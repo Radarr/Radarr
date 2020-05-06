@@ -1,4 +1,4 @@
-const readarrGreen = '#00A65B';
+const readarrRed = '#ca302d';
 
 module.exports = {
   textColor: '#515253',
@@ -10,15 +10,15 @@ module.exports = {
   offWhite: '#f5f7fa',
   blue: '#06f',
   yellow: '#FFA500',
-  primaryColor: '#0b8750',
+  primaryColor: '#5d9cec',
   selectedColor: '#f9be03',
   successColor: '#27c24c',
   dangerColor: '#f05050',
   warningColor: '#ffa500',
-  infoColor: readarrGreen,
+  infoColor: readarrRed,
   purple: '#7a43b6',
   pink: '#ff69b4',
-  readarrGreen,
+  readarrRed,
   helpTextColor: '#909293',
   darkGray: '#888',
   gray: '#adadad',
@@ -27,18 +27,18 @@ module.exports = {
 
   // Theme Colors
 
-  themeBlue: readarrGreen,
-  themeAlternateBlue: '#00a65b',
-  themeRed: '#c4273c',
+  themeRed: readarrRed,
+  themeAlternateRed: '#a41726',
+  themeDarkRed: '#66001a',
   themeDarkColor: '#353535',
-  themeLightColor: '#1d563d',
+  themeLightColor: '#810020',
 
   torrentColor: '#00853d',
   usenetColor: '#17b1d9',
 
   // Links
   defaultLinkHoverColor: '#fff',
-  linkColor: '#0b8750',
+  linkColor: '#5d9cec',
   linkHoverColor: '#1b72e2',
 
   // Sidebar
@@ -49,10 +49,10 @@ module.exports = {
 
   // Toolbar
   toolbarColor: '#e1e2e3',
-  toolbarBackgroundColor: '#1d563d',
-  toolbarMenuItemBackgroundColor: '#4D8069',
+  toolbarBackgroundColor: '#810020',
+  toolbarMenuItemBackgroundColor: '#66001a',
   toolbarMenuItemHoverBackgroundColor: '#353535',
-  toolbarLabelColor: '#8895aa',
+  toolbarLabelColor: '#e1e2e3',
 
   // Accents
   borderColor: '#e5e5e5',
@@ -75,10 +75,10 @@ module.exports = {
   defaultHoverBackgroundColor: '#f5f5f5',
   defaultHoverBorderColor: '#d6d6d6;',
 
-  primaryBackgroundColor: '#0b8750',
-  primaryBorderColor: '#1d563d',
-  primaryHoverBackgroundColor: '#097948',
-  primaryHoverBorderColor: '#1D563D;',
+  primaryBackgroundColor: '#5d9cec',
+  primaryBorderColor: '#5899eb',
+  primaryHoverBackgroundColor: '#4b91ea',
+  primaryHoverBorderColor: '#3483e7;',
 
   successBackgroundColor: '#27c24c',
   successBorderColor: '#26be4a',
@@ -115,8 +115,8 @@ module.exports = {
   //
   // Toolbar
 
-  toobarButtonHoverColor: '#00A65B',
-  toobarButtonSelectedColor: '#00A65B',
+  toobarButtonHoverColor: '#ca302d',
+  toobarButtonSelectedColor: '#ca302d',
 
   //
   // Scroller
@@ -152,7 +152,7 @@ module.exports = {
   //
   // Slider
 
-  sliderAccentColor: '#0b8750',
+  sliderAccentColor: '#5d9cec',
 
   //
   // Form

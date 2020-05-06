@@ -8,7 +8,7 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
 {
     public abstract class SearchCriteriaBase
     {
-        private static readonly Regex SpecialCharacter = new Regex(@"[`'’.]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex SpecialCharacter = new Regex(@"[`'’]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex NonWord = new Regex(@"[\W]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex BeginningThe = new Regex(@"^the\s", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -16,9 +16,8 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         public virtual bool UserInvokedSearch { get; set; }
         public virtual bool InteractiveSearch { get; set; }
 
-        public Artist Artist { get; set; }
-        public List<Album> Albums { get; set; }
-        public List<Track> Tracks { get; set; }
+        public Author Artist { get; set; }
+        public List<Book> Albums { get; set; }
 
         public string ArtistQuery => GetQueryTitle(Artist.Name);
 
@@ -35,6 +34,7 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
             var cleanTitle = BeginningThe.Replace(title, string.Empty);
 
             cleanTitle = cleanTitle.Replace(" & ", " ");
+            cleanTitle = cleanTitle.Replace(".", " ");
             cleanTitle = SpecialCharacter.Replace(cleanTitle, "");
             cleanTitle = NonWord.Replace(cleanTitle, "+");
 

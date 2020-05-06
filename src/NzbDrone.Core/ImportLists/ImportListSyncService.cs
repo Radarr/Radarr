@@ -8,6 +8,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Music;
+using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.ImportLists
@@ -17,25 +18,27 @@ namespace NzbDrone.Core.ImportLists
         private readonly IImportListFactory _importListFactory;
         private readonly IImportListExclusionService _importListExclusionService;
         private readonly IFetchAndParseImportList _listFetcherAndParser;
-        private readonly ISearchForNewAlbum _albumSearchService;
-        private readonly ISearchForNewArtist _artistSearchService;
+        private readonly ISearchForNewBook _albumSearchService;
+        private readonly ISearchForNewAuthor _artistSearchService;
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
         private readonly IAddArtistService _addArtistService;
         private readonly IAddAlbumService _addAlbumService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IManageCommandQueue _commandQueueManager;
         private readonly Logger _logger;
 
         public ImportListSyncService(IImportListFactory importListFactory,
                                      IImportListExclusionService importListExclusionService,
                                      IFetchAndParseImportList listFetcherAndParser,
-                                     ISearchForNewAlbum albumSearchService,
-                                     ISearchForNewArtist artistSearchService,
+                                     ISearchForNewBook albumSearchService,
+                                     ISearchForNewAuthor artistSearchService,
                                      IArtistService artistService,
                                      IAlbumService albumService,
                                      IAddArtistService addArtistService,
                                      IAddAlbumService addAlbumService,
                                      IEventAggregator eventAggregator,
+                                     IManageCommandQueue commandQueueManager,
                                      Logger logger)
         {
             _importListFactory = importListFactory;
@@ -48,10 +51,11 @@ namespace NzbDrone.Core.ImportLists
             _addArtistService = addArtistService;
             _addAlbumService = addAlbumService;
             _eventAggregator = eventAggregator;
+            _commandQueueManager = commandQueueManager;
             _logger = logger;
         }
 
-        private List<Album> SyncAll()
+        private List<Book> SyncAll()
         {
             _logger.ProgressInfo("Starting Import List Sync");
 
@@ -62,7 +66,7 @@ namespace NzbDrone.Core.ImportLists
             return ProcessReports(reports);
         }
 
-        private List<Album> SyncList(ImportListDefinition definition)
+        private List<Book> SyncList(ImportListDefinition definition)
         {
             _logger.ProgressInfo(string.Format("Starting Import List Refresh for List {0}", definition.Name));
 
@@ -73,11 +77,11 @@ namespace NzbDrone.Core.ImportLists
             return ProcessReports(reports);
         }
 
-        private List<Album> ProcessReports(List<ImportListItemInfo> reports)
+        private List<Book> ProcessReports(List<ImportListItemInfo> reports)
         {
-            var processed = new List<Album>();
-            var artistsToAdd = new List<Artist>();
-            var albumsToAdd = new List<Album>();
+            var processed = new List<Book>();
+            var artistsToAdd = new List<Author>();
+            var albumsToAdd = new List<Book>();
 
             _logger.ProgressInfo("Processing {0} list items", reports.Count);
 
@@ -113,35 +117,52 @@ namespace NzbDrone.Core.ImportLists
                 }
             }
 
-            _addArtistService.AddArtists(artistsToAdd);
-            _addAlbumService.AddAlbums(albumsToAdd);
+            var addedArtists = _addArtistService.AddArtists(artistsToAdd, false);
+            var addedAlbums = _addAlbumService.AddAlbums(albumsToAdd, false);
 
             var message = string.Format($"Import List Sync Completed. Items found: {reports.Count}, Artists added: {artistsToAdd.Count}, Albums added: {albumsToAdd.Count}");
 
             _logger.ProgressInfo(message);
+
+            var toRefresh = addedArtists.Select(x => x.Id).Concat(addedAlbums.Select(x => x.Author.Value.Id)).Distinct().ToList();
+            if (toRefresh.Any())
+            {
+                _commandQueueManager.Push(new BulkRefreshArtistCommand(toRefresh, true));
+            }
 
             return processed;
         }
 
         private void MapAlbumReport(ImportListItemInfo report)
         {
-            var albumQuery = report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() ? $"readarr:{report.AlbumMusicBrainzId}" : report.Album;
-            var mappedAlbum = _albumSearchService.SearchForNewAlbum(albumQuery, report.Artist)
-                .FirstOrDefault();
+            Book mappedAlbum;
+
+            if (report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() && int.TryParse(report.AlbumMusicBrainzId, out var goodreadsId))
+            {
+                mappedAlbum = _albumSearchService.SearchByGoodreadsId(goodreadsId).FirstOrDefault(x => x.GoodreadsId == goodreadsId);
+            }
+            else
+            {
+                mappedAlbum = _albumSearchService.SearchForNewBook(report.Album, report.Artist).FirstOrDefault();
+            }
 
             // Break if we are looking for an album and cant find it. This will avoid us from adding the artist and possibly getting it wrong.
             if (mappedAlbum == null)
             {
+                _logger.Trace($"Nothing found for {report.AlbumMusicBrainzId}");
+                report.AlbumMusicBrainzId = null;
                 return;
             }
 
-            report.AlbumMusicBrainzId = mappedAlbum.ForeignAlbumId;
+            _logger.Trace($"Mapped {report.AlbumMusicBrainzId} to {mappedAlbum}");
+
+            report.AlbumMusicBrainzId = mappedAlbum.ForeignBookId;
             report.Album = mappedAlbum.Title;
-            report.Artist = mappedAlbum.ArtistMetadata?.Value?.Name;
-            report.ArtistMusicBrainzId = mappedAlbum.ArtistMetadata?.Value?.ForeignArtistId;
+            report.Artist = mappedAlbum.AuthorMetadata?.Value?.Name;
+            report.ArtistMusicBrainzId = mappedAlbum.AuthorMetadata?.Value?.ForeignAuthorId;
         }
 
-        private void ProcessAlbumReport(ImportListDefinition importList, ImportListItemInfo report, List<ImportListExclusion> listExclusions, List<Album> albumsToAdd)
+        private void ProcessAlbumReport(ImportListDefinition importList, ImportListItemInfo report, List<ImportListExclusion> listExclusions, List<Book> albumsToAdd)
         {
             if (report.AlbumMusicBrainzId == null)
             {
@@ -176,23 +197,21 @@ namespace NzbDrone.Core.ImportLists
             }
 
             // Append Album if not already in DB or already on add list
-            if (albumsToAdd.All(s => s.ForeignAlbumId != report.AlbumMusicBrainzId))
+            if (albumsToAdd.All(s => s.ForeignBookId != report.AlbumMusicBrainzId))
             {
                 var monitored = importList.ShouldMonitor != ImportListMonitorType.None;
 
-                var toAdd = new Album
+                var toAdd = new Book
                 {
-                    ForeignAlbumId = report.AlbumMusicBrainzId,
+                    ForeignBookId = report.AlbumMusicBrainzId,
                     Monitored = monitored,
-                    AnyReleaseOk = true,
-                    Artist = new Artist
+                    Author = new Author
                     {
                         Monitored = monitored,
                         RootFolderPath = importList.RootFolderPath,
                         QualityProfileId = importList.ProfileId,
                         MetadataProfileId = importList.MetadataProfileId,
                         Tags = importList.Tags,
-                        AlbumFolder = true,
                         AddOptions = new AddArtistOptions
                         {
                             SearchForMissingAlbums = monitored,
@@ -204,7 +223,7 @@ namespace NzbDrone.Core.ImportLists
 
                 if (importList.ShouldMonitor == ImportListMonitorType.SpecificAlbum)
                 {
-                    toAdd.Artist.Value.AddOptions.AlbumsToMonitor.Add(toAdd.ForeignAlbumId);
+                    toAdd.Author.Value.AddOptions.AlbumsToMonitor.Add(toAdd.ForeignBookId);
                 }
 
                 albumsToAdd.Add(toAdd);
@@ -213,13 +232,13 @@ namespace NzbDrone.Core.ImportLists
 
         private void MapArtistReport(ImportListItemInfo report)
         {
-            var mappedArtist = _artistSearchService.SearchForNewArtist(report.Artist)
+            var mappedArtist = _artistSearchService.SearchForNewAuthor(report.Artist)
                 .FirstOrDefault();
-            report.ArtistMusicBrainzId = mappedArtist?.Metadata.Value?.ForeignArtistId;
+            report.ArtistMusicBrainzId = mappedArtist?.Metadata.Value?.ForeignAuthorId;
             report.Artist = mappedArtist?.Metadata.Value?.Name;
         }
 
-        private void ProcessArtistReport(ImportListDefinition importList, ImportListItemInfo report, List<ImportListExclusion> listExclusions, List<Artist> artistsToAdd)
+        private void ProcessArtistReport(ImportListDefinition importList, ImportListItemInfo report, List<ImportListExclusion> listExclusions, List<Author> artistsToAdd)
         {
             if (report.ArtistMusicBrainzId == null)
             {
@@ -245,15 +264,15 @@ namespace NzbDrone.Core.ImportLists
             }
 
             // Append Artist if not already in DB or already on add list
-            if (artistsToAdd.All(s => s.Metadata.Value.ForeignArtistId != report.ArtistMusicBrainzId))
+            if (artistsToAdd.All(s => s.Metadata.Value.ForeignAuthorId != report.ArtistMusicBrainzId))
             {
                 var monitored = importList.ShouldMonitor != ImportListMonitorType.None;
 
-                artistsToAdd.Add(new Artist
+                artistsToAdd.Add(new Author
                 {
-                    Metadata = new ArtistMetadata
+                    Metadata = new AuthorMetadata
                     {
-                        ForeignArtistId = report.ArtistMusicBrainzId,
+                        ForeignAuthorId = report.ArtistMusicBrainzId,
                         Name = report.Artist
                     },
                     Monitored = monitored,
@@ -261,7 +280,6 @@ namespace NzbDrone.Core.ImportLists
                     QualityProfileId = importList.ProfileId,
                     MetadataProfileId = importList.MetadataProfileId,
                     Tags = importList.Tags,
-                    AlbumFolder = true,
                     AddOptions = new AddArtistOptions
                     {
                         SearchForMissingAlbums = monitored,
@@ -274,7 +292,7 @@ namespace NzbDrone.Core.ImportLists
 
         public void Execute(ImportListSyncCommand message)
         {
-            List<Album> processed;
+            List<Book> processed;
 
             if (message.DefinitionId.HasValue)
             {

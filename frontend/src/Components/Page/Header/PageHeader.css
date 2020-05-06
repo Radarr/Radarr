@@ -4,7 +4,7 @@
   align-items: center;
   flex: 0 0 auto;
   height: $headerHeight;
-  background-color: $themeAlternateBlue;
+  background-color: $themeAlternateRed;
   color: $white;
 }
 
@@ -41,12 +41,12 @@
   composes: link from '~Components/Link/Link.css';
 
   width: 30px;
-  color: $themeRed;
+  color: $themeDarkRed;
   text-align: center;
   line-height: 60px;
 
   &:hover {
-    color: #9c1f30;
+    color: $themeDarkColor;
   }
 }
 

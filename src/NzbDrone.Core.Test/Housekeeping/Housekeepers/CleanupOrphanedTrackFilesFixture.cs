@@ -11,42 +11,19 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 {
     [TestFixture]
-    public class CleanupOrphanedTrackFilesFixture : DbTest<CleanupOrphanedTrackFiles, TrackFile>
+    public class CleanupOrphanedTrackFilesFixture : DbTest<CleanupOrphanedBookFiles, BookFile>
     {
         [Test]
         public void should_unlink_orphaned_track_files()
         {
-            var trackFile = Builder<TrackFile>.CreateNew()
+            var trackFile = Builder<BookFile>.CreateNew()
                 .With(h => h.Quality = new QualityModel())
-                .With(h => h.AlbumId = 1)
+                .With(h => h.BookId = 1)
                 .BuildNew();
 
             Db.Insert(trackFile);
             Subject.Clean();
-            AllStoredModels[0].AlbumId.Should().Be(0);
-        }
-
-        [Test]
-        public void should_not_unlink_unorphaned_track_files()
-        {
-            var trackFiles = Builder<TrackFile>.CreateListOfSize(2)
-                .All()
-                .With(h => h.Quality = new QualityModel())
-                .With(h => h.AlbumId = 1)
-                .BuildListOfNew();
-
-            Db.InsertMany(trackFiles);
-
-            var track = Builder<Track>.CreateNew()
-                                          .With(e => e.TrackFileId = trackFiles.First().Id)
-                                          .BuildNew();
-
-            Db.Insert(track);
-
-            Subject.Clean();
-            AllStoredModels.Where(x => x.AlbumId == 1).Should().HaveCount(1);
-
-            Db.All<Track>().Should().Contain(e => e.TrackFileId == AllStoredModels.First().Id);
+            AllStoredModels[0].BookId.Should().Be(0);
         }
     }
 }

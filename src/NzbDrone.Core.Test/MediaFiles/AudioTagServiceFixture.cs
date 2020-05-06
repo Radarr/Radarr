@@ -17,6 +17,7 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
 {
     [TestFixture]
+    [Ignore("Readarr doesn't currently support audio")]
     public class AudioTagServiceFixture : CoreTest<AudioTagService>
     {
         public static class TestCaseFactory
@@ -197,40 +198,6 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
 
         [Test]
         [TestCaseSource(typeof(TestCaseFactory), "TestCases")]
-        public void should_remove_mb_tags(string filename, string[] skipProperties)
-        {
-            GivenFileCopy(filename);
-            var path = _copiedFile;
-
-            var track = new TrackFile
-            {
-                Path = path
-            };
-
-            _testTags.Write(path);
-
-            var withmb = Subject.ReadAudioTag(path);
-
-            VerifySame(withmb, _testTags, skipProperties);
-
-            Subject.RemoveMusicBrainzTags(track);
-
-            var tag = Subject.ReadAudioTag(path);
-
-            tag.MusicBrainzReleaseCountry.Should().BeNull();
-            tag.MusicBrainzReleaseStatus.Should().BeNull();
-            tag.MusicBrainzReleaseType.Should().BeNull();
-            tag.MusicBrainzReleaseId.Should().BeNull();
-            tag.MusicBrainzArtistId.Should().BeNull();
-            tag.MusicBrainzReleaseArtistId.Should().BeNull();
-            tag.MusicBrainzReleaseGroupId.Should().BeNull();
-            tag.MusicBrainzTrackId.Should().BeNull();
-            tag.MusicBrainzAlbumComment.Should().BeNull();
-            tag.MusicBrainzReleaseTrackId.Should().BeNull();
-        }
-
-        [Test]
-        [TestCaseSource(typeof(TestCaseFactory), "TestCases")]
         public void should_read_audiotag_from_file_with_no_tags(string filename, string[] skipProperties)
         {
             GivenFileCopy(filename);
@@ -337,40 +304,19 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
             tag.OriginalReleaseDate.HasValue.Should().BeFalse();
         }
 
-        private TrackFile GivenPopulatedTrackfile(int mediumOffset)
+        private BookFile GivenPopulatedTrackfile(int mediumOffset)
         {
-            var meta = Builder<ArtistMetadata>.CreateNew().Build();
-            var artist = Builder<Artist>.CreateNew()
+            var meta = Builder<AuthorMetadata>.CreateNew().Build();
+            var artist = Builder<Author>.CreateNew()
                 .With(x => x.Metadata = meta)
                 .Build();
 
-            var album = Builder<Album>.CreateNew()
-                .With(x => x.Artist = artist)
+            var album = Builder<Book>.CreateNew()
+                .With(x => x.Author = artist)
                 .Build();
 
-            var media = Builder<Medium>.CreateListOfSize(2).Build() as List<Medium>;
-            media.ForEach(x => x.Number += mediumOffset);
-
-            var release = Builder<AlbumRelease>.CreateNew()
+            var file = Builder<BookFile>.CreateNew()
                 .With(x => x.Album = album)
-                .With(x => x.Media = media)
-                .With(x => x.Country = new List<string>())
-                .With(x => x.Label = new List<string>())
-                .Build();
-
-            var tracks = Builder<Track>.CreateListOfSize(10)
-                .All()
-                .With(x => x.AlbumRelease = release)
-                .With(x => x.ArtistMetadata = meta)
-                .TheFirst(5)
-                .With(x => x.MediumNumber = 1 + mediumOffset)
-                .TheNext(5)
-                .With(x => x.MediumNumber = 2 + mediumOffset)
-                .Build() as List<Track>;
-            release.Tracks = tracks;
-
-            var file = Builder<TrackFile>.CreateNew()
-                .With(x => x.Tracks = new List<Track> { tracks[0] })
                 .With(x => x.Artist = artist)
                 .Build();
 
@@ -382,8 +328,6 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
         {
             var file = GivenPopulatedTrackfile(0);
             var tag = Subject.GetTrackMetadata(file);
-
-            tag.MusicBrainzReleaseCountry.Should().BeNull();
         }
 
         [Test]

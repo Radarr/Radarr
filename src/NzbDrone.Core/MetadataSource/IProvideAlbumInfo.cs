@@ -4,9 +4,9 @@ using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MetadataSource
 {
-    public interface IProvideAlbumInfo
+    public interface IProvideBookInfo
     {
-        Tuple<string, Album, List<ArtistMetadata>> GetAlbumInfo(string id);
+        Tuple<string, Book, List<AuthorMetadata>> GetBookInfo(string id);
         HashSet<string> GetChangedAlbums(DateTime startTime);
     }
 }

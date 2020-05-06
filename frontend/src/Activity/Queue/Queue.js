@@ -48,7 +48,7 @@ class Queue extends Component {
       this.props.isFetching &&
       nextProps.isPopulated &&
       hasDifferentItems(this.props.items, nextProps.items) &&
-      nextProps.items.some((e) => e.albumId)
+      nextProps.items.some((e) => e.bookId)
     ) {
       return false;
     }
@@ -146,7 +146,7 @@ class Queue extends Component {
     } = this.state;
 
     const isRefreshing = isFetching || isAlbumsFetching || isRefreshMonitoredDownloadsExecuting;
-    const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length || items.every((e) => !e.albumId));
+    const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length || items.every((e) => !e.bookId));
     const hasError = error || albumsError;
     const selectedIds = this.getSelectedIds();
     const selectedCount = selectedIds.length;
@@ -236,7 +236,7 @@ class Queue extends Component {
                         return (
                           <QueueRowConnector
                             key={item.id}
-                            albumId={item.albumId}
+                            bookId={item.bookId}
                             isSelected={selectedState[item.id]}
                             columns={columns}
                             {...item}
@@ -264,7 +264,7 @@ class Queue extends Component {
             selectedIds.every((id) => {
               const item = items.find((i) => i.id === id);
 
-              return !!(item && item.artistId && item.albumId);
+              return !!(item && item.authorId && item.bookId);
             })
           )}
           onRemovePress={this.onRemoveSelectedConfirmed}

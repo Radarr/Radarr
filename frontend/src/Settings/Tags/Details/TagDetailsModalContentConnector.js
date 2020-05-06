@@ -11,7 +11,7 @@ function findMatchingItems(ids, items) {
 
 function createMatchingArtistSelector() {
   return createSelector(
-    (state, { artistIds }) => artistIds,
+    (state, { authorIds }) => authorIds,
     createAllArtistSelector(),
     findMatchingItems
   );

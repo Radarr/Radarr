@@ -7,6 +7,6 @@ namespace NzbDrone.Core.Extras
     public interface IImportExistingExtraFiles
     {
         int Order { get; }
-        IEnumerable<ExtraFile> ProcessFiles(Artist artist, List<string> filesOnDisk, List<string> importedFiles);
+        IEnumerable<ExtraFile> ProcessFiles(Author artist, List<string> filesOnDisk, List<string> importedFiles);
     }
 }

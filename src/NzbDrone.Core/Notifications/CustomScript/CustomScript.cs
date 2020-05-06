@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Readarr_EventType", "Grab");
             environmentVariables.Add("Readarr_Artist_Id", artist.Id.ToString());
             environmentVariables.Add("Readarr_Artist_Name", artist.Metadata.Value.Name);
-            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignAuthorId);
             environmentVariables.Add("Readarr_Artist_Type", artist.Metadata.Value.Type);
             environmentVariables.Add("Readarr_Release_AlbumCount", remoteAlbum.Albums.Count.ToString());
             environmentVariables.Add("Readarr_Release_AlbumReleaseDates", string.Join(",", remoteAlbum.Albums.Select(e => e.ReleaseDate)));
@@ -63,19 +63,17 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             var artist = message.Artist;
             var album = message.Album;
-            var release = message.Release;
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Readarr_EventType", "AlbumDownload");
             environmentVariables.Add("Readarr_Artist_Id", artist.Id.ToString());
             environmentVariables.Add("Readarr_Artist_Name", artist.Metadata.Value.Name);
             environmentVariables.Add("Readarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignAuthorId);
             environmentVariables.Add("Readarr_Artist_Type", artist.Metadata.Value.Type);
             environmentVariables.Add("Readarr_Album_Id", album.Id.ToString());
             environmentVariables.Add("Readarr_Album_Title", album.Title);
-            environmentVariables.Add("Readarr_Album_MBId", album.ForeignAlbumId);
-            environmentVariables.Add("Readarr_AlbumRelease_MBId", release.ForeignReleaseId);
+            environmentVariables.Add("Readarr_Album_MBId", album.ForeignBookId);
             environmentVariables.Add("Readarr_Album_ReleaseDate", album.ReleaseDate.ToString());
             environmentVariables.Add("Readarr_Download_Client", message.DownloadClient ?? string.Empty);
             environmentVariables.Add("Readarr_Download_Id", message.DownloadId ?? string.Empty);
@@ -93,7 +91,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             ExecuteScript(environmentVariables);
         }
 
-        public override void OnRename(Artist artist)
+        public override void OnRename(Author artist)
         {
             var environmentVariables = new StringDictionary();
 
@@ -101,7 +99,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Readarr_Artist_Id", artist.Id.ToString());
             environmentVariables.Add("Readarr_Artist_Name", artist.Metadata.Value.Name);
             environmentVariables.Add("Readarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignAuthorId);
             environmentVariables.Add("Readarr_Artist_Type", artist.Metadata.Value.Type);
 
             ExecuteScript(environmentVariables);
@@ -111,7 +109,6 @@ namespace NzbDrone.Core.Notifications.CustomScript
         {
             var artist = message.Artist;
             var album = message.Album;
-            var release = message.Release;
             var trackFile = message.TrackFile;
             var environmentVariables = new StringDictionary();
 
@@ -119,18 +116,14 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Readarr_Artist_Id", artist.Id.ToString());
             environmentVariables.Add("Readarr_Artist_Name", artist.Metadata.Value.Name);
             environmentVariables.Add("Readarr_Artist_Path", artist.Path);
-            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignArtistId);
+            environmentVariables.Add("Readarr_Artist_MBId", artist.Metadata.Value.ForeignAuthorId);
             environmentVariables.Add("Readarr_Artist_Type", artist.Metadata.Value.Type);
             environmentVariables.Add("Readarr_Album_Id", album.Id.ToString());
             environmentVariables.Add("Readarr_Album_Title", album.Title);
-            environmentVariables.Add("Readarr_Album_MBId", album.ForeignAlbumId);
-            environmentVariables.Add("Readarr_AlbumRelease_MBId", release.ForeignReleaseId);
+            environmentVariables.Add("Readarr_Album_MBId", album.ForeignBookId);
             environmentVariables.Add("Readarr_Album_ReleaseDate", album.ReleaseDate.ToString());
             environmentVariables.Add("Readarr_TrackFile_Id", trackFile.Id.ToString());
-            environmentVariables.Add("Readarr_TrackFile_TrackCount", trackFile.Tracks.Value.Count.ToString());
             environmentVariables.Add("Readarr_TrackFile_Path", trackFile.Path);
-            environmentVariables.Add("Readarr_TrackFile_TrackNumbers", string.Join(",", trackFile.Tracks.Value.Select(e => e.TrackNumber)));
-            environmentVariables.Add("Readarr_TrackFile_TrackTitles", string.Join("|", trackFile.Tracks.Value.Select(e => e.Title)));
             environmentVariables.Add("Readarr_TrackFile_Quality", trackFile.Quality.Quality.Name);
             environmentVariables.Add("Readarr_TrackFile_QualityVersion", trackFile.Quality.Revision.Version.ToString());
             environmentVariables.Add("Readarr_TrackFile_ReleaseGroup", trackFile.ReleaseGroup ?? string.Empty);

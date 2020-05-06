@@ -190,6 +190,7 @@ VirtualTable.propTypes = {
 VirtualTable.defaultProps = {
   className: styles.tableContainer,
   headerHeight: 38,
+  rowHeight: 38,
   onRecompute: () => {}
 };
 

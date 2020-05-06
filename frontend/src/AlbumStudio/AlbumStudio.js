@@ -41,7 +41,7 @@ const columns = [
   },
   {
     name: 'albumCount',
-    label: 'Albums',
+    label: 'Books',
     isSortable: false,
     isVisible: true
   }
@@ -253,7 +253,7 @@ class AlbumStudio extends Component {
           >
             <AlbumStudioRowConnector
               key={item.id}
-              artistId={item.id}
+              authorId={item.id}
               isSelected={selectedState[item.id]}
               onSelectedChange={this.onSelectedChange}
             />
@@ -282,7 +282,7 @@ class AlbumStudio extends Component {
 
   onUpdateSelectedPress = (changes) => {
     this.props.onUpdateSelectedPress({
-      artistIds: this.getSelectedIds(),
+      authorIds: this.getSelectedIds(),
       ...changes
     });
   }

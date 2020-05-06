@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private RemoteAlbum _parseResultSingle;
         private QualityModel _upgradableQuality;
         private QualityModel _notupgradableQuality;
-        private Artist _fakeArtist;
+        private Author _fakeArtist;
 
         [SetUp]
         public void Setup()
@@ -37,15 +37,15 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Mocker.Resolve<UpgradableSpecification>();
             _upgradeHistory = Mocker.Resolve<HistorySpecification>();
 
-            var singleAlbumList = new List<Album> { new Album { Id = FIRST_ALBUM_ID } };
-            var doubleAlbumList = new List<Album>
+            var singleAlbumList = new List<Book> { new Book { Id = FIRST_ALBUM_ID } };
+            var doubleAlbumList = new List<Book>
             {
-                                                            new Album { Id = FIRST_ALBUM_ID },
-                                                            new Album { Id = SECOND_ALBUM_ID },
-                                                            new Album { Id = 3 }
+                                                            new Book { Id = FIRST_ALBUM_ID },
+                                                            new Book { Id = SECOND_ALBUM_ID },
+                                                            new Book { Id = 3 }
             };
 
-            _fakeArtist = Builder<Artist>.CreateNew()
+            _fakeArtist = Builder<Author>.CreateNew()
                 .With(c => c.QualityProfile = new QualityProfile
                 {
                     UpgradeAllowed = true,
@@ -57,18 +57,18 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _parseResultMulti = new RemoteAlbum
             {
                 Artist = _fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
                 Albums = doubleAlbumList
             };
 
             _parseResultSingle = new RemoteAlbum
             {
                 Artist = _fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
                 Albums = singleAlbumList
             };
 
-            _upgradableQuality = new QualityModel(Quality.MP3_192, new Revision(version: 1));
+            _upgradableQuality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _notupgradableQuality = new QualityModel(Quality.MP3_320, new Revision(version: 2));
 
             Mocker.GetMock<IConfigService>()
@@ -76,9 +76,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Returns(true);
         }
 
-        private void GivenMostRecentForAlbum(int albumId, string downloadId, QualityModel quality, DateTime date, HistoryEventType eventType)
+        private void GivenMostRecentForAlbum(int bookId, string downloadId, QualityModel quality, DateTime date, HistoryEventType eventType)
         {
-            Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForAlbum(albumId))
+            Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForAlbum(bookId))
                   .Returns(new History.History { DownloadId = downloadId, Quality = quality, Date = date, EventType = eventType });
         }
 

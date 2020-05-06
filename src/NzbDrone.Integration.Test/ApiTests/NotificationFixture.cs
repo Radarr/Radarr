@@ -30,10 +30,10 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             var schema = Notifications.Schema();
 
-            var xbmc = schema.Single(s => s.Implementation.Equals("Xbmc", StringComparison.InvariantCultureIgnoreCase));
+            var xbmc = schema.Single(s => s.Implementation.Equals("Webhook", StringComparison.InvariantCultureIgnoreCase));
 
-            xbmc.Name = "Test XBMC";
-            xbmc.Fields.Single(f => f.Name.Equals("host")).Value = "localhost";
+            xbmc.Name = "Test Webhook";
+            xbmc.Fields.Single(f => f.Name.Equals("url")).Value = "http://httpbin.org/post";
 
             var result = Notifications.Post(xbmc);
             Notifications.Delete(result.Id);

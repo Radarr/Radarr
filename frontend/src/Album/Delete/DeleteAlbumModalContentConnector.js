@@ -28,14 +28,14 @@ class DeleteAlbumModalContentConnector extends Component {
 
   onDeletePress = (deleteFiles, addImportListExclusion) => {
     this.props.deleteAlbum({
-      id: this.props.albumId,
+      id: this.props.bookId,
       deleteFiles,
       addImportListExclusion
     });
 
     this.props.onModalClose(true);
 
-    this.props.push(`${window.Readarr.urlBase}/artist/${this.props.foreignArtistId}`);
+    this.props.push(`${window.Readarr.urlBase}/author/${this.props.titleSlug}`);
   }
 
   //
@@ -52,8 +52,8 @@ class DeleteAlbumModalContentConnector extends Component {
 }
 
 DeleteAlbumModalContentConnector.propTypes = {
-  albumId: PropTypes.number.isRequired,
-  foreignArtistId: PropTypes.string.isRequired,
+  bookId: PropTypes.number.isRequired,
+  titleSlug: PropTypes.string.isRequired,
   push: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
   deleteAlbum: PropTypes.func.isRequired

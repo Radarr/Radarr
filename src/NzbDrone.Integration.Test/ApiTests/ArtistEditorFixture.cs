@@ -33,7 +33,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var artistEditor = new ArtistEditorResource
             {
                 QualityProfileId = 2,
-                ArtistIds = artist.Select(o => o.Id).ToList()
+                AuthorIds = artist.Select(o => o.Id).ToList()
             };
 
             var result = Artist.Editor(artistEditor);

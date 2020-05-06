@@ -6,9 +6,9 @@ namespace NzbDrone.Core.ImportLists
 {
     public class ImportListSyncCompleteEvent : IEvent
     {
-        public List<Album> ProcessedDecisions { get; private set; }
+        public List<Book> ProcessedDecisions { get; private set; }
 
-        public ImportListSyncCompleteEvent(List<Album> processedDecisions)
+        public ImportListSyncCompleteEvent(List<Book> processedDecisions)
         {
             ProcessedDecisions = processedDecisions;
         }

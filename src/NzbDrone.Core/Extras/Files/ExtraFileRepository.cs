@@ -8,11 +8,11 @@ namespace NzbDrone.Core.Extras.Files
     public interface IExtraFileRepository<TExtraFile> : IBasicRepository<TExtraFile>
         where TExtraFile : ExtraFile, new()
     {
-        void DeleteForArtist(int artistId);
-        void DeleteForAlbum(int artistId, int albumId);
+        void DeleteForArtist(int authorId);
+        void DeleteForAlbum(int authorId, int bookId);
         void DeleteForTrackFile(int trackFileId);
-        List<TExtraFile> GetFilesByArtist(int artistId);
-        List<TExtraFile> GetFilesByAlbum(int artistId, int albumId);
+        List<TExtraFile> GetFilesByArtist(int authorId);
+        List<TExtraFile> GetFilesByAlbum(int authorId, int bookId);
         List<TExtraFile> GetFilesByTrackFile(int trackFileId);
         TExtraFile FindByPath(string path);
     }
@@ -25,14 +25,14 @@ namespace NzbDrone.Core.Extras.Files
         {
         }
 
-        public void DeleteForArtist(int artistId)
+        public void DeleteForArtist(int authorId)
         {
-            Delete(c => c.ArtistId == artistId);
+            Delete(c => c.AuthorId == authorId);
         }
 
-        public void DeleteForAlbum(int artistId, int albumId)
+        public void DeleteForAlbum(int authorId, int bookId)
         {
-            Delete(c => c.ArtistId == artistId && c.AlbumId == albumId);
+            Delete(c => c.AuthorId == authorId && c.BookId == bookId);
         }
 
         public void DeleteForTrackFile(int trackFileId)
@@ -40,14 +40,14 @@ namespace NzbDrone.Core.Extras.Files
             Delete(c => c.TrackFileId == trackFileId);
         }
 
-        public List<TExtraFile> GetFilesByArtist(int artistId)
+        public List<TExtraFile> GetFilesByArtist(int authorId)
         {
-            return Query(c => c.ArtistId == artistId);
+            return Query(c => c.AuthorId == authorId);
         }
 
-        public List<TExtraFile> GetFilesByAlbum(int artistId, int albumId)
+        public List<TExtraFile> GetFilesByAlbum(int authorId, int bookId)
         {
-            return Query(c => c.ArtistId == artistId && c.AlbumId == albumId);
+            return Query(c => c.AuthorId == authorId && c.BookId == bookId);
         }
 
         public List<TExtraFile> GetFilesByTrackFile(int trackFileId)

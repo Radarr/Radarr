@@ -5,6 +5,7 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.0" />
     <PackageReference Include="System.Memory" Version="4.5.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.0" />
@@ -17,10 +18,10 @@
     <PackageReference Include="System.IO.Abstractions" Version="7.0.15" />
     <PackageReference Include="TagLibSharp-Lidarr" Version="2.2.0.19" />
     <PackageReference Include="Kveer.XmlRPC" Version="1.1.1" />
-    <PackageReference Include="SpotifyAPI.Web" Version="4.2.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
     <PackageReference Include="Equ" Version="2.2.0" />
     <PackageReference Include="MonoTorrent" Version="1.0.11" />
+    <PackageReference Include="PdfSharpCore" Version="1.1.25" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Common\Readarr.Common.csproj" />

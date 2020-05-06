@@ -12,18 +12,18 @@ namespace NzbDrone.Core.MediaFiles.Commands
             AddNewArtists = true;
         }
 
-        public RescanFoldersCommand(List<string> folders, FilterFilesType filter, bool addNewArtists, List<int> artistIds)
+        public RescanFoldersCommand(List<string> folders, FilterFilesType filter, bool addNewArtists, List<int> authorIds)
         {
             Folders = folders;
             Filter = filter;
             AddNewArtists = addNewArtists;
-            ArtistIds = artistIds;
+            AuthorIds = authorIds;
         }
 
         public List<string> Folders { get; set; }
         public FilterFilesType Filter { get; set; }
         public bool AddNewArtists { get; set; }
-        public List<int> ArtistIds { get; set; }
+        public List<int> AuthorIds { get; set; }
 
         public override bool SendUpdatesToClient => true;
         public override bool RequiresDiskAccess => true;

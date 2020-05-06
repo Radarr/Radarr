@@ -18,8 +18,8 @@ namespace NzbDrone.Core.Test.MediaCoverTests
     [TestFixture]
     public class MediaCoverServiceFixture : CoreTest<MediaCoverService>
     {
-        private Artist _artist;
-        private Album _album;
+        private Author _artist;
+        private Book _album;
         private HttpResponse _httpResponse;
 
         [SetUp]
@@ -27,12 +27,12 @@ namespace NzbDrone.Core.Test.MediaCoverTests
         {
             Mocker.SetConstant<IAppFolderInfo>(new AppFolderInfo(Mocker.Resolve<IStartupContext>()));
 
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                 .With(v => v.Id = 2)
                 .With(v => v.Metadata.Value.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Poster, "") })
                 .Build();
 
-            _album = Builder<Album>.CreateNew()
+            _album = Builder<Book>.CreateNew()
                 .With(v => v.Id = 4)
                 .With(v => v.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Cover, "") })
                 .Build();
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             Mocker.GetMock<IAlbumService>()
                   .Setup(v => v.GetAlbumsByArtist(It.IsAny<int>()))
-                  .Returns(new List<Album> { _album });
+                  .Returns(new List<Book> { _album });
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(It.IsAny<string>()))
@@ -161,7 +161,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             Mocker.GetMock<IAlbumService>()
                   .Setup(v => v.GetAlbumsByArtist(It.IsAny<int>()))
-                  .Returns(new List<Album> { _album });
+                  .Returns(new List<Book> { _album });
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.FileExists(It.IsAny<string>()))
@@ -186,7 +186,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             Mocker.GetMock<IAlbumService>()
                   .Setup(v => v.GetAlbumsByArtist(It.IsAny<int>()))
-                  .Returns(new List<Album> { _album });
+                  .Returns(new List<Book> { _album });
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.GetFileSize(It.IsAny<string>()))
@@ -211,7 +211,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             Mocker.GetMock<IAlbumService>()
                   .Setup(v => v.GetAlbumsByArtist(It.IsAny<int>()))
-                  .Returns(new List<Album> { _album });
+                  .Returns(new List<Book> { _album });
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(v => v.GetFileSize(It.IsAny<string>()))
@@ -236,7 +236,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             Mocker.GetMock<IAlbumService>()
                   .Setup(v => v.GetAlbumsByArtist(It.IsAny<int>()))
-                  .Returns(new List<Album> { _album });
+                  .Returns(new List<Book> { _album });
 
             Mocker.GetMock<IImageResizer>()
                   .Setup(v => v.Resize(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()))

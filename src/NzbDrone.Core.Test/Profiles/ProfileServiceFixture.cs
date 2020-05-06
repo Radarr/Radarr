@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.Profiles
             Subject.Handle(new ApplicationStartedEvent());
 
             Mocker.GetMock<IProfileRepository>()
-                .Verify(v => v.Insert(It.IsAny<QualityProfile>()), Times.Exactly(3));
+                .Verify(v => v.Insert(It.IsAny<QualityProfile>()), Times.Exactly(4));
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.Profiles
                                           .With(p => p.Id = 2)
                                           .Build();
 
-            var artistList = Builder<Artist>.CreateListOfSize(3)
+            var artistList = Builder<Author>.CreateListOfSize(3)
                                             .Random(1)
                                             .With(c => c.QualityProfileId = profile.Id)
                                             .Build().ToList();
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.Profiles
                 .With(p => p.Id = 2)
                 .Build();
 
-            var artistList = Builder<Artist>.CreateListOfSize(3)
+            var artistList = Builder<Author>.CreateListOfSize(3)
                 .All()
                 .With(c => c.QualityProfileId = 1)
                 .Build().ToList();
@@ -111,7 +111,7 @@ namespace NzbDrone.Core.Test.Profiles
                 .With(p => p.Id = 2)
                 .Build();
 
-            var artistList = Builder<Artist>.CreateListOfSize(3)
+            var artistList = Builder<Author>.CreateListOfSize(3)
                 .All()
                 .With(c => c.QualityProfileId = 1)
                 .Build().ToList();
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Test.Profiles
         [Test]
         public void should_delete_profile_if_not_assigned_to_artist_import_list_or_root_folder()
         {
-            var artistList = Builder<Artist>.CreateListOfSize(3)
+            var artistList = Builder<Author>.CreateListOfSize(3)
                                             .All()
                                             .With(c => c.QualityProfileId = 2)
                                             .Build().ToList();

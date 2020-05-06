@@ -13,14 +13,14 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
     [TestFixture]
     public class CalculateFixture : CoreTest<Core.Profiles.Releases.PreferredWordService>
     {
-        private Artist _artist = null;
+        private Author _artist = null;
         private List<ReleaseProfile> _releaseProfiles = null;
         private string _title = "Artist.Name-Album.Title.2018.FLAC.24bit-Readarr";
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                                      .With(s => s.Tags = new HashSet<int>(new[] { 1, 2 }))
                                      .Build();
 

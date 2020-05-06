@@ -5,25 +5,25 @@ import getSectionState from 'Utilities/State/getSectionState';
 function createBatchToggleAlbumMonitoredHandler(section, fetchHandler) {
   return function(getState, payload, dispatch) {
     const {
-      albumIds,
+      bookIds,
       monitored
     } = payload;
 
     const state = getSectionState(getState(), section, true);
 
-    dispatch(updateAlbums(section, state.items, albumIds, {
+    dispatch(updateAlbums(section, state.items, bookIds, {
       isSaving: true
     }));
 
     const promise = createAjaxRequest({
       url: '/album/monitor',
       method: 'PUT',
-      data: JSON.stringify({ albumIds, monitored }),
+      data: JSON.stringify({ bookIds, monitored }),
       dataType: 'json'
     }).request;
 
     promise.done(() => {
-      dispatch(updateAlbums(section, state.items, albumIds, {
+      dispatch(updateAlbums(section, state.items, bookIds, {
         isSaving: false,
         monitored
       }));
@@ -32,7 +32,7 @@ function createBatchToggleAlbumMonitoredHandler(section, fetchHandler) {
     });
 
     promise.fail(() => {
-      dispatch(updateAlbums(section, state.items, albumIds, {
+      dispatch(updateAlbums(section, state.items, bookIds, {
         isSaving: false
       }));
     });

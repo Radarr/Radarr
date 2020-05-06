@@ -61,14 +61,6 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
             var profiles = Builder<MetadataProfile>.CreateListOfSize(2)
                 .TheFirst(1)
                 .With(x => x.Name = MetadataProfileService.NONE_PROFILE_NAME)
-                .With(x => x.PrimaryAlbumTypes = new List<ProfilePrimaryAlbumTypeItem>
-                    {
-                        new ProfilePrimaryAlbumTypeItem
-                        {
-                            PrimaryAlbumType = PrimaryAlbumType.Album,
-                            Allowed = true
-                        }
-                    })
                 .BuildList();
 
             Mocker.GetMock<IMetadataProfileRepository>()
@@ -113,7 +105,7 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(p => p.Id = 2)
                 .Build();
 
-            var artistList = Builder<Artist>.CreateListOfSize(3)
+            var artistList = Builder<Author>.CreateListOfSize(3)
                                             .Random(1)
                                             .With(c => c.MetadataProfileId = profile.Id)
                                             .Build().ToList();
@@ -145,7 +137,7 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(p => p.Id = 2)
                 .Build();
 
-            var artistList = Builder<Artist>.CreateListOfSize(3)
+            var artistList = Builder<Author>.CreateListOfSize(3)
                 .All()
                 .With(c => c.MetadataProfileId = 1)
                 .Build().ToList();
@@ -177,7 +169,7 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(p => p.Id = 2)
                 .Build();
 
-            var artistList = Builder<Artist>.CreateListOfSize(3)
+            var artistList = Builder<Author>.CreateListOfSize(3)
                 .All()
                 .With(c => c.MetadataProfileId = 1)
                 .Build().ToList();
@@ -209,7 +201,7 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(p => p.Id = 1)
                 .Build();
 
-            var artistList = Builder<Artist>.CreateListOfSize(3)
+            var artistList = Builder<Author>.CreateListOfSize(3)
                                             .All()
                                             .With(c => c.MetadataProfileId = 2)
                                             .Build().ToList();

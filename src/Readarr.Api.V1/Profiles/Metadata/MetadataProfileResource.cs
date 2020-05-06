@@ -8,27 +8,13 @@ namespace Readarr.Api.V1.Profiles.Metadata
     public class MetadataProfileResource : RestResource
     {
         public string Name { get; set; }
-        public List<ProfilePrimaryAlbumTypeItemResource> PrimaryAlbumTypes { get; set; }
-        public List<ProfileSecondaryAlbumTypeItemResource> SecondaryAlbumTypes { get; set; }
-        public List<ProfileReleaseStatusItemResource> ReleaseStatuses { get; set; }
-    }
-
-    public class ProfilePrimaryAlbumTypeItemResource : RestResource
-    {
-        public NzbDrone.Core.Music.PrimaryAlbumType AlbumType { get; set; }
-        public bool Allowed { get; set; }
-    }
-
-    public class ProfileSecondaryAlbumTypeItemResource : RestResource
-    {
-        public NzbDrone.Core.Music.SecondaryAlbumType AlbumType { get; set; }
-        public bool Allowed { get; set; }
-    }
-
-    public class ProfileReleaseStatusItemResource : RestResource
-    {
-        public NzbDrone.Core.Music.ReleaseStatus ReleaseStatus { get; set; }
-        public bool Allowed { get; set; }
+        public double MinRating { get; set; }
+        public int MinRatingCount { get; set; }
+        public bool SkipMissingDate { get; set; }
+        public bool SkipMissingIsbn { get; set; }
+        public bool SkipPartsAndSets { get; set; }
+        public bool SkipSeriesSecondary { get; set; }
+        public string AllowedLanguages { get; set; }
     }
 
     public static class MetadataProfileResourceMapper
@@ -44,51 +30,13 @@ namespace Readarr.Api.V1.Profiles.Metadata
             {
                 Id = model.Id,
                 Name = model.Name,
-                PrimaryAlbumTypes = model.PrimaryAlbumTypes.ConvertAll(ToResource),
-                SecondaryAlbumTypes = model.SecondaryAlbumTypes.ConvertAll(ToResource),
-                ReleaseStatuses = model.ReleaseStatuses.ConvertAll(ToResource)
-            };
-        }
-
-        public static ProfilePrimaryAlbumTypeItemResource ToResource(this ProfilePrimaryAlbumTypeItem model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-
-            return new ProfilePrimaryAlbumTypeItemResource
-            {
-                AlbumType = model.PrimaryAlbumType,
-                Allowed = model.Allowed
-            };
-        }
-
-        public static ProfileSecondaryAlbumTypeItemResource ToResource(this ProfileSecondaryAlbumTypeItem model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-
-            return new ProfileSecondaryAlbumTypeItemResource
-            {
-                AlbumType = model.SecondaryAlbumType,
-                Allowed = model.Allowed
-            };
-        }
-
-        public static ProfileReleaseStatusItemResource ToResource(this ProfileReleaseStatusItem model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-
-            return new ProfileReleaseStatusItemResource
-            {
-                ReleaseStatus = model.ReleaseStatus,
-                Allowed = model.Allowed
+                MinRating = model.MinRating,
+                MinRatingCount = model.MinRatingCount,
+                SkipMissingDate = model.SkipMissingDate,
+                SkipMissingIsbn = model.SkipMissingIsbn,
+                SkipPartsAndSets = model.SkipPartsAndSets,
+                SkipSeriesSecondary = model.SkipSeriesSecondary,
+                AllowedLanguages = model.AllowedLanguages
             };
         }
 
@@ -103,51 +51,13 @@ namespace Readarr.Api.V1.Profiles.Metadata
             {
                 Id = resource.Id,
                 Name = resource.Name,
-                PrimaryAlbumTypes = resource.PrimaryAlbumTypes.ConvertAll(ToModel),
-                SecondaryAlbumTypes = resource.SecondaryAlbumTypes.ConvertAll(ToModel),
-                ReleaseStatuses = resource.ReleaseStatuses.ConvertAll(ToModel)
-            };
-        }
-
-        public static ProfilePrimaryAlbumTypeItem ToModel(this ProfilePrimaryAlbumTypeItemResource resource)
-        {
-            if (resource == null)
-            {
-                return null;
-            }
-
-            return new ProfilePrimaryAlbumTypeItem
-            {
-                PrimaryAlbumType = (NzbDrone.Core.Music.PrimaryAlbumType)resource.AlbumType.Id,
-                Allowed = resource.Allowed
-            };
-        }
-
-        public static ProfileSecondaryAlbumTypeItem ToModel(this ProfileSecondaryAlbumTypeItemResource resource)
-        {
-            if (resource == null)
-            {
-                return null;
-            }
-
-            return new ProfileSecondaryAlbumTypeItem
-            {
-                SecondaryAlbumType = (NzbDrone.Core.Music.SecondaryAlbumType)resource.AlbumType.Id,
-                Allowed = resource.Allowed
-            };
-        }
-
-        public static ProfileReleaseStatusItem ToModel(this ProfileReleaseStatusItemResource resource)
-        {
-            if (resource == null)
-            {
-                return null;
-            }
-
-            return new ProfileReleaseStatusItem
-            {
-                ReleaseStatus = (NzbDrone.Core.Music.ReleaseStatus)resource.ReleaseStatus.Id,
-                Allowed = resource.Allowed
+                MinRating = resource.MinRating,
+                MinRatingCount = resource.MinRatingCount,
+                SkipMissingDate = resource.SkipMissingDate,
+                SkipMissingIsbn = resource.SkipMissingIsbn,
+                SkipPartsAndSets = resource.SkipPartsAndSets,
+                SkipSeriesSecondary = resource.SkipSeriesSecondary,
+                AllowedLanguages = resource.AllowedLanguages
             };
         }
 

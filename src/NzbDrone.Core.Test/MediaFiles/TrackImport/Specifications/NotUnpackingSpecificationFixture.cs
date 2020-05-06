@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
             {
                 Path = @"C:\Test\Unsorted Music\Kid.Rock\Kid.Rock.Cowboy.mp3".AsOsAgnostic(),
                 Size = 100,
-                Artist = Builder<Artist>.CreateNew().Build()
+                Artist = Builder<Author>.CreateNew().Build()
             };
         }
 

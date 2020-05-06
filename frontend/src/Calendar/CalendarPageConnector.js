@@ -10,7 +10,7 @@ import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import CalendarPage from './CalendarPage';
 
-function createMissingAlbumIdsSelector() {
+function createMissingBookIdsSelector() {
   return createSelector(
     (state) => state.calendar.start,
     (state) => state.calendar.end,
@@ -58,14 +58,14 @@ function createMapStateToProps() {
     (state) => state.calendar.filters,
     createArtistCountSelector(),
     createUISettingsSelector(),
-    createMissingAlbumIdsSelector(),
+    createMissingBookIdsSelector(),
     createIsSearchingSelector(),
     (
       selectedFilterKey,
       filters,
       artistCount,
       uiSettings,
-      missingAlbumIds,
+      missingBookIds,
       isSearchingForMissing
     ) => {
       return {
@@ -74,7 +74,7 @@ function createMapStateToProps() {
         colorImpairedMode: uiSettings.enableColorImpairedMode,
         hasArtist: !!artistCount.count,
         artistError: artistCount.error,
-        missingAlbumIds,
+        missingBookIds,
         isSearchingForMissing
       };
     }
@@ -83,8 +83,8 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onSearchMissingPress(albumIds) {
-      dispatch(searchMissing({ albumIds }));
+    onSearchMissingPress(bookIds) {
+      dispatch(searchMissing({ bookIds }));
     },
     onDaysCountChange(dayCount) {
       dispatch(setCalendarDaysCount({ dayCount }));

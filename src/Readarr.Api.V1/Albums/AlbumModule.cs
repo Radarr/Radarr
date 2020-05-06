@@ -30,13 +30,11 @@ namespace Readarr.Api.V1.Albums
         IHandle<TrackFileDeletedEvent>
     {
         protected readonly IArtistService _artistService;
-        protected readonly IReleaseService _releaseService;
         protected readonly IAddAlbumService _addAlbumService;
 
         public AlbumModule(IArtistService artistService,
                            IAlbumService albumService,
                            IAddAlbumService addAlbumService,
-                           IReleaseService releaseService,
                            IArtistStatisticsService artistStatisticsService,
                            IMapCoversToLocal coverMapper,
                            IUpgradableSpecification upgradableSpecification,
@@ -47,7 +45,6 @@ namespace Readarr.Api.V1.Albums
         : base(albumService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster)
         {
             _artistService = artistService;
-            _releaseService = releaseService;
             _addAlbumService = addAlbumService;
 
             GetResourceAll = GetAlbums;
@@ -56,78 +53,69 @@ namespace Readarr.Api.V1.Albums
             DeleteResource = DeleteAlbum;
             Put("/monitor", x => SetAlbumsMonitored());
 
-            PostValidator.RuleFor(s => s.ForeignAlbumId).NotEmpty();
+            PostValidator.RuleFor(s => s.ForeignBookId).NotEmpty();
             PostValidator.RuleFor(s => s.Artist.QualityProfileId).SetValidator(qualityProfileExistsValidator);
             PostValidator.RuleFor(s => s.Artist.MetadataProfileId).SetValidator(metadataProfileExistsValidator);
             PostValidator.RuleFor(s => s.Artist.RootFolderPath).IsValidPath().When(s => s.Artist.Path.IsNullOrWhiteSpace());
-            PostValidator.RuleFor(s => s.Artist.ForeignArtistId).NotEmpty();
+            PostValidator.RuleFor(s => s.Artist.ForeignAuthorId).NotEmpty();
         }
 
         private List<AlbumResource> GetAlbums()
         {
-            var artistIdQuery = Request.Query.ArtistId;
-            var albumIdsQuery = Request.Query.AlbumIds;
-            var foreignIdQuery = Request.Query.ForeignAlbumId;
+            var authorIdQuery = Request.Query.AuthorId;
+            var bookIdsQuery = Request.Query.BookIds;
+            var slugQuery = Request.Query.TitleSlug;
             var includeAllArtistAlbumsQuery = Request.Query.IncludeAllArtistAlbums;
 
-            if (!Request.Query.ArtistId.HasValue && !albumIdsQuery.HasValue && !foreignIdQuery.HasValue)
+            if (!Request.Query.AuthorId.HasValue && !bookIdsQuery.HasValue && !slugQuery.HasValue)
             {
                 var albums = _albumService.GetAllAlbums();
 
-                var artists = _artistService.GetAllArtists().ToDictionary(x => x.ArtistMetadataId);
-                var releases = _releaseService.GetAllReleases().GroupBy(x => x.AlbumId).ToDictionary(x => x.Key, y => y.ToList());
+                var artists = _artistService.GetAllArtists().ToDictionary(x => x.AuthorMetadataId);
 
                 foreach (var album in albums)
                 {
-                    album.Artist = artists[album.ArtistMetadataId];
-                    if (releases.TryGetValue(album.Id, out var albumReleases))
-                    {
-                        album.AlbumReleases = albumReleases;
-                    }
-                    else
-                    {
-                        album.AlbumReleases = new List<AlbumRelease>();
-                    }
+                    album.Author = artists[album.AuthorMetadataId];
                 }
 
                 return MapToResource(albums, false);
             }
 
-            if (artistIdQuery.HasValue)
+            if (authorIdQuery.HasValue)
             {
-                int artistId = Convert.ToInt32(artistIdQuery.Value);
+                int authorId = Convert.ToInt32(authorIdQuery.Value);
 
-                return MapToResource(_albumService.GetAlbumsByArtist(artistId), false);
+                return MapToResource(_albumService.GetAlbumsByArtist(authorId), false);
             }
 
-            if (foreignIdQuery.HasValue)
+            if (slugQuery.HasValue)
             {
-                string foreignAlbumId = foreignIdQuery.Value.ToString();
+                string titleSlug = slugQuery.Value.ToString();
 
-                var album = _albumService.FindById(foreignAlbumId);
+                var album = _albumService.FindBySlug(titleSlug);
 
                 if (album == null)
                 {
-                    return MapToResource(new List<Album>(), false);
+                    return MapToResource(new List<Book>(), false);
                 }
 
                 if (includeAllArtistAlbumsQuery.HasValue && Convert.ToBoolean(includeAllArtistAlbumsQuery.Value))
                 {
-                    return MapToResource(_albumService.GetAlbumsByArtist(album.ArtistId), false);
+                    return MapToResource(_albumService.GetAlbumsByArtist(album.AuthorId), false);
                 }
                 else
                 {
-                    return MapToResource(new List<Album> { album }, false);
+                    return MapToResource(new List<Book> { album }, false);
                 }
             }
 
-            string albumIdsValue = albumIdsQuery.Value.ToString();
+            string bookIdsValue = bookIdsQuery.Value.ToString();
 
-            var albumIds = albumIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+            var bookIds = bookIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                             .Select(e => Convert.ToInt32(e))
                                             .ToList();
 
-            return MapToResource(_albumService.GetAlbums(albumIds), false);
+            return MapToResource(_albumService.GetAlbums(bookIds), false);
         }
 
         private int AddAlbum(AlbumResource albumResource)
@@ -144,7 +132,6 @@ namespace Readarr.Api.V1.Albums
             var model = albumResource.ToModel(album);
 
             _albumService.UpdateAlbum(model);
-            _releaseService.UpdateMany(model.AlbumReleases.Value);
 
             BroadcastResourceChange(ModelAction.Updated, model.Id);
         }
@@ -161,9 +148,9 @@ namespace Readarr.Api.V1.Albums
         {
             var resource = Request.Body.FromJson<AlbumsMonitoredResource>();
 
-            _albumService.SetMonitored(resource.AlbumIds, resource.Monitored);
+            _albumService.SetMonitored(resource.BookIds, resource.Monitored);
 
-            return ResponseWithCode(MapToResource(_albumService.GetAlbums(resource.AlbumIds), false), HttpStatusCode.Accepted);
+            return ResponseWithCode(MapToResource(_albumService.GetAlbums(resource.BookIds), false), HttpStatusCode.Accepted);
         }
 
         public void Handle(AlbumGrabbedEvent message)

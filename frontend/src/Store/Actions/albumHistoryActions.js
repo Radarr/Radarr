@@ -48,7 +48,7 @@ export const actionHandlers = handleThunks({
       page: 1,
       sortKey: 'date',
       sortDirection: sortDirections.DESCENDING,
-      albumId: payload.albumId
+      bookId: payload.bookId
     };
 
     const promise = createAjaxRequest({
@@ -82,7 +82,7 @@ export const actionHandlers = handleThunks({
   [ALBUM_HISTORY_MARK_AS_FAILED]: function(getState, payload, dispatch) {
     const {
       historyId,
-      albumId
+      bookId
     } = payload;
 
     const promise = createAjaxRequest({
@@ -94,7 +94,7 @@ export const actionHandlers = handleThunks({
     }).request;
 
     promise.done(() => {
-      dispatch(fetchAlbumHistory({ albumId }));
+      dispatch(fetchAlbumHistory({ bookId }));
     });
   }
 });

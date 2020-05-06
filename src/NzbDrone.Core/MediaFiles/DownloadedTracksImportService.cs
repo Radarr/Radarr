@@ -20,8 +20,8 @@ namespace NzbDrone.Core.MediaFiles
     public interface IDownloadedTracksImportService
     {
         List<ImportResult> ProcessRootFolder(IDirectoryInfo directoryInfo);
-        List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Artist artist = null, DownloadClientItem downloadClientItem = null);
-        bool ShouldDeleteFolder(IDirectoryInfo directoryInfo, Artist artist);
+        List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Author artist = null, DownloadClientItem downloadClientItem = null);
+        bool ShouldDeleteFolder(IDirectoryInfo directoryInfo, Author artist);
     }
 
     public class DownloadedTracksImportService : IDownloadedTracksImportService
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.MediaFiles
             return results;
         }
 
-        public List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Artist artist = null, DownloadClientItem downloadClientItem = null)
+        public List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Author artist = null, DownloadClientItem downloadClientItem = null)
         {
             if (_diskProvider.FolderExists(path))
             {
@@ -108,7 +108,7 @@ namespace NzbDrone.Core.MediaFiles
             return new List<ImportResult>();
         }
 
-        public bool ShouldDeleteFolder(IDirectoryInfo directoryInfo, Artist artist)
+        public bool ShouldDeleteFolder(IDirectoryInfo directoryInfo, Author artist)
         {
             var audioFiles = _diskScanService.GetAudioFiles(directoryInfo.FullName);
             var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f).Equals(".rar", StringComparison.OrdinalIgnoreCase));
@@ -154,7 +154,7 @@ namespace NzbDrone.Core.MediaFiles
             return ProcessFolder(directoryInfo, importMode, artist, downloadClientItem);
         }
 
-        private List<ImportResult> ProcessFolder(IDirectoryInfo directoryInfo, ImportMode importMode, Artist artist, DownloadClientItem downloadClientItem)
+        private List<ImportResult> ProcessFolder(IDirectoryInfo directoryInfo, ImportMode importMode, Author artist, DownloadClientItem downloadClientItem)
         {
             if (_artistService.ArtistPathExists(directoryInfo.FullName))
             {
@@ -254,7 +254,7 @@ namespace NzbDrone.Core.MediaFiles
             return ProcessFile(fileInfo, importMode, artist, downloadClientItem);
         }
 
-        private List<ImportResult> ProcessFile(IFileInfo fileInfo, ImportMode importMode, Artist artist, DownloadClientItem downloadClientItem)
+        private List<ImportResult> ProcessFile(IFileInfo fileInfo, ImportMode importMode, Author artist, DownloadClientItem downloadClientItem)
         {
             if (Path.GetFileNameWithoutExtension(fileInfo.Name).StartsWith("._"))
             {

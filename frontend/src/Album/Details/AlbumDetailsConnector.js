@@ -8,8 +8,8 @@ import { findCommand, isCommandExecuting } from 'Utilities/Command';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { toggleAlbumsMonitored } from 'Store/Actions/albumActions';
-import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
 import { fetchTrackFiles, clearTrackFiles } from 'Store/Actions/trackFileActions';
+import { clearReleases, cancelFetchReleases } from 'Store/Actions/releaseActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import AlbumDetails from './AlbumDetails';
@@ -39,18 +39,17 @@ const selectTrackFiles = createSelector(
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { foreignAlbumId }) => foreignAlbumId,
-    (state) => state.tracks,
+    (state, { titleSlug }) => titleSlug,
     selectTrackFiles,
     (state) => state.albums,
     createAllArtistSelector(),
     createCommandsSelector(),
     createUISettingsSelector(),
-    (foreignAlbumId, tracks, trackFiles, albums, artists, commands, uiSettings) => {
+    (titleSlug, trackFiles, albums, artists, commands, uiSettings) => {
       const sortedAlbums = _.orderBy(albums.items, 'releaseDate');
-      const albumIndex = _.findIndex(sortedAlbums, { foreignAlbumId });
+      const albumIndex = _.findIndex(sortedAlbums, { titleSlug });
       const album = sortedAlbums[albumIndex];
-      const artist = _.find(artists, { id: album.artistId });
+      const artist = _.find(artists, { id: album.authorId });
 
       if (!album) {
         return {};
@@ -68,12 +67,11 @@ function createMapStateToProps() {
       const isSearchingCommand = findCommand(commands, { name: commandNames.ALBUM_SEARCH });
       const isSearching = (
         isCommandExecuting(isSearchingCommand) &&
-        isSearchingCommand.body.albumIds.indexOf(album.id) > -1
+        isSearchingCommand.body.bookIds.indexOf(album.id) > -1
       );
 
-      const isFetching = tracks.isFetching || isTrackFilesFetching;
-      const isPopulated = tracks.isPopulated && isTrackFilesPopulated;
-      const tracksError = tracks.error;
+      const isFetching = isTrackFilesFetching;
+      const isPopulated = isTrackFilesPopulated;
 
       return {
         ...album,
@@ -82,7 +80,6 @@ function createMapStateToProps() {
         isSearching,
         isFetching,
         isPopulated,
-        tracksError,
         trackFilesError,
         hasTrackFiles,
         previousAlbum,
@@ -94,16 +91,12 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   executeCommand,
-  fetchTracks,
-  clearTracks,
   fetchTrackFiles,
   clearTrackFiles,
+  clearReleases,
+  cancelFetchReleases,
   toggleAlbumsMonitored
 };
-
-function getMonitoredReleases(props) {
-  return _.map(_.filter(props.releases, { monitored: true }), 'id').sort();
-}
 
 class AlbumDetailsConnector extends Component {
 
@@ -113,8 +106,10 @@ class AlbumDetailsConnector extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (!_.isEqual(getMonitoredReleases(prevProps), getMonitoredReleases(this.props)) ||
-        (prevProps.anyReleaseOk === false && this.props.anyReleaseOk === true)) {
+    // If the id has changed we need to clear the albums
+    // files and fetch from the server.
+
+    if (prevProps.id !== this.props.id) {
       this.unpopulate();
       this.populate();
     }
@@ -129,14 +124,14 @@ class AlbumDetailsConnector extends Component {
   // Control
 
   populate = () => {
-    const albumId = this.props.id;
+    const bookId = this.props.id;
 
-    this.props.fetchTracks({ albumId });
-    this.props.fetchTrackFiles({ albumId });
+    this.props.fetchTrackFiles({ bookId });
   }
 
   unpopulate = () => {
-    this.props.clearTracks();
+    this.props.cancelFetchReleases();
+    this.props.clearReleases();
     this.props.clearTrackFiles();
   }
 
@@ -145,7 +140,7 @@ class AlbumDetailsConnector extends Component {
 
   onMonitorTogglePress = (monitored) => {
     this.props.toggleAlbumsMonitored({
-      albumIds: [this.props.id],
+      bookIds: [this.props.id],
       monitored
     });
   }
@@ -153,7 +148,7 @@ class AlbumDetailsConnector extends Component {
   onSearchPress = () => {
     this.props.executeCommand({
       name: commandNames.ALBUM_SEARCH,
-      albumIds: [this.props.id]
+      bookIds: [this.props.id]
     });
   }
 
@@ -176,11 +171,11 @@ AlbumDetailsConnector.propTypes = {
   anyReleaseOk: PropTypes.bool,
   isAlbumFetching: PropTypes.bool,
   isAlbumPopulated: PropTypes.bool,
-  foreignAlbumId: PropTypes.string.isRequired,
-  fetchTracks: PropTypes.func.isRequired,
-  clearTracks: PropTypes.func.isRequired,
+  titleSlug: PropTypes.string.isRequired,
   fetchTrackFiles: PropTypes.func.isRequired,
   clearTrackFiles: PropTypes.func.isRequired,
+  clearReleases: PropTypes.func.isRequired,
+  cancelFetchReleases: PropTypes.func.isRequired,
   toggleAlbumsMonitored: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };

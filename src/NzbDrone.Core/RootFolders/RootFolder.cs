@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NzbDrone.Core.Books.Calibre;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Music;
 
@@ -12,6 +13,8 @@ namespace NzbDrone.Core.RootFolders
         public int DefaultQualityProfileId { get; set; }
         public MonitorTypes DefaultMonitorOption { get; set; }
         public HashSet<int> DefaultTags { get; set; }
+        public bool IsCalibreLibrary { get; set; }
+        public CalibreSettings CalibreSettings { get; set; }
 
         public bool Accessible { get; set; }
         public long? FreeSpace { get; set; }

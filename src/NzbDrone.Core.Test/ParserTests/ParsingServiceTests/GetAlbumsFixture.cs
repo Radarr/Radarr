@@ -18,8 +18,8 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         [Test]
         public void should_not_fail_if_search_criteria_contains_multiple_albums_with_the_same_name()
         {
-            var artist = Builder<Artist>.CreateNew().Build();
-            var albums = Builder<Album>.CreateListOfSize(2).All().With(x => x.Title = "IdenticalTitle").Build().ToList();
+            var artist = Builder<Author>.CreateNew().Build();
+            var albums = Builder<Book>.CreateListOfSize(2).All().With(x => x.Title = "IdenticalTitle").Build().ToList();
             var criteria = new AlbumSearchCriteria
             {
                 Artist = artist,
@@ -31,10 +31,10 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                 AlbumTitle = "IdenticalTitle"
             };
 
-            Subject.GetAlbums(parsed, artist, criteria).Should().BeEquivalentTo(new List<Album>());
+            Subject.GetAlbums(parsed, artist, criteria).Should().BeEquivalentTo(new List<Book>());
 
             Mocker.GetMock<IAlbumService>()
-                .Verify(s => s.FindByTitle(artist.ArtistMetadataId, "IdenticalTitle"), Times.Once());
+                .Verify(s => s.FindByTitle(artist.AuthorMetadataId, "IdenticalTitle"), Times.Once());
         }
     }
 }

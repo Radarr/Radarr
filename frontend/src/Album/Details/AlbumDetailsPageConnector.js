@@ -17,14 +17,14 @@ function createMapStateToProps() {
     (state) => state.albums,
     (state) => state.artist,
     (match, albums, artist) => {
-      const foreignAlbumId = match.params.foreignAlbumId;
+      const titleSlug = match.params.titleSlug;
       const isFetching = albums.isFetching || artist.isFetching;
       const isPopulated = albums.isPopulated && artist.isPopulated;
 
       // if albums have been fetched, make sure requested one exists
-      // otherwise don't map foreignAlbumId to trigger not found page
+      // otherwise don't map titleSlug to trigger not found page
       if (!isFetching && isPopulated) {
-        const albumIndex = _.findIndex(albums.items, { foreignAlbumId });
+        const albumIndex = _.findIndex(albums.items, { titleSlug });
         if (albumIndex === -1) {
           return {
             isFetching,
@@ -34,7 +34,7 @@ function createMapStateToProps() {
       }
 
       return {
-        foreignAlbumId,
+        titleSlug,
         isFetching,
         isPopulated
       };
@@ -69,10 +69,10 @@ class AlbumDetailsPageConnector extends Component {
   // Control
 
   populate = () => {
-    const foreignAlbumId = this.props.foreignAlbumId;
+    const titleSlug = this.props.titleSlug;
     this.setState({ hasMounted: true });
     this.props.fetchAlbums({
-      foreignAlbumId,
+      titleSlug,
       includeAllArtistAlbums: true
     });
   }
@@ -86,15 +86,15 @@ class AlbumDetailsPageConnector extends Component {
 
   render() {
     const {
-      foreignAlbumId,
+      titleSlug,
       isFetching,
       isPopulated
     } = this.props;
 
-    if (!foreignAlbumId) {
+    if (!titleSlug) {
       return (
         <NotFound
-          message="Sorry, that album cannot be found."
+          message="Sorry, that book cannot be found."
         />
       );
     }
@@ -113,7 +113,7 @@ class AlbumDetailsPageConnector extends Component {
     if (!isFetching && isPopulated && this.state.hasMounted) {
       return (
         <AlbumDetailsConnector
-          foreignAlbumId={foreignAlbumId}
+          titleSlug={titleSlug}
         />
       );
     }
@@ -121,8 +121,8 @@ class AlbumDetailsPageConnector extends Component {
 }
 
 AlbumDetailsPageConnector.propTypes = {
-  foreignAlbumId: PropTypes.string,
-  match: PropTypes.shape({ params: PropTypes.shape({ foreignAlbumId: PropTypes.string.isRequired }).isRequired }).isRequired,
+  titleSlug: PropTypes.string,
+  match: PropTypes.shape({ params: PropTypes.shape({ titleSlug: PropTypes.string.isRequired }).isRequired }).isRequired,
   push: PropTypes.func.isRequired,
   fetchAlbums: PropTypes.func.isRequired,
   clearAlbums: PropTypes.func.isRequired,

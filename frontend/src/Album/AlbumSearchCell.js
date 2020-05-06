@@ -36,7 +36,7 @@ class AlbumSearchCell extends Component {
 
   render() {
     const {
-      albumId,
+      bookId,
       albumTitle,
       isSearching,
       onSearchPress,
@@ -58,7 +58,7 @@ class AlbumSearchCell extends Component {
 
         <AlbumInteractiveSearchModalConnector
           isOpen={this.state.isDetailsModalOpen}
-          albumId={albumId}
+          bookId={bookId}
           albumTitle={albumTitle}
           onModalClose={this.onDetailsModalClose}
           {...otherProps}
@@ -70,8 +70,8 @@ class AlbumSearchCell extends Component {
 }
 
 AlbumSearchCell.propTypes = {
-  albumId: PropTypes.number.isRequired,
-  artistId: PropTypes.number.isRequired,
+  bookId: PropTypes.number.isRequired,
+  authorId: PropTypes.number.isRequired,
   albumTitle: PropTypes.string.isRequired,
   isSearching: PropTypes.bool.isRequired,
   onSearchPress: PropTypes.func.isRequired

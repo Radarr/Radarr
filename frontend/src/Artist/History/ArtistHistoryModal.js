@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Modal from 'Components/Modal/Modal';
-import ArtistHistoryModalContentConnector from './ArtistHistoryModalContentConnector';
+import ArtistHistoryContentConnector from './ArtistHistoryContentConnector';
+import ArtistHistoryModalContent from './ArtistHistoryModalContent';
 
 function ArtistHistoryModal(props) {
   const {
@@ -15,7 +16,8 @@ function ArtistHistoryModal(props) {
       isOpen={isOpen}
       onModalClose={onModalClose}
     >
-      <ArtistHistoryModalContentConnector
+      <ArtistHistoryContentConnector
+        component={ArtistHistoryModalContent}
         {...otherProps}
         onModalClose={onModalClose}
       />

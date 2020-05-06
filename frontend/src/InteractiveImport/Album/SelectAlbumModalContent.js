@@ -17,17 +17,14 @@ import styles from './SelectAlbumModalContent.css';
 const columns = [
   {
     name: 'title',
-    label: 'Album Title',
-    isVisible: true
-  },
-  {
-    name: 'albumType',
-    label: 'Album Type',
+    label: 'Book Title',
+    isSortable: true,
     isVisible: true
   },
   {
     name: 'releaseDate',
     label: 'Release Date',
+    isSortable: true,
     isVisible: true
   },
   {
@@ -74,7 +71,7 @@ class SelectAlbumModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manual Import - Select Album
+          Manual Import - Select Book
         </ModalHeader>
 
         <ModalBody
@@ -87,7 +84,7 @@ class SelectAlbumModalContent extends Component {
           }
           <TextInput
             className={styles.filterInput}
-            placeholder="Filter album"
+            placeholder="Filter book"
             name="filter"
             value={filter}
             autoFocus={true}

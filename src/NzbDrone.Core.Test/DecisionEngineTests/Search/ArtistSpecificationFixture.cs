@@ -12,16 +12,16 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
     [TestFixture]
     public class ArtistSpecificationFixture : TestBase<ArtistSpecification>
     {
-        private Artist _artist1;
-        private Artist _artist2;
+        private Author _artist1;
+        private Author _artist2;
         private RemoteAlbum _remoteAlbum = new RemoteAlbum();
         private SearchCriteriaBase _searchCriteria = new AlbumSearchCriteria();
 
         [SetUp]
         public void Setup()
         {
-            _artist1 = Builder<Artist>.CreateNew().With(s => s.Id = 1).Build();
-            _artist2 = Builder<Artist>.CreateNew().With(s => s.Id = 2).Build();
+            _artist1 = Builder<Author>.CreateNew().With(s => s.Id = 1).Build();
+            _artist2 = Builder<Author>.CreateNew().With(s => s.Id = 2).Build();
 
             _remoteAlbum.Artist = _artist1;
         }

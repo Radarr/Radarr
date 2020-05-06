@@ -15,7 +15,7 @@
 	<key>CFBundleIconFile</key>
 	<string>readarr.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.osx.readarr.audio</string>
+	<string>com.osx.readarr.com</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

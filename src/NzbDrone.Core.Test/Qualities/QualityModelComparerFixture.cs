@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.Qualities
 
         private void GivenCustomProfile()
         {
-            Subject = new QualityModelComparer(new QualityProfile { Items = QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_192) });
+            Subject = new QualityModelComparer(new QualityProfile { Items = QualityFixture.GetDefaultQualities(Quality.AZW3, Quality.MOBI) });
         }
 
         private void GivenGroupedProfile()
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.Qualities
                                           new QualityProfileQualityItem
                                           {
                                               Allowed = false,
-                                              Quality = Quality.MP3_192
+                                              Quality = Quality.MOBI
                                           },
                                           new QualityProfileQualityItem
                                           {
@@ -41,12 +41,12 @@ namespace NzbDrone.Core.Test.Qualities
                                                           new QualityProfileQualityItem
                                                           {
                                                               Allowed = true,
-                                                              Quality = Quality.MP3_256
+                                                              Quality = Quality.EPUB
                                                           },
                                                           new QualityProfileQualityItem
                                                           {
                                                               Allowed = true,
-                                                              Quality = Quality.MP3_320
+                                                              Quality = Quality.AZW3
                                                           }
                                                       }
                                           },
@@ -66,8 +66,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(Quality.MP3_320);
-            var second = new QualityModel(Quality.MP3_192);
+            var first = new QualityModel(Quality.FLAC);
+            var second = new QualityModel(Quality.MOBI);
 
             var compare = Subject.Compare(first, second);
 
@@ -79,8 +79,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(Quality.MP3_192);
-            var second = new QualityModel(Quality.MP3_320);
+            var first = new QualityModel(Quality.MOBI);
+            var second = new QualityModel(Quality.FLAC);
 
             var compare = Subject.Compare(first, second);
 
@@ -92,8 +92,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(Quality.MP3_320, new Revision(version: 2));
-            var second = new QualityModel(Quality.MP3_320, new Revision(version: 1));
+            var first = new QualityModel(Quality.MOBI, new Revision(version: 2));
+            var second = new QualityModel(Quality.MOBI, new Revision(version: 1));
 
             var compare = Subject.Compare(first, second);
 
@@ -105,8 +105,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenCustomProfile();
 
-            var first = new QualityModel(Quality.MP3_192);
-            var second = new QualityModel(Quality.MP3_320);
+            var first = new QualityModel(Quality.MOBI);
+            var second = new QualityModel(Quality.AZW3);
 
             var compare = Subject.Compare(first, second);
 
@@ -118,8 +118,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenGroupedProfile();
 
-            var first = new QualityModel(Quality.MP3_256);
-            var second = new QualityModel(Quality.MP3_320);
+            var first = new QualityModel(Quality.EPUB);
+            var second = new QualityModel(Quality.AZW3);
 
             var compare = Subject.Compare(first, second);
 
@@ -131,8 +131,8 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenGroupedProfile();
 
-            var first = new QualityModel(Quality.MP3_256);
-            var second = new QualityModel(Quality.MP3_320);
+            var first = new QualityModel(Quality.EPUB);
+            var second = new QualityModel(Quality.AZW3);
 
             var compare = Subject.Compare(first, second, true);
 

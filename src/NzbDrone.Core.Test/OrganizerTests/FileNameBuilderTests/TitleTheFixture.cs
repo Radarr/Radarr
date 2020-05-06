@@ -14,38 +14,25 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
     [TestFixture]
     public class TitleTheFixture : CoreTest<FileNameBuilder>
     {
-        private Artist _artist;
-        private Album _album;
-        private AlbumRelease _release;
-        private Track _track;
-        private TrackFile _trackFile;
+        private Author _artist;
+        private Book _album;
+        private BookFile _trackFile;
         private NamingConfig _namingConfig;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>
+            _artist = Builder<Author>
                     .CreateNew()
                     .With(s => s.Name = "Alien Ant Farm")
                     .Build();
 
-            _album = Builder<Album>
+            _album = Builder<Book>
                     .CreateNew()
                     .With(s => s.Title = "Anthology")
                     .Build();
 
-            _release = Builder<AlbumRelease>
-                .CreateNew()
-                .With(s => s.Media = new List<Medium> { new Medium { Number = 1 } })
-                .Build();
-
-            _track = Builder<Track>.CreateNew()
-                            .With(e => e.Title = "City Sushi")
-                            .With(e => e.AbsoluteTrackNumber = 6)
-                            .With(e => e.AlbumRelease = _release)
-                            .Build();
-
-            _trackFile = new TrackFile { Quality = new QualityModel(Quality.MP3_320), ReleaseGroup = "ReadarrTest" };
+            _trackFile = new BookFile { Quality = new QualityModel(Quality.MP3_320), ReleaseGroup = "ReadarrTest" };
 
             _namingConfig = NamingConfig.Default;
             _namingConfig.RenameTracks = true;
@@ -75,7 +62,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _artist.Name = name;
             _namingConfig.StandardTrackFormat = "{Artist NameThe}";
 
-            Subject.BuildTrackFileName(new List<Track> { _track }, _artist, _album, _trackFile)
+            Subject.BuildTrackFileName(_artist, _album, _trackFile)
                    .Should().Be(expected);
         }
 
@@ -88,7 +75,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _artist.Name = name;
             _namingConfig.StandardTrackFormat = "{Artist NameThe}";
 
-            Subject.BuildTrackFileName(new List<Track> { _track }, _artist, _album, _trackFile)
+            Subject.BuildTrackFileName(_artist, _album, _trackFile)
                    .Should().Be(name);
         }
     }

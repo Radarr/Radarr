@@ -228,7 +228,7 @@ class ArtistIndexBanners extends Component {
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
-          artistId={artist.id}
+          authorId={artist.id}
           qualityProfileId={artist.qualityProfileId}
           metadataProfileId={artist.metadataProfileId}
         />

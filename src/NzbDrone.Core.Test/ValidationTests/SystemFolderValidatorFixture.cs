@@ -13,12 +13,12 @@ namespace NzbDrone.Core.Test.ValidationTests
 {
     public class SystemFolderValidatorFixture : CoreTest<SystemFolderValidator>
     {
-        private TestValidator<Artist> _validator;
+        private TestValidator<Author> _validator;
 
         [SetUp]
         public void Setup()
         {
-            _validator = new TestValidator<Artist>
+            _validator = new TestValidator<Author>
                             {
                                 v => v.RuleFor(s => s.Path).SetValidator(Subject)
                             };
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.ValidationTests
         {
             WindowsOnly();
 
-            var artist = Builder<Artist>.CreateNew()
+            var artist = Builder<Author>.CreateNew()
                                         .With(s => s.Path = Environment.GetFolderPath(Environment.SpecialFolder.Windows))
                                         .Build();
 
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.ValidationTests
         {
             WindowsOnly();
 
-            var artist = Builder<Artist>.CreateNew()
+            var artist = Builder<Author>.CreateNew()
                                         .With(s => s.Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Test"))
                                         .Build();
 
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.ValidationTests
             PosixOnly();
 
             var bin = OsInfo.IsOsx ? "/System" : "/bin";
-            var artist = Builder<Artist>.CreateNew()
+            var artist = Builder<Author>.CreateNew()
                                         .With(s => s.Path = bin)
                                         .Build();
 
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.ValidationTests
             PosixOnly();
 
             var bin = OsInfo.IsOsx ? "/System" : "/bin";
-            var artist = Builder<Artist>.CreateNew()
+            var artist = Builder<Author>.CreateNew()
                 .With(s => s.Path = Path.Combine(bin, "test"))
                 .Build();
 

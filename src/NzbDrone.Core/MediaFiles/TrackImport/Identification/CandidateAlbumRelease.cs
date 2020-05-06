@@ -9,13 +9,13 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
         {
         }
 
-        public CandidateAlbumRelease(AlbumRelease release)
+        public CandidateAlbumRelease(Book book)
         {
-            AlbumRelease = release;
-            ExistingTracks = new List<TrackFile>();
+            Book = book;
+            ExistingTracks = new List<BookFile>();
         }
 
-        public AlbumRelease AlbumRelease { get; set; }
-        public List<TrackFile> ExistingTracks { get; set; }
+        public Book Book { get; set; }
+        public List<BookFile> ExistingTracks { get; set; }
     }
 }

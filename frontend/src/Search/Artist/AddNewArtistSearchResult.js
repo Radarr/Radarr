@@ -68,7 +68,9 @@ class AddNewArtistSearchResult extends Component {
 
   render() {
     const {
-      foreignArtistId,
+      foreignAuthorId,
+      goodreadsId,
+      titleSlug,
       artistName,
       year,
       disambiguation,
@@ -85,7 +87,7 @@ class AddNewArtistSearchResult extends Component {
       isNewAddArtistModalOpen
     } = this.state;
 
-    const linkProps = isExistingArtist ? { to: `/artist/${foreignArtistId}` } : { onPress: this.onPress };
+    const linkProps = isExistingArtist ? { to: `/author/${titleSlug}` } : { onPress: this.onPress };
 
     const endedString = artistType === 'Person' ? 'Deceased' : 'Ended';
 
@@ -107,6 +109,7 @@ class AddNewArtistSearchResult extends Component {
                 images={images}
                 size={250}
                 overflow={true}
+                lazy={false}
               />
           }
 
@@ -140,7 +143,7 @@ class AddNewArtistSearchResult extends Component {
 
               <Link
                 className={styles.mbLink}
-                to={`https://musicbrainz.org/artist/${foreignArtistId}`}
+                to={`https://goodreads.com/author/show/${goodreadsId}`}
                 onPress={this.onMBLinkPress}
               >
                 <Icon
@@ -196,7 +199,7 @@ class AddNewArtistSearchResult extends Component {
 
         <AddNewArtistModal
           isOpen={isNewAddArtistModalOpen && !isExistingArtist}
-          foreignArtistId={foreignArtistId}
+          foreignAuthorId={foreignAuthorId}
           artistName={artistName}
           disambiguation={disambiguation}
           year={year}
@@ -210,7 +213,9 @@ class AddNewArtistSearchResult extends Component {
 }
 
 AddNewArtistSearchResult.propTypes = {
-  foreignArtistId: PropTypes.string.isRequired,
+  foreignAuthorId: PropTypes.string.isRequired,
+  goodreadsId: PropTypes.number.isRequired,
+  titleSlug: PropTypes.number.isRequired,
   artistName: PropTypes.string.isRequired,
   year: PropTypes.number,
   disambiguation: PropTypes.string,

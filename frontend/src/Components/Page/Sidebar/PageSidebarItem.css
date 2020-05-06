@@ -5,7 +5,7 @@
 }
 
 .isActiveItem {
-  border-left: 3px solid $themeBlue;
+  border-left: 3px solid $themeAlternateRed;
 }
 
 .link {
@@ -15,7 +15,7 @@
 
   &:hover,
   &:focus {
-    color: $themeBlue;
+    color: $themeRed;
     text-decoration: none;
   }
 }
@@ -27,7 +27,7 @@
 }
 
 .isActiveLink {
-  color: $themeBlue;
+  color: $themeRed;
 }
 
 .isActiveParentLink {

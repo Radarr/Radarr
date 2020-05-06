@@ -137,7 +137,7 @@ class ArtistEditorFooter extends Component {
 
   render() {
     const {
-      artistIds,
+      authorIds,
       selectedCount,
       isSaving,
       isDeleting,
@@ -309,14 +309,14 @@ class ArtistEditorFooter extends Component {
 
         <TagsModal
           isOpen={isTagsModalOpen}
-          artistIds={artistIds}
+          authorIds={authorIds}
           onApplyTagsPress={this.onApplyTagsPress}
           onModalClose={this.onTagsModalClose}
         />
 
         <DeleteArtistModal
           isOpen={isDeleteArtistModalOpen}
-          artistIds={artistIds}
+          authorIds={authorIds}
           onModalClose={this.onDeleteArtistModalClose}
         />
 
@@ -333,7 +333,7 @@ class ArtistEditorFooter extends Component {
 }
 
 ArtistEditorFooter.propTypes = {
-  artistIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  authorIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   selectedCount: PropTypes.number.isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,

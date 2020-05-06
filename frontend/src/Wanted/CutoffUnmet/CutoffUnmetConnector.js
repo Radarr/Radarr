@@ -61,10 +61,10 @@ class CutoffUnmetConnector extends Component {
 
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
-      const albumIds = selectUniqueIds(this.props.items, 'id');
+      const bookIds = selectUniqueIds(this.props.items, 'id');
       const trackFileIds = selectUniqueIds(this.props.items, 'trackFileId');
 
-      this.props.fetchQueueDetails({ albumIds });
+      this.props.fetchQueueDetails({ bookIds });
 
       if (trackFileIds.length) {
         this.props.fetchTrackFiles({ trackFileIds });
@@ -128,7 +128,7 @@ class CutoffUnmetConnector extends Component {
   onSearchSelectedPress = (selected) => {
     this.props.executeCommand({
       name: commandNames.ALBUM_SEARCH,
-      albumIds: selected
+      bookIds: selected
     });
   }
 

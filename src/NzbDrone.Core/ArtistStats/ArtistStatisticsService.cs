@@ -11,7 +11,7 @@ namespace NzbDrone.Core.ArtistStats
     public interface IArtistStatisticsService
     {
         List<ArtistStatistics> ArtistStatistics();
-        ArtistStatistics ArtistStatistics(int artistId);
+        ArtistStatistics ArtistStatistics(int authorId);
     }
 
     public class ArtistStatisticsService : IArtistStatisticsService,
@@ -37,12 +37,12 @@ namespace NzbDrone.Core.ArtistStats
         {
             var albumStatistics = _cache.Get("AllArtists", () => _artistStatisticsRepository.ArtistStatistics());
 
-            return albumStatistics.GroupBy(s => s.ArtistId).Select(s => MapArtistStatistics(s.ToList())).ToList();
+            return albumStatistics.GroupBy(s => s.AuthorId).Select(s => MapArtistStatistics(s.ToList())).ToList();
         }
 
-        public ArtistStatistics ArtistStatistics(int artistId)
+        public ArtistStatistics ArtistStatistics(int authorId)
         {
-            var stats = _cache.Get(artistId.ToString(), () => _artistStatisticsRepository.ArtistStatistics(artistId));
+            var stats = _cache.Get(authorId.ToString(), () => _artistStatisticsRepository.ArtistStatistics(authorId));
 
             if (stats == null || stats.Count == 0)
             {
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.ArtistStats
             {
                 AlbumStatistics = albumStatistics,
                 AlbumCount = albumStatistics.Count,
-                ArtistId = albumStatistics.First().ArtistId,
+                AuthorId = albumStatistics.First().AuthorId,
                 TrackFileCount = albumStatistics.Sum(s => s.TrackFileCount),
                 TrackCount = albumStatistics.Sum(s => s.TrackCount),
                 TotalTrackCount = albumStatistics.Sum(s => s.TotalTrackCount),
@@ -86,14 +86,14 @@ namespace NzbDrone.Core.ArtistStats
         public void Handle(AlbumAddedEvent message)
         {
             _cache.Remove("AllArtists");
-            _cache.Remove(message.Album.ArtistId.ToString());
+            _cache.Remove(message.Album.AuthorId.ToString());
         }
 
         [EventHandleOrder(EventHandleOrder.First)]
         public void Handle(AlbumDeletedEvent message)
         {
             _cache.Remove("AllArtists");
-            _cache.Remove(message.Album.ArtistId.ToString());
+            _cache.Remove(message.Album.AuthorId.ToString());
         }
 
         [EventHandleOrder(EventHandleOrder.First)]
@@ -107,7 +107,7 @@ namespace NzbDrone.Core.ArtistStats
         public void Handle(AlbumEditedEvent message)
         {
             _cache.Remove("AllArtists");
-            _cache.Remove(message.Album.ArtistId.ToString());
+            _cache.Remove(message.Album.AuthorId.ToString());
         }
 
         [EventHandleOrder(EventHandleOrder.First)]

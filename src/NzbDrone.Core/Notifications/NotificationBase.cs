@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Notifications
         {
         }
 
-        public virtual void OnRename(Artist artist)
+        public virtual void OnRename(Author artist)
         {
         }
 

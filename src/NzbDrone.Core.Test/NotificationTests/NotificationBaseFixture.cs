@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnAlbumDownload was called");
             }
 
-            public override void OnRename(Artist artist)
+            public override void OnRename(Author artist)
             {
                 TestLogger.Info("OnRename was called");
             }

@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Notifications
             _logger = logger;
         }
 
-        private string GetMessage(Artist artist, List<Album> albums, QualityModel quality)
+        private string GetMessage(Author artist, List<Book> albums, QualityModel quality)
         {
             var qualityString = quality.Quality.ToString();
 
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Notifications
                                     qualityString);
         }
 
-        private string GetAlbumDownloadMessage(Artist artist, Album album, List<TrackFile> tracks)
+        private string GetAlbumDownloadMessage(Author artist, Book album, List<BookFile> tracks)
         {
             return string.Format("{0} - {1} ({2} Tracks Imported)",
                 artist.Name,
@@ -69,14 +69,14 @@ namespace NzbDrone.Core.Notifications
             return text.IsNullOrWhiteSpace() ? "<missing>" : text;
         }
 
-        private string GetTrackRetagMessage(Artist artist, TrackFile trackFile, Dictionary<string, Tuple<string, string>> diff)
+        private string GetTrackRetagMessage(Author artist, BookFile trackFile, Dictionary<string, Tuple<string, string>> diff)
         {
             return string.Format("{0}:\n{1}",
                                  trackFile.Path,
                                  string.Join("\n", diff.Select(x => $"{x.Key}: {FormatMissing(x.Value.Item1)} → {FormatMissing(x.Value.Item2)}")));
         }
 
-        private bool ShouldHandleArtist(ProviderDefinition definition, Artist artist)
+        private bool ShouldHandleArtist(ProviderDefinition definition, Author artist)
         {
             if (definition.Tags.Empty())
             {
@@ -152,7 +152,6 @@ namespace NzbDrone.Core.Notifications
                 Message = GetAlbumDownloadMessage(message.Artist, message.Album, message.ImportedTracks),
                 Artist = message.Artist,
                 Album = message.Album,
-                Release = message.AlbumRelease,
                 DownloadClient = message.DownloadClient,
                 DownloadId = message.DownloadId,
                 TrackFiles = message.ImportedTracks,
@@ -258,7 +257,6 @@ namespace NzbDrone.Core.Notifications
                 Message = GetTrackRetagMessage(message.Artist, message.TrackFile, message.Diff),
                 Artist = message.Artist,
                 Album = message.TrackFile.Album,
-                Release = message.TrackFile.Tracks.Value.First().AlbumRelease.Value,
                 TrackFile = message.TrackFile,
                 Diff = message.Diff,
                 Scrubbed = message.Scrubbed

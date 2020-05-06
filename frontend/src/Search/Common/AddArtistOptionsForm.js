@@ -35,7 +35,6 @@ class AddArtistOptionsForm extends Component {
       metadataProfileId,
       includeNoneMetadataProfile,
       showMetadataProfile,
-      albumFolder,
       tags,
       onInputChange,
       ...otherProps
@@ -120,17 +119,6 @@ class AddArtistOptionsForm extends Component {
         </FormGroup>
 
         <FormGroup>
-          <FormLabel>Album Folder</FormLabel>
-
-          <FormInputGroup
-            type={inputTypes.CHECK}
-            name="albumFolder"
-            onChange={onInputChange}
-            {...albumFolder}
-          />
-        </FormGroup>
-
-        <FormGroup>
           <FormLabel>Tags</FormLabel>
 
           <FormInputGroup
@@ -152,7 +140,6 @@ AddArtistOptionsForm.propTypes = {
   metadataProfileId: PropTypes.object,
   showMetadataProfile: PropTypes.bool.isRequired,
   includeNoneMetadataProfile: PropTypes.bool.isRequired,
-  albumFolder: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,
   onInputChange: PropTypes.func.isRequired
 };

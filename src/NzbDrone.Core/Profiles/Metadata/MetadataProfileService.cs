@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
@@ -18,11 +20,15 @@ namespace NzbDrone.Core.Profiles.Metadata
         List<MetadataProfile> All();
         MetadataProfile Get(int id);
         bool Exists(int id);
+        List<Book> FilterBooks(Author input, int profileId);
     }
 
     public class MetadataProfileService : IMetadataProfileService, IHandle<ApplicationStartedEvent>
     {
         public const string NONE_PROFILE_NAME = "None";
+
+        private static readonly Regex PartOrSetRegex = new Regex(@"(?:\d+ of \d+|\d+/\d+|(?<from>\d+)-(?<to>\d+))");
+
         private readonly IMetadataProfileRepository _profileRepository;
         private readonly IArtistService _artistService;
         private readonly IImportListFactory _importListFactory;
@@ -87,32 +93,71 @@ namespace NzbDrone.Core.Profiles.Metadata
             return _profileRepository.Exists(id);
         }
 
-        private void AddDefaultProfile(string name, List<PrimaryAlbumType> primAllowed, List<SecondaryAlbumType> secAllowed, List<ReleaseStatus> relAllowed)
+        public List<Book> FilterBooks(Author input, int profileId)
         {
-            var primaryTypes = PrimaryAlbumType.All
-                .OrderByDescending(l => l.Name)
-                .Select(v => new ProfilePrimaryAlbumTypeItem { PrimaryAlbumType = v, Allowed = primAllowed.Contains(v) })
-                .ToList();
+            var seriesLinks = input.Series.Value.SelectMany(x => x.LinkItems.Value)
+                .GroupBy(x => x.Book.Value)
+                .ToDictionary(x => x.Key, y => y.ToList());
 
-            var secondaryTypes = SecondaryAlbumType.All
-                .OrderByDescending(l => l.Name)
-                .Select(v => new ProfileSecondaryAlbumTypeItem { SecondaryAlbumType = v, Allowed = secAllowed.Contains(v) })
-                .ToList();
+            return FilterBooks(input.Books.Value, seriesLinks, profileId);
+        }
 
-            var releaseStatues = ReleaseStatus.All
-                .OrderByDescending(l => l.Name)
-                .Select(v => new ProfileReleaseStatusItem { ReleaseStatus = v, Allowed = relAllowed.Contains(v) })
-                .ToList();
+        private List<Book> FilterBooks(IEnumerable<Book> books, Dictionary<Book, List<SeriesBookLink>> seriesLinks, int metadataProfileId)
+        {
+            var profile = Get(metadataProfileId);
+            var allowedLanguages = profile.AllowedLanguages.IsNotNullOrWhiteSpace() ? new HashSet<string>(profile.AllowedLanguages.Split(',').Select(x => x.Trim().ToLower())) : new HashSet<string>();
 
-            var profile = new MetadataProfile
+            _logger.Trace($"Filtering:\n{books.Select(x => x.ToString()).Join("\n")}");
+
+            var hash = new HashSet<Book>(books);
+            var titles = new HashSet<string>(books.Select(x => x.Title));
+
+            FilterByPredicate(hash, profile, (x, p) => x.Ratings.Votes >= p.MinRatingCount && (double)x.Ratings.Value >= p.MinRating, "rating criteria not met");
+            FilterByPredicate(hash, profile, (x, p) => !p.SkipMissingDate || x.ReleaseDate.HasValue, "release date is missing");
+            FilterByPredicate(hash, profile, (x, p) => !p.SkipMissingIsbn || x.Isbn13.IsNotNullOrWhiteSpace() || x.Asin.IsNotNullOrWhiteSpace(), "isbn and asin is missing");
+            FilterByPredicate(hash, profile, (x, p) => !p.SkipPartsAndSets || !IsPartOrSet(x, seriesLinks.GetValueOrDefault(x), titles), "book is part of set");
+            FilterByPredicate(hash, profile, (x, p) => !p.SkipSeriesSecondary || !seriesLinks.ContainsKey(x) || seriesLinks[x].Any(y => y.IsPrimary), "book is a secondary series item");
+            FilterByPredicate(hash, profile, (x, p) => !allowedLanguages.Any() || allowedLanguages.Contains(x.Language?.ToLower() ?? "null"), "book language not allowed");
+
+            return hash.ToList();
+        }
+
+        private void FilterByPredicate(HashSet<Book> books, MetadataProfile profile, Func<Book, MetadataProfile, bool> bookAllowed, string message)
+        {
+            var filtered = new HashSet<Book>(books.Where(x => !bookAllowed(x, profile)));
+            if (filtered.Any())
             {
-                Name = name,
-                PrimaryAlbumTypes = primaryTypes,
-                SecondaryAlbumTypes = secondaryTypes,
-                ReleaseStatuses = releaseStatues
-            };
+                _logger.Trace($"Skipping {filtered.Count} books because {message}:\n{filtered.ConcatToString(x => x.ToString(), "\n")}");
+                books.RemoveWhere(x => filtered.Contains(x));
+            }
+        }
 
-            Add(profile);
+        private bool IsPartOrSet(Book book, List<SeriesBookLink> seriesLinks, HashSet<string> titles)
+        {
+            if (seriesLinks != null &&
+                seriesLinks.Any(x => x.Position.IsNotNullOrWhiteSpace()) &&
+                !seriesLinks.Any(s => double.TryParse(s.Position, out _)))
+            {
+                // No non-empty series entries parse to a number, so all like 1-3 etc.
+                return true;
+            }
+
+            // Skip things of form Title1 / Title2 when Title1 and Title2 are already in the list
+            var split = book.Title.Split('/').Select(x => x.Trim()).ToList();
+            if (split.Count > 1 && split.All(x => titles.Contains(x)))
+            {
+                return true;
+            }
+
+            var match = PartOrSetRegex.Match(book.Title);
+
+            if (match.Groups["from"].Success)
+            {
+                var from = int.Parse(match.Groups["from"].Value);
+                return from >= 1800 && from <= DateTime.UtcNow.Year ? false : true;
+            }
+
+            return false;
         }
 
         public void Handle(ApplicationStartedEvent message)
@@ -123,10 +168,9 @@ namespace NzbDrone.Core.Profiles.Metadata
             var emptyProfile = profiles.FirstOrDefault(x => x.Name == NONE_PROFILE_NAME);
 
             // make sure empty profile exists and is actually empty
+            // TODO: reinstate
             if (emptyProfile != null &&
-                !emptyProfile.PrimaryAlbumTypes.Any(x => x.Allowed) &&
-                !emptyProfile.SecondaryAlbumTypes.Any(x => x.Allowed) &&
-                !emptyProfile.ReleaseStatuses.Any(x => x.Allowed))
+                emptyProfile.MinRating == 100)
             {
                 return;
             }
@@ -135,7 +179,15 @@ namespace NzbDrone.Core.Profiles.Metadata
             {
                 _logger.Info("Setting up standard metadata profile");
 
-                AddDefaultProfile("Standard", new List<PrimaryAlbumType> { PrimaryAlbumType.Album }, new List<SecondaryAlbumType> { SecondaryAlbumType.Studio }, new List<ReleaseStatus> { ReleaseStatus.Official });
+                Add(new MetadataProfile
+                {
+                    Name = "Standard",
+                    MinRating = 0,
+                    MinRatingCount = 100,
+                    SkipMissingDate = true,
+                    SkipPartsAndSets = true,
+                    AllowedLanguages = "eng, en-US, en-GB"
+                });
             }
 
             if (emptyProfile != null)
@@ -158,7 +210,11 @@ namespace NzbDrone.Core.Profiles.Metadata
 
             _logger.Info("Setting up empty metadata profile");
 
-            AddDefaultProfile(NONE_PROFILE_NAME, new List<PrimaryAlbumType>(), new List<SecondaryAlbumType>(), new List<ReleaseStatus>());
+            Add(new MetadataProfile
+            {
+                Name = NONE_PROFILE_NAME,
+                MinRating = 100
+            });
         }
     }
 }

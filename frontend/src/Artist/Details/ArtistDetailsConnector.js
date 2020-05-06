@@ -6,12 +6,15 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { findCommand, isCommandExecuting } from 'Utilities/Command';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
+import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
 import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
+import { fetchSeries, clearSeries } from 'Store/Actions/seriesActions';
 import { fetchTrackFiles, clearTrackFiles } from 'Store/Actions/trackFileActions';
 import { toggleArtistMonitored } from 'Store/Actions/artistActions';
 import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
+import { clearReleases, cancelFetchReleases } from 'Store/Actions/releaseActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import ArtistDetails from './ArtistDetails';
@@ -28,15 +31,36 @@ const selectAlbums = createSelector(
 
     const hasAlbums = !!items.length;
     const hasMonitoredAlbums = items.some((e) => e.monitored);
-    const albumTypes = _.uniq(_.map(items, 'albumType'));
 
     return {
       isAlbumsFetching: isFetching,
       isAlbumsPopulated: isPopulated,
       albumsError: error,
       hasAlbums,
-      hasMonitoredAlbums,
-      albumTypes
+      hasMonitoredAlbums
+    };
+  }
+);
+
+const selectSeries = createSelector(
+  createSortedSectionSelector('series', (a, b) => a.title.localeCompare(b.title)),
+  (state) => state.series,
+  (series) => {
+    const {
+      items,
+      isFetching,
+      isPopulated,
+      error
+    } = series;
+
+    const hasSeries = !!items.length;
+
+    return {
+      isSeriesFetching: isFetching,
+      isSeriesPopulated: isPopulated,
+      seriesError: error,
+      hasSeries,
+      series: series.items
     };
   }
 );
@@ -64,14 +88,15 @@ const selectTrackFiles = createSelector(
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { foreignArtistId }) => foreignArtistId,
+    (state, { titleSlug }) => titleSlug,
     selectAlbums,
+    selectSeries,
     selectTrackFiles,
     createAllArtistSelector(),
     createCommandsSelector(),
-    (foreignArtistId, albums, trackFiles, allArtists, commands) => {
+    (titleSlug, albums, series, trackFiles, allArtists, commands) => {
       const sortedArtist = _.orderBy(allArtists, 'sortName');
-      const artistIndex = _.findIndex(sortedArtist, { foreignArtistId });
+      const artistIndex = _.findIndex(sortedArtist, { titleSlug });
       const artist = sortedArtist[artistIndex];
 
       if (!artist) {
@@ -83,9 +108,16 @@ function createMapStateToProps() {
         isAlbumsPopulated,
         albumsError,
         hasAlbums,
-        hasMonitoredAlbums,
-        albumTypes
+        hasMonitoredAlbums
       } = albums;
+
+      const {
+        isSeriesFetching,
+        isSeriesPopulated,
+        seriesError,
+        hasSeries,
+        series: seriesItems
+      } = series;
 
       const {
         isTrackFilesFetching,
@@ -94,28 +126,26 @@ function createMapStateToProps() {
         hasTrackFiles
       } = trackFiles;
 
-      const sortedAlbumTypes = _.orderBy(albumTypes);
-
       const previousArtist = sortedArtist[artistIndex - 1] || _.last(sortedArtist);
       const nextArtist = sortedArtist[artistIndex + 1] || _.first(sortedArtist);
-      const isArtistRefreshing = isCommandExecuting(findCommand(commands, { name: commandNames.REFRESH_ARTIST, artistId: artist.id }));
+      const isArtistRefreshing = isCommandExecuting(findCommand(commands, { name: commandNames.REFRESH_ARTIST, authorId: artist.id }));
       const artistRefreshingCommand = findCommand(commands, { name: commandNames.REFRESH_ARTIST });
       const allArtistRefreshing = (
         isCommandExecuting(artistRefreshingCommand) &&
-        !artistRefreshingCommand.body.artistId
+        !artistRefreshingCommand.body.authorId
       );
       const isRefreshing = isArtistRefreshing || allArtistRefreshing;
-      const isSearching = isCommandExecuting(findCommand(commands, { name: commandNames.ARTIST_SEARCH, artistId: artist.id }));
-      const isRenamingFiles = isCommandExecuting(findCommand(commands, { name: commandNames.RENAME_FILES, artistId: artist.id }));
+      const isSearching = isCommandExecuting(findCommand(commands, { name: commandNames.ARTIST_SEARCH, authorId: artist.id }));
+      const isRenamingFiles = isCommandExecuting(findCommand(commands, { name: commandNames.RENAME_FILES, authorId: artist.id }));
 
       const isRenamingArtistCommand = findCommand(commands, { name: commandNames.RENAME_ARTIST });
       const isRenamingArtist = (
         isCommandExecuting(isRenamingArtistCommand) &&
-        isRenamingArtistCommand.body.artistIds.indexOf(artist.id) > -1
+        isRenamingArtistCommand.body.authorIds.indexOf(artist.id) > -1
       );
 
-      const isFetching = isAlbumsFetching || isTrackFilesFetching;
-      const isPopulated = isAlbumsPopulated && isTrackFilesPopulated;
+      const isFetching = isAlbumsFetching || isSeriesFetching || isTrackFilesFetching;
+      const isPopulated = isAlbumsPopulated && isSeriesPopulated && isTrackFilesPopulated;
 
       const alternateTitles = _.reduce(artist.alternateTitles, (acc, alternateTitle) => {
         if ((alternateTitle.seasonNumber === -1 || alternateTitle.seasonNumber === undefined) &&
@@ -128,7 +158,6 @@ function createMapStateToProps() {
 
       return {
         ...artist,
-        albumTypes: sortedAlbumTypes,
         alternateTitles,
         isArtistRefreshing,
         allArtistRefreshing,
@@ -139,9 +168,12 @@ function createMapStateToProps() {
         isFetching,
         isPopulated,
         albumsError,
+        seriesError,
         trackFilesError,
         hasAlbums,
         hasMonitoredAlbums,
+        hasSeries,
+        series: seriesItems,
         hasTrackFiles,
         previousArtist,
         nextArtist
@@ -153,11 +185,15 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
   fetchAlbums,
   clearAlbums,
+  fetchSeries,
+  clearSeries,
   fetchTrackFiles,
   clearTrackFiles,
   toggleArtistMonitored,
   fetchQueueDetails,
   clearQueueDetails,
+  clearReleases,
+  cancelFetchReleases,
   executeCommand
 };
 
@@ -207,17 +243,21 @@ class ArtistDetailsConnector extends Component {
   // Control
 
   populate = () => {
-    const artistId = this.props.id;
+    const authorId = this.props.id;
 
-    this.props.fetchAlbums({ artistId });
-    this.props.fetchTrackFiles({ artistId });
-    this.props.fetchQueueDetails({ artistId });
+    this.props.fetchAlbums({ authorId });
+    this.props.fetchSeries({ authorId });
+    this.props.fetchTrackFiles({ authorId });
+    this.props.fetchQueueDetails({ authorId });
   }
 
   unpopulate = () => {
+    this.props.cancelFetchReleases();
     this.props.clearAlbums();
+    this.props.clearSeries();
     this.props.clearTrackFiles();
     this.props.clearQueueDetails();
+    this.props.clearReleases();
   }
 
   //
@@ -225,7 +265,7 @@ class ArtistDetailsConnector extends Component {
 
   onMonitorTogglePress = (monitored) => {
     this.props.toggleArtistMonitored({
-      artistId: this.props.id,
+      authorId: this.props.id,
       monitored
     });
   }
@@ -233,14 +273,14 @@ class ArtistDetailsConnector extends Component {
   onRefreshPress = () => {
     this.props.executeCommand({
       name: commandNames.REFRESH_ARTIST,
-      artistId: this.props.id
+      authorId: this.props.id
     });
   }
 
   onSearchPress = () => {
     this.props.executeCommand({
       name: commandNames.ARTIST_SEARCH,
-      artistId: this.props.id
+      authorId: this.props.id
     });
   }
 
@@ -261,7 +301,7 @@ class ArtistDetailsConnector extends Component {
 
 ArtistDetailsConnector.propTypes = {
   id: PropTypes.number.isRequired,
-  foreignArtistId: PropTypes.string.isRequired,
+  titleSlug: PropTypes.string.isRequired,
   isArtistRefreshing: PropTypes.bool.isRequired,
   allArtistRefreshing: PropTypes.bool.isRequired,
   isRefreshing: PropTypes.bool.isRequired,
@@ -269,11 +309,15 @@ ArtistDetailsConnector.propTypes = {
   isRenamingArtist: PropTypes.bool.isRequired,
   fetchAlbums: PropTypes.func.isRequired,
   clearAlbums: PropTypes.func.isRequired,
+  fetchSeries: PropTypes.func.isRequired,
+  clearSeries: PropTypes.func.isRequired,
   fetchTrackFiles: PropTypes.func.isRequired,
   clearTrackFiles: PropTypes.func.isRequired,
   toggleArtistMonitored: PropTypes.func.isRequired,
   fetchQueueDetails: PropTypes.func.isRequired,
   clearQueueDetails: PropTypes.func.isRequired,
+  clearReleases: PropTypes.func.isRequired,
+  cancelFetchReleases: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };
 

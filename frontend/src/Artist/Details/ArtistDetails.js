@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TextTruncate from 'react-text-truncate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import selectAll from 'Utilities/Table/selectAll';
@@ -21,21 +22,23 @@ import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
-import TrackFileEditorModal from 'TrackFile/Editor/TrackFileEditorModal';
+import TrackFileEditorTable from 'TrackFile/Editor/TrackFileEditorTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import RetagPreviewModalConnector from 'Retag/RetagPreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import ArtistPoster from 'Artist/ArtistPoster';
 import EditArtistModalConnector from 'Artist/Edit/EditArtistModalConnector';
 import DeleteArtistModal from 'Artist/Delete/DeleteArtistModal';
-import ArtistHistoryModal from 'Artist/History/ArtistHistoryModal';
+import ArtistHistoryTable from 'Artist/History/ArtistHistoryTable';
 import ArtistAlternateTitles from './ArtistAlternateTitles';
 import ArtistDetailsSeasonConnector from './ArtistDetailsSeasonConnector';
+import AuthorDetailsSeriesConnector from './AuthorDetailsSeriesConnector';
 import ArtistTagsConnector from './ArtistTagsConnector';
 import ArtistDetailsLinks from './ArtistDetailsLinks';
 import styles from './ArtistDetails.css';
+import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
+import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
 import InteractiveImportModal from '../../InteractiveImport/InteractiveImportModal';
-import ArtistInteractiveSearchModalConnector from 'Artist/Search/ArtistInteractiveSearchModalConnector';
 import Link from 'Components/Link/Link';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
@@ -68,15 +71,13 @@ class ArtistDetails extends Component {
     this.state = {
       isOrganizeModalOpen: false,
       isRetagModalOpen: false,
-      isManageTracksOpen: false,
       isEditArtistModalOpen: false,
       isDeleteArtistModalOpen: false,
-      isArtistHistoryModalOpen: false,
       isInteractiveImportModalOpen: false,
-      isInteractiveSearchModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
-      expandedState: {}
+      expandedState: {},
+      selectedTabIndex: 0
     };
   }
 
@@ -99,28 +100,12 @@ class ArtistDetails extends Component {
     this.setState({ isRetagModalOpen: false });
   }
 
-  onManageTracksPress = () => {
-    this.setState({ isManageTracksOpen: true });
-  }
-
-  onManageTracksModalClose = () => {
-    this.setState({ isManageTracksOpen: false });
-  }
-
   onInteractiveImportPress = () => {
     this.setState({ isInteractiveImportModalOpen: true });
   }
 
   onInteractiveImportModalClose = () => {
     this.setState({ isInteractiveImportModalOpen: false });
-  }
-
-  onInteractiveSearchPress = () => {
-    this.setState({ isInteractiveSearchModalOpen: true });
-  }
-
-  onInteractiveSearchModalClose = () => {
-    this.setState({ isInteractiveSearchModalOpen: false });
   }
 
   onEditArtistPress = () => {
@@ -142,14 +127,6 @@ class ArtistDetails extends Component {
     this.setState({ isDeleteArtistModalOpen: false });
   }
 
-  onArtistHistoryPress = () => {
-    this.setState({ isArtistHistoryModalOpen: true });
-  }
-
-  onArtistHistoryModalClose = () => {
-    this.setState({ isArtistHistoryModalOpen: false });
-  }
-
   onExpandAllPress = () => {
     const {
       allExpanded,
@@ -159,7 +136,7 @@ class ArtistDetails extends Component {
     this.setState(getExpandedState(selectAll(expandedState, !allExpanded)));
   }
 
-  onExpandPress = (albumId, isExpanded) => {
+  onExpandPress = (bookId, isExpanded) => {
     this.setState((state) => {
       const convertedState = {
         allSelected: state.allExpanded,
@@ -167,7 +144,7 @@ class ArtistDetails extends Component {
         selectedState: state.expandedState
       };
 
-      const newState = toggleSelected(convertedState, [], albumId, isExpanded, false);
+      const newState = toggleSelected(convertedState, [], bookId, isExpanded, false);
 
       return getExpandedState(newState);
     });
@@ -179,14 +156,12 @@ class ArtistDetails extends Component {
   render() {
     const {
       id,
-      foreignArtistId,
       artistName,
       ratings,
       path,
       statistics,
       qualityProfileId,
       monitored,
-      albumTypes,
       status,
       overview,
       links,
@@ -203,6 +178,8 @@ class ArtistDetails extends Component {
       trackFilesError,
       hasAlbums,
       hasMonitoredAlbums,
+      hasSeries,
+      series,
       hasTrackFiles,
       previousArtist,
       nextArtist,
@@ -219,15 +196,13 @@ class ArtistDetails extends Component {
     const {
       isOrganizeModalOpen,
       isRetagModalOpen,
-      isManageTracksOpen,
       isEditArtistModalOpen,
       isDeleteArtistModalOpen,
-      isArtistHistoryModalOpen,
       isInteractiveImportModalOpen,
-      isInteractiveSearchModalOpen,
       allExpanded,
       allCollapsed,
-      expandedState
+      expandedState,
+      selectedTabIndex
     } = this.state;
 
     const continuing = status === 'continuing';
@@ -271,15 +246,6 @@ class ArtistDetails extends Component {
               onPress={onSearchPress}
             />
 
-            <PageToolbarButton
-              label="Interactive Search"
-              iconName={icons.INTERACTIVE}
-              isDisabled={!monitored || !hasMonitoredAlbums || !hasAlbums}
-              isSpinning={isSearching}
-              title={hasMonitoredAlbums ? undefined : 'No monitored albums for this artist'}
-              onPress={this.onInteractiveSearchPress}
-            />
-
             <PageToolbarSeparator />
 
             <PageToolbarButton
@@ -289,26 +255,12 @@ class ArtistDetails extends Component {
               onPress={this.onOrganizePress}
             />
 
-            <PageToolbarButton
-              label="Preview Retag"
-              iconName={icons.RETAG}
-              isDisabled={!hasTrackFiles}
-              onPress={this.onRetagPress}
-            />
-
-            <PageToolbarButton
-              label="Manage Tracks"
-              iconName={icons.TRACK_FILE}
-              isDisabled={!hasTrackFiles}
-              onPress={this.onManageTracksPress}
-            />
-
-            <PageToolbarButton
-              label="History"
-              iconName={icons.HISTORY}
-              isDisabled={!hasAlbums}
-              onPress={this.onArtistHistoryPress}
-            />
+            {/* <PageToolbarButton */}
+            {/*   label="Preview Retag" */}
+            {/*   iconName={icons.RETAG} */}
+            {/*   isDisabled={!hasTrackFiles} */}
+            {/*   onPress={this.onRetagPress} */}
+            {/* /> */}
 
             <PageToolbarButton
               label="Manual Import"
@@ -400,7 +352,7 @@ class ArtistDetails extends Component {
                       name={icons.ARROW_LEFT}
                       size={30}
                       title={`Go to ${previousArtist.artistName}`}
-                      to={`/artist/${previousArtist.foreignArtistId}`}
+                      to={`/author/${previousArtist.titleSlug}`}
                     />
 
                     <IconButton
@@ -416,7 +368,7 @@ class ArtistDetails extends Component {
                       name={icons.ARROW_RIGHT}
                       size={30}
                       title={`Go to ${nextArtist.artistName}`}
-                      to={`/artist/${nextArtist.foreignArtistId}`}
+                      to={`/author/${nextArtist.titleSlug}`}
                     />
                   </div>
                 </div>
@@ -528,7 +480,6 @@ class ArtistDetails extends Component {
                     }
                     tooltip={
                       <ArtistDetailsLinks
-                        foreignArtistId={foreignArtistId}
                         links={links}
                       />
                     }
@@ -554,7 +505,7 @@ class ArtistDetails extends Component {
                             </span>
                           </Label>
                         }
-                        tooltip={<ArtistTagsConnector artistId={id} />}
+                        tooltip={<ArtistTagsConnector authorId={id} />}
                         kind={kinds.INVERSE}
                         position={tooltipPositions.BOTTOM}
                       />
@@ -564,7 +515,7 @@ class ArtistDetails extends Component {
                 <div className={styles.overview}>
                   <TextTruncate
                     line={Math.floor(125 / (defaultFontSize * lineHeight))}
-                    text={overview}
+                    text={overview.replace(/<[^>]*>?/gm, '')}
                   />
                 </div>
               </div>
@@ -588,30 +539,110 @@ class ArtistDetails extends Component {
             }
 
             {
-              isPopulated && !!albumTypes.length &&
-                <div>
-                  {
-                    albumTypes.slice(0).map((albumType) => {
-                      return (
-                        <ArtistDetailsSeasonConnector
-                          key={albumType}
-                          artistId={id}
-                          name={albumType}
-                          label={albumType}
-                          {...albumType}
-                          isExpanded={expandedState[albumType]}
-                          onExpandPress={this.onExpandPress}
-                        />
-                      );
-                    })
-                  }
-                </div>
+              isPopulated &&
+                <Tabs selectedIndex={this.state.tabIndex} onSelect={(tabIndex) => this.setState({ selectedTabIndex: tabIndex })}>
+                  <TabList
+                    className={styles.tabList}
+                  >
+                    <Tab
+                      className={styles.tab}
+                      selectedClassName={styles.selectedTab}
+                    >
+                      Books
+                    </Tab>
+
+                    <Tab
+                      className={styles.tab}
+                      selectedClassName={styles.selectedTab}
+                    >
+                      Series
+                    </Tab>
+
+                    <Tab
+                      className={styles.tab}
+                      selectedClassName={styles.selectedTab}
+                    >
+                      History
+                    </Tab>
+
+                    <Tab
+                      className={styles.tab}
+                      selectedClassName={styles.selectedTab}
+                    >
+                      Search
+                    </Tab>
+
+                    <Tab
+                      className={styles.tab}
+                      selectedClassName={styles.selectedTab}
+                    >
+                      Files
+                    </Tab>
+
+                    {
+                      selectedTabIndex === 3 &&
+                        <div className={styles.filterIcon}>
+                          <InteractiveSearchFilterMenuConnector
+                            type="artist"
+                          />
+                        </div>
+                    }
+                  </TabList>
+
+                  <TabPanel>
+                    <ArtistDetailsSeasonConnector
+                      authorId={id}
+                      isExpanded={true}
+                      onExpandPress={this.onExpandPress}
+                    />
+                  </TabPanel>
+
+                  <TabPanel>
+                    {
+                      isPopulated && hasSeries &&
+                        <div>
+                          {
+                            series.map((item) => {
+                              return (
+                                <AuthorDetailsSeriesConnector
+                                  key={item.id}
+                                  seriesId={item.id}
+                                  authorId={id}
+                                  isExpanded={expandedState[item.id]}
+                                  onExpandPress={this.onExpandPress}
+                                />
+                              );
+                            })
+                          }
+                        </div>
+                    }
+                  </TabPanel>
+
+                  <TabPanel>
+                    <ArtistHistoryTable
+                      authorId={id}
+                    />
+                  </TabPanel>
+
+                  <TabPanel>
+                    <InteractiveSearchTable
+                      type="artist"
+                      authorId={id}
+                    />
+                  </TabPanel>
+
+                  <TabPanel>
+                    <TrackFileEditorTable
+                      authorId={id}
+                    />
+                  </TabPanel>
+                </Tabs>
             }
 
           </div>
 
           <div className={styles.metadataMessage}>
-            Missing Albums, Singles, or Other Types? Modify or create a new
+            Missing or too many books? Modify or create a new
             <Link to='/settings/profiles'> Metadata Profile </Link>
             or manually
             <Link to={`/add/search?term=${encodeURIComponent(artistName)}`}> Search </Link>
@@ -620,38 +651,26 @@ class ArtistDetails extends Component {
 
           <OrganizePreviewModalConnector
             isOpen={isOrganizeModalOpen}
-            artistId={id}
+            authorId={id}
             onModalClose={this.onOrganizeModalClose}
           />
 
           <RetagPreviewModalConnector
             isOpen={isRetagModalOpen}
-            artistId={id}
+            authorId={id}
             onModalClose={this.onRetagModalClose}
-          />
-
-          <TrackFileEditorModal
-            isOpen={isManageTracksOpen}
-            artistId={id}
-            onModalClose={this.onManageTracksModalClose}
-          />
-
-          <ArtistHistoryModal
-            isOpen={isArtistHistoryModalOpen}
-            artistId={id}
-            onModalClose={this.onArtistHistoryModalClose}
           />
 
           <EditArtistModalConnector
             isOpen={isEditArtistModalOpen}
-            artistId={id}
+            authorId={id}
             onModalClose={this.onEditArtistModalClose}
             onDeleteArtistPress={this.onDeleteArtistPress}
           />
 
           <DeleteArtistModal
             isOpen={isDeleteArtistModalOpen}
-            artistId={id}
+            authorId={id}
             onModalClose={this.onDeleteArtistModalClose}
           />
 
@@ -663,12 +682,6 @@ class ArtistDetails extends Component {
             showImportMode={false}
             onModalClose={this.onInteractiveImportModalClose}
           />
-
-          <ArtistInteractiveSearchModalConnector
-            isOpen={isInteractiveSearchModalOpen}
-            artistId={id}
-            onModalClose={this.onInteractiveSearchModalClose}
-          />
         </PageContentBodyConnector>
       </PageContent>
     );
@@ -677,7 +690,6 @@ class ArtistDetails extends Component {
 
 ArtistDetails.propTypes = {
   id: PropTypes.number.isRequired,
-  foreignArtistId: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
   ratings: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
@@ -685,7 +697,6 @@ ArtistDetails.propTypes = {
   qualityProfileId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   artistType: PropTypes.string,
-  albumTypes: PropTypes.arrayOf(PropTypes.string),
   status: PropTypes.string.isRequired,
   overview: PropTypes.string.isRequired,
   links: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -701,6 +712,8 @@ ArtistDetails.propTypes = {
   trackFilesError: PropTypes.object,
   hasAlbums: PropTypes.bool.isRequired,
   hasMonitoredAlbums: PropTypes.bool.isRequired,
+  hasSeries: PropTypes.bool.isRequired,
+  series: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasTrackFiles: PropTypes.bool.isRequired,
   previousArtist: PropTypes.object.isRequired,
   nextArtist: PropTypes.object.isRequired,

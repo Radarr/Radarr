@@ -17,8 +17,7 @@ function CutoffUnmetRow(props) {
     trackFileId,
     artist,
     releaseDate,
-    foreignAlbumId,
-    albumType,
+    titleSlug,
     title,
     disambiguation,
     isSelected,
@@ -49,33 +48,25 @@ function CutoffUnmetRow(props) {
             return null;
           }
 
-          if (name === 'artist.sortName') {
+          if (name === 'authors.sortName') {
             return (
               <TableRowCell key={name}>
                 <ArtistNameLink
-                  foreignArtistId={artist.foreignArtistId}
+                  titleSlug={artist.titleSlug}
                   artistName={artist.artistName}
                 />
               </TableRowCell>
             );
           }
 
-          if (name === 'albumTitle') {
+          if (name === 'books.title') {
             return (
               <TableRowCell key={name}>
                 <AlbumTitleLink
-                  foreignAlbumId={foreignAlbumId}
+                  titleSlug={titleSlug}
                   title={title}
                   disambiguation={disambiguation}
                 />
-              </TableRowCell>
-            );
-          }
-
-          if (name === 'albumType') {
-            return (
-              <TableRowCell key={name}>
-                {albumType}
               </TableRowCell>
             );
           }
@@ -96,7 +87,7 @@ function CutoffUnmetRow(props) {
                 className={styles.status}
               >
                 <EpisodeStatusConnector
-                  albumId={id}
+                  bookId={id}
                   trackFileId={trackFileId}
                   albumEntity={albumEntities.WANTED_CUTOFF_UNMET}
                 />
@@ -108,8 +99,8 @@ function CutoffUnmetRow(props) {
             return (
               <AlbumSearchCellConnector
                 key={name}
-                albumId={id}
-                artistId={artist.id}
+                bookId={id}
+                authorId={artist.id}
                 albumTitle={title}
                 albumEntity={albumEntities.WANTED_CUTOFF_UNMET}
                 showOpenArtistButton={true}
@@ -129,8 +120,7 @@ CutoffUnmetRow.propTypes = {
   trackFileId: PropTypes.number,
   artist: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,
-  foreignAlbumId: PropTypes.string.isRequired,
-  albumType: PropTypes.string.isRequired,
+  titleSlug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   disambiguation: PropTypes.string,
   isSelected: PropTypes.bool,

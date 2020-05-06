@@ -4,7 +4,6 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Files;
-using NzbDrone.Core.Extras.Lyrics;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
 using NzbDrone.Core.Music;
@@ -37,7 +36,7 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override int Order => 0;
 
-        public override IEnumerable<ExtraFile> ProcessFiles(Artist artist, List<string> filesOnDisk, List<string> importedFiles)
+        public override IEnumerable<ExtraFile> ProcessFiles(Author artist, List<string> filesOnDisk, List<string> importedFiles)
         {
             _logger.Debug("Looking for existing metadata in {0}", artist.Path);
 
@@ -46,12 +45,6 @@ namespace NzbDrone.Core.Extras.Metadata
 
             foreach (var possibleMetadataFile in filterResult.FilesOnDisk)
             {
-                // Don't process files that have known Subtitle file extensions (saves a bit of unecessary processing)
-                if (LyricFileExtensions.Extensions.Contains(Path.GetExtension(possibleMetadataFile)))
-                {
-                    continue;
-                }
-
                 foreach (var consumer in _consumers)
                 {
                     var metadata = consumer.FindMetadataFile(artist, possibleMetadataFile);
@@ -71,7 +64,7 @@ namespace NzbDrone.Core.Extras.Metadata
                             continue;
                         }
 
-                        metadata.AlbumId = localAlbum.Id;
+                        metadata.BookId = localAlbum.Id;
                     }
 
                     if (metadata.Type == MetadataType.TrackMetadata)
@@ -93,19 +86,11 @@ namespace NzbDrone.Core.Extras.Metadata
                             continue;
                         }
 
-                        if (localTrack.Tracks.Empty())
+                        if (localTrack.Album == null)
                         {
-                            _logger.Debug("Cannot find related tracks for: {0}", possibleMetadataFile);
+                            _logger.Debug("Cannot find related book for: {0}", possibleMetadataFile);
                             continue;
                         }
-
-                        if (localTrack.Tracks.DistinctBy(e => e.TrackFileId).Count() > 1)
-                        {
-                            _logger.Debug("Extra file: {0} does not match existing files.", possibleMetadataFile);
-                            continue;
-                        }
-
-                        metadata.TrackFileId = localTrack.Tracks.First().TrackFileId;
                     }
 
                     metadata.Extension = Path.GetExtension(possibleMetadataFile);

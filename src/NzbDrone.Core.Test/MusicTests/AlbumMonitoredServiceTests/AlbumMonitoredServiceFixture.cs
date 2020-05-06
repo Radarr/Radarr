@@ -13,18 +13,18 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
     [TestFixture]
     public class SetAlbumMontitoredFixture : CoreTest<AlbumMonitoredService>
     {
-        private Artist _artist;
-        private List<Album> _albums;
+        private Author _artist;
+        private List<Book> _albums;
 
         [SetUp]
         public void Setup()
         {
             const int albums = 4;
 
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                                      .Build();
 
-            _albums = Builder<Album>.CreateListOfSize(albums)
+            _albums = Builder<Book>.CreateListOfSize(albums)
                                         .All()
                                         .With(e => e.Monitored = true)
                                         .With(e => e.ReleaseDate = DateTime.UtcNow.AddDays(-7))
@@ -44,12 +44,8 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
                   .Returns(_albums);
 
             Mocker.GetMock<IAlbumService>()
-                .Setup(s => s.GetArtistAlbumsWithFiles(It.IsAny<Artist>()))
-                .Returns(new List<Album>());
-
-            Mocker.GetMock<ITrackService>()
-                .Setup(s => s.GetTracksByAlbum(It.IsAny<int>()))
-                .Returns(new List<Track>());
+                .Setup(s => s.GetArtistAlbumsWithFiles(It.IsAny<Author>()))
+                .Returns(new List<Book>());
         }
 
         [Test]
@@ -58,24 +54,24 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
             Subject.SetAlbumMonitoredStatus(_artist, null);
 
             Mocker.GetMock<IArtistService>()
-                  .Verify(v => v.UpdateArtist(It.IsAny<Artist>()), Times.Once());
+                  .Verify(v => v.UpdateArtist(It.IsAny<Author>()), Times.Once());
 
             Mocker.GetMock<IAlbumService>()
-                  .Verify(v => v.UpdateMany(It.IsAny<List<Album>>()), Times.Never());
+                  .Verify(v => v.UpdateMany(It.IsAny<List<Book>>()), Times.Never());
         }
 
         [Test]
         public void should_be_able_to_monitor_albums_when_passed_in_artist()
         {
-            var albumsToMonitor = new List<string> { _albums.First().ForeignAlbumId };
+            var albumsToMonitor = new List<string> { _albums.First().ForeignBookId };
 
             Subject.SetAlbumMonitoredStatus(_artist, new MonitoringOptions { Monitored = true, AlbumsToMonitor = albumsToMonitor });
 
             Mocker.GetMock<IArtistService>()
-                .Verify(v => v.UpdateArtist(It.IsAny<Artist>()), Times.Once());
+                .Verify(v => v.UpdateArtist(It.IsAny<Author>()), Times.Once());
 
-            VerifyMonitored(e => e.ForeignAlbumId == _albums.First().ForeignAlbumId);
-            VerifyNotMonitored(e => e.ForeignAlbumId != _albums.First().ForeignAlbumId);
+            VerifyMonitored(e => e.ForeignBookId == _albums.First().ForeignBookId);
+            VerifyNotMonitored(e => e.ForeignBookId != _albums.First().ForeignBookId);
         }
 
         [Test]
@@ -84,7 +80,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
             Subject.SetAlbumMonitoredStatus(_artist, new MonitoringOptions { Monitor = MonitorTypes.All });
 
             Mocker.GetMock<IAlbumService>()
-                  .Verify(v => v.UpdateMany(It.Is<List<Album>>(l => l.All(e => e.Monitored))));
+                  .Verify(v => v.UpdateMany(It.Is<List<Book>>(l => l.All(e => e.Monitored))));
         }
 
         [Test]
@@ -102,16 +98,16 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
             VerifyNotMonitored(e => e.ReleaseDate.HasValue && e.ReleaseDate.Value.Before(DateTime.UtcNow));
         }
 
-        private void VerifyMonitored(Func<Album, bool> predicate)
+        private void VerifyMonitored(Func<Book, bool> predicate)
         {
             Mocker.GetMock<IAlbumService>()
-                .Verify(v => v.UpdateMany(It.Is<List<Album>>(l => l.Where(predicate).All(e => e.Monitored))));
+                .Verify(v => v.UpdateMany(It.Is<List<Book>>(l => l.Where(predicate).All(e => e.Monitored))));
         }
 
-        private void VerifyNotMonitored(Func<Album, bool> predicate)
+        private void VerifyNotMonitored(Func<Book, bool> predicate)
         {
             Mocker.GetMock<IAlbumService>()
-                .Verify(v => v.UpdateMany(It.Is<List<Album>>(l => l.Where(predicate).All(e => !e.Monitored))));
+                .Verify(v => v.UpdateMany(It.Is<List<Book>>(l => l.Where(predicate).All(e => !e.Monitored))));
         }
     }
 }

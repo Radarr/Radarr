@@ -46,7 +46,7 @@ class EpisodeStatusConnector extends Component {
 }
 
 EpisodeStatusConnector.propTypes = {
-  albumId: PropTypes.number.isRequired,
+  bookId: PropTypes.number.isRequired,
   trackFileId: PropTypes.number.isRequired
 };
 

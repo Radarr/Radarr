@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
             var allAlbumsImportedInHistory = trackedDownload.RemoteAlbum.Albums.All(album =>
             {
-                var lastHistoryItem = historyItems.FirstOrDefault(h => h.AlbumId == album.Id);
+                var lastHistoryItem = historyItems.FirstOrDefault(h => h.BookId == album.Id);
 
                 if (lastHistoryItem == null)
                 {

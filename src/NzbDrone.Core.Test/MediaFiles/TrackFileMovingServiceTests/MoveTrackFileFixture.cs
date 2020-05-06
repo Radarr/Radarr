@@ -21,37 +21,37 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
     [TestFixture]
     public class MoveTrackFileFixture : CoreTest<TrackFileMovingService>
     {
-        private Artist _artist;
-        private TrackFile _trackFile;
+        private Author _artist;
+        private BookFile _trackFile;
         private LocalTrack _localtrack;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                                      .With(s => s.Path = @"C:\Test\Music\Artist".AsOsAgnostic())
                                      .Build();
 
-            _trackFile = Builder<TrackFile>.CreateNew()
+            _trackFile = Builder<BookFile>.CreateNew()
                                                .With(f => f.Path = null)
                                                .With(f => f.Path = Path.Combine(_artist.Path, @"Album\File.mp3"))
                                                .Build();
 
             _localtrack = Builder<LocalTrack>.CreateNew()
                                                  .With(l => l.Artist = _artist)
-                                                 .With(l => l.Tracks = Builder<Track>.CreateListOfSize(1).Build().ToList())
+                                                 .With(l => l.Album = Builder<Book>.CreateNew().Build())
                                                  .Build();
 
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.BuildTrackFileName(It.IsAny<List<Track>>(), It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<TrackFile>(), null, null))
+                  .Setup(s => s.BuildTrackFileName(It.IsAny<Author>(), It.IsAny<Book>(), It.IsAny<BookFile>(), null, null))
                   .Returns("File Name");
 
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.BuildTrackFilePath(It.IsAny<Artist>(), It.IsAny<Album>(), It.IsAny<string>(), It.IsAny<string>()))
+                  .Setup(s => s.BuildTrackFilePath(It.IsAny<Author>(), It.IsAny<Book>(), It.IsAny<string>(), It.IsAny<string>()))
                   .Returns(@"C:\Test\Music\Artist\Album\File Name.mp3".AsOsAgnostic());
 
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.BuildAlbumPath(It.IsAny<Artist>(), It.IsAny<Album>()))
+                  .Setup(s => s.BuildAlbumPath(It.IsAny<Author>(), It.IsAny<Book>()))
                   .Returns(@"C:\Test\Music\Artist\Album".AsOsAgnostic());
 
             var rootFolder = @"C:\Test\Music\".AsOsAgnostic();

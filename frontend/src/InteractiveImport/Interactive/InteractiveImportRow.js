@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import formatBytes from 'Utilities/Number/formatBytes';
-import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
-import { icons, kinds, tooltipPositions, sortDirections } from 'Helpers/Props';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
@@ -13,10 +12,8 @@ import Tooltip from 'Components/Tooltip/Tooltip';
 import TrackQuality from 'Album/TrackQuality';
 import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
 import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
-import SelectTrackModal from 'InteractiveImport/Track/SelectTrackModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import styles from './InteractiveImportRow.css';
 
 class InteractiveImportRow extends Component {
@@ -30,7 +27,6 @@ class InteractiveImportRow extends Component {
     this.state = {
       isSelectArtistModalOpen: false,
       isSelectAlbumModalOpen: false,
-      isSelectTrackModalOpen: false,
       isSelectQualityModalOpen: false
     };
   }
@@ -40,14 +36,12 @@ class InteractiveImportRow extends Component {
       id,
       artist,
       album,
-      tracks,
       quality
     } = this.props;
 
     if (
       artist &&
       album != null &&
-      tracks.length &&
       quality
     ) {
       this.props.onSelectedChange({ id, value: true });
@@ -59,7 +53,6 @@ class InteractiveImportRow extends Component {
       id,
       artist,
       album,
-      tracks,
       quality,
       isSelected,
       onValidRowChange
@@ -68,7 +61,6 @@ class InteractiveImportRow extends Component {
     if (
       prevProps.artist === artist &&
       prevProps.album === album &&
-      !hasDifferentItems(prevProps.tracks, tracks) &&
       prevProps.quality === quality &&
       prevProps.isSelected === isSelected
     ) {
@@ -78,7 +70,6 @@ class InteractiveImportRow extends Component {
     const isValid = !!(
       artist &&
       album &&
-      tracks.length &&
       quality
     );
 
@@ -114,10 +105,6 @@ class InteractiveImportRow extends Component {
     this.setState({ isSelectAlbumModalOpen: true });
   }
 
-  onSelectTrackPress = () => {
-    this.setState({ isSelectTrackModalOpen: true });
-  }
-
   onSelectQualityPress = () => {
     this.setState({ isSelectQualityModalOpen: true });
   }
@@ -129,11 +116,6 @@ class InteractiveImportRow extends Component {
 
   onSelectAlbumModalClose = (changed) => {
     this.setState({ isSelectAlbumModalOpen: false });
-    this.selectRowAfterChange(changed);
-  }
-
-  onSelectTrackModalClose = (changed) => {
-    this.setState({ isSelectTrackModalOpen: false });
     this.selectRowAfterChange(changed);
   }
 
@@ -152,22 +134,17 @@ class InteractiveImportRow extends Component {
       path,
       artist,
       album,
-      albumReleaseId,
-      tracks,
       quality,
       size,
       rejections,
-      audioTags,
       additionalFile,
       isSelected,
-      isSaving,
       onSelectedChange
     } = this.props;
 
     const {
       isSelectArtistModalOpen,
       isSelectAlbumModalOpen,
-      isSelectTrackModalOpen,
       isSelectQualityModalOpen
     } = this.state;
 
@@ -177,15 +154,8 @@ class InteractiveImportRow extends Component {
       albumTitle = album.disambiguation ? `${album.title} (${album.disambiguation})` : album.title;
     }
 
-    const sortedTracks = tracks.sort((a, b) => parseInt(a.absoluteTrackNumber) - parseInt(b.absoluteTrackNumber));
-
-    const trackNumbers = sortedTracks.map((track) => `${track.mediumNumber}x${track.trackNumber}`)
-      .join(', ');
-
     const showArtistPlaceholder = isSelected && !artist;
     const showAlbumNumberPlaceholder = isSelected && !!artist && !album;
-    const showTrackNumbersPlaceholder = !isSaving && isSelected && !!album && !tracks.length;
-    const showTrackNumbersLoading = isSaving && !tracks.length;
     const showQualityPlaceholder = isSelected && !quality;
 
     const pathCellContents = (
@@ -236,19 +206,6 @@ class InteractiveImportRow extends Component {
         >
           {
             showAlbumNumberPlaceholder ? <InteractiveImportRowCellPlaceholder /> : albumTitle
-          }
-        </TableRowCellButton>
-
-        <TableRowCellButton
-          isDisabled={!artist || !album}
-          title={artist && album ? 'Click to change track' : undefined}
-          onPress={this.onSelectTrackPress}
-        >
-          {
-            showTrackNumbersLoading && <LoadingIndicator size={20} className={styles.loading} />
-          }
-          {
-            showTrackNumbersPlaceholder ? <InteractiveImportRowCellPlaceholder /> : trackNumbers
           }
         </TableRowCellButton>
 
@@ -314,22 +271,8 @@ class InteractiveImportRow extends Component {
         <SelectAlbumModal
           isOpen={isSelectAlbumModalOpen}
           ids={[id]}
-          artistId={artist && artist.id}
+          authorId={artist && artist.id}
           onModalClose={this.onSelectAlbumModalClose}
-        />
-
-        <SelectTrackModal
-          isOpen={isSelectTrackModalOpen}
-          id={id}
-          artistId={artist && artist.id}
-          albumId={album && album.id}
-          albumReleaseId={albumReleaseId}
-          rejections={rejections}
-          audioTags={audioTags}
-          sortKey='mediumNumber'
-          sortDirection={sortDirections.ASCENDING}
-          filename={path}
-          onModalClose={this.onSelectTrackModalClose}
         />
 
         <SelectQualityModal
@@ -352,8 +295,6 @@ InteractiveImportRow.propTypes = {
   path: PropTypes.string.isRequired,
   artist: PropTypes.object,
   album: PropTypes.object,
-  albumReleaseId: PropTypes.number,
-  tracks: PropTypes.arrayOf(PropTypes.object).isRequired,
   quality: PropTypes.object,
   size: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -363,10 +304,6 @@ InteractiveImportRow.propTypes = {
   isSaving: PropTypes.bool.isRequired,
   onSelectedChange: PropTypes.func.isRequired,
   onValidRowChange: PropTypes.func.isRequired
-};
-
-InteractiveImportRow.defaultProps = {
-  tracks: []
 };
 
 export default InteractiveImportRow;

@@ -122,7 +122,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
             return new string(arr);
         }
 
-        public void AddString(string key, string value, string target)
+        private double StringScore(string value, string target)
         {
             // Adds a penaltly based on the distance between value and target
             var cleanValue = Clean(value);
@@ -130,16 +130,31 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
             if (cleanValue.IsNullOrWhiteSpace() && cleanTarget.IsNotNullOrWhiteSpace())
             {
-                Add(key, 1.0);
+                return 1.0;
             }
             else if (cleanValue.IsNullOrWhiteSpace() && cleanTarget.IsNullOrWhiteSpace())
             {
-                Add(key, 0.0);
+                return 0.0;
             }
             else
             {
-                Add(key, 1.0 - cleanValue.LevenshteinCoefficient(cleanTarget));
+                return 1.0 - cleanValue.LevenshteinCoefficient(cleanTarget);
             }
+        }
+
+        public void AddString(string key, string value, string target)
+        {
+            Add(key, StringScore(value, target));
+        }
+
+        public void AddString(string key, string value, List<string> options)
+        {
+            Add(key, options.Min(x => StringScore(value, x)));
+        }
+
+        public void AddString(string key, List<string> values, string target)
+        {
+            Add(key, values.Min(v => StringScore(v, target)));
         }
 
         public void AddBool(string key, bool expr)

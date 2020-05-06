@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Queue
             }
         }
 
-        private Queue MapQueueItem(TrackedDownload trackedDownload, Album album)
+        private Queue MapQueueItem(TrackedDownload trackedDownload, Book album)
         {
             bool downloadForced = false;
             var history = _historyService.Find(trackedDownload.DownloadItem.DownloadId, HistoryEventType.Grabbed).FirstOrDefault();

@@ -8,9 +8,9 @@ namespace NzbDrone.Core.Blacklisting
 {
     public interface IBlacklistRepository : IBasicRepository<Blacklist>
     {
-        List<Blacklist> BlacklistedByTitle(int artistId, string sourceTitle);
-        List<Blacklist> BlacklistedByTorrentInfoHash(int artistId, string torrentInfoHash);
-        List<Blacklist> BlacklistedByArtist(int artistId);
+        List<Blacklist> BlacklistedByTitle(int authorId, string sourceTitle);
+        List<Blacklist> BlacklistedByTorrentInfoHash(int authorId, string torrentInfoHash);
+        List<Blacklist> BlacklistedByArtist(int authorId);
     }
 
     public class BlacklistRepository : BasicRepository<Blacklist>, IBlacklistRepository
@@ -20,23 +20,23 @@ namespace NzbDrone.Core.Blacklisting
         {
         }
 
-        public List<Blacklist> BlacklistedByTitle(int artistId, string sourceTitle)
+        public List<Blacklist> BlacklistedByTitle(int authorId, string sourceTitle)
         {
-            return Query(e => e.ArtistId == artistId && e.SourceTitle.Contains(sourceTitle));
+            return Query(e => e.AuthorId == authorId && e.SourceTitle.Contains(sourceTitle));
         }
 
-        public List<Blacklist> BlacklistedByTorrentInfoHash(int artistId, string torrentInfoHash)
+        public List<Blacklist> BlacklistedByTorrentInfoHash(int authorId, string torrentInfoHash)
         {
-            return Query(e => e.ArtistId == artistId && e.TorrentInfoHash.Contains(torrentInfoHash));
+            return Query(e => e.AuthorId == authorId && e.TorrentInfoHash.Contains(torrentInfoHash));
         }
 
-        public List<Blacklist> BlacklistedByArtist(int artistId)
+        public List<Blacklist> BlacklistedByArtist(int authorId)
         {
-            return Query(b => b.ArtistId == artistId);
+            return Query(b => b.AuthorId == authorId);
         }
 
-        protected override SqlBuilder PagedBuilder() => new SqlBuilder().Join<Blacklist, Artist>((b, m) => b.ArtistId == m.Id);
-        protected override IEnumerable<Blacklist> PagedQuery(SqlBuilder builder) => _database.QueryJoined<Blacklist, Artist>(builder, (bl, artist) =>
+        protected override SqlBuilder PagedBuilder() => new SqlBuilder().Join<Blacklist, Author>((b, m) => b.AuthorId == m.Id);
+        protected override IEnumerable<Blacklist> PagedQuery(SqlBuilder builder) => _database.QueryJoined<Blacklist, Author>(builder, (bl, artist) =>
                     {
                         bl.Artist = artist;
                         return bl;

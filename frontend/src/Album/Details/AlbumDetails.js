@@ -2,6 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TextTruncate from 'react-text-truncate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import selectAll from 'Utilities/Table/selectAll';
@@ -16,8 +17,7 @@ import MonitorToggleButton from 'Components/MonitorToggleButton';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import AlbumCover from 'Album/AlbumCover';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
-import RetagPreviewModalConnector from 'Retag/RetagPreviewModalConnector';
-import EditAlbumModalConnector from 'Album/Edit/EditAlbumModalConnector';
+// import RetagPreviewModalConnector from 'Retag/RetagPreviewModalConnector';
 import DeleteAlbumModal from 'Album/Delete/DeleteAlbumModal';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
@@ -26,10 +26,10 @@ import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
-import AlbumDetailsMediumConnector from './AlbumDetailsMediumConnector';
-import ArtistHistoryModal from 'Artist/History/ArtistHistoryModal';
-import AlbumInteractiveSearchModalConnector from 'Album/Search/AlbumInteractiveSearchModalConnector';
-import TrackFileEditorModal from 'TrackFile/Editor/TrackFileEditorModal';
+import ArtistHistoryTable from 'Artist/History/ArtistHistoryTable';
+import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
+import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
+import TrackFileEditorTable from 'TrackFile/Editor/TrackFileEditorTable';
 import AlbumDetailsLinks from './AlbumDetailsLinks';
 import styles from './AlbumDetails.css';
 
@@ -85,14 +85,11 @@ class AlbumDetails extends Component {
     this.state = {
       isOrganizeModalOpen: false,
       isRetagModalOpen: false,
-      isArtistHistoryModalOpen: false,
-      isInteractiveSearchModalOpen: false,
-      isManageTracksOpen: false,
-      isEditAlbumModalOpen: false,
       isDeleteAlbumModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
-      expandedState: {}
+      expandedState: {},
+      selectedTabIndex: 0
     };
   }
 
@@ -115,47 +112,14 @@ class AlbumDetails extends Component {
     this.setState({ isRetagModalOpen: false });
   }
 
-  onEditAlbumPress = () => {
-    this.setState({ isEditAlbumModalOpen: true });
-  }
-
-  onEditAlbumModalClose = () => {
-    this.setState({ isEditAlbumModalOpen: false });
-  }
-
   onDeleteAlbumPress = () => {
     this.setState({
-      isEditAlbumModalOpen: false,
       isDeleteAlbumModalOpen: true
     });
   }
 
   onDeleteAlbumModalClose = () => {
     this.setState({ isDeleteAlbumModalOpen: false });
-  }
-
-  onManageTracksPress = () => {
-    this.setState({ isManageTracksOpen: true });
-  }
-
-  onManageTracksModalClose = () => {
-    this.setState({ isManageTracksOpen: false });
-  }
-
-  onInteractiveSearchPress = () => {
-    this.setState({ isInteractiveSearchModalOpen: true });
-  }
-
-  onInteractiveSearchModalClose = () => {
-    this.setState({ isInteractiveSearchModalOpen: false });
-  }
-
-  onArtistHistoryPress = () => {
-    this.setState({ isArtistHistoryModalOpen: true });
-  }
-
-  onArtistHistoryModalClose = () => {
-    this.setState({ isArtistHistoryModalOpen: false });
   }
 
   onExpandAllPress = () => {
@@ -167,7 +131,7 @@ class AlbumDetails extends Component {
     this.setState(getExpandedState(selectAll(expandedState, !allExpanded)));
   }
 
-  onExpandPress = (albumId, isExpanded) => {
+  onExpandPress = (bookId, isExpanded) => {
     this.setState((state) => {
       const convertedState = {
         allSelected: state.allExpanded,
@@ -175,7 +139,7 @@ class AlbumDetails extends Component {
         selectedState: state.expandedState
       };
 
-      const newState = toggleSelected(convertedState, [], albumId, isExpanded, false);
+      const newState = toggleSelected(convertedState, [], bookId, isExpanded, false);
 
       return getExpandedState(newState);
     });
@@ -187,23 +151,20 @@ class AlbumDetails extends Component {
   render() {
     const {
       id,
-      foreignAlbumId,
+      titleSlug,
       title,
       disambiguation,
       duration,
       overview,
-      albumType,
       statistics = {},
       monitored,
       releaseDate,
       ratings,
       images,
       links,
-      media,
       isSaving,
       isFetching,
       isPopulated,
-      albumsError,
       trackFilesError,
       hasTrackFiles,
       shortDateFormat,
@@ -217,15 +178,11 @@ class AlbumDetails extends Component {
 
     const {
       isOrganizeModalOpen,
-      isRetagModalOpen,
-      isArtistHistoryModalOpen,
-      isInteractiveSearchModalOpen,
-      isEditAlbumModalOpen,
+      // isRetagModalOpen,
       isDeleteAlbumModalOpen,
-      isManageTracksOpen,
       allExpanded,
       allCollapsed,
-      expandedState
+      selectedTabIndex
     } = this.state;
 
     let expandIcon = icons.EXPAND_INDETERMINATE;
@@ -247,12 +204,6 @@ class AlbumDetails extends Component {
               onPress={onSearchPress}
             />
 
-            <PageToolbarButton
-              label="Interactive Search"
-              iconName={icons.INTERACTIVE}
-              onPress={this.onInteractiveSearchPress}
-            />
-
             <PageToolbarSeparator />
 
             <PageToolbarButton
@@ -269,26 +220,7 @@ class AlbumDetails extends Component {
               onPress={this.onRetagPress}
             />
 
-            <PageToolbarButton
-              label="Manage Tracks"
-              iconName={icons.TRACK_FILE}
-              isDisabled={!hasTrackFiles}
-              onPress={this.onManageTracksPress}
-            />
-
-            <PageToolbarButton
-              label="History"
-              iconName={icons.HISTORY}
-              onPress={this.onArtistHistoryPress}
-            />
-
             <PageToolbarSeparator />
-
-            <PageToolbarButton
-              label="Edit"
-              iconName={icons.EDIT}
-              onPress={this.onEditAlbumPress}
-            />
 
             <PageToolbarButton
               label="Delete"
@@ -350,7 +282,7 @@ class AlbumDetails extends Component {
                       name={icons.ARROW_LEFT}
                       size={30}
                       title={`Go to ${previousAlbum.title}`}
-                      to={`/album/${previousAlbum.foreignAlbumId}`}
+                      to={`/book/${previousAlbum.titleSlug}`}
                     />
 
                     <IconButton
@@ -358,7 +290,7 @@ class AlbumDetails extends Component {
                       name={icons.ARROW_UP}
                       size={30}
                       title={`Go to ${artist.artistName}`}
-                      to={`/artist/${artist.foreignArtistId}`}
+                      to={`/author/${artist.titleSlug}`}
                     />
 
                     <IconButton
@@ -366,7 +298,7 @@ class AlbumDetails extends Component {
                       name={icons.ARROW_RIGHT}
                       size={30}
                       title={`Go to ${nextAlbum.title}`}
-                      to={`/album/${nextAlbum.foreignAlbumId}`}
+                      to={`/book/${nextAlbum.titleSlug}`}
                     />
                   </div>
                 </div>
@@ -435,24 +367,6 @@ class AlbumDetails extends Component {
                     </span>
                   </Label>
 
-                  {
-                    !!albumType &&
-                      <Label
-                        className={styles.detailsLabel}
-                        title="Type"
-                        size={sizes.LARGE}
-                      >
-                        <Icon
-                          name={icons.INFO}
-                          size={17}
-                        />
-
-                        <span className={styles.qualityProfileName}>
-                          {albumType}
-                        </span>
-                      </Label>
-                  }
-
                   <Tooltip
                     anchor={
                       <Label
@@ -471,7 +385,7 @@ class AlbumDetails extends Component {
                     }
                     tooltip={
                       <AlbumDetailsLinks
-                        foreignAlbumId={foreignAlbumId}
+                        titleSlug={titleSlug}
                         links={links}
                       />
                     }
@@ -483,7 +397,7 @@ class AlbumDetails extends Component {
                 <div className={styles.overview}>
                   <TextTruncate
                     line={Math.floor(125 / (defaultFontSize * lineHeight))}
-                    text={overview}
+                    text={overview.replace(/<[^>]*>?/gm, '')}
                   />
                 </div>
               </div>
@@ -492,90 +406,92 @@ class AlbumDetails extends Component {
 
           <div className={styles.contentContainer}>
             {
-              !isPopulated && !albumsError && !trackFilesError &&
+              !isPopulated && !trackFilesError &&
                 <LoadingIndicator />
             }
 
             {
-              !isFetching && albumsError &&
-                <div>Loading albums failed</div>
-            }
-
-            {
               !isFetching && trackFilesError &&
-                <div>Loading track files failed</div>
+                <div>Loading book files failed</div>
             }
 
-            {
-              isPopulated && !!media.length &&
-                <div>
+            <Tabs selectedIndex={this.state.tabIndex} onSelect={(tabIndex) => this.setState({ selectedTabIndex: tabIndex })}>
+              <TabList
+                className={styles.tabList}
+              >
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  History
+                </Tab>
 
-                  {
-                    media.slice(0).map((medium) => {
-                      return (
-                        <AlbumDetailsMediumConnector
-                          key={medium.mediumNumber}
-                          albumId={id}
-                          albumMonitored={monitored}
-                          {...medium}
-                          isExpanded={expandedState[medium.mediumNumber]}
-                          onExpandPress={this.onExpandPress}
-                        />
-                      );
-                    })
-                  }
-                </div>
-            }
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  Search
+                </Tab>
 
+                <Tab
+                  className={styles.tab}
+                  selectedClassName={styles.selectedTab}
+                >
+                  Files
+                </Tab>
+
+                {
+                  selectedTabIndex === 1 &&
+                    <div className={styles.filterIcon}>
+                      <InteractiveSearchFilterMenuConnector
+                        type="album"
+                      />
+                    </div>
+                }
+
+              </TabList>
+
+              <TabPanel>
+                <ArtistHistoryTable
+                  authorId={artist.id}
+                  bookId={id}
+                />
+              </TabPanel>
+
+              <TabPanel>
+                <InteractiveSearchTable
+                  bookId={id}
+                  type="album"
+                />
+              </TabPanel>
+
+              <TabPanel>
+                <TrackFileEditorTable
+                  authorId={artist.id}
+                  bookId={id}
+                />
+              </TabPanel>
+            </Tabs>
           </div>
 
           <OrganizePreviewModalConnector
             isOpen={isOrganizeModalOpen}
-            artistId={artist.id}
-            albumId={id}
+            authorId={artist.id}
+            bookId={id}
             onModalClose={this.onOrganizeModalClose}
           />
 
-          <RetagPreviewModalConnector
-            isOpen={isRetagModalOpen}
-            artistId={artist.id}
-            albumId={id}
-            onModalClose={this.onRetagModalClose}
-          />
-
-          <TrackFileEditorModal
-            isOpen={isManageTracksOpen}
-            artistId={artist.id}
-            albumId={id}
-            onModalClose={this.onManageTracksModalClose}
-          />
-
-          <AlbumInteractiveSearchModalConnector
-            isOpen={isInteractiveSearchModalOpen}
-            albumId={id}
-            albumTitle={title}
-            onModalClose={this.onInteractiveSearchModalClose}
-          />
-
-          <ArtistHistoryModal
-            isOpen={isArtistHistoryModalOpen}
-            artistId={artist.id}
-            albumId={id}
-            onModalClose={this.onArtistHistoryModalClose}
-          />
-
-          <EditAlbumModalConnector
-            isOpen={isEditAlbumModalOpen}
-            albumId={id}
-            artistId={artist.id}
-            onModalClose={this.onEditAlbumModalClose}
-            onDeleteArtistPress={this.onDeleteAlbumPress}
-          />
+          {/* <RetagPreviewModalConnector */}
+          {/*   isOpen={isRetagModalOpen} */}
+          {/*   authorId={artist.id} */}
+          {/*   bookId={id} */}
+          {/*   onModalClose={this.onRetagModalClose} */}
+          {/* /> */}
 
           <DeleteAlbumModal
             isOpen={isDeleteAlbumModalOpen}
-            albumId={id}
-            foreignArtistId={artist.foreignArtistId}
+            bookId={id}
+            titleSlug={artist.titleSlug}
             onModalClose={this.onDeleteAlbumModalClose}
           />
 
@@ -587,26 +503,22 @@ class AlbumDetails extends Component {
 
 AlbumDetails.propTypes = {
   id: PropTypes.number.isRequired,
-  foreignAlbumId: PropTypes.string.isRequired,
+  titleSlug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   disambiguation: PropTypes.string,
   duration: PropTypes.number,
   overview: PropTypes.string,
-  albumType: PropTypes.string.isRequired,
   statistics: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,
   ratings: PropTypes.object.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   links: PropTypes.arrayOf(PropTypes.object).isRequired,
-  media: PropTypes.arrayOf(PropTypes.object).isRequired,
   monitored: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   isSaving: PropTypes.bool.isRequired,
   isSearching: PropTypes.bool,
   isFetching: PropTypes.bool,
   isPopulated: PropTypes.bool,
-  albumsError: PropTypes.object,
-  tracksError: PropTypes.object,
   trackFilesError: PropTypes.object,
   hasTrackFiles: PropTypes.bool.isRequired,
   artist: PropTypes.object,

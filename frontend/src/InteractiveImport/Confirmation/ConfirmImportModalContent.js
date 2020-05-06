@@ -93,7 +93,7 @@ class ConfirmImportModalContent extends Component {
                 </Alert>
 
                 { _.chain(items)
-                  .groupBy('albumId')
+                  .groupBy('bookId')
                   .mapValues((value, key) => formatAlbumFiles(value, _.find(albums, (a) => a.id === parseInt(key))))
                   .values()
                   .value() }

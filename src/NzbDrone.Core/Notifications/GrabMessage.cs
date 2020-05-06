@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Notifications
     public class GrabMessage
     {
         public string Message { get; set; }
-        public Artist Artist { get; set; }
+        public Author Artist { get; set; }
         public RemoteAlbum Album { get; set; }
         public QualityModel Quality { get; set; }
         public string DownloadClient { get; set; }

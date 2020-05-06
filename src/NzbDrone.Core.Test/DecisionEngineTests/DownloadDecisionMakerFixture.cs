@@ -59,8 +59,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _reports = new List<ReleaseInfo> { new ReleaseInfo { Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT" } };
             _remoteAlbum = new RemoteAlbum
             {
-                Artist = new Artist(),
-                Albums = new List<Album> { new Album() }
+                Artist = new Author(),
+                Albums = new List<Book> { new Book() }
             };
 
             Mocker.GetMock<IParsingService>()
@@ -231,12 +231,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_only_include_reports_for_requested_albums()
         {
-            var artist = Builder<Artist>.CreateNew().Build();
+            var artist = Builder<Author>.CreateNew().Build();
 
-            var albums = Builder<Album>.CreateListOfSize(2)
+            var albums = Builder<Book>.CreateListOfSize(2)
                 .All()
-                .With(v => v.ArtistId, artist.Id)
-                .With(v => v.Artist, new LazyLoaded<Artist>(artist))
+                .With(v => v.AuthorId, artist.Id)
+                .With(v => v.Author, new LazyLoaded<Author>(artist))
                 .BuildList();
 
             var criteria = new ArtistSearchCriteria { Albums = albums.Take(1).ToList() };
@@ -289,7 +289,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            _remoteAlbum.Albums = new List<Album>();
+            _remoteAlbum.Albums = new List<Book>();
 
             var result = Subject.GetRssDecision(_reports);
 

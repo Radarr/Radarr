@@ -10,7 +10,6 @@ using NzbDrone.Core.CustomFilters;
 using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
-using NzbDrone.Core.Extras.Lyrics;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
@@ -95,64 +94,53 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<History.History>("History").RegisterModel();
 
-            Mapper.Entity<Artist>("Artists")
+            Mapper.Entity<Author>("Authors")
                 .Ignore(s => s.RootFolderPath)
                 .Ignore(s => s.Name)
-                .Ignore(s => s.ForeignArtistId)
-                .HasOne(a => a.Metadata, a => a.ArtistMetadataId)
+                .Ignore(s => s.ForeignAuthorId)
+                .HasOne(a => a.Metadata, a => a.AuthorMetadataId)
                 .HasOne(a => a.QualityProfile, a => a.QualityProfileId)
                 .HasOne(s => s.MetadataProfile, s => s.MetadataProfileId)
-                .LazyLoad(a => a.Albums, (db, a) => db.Query<Album>(new SqlBuilder().Where<Album>(rg => rg.ArtistMetadataId == a.Id)).ToList(), a => a.Id > 0);
+                .LazyLoad(a => a.Books, (db, a) => db.Query<Book>(new SqlBuilder().Where<Book>(rg => rg.AuthorMetadataId == a.Id)).ToList(), a => a.Id > 0);
 
-            Mapper.Entity<ArtistMetadata>("ArtistMetadata").RegisterModel();
+            Mapper.Entity<Series>("Series").RegisterModel()
+                .LazyLoad(s => s.LinkItems,
+                          (db, series) => db.Query<SeriesBookLink>(new SqlBuilder().Where<SeriesBookLink>(s => s.SeriesId == series.Id)).ToList(),
+                          s => s.Id > 0)
+                .LazyLoad(s => s.Books,
+                          (db, series) => db.Query<Book>(new SqlBuilder()
+                                                         .Join<Book, SeriesBookLink>((l, r) => l.Id == r.BookId)
+                                                         .Join<SeriesBookLink, Series>((l, r) => l.SeriesId == r.Id)
+                                                         .Where<Series>(s => s.Id == series.Id)).ToList(),
+                          s => s.Id > 0);
 
-            Mapper.Entity<Album>("Albums").RegisterModel()
-                .Ignore(x => x.ArtistId)
-                .HasOne(r => r.ArtistMetadata, r => r.ArtistMetadataId)
-                .LazyLoad(a => a.AlbumReleases, (db, album) => db.Query<AlbumRelease>(new SqlBuilder().Where<AlbumRelease>(r => r.AlbumId == album.Id)).ToList(), a => a.Id > 0)
-                .LazyLoad(a => a.Artist,
+            Mapper.Entity<SeriesBookLink>("SeriesBookLink").RegisterModel();
+
+            Mapper.Entity<AuthorMetadata>("AuthorMetadata").RegisterModel();
+
+            Mapper.Entity<Book>("Books").RegisterModel()
+                .Ignore(x => x.AuthorId)
+                .HasOne(r => r.AuthorMetadata, r => r.AuthorMetadataId)
+                .LazyLoad(x => x.BookFiles,
+                          (db, book) => db.Query<BookFile>(new SqlBuilder()
+                                                           .Join<BookFile, Book>((l, r) => l.BookId == r.Id)
+                                                           .Where<Book>(b => b.Id == book.Id)).ToList(),
+                          b => b.Id > 0)
+                .LazyLoad(a => a.Author,
                           (db, album) => ArtistRepository.Query(db,
                                                                 new SqlBuilder()
-                                                                .Join<Artist, ArtistMetadata>((a, m) => a.ArtistMetadataId == m.Id)
-                                                                .Where<Artist>(a => a.ArtistMetadataId == album.ArtistMetadataId)).SingleOrDefault(),
-                          a => a.ArtistMetadataId > 0);
+                                                                .Join<Author, AuthorMetadata>((a, m) => a.AuthorMetadataId == m.Id)
+                                                                .Where<Author>(a => a.AuthorMetadataId == album.AuthorMetadataId)).SingleOrDefault(),
+                          a => a.AuthorMetadataId > 0);
 
-            Mapper.Entity<AlbumRelease>("AlbumReleases").RegisterModel()
-                .HasOne(r => r.Album, r => r.AlbumId)
-                .LazyLoad(x => x.Tracks, (db, release) => db.Query<Track>(new SqlBuilder().Where<Track>(t => t.AlbumReleaseId == release.Id)).ToList(), r => r.Id > 0);
-
-            Mapper.Entity<Track>("Tracks").RegisterModel()
-                .Ignore(t => t.HasFile)
-                .Ignore(t => t.AlbumId)
-                .HasOne(track => track.AlbumRelease, track => track.AlbumReleaseId)
-                .HasOne(track => track.ArtistMetadata, track => track.ArtistMetadataId)
-                .LazyLoad(t => t.TrackFile,
-                          (db, track) => MediaFileRepository.Query(db,
-                                                                   new SqlBuilder()
-                                                                   .Join<TrackFile, Track>((l, r) => l.Id == r.TrackFileId)
-                                                                   .Join<TrackFile, Album>((l, r) => l.AlbumId == r.Id)
-                                                                   .Join<Album, Artist>((l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
-                                                                   .Join<Artist, ArtistMetadata>((l, r) => l.ArtistMetadataId == r.Id)
-                                                                   .Where<TrackFile>(t => t.Id == track.TrackFileId)).SingleOrDefault(),
-                          t => t.TrackFileId > 0)
-                .LazyLoad(x => x.Artist,
-                          (db, t) => ArtistRepository.Query(db,
-                                                            new SqlBuilder()
-                                                            .Join<Artist, ArtistMetadata>((a, m) => a.ArtistMetadataId == m.Id)
-                                                            .Join<Artist, Album>((l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
-                                                            .Join<Album, AlbumRelease>((l, r) => l.Id == r.AlbumId)
-                                                            .Where<AlbumRelease>(r => r.Id == t.AlbumReleaseId)).SingleOrDefault(),
-                          t => t.Id > 0);
-
-            Mapper.Entity<TrackFile>("TrackFiles").RegisterModel()
-                .HasOne(f => f.Album, f => f.AlbumId)
-                .LazyLoad(x => x.Tracks, (db, file) => db.Query<Track>(new SqlBuilder().Where<Track>(t => t.TrackFileId == file.Id)).ToList(), x => x.Id > 0)
+            Mapper.Entity<BookFile>("BookFiles").RegisterModel()
+                .HasOne(f => f.Album, f => f.BookId)
                 .LazyLoad(x => x.Artist,
                           (db, f) => ArtistRepository.Query(db,
                                                             new SqlBuilder()
-                                                            .Join<Artist, ArtistMetadata>((a, m) => a.ArtistMetadataId == m.Id)
-                                                            .Join<Artist, Album>((l, r) => l.ArtistMetadataId == r.ArtistMetadataId)
-                                                            .Where<Album>(a => a.Id == f.AlbumId)).SingleOrDefault(),
+                                                            .Join<Author, AuthorMetadata>((a, m) => a.AuthorMetadataId == m.Id)
+                                                            .Join<Author, Book>((l, r) => l.AuthorMetadataId == r.AuthorMetadataId)
+                                                            .Where<Book>(a => a.Id == f.BookId)).SingleOrDefault(),
                           t => t.Id > 0);
 
             Mapper.Entity<QualityDefinition>("QualityDefinitions").RegisterModel()
@@ -167,7 +155,6 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<Blacklist>("Blacklist").RegisterModel();
             Mapper.Entity<MetadataFile>("MetadataFiles").RegisterModel();
-            Mapper.Entity<LyricFile>("LyricFiles").RegisterModel();
             Mapper.Entity<OtherExtraFile>("ExtraFiles").RegisterModel();
 
             Mapper.Entity<PendingRelease>("PendingReleases").RegisterModel()
@@ -206,9 +193,6 @@ namespace NzbDrone.Core.Datastore
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<KeyValuePair<string, int>>>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<KeyValuePair<string, int>>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<string>>());
-            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<ProfilePrimaryAlbumTypeItem>>(new PrimaryAlbumTypeIntConverter()));
-            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<ProfileSecondaryAlbumTypeItem>>(new SecondaryAlbumTypeIntConverter()));
-            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<ProfileReleaseStatusItem>>(new ReleaseStatusIntConverter()));
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ParsedAlbumInfo>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ParsedTrackInfo>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ReleaseInfo>());

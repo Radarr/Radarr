@@ -83,10 +83,10 @@ class CutoffUnmet extends Component {
   }
 
   onToggleSelectedPress = () => {
-    const albumIds = this.getSelectedIds();
+    const bookIds = this.getSelectedIds();
 
     this.props.batchToggleCutoffUnmetAlbums({
-      albumIds,
+      bookIds,
       monitored: !getMonitoredValue(this.props)
     });
   }

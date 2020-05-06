@@ -90,53 +90,28 @@ namespace NzbDrone.Core.Profiles.Qualities
             _logger.Info("Setting up default quality profiles");
 
             AddDefaultProfile("Any",
-                Quality.Unknown,
-                Quality.Unknown,
-                Quality.MP3_008,
-                Quality.MP3_016,
-                Quality.MP3_024,
-                Quality.MP3_032,
-                Quality.MP3_040,
-                Quality.MP3_048,
-                Quality.MP3_056,
-                Quality.MP3_064,
-                Quality.MP3_080,
-                Quality.MP3_096,
-                Quality.MP3_112,
-                Quality.MP3_128,
-                Quality.MP3_160,
-                Quality.MP3_192,
-                Quality.MP3_224,
-                Quality.MP3_256,
-                Quality.MP3_320,
-                Quality.MP3_VBR,
-                Quality.MP3_VBR_V2,
-                Quality.AAC_192,
-                Quality.AAC_256,
-                Quality.AAC_320,
-                Quality.AAC_VBR,
-                Quality.VORBIS_Q5,
-                Quality.VORBIS_Q6,
-                Quality.VORBIS_Q7,
-                Quality.VORBIS_Q8,
-                Quality.VORBIS_Q9,
-                Quality.VORBIS_Q10,
-                Quality.WMA,
-                Quality.ALAC,
-                Quality.FLAC,
-                Quality.FLAC_24);
+                              Quality.Unknown,
+                              Quality.Unknown,
+                              Quality.PDF,
+                              Quality.MOBI,
+                              Quality.EPUB,
+                              Quality.AZW3,
+                              Quality.MP3_320,
+                              Quality.FLAC);
 
-            AddDefaultProfile("Lossless",
-                Quality.FLAC,
-                Quality.FLAC,
-                Quality.ALAC,
-                Quality.FLAC_24);
+            AddDefaultProfile("Lossless Audio",
+                              Quality.FLAC,
+                              Quality.FLAC);
 
-            AddDefaultProfile("Standard",
-                Quality.MP3_192,
-                Quality.MP3_192,
-                Quality.MP3_256,
-                Quality.MP3_320);
+            AddDefaultProfile("Standard Audio",
+                              Quality.MP3_320,
+                              Quality.MP3_320);
+
+            AddDefaultProfile("Text",
+                              Quality.MOBI,
+                              Quality.MOBI,
+                              Quality.EPUB,
+                              Quality.AZW3);
         }
 
         public QualityProfile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed)

@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         {
             Host = "localhost";
             Port = 8080;
-            MusicCategory = "music";
+            MusicCategory = "Readarr";
             RecentTvPriority = (int)SabnzbdPriority.Default;
             OlderTvPriority = (int)SabnzbdPriority.Default;
         }

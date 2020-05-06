@@ -20,17 +20,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            var artist = Builder<Artist>.CreateNew().With(s => s.Id = 1234).Build();
+            var artist = Builder<Author>.CreateNew().With(s => s.Id = 1234).Build();
             _remoteAlbum = new RemoteAlbum
             {
                 ParsedAlbumInfo = new ParsedAlbumInfo
                 {
                     Discography = true
                 },
-                Albums = Builder<Album>.CreateListOfSize(3)
+                Albums = Builder<Book>.CreateListOfSize(3)
                                            .All()
                                            .With(e => e.ReleaseDate = DateTime.UtcNow.AddDays(-8))
-                                           .With(s => s.ArtistId = artist.Id)
+                                           .With(s => s.AuthorId = artist.Id)
                                            .BuildList(),
                 Artist = artist,
                 Release = new ReleaseInfo
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             };
 
             Mocker.GetMock<IAlbumService>().Setup(s => s.AlbumsBetweenDates(It.IsAny<DateTime>(), It.IsAny<DateTime>(), false))
-                                             .Returns(new List<Album>());
+                                             .Returns(new List<Book>());
         }
 
         [Test]

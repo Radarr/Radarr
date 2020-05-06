@@ -60,7 +60,7 @@ class ArtistIndexFooter extends PureComponent {
                       enableColorImpairedMode && 'colorImpaired'
                     )}
                   />
-                  <div>Continuing (All tracks downloaded)</div>
+                  <div>Continuing (All books downloaded)</div>
                 </div>
 
                 <div className={styles.legendItem}>
@@ -70,7 +70,7 @@ class ArtistIndexFooter extends PureComponent {
                       enableColorImpairedMode && 'colorImpaired'
                     )}
                   />
-                  <div>Ended (All tracks downloaded)</div>
+                  <div>Ended (All books downloaded)</div>
                 </div>
 
                 <div className={styles.legendItem}>
@@ -80,7 +80,7 @@ class ArtistIndexFooter extends PureComponent {
                       enableColorImpairedMode && 'colorImpaired'
                     )}
                   />
-                  <div>Missing Tracks (Artist monitored)</div>
+                  <div>Missing Books (Author monitored)</div>
                 </div>
 
                 <div className={styles.legendItem}>
@@ -90,14 +90,14 @@ class ArtistIndexFooter extends PureComponent {
                       enableColorImpairedMode && 'colorImpaired'
                     )}
                   />
-                  <div>Missing Tracks (Artist not monitored)</div>
+                  <div>Missing Books (Author not monitored)</div>
                 </div>
               </div>
 
               <div className={styles.statistics}>
                 <DescriptionList>
                   <DescriptionListItem
-                    title="Artist"
+                    title="Authors"
                     data={count}
                   />
 
@@ -126,7 +126,7 @@ class ArtistIndexFooter extends PureComponent {
 
                 <DescriptionList>
                   <DescriptionListItem
-                    title="Tracks"
+                    title="Books"
                     data={tracks}
                   />
 

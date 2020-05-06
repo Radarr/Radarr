@@ -17,12 +17,11 @@ namespace NzbDrone.Core.Organizer
 {
     public interface IBuildFileNames
     {
-        string BuildTrackFileName(List<Track> tracks, Artist artist, Album album, TrackFile trackFile, NamingConfig namingConfig = null, List<string> preferredWords = null);
-        string BuildTrackFilePath(Artist artist, Album album, string fileName, string extension);
-        string BuildAlbumPath(Artist artist, Album album);
+        string BuildTrackFileName(Author artist, Book album, BookFile trackFile, NamingConfig namingConfig = null, List<string> preferredWords = null);
+        string BuildTrackFilePath(Author artist, Book album, string fileName, string extension);
+        string BuildAlbumPath(Author artist, Book album);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
-        string GetArtistFolder(Artist artist, NamingConfig namingConfig = null);
-        string GetAlbumFolder(Artist artist, Album album, NamingConfig namingConfig = null);
+        string GetArtistFolder(Author artist, NamingConfig namingConfig = null);
     }
 
     public class FileNameBuilder : IBuildFileNames
@@ -84,7 +83,7 @@ namespace NzbDrone.Core.Organizer
             _logger = logger;
         }
 
-        public string BuildTrackFileName(List<Track> tracks, Artist artist, Album album, TrackFile trackFile, NamingConfig namingConfig = null, List<string> preferredWords = null)
+        public string BuildTrackFileName(Author artist, Book album, BookFile trackFile, NamingConfig namingConfig = null, List<string> preferredWords = null)
         {
             if (namingConfig == null)
             {
@@ -96,32 +95,20 @@ namespace NzbDrone.Core.Organizer
                 return GetOriginalFileName(trackFile);
             }
 
-            if (namingConfig.StandardTrackFormat.IsNullOrWhiteSpace() || namingConfig.MultiDiscTrackFormat.IsNullOrWhiteSpace())
+            if (namingConfig.StandardTrackFormat.IsNullOrWhiteSpace())
             {
-                throw new NamingFormatException("Standard and Multi track formats cannot be empty");
+                throw new NamingFormatException("File name format cannot be empty");
             }
 
             var pattern = namingConfig.StandardTrackFormat;
-
-            if (tracks.First().AlbumRelease.Value.Media.Count() > 1)
-            {
-                pattern = namingConfig.MultiDiscTrackFormat;
-            }
 
             var subFolders = pattern.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
             var safePattern = subFolders.Aggregate("", (current, folderLevel) => Path.Combine(current, folderLevel));
 
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
-            tracks = tracks.OrderBy(e => e.AlbumReleaseId).ThenBy(e => e.TrackNumber).ToList();
-
-            safePattern = FormatTrackNumberTokens(safePattern, "", tracks);
-            safePattern = FormatMediumNumberTokens(safePattern, "", tracks);
-
             AddArtistTokens(tokenHandlers, artist);
             AddAlbumTokens(tokenHandlers, album);
-            AddMediumTokens(tokenHandlers, tracks.First().AlbumRelease.Value.Media.SingleOrDefault(m => m.Number == tracks.First().MediumNumber));
-            AddTrackTokens(tokenHandlers, tracks);
             AddTrackFileTokens(tokenHandlers, trackFile);
             AddQualityTokens(tokenHandlers, artist, trackFile);
             AddMediaInfoTokens(tokenHandlers, trackFile);
@@ -134,7 +121,7 @@ namespace NzbDrone.Core.Organizer
             return fileName;
         }
 
-        public string BuildTrackFilePath(Artist artist, Album album, string fileName, string extension)
+        public string BuildTrackFilePath(Author artist, Book album, string fileName, string extension)
         {
             Ensure.That(extension, () => extension).IsNotNullOrWhiteSpace();
 
@@ -143,18 +130,9 @@ namespace NzbDrone.Core.Organizer
             return Path.Combine(path, fileName + extension);
         }
 
-        public string BuildAlbumPath(Artist artist, Album album)
+        public string BuildAlbumPath(Author artist, Book album)
         {
             var path = artist.Path;
-
-            if (artist.AlbumFolder)
-            {
-                var albumFolder = GetAlbumFolder(artist, album);
-
-                albumFolder = CleanFileName(albumFolder);
-
-                path = Path.Combine(path, albumFolder);
-            }
 
             return path;
         }
@@ -204,7 +182,7 @@ namespace NzbDrone.Core.Organizer
             return basicNamingConfig;
         }
 
-        public string GetArtistFolder(Artist artist, NamingConfig namingConfig = null)
+        public string GetArtistFolder(Author artist, NamingConfig namingConfig = null)
         {
             if (namingConfig == null)
             {
@@ -216,21 +194,6 @@ namespace NzbDrone.Core.Organizer
             AddArtistTokens(tokenHandlers, artist);
 
             return CleanFolderName(ReplaceTokens(namingConfig.ArtistFolderFormat, tokenHandlers, namingConfig));
-        }
-
-        public string GetAlbumFolder(Artist artist, Album album, NamingConfig namingConfig = null)
-        {
-            if (namingConfig == null)
-            {
-                namingConfig = _namingConfigService.GetConfig();
-            }
-
-            var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
-
-            AddAlbumTokens(tokenHandlers, album);
-            AddArtistTokens(tokenHandlers, artist);
-
-            return CleanFolderName(ReplaceTokens(namingConfig.AlbumFolderFormat, tokenHandlers, namingConfig));
         }
 
         public static string CleanTitle(string title)
@@ -267,7 +230,7 @@ namespace NzbDrone.Core.Organizer
             return name.Trim(' ', '.');
         }
 
-        private void AddArtistTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Artist artist)
+        private void AddArtistTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Author artist)
         {
             tokenHandlers["{Artist Name}"] = m => artist.Name;
             tokenHandlers["{Artist CleanName}"] = m => CleanTitle(artist.Name);
@@ -279,12 +242,11 @@ namespace NzbDrone.Core.Organizer
             }
         }
 
-        private void AddAlbumTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Album album)
+        private void AddAlbumTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Book album)
         {
             tokenHandlers["{Album Title}"] = m => album.Title;
             tokenHandlers["{Album CleanTitle}"] = m => CleanTitle(album.Title);
             tokenHandlers["{Album TitleThe}"] = m => TitleThe(album.Title);
-            tokenHandlers["{Album Type}"] = m => album.AlbumType;
 
             if (album.Disambiguation != null)
             {
@@ -301,25 +263,14 @@ namespace NzbDrone.Core.Organizer
             }
         }
 
-        private void AddMediumTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Medium medium)
-        {
-            tokenHandlers["{Medium Format}"] = m => medium.Format;
-        }
-
-        private void AddTrackTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, List<Track> tracks)
-        {
-            tokenHandlers["{Track Title}"] = m => GetTrackTitle(tracks, "+");
-            tokenHandlers["{Track CleanTitle}"] = m => CleanTitle(GetTrackTitle(tracks, "and"));
-        }
-
-        private void AddTrackFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, TrackFile trackFile)
+        private void AddTrackFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, BookFile trackFile)
         {
             tokenHandlers["{Original Title}"] = m => GetOriginalTitle(trackFile);
             tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(trackFile);
             tokenHandlers["{Release Group}"] = m => trackFile.ReleaseGroup ?? m.DefaultValue("Readarr");
         }
 
-        private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Artist artist, TrackFile trackFile)
+        private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Author artist, BookFile trackFile)
         {
             var qualityTitle = _qualityDefinitionService.Get(trackFile.Quality.Quality).Title;
             var qualityProper = GetQualityProper(trackFile.Quality);
@@ -332,7 +283,7 @@ namespace NzbDrone.Core.Organizer
             //tokenHandlers["{Quality Real}"] = m => qualityReal;
         }
 
-        private void AddMediaInfoTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, TrackFile trackFile)
+        private void AddMediaInfoTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, BookFile trackFile)
         {
             if (trackFile.MediaInfo == null)
             {
@@ -354,7 +305,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{MediaInfo AudioSampleRate}"] = m => MediaInfoFormatter.FormatAudioSampleRate(trackFile.MediaInfo);
         }
 
-        private void AddPreferredWords(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Artist artist, TrackFile trackFile, List<string> preferredWords = null)
+        private void AddPreferredWords(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Author artist, BookFile trackFile, List<string> preferredWords = null)
         {
             if (preferredWords == null)
             {
@@ -414,45 +365,6 @@ namespace NzbDrone.Core.Organizer
             return replacementText;
         }
 
-        private string FormatTrackNumberTokens(string basePattern, string formatPattern, List<Track> tracks)
-        {
-            var pattern = string.Empty;
-
-            for (int i = 0; i < tracks.Count; i++)
-            {
-                var patternToReplace = i == 0 ? basePattern : formatPattern;
-
-                pattern += TrackRegex.Replace(patternToReplace, match => ReplaceNumberToken(match.Groups["track"].Value, tracks[i].AbsoluteTrackNumber));
-            }
-
-            return pattern;
-        }
-
-        private string FormatMediumNumberTokens(string basePattern, string formatPattern, List<Track> tracks)
-        {
-            var pattern = string.Empty;
-
-            for (int i = 0; i < tracks.Count; i++)
-            {
-                var patternToReplace = i == 0 ? basePattern : formatPattern;
-
-                pattern += MediumRegex.Replace(patternToReplace, match => ReplaceNumberToken(match.Groups["medium"].Value, tracks[i].MediumNumber));
-            }
-
-            return pattern;
-        }
-
-        private string ReplaceNumberToken(string token, int value)
-        {
-            var split = token.Trim('{', '}').Split(':');
-            if (split.Length == 1)
-            {
-                return value.ToString("0");
-            }
-
-            return value.ToString(split[1]);
-        }
-
         private TrackFormat[] GetTrackFormat(string pattern)
         {
             return _trackFormatCache.Get(pattern, () => SeasonEpisodePatternRegex.Matches(pattern).OfType<Match>()
@@ -462,36 +374,6 @@ namespace NzbDrone.Core.Organizer
                     Separator = match.Groups["separator"].Value,
                     TrackPattern = match.Groups["episode"].Value,
                 }).ToArray());
-        }
-
-        private string GetTrackTitle(List<Track> tracks, string separator)
-        {
-            separator = string.Format(" {0} ", separator.Trim());
-
-            if (tracks.Count == 1)
-            {
-                return tracks.First().Title.TrimEnd(TrackTitleTrimCharacters);
-            }
-
-            var titles = tracks.Select(c => c.Title.TrimEnd(TrackTitleTrimCharacters))
-                                 .Select(CleanupTrackTitle)
-                                 .Distinct()
-                                 .ToList();
-
-            if (titles.All(t => t.IsNullOrWhiteSpace()))
-            {
-                titles = tracks.Select(c => c.Title.TrimEnd(TrackTitleTrimCharacters))
-                                 .Distinct()
-                                 .ToList();
-            }
-
-            return string.Join(separator, titles);
-        }
-
-        private string CleanupTrackTitle(string title)
-        {
-            //this will remove (1),(2) from the end of multi part episodes.
-            return MultiPartCleanupRegex.Replace(title, string.Empty).Trim();
         }
 
         private string GetQualityProper(QualityModel quality)
@@ -509,16 +391,7 @@ namespace NzbDrone.Core.Organizer
             return string.Empty;
         }
 
-        //private string GetQualityReal(Series series, QualityModel quality)
-        //{
-        //    if (quality.Revision.Real > 0)
-        //    {
-        //        return "REAL";
-        //    }
-
-        //    return string.Empty;
-        //}
-        private string GetOriginalTitle(TrackFile trackFile)
+        private string GetOriginalTitle(BookFile trackFile)
         {
             if (trackFile.SceneName.IsNullOrWhiteSpace())
             {
@@ -528,7 +401,7 @@ namespace NzbDrone.Core.Organizer
             return trackFile.SceneName;
         }
 
-        private string GetOriginalFileName(TrackFile trackFile)
+        private string GetOriginalFileName(BookFile trackFile)
         {
             return Path.GetFileNameWithoutExtension(trackFile.Path);
         }

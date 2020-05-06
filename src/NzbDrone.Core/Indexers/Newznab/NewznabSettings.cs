@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         public NewznabSettings()
         {
             ApiPath = "/api";
-            Categories = new[] { 3000, 3010, 3020, 3030, 3040 };
+            Categories = new[] { 7020, 8010 };
         }
 
         [FieldDefinition(0, Label = "URL")]

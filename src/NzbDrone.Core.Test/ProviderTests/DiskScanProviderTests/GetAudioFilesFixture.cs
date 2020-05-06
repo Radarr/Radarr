@@ -24,9 +24,9 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
                         {
                             @"30 Rock1.mp3",
                             @"30 Rock2.flac",
-                            @"30 Rock3.ogg",
-                            @"30 Rock4.m4a",
-                            @"30 Rock.avi",
+                            @"30 Rock3.pdf",
+                            @"30 Rock4.epub",
+                            @"30 Rock.mobi",
                             @"movie.exe",
                             @"movie"
                         };
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
         {
             GivenFiles(GetFiles(_path));
 
-            Subject.GetAudioFiles(_path).Should().HaveCount(4);
+            Subject.GetAudioFiles(_path).Should().HaveCount(3);
         }
 
         [TestCase("Extras")]

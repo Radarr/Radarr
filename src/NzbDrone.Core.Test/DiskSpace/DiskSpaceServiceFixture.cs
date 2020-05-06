@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.DiskSpace
             GivenArtist();
         }
 
-        private void GivenArtist(params Artist[] artist)
+        private void GivenArtist(params Author[] artist)
         {
             Mocker.GetMock<IArtistService>()
                   .Setup(v => v.GetAllArtists())
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.DiskSpace
         [Test]
         public void should_check_diskspace_for_artist_folders()
         {
-            GivenArtist(new Artist { Path = _artistFolder1 });
+            GivenArtist(new Author { Path = _artistFolder1 });
 
             GivenExistingFolder(_artistFolder1);
 
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.DiskSpace
         [Test]
         public void should_check_diskspace_for_same_root_folder_only_once()
         {
-            GivenArtist(new Artist { Path = _artistFolder1 }, new Artist { Path = _artistFolder2 });
+            GivenArtist(new Author { Path = _artistFolder1 }, new Author { Path = _artistFolder2 });
 
             GivenExistingFolder(_artistFolder1);
             GivenExistingFolder(_artistFolder2);

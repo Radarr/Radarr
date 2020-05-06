@@ -9,8 +9,8 @@ namespace Readarr.Api.V1.Blacklist
 {
     public class BlacklistResource : RestResource
     {
-        public int ArtistId { get; set; }
-        public List<int> AlbumIds { get; set; }
+        public int AuthorId { get; set; }
+        public List<int> BookIds { get; set; }
         public string SourceTitle { get; set; }
         public QualityModel Quality { get; set; }
         public DateTime Date { get; set; }
@@ -34,8 +34,8 @@ namespace Readarr.Api.V1.Blacklist
             {
                 Id = model.Id,
 
-                ArtistId = model.ArtistId,
-                AlbumIds = model.AlbumIds,
+                AuthorId = model.AuthorId,
+                BookIds = model.BookIds,
                 SourceTitle = model.SourceTitle,
                 Quality = model.Quality,
                 Date = model.Date,

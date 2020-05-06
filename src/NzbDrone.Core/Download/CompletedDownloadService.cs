@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NzbDrone.Common.EnvironmentInfo;
@@ -83,7 +84,7 @@ namespace NzbDrone.Core.Download
             {
                 if (historyItem != null)
                 {
-                    artist = _artistService.GetArtist(historyItem.ArtistId);
+                    artist = _artistService.GetArtist(historyItem.AuthorId);
                 }
 
                 if (artist == null)
@@ -111,46 +112,12 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            var allTracksImported = importResults.All(c => c.Result == ImportResultType.Imported) ||
-                importResults.Count(c => c.Result == ImportResultType.Imported) >=
-                Math.Max(1, trackedDownload.RemoteAlbum.Albums.Sum(x => x.AlbumReleases.Value.Where(y => y.Monitored).Sum(z => z.TrackCount)));
-
-            Console.WriteLine($"allimported: {allTracksImported}");
-            Console.WriteLine($"count: {importResults.Count(c => c.Result == ImportResultType.Imported)}");
-            Console.WriteLine($"max: {Math.Max(1, trackedDownload.RemoteAlbum.Albums.Sum(x => x.AlbumReleases.Value.Where(y => y.Monitored).Sum(z => z.TrackCount)))}");
-
-            if (allTracksImported)
+            if (VerifyImport(trackedDownload, importResults))
             {
-                trackedDownload.State = TrackedDownloadState.Imported;
-                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
                 return;
             }
 
-            // Double check if all albums were imported by checking the history if at least one
-            // file was imported. This will allow the decision engine to reject already imported
-            // albums and still mark the download complete when all files are imported.
-            if (importResults.Any(c => c.Result == ImportResultType.Imported))
-            {
-                var historyItems = _historyService.FindByDownloadId(trackedDownload.DownloadItem.DownloadId)
-                    .OrderByDescending(h => h.Date)
-                    .ToList();
-
-                var allTracksImportedInHistory = _trackedDownloadAlreadyImported.IsImported(trackedDownload, historyItems);
-
-                if (allTracksImportedInHistory)
-                {
-                    trackedDownload.State = TrackedDownloadState.Imported;
-                    _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
-                    return;
-                }
-            }
-
             trackedDownload.State = TrackedDownloadState.ImportPending;
-
-            if (importResults.Empty())
-            {
-                trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
-            }
 
             if (importResults.Any(c => c.Result != ImportResultType.Imported))
             {
@@ -164,6 +131,46 @@ namespace NzbDrone.Core.Download
                 _eventAggregator.PublishEvent(new AlbumImportIncompleteEvent(trackedDownload));
                 return;
             }
+        }
+
+        public bool VerifyImport(TrackedDownload trackedDownload, List<ImportResult> importResults)
+        {
+            var allItemsImported = importResults.Where(c => c.Result == ImportResultType.Imported)
+                                                   .Select(c => c.ImportDecision.Item.Album)
+                                                   .Count() >= Math.Max(1, trackedDownload.RemoteAlbum.Albums.Count);
+
+            if (allItemsImported)
+            {
+                trackedDownload.State = TrackedDownloadState.Imported;
+                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
+                return true;
+            }
+
+            // Double check if all episodes were imported by checking the history if at least one
+            // file was imported. This will allow the decision engine to reject already imported
+            // episode files and still mark the download complete when all files are imported.
+
+            // EDGE CASE: This process relies on EpisodeIds being consistent between executions, if a series is updated
+            // and an episode is removed, but later comes back with a different ID then Sonarr will treat it as incomplete.
+            // Since imports should be relatively fast and these types of data changes are infrequent this should be quite
+            // safe, but commenting for future benefit.
+            if (importResults.Any(c => c.Result == ImportResultType.Imported))
+            {
+                var historyItems = _historyService.FindByDownloadId(trackedDownload.DownloadItem.DownloadId)
+                                                  .OrderByDescending(h => h.Date)
+                                                  .ToList();
+
+                var allEpisodesImportedInHistory = _trackedDownloadAlreadyImported.IsImported(trackedDownload, historyItems);
+
+                if (allEpisodesImportedInHistory)
+                {
+                    trackedDownload.State = TrackedDownloadState.Imported;
+                    _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

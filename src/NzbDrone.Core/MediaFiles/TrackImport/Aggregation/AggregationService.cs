@@ -38,7 +38,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Aggregation
                 localTrack.FolderTrackInfo == null &&
                 localTrack.FileTrackInfo == null)
             {
-                if (MediaFileExtensions.Extensions.Contains(Path.GetExtension(localTrack.Path)))
+                if (MediaFileExtensions.AllExtensions.Contains(Path.GetExtension(localTrack.Path)))
                 {
                     throw new AugmentingFailedException("Unable to parse track info from path: {0}", localTrack.Path);
                 }

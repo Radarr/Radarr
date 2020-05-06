@@ -21,7 +21,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
 
         public Decision IsSatisfiedBy(LocalTrack item, DownloadClientItem downloadClientItem)
         {
-            if (!item.Tracks.Any(e => e.TrackFileId > 0))
+            var files = item.Album?.BookFiles?.Value;
+            if (files == null || !files.Any())
             {
                 // No existing tracks, skip.  This guards against new artists not having a QualityProfile.
                 return Decision.Accept();
@@ -30,16 +31,8 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
             var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
             var qualityComparer = new QualityModelComparer(item.Artist.QualityProfile);
 
-            foreach (var track in item.Tracks.Where(e => e.TrackFileId > 0))
+            foreach (var trackFile in files)
             {
-                var trackFile = track.TrackFile.Value;
-
-                if (trackFile == null)
-                {
-                    _logger.Trace("Unable to get track file details from the DB. TrackId: {0} TrackFileId: {1}", track.Id, track.TrackFileId);
-                    continue;
-                }
-
                 var qualityCompare = qualityComparer.Compare(item.Quality.Quality, trackFile.Quality.Quality);
 
                 if (qualityCompare < 0)

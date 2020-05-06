@@ -11,6 +11,7 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.Music.Events;
+using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -20,48 +21,54 @@ namespace NzbDrone.Core.Test.MusicTests
     [TestFixture]
     public class RefreshArtistServiceFixture : CoreTest<RefreshArtistService>
     {
-        private Artist _artist;
-        private Album _album1;
-        private Album _album2;
-        private List<Album> _albums;
-        private List<Album> _remoteAlbums;
+        private Author _artist;
+        private Book _album1;
+        private Book _album2;
+        private List<Book> _albums;
+        private List<Book> _remoteAlbums;
 
         [SetUp]
         public void Setup()
         {
-            _album1 = Builder<Album>.CreateNew()
-                .With(s => s.ForeignAlbumId = "1")
+            _album1 = Builder<Book>.CreateNew()
+                .With(s => s.ForeignBookId = "1")
                 .Build();
 
-            _album2 = Builder<Album>.CreateNew()
-                .With(s => s.ForeignAlbumId = "2")
+            _album2 = Builder<Book>.CreateNew()
+                .With(s => s.ForeignBookId = "2")
                 .Build();
 
-            _albums = new List<Album> { _album1, _album2 };
+            _albums = new List<Book> { _album1, _album2 };
 
             _remoteAlbums = _albums.JsonClone();
             _remoteAlbums.ForEach(x => x.Id = 0);
 
-            var metadata = Builder<ArtistMetadata>.CreateNew().Build();
+            var metadata = Builder<AuthorMetadata>.CreateNew().Build();
+            var series = Builder<Series>.CreateListOfSize(1).BuildList();
 
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                 .With(a => a.Metadata = metadata)
+                .With(a => a.Series = series)
                 .Build();
 
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
                   .Setup(s => s.GetArtists(new List<int> { _artist.Id }))
-                  .Returns(new List<Artist> { _artist });
+                  .Returns(new List<Author> { _artist });
 
             Mocker.GetMock<IAlbumService>(MockBehavior.Strict)
-                .Setup(s => s.InsertMany(It.IsAny<List<Album>>()));
+                .Setup(s => s.InsertMany(It.IsAny<List<Book>>()));
 
-            Mocker.GetMock<IProvideArtistInfo>()
-                  .Setup(s => s.GetArtistInfo(It.IsAny<string>(), It.IsAny<int>()))
-                  .Callback(() => { throw new ArtistNotFoundException(_artist.ForeignArtistId); });
+            Mocker.GetMock<IMetadataProfileService>()
+                .Setup(s => s.FilterBooks(It.IsAny<Author>(), It.IsAny<int>()))
+                .Returns(_albums);
+
+            Mocker.GetMock<IProvideAuthorInfo>()
+                  .Setup(s => s.GetAuthorInfo(It.IsAny<string>()))
+                  .Callback(() => { throw new ArtistNotFoundException(_artist.ForeignAuthorId); });
 
             Mocker.GetMock<IMediaFileService>()
                 .Setup(x => x.GetFilesByArtist(It.IsAny<int>()))
-                .Returns(new List<TrackFile>());
+                .Returns(new List<BookFile>());
 
             Mocker.GetMock<IHistoryService>()
                 .Setup(x => x.GetByArtist(It.IsAny<int>(), It.IsAny<HistoryEventType?>()))
@@ -76,10 +83,10 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Returns(new List<RootFolder>());
         }
 
-        private void GivenNewArtistInfo(Artist artist)
+        private void GivenNewArtistInfo(Author artist)
         {
-            Mocker.GetMock<IProvideArtistInfo>()
-                  .Setup(s => s.GetArtistInfo(_artist.ForeignArtistId, _artist.MetadataProfileId))
+            Mocker.GetMock<IProvideAuthorInfo>()
+                  .Setup(s => s.GetAuthorInfo(_artist.ForeignAuthorId))
                   .Returns(artist);
         }
 
@@ -87,10 +94,10 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             Mocker.GetMock<IMediaFileService>()
                   .Setup(x => x.GetFilesByArtist(It.IsAny<int>()))
-                  .Returns(Builder<TrackFile>.CreateListOfSize(1).BuildList());
+                  .Returns(Builder<BookFile>.CreateListOfSize(1).BuildList());
         }
 
-        private void GivenAlbumsForRefresh(List<Album> albums)
+        private void GivenAlbumsForRefresh(List<Book> albums)
         {
             Mocker.GetMock<IAlbumService>(MockBehavior.Strict)
                 .Setup(s => s.GetAlbumsForRefresh(It.IsAny<int>(), It.IsAny<IEnumerable<string>>()))
@@ -100,8 +107,8 @@ namespace NzbDrone.Core.Test.MusicTests
         private void AllowArtistUpdate()
         {
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
-                .Setup(x => x.UpdateArtist(It.IsAny<Artist>()))
-                .Returns((Artist a) => a);
+                .Setup(x => x.UpdateArtist(It.IsAny<Author>()))
+                .Returns((Author a) => a);
         }
 
         [Test]
@@ -109,7 +116,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtistInfo = _artist.JsonClone();
             newArtistInfo.Metadata = _artist.Metadata.Value.JsonClone();
-            newArtistInfo.Albums = _remoteAlbums;
+            newArtistInfo.Books = _remoteAlbums;
 
             GivenNewArtistInfo(newArtistInfo);
             GivenAlbumsForRefresh(_albums);
@@ -130,10 +137,10 @@ namespace NzbDrone.Core.Test.MusicTests
             {
                 new MediaCover.MediaCover(MediaCover.MediaCoverTypes.Logo, "dummy")
             };
-            newArtistInfo.Albums = _remoteAlbums;
+            newArtistInfo.Books = _remoteAlbums;
 
             GivenNewArtistInfo(newArtistInfo);
-            GivenAlbumsForRefresh(new List<Album>());
+            GivenAlbumsForRefresh(new List<Book>());
             AllowArtistUpdate();
 
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
@@ -151,7 +158,7 @@ namespace NzbDrone.Core.Test.MusicTests
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
 
             Mocker.GetMock<IArtistService>()
-                .Verify(v => v.UpdateArtist(It.IsAny<Artist>()), Times.Never());
+                .Verify(v => v.UpdateArtist(It.IsAny<Author>()), Times.Never());
 
             Mocker.GetMock<IArtistService>()
                 .Verify(v => v.DeleteArtist(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Once());
@@ -164,12 +171,12 @@ namespace NzbDrone.Core.Test.MusicTests
         public void should_log_error_but_not_delete_if_musicbrainz_id_not_found_and_artist_has_files()
         {
             GivenArtistFiles();
-            GivenAlbumsForRefresh(new List<Album>());
+            GivenAlbumsForRefresh(new List<Book>());
 
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
 
             Mocker.GetMock<IArtistService>()
-                .Verify(v => v.UpdateArtist(It.IsAny<Artist>()), Times.Never());
+                .Verify(v => v.UpdateArtist(It.IsAny<Author>()), Times.Never());
 
             Mocker.GetMock<IArtistService>()
                 .Verify(v => v.DeleteArtist(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>()), Times.Never());
@@ -182,8 +189,8 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtistInfo = _artist.JsonClone();
             newArtistInfo.Metadata = _artist.Metadata.Value.JsonClone();
-            newArtistInfo.Albums = _remoteAlbums;
-            newArtistInfo.ForeignArtistId = _artist.ForeignArtistId + 1;
+            newArtistInfo.Books = _remoteAlbums;
+            newArtistInfo.ForeignAuthorId = _artist.ForeignAuthorId + 1;
             newArtistInfo.Metadata.Value.Id = 100;
 
             GivenNewArtistInfo(newArtistInfo);
@@ -191,30 +198,30 @@ namespace NzbDrone.Core.Test.MusicTests
             var seq = new MockSequence();
 
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
-                .Setup(x => x.FindById(newArtistInfo.ForeignArtistId))
-                .Returns(default(Artist));
+                .Setup(x => x.FindById(newArtistInfo.ForeignAuthorId))
+                .Returns(default(Author));
 
             // Make sure that the artist is updated before we refresh the albums
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
                 .InSequence(seq)
-                .Setup(x => x.UpdateArtist(It.IsAny<Artist>()))
-                .Returns((Artist a) => a);
+                .Setup(x => x.UpdateArtist(It.IsAny<Author>()))
+                .Returns((Author a) => a);
 
             Mocker.GetMock<IAlbumService>(MockBehavior.Strict)
                 .InSequence(seq)
                 .Setup(x => x.GetAlbumsForRefresh(It.IsAny<int>(), It.IsAny<IEnumerable<string>>()))
-                .Returns(new List<Album>());
+                .Returns(new List<Book>());
 
             // Update called twice for a move/merge
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
                 .InSequence(seq)
-                .Setup(x => x.UpdateArtist(It.IsAny<Artist>()))
-                .Returns((Artist a) => a);
+                .Setup(x => x.UpdateArtist(It.IsAny<Author>()))
+                .Returns((Author a) => a);
 
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
 
             Mocker.GetMock<IArtistService>()
-                .Verify(v => v.UpdateArtist(It.Is<Artist>(s => s.ArtistMetadataId == 100 && s.ForeignArtistId == newArtistInfo.ForeignArtistId)),
+                .Verify(v => v.UpdateArtist(It.Is<Author>(s => s.AuthorMetadataId == 100 && s.ForeignAuthorId == newArtistInfo.ForeignAuthorId)),
                         Times.Exactly(2));
         }
 
@@ -227,15 +234,15 @@ namespace NzbDrone.Core.Test.MusicTests
             clash.Id = 100;
             clash.Metadata = existing.Metadata.Value.JsonClone();
             clash.Metadata.Value.Id = 101;
-            clash.Metadata.Value.ForeignArtistId = clash.Metadata.Value.ForeignArtistId + 1;
+            clash.Metadata.Value.ForeignAuthorId = clash.Metadata.Value.ForeignAuthorId + 1;
 
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
-                .Setup(x => x.FindById(clash.Metadata.Value.ForeignArtistId))
+                .Setup(x => x.FindById(clash.Metadata.Value.ForeignAuthorId))
                 .Returns(clash);
 
             var newArtistInfo = clash.JsonClone();
             newArtistInfo.Metadata = clash.Metadata.Value.JsonClone();
-            newArtistInfo.Albums = _remoteAlbums;
+            newArtistInfo.Books = _remoteAlbums;
 
             GivenNewArtistInfo(newArtistInfo);
 
@@ -249,7 +256,7 @@ namespace NzbDrone.Core.Test.MusicTests
 
             Mocker.GetMock<IAlbumService>(MockBehavior.Strict)
                 .InSequence(seq)
-                .Setup(x => x.UpdateMany(It.IsAny<List<Album>>()));
+                .Setup(x => x.UpdateMany(It.IsAny<List<Book>>()));
 
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
                 .InSequence(seq)
@@ -257,32 +264,32 @@ namespace NzbDrone.Core.Test.MusicTests
 
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
                 .InSequence(seq)
-                .Setup(x => x.UpdateArtist(It.Is<Artist>(a => a.Id == clash.Id)))
-                .Returns((Artist a) => a);
+                .Setup(x => x.UpdateArtist(It.Is<Author>(a => a.Id == clash.Id)))
+                .Returns((Author a) => a);
 
             Mocker.GetMock<IAlbumService>(MockBehavior.Strict)
                 .InSequence(seq)
-                .Setup(x => x.GetAlbumsForRefresh(clash.ArtistMetadataId, It.IsAny<IEnumerable<string>>()))
+                .Setup(x => x.GetAlbumsForRefresh(clash.AuthorMetadataId, It.IsAny<IEnumerable<string>>()))
                 .Returns(_albums);
 
             // Update called twice for a move/merge
             Mocker.GetMock<IArtistService>(MockBehavior.Strict)
                 .InSequence(seq)
-                .Setup(x => x.UpdateArtist(It.IsAny<Artist>()))
-                .Returns((Artist a) => a);
+                .Setup(x => x.UpdateArtist(It.IsAny<Author>()))
+                .Returns((Author a) => a);
 
             Subject.Execute(new RefreshArtistCommand(_artist.Id));
 
             // the retained artist gets updated
             Mocker.GetMock<IArtistService>()
-                .Verify(v => v.UpdateArtist(It.Is<Artist>(s => s.Id == clash.Id)), Times.Exactly(2));
+                .Verify(v => v.UpdateArtist(It.Is<Author>(s => s.Id == clash.Id)), Times.Exactly(2));
 
             // the old one gets removed
             Mocker.GetMock<IArtistService>()
                 .Verify(v => v.DeleteArtist(existing.Id, false, false));
 
             Mocker.GetMock<IAlbumService>()
-                .Verify(v => v.UpdateMany(It.Is<List<Album>>(x => x.Count == _albums.Count)));
+                .Verify(v => v.UpdateMany(It.Is<List<Book>>(x => x.Count == _albums.Count)));
 
             ExceptionVerification.ExpectedWarns(1);
         }

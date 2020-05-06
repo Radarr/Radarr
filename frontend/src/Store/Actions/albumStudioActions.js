@@ -100,14 +100,14 @@ export const actionHandlers = handleThunks({
 
   [SAVE_ALBUM_STUDIO]: function(getState, payload, dispatch) {
     const {
-      artistIds,
+      authorIds,
       monitored,
       monitor
     } = payload;
 
     const artist = [];
 
-    artistIds.forEach((id) => {
+    authorIds.forEach((id) => {
       const artistToUpdate = { id };
 
       if (payload.hasOwnProperty('monitored')) {

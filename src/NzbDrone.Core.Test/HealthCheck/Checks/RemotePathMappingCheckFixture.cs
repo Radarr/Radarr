@@ -166,7 +166,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_return_ok_on_track_imported_event()
         {
             GivenFolderExists(_downloadRootPath);
-            var importEvent = new TrackImportedEvent(new LocalTrack(), new TrackFile(), new List<TrackFile>(), true, new DownloadClientItem());
+            var importEvent = new TrackImportedEvent(new LocalTrack(), new BookFile(), new List<BookFile>(), true, new DownloadClientItem());
 
             Subject.Check(importEvent).ShouldBeOk();
         }

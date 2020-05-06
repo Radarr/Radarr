@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         {
         }
 
-        public WebhookTrackFile(TrackFile trackFile)
+        public WebhookTrackFile(BookFile trackFile)
         {
             Id = trackFile.Id;
             Path = trackFile.Path;

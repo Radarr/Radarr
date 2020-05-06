@@ -18,46 +18,46 @@ namespace NzbDrone.Core.Test.MusicTests
     [TestFixture]
     public class AddArtistFixture : CoreTest<AddArtistService>
     {
-        private Artist _fakeArtist;
+        private Author _fakeArtist;
 
         [SetUp]
         public void Setup()
         {
-            _fakeArtist = Builder<Artist>
+            _fakeArtist = Builder<Author>
                 .CreateNew()
                 .With(s => s.Path = null)
                 .Build();
-            _fakeArtist.Albums = new List<Album>();
+            _fakeArtist.Books = new List<Book>();
         }
 
         private void GivenValidArtist(string readarrId)
         {
-            Mocker.GetMock<IProvideArtistInfo>()
-                .Setup(s => s.GetArtistInfo(readarrId, It.IsAny<int>()))
+            Mocker.GetMock<IProvideAuthorInfo>()
+                .Setup(s => s.GetAuthorInfo(readarrId))
                 .Returns(_fakeArtist);
         }
 
         private void GivenValidPath()
         {
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
-                  .Returns<Artist, NamingConfig>((c, n) => c.Name);
+                  .Setup(s => s.GetArtistFolder(It.IsAny<Author>(), null))
+                  .Returns<Author, NamingConfig>((c, n) => c.Name);
 
             Mocker.GetMock<IAddArtistValidator>()
-                  .Setup(s => s.Validate(It.IsAny<Artist>()))
+                  .Setup(s => s.Validate(It.IsAny<Author>()))
                   .Returns(new ValidationResult());
         }
 
         [Test]
         public void should_be_able_to_add_a_artist_without_passing_in_name()
         {
-            var newArtist = new Artist
+            var newArtist = new Author
             {
-                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
+                ForeignAuthorId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                 RootFolderPath = @"C:\Test\Music"
             };
 
-            GivenValidArtist(newArtist.ForeignArtistId);
+            GivenValidArtist(newArtist.ForeignAuthorId);
             GivenValidPath();
 
             var artist = Subject.AddArtist(newArtist);
@@ -68,13 +68,13 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_have_proper_path()
         {
-            var newArtist = new Artist
+            var newArtist = new Author
             {
-                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
+                ForeignAuthorId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                 RootFolderPath = @"C:\Test\Music"
             };
 
-            GivenValidArtist(newArtist.ForeignArtistId);
+            GivenValidArtist(newArtist.ForeignAuthorId);
             GivenValidPath();
 
             var artist = Subject.AddArtist(newArtist);
@@ -85,16 +85,16 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_throw_if_artist_validation_fails()
         {
-            var newArtist = new Artist
+            var newArtist = new Author
             {
-                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
+                ForeignAuthorId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                 Path = @"C:\Test\Music\Name1"
             };
 
-            GivenValidArtist(newArtist.ForeignArtistId);
+            GivenValidArtist(newArtist.ForeignAuthorId);
 
             Mocker.GetMock<IAddArtistValidator>()
-                  .Setup(s => s.Validate(It.IsAny<Artist>()))
+                  .Setup(s => s.Validate(It.IsAny<Author>()))
                   .Returns(new ValidationResult(new List<ValidationFailure>
                                                 {
                                                     new ValidationFailure("Path", "Test validation failure")
@@ -106,18 +106,18 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_throw_if_artist_cannot_be_found()
         {
-            var newArtist = new Artist
+            var newArtist = new Author
             {
-                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
+                ForeignAuthorId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                 Path = @"C:\Test\Music\Name1"
             };
 
-            Mocker.GetMock<IProvideArtistInfo>()
-                  .Setup(s => s.GetArtistInfo(newArtist.ForeignArtistId, newArtist.MetadataProfileId))
-                  .Throws(new ArtistNotFoundException(newArtist.ForeignArtistId));
+            Mocker.GetMock<IProvideAuthorInfo>()
+                  .Setup(s => s.GetAuthorInfo(newArtist.ForeignAuthorId))
+                  .Throws(new ArtistNotFoundException(newArtist.ForeignAuthorId));
 
             Mocker.GetMock<IAddArtistValidator>()
-                  .Setup(s => s.Validate(It.IsAny<Artist>()))
+                  .Setup(s => s.Validate(It.IsAny<Author>()))
                   .Returns(new ValidationResult(new List<ValidationFailure>
                                                 {
                                                     new ValidationFailure("Path", "Test validation failure")
@@ -131,15 +131,15 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_disambiguate_if_artist_folder_exists()
         {
-            var newArtist = new Artist
+            var newArtist = new Author
             {
-                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
+                ForeignAuthorId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                 Path = @"C:\Test\Music\Name1",
             };
 
-            _fakeArtist.Metadata = Builder<ArtistMetadata>.CreateNew().With(x => x.Disambiguation = "Disambiguation").Build();
+            _fakeArtist.Metadata = Builder<AuthorMetadata>.CreateNew().With(x => x.Disambiguation = "Disambiguation").Build();
 
-            GivenValidArtist(newArtist.ForeignArtistId);
+            GivenValidArtist(newArtist.ForeignAuthorId);
             GivenValidPath();
 
             Mocker.GetMock<IArtistService>()
@@ -153,15 +153,15 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_disambiguate_with_numbers_if_artist_folder_still_exists()
         {
-            var newArtist = new Artist
+            var newArtist = new Author
             {
-                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
+                ForeignAuthorId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                 Path = @"C:\Test\Music\Name1",
             };
 
-            _fakeArtist.Metadata = Builder<ArtistMetadata>.CreateNew().With(x => x.Disambiguation = "Disambiguation").Build();
+            _fakeArtist.Metadata = Builder<AuthorMetadata>.CreateNew().With(x => x.Disambiguation = "Disambiguation").Build();
 
-            GivenValidArtist(newArtist.ForeignArtistId);
+            GivenValidArtist(newArtist.ForeignAuthorId);
             GivenValidPath();
 
             Mocker.GetMock<IArtistService>()
@@ -187,15 +187,15 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_disambiguate_with_numbers_if_artist_folder_exists_and_no_disambiguation()
         {
-            var newArtist = new Artist
+            var newArtist = new Author
             {
-                ForeignArtistId = "ce09ea31-3d4a-4487-a797-e315175457a0",
+                ForeignAuthorId = "ce09ea31-3d4a-4487-a797-e315175457a0",
                 Path = @"C:\Test\Music\Name1",
             };
 
-            _fakeArtist.Metadata = Builder<ArtistMetadata>.CreateNew().With(x => x.Disambiguation = string.Empty).Build();
+            _fakeArtist.Metadata = Builder<AuthorMetadata>.CreateNew().With(x => x.Disambiguation = string.Empty).Build();
 
-            GivenValidArtist(newArtist.ForeignArtistId);
+            GivenValidArtist(newArtist.ForeignAuthorId);
             GivenValidPath();
 
             Mocker.GetMock<IArtistService>()

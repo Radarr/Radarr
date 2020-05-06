@@ -40,13 +40,13 @@ class OrganizePreviewModalContentConnector extends Component {
 
   componentDidMount() {
     const {
-      artistId,
-      albumId
+      authorId,
+      bookId
     } = this.props;
 
     this.props.fetchOrganizePreview({
-      artistId,
-      albumId
+      authorId,
+      bookId
     });
 
     this.props.fetchNamingSettings();
@@ -58,7 +58,7 @@ class OrganizePreviewModalContentConnector extends Component {
   onOrganizePress = (files) => {
     this.props.executeCommand({
       name: commandNames.RENAME_FILES,
-      artistId: this.props.artistId,
+      authorId: this.props.authorId,
       files
     });
 
@@ -79,8 +79,8 @@ class OrganizePreviewModalContentConnector extends Component {
 }
 
 OrganizePreviewModalContentConnector.propTypes = {
-  artistId: PropTypes.number.isRequired,
-  albumId: PropTypes.number,
+  authorId: PropTypes.number.isRequired,
+  bookId: PropTypes.number,
   fetchOrganizePreview: PropTypes.func.isRequired,
   fetchNamingSettings: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired,

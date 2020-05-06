@@ -14,7 +14,7 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IUpdateTrackFileService
     {
-        void ChangeFileDateForFile(TrackFile trackFile, Artist artist, List<Track> tracks);
+        void ChangeFileDateForFile(BookFile trackFile, Author artist, Book book);
     }
 
     public class UpdateTrackFileService : IUpdateTrackFileService,
@@ -23,29 +23,26 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IDiskProvider _diskProvider;
         private readonly IAlbumService _albumService;
         private readonly IConfigService _configService;
-        private readonly ITrackService _trackService;
         private readonly Logger _logger;
         private static readonly DateTime EpochTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public UpdateTrackFileService(IDiskProvider diskProvider,
-                                        IConfigService configService,
-                                        ITrackService trackService,
-                                        IAlbumService albumService,
-                                        Logger logger)
+                                      IConfigService configService,
+                                      IAlbumService albumService,
+                                      Logger logger)
         {
             _diskProvider = diskProvider;
             _configService = configService;
-            _trackService = trackService;
             _albumService = albumService;
             _logger = logger;
         }
 
-        public void ChangeFileDateForFile(TrackFile trackFile, Artist artist, List<Track> tracks)
+        public void ChangeFileDateForFile(BookFile trackFile, Author artist, Book book)
         {
-            ChangeFileDate(trackFile, artist, tracks);
+            ChangeFileDate(trackFile, book);
         }
 
-        private bool ChangeFileDate(TrackFile trackFile, Artist artist, List<Track> tracks)
+        private bool ChangeFileDate(BookFile trackFile, Book album)
         {
             var trackFilePath = trackFile.Path;
 
@@ -53,8 +50,6 @@ namespace NzbDrone.Core.MediaFiles
             {
                 case FileDateType.AlbumReleaseDate:
                     {
-                        var album = _albumService.GetAlbum(trackFile.AlbumId);
-
                         if (!album.ReleaseDate.HasValue)
                         {
                             _logger.Debug("Could not create valid date to change file [{0}]", trackFilePath);
@@ -64,7 +59,7 @@ namespace NzbDrone.Core.MediaFiles
                         var relDate = album.ReleaseDate.Value;
 
                         // avoiding false +ve checks and set date skewing by not using UTC (Windows)
-                        DateTime oldDateTime = _diskProvider.FileGetLastWrite(trackFilePath);
+                        var oldDateTime = _diskProvider.FileGetLastWrite(trackFilePath);
 
                         if (OsInfo.IsNotWindows && relDate < EpochTime)
                         {
@@ -101,21 +96,21 @@ namespace NzbDrone.Core.MediaFiles
                 return;
             }
 
-            var tracks = _trackService.TracksWithFiles(message.Artist.Id);
+            var books = _albumService.GetArtistAlbumsWithFiles(message.Artist);
 
-            var trackFiles = new List<TrackFile>();
-            var updated = new List<TrackFile>();
+            var trackFiles = new List<BookFile>();
+            var updated = new List<BookFile>();
 
-            foreach (var group in tracks.GroupBy(e => e.TrackFileId))
+            foreach (var book in books)
             {
-                var tracksInFile = group.Select(e => e).ToList();
-                var trackFile = tracksInFile.First().TrackFile;
-
-                trackFiles.Add(trackFile);
-
-                if (ChangeFileDate(trackFile, message.Artist, tracksInFile))
+                var files = book.BookFiles.Value;
+                foreach (var file in files)
                 {
-                    updated.Add(trackFile);
+                    trackFiles.Add(file);
+                    if (ChangeFileDate(file, book))
+                    {
+                        updated.Add(file);
+                    }
                 }
             }
 

@@ -6,7 +6,7 @@ namespace NzbDrone.Core.Download.Pending
 {
     public class PendingRelease : ModelBase
     {
-        public int ArtistId { get; set; }
+        public int AuthorId { get; set; }
         public string Title { get; set; }
         public DateTime Added { get; set; }
         public ParsedAlbumInfo ParsedAlbumInfo { get; set; }

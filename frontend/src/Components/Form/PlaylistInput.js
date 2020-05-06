@@ -104,28 +104,28 @@ class PlaylistInput extends Component {
         {
           !isPopulated && !isFetching &&
             <div>
-              Authenticate with spotify to retrieve playlists to import.
+              Authenticate with Goodreads to retrieve bookshelves to import.
             </div>
         }
 
         {
           isPopulated && !isFetching && !user &&
             <div>
-              Could not retrieve data from Spotify.  Try re-authenticating.
+              Could not retrieve data from Goodreads.  Try re-authenticating.
             </div>
         }
 
         {
           isPopulated && !isFetching && user && !items.length &&
             <div>
-              No playlists found for Spotify user {user}.
+              No bookshelves found for Goodreads user {user}.
             </div>
         }
 
         {
           isPopulated && !isFetching && user && !!items.length &&
             <div className={className}>
-              Select playlists to import from Spotify user {user}.
+              Select playlists to import from Goodreads user {user}.
               <Table
                 columns={columns}
                 selectAll={true}

@@ -76,24 +76,24 @@ namespace Readarr.Api.V1.Indexers
 
         private List<ReleaseResource> GetReleases()
         {
-            if (Request.Query.albumId.HasValue)
+            if (Request.Query.bookId.HasValue)
             {
-                return GetAlbumReleases(Request.Query.albumId);
+                return GetAlbumReleases(Request.Query.bookId);
             }
 
-            if (Request.Query.artistId.HasValue)
+            if (Request.Query.authorId.HasValue)
             {
-                return GetArtistReleases(Request.Query.artistId);
+                return GetArtistReleases(Request.Query.authorId);
             }
 
             return GetRss();
         }
 
-        private List<ReleaseResource> GetAlbumReleases(int albumId)
+        private List<ReleaseResource> GetAlbumReleases(int bookId)
         {
             try
             {
-                var decisions = _nzbSearchService.AlbumSearch(albumId, true, true, true);
+                var decisions = _nzbSearchService.AlbumSearch(bookId, true, true, true);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
 
                 return MapDecisions(prioritizedDecisions);
@@ -106,11 +106,11 @@ namespace Readarr.Api.V1.Indexers
             return new List<ReleaseResource>();
         }
 
-        private List<ReleaseResource> GetArtistReleases(int artistId)
+        private List<ReleaseResource> GetArtistReleases(int authorId)
         {
             try
             {
-                var decisions = _nzbSearchService.ArtistSearch(artistId, false, true, true);
+                var decisions = _nzbSearchService.ArtistSearch(authorId, false, true, true);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
 
                 return MapDecisions(prioritizedDecisions);

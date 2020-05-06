@@ -62,10 +62,10 @@ class QueueConnector extends Component {
 
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
-      const albumIds = selectUniqueIds(this.props.items, 'albumId');
+      const bookIds = selectUniqueIds(this.props.items, 'bookId');
 
-      if (albumIds.length) {
-        this.props.fetchAlbums({ albumIds });
+      if (bookIds.length) {
+        this.props.fetchAlbums({ bookIds });
       } else {
         this.props.clearAlbums();
       }

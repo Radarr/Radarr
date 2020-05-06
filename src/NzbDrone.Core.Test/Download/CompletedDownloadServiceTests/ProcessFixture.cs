@@ -58,8 +58,8 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         {
             return new RemoteAlbum
             {
-                Artist = new Artist(),
-                Albums = new List<Album> { new Album { Id = 1 } }
+                Artist = new Author(),
+                Albums = new List<Book> { new Book { Id = 1 } }
             };
         }
 
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetArtist(It.IsAny<string>()))
-                  .Returns((Artist)null);
+                  .Returns((Author)null);
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetArtist("Droned S01E01"))
@@ -161,7 +161,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
             _trackedDownload.RemoteAlbum.Artist = null;
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetArtist("Drone.S01E01.HDTV"))
-                  .Returns((Artist)null);
+                  .Returns((Author)null);
 
             Subject.Check(_trackedDownload);
 

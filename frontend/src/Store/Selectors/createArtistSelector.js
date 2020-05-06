@@ -2,11 +2,11 @@ import { createSelector } from 'reselect';
 
 function createArtistSelector() {
   return createSelector(
-    (state, { artistId }) => artistId,
+    (state, { authorId }) => authorId,
     (state) => state.artist.itemMap,
     (state) => state.artist.items,
-    (artistId, itemMap, allArtists) => {
-      return allArtists[itemMap[artistId]];
+    (authorId, itemMap, allArtists) => {
+      return allArtists[itemMap[authorId]];
     }
   );
 }

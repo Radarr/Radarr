@@ -11,16 +11,16 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 {
     [TestFixture]
 
-    public class ArtistMetadataRepositoryFixture : DbTest<ArtistMetadataRepository, ArtistMetadata>
+    public class ArtistMetadataRepositoryFixture : DbTest<ArtistMetadataRepository, AuthorMetadata>
     {
         private ArtistMetadataRepository _artistMetadataRepo;
-        private List<ArtistMetadata> _metadataList;
+        private List<AuthorMetadata> _metadataList;
 
         [SetUp]
         public void Setup()
         {
             _artistMetadataRepo = Mocker.Resolve<ArtistMetadataRepository>();
-            _metadataList = Builder<ArtistMetadata>.CreateListOfSize(10).All().With(x => x.Id = 0).BuildList();
+            _metadataList = Builder<AuthorMetadata>.CreateListOfSize(10).All().With(x => x.Id = 0).BuildList();
         }
 
         [Test]

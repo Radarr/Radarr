@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
     {
         private void GivenMissingRootFolder()
         {
-            var artist = Builder<Artist>.CreateListOfSize(1)
+            var artist = Builder<Author>.CreateListOfSize(1)
                                         .Build()
                                         .ToList();
 
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         {
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetAllArtists())
-                  .Returns(new List<Artist>());
+                  .Returns(new List<Author>());
 
             Mocker.GetMock<IImportListFactory>()
                 .Setup(s => s.All())

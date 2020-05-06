@@ -13,7 +13,7 @@ function HeartRating({ rating, iconSize }) {
         size={iconSize}
       />
 
-      {rating * 10}%
+      {rating.toFixed(1)}
     </span>
   );
 }

@@ -34,8 +34,8 @@ namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
 
             var remoteAlbum = new RemoteAlbum
             {
-                Artist = new Artist(),
-                Albums = new List<Album> { new Album { Id = 1 } }
+                Artist = new Author(),
+                Albums = new List<Book> { new Book { Id = 1 } }
             };
 
             _trackedDownload = Builder<TrackedDownload>.CreateNew()

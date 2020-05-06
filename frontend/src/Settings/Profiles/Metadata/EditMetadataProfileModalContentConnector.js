@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -8,87 +7,12 @@ import createProviderSettingsSelector from 'Store/Selectors/createProviderSettin
 import { fetchMetadataProfileSchema, setMetadataProfileValue, saveMetadataProfile } from 'Store/Actions/settingsActions';
 import EditMetadataProfileModalContent from './EditMetadataProfileModalContent';
 
-function createPrimaryAlbumTypesSelector() {
-  return createSelector(
-    createProviderSettingsSelector('metadataProfiles'),
-    (metadataProfile) => {
-      const primaryAlbumTypes = metadataProfile.item.primaryAlbumTypes;
-      if (!primaryAlbumTypes || !primaryAlbumTypes.value) {
-        return [];
-      }
-
-      return _.reduceRight(primaryAlbumTypes.value, (result, { allowed, albumType }) => {
-        if (allowed) {
-          result.push({
-            key: albumType.id,
-            value: albumType.name
-          });
-        }
-
-        return result;
-      }, []);
-    }
-  );
-}
-
-function createSecondaryAlbumTypesSelector() {
-  return createSelector(
-    createProviderSettingsSelector('metadataProfiles'),
-    (metadataProfile) => {
-      const secondaryAlbumTypes = metadataProfile.item.secondaryAlbumTypes;
-      if (!secondaryAlbumTypes || !secondaryAlbumTypes.value) {
-        return [];
-      }
-
-      return _.reduceRight(secondaryAlbumTypes.value, (result, { allowed, albumType }) => {
-        if (allowed) {
-          result.push({
-            key: albumType.id,
-            value: albumType.name
-          });
-        }
-
-        return result;
-      }, []);
-    }
-  );
-}
-
-function createReleaseStatusesSelector() {
-  return createSelector(
-    createProviderSettingsSelector('metadataProfiles'),
-    (metadataProfile) => {
-      const releaseStatuses = metadataProfile.item.releaseStatuses;
-      if (!releaseStatuses || !releaseStatuses.value) {
-        return [];
-      }
-
-      return _.reduceRight(releaseStatuses.value, (result, { allowed, releaseStatus }) => {
-        if (allowed) {
-          result.push({
-            key: releaseStatus.id,
-            value: releaseStatus.name
-          });
-        }
-
-        return result;
-      }, []);
-    }
-  );
-}
-
 function createMapStateToProps() {
   return createSelector(
     createProviderSettingsSelector('metadataProfiles'),
-    createPrimaryAlbumTypesSelector(),
-    createSecondaryAlbumTypesSelector(),
-    createReleaseStatusesSelector(),
     createProfileInUseSelector('metadataProfileId'),
-    (metadataProfile, primaryAlbumTypes, secondaryAlbumTypes, releaseStatuses, isInUse) => {
+    (metadataProfile, isInUse) => {
       return {
-        primaryAlbumTypes,
-        secondaryAlbumTypes,
-        releaseStatuses,
         ...metadataProfile,
         isInUse
       };
@@ -139,59 +63,16 @@ class EditMetadataProfileModalContentConnector extends Component {
     this.props.saveMetadataProfile({ id: this.props.id });
   }
 
-  onMetadataPrimaryTypeItemAllowedChange = (id, allowed) => {
-    const metadataProfile = _.cloneDeep(this.props.item);
-
-    const item = _.find(metadataProfile.primaryAlbumTypes.value, (i) => i.albumType.id === id);
-    item.allowed = allowed;
-
-    this.props.setMetadataProfileValue({
-      name: 'primaryAlbumTypes',
-      value: metadataProfile.primaryAlbumTypes.value
-    });
-  }
-
-  onMetadataSecondaryTypeItemAllowedChange = (id, allowed) => {
-    const metadataProfile = _.cloneDeep(this.props.item);
-
-    const item = _.find(metadataProfile.secondaryAlbumTypes.value, (i) => i.albumType.id === id);
-    item.allowed = allowed;
-
-    this.props.setMetadataProfileValue({
-      name: 'secondaryAlbumTypes',
-      value: metadataProfile.secondaryAlbumTypes.value
-    });
-  }
-
-  onMetadataReleaseStatusItemAllowedChange = (id, allowed) => {
-    const metadataProfile = _.cloneDeep(this.props.item);
-
-    const item = _.find(metadataProfile.releaseStatuses.value, (i) => i.releaseStatus.id === id);
-    item.allowed = allowed;
-
-    this.props.setMetadataProfileValue({
-      name: 'releaseStatuses',
-      value: metadataProfile.releaseStatuses.value
-    });
-  }
-
   //
   // Render
 
   render() {
-    if (_.isEmpty(this.props.item.primaryAlbumTypes) && !this.props.isFetching) {
-      return null;
-    }
-
     return (
       <EditMetadataProfileModalContent
         {...this.state}
         {...this.props}
         onSavePress={this.onSavePress}
         onInputChange={this.onInputChange}
-        onMetadataPrimaryTypeItemAllowedChange={this.onMetadataPrimaryTypeItemAllowedChange}
-        onMetadataSecondaryTypeItemAllowedChange={this.onMetadataSecondaryTypeItemAllowedChange}
-        onMetadataReleaseStatusItemAllowedChange={this.onMetadataReleaseStatusItemAllowedChange}
       />
     );
   }

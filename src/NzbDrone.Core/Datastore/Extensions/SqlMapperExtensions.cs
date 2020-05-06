@@ -110,6 +110,14 @@ namespace NzbDrone.Core.Datastore
             return db.Query<T>(sql.RawSql, sql.Parameters);
         }
 
+        public static IEnumerable<T> QueryDistinct<T>(this IDatabase db, SqlBuilder builder)
+        {
+            var type = typeof(T);
+            var sql = builder.SelectDistinct(type).AddSelectTemplate(type);
+
+            return db.Query<T>(sql.RawSql, sql.Parameters);
+        }
+
         public static IEnumerable<T> QueryJoined<T, T2>(this IDatabase db, SqlBuilder builder, Func<T, T2, T> mapper)
         {
             var type = typeof(T);

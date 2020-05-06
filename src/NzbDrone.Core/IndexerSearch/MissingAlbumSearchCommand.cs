@@ -4,7 +4,7 @@ namespace NzbDrone.Core.IndexerSearch
 {
     public class MissingAlbumSearchCommand : Command
     {
-        public int? ArtistId { get; set; }
+        public int? AuthorId { get; set; }
 
         public override bool SendUpdatesToClient => true;
 
@@ -12,9 +12,9 @@ namespace NzbDrone.Core.IndexerSearch
         {
         }
 
-        public MissingAlbumSearchCommand(int artistId)
+        public MissingAlbumSearchCommand(int authorId)
         {
-            ArtistId = artistId;
+            AuthorId = authorId;
         }
     }
 }

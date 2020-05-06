@@ -9,9 +9,9 @@ namespace Readarr.Api.V1.Albums
 {
     public class AlbumLookupModule : ReadarrRestModule<AlbumResource>
     {
-        private readonly ISearchForNewAlbum _searchProxy;
+        private readonly ISearchForNewBook _searchProxy;
 
-        public AlbumLookupModule(ISearchForNewAlbum searchProxy)
+        public AlbumLookupModule(ISearchForNewBook searchProxy)
             : base("/album/lookup")
         {
             _searchProxy = searchProxy;
@@ -20,11 +20,11 @@ namespace Readarr.Api.V1.Albums
 
         private object Search()
         {
-            var searchResults = _searchProxy.SearchForNewAlbum((string)Request.Query.term, null);
+            var searchResults = _searchProxy.SearchForNewBook((string)Request.Query.term, null);
             return MapToResource(searchResults).ToList();
         }
 
-        private static IEnumerable<AlbumResource> MapToResource(IEnumerable<NzbDrone.Core.Music.Album> albums)
+        private static IEnumerable<AlbumResource> MapToResource(IEnumerable<NzbDrone.Core.Music.Book> albums)
         {
             foreach (var currentAlbum in albums)
             {

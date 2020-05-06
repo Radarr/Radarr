@@ -22,29 +22,29 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private const int FIRST_ALBUM_ID = 1;
         private const string TITLE = "Some.Artist-Some.Album-2018-320kbps-CD-Readarr";
 
-        private Artist _artist;
+        private Author _artist;
         private QualityModel _mp3;
         private QualityModel _flac;
         private RemoteAlbum _remoteAlbum;
         private List<History.History> _history;
-        private TrackFile _firstFile;
+        private BookFile _firstFile;
 
         [SetUp]
         public void Setup()
         {
-            var singleAlbumList = new List<Album>
+            var singleAlbumList = new List<Book>
                                     {
-                                        new Album
+                                        new Book
                                         {
                                             Id = FIRST_ALBUM_ID,
                                             Title = "Some Album"
                                         }
                                     };
 
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                                      .Build();
 
-            _firstFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now };
+            _firstFile = new BookFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now };
 
             _mp3 = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _flac = new QualityModel(Quality.FLAC, new Revision(version: 1));
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Mocker.GetMock<IMediaFileService>()
                   .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
-                  .Returns(new List<TrackFile> { _firstFile });
+                  .Returns(new List<BookFile> { _firstFile });
         }
 
         private void GivenCdhDisabled()
@@ -105,7 +105,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             Mocker.GetMock<IMediaFileService>()
                 .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
-                .Returns(new List<TrackFile> { });
+                .Returns(new List<BookFile> { });
 
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }

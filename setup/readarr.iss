@@ -3,8 +3,8 @@
 
 #define AppName "Readarr"
 #define AppPublisher "Team Readarr"
-#define AppURL "https://readarr.audio/"
-#define ForumsURL "https://forums.readarr.audio/"
+#define AppURL "https://readarr.com/"
+#define ForumsURL "https://forums.readarr.com/"
 #define AppExeName "Readarr.exe"
 #define BaseVersion GetEnv('MAJORVERSION')
 #define BuildNumber GetEnv('MINORVERSION')
@@ -15,7 +15,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{56C1065D-3523-4025-B76D-6F73F67F7F93}
+AppId={{EA316CFC-40C5-4104-A7E1-AFA4D42702D8}
 AppName={#AppName}
 AppVersion={#BaseVersion}
 AppPublisher={#AppPublisher}

@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Tags
                 ImportListIds = importLists.Select(c => c.Id).ToList(),
                 NotificationIds = notifications.Select(c => c.Id).ToList(),
                 RestrictionIds = restrictions.Select(c => c.Id).ToList(),
-                ArtistIds = artist.Select(c => c.Id).ToList(),
+                AuthorIds = artist.Select(c => c.Id).ToList(),
                 RootFolderIds = rootFolders.Select(c => c.Id).ToList()
             };
         }
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Tags
                     ImportListIds = importLists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     NotificationIds = notifications.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
-                    ArtistIds = artists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                    AuthorIds = artists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     RootFolderIds = rootFolders.Where(c => c.DefaultTags.Contains(tag.Id)).Select(c => c.Id).ToList()
                 });
             }

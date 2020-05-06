@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { icons, kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
-import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditMetadataProfileModalConnector from './EditMetadataProfileModalConnector';
@@ -64,8 +63,6 @@ class MetadataProfile extends Component {
     const {
       id,
       name,
-      primaryAlbumTypes,
-      secondaryAlbumTypes,
       isDeleting
     } = this.props;
 
@@ -86,46 +83,6 @@ class MetadataProfile extends Component {
             name={icons.CLONE}
             onPress={this.onCloneMetadataProfilePress}
           />
-        </div>
-
-        <div className={styles.albumTypes}>
-          {
-            primaryAlbumTypes.map((item) => {
-              if (!item.allowed) {
-                return null;
-              }
-
-              return (
-                <Label
-                  key={item.albumType.id}
-                  kind={kinds.default}
-                  title={null}
-                >
-                  {item.albumType.name}
-                </Label>
-              );
-            })
-          }
-        </div>
-
-        <div className={styles.albumTypes}>
-          {
-            secondaryAlbumTypes.map((item) => {
-              if (!item.allowed) {
-                return null;
-              }
-
-              return (
-                <Label
-                  key={item.albumType.id}
-                  kind={kinds.INFO}
-                  title={null}
-                >
-                  {item.albumType.name}
-                </Label>
-              );
-            })
-          }
         </div>
 
         <EditMetadataProfileModalConnector
@@ -153,8 +110,6 @@ class MetadataProfile extends Component {
 MetadataProfile.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  primaryAlbumTypes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  secondaryAlbumTypes: PropTypes.arrayOf(PropTypes.object).isRequired,
   isDeleting: PropTypes.bool.isRequired,
   onConfirmDeleteMetadataProfile: PropTypes.func.isRequired,
   onCloneMetadataProfilePress: PropTypes.func.isRequired

@@ -17,7 +17,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var body = new Dictionary<string, object>();
             body.Add("title", "The Artist - The Album (2008) [FLAC]");
             body.Add("protocol", "Torrent");
-            body.Add("downloadUrl", "https://readarr.audio/test.torrent");
+            body.Add("downloadUrl", "https://readarr.com/test.torrent");
             body.Add("publishDate", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ssZ", CultureInfo.InvariantCulture));
 
             var request = ReleasePush.BuildRequest();

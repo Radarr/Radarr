@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Returns(new List<ImportResult>());
 
             Mocker.GetMock<IDownloadedTracksImportService>()
-                .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Artist>(), It.IsAny<DownloadClientItem>()))
+                .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Author>(), It.IsAny<DownloadClientItem>()))
                 .Returns(new List<ImportResult>());
 
             var downloadItem = Builder<DownloadClientItem>.CreateNew()
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Build();
 
             var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                .With(v => v.Artist = new Artist())
+                .With(v => v.Artist = new Author())
                 .Build();
 
             _trackedDownload = new TrackedDownload

@@ -17,51 +17,51 @@ namespace NzbDrone.Core.Test.MusicTests
     [TestFixture]
     public class AddAlbumFixture : CoreTest<AddAlbumService>
     {
-        private Artist _fakeArtist;
-        private Album _fakeAlbum;
+        private Author _fakeArtist;
+        private Book _fakeAlbum;
 
         [SetUp]
         public void Setup()
         {
-            _fakeAlbum = Builder<Album>
+            _fakeAlbum = Builder<Book>
                 .CreateNew()
                 .Build();
 
-            _fakeArtist = Builder<Artist>
+            _fakeArtist = Builder<Author>
                 .CreateNew()
                 .With(s => s.Path = null)
-                .With(s => s.Metadata = Builder<ArtistMetadata>.CreateNew().Build())
+                .With(s => s.Metadata = Builder<AuthorMetadata>.CreateNew().Build())
                 .Build();
         }
 
         private void GivenValidAlbum(string readarrId)
         {
-            Mocker.GetMock<IProvideAlbumInfo>()
-                .Setup(s => s.GetAlbumInfo(readarrId))
-                .Returns(Tuple.Create(_fakeArtist.Metadata.Value.ForeignArtistId,
+            Mocker.GetMock<IProvideBookInfo>()
+                .Setup(s => s.GetBookInfo(readarrId))
+                .Returns(Tuple.Create(_fakeArtist.Metadata.Value.ForeignAuthorId,
                                       _fakeAlbum,
-                                      new List<ArtistMetadata> { _fakeArtist.Metadata.Value }));
+                                      new List<AuthorMetadata> { _fakeArtist.Metadata.Value }));
 
             Mocker.GetMock<IAddArtistService>()
-                .Setup(s => s.AddArtist(It.IsAny<Artist>(), It.IsAny<bool>()))
+                .Setup(s => s.AddArtist(It.IsAny<Author>(), It.IsAny<bool>()))
                 .Returns(_fakeArtist);
         }
 
         private void GivenValidPath()
         {
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
-                  .Returns<Artist, NamingConfig>((c, n) => c.Name);
+                  .Setup(s => s.GetArtistFolder(It.IsAny<Author>(), null))
+                  .Returns<Author, NamingConfig>((c, n) => c.Name);
         }
 
-        private Album AlbumToAdd(string albumId, string artistId)
+        private Book AlbumToAdd(string bookId, string authorId)
         {
-            return new Album
+            return new Book
             {
-                ForeignAlbumId = albumId,
-                ArtistMetadata = new ArtistMetadata
+                ForeignBookId = bookId,
+                AuthorMetadata = new AuthorMetadata
                 {
-                    ForeignArtistId = artistId
+                    ForeignAuthorId = authorId
                 }
             };
         }
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newAlbum = AlbumToAdd("5537624c-3d2f-4f5c-8099-df916082c85c", "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493");
 
-            GivenValidAlbum(newAlbum.ForeignAlbumId);
+            GivenValidAlbum(newAlbum.ForeignBookId);
             GivenValidPath();
 
             var album = Subject.AddAlbum(newAlbum);
@@ -84,9 +84,9 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newAlbum = AlbumToAdd("5537624c-3d2f-4f5c-8099-df916082c85c", "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493");
 
-            Mocker.GetMock<IProvideAlbumInfo>()
-                  .Setup(s => s.GetAlbumInfo(newAlbum.ForeignAlbumId))
-                  .Throws(new AlbumNotFoundException(newAlbum.ForeignAlbumId));
+            Mocker.GetMock<IProvideBookInfo>()
+                  .Setup(s => s.GetBookInfo(newAlbum.ForeignBookId))
+                  .Throws(new AlbumNotFoundException(newAlbum.ForeignBookId));
 
             Assert.Throws<ValidationException>(() => Subject.AddAlbum(newAlbum));
 

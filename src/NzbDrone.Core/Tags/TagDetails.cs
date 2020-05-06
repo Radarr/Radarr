@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Tags
     public class TagDetails : ModelBase
     {
         public string Label { get; set; }
-        public List<int> ArtistIds { get; set; }
+        public List<int> AuthorIds { get; set; }
         public List<int> NotificationIds { get; set; }
         public List<int> RestrictionIds { get; set; }
         public List<int> DelayProfileIds { get; set; }
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Tags
         {
             get
             {
-                return ArtistIds.Any() || NotificationIds.Any() || RestrictionIds.Any() || DelayProfileIds.Any() || ImportListIds.Any() || RootFolderIds.Any();
+                return AuthorIds.Any() || NotificationIds.Any() || RestrictionIds.Any() || DelayProfileIds.Any() || ImportListIds.Any() || RootFolderIds.Any();
             }
         }
     }

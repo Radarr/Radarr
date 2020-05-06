@@ -4,9 +4,9 @@ namespace NzbDrone.Core.MediaFiles.Events
 {
     public class TrackFileAddedEvent : IEvent
     {
-        public TrackFile TrackFile { get; private set; }
+        public BookFile TrackFile { get; private set; }
 
-        public TrackFileAddedEvent(TrackFile trackFile)
+        public TrackFileAddedEvent(BookFile trackFile)
         {
             TrackFile = trackFile;
         }

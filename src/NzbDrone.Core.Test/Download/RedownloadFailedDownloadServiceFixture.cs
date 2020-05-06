@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.Download
 
             Mocker.GetMock<IAlbumService>()
                 .Setup(x => x.GetAlbumsByArtist(It.IsAny<int>()))
-                .Returns(Builder<Album>.CreateListOfSize(3).Build() as List<Album>);
+                .Returns(Builder<Book>.CreateListOfSize(3).Build() as List<Book>);
         }
 
         [Test]
@@ -31,8 +31,8 @@ namespace NzbDrone.Core.Test.Download
         {
             var failedEvent = new DownloadFailedEvent
             {
-                ArtistId = 1,
-                AlbumIds = new List<int> { 1 },
+                AuthorId = 1,
+                BookIds = new List<int> { 1 },
                 SkipReDownload = true
             };
 
@@ -48,8 +48,8 @@ namespace NzbDrone.Core.Test.Download
         {
             var failedEvent = new DownloadFailedEvent
             {
-                ArtistId = 1,
-                AlbumIds = new List<int> { 1 }
+                AuthorId = 1,
+                BookIds = new List<int> { 1 }
             };
 
             Mocker.GetMock<IConfigService>()
@@ -68,15 +68,15 @@ namespace NzbDrone.Core.Test.Download
         {
             var failedEvent = new DownloadFailedEvent
             {
-                ArtistId = 1,
-                AlbumIds = new List<int> { 2 }
+                AuthorId = 1,
+                BookIds = new List<int> { 2 }
             };
 
             Subject.Handle(failedEvent);
 
             Mocker.GetMock<IManageCommandQueue>()
-                .Verify(x => x.Push(It.Is<AlbumSearchCommand>(c => c.AlbumIds.Count == 1 &&
-                                                              c.AlbumIds[0] == 2),
+                .Verify(x => x.Push(It.Is<AlbumSearchCommand>(c => c.BookIds.Count == 1 &&
+                                                              c.BookIds[0] == 2),
                                     It.IsAny<CommandPriority>(),
                                     It.IsAny<CommandTrigger>()),
                         Times.Once());
@@ -91,16 +91,16 @@ namespace NzbDrone.Core.Test.Download
         {
             var failedEvent = new DownloadFailedEvent
             {
-                ArtistId = 1,
-                AlbumIds = new List<int> { 2, 3 }
+                AuthorId = 1,
+                BookIds = new List<int> { 2, 3 }
             };
 
             Subject.Handle(failedEvent);
 
             Mocker.GetMock<IManageCommandQueue>()
-                .Verify(x => x.Push(It.Is<AlbumSearchCommand>(c => c.AlbumIds.Count == 2 &&
-                                                              c.AlbumIds[0] == 2 &&
-                                                              c.AlbumIds[1] == 3),
+                .Verify(x => x.Push(It.Is<AlbumSearchCommand>(c => c.BookIds.Count == 2 &&
+                                                              c.BookIds[0] == 2 &&
+                                                              c.BookIds[1] == 3),
                                     It.IsAny<CommandPriority>(),
                                     It.IsAny<CommandTrigger>()),
                         Times.Once());
@@ -116,14 +116,14 @@ namespace NzbDrone.Core.Test.Download
             // note that artist is set to have 3 albums in setup
             var failedEvent = new DownloadFailedEvent
             {
-                ArtistId = 2,
-                AlbumIds = new List<int> { 1, 2, 3 }
+                AuthorId = 2,
+                BookIds = new List<int> { 1, 2, 3 }
             };
 
             Subject.Handle(failedEvent);
 
             Mocker.GetMock<IManageCommandQueue>()
-                .Verify(x => x.Push(It.Is<ArtistSearchCommand>(c => c.ArtistId == failedEvent.ArtistId),
+                .Verify(x => x.Push(It.Is<ArtistSearchCommand>(c => c.AuthorId == failedEvent.AuthorId),
                                     It.IsAny<CommandPriority>(),
                                     It.IsAny<CommandTrigger>()),
                         Times.Once());

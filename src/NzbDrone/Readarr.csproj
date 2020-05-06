@@ -4,7 +4,7 @@
     <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <UseWindowsForms>true</UseWindowsForms>
-    <ApplicationIcon>..\NzbDrone.Host\NzbDrone.ico</ApplicationIcon>
+    <ApplicationIcon>..\NzbDrone.Host\Readarr.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>

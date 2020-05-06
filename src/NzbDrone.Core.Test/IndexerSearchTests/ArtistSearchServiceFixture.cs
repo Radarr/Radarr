@@ -14,12 +14,12 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
     [TestFixture]
     public class ArtistSearchServiceFixture : CoreTest<ArtistSearchService>
     {
-        private Artist _artist;
+        private Author _artist;
 
         [SetUp]
         public void Setup()
         {
-            _artist = new Artist();
+            _artist = new Author();
 
             Mocker.GetMock<IArtistService>()
                 .Setup(s => s.GetArtist(It.IsAny<int>()))
@@ -37,17 +37,17 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
         [Test]
         public void should_only_include_monitored_albums()
         {
-            _artist.Albums = new List<Album>
+            _artist.Books = new List<Book>
             {
-                new Album { Monitored = false },
-                new Album { Monitored = true }
+                new Book { Monitored = false },
+                new Book { Monitored = true }
             };
 
-            Subject.Execute(new ArtistSearchCommand { ArtistId = _artist.Id, Trigger = CommandTrigger.Manual });
+            Subject.Execute(new ArtistSearchCommand { AuthorId = _artist.Id, Trigger = CommandTrigger.Manual });
 
             Mocker.GetMock<ISearchForNzb>()
                 .Verify(v => v.ArtistSearch(_artist.Id, false, true, false),
-                    Times.Exactly(_artist.Albums.Value.Count(s => s.Monitored)));
+                    Times.Exactly(_artist.Books.Value.Count(s => s.Monitored)));
         }
     }
 }

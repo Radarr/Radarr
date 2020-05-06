@@ -38,7 +38,7 @@ namespace NzbDrone.Core.MediaCover
                 return lastModifiedLocal.Value.ToUniversalTime() == serverModifiedDate.Value.ToUniversalTime();
             }
 
-            return false;
+            return true;
         }
     }
 }

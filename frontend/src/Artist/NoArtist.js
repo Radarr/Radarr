@@ -11,7 +11,7 @@ function NoArtist(props) {
     return (
       <div>
         <div className={styles.message}>
-        All artists are hidden due to the applied filter.
+        All authors are hidden due to the applied filter.
         </div>
       </div>
     );
@@ -20,7 +20,7 @@ function NoArtist(props) {
   return (
     <div>
       <div className={styles.message}>
-        No artists found, to get started you'll want to add a new artist or album or add an existing library location (Root Folder) and update.
+        No authors found, to get started you'll want to add a new author or book or add an existing library location (Root Folder) and update.
       </div>
 
       <div className={styles.buttonContainer}>
@@ -37,7 +37,7 @@ function NoArtist(props) {
           to="/add/search"
           kind={kinds.PRIMARY}
         >
-          Add New Artist
+          Add New Author
         </Button>
       </div>
     </div>

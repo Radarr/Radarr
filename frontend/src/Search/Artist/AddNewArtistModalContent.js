@@ -105,7 +105,7 @@ class AddNewArtistModalContent extends Component {
         <ModalFooter className={styles.modalFooter}>
           <label className={styles.searchForMissingAlbumsLabelContainer}>
             <span className={styles.searchForMissingAlbumsLabel}>
-              Start search for missing albums
+              Start search for missing books
             </span>
 
             <CheckInput

@@ -35,11 +35,11 @@ namespace Readarr.Api.V1.Search
                 var resource = new SearchResource();
                 resource.Id = id++;
 
-                if (result is NzbDrone.Core.Music.Artist)
+                if (result is NzbDrone.Core.Music.Author)
                 {
-                    var artist = (NzbDrone.Core.Music.Artist)result;
+                    var artist = (NzbDrone.Core.Music.Author)result;
                     resource.Artist = artist.ToResource();
-                    resource.ForeignId = artist.ForeignArtistId;
+                    resource.ForeignId = artist.ForeignAuthorId;
 
                     var poster = artist.Metadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                     if (poster != null)
@@ -47,11 +47,11 @@ namespace Readarr.Api.V1.Search
                         resource.Artist.RemotePoster = poster.Url;
                     }
                 }
-                else if (result is NzbDrone.Core.Music.Album)
+                else if (result is NzbDrone.Core.Music.Book)
                 {
-                    var album = (NzbDrone.Core.Music.Album)result;
+                    var album = (NzbDrone.Core.Music.Book)result;
                     resource.Album = album.ToResource();
-                    resource.ForeignId = album.ForeignAlbumId;
+                    resource.ForeignId = album.ForeignBookId;
 
                     var cover = album.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Cover);
                     if (cover != null)

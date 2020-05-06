@@ -19,8 +19,8 @@ namespace NzbDrone.Core.Test.Blacklisting
         {
             _event = new DownloadFailedEvent
             {
-                ArtistId = 12345,
-                AlbumIds = new List<int> { 1 },
+                AuthorId = 12345,
+                BookIds = new List<int> { 1 },
                 Quality = new QualityModel(Quality.MP3_320),
                 SourceTitle = "artist.name.album.title",
                 DownloadClient = "SabnzbdClient",
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.Blacklisting
             Subject.Handle(_event);
 
             Mocker.GetMock<IBlacklistRepository>()
-                .Verify(v => v.Insert(It.Is<Blacklist>(b => b.AlbumIds == _event.AlbumIds)), Times.Once());
+                .Verify(v => v.Insert(It.Is<Blacklist>(b => b.BookIds == _event.BookIds)), Times.Once());
         }
 
         [Test]
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.Blacklisting
             _event.Data.Remove("protocol");
 
             Mocker.GetMock<IBlacklistRepository>()
-                .Verify(v => v.Insert(It.Is<Blacklist>(b => b.AlbumIds == _event.AlbumIds)), Times.Once());
+                .Verify(v => v.Insert(It.Is<Blacklist>(b => b.BookIds == _event.BookIds)), Times.Once());
         }
     }
 }

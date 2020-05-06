@@ -31,9 +31,16 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Identification
 
             var releases = new List<LocalAlbumRelease>();
 
+            // text files are always single file releases
+            var textfiles = localTracks.Where(x => MediaFileExtensions.TextExtensions.Contains(Path.GetExtension(x.Path)));
+            foreach (var file in textfiles)
+            {
+                releases.Add(new LocalAlbumRelease(new List<LocalTrack> { file }));
+            }
+
             // first attempt, assume grouped by folder
             var unprocessed = new List<LocalTrack>();
-            foreach (var group in GroupTracksByDirectory(localTracks))
+            foreach (var group in GroupTracksByDirectory(localTracks.Except(textfiles).ToList()))
             {
                 var tracks = group.ToList();
                 if (LooksLikeSingleRelease(tracks))

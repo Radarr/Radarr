@@ -19,10 +19,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.CutoffNotMet(
              new QualityProfile
              {
-                 Cutoff = Quality.MP3_256.Id,
+                 Cutoff = Quality.MP3_320.Id,
                  Items = Qualities.QualityFixture.GetDefaultQualities()
              },
-             new List<QualityModel> { new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
+             new List<QualityModel> { new QualityModel(Quality.Unknown, new Revision(version: 2)) },
              NoPreferredWordScore).Should().BeTrue();
         }
 
@@ -32,10 +32,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.CutoffNotMet(
             new QualityProfile
             {
-                Cutoff = Quality.MP3_256.Id,
+                Cutoff = Quality.MP3_320.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities()
             },
-            new List<QualityModel> { new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
+            new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
             NoPreferredWordScore).Should().BeFalse();
         }
 
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Subject.CutoffNotMet(
             new QualityProfile
             {
-                Cutoff = Quality.MP3_256.Id,
+                Cutoff = Quality.AZW3.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities()
             },
             new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 2)) },

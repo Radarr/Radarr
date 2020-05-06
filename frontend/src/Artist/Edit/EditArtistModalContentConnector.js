@@ -87,7 +87,7 @@ class EditArtistModalContentConnector extends Component {
 
   onSavePress = (moveFiles) => {
     this.props.dispatchSaveArtist({
-      id: this.props.artistId,
+      id: this.props.authorId,
       moveFiles
     });
   }
@@ -108,7 +108,7 @@ class EditArtistModalContentConnector extends Component {
 }
 
 EditArtistModalContentConnector.propTypes = {
-  artistId: PropTypes.number,
+  authorId: PropTypes.number,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   dispatchSetArtistValue: PropTypes.func.isRequired,

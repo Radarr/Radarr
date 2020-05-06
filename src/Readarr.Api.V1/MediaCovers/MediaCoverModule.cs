@@ -10,8 +10,8 @@ namespace Readarr.Api.V1.MediaCovers
 {
     public class MediaCoverModule : ReadarrV1Module
     {
-        private const string MEDIA_COVER_ARTIST_ROUTE = @"/Artist/(?<artistId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
-        private const string MEDIA_COVER_ALBUM_ROUTE = @"/Album/(?<artistId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
+        private const string MEDIA_COVER_ARTIST_ROUTE = @"/Artist/(?<authorId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
+        private const string MEDIA_COVER_ALBUM_ROUTE = @"/Album/(?<authorId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
 
         private static readonly Regex RegexResizedImage = new Regex(@"-\d+(?=\.(jpg|png|gif)$)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -24,13 +24,13 @@ namespace Readarr.Api.V1.MediaCovers
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;
 
-            Get(MEDIA_COVER_ARTIST_ROUTE, options => GetArtistMediaCover(options.artistId, options.filename));
-            Get(MEDIA_COVER_ALBUM_ROUTE, options => GetAlbumMediaCover(options.artistId, options.filename));
+            Get(MEDIA_COVER_ARTIST_ROUTE, options => GetArtistMediaCover(options.authorId, options.filename));
+            Get(MEDIA_COVER_ALBUM_ROUTE, options => GetAlbumMediaCover(options.authorId, options.filename));
         }
 
-        private object GetArtistMediaCover(int artistId, string filename)
+        private object GetArtistMediaCover(int authorId, string filename)
         {
-            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", artistId.ToString(), filename);
+            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", authorId.ToString(), filename);
 
             if (!_diskProvider.FileExists(filePath) || _diskProvider.GetFileSize(filePath) == 0)
             {
@@ -48,9 +48,9 @@ namespace Readarr.Api.V1.MediaCovers
             return new StreamResponse(() => File.OpenRead(filePath), MimeTypes.GetMimeType(filePath));
         }
 
-        private object GetAlbumMediaCover(int albumId, string filename)
+        private object GetAlbumMediaCover(int bookId, string filename)
         {
-            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", "Albums", albumId.ToString(), filename);
+            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", "Albums", bookId.ToString(), filename);
 
             if (!_diskProvider.FileExists(filePath) || _diskProvider.GetFileSize(filePath) == 0)
             {

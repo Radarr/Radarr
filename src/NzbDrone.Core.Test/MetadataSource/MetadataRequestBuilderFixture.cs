@@ -20,14 +20,14 @@ namespace NzbDrone.Core.Test.MetadataSource
 
             Mocker.GetMock<IReadarrCloudRequestBuilder>()
                 .Setup(s => s.Search)
-                .Returns(new HttpRequestBuilder("https://api.readarr.audio/api/v0.4/{route}").CreateFactory());
+                .Returns(new HttpRequestBuilder("https://api.readarr.com/api/v0.4/{route}").CreateFactory());
         }
 
         private void WithCustomProvider()
         {
             Mocker.GetMock<IConfigService>()
                 .Setup(s => s.MetadataSource)
-                .Returns("http://api.readarr.audio/api/testing/");
+                .Returns("http://api.readarr.com/api/testing/");
         }
 
         [TestCase]

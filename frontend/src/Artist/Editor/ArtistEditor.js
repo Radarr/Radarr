@@ -46,12 +46,6 @@ function getColumns(showMetadataProfile) {
       isVisible: showMetadataProfile
     },
     {
-      name: 'albumFolder',
-      label: 'Album Folder',
-      isSortable: true,
-      isVisible: true
-    },
-    {
       name: 'path',
       label: 'Path',
       isSortable: true,
@@ -122,7 +116,7 @@ class ArtistEditor extends Component {
 
   onSaveSelected = (changes) => {
     this.props.onSaveSelected({
-      artistIds: this.getSelectedIds(),
+      authorIds: this.getSelectedIds(),
       ...changes
     });
   }
@@ -184,7 +178,7 @@ class ArtistEditor extends Component {
       columns
     } = this.state;
 
-    const selectedArtistIds = this.getSelectedIds();
+    const selectedAuthorIds = this.getSelectedIds();
 
     return (
       <PageContent title="Artist Editor">
@@ -252,8 +246,8 @@ class ArtistEditor extends Component {
         </PageContentBodyConnector>
 
         <ArtistEditorFooter
-          artistIds={selectedArtistIds}
-          selectedCount={selectedArtistIds.length}
+          authorIds={selectedAuthorIds}
+          selectedCount={selectedAuthorIds.length}
           isSaving={isSaving}
           saveError={saveError}
           isDeleting={isDeleting}
@@ -268,13 +262,13 @@ class ArtistEditor extends Component {
 
         <OrganizeArtistModal
           isOpen={this.state.isOrganizingArtistModalOpen}
-          artistIds={selectedArtistIds}
+          authorIds={selectedAuthorIds}
           onModalClose={this.onOrganizeArtistModalClose}
         />
 
         <RetagArtistModal
           isOpen={this.state.isRetaggingArtistModalOpen}
-          artistIds={selectedArtistIds}
+          authorIds={selectedAuthorIds}
           onModalClose={this.onRetagArtistModalClose}
         />
 

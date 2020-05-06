@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dapper;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Music;
@@ -11,13 +10,13 @@ namespace NzbDrone.Core.History
 {
     public interface IHistoryRepository : IBasicRepository<History>
     {
-        History MostRecentForAlbum(int albumId);
+        History MostRecentForAlbum(int bookId);
         History MostRecentForDownloadId(string downloadId);
         List<History> FindByDownloadId(string downloadId);
-        List<History> GetByArtist(int artistId, HistoryEventType? eventType);
-        List<History> GetByAlbum(int albumId, HistoryEventType? eventType);
-        List<History> FindDownloadHistory(int idArtistId, QualityModel quality);
-        void DeleteForArtist(int artistId);
+        List<History> GetByArtist(int authorId, HistoryEventType? eventType);
+        List<History> GetByAlbum(int bookId, HistoryEventType? eventType);
+        List<History> FindDownloadHistory(int idAuthorId, QualityModel quality);
+        void DeleteForArtist(int authorId);
         List<History> Since(DateTime date, HistoryEventType? eventType);
     }
 
@@ -28,9 +27,9 @@ namespace NzbDrone.Core.History
         {
         }
 
-        public History MostRecentForAlbum(int albumId)
+        public History MostRecentForAlbum(int bookId)
         {
-            return Query(h => h.AlbumId == albumId)
+            return Query(h => h.BookId == bookId)
                 .OrderByDescending(h => h.Date)
                 .FirstOrDefault();
         }
@@ -44,10 +43,10 @@ namespace NzbDrone.Core.History
 
         public List<History> FindByDownloadId(string downloadId)
         {
-            return _database.QueryJoined<History, Artist, Album>(
+            return _database.QueryJoined<History, Author, Book>(
                 Builder()
-                .Join<History, Artist>((h, a) => h.ArtistId == a.Id)
-                .Join<History, Album>((h, a) => h.AlbumId == a.Id)
+                .Join<History, Author>((h, a) => h.AuthorId == a.Id)
+                .Join<History, Book>((h, a) => h.BookId == a.Id)
                 .Where<History>(h => h.DownloadId == downloadId),
                 (history, artist, album) =>
                 {
@@ -57,9 +56,9 @@ namespace NzbDrone.Core.History
                 }).ToList();
         }
 
-        public List<History> GetByArtist(int artistId, HistoryEventType? eventType)
+        public List<History> GetByArtist(int authorId, HistoryEventType? eventType)
         {
-            var builder = Builder().Where<History>(h => h.ArtistId == artistId);
+            var builder = Builder().Where<History>(h => h.AuthorId == authorId);
 
             if (eventType.HasValue)
             {
@@ -69,18 +68,18 @@ namespace NzbDrone.Core.History
             return Query(builder).OrderByDescending(h => h.Date).ToList();
         }
 
-        public List<History> GetByAlbum(int albumId, HistoryEventType? eventType)
+        public List<History> GetByAlbum(int bookId, HistoryEventType? eventType)
         {
             var builder = Builder()
-                .Join<History, Album>((h, a) => h.AlbumId == a.Id)
-                .Where<History>(h => h.AlbumId == albumId);
+                .Join<History, Book>((h, a) => h.BookId == a.Id)
+                .Where<History>(h => h.BookId == bookId);
 
             if (eventType.HasValue)
             {
                 builder.Where<History>(h => h.EventType == eventType);
             }
 
-            return _database.QueryJoined<History, Album>(
+            return _database.QueryJoined<History, Book>(
                 builder,
                 (history, album) =>
                 {
@@ -89,30 +88,29 @@ namespace NzbDrone.Core.History
                 }).OrderByDescending(h => h.Date).ToList();
         }
 
-        public List<History> FindDownloadHistory(int idArtistId, QualityModel quality)
+        public List<History> FindDownloadHistory(int idAuthorId, QualityModel quality)
         {
             var allowed = new[] { HistoryEventType.Grabbed, HistoryEventType.DownloadFailed, HistoryEventType.TrackFileImported };
 
-            return Query(h => h.ArtistId == idArtistId &&
+            return Query(h => h.AuthorId == idAuthorId &&
                          h.Quality == quality &&
                          allowed.Contains(h.EventType));
         }
 
-        public void DeleteForArtist(int artistId)
+        public void DeleteForArtist(int authorId)
         {
-            Delete(c => c.ArtistId == artistId);
+            Delete(c => c.AuthorId == authorId);
         }
 
         protected override SqlBuilder PagedBuilder() => new SqlBuilder()
-            .Join<History, Artist>((h, a) => h.ArtistId == a.Id)
-            .Join<History, Album>((h, a) => h.AlbumId == a.Id)
-            .LeftJoin<History, Track>((h, t) => h.TrackId == t.Id);
+            .Join<History, Author>((h, a) => h.AuthorId == a.Id)
+            .Join<History, Book>((h, a) => h.BookId == a.Id);
+
         protected override IEnumerable<History> PagedQuery(SqlBuilder builder) =>
-            _database.QueryJoined<History, Artist, Album, Track>(builder, (history, artist, album, track) =>
+            _database.QueryJoined<History, Author, Book>(builder, (history, artist, album) =>
                     {
                         history.Artist = artist;
                         history.Album = album;
-                        history.Track = track;
                         return history;
                     });
 

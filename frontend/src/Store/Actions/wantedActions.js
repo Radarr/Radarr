@@ -28,20 +28,14 @@ export const defaultState = {
 
     columns: [
       {
-        name: 'artist.sortName',
-        label: 'Artist Name',
+        name: 'authors.sortName',
+        label: 'Author',
         isSortable: true,
         isVisible: true
       },
       {
-        name: 'albumTitle',
-        label: 'Album Title',
-        isSortable: true,
-        isVisible: true
-      },
-      {
-        name: 'albumType',
-        label: 'Album Type',
+        name: 'books.title',
+        label: 'Book',
         isSortable: true,
         isVisible: true
       },
@@ -51,11 +45,6 @@ export const defaultState = {
         isSortable: true,
         isVisible: true
       },
-      // {
-      //   name: 'status',
-      //   label: 'Status',
-      //   isVisible: true
-      // },
       {
         name: 'actions',
         columnLabel: 'Actions',
@@ -102,20 +91,14 @@ export const defaultState = {
 
     columns: [
       {
-        name: 'artist.sortName',
-        label: 'Artist Name',
+        name: 'authors.sortName',
+        label: 'Author',
         isSortable: true,
         isVisible: true
       },
       {
-        name: 'albumTitle',
-        label: 'Album Title',
-        isSortable: true,
-        isVisible: true
-      },
-      {
-        name: 'albumType',
-        label: 'Album Type',
+        name: 'books.Title',
+        label: 'Book',
         isSortable: true,
         isVisible: true
       },
@@ -125,11 +108,6 @@ export const defaultState = {
         isSortable: true,
         isVisible: true
       },
-      // {
-      //  name: 'status',
-      //  label: 'Status',
-      //  isVisible: true
-      // },
       {
         name: 'actions',
         columnLabel: 'Actions',

@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _remoteAlbum = new RemoteAlbum
             {
-                Artist = new Artist
+                Artist = new Author
                 {
                     Tags = new HashSet<int>()
                 },

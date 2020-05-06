@@ -114,7 +114,7 @@ class AddNewAlbumModalContent extends Component {
         <ModalFooter className={styles.modalFooter}>
           <label className={styles.searchForNewAlbumLabelContainer}>
             <span className={styles.searchForNewAlbumLabel}>
-              Start search for new album
+              Start search for new book
             </span>
 
             <CheckInput

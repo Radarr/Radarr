@@ -195,7 +195,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex YearInTitleRegex = new Regex(@"^(?<title>.+?)(?:\W|_)?(?<year>\d{4})",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex WordDelimiterRegex = new Regex(@"(\s|\.|,|_|-|=|\|)+", RegexOptions.Compiled);
+        private static readonly Regex WordDelimiterRegex = new Regex(@"(\s|\.|,|_|-|=|\(|\)|\[|\]|\|)+", RegexOptions.Compiled);
         private static readonly Regex PunctuationRegex = new Regex(@"[^\w\s]", RegexOptions.Compiled);
         private static readonly Regex CommonWordRegex = new Regex(@"\b(a|an|the|and|or|of)\b\s?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SpecialEpisodeWordRegex = new Regex(@"\b(part|special|edition|christmas)\b\s?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -218,6 +218,8 @@ namespace NzbDrone.Core.Parser
         };
 
         private static readonly Regex AfterDashRegex = new Regex(@"[-:].*", RegexOptions.Compiled);
+
+        private static readonly Regex CalibreIdRegex = new Regex(@"\((?<id>\d+)\)", RegexOptions.Compiled);
 
         public static ParsedTrackInfo ParseMusicPath(string path)
         {
@@ -291,7 +293,7 @@ namespace NzbDrone.Core.Parser
 
                             if (result != null)
                             {
-                                result.Quality = QualityParser.ParseQuality(title, null, 0);
+                                result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
                                 return result;
@@ -317,7 +319,7 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
-        public static ParsedAlbumInfo ParseAlbumTitleWithSearchCriteria(string title, Artist artist, List<Album> album)
+        public static ParsedAlbumInfo ParseAlbumTitleWithSearchCriteria(string title, Author artist, List<Book> album)
         {
             try
             {
@@ -341,47 +343,39 @@ namespace NzbDrone.Core.Parser
 
                 simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle);
 
-                var escapedArtist = Regex.Escape(artistName.RemoveAccent()).Replace(@"\ ", @"[\W_]");
-                var escapedAlbums = string.Join("|", album.Select(s => Regex.Escape(s.Title.RemoveAccent())).ToList()).Replace(@"\ ", @"[\W_]");
+                var bestAlbum = album.OrderByDescending(x => simpleTitle.FuzzyContains(x.Title)).First();
 
-                var releaseRegex = new Regex(@"^(\W*|\b)(?<artist>" + escapedArtist + @")(\W*|\b).*(\W*|\b)(?<album>" + escapedAlbums + @")(\W*|\b)", RegexOptions.IgnoreCase);
+                var foundArtist = GetTitleFuzzy(simpleTitle, artistName, out var remainder);
+                var foundAlbum = GetTitleFuzzy(remainder, bestAlbum.Title, out _);
 
-                var match = releaseRegex.Matches(simpleTitle);
+                Logger.Trace($"Found {foundArtist} - {foundAlbum} with fuzzy parser");
 
-                if (match.Count != 0)
+                if (foundArtist == null || foundAlbum == null)
                 {
-                    try
-                    {
-                        var result = ParseAlbumMatchCollection(match);
+                    return null;
+                }
 
-                        if (result != null)
-                        {
-                            result.Quality = QualityParser.ParseQuality(title, null, 0);
-                            Logger.Debug("Quality parsed: {0}", result.Quality);
+                var result = new ParsedAlbumInfo
+                {
+                    ArtistName = foundArtist,
+                    ArtistTitleInfo = GetArtistTitleInfo(foundArtist),
+                    AlbumTitle = foundAlbum
+                };
 
-                            result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
+                try
+                {
+                    result.Quality = QualityParser.ParseQuality(title);
+                    Logger.Debug("Quality parsed: {0}", result.Quality);
 
-                            var subGroup = GetSubGroup(match);
-                            if (!subGroup.IsNullOrWhiteSpace())
-                            {
-                                result.ReleaseGroup = subGroup;
-                            }
+                    result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
 
-                            Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+                    Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
 
-                            result.ReleaseHash = GetReleaseHash(match);
-                            if (!result.ReleaseHash.IsNullOrWhiteSpace())
-                            {
-                                Logger.Debug("Release Hash parsed: {0}", result.ReleaseHash);
-                            }
-
-                            return result;
-                        }
-                    }
-                    catch (InvalidDateException ex)
-                    {
-                        Logger.Debug(ex, ex.Message);
-                    }
+                    return result;
+                }
+                catch (InvalidDateException ex)
+                {
+                    Logger.Debug(ex, ex.Message);
                 }
             }
             catch (Exception e)
@@ -394,6 +388,86 @@ namespace NzbDrone.Core.Parser
 
             Logger.Debug("Unable to parse {0}", title);
             return null;
+        }
+
+        private static string GetTitleFuzzy(string report, string name, out string remainder)
+        {
+            remainder = report;
+
+            Logger.Trace($"Finding '{name}' in '{report}'");
+            var loc = report.ToLowerInvariant().FuzzyFind(name.ToLowerInvariant(), 0.6);
+
+            if (loc == -1)
+            {
+                return null;
+            }
+
+            Logger.Trace($"start '{loc}'");
+
+            var boundaries = WordDelimiterRegex.Matches(report);
+
+            if (boundaries.Count == 0)
+            {
+                return null;
+            }
+
+            var starts = new List<int>();
+            var finishes = new List<int>();
+
+            if (boundaries[0].Index == 0)
+            {
+                starts.Add(boundaries[0].Length);
+            }
+            else
+            {
+                starts.Add(0);
+            }
+
+            foreach (Match match in boundaries)
+            {
+                var start = match.Index + match.Length;
+                if (start < report.Length)
+                {
+                    starts.Add(start);
+                }
+
+                var finish = match.Index - 1;
+                if (finish >= 0)
+                {
+                    finishes.Add(finish);
+                }
+            }
+
+            var lastMatch = boundaries[boundaries.Count - 1];
+            if (lastMatch.Index + lastMatch.Length < report.Length)
+            {
+                finishes.Add(report.Length - 1);
+            }
+
+            Logger.Trace(starts.ConcatToString(x => x.ToString()));
+            Logger.Trace(finishes.ConcatToString(x => x.ToString()));
+
+            var wordStart = starts.OrderBy(x => Math.Abs(x - loc)).First();
+            var wordEnd = finishes.OrderBy(x => Math.Abs(x - (loc + name.Length))).First();
+
+            var found = report.Substring(wordStart, wordEnd - wordStart + 1);
+
+            if (found.ToLowerInvariant().FuzzyMatch(name.ToLowerInvariant()) >= 0.8)
+            {
+                remainder = report.Remove(wordStart, wordEnd - wordStart + 1);
+                return found.Replace('.', ' ').Replace('_', ' ');
+            }
+
+            return null;
+        }
+
+        public static int ParseCalibreId(this string path)
+        {
+            var bookFolder = path.GetParentPath();
+
+            var match = CalibreIdRegex.Match(bookFolder);
+
+            return match.Success ? int.Parse(match.Groups["id"].Value) : 0;
         }
 
         public static ParsedAlbumInfo ParseAlbumTitle(string title)
@@ -450,7 +524,7 @@ namespace NzbDrone.Core.Parser
 
                             if (result != null)
                             {
-                                result.Quality = QualityParser.ParseQuality(title, null, 0);
+                                result.Quality = QualityParser.ParseQuality(title);
                                 Logger.Debug("Quality parsed: {0}", result.Quality);
 
                                 result.ReleaseGroup = ParseReleaseGroup(releaseTitle);
@@ -562,7 +636,7 @@ namespace NzbDrone.Core.Parser
             title = FileExtensionRegex.Replace(title, m =>
                 {
                     var extension = m.Value.ToLower();
-                    if (MediaFiles.MediaFileExtensions.Extensions.Contains(extension) || new[] { ".par2", ".nzb" }.Contains(extension))
+                    if (MediaFiles.MediaFileExtensions.AllExtensions.Contains(extension) || new[] { ".par2", ".nzb" }.Contains(extension))
                     {
                         return string.Empty;
                     }
@@ -653,7 +727,6 @@ namespace NzbDrone.Core.Parser
             ParsedTrackInfo result = new ParsedTrackInfo();
 
             result.ArtistTitle = artistName;
-            result.ArtistTitleInfo = GetArtistTitleInfo(result.ArtistTitle);
 
             Logger.Debug("Track Parsed. {0}", result);
             return result;

@@ -58,14 +58,14 @@ function createMapStateToProps() {
       const isRefreshingArtist = executingCommands.some((command) => {
         return (
           command.name === commandNames.REFRESH_ARTIST &&
-          command.body.artistId === artist.id
+          command.body.authorId === artist.id
         );
       });
 
       const isSearchingArtist = executingCommands.some((command) => {
         return (
           command.name === commandNames.ARTIST_SEARCH &&
-          command.body.artistId === artist.id
+          command.body.authorId === artist.id
         );
       });
 
@@ -96,14 +96,14 @@ class ArtistIndexItemConnector extends Component {
   onRefreshArtistPress = () => {
     this.props.dispatchExecuteCommand({
       name: commandNames.REFRESH_ARTIST,
-      artistId: this.props.id
+      authorId: this.props.id
     });
   }
 
   onSearchPress = () => {
     this.props.dispatchExecuteCommand({
       name: commandNames.ARTIST_SEARCH,
-      artistId: this.props.id
+      authorId: this.props.id
     });
   }
 

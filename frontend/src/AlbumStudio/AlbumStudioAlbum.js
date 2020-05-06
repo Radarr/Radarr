@@ -25,7 +25,6 @@ class AlbumStudioAlbum extends Component {
     const {
       title,
       disambiguation,
-      albumType,
       monitored,
       statistics,
       isSaving
@@ -53,14 +52,6 @@ class AlbumStudioAlbum extends Component {
           </span>
         </div>
 
-        <div className={styles.albumType}>
-          <span>
-            {
-              `${albumType}`
-            }
-          </span>
-        </div>
-
         <div
           className={classNames(
             styles.tracks,
@@ -82,7 +73,6 @@ AlbumStudioAlbum.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   disambiguation: PropTypes.string,
-  albumType: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   statistics: PropTypes.object.isRequired,
   isSaving: PropTypes.bool.isRequired,

@@ -10,15 +10,15 @@ namespace NzbDrone.Core.Parser.Model
     {
         public ReleaseInfo Release { get; set; }
         public ParsedAlbumInfo ParsedAlbumInfo { get; set; }
-        public Artist Artist { get; set; }
-        public List<Album> Albums { get; set; }
+        public Author Artist { get; set; }
+        public List<Book> Albums { get; set; }
         public bool DownloadAllowed { get; set; }
         public TorrentSeedConfiguration SeedConfiguration { get; set; }
         public int PreferredWordScore { get; set; }
 
         public RemoteAlbum()
         {
-            Albums = new List<Album>();
+            Albums = new List<Book>();
         }
 
         public bool IsRecentAlbum()

@@ -36,13 +36,13 @@ class RetagPreviewModalContentConnector extends Component {
 
   componentDidMount() {
     const {
-      artistId,
-      albumId
+      authorId,
+      bookId
     } = this.props;
 
     this.props.fetchRetagPreview({
-      artistId,
-      albumId
+      authorId,
+      bookId
     });
   }
 
@@ -52,7 +52,7 @@ class RetagPreviewModalContentConnector extends Component {
   onRetagPress = (files) => {
     this.props.executeCommand({
       name: commandNames.RETAG_FILES,
-      artistId: this.props.artistId,
+      authorId: this.props.authorId,
       files
     });
 
@@ -73,8 +73,8 @@ class RetagPreviewModalContentConnector extends Component {
 }
 
 RetagPreviewModalContentConnector.propTypes = {
-  artistId: PropTypes.number.isRequired,
-  albumId: PropTypes.number,
+  authorId: PropTypes.number.isRequired,
+  bookId: PropTypes.number,
   isPopulated: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   fetchRetagPreview: PropTypes.func.isRequired,

@@ -4,7 +4,7 @@ namespace Readarr.Api.V1.Artist
 {
     public class ArtistEditorResource
     {
-        public List<int> ArtistIds { get; set; }
+        public List<int> AuthorIds { get; set; }
         public bool? Monitored { get; set; }
         public int? QualityProfileId { get; set; }
         public int? MetadataProfileId { get; set; }

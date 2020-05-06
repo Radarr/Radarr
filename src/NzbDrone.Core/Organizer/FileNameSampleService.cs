@@ -11,89 +11,36 @@ namespace NzbDrone.Core.Organizer
         SampleResult GetStandardTrackSample(NamingConfig nameSpec);
         SampleResult GetMultiDiscTrackSample(NamingConfig nameSpec);
         string GetArtistFolderSample(NamingConfig nameSpec);
-        string GetAlbumFolderSample(NamingConfig nameSpec);
     }
 
     public class FileNameSampleService : IFilenameSampleService
     {
         private readonly IBuildFileNames _buildFileNames;
 
-        private static Artist _standardArtist;
-        private static Album _standardAlbum;
-        private static AlbumRelease _singleRelease;
-        private static AlbumRelease _multiRelease;
-        private static Track _track1;
-        private static List<Track> _singleTrack;
-        private static TrackFile _singleTrackFile;
+        private static Author _standardArtist;
+        private static Book _standardAlbum;
+        private static BookFile _singleTrackFile;
         private static List<string> _preferredWords;
 
         public FileNameSampleService(IBuildFileNames buildFileNames)
         {
             _buildFileNames = buildFileNames;
 
-            _standardArtist = new Artist
+            _standardArtist = new Author
             {
-                Metadata = new ArtistMetadata
+                Metadata = new AuthorMetadata
                 {
-                    Name = "The Artist Name",
-                    Disambiguation = "US Rock Band"
+                    Name = "The Author Name",
+                    Disambiguation = "US Author"
                 }
             };
 
-            _standardAlbum = new Album
+            _standardAlbum = new Book
             {
-                Title = "The Album Title",
+                Title = "The Book Title",
                 ReleaseDate = System.DateTime.Today,
-                AlbumType = "Album",
-                Disambiguation = "The Best Album",
+                Disambiguation = "First Book"
             };
-
-            _singleRelease = new AlbumRelease
-            {
-                Album = _standardAlbum,
-                Media = new List<Medium>
-                {
-                    new Medium
-                    {
-                        Name = "CD 1: First Years",
-                        Format = "CD",
-                        Number = 1
-                    }
-                },
-                Monitored = true
-            };
-
-            _multiRelease = new AlbumRelease
-            {
-                Album = _standardAlbum,
-                Media = new List<Medium>
-                {
-                    new Medium
-                    {
-                        Name = "CD 1: First Years",
-                        Format = "CD",
-                        Number = 1
-                    },
-                    new Medium
-                    {
-                        Name = "CD 2: Second Best",
-                        Format = "CD",
-                        Number = 2
-                    }
-                },
-                Monitored = true
-            };
-
-            _track1 = new Track
-            {
-                AlbumRelease = _singleRelease,
-                AbsoluteTrackNumber = 3,
-                MediumNumber = 1,
-
-                Title = "Track Title (1)",
-            };
-
-            _singleTrack = new List<Track> { _track1 };
 
             var mediaInfo = new MediaInfoModel()
             {
@@ -104,9 +51,9 @@ namespace NzbDrone.Core.Organizer
                 AudioSampleRate = 44100
             };
 
-            _singleTrackFile = new TrackFile
+            _singleTrackFile = new BookFile
             {
-                Quality = new QualityModel(Quality.MP3_256, new Revision(2)),
+                Quality = new QualityModel(Quality.MP3_320, new Revision(2)),
                 Path = "/music/Artist.Name.Album.Name.TrackNum.Track.Title.MP3256.mp3",
                 SceneName = "Artist.Name.Album.Name.TrackNum.Track.Title.MP3256",
                 ReleaseGroup = "RlsGrp",
@@ -121,14 +68,11 @@ namespace NzbDrone.Core.Organizer
 
         public SampleResult GetStandardTrackSample(NamingConfig nameSpec)
         {
-            _track1.AlbumRelease = _singleRelease;
-
             var result = new SampleResult
             {
-                FileName = BuildTrackSample(_singleTrack, _standardArtist, _standardAlbum, _singleTrackFile, nameSpec),
+                FileName = BuildTrackSample(_standardArtist, _standardAlbum, _singleTrackFile, nameSpec),
                 Artist = _standardArtist,
                 Album = _standardAlbum,
-                Tracks = _singleTrack,
                 TrackFile = _singleTrackFile
             };
 
@@ -137,14 +81,11 @@ namespace NzbDrone.Core.Organizer
 
         public SampleResult GetMultiDiscTrackSample(NamingConfig nameSpec)
         {
-            _track1.AlbumRelease = _multiRelease;
-
             var result = new SampleResult
             {
-                FileName = BuildTrackSample(_singleTrack, _standardArtist, _standardAlbum, _singleTrackFile, nameSpec),
+                FileName = BuildTrackSample(_standardArtist, _standardAlbum, _singleTrackFile, nameSpec),
                 Artist = _standardArtist,
                 Album = _standardAlbum,
-                Tracks = _singleTrack,
                 TrackFile = _singleTrackFile
             };
 
@@ -156,16 +97,11 @@ namespace NzbDrone.Core.Organizer
             return _buildFileNames.GetArtistFolder(_standardArtist, nameSpec);
         }
 
-        public string GetAlbumFolderSample(NamingConfig nameSpec)
-        {
-            return _buildFileNames.GetAlbumFolder(_standardArtist, _standardAlbum, nameSpec);
-        }
-
-        private string BuildTrackSample(List<Track> tracks, Artist artist, Album album, TrackFile trackFile, NamingConfig nameSpec)
+        private string BuildTrackSample(Author artist, Book album, BookFile trackFile, NamingConfig nameSpec)
         {
             try
             {
-                return _buildFileNames.BuildTrackFileName(tracks, artist, album, trackFile, nameSpec, _preferredWords);
+                return _buildFileNames.BuildTrackFileName(artist, album, trackFile, nameSpec, _preferredWords);
             }
             catch (NamingFormatException)
             {

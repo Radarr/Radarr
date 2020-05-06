@@ -14,26 +14,22 @@ namespace NzbDrone.Core.Test.MediaFiles
     public class MediaFileTableCleanupServiceFixture : CoreTest<MediaFileTableCleanupService>
     {
         private readonly string _DELETED_PATH = @"c:\ANY FILE STARTING WITH THIS PATH IS CONSIDERED DELETED!".AsOsAgnostic();
-        private List<Track> _tracks;
-        private Artist _artist;
+        private List<Book> _tracks;
+        private Author _artist;
 
         [SetUp]
         public void SetUp()
         {
-            _tracks = Builder<Track>.CreateListOfSize(10)
+            _tracks = Builder<Book>.CreateListOfSize(10)
                   .Build()
                   .ToList();
 
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                                      .With(s => s.Path = @"C:\Test\Music\Artist".AsOsAgnostic())
                                      .Build();
-
-            Mocker.GetMock<ITrackService>()
-                  .Setup(c => c.GetTracksByFileId(It.IsAny<IEnumerable<int>>()))
-                  .Returns((IEnumerable<int> ids) => _tracks.Where(y => ids.Contains(y.TrackFileId)).ToList());
         }
 
-        private void GivenTrackFiles(IEnumerable<TrackFile> trackFiles)
+        private void GivenTrackFiles(IEnumerable<BookFile> trackFiles)
         {
             Mocker.GetMock<IMediaFileService>()
                   .Setup(c => c.GetFilesWithBasePath(It.IsAny<string>()))
@@ -42,12 +38,9 @@ namespace NzbDrone.Core.Test.MediaFiles
 
         private void GivenFilesAreNotAttachedToTrack()
         {
-            Mocker.GetMock<ITrackService>()
-                  .Setup(c => c.GetTracksByFileId(It.IsAny<int>()))
-                  .Returns(new List<Track>());
         }
 
-        private List<string> FilesOnDisk(IEnumerable<TrackFile> trackFiles)
+        private List<string> FilesOnDisk(IEnumerable<BookFile> trackFiles)
         {
             return trackFiles.Select(e => e.Path).ToList();
         }
@@ -55,7 +48,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_skip_files_that_exist_on_disk()
         {
-            var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
+            var trackFiles = Builder<BookFile>.CreateListOfSize(10)
                 .All()
                 .With(x => x.Path = Path.Combine(@"c:\test".AsOsAgnostic(), Path.GetRandomFileName()))
                 .Build();
@@ -65,13 +58,13 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.Clean(_artist.Path, FilesOnDisk(trackFiles));
 
             Mocker.GetMock<IMediaFileService>()
-                .Verify(c => c.DeleteMany(It.Is<List<TrackFile>>(x => x.Count == 0), DeleteMediaFileReason.MissingFromDisk), Times.Once());
+                .Verify(c => c.DeleteMany(It.Is<List<BookFile>>(x => x.Count == 0), DeleteMediaFileReason.MissingFromDisk), Times.Once());
         }
 
         [Test]
         public void should_delete_non_existent_files()
         {
-            var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
+            var trackFiles = Builder<BookFile>.CreateListOfSize(10)
                 .All()
                 .With(x => x.Path = Path.Combine(@"c:\test".AsOsAgnostic(), Path.GetRandomFileName()))
                 .Random(2)
@@ -83,13 +76,13 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.Clean(_artist.Path, FilesOnDisk(trackFiles.Where(e => !e.Path.StartsWith(_DELETED_PATH))));
 
             Mocker.GetMock<IMediaFileService>()
-                .Verify(c => c.DeleteMany(It.Is<List<TrackFile>>(e => e.Count == 2 && e.All(y => y.Path.StartsWith(_DELETED_PATH))), DeleteMediaFileReason.MissingFromDisk), Times.Once());
+                .Verify(c => c.DeleteMany(It.Is<List<BookFile>>(e => e.Count == 2 && e.All(y => y.Path.StartsWith(_DELETED_PATH))), DeleteMediaFileReason.MissingFromDisk), Times.Once());
         }
 
         [Test]
         public void should_unlink_track_when_trackFile_does_not_exist()
         {
-            var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
+            var trackFiles = Builder<BookFile>.CreateListOfSize(10)
                 .Random(10)
                 .With(c => c.Path = Path.Combine(@"c:\test".AsOsAgnostic(), Path.GetRandomFileName()))
                 .Build();
@@ -97,15 +90,12 @@ namespace NzbDrone.Core.Test.MediaFiles
             GivenTrackFiles(trackFiles);
 
             Subject.Clean(_artist.Path, new List<string>());
-
-            Mocker.GetMock<ITrackService>()
-                .Verify(c => c.SetFileIds(It.Is<List<Track>>(e => e.Count == 10 && e.All(y => y.TrackFileId == 0))), Times.Once());
         }
 
         [Test]
         public void should_not_update_track_when_trackFile_exists()
         {
-            var trackFiles = Builder<TrackFile>.CreateListOfSize(10)
+            var trackFiles = Builder<BookFile>.CreateListOfSize(10)
                                 .Random(10)
                                 .With(c => c.Path = Path.Combine(@"c:\test".AsOsAgnostic(), Path.GetRandomFileName()))
                                 .Build();
@@ -113,8 +103,6 @@ namespace NzbDrone.Core.Test.MediaFiles
             GivenTrackFiles(trackFiles);
 
             Subject.Clean(_artist.Path, FilesOnDisk(trackFiles));
-
-            Mocker.GetMock<ITrackService>().Verify(c => c.SetFileIds(It.Is<List<Track>>(x => x.Count == 0)), Times.Once());
         }
     }
 }

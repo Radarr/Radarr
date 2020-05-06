@@ -7,25 +7,11 @@ import styles from './AlbumDetailsLinks.css';
 
 function AlbumDetailsLinks(props) {
   const {
-    foreignAlbumId,
     links
   } = props;
 
   return (
     <div className={styles.links}>
-
-      <Link
-        className={styles.link}
-        to={`https://musicbrainz.org/release-group/${foreignAlbumId}`}
-      >
-        <Label
-          className={styles.linkLabel}
-          kind={kinds.INFO}
-          size={sizes.LARGE}
-        >
-          Musicbrainz
-        </Label>
-      </Link>
 
       {links.map((link, index) => {
         return (
@@ -56,7 +42,6 @@ function AlbumDetailsLinks(props) {
 }
 
 AlbumDetailsLinks.propTypes = {
-  foreignAlbumId: PropTypes.string.isRequired,
   links: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 

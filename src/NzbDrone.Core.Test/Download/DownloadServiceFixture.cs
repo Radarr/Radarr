@@ -34,10 +34,10 @@ namespace NzbDrone.Core.Test.Download
                 .Setup(v => v.GetDownloadClient(It.IsAny<DownloadProtocol>()))
                 .Returns<DownloadProtocol>(v => _downloadClients.FirstOrDefault(d => d.Protocol == v));
 
-            var episodes = Builder<Album>.CreateListOfSize(2)
+            var episodes = Builder<Book>.CreateListOfSize(2)
                 .TheFirst(1).With(s => s.Id = 12)
                 .TheNext(1).With(s => s.Id = 99)
-                .All().With(s => s.ArtistId = 5)
+                .All().With(s => s.AuthorId = 5)
                 .Build().ToList();
 
             var releaseInfo = Builder<ReleaseInfo>.CreateNew()
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.Download
                 .Build();
 
             _parseResult = Builder<RemoteAlbum>.CreateNew()
-                   .With(c => c.Artist = Builder<Artist>.CreateNew().Build())
+                   .With(c => c.Artist = Builder<Author>.CreateNew().Build())
                    .With(c => c.Release = releaseInfo)
                    .With(c => c.Albums = episodes)
                    .Build();

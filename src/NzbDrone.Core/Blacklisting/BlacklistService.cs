@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Blacklisting
 {
     public interface IBlacklistService
     {
-        bool Blacklisted(int artistId, ReleaseInfo release);
+        bool Blacklisted(int authorId, ReleaseInfo release);
         PagingSpec<Blacklist> Paged(PagingSpec<Blacklist> pagingSpec);
         void Delete(int id);
     }
@@ -32,9 +32,9 @@ namespace NzbDrone.Core.Blacklisting
             _blacklistRepository = blacklistRepository;
         }
 
-        public bool Blacklisted(int artistId, ReleaseInfo release)
+        public bool Blacklisted(int authorId, ReleaseInfo release)
         {
-            var blacklistedByTitle = _blacklistRepository.BlacklistedByTitle(artistId, release.Title);
+            var blacklistedByTitle = _blacklistRepository.BlacklistedByTitle(authorId, release.Title);
 
             if (release.DownloadProtocol == DownloadProtocol.Torrent)
             {
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Blacklisting
                                              .Any(b => SameTorrent(b, torrentInfo));
                 }
 
-                var blacklistedByTorrentInfohash = _blacklistRepository.BlacklistedByTorrentInfoHash(artistId, torrentInfo.InfoHash);
+                var blacklistedByTorrentInfohash = _blacklistRepository.BlacklistedByTorrentInfoHash(authorId, torrentInfo.InfoHash);
 
                 return blacklistedByTorrentInfohash.Any(b => SameTorrent(b, torrentInfo));
             }
@@ -139,8 +139,8 @@ namespace NzbDrone.Core.Blacklisting
         {
             var blacklist = new Blacklist
             {
-                ArtistId = message.ArtistId,
-                AlbumIds = message.AlbumIds,
+                AuthorId = message.AuthorId,
+                BookIds = message.BookIds,
                 SourceTitle = message.SourceTitle,
                 Quality = message.Quality,
                 Date = DateTime.UtcNow,

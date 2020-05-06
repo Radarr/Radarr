@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Validation.Paths
                 return true;
             }
 
-            return !_artistService.GetAllArtists().Exists(s => s.Metadata.Value.ForeignArtistId == context.PropertyValue.ToString());
+            return !_artistService.GetAllArtists().Exists(s => s.Metadata.Value.ForeignAuthorId == context.PropertyValue.ToString());
         }
     }
 }

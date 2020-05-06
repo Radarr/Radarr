@@ -15,14 +15,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
     [TestFixture]
     public class TorrentSeedingSpecificationFixture : TestBase<TorrentSeedingSpecification>
     {
-        private Artist _artist;
+        private Author _artist;
         private RemoteAlbum _remoteAlbum;
         private IndexerDefinition _indexerDefinition;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>.CreateNew().With(s => s.Id = 1).Build();
+            _artist = Builder<Author>.CreateNew().With(s => s.Id = 1).Build();
 
             _remoteAlbum = new RemoteAlbum
             {

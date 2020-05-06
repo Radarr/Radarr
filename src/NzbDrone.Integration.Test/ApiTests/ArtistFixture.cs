@@ -13,10 +13,10 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(0)]
         public void add_artist_with_tags_should_store_them()
         {
-            EnsureNoArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park");
+            EnsureNoArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "J.K. Rowling");
             var tag = EnsureTag("abc");
 
-            var artist = Artist.Lookup("readarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
+            var artist = Artist.Lookup("readarr:1").Single();
 
             artist.QualityProfileId = 1;
             artist.MetadataProfileId = 1;
@@ -36,9 +36,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             IgnoreOnMonoVersions("5.12", "5.14");
 
-            EnsureNoArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park");
+            EnsureNoArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "J.K. Rowling");
 
-            var artist = Artist.Lookup("readarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
+            var artist = Artist.Lookup("readarr:1").Single();
 
             artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
 
@@ -51,9 +51,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         {
             IgnoreOnMonoVersions("5.12", "5.14");
 
-            EnsureNoArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park");
+            EnsureNoArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "J.K. Rowling");
 
-            var artist = Artist.Lookup("readarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
+            var artist = Artist.Lookup("readarr:1").Single();
 
             artist.QualityProfileId = 1;
 
@@ -64,9 +64,9 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(1)]
         public void add_artist()
         {
-            EnsureNoArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park");
+            EnsureNoArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "J.K. Rowling");
 
-            var artist = Artist.Lookup("readarr:f59c5520-5f46-4d2c-b2c4-822eabf53419").Single();
+            var artist = Artist.Lookup("readarr:1").Single();
 
             artist.QualityProfileId = 1;
             artist.MetadataProfileId = 1;
@@ -85,25 +85,25 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(2)]
         public void get_all_artist()
         {
-            EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
-            EnsureArtist("cc197bad-dc9c-440d-a5b5-d52ba2e14234", "Coldplay");
+            EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling");
+            EnsureArtist("amzn1.gr.author.v1.qTrNu9-PIaaBj5gYRDmN4Q", "34497", "Terry Pratchett");
 
             var artists = Artist.All();
 
             artists.Should().NotBeNullOrEmpty();
-            artists.Should().Contain(v => v.ForeignArtistId == "8ac6cc32-8ddf-43b1-9ac4-4b04f9053176");
-            artists.Should().Contain(v => v.ForeignArtistId == "cc197bad-dc9c-440d-a5b5-d52ba2e14234");
+            artists.Should().Contain(v => v.ForeignAuthorId == "amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ");
+            artists.Should().Contain(v => v.ForeignAuthorId == "amzn1.gr.author.v1.qTrNu9-PIaaBj5gYRDmN4Q");
         }
 
         [Test]
         [Order(2)]
         public void get_artist_by_id()
         {
-            var artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
+            var artist = EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling");
 
             var result = Artist.Get(artist.Id);
 
-            result.ForeignArtistId.Should().Be("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176");
+            result.ForeignAuthorId.Should().Be("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ");
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(2)]
         public void update_artist_profile_id()
         {
-            var artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
+            var artist = EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling");
 
             var profileId = 1;
             if (artist.QualityProfileId == profileId)
@@ -137,7 +137,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(3)]
         public void update_artist_monitored()
         {
-            var artist = EnsureArtist("f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park", false);
+            var artist = EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling", false);
 
             artist.Monitored.Should().BeFalse();
 
@@ -159,7 +159,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(3)]
         public void update_artist_tags()
         {
-            var artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
+            var artist = EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling");
             var tag = EnsureTag("abc");
 
             if (artist.Tags.Contains(tag.Id))
@@ -182,13 +182,13 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(4)]
         public void delete_artist()
         {
-            var artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
+            var artist = EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling");
 
             Artist.Get(artist.Id).Should().NotBeNull();
 
             Artist.Delete(artist.Id);
 
-            Artist.All().Should().NotContain(v => v.ForeignArtistId == "8ac6cc32-8ddf-43b1-9ac4-4b04f9053176");
+            Artist.All().Should().NotContain(v => v.ForeignAuthorId == "amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ");
         }
     }
 }

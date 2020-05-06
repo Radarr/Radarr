@@ -204,8 +204,8 @@ class ArtistIndexPosters extends Component {
       showQualityProfile
     } = posterOptions;
 
-    const artistIdx = rowIndex * columnCount + columnIndex;
-    const artist = items[artistIdx];
+    const authorIdx = rowIndex * columnCount + columnIndex;
+    const artist = items[authorIdx];
 
     if (!artist) {
       return null;
@@ -229,7 +229,7 @@ class ArtistIndexPosters extends Component {
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
-          artistId={artist.id}
+          authorId={artist.id}
           qualityProfileId={artist.qualityProfileId}
           metadataProfileId={artist.metadataProfileId}
         />

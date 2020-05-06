@@ -6,7 +6,7 @@ using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MetadataSource
 {
-    public class SearchArtistComparer : IComparer<Artist>
+    public class SearchArtistComparer : IComparer<Author>
     {
         private static readonly Regex RegexCleanPunctuation = new Regex("[-._:]", RegexOptions.Compiled);
         private static readonly Regex RegexCleanCountryYearPostfix = new Regex(@"(?<=.+)( \([A-Z]{2}\)| \(\d{4}\)| \([A-Z]{2}\) \(\d{4}\))$", RegexOptions.Compiled);
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.MetadataSource
             }
         }
 
-        public int Compare(Artist x, Artist y)
+        public int Compare(Author x, Author y)
         {
             int result = 0;
 
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.MetadataSource
             return Compare(x, y, s => SearchQuery.LevenshteinDistanceClean(s.Name));
         }
 
-        public int Compare<T>(Artist x, Artist y, Func<Artist, T> keySelector)
+        public int Compare<T>(Author x, Author y, Func<Author, T> keySelector)
             where T : IComparable<T>
         {
             var keyX = keySelector(x);

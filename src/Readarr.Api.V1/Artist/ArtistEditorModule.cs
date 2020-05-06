@@ -26,7 +26,7 @@ namespace Readarr.Api.V1.Artist
         private object SaveAll()
         {
             var resource = Request.Body.FromJson<ArtistEditorResource>();
-            var artistToUpdate = _artistService.GetArtists(resource.ArtistIds);
+            var artistToUpdate = _artistService.GetArtists(resource.AuthorIds);
             var artistToMove = new List<BulkMoveArtist>();
 
             foreach (var artist in artistToUpdate)
@@ -46,17 +46,12 @@ namespace Readarr.Api.V1.Artist
                     artist.MetadataProfileId = resource.MetadataProfileId.Value;
                 }
 
-                if (resource.AlbumFolder.HasValue)
-                {
-                    artist.AlbumFolder = resource.AlbumFolder.Value;
-                }
-
                 if (resource.RootFolderPath.IsNotNullOrWhiteSpace())
                 {
                     artist.RootFolderPath = resource.RootFolderPath;
                     artistToMove.Add(new BulkMoveArtist
                     {
-                        ArtistId = artist.Id,
+                        AuthorId = artist.Id,
                         SourcePath = artist.Path
                     });
                 }
@@ -99,9 +94,9 @@ namespace Readarr.Api.V1.Artist
         {
             var resource = Request.Body.FromJson<ArtistEditorResource>();
 
-            foreach (var artistId in resource.ArtistIds)
+            foreach (var authorId in resource.AuthorIds)
             {
-                _artistService.DeleteArtist(artistId, false);
+                _artistService.DeleteArtist(authorId, false);
             }
 
             return new object();

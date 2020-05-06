@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_update_clean_title()
         {
-            var artist = Builder<Artist>.CreateNew()
+            var artist = Builder<Author>.CreateNew()
                                         .With(s => s.Name = "Full Name")
                                         .With(s => s.CleanName = "unclean")
                                         .Build();
@@ -25,13 +25,13 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             Subject.Clean();
 
             Mocker.GetMock<IArtistRepository>()
-                .Verify(v => v.Update(It.Is<Artist>(s => s.CleanName == "fullname")), Times.Once());
+                .Verify(v => v.Update(It.Is<Author>(s => s.CleanName == "fullname")), Times.Once());
         }
 
         [Test]
         public void should_not_update_unchanged_title()
         {
-            var artist = Builder<Artist>.CreateNew()
+            var artist = Builder<Author>.CreateNew()
                                         .With(s => s.Name = "Full Name")
                                         .With(s => s.CleanName = "fullname")
                                         .Build();
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             Subject.Clean();
 
             Mocker.GetMock<IArtistRepository>()
-                .Verify(v => v.Update(It.Is<Artist>(s => s.CleanName == "fullname")), Times.Never());
+                .Verify(v => v.Update(It.Is<Author>(s => s.CleanName == "fullname")), Times.Never());
         }
     }
 }

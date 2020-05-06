@@ -23,7 +23,7 @@ function createMapStateToProps() {
     createUISettingsSelector(),
     (label, albums, artist, commands, dimensions, uiSettings) => {
 
-      const albumsInGroup = _.filter(albums.items, { albumType: label });
+      const albumsInGroup = albums.items;
 
       let sortDir = 'asc';
 
@@ -66,9 +66,9 @@ class ArtistDetailsSeasonConnector extends Component {
     this.props.dispatchSetAlbumSort({ sortKey });
   }
 
-  onMonitorAlbumPress = (albumIds, monitored) => {
+  onMonitorAlbumPress = (bookIds, monitored) => {
     this.props.toggleAlbumsMonitored({
-      albumIds,
+      bookIds,
       monitored
     });
   }
@@ -89,7 +89,7 @@ class ArtistDetailsSeasonConnector extends Component {
 }
 
 ArtistDetailsSeasonConnector.propTypes = {
-  artistId: PropTypes.number.isRequired,
+  authorId: PropTypes.number.isRequired,
   toggleAlbumsMonitored: PropTypes.func.isRequired,
   setAlbumsTableOption: PropTypes.func.isRequired,
   dispatchSetAlbumSort: PropTypes.func.isRequired,

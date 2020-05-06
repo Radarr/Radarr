@@ -25,7 +25,7 @@ namespace Readarr.Api.V1.Wanted
 
         private PagingResource<AlbumResource> GetMissingAlbums(PagingResource<AlbumResource> pagingResource)
         {
-            var pagingSpec = new PagingSpec<Album>
+            var pagingSpec = new PagingSpec<Book>
             {
                 Page = pagingResource.Page,
                 PageSize = pagingResource.PageSize,
@@ -38,11 +38,11 @@ namespace Readarr.Api.V1.Wanted
 
             if (monitoredFilter != null && monitoredFilter.Value == "false")
             {
-                pagingSpec.FilterExpressions.Add(v => v.Monitored == false || v.Artist.Value.Monitored == false);
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == false || v.Author.Value.Monitored == false);
             }
             else
             {
-                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Artist.Value.Monitored == true);
+                pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Author.Value.Monitored == true);
             }
 
             var resource = ApplyToPage(_albumService.AlbumsWithoutFiles, pagingSpec, v => MapToResource(v, includeArtist));

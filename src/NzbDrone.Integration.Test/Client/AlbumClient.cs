@@ -11,9 +11,9 @@ namespace NzbDrone.Integration.Test.Client
         {
         }
 
-        public List<AlbumResource> GetAlbumsInArtist(int artistId)
+        public List<AlbumResource> GetAlbumsInArtist(int authorId)
         {
-            var request = BuildRequest("?artistId=" + artistId.ToString());
+            var request = BuildRequest("?authorId=" + authorId.ToString());
             return Get<List<AlbumResource>>(request);
         }
     }

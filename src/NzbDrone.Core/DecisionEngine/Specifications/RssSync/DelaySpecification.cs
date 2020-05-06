@@ -92,9 +92,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var albumIds = subject.Albums.Select(e => e.Id);
+            var bookIds = subject.Albums.Select(e => e.Id);
 
-            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Artist.Id, albumIds.ToArray());
+            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Artist.Id, bookIds.ToArray());
 
             if (oldest != null && oldest.Release.AgeMinutes > delay)
             {

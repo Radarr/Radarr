@@ -110,7 +110,7 @@ export const actionHandlers = handleThunks({
     }));
 
     const promise = createAjaxRequest({
-      url: '/artist/editor',
+      url: '/author/editor',
       method: 'PUT',
       data: JSON.stringify(payload),
       dataType: 'json'
@@ -150,7 +150,7 @@ export const actionHandlers = handleThunks({
     }));
 
     const promise = createAjaxRequest({
-      url: '/artist/editor',
+      url: '/author/editor',
       method: 'DELETE',
       data: JSON.stringify(payload),
       dataType: 'json'

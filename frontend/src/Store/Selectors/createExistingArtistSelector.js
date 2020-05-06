@@ -4,10 +4,10 @@ import createAllArtistSelector from './createAllArtistSelector';
 
 function createExistingArtistSelector() {
   return createSelector(
-    (state, { foreignArtistId }) => foreignArtistId,
+    (state, { titleSlug }) => titleSlug,
     createAllArtistSelector(),
-    (foreignArtistId, artist) => {
-      return _.some(artist, { foreignArtistId });
+    (titleSlug, artist) => {
+      return _.some(artist, { titleSlug });
     }
   );
 }

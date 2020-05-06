@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     UpgradeAllowed = true
                 },
                 new List<QualityModel> { new QualityModel(Quality.MP3_320) },
-                new QualityModel(Quality.MP3_256))
+                new QualityModel(Quality.MP3_320))
             .Should().BeTrue();
         }
 
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     UpgradeAllowed = false
                 },
                 new List<QualityModel> { new QualityModel(Quality.MP3_320) },
-                new QualityModel(Quality.MP3_256))
+                new QualityModel(Quality.MP3_320))
             .Should().BeTrue();
         }
     }

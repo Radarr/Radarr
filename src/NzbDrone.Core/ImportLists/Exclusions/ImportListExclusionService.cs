@@ -79,7 +79,7 @@ namespace NzbDrone.Core.ImportLists.Exclusions
                 return;
             }
 
-            var existingExclusion = _repo.FindByForeignId(message.Artist.ForeignArtistId);
+            var existingExclusion = _repo.FindByForeignId(message.Artist.ForeignAuthorId);
 
             if (existingExclusion != null)
             {
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.ImportLists.Exclusions
 
             var importExclusion = new ImportListExclusion
             {
-                ForeignId = message.Artist.ForeignArtistId,
+                ForeignId = message.Artist.ForeignAuthorId,
                 Name = message.Artist.Name
             };
 
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.ImportLists.Exclusions
                 return;
             }
 
-            var existingExclusion = _repo.FindByForeignId(message.Album.ForeignAlbumId);
+            var existingExclusion = _repo.FindByForeignId(message.Album.ForeignBookId);
 
             if (existingExclusion != null)
             {
@@ -111,8 +111,8 @@ namespace NzbDrone.Core.ImportLists.Exclusions
 
             var importExclusion = new ImportListExclusion
             {
-                ForeignId = message.Album.ForeignAlbumId,
-                Name = $"{message.Album.ArtistMetadata.Value.Name} - {message.Album.Title}"
+                ForeignId = message.Album.ForeignBookId,
+                Name = $"{message.Album.AuthorMetadata.Value.Name} - {message.Album.Title}"
             };
 
             _repo.Insert(importExclusion);

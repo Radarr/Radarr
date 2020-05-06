@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
-        [Platform(Exclude = "NetCore")]
+        [Ignore("Ignore until we actually release something on nightly")]
         public void finds_update_when_version_lower()
         {
             UseRealHttp();
@@ -41,6 +41,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         }
 
         [Test]
+        [Ignore("Until merge readarr 0.1 pr")]
         public void should_get_recent_updates()
         {
             const string branch = "nightly";

@@ -48,13 +48,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = "Download",
                 Artist = new WebhookArtist(message.Artist),
-                Tracks = trackFiles.SelectMany(x => x.Tracks.Value.Select(y => new WebhookTrack(y)
-                {
-                    // TODO: Stop passing these parameters inside an episode v3
-                    Quality = x.Quality.Quality.Name,
-                    QualityVersion = x.Quality.Revision.Version,
-                    ReleaseGroup = x.ReleaseGroup
-                })).ToList(),
+                Book = new WebhookAlbum(message.Album),
                 TrackFiles = trackFiles.ConvertAll(x => new WebhookTrackFile(x)),
                 IsUpgrade = message.OldFiles.Any()
             };
@@ -62,7 +56,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             _proxy.SendWebhook(payload, Settings);
         }
 
-        public override void OnRename(Artist artist)
+        public override void OnRename(Author artist)
         {
             var payload = new WebhookPayload
             {

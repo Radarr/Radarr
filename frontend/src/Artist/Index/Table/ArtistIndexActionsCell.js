@@ -78,14 +78,14 @@ class ArtistIndexActionsCell extends Component {
 
         <EditArtistModalConnector
           isOpen={isEditArtistModalOpen}
-          artistId={id}
+          authorId={id}
           onModalClose={this.onEditArtistModalClose}
           onDeleteArtistPress={this.onDeleteArtistPress}
         />
 
         <DeleteArtistModal
           isOpen={isDeleteArtistModalOpen}
-          artistId={id}
+          authorId={id}
           onModalClose={this.onDeleteArtistModalClose}
         />
       </VirtualTableRowCell>

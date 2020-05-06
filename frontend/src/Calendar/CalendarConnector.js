@@ -65,11 +65,11 @@ class CalendarConnector extends Component {
     } = this.props;
 
     if (hasDifferentItems(prevProps.items, items)) {
-      const albumIds = selectUniqueIds(items, 'id');
+      const bookIds = selectUniqueIds(items, 'id');
       // const trackFileIds = selectUniqueIds(items, 'trackFileId');
 
       if (items.length) {
-        this.props.fetchQueueDetails({ albumIds });
+        this.props.fetchQueueDetails({ bookIds });
       }
 
       // if (trackFileIds.length) {

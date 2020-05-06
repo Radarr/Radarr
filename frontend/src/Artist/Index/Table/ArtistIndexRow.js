@@ -81,7 +81,7 @@ class ArtistIndexRow extends Component {
       monitored,
       status,
       artistName,
-      foreignArtistId,
+      titleSlug,
       artistType,
       qualityProfile,
       metadataProfile,
@@ -157,7 +157,7 @@ class ArtistIndexRow extends Component {
                     showBanners ?
                       <Link
                         className={styles.link}
-                        to={`/artist/${foreignArtistId}`}
+                        to={`/author/${titleSlug}`}
                       >
                         <ArtistBanner
                           className={styles.bannerImage}
@@ -177,7 +177,7 @@ class ArtistIndexRow extends Component {
                       </Link> :
 
                       <ArtistNameLink
-                        foreignArtistId={foreignArtistId}
+                        titleSlug={titleSlug}
                         artistName={artistName}
                       />
                   }
@@ -228,7 +228,7 @@ class ArtistIndexRow extends Component {
                     <AlbumTitleLink
                       title={nextAlbum.title}
                       disambiguation={nextAlbum.disambiguation}
-                      foreignAlbumId={nextAlbum.foreignAlbumId}
+                      titleSlug={nextAlbum.titleSlug}
                     />
                   </VirtualTableRowCell>
                 );
@@ -253,7 +253,7 @@ class ArtistIndexRow extends Component {
                     <AlbumTitleLink
                       title={lastAlbum.title}
                       disambiguation={lastAlbum.disambiguation}
-                      foreignAlbumId={lastAlbum.foreignAlbumId}
+                      titleSlug={lastAlbum.titleSlug}
                     />
                   </VirtualTableRowCell>
                 );
@@ -423,14 +423,14 @@ class ArtistIndexRow extends Component {
 
         <EditArtistModalConnector
           isOpen={isEditArtistModalOpen}
-          artistId={id}
+          authorId={id}
           onModalClose={this.onEditArtistModalClose}
           onDeleteArtistPress={this.onDeleteArtistPress}
         />
 
         <DeleteArtistModal
           isOpen={isDeleteArtistModalOpen}
-          artistId={id}
+          authorId={id}
           onModalClose={this.onDeleteArtistModalClose}
         />
       </>
@@ -443,7 +443,7 @@ ArtistIndexRow.propTypes = {
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
-  foreignArtistId: PropTypes.string.isRequired,
+  titleSlug: PropTypes.string.isRequired,
   artistType: PropTypes.string,
   qualityProfile: PropTypes.object.isRequired,
   metadataProfile: PropTypes.object.isRequired,

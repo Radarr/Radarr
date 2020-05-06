@@ -21,6 +21,7 @@ import * as artist from './artistActions';
 import * as artistEditor from './artistEditorActions';
 import * as artistHistory from './artistHistoryActions';
 import * as artistIndex from './artistIndexActions';
+import * as series from './seriesActions';
 import * as search from './searchActions';
 import * as settings from './settingsActions';
 import * as system from './systemActions';
@@ -52,6 +53,7 @@ export default [
   artistEditor,
   artistHistory,
   artistIndex,
+  series,
   search,
   settings,
   system,

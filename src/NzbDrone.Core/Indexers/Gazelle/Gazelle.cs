@@ -5,7 +5,6 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Indexers.Gazelle
 {
@@ -44,16 +43,6 @@ namespace NzbDrone.Core.Indexers.Gazelle
         public override IParseIndexerResponse GetParser()
         {
             return new GazelleParser(Settings);
-        }
-
-        public override IEnumerable<ProviderDefinition> DefaultDefinitions
-        {
-            get
-            {
-                yield return GetDefinition("Orpheus Network", GetSettings("https://orpheus.network"));
-                yield return GetDefinition("REDacted", GetSettings("https://redacted.ch"));
-                yield return GetDefinition("Not What CD", GetSettings("https://notwhat.cd"));
-            }
         }
 
         private IndexerDefinition GetDefinition(string name, GazelleSettings settings)

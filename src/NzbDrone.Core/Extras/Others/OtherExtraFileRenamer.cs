@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Extras.Others
 {
     public interface IOtherExtraFileRenamer
     {
-        void RenameOtherExtraFile(Artist artist, string path);
+        void RenameOtherExtraFile(Author artist, string path);
     }
 
     public class OtherExtraFileRenamer : IOtherExtraFileRenamer
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Extras.Others
             _otherExtraFileService = otherExtraFileService;
         }
 
-        public void RenameOtherExtraFile(Artist artist, string path)
+        public void RenameOtherExtraFile(Author artist, string path)
         {
             if (!_diskProvider.FileExists(path))
             {
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Extras.Others
             }
         }
 
-        private void RemoveOtherExtraFile(Artist artist, string path)
+        private void RemoveOtherExtraFile(Author artist, string path)
         {
             if (!_diskProvider.FileExists(path))
             {

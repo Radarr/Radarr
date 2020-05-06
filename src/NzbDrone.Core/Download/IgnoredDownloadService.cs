@@ -36,8 +36,8 @@ namespace NzbDrone.Core.Download
 
             var downloadIgnoredEvent = new DownloadIgnoredEvent
                                       {
-                                          ArtistId = artist.Id,
-                                          AlbumIds = albums.Select(e => e.Id).ToList(),
+                                          AuthorId = artist.Id,
+                                          BookIds = albums.Select(e => e.Id).ToList(),
                                           Quality = trackedDownload.RemoteAlbum.ParsedAlbumInfo.Quality,
                                           SourceTitle = trackedDownload.DownloadItem.Title,
                                           DownloadClient = trackedDownload.DownloadItem.DownloadClient,

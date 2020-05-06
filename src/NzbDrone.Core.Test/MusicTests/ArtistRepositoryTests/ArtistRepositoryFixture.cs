@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 {
     [TestFixture]
 
-    public class ArtistRepositoryFixture : DbTest<ArtistRepository, Artist>
+    public class ArtistRepositoryFixture : DbTest<ArtistRepository, Author>
     {
         private ArtistRepository _artistRepo;
         private ArtistMetadataRepository _artistMetadataRepo;
@@ -34,21 +34,21 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
                 oldIds = new List<string>();
             }
 
-            var metadata = Builder<ArtistMetadata>.CreateNew()
+            var metadata = Builder<AuthorMetadata>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Name = name)
-                .With(a => a.OldForeignArtistIds = oldIds)
+                .With(a => a.TitleSlug = foreignId)
                 .BuildNew();
 
-            var artist = Builder<Artist>.CreateNew()
+            var artist = Builder<Author>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Metadata = metadata)
                 .With(a => a.CleanName = Parser.Parser.CleanArtistName(name))
-                .With(a => a.ForeignArtistId = foreignId)
+                .With(a => a.ForeignAuthorId = foreignId)
                 .BuildNew();
 
             _artistMetadataRepo.Insert(metadata);
-            artist.ArtistMetadataId = metadata.Id;
+            artist.AuthorMetadataId = metadata.Id;
             _artistRepo.Insert(artist);
         }
 
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
         {
             var profile = new QualityProfile
             {
-                Items = Qualities.QualityFixture.GetDefaultQualities(Quality.FLAC, Quality.MP3_192, Quality.MP3_320),
+                Items = Qualities.QualityFixture.GetDefaultQualities(Quality.FLAC, Quality.MP3_320, Quality.MP3_320),
 
                 Cutoff = Quality.FLAC.Id,
                 Name = "TestProfile"
@@ -71,16 +71,13 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 
             var metaProfile = new MetadataProfile
             {
-                Name = "TestProfile",
-                PrimaryAlbumTypes = new List<ProfilePrimaryAlbumTypeItem>(),
-                SecondaryAlbumTypes = new List<ProfileSecondaryAlbumTypeItem>(),
-                ReleaseStatuses = new List<ProfileReleaseStatusItem>()
+                Name = "TestProfile"
             };
 
             Mocker.Resolve<QualityProfileRepository>().Insert(profile);
             Mocker.Resolve<MetadataProfileRepository>().Insert(metaProfile);
 
-            var artist = Builder<Artist>.CreateNew().BuildNew();
+            var artist = Builder<Author>.CreateNew().BuildNew();
             artist.QualityProfileId = profile.Id;
             artist.MetadataProfileId = metaProfile.Id;
 
@@ -108,18 +105,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             var artist = _artistRepo.FindById("d5be5333-4171-427e-8e12-732087c6b78e");
 
             artist.Should().NotBeNull();
-            artist.ForeignArtistId.Should().Be("d5be5333-4171-427e-8e12-732087c6b78e");
-        }
-
-        [Test]
-        public void should_find_artist_in_by_old_id()
-        {
-            GivenArtists();
-            var artist = _artistRepo.FindById("6f2ed437-825c-4cea-bb58-bf7688c6317a");
-
-            artist.Should().NotBeNull();
-            artist.Name.Should().Be("The Black Keys");
-            artist.ForeignArtistId.Should().Be("d15721d8-56b4-453d-b506-fc915b14cba2");
+            artist.ForeignAuthorId.Should().Be("d5be5333-4171-427e-8e12-732087c6b78e");
         }
 
         [Test]
@@ -141,12 +127,12 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
         public void should_throw_sql_exception_adding_duplicate_artist()
         {
             var name = "test";
-            var metadata = Builder<ArtistMetadata>.CreateNew()
+            var metadata = Builder<AuthorMetadata>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Name = name)
                 .BuildNew();
 
-            var artist1 = Builder<Artist>.CreateNew()
+            var artist1 = Builder<Author>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Metadata = metadata)
                 .With(a => a.CleanName = Parser.Parser.CleanArtistName(name))

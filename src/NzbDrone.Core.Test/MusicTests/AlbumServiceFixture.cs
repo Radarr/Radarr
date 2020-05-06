@@ -10,19 +10,19 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
     [TestFixture]
     public class AlbumServiceFixture : CoreTest<AlbumService>
     {
-        private List<Album> _albums;
+        private List<Book> _albums;
 
         [SetUp]
         public void Setup()
         {
-            _albums = new List<Album>();
-            _albums.Add(new Album
+            _albums = new List<Book>();
+            _albums.Add(new Book
             {
                 Title = "ANThology",
                 CleanTitle = "anthology",
             });
 
-            _albums.Add(new Album
+            _albums.Add(new Book
             {
                 Title = "+",
                 CleanTitle = "",
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
 
         private void GivenSimilarAlbum()
         {
-            _albums.Add(new Album
+            _albums.Add(new Book
             {
                 Title = "ANThology2",
                 CleanTitle = "anthology2",

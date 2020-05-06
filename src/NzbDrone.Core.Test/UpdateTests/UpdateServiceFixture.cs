@@ -124,7 +124,7 @@ namespace NzbDrone.Core.Test.UpdateTests
 
             Subject.Execute(new ApplicationUpdateCommand());
 
-            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(_updatePackage.Url, updateArchive));
+            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(_updatePackage.Url, updateArchive, null));
         }
 
         [Test]
@@ -238,6 +238,7 @@ namespace NzbDrone.Core.Test.UpdateTests
 
         [Test]
         [IntegrationTest]
+        [Ignore("Until release published")]
         public void Should_download_and_extract_to_temp_folder()
         {
             UseRealHttp();
@@ -289,7 +290,7 @@ namespace NzbDrone.Core.Test.UpdateTests
 
             Assert.Throws<CommandFailedException>(() => Subject.Execute(new ApplicationUpdateCommand()));
 
-            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(_updatePackage.Url, updateArchive), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(_updatePackage.Url, updateArchive, null), Times.Never());
             ExceptionVerification.ExpectedErrors(1);
         }
 
@@ -304,7 +305,7 @@ namespace NzbDrone.Core.Test.UpdateTests
 
             Assert.Throws<CommandFailedException>(() => Subject.Execute(new ApplicationUpdateCommand()));
 
-            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(_updatePackage.Url, updateArchive), Times.Never());
+            Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(_updatePackage.Url, updateArchive, null), Times.Never());
             ExceptionVerification.ExpectedErrors(1);
         }
 

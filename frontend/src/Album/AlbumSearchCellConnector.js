@@ -9,10 +9,10 @@ import AlbumSearchCell from './AlbumSearchCell';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { albumId }) => albumId,
+    (state, { bookId }) => bookId,
     createArtistSelector(),
     createCommandsSelector(),
-    (albumId, artist, commands) => {
+    (bookId, artist, commands) => {
       const isSearching = commands.some((command) => {
         const albumSearch = command.name === commandNames.ALBUM_SEARCH;
 
@@ -22,7 +22,7 @@ function createMapStateToProps() {
 
         return (
           isCommandExecuting(command) &&
-          command.body.albumIds.indexOf(albumId) > -1
+          command.body.bookIds.indexOf(bookId) > -1
         );
       });
 
@@ -40,7 +40,7 @@ function createMapDispatchToProps(dispatch, props) {
     onSearchPress(name, path) {
       dispatch(executeCommand({
         name: commandNames.ALBUM_SEARCH,
-        albumIds: [props.albumId]
+        bookIds: [props.bookId]
       }));
     }
   };

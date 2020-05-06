@@ -16,9 +16,9 @@ class AlbumStudioRow extends Component {
 
   render() {
     const {
-      artistId,
+      authorId,
       status,
-      foreignArtistId,
+      titleSlug,
       artistName,
       monitored,
       albums,
@@ -33,7 +33,7 @@ class AlbumStudioRow extends Component {
       <>
         <VirtualTableSelectCell
           className={styles.selectCell}
-          id={artistId}
+          id={authorId}
           isSelected={isSelected}
           onSelectedChange={onSelectedChange}
           isDisabled={false}
@@ -58,7 +58,7 @@ class AlbumStudioRow extends Component {
 
         <VirtualTableRowCell className={styles.title}>
           <ArtistNameLink
-            foreignArtistId={foreignArtistId}
+            titleSlug={titleSlug}
             artistName={artistName}
           />
         </VirtualTableRowCell>
@@ -82,9 +82,9 @@ class AlbumStudioRow extends Component {
 }
 
 AlbumStudioRow.propTypes = {
-  artistId: PropTypes.number.isRequired,
+  authorId: PropTypes.number.isRequired,
   status: PropTypes.string.isRequired,
-  foreignArtistId: PropTypes.string.isRequired,
+  titleSlug: PropTypes.string.isRequired,
   artistName: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   albums: PropTypes.arrayOf(PropTypes.object).isRequired,

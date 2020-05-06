@@ -31,15 +31,15 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
                 return Decision.Accept();
             }
 
-            var albumRelease = localAlbumRelease.AlbumRelease;
+            var albumRelease = localAlbumRelease.Book;
 
-            if (!albumRelease.Tracks.Value.Any(x => x.HasFile))
+            if ((!albumRelease?.BookFiles?.Value?.Any()) ?? true)
             {
-                _logger.Debug("Skipping already imported check for album without files");
+                _logger.Debug("Skipping already imported check for book without files");
                 return Decision.Accept();
             }
 
-            var albumHistory = _historyService.GetByAlbum(albumRelease.AlbumId, null);
+            var albumHistory = _historyService.GetByAlbum(albumRelease.Id, null);
             var lastImported = albumHistory.FirstOrDefault(h => h.EventType == HistoryEventType.DownloadImported);
             var lastGrabbed = albumHistory.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
 
@@ -55,8 +55,8 @@ namespace NzbDrone.Core.MediaFiles.EpisodeImport.Specifications
 
             if (lastImported.DownloadId == downloadClientItem.DownloadId)
             {
-                _logger.Debug("Album previously imported at {0}", lastImported.Date);
-                return Decision.Reject("Album already imported at {0}", lastImported.Date);
+                _logger.Debug("Book previously imported at {0}", lastImported.Date);
+                return Decision.Reject("Book already imported at {0}", lastImported.Date);
             }
 
             return Decision.Accept();

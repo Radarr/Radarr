@@ -19,34 +19,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         {
             UseRealHttp();
 
-            var metadataProfile = new MetadataProfile
-            {
-                Id = 1,
-                PrimaryAlbumTypes = new List<ProfilePrimaryAlbumTypeItem>
-                {
-                    new ProfilePrimaryAlbumTypeItem
-                    {
-                        PrimaryAlbumType = PrimaryAlbumType.Album,
-                        Allowed = true
-                    }
-                },
-                SecondaryAlbumTypes = new List<ProfileSecondaryAlbumTypeItem>
-                {
-                    new ProfileSecondaryAlbumTypeItem()
-                    {
-                        SecondaryAlbumType = SecondaryAlbumType.Studio,
-                        Allowed = true
-                    }
-                },
-                ReleaseStatuses = new List<ProfileReleaseStatusItem>
-                {
-                    new ProfileReleaseStatusItem
-                    {
-                        ReleaseStatus = ReleaseStatus.Official,
-                        Allowed = true
-                    }
-                }
-            };
+            var metadataProfile = new MetadataProfile();
 
             Mocker.GetMock<IMetadataProfileService>()
                 .Setup(s => s.All())
@@ -57,16 +30,12 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
                 .Returns(metadataProfile);
         }
 
-        [TestCase("Coldplay", "Coldplay")]
-        [TestCase("Avenged Sevenfold", "Avenged Sevenfold")]
-        [TestCase("3OH!3", "3OH!3")]
-        [TestCase("The Academy Is...", "The Academy Is…")]
-        [TestCase("readarr:f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park")]
-        [TestCase("readarrid:f59c5520-5f46-4d2c-b2c4-822eabf53419", "Linkin Park")]
-        [TestCase("readarrid: f59c5520-5f46-4d2c-b2c4-822eabf53419 ", "Linkin Park")]
+        [TestCase("Robert Harris", "Robert Harris")]
+        [TestCase("Terry Pratchett", "Terry Pratchett")]
+        [TestCase("Charlotte Brontë", "Charlotte Brontë")]
         public void successful_artist_search(string title, string expected)
         {
-            var result = Subject.SearchForNewArtist(title);
+            var result = Subject.SearchForNewAuthor(title);
 
             result.Should().NotBeEmpty();
 
@@ -75,14 +44,16 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             ExceptionVerification.IgnoreWarns();
         }
 
-        [TestCase("Evolve", "Imagine Dragons", "Evolve")]
-        [TestCase("Hysteria", null, "Hysteria")]
-        [TestCase("readarr:d77df681-b779-3d6d-b66a-3bfd15985e3e", null, "Pyromania")]
-        [TestCase("readarr: d77df681-b779-3d6d-b66a-3bfd15985e3e", null, "Pyromania")]
-        [TestCase("readarrid:d77df681-b779-3d6d-b66a-3bfd15985e3e", null, "Pyromania")]
+        [TestCase("Harry Potter and the sorcerer's stone", null, "Harry Potter and the Sorcerer's Stone")]
+        [TestCase("readarr:3", null, "Harry Potter and the Sorcerer's Stone")]
+        [TestCase("readarr: 3", null, "Harry Potter and the Sorcerer's Stone")]
+        [TestCase("readarrid:3", null, "Harry Potter and the Sorcerer's Stone")]
+        [TestCase("goodreads:3", null, "Harry Potter and the Sorcerer's Stone")]
+        [TestCase("asin:B0192CTMYG", null, "Harry Potter and the Sorcerer's Stone")]
+        [TestCase("isbn:9780439554930", null, "Harry Potter and the Sorcerer's Stone")]
         public void successful_album_search(string title, string artist, string expected)
         {
-            var result = Subject.SearchForNewAlbum(title, artist);
+            var result = Subject.SearchForNewBook(title, artist);
 
             result.Should().NotBeEmpty();
 
@@ -95,34 +66,33 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase("readarrid: 99999999999999999999")]
         [TestCase("readarrid: 0")]
         [TestCase("readarrid: -12")]
-        [TestCase("readarrid:289578")]
+        [TestCase("readarrid: aaaa")]
         [TestCase("adjalkwdjkalwdjklawjdlKAJD")]
         public void no_artist_search_result(string term)
         {
-            var result = Subject.SearchForNewArtist(term);
+            var result = Subject.SearchForNewAuthor(term);
             result.Should().BeEmpty();
 
             ExceptionVerification.IgnoreWarns();
         }
 
-        [TestCase("Eminem", 0, typeof(Artist), "Eminem")]
-        [TestCase("Eminem Kamikaze", 0, typeof(Artist), "Eminem")]
-        [TestCase("Eminem Kamikaze", 1, typeof(Album), "Kamikaze")]
+        [TestCase("Robert Harris", 0, typeof(Author), "Robert Harris")]
+        [TestCase("Robert Harris", 1, typeof(Book), "Fatherland")]
         public void successful_combined_search(string query, int position, Type resultType, string expected)
         {
             var result = Subject.SearchForNewEntity(query);
             result.Should().NotBeEmpty();
             result[position].GetType().Should().Be(resultType);
 
-            if (resultType == typeof(Artist))
+            if (resultType == typeof(Author))
             {
-                var cast = result[position] as Artist;
+                var cast = result[position] as Author;
                 cast.Should().NotBeNull();
                 cast.Name.Should().Be(expected);
             }
             else
             {
-                var cast = result[position] as Album;
+                var cast = result[position] as Book;
                 cast.Should().NotBeNull();
                 cast.Title.Should().Be(expected);
             }

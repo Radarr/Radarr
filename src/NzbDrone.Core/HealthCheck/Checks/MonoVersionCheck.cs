@@ -24,45 +24,12 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             var monoVersion = _platformInfo.Version;
 
-            // Known buggy Mono versions
-            if (monoVersion == new Version("4.4.0") || monoVersion == new Version("4.4.1"))
-            {
-                _logger.Debug("Mono version {0}", monoVersion);
-                return new HealthCheck(GetType(),
-                    HealthCheckResult.Error,
-                    $"Currently installed Mono version {monoVersion} has a bug that causes issues connecting to indexers/download clients. You should upgrade to a higher version",
-                    "#currently-installed-mono-version-is-old-and-unsupported");
-            }
-
             // Currently best stable Mono version (5.18 gets us .net 4.7.2 support)
             var bestVersion = new Version("5.20");
-            var targetVersion = new Version("5.18");
-            if (monoVersion >= targetVersion)
+            if (monoVersion >= bestVersion)
             {
-                _logger.Debug("Mono version is {0} or better: {1}", targetVersion, monoVersion);
+                _logger.Debug("Mono version is {0} or better: {1}", bestVersion, monoVersion);
                 return new HealthCheck(GetType());
-            }
-
-            // Stable Mono versions
-            var stableVersion = new Version("5.16");
-            if (monoVersion >= stableVersion)
-            {
-                _logger.Debug("Mono version is {0} or better: {1}", stableVersion, monoVersion);
-                return new HealthCheck(GetType(),
-                    HealthCheckResult.Notice,
-                    $"Currently installed Mono version {monoVersion} is supported but upgrading to {bestVersion} is recommended.",
-                    "#currently-installed-mono-version-is-supported-but-upgrading-is-recommended");
-            }
-
-            // Old but supported Mono versions, there are known bugs
-            var supportedVersion = new Version("5.4");
-            if (monoVersion >= supportedVersion)
-            {
-                _logger.Debug("Mono version is {0} or better: {1}", supportedVersion, monoVersion);
-                return new HealthCheck(GetType(),
-                    HealthCheckResult.Warning,
-                    $"Currently installed Mono version {monoVersion} is supported but has some known issues. Please upgrade Mono to version {bestVersion}.",
-                    "#currently-installed-mono-version-is-supported-but-upgrading-is-recommended");
             }
 
             return new HealthCheck(GetType(),

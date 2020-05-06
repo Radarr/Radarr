@@ -63,20 +63,20 @@ export const defaultState = {
         isModifiable: false
       },
       {
-        name: 'artist.sortName',
-        label: 'Artist',
+        name: 'authors.sortName',
+        label: 'Author',
         isSortable: true,
         isVisible: true
       },
       {
-        name: 'album.title',
-        label: 'Album Title',
+        name: 'books.title',
+        label: 'Book Title',
         isSortable: true,
         isVisible: true
       },
       {
-        name: 'album.releaseDate',
-        label: 'Album Release Date',
+        name: 'books.releaseDate',
+        label: 'Release Date',
         isSortable: true,
         isVisible: false
       },

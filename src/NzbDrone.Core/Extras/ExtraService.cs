@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Extras
 {
     public interface IExtraService
     {
-        void ImportTrack(LocalTrack localTrack, TrackFile trackFile, bool isReadOnly);
+        void ImportTrack(LocalTrack localTrack, BookFile trackFile, bool isReadOnly);
     }
 
     public class ExtraService : IExtraService,
@@ -28,7 +28,6 @@ namespace NzbDrone.Core.Extras
     {
         private readonly IMediaFileService _mediaFileService;
         private readonly IAlbumService _albumService;
-        private readonly ITrackService _trackService;
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
         private readonly List<IManageExtraFiles> _extraFileManagers;
@@ -36,7 +35,6 @@ namespace NzbDrone.Core.Extras
 
         public ExtraService(IMediaFileService mediaFileService,
                             IAlbumService albumService,
-                            ITrackService trackService,
                             IDiskProvider diskProvider,
                             IConfigService configService,
                             List<IManageExtraFiles> extraFileManagers,
@@ -44,21 +42,20 @@ namespace NzbDrone.Core.Extras
         {
             _mediaFileService = mediaFileService;
             _albumService = albumService;
-            _trackService = trackService;
             _diskProvider = diskProvider;
             _configService = configService;
             _extraFileManagers = extraFileManagers.OrderBy(e => e.Order).ToList();
             _logger = logger;
         }
 
-        public void ImportTrack(LocalTrack localTrack, TrackFile trackFile, bool isReadOnly)
+        public void ImportTrack(LocalTrack localTrack, BookFile trackFile, bool isReadOnly)
         {
             ImportExtraFiles(localTrack, trackFile, isReadOnly);
 
             CreateAfterImport(localTrack.Artist, trackFile);
         }
 
-        public void ImportExtraFiles(LocalTrack localTrack, TrackFile trackFile, bool isReadOnly)
+        public void ImportExtraFiles(LocalTrack localTrack, BookFile trackFile, bool isReadOnly)
         {
             if (!_configService.ImportExtraFiles)
             {
@@ -123,7 +120,7 @@ namespace NzbDrone.Core.Extras
             }
         }
 
-        private void CreateAfterImport(Artist artist, TrackFile trackFile)
+        private void CreateAfterImport(Author artist, BookFile trackFile)
         {
             foreach (var extraFileManager in _extraFileManagers)
             {
@@ -146,7 +143,7 @@ namespace NzbDrone.Core.Extras
         public void Handle(TrackFolderCreatedEvent message)
         {
             var artist = message.Artist;
-            var album = _albumService.GetAlbum(message.TrackFile.AlbumId);
+            var album = _albumService.GetAlbum(message.TrackFile.BookId);
 
             foreach (var extraFileManager in _extraFileManagers)
             {
@@ -165,18 +162,9 @@ namespace NzbDrone.Core.Extras
             }
         }
 
-        private List<TrackFile> GetTrackFiles(int artistId)
+        private List<BookFile> GetTrackFiles(int authorId)
         {
-            var trackFiles = _mediaFileService.GetFilesByArtist(artistId);
-            var tracks = _trackService.GetTracksByArtist(artistId);
-
-            foreach (var trackFile in trackFiles)
-            {
-                var localTrackFile = trackFile;
-                trackFile.Tracks = tracks.Where(e => e.TrackFileId == localTrackFile.Id).ToList();
-            }
-
-            return trackFiles;
+            return _mediaFileService.GetFilesByArtist(authorId);
         }
     }
 }

@@ -5,9 +5,9 @@ namespace NzbDrone.Core.MediaFiles.Events
 {
     public class ArtistRenamedEvent : IEvent
     {
-        public Artist Artist { get; private set; }
+        public Author Artist { get; private set; }
 
-        public ArtistRenamedEvent(Artist artist)
+        public ArtistRenamedEvent(Author artist)
         {
             Artist = artist;
         }

@@ -7,25 +7,11 @@ import styles from './ArtistDetailsLinks.css';
 
 function ArtistDetailsLinks(props) {
   const {
-    foreignArtistId,
     links
   } = props;
 
   return (
     <div className={styles.links}>
-
-      <Link
-        className={styles.link}
-        to={`https://musicbrainz.org/artist/${foreignArtistId}`}
-      >
-        <Label
-          className={styles.linkLabel}
-          kind={kinds.INFO}
-          size={sizes.LARGE}
-        >
-          Musicbrainz
-        </Label>
-      </Link>
 
       {links.map((link, index) => {
         return (
@@ -56,7 +42,6 @@ function ArtistDetailsLinks(props) {
 }
 
 ArtistDetailsLinks.propTypes = {
-  foreignArtistId: PropTypes.string.isRequired,
   links: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 

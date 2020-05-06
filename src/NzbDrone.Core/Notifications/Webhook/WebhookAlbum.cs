@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         {
         }
 
-        public WebhookAlbum(Album album)
+        public WebhookAlbum(Book album)
         {
             Id = album.Id;
             Title = album.Title;

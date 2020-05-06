@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.Datastore
 
         public class TypeWithNoMappableProperties
         {
-            public Artist Artist { get; set; }
+            public Author Artist { get; set; }
 
             public int ReadOnly { get; private set; }
             public int WriteOnly { private get; set; }

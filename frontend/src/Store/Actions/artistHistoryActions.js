@@ -73,8 +73,8 @@ export const actionHandlers = handleThunks({
   [ARTIST_HISTORY_MARK_AS_FAILED]: function(getState, payload, dispatch) {
     const {
       historyId,
-      artistId,
-      albumId
+      authorId,
+      bookId
     } = payload;
 
     const promise = createAjaxRequest({
@@ -86,7 +86,7 @@ export const actionHandlers = handleThunks({
     }).request;
 
     promise.done(() => {
-      dispatch(fetchArtistHistory({ artistId, albumId }));
+      dispatch(fetchArtistHistory({ authorId, bookId }));
     });
   }
 });

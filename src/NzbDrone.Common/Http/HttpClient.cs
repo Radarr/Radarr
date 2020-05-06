@@ -16,7 +16,7 @@ namespace NzbDrone.Common.Http
     public interface IHttpClient
     {
         HttpResponse Execute(HttpRequest request);
-        void DownloadFile(string url, string fileName);
+        void DownloadFile(string url, string fileName, string userAgent = null);
         HttpResponse Get(HttpRequest request);
         HttpResponse<T> Get<T>(HttpRequest request)
             where T : new();
@@ -229,7 +229,7 @@ namespace NzbDrone.Common.Http
             }
         }
 
-        public void DownloadFile(string url, string fileName)
+        public void DownloadFile(string url, string fileName, string userAgent = null)
         {
             try
             {
@@ -243,7 +243,7 @@ namespace NzbDrone.Common.Http
 
                 var stopWatch = Stopwatch.StartNew();
                 var webClient = new GZipWebClient();
-                webClient.Headers.Add(HttpRequestHeader.UserAgent, _userAgentBuilder.GetUserAgent());
+                webClient.Headers.Add(HttpRequestHeader.UserAgent, userAgent ?? _userAgentBuilder.GetUserAgent());
                 webClient.DownloadFile(url, fileName);
                 stopWatch.Stop();
                 _logger.Debug("Downloading Completed. took {0:0}s", stopWatch.Elapsed.Seconds);

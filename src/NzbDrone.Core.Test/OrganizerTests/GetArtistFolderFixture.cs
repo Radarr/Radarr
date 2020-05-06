@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.OrganizerTests
         {
             _namingConfig.ArtistFolderFormat = format;
 
-            var artist = new Artist { Name = artistName };
+            var artist = new Author { Name = artistName };
 
             Subject.GetArtistFolder(artist).Should().Be(expected);
         }

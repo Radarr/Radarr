@@ -84,10 +84,10 @@ class Missing extends Component {
   }
 
   onToggleSelectedPress = () => {
-    const albumIds = this.getSelectedIds();
+    const bookIds = this.getSelectedIds();
 
     this.props.batchToggleMissingAlbums({
-      albumIds,
+      bookIds,
       monitored: !getMonitoredValue(this.props)
     });
   }

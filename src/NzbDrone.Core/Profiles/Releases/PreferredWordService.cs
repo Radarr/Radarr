@@ -8,8 +8,8 @@ namespace NzbDrone.Core.Profiles.Releases
 {
     public interface IPreferredWordService
     {
-        int Calculate(Artist artist, string title);
-        List<string> GetMatchingPreferredWords(Artist artist, string title);
+        int Calculate(Author artist, string title);
+        List<string> GetMatchingPreferredWords(Author artist, string title);
     }
 
     public class PreferredWordService : IPreferredWordService
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Profiles.Releases
             _logger = logger;
         }
 
-        public int Calculate(Artist series, string title)
+        public int Calculate(Author series, string title)
         {
             _logger.Trace("Calculating preferred word score for '{0}'", title);
 
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Profiles.Releases
             return score;
         }
 
-        public List<string> GetMatchingPreferredWords(Artist artist, string title)
+        public List<string> GetMatchingPreferredWords(Author artist, string title)
         {
             var releaseProfiles = _releaseProfileService.AllForTags(artist.Tags);
             var matchingPairs = new List<KeyValuePair<string, int>>();

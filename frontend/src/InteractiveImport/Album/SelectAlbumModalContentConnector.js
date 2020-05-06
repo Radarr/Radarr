@@ -37,10 +37,10 @@ class SelectAlbumModalContentConnector extends Component {
 
   componentDidMount() {
     const {
-      artistId
+      authorId
     } = this.props;
 
-    this.props.fetchInteractiveImportAlbums({ artistId });
+    this.props.fetchInteractiveImportAlbums({ authorId });
   }
 
   componentWillUnmount() {
@@ -56,8 +56,8 @@ class SelectAlbumModalContentConnector extends Component {
     this.props.setInteractiveImportAlbumsSort({ sortKey, sortDirection });
   }
 
-  onAlbumSelect = (albumId) => {
-    const album = _.find(this.props.items, { id: albumId });
+  onAlbumSelect = (bookId) => {
+    const album = _.find(this.props.items, { id: bookId });
 
     const ids = this.props.ids;
 
@@ -83,6 +83,7 @@ class SelectAlbumModalContentConnector extends Component {
     return (
       <SelectAlbumModalContent
         {...this.props}
+        onSortPress={this.onSortPress}
         onAlbumSelect={this.onAlbumSelect}
       />
     );
@@ -91,7 +92,7 @@ class SelectAlbumModalContentConnector extends Component {
 
 SelectAlbumModalContentConnector.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.number).isRequired,
-  artistId: PropTypes.number.isRequired,
+  authorId: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   fetchInteractiveImportAlbums: PropTypes.func.isRequired,
   setInteractiveImportAlbumsSort: PropTypes.func.isRequired,

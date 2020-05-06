@@ -11,17 +11,17 @@ namespace NzbDrone.Core.Test.MetadataSource
     [TestFixture]
     public class SearchArtistComparerFixture : CoreTest
     {
-        private List<Artist> _artist;
+        private List<Author> _artist;
 
         [SetUp]
         public void Setup()
         {
-            _artist = new List<Artist>();
+            _artist = new List<Author>();
         }
 
         private void WithSeries(string name)
         {
-            _artist.Add(new Artist { Name = name });
+            _artist.Add(new Author { Name = name });
         }
 
         [Test]

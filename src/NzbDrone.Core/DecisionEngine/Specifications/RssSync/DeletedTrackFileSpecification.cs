@@ -64,7 +64,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             return Decision.Accept();
         }
 
-        private bool IsTrackFileMissing(Artist artist, TrackFile trackFile)
+        private bool IsTrackFileMissing(Author artist, BookFile trackFile)
         {
             return !_diskProvider.FileExists(trackFile.Path);
         }

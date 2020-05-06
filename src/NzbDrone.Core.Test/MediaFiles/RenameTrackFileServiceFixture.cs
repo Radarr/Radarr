@@ -14,16 +14,16 @@ namespace NzbDrone.Core.Test.MediaFiles
 {
     public class RenameTrackFileServiceFixture : CoreTest<RenameTrackFileService>
     {
-        private Artist _artist;
-        private List<TrackFile> _trackFiles;
+        private Author _artist;
+        private List<BookFile> _trackFiles;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                                      .Build();
 
-            _trackFiles = Builder<TrackFile>.CreateListOfSize(2)
+            _trackFiles = Builder<BookFile>.CreateListOfSize(2)
                                                 .All()
                                                 .With(e => e.Artist = _artist)
                                                 .Build()
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             Mocker.GetMock<IMediaFileService>()
                   .Setup(s => s.Get(It.IsAny<IEnumerable<int>>()))
-                  .Returns(new List<TrackFile>());
+                  .Returns(new List<BookFile>());
         }
 
         private void GivenTrackFiles()
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         private void GivenMovedFiles()
         {
             Mocker.GetMock<IMoveTrackFiles>()
-                  .Setup(s => s.MoveTrackFile(It.IsAny<TrackFile>(), _artist));
+                  .Setup(s => s.MoveTrackFile(It.IsAny<BookFile>(), _artist));
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             GivenTrackFiles();
 
             Mocker.GetMock<IMoveTrackFiles>()
-                  .Setup(s => s.MoveTrackFile(It.IsAny<TrackFile>(), It.IsAny<Artist>()))
+                  .Setup(s => s.MoveTrackFile(It.IsAny<BookFile>(), It.IsAny<Author>()))
                   .Throws(new SameFilenameException("Same file name", "Filename"));
 
             Subject.Execute(new RenameFilesCommand(_artist.Id, new List<int> { 1 }));
@@ -101,7 +101,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.Execute(new RenameFilesCommand(_artist.Id, new List<int> { 1 }));
 
             Mocker.GetMock<IMediaFileService>()
-                  .Verify(v => v.Update(It.IsAny<TrackFile>()), Times.Exactly(2));
+                  .Verify(v => v.Update(It.IsAny<BookFile>()), Times.Exactly(2));
         }
 
         [Test]

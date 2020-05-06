@@ -17,7 +17,7 @@ function createMapStateToProps() {
     (state, { match }) => match,
     (state) => state.artist,
     (match, artist) => {
-      const foreignArtistId = match.params.foreignArtistId;
+      const titleSlug = match.params.titleSlug;
       const {
         isFetching,
         isPopulated,
@@ -25,13 +25,13 @@ function createMapStateToProps() {
         items
       } = artist;
 
-      const artistIndex = _.findIndex(items, { foreignArtistId });
+      const artistIndex = _.findIndex(items, { titleSlug });
 
       if (artistIndex > -1) {
         return {
           isFetching,
           isPopulated,
-          foreignArtistId
+          titleSlug
         };
       }
 
@@ -54,7 +54,7 @@ class ArtistDetailsPageConnector extends Component {
   // Lifecycle
 
   componentDidUpdate(prevProps) {
-    if (!this.props.foreignArtistId) {
+    if (!this.props.titleSlug) {
       this.props.push(`${window.Readarr.urlBase}/`);
       return;
     }
@@ -65,7 +65,7 @@ class ArtistDetailsPageConnector extends Component {
 
   render() {
     const {
-      foreignArtistId,
+      titleSlug,
       isFetching,
       isPopulated,
       error
@@ -84,33 +84,33 @@ class ArtistDetailsPageConnector extends Component {
     if (!isFetching && !!error) {
       return (
         <div className={styles.errorMessage}>
-          {getErrorMessage(error, 'Failed to load artist from API')}
+          {getErrorMessage(error, 'Failed to load author from API')}
         </div>
       );
     }
 
-    if (!foreignArtistId) {
+    if (!titleSlug) {
       return (
         <NotFound
-          message="Sorry, that artist cannot be found."
+          message="Sorry, that author cannot be found."
         />
       );
     }
 
     return (
       <ArtistDetailsConnector
-        foreignArtistId={foreignArtistId}
+        titleSlug={titleSlug}
       />
     );
   }
 }
 
 ArtistDetailsPageConnector.propTypes = {
-  foreignArtistId: PropTypes.string,
+  titleSlug: PropTypes.string,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
-  match: PropTypes.shape({ params: PropTypes.shape({ foreignArtistId: PropTypes.string.isRequired }).isRequired }).isRequired,
+  match: PropTypes.shape({ params: PropTypes.shape({ titleSlug: PropTypes.string.isRequired }).isRequired }).isRequired,
   push: PropTypes.func.isRequired
 };
 

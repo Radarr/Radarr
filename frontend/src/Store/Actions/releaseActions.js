@@ -151,7 +151,7 @@ export const defaultState = {
   },
 
   artist: {
-    selectedFilterKey: 'discography-pack'
+    selectedFilterKey: 'all'
   }
 };
 

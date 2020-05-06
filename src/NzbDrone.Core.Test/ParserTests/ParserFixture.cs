@@ -12,16 +12,16 @@ namespace NzbDrone.Core.Test.ParserTests
     [TestFixture]
     public class ParserFixture : CoreTest
     {
-        private Artist _artist = new Artist();
-        private List<Album> _albums = new List<Album> { new Album() };
+        private Author _artist = new Author();
+        private List<Book> _albums = new List<Book> { new Book() };
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>
+            _artist = Builder<Author>
                 .CreateNew()
                 .Build();
-            _albums = Builder<List<Album>>
+            _albums = Builder<List<Book>>
                 .CreateNew()
                 .Build();
         }
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.ParserTests
         private void GivenSearchCriteria(string artistName, string albumTitle)
         {
             _artist.Name = artistName;
-            var a = new Album();
+            var a = new Book();
             a.Title = albumTitle;
             _albums.Add(a);
         }

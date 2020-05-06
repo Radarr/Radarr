@@ -5,7 +5,7 @@ namespace NzbDrone.Core.IndexerSearch
 {
     public class AlbumSearchCommand : Command
     {
-        public List<int> AlbumIds { get; set; }
+        public List<int> BookIds { get; set; }
 
         public override bool SendUpdatesToClient => true;
 
@@ -13,9 +13,9 @@ namespace NzbDrone.Core.IndexerSearch
         {
         }
 
-        public AlbumSearchCommand(List<int> albumIds)
+        public AlbumSearchCommand(List<int> bookIds)
         {
-            AlbumIds = albumIds;
+            BookIds = bookIds;
         }
     }
 }

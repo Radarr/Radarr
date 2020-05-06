@@ -28,7 +28,7 @@ function createMapStateToProps() {
         items,
         ...otherProps
       } = trackFiles;
-      const unmappedFiles = _.filter(items, { albumId: 0 });
+      const unmappedFiles = _.filter(items, { bookId: 0 });
       return {
         items: unmappedFiles,
         ...otherProps,
@@ -60,6 +60,7 @@ function createMapDispatchToProps(dispatch, props) {
     onAddMissingArtistsPress() {
       dispatch(executeCommand({
         name: commandNames.RESCAN_FOLDERS,
+        addNewArtists: true,
         filter: 'matched'
       }));
     }

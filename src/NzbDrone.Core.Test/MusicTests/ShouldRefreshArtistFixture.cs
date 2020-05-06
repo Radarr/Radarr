@@ -11,18 +11,18 @@ namespace NzbDrone.Core.Test.MusicTests
     [TestFixture]
     public class ShouldRefreshArtistFixture : TestBase<ShouldRefreshArtist>
     {
-        private Artist _artist;
+        private Author _artist;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                                      .With(v => v.Metadata.Value.Status == ArtistStatusType.Continuing)
                                      .Build();
 
             Mocker.GetMock<IAlbumService>()
                   .Setup(s => s.GetAlbumsByArtist(_artist.Id))
-                  .Returns(Builder<Album>.CreateListOfSize(2)
+                  .Returns(Builder<Book>.CreateListOfSize(2)
                                            .All()
                                            .With(e => e.ReleaseDate = DateTime.Today.AddDays(-100))
                                            .Build()
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             Mocker.GetMock<IAlbumService>()
                               .Setup(s => s.GetAlbumsByArtist(_artist.Id))
-                              .Returns(Builder<Album>.CreateListOfSize(2)
+                              .Returns(Builder<Book>.CreateListOfSize(2)
                                                        .TheFirst(1)
                                                        .With(e => e.ReleaseDate = DateTime.Today.AddDays(-7))
                                                        .TheLast(1)

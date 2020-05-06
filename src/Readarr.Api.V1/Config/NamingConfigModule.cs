@@ -17,9 +17,9 @@ namespace Readarr.Api.V1.Config
         private readonly IBuildFileNames _filenameBuilder;
 
         public NamingConfigModule(INamingConfigService namingConfigService,
-                            IFilenameSampleService filenameSampleService,
-                            IFilenameValidationService filenameValidationService,
-                            IBuildFileNames filenameBuilder)
+                                  IFilenameSampleService filenameSampleService,
+                                  IFilenameValidationService filenameValidationService,
+                                  IBuildFileNames filenameBuilder)
             : base("config/naming")
         {
             _namingConfigService = namingConfigService;
@@ -33,9 +33,7 @@ namespace Readarr.Api.V1.Config
             Get("/examples", x => GetExamples(this.Bind<NamingConfigResource>()));
 
             SharedValidator.RuleFor(c => c.StandardTrackFormat).ValidTrackFormat();
-            SharedValidator.RuleFor(c => c.MultiDiscTrackFormat).ValidTrackFormat();
             SharedValidator.RuleFor(c => c.ArtistFolderFormat).ValidArtistFolderFormat();
-            SharedValidator.RuleFor(c => c.AlbumFolderFormat).ValidAlbumFolderFormat();
         }
 
         private void UpdateNamingConfig(NamingConfigResource resource)
@@ -52,12 +50,6 @@ namespace Readarr.Api.V1.Config
             var resource = nameSpec.ToResource();
 
             if (resource.StandardTrackFormat.IsNotNullOrWhiteSpace())
-            {
-                var basicConfig = _filenameBuilder.GetBasicNamingConfig(nameSpec);
-                basicConfig.AddToResource(resource);
-            }
-
-            if (resource.MultiDiscTrackFormat.IsNotNullOrWhiteSpace())
             {
                 var basicConfig = _filenameBuilder.GetBasicNamingConfig(nameSpec);
                 basicConfig.AddToResource(resource);
@@ -82,23 +74,14 @@ namespace Readarr.Api.V1.Config
             var sampleResource = new NamingExampleResource();
 
             var singleTrackSampleResult = _filenameSampleService.GetStandardTrackSample(nameSpec);
-            var multiDiscTrackSampleResult = _filenameSampleService.GetMultiDiscTrackSample(nameSpec);
 
             sampleResource.SingleTrackExample = _filenameValidationService.ValidateTrackFilename(singleTrackSampleResult) != null
                     ? null
                     : singleTrackSampleResult.FileName;
 
-            sampleResource.MultiDiscTrackExample = _filenameValidationService.ValidateTrackFilename(multiDiscTrackSampleResult) != null
-                    ? null
-                    : multiDiscTrackSampleResult.FileName;
-
             sampleResource.ArtistFolderExample = nameSpec.ArtistFolderFormat.IsNullOrWhiteSpace()
                 ? null
                 : _filenameSampleService.GetArtistFolderSample(nameSpec);
-
-            sampleResource.AlbumFolderExample = nameSpec.AlbumFolderFormat.IsNullOrWhiteSpace()
-                ? null
-                : _filenameSampleService.GetAlbumFolderSample(nameSpec);
 
             return sampleResource;
         }

@@ -46,6 +46,11 @@ export default {
     isPopulated: false,
     error: null,
     schema: {
+      isCalibreLibrary: false,
+      host: 'localhost',
+      port: 8080,
+      useSsl: false,
+      outputProfile: 0,
       defaultTags: []
     },
     isSaving: false,

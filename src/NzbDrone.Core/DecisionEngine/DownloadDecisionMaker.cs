@@ -70,29 +70,23 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     var parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(report.Title);
 
-                    if (parsedAlbumInfo == null && searchCriteria != null)
+                    if (parsedAlbumInfo == null)
                     {
-                        parsedAlbumInfo = Parser.Parser.ParseAlbumTitleWithSearchCriteria(report.Title,
-                            searchCriteria.Artist,
-                            searchCriteria.Albums);
+                        if (searchCriteria != null)
+                        {
+                            parsedAlbumInfo = Parser.Parser.ParseAlbumTitleWithSearchCriteria(report.Title,
+                                                                                              searchCriteria.Artist,
+                                                                                              searchCriteria.Albums);
+                        }
+                        else
+                        {
+                            // try parsing fuzzy
+                            parsedAlbumInfo = _parsingService.ParseAlbumTitleFuzzy(report.Title);
+                        }
                     }
 
                     if (parsedAlbumInfo != null)
                     {
-                        // TODO: Artist Data Augment without calling to parse title again
-                        //if (!report.Artist.IsNullOrWhiteSpace())
-                        //{
-                        //    if (parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace() || _parsingService.GetArtist(parsedAlbumInfo.ArtistName) == null)
-                        //    {
-                        //        parsedAlbumInfo.ArtistName = report.Artist;
-                        //    }
-                        //}
-
-                        // TODO: Replace Parsed AlbumTitle with metadata Title if Parsed AlbumTitle not a valid match
-                        //if (!report.Album.IsNullOrWhiteSpace())
-                        //{
-                        //    parsedAlbumInfo.AlbumTitle = report.Album;
-                        //}
                         if (!parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
                         {
                             var remoteAlbum = _parsingService.Map(parsedAlbumInfo, searchCriteria);

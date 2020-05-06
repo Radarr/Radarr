@@ -7,11 +7,11 @@ import TagsModalContent from './TagsModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { artistIds }) => artistIds,
+    (state, { authorIds }) => authorIds,
     createAllArtistSelector(),
     createTagsSelector(),
-    (artistIds, allArtists, tagList) => {
-      const artist = _.intersectionWith(allArtists, artistIds, (s, id) => {
+    (authorIds, allArtists, tagList) => {
+      const artist = _.intersectionWith(allArtists, authorIds, (s, id) => {
         return s.id === id;
       });
 

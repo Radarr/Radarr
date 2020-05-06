@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
         {
             Host = "localhost";
             Port = 4321;
-            MusicCategory = "Music";
+            MusicCategory = "Readarr";
             RecentTvPriority = (int)NzbVortexPriority.Normal;
             OlderTvPriority = (int)NzbVortexPriority.Normal;
         }

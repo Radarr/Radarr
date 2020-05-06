@@ -15,19 +15,16 @@ namespace Readarr.Api.V1.ManualImport
     {
         private readonly IArtistService _artistService;
         private readonly IAlbumService _albumService;
-        private readonly IReleaseService _releaseService;
         private readonly IManualImportService _manualImportService;
         private readonly Logger _logger;
 
         public ManualImportModule(IManualImportService manualImportService,
                                   IArtistService artistService,
                                   IAlbumService albumService,
-                                  IReleaseService releaseService,
                                   Logger logger)
         {
             _artistService = artistService;
             _albumService = albumService;
-            _releaseService = releaseService;
             _manualImportService = manualImportService;
             _logger = logger;
 
@@ -75,12 +72,10 @@ namespace Readarr.Api.V1.ManualImport
                     Size = resource.Size,
                     Artist = resource.Artist == null ? null : _artistService.GetArtist(resource.Artist.Id),
                     Album = resource.Album == null ? null : _albumService.GetAlbum(resource.Album.Id),
-                    Release = resource.AlbumReleaseId == 0 ? null : _releaseService.GetRelease(resource.AlbumReleaseId),
                     Quality = resource.Quality,
                     DownloadId = resource.DownloadId,
                     AdditionalFile = resource.AdditionalFile,
-                    ReplaceExistingFiles = resource.ReplaceExistingFiles,
-                    DisableReleaseSwitching = resource.DisableReleaseSwitching
+                    ReplaceExistingFiles = resource.ReplaceExistingFiles
                 });
             }
 

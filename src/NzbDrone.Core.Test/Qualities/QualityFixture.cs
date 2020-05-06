@@ -14,21 +14,23 @@ namespace NzbDrone.Core.Test.Qualities
         public static object[] FromIntCases =
                 {
                         new object[] { 0, Quality.Unknown },
-                        new object[] { 1, Quality.MP3_192 },
-                        new object[] { 2, Quality.MP3_VBR },
-                        new object[] { 3, Quality.MP3_256 },
-                        new object[] { 4, Quality.MP3_320 },
-                        new object[] { 6, Quality.FLAC },
+                        new object[] { 1, Quality.PDF },
+                        new object[] { 2, Quality.MOBI },
+                        new object[] { 3, Quality.EPUB },
+                        new object[] { 4, Quality.AZW3 },
+                        new object[] { 10, Quality.MP3_320 },
+                        new object[] { 11, Quality.FLAC },
                 };
 
         public static object[] ToIntCases =
                 {
                         new object[] { Quality.Unknown, 0 },
-                        new object[] { Quality.MP3_192, 1 },
-                        new object[] { Quality.MP3_VBR, 2 },
-                        new object[] { Quality.MP3_256, 3 },
-                        new object[] { Quality.MP3_320, 4 },
-                        new object[] { Quality.FLAC, 6 },
+                        new object[] { Quality.PDF, 1 },
+                        new object[] { Quality.MOBI, 2 },
+                        new object[] { Quality.EPUB, 3 },
+                        new object[] { Quality.AZW3, 4 },
+                        new object[] { Quality.MP3_320, 10 },
+                        new object[] { Quality.FLAC, 11 },
                 };
 
         [Test]
@@ -52,11 +54,11 @@ namespace NzbDrone.Core.Test.Qualities
             var qualities = new List<Quality>
             {
                 Quality.Unknown,
-                Quality.MP3_192,
-                Quality.MP3_VBR,
-                Quality.MP3_256,
+                Quality.MOBI,
+                Quality.EPUB,
+                Quality.AZW3,
                 Quality.MP3_320,
-                Quality.FLAC,
+                Quality.FLAC
             };
 
             if (allowed.Length == 0)

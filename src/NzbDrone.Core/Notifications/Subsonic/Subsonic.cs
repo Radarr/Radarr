@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
             Update();
         }
 
-        public override void OnRename(Artist artist)
+        public override void OnRename(Author artist)
         {
             Update();
         }

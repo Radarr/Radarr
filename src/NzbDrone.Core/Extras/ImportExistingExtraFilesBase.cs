@@ -19,9 +19,9 @@ namespace NzbDrone.Core.Extras
         }
 
         public abstract int Order { get; }
-        public abstract IEnumerable<ExtraFile> ProcessFiles(Artist artist, List<string> filesOnDisk, List<string> importedFiles);
+        public abstract IEnumerable<ExtraFile> ProcessFiles(Author artist, List<string> filesOnDisk, List<string> importedFiles);
 
-        public virtual ImportExistingExtraFileFilterResult<TExtraFile> FilterAndClean(Artist artist, List<string> filesOnDisk, List<string> importedFiles)
+        public virtual ImportExistingExtraFileFilterResult<TExtraFile> FilterAndClean(Author artist, List<string> filesOnDisk, List<string> importedFiles)
         {
             var artistFiles = _extraFileService.GetFilesByArtist(artist.Id);
 
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Extras
             return Filter(artist, filesOnDisk, importedFiles, artistFiles);
         }
 
-        private ImportExistingExtraFileFilterResult<TExtraFile> Filter(Artist artist, List<string> filesOnDisk, List<string> importedFiles, List<TExtraFile> artistFiles)
+        private ImportExistingExtraFileFilterResult<TExtraFile> Filter(Author artist, List<string> filesOnDisk, List<string> importedFiles, List<TExtraFile> artistFiles)
         {
             var previouslyImported = artistFiles.IntersectBy(s => Path.Combine(artist.Path, s.RelativePath), filesOnDisk, f => f, PathEqualityComparer.Instance).ToList();
             var filteredFiles = filesOnDisk.Except(previouslyImported.Select(f => Path.Combine(artist.Path, f.RelativePath)).ToList(), PathEqualityComparer.Instance)
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Extras
             return new ImportExistingExtraFileFilterResult<TExtraFile>(previouslyImported, filteredFiles);
         }
 
-        private void Clean(Artist artist, List<string> filesOnDisk, List<string> importedFiles, List<TExtraFile> artistFiles)
+        private void Clean(Author artist, List<string> filesOnDisk, List<string> importedFiles, List<TExtraFile> artistFiles)
         {
             var alreadyImportedFileIds = artistFiles.IntersectBy(f => Path.Combine(artist.Path, f.RelativePath), importedFiles, i => i, PathEqualityComparer.Instance)
                 .Select(f => f.Id);

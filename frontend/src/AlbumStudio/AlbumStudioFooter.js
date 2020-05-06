@@ -89,7 +89,7 @@ class AlbumStudioFooter extends Component {
       <PageContentFooter>
         <div className={styles.inputContainer}>
           <div className={styles.label}>
-            Monitor Artist
+            Monitor Author
           </div>
 
           <SelectInput
@@ -103,7 +103,7 @@ class AlbumStudioFooter extends Component {
 
         <div className={styles.inputContainer}>
           <div className={styles.label}>
-            Monitor Albums
+            Monitor Books
           </div>
 
           <MonitorAlbumsSelectInput
@@ -117,7 +117,7 @@ class AlbumStudioFooter extends Component {
 
         <div>
           <div className={styles.label}>
-            {selectedCount} Artist(s) Selected
+            {selectedCount} Author(s) Selected
           </div>
 
           <SpinnerButton

@@ -40,33 +40,11 @@ class Naming extends Component {
     });
   }
 
-  onMultiDiscNamingModalOpenClick = () => {
-    this.setState({
-      isNamingModalOpen: true,
-      namingModalOptions: {
-        name: 'multiDiscTrackFormat',
-        album: true,
-        track: true,
-        additional: true
-      }
-    });
-  }
-
   onArtistFolderNamingModalOpenClick = () => {
     this.setState({
       isNamingModalOpen: true,
       namingModalOptions: {
         name: 'artistFolderFormat'
-      }
-    });
-  }
-
-  onAlbumFolderNamingModalOpenClick = () => {
-    this.setState({
-      isNamingModalOpen: true,
-      namingModalOptions: {
-        name: 'albumFolderFormat',
-        album: true
       }
     });
   }
@@ -99,12 +77,8 @@ class Naming extends Component {
 
     const standardTrackFormatHelpTexts = [];
     const standardTrackFormatErrors = [];
-    const multiDiscTrackFormatHelpTexts = [];
-    const multiDiscTrackFormatErrors = [];
     const artistFolderFormatHelpTexts = [];
     const artistFolderFormatErrors = [];
-    const albumFolderFormatHelpTexts = [];
-    const albumFolderFormatErrors = [];
 
     if (examplesPopulated) {
       if (examples.singleTrackExample) {
@@ -113,22 +87,10 @@ class Naming extends Component {
         standardTrackFormatErrors.push({ message: 'Single Track: Invalid Format' });
       }
 
-      if (examples.multiDiscTrackExample) {
-        multiDiscTrackFormatHelpTexts.push(`Multi Disc Track: ${examples.multiDiscTrackExample}`);
-      } else {
-        multiDiscTrackFormatErrors.push({ message: 'Single Track: Invalid Format' });
-      }
-
       if (examples.artistFolderExample) {
         artistFolderFormatHelpTexts.push(`Example: ${examples.artistFolderExample}`);
       } else {
         artistFolderFormatErrors.push({ message: 'Invalid Format' });
-      }
-
-      if (examples.albumFolderExample) {
-        albumFolderFormatHelpTexts.push(`Example: ${examples.albumFolderExample}`);
-      } else {
-        albumFolderFormatErrors.push({ message: 'Invalid Format' });
       }
     }
 
@@ -188,22 +150,6 @@ class Naming extends Component {
                         errors={[...standardTrackFormatErrors, ...settings.standardTrackFormat.errors]}
                       />
                     </FormGroup>
-
-                    <FormGroup size={sizes.LARGE}>
-                      <FormLabel>Multi Disc Track Format</FormLabel>
-
-                      <FormInputGroup
-                        inputClassName={styles.namingInput}
-                        type={inputTypes.TEXT}
-                        name="multiDiscTrackFormat"
-                        buttons={<FormInputButton onPress={this.onMultiDiscNamingModalOpenClick}>?</FormInputButton>}
-                        onChange={onInputChange}
-                        {...settings.multiDiscTrackFormat}
-                        helpTexts={multiDiscTrackFormatHelpTexts}
-                        errors={[...multiDiscTrackFormatErrors, ...settings.multiDiscTrackFormat.errors]}
-                      />
-                    </FormGroup>
-
                   </div>
               }
 
@@ -222,21 +168,6 @@ class Naming extends Component {
                   {...settings.artistFolderFormat}
                   helpTexts={['Used when adding a new artist or moving an artist via the artist editor', ...artistFolderFormatHelpTexts]}
                   errors={[...artistFolderFormatErrors, ...settings.artistFolderFormat.errors]}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <FormLabel>Album Folder Format</FormLabel>
-
-                <FormInputGroup
-                  inputClassName={styles.namingInput}
-                  type={inputTypes.TEXT}
-                  name="albumFolderFormat"
-                  buttons={<FormInputButton onPress={this.onAlbumFolderNamingModalOpenClick}>?</FormInputButton>}
-                  onChange={onInputChange}
-                  {...settings.albumFolderFormat}
-                  helpTexts={albumFolderFormatHelpTexts}
-                  errors={[...albumFolderFormatErrors, ...settings.albumFolderFormat.errors]}
                 />
               </FormGroup>
 

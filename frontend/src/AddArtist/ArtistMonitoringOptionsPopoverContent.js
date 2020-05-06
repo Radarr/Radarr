@@ -6,38 +6,38 @@ function ArtistMonitoringOptionsPopoverContent() {
   return (
     <DescriptionList>
       <DescriptionListItem
-        title="All Albums"
-        data="Monitor all albums except specials"
+        title="All Books"
+        data="Monitor all books"
       />
 
       <DescriptionListItem
-        title="Future Albums"
-        data="Monitor albums that have not released yet"
+        title="Future Books"
+        data="Monitor books that have not released yet"
       />
 
       <DescriptionListItem
-        title="Missing Albums"
-        data="Monitor albums that do not have files or have not released yet"
+        title="Missing Books"
+        data="Monitor books that do not have files or have not released yet"
       />
 
       <DescriptionListItem
-        title="Existing Albums"
-        data="Monitor albums that have files or have not released yet"
+        title="Existing Books"
+        data="Monitor books that have files or have not released yet"
       />
 
       <DescriptionListItem
-        title="First Album"
-        data="Monitor the first albums. All other albums will be ignored"
+        title="First Book"
+        data="Monitor the first book. All other books will be ignored"
       />
 
       <DescriptionListItem
-        title="Latest Album"
-        data="Monitor the latest albums and future albums"
+        title="Latest Book"
+        data="Monitor the latest book and future books"
       />
 
       <DescriptionListItem
         title="None"
-        data="No albums will be monitored"
+        data="No books will be monitored"
       />
     </DescriptionList>
   );

@@ -42,7 +42,16 @@ function EditRootFolderModalContent(props) {
     defaultQualityProfileId,
     defaultMetadataProfileId,
     defaultMonitorOption,
-    defaultTags
+    defaultTags,
+    isCalibreLibrary,
+    host,
+    port,
+    urlBase,
+    username,
+    password,
+    outputFormat,
+    outputProfile,
+    useSsl
   } = item;
 
   return (
@@ -83,12 +92,128 @@ function EditRootFolderModalContent(props) {
                   type={id ? inputTypes.TEXT : inputTypes.PATH}
                   readOnly={!!id}
                   name="path"
-                  helpText="Root Folder containing your music library"
+                  helpText="Root Folder containing your book library"
                   helpTextWarning="This must be different to the directory where your download client puts files"
                   {...path}
                   onChange={onInputChange}
                 />
               </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Calibre Library</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="isCalibreLibrary"
+                  helpText="Use calibre content server to manipulate library"
+                  {...isCalibreLibrary}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
+
+              {
+                isCalibreLibrary !== undefined && isCalibreLibrary.value &&
+                  <div>
+                    <FormGroup>
+                      <FormLabel>Calibre Host</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.TEXT}
+                        name="host"
+                        helpText="Calibre content server host"
+                        {...host}
+                        onChange={onInputChange}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>Calibre Port</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.NUMBER}
+                        name="port"
+                        helpText="Calibre content server port"
+                        {...port}
+                        onChange={onInputChange}
+                      />
+                    </FormGroup>
+
+                    <FormGroup
+                      advancedSettings={advancedSettings}
+                      isAdvanced={true}
+                    >
+                      <FormLabel>Calibre Url Base</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.TEXT}
+                        name="urlBase"
+                        helpText="Adds a prefix to the calibre url, e.g. http://[host]:[port]/[urlBase]"
+                        {...urlBase}
+                        onChange={onInputChange}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>Calibre Username</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.TEXT}
+                        name="username"
+                        helpText="Calibre content server username"
+                        {...username}
+                        onChange={onInputChange}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>Calibre Password</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.PASSWORD}
+                        name="password"
+                        helpText="Calibre content server password"
+                        {...password}
+                        onChange={onInputChange}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>Convert to format</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.TEXT}
+                        name="outputFormat"
+                        helpText="Optionally ask calibre to convert to other formats on import. Comma separated list."
+                        {...outputFormat}
+                        onChange={onInputChange}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>Calibre Output Profile</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.NUMBER}
+                        name="outputProfile"
+                        helpText="Output profile for conversion"
+                        {...outputProfile}
+                        onChange={onInputChange}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>Use SSL</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.CHECK}
+                        name="useSsl"
+                        helpText="Use SSL to connect to calibre content server"
+                        {...useSsl}
+                        onChange={onInputChange}
+                      />
+                    </FormGroup>
+                  </div>
+              }
 
               <FormGroup>
                 <FormLabel>
@@ -112,7 +237,7 @@ function EditRootFolderModalContent(props) {
                   name="defaultMonitorOption"
                   onChange={onInputChange}
                   {...defaultMonitorOption}
-                  helpText="Default Monitoring Options for albums by artists detected in this folder"
+                  helpText="Default Monitoring Options for books by authors detected in this folder"
                 />
 
               </FormGroup>
@@ -123,7 +248,7 @@ function EditRootFolderModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.QUALITY_PROFILE_SELECT}
                   name="defaultQualityProfileId"
-                  helpText="Default Quality Profile for artists detected in this folder"
+                  helpText="Default Quality Profile for authors detected in this folder"
                   {...defaultQualityProfileId}
                   onChange={onInputChange}
                 />
@@ -148,7 +273,7 @@ function EditRootFolderModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.METADATA_PROFILE_SELECT}
                   name="defaultMetadataProfileId"
-                  helpText="Default Metadata Profile for artists detected in this folder"
+                  helpText="Default Metadata Profile for authors detected in this folder"
                   {...defaultMetadataProfileId}
                   includeNone={true}
                   onChange={onInputChange}
@@ -161,7 +286,7 @@ function EditRootFolderModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.TAG}
                   name="defaultTags"
-                  helpText="Default Readarr Tags for artists detected in this folder"
+                  helpText="Default Readarr Tags for authors detected in this folder"
                   {...defaultTags}
                   onChange={onInputChange}
                 />

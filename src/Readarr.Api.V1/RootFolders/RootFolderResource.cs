@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Books.Calibre;
 using NzbDrone.Core.Music;
 using NzbDrone.Core.RootFolders;
 using Readarr.Http.REST;
@@ -14,6 +15,15 @@ namespace Readarr.Api.V1.RootFolders
         public int DefaultQualityProfileId { get; set; }
         public MonitorTypes DefaultMonitorOption { get; set; }
         public HashSet<int> DefaultTags { get; set; }
+        public bool IsCalibreLibrary { get; set; }
+        public string Host { get; set; }
+        public int Port { get; set; }
+        public string UrlBase { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string OutputFormat { get; set; }
+        public int OutputProfile { get; set; }
+        public bool UseSsl { get; set; }
 
         public bool Accessible { get; set; }
         public long? FreeSpace { get; set; }
@@ -39,6 +49,15 @@ namespace Readarr.Api.V1.RootFolders
                 DefaultQualityProfileId = model.DefaultQualityProfileId,
                 DefaultMonitorOption = model.DefaultMonitorOption,
                 DefaultTags = model.DefaultTags,
+                IsCalibreLibrary = model.IsCalibreLibrary,
+                Host = model.CalibreSettings?.Host,
+                Port = model.CalibreSettings?.Port ?? 0,
+                UrlBase = model.CalibreSettings?.UrlBase,
+                Username = model.CalibreSettings?.Username,
+                Password = model.CalibreSettings?.Password,
+                OutputFormat = model.CalibreSettings?.OutputFormat,
+                OutputProfile = model.CalibreSettings?.OutputProfile ?? 0,
+                UseSsl = model.CalibreSettings?.UseSsl ?? false,
 
                 Accessible = model.Accessible,
                 FreeSpace = model.FreeSpace,
@@ -53,6 +72,26 @@ namespace Readarr.Api.V1.RootFolders
                 return null;
             }
 
+            CalibreSettings cs;
+            if (resource.IsCalibreLibrary)
+            {
+                cs = new CalibreSettings
+                {
+                    Host = resource.Host,
+                    Port = resource.Port,
+                    UrlBase = resource.UrlBase,
+                    Username = resource.Username,
+                    Password = resource.Password,
+                    OutputFormat = resource.OutputFormat,
+                    OutputProfile = resource.OutputProfile,
+                    UseSsl = resource.UseSsl
+                };
+            }
+            else
+            {
+                cs = null;
+            }
+
             return new RootFolder
             {
                 Id = resource.Id,
@@ -62,7 +101,9 @@ namespace Readarr.Api.V1.RootFolders
                 DefaultMetadataProfileId = resource.DefaultMetadataProfileId,
                 DefaultQualityProfileId = resource.DefaultQualityProfileId,
                 DefaultMonitorOption = resource.DefaultMonitorOption,
-                DefaultTags = resource.DefaultTags
+                DefaultTags = resource.DefaultTags,
+                IsCalibreLibrary = resource.IsCalibreLibrary,
+                CalibreSettings = cs
             };
         }
 

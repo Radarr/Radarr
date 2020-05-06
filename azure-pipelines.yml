@@ -11,7 +11,8 @@ variables:
   minorVersion: $[counter('minorVersion', 1)]
   readarrVersion: '$(majorVersion).$(minorVersion)'
   buildName: '$(Build.SourceBranchName).$(readarrVersion)'
-  sentryOrg: 'radarr'
+  sentryOrg: 'servarr'
+  sentryUrl: 'https://sentry.servarr.com'
   dotnetVersion: '3.1.102'
 
 trigger:
@@ -255,7 +256,6 @@ stages:
           sentry-cli releases deploys "${RELEASENAME}" new -e production
           fi
         displayName: Publish Sentry Source Maps
-        enabled: false
         condition: |
           or
           (
@@ -263,9 +263,9 @@ stages:
             and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
           )
         env:
-          SENTRY_AUTH_TOKEN: $(sentryAuthTokenSelfHosted)
+          SENTRY_AUTH_TOKEN: $(sentryAuthTokenServarr)
           SENTRY_ORG: $(sentryOrg)
-          SENTRY_URL: https://sentry.radarr.video
+          SENTRY_URL: $(sentryUrl)
     
   - stage: Unit_Test
     displayName: Unit Tests
@@ -338,15 +338,12 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Unit Tests'
-          failTaskOnFailedTests: false
+          failTaskOnFailedTests: true
 
     - job: Unit_Docker
       displayName: Unit Docker
       strategy:
         matrix:
-          mono508:
-            testName: 'Mono 5.8'
-            containerImage: lidarr/testimages:mono-5.8
           mono520:
             testName: 'Mono 5.20'
             containerImage: lidarr/testimages:mono-5.20
@@ -463,16 +460,13 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Integration Tests'
-          failTaskOnFailedTests: false
+          failTaskOnFailedTests: true
         displayName: Publish Test Results
 
     - job: Integration_Docker
       displayName: Integration Docker
       strategy:
         matrix:
-          mono508:
-            testName: 'Mono 5.8'
-            containerImage: lidarr/testimages:mono-5.8
           mono520:
             testName: 'Mono 5.20'
             containerImage: lidarr/testimages:mono-5.20
@@ -557,7 +551,7 @@ stages:
             osName: 'Windows'
             imageName: 'windows-2019'
             pattern: 'Readarr.**.windows-core-x64.zip'
-            failBuild: true
+            failBuild: $(failOnAutomationFailure)
 
       pool:
         vmImage: $(imageName)
@@ -713,3 +707,25 @@ stages:
           codeCoverageTool: 'cobertura'
           summaryFileLocation: './CoverageResults/combined/Cobertura.xml'
           reportDirectory: './CoverageResults/combined/'
+
+  - stage: Report_Out
+    dependsOn:
+    - Analyze
+    - Unit_Test
+    - Integration
+    - Automation
+    condition: always()
+    displayName: Build Status Report
+    jobs:
+    - job:
+      displayName: Discord Notification
+      pool:
+        vmImage: 'ubuntu-18.04'
+      steps:
+        - checkout: none
+        - powershell: |
+            iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Servarr/AzureDiscordNotify/master/DiscordNotify.ps1'))
+          env:
+            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            DISCORDCHANNELID: $(discordChannelId)
+            DISCORDWEBHOOKKEY: $(discordWebhookKey)

@@ -121,12 +121,12 @@ namespace NzbDrone.Core.Download
 
         private bool IsAlbumProcessed(List<DownloadDecision> decisions, DownloadDecision report)
         {
-            var albumIds = report.RemoteAlbum.Albums.Select(e => e.Id).ToList();
+            var bookIds = report.RemoteAlbum.Albums.Select(e => e.Id).ToList();
 
             return decisions.SelectMany(r => r.RemoteAlbum.Albums)
                             .Select(e => e.Id)
                             .ToList()
-                            .Intersect(albumIds)
+                            .Intersect(bookIds)
                             .Any();
         }
 

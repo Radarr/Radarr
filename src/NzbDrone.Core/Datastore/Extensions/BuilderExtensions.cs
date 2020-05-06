@@ -23,6 +23,11 @@ namespace NzbDrone.Core.Datastore
             return builder.Select(types.Select(x => TableMapping.Mapper.TableNameMapping(x) + ".*").Join(", "));
         }
 
+        public static SqlBuilder SelectDistinct(this SqlBuilder builder, params Type[] types)
+        {
+            return builder.Select("DISTINCT " + types.Select(x => TableMapping.Mapper.TableNameMapping(x) + ".*").Join(", "));
+        }
+
         public static SqlBuilder SelectCount(this SqlBuilder builder)
         {
             return builder.Select("COUNT(*)");

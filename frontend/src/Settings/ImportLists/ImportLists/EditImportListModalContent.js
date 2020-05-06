@@ -24,17 +24,17 @@ function ImportListMonitoringOptionsPopoverContent() {
     <DescriptionList>
       <DescriptionListItem
         title="None"
-        data="Do not monitor artists or albums"
+        data="Do not monitor authors or books"
       />
 
       <DescriptionListItem
-        title="Specific Album"
-        data="Monitor artists but only monitor albums explicitly included in the list"
+        title="Specific Book"
+        data="Monitor authors but only monitor books explicitly included in the list"
       />
 
       <DescriptionListItem
-        title="All Artist Albums"
-        data="Monitor artists and all albums for each artist included on the import list"
+        title="All Author Books"
+        data="Monitor authors and all books for each author included on the import list"
       />
     </DescriptionList>
   );
@@ -44,8 +44,8 @@ function EditImportListModalContent(props) {
 
   const monitorOptions = [
     { key: 'none', value: 'None' },
-    { key: 'specificAlbum', value: 'Specific Album' },
-    { key: 'entireArtist', value: 'All Artist Albums' }
+    { key: 'specificAlbum', value: 'Specific Book' },
+    { key: 'entireArtist', value: 'All Author Books' }
   ];
 
   const {
@@ -115,7 +115,7 @@ function EditImportListModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enableAutomaticAdd"
-                  helpText={'Add artist/albums to Readarr when syncs are performed via the UI or by Readarr'}
+                  helpText={'Add author/books to Readarr when syncs are performed via the UI or by Readarr'}
                   {...enableAutomaticAdd}
                   onChange={onInputChange}
                 />
@@ -142,7 +142,7 @@ function EditImportListModalContent(props) {
                   type={inputTypes.SELECT}
                   name="shouldMonitor"
                   values={monitorOptions}
-                  helpText={'Monitor artists and albums added from this list'}
+                  helpText={'Monitor authors and books added from this list'}
                   {...shouldMonitor}
                   onChange={onInputChange}
                 />
@@ -191,7 +191,7 @@ function EditImportListModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.TAG}
                   name="tags"
-                  helpText="Add artists from this list with these tags"
+                  helpText="Add authors from this list with these tags"
                   {...tags}
                   onChange={onInputChange}
                 />

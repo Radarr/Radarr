@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Notifications.Slack
             _proxy.SendPayload(payload, Settings);
         }
 
-        public override void OnRename(Artist artist)
+        public override void OnRename(Author artist)
         {
             var attachments = new List<Attachment>
                               {

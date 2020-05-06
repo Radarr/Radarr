@@ -23,7 +23,7 @@ namespace NzbDrone.Core.MediaFiles.TrackImport.Specifications
         public Decision IsSatisfiedBy(LocalAlbumRelease item, DownloadClientItem downloadClientItem)
         {
             // Prevent imports to artists that are no longer inside a root folder Readarr manages
-            var artist = item.AlbumRelease.Album.Value.Artist.Value;
+            var artist = item.Book.Author.Value;
 
             // a new artist will have empty path, and will end up having path assinged based on file location
             var pathToCheck = artist.Path.IsNotNullOrWhiteSpace() ? artist.Path : item.LocalTracks.First().Path.GetParentPath();

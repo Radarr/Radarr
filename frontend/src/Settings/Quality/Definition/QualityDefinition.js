@@ -46,26 +46,10 @@ class QualityDefinition extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this._forceUpdateTimeout = null;
-
     this.state = {
       sliderMinSize: getSliderValue(props.minSize, slider.min),
       sliderMaxSize: getSliderValue(props.maxSize, slider.max)
     };
-  }
-
-  componentDidMount() {
-    // A hack to deal with a bug in the slider component until a fix for it
-    // lands and an updated version is available.
-    // See: https://github.com/mpowaga/react-slider/issues/115
-
-    this._forceUpdateTimeout = setTimeout(() => this.forceUpdate(), 1);
-  }
-
-  componentWillUnmount() {
-    if (this._forceUpdateTimeout) {
-      clearTimeout(this._forceUpdateTimeout);
-    }
   }
 
   //
@@ -167,11 +151,11 @@ class QualityDefinition extends Component {
             step={slider.step}
             minDistance={10}
             value={[sliderMinSize, sliderMaxSize]}
-            withBars={true}
+            withTracks={true}
             snapDragDisabled={true}
             className={styles.slider}
-            barClassName={styles.bar}
-            handleClassName={styles.handle}
+            trackClassName={styles.bar}
+            thumbClassName={styles.handle}
             onChange={this.onSliderChange}
             onAfterChange={this.onAfterSliderChange}
           />

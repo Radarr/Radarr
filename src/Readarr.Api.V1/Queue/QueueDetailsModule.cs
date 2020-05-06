@@ -33,23 +33,23 @@ namespace Readarr.Api.V1.Queue
             var pending = _pendingReleaseService.GetPendingQueue();
             var fullQueue = queue.Concat(pending);
 
-            var artistIdQuery = Request.Query.ArtistId;
-            var albumIdsQuery = Request.Query.AlbumIds;
+            var authorIdQuery = Request.Query.AuthorId;
+            var bookIdsQuery = Request.Query.BookIds;
 
-            if (artistIdQuery.HasValue)
+            if (authorIdQuery.HasValue)
             {
-                return fullQueue.Where(q => q.Artist?.Id == (int)artistIdQuery).ToResource(includeArtist, includeAlbum);
+                return fullQueue.Where(q => q.Artist?.Id == (int)authorIdQuery).ToResource(includeArtist, includeAlbum);
             }
 
-            if (albumIdsQuery.HasValue)
+            if (bookIdsQuery.HasValue)
             {
-                string albumIdsValue = albumIdsQuery.Value.ToString();
+                string bookIdsValue = bookIdsQuery.Value.ToString();
 
-                var albumIds = albumIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                var bookIds = bookIdsValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                                 .Select(e => Convert.ToInt32(e))
                                                 .ToList();
 
-                return fullQueue.Where(q => q.Album != null && albumIds.Contains(q.Album.Id)).ToResource(includeArtist, includeAlbum);
+                return fullQueue.Where(q => q.Album != null && bookIds.Contains(q.Album.Id)).ToResource(includeArtist, includeAlbum);
             }
 
             return fullQueue.ToResource(includeArtist, includeAlbum);

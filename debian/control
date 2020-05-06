@@ -2,7 +2,7 @@ Section: web
 Priority: optional
 Maintainer: Sonarr <contact@nzbdrone.com>
 Source: nzbdrone
-Homepage: https://readarr.audio
+Homepage: https://readarr.com
 Vcs-Git: git@github.com:readarr/Readarr.git
 Vcs-Browser: https://github.com/readarr/Readarr
 

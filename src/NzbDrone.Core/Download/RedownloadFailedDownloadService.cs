@@ -41,24 +41,24 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            if (message.AlbumIds.Count == 1)
+            if (message.BookIds.Count == 1)
             {
                 _logger.Debug("Failed download only contains one album, searching again");
 
-                _commandQueueManager.Push(new AlbumSearchCommand(message.AlbumIds));
+                _commandQueueManager.Push(new AlbumSearchCommand(message.BookIds));
 
                 return;
             }
 
-            var albumsInArtist = _albumService.GetAlbumsByArtist(message.ArtistId);
+            var albumsInArtist = _albumService.GetAlbumsByArtist(message.AuthorId);
 
-            if (message.AlbumIds.Count == albumsInArtist.Count)
+            if (message.BookIds.Count == albumsInArtist.Count)
             {
                 _logger.Debug("Failed download was entire artist, searching again");
 
                 _commandQueueManager.Push(new ArtistSearchCommand
                 {
-                    ArtistId = message.ArtistId
+                    AuthorId = message.AuthorId
                 });
 
                 return;
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Download
 
             _logger.Debug("Failed download contains multiple albums, searching again");
 
-            _commandQueueManager.Push(new AlbumSearchCommand(message.AlbumIds));
+            _commandQueueManager.Push(new AlbumSearchCommand(message.BookIds));
         }
     }
 }

@@ -345,11 +345,11 @@ export const actionHandlers = handleThunks({
   },
 
   [SEARCH_MISSING]: function(getState, payload, dispatch) {
-    const { albumIds } = payload;
+    const { bookIds } = payload;
 
     const commandPayload = {
       name: commandNames.ALBUM_SEARCH,
-      albumIds
+      bookIds
     };
 
     executeCommandHelper(commandPayload, dispatch).then((data) => {

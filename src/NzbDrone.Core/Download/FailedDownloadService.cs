@@ -115,8 +115,8 @@ namespace NzbDrone.Core.Download
 
             var downloadFailedEvent = new DownloadFailedEvent
             {
-                ArtistId = historyItem.ArtistId,
-                AlbumIds = historyItems.Select(h => h.AlbumId).ToList(),
+                AuthorId = historyItem.AuthorId,
+                BookIds = historyItems.Select(h => h.BookId).ToList(),
                 Quality = historyItem.Quality,
                 SourceTitle = historyItem.SourceTitle,
                 DownloadClient = historyItem.Data.GetValueOrDefault(History.History.DOWNLOAD_CLIENT),

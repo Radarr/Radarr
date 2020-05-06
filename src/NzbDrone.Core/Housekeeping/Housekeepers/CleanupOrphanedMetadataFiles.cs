@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
             DeleteOrphanedByArtist();
             DeleteOrphanedByAlbum();
             DeleteOrphanedByTrackFile();
-            DeleteWhereAlbumIdIsZero();
+            DeleteWhereBookIdIsZero();
             DeleteWhereTrackFileIsZero();
         }
 
@@ -28,9 +28,9 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 mapper.Execute(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT MetadataFiles.Id FROM MetadataFiles
-                                     LEFT OUTER JOIN Artists
-                                     ON MetadataFiles.ArtistId = Artists.Id
-                                     WHERE Artists.Id IS NULL)");
+                                     LEFT OUTER JOIN Authors
+                                     ON MetadataFiles.AuthorId = Authors.Id
+                                     WHERE Authors.Id IS NULL)");
             }
         }
 
@@ -41,10 +41,10 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 mapper.Execute(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT MetadataFiles.Id FROM MetadataFiles
-                                     LEFT OUTER JOIN Albums
-                                     ON MetadataFiles.AlbumId = Albums.Id
-                                     WHERE MetadataFiles.AlbumId > 0
-                                     AND Albums.Id IS NULL)");
+                                     LEFT OUTER JOIN Books
+                                     ON MetadataFiles.BookId = Books.Id
+                                     WHERE MetadataFiles.BookId > 0
+                                     AND Books.Id IS NULL)");
             }
         }
 
@@ -55,14 +55,14 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 mapper.Execute(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT MetadataFiles.Id FROM MetadataFiles
-                                     LEFT OUTER JOIN TrackFiles
-                                     ON MetadataFiles.TrackFileId = TrackFiles.Id
+                                     LEFT OUTER JOIN BookFiles
+                                     ON MetadataFiles.TrackFileId = BookFiles.Id
                                      WHERE MetadataFiles.TrackFileId > 0
-                                     AND TrackFiles.Id IS NULL)");
+                                     AND BookFiles.Id IS NULL)");
             }
         }
 
-        private void DeleteWhereAlbumIdIsZero()
+        private void DeleteWhereBookIdIsZero()
         {
             using (var mapper = _database.OpenConnection())
             {
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      WHERE Id IN (
                                      SELECT Id FROM MetadataFiles
                                      WHERE Type IN (4, 6)
-                                     AND AlbumId = 0)");
+                                     AND BookId = 0)");
             }
         }
 

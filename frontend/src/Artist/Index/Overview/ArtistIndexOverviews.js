@@ -172,7 +172,7 @@ class ArtistIndexOverviews extends Component {
           longDateFormat={longDateFormat}
           timeFormat={timeFormat}
           isSmallScreen={isSmallScreen}
-          artistId={artist.id}
+          authorId={artist.id}
           qualityProfileId={artist.qualityProfileId}
           metadataProfileId={artist.metadataProfileId}
         />

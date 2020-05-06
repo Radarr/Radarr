@@ -13,20 +13,20 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
     [TestFixture]
     public class MediaFileServiceFixture : CoreTest<MediaFileService>
     {
-        private Album _album;
-        private List<TrackFile> _trackFiles;
+        private Book _album;
+        private List<BookFile> _trackFiles;
 
         [SetUp]
         public void Setup()
         {
-            _album = Builder<Album>.CreateNew()
+            _album = Builder<Book>.CreateNew()
                          .Build();
 
-            _trackFiles = Builder<TrackFile>.CreateListOfSize(3)
+            _trackFiles = Builder<BookFile>.CreateListOfSize(3)
                                                .TheFirst(2)
-                                               .With(f => f.AlbumId = _album.Id)
+                                               .With(f => f.BookId = _album.Id)
                                                .TheNext(1)
-                                               .With(f => f.AlbumId = 0)
+                                               .With(f => f.BookId = 0)
                                                .Build().ToList();
         }
 

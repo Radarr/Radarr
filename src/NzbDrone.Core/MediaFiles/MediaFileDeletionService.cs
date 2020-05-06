@@ -16,8 +16,8 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IDeleteMediaFiles
     {
-        void DeleteTrackFile(Artist artist, TrackFile trackFile);
-        void DeleteTrackFile(TrackFile trackFile, string subfolder = "");
+        void DeleteTrackFile(Author artist, BookFile trackFile);
+        void DeleteTrackFile(BookFile trackFile, string subfolder = "");
     }
 
     public class MediaFileDeletionService : IDeleteMediaFiles,
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.MediaFiles
             _logger = logger;
         }
 
-        public void DeleteTrackFile(Artist artist, TrackFile trackFile)
+        public void DeleteTrackFile(Author artist, BookFile trackFile)
         {
             var fullPath = trackFile.Path;
             var rootFolder = _diskProvider.GetParentFolder(artist.Path);
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-        public void DeleteTrackFile(TrackFile trackFile, string subfolder = "")
+        public void DeleteTrackFile(BookFile trackFile, string subfolder = "")
         {
             var fullPath = trackFile.Path;
 

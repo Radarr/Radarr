@@ -9,9 +9,9 @@ namespace Readarr.Api.V1.Artist
 {
     public class ArtistLookupModule : ReadarrRestModule<ArtistResource>
     {
-        private readonly ISearchForNewArtist _searchProxy;
+        private readonly ISearchForNewAuthor _searchProxy;
 
-        public ArtistLookupModule(ISearchForNewArtist searchProxy)
+        public ArtistLookupModule(ISearchForNewAuthor searchProxy)
             : base("/artist/lookup")
         {
             _searchProxy = searchProxy;
@@ -20,11 +20,11 @@ namespace Readarr.Api.V1.Artist
 
         private object Search()
         {
-            var searchResults = _searchProxy.SearchForNewArtist((string)Request.Query.term);
+            var searchResults = _searchProxy.SearchForNewAuthor((string)Request.Query.term);
             return MapToResource(searchResults).ToList();
         }
 
-        private static IEnumerable<ArtistResource> MapToResource(IEnumerable<NzbDrone.Core.Music.Artist> artist)
+        private static IEnumerable<ArtistResource> MapToResource(IEnumerable<NzbDrone.Core.Music.Author> artist)
         {
             foreach (var currentArtist in artist)
             {

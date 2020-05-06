@@ -52,12 +52,12 @@ namespace Readarr.Api.V1.Indexers
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 
         //        [JsonIgnore]
-        public int? ArtistId { get; set; }
+        public int? AuthorId { get; set; }
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 
         //        [JsonIgnore]
-        public int? AlbumId { get; set; }
+        public int? BookId { get; set; }
     }
 
     public static class ReleaseResourceMapper

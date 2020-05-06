@@ -12,55 +12,32 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.ArtistStatsTests
 {
     [TestFixture]
-    public class ArtistStatisticsFixture : DbTest<ArtistStatisticsRepository, Artist>
+    public class ArtistStatisticsFixture : DbTest<ArtistStatisticsRepository, Author>
     {
-        private Artist _artist;
-        private Album _album;
-        private AlbumRelease _release;
-        private Track _track;
-        private TrackFile _trackFile;
+        private Author _artist;
+        private Book _album;
+        private BookFile _trackFile;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>.CreateNew()
-                .With(a => a.ArtistMetadataId = 10)
+            _artist = Builder<Author>.CreateNew()
+                .With(a => a.AuthorMetadataId = 10)
                 .BuildNew();
             Db.Insert(_artist);
 
-            _album = Builder<Album>.CreateNew()
+            _album = Builder<Book>.CreateNew()
                 .With(e => e.ReleaseDate = DateTime.Today.AddDays(-5))
-                .With(e => e.ArtistMetadataId = 10)
+                .With(e => e.AuthorMetadataId = 10)
                 .BuildNew();
             Db.Insert(_album);
 
-            _release = Builder<AlbumRelease>.CreateNew()
-                .With(e => e.AlbumId = _album.Id)
-                .With(e => e.Monitored = true)
+            _trackFile = Builder<BookFile>.CreateNew()
+                .With(e => e.Artist = _artist)
+                .With(e => e.Album = _album)
+                .With(e => e.BookId == _album.Id)
+                .With(e => e.Quality = new QualityModel(Quality.MP3_320))
                 .BuildNew();
-            Db.Insert(_release);
-
-            _track = Builder<Track>.CreateNew()
-                                          .With(e => e.TrackFileId = 0)
-                                          .With(e => e.Artist = _artist)
-                                          .With(e => e.AlbumReleaseId = _release.Id)
-                                          .BuildNew();
-
-            _trackFile = Builder<TrackFile>.CreateNew()
-                                           .With(e => e.Artist = _artist)
-                                           .With(e => e.Album = _album)
-                                           .With(e => e.Quality = new QualityModel(Quality.MP3_256))
-                                           .BuildNew();
-        }
-
-        private void GivenTrackWithFile()
-        {
-            _track.TrackFileId = 1;
-        }
-
-        private void GivenTrack()
-        {
-            Db.Insert(_track);
         }
 
         private void GivenTrackFile()
@@ -71,8 +48,6 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         [Test]
         public void should_get_stats_for_artist()
         {
-            GivenTrack();
-
             var stats = Subject.ArtistStatistics();
 
             stats.Should().HaveCount(1);
@@ -81,8 +56,6 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         [Test]
         public void should_not_include_unmonitored_track_in_track_count()
         {
-            GivenTrack();
-
             var stats = Subject.ArtistStatistics();
 
             stats.Should().HaveCount(1);
@@ -92,8 +65,7 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         [Test]
         public void should_include_unmonitored_track_with_file_in_track_count()
         {
-            GivenTrackWithFile();
-            GivenTrack();
+            GivenTrackFile();
 
             var stats = Subject.ArtistStatistics();
 
@@ -104,8 +76,6 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         [Test]
         public void should_have_size_on_disk_of_zero_when_no_track_file()
         {
-            GivenTrack();
-
             var stats = Subject.ArtistStatistics();
 
             stats.Should().HaveCount(1);
@@ -115,8 +85,6 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         [Test]
         public void should_have_size_on_disk_when_track_file_exists()
         {
-            GivenTrackWithFile();
-            GivenTrack();
             GivenTrackFile();
 
             var stats = Subject.ArtistStatistics();

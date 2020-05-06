@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void two_equivalent_artist_metadata_should_be_equal()
         {
-            var item1 = _fixture.Create<ArtistMetadata>();
+            var item1 = _fixture.Create<AuthorMetadata>();
             var item2 = item1.JsonClone();
 
             item1.Should().NotBeSameAs(item2);
@@ -61,12 +61,12 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
-        [TestCaseSource(typeof(EqualityPropertySource<ArtistMetadata>), "TestCases")]
+        [TestCaseSource(typeof(EqualityPropertySource<AuthorMetadata>), "TestCases")]
         public void two_different_artist_metadata_should_not_be_equal(PropertyInfo prop)
         {
-            var item1 = _fixture.Create<ArtistMetadata>();
+            var item1 = _fixture.Create<AuthorMetadata>();
             var item2 = item1.JsonClone();
-            var different = _fixture.Create<ArtistMetadata>();
+            var different = _fixture.Create<AuthorMetadata>();
 
             // make item2 different in the property under consideration
             var differentEntry = prop.GetValue(different);
@@ -79,8 +79,8 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void metadata_and_db_fields_should_replicate_artist_metadata()
         {
-            var item1 = _fixture.Create<ArtistMetadata>();
-            var item2 = _fixture.Create<ArtistMetadata>();
+            var item1 = _fixture.Create<AuthorMetadata>();
+            var item2 = _fixture.Create<AuthorMetadata>();
 
             item1.Should().NotBe(item2);
 
@@ -89,111 +89,12 @@ namespace NzbDrone.Core.Test.MusicTests
             item1.Should().Be(item2);
         }
 
-        private Track GivenTrack()
+        private Book GivenAlbum()
         {
-            return _fixture.Build<Track>()
-                .Without(x => x.AlbumRelease)
-                .Without(x => x.ArtistMetadata)
-                .Without(x => x.TrackFile)
-                .Without(x => x.Artist)
-                .Without(x => x.AlbumId)
-                .Without(x => x.Album)
-                .Create();
-        }
-
-        [Test]
-        public void two_equivalent_track_should_be_equal()
-        {
-            var item1 = GivenTrack();
-            var item2 = item1.JsonClone();
-
-            item1.Should().NotBeSameAs(item2);
-            item1.Should().Be(item2);
-        }
-
-        [Test]
-        [TestCaseSource(typeof(EqualityPropertySource<Track>), "TestCases")]
-        public void two_different_tracks_should_not_be_equal(PropertyInfo prop)
-        {
-            var item1 = GivenTrack();
-            var item2 = item1.JsonClone();
-            var different = GivenTrack();
-
-            // make item2 different in the property under consideration
-            var differentEntry = prop.GetValue(different);
-            prop.SetValue(item2, differentEntry);
-
-            item1.Should().NotBeSameAs(item2);
-            item1.Should().NotBe(item2);
-        }
-
-        [Test]
-        public void metadata_and_db_fields_should_replicate_track()
-        {
-            var item1 = GivenTrack();
-            var item2 = GivenTrack();
-
-            item1.Should().NotBe(item2);
-
-            item1.UseMetadataFrom(item2);
-            item1.UseDbFieldsFrom(item2);
-            item1.Should().Be(item2);
-        }
-
-        private AlbumRelease GivenAlbumRelease()
-        {
-            return _fixture.Build<AlbumRelease>()
-                .Without(x => x.Album)
-                .Without(x => x.Tracks)
-                .Create();
-        }
-
-        [Test]
-        public void two_equivalent_album_releases_should_be_equal()
-        {
-            var item1 = GivenAlbumRelease();
-            var item2 = item1.JsonClone();
-
-            item1.Should().NotBeSameAs(item2);
-            item1.Should().Be(item2);
-        }
-
-        [Test]
-        [TestCaseSource(typeof(EqualityPropertySource<AlbumRelease>), "TestCases")]
-        public void two_different_album_releases_should_not_be_equal(PropertyInfo prop)
-        {
-            var item1 = GivenAlbumRelease();
-            var item2 = item1.JsonClone();
-            var different = GivenAlbumRelease();
-
-            // make item2 different in the property under consideration
-            var differentEntry = prop.GetValue(different);
-            prop.SetValue(item2, differentEntry);
-
-            item1.Should().NotBeSameAs(item2);
-            item1.Should().NotBe(item2);
-        }
-
-        [Test]
-        public void metadata_and_db_fields_should_replicate_release()
-        {
-            var item1 = GivenAlbumRelease();
-            var item2 = GivenAlbumRelease();
-
-            item1.Should().NotBe(item2);
-
-            item1.UseMetadataFrom(item2);
-            item1.UseDbFieldsFrom(item2);
-            item1.Should().Be(item2);
-        }
-
-        private Album GivenAlbum()
-        {
-            return _fixture.Build<Album>()
-                .Without(x => x.ArtistMetadata)
-                .Without(x => x.AlbumReleases)
-                .Without(x => x.Artist)
-                .Without(x => x.ArtistId)
+            return _fixture.Build<Book>()
+                .Without(x => x.AuthorMetadata)
+                .Without(x => x.Author)
+                .Without(x => x.AuthorId)
                 .Create();
         }
 
@@ -208,7 +109,7 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
-        [TestCaseSource(typeof(EqualityPropertySource<Album>), "TestCases")]
+        [TestCaseSource(typeof(EqualityPropertySource<Book>), "TestCases")]
         public void two_different_albums_should_not_be_equal(PropertyInfo prop)
         {
             var item1 = GivenAlbum();
@@ -242,15 +143,15 @@ namespace NzbDrone.Core.Test.MusicTests
             item1.Should().Be(item2);
         }
 
-        private Artist GivenArtist()
+        private Author GivenArtist()
         {
-            return _fixture.Build<Artist>()
-                .With(x => x.Metadata, new LazyLoaded<ArtistMetadata>(_fixture.Create<ArtistMetadata>()))
+            return _fixture.Build<Author>()
+                .With(x => x.Metadata, new LazyLoaded<AuthorMetadata>(_fixture.Create<AuthorMetadata>()))
                 .Without(x => x.QualityProfile)
                 .Without(x => x.MetadataProfile)
-                .Without(x => x.Albums)
+                .Without(x => x.Books)
                 .Without(x => x.Name)
-                .Without(x => x.ForeignArtistId)
+                .Without(x => x.ForeignAuthorId)
                 .Create();
         }
 
@@ -265,7 +166,7 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
-        [TestCaseSource(typeof(EqualityPropertySource<Artist>), "TestCases")]
+        [TestCaseSource(typeof(EqualityPropertySource<Author>), "TestCases")]
         public void two_different_artists_should_not_be_equal(PropertyInfo prop)
         {
             var item1 = GivenArtist();

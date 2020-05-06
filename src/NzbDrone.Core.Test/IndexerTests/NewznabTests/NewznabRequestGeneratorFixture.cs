@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
             _singleAlbumSearchCriteria = new AlbumSearchCriteria
             {
-                Artist = new Music.Artist { Name = "Alien Ant Farm" },
+                Artist = new Music.Author { Name = "Alien Ant Farm" },
                 AlbumTitle = "TruANT"
             };
 

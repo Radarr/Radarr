@@ -3,7 +3,7 @@
     <OutputType>Exe</OutputType>
     <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
 
-    <ApplicationIcon>..\NzbDrone.Host\NzbDrone.ico</ApplicationIcon>
+    <ApplicationIcon>..\NzbDrone.Host\Readarr.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup Condition="!$(RuntimeIdentifier.StartsWith('win'))">

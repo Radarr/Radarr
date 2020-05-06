@@ -10,12 +10,12 @@ namespace NzbDrone.Core.Test.MusicTests
     [TestFixture]
     public class ShouldRefreshAlbumFixture : TestBase<ShouldRefreshAlbum>
     {
-        private Album _album;
+        private Book _album;
 
         [SetUp]
         public void Setup()
         {
-            _album = Builder<Album>.CreateNew()
+            _album = Builder<Book>.CreateNew()
                                    .With(e => e.ReleaseDate = DateTime.Today.AddDays(-100))
                                    .Build();
         }

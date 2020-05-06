@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                       .With(d => d.PreferredProtocol = DownloadProtocol.Usenet)
                                       .Build();
 
-            var artist = Builder<Artist>.CreateNew()
+            var artist = Builder<Author>.CreateNew()
                                         .With(s => s.QualityProfile = _profile)
                                         .Build();
 
@@ -46,21 +46,21 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                                    .Build();
 
             _profile.Items = new List<QualityProfileQualityItem>();
-            _profile.Items.Add(new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_256 });
-            _profile.Items.Add(new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 });
+            _profile.Items.Add(new QualityProfileQualityItem { Allowed = true, Quality = Quality.PDF });
+            _profile.Items.Add(new QualityProfileQualityItem { Allowed = true, Quality = Quality.AZW3 });
             _profile.Items.Add(new QualityProfileQualityItem { Allowed = true, Quality = Quality.MP3_320 });
 
-            _profile.Cutoff = Quality.MP3_320.Id;
+            _profile.Cutoff = Quality.AZW3.Id;
 
             _remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
             _remoteAlbum.Release = new ReleaseInfo();
             _remoteAlbum.Release.DownloadProtocol = DownloadProtocol.Usenet;
 
-            _remoteAlbum.Albums = Builder<Album>.CreateListOfSize(1).Build().ToList();
+            _remoteAlbum.Albums = Builder<Book>.CreateListOfSize(1).Build().ToList();
 
             Mocker.GetMock<IMediaFileService>()
                 .Setup(s => s.GetFilesByAlbum(It.IsAny<int>()))
-                .Returns(new List<TrackFile> { });
+                .Returns(new List<BookFile> { });
 
             Mocker.GetMock<IDelayProfileService>()
                   .Setup(s => s.BestForTags(It.IsAny<HashSet<int>>()))
@@ -75,12 +75,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         {
             Mocker.GetMock<IMediaFileService>()
                 .Setup(s => s.GetFilesByAlbum(It.IsAny<int>()))
-                .Returns(new List<TrackFile>
+                .Returns(new List<BookFile>
                 {
-                    new TrackFile
-                {
-                                                                Quality = quality
-                }
+                    new BookFile
+                    {
+                        Quality = quality
+                    }
                 });
         }
 
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_system_invoked_search_and_release_is_younger_than_delay()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_192);
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MOBI);
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
@@ -127,7 +127,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_older_than_delay()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256);
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MOBI);
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow.AddHours(-10);
 
             _delayProfile.UsenetDelay = 60;
@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_release_is_younger_than_delay()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_192);
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MOBI);
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
@@ -149,10 +149,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_a_proper_for_existing_album()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2));
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.MP3_256));
+            GivenExistingFile(new QualityModel(Quality.MP3_320));
             GivenUpgradeForExistingFile();
 
             Mocker.GetMock<IUpgradableSpecification>()
@@ -167,10 +167,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_a_real_for_existing_album()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(real: 1));
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(real: 1));
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.MP3_256));
+            GivenExistingFile(new QualityModel(Quality.MP3_320));
             GivenUpgradeForExistingFile();
 
             Mocker.GetMock<IUpgradableSpecification>()
@@ -185,10 +185,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_release_is_proper_for_existing_album_of_different_quality()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2));
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.AZW3, new Revision(version: 2));
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
-            GivenExistingFile(new QualityModel(Quality.MP3_192));
+            GivenExistingFile(new QualityModel(Quality.PDF));
 
             _delayProfile.UsenetDelay = 720;
 

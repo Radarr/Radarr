@@ -18,14 +18,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         public static object[] AllowedTestCases =
         {
-            new object[] { Quality.MP3_192 },
-            new object[] { Quality.MP3_256 },
+            new object[] { Quality.MP3_320 },
+            new object[] { Quality.MP3_320 },
             new object[] { Quality.MP3_320 }
         };
 
         public static object[] DeniedTestCases =
         {
-            new object[] { Quality.MP3_VBR },
             new object[] { Quality.FLAC },
             new object[] { Quality.Unknown }
         };
@@ -33,14 +32,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            var fakeArtist = Builder<Artist>.CreateNew()
+            var fakeArtist = Builder<Author>.CreateNew()
                          .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.MP3_320.Id })
                          .Build();
 
             _remoteAlbum = new RemoteAlbum
             {
                 Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_192, new Revision(version: 2)) },
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
             };
         }
 
@@ -49,7 +48,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_allow_if_quality_is_defined_in_profile(Quality qualityType)
         {
             _remoteAlbum.ParsedAlbumInfo.Quality.Quality = qualityType;
-            _remoteAlbum.Artist.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_192, Quality.MP3_256, Quality.MP3_320);
+            _remoteAlbum.Artist.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_320, Quality.MP3_320);
 
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
@@ -59,7 +58,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_not_allow_if_quality_is_not_defined_in_profile(Quality qualityType)
         {
             _remoteAlbum.ParsedAlbumInfo.Quality.Quality = qualityType;
-            _remoteAlbum.Artist.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_192, Quality.MP3_256, Quality.MP3_320);
+            _remoteAlbum.Artist.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_320, Quality.MP3_320);
 
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }

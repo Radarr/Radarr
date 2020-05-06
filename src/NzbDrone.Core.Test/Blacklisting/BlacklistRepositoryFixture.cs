@@ -19,8 +19,8 @@ namespace NzbDrone.Core.Test.Blacklisting
         {
             _blacklist = new Blacklist
             {
-                ArtistId = 12345,
-                AlbumIds = new List<int> { 1 },
+                AuthorId = 12345,
+                BookIds = new List<int> { 1 },
                 Quality = new QualityModel(Quality.FLAC),
                 SourceTitle = "artist.name.album.title",
                 Date = DateTime.UtcNow
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.Blacklisting
         {
             Subject.Insert(_blacklist);
 
-            Subject.All().First().AlbumIds.Should().Contain(_blacklist.AlbumIds);
+            Subject.All().First().BookIds.Should().Contain(_blacklist.BookIds);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.Blacklisting
         {
             Subject.Insert(_blacklist);
 
-            Subject.BlacklistedByTitle(_blacklist.ArtistId, _blacklist.SourceTitle.ToUpperInvariant()).Should().HaveCount(1);
+            Subject.BlacklistedByTitle(_blacklist.AuthorId, _blacklist.SourceTitle.ToUpperInvariant()).Should().HaveCount(1);
         }
     }
 }

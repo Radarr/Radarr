@@ -16,18 +16,18 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
     public class RemovePendingFixture : CoreTest<PendingReleaseService>
     {
         private List<PendingRelease> _pending;
-        private Album _album;
+        private Book _album;
 
         [SetUp]
         public void Setup()
         {
             _pending = new List<PendingRelease>();
 
-            _album = Builder<Album>.CreateNew()
+            _album = Builder<Book>.CreateNew()
                                        .Build();
 
             Mocker.GetMock<IPendingReleaseRepository>()
-                 .Setup(s => s.AllByArtistId(It.IsAny<int>()))
+                 .Setup(s => s.AllByAuthorId(It.IsAny<int>()))
                  .Returns(_pending);
 
             Mocker.GetMock<IPendingReleaseRepository>()
@@ -36,15 +36,15 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetArtist(It.IsAny<int>()))
-                  .Returns(new Artist());
+                  .Returns(new Author());
 
             Mocker.GetMock<IArtistService>()
                   .Setup(s => s.GetArtists(It.IsAny<IEnumerable<int>>()))
-                  .Returns(new List<Artist> { new Artist() });
+                  .Returns(new List<Author> { new Author() });
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetAlbums(It.IsAny<ParsedAlbumInfo>(), It.IsAny<Artist>(), null))
-                  .Returns(new List<Album> { _album });
+                  .Setup(s => s.GetAlbums(It.IsAny<ParsedAlbumInfo>(), It.IsAny<Author>(), null))
+                  .Returns(new List<Book> { _album });
         }
 
         private void AddPending(int id, string album)

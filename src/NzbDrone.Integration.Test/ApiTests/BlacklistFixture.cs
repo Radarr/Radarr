@@ -14,11 +14,11 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Ignore("Adding to blacklist not supported")]
         public void should_be_able_to_add_to_blacklist()
         {
-            _artist = EnsureArtist("8ac6cc32-8ddf-43b1-9ac4-4b04f9053176", "Alien Ant Farm");
+            _artist = EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling");
 
             Blacklist.Post(new BlacklistResource
             {
-                ArtistId = _artist.Id,
+                AuthorId = _artist.Id,
                 SourceTitle = "Blacklist - Album 1 [2015 FLAC]"
             });
         }

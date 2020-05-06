@@ -31,29 +31,20 @@ namespace NzbDrone.Core.Parser.Model
         public List<LocalTrack> LocalTracks { get; set; }
         public int TrackCount => LocalTracks.Count;
 
-        public TrackMapping TrackMapping { get; set; }
         public Distance Distance { get; set; }
-        public AlbumRelease AlbumRelease { get; set; }
+        public Book Book { get; set; }
         public List<LocalTrack> ExistingTracks { get; set; }
         public bool NewDownload { get; set; }
 
         public void PopulateMatch()
         {
-            if (AlbumRelease != null)
+            if (Book != null)
             {
                 LocalTracks = LocalTracks.Concat(ExistingTracks).DistinctBy(x => x.Path).ToList();
                 foreach (var localTrack in LocalTracks)
                 {
-                    localTrack.Release = AlbumRelease;
-                    localTrack.Album = AlbumRelease.Album.Value;
-                    localTrack.Artist = localTrack.Album.Artist.Value;
-
-                    if (TrackMapping.Mapping.ContainsKey(localTrack))
-                    {
-                        var track = TrackMapping.Mapping[localTrack].Item1;
-                        localTrack.Tracks = new List<Track> { track };
-                        localTrack.Distance = TrackMapping.Mapping[localTrack].Item2;
-                    }
+                    localTrack.Album = Book;
+                    localTrack.Artist = Book.Author.Value;
                 }
             }
         }
@@ -62,17 +53,5 @@ namespace NzbDrone.Core.Parser.Model
         {
             return "[" + string.Join(", ", LocalTracks.Select(x => Path.GetDirectoryName(x.Path)).Distinct()) + "]";
         }
-    }
-
-    public class TrackMapping
-    {
-        public TrackMapping()
-        {
-            Mapping = new Dictionary<LocalTrack, Tuple<Track, Distance>>();
-        }
-
-        public Dictionary<LocalTrack, Tuple<Track, Distance>> Mapping { get; set; }
-        public List<LocalTrack> LocalExtra { get; set; }
-        public List<Track> MBExtra { get; set; }
     }
 }

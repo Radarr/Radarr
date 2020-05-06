@@ -7,10 +7,10 @@ import DeleteArtistModalContent from './DeleteArtistModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { artistIds }) => artistIds,
+    (state, { authorIds }) => authorIds,
     createAllArtistSelector(),
-    (artistIds, allArtists) => {
-      const selectedArtist = _.intersectionWith(allArtists, artistIds, (s, id) => {
+    (authorIds, allArtists) => {
+      const selectedArtist = _.intersectionWith(allArtists, authorIds, (s, id) => {
         return s.id === id;
       });
 
@@ -33,7 +33,7 @@ function createMapDispatchToProps(dispatch, props) {
   return {
     onDeleteSelectedPress(deleteFiles) {
       dispatch(bulkDeleteArtist({
-        artistIds: props.artistIds,
+        authorIds: props.authorIds,
         deleteFiles
       }));
 

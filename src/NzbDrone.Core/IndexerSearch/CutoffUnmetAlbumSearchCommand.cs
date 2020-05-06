@@ -4,7 +4,7 @@ namespace NzbDrone.Core.IndexerSearch
 {
     public class CutoffUnmetAlbumSearchCommand : Command
     {
-        public int? ArtistId { get; set; }
+        public int? AuthorId { get; set; }
 
         public override bool SendUpdatesToClient => true;
 
@@ -12,9 +12,9 @@ namespace NzbDrone.Core.IndexerSearch
         {
         }
 
-        public CutoffUnmetAlbumSearchCommand(int artistId)
+        public CutoffUnmetAlbumSearchCommand(int authorId)
         {
-            ArtistId = artistId;
+            AuthorId = authorId;
         }
     }
 }

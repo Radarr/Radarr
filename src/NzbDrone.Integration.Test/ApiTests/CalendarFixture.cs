@@ -23,31 +23,31 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void should_be_able_to_get_albums()
         {
-            var artist = EnsureArtist("cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493", "Adele", true);
+            var artist = EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling", true);
 
             var request = Calendar.BuildRequest();
-            request.AddParameter("start", new DateTime(2015, 11, 19).ToString("s") + "Z");
-            request.AddParameter("end", new DateTime(2015, 11, 21).ToString("s") + "Z");
+            request.AddParameter("start", new DateTime(2003, 06, 20).ToString("s") + "Z");
+            request.AddParameter("end", new DateTime(2003, 06, 22).ToString("s") + "Z");
             var items = Calendar.Get<List<AlbumResource>>(request);
 
-            items = items.Where(v => v.ArtistId == artist.Id).ToList();
+            items = items.Where(v => v.AuthorId == artist.Id).ToList();
 
             items.Should().HaveCount(1);
-            items.First().Title.Should().Be("25");
+            items.First().Title.Should().Be("Harry Potter and the Order of the Phoenix");
         }
 
         [Test]
         public void should_not_be_able_to_get_unmonitored_albums()
         {
-            var artist = EnsureArtist("cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493", "Adele", false);
+            var artist = EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling", false);
 
             var request = Calendar.BuildRequest();
-            request.AddParameter("start", new DateTime(2015, 11, 19).ToString("s") + "Z");
-            request.AddParameter("end", new DateTime(2015, 11, 21).ToString("s") + "Z");
+            request.AddParameter("start", new DateTime(2003, 06, 20).ToString("s") + "Z");
+            request.AddParameter("end", new DateTime(2003, 06, 22).ToString("s") + "Z");
             request.AddParameter("unmonitored", "false");
             var items = Calendar.Get<List<AlbumResource>>(request);
 
-            items = items.Where(v => v.ArtistId == artist.Id).ToList();
+            items = items.Where(v => v.AuthorId == artist.Id).ToList();
 
             items.Should().BeEmpty();
         }
@@ -55,18 +55,18 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void should_be_able_to_get_unmonitored_albums()
         {
-            var artist = EnsureArtist("cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493", "Adele", false);
+            var artist = EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling", false);
 
             var request = Calendar.BuildRequest();
-            request.AddParameter("start", new DateTime(2015, 11, 19).ToString("s") + "Z");
-            request.AddParameter("end", new DateTime(2015, 11, 21).ToString("s") + "Z");
+            request.AddParameter("start", new DateTime(2003, 06, 20).ToString("s") + "Z");
+            request.AddParameter("end", new DateTime(2003, 06, 22).ToString("s") + "Z");
             request.AddParameter("unmonitored", "true");
             var items = Calendar.Get<List<AlbumResource>>(request);
 
-            items = items.Where(v => v.ArtistId == artist.Id).ToList();
+            items = items.Where(v => v.AuthorId == artist.Id).ToList();
 
             items.Should().HaveCount(1);
-            items.First().Title.Should().Be("25");
+            items.First().Title.Should().Be("Harry Potter and the Order of the Phoenix");
         }
     }
 }

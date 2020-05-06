@@ -6,7 +6,6 @@ import { kinds, sizes } from 'Helpers/Props';
 import TableRow from 'Components/Table/TableRow';
 import Label from 'Components/Label';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
 import AlbumSearchCellConnector from 'Album/AlbumSearchCellConnector';
 import AlbumTitleLink from 'Album/AlbumTitleLink';
 import StarRating from 'Components/StarRating';
@@ -67,19 +66,17 @@ class AlbumRow extends Component {
   render() {
     const {
       id,
-      artistId,
+      authorId,
       monitored,
       statistics,
-      duration,
       releaseDate,
-      mediumCount,
-      secondaryTypes,
       title,
+      position,
       ratings,
       disambiguation,
       isSaving,
       artistMonitored,
-      foreignAlbumId,
+      titleSlug,
       columns
     } = this.props;
 
@@ -125,7 +122,7 @@ class AlbumRow extends Component {
                   className={styles.title}
                 >
                   <AlbumTitleLink
-                    foreignAlbumId={foreignAlbumId}
+                    titleSlug={titleSlug}
                     title={title}
                     disambiguation={disambiguation}
                   />
@@ -133,42 +130,13 @@ class AlbumRow extends Component {
               );
             }
 
-            if (name === 'mediumCount') {
+            if (name === 'position') {
               return (
-                <TableRowCell key={name}>
-                  {
-                    mediumCount
-                  }
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'secondaryTypes') {
-              return (
-                <TableRowCell key={name}>
-                  {
-                    secondaryTypes
-                  }
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'trackCount') {
-              return (
-                <TableRowCell key={name}>
-                  {
-                    statistics.totalTrackCount
-                  }
-                </TableRowCell>
-              );
-            }
-
-            if (name === 'duration') {
-              return (
-                <TableRowCell key={name}>
-                  {
-                    formatTimeSpan(duration)
-                  }
+                <TableRowCell
+                  key={name}
+                  className={styles.title}
+                >
+                  {position || ''}
                 </TableRowCell>
               );
             }
@@ -218,8 +186,8 @@ class AlbumRow extends Component {
               return (
                 <AlbumSearchCellConnector
                   key={name}
-                  albumId={id}
-                  artistId={artistId}
+                  bookId={id}
+                  authorId={authorId}
                   albumTitle={title}
                 />
               );
@@ -234,21 +202,17 @@ class AlbumRow extends Component {
 
 AlbumRow.propTypes = {
   id: PropTypes.number.isRequired,
-  artistId: PropTypes.number.isRequired,
+  authorId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
-  releaseDate: PropTypes.string.isRequired,
-  mediumCount: PropTypes.number.isRequired,
-  duration: PropTypes.number.isRequired,
+  releaseDate: PropTypes.string,
   title: PropTypes.string.isRequired,
+  position: PropTypes.string,
   ratings: PropTypes.object.isRequired,
   disambiguation: PropTypes.string,
-  secondaryTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
-  foreignAlbumId: PropTypes.string.isRequired,
+  titleSlug: PropTypes.string.isRequired,
   isSaving: PropTypes.bool,
-  unverifiedSceneNumbering: PropTypes.bool,
   artistMonitored: PropTypes.bool.isRequired,
   statistics: PropTypes.object.isRequired,
-  mediaInfo: PropTypes.object,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   onMonitorAlbumPress: PropTypes.func.isRequired
 };

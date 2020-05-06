@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_delete_orphaned_blacklist_items()
         {
             var blacklist = Builder<Blacklist>.CreateNew()
-                                              .With(h => h.AlbumIds = new List<int>())
+                                              .With(h => h.BookIds = new List<int>())
                                               .With(h => h.Quality = new QualityModel())
                                               .BuildNew();
 
@@ -29,14 +29,14 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_not_delete_unorphaned_blacklist_items()
         {
-            var artist = Builder<Artist>.CreateNew().BuildNew();
+            var artist = Builder<Author>.CreateNew().BuildNew();
 
             Db.Insert(artist);
 
             var blacklist = Builder<Blacklist>.CreateNew()
-                                              .With(h => h.AlbumIds = new List<int>())
+                                              .With(h => h.BookIds = new List<int>())
                                               .With(h => h.Quality = new QualityModel())
-                                              .With(b => b.ArtistId = artist.Id)
+                                              .With(b => b.AuthorId = artist.Id)
                                               .BuildNew();
 
             Db.Insert(blacklist);

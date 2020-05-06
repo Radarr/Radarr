@@ -70,6 +70,8 @@ namespace NzbDrone.Core.Datastore
 
         protected virtual List<TModel> Query(SqlBuilder builder) => _database.Query<TModel>(builder).ToList();
 
+        protected virtual List<TModel> QueryDistinct(SqlBuilder builder) => _database.QueryDistinct<TModel>(builder).ToList();
+
         protected List<TModel> Query(Expression<Func<TModel, bool>> where) => Query(Builder().Where(where));
 
         public int Count()
@@ -372,7 +374,11 @@ namespace NzbDrone.Core.Datastore
         {
             var sql = propertiesToUpdate == _properties ? _updateSql : GetUpdateSql(propertiesToUpdate);
 
-            // SqlBuilderExtensions.LogQuery(sql, models);
+            foreach (var model in models)
+            {
+                SqlBuilderExtensions.LogQuery(sql, model);
+            }
+
             connection.Execute(sql, models, transaction: transaction);
         }
 

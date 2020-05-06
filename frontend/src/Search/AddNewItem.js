@@ -100,7 +100,7 @@ class AddNewItem extends Component {
               className={styles.searchInput}
               name="searchBox"
               value={term}
-              placeholder="eg. Breaking Benjamin, readarr:854a1807-025b-42a8-ba8c-2a39717f1d25"
+              placeholder="eg. War and Peace, goodreads:656, isbn:067003469X, asin:B00JCDK5ME"
               autoFocus={true}
               onChange={this.onSearchInputChange}
             />
@@ -162,8 +162,8 @@ class AddNewItem extends Component {
                 <div className={styles.noResults}>Couldn't find any results for '{term}'</div>
                 <div>
                   You can also search using the
-                  <Link to="https://musicbrainz.org/search"> MusicBrainz ID </Link>
-                  of an artist e.g. readarr:cc197bad-dc9c-440d-a5b5-d52ba2e14234
+                  <Link to="https://goodreads.com"> Goodreads ID </Link>
+                  of a book (e.g. goodreads:656), the isbn (e.g. isbn:067003469X) or the asin (e.g. asin:B00JCDK5ME)
                 </div>
               </div>
           }
@@ -171,11 +171,11 @@ class AddNewItem extends Component {
           {
             !term &&
               <div className={styles.message}>
-                <div className={styles.helpText}>It's easy to add a new artist, just start typing the name of the artist you want to add.</div>
+                <div className={styles.helpText}>It's easy to add a new author or book, just start typing the name of the item you want to add.</div>
                 <div>
                   You can also search using the
-                  <Link to="https://musicbrainz.org/search"> MusicBrainz ID </Link>
-                  of an artist e.g. readarr:cc197bad-dc9c-440d-a5b5-d52ba2e14234
+                  <Link to="https://goodreads.com"> Goodreads ID </Link>
+                  of a book (e.g. goodreads:656), the isbn (e.g. isbn:067003469X) or the asin (e.g. asin:B00JCDK5ME)
                 </div>
               </div>
           }

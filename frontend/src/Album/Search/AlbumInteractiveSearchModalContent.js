@@ -10,7 +10,7 @@ import InteractiveSearchConnector from 'InteractiveSearch/InteractiveSearchConne
 
 function AlbumInteractiveSearchModalContent(props) {
   const {
-    albumId,
+    bookId,
     albumTitle,
     onModalClose
   } = props;
@@ -18,14 +18,14 @@ function AlbumInteractiveSearchModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        Interactive Search  {albumId != null && `- ${albumTitle}`}
+        Interactive Search  {bookId != null && `- ${albumTitle}`}
       </ModalHeader>
 
       <ModalBody scrollDirection={scrollDirections.BOTH}>
         <InteractiveSearchConnector
           type="album"
           searchPayload={{
-            albumId
+            bookId
           }}
         />
       </ModalBody>
@@ -40,7 +40,7 @@ function AlbumInteractiveSearchModalContent(props) {
 }
 
 AlbumInteractiveSearchModalContent.propTypes = {
-  albumId: PropTypes.number.isRequired,
+  bookId: PropTypes.number.isRequired,
   albumTitle: PropTypes.string.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

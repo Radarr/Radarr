@@ -5,10 +5,10 @@ namespace NzbDrone.Core.MediaFiles.Events
 {
     public class ArtistScanSkippedEvent : IEvent
     {
-        public Artist Artist { get; private set; }
+        public Author Artist { get; private set; }
         public ArtistScanSkippedReason Reason { get; private set; }
 
-        public ArtistScanSkippedEvent(Artist artist, ArtistScanSkippedReason reason)
+        public ArtistScanSkippedEvent(Author artist, ArtistScanSkippedReason reason)
         {
             Artist = artist;
             Reason = reason;

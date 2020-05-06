@@ -11,6 +11,7 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import RootFoldersConnector from './RootFolder/RootFoldersConnector';
+import RemotePathMappingsConnector from 'Settings/DownloadClients/RemotePathMappings/RemotePathMappingsConnector';
 import NamingConnector from './Naming/NamingConnector';
 
 const rescanAfterRefreshOptions = [
@@ -64,6 +65,7 @@ class MediaManagement extends Component {
 
         <PageContentBodyConnector>
           <RootFoldersConnector />
+          <RemotePathMappingsConnector />
           <NamingConnector />
 
           {

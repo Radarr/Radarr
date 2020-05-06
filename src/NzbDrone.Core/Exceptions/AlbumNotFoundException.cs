@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Exceptions
         public string MusicBrainzId { get; set; }
 
         public AlbumNotFoundException(string musicbrainzId)
-            : base(string.Format("Album with MusicBrainz {0} was not found, it may have been removed from MusicBrainz.", musicbrainzId))
+            : base(string.Format("Album with id {0} was not found, it may have been removed from metadata server.", musicbrainzId))
         {
             MusicBrainzId = musicbrainzId;
         }

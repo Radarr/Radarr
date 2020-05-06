@@ -38,8 +38,8 @@ class SelectArtistModalContentConnector extends Component {
   //
   // Listeners
 
-  onArtistSelect = (artistId) => {
-    const artist = _.find(this.props.items, { id: artistId });
+  onArtistSelect = (authorId) => {
+    const artist = _.find(this.props.items, { id: authorId });
 
     const ids = this.props.ids;
 

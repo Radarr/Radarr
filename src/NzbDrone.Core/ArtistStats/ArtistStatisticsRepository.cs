@@ -11,12 +11,12 @@ namespace NzbDrone.Core.ArtistStats
     public interface IArtistStatisticsRepository
     {
         List<AlbumStatistics> ArtistStatistics();
-        List<AlbumStatistics> ArtistStatistics(int artistId);
+        List<AlbumStatistics> ArtistStatistics(int authorId);
     }
 
     public class ArtistStatisticsRepository : IArtistStatisticsRepository
     {
-        private const string _selectTemplate = "SELECT /**select**/ FROM Tracks /**join**/ /**innerjoin**/ /**leftjoin**/ /**where**/ /**groupby**/ /**having**/ /**orderby**/";
+        private const string _selectTemplate = "SELECT /**select**/ FROM Books /**join**/ /**innerjoin**/ /**leftjoin**/ /**where**/ /**groupby**/ /**having**/ /**orderby**/";
 
         private readonly IMainDatabase _database;
 
@@ -28,14 +28,14 @@ namespace NzbDrone.Core.ArtistStats
         public List<AlbumStatistics> ArtistStatistics()
         {
             var time = DateTime.UtcNow;
-            return Query(Builder().Where<Album>(x => x.ReleaseDate < time));
+            return Query(Builder().Where<Book>(x => x.ReleaseDate < time));
         }
 
-        public List<AlbumStatistics> ArtistStatistics(int artistId)
+        public List<AlbumStatistics> ArtistStatistics(int authorId)
         {
             var time = DateTime.UtcNow;
-            return Query(Builder().Where<Album>(x => x.ReleaseDate < time)
-                         .Where<Artist>(x => x.Id == artistId));
+            return Query(Builder().Where<Book>(x => x.ReleaseDate < time)
+                         .Where<Author>(x => x.Id == authorId));
         }
 
         private List<AlbumStatistics> Query(SqlBuilder builder)
@@ -49,19 +49,16 @@ namespace NzbDrone.Core.ArtistStats
         }
 
         private SqlBuilder Builder() => new SqlBuilder()
-            .Select(@"Artists.Id AS ArtistId,
-                     Albums.Id AS AlbumId,
-                     SUM(COALESCE(TrackFiles.Size, 0)) AS SizeOnDisk,
-                     COUNT(Tracks.Id) AS TotalTrackCount,
-                     SUM(CASE WHEN Tracks.TrackFileId > 0 THEN 1 ELSE 0 END) AS AvailableTrackCount,
-                     SUM(CASE WHEN Albums.Monitored = 1 OR Tracks.TrackFileId > 0 THEN 1 ELSE 0 END) AS TrackCount,
-                     SUM(CASE WHEN TrackFiles.Id IS NULL THEN 0 ELSE 1 END) AS TrackFileCount")
-            .Join<Track, AlbumRelease>((t, r) => t.AlbumReleaseId == r.Id)
-            .Join<AlbumRelease, Album>((r, a) => r.AlbumId == a.Id)
-            .Join<Album, Artist>((album, artist) => album.ArtistMetadataId == artist.ArtistMetadataId)
-            .LeftJoin<Track, TrackFile>((t, f) => t.TrackFileId == f.Id)
-            .Where<AlbumRelease>(x => x.Monitored == true)
-            .GroupBy<Artist>(x => x.Id)
-            .GroupBy<Album>(x => x.Id);
+            .Select(@"Authors.Id AS AuthorId,
+                     Books.Id AS BookId,
+                     SUM(COALESCE(BookFiles.Size, 0)) AS SizeOnDisk,
+                     COUNT(Books.Id) AS TotalTrackCount,
+                     SUM(CASE WHEN BookFiles.Id IS NULL THEN 0 ELSE 1 END) AS AvailableTrackCount,
+                     SUM(CASE WHEN Books.Monitored = 1 OR BookFiles.Id IS NOT NULL THEN 1 ELSE 0 END) AS TrackCount,
+                     SUM(CASE WHEN BookFiles.Id IS NULL THEN 0 ELSE 1 END) AS TrackFileCount")
+            .Join<Book, Author>((album, artist) => album.AuthorMetadataId == artist.AuthorMetadataId)
+            .LeftJoin<Book, BookFile>((t, f) => t.Id == f.BookId)
+            .GroupBy<Author>(x => x.Id)
+            .GroupBy<Book>(x => x.Id);
     }
 }

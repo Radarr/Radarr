@@ -3,12 +3,12 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.ImportLists;
-using NzbDrone.Core.ImportLists.ReadarrLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ImportListTests
 {
+    /*
     public class ImportListServiceFixture : DbTest<ImportListFactory, ImportListDefinition>
     {
         private List<IImportList> _importLists;
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         {
             _importLists = new List<IImportList>();
 
-            _importLists.Add(Mocker.Resolve<ReadarrLists>());
+            _importLists.Add(Mocker.Resolve<GoodreadsOwnedBooks>());
 
             Mocker.SetConstant<IEnumerable<IImportList>>(_importLists);
         }
@@ -39,5 +39,5 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             AllStoredModels.Should().NotContain(c => c.Id == existingImportLists.Id);
         }
-    }
+    }*/
 }

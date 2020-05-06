@@ -23,52 +23,52 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
     {
         private RemoteAlbum _parseResultMulti;
         private RemoteAlbum _parseResultSingle;
-        private TrackFile _firstFile;
-        private TrackFile _secondFile;
+        private BookFile _firstFile;
+        private BookFile _secondFile;
 
         [SetUp]
         public void Setup()
         {
             Mocker.Resolve<UpgradableSpecification>();
 
-            _firstFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
-            _secondFile = new TrackFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
+            _firstFile = new BookFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
+            _secondFile = new BookFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
 
-            var singleAlbumList = new List<Album> { new Album { }, new Album { } };
-            var doubleAlbumList = new List<Album> { new Album { }, new Album { }, new Album { } };
+            var singleAlbumList = new List<Book> { new Book { }, new Book { } };
+            var doubleAlbumList = new List<Book> { new Book { }, new Book { }, new Book { } };
 
-            var fakeArtist = Builder<Artist>.CreateNew()
+            var fakeArtist = Builder<Author>.CreateNew()
                          .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.FLAC.Id })
                          .Build();
 
             Mocker.GetMock<IMediaFileService>()
                 .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
-                .Returns(new List<TrackFile> { _firstFile, _secondFile });
+                .Returns(new List<BookFile> { _firstFile, _secondFile });
 
             _parseResultMulti = new RemoteAlbum
             {
                 Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MOBI, new Revision(version: 2)) },
                 Albums = doubleAlbumList
             };
 
             _parseResultSingle = new RemoteAlbum
             {
                 Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_256, new Revision(version: 2)) },
+                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MOBI, new Revision(version: 2)) },
                 Albums = singleAlbumList
             };
         }
 
         private void WithFirstFileUpgradable()
         {
-            _firstFile.Quality = new QualityModel(Quality.MP3_192);
+            _firstFile.Quality = new QualityModel(Quality.PDF);
         }
 
         [Test]
         public void should_return_false_when_trackFile_was_added_more_than_7_days_ago()
         {
-            _firstFile.Quality.Quality = Quality.MP3_256;
+            _firstFile.Quality.Quality = Quality.MOBI;
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
@@ -77,8 +77,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_false_when_first_trackFile_was_added_more_than_7_days_ago()
         {
-            _firstFile.Quality.Quality = Quality.MP3_256;
-            _secondFile.Quality.Quality = Quality.MP3_256;
+            _firstFile.Quality.Quality = Quality.MOBI;
+            _secondFile.Quality.Quality = Quality.MOBI;
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
             Subject.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
@@ -87,8 +87,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_false_when_second_trackFile_was_added_more_than_7_days_ago()
         {
-            _firstFile.Quality.Quality = Quality.MP3_256;
-            _secondFile.Quality.Quality = Quality.MP3_256;
+            _firstFile.Quality.Quality = Quality.MOBI;
+            _secondFile.Quality.Quality = Quality.MOBI;
 
             _secondFile.DateAdded = DateTime.Today.AddDays(-30);
             Subject.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
@@ -119,7 +119,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                 .Setup(s => s.DownloadPropersAndRepacks)
                 .Returns(ProperDownloadTypes.DoNotUpgrade);
 
-            _firstFile.Quality.Quality = Quality.MP3_256;
+            _firstFile.Quality.Quality = Quality.MOBI;
 
             _firstFile.DateAdded = DateTime.Today;
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                   .Setup(s => s.DownloadPropersAndRepacks)
                   .Returns(ProperDownloadTypes.PreferAndUpgrade);
 
-            _firstFile.Quality.Quality = Quality.MP3_256;
+            _firstFile.Quality.Quality = Quality.MOBI;
 
             _firstFile.DateAdded = DateTime.Today;
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
@@ -145,7 +145,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                   .Setup(s => s.DownloadPropersAndRepacks)
                   .Returns(ProperDownloadTypes.DoNotPrefer);
 
-            _firstFile.Quality.Quality = Quality.MP3_256;
+            _firstFile.Quality.Quality = Quality.MOBI;
 
             _firstFile.DateAdded = DateTime.Today;
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();

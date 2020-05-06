@@ -34,7 +34,6 @@ export const defaultState = {
     monitor: monitorOptions[0].key,
     qualityProfileId: 0,
     metadataProfileId: 0,
-    albumFolder: true,
     tags: []
   }
 };
@@ -108,9 +107,9 @@ export const actionHandlers = handleThunks({
   [ADD_ARTIST]: function(getState, payload, dispatch) {
     dispatch(set({ section, isAdding: true }));
 
-    const foreignArtistId = payload.foreignArtistId;
+    const foreignAuthorId = payload.foreignAuthorId;
     const items = getState().search.items;
-    const itemToAdd = _.find(items, { foreignId: foreignArtistId });
+    const itemToAdd = _.find(items, { foreignId: foreignAuthorId });
     const newArtist = getNewArtist(_.cloneDeep(itemToAdd.artist), payload);
 
     const promise = createAjaxRequest({
@@ -146,9 +145,9 @@ export const actionHandlers = handleThunks({
   [ADD_ALBUM]: function(getState, payload, dispatch) {
     dispatch(set({ section, isAdding: true }));
 
-    const foreignAlbumId = payload.foreignAlbumId;
+    const foreignBookId = payload.foreignBookId;
     const items = getState().search.items;
-    const itemToAdd = _.find(items, { foreignId: foreignAlbumId });
+    const itemToAdd = _.find(items, { foreignId: foreignBookId });
     const newAlbum = getNewAlbum(_.cloneDeep(itemToAdd.album), payload);
 
     const promise = createAjaxRequest({

@@ -11,21 +11,21 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
 
     public class FindByNameInexactFixture : CoreTest<ArtistService>
     {
-        private List<Artist> _artists;
+        private List<Author> _artists;
 
-        private Artist CreateArtist(string name)
+        private Author CreateArtist(string name)
         {
-            return Builder<Artist>.CreateNew()
+            return Builder<Author>.CreateNew()
                 .With(a => a.Name = name)
                 .With(a => a.CleanName = Parser.Parser.CleanArtistName(name))
-                .With(a => a.ForeignArtistId = name)
+                .With(a => a.ForeignAuthorId = name)
                 .BuildNew();
         }
 
         [SetUp]
         public void Setup()
         {
-            _artists = new List<Artist>();
+            _artists = new List<Author>();
             _artists.Add(CreateArtist("The Black Eyed Peas"));
             _artists.Add(CreateArtist("The Black Keys"));
 
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
         [Test]
         public void should_find_artist_when_the_is_omitted_from_start()
         {
-            _artists = new List<Artist>();
+            _artists = new List<Author>();
             _artists.Add(CreateArtist("Black Keys"));
             _artists.Add(CreateArtist("The Black Eyed Peas"));
 

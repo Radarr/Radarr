@@ -11,8 +11,8 @@ namespace Readarr.Api.V1.TrackFiles
 {
     public class TrackFileResource : RestResource
     {
-        public int ArtistId { get; set; }
-        public int AlbumId { get; set; }
+        public int AuthorId { get; set; }
+        public int BookId { get; set; }
         public string Path { get; set; }
         public long Size { get; set; }
         public DateTime DateAdded { get; set; }
@@ -39,7 +39,7 @@ namespace Readarr.Api.V1.TrackFiles
             return qualityWeight;
         }
 
-        public static TrackFileResource ToResource(this TrackFile model)
+        public static TrackFileResource ToResource(this BookFile model)
         {
             if (model == null)
             {
@@ -49,7 +49,7 @@ namespace Readarr.Api.V1.TrackFiles
             return new TrackFileResource
             {
                 Id = model.Id,
-                AlbumId = model.AlbumId,
+                BookId = model.BookId,
                 Path = model.Path,
                 Size = model.Size,
                 DateAdded = model.DateAdded,
@@ -59,7 +59,7 @@ namespace Readarr.Api.V1.TrackFiles
             };
         }
 
-        public static TrackFileResource ToResource(this TrackFile model, NzbDrone.Core.Music.Artist artist, IUpgradableSpecification upgradableSpecification)
+        public static TrackFileResource ToResource(this BookFile model, NzbDrone.Core.Music.Author artist, IUpgradableSpecification upgradableSpecification)
         {
             if (model == null)
             {
@@ -70,8 +70,8 @@ namespace Readarr.Api.V1.TrackFiles
             {
                 Id = model.Id,
 
-                ArtistId = artist.Id,
-                AlbumId = model.AlbumId,
+                AuthorId = artist.Id,
+                BookId = model.BookId,
                 Path = model.Path,
                 Size = model.Size,
                 DateAdded = model.DateAdded,

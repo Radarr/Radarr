@@ -18,24 +18,24 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private RemoteAlbum _parseResultMulti;
         private RemoteAlbum _parseResultSingle;
-        private Artist _fakeArtist;
-        private Album _firstAlbum;
-        private Album _secondAlbum;
+        private Author _fakeArtist;
+        private Book _firstAlbum;
+        private Book _secondAlbum;
 
         [SetUp]
         public void Setup()
         {
             _monitoredAlbumSpecification = Mocker.Resolve<MonitoredAlbumSpecification>();
 
-            _fakeArtist = Builder<Artist>.CreateNew()
+            _fakeArtist = Builder<Author>.CreateNew()
                 .With(c => c.Monitored = true)
                 .Build();
 
-            _firstAlbum = new Album { Monitored = true };
-            _secondAlbum = new Album { Monitored = true };
+            _firstAlbum = new Book { Monitored = true };
+            _secondAlbum = new Book { Monitored = true };
 
-            var singleAlbumList = new List<Album> { _firstAlbum };
-            var doubleAlbumList = new List<Album> { _firstAlbum, _secondAlbum };
+            var singleAlbumList = new List<Book> { _firstAlbum };
+            var doubleAlbumList = new List<Book> { _firstAlbum, _secondAlbum };
 
             _parseResultMulti = new RemoteAlbum
             {

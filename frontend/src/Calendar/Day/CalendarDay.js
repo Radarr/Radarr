@@ -39,7 +39,7 @@ function CalendarDay(props) {
             return (
               <CalendarEventConnector
                 key={event.id}
-                albumId={event.id}
+                bookId={event.id}
                 {...event}
                 onEventModalOpenToggle={onEventModalOpenToggle}
               />

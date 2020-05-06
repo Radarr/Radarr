@@ -16,7 +16,7 @@ using HttpStatusCode = System.Net.HttpStatusCode;
 
 namespace Readarr.Api.V1.TrackFiles
 {
-    public class TrackFileModule : ReadarrRestModuleWithSignalR<TrackFileResource, TrackFile>,
+    public class TrackFileModule : ReadarrRestModuleWithSignalR<TrackFileResource, BookFile>,
                                  IHandle<TrackFileAddedEvent>,
                                  IHandle<TrackFileDeletedEvent>
     {
@@ -52,9 +52,9 @@ namespace Readarr.Api.V1.TrackFiles
             Delete("/bulk", trackFiles => DeleteTrackFiles());
         }
 
-        private TrackFileResource MapToResource(TrackFile trackFile)
+        private TrackFileResource MapToResource(BookFile trackFile)
         {
-            if (trackFile.AlbumId > 0 && trackFile.Artist != null && trackFile.Artist.Value != null)
+            if (trackFile.BookId > 0 && trackFile.Artist != null && trackFile.Artist.Value != null)
             {
                 return trackFile.ToResource(trackFile.Artist.Value, _upgradableSpecification);
             }
@@ -73,14 +73,14 @@ namespace Readarr.Api.V1.TrackFiles
 
         private List<TrackFileResource> GetTrackFiles()
         {
-            var artistIdQuery = Request.Query.ArtistId;
+            var authorIdQuery = Request.Query.AuthorId;
             var trackFileIdsQuery = Request.Query.TrackFileIds;
-            var albumIdQuery = Request.Query.AlbumId;
+            var bookIdQuery = Request.Query.BookId;
             var unmappedQuery = Request.Query.Unmapped;
 
-            if (!artistIdQuery.HasValue && !trackFileIdsQuery.HasValue && !albumIdQuery.HasValue && !unmappedQuery.HasValue)
+            if (!authorIdQuery.HasValue && !trackFileIdsQuery.HasValue && !bookIdQuery.HasValue && !unmappedQuery.HasValue)
             {
-                throw new Readarr.Http.REST.BadRequestException("artistId, albumId, trackFileIds or unmapped must be provided");
+                throw new Readarr.Http.REST.BadRequestException("authorId, bookId, trackFileIds or unmapped must be provided");
             }
 
             if (unmappedQuery.HasValue && Convert.ToBoolean(unmappedQuery.Value))
@@ -89,27 +89,27 @@ namespace Readarr.Api.V1.TrackFiles
                 return files.ConvertAll(f => MapToResource(f));
             }
 
-            if (artistIdQuery.HasValue && !albumIdQuery.HasValue)
+            if (authorIdQuery.HasValue && !bookIdQuery.HasValue)
             {
-                int artistId = Convert.ToInt32(artistIdQuery.Value);
-                var artist = _artistService.GetArtist(artistId);
+                int authorId = Convert.ToInt32(authorIdQuery.Value);
+                var artist = _artistService.GetArtist(authorId);
 
-                return _mediaFileService.GetFilesByArtist(artistId).ConvertAll(f => f.ToResource(artist, _upgradableSpecification));
+                return _mediaFileService.GetFilesByArtist(authorId).ConvertAll(f => f.ToResource(artist, _upgradableSpecification));
             }
 
-            if (albumIdQuery.HasValue)
+            if (bookIdQuery.HasValue)
             {
-                string albumIdValue = albumIdQuery.Value.ToString();
+                string bookIdValue = bookIdQuery.Value.ToString();
 
-                var albumIds = albumIdValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                var bookIds = bookIdValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(e => Convert.ToInt32(e))
                     .ToList();
 
                 var result = new List<TrackFileResource>();
-                foreach (var albumId in albumIds)
+                foreach (var bookId in bookIds)
                 {
-                    var album = _albumService.GetAlbum(albumId);
-                    var albumArtist = _artistService.GetArtist(album.ArtistId);
+                    var album = _albumService.GetAlbum(bookId);
+                    var albumArtist = _artistService.GetArtist(album.AuthorId);
                     result.AddRange(_mediaFileService.GetFilesByAlbum(album.Id).ConvertAll(f => f.ToResource(albumArtist, _upgradableSpecification)));
                 }
 
@@ -164,7 +164,7 @@ namespace Readarr.Api.V1.TrackFiles
                 throw new NzbDroneClientException(HttpStatusCode.NotFound, "Track file not found");
             }
 
-            if (trackFile.AlbumId > 0 && trackFile.Artist != null && trackFile.Artist.Value != null)
+            if (trackFile.BookId > 0 && trackFile.Artist != null && trackFile.Artist.Value != null)
             {
                 _mediaFileDeletionService.DeleteTrackFile(trackFile.Artist.Value, trackFile);
             }

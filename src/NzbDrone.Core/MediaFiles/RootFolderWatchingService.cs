@@ -257,7 +257,7 @@ namespace NzbDrone.Core.MediaFiles
                 return true;
             }
 
-            if (extension.IsNotNullOrWhiteSpace() && !MediaFileExtensions.Extensions.Contains(extension))
+            if (extension.IsNotNullOrWhiteSpace() && !MediaFileExtensions.AllExtensions.Contains(extension))
             {
                 return true;
             }

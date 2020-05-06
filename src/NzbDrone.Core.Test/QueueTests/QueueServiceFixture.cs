@@ -26,17 +26,17 @@ namespace NzbDrone.Core.Test.QueueTests
                 .With(v => v.RemainingTime = TimeSpan.FromSeconds(10))
                 .Build();
 
-            var artist = Builder<Artist>.CreateNew()
+            var artist = Builder<Author>.CreateNew()
                 .Build();
 
-            var albums = Builder<Album>.CreateListOfSize(3)
+            var albums = Builder<Book>.CreateListOfSize(3)
                 .All()
-                .With(e => e.ArtistId = artist.Id)
+                .With(e => e.AuthorId = artist.Id)
                 .Build();
 
             var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
                 .With(r => r.Artist = artist)
-                .With(r => r.Albums = new List<Album>(albums))
+                .With(r => r.Albums = new List<Book>(albums))
                 .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo())
                 .Build();
 

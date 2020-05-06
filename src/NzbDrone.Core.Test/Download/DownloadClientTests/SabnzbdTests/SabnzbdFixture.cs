@@ -354,7 +354,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                     .Returns(new SabnzbdAddResponse { Ids = new List<string> { "readarrtest" } });
 
             var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Albums = Builder<Album>.CreateListOfSize(1)
+            remoteAlbum.Albums = Builder<Book>.CreateListOfSize(1)
                                                       .All()
                                                       .With(e => e.ReleaseDate = DateTime.Today)
                                                       .Build()

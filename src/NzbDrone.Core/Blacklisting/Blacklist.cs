@@ -9,9 +9,9 @@ namespace NzbDrone.Core.Blacklisting
 {
     public class Blacklist : ModelBase
     {
-        public int ArtistId { get; set; }
-        public Artist Artist { get; set; }
-        public List<int> AlbumIds { get; set; }
+        public int AuthorId { get; set; }
+        public Author Artist { get; set; }
+        public List<int> BookIds { get; set; }
         public string SourceTitle { get; set; }
         public QualityModel Quality { get; set; }
         public DateTime Date { get; set; }

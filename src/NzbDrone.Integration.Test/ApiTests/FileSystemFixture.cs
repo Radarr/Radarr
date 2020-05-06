@@ -105,7 +105,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void get_all_mediafiles()
         {
             var tempDir = GetTempDirectory("mediaDir");
-            File.WriteAllText(Path.Combine(tempDir, "somevideo.mp3"), "audio");
+            File.WriteAllText(Path.Combine(tempDir, "somevideo.mobi"), "audio");
 
             var request = FileSystem.BuildRequest("mediafiles");
             request.Method = Method.GET;
@@ -117,7 +117,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             result.First().Should().ContainKey("path");
             result.First().Should().ContainKey("name");
 
-            result.First()["name"].Should().Be("somevideo.mp3");
+            result.First()["name"].Should().Be("somevideo.mobi");
         }
     }
 }

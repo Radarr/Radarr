@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Build();
 
             var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                .With(v => v.Artist = new Artist())
+                .With(v => v.Artist = new Author())
                 .Build();
 
             _trackedDownload = new TrackedDownload
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetArtist(It.IsAny<string>()))
-                  .Returns(Builder<Artist>.CreateNew().Build());
+                  .Returns(Builder<Author>.CreateNew().Build());
         }
 
         private void GivenSuccessfulImport()
@@ -125,7 +125,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_skip_if_no_artist_found()
         {
-            Mocker.GetMock<IParsingService>().Setup(c => c.GetArtist("foldername")).Returns((Artist)null);
+            Mocker.GetMock<IParsingService>().Setup(c => c.GetArtist("foldername")).Returns((Author)null);
 
             Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 

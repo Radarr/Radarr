@@ -39,7 +39,6 @@ namespace NzbDrone.Integration.Test
         public CommandClient Commands;
         public DownloadClientClient DownloadClients;
         public AlbumClient Albums;
-        public TrackClient Tracks;
         public ClientBase<HistoryResource> History;
         public ClientBase<HostConfigResource> HostConfig;
         public IndexerClient Indexers;
@@ -103,7 +102,6 @@ namespace NzbDrone.Integration.Test
             Commands = new CommandClient(RestClient, ApiKey);
             DownloadClients = new DownloadClientClient(RestClient, ApiKey);
             Albums = new AlbumClient(RestClient, ApiKey);
-            Tracks = new TrackClient(RestClient, ApiKey);
             History = new ClientBase<HistoryResource>(RestClient, ApiKey);
             HostConfig = new ClientBase<HostConfigResource>(RestClient, ApiKey, "config/host");
             Indexers = new IndexerClient(RestClient, ApiKey);
@@ -251,13 +249,13 @@ namespace NzbDrone.Integration.Test
             Assert.Fail("Timed on wait");
         }
 
-        public ArtistResource EnsureArtist(string readarrId, string artistName, bool? monitored = null)
+        public ArtistResource EnsureArtist(string authorId, string goodreadsBookId, string artistName, bool? monitored = null)
         {
-            var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == readarrId);
+            var result = Artist.All().FirstOrDefault(v => v.ForeignAuthorId == authorId);
 
             if (result == null)
             {
-                var lookup = Artist.Lookup("readarr:" + readarrId);
+                var lookup = Artist.Lookup("readarr:" + goodreadsBookId);
                 var artist = lookup.First();
                 artist.QualityProfileId = 1;
                 artist.MetadataProfileId = 1;
@@ -268,7 +266,7 @@ namespace NzbDrone.Integration.Test
 
                 result = Artist.Post(artist);
                 Commands.WaitAll();
-                WaitForCompletion(() => Tracks.GetTracksInArtist(result.Id).Count > 0);
+                WaitForCompletion(() => Albums.GetAlbumsInArtist(result.Id).Count > 0);
             }
 
             var changed = false;
@@ -299,7 +297,7 @@ namespace NzbDrone.Integration.Test
 
         public void EnsureNoArtist(string readarrId, string artistTitle)
         {
-            var result = Artist.All().FirstOrDefault(v => v.ForeignArtistId == readarrId);
+            var result = Artist.All().FirstOrDefault(v => v.ForeignAuthorId == readarrId);
 
             if (result != null)
             {
@@ -307,11 +305,12 @@ namespace NzbDrone.Integration.Test
             }
         }
 
-        public void EnsureTrackFile(ArtistResource artist, int albumId, int albumReleaseId, int trackId, Quality quality)
+        public void EnsureTrackFile(ArtistResource artist, int bookId, Quality quality)
         {
-            var result = Tracks.GetTracksInArtist(artist.Id).Single(v => v.Id == trackId);
+            var result = Albums.GetAlbumsInArtist(artist.Id).Single(v => v.Id == bookId);
 
-            if (result.TrackFile == null)
+            // if (result.BookFile == null)
+            if (true)
             {
                 var path = Path.Combine(ArtistRootFolder, artist.ArtistName, "Track.mp3");
 
@@ -325,30 +324,27 @@ namespace NzbDrone.Integration.Test
                             new ManualImportFile
                             {
                                 Path = path,
-                                ArtistId = artist.Id,
-                                AlbumId = albumId,
-                                AlbumReleaseId = albumReleaseId,
-                                TrackIds = new List<int> { trackId },
+                                AuthorId = artist.Id,
+                                BookId = bookId,
                                 Quality = new QualityModel(quality)
                             }
                     }
                 });
                 Commands.WaitAll();
 
-                var track = Tracks.GetTracksInArtist(artist.Id).Single(x => x.Id == trackId);
+                var track = Albums.GetAlbumsInArtist(artist.Id).Single(x => x.Id == bookId);
 
-                track.TrackFileId.Should().NotBe(0);
+                // track.BookFileId.Should().NotBe(0);
             }
         }
 
-        public QualityProfileResource EnsureProfileCutoff(int profileId, string cutoff)
+        public QualityProfileResource EnsureProfileCutoff(int profileId, Quality cutoff)
         {
             var profile = Profiles.Get(profileId);
-            var cutoffItem = profile.Items.First(x => x.Name == cutoff);
 
-            if (profile.Cutoff != cutoffItem.Id)
+            if (profile.Cutoff != cutoff.Id)
             {
-                profile.Cutoff = cutoffItem.Id;
+                profile.Cutoff = cutoff.Id;
                 profile = Profiles.Put(profile);
             }
 

@@ -6,10 +6,10 @@ import styles from './StarRating.css';
 
 function StarRating({ rating, votes, iconSize }) {
   const starWidth = {
-    width: `${rating * 10}%`
+    width: `${rating * 20}%`
   };
 
-  const helpText = `${rating/2} (${votes} Votes)`;
+  const helpText = `${rating.toFixed(1)} (${votes} Votes)`;
 
   return (
     <span className={styles.starRating} title={helpText}>

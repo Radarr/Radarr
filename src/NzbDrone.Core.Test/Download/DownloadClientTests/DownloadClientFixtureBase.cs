@@ -52,9 +52,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
 
             remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
 
-            remoteAlbum.Albums = new List<Album>();
+            remoteAlbum.Albums = new List<Book>();
 
-            remoteAlbum.Artist = new Artist();
+            remoteAlbum.Artist = new Author();
 
             return remoteAlbum;
         }

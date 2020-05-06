@@ -54,22 +54,20 @@ class AddNewArtistModalContentConnector extends Component {
 
   onAddArtistPress = (searchForMissingAlbums) => {
     const {
-      foreignArtistId,
+      foreignAuthorId,
       rootFolderPath,
       monitor,
       qualityProfileId,
       metadataProfileId,
-      albumFolder,
       tags
     } = this.props;
 
     this.props.addArtist({
-      foreignArtistId,
+      foreignAuthorId,
       rootFolderPath: rootFolderPath.value,
       monitor: monitor.value,
       qualityProfileId: qualityProfileId.value,
       metadataProfileId: metadataProfileId.value,
-      albumFolder: albumFolder.value,
       tags: tags.value,
       searchForMissingAlbums
     });
@@ -90,12 +88,11 @@ class AddNewArtistModalContentConnector extends Component {
 }
 
 AddNewArtistModalContentConnector.propTypes = {
-  foreignArtistId: PropTypes.string.isRequired,
+  foreignAuthorId: PropTypes.string.isRequired,
   rootFolderPath: PropTypes.object,
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
   metadataProfileId: PropTypes.object,
-  albumFolder: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,
   onModalClose: PropTypes.func.isRequired,
   setAddDefault: PropTypes.func.isRequired,

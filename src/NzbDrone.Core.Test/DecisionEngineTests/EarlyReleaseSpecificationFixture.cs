@@ -17,23 +17,23 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [TestFixture]
     public class EarlyReleaseSpecificationFixture : TestBase<EarlyReleaseSpecification>
     {
-        private Artist _artist;
-        private Album _album1;
-        private Album _album2;
+        private Author _artist;
+        private Book _album1;
+        private Book _album2;
         private RemoteAlbum _remoteAlbum;
         private IndexerDefinition _indexerDefinition;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>.CreateNew().With(s => s.Id = 1).Build();
-            _album1 = Builder<Album>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
-            _album2 = Builder<Album>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
+            _artist = Builder<Author>.CreateNew().With(s => s.Id = 1).Build();
+            _album1 = Builder<Book>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
+            _album2 = Builder<Book>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
 
             _remoteAlbum = new RemoteAlbum
             {
                 Artist = _artist,
-                Albums = new List<Album> { _album1 },
+                Albums = new List<Book> { _album1 },
                 Release = new TorrentInfo
                 {
                     IndexerId = 1,

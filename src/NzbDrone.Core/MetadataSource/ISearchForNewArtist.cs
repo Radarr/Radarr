@@ -3,8 +3,8 @@ using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MetadataSource
 {
-    public interface ISearchForNewArtist
+    public interface ISearchForNewAuthor
     {
-        List<Artist> SearchForNewArtist(string title);
+        List<Author> SearchForNewAuthor(string title);
     }
 }

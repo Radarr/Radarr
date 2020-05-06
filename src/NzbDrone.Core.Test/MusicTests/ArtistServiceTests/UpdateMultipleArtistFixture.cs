@@ -15,12 +15,12 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
     [TestFixture]
     public class UpdateMultipleArtistFixture : CoreTest<ArtistService>
     {
-        private List<Artist> _artists;
+        private List<Author> _artists;
 
         [SetUp]
         public void Setup()
         {
-            _artists = Builder<Artist>.CreateListOfSize(5)
+            _artists = Builder<Author>.CreateListOfSize(5)
                 .All()
                 .With(s => s.QualityProfileId = 1)
                 .With(s => s.Monitored)
@@ -41,15 +41,15 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
         public void should_update_path_when_rootFolderPath_is_supplied()
         {
             Mocker.GetMock<IBuildFileNames>()
-                .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
-                .Returns<Artist, NamingConfig>((c, n) => c.Name);
+                .Setup(s => s.GetArtistFolder(It.IsAny<Author>(), null))
+                .Returns<Author, NamingConfig>((c, n) => c.Name);
 
             var newRoot = @"C:\Test\Music2".AsOsAgnostic();
             _artists.ForEach(s => s.RootFolderPath = newRoot);
 
             Mocker.GetMock<IBuildArtistPaths>()
-                .Setup(s => s.BuildPath(It.IsAny<Artist>(), false))
-                .Returns<Artist, bool>((s, u) => Path.Combine(s.RootFolderPath, s.Name));
+                .Setup(s => s.BuildPath(It.IsAny<Author>(), false))
+                .Returns<Author, bool>((s, u) => Path.Combine(s.RootFolderPath, s.Name));
 
             Subject.UpdateArtists(_artists, false).ForEach(s => s.Path.Should().StartWith(newRoot));
         }
@@ -67,15 +67,15 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
         [Test]
         public void should_be_able_to_update_many_artist()
         {
-            var artist = Builder<Artist>.CreateListOfSize(50)
+            var artist = Builder<Author>.CreateListOfSize(50)
                                         .All()
                                         .With(s => s.Path = (@"C:\Test\Music\" + s.Path).AsOsAgnostic())
                                         .Build()
                                         .ToList();
 
             Mocker.GetMock<IBuildFileNames>()
-                .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
-                .Returns<Artist, NamingConfig>((c, n) => c.Name);
+                .Setup(s => s.GetArtistFolder(It.IsAny<Author>(), null))
+                .Returns<Author, NamingConfig>((c, n) => c.Name);
 
             var newRoot = @"C:\Test\Music2".AsOsAgnostic();
             artist.ForEach(s => s.RootFolderPath = newRoot);

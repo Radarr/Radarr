@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Link from 'Components/Link/Link';
 
-function AlbumTitleLink({ foreignAlbumId, title, disambiguation }) {
-  const link = `/album/${foreignAlbumId}`;
+function AlbumTitleLink({ titleSlug, title, disambiguation }) {
+  const link = `/book/${titleSlug}`;
 
   return (
     <Link to={link}>
@@ -13,7 +13,7 @@ function AlbumTitleLink({ foreignAlbumId, title, disambiguation }) {
 }
 
 AlbumTitleLink.propTypes = {
-  foreignAlbumId: PropTypes.string.isRequired,
+  titleSlug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   disambiguation: PropTypes.string
 };

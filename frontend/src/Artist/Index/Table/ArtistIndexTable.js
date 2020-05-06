@@ -62,7 +62,7 @@ class ArtistIndexTable extends Component {
           component={ArtistIndexRow}
           style={style}
           columns={columns}
-          artistId={artist.id}
+          authorId={artist.id}
           qualityProfileId={artist.qualityProfileId}
           metadataProfileId={artist.metadataProfileId}
           showBanners={showBanners}

@@ -13,14 +13,14 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
     [TestFixture]
     public class TrackedDownloadAlreadyImportedFixture : CoreTest<TrackedDownloadAlreadyImported>
     {
-        private List<Album> _albums;
+        private List<Book> _albums;
         private TrackedDownload _trackedDownload;
         private List<History.History> _historyItems;
 
         [SetUp]
         public void Setup()
         {
-            _albums = new List<Album>();
+            _albums = new List<Book>();
 
             var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
                                                       .With(r => r.Albums = _albums)
@@ -35,17 +35,17 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
         public void GivenEpisodes(int count)
         {
-            _albums.AddRange(Builder<Album>.CreateListOfSize(count)
+            _albums.AddRange(Builder<Book>.CreateListOfSize(count)
                                                .BuildList());
         }
 
-        public void GivenHistoryForEpisode(Album episode, params HistoryEventType[] eventTypes)
+        public void GivenHistoryForEpisode(Book episode, params HistoryEventType[] eventTypes)
         {
             foreach (var eventType in eventTypes)
             {
                 _historyItems.Add(
                     Builder<History.History>.CreateNew()
-                                            .With(h => h.AlbumId = episode.Id)
+                                            .With(h => h.BookId = episode.Id)
                                             .With(h => h.EventType = eventType)
                                             .Build());
             }

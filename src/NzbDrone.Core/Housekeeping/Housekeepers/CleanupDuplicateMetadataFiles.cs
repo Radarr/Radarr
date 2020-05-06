@@ -28,8 +28,8 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE Type = 1
-                                         GROUP BY ArtistId, Consumer
-                                         HAVING COUNT(ArtistId) > 1
+                                         GROUP BY AuthorId, Consumer
+                                         HAVING COUNT(AuthorId) > 1
                                      )");
             }
         }
@@ -42,8 +42,8 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                          WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE Type = 6
-                                         GROUP BY AlbumId, Consumer
-                                         HAVING COUNT(AlbumId) > 1
+                                         GROUP BY BookId, Consumer
+                                         HAVING COUNT(BookId) > 1
                                      )");
             }
         }

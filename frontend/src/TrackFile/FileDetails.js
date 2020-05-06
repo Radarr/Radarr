@@ -135,7 +135,7 @@ function FileDetails(props) {
           {
             audioTags.artistMBId !== undefined &&
               <Link
-                to={`https://musicbrainz.org/artist/${audioTags.artistMBId}`}
+                to={`https://musicbrainz.org/author/${audioTags.artistMBId}`}
               >
                 <DescriptionListItem
                   title="MusicBrainz Artist ID"

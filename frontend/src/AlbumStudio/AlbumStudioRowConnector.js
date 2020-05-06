@@ -13,7 +13,7 @@ const getAlbumMap = createSelector(
   (state) => state.albums.items,
   (albums) => {
     return albums.reduce((acc, curr) => {
-      (acc[curr.artistId] = acc[curr.artistId] || []).push(curr);
+      (acc[curr.authorId] = acc[curr.authorId] || []).push(curr);
       return acc;
     }, {});
   }
@@ -29,7 +29,7 @@ function createMapStateToProps() {
 
       return {
         ...artist,
-        artistId: artist.id,
+        authorId: artist.id,
         artistName: artist.artistName,
         monitored: artist.monitored,
         status: artist.status,
@@ -52,20 +52,20 @@ class AlbumStudioRowConnector extends Component {
 
   onArtistMonitoredPress = () => {
     const {
-      artistId,
+      authorId,
       monitored
     } = this.props;
 
     this.props.toggleArtistMonitored({
-      artistId,
+      authorId,
       monitored: !monitored
     });
   }
 
-  onAlbumMonitoredPress = (albumId, monitored) => {
-    const albumIds = [albumId];
+  onAlbumMonitoredPress = (bookId, monitored) => {
+    const bookIds = [bookId];
     this.props.toggleAlbumsMonitored({
-      albumIds,
+      bookIds,
       monitored
     });
   }
@@ -85,7 +85,7 @@ class AlbumStudioRowConnector extends Component {
 }
 
 AlbumStudioRowConnector.propTypes = {
-  artistId: PropTypes.number.isRequired,
+  authorId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   toggleArtistMonitored: PropTypes.func.isRequired,
   toggleAlbumsMonitored: PropTypes.func.isRequired

@@ -26,9 +26,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
     {
         private List<IFileInfo> _fileInfos;
         private LocalTrack _localTrack;
-        private Artist _artist;
-        private Album _album;
-        private AlbumRelease _albumRelease;
+        private Author _artist;
+        private Book _album;
         private QualityModel _quality;
 
         private IdentificationOverrides _idOverrides;
@@ -85,26 +84,22 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail2"));
             _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail3"));
 
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                 .With(e => e.QualityProfileId = 1)
                 .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                 .Build();
 
-            _album = Builder<Album>.CreateNew()
-                .With(x => x.Artist = _artist)
+            _album = Builder<Book>.CreateNew()
+                .With(x => x.Author = _artist)
                 .Build();
 
-            _albumRelease = Builder<AlbumRelease>.CreateNew()
-                .With(x => x.Album = _album)
-                .Build();
-
-            _quality = new QualityModel(Quality.MP3_256);
+            _quality = new QualityModel(Quality.MP3_320);
 
             _localTrack = new LocalTrack
             {
                 Artist = _artist,
                 Quality = _quality,
-                Tracks = new List<Track> { new Track() },
+                Album = new Book(),
                 Path = @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV.avi".AsOsAgnostic()
             };
 
@@ -122,7 +117,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
                 .Returns((List<LocalTrack> tracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config) =>
                 {
                     var ret = new LocalAlbumRelease(tracks);
-                    ret.AlbumRelease = _albumRelease;
+                    ret.Book = _album;
                     return new List<LocalAlbumRelease> { ret };
                 });
 
@@ -154,7 +149,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
                   .Setup(s => s.Augment(It.IsAny<LocalTrack>(), It.IsAny<bool>()))
                   .Callback<LocalTrack, bool>((localTrack, otherFiles) =>
                   {
-                      localTrack.Tracks = _localTrack.Tracks;
+                      localTrack.Album = _localTrack.Album;
                   });
         }
 

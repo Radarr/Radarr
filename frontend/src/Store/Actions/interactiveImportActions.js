@@ -55,7 +55,7 @@ export const defaultState = {
     isFetching: false,
     isPopulated: false,
     error: null,
-    sortKey: 'albumTitle',
+    sortKey: 'title',
     sortDirection: sortDirections.ASCENDING,
     items: []
   },
@@ -64,7 +64,7 @@ export const defaultState = {
     isFetching: false,
     isPopulated: false,
     error: null,
-    sortKey: 'relataivePath',
+    sortKey: 'relativePath',
     sortDirection: sortDirections.ASCENDING,
     items: []
   }

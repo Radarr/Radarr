@@ -13,12 +13,12 @@ namespace NzbDrone.Core.Notifications.Webhook
         {
         }
 
-        public WebhookArtist(Artist artist)
+        public WebhookArtist(Author artist)
         {
             Id = artist.Id;
             Name = artist.Name;
             Path = artist.Path;
-            MBId = artist.Metadata.Value.ForeignArtistId;
+            MBId = artist.Metadata.Value.ForeignAuthorId;
         }
     }
 }

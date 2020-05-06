@@ -64,7 +64,7 @@ namespace Readarr.Api.V1.Calendar
             var albums = _albumService.AlbumsBetweenDates(start, end, unmonitored);
             var calendar = new Ical.Net.Calendar
             {
-                ProductId = "-//readarr.audio//Readarr//EN"
+                ProductId = "-//readarr.com//Readarr//EN"
             };
 
             var calendarName = "Readarr Music Schedule";
@@ -73,7 +73,7 @@ namespace Readarr.Api.V1.Calendar
 
             foreach (var album in albums.OrderBy(v => v.ReleaseDate.Value))
             {
-                var artist = _artistService.GetArtist(album.ArtistId); // Temp fix TODO: Figure out why Album.Artist is not populated during AlbumsBetweenDates Query
+                var artist = _artistService.GetArtist(album.AuthorId); // Temp fix TODO: Figure out why Album.Artist is not populated during AlbumsBetweenDates Query
 
                 if (tags.Any() && tags.None(artist.Tags.Contains))
                 {

@@ -11,8 +11,8 @@ namespace NzbDrone.Core.Queue
 {
     public class Queue : ModelBase
     {
-        public Artist Artist { get; set; }
-        public Album Album { get; set; }
+        public Author Artist { get; set; }
+        public Book Album { get; set; }
         public QualityModel Quality { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }

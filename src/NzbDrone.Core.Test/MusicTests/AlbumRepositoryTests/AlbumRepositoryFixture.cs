@@ -10,83 +10,54 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
 {
     [TestFixture]
-    public class AlbumRepositoryFixture : DbTest<AlbumService, Album>
+    public class AlbumRepositoryFixture : DbTest<AlbumService, Book>
     {
-        private Artist _artist;
-        private Album _album;
-        private Album _albumSpecial;
-        private List<Album> _albums;
-        private AlbumRelease _release;
+        private Author _artist;
+        private Book _album;
+        private Book _albumSpecial;
+        private List<Book> _albums;
         private AlbumRepository _albumRepo;
-        private ReleaseRepository _releaseRepo;
 
         [SetUp]
         public void Setup()
         {
-            _artist = new Artist
+            _artist = new Author
             {
                 Name = "Alien Ant Farm",
                 Monitored = true,
-                ForeignArtistId = "this is a fake id",
+                ForeignAuthorId = "this is a fake id",
                 Id = 1,
-                ArtistMetadataId = 1
+                AuthorMetadataId = 1
             };
 
             _albumRepo = Mocker.Resolve<AlbumRepository>();
-            _releaseRepo = Mocker.Resolve<ReleaseRepository>();
 
-            _release = Builder<AlbumRelease>
-                .CreateNew()
-                .With(e => e.Id = 0)
-                .With(e => e.ForeignReleaseId = "e00e40a3-5ed5-4ed3-9c22-0a8ff4119bdf")
-                .With(e => e.Monitored = true)
-                .Build();
-
-            _album = new Album
+            _album = new Book
             {
                 Title = "ANThology",
-                ForeignAlbumId = "1",
+                ForeignBookId = "1",
+                ForeignWorkId = "1",
+                TitleSlug = "1-ANThology",
                 CleanTitle = "anthology",
-                Artist = _artist,
-                ArtistMetadataId = _artist.ArtistMetadataId,
-                AlbumType = "",
-                AlbumReleases = new List<AlbumRelease> { _release },
+                Author = _artist,
+                AuthorMetadataId = _artist.AuthorMetadataId,
             };
 
             _albumRepo.Insert(_album);
-            _release.AlbumId = _album.Id;
-            _releaseRepo.Insert(_release);
             _albumRepo.Update(_album);
 
-            _albumSpecial = new Album
+            _albumSpecial = new Book
             {
                 Title = "+",
-                ForeignAlbumId = "2",
+                ForeignBookId = "2",
+                ForeignWorkId = "2",
+                TitleSlug = "2-_",
                 CleanTitle = "",
-                Artist = _artist,
-                ArtistMetadataId = _artist.ArtistMetadataId,
-                AlbumType = "",
-                AlbumReleases = new List<AlbumRelease>
-                {
-                    new AlbumRelease
-                    {
-                        ForeignReleaseId = "fake id"
-                    }
-                }
+                Author = _artist,
+                AuthorMetadataId = _artist.AuthorMetadataId
             };
 
             _albumRepo.Insert(_albumSpecial);
-        }
-
-        [Test]
-        public void should_find_album_in_db_by_releaseid()
-        {
-            var id = "e00e40a3-5ed5-4ed3-9c22-0a8ff4119bdf";
-
-            var album = _albumRepo.FindAlbumByRelease(id);
-
-            album.Should().NotBeNull();
-            album.Title.Should().Be(_album.Title);
         }
 
         [TestCase("ANThology")]
@@ -94,7 +65,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         [TestCase("anthology!")]
         public void should_find_album_in_db_by_title(string title)
         {
-            var album = _albumRepo.FindByTitle(_artist.ArtistMetadataId, title);
+            var album = _albumRepo.FindByTitle(_artist.AuthorMetadataId, title);
 
             album.Should().NotBeNull();
             album.Title.Should().Be(_album.Title);
@@ -103,7 +74,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         [Test]
         public void should_find_album_in_db_by_title_all_special_characters()
         {
-            var album = _albumRepo.FindByTitle(_artist.ArtistMetadataId, "+");
+            var album = _albumRepo.FindByTitle(_artist.AuthorMetadataId, "+");
 
             album.Should().NotBeNull();
             album.Title.Should().Be(_albumSpecial.Title);
@@ -115,7 +86,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         [TestCase("÷")]
         public void should_not_find_album_in_db_by_incorrect_title(string title)
         {
-            var album = _albumRepo.FindByTitle(_artist.ArtistMetadataId, title);
+            var album = _albumRepo.FindByTitle(_artist.AuthorMetadataId, title);
 
             album.Should().BeNull();
         }
@@ -123,40 +94,30 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         [Test]
         public void should_not_find_album_when_two_albums_have_same_name()
         {
-            var albums = Builder<Album>.CreateListOfSize(2)
+            var albums = Builder<Book>.CreateListOfSize(2)
                 .All()
                 .With(x => x.Id = 0)
-                .With(x => x.Artist = _artist)
-                .With(x => x.ArtistMetadataId = _artist.ArtistMetadataId)
+                .With(x => x.Author = _artist)
+                .With(x => x.AuthorMetadataId = _artist.AuthorMetadataId)
                 .With(x => x.Title = "Weezer")
                 .With(x => x.CleanTitle = "weezer")
                 .Build();
 
             _albumRepo.InsertMany(albums);
 
-            var album = _albumRepo.FindByTitle(_artist.ArtistMetadataId, "Weezer");
+            var album = _albumRepo.FindByTitle(_artist.AuthorMetadataId, "Weezer");
 
             _albumRepo.All().Should().HaveCount(4);
             album.Should().BeNull();
         }
 
-        [Test]
-        public void should_not_find_album_in_db_by_partial_releaseid()
-        {
-            var id = "e00e40a3-5ed5-4ed3-9c22";
-
-            var album = _albumRepo.FindAlbumByRelease(id);
-
-            album.Should().BeNull();
-        }
-
         private void GivenMultipleAlbums()
         {
-            _albums = Builder<Album>.CreateListOfSize(4)
+            _albums = Builder<Book>.CreateListOfSize(4)
                 .All()
                 .With(x => x.Id = 0)
-                .With(x => x.Artist = _artist)
-                .With(x => x.ArtistMetadataId = _artist.ArtistMetadataId)
+                .With(x => x.Author = _artist)
+                .With(x => x.AuthorMetadataId = _artist.AuthorMetadataId)
                 .TheFirst(1)
 
                 // next
@@ -183,7 +144,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         {
             GivenMultipleAlbums();
 
-            var result = _albumRepo.GetNextAlbums(new[] { _artist.ArtistMetadataId });
+            var result = _albumRepo.GetNextAlbums(new[] { _artist.AuthorMetadataId });
             result.Should().BeEquivalentTo(_albums.Take(1));
         }
 
@@ -192,7 +153,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         {
             GivenMultipleAlbums();
 
-            var result = _albumRepo.GetLastAlbums(new[] { _artist.ArtistMetadataId });
+            var result = _albumRepo.GetLastAlbums(new[] { _artist.AuthorMetadataId });
             result.Should().BeEquivalentTo(_albums.Skip(2).Take(1));
         }
     }

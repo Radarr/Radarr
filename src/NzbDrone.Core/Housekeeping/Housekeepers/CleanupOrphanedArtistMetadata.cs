@@ -3,11 +3,11 @@ using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
-    public class CleanupOrphanedArtistMetadata : IHousekeepingTask
+    public class CleanupOrphanedAuthorMetadata : IHousekeepingTask
     {
         private readonly IMainDatabase _database;
 
-        public CleanupOrphanedArtistMetadata(IMainDatabase database)
+        public CleanupOrphanedAuthorMetadata(IMainDatabase database)
         {
             _database = database;
         }
@@ -16,13 +16,12 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             using (var mapper = _database.OpenConnection())
             {
-                mapper.Execute(@"DELETE FROM ArtistMetadata
+                mapper.Execute(@"DELETE FROM AuthorMetadata
                                      WHERE Id IN (
-                                     SELECT ArtistMetadata.Id FROM ArtistMetadata
-                                     LEFT OUTER JOIN Albums ON Albums.ArtistMetadataId = ArtistMetadata.Id
-                                     LEFT OUTER JOIN Tracks ON Tracks.ArtistMetadataId = ArtistMetadata.Id
-                                     LEFT OUTER JOIN Artists ON Artists.ArtistMetadataId = ArtistMetadata.Id
-                                     WHERE Albums.Id IS NULL AND Tracks.Id IS NULL AND Artists.Id IS NULL)");
+                                     SELECT AuthorMetadata.Id FROM AuthorMetadata
+                                     LEFT OUTER JOIN Books ON Books.AuthorMetadataId = AuthorMetadata.Id
+                                     LEFT OUTER JOIN Authors ON Authors.AuthorMetadataId = AuthorMetadata.Id
+                                     WHERE Books.Id IS NULL AND Authors.Id IS NULL)");
             }
         }
     }

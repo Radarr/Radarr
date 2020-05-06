@@ -33,7 +33,7 @@ const links = [
         to: '/artisteditor'
       },
       {
-        title: 'Album Studio',
+        title: 'Bookshelf',
         to: '/albumstudio'
       },
       {

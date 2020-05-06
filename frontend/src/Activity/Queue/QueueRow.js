@@ -137,13 +137,13 @@ class QueueRow extends Component {
               );
             }
 
-            if (name === 'artist.sortName') {
+            if (name === 'authors.sortName') {
               return (
                 <TableRowCell key={name}>
                   {
                     artist ?
                       <ArtistNameLink
-                        foreignArtistId={artist.foreignArtistId}
+                        titleSlug={artist.titleSlug}
                         artistName={artist.artistName}
                       /> :
                       title
@@ -152,13 +152,13 @@ class QueueRow extends Component {
               );
             }
 
-            if (name === 'album.title') {
+            if (name === 'books.title') {
               return (
                 <TableRowCell key={name}>
                   {
                     album ?
                       <AlbumTitleLink
-                        foreignAlbumId={album.foreignAlbumId}
+                        titleSlug={album.titleSlug}
                         title={album.title}
                         disambiguation={album.disambiguation}
                       /> :
@@ -168,7 +168,7 @@ class QueueRow extends Component {
               );
             }
 
-            if (name === 'album.releaseDate') {
+            if (name === 'books.releaseDate') {
               if (album) {
                 return (
                   <RelativeDateCellConnector

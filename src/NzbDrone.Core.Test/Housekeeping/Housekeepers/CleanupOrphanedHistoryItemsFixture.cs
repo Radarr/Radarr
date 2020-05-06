@@ -11,16 +11,16 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
     [TestFixture]
     public class CleanupOrphanedHistoryItemsFixture : DbTest<CleanupOrphanedHistoryItems, History.History>
     {
-        private Artist _artist;
-        private Album _album;
+        private Author _artist;
+        private Book _album;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>.CreateNew()
+            _artist = Builder<Author>.CreateNew()
                                      .BuildNew();
 
-            _album = Builder<Album>.CreateNew()
+            _album = Builder<Book>.CreateNew()
                 .BuildNew();
         }
 
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             var history = Builder<History.History>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.AlbumId = _album.Id)
+                                                  .With(h => h.BookId = _album.Id)
                                                   .BuildNew();
             Db.Insert(history);
 
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             var history = Builder<History.History>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.ArtistId = _artist.Id)
+                                                  .With(h => h.AuthorId = _artist.Id)
                                                   .BuildNew();
             Db.Insert(history);
 
@@ -73,16 +73,16 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var history = Builder<History.History>.CreateListOfSize(2)
                                                   .All()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.AlbumId = _album.Id)
+                                                  .With(h => h.BookId = _album.Id)
                                                   .TheFirst(1)
-                                                  .With(h => h.ArtistId = _artist.Id)
+                                                  .With(h => h.AuthorId = _artist.Id)
                                                   .BuildListOfNew();
 
             Db.InsertMany(history);
 
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(h => h.ArtistId == _artist.Id);
+            AllStoredModels.Should().Contain(h => h.AuthorId == _artist.Id);
         }
 
         [Test]
@@ -94,16 +94,16 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var history = Builder<History.History>.CreateListOfSize(2)
                                                   .All()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.ArtistId = _artist.Id)
+                                                  .With(h => h.AuthorId = _artist.Id)
                                                   .TheFirst(1)
-                                                  .With(h => h.AlbumId = _album.Id)
+                                                  .With(h => h.BookId = _album.Id)
                                                   .BuildListOfNew();
 
             Db.InsertMany(history);
 
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(h => h.AlbumId == _album.Id);
+            AllStoredModels.Should().Contain(h => h.BookId == _album.Id);
         }
     }
 }

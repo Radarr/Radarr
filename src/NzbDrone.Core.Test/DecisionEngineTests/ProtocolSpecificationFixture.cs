@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _remoteAlbum = new RemoteAlbum();
             _remoteAlbum.Release = new ReleaseInfo();
-            _remoteAlbum.Artist = new Artist();
+            _remoteAlbum.Artist = new Author();
 
             _delayProfile = new DelayProfile();
 

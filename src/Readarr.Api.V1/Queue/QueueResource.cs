@@ -13,8 +13,8 @@ namespace Readarr.Api.V1.Queue
 {
     public class QueueResource : RestResource
     {
-        public int? ArtistId { get; set; }
-        public int? AlbumId { get; set; }
+        public int? AuthorId { get; set; }
+        public int? BookId { get; set; }
         public ArtistResource Artist { get; set; }
         public AlbumResource Album { get; set; }
         public QualityModel Quality { get; set; }
@@ -48,8 +48,8 @@ namespace Readarr.Api.V1.Queue
             return new QueueResource
             {
                 Id = model.Id,
-                ArtistId = model.Artist?.Id,
-                AlbumId = model.Album?.Id,
+                AuthorId = model.Artist?.Id,
+                BookId = model.Album?.Id,
                 Artist = includeArtist && model.Artist != null ? model.Artist.ToResource() : null,
                 Album = includeAlbum && model.Album != null ? model.Album.ToResource() : null,
                 Quality = model.Quality,

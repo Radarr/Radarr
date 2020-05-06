@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.Profiles
         {
             var profile = new QualityProfile
             {
-                Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_192, Quality.MP3_256),
+                Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_320, Quality.MP3_320),
                 Cutoff = Quality.MP3_320.Id,
                 Name = "TestProfile"
             };

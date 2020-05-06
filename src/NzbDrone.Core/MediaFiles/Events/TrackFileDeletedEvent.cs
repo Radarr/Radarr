@@ -4,10 +4,10 @@ namespace NzbDrone.Core.MediaFiles.Events
 {
     public class TrackFileDeletedEvent : IEvent
     {
-        public TrackFile TrackFile { get; private set; }
+        public BookFile TrackFile { get; private set; }
         public DeleteMediaFileReason Reason { get; private set; }
 
-        public TrackFileDeletedEvent(TrackFile trackFile, DeleteMediaFileReason reason)
+        public TrackFileDeletedEvent(BookFile trackFile, DeleteMediaFileReason reason)
         {
             TrackFile = trackFile;
             Reason = reason;

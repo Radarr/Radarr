@@ -17,8 +17,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     public class RepackSpecificationFixture : CoreTest<RepackSpecification>
     {
         private ParsedAlbumInfo _parsedAlbumInfo;
-        private List<Album> _albums;
-        private List<TrackFile> _trackFiles;
+        private List<Book> _albums;
+        private List<BookFile> _trackFiles;
 
         [SetUp]
         public void Setup()
@@ -31,13 +31,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                            .With(p => p.ReleaseGroup = "Readarr")
                                                            .Build();
 
-            _albums = Builder<Album>.CreateListOfSize(1)
+            _albums = Builder<Book>.CreateListOfSize(1)
                                         .All()
                                         .BuildList();
 
-            _trackFiles = Builder<TrackFile>.CreateListOfSize(3)
+            _trackFiles = Builder<BookFile>.CreateListOfSize(3)
                                             .All()
-                                            .With(t => t.AlbumId = _albums.First().Id)
+                                            .With(t => t.BookId = _albums.First().Id)
                                             .BuildList();
 
             Mocker.GetMock<IMediaFileService>()
@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             Mocker.GetMock<IMediaFileService>()
                   .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
-                  .Returns(new List<TrackFile>());
+                  .Returns(new List<BookFile>());
 
             _parsedAlbumInfo.Quality.Revision.IsRepack = true;
 
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             }).ToList();
             _trackFiles.Select(c =>
             {
-                c.Quality = new QualityModel(Quality.MP3_256);
+                c.Quality = new QualityModel(Quality.MP3_320);
                 return c;
             }).ToList();
 

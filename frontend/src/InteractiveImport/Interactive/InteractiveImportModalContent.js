@@ -23,7 +23,6 @@ import TableBody from 'Components/Table/TableBody';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
 import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
-import SelectAlbumReleaseModal from 'InteractiveImport/AlbumRelease/SelectAlbumReleaseModal';
 import ConfirmImportModal from 'InteractiveImport/Confirmation/ConfirmImportModal';
 import InteractiveImportRow from './InteractiveImportRow';
 import styles from './InteractiveImportModalContent.css';
@@ -43,12 +42,7 @@ const columns = [
   },
   {
     name: 'album',
-    label: 'Album',
-    isVisible: true
-  },
-  {
-    name: 'tracks',
-    label: 'Track(s)',
+    label: 'Book',
     isVisible: true
   },
   {
@@ -85,7 +79,6 @@ const importModeOptions = [
 const SELECT = 'select';
 const ARTIST = 'artist';
 const ALBUM = 'album';
-const ALBUM_RELEASE = 'albumRelease';
 const QUALITY = 'quality';
 
 const replaceExistingFilesOptions = {
@@ -110,7 +103,6 @@ class InteractiveImportModalContent extends Component {
       selectModalOpen: null,
       albumsImported: [],
       isConfirmImportModalOpen: false,
-      showClearTracks: false,
       inconsistentAlbumReleases: false
     };
   }
@@ -118,15 +110,10 @@ class InteractiveImportModalContent extends Component {
   componentDidUpdate(prevProps) {
     const selectedIds = this.getSelectedIds();
     const selectedItems = _.filter(this.props.items, (x) => _.includes(selectedIds, x.id));
-    const selectionHasTracks = _.some(selectedItems, (x) => x.tracks.length);
-
-    if (this.state.showClearTracks !== selectionHasTracks) {
-      this.setState({ showClearTracks: selectionHasTracks });
-    }
 
     const inconsistent = _(selectedItems)
-      .map((x) => ({ albumId: x.album ? x.album.id : 0, releaseId: x.albumReleaseId }))
-      .groupBy('albumId')
+      .map((x) => ({ bookId: x.album ? x.album.id : 0, releaseId: x.albumReleaseId }))
+      .groupBy('bookId')
       .mapValues((album) => _(album).groupBy((x) => x.releaseId).values().value().length)
       .values()
       .some((x) => x !== undefined && x > 1);
@@ -224,7 +211,6 @@ class InteractiveImportModalContent extends Component {
     selectedIds.forEach((id) => {
       this.props.updateInteractiveImportItem({
         id,
-        tracks: [],
         rejections: []
       });
     });
@@ -277,7 +263,6 @@ class InteractiveImportModalContent extends Component {
       selectModalOpen,
       albumsImported,
       isConfirmImportModalOpen,
-      showClearTracks,
       inconsistentAlbumReleases
     } = this.state;
 
@@ -288,7 +273,6 @@ class InteractiveImportModalContent extends Component {
     const bulkSelectOptions = [
       { key: SELECT, value: 'Select...', disabled: true },
       { key: ALBUM, value: 'Select Album' },
-      { key: ALBUM_RELEASE, value: 'Select Album Release' },
       { key: QUALITY, value: 'Select Quality' }
     ];
 
@@ -450,24 +434,6 @@ class InteractiveImportModalContent extends Component {
               isDisabled={!selectedIds.length}
               onChange={this.onSelectModalSelect}
             />
-
-            {
-              showClearTracks ? (
-                <Button
-                  onPress={this.onClearTrackMappingPress}
-                  isDisabled={!selectedIds.length}
-                >
-                  Clear Tracks
-                </Button>
-              ) : (
-                <Button
-                  onPress={this.onGetTrackMappingPress}
-                  isDisabled={!selectedIds.length}
-                >
-                  Map Tracks
-                </Button>
-              )
-            }
           </div>
 
           <div className={styles.rightButtons}>
@@ -499,14 +465,7 @@ class InteractiveImportModalContent extends Component {
         <SelectAlbumModal
           isOpen={selectModalOpen === ALBUM}
           ids={selectedIds}
-          artistId={selectedItem && selectedItem.artist && selectedItem.artist.id}
-          onModalClose={this.onSelectModalClose}
-        />
-
-        <SelectAlbumReleaseModal
-          isOpen={selectModalOpen === ALBUM_RELEASE}
-          importIdsByAlbum={_.chain(items).filter((x) => x.album).groupBy((x) => x.album.id).mapValues((x) => x.map((y) => y.id)).value()}
-          albums={_.chain(items).filter((x) => x.album).keyBy((x) => x.album.id).mapValues((x) => ({ matchedReleaseId: x.albumReleaseId, album: x.album })).values().value()}
+          authorId={selectedItem && selectedItem.artist && selectedItem.artist.id}
           onModalClose={this.onSelectModalClose}
         />
 

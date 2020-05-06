@@ -6,7 +6,7 @@ import AlbumInteractiveSearchModalContent from './AlbumInteractiveSearchModalCon
 function AlbumInteractiveSearchModal(props) {
   const {
     isOpen,
-    albumId,
+    bookId,
     albumTitle,
     onModalClose
   } = props;
@@ -18,7 +18,7 @@ function AlbumInteractiveSearchModal(props) {
       onModalClose={onModalClose}
     >
       <AlbumInteractiveSearchModalContent
-        albumId={albumId}
+        bookId={bookId}
         albumTitle={albumTitle}
         onModalClose={onModalClose}
       />
@@ -28,7 +28,7 @@ function AlbumInteractiveSearchModal(props) {
 
 AlbumInteractiveSearchModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  albumId: PropTypes.number.isRequired,
+  bookId: PropTypes.number.isRequired,
   albumTitle: PropTypes.string.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

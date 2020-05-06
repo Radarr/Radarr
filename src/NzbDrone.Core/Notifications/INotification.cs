@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Notifications
 
         void OnGrab(GrabMessage grabMessage);
         void OnReleaseImport(AlbumDownloadMessage message);
-        void OnRename(Artist artist);
+        void OnRename(Author artist);
         void OnHealthIssue(HealthCheck.HealthCheck healthCheck);
         void OnDownloadFailure(DownloadFailedMessage message);
         void OnImportFailure(AlbumDownloadMessage message);

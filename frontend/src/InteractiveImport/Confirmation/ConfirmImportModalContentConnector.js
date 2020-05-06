@@ -30,7 +30,7 @@ class ConfirmImportModalContentConnector extends Component {
       albums
     } = this.props;
 
-    this.props.fetchInteractiveImportTrackFiles({ albumId: albums.map((x) => x.id) });
+    this.props.fetchInteractiveImportTrackFiles({ bookId: albums.map((x) => x.id) });
   }
 
   componentWillUnmount() {

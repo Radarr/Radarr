@@ -118,13 +118,13 @@ namespace Readarr.Api.V1.Queue
             {
                 case "status":
                     return q => q.Status;
-                case "artist.sortName":
+                case "authors.sortName":
                     return q => q.Artist?.SortName;
                 case "title":
                     return q => q.Title;
                 case "album":
                     return q => q.Album;
-                case "album.title":
+                case "books.title":
                     return q => q.Album?.Title;
                 case "album.releaseDate":
                     return q => q.Album?.ReleaseDate;

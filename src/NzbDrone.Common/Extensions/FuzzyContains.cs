@@ -29,13 +29,13 @@ namespace NzbDrone.Common.Extensions
     {
         public static int FuzzyFind(this string text, string pattern, double matchProb)
         {
-            return match(text, pattern, matchProb).Item1;
+            return FuzzyMatch(text, pattern, matchProb).Item1;
         }
 
         // return the accuracy of the best match of pattern within text
         public static double FuzzyContains(this string text, string pattern)
         {
-            return match(text, pattern, 0.25).Item2;
+            return FuzzyMatch(text, pattern, 0.25).Item2;
         }
 
         /**
@@ -45,7 +45,7 @@ namespace NzbDrone.Common.Extensions
          * @param pattern The pattern to search for.
          * @return Best match index or -1.
          */
-        private static Tuple<int, double> match(string text, string pattern, double matchThreshold = 0.5)
+        public static Tuple<int, double> FuzzyMatch(this string text, string pattern, double matchThreshold = 0.5)
         {
             // Check for null inputs not needed since null can't be passed in C#.
             if (text.Length == 0 || pattern.Length == 0)
@@ -65,7 +65,7 @@ namespace NzbDrone.Common.Extensions
             }
 
             // Do a fuzzy compare.
-            return match_bitap(text, pattern, matchThreshold);
+            return MatchBitap(text, pattern, matchThreshold);
         }
 
         /**
@@ -75,7 +75,7 @@ namespace NzbDrone.Common.Extensions
          * @param pattern The pattern to search for.
          * @return Best match index or -1.
          */
-        private static Tuple<int, double> match_bitap(string text, string pattern, double matchThreshold)
+        private static Tuple<int, double> MatchBitap(string text, string pattern, double matchThreshold)
         {
             // Initialise the alphabet.
             Dictionary<char, BigInteger> s = alphabet(pattern);

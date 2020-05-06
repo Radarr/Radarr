@@ -316,7 +316,20 @@ namespace NzbDrone.Core.Datastore
 
             _sb.Append(" IN ");
 
-            Visit(list);
+            // hardcode the integer list if it exists to bypass parameter limit
+            if (item.Type == typeof(int) && TryGetRightValue(list, out var value))
+            {
+                var items = (IEnumerable<int>)value;
+                _sb.Append("(");
+                _sb.Append(string.Join(", ", items));
+                _sb.Append(")");
+
+                _gotConcreteValue = true;
+            }
+            else
+            {
+                Visit(list);
+            }
 
             _sb.Append(")");
         }

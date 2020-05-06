@@ -5,7 +5,7 @@ namespace NzbDrone.Core.ArtistStats
 {
     public class ArtistStatistics : ResultSet
     {
-        public int ArtistId { get; set; }
+        public int AuthorId { get; set; }
         public int AlbumCount { get; set; }
         public int TrackFileCount { get; set; }
         public int TrackCount { get; set; }

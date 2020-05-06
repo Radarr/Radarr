@@ -10,10 +10,10 @@ import RetagArtistModalContent from './RetagArtistModalContent';
 
 function createMapStateToProps() {
   return createSelector(
-    (state, { artistIds }) => artistIds,
+    (state, { authorIds }) => authorIds,
     createAllArtistSelector(),
-    (artistIds, allArtists) => {
-      const artist = _.intersectionWith(allArtists, artistIds, (s, id) => {
+    (authorIds, allArtists) => {
+      const artist = _.intersectionWith(allArtists, authorIds, (s, id) => {
         return s.id === id;
       });
 
@@ -39,7 +39,7 @@ class RetagArtistModalContentConnector extends Component {
   onRetagArtistPress = () => {
     this.props.executeCommand({
       name: commandNames.RETAG_ARTIST,
-      artistIds: this.props.artistIds
+      authorIds: this.props.authorIds
     });
 
     this.props.onModalClose(true);
@@ -59,7 +59,7 @@ class RetagArtistModalContentConnector extends Component {
 }
 
 RetagArtistModalContentConnector.propTypes = {
-  artistIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  authorIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   onModalClose: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };

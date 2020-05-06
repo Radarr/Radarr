@@ -26,7 +26,7 @@ class DeleteArtistModalContentConnector extends Component {
 
   onDeletePress = (deleteFiles, addImportListExclusion) => {
     this.props.deleteArtist({
-      id: this.props.artistId,
+      id: this.props.authorId,
       deleteFiles,
       addImportListExclusion
     });
@@ -48,7 +48,7 @@ class DeleteArtistModalContentConnector extends Component {
 }
 
 DeleteArtistModalContentConnector.propTypes = {
-  artistId: PropTypes.number.isRequired,
+  authorId: PropTypes.number.isRequired,
   onModalClose: PropTypes.func.isRequired,
   deleteArtist: PropTypes.func.isRequired
 };

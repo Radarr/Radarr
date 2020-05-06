@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
                                              .With(m => m.Type = MetadataType.ArtistMetadata)
-                                             .With(m => m.ArtistId = 1)
+                                             .With(m => m.AuthorId = 1)
                                              .BuildListOfNew();
 
             Db.InsertMany(files);
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
                                              .With(m => m.Type = MetadataType.ArtistMetadata)
-                                             .With(m => m.ArtistId = 1)
+                                             .With(m => m.AuthorId = 1)
                                              .With(m => m.Consumer = "XbmcMetadata")
                                              .BuildListOfNew();
 
@@ -71,8 +71,8 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
                                              .With(m => m.Type = MetadataType.AlbumMetadata)
-                                             .With(m => m.ArtistId = 1)
-                                             .With(m => m.AlbumId = 1)
+                                             .With(m => m.AuthorId = 1)
+                                             .With(m => m.BookId = 1)
                                              .BuildListOfNew();
 
             Db.InsertMany(files);
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
                                              .All()
                                              .With(m => m.Type = MetadataType.AlbumMetadata)
                                              .With(m => m.Consumer = "XbmcMetadata")
-                                             .With(m => m.ArtistId = 1)
+                                             .With(m => m.AuthorId = 1)
                                              .BuildListOfNew();
 
             Db.InsertMany(files);
@@ -101,8 +101,8 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
                                              .With(m => m.Type = MetadataType.AlbumMetadata)
-                                             .With(m => m.ArtistId = 1)
-                                             .With(m => m.AlbumId = 1)
+                                             .With(m => m.AuthorId = 1)
+                                             .With(m => m.BookId = 1)
                                              .With(m => m.Consumer = "XbmcMetadata")
                                              .BuildListOfNew();
 

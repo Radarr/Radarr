@@ -16,12 +16,12 @@ class MoreInfo extends Component {
         <DescriptionList>
           <DescriptionListItemTitle>Home page</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://readarr.audio/">readarr.audio</Link>
+            <Link to="https://readarr.com/">readarr.com</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Wiki</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://github.com/readarr/Readarr/wiki">wiki.readarr.audio</Link>
+            <Link to="https://github.com/readarr/Readarr/wiki">wiki.readarr.com</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Reddit</DescriptionListItemTitle>
@@ -31,7 +31,7 @@ class MoreInfo extends Component {
 
           <DescriptionListItemTitle>Discord</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://discord.gg/8Y7rDc9">#readarr on Discord</Link>
+            <Link to="https://discord.gg/Rt6gQdB">#readarr on Discord</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Donations</DescriptionListItemTitle>

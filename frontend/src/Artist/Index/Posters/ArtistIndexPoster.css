@@ -81,7 +81,7 @@ $hoverScale: 1.05;
   left: 10px;
   z-index: 3;
   border-radius: 4px;
-  background-color: #216044;
+  background-color: $themeLightColor;
   color: $white;
   font-size: $smallFontSize;
   opacity: 0;

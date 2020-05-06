@@ -16,20 +16,20 @@ namespace NzbDrone.Core.Test.MusicTests
     [TestFixture]
     public class MoveArtistServiceFixture : CoreTest<MoveArtistService>
     {
-        private Artist _artist;
+        private Author _artist;
         private MoveArtistCommand _command;
         private BulkMoveArtistCommand _bulkCommand;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Artist>
+            _artist = Builder<Author>
                 .CreateNew()
                 .Build();
 
             _command = new MoveArtistCommand
             {
-                ArtistId = 1,
+                AuthorId = 1,
                 SourcePath = @"C:\Test\Music\Artist".AsOsAgnostic(),
                 DestinationPath = @"C:\Test\Music2\Artist".AsOsAgnostic()
             };
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.MusicTests
                 {
                     new BulkMoveArtist
                     {
-                        ArtistId = 1,
+                        AuthorId = 1,
                         SourcePath = @"C:\Test\Music\Artist".AsOsAgnostic()
                     }
                 },
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Test.MusicTests
             ExceptionVerification.ExpectedErrors(1);
 
             Mocker.GetMock<IArtistService>()
-                .Verify(v => v.UpdateArtist(It.IsAny<Artist>()), Times.Once());
+                .Verify(v => v.UpdateArtist(It.IsAny<Author>()), Times.Once());
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.MusicTests
                     Times.Once());
 
             Mocker.GetMock<IBuildFileNames>()
-                .Verify(v => v.GetArtistFolder(It.IsAny<Artist>(), null), Times.Never());
+                .Verify(v => v.GetArtistFolder(It.IsAny<Author>(), null), Times.Never());
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.MusicTests
             var expectedPath = Path.Combine(_bulkCommand.DestinationRootFolder, artistFolder);
 
             Mocker.GetMock<IBuildFileNames>()
-                .Setup(s => s.GetArtistFolder(It.IsAny<Artist>(), null))
+                .Setup(s => s.GetArtistFolder(It.IsAny<Author>(), null))
                 .Returns(artistFolder);
 
             Subject.Execute(_bulkCommand);
@@ -141,7 +141,7 @@ namespace NzbDrone.Core.Test.MusicTests
                         It.IsAny<bool>()), Times.Never());
 
             Mocker.GetMock<IBuildFileNames>()
-                .Verify(v => v.GetArtistFolder(It.IsAny<Artist>(), null), Times.Never());
+                .Verify(v => v.GetArtistFolder(It.IsAny<Author>(), null), Times.Never());
         }
     }
 }

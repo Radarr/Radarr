@@ -224,7 +224,7 @@ export const actionHandlers = handleThunks({
 
   [TOGGLE_ARTIST_MONITORED]: (getState, payload, dispatch) => {
     const {
-      artistId: id,
+      authorId: id,
       monitored
     } = payload;
 
@@ -266,7 +266,7 @@ export const actionHandlers = handleThunks({
 
   [TOGGLE_ALBUM_MONITORED]: function(getState, payload, dispatch) {
     const {
-      artistId: id,
+      authorId: id,
       seasonNumber,
       monitored
     } = payload;
@@ -296,7 +296,7 @@ export const actionHandlers = handleThunks({
     }).request;
 
     promise.done((data) => {
-      const albums = _.filter(getState().albums.items, { artistId: id, seasonNumber });
+      const albums = _.filter(getState().albums.items, { authorId: id, seasonNumber });
 
       dispatch(batchActions([
         updateItem({
