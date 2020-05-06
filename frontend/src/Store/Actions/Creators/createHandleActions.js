@@ -17,7 +17,7 @@ const blacklistedProperties = [
 ];
 
 function createItemMap(data) {
-  return data.reduce((acc, d, index, array) => {
+  return data.reduce((acc, d, index) => {
     acc[d.id] = index;
     return acc;
   }, {});
@@ -49,7 +49,7 @@ export default function createHandleActions(handlers, defaultState, section) {
 
         if (_.isArray(payload.data)) {
           newState.items = payload.data;
-          newState.itemMap = createItemMap(newState.items);
+          newState.itemMap = createItemMap(payload.data);
         } else {
           newState.item = payload.data;
         }
@@ -73,11 +73,12 @@ export default function createHandleActions(handlers, defaultState, section) {
         const newState = getSectionState(state, payloadSection);
         const items = newState.items;
 
-        if (!newState.itemMap) {
-          newState.itemMap = createItemMap(items);
-        }
-
-        const index = payload.id in newState.itemMap ? newState.itemMap[payload.id] : -1;
+        // Client side collections that are created by adding items to an
+        // existing array may not have an itemMap, the array is probably empty,
+        // but on the offchance it's not create a new item map based on the
+        // items in the array.
+        const itemMap = newState.itemMap ?? createItemMap(items);
+        const index = payload.id in itemMap ? itemMap[payload.id] : -1;
 
         newState.items = [...items];
 
@@ -96,6 +97,7 @@ export default function createHandleActions(handlers, defaultState, section) {
         } else if (!updateOnly) {
           const newIndex = newState.items.push({ ...otherProps }) - 1;
 
+          newState.itemMap = { ...itemMap };
           newState.itemMap[payload.id] = newIndex;
         }
 
@@ -152,7 +154,8 @@ export default function createHandleActions(handlers, defaultState, section) {
         const serverState = _.omit(data, ['records']);
         const calculatedState = {
           totalPages: Math.max(Math.ceil(data.totalRecords / data.pageSize), 1),
-          items: data.records
+          items: data.records,
+          itemMap: createItemMap(data.records)
         };
 
         return updateSectionState(state, payloadSection, Object.assign(newState, serverState, calculatedState));

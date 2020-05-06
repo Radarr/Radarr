@@ -11,8 +11,9 @@ variables:
   minorVersion: $[counter('minorVersion', 2000)]
   radarrVersion: '$(majorVersion).$(minorVersion)'
   buildName: '$(Build.SourceBranchName).$(radarrVersion)'
-  sentryOrg: 'radarr'
-  dotnetVersion: '3.1.102'
+  sentryOrg: 'servarr'
+  sentryUrl: 'https://sentry.servarr.com'
+  dotnetVersion: '3.1.201'
 
 trigger:
   branches:
@@ -265,17 +266,21 @@ stages:
           echo "Uploading source maps to sentry"
           curl -sL https://sentry.io/get-cli/ | bash
           RELEASENAME="${RADARRVERSION}-${BUILD_SOURCEBRANCHNAME}"
-          sentry-cli releases new --finalize -p radarr3 -p radarr3-ui -p radarr-update "${RELEASENAME}"
-          sentry-cli releases -p radarr3-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
+          sentry-cli releases new --finalize -p radarr -p radarr-ui -p radarr-update "${RELEASENAME}"
+          sentry-cli releases -p radarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
           sentry-cli releases set-commits --auto "${RELEASENAME}"
           sentry-cli releases deploys "${RELEASENAME}" new -e aphrodite
+          if [ $? -gt 0 ]; then
+            echo "##vso[task.logissue type=warning]Error uploading source maps."
+          fi
+          exit 0
         displayName: Publish Sentry Source Maps
         continueOnError: true
         condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/aphrodite'))
         env:
-          SENTRY_AUTH_TOKEN: $(sentryAuthTokenSelfHosted)
+          SENTRY_AUTH_TOKEN: $(sentryAuthTokenServarr)
           SENTRY_ORG: $(sentryOrg)
-          SENTRY_URL: https://sentry.radarr.video
+          SENTRY_URL: $(sentryUrl)
     
   - stage: Unit_Test
     displayName: Unit Tests
@@ -607,7 +612,7 @@ stages:
             osName: 'Windows'
             imageName: 'windows-2019'
             pattern: 'Radarr.**.windows-core-x64.zip'
-            failBuild: true
+            failBuild: $(failOnAutomationFailure)
 
       pool:
         vmImage: $(imageName)
@@ -784,3 +789,26 @@ stages:
           codeCoverageTool: 'cobertura'
           summaryFileLocation: './CoverageResults/combined/Cobertura.xml'
           reportDirectory: './CoverageResults/combined/'
+
+  - stage: Report_Out
+    dependsOn:
+    - Analyze
+    - Unit_Test
+    - Integration
+    - Automation
+    condition: always()
+    displayName: Build Status Report
+    jobs:
+    - job:
+      displayName: Discord Notification
+      pool:
+        vmImage: 'ubuntu-18.04'
+      steps:
+        - checkout: none
+        - powershell: |
+            iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Servarr/AzureDiscordNotify/master/DiscordNotify.ps1'))
+          env:
+            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            DISCORDCHANNELID: $(discordChannelId)
+            DISCORDWEBHOOKKEY: $(discordWebhookKey)
+

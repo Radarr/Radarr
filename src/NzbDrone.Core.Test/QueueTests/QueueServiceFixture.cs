@@ -4,6 +4,7 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
@@ -20,8 +21,11 @@ namespace NzbDrone.Core.Test.QueueTests
         [SetUp]
         public void SetUp()
         {
+            var downloadClientInfo = Builder<DownloadClientItemClientInfo>.CreateNew().Build();
+
             var downloadItem = Builder<NzbDrone.Core.Download.DownloadClientItem>.CreateNew()
                                         .With(v => v.RemainingTime = TimeSpan.FromSeconds(10))
+                                        .With(v => v.DownloadClientInfo = downloadClientInfo)
                                         .Build();
 
             var series = Builder<Movie>.CreateNew()

@@ -8,6 +8,7 @@ using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Security;
 
@@ -132,6 +133,13 @@ namespace NzbDrone.Core.Configuration
         {
             get { return GetValue("ImportExclusions", string.Empty); }
             set { SetValue("ImportExclusions", value); }
+        }
+
+        public TMDbCountryCode CertificationCountry
+        {
+            get { return GetValueEnum("CertificationCountry", TMDbCountryCode.US); }
+
+            set { SetValue("CertificationCountry", value); }
         }
 
         public int MaximumSize

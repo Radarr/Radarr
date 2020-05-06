@@ -162,6 +162,7 @@ class MovieDetails extends Component {
       title,
       year,
       runtime,
+      certification,
       ratings,
       path,
       sizeOnDisk,
@@ -330,6 +331,13 @@ class MovieDetails extends Component {
                 <div className={styles.details}>
                   <div>
                     {
+                      !!certification &&
+                        <span className={styles.certification}>
+                          {certification}
+                        </span>
+                    }
+
+                    {
                       year > 0 &&
                         <span className={styles.year}>
                           {year}
@@ -343,10 +351,13 @@ class MovieDetails extends Component {
                         </span>
                     }
 
-                    <HeartRating
-                      rating={ratings.value}
-                      iconSize={20}
-                    />
+                    {
+                      !!ratings &&
+                        <HeartRating
+                          rating={ratings.value}
+                          iconSize={20}
+                        />
+                    }
                   </div>
                 </div>
 
@@ -616,6 +627,7 @@ MovieDetails.propTypes = {
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
   runtime: PropTypes.number.isRequired,
+  certification: PropTypes.string,
   ratings: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
   sizeOnDisk: PropTypes.number.isRequired,

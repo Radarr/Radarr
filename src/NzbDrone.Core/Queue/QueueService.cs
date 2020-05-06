@@ -65,14 +65,15 @@ namespace NzbDrone.Core.Queue
                 Sizeleft = trackedDownload.DownloadItem.RemainingSize,
                 Timeleft = trackedDownload.DownloadItem.RemainingTime,
                 Status = trackedDownload.DownloadItem.Status.ToString(),
-                TrackedDownloadStatus = trackedDownload.Status.ToString(),
+                TrackedDownloadStatus = trackedDownload.Status,
+                TrackedDownloadState = trackedDownload.State,
                 StatusMessages = trackedDownload.StatusMessages.ToList(),
                 ErrorMessage = trackedDownload.DownloadItem.Message,
                 RemoteMovie = trackedDownload.RemoteMovie,
                 DownloadId = trackedDownload.DownloadItem.DownloadId,
                 Protocol = trackedDownload.Protocol,
                 Movie = movie,
-                DownloadClient = trackedDownload.DownloadItem.DownloadClient,
+                DownloadClient = trackedDownload.DownloadItem.DownloadClientInfo.Name,
                 Indexer = trackedDownload.Indexer,
                 OutputPath = trackedDownload.DownloadItem.OutputPath.ToString()
             };

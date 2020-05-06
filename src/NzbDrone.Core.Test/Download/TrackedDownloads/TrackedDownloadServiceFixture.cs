@@ -25,9 +25,9 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         {
             Mocker.GetMock<IHistoryService>()
                 .Setup(s => s.FindByDownloadId(It.Is<string>(sr => sr == "35238")))
-                .Returns(new List<History.History>()
+                .Returns(new List<MovieHistory>()
                 {
-                    new History.History()
+                    new MovieHistory()
                     {
                         DownloadId = "35238",
                         SourceTitle = "TV Series S01",
@@ -68,6 +68,12 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             {
                 Title = "A Movie 1998",
                 DownloadId = "35238",
+                DownloadClientInfo = new DownloadClientItemClientInfo
+                {
+                    Protocol = client.Protocol,
+                    Id = client.Id,
+                    Name = client.Name
+                }
             };
 
             var trackedDownload = Subject.TrackDownload(client, item);

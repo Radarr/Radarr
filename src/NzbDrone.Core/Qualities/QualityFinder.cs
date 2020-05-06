@@ -1,7 +1,6 @@
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Instrumentation;
-using NzbDrone.Core.CustomFormats;
 
 namespace NzbDrone.Core.Qualities
 {

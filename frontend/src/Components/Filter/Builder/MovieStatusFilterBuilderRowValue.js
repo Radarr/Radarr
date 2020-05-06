@@ -5,7 +5,8 @@ const protocols = [
   { id: 'tba', name: 'TBA' },
   { id: 'announced', name: 'Announced' },
   { id: 'inCinemas', name: 'In Cinemas' },
-  { id: 'released', name: 'Released' }
+  { id: 'released', name: 'Released' },
+  { id: 'deleted', name: 'Deleted' }
 ];
 
 function MovieStatusFilterBuilderRowValue(props) {

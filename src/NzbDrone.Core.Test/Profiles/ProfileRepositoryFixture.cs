@@ -1,6 +1,5 @@
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.CustomFormats;

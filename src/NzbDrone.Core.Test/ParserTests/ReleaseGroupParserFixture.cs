@@ -76,6 +76,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-Chamele0n", "EVO")]
         [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-4P", "EVO")]
         [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-EVO-4Planet", "EVO")]
+        [TestCase("Rambo.Last.Blood.2019.1080p.BDRip.X264.AC3-DON-AlteZachen", "DON")]
         public void should_not_include_repost_in_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);

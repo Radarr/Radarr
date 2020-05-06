@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
             });
         }
 
-        private History.History HistoryWithData(params string[] data)
+        private MovieHistory HistoryWithData(params string[] data)
         {
             var dict = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
             for (var i = 0; i < data.Length; i += 2)
@@ -62,10 +62,10 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
                 dict.Add(data[i], data[i + 1]);
             }
 
-            return new History.History
+            return new MovieHistory
             {
                 Data = dict,
-                EventType = HistoryEventType.Grabbed
+                EventType = MovieHistoryEventType.Grabbed
             };
         }
 

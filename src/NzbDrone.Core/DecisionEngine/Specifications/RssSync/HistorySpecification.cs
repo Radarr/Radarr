@@ -47,7 +47,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             _logger.Debug("Checking current status of movie [{0}] in history", subject.Movie.Id);
             var mostRecent = _historyService.MostRecentForMovie(subject.Movie.Id);
 
-            if (mostRecent != null && mostRecent.EventType == HistoryEventType.Grabbed)
+            if (mostRecent != null && mostRecent.EventType == MovieHistoryEventType.Grabbed)
             {
                 var customFormats = _formatService.ParseCustomFormat(mostRecent);
 

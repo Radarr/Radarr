@@ -44,20 +44,20 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 if (!movie.HasFile)
                 {
-                    _logger.Debug("Skipping already imported check for episode without file");
+                    _logger.Debug("Skipping already imported check for movie without file");
                     return Decision.Accept();
                 }
 
-                var historyForEpisode = _historyService.GetByMovieId(movie.Id, null);
-                var lastGrabbed = historyForEpisode.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
+                var historyForMovie = _historyService.GetByMovieId(movie.Id, null);
+                var lastGrabbed = historyForMovie.FirstOrDefault(h => h.EventType == MovieHistoryEventType.Grabbed);
 
                 if (lastGrabbed == null)
                 {
                     return Decision.Accept();
                 }
 
-                var imported = historyForEpisode.FirstOrDefault(h =>
-                    h.EventType == HistoryEventType.DownloadFolderImported &&
+                var imported = historyForMovie.FirstOrDefault(h =>
+                    h.EventType == MovieHistoryEventType.DownloadFolderImported &&
                     h.DownloadId == lastGrabbed.DownloadId);
 
                 if (imported == null)

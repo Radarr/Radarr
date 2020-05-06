@@ -15,6 +15,7 @@ namespace Radarr.Api.V3.Qualities
 
         public double? MinSize { get; set; }
         public double? MaxSize { get; set; }
+        public double? PreferredSize { get; set; }
     }
 
     public static class QualityDefinitionResourceMapper
@@ -38,6 +39,7 @@ namespace Radarr.Api.V3.Qualities
 
                 MinSize = model.MinSize,
                 MaxSize = model.MaxSize,
+                PreferredSize = model.PreferredSize
             };
         }
 
@@ -60,6 +62,7 @@ namespace Radarr.Api.V3.Qualities
 
                 MinSize = resource.MinSize,
                 MaxSize = resource.MaxSize,
+                PreferredSize = resource.PreferredSize
             };
         }
 

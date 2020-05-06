@@ -8,6 +8,7 @@ using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
@@ -29,30 +30,30 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly Logger _logger;
 
         private readonly IHttpRequestBuilderFactory _movieBuilder;
-        private readonly ITmdbConfigService _configService;
+        private readonly ITmdbConfigService _tmdbConfigService;
+        private readonly IConfigService _configService;
         private readonly IMovieService _movieService;
         private readonly IPreDBService _predbService;
         private readonly IImportExclusionsService _exclusionService;
-        private readonly IAlternativeTitleService _altTitleService;
         private readonly IRadarrAPIClient _radarrAPI;
 
         public SkyHookProxy(IHttpClient httpClient,
             IRadarrCloudRequestBuilder requestBuilder,
-            ITmdbConfigService configService,
+            ITmdbConfigService tmdbConfigService,
+            IConfigService configService,
             IMovieService movieService,
             IPreDBService predbService,
             IImportExclusionsService exclusionService,
-            IAlternativeTitleService altTitleService,
             IRadarrAPIClient radarrAPI,
             Logger logger)
         {
             _httpClient = httpClient;
             _movieBuilder = requestBuilder.TMDB;
+            _tmdbConfigService = tmdbConfigService;
             _configService = configService;
             _movieService = movieService;
             _predbService = predbService;
             _exclusionService = exclusionService;
-            _altTitleService = altTitleService;
             _radarrAPI = radarrAPI;
 
             _logger = logger;
@@ -185,13 +186,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Images.AddIfNotNull(MapImage(resource.backdrop_path, MediaCoverTypes.Fanart));
             movie.Runtime = resource.runtime;
 
-            //foreach(Title title in resource.alternative_titles.titles)
-            //{
-            //    movie.AlternativeTitles.Add(title.title);
-            //}
-            foreach (ReleaseDates releaseDates in resource.release_dates.results)
+            foreach (var releaseDates in resource.release_dates.results)
             {
-                foreach (ReleaseDate releaseDate in releaseDates.release_dates)
+                foreach (var releaseDate in releaseDates.release_dates)
                 {
                     if (releaseDate.type == 5 || releaseDate.type == 4)
                     {
@@ -212,11 +209,21 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
             }
 
+            var countryReleases = resource.release_dates.results.FirstOrDefault(m => m.iso_3166_1 == _configService.CertificationCountry.ToString());
+
+            // Set Certification from Theatrical Release(Type 3), if not fall back to Limited Threatrical(Type 2) and then Premiere(Type 1)
+            if (countryReleases != null && countryReleases.release_dates.Any())
+            {
+                var certRelease = countryReleases.release_dates.OrderByDescending(c => c.type).Where(d => d.type <= 3).FirstOrDefault(c => c.certification.IsNotNullOrWhiteSpace());
+
+                movie.Certification = certRelease?.certification;
+            }
+
             movie.Ratings = new Ratings();
             movie.Ratings.Votes = resource.vote_count;
             movie.Ratings.Value = (decimal)resource.vote_average;
 
-            foreach (Genre genre in resource.genres)
+            foreach (var genre in resource.genres)
             {
                 movie.Genres.Add(genre.name);
             }
@@ -369,11 +376,18 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         public List<Movie> DiscoverNewMovies(string action)
         {
             var allMovies = _movieService.GetAllMovies();
-            var allExclusions = _exclusionService.GetAllExclusions();
-            string allIds = string.Join(",", allMovies.Select(m => m.TmdbId));
-            string ignoredIds = string.Join(",", allExclusions.Select(ex => ex.TmdbId));
 
-            List<MovieResult> results = new List<MovieResult>();
+            if (!allMovies.Any())
+            {
+                _logger.Debug("Skipping discover, no movies in library");
+                return new List<Movie>();
+            }
+
+            var allExclusions = _exclusionService.GetAllExclusions();
+            var allIds = string.Join(",", allMovies.Select(m => m.TmdbId));
+            var ignoredIds = string.Join(",", allExclusions.Select(ex => ex.TmdbId));
+
+            var results = new List<MovieResult>();
 
             try
             {
@@ -708,7 +722,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             if (path.IsNotNullOrWhiteSpace())
             {
-                return _configService.GetCoverForURL(path, type);
+                return _tmdbConfigService.GetCoverForURL(path, type);
             }
 
             return null;

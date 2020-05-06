@@ -83,6 +83,8 @@ namespace NzbDrone.Core.MediaFiles
 
         public List<ImportResult> ProcessPath(string path, ImportMode importMode = ImportMode.Auto, Movie movie = null, DownloadClientItem downloadClientItem = null)
         {
+            _logger.Debug("Processing path: {0}", path);
+
             if (_diskProvider.FolderExists(path))
             {
                 var directoryInfo = new DirectoryInfo(path);
@@ -113,34 +115,42 @@ namespace NzbDrone.Core.MediaFiles
 
         public bool ShouldDeleteFolder(DirectoryInfo directoryInfo, Movie movie)
         {
-            var videoFiles = _diskScanService.GetVideoFiles(directoryInfo.FullName);
-            var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f).Equals(".rar", StringComparison.OrdinalIgnoreCase));
-
-            foreach (var videoFile in videoFiles)
-            {
-                var episodeParseResult =
-                    Parser.Parser.ParseMovieTitle(Path.GetFileName(videoFile), _config.ParsingLeniency > 0);
-
-                if (episodeParseResult == null)
+            try
                 {
-                    _logger.Warn("Unable to parse file on import: [{0}]", videoFile);
+                var videoFiles = _diskScanService.GetVideoFiles(directoryInfo.FullName);
+                var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f).Equals(".rar", StringComparison.OrdinalIgnoreCase));
+
+                foreach (var videoFile in videoFiles)
+                {
+                    var movieParseResult =
+                        Parser.Parser.ParseMovieTitle(Path.GetFileName(videoFile), _config.ParsingLeniency > 0);
+
+                    if (movieParseResult == null)
+                    {
+                        _logger.Warn("Unable to parse file on import: [{0}]", videoFile);
+                        return false;
+                    }
+
+                    if (_detectSample.IsSample(movie, videoFile, false) != DetectSampleResult.Sample)
+                    {
+                        _logger.Warn("Non-sample file detected: [{0}]", videoFile);
+                        return false;
+                    }
+                }
+
+                if (rarFiles.Any(f => _diskProvider.GetFileSize(f) > 10.Megabytes()))
+                {
+                    _logger.Warn("RAR file detected, will require manual cleanup");
                     return false;
                 }
 
-                if (_detectSample.IsSample(movie, videoFile, false) != DetectSampleResult.Sample)
-                {
-                    _logger.Warn("Non-sample file detected: [{0}]", videoFile);
-                    return false;
-                }
+                return true;
             }
-
-            if (rarFiles.Any(f => _diskProvider.GetFileSize(f) > 10.Megabytes()))
+            catch (DirectoryNotFoundException e)
             {
-                _logger.Warn("RAR file detected, will require manual cleanup");
+                _logger.Debug(e, "Folder {0} has already been removed", directoryInfo.FullName);
                 return false;
             }
-
-            return true;
         }
 
         private List<ImportResult> ProcessFolder(DirectoryInfo directoryInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
@@ -281,6 +291,12 @@ namespace NzbDrone.Core.MediaFiles
             {
                 var mounts = _diskProvider.GetMounts();
                 var mount = mounts.FirstOrDefault(m => m.RootDirectory == Path.GetPathRoot(path));
+
+                if (mount == null)
+                {
+                    _logger.Error("Import failed, path does not exist or is not accessible by Radarr: {0}. Unable to find a volume mounted for the path. If you're using a mapped network drive see the FAQ for more info", path);
+                    return;
+                }
 
                 if (mount.DriveType == DriveType.Network)
                 {

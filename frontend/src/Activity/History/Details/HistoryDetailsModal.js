@@ -23,6 +23,8 @@ function getHeaderTitle(eventType) {
       return 'Movie File Deleted';
     case 'movieFileRenamed':
       return 'Movie File Renamed';
+    case 'downloadIgnored':
+      return 'Download Ignored';
     default:
       return 'Unknown';
   }

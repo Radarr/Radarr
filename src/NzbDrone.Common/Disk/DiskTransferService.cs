@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -75,6 +75,8 @@ namespace NzbDrone.Common.Disk
             if (!_diskProvider.FolderExists(targetPath))
             {
                 _diskProvider.CreateFolder(targetPath);
+
+                _diskProvider.CopyPermissions(sourcePath, targetPath);
             }
 
             var result = mode;

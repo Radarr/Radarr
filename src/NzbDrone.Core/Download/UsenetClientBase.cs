@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Download
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                 {
                     _logger.Error(ex, "Downloading nzb file for movie '{0}' failed since it no longer exists ({1})", remoteMovie.Release.Title, url);
-                    throw new ReleaseUnavailableException(remoteMovie.Release, "Downloading torrent failed", ex);
+                    throw new ReleaseUnavailableException(remoteMovie.Release, "Downloading nzb failed", ex);
                 }
 
                 if ((int)ex.Response.StatusCode == 429)

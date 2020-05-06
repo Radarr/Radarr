@@ -134,8 +134,6 @@ namespace NzbDrone.Core.Movies
 
                 movieInfo.AlternativeTitles.AddRange(mappingsTitles);
 
-                movie.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movie);
-
                 if (mappings.Item2 != null)
                 {
                     movie.SecondaryYear = mappings.Item2.Year;
@@ -156,20 +154,10 @@ namespace NzbDrone.Core.Movies
                 _logger.Info(ex, "Unable to communicate with Mappings Server.");
             }
 
+            movie.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movie);
+
             _movieService.UpdateMovie(new List<Movie> { movie }, true);
             _creditService.UpdateCredits(credits, movie);
-
-            try
-            {
-                var newTitles = movieInfo.AlternativeTitles.Except(movie.AlternativeTitles);
-
-                //_titleService.AddAltTitles(newTitles.ToList(), movie);
-            }
-            catch (Exception e)
-            {
-                _logger.Debug(e, "Failed adding alternative titles.");
-                throw;
-            }
 
             _logger.Debug("Finished movie refresh for {0}", movie.Title);
             _eventAggregator.PublishEvent(new MovieUpdatedEvent(movie));

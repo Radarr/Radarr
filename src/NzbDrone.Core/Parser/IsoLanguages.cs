@@ -24,6 +24,7 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("vi", "vie", Language.Vietnamese),
                                                                new IsoLanguage("sv", "swe", Language.Swedish),
                                                                new IsoLanguage("no", "nor", Language.Norwegian),
+                                                               new IsoLanguage("nb", "nob", Language.Norwegian),
                                                                new IsoLanguage("fi", "fin", Language.Finnish),
                                                                new IsoLanguage("tr", "tur", Language.Turkish),
                                                                new IsoLanguage("pt", "por", Language.Portuguese),
@@ -55,7 +56,7 @@ namespace NzbDrone.Core.Parser
 
         public static IsoLanguage Get(Language language)
         {
-            return All.SingleOrDefault(l => l.Language == language);
+            return All.FirstOrDefault(l => l.Language == language);
         }
     }
 }

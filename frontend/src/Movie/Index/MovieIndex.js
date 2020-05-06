@@ -26,7 +26,6 @@ import MovieIndexOverviewOptionsModal from './Overview/Options/MovieIndexOvervie
 import MovieIndexOverviewsConnector from './Overview/MovieIndexOverviewsConnector';
 import MovieIndexFilterMenu from './Menus/MovieIndexFilterMenu';
 import MovieIndexSortMenu from './Menus/MovieIndexSortMenu';
-import MovieIndexSearchMenu from './Menus/MovieIndexSearchMenu';
 import MovieIndexViewMenu from './Menus/MovieIndexViewMenu';
 import MovieIndexFooterConnector from './MovieIndexFooterConnector';
 import MovieEditorFooter from 'Movie/Editor/MovieEditorFooter.js';
@@ -274,12 +273,12 @@ class MovieIndex extends Component {
     }
   }
 
-  onSearchPress = (command) => {
-    this.setState({ isConfirmSearchModalOpen: true, searchType: command });
+  onSearchPress = () => {
+    this.setState({ isConfirmSearchModalOpen: true, searchType: 'moviesSearch' });
   }
 
   onSearchConfirmed = () => {
-    this.props.onSearchPress(this.state.searchType);
+    this.props.onSearchPress(this.state.searchType, this.props.items.map((m) => m.id));
     this.setState({ isConfirmSearchModalOpen: false });
   }
 
@@ -365,9 +364,11 @@ class MovieIndex extends Component {
 
             <PageToolbarSeparator />
 
-            <MovieIndexSearchMenu
-              isDisabled={isSearchingMovies}
-              onSearchPress={this.onSearchPress}
+            <PageToolbarButton
+              label={selectedFilterKey === 'all' ? 'Search All' : 'Search Filtered'}
+              iconName={icons.SEARCH}
+              isDisabled={isSearchingMovies || !items.length}
+              onPress={this.onSearchPress}
             />
 
             <PageToolbarButton
@@ -449,10 +450,7 @@ class MovieIndex extends Component {
                 null
             }
 
-            {
-              (view === 'posters' || view === 'overview') &&
-                <PageToolbarSeparator />
-            }
+            <PageToolbarSeparator />
 
             <MovieIndexViewMenu
               view={view}
@@ -580,7 +578,7 @@ class MovieIndex extends Component {
           message={
             <div>
               <div>
-                Are you sure you want to perform mass movie search?
+                Are you sure you want to perform mass movie search for {this.props.items.length} movies?
               </div>
               <div>
                 This cannot be cancelled once started without restarting Radarr.

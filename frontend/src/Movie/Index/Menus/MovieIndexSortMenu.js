@@ -90,6 +90,24 @@ function MovieIndexSortMenu(props) {
         >
           Path
         </SortMenuItem>
+
+        <SortMenuItem
+          name="sizeOnDisk"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          Size on Disk
+        </SortMenuItem>
+
+        <SortMenuItem
+          name="certification"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          Certification
+        </SortMenuItem>
       </MenuContent>
     </SortMenu>
   );

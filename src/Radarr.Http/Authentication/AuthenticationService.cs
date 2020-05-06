@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Security.Principal;
 using Nancy;
@@ -208,27 +209,27 @@ namespace Radarr.Http.Authentication
 
         public void LogUnauthorized(NancyContext context)
         {
-            _authLogger.Info("Auth-Unauthorized ip {0} url '{1}'", context.Request.UserHostAddress, context.Request.Url.ToString());
+            _authLogger.Info("Auth-Unauthorized ip {0} url '{1}'", context.GetRemoteIP(), context.Request.Url.ToString());
         }
 
         private void LogInvalidated(NancyContext context)
         {
-            _authLogger.Info("Auth-Invalidated ip {0}", context.Request.UserHostAddress);
+            _authLogger.Info("Auth-Invalidated ip {0}", context.GetRemoteIP());
         }
 
         private void LogFailure(NancyContext context, string username)
         {
-            _authLogger.Warn("Auth-Failure ip {0} username '{1}'", context.Request.UserHostAddress, username);
+            _authLogger.Warn("Auth-Failure ip {0} username '{1}'", context.GetRemoteIP(), username);
         }
 
         private void LogSuccess(NancyContext context, string username)
         {
-            _authLogger.Info("Auth-Success ip {0} username '{1}'", context.Request.UserHostAddress, username);
+            _authLogger.Info("Auth-Success ip {0} username '{1}'", context.GetRemoteIP(), username);
         }
 
         private void LogLogout(NancyContext context, string username)
         {
-            _authLogger.Info("Auth-Logout ip {0} username '{1}'", context.Request.UserHostAddress, username);
+            _authLogger.Info("Auth-Logout ip {0} username '{1}'", context.GetRemoteIP(), username);
         }
     }
 }

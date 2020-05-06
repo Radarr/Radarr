@@ -81,9 +81,10 @@ function createMapDispatchToProps(dispatch, props) {
       }));
     },
 
-    onSearchPress(command) {
+    onSearchPress(command, items) {
       dispatch(executeCommand({
-        name: command
+        name: command,
+        movieIds: items
       }));
     }
   };

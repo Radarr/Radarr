@@ -84,7 +84,7 @@ class MovieHistoryTableContent extends Component {
             <Table columns={columns}>
               <TableBody>
                 {
-                  items.reverse().map((item) => {
+                  items.map((item) => {
                     return (
                       <MovieHistoryRowConnector
                         key={item.id}

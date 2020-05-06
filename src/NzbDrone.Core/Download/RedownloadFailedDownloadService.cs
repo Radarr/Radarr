@@ -2,31 +2,29 @@ using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch;
+using NzbDrone.Core.Messaging;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Download
 {
-    public class RedownloadFailedDownloadService : IHandleAsync<DownloadFailedEvent>
+    public class RedownloadFailedDownloadService : IHandle<DownloadFailedEvent>
     {
         private readonly IConfigService _configService;
-        private readonly IMovieService _movieService;
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly Logger _logger;
 
         public RedownloadFailedDownloadService(IConfigService configService,
-                                               IMovieService movieService,
                                                IManageCommandQueue commandQueueManager,
                                                Logger logger)
         {
             _configService = configService;
-            _movieService = movieService;
             _commandQueueManager = commandQueueManager;
             _logger = logger;
         }
 
-        public void HandleAsync(DownloadFailedEvent message)
+        [EventHandleOrder(EventHandleOrder.Last)]
+        public void Handle(DownloadFailedEvent message)
         {
             if (!_configService.AutoRedownloadFailed)
             {

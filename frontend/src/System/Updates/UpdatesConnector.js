@@ -14,6 +14,7 @@ import Updates from './Updates';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.app.version,
+    createSystemStatusSelector(),
     (state) => state.system.updates,
     (state) => state.settings.general,
     createUISettingsSelector(),
@@ -21,6 +22,7 @@ function createMapStateToProps() {
     createCommandExecutingSelector(commandNames.APPLICATION_UPDATE),
     (
       currentVersion,
+      status,
       updates,
       generalSettings,
       uiSettings,
@@ -45,6 +47,7 @@ function createMapStateToProps() {
         isInstallingUpdate,
         isDocker: systemStatus.isDocker,
         updateMechanism: generalSettings.item.updateMechanism,
+        updateMechanismMessage: status.packageUpdateMechanismMessage,
         shortDateFormat: uiSettings.shortDateFormat
       };
     }

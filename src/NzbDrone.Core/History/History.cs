@@ -7,11 +7,11 @@ using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.History
 {
-    public class History : ModelBase
+    public class MovieHistory : ModelBase
     {
         public const string DOWNLOAD_CLIENT = "downloadClient";
 
-        public History()
+        public MovieHistory()
         {
             Data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
@@ -21,14 +21,14 @@ namespace NzbDrone.Core.History
         public QualityModel Quality { get; set; }
         public DateTime Date { get; set; }
         public Movie Movie { get; set; }
-        public HistoryEventType EventType { get; set; }
+        public MovieHistoryEventType EventType { get; set; }
         public Dictionary<string, string> Data { get; set; }
         public List<Language> Languages { get; set; }
 
         public string DownloadId { get; set; }
     }
 
-    public enum HistoryEventType
+    public enum MovieHistoryEventType
     {
         Unknown = 0,
         Grabbed = 1,
@@ -40,6 +40,7 @@ namespace NzbDrone.Core.History
         // EpisodeFileDeleted = 5, // deprecated
         MovieFileDeleted = 6,
         MovieFolderImported = 7, // not used yet
-        MovieFileRenamed = 8
+        MovieFileRenamed = 8,
+        DownloadIgnored = 9
     }
 }

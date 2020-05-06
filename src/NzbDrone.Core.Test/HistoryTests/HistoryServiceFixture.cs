@@ -4,7 +4,9 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Movies;
@@ -78,10 +80,21 @@ namespace NzbDrone.Core.Test.HistoryTests
                 Path = @"C:\Test\Unsorted\Movie.2011.mkv"
             };
 
-            Subject.Handle(new MovieImportedEvent(localMovie, movieFile, true, "sab", "abcd"));
+            var downloadClientItem = new DownloadClientItem
+            {
+                DownloadClientInfo = new DownloadClientItemClientInfo
+                {
+                    Protocol = DownloadProtocol.Usenet,
+                    Id = 1,
+                    Name = "sab"
+                },
+                DownloadId = "abcd"
+            };
+
+            Subject.Handle(new MovieImportedEvent(localMovie, movieFile, true, downloadClientItem, "abcd"));
 
             Mocker.GetMock<IHistoryRepository>()
-                .Verify(v => v.Insert(It.Is<History.History>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localMovie.Path))));
+                .Verify(v => v.Insert(It.Is<MovieHistory>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localMovie.Path))));
         }
     }
 }

@@ -1,34 +1,53 @@
-﻿namespace NzbDrone.Core.NetImport.Trakt
+namespace NzbDrone.Core.NetImport.Trakt
 {
-    public class Ids
+    public class TraktMovieIdsResource
     {
-        public int trakt { get; set; }
-        public string slug { get; set; }
-        public string imdb { get; set; }
-        public int tmdb { get; set; }
+        public int Trakt { get; set; }
+        public string Slug { get; set; }
+        public string Imdb { get; set; }
+        public int Tmdb { get; set; }
     }
 
-    public class Movie
+    public class TraktMovieResource
     {
-        public string title { get; set; }
-        public int? year { get; set; }
-        public Ids ids { get; set; }
+        public string Title { get; set; }
+        public int? Year { get; set; }
+        public TraktMovieIdsResource Ids { get; set; }
     }
 
     public class TraktResponse
     {
-        public int? rank { get; set; }
-        public string listed_at { get; set; }
-        public string type { get; set; }
+        public int? Rank { get; set; }
+        public string Listed_at { get; set; }
+        public string Type { get; set; }
 
-        public int? watchers { get; set; }
+        public int? Watchers { get; set; }
 
-        public long? revenue { get; set; }
+        public long? Revenue { get; set; }
 
-        public long? watcher_count { get; set; }
-        public long? play_count { get; set; }
-        public long? collected_count { get; set; }
+        public long? Watcher_count { get; set; }
+        public long? Play_count { get; set; }
+        public long? Collected_count { get; set; }
 
-        public Movie movie { get; set; }
+        public TraktMovieResource Movie { get; set; }
+    }
+
+    public class RefreshRequestResponse
+    {
+        public string Access_token { get; set; }
+        public string Token_type { get; set; }
+        public int Expires_in { get; set; }
+        public string Refresh_token { get; set; }
+        public string Scope { get; set; }
+    }
+
+    public class UserSettingsResponse
+    {
+        public TraktUserResource User { get; set; }
+    }
+
+    public class TraktUserResource
+    {
+        public string Username { get; set; }
     }
 }

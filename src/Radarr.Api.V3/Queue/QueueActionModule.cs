@@ -15,6 +15,7 @@ namespace Radarr.Api.V3.Queue
         private readonly IQueueService _queueService;
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IFailedDownloadService _failedDownloadService;
+        private readonly IIgnoredDownloadService _ignoredDownloadService;
         private readonly IProvideDownloadClient _downloadClientProvider;
         private readonly IPendingReleaseService _pendingReleaseService;
         private readonly IDownloadService _downloadService;
@@ -22,6 +23,7 @@ namespace Radarr.Api.V3.Queue
         public QueueActionModule(IQueueService queueService,
                                  ITrackedDownloadService trackedDownloadService,
                                  IFailedDownloadService failedDownloadService,
+                                 IIgnoredDownloadService ignoredDownloadService,
                                  IProvideDownloadClient downloadClientProvider,
                                  IPendingReleaseService pendingReleaseService,
                                  IDownloadService downloadService)
@@ -29,6 +31,7 @@ namespace Radarr.Api.V3.Queue
             _queueService = queueService;
             _trackedDownloadService = trackedDownloadService;
             _failedDownloadService = failedDownloadService;
+            _ignoredDownloadService = ignoredDownloadService;
             _downloadClientProvider = downloadClientProvider;
             _pendingReleaseService = pendingReleaseService;
             _downloadService = downloadService;
@@ -75,9 +78,10 @@ namespace Radarr.Api.V3.Queue
 
         private object Remove(int id)
         {
+            var removeFromClient = Request.GetBooleanQueryParameter("removeFromClient", true);
             var blacklist = Request.GetBooleanQueryParameter("blacklist");
 
-            var trackedDownload = Remove(id, blacklist);
+            var trackedDownload = Remove(id, removeFromClient, blacklist);
 
             if (trackedDownload != null)
             {
@@ -89,6 +93,7 @@ namespace Radarr.Api.V3.Queue
 
         private object Remove()
         {
+            var removeFromClient = Request.GetBooleanQueryParameter("removeFromClient", true);
             var blacklist = Request.GetBooleanQueryParameter("blacklist");
 
             var resource = Request.Body.FromJson<QueueBulkResource>();
@@ -96,7 +101,7 @@ namespace Radarr.Api.V3.Queue
 
             foreach (var id in resource.Ids)
             {
-                var trackedDownload = Remove(id, blacklist);
+                var trackedDownload = Remove(id, removeFromClient, blacklist);
 
                 if (trackedDownload != null)
                 {
@@ -109,7 +114,7 @@ namespace Radarr.Api.V3.Queue
             return new object();
         }
 
-        private TrackedDownload Remove(int id, bool blacklist)
+        private TrackedDownload Remove(int id, bool removeFromClient, bool blacklist)
         {
             var pendingRelease = _pendingReleaseService.FindPendingQueueItem(id);
 
@@ -127,18 +132,26 @@ namespace Radarr.Api.V3.Queue
                 throw new NotFoundException();
             }
 
-            var downloadClient = _downloadClientProvider.Get(trackedDownload.DownloadClient);
-
-            if (downloadClient == null)
+            if (removeFromClient)
             {
-                throw new BadRequestException();
-            }
+                var downloadClient = _downloadClientProvider.Get(trackedDownload.DownloadClient);
 
-            downloadClient.RemoveItem(trackedDownload.DownloadItem.DownloadId, true);
+                if (downloadClient == null)
+                {
+                    throw new BadRequestException();
+                }
+
+                downloadClient.RemoveItem(trackedDownload.DownloadItem.DownloadId, true);
+            }
 
             if (blacklist)
             {
                 _failedDownloadService.MarkAsFailed(trackedDownload.DownloadItem.DownloadId);
+            }
+
+            if (!removeFromClient && !blacklist && !_ignoredDownloadService.IgnoreDownload(trackedDownload))
+            {
+                return null;
             }
 
             return trackedDownload;

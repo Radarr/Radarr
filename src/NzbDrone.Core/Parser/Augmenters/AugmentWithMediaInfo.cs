@@ -1,5 +1,4 @@
 ﻿using System;
-using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;

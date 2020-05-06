@@ -105,6 +105,7 @@ class GeneralSettings extends Component {
       isWindows,
       isWindowsService,
       mode,
+      packageUpdateMechanism,
       onInputChange,
       onConfirmResetApiKey,
       ...otherProps
@@ -167,6 +168,7 @@ class GeneralSettings extends Component {
                   advancedSettings={advancedSettings}
                   settings={settings}
                   isWindows={isWindows}
+                  packageUpdateMechanism={packageUpdateMechanism}
                   onInputChange={onInputChange}
                 />
 
@@ -210,6 +212,7 @@ GeneralSettings.propTypes = {
   isWindows: PropTypes.bool.isRequired,
   isWindowsService: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
+  packageUpdateMechanism: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onConfirmResetApiKey: PropTypes.func.isRequired,
   onConfirmRestart: PropTypes.func.isRequired
