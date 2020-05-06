@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Download
 
                 if (movie == null)
                 {
-                    trackedDownload.Warn("Series title mismatch, automatic import is not possible.");
+                    trackedDownload.Warn("Movie title mismatch, automatic import is not possible.");
                     return;
                 }
             }
