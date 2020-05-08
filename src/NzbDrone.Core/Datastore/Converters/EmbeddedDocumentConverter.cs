@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Dapper;
@@ -39,7 +39,9 @@ namespace NzbDrone.Core.Datastore.Converters
 
         public override void SetValue(IDbDataParameter parameter, T value)
         {
-            parameter.Value = JsonSerializer.Serialize(value, SerializerSettings);
+            // Cast to object to get all properties written out
+            // https://github.com/dotnet/corefx/issues/38650
+            parameter.Value = JsonSerializer.Serialize((object)value, SerializerSettings);
         }
 
         public override T Parse(object value)

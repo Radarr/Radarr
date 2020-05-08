@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using System.Text.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Reflection;
@@ -35,7 +35,9 @@ namespace NzbDrone.Core.Datastore.Converters
 
         public override void SetValue(IDbDataParameter parameter, Command value)
         {
-            parameter.Value = value == null ? null : JsonSerializer.Serialize(value, SerializerSettings);
+            // Cast to object to get all properties written out
+            // https://github.com/dotnet/corefx/issues/38650
+            parameter.Value = value == null ? null : JsonSerializer.Serialize((object)value, SerializerSettings);
         }
     }
 }
