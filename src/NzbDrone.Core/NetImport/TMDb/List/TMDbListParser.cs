@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.NetImport.TMDb.List
@@ -42,7 +41,7 @@ namespace NzbDrone.Core.NetImport.TMDb.List
                     continue;
                 }
 
-                movies.AddIfNotNull(_skyhookProxy.MapMovie(movie));
+                movies.AddIfNotNull(new Movie { TmdbId = movie.id });
             }
 
             return movies;

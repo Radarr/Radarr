@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Api.NetImport;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;
 using Radarr.Http;
 
@@ -10,13 +10,11 @@ namespace NzbDrone.Api.Movies
 {
     public class MovieDiscoverModule : RadarrRestModule<MovieResource>
     {
-        private readonly IDiscoverNewMovies _searchProxy;
         private readonly INetImportFactory _netImportFactory;
 
-        public MovieDiscoverModule(IDiscoverNewMovies searchProxy, INetImportFactory netImportFactory)
+        public MovieDiscoverModule(INetImportFactory netImportFactory)
             : base("/movies/discover")
         {
-            _searchProxy = searchProxy;
             _netImportFactory = netImportFactory;
             Get("/lists", x => GetLists());
             Get("/{action?recommendations}", x => Search(x.action));
@@ -24,7 +22,8 @@ namespace NzbDrone.Api.Movies
 
         private object Search(string action)
         {
-            var imdbResults = _searchProxy.DiscoverNewMovies(action);
+            //Return empty for now so as not to break 3rd Party
+            var imdbResults = new List<Movie>();
             return MapToResource(imdbResults);
         }
 
@@ -43,12 +42,12 @@ namespace NzbDrone.Api.Movies
             });
         }
 
-        private static IEnumerable<MovieResource> MapToResource(IEnumerable<Core.Movies.Movie> movies)
+        private static IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
         {
-            foreach (var currentSeries in movies)
+            foreach (var currentMovie in movies)
             {
-                var resource = currentSeries.ToResource();
-                var poster = currentSeries.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
+                var resource = currentMovie.ToResource();
+                var poster = currentMovie.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
                     resource.RemotePoster = poster.Url;

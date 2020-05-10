@@ -11,7 +11,6 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.MetadataSource.RadarrAPI;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Credits;
@@ -29,7 +28,6 @@ namespace NzbDrone.Core.Movies
         private readonly IDiskScanService _diskScanService;
         private readonly ICheckIfMovieShouldBeRefreshed _checkIfMovieShouldBeRefreshed;
         private readonly IConfigService _configService;
-        private readonly IRadarrAPIClient _apiClient;
 
         private readonly Logger _logger;
 
@@ -39,7 +37,6 @@ namespace NzbDrone.Core.Movies
                                     ICreditService creditService,
                                     IEventAggregator eventAggregator,
                                     IDiskScanService diskScanService,
-                                    IRadarrAPIClient apiClient,
                                     ICheckIfMovieShouldBeRefreshed checkIfMovieShouldBeRefreshed,
                                     IConfigService configService,
                                     Logger logger)
@@ -49,7 +46,6 @@ namespace NzbDrone.Core.Movies
             _titleService = titleService;
             _creditService = creditService;
             _eventAggregator = eventAggregator;
-            _apiClient = apiClient;
             _diskScanService = diskScanService;
             _checkIfMovieShouldBeRefreshed = checkIfMovieShouldBeRefreshed;
             _configService = configService;
@@ -65,7 +61,7 @@ namespace NzbDrone.Core.Movies
 
             try
             {
-                var tuple = _movieInfo.GetMovieInfo(movie.TmdbId, movie.HasPreDBEntry);
+                var tuple = _movieInfo.GetMovieInfo(movie.TmdbId);
                 movieInfo = tuple.Item1;
                 credits = tuple.Item2;
             }
@@ -105,8 +101,8 @@ namespace NzbDrone.Core.Movies
             movie.InCinemas = movieInfo.InCinemas;
             movie.Website = movieInfo.Website;
 
-            //movie.AlternativeTitles = movieInfo.AlternativeTitles;
             movie.Year = movieInfo.Year;
+            movie.SecondaryYear = movieInfo.SecondaryYear;
             movie.PhysicalRelease = movieInfo.PhysicalRelease;
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
             movie.Studio = movieInfo.Studio;
@@ -120,35 +116,6 @@ namespace NzbDrone.Core.Movies
             catch (Exception e)
             {
                 _logger.Warn(e, "Couldn't update movie path for " + movie.Path);
-            }
-
-            try
-            {
-                var mappings = _apiClient.AlternativeTitlesAndYearForMovie(movieInfo.TmdbId);
-                var mappingsTitles = mappings.Item1;
-
-                mappingsTitles = mappingsTitles.Where(t => t.IsTrusted()).ToList();
-
-                movieInfo.AlternativeTitles.AddRange(mappingsTitles);
-
-                if (mappings.Item2 != null)
-                {
-                    movie.SecondaryYear = mappings.Item2.Year;
-                    movie.SecondaryYearSourceId = mappings.Item2.SourceId;
-                }
-                else
-                {
-                    movie.SecondaryYear = null;
-                    movie.SecondaryYearSourceId = 0;
-                }
-            }
-            catch (RadarrAPIException)
-            {
-                //Not that wild, could just be a 404.
-            }
-            catch (Exception ex)
-            {
-                _logger.Info(ex, "Unable to communicate with Mappings Server.");
             }
 
             movie.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movie);

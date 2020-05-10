@@ -13,7 +13,6 @@ using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.MetadataSource.PreDB;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Update.Commands;
@@ -71,7 +70,6 @@ namespace NzbDrone.Core.Jobs
 
             var defaultTasks = new[]
                 {
-                    new ScheduledTask { Interval = 1 * 60, TypeName = typeof(PreDBSyncCommand).FullName },
                     new ScheduledTask { Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName },
                     new ScheduledTask { Interval = updateInterval, TypeName = typeof(ApplicationCheckUpdateCommand).FullName },
 

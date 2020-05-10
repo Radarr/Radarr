@@ -10,7 +10,6 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Credits;
-using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -33,14 +32,14 @@ namespace NzbDrone.Core.Test.MovieTests
                   .Returns(_movie);
 
             Mocker.GetMock<IProvideMovieInfo>()
-                  .Setup(s => s.GetMovieInfo(It.IsAny<int>(), It.IsAny<bool>()))
-                  .Callback<int, bool>((i, b) => { throw new MovieNotFoundException(i); });
+                  .Setup(s => s.GetMovieInfo(It.IsAny<int>()))
+                  .Callback<int>((i) => { throw new MovieNotFoundException(i); });
         }
 
         private void GivenNewMovieInfo(Movie movie)
         {
             Mocker.GetMock<IProvideMovieInfo>()
-                  .Setup(s => s.GetMovieInfo(_movie.TmdbId, It.IsAny<bool>()))
+                  .Setup(s => s.GetMovieInfo(_movie.TmdbId))
                   .Returns(new Tuple<Movie, List<Credit>>(movie, new List<Credit>()));
         }
 

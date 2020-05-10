@@ -1,7 +1,5 @@
-using System.Data;
 using System.Data.SQLite;
 using FluentAssertions;
-using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Messaging.Commands;
