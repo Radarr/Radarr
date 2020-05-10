@@ -28,7 +28,7 @@ namespace NzbDrone.Api.Movies
             int tmdbId = -1;
             if (int.TryParse(Request.Query.tmdbId, out tmdbId))
             {
-                var result = _movieInfo.GetMovieInfo(tmdbId, true).Item1;
+                var result = _movieInfo.GetMovieInfo(tmdbId).Item1;
                 return result.ToResource();
             }
 
@@ -38,7 +38,7 @@ namespace NzbDrone.Api.Movies
         private object SearchByImdbId()
         {
             string imdbId = Request.Query.imdbId;
-            var result = _movieInfo.GetMovieInfo(imdbId);
+            var result = _movieInfo.GetMovieByImdbId(imdbId);
             return result.ToResource();
         }
 

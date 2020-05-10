@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Movies
 
             try
             {
-                movie = _movieInfo.GetMovieInfo(newMovie.TmdbId, true).Item1;
+                movie = _movieInfo.GetMovieInfo(newMovie.TmdbId).Item1;
             }
             catch (MovieNotFoundException)
             {

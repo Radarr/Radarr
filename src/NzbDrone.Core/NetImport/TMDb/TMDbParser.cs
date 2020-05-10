@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.Exceptions;
 
@@ -35,7 +34,7 @@ namespace NzbDrone.Core.NetImport.TMDb
                 return movies;
             }
 
-            return jsonResponse.results.SelectList(_skyhookProxy.MapMovie);
+            return jsonResponse.Results.SelectList(m => new Movie { TmdbId = m.id });
         }
 
         protected virtual bool PreProcess(NetImportResponse listResponse)

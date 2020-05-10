@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
 
@@ -10,8 +9,6 @@ namespace NzbDrone.Core.NetImport.RadarrList
 {
     public class RadarrListImport : HttpNetImportBase<RadarrListSettings>
     {
-        private readonly ISearchForNewMovie _skyhookProxy;
-
         public override string Name => "Radarr Lists";
 
         public override NetImportType ListType => NetImportType.Other;
@@ -21,11 +18,9 @@ namespace NzbDrone.Core.NetImport.RadarrList
         public RadarrListImport(IHttpClient httpClient,
             IConfigService configService,
             IParsingService parsingService,
-            ISearchForNewMovie skyhookProxy,
             Logger logger)
             : base(httpClient, configService, parsingService, logger)
         {
-            _skyhookProxy = skyhookProxy;
         }
 
         public override IEnumerable<ProviderDefinition> DefaultDefinitions
@@ -79,7 +74,7 @@ namespace NzbDrone.Core.NetImport.RadarrList
 
         public override IParseNetImportResponse GetParser()
         {
-            return new RadarrListParser(_skyhookProxy);
+            return new RadarrListParser();
         }
     }
 }

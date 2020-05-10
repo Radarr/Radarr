@@ -2,20 +2,15 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.MetadataSource.RadarrAPI;
-using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport.TMDb;
 
 namespace NzbDrone.Core.NetImport.RadarrList
 {
     public class RadarrListParser : IParseNetImportResponse
     {
-        private readonly ISearchForNewMovie _skyhookProxy;
-
-        public RadarrListParser(ISearchForNewMovie skyhookProxy)
+        public RadarrListParser()
         {
-            _skyhookProxy = skyhookProxy;
         }
 
         public IList<Movie> ParseResponse(NetImportResponse netMovieImporterResponse)
@@ -37,18 +32,18 @@ namespace NzbDrone.Core.NetImport.RadarrList
                 return movies;
             }
 
-            return jsonResponse.SelectList(_skyhookProxy.MapMovie);
+            return jsonResponse.SelectList(m => new Movie { TmdbId = m.id });
         }
 
         protected virtual bool PreProcess(NetImportResponse netImportResponse)
         {
             try
             {
-                var error = JsonConvert.DeserializeObject<RadarrError>(netImportResponse.HttpResponse.Content);
+                var error = JsonConvert.DeserializeObject<RadarrErrors>(netImportResponse.HttpResponse.Content);
 
                 if (error != null && error.Errors != null && error.Errors.Count != 0)
                 {
-                    throw new RadarrAPIException(error);
+                    throw new RadarrListException(error);
                 }
             }
             catch (JsonSerializationException)

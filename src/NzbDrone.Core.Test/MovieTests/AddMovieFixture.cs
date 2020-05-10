@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.MovieTests
         private void GivenValidMovie(int tmdbId)
         {
             Mocker.GetMock<IProvideMovieInfo>()
-                  .Setup(s => s.GetMovieInfo(tmdbId, true))
+                  .Setup(s => s.GetMovieInfo(tmdbId))
                   .Returns(new Tuple<Movie, List<Credit>>(_fakeMovie, new List<Credit>()));
         }
 
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Test.MovieTests
             };
 
             Mocker.GetMock<IProvideMovieInfo>()
-                  .Setup(s => s.GetMovieInfo(newMovie.TmdbId, true))
+                  .Setup(s => s.GetMovieInfo(newMovie.TmdbId))
                   .Throws(new MovieNotFoundException("Movie Not Found"));
 
             Mocker.GetMock<IAddMovieValidator>()
