@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
 
         public override void OnTrackRetag(TrackRetagMessage message)
         {
-            Notify(Settings, TRACK_RETAGGED_TITLE_BRANDED, message.Message);
+            Notify(Settings, BOOK_RETAGGED_TITLE_BRANDED, message.Message);
         }
 
         public override string Name => "Subsonic";

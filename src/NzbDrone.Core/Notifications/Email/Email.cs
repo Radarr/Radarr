@@ -21,14 +21,16 @@ namespace NzbDrone.Core.Notifications.Email
         {
             var body = $"{grabMessage.Message} sent to queue.";
 
-            _emailService.SendEmail(Settings, ALBUM_GRABBED_TITLE_BRANDED, body);
+            _emailService.SendEmail(Settings, BOOK_GRABBED_TITLE_BRANDED, body);
         }
 
         public override void OnReleaseImport(AlbumDownloadMessage message)
         {
             var body = $"{message.Message} Downloaded and sorted.";
 
-            _emailService.SendEmail(Settings, ALBUM_DOWNLOADED_TITLE_BRANDED, body);
+            var paths = Settings.AttachFiles ? message.TrackFiles.SelectList(a => a.Path) : null;
+
+            _emailService.SendEmail(Settings, BOOK_DOWNLOADED_TITLE_BRANDED, body, false, paths);
         }
 
         public override void OnHealthIssue(HealthCheck.HealthCheck message)

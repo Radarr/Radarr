@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Notifications.Discord
                               {
                                   new Embed
                                   {
-                                      Title = TRACK_RETAGGED_TITLE,
+                                      Title = BOOK_RETAGGED_TITLE,
                                       Text = message.Message
                                   }
                               };

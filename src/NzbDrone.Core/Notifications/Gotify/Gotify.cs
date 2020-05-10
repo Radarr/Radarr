@@ -21,12 +21,12 @@ namespace NzbDrone.Core.Notifications.Gotify
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _proxy.SendNotification(ALBUM_GRABBED_TITLE, grabMessage.Message, Settings);
+            _proxy.SendNotification(BOOK_GRABBED_TITLE, grabMessage.Message, Settings);
         }
 
         public override void OnReleaseImport(AlbumDownloadMessage message)
         {
-            _proxy.SendNotification(ALBUM_DOWNLOADED_TITLE, message.Message, Settings);
+            _proxy.SendNotification(BOOK_DOWNLOADED_TITLE, message.Message, Settings);
         }
 
         public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
