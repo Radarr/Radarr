@@ -385,7 +385,7 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Unit Tests'
-          failTaskOnFailedTests: false
+          failTaskOnFailedTests: true
 
   - stage: Integration
     displayName: Integration
