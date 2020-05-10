@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.Datastore
         {
             var properties = typeof(TypeWithAllMappableProperties).GetProperties();
             properties.Should().NotBeEmpty();
-            properties.Should().OnlyContain(c => ColumnMapper<int>.IsMappableProperty(c));
+            properties.Should().OnlyContain(c => c.IsMappableProperty());
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.Datastore
         {
             var properties = typeof(TypeWithNoMappableProperties).GetProperties();
             properties.Should().NotBeEmpty();
-            properties.Should().NotContain(c => ColumnMapper<int>.IsMappableProperty(c));
+            properties.Should().NotContain(c => c.IsMappableProperty());
         }
     }
 }

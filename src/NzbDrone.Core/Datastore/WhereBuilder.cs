@@ -19,9 +19,9 @@ namespace NzbDrone.Core.Datastore
         private int _paramCount = 0;
         private bool _gotConcreteValue = false;
 
-        public WhereBuilder(Expression filter, bool requireConcreteValue)
+        public WhereBuilder(Expression filter, bool requireConcreteValue, int seq)
         {
-            _paramNamePrefix = Guid.NewGuid().ToString().Replace("-", "_");
+            _paramNamePrefix = string.Format("Clause{0}", seq + 1);
             _requireConcreteValue = requireConcreteValue;
             _sb = new StringBuilder();
 
@@ -87,16 +87,16 @@ namespace NzbDrone.Core.Datastore
 
         protected override Expression VisitMemberAccess(MemberExpression expression)
         {
-            var tableName = expression != null ? TableMapping.Mapper.TableNameMapping(expression.Expression.Type) : null;
+            var tableName = expression?.Expression?.Type != null ? TableMapping.Mapper.TableNameMapping(expression.Expression.Type) : null;
+            var gotValue = TryGetRightValue(expression, out var value);
 
-            if (tableName != null)
+            // Only use the SQL condition if the expression didn't resolve to an actual value
+            if (tableName != null && !gotValue)
             {
                 _sb.Append($"\"{tableName}\".\"{expression.Member.Name}\"");
             }
             else
             {
-                var value = GetRightValue(expression);
-
                 if (value != null)
                 {
                     // string is IEnumerable<Char> but we don't want to pick up that case
@@ -138,33 +138,43 @@ namespace NzbDrone.Core.Datastore
 
         private bool TryGetConstantValue(Expression expression, out object result)
         {
+            result = null;
+
             if (expression is ConstantExpression constExp)
             {
                 result = constExp.Value;
                 return true;
             }
 
-            result = null;
             return false;
         }
 
         private bool TryGetPropertyValue(MemberExpression expression, out object result)
         {
+            result = null;
+
             if (expression.Expression is MemberExpression nested)
             {
                 // Value is passed in as a property on a parent entity
-                var container = (nested.Expression as ConstantExpression).Value;
+                var container = (nested.Expression as ConstantExpression)?.Value;
+
+                if (container == null)
+                {
+                    return false;
+                }
+
                 var entity = GetFieldValue(container, nested.Member);
                 result = GetFieldValue(entity, expression.Member);
                 return true;
             }
 
-            result = null;
             return false;
         }
 
         private bool TryGetVariableValue(MemberExpression expression, out object result)
         {
+            result = null;
+
             // Value is passed in as a variable
             if (expression.Expression is ConstantExpression nested)
             {
@@ -172,30 +182,31 @@ namespace NzbDrone.Core.Datastore
                 return true;
             }
 
-            result = null;
             return false;
         }
 
-        private object GetRightValue(Expression expression)
+        private bool TryGetRightValue(Expression expression, out object value)
         {
-            if (TryGetConstantValue(expression, out var constValue))
+            value = null;
+
+            if (TryGetConstantValue(expression, out value))
             {
-                return constValue;
+                return true;
             }
 
             var memberExp = expression as MemberExpression;
 
-            if (TryGetPropertyValue(memberExp, out var propValue))
+            if (TryGetPropertyValue(memberExp, out value))
             {
-                return propValue;
+                return true;
             }
 
-            if (TryGetVariableValue(memberExp, out var variableValue))
+            if (TryGetVariableValue(memberExp, out value))
             {
-                return variableValue;
+                return true;
             }
 
-            return null;
+            return false;
         }
 
         private object GetFieldValue(object entity, MemberInfo member)
@@ -224,8 +235,8 @@ namespace NzbDrone.Core.Datastore
 
             if (expression.NodeType == ExpressionType.MemberAccess &&
                 expression is MemberExpression member &&
-                TryGetVariableValue(member, out var variableResult) &&
-                variableResult == null)
+                ((TryGetPropertyValue(member, out var result) && result == null) ||
+                 (TryGetVariableValue(member, out result) && result == null)))
             {
                 return true;
             }
@@ -264,7 +275,7 @@ namespace NzbDrone.Core.Datastore
         {
             var list = expression.Object;
 
-            if (list != null && list.Type == typeof(string))
+            if (list != null && (list.Type == typeof(string) || list.Type == typeof(List<string>)))
             {
                 ParseStringContains(expression);
                 return;
@@ -304,7 +315,20 @@ namespace NzbDrone.Core.Datastore
 
             _sb.Append(" IN ");
 
-            Visit(list);
+            // hardcode the integer list if it exists to bypass parameter limit
+            if (item.Type == typeof(int) && TryGetRightValue(list, out var value))
+            {
+                var items = (IEnumerable<int>)value;
+                _sb.Append("(");
+                _sb.Append(string.Join(", ", items));
+                _sb.Append(")");
+
+                _gotConcreteValue = true;
+            }
+            else
+            {
+                Visit(list);
+            }
 
             _sb.Append(")");
         }
