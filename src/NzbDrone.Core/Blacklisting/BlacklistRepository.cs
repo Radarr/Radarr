@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
-using Dapper;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -36,23 +34,11 @@ namespace NzbDrone.Core.Blacklisting
             return Query(x => x.MovieId == movieId);
         }
 
-        private IEnumerable<Blacklist> SelectJoined(SqlBuilder.Template sql)
-        {
-            using (var conn = _database.OpenConnection())
-            {
-                return conn.Query<Blacklist, Movie, Blacklist>(
-                    sql.RawSql,
-                    (bl, movie) =>
+        protected override SqlBuilder PagedBuilder() => new SqlBuilder().Join<Blacklist, Movie>((b, m) => b.MovieId == m.Id);
+        protected override IEnumerable<Blacklist> PagedQuery(SqlBuilder sql) => _database.QueryJoined<Blacklist, Movie>(sql, (bl, movie) =>
                     {
                         bl.Movie = movie;
                         return bl;
-                    },
-                    sql.Parameters)
-                    .ToList();
-            }
-        }
-
-        protected override SqlBuilder PagedBuilder() => new SqlBuilder().Join<Blacklist, Movie>((b, m) => b.MovieId == m.Id);
-        protected override IEnumerable<Blacklist> PagedSelector(SqlBuilder.Template sql) => SelectJoined(sql);
+                    });
     }
 }

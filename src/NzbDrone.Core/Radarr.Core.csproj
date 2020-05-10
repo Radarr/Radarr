@@ -4,7 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.30" />
-    <PackageReference Include="Dapper.SqlBuilder" Version="2.0.30" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="4.7.0" />
     <PackageReference Include="FluentMigrator.Runner" Version="4.0.0-alpha.268" />
