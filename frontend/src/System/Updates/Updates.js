@@ -38,7 +38,7 @@ class Updates extends Component {
     const hasUpdateToInstall = hasUpdates && _.some(items, { installable: true, latest: true });
     const noUpdateToInstall = hasUpdates && !hasUpdateToInstall;
 
-    const externalUpdaterPrefix = 'Unable to update Radarr directly,';
+    const externalUpdaterPrefix = 'Unable to update Readarr directly,';
     const externalUpdaterMessages = {
       external: 'Readarr is configured to use an external update mechanism',
       apt: 'use apt to install the update',
