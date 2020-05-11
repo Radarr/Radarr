@@ -23,7 +23,8 @@ class Updates extends Component {
       currentVersion,
       isFetching,
       isPopulated,
-      error,
+      updatesError,
+      generalSettingsError,
       items,
       isInstallingUpdate,
       updateMechanism,
@@ -33,8 +34,9 @@ class Updates extends Component {
       onInstallLatestPress
     } = this.props;
 
-    const hasUpdates = isPopulated && !error && items.length > 0;
-    const noUpdates = isPopulated && !error && !items.length;
+    const hasError = !!(updatesError || generalSettingsError);
+    const hasUpdates = isPopulated && !hasError && items.length > 0;
+    const noUpdates = isPopulated && !hasError && !items.length;
     const hasUpdateToInstall = hasUpdates && _.some(items, { installable: true, latest: true });
     const noUpdateToInstall = hasUpdates && !hasUpdateToInstall;
 
@@ -49,7 +51,7 @@ class Updates extends Component {
       <PageContent title="Updates">
         <PageContentBodyConnector>
           {
-            !isPopulated && !error &&
+            !isPopulated && !hasError &&
               <LoadingIndicator />
           }
 
@@ -97,13 +99,14 @@ class Updates extends Component {
 
           {
             noUpdateToInstall &&
-              <div className={styles.upToDate}>
+              <div className={styles.messageContainer}>
                 <Icon
                   className={styles.upToDateIcon}
                   name={icons.CHECK_CIRCLE}
                   size={30}
                 />
-                <div className={styles.upToDateMessage}>
+
+                <div className={styles.message}>
                   The latest version of Readarr is already installed
                 </div>
 
@@ -183,9 +186,16 @@ class Updates extends Component {
           }
 
           {
-            !!error &&
+            !!updatesError &&
               <div>
                 Failed to fetch updates
+              </div>
+          }
+
+          {
+            !!generalSettingsError &&
+              <div>
+                Failed to update settings
               </div>
           }
         </PageContentBodyConnector>
@@ -199,7 +209,8 @@ Updates.propTypes = {
   currentVersion: PropTypes.string.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
-  error: PropTypes.object,
+  updatesError: PropTypes.object,
+  generalSettingsError: PropTypes.object,
   items: PropTypes.array.isRequired,
   isInstallingUpdate: PropTypes.bool.isRequired,
   isDocker: PropTypes.bool.isRequired,
