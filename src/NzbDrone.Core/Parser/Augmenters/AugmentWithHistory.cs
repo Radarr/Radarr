@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Parser.Augmenters
                     releaseInfo.IndexerId = indexerId;
                 }
 
-                if (int.TryParse(history.Data.GetValueOrDefault("size"), out var size))
+                if (long.TryParse(history.Data.GetValueOrDefault("size"), out var size))
                 {
                     releaseInfo.Size = size;
                 }
