@@ -79,9 +79,9 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
         [Test]
         public void should_add_size()
         {
-            var history = HistoryWithData("Size", 1500.ToString());
+            var history = HistoryWithData("Size", 9663676416.ToString());
             var movieInfo = Subject.AugmentMovieInfo(MovieInfo, history);
-            movieInfo.ExtraInfo["Size"].ShouldBeEquivalentTo(1500);
+            movieInfo.ExtraInfo["Size"].ShouldBeEquivalentTo(9663676416);
         }
 
         [Test]
