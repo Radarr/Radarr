@@ -11,6 +11,7 @@ src/**/[Oo]bj/
 *.user
 *.sln.docstates
 .vs/
+.vscode/
 
 # Build results
 *_i.c
@@ -44,6 +45,10 @@ _dotCover*
 
 # DevExpress CodeRush
 src/.cr/
+
+# Emacs
+*~
+\#*\#
 
 # NCrunch
 *.ncrunch*
@@ -80,7 +85,6 @@ TestResults
 [Tt]est[Rr]esult*
 *.Cache
 ClientBin
-[Ss]tyle[Cc]op.*
 ~$*
 *.dbmdl
 Generated_Code #added for RIA/Silverlight projects
@@ -102,40 +106,44 @@ _NCrunch_*
 _TeamCity*
 
 # Radarr
-Backups/
-logs/
-#MediaCover/
-UpdateLogs/
-xdg/
 config.xml
-logs.db*
-nzbdrone.db*
-nzbdrone.pid
+nzbdrone.log*txt
+UpdateLogs/
 *workspace.xml
 *.test-cache
 *.userprefs
 */test-results/*
 src/UI/.idea/*
+*log.txt
 node_modules/
 _output*
+_artifacts
 _rawPackage/
 _dotTrace*
 _tests/
 *.Result.xml
+coverage*.xml
+coverage*.json
 setup/Output/
 *.~is
-
-UI.Phantom/
 
 # VS outout folders
 bin
 obj
 output/*
 
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+**/Properties/launchSettings.json
+
 # Packages
 Radarr_*/
 Radarr_*.zip
 Radarr_*.gz
+gecko.zip
+geckodriver.exe
 
 # macOS metadata files
 ._*
@@ -163,6 +171,8 @@ packages.config.md5sum
 **/.idea/**/tasks.xml
 **/.idea/shelf/*
 **/.idea/dictionaries
+**/.idea/.idea.Radarr.Posix
+**/.idea/.idea.Radarr.Windows
 
 # Sensitive or high-churn files
 **/.idea/**/dataSources/
