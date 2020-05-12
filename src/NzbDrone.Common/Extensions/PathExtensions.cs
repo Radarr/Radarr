@@ -14,7 +14,7 @@ namespace NzbDrone.Common.Extensions
         private const string NZBDRONE_DB = "nzbdrone.db";
         private const string NZBDRONE_LOG_DB = "logs.db";
         private const string NLOG_CONFIG_FILE = "nlog.config";
-        private const string UPDATE_CLIENT_EXE = "Radarr.Update.exe";
+        private const string UPDATE_CLIENT_EXE_NAME = "Radarr.Update";
         private const string BACKUP_FOLDER = "Backups";
 
         private static readonly string UPDATE_SANDBOX_FOLDER_NAME = "radarr_update" + Path.DirectorySeparatorChar;
@@ -22,6 +22,7 @@ namespace NzbDrone.Common.Extensions
         private static readonly string UPDATE_BACKUP_FOLDER_NAME = "radarr_backup" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_BACKUP_APPDATA_FOLDER_NAME = "radarr_appdata_backup" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_CLIENT_FOLDER_NAME = "NzbDrone.Update" + Path.DirectorySeparatorChar;
+        private static readonly string UPDATE_V3_CLIENT_FOLDER_NAME = "Radarr.Update" + Path.DirectorySeparatorChar;
         private static readonly string UPDATE_LOG_FOLDER_NAME = "UpdateLogs" + Path.DirectorySeparatorChar;
 
         public static string CleanFilePath(this string path)
@@ -191,6 +192,19 @@ namespace NzbDrone.Common.Extensions
             return directories;
         }
 
+        public static string ProcessNameToExe(this string processName)
+        {
+            // Windows always has exe (but is shunted to net core)
+            // Linux is kept on mono pending manual upgrade to net core so has .exe
+            // macOS is shunted to net core and does not have .exe
+            if (OsInfo.IsWindows || OsInfo.IsLinux)
+            {
+                processName += ".exe";
+            }
+
+            return processName;
+        }
+
         public static string GetAppDataPath(this IAppFolderInfo appFolderInfo)
         {
             return appFolderInfo.AppDataFolder;
@@ -246,14 +260,21 @@ namespace NzbDrone.Common.Extensions
             return Path.Combine(GetUpdateSandboxFolder(appFolderInfo), UPDATE_PACKAGE_FOLDER_NAME);
         }
 
-        public static string GetUpdateClientFolder(this IAppFolderInfo appFolderInfo)
+        public static string GetUpdateClientFolder(this IAppFolderInfo appFolderInfo, Version version)
         {
-            return Path.Combine(GetUpdatePackageFolder(appFolderInfo), UPDATE_CLIENT_FOLDER_NAME);
+            if (version.Major >= 3)
+            {
+                return Path.Combine(GetUpdatePackageFolder(appFolderInfo), UPDATE_V3_CLIENT_FOLDER_NAME);
+            }
+            else
+            {
+                return Path.Combine(GetUpdatePackageFolder(appFolderInfo), UPDATE_CLIENT_FOLDER_NAME);
+            }
         }
 
         public static string GetUpdateClientExePath(this IAppFolderInfo appFolderInfo)
         {
-            return Path.Combine(GetUpdateSandboxFolder(appFolderInfo), UPDATE_CLIENT_EXE);
+            return Path.Combine(GetUpdateSandboxFolder(appFolderInfo), UPDATE_CLIENT_EXE_NAME).ProcessNameToExe();
         }
 
         public static string GetBackupFolder(this IAppFolderInfo appFolderInfo)
