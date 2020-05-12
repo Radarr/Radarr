@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Test]
         public void Should_copy_update_client_to_root_of_sandbox()
         {
-            var updateClientFolder = Mocker.GetMock<IAppFolderInfo>().Object.GetUpdateClientFolder();
+            var updateClientFolder = Mocker.GetMock<IAppFolderInfo>().Object.GetUpdateClientFolder(It.IsAny<Version>());
 
             Subject.Execute(new ApplicationUpdateCommand());
 
