@@ -66,19 +66,21 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             foreach (var importDecision in qualifiedImports.OrderByDescending(e => e.LocalMovie.Size))
             {
-                var isExistingFileHasChanged = 0;
+                var isExistingFileAndChanged = false;
                 var localMovie = importDecision.LocalMovie;
                 var oldFiles = new List<MovieFile>();
 
                 // Check if we are importing an existing file so we can update it
-                if (localMovie.Movie.Path != null)
+                if (localMovie.ExistingFile)
                 {
-                    isExistingFileHasChanged = CheckIfImportingExistingFile(localMovie);
-                    if (isExistingFileHasChanged == 1)
+                    // Same file name as current movie file, has file size changed?
+                    if (localMovie.Size == localMovie.Movie.MovieFile.Size)
                     {
-                        // Existing file that hasn't changed in size, so skipping
+                        //Same size, so skip it
                         continue;
                     }
+
+                    isExistingFileAndChanged = true;
                 }
 
                 try
@@ -92,8 +94,9 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     }
 
                     var movieFile = new MovieFile();
-                    if (isExistingFileHasChanged == 2)
+                    if (isExistingFileAndChanged)
                     {
+                        // dealing with existing file, so use existing MovieFile values, and they will be updated
                         movieFile = localMovie.Movie.MovieFile;
                     }
 
@@ -148,8 +151,9 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                         movieFile.RelativePath = localMovie.Movie.Path.GetRelativePath(movieFile.Path);
                     }
 
-                    if (isExistingFileHasChanged == 2)
+                    if (isExistingFileAndChanged)
                     {
+                        // If existing and its changed, update file instead of adding
                         _mediaFileService.Update(movieFile);
                     }
                     else
@@ -202,40 +206,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                                             .Select(d => new ImportResult(d, d.Rejections.Select(r => r.Reason).ToArray())));
 
             return importResults;
-        }
-
-        private int CheckIfImportingExistingFile(LocalMovie localMovie)
-        {
-            if (localMovie.Path == null || localMovie.Movie == null || localMovie.Movie.MovieFile == null)
-            {
-                return 0;
-            }
-
-            //Get existing Mediafiles for Movie
-            string temp2;
-            if (new OsPath(localMovie.Movie.Path).IsWindowsPath)
-            {
-                temp2 = localMovie.Movie.Path + "\\" + localMovie.Movie.MovieFile.RelativePath;
-            }
-            else
-            {
-                temp2 = localMovie.Movie.Path + "/" + localMovie.Movie.MovieFile.RelativePath;
-            }
-
-            if (temp2 == localMovie.Path)
-            {
-                var localFileSize = _diskProvider.GetFileSize(temp2);
-                var newFileSize = _diskProvider.GetFileSize(localMovie.Path);
-                if (localFileSize != newFileSize)
-                {
-                    return 2;
-                }
-
-                // The import file is the same as the existing file, so we should update it only
-                return 1;
-            }
-
-            return 0;
         }
 
         private string GetOriginalFilePath(DownloadClientItem downloadClientItem, LocalMovie localMovie)
