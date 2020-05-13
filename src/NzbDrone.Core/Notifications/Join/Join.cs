@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Notifications.Join
             _proxy.SendNotification(BOOK_GRABBED_TITLE_BRANDED, message.Message, Settings);
         }
 
-        public override void OnReleaseImport(AlbumDownloadMessage message)
+        public override void OnReleaseImport(BookDownloadMessage message)
         {
             _proxy.SendNotification(BOOK_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
         }

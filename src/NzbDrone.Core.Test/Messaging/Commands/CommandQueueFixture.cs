@@ -1,10 +1,10 @@
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books.Commands;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Update.Commands;
 
@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Test.Messaging.Commands
             var newCommandModel = Builder<CommandModel>
                 .CreateNew()
                 .With(c => c.Name = "RefreshArtist")
-                .With(c => c.Body = new RefreshArtistCommand())
+                .With(c => c.Body = new RefreshAuthorCommand())
                 .Build();
 
             Subject.Add(newCommandModel);
@@ -168,7 +168,7 @@ namespace NzbDrone.Core.Test.Messaging.Commands
             var newCommandModel = Builder<CommandModel>
                 .CreateNew()
                 .With(c => c.Name = "RefreshArtist")
-                .With(c => c.Body = new RefreshArtistCommand())
+                .With(c => c.Body = new RefreshAuthorCommand())
                 .Build();
 
             Subject.Add(newCommandModel);

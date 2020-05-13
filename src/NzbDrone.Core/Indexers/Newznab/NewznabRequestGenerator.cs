@@ -40,8 +40,8 @@ namespace NzbDrone.Core.Indexers.Newznab
 
                 return capabilities.SupportedAudioSearchParameters != null &&
                        capabilities.SupportedAudioSearchParameters.Contains("q") &&
-                       capabilities.SupportedAudioSearchParameters.Contains("artist") &&
-                       capabilities.SupportedAudioSearchParameters.Contains("album");
+                       capabilities.SupportedAudioSearchParameters.Contains("author") &&
+                       capabilities.SupportedAudioSearchParameters.Contains("book");
             }
         }
 
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             return pageableRequests;
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(BookSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 AddAudioPageableRequests(pageableRequests,
                     searchCriteria,
-                    NewsnabifyTitle($"&artist={searchCriteria.ArtistQuery}&album={searchCriteria.AlbumQuery}"));
+                    NewsnabifyTitle($"&author={searchCriteria.ArtistQuery}&book={searchCriteria.AlbumQuery}"));
             }
 
             if (SupportsSearch)
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             return pageableRequests;
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(AuthorSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 AddAudioPageableRequests(pageableRequests,
                     searchCriteria,
-                    NewsnabifyTitle($"&artist={searchCriteria.ArtistQuery}"));
+                    NewsnabifyTitle($"&author={searchCriteria.ArtistQuery}"));
             }
 
             if (SupportsSearch)

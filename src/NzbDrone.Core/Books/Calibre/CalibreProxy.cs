@@ -117,13 +117,13 @@ namespace NzbDrone.Core.Books.Calibre
 
         public void SetFields(BookFile file, CalibreSettings settings)
         {
-            var book = file.Album.Value;
+            var book = file.Book.Value;
 
             var cover = book.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Cover);
             string image = null;
             if (cover != null)
             {
-                var imageFile = _mediaCoverService.GetCoverPath(book.Id, MediaCoverEntity.Album, cover.CoverType, cover.Extension, null);
+                var imageFile = _mediaCoverService.GetCoverPath(book.Id, MediaCoverEntity.Book, cover.CoverType, cover.Extension, null);
 
                 if (File.Exists(imageFile))
                 {
@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Books.Calibre
                 changes = new
                 {
                     title = book.Title,
-                    authors = new[] { file.Artist.Value.Name },
+                    authors = new[] { file.Author.Value.Name },
                     cover = image,
                     pubdate = book.ReleaseDate,
                     comments = book.Overview,

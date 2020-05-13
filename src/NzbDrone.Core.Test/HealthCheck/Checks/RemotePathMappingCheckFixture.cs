@@ -166,7 +166,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_return_ok_on_track_imported_event()
         {
             GivenFolderExists(_downloadRootPath);
-            var importEvent = new TrackImportedEvent(new LocalTrack(), new BookFile(), new List<BookFile>(), true, new DownloadClientItem());
+            var importEvent = new TrackImportedEvent(new LocalBook(), new BookFile(), new List<BookFile>(), true, new DownloadClientItem());
 
             Subject.Check(importEvent).ShouldBeOk();
         }
@@ -174,7 +174,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [Test]
         public void should_return_permissions_error_on_track_import_failed_event_if_file_exists()
         {
-            var localTrack = new LocalTrack
+            var localTrack = new LocalBook
             {
                 Path = Path.Combine(_downloadItemPath, "file.mp3")
             };

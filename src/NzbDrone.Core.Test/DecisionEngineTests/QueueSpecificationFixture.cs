@@ -3,9 +3,9 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download.TrackedDownloads;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     {
         private Author _artist;
         private Book _album;
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
 
         private Author _otherArtist;
         private Book _otherAlbum;
@@ -55,10 +55,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _releaseInfo = Builder<ReleaseInfo>.CreateNew()
                                    .Build();
 
-            _remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                   .With(r => r.Artist = _artist)
-                                                   .With(r => r.Albums = new List<Book> { _album })
-                                                   .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_320) })
+            _remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                   .With(r => r.Author = _artist)
+                                                   .With(r => r.Books = new List<Book> { _album })
+                                                   .With(r => r.ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320) })
                                                    .With(r => r.PreferredWordScore = 0)
                                                    .Build();
         }
@@ -70,11 +70,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Returns(new List<Queue.Queue>());
         }
 
-        private void GivenQueue(IEnumerable<RemoteAlbum> remoteAlbums, TrackedDownloadState trackedDownloadState = TrackedDownloadState.Downloading)
+        private void GivenQueue(IEnumerable<RemoteBook> remoteAlbums, TrackedDownloadState trackedDownloadState = TrackedDownloadState.Downloading)
         {
             var queue = remoteAlbums.Select(remoteAlbum => new Queue.Queue
             {
-                RemoteAlbum = remoteAlbum,
+                RemoteBook = remoteAlbum,
                 TrackedDownloadState = trackedDownloadState
             });
 
@@ -93,13 +93,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_when_artist_doesnt_match()
         {
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                       .With(r => r.Artist = _otherArtist)
-                                                       .With(r => r.Albums = new List<Book> { _album })
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                       .With(r => r.Author = _otherArtist)
+                                                       .With(r => r.Books = new List<Book> { _album })
                                                        .With(r => r.Release = _releaseInfo)
                                                        .Build();
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
@@ -108,17 +108,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _artist.QualityProfile.Value.Cutoff = Quality.FLAC.Id;
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                .With(r => r.Artist = _artist)
-                .With(r => r.Albums = new List<Book> { _album })
-                .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                .With(r => r.Author = _artist)
+                .With(r => r.Books = new List<Book> { _album })
+                .With(r => r.ParsedBookInfo = new ParsedBookInfo
                 {
                     Quality = new QualityModel(Quality.MP3_320)
                 })
                 .With(r => r.Release = _releaseInfo)
                 .Build();
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
 
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
@@ -128,34 +128,34 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _artist.QualityProfile.Value.Cutoff = Quality.MP3_320.Id;
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Artist = _artist)
-                                                      .With(r => r.Albums = new List<Book> { _album })
-                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(r => r.Author = _artist)
+                                                      .With(r => r.Books = new List<Book> { _album })
+                                                      .With(r => r.ParsedBookInfo = new ParsedBookInfo
                                                       {
                                                           Quality = new QualityModel(Quality.AZW3)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_when_album_doesnt_match()
         {
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Artist = _artist)
-                                                      .With(r => r.Albums = new List<Book> { _otherAlbum })
-                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(r => r.Author = _artist)
+                                                      .With(r => r.Books = new List<Book> { _otherAlbum })
+                                                      .With(r => r.ParsedBookInfo = new ParsedBookInfo
                                                       {
                                                           Quality = new QualityModel(Quality.MP3_320)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
@@ -164,34 +164,34 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _remoteAlbum.PreferredWordScore = 1;
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                .With(r => r.Artist = _artist)
-                .With(r => r.Albums = new List<Book> { _album })
-                .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                .With(r => r.Author = _artist)
+                .With(r => r.Books = new List<Book> { _album })
+                .With(r => r.ParsedBookInfo = new ParsedBookInfo
                 {
                     Quality = new QualityModel(Quality.MP3_320)
                 })
                 .With(r => r.Release = _releaseInfo)
                 .Build();
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_false_when_qualities_are_the_same()
         {
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Artist = _artist)
-                                                      .With(r => r.Albums = new List<Book> { _album })
-                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(r => r.Author = _artist)
+                                                      .With(r => r.Books = new List<Book> { _album })
+                                                      .With(r => r.ParsedBookInfo = new ParsedBookInfo
                                                       {
                                                           Quality = new QualityModel(Quality.MP3_320)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
@@ -200,93 +200,93 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _artist.QualityProfile.Value.Cutoff = Quality.FLAC.Id;
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Artist = _artist)
-                                                      .With(r => r.Albums = new List<Book> { _album })
-                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(r => r.Author = _artist)
+                                                      .With(r => r.Books = new List<Book> { _album })
+                                                      .With(r => r.ParsedBookInfo = new ParsedBookInfo
                                                       {
                                                           Quality = new QualityModel(Quality.MP3_320)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_false_if_matching_multi_album_is_in_queue()
         {
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Artist = _artist)
-                                                      .With(r => r.Albums = new List<Book> { _album, _otherAlbum })
-                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(r => r.Author = _artist)
+                                                      .With(r => r.Books = new List<Book> { _album, _otherAlbum })
+                                                      .With(r => r.ParsedBookInfo = new ParsedBookInfo
                                                       {
                                                           Quality = new QualityModel(Quality.MP3_320)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_false_if_multi_album_has_one_album_in_queue()
         {
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Artist = _artist)
-                                                      .With(r => r.Albums = new List<Book> { _album })
-                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(r => r.Author = _artist)
+                                                      .With(r => r.Books = new List<Book> { _album })
+                                                      .With(r => r.ParsedBookInfo = new ParsedBookInfo
                                                       {
                                                           Quality = new QualityModel(Quality.MP3_320)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
 
-            _remoteAlbum.Albums.Add(_otherAlbum);
+            _remoteAlbum.Books.Add(_otherAlbum);
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_false_if_multi_part_album_is_already_in_queue()
         {
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Artist = _artist)
-                                                      .With(r => r.Albums = new List<Book> { _album, _otherAlbum })
-                                                      .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(r => r.Author = _artist)
+                                                      .With(r => r.Books = new List<Book> { _album, _otherAlbum })
+                                                      .With(r => r.ParsedBookInfo = new ParsedBookInfo
                                                       {
                                                           Quality = new QualityModel(Quality.MP3_320)
                                                       })
                                                       .With(r => r.Release = _releaseInfo)
                                                       .Build();
 
-            _remoteAlbum.Albums.Add(_otherAlbum);
+            _remoteAlbum.Books.Add(_otherAlbum);
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_false_if_multi_part_album_has_two_albums_in_queue()
         {
-            var remoteAlbums = Builder<RemoteAlbum>.CreateListOfSize(2)
+            var remoteAlbums = Builder<RemoteBook>.CreateListOfSize(2)
                                                        .All()
-                                                       .With(r => r.Artist = _artist)
-                                                       .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+                                                       .With(r => r.Author = _artist)
+                                                       .With(r => r.ParsedBookInfo = new ParsedBookInfo
                                                        {
                                                            Quality = new QualityModel(Quality.MP3_320)
                                                        })
                                                        .With(r => r.Release = _releaseInfo)
                                                        .TheFirst(1)
-                                                       .With(r => r.Albums = new List<Book> { _album })
+                                                       .With(r => r.Books = new List<Book> { _album })
                                                        .TheNext(1)
-                                                       .With(r => r.Albums = new List<Book> { _otherAlbum })
+                                                       .With(r => r.Books = new List<Book> { _otherAlbum })
                                                        .Build();
 
-            _remoteAlbum.Albums.Add(_otherAlbum);
+            _remoteAlbum.Books.Add(_otherAlbum);
             GivenQueue(remoteAlbums);
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
@@ -297,17 +297,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _artist.QualityProfile.Value.Cutoff = Quality.FLAC.Id;
             _artist.QualityProfile.Value.UpgradeAllowed = false;
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                .With(r => r.Artist = _artist)
-                .With(r => r.Albums = new List<Book> { _album })
-                .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                .With(r => r.Author = _artist)
+                .With(r => r.Books = new List<Book> { _album })
+                .With(r => r.ParsedBookInfo = new ParsedBookInfo
                 {
                     Quality = new QualityModel(Quality.FLAC)
                 })
                 .With(r => r.Release = _releaseInfo)
                 .Build();
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum });
+            GivenQueue(new List<RemoteBook> { remoteAlbum });
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
         }
 
@@ -316,17 +316,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _artist.QualityProfile.Value.Cutoff = Quality.FLAC.Id;
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                .With(r => r.Artist = _artist)
-                .With(r => r.Albums = new List<Book> { _album })
-                .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                .With(r => r.Author = _artist)
+                .With(r => r.Books = new List<Book> { _album })
+                .With(r => r.ParsedBookInfo = new ParsedBookInfo
                 {
                     Quality = new QualityModel(Quality.MP3_320)
                 })
                 .With(r => r.Release = _releaseInfo)
                 .Build();
 
-            GivenQueue(new List<RemoteAlbum> { remoteAlbum }, TrackedDownloadState.DownloadFailedPending);
+            GivenQueue(new List<RemoteBook> { remoteAlbum }, TrackedDownloadState.DownloadFailedPending);
 
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }

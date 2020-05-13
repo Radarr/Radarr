@@ -23,11 +23,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
-            var qualityProfile = subject.Artist.QualityProfile.Value;
+            var qualityProfile = subject.Author.QualityProfile.Value;
 
-            foreach (var file in subject.Albums.SelectMany(b => b.BookFiles.Value))
+            foreach (var file in subject.Books.SelectMany(b => b.BookFiles.Value))
             {
                 if (file == null)
                 {
@@ -35,14 +35,14 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     continue;
                 }
 
-                // Get a distinct list of all current track qualities for a given album
+                // Get a distinct list of all current track qualities for a given book
                 var currentQualities = new List<QualityModel> { file.Quality };
 
                 _logger.Debug("Comparing file quality with report. Existing files contain {0}", currentQualities.ConcatToString());
 
                 if (!_upgradableSpecification.IsUpgradeAllowed(qualityProfile,
                                                                currentQualities,
-                                                               subject.ParsedAlbumInfo.Quality))
+                                                               subject.ParsedBookInfo.Quality))
                 {
                     _logger.Debug("Upgrading is not allowed by the quality profile");
 

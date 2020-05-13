@@ -1,11 +1,11 @@
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Housekeeping.Housekeepers;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_delete_metadata_files_that_dont_have_a_coresponding_artist()
         {
             var metadataFile = Builder<MetadataFile>.CreateNew()
-                                                    .With(m => m.TrackFileId = null)
+                                                    .With(m => m.BookFileId = null)
                                                     .BuildNew();
 
             Db.Insert(metadataFile);
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             var metadataFile = Builder<MetadataFile>.CreateNew()
                                                     .With(m => m.AuthorId = artist.Id)
-                                                    .With(m => m.TrackFileId = null)
+                                                    .With(m => m.BookFileId = null)
                                                     .BuildNew();
 
             Db.Insert(metadataFile);
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var metadataFile = Builder<MetadataFile>.CreateNew()
                                                     .With(m => m.AuthorId = artist.Id)
                                                     .With(m => m.BookId = null)
-                                                    .With(m => m.TrackFileId = null)
+                                                    .With(m => m.BookFileId = null)
                                                     .BuildNew();
 
             Db.Insert(metadataFile);
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var metadataFile = Builder<MetadataFile>.CreateNew()
                                                     .With(m => m.AuthorId = artist.Id)
                                                     .With(m => m.BookId = album.Id)
-                                                    .With(m => m.TrackFileId = null)
+                                                    .With(m => m.BookFileId = null)
                                                     .BuildNew();
 
             Db.Insert(metadataFile);
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var metadataFile = Builder<MetadataFile>.CreateNew()
                                                     .With(m => m.AuthorId = artist.Id)
                                                     .With(m => m.BookId = album.Id)
-                                                    .With(m => m.TrackFileId = 10)
+                                                    .With(m => m.BookFileId = 10)
                                                     .BuildNew();
 
             Db.Insert(metadataFile);
@@ -130,7 +130,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var metadataFile = Builder<MetadataFile>.CreateNew()
                                                     .With(m => m.AuthorId = artist.Id)
                                                     .With(m => m.BookId = album.Id)
-                                                    .With(m => m.TrackFileId = trackFile.Id)
+                                                    .With(m => m.BookFileId = trackFile.Id)
                                                     .BuildNew();
 
             Db.Insert(metadataFile);
@@ -150,7 +150,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
                 .With(m => m.AuthorId = artist.Id)
                 .With(m => m.Type = MetadataType.AlbumMetadata)
                 .With(m => m.BookId = 0)
-                .With(m => m.TrackFileId = null)
+                .With(m => m.BookFileId = null)
                 .BuildNew();
 
             Db.Insert(metadataFile);
@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
                 .With(m => m.AuthorId = artist.Id)
                 .With(m => m.Type = MetadataType.AlbumImage)
                 .With(m => m.BookId = 0)
-                .With(m => m.TrackFileId = null)
+                .With(m => m.BookFileId = null)
                 .BuildNew();
 
             Db.Insert(metadataFile);
@@ -189,7 +189,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var metadataFile = Builder<MetadataFile>.CreateNew()
                                                  .With(m => m.AuthorId = artist.Id)
                                                  .With(m => m.Type = MetadataType.TrackMetadata)
-                                                 .With(m => m.TrackFileId = 0)
+                                                 .With(m => m.BookFileId = 0)
                                                  .BuildNew();
 
             Db.Insert(metadataFile);

@@ -4,11 +4,11 @@ using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -44,13 +44,13 @@ namespace NzbDrone.Core.Test.HistoryTests
             var artist = Builder<Author>.CreateNew().Build();
             var trackFile = Builder<BookFile>.CreateNew()
                 .With(f => f.SceneName = null)
-                .With(f => f.Artist = artist)
+                .With(f => f.Author = artist)
                 .Build();
 
-            var localTrack = new LocalTrack
+            var localTrack = new LocalBook
             {
-                Artist = artist,
-                Album = new Book(),
+                Author = artist,
+                Book = new Book(),
                 Path = @"C:\Test\Unsorted\Artist.01.Hymn.mp3"
             };
 

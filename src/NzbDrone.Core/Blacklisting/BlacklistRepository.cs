@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Dapper;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Blacklisting
 {
@@ -36,9 +36,9 @@ namespace NzbDrone.Core.Blacklisting
         }
 
         protected override SqlBuilder PagedBuilder() => new SqlBuilder().Join<Blacklist, Author>((b, m) => b.AuthorId == m.Id);
-        protected override IEnumerable<Blacklist> PagedQuery(SqlBuilder builder) => _database.QueryJoined<Blacklist, Author>(builder, (bl, artist) =>
+        protected override IEnumerable<Blacklist> PagedQuery(SqlBuilder builder) => _database.QueryJoined<Blacklist, Author>(builder, (bl, author) =>
                     {
-                        bl.Artist = artist;
+                        bl.Author = author;
                         return bl;
                     });
     }

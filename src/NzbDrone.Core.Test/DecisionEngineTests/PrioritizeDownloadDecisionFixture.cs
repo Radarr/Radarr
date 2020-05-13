@@ -6,10 +6,10 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Profiles.Qualities;
@@ -34,21 +34,21 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                             .Build();
         }
 
-        private RemoteAlbum GivenRemoteAlbum(List<Book> albums, QualityModel quality, int age = 0, long size = 0, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
+        private RemoteBook GivenRemoteAlbum(List<Book> albums, QualityModel quality, int age = 0, long size = 0, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
         {
-            var remoteAlbum = new RemoteAlbum();
-            remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
-            remoteAlbum.ParsedAlbumInfo.Quality = quality;
+            var remoteAlbum = new RemoteBook();
+            remoteAlbum.ParsedBookInfo = new ParsedBookInfo();
+            remoteAlbum.ParsedBookInfo.Quality = quality;
 
-            remoteAlbum.Albums = new List<Book>();
-            remoteAlbum.Albums.AddRange(albums);
+            remoteAlbum.Books = new List<Book>();
+            remoteAlbum.Books.AddRange(albums);
 
             remoteAlbum.Release = new ReleaseInfo();
             remoteAlbum.Release.PublishDate = DateTime.Now.AddDays(-age);
             remoteAlbum.Release.Size = size;
             remoteAlbum.Release.DownloadProtocol = downloadProtocol;
 
-            remoteAlbum.Artist = Builder<Author>.CreateNew()
+            remoteAlbum.Author = Builder<Author>.CreateNew()
                                                 .With(e => e.QualityProfile = new QualityProfile
                                                 {
                                                     Items = Qualities.QualityFixture.GetDefaultQualities()
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Revision.Version.Should().Be(2);
+            qualifiedReports.First().RemoteBook.ParsedBookInfo.Quality.Revision.Version.Should().Be(2);
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Quality.Should().Be(Quality.MP3_320);
+            qualifiedReports.First().RemoteBook.ParsedBookInfo.Quality.Quality.Should().Be(Quality.MP3_320);
         }
 
         [Test]
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbumHdLargeYoung));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.Should().Be(remoteAlbumHdLargeYoung);
+            qualifiedReports.First().RemoteBook.Should().Be(remoteAlbumHdLargeYoung);
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.Should().Be(remoteAlbum2);
+            qualifiedReports.First().RemoteBook.Should().Be(remoteAlbum2);
         }
 
         [Test]
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteAlbum1 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.MP3_320), size: 500.Megabytes());
             var remoteAlbum2 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.MP3_320), size: 500.Megabytes());
 
-            remoteAlbum1.Albums = new List<Book>();
+            remoteAlbum1.Books = new List<Book>();
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
@@ -157,7 +157,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.Release.DownloadProtocol.Should().Be(DownloadProtocol.Usenet);
+            qualifiedReports.First().RemoteBook.Release.DownloadProtocol.Should().Be(DownloadProtocol.Usenet);
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.Release.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
+            qualifiedReports.First().RemoteBook.Release.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
         }
 
         [Test]
@@ -182,14 +182,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteAlbum1 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1), GivenAlbum(2) }, new QualityModel(Quality.FLAC));
             var remoteAlbum2 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.FLAC));
 
-            remoteAlbum1.ParsedAlbumInfo.Discography = true;
+            remoteAlbum1.ParsedBookInfo.Discography = true;
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Discography.Should().BeTrue();
+            qualifiedReports.First().RemoteBook.ParsedBookInfo.Discography.Should().BeTrue();
         }
 
         [Test]
@@ -198,14 +198,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteAlbum1 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1), GivenAlbum(2) }, new QualityModel(Quality.MP3_320));
             var remoteAlbum2 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.FLAC));
 
-            remoteAlbum1.ParsedAlbumInfo.Discography = true;
+            remoteAlbum1.ParsedBookInfo.Discography = true;
 
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum1));
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Discography.Should().BeFalse();
+            qualifiedReports.First().RemoteBook.ParsedBookInfo.Discography.Should().BeFalse();
         }
 
         [Test]
@@ -219,7 +219,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.Albums.Count.Should().Be(remoteAlbum2.Albums.Count);
+            qualifiedReports.First().RemoteBook.Books.Count.Should().Be(remoteAlbum2.Books.Count);
         }
 
         [Test]
@@ -245,7 +245,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            ((TorrentInfo)qualifiedReports.First().RemoteAlbum.Release).Seeders.Should().Be(torrentInfo2.Seeders);
+            ((TorrentInfo)qualifiedReports.First().RemoteBook.Release).Seeders.Should().Be(torrentInfo2.Seeders);
         }
 
         [Test]
@@ -272,7 +272,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            ((TorrentInfo)qualifiedReports.First().RemoteAlbum.Release).Peers.Should().Be(torrentInfo2.Peers);
+            ((TorrentInfo)qualifiedReports.First().RemoteBook.Release).Peers.Should().Be(torrentInfo2.Peers);
         }
 
         [Test]
@@ -300,7 +300,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            ((TorrentInfo)qualifiedReports.First().RemoteAlbum.Release).Peers.Should().Be(torrentInfo2.Peers);
+            ((TorrentInfo)qualifiedReports.First().RemoteBook.Release).Peers.Should().Be(torrentInfo2.Peers);
         }
 
         [Test]
@@ -329,7 +329,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            ((TorrentInfo)qualifiedReports.First().RemoteAlbum.Release).Should().Be(torrentInfo1);
+            ((TorrentInfo)qualifiedReports.First().RemoteBook.Release).Should().Be(torrentInfo1);
         }
 
         [Test]
@@ -349,7 +349,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.Release.Should().Be(remoteAlbum1.Release);
+            qualifiedReports.First().RemoteBook.Release.Should().Be(remoteAlbum1.Release);
         }
 
         [Test]
@@ -378,7 +378,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            ((TorrentInfo)qualifiedReports.First().RemoteAlbum.Release).Should().Be(torrentInfo1);
+            ((TorrentInfo)qualifiedReports.First().RemoteBook.Release).Should().Be(torrentInfo1);
         }
 
         [Test]
@@ -392,7 +392,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Quality.Should().Be(Quality.MP3_320);
+            qualifiedReports.First().RemoteBook.ParsedBookInfo.Quality.Quality.Should().Be(Quality.MP3_320);
         }
 
         [Test]
@@ -409,7 +409,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.PreferredWordScore.Should().Be(10);
+            qualifiedReports.First().RemoteBook.PreferredWordScore.Should().Be(10);
         }
 
         [Test]
@@ -430,7 +430,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Revision.Version.Should().Be(2);
+            qualifiedReports.First().RemoteBook.ParsedBookInfo.Quality.Revision.Version.Should().Be(2);
         }
 
         [Test]
@@ -451,7 +451,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Revision.Version.Should().Be(2);
+            qualifiedReports.First().RemoteBook.ParsedBookInfo.Quality.Revision.Version.Should().Be(2);
         }
 
         [Test]
@@ -472,9 +472,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             var qualifiedReports = Subject.PrioritizeDecisions(decisions);
-            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Quality.Should().Be(Quality.FLAC);
-            qualifiedReports.First().RemoteAlbum.ParsedAlbumInfo.Quality.Revision.Version.Should().Be(1);
-            qualifiedReports.First().RemoteAlbum.PreferredWordScore.Should().Be(10);
+            qualifiedReports.First().RemoteBook.ParsedBookInfo.Quality.Quality.Should().Be(Quality.FLAC);
+            qualifiedReports.First().RemoteBook.ParsedBookInfo.Quality.Revision.Version.Should().Be(1);
+            qualifiedReports.First().RemoteBook.PreferredWordScore.Should().Be(10);
         }
     }
 }

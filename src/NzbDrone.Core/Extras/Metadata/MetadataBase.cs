@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentValidation.Results;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Extras.Metadata
@@ -27,31 +27,31 @@ namespace NzbDrone.Core.Extras.Metadata
             return new ValidationResult();
         }
 
-        public virtual string GetFilenameAfterMove(Author artist, BookFile trackFile, MetadataFile metadataFile)
+        public virtual string GetFilenameAfterMove(Author author, BookFile bookFile, MetadataFile metadataFile)
         {
-            var existingFilename = Path.Combine(artist.Path, metadataFile.RelativePath);
+            var existingFilename = Path.Combine(author.Path, metadataFile.RelativePath);
             var extension = Path.GetExtension(existingFilename).TrimStart('.');
-            var newFileName = Path.ChangeExtension(trackFile.Path, extension);
+            var newFileName = Path.ChangeExtension(bookFile.Path, extension);
 
             return newFileName;
         }
 
-        public virtual string GetFilenameAfterMove(Author artist, string albumPath, MetadataFile metadataFile)
+        public virtual string GetFilenameAfterMove(Author author, string albumPath, MetadataFile metadataFile)
         {
             var existingFilename = Path.GetFileName(metadataFile.RelativePath);
-            var newFileName = Path.Combine(artist.Path, albumPath, existingFilename);
+            var newFileName = Path.Combine(author.Path, albumPath, existingFilename);
 
             return newFileName;
         }
 
-        public abstract MetadataFile FindMetadataFile(Author artist, string path);
+        public abstract MetadataFile FindMetadataFile(Author author, string path);
 
-        public abstract MetadataFileResult ArtistMetadata(Author artist);
-        public abstract MetadataFileResult AlbumMetadata(Author artist, Book album, string albumPath);
-        public abstract MetadataFileResult TrackMetadata(Author artist, BookFile trackFile);
-        public abstract List<ImageFileResult> ArtistImages(Author artist);
-        public abstract List<ImageFileResult> AlbumImages(Author artist, Book album, string albumPath);
-        public abstract List<ImageFileResult> TrackImages(Author artist, BookFile trackFile);
+        public abstract MetadataFileResult ArtistMetadata(Author author);
+        public abstract MetadataFileResult AlbumMetadata(Author author, Book book, string albumPath);
+        public abstract MetadataFileResult TrackMetadata(Author author, BookFile bookFile);
+        public abstract List<ImageFileResult> ArtistImages(Author author);
+        public abstract List<ImageFileResult> AlbumImages(Author author, Book book, string albumPath);
+        public abstract List<ImageFileResult> TrackImages(Author author, BookFile bookFile);
 
         public virtual object RequestAction(string action, IDictionary<string, string> query)
         {

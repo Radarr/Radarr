@@ -23,7 +23,7 @@ namespace Readarr.Api.V1.Albums
 
     public static class RetagTrackResourceMapper
     {
-        public static RetagTrackResource ToResource(this NzbDrone.Core.MediaFiles.RetagTrackFilePreview model)
+        public static RetagTrackResource ToResource(this NzbDrone.Core.MediaFiles.RetagBookFilePreview model)
         {
             if (model == null)
             {
@@ -35,7 +35,7 @@ namespace Readarr.Api.V1.Albums
                 AuthorId = model.AuthorId,
                 BookId = model.BookId,
                 TrackNumbers = model.TrackNumbers.ToList(),
-                TrackFileId = model.TrackFileId,
+                TrackFileId = model.BookFileId,
                 Path = model.Path,
                 Changes = model.Changes.Select(x => new TagDifference
                 {
@@ -46,7 +46,7 @@ namespace Readarr.Api.V1.Albums
             };
         }
 
-        public static List<RetagTrackResource> ToResource(this IEnumerable<NzbDrone.Core.MediaFiles.RetagTrackFilePreview> models)
+        public static List<RetagTrackResource> ToResource(this IEnumerable<NzbDrone.Core.MediaFiles.RetagBookFilePreview> models)
         {
             return models.Select(ToResource).ToList();
         }

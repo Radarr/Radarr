@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
             return pageableRequests;
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(BookSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
             return pageableRequests;
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(AuthorSearchCriteria searchCriteria)
         {
             var pageableRequests = new IndexerPageableRequestChain();
 

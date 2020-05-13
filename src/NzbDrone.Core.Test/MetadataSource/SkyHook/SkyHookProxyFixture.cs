@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource.SkyHook;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Test.Framework;
 
@@ -56,20 +56,20 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [Test]
         public void getting_details_of_invalid_artist()
         {
-            Assert.Throws<ArtistNotFoundException>(() => Subject.GetAuthorInfo("66c66aaa-6e2f-4930-8610-912e24c63ed1"));
+            Assert.Throws<AuthorNotFoundException>(() => Subject.GetAuthorInfo("66c66aaa-6e2f-4930-8610-912e24c63ed1"));
         }
 
         [Test]
         public void getting_details_of_invalid_album()
         {
-            Assert.Throws<AlbumNotFoundException>(() => Subject.GetBookInfo("66c66aaa-6e2f-4930-8610-912e24c63ed1"));
+            Assert.Throws<BookNotFoundException>(() => Subject.GetBookInfo("66c66aaa-6e2f-4930-8610-912e24c63ed1"));
         }
 
         private void ValidateAuthor(Author author)
         {
             author.Should().NotBeNull();
             author.Name.Should().NotBeNullOrWhiteSpace();
-            author.CleanName.Should().Be(Parser.Parser.CleanArtistName(author.Name));
+            author.CleanName.Should().Be(Parser.Parser.CleanAuthorName(author.Name));
             author.SortName.Should().Be(Parser.Parser.NormalizeTitle(author.Name));
             author.Metadata.Value.TitleSlug.Should().NotBeNullOrWhiteSpace();
             author.Metadata.Value.Overview.Should().NotBeNullOrWhiteSpace();

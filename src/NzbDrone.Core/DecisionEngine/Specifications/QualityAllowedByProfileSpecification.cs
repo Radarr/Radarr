@@ -16,18 +16,18 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
-            _logger.Debug("Checking if report meets quality requirements. {0}", subject.ParsedAlbumInfo.Quality);
+            _logger.Debug("Checking if report meets quality requirements. {0}", subject.ParsedBookInfo.Quality);
 
-            var profile = subject.Artist.QualityProfile.Value;
-            var qualityIndex = profile.GetIndex(subject.ParsedAlbumInfo.Quality.Quality);
+            var profile = subject.Author.QualityProfile.Value;
+            var qualityIndex = profile.GetIndex(subject.ParsedBookInfo.Quality.Quality);
             var qualityOrGroup = profile.Items[qualityIndex.Index];
 
             if (!qualityOrGroup.Allowed)
             {
-                _logger.Debug("Quality {0} rejected by Artist's quality profile", subject.ParsedAlbumInfo.Quality);
-                return Decision.Reject("{0} is not wanted in profile", subject.ParsedAlbumInfo.Quality.Quality);
+                _logger.Debug("Quality {0} rejected by Author's quality profile", subject.ParsedBookInfo.Quality);
+                return Decision.Reject("{0} is not wanted in profile", subject.ParsedBookInfo.Quality.Quality);
             }
 
             return Decision.Accept();

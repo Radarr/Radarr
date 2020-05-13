@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                 }
 
                 if (capabilities.SupportedAudioSearchParameters != null &&
-                    new[] { "artist", "album" }.All(v => capabilities.SupportedAudioSearchParameters.Contains(v)))
+                    new[] { "author", "book" }.All(v => capabilities.SupportedAudioSearchParameters.Contains(v)))
                 {
                     return null;
                 }

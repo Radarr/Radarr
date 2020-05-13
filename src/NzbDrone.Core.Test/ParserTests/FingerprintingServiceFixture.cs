@@ -102,8 +102,8 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
         public void should_lookup_file(string file)
         {
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", file);
-            var localTrack = new LocalTrack { Path = path };
-            Subject.Lookup(new List<LocalTrack> { localTrack }, 0.5);
+            var localTrack = new LocalBook { Path = path };
+            Subject.Lookup(new List<LocalBook> { localTrack }, 0.5);
             localTrack.AcoustIdResults.Should().NotBeNull();
             localTrack.AcoustIdResults.Should().Contain("30f3f33e-8d0c-4e69-8539-cbd701d18f28");
         }
@@ -115,7 +115,7 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
             {
                 "nin.mp3",
                 "nin.flac"
-            }.Select(x => new LocalTrack { Path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", x) }).ToList();
+            }.Select(x => new LocalBook { Path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", x) }).ToList();
             Subject.Lookup(files, 0.5);
 
             files[0].AcoustIdResults.Should().Contain("30f3f33e-8d0c-4e69-8539-cbd701d18f28");
@@ -130,7 +130,7 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
                 "nin.mp3",
                 "missing.mp3",
                 "nin.flac"
-            }.Select(x => new LocalTrack { Path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", x) }).ToList();
+            }.Select(x => new LocalBook { Path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", x) }).ToList();
 
             var idpairs = files.Select(x => Tuple.Create(x, Subject.GetFingerprint(x.Path))).ToList();
 
@@ -148,9 +148,9 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
             {
                 "missing1.mp3",
                 "missing2.mp3"
-            }.Select(x => new LocalTrack { Path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", x) }).ToList();
+            }.Select(x => new LocalBook { Path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", x) }).ToList();
 
-            var idpairs = files.Select(x => Tuple.Create<LocalTrack, AcoustId>(x, null)).ToList();
+            var idpairs = files.Select(x => Tuple.Create<LocalBook, AcoustId>(x, null)).ToList();
 
             Subject.Lookup(idpairs, 0.5);
 
@@ -162,28 +162,28 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
         public void should_not_fail_if_duration_reported_as_zero()
         {
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "missing.mp3");
-            var localTrack = new LocalTrack { Path = path };
+            var localTrack = new LocalBook { Path = path };
             var acoustId = new AcoustId
             {
                 Duration = 0,
                 Fingerprint = "fingerprint"
             };
 
-            Subject.Lookup(new List<Tuple<LocalTrack, AcoustId>> { Tuple.Create(localTrack, acoustId) }, 0.5);
+            Subject.Lookup(new List<Tuple<LocalBook, AcoustId>> { Tuple.Create(localTrack, acoustId) }, 0.5);
         }
 
         [Test]
         public void should_not_throw_if_fingerprint_invalid()
         {
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "missing.mp3");
-            var localTrack = new LocalTrack { Path = path };
+            var localTrack = new LocalBook { Path = path };
             var acoustId = new AcoustId
             {
                 Duration = 1,
                 Fingerprint = "fingerprint"
             };
 
-            var files = new List<Tuple<LocalTrack, AcoustId>> { Tuple.Create(localTrack, acoustId) };
+            var files = new List<Tuple<LocalBook, AcoustId>> { Tuple.Create(localTrack, acoustId) };
             Subject.Lookup(files, 0.5);
             files[0].Item1.AcoustIdResults.Should().BeNull();
         }
@@ -195,11 +195,11 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
             {
                 "nin.mp3",
                 "nin.flac"
-            }.Select(x => new LocalTrack { Path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", x) }).ToList();
+            }.Select(x => new LocalBook { Path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", x) }).ToList();
 
             var idpairs = files.Select(x => Tuple.Create(x, Subject.GetFingerprint(x.Path))).ToList();
 
-            idpairs.Add(Tuple.Create(new LocalTrack(), new AcoustId { Duration = 1, Fingerprint = "fingerprint" }));
+            idpairs.Add(Tuple.Create(new LocalBook(), new AcoustId { Duration = 1, Fingerprint = "fingerprint" }));
 
             Subject.Lookup(idpairs, 0.5);
 
@@ -215,8 +215,8 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
                                          .Callback<HttpRequest>(req => throw new UnexpectedHtmlContentException(new HttpResponse(req, req.Headers, "html content", HttpStatusCode.Accepted)));
 
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "nin.mp3");
-            var localTrack = new LocalTrack { Path = path };
-            Subject.Lookup(new List<LocalTrack> { localTrack }, 0.5);
+            var localTrack = new LocalBook { Path = path };
+            Subject.Lookup(new List<LocalBook> { localTrack }, 0.5);
             localTrack.AcoustIdResults.Should().BeNull();
 
             ExceptionVerification.ExpectedWarns(4);
@@ -229,8 +229,8 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
                 .Throws(new System.Net.WebException("The operation has timed out."));
 
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "nin.mp3");
-            var localTrack = new LocalTrack { Path = path };
-            Subject.Lookup(new List<LocalTrack> { localTrack }, 0.5);
+            var localTrack = new LocalBook { Path = path };
+            Subject.Lookup(new List<LocalBook> { localTrack }, 0.5);
             localTrack.AcoustIdResults.Should().BeNull();
 
             ExceptionVerification.ExpectedWarns(1);
@@ -247,8 +247,8 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
                 .Returns(new HttpResponse<LookupResponse>(new HttpResponse(new HttpRequest("dummy"), new HttpHeader(), response, HttpStatusCode.OK)));
 
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "nin.mp3");
-            var localTrack = new LocalTrack { Path = path };
-            Subject.Lookup(new List<LocalTrack> { localTrack }, 0.5);
+            var localTrack = new LocalBook { Path = path };
+            Subject.Lookup(new List<LocalBook> { localTrack }, 0.5);
             localTrack.AcoustIdResults.Should().NotBeNull();
             localTrack.AcoustIdResults.Should().Contain("30f3f33e-8d0c-4e69-8539-cbd701d18f28");
 
@@ -265,9 +265,9 @@ FINGERPRINT=AQAHJlMURlEURcgP6cwRD43Y4Ptw9FowncWPWkf6GB9-JYdP9OgJHw8u4Apw4SsOHMdx
                 .Returns(new HttpResponse<LookupResponse>(new HttpResponse(new HttpRequest("dummy"), new HttpHeader(), error, HttpStatusCode.ServiceUnavailable)));
 
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Media", "nin.mp3");
-            var localTrack = new LocalTrack { Path = path };
+            var localTrack = new LocalBook { Path = path };
 
-            Subject.Lookup(new List<LocalTrack> { localTrack }, 0.5);
+            Subject.Lookup(new List<LocalBook> { localTrack }, 0.5);
             localTrack.AcoustIdResults.Should().BeNull();
 
             Mocker.GetMock<IHttpClient>()

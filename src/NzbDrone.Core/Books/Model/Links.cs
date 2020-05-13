@@ -1,7 +1,7 @@
 using Equ;
 using NzbDrone.Core.Datastore;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public class Links : MemberwiseEquatable<Links>, IEmbeddedDocument
     {

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download.TrackedDownloads;
@@ -25,20 +25,20 @@ namespace NzbDrone.Core.Download
 
         public bool IgnoreDownload(TrackedDownload trackedDownload)
         {
-            var artist = trackedDownload.RemoteAlbum.Artist;
-            var albums = trackedDownload.RemoteAlbum.Albums;
+            var author = trackedDownload.RemoteBook.Author;
+            var books = trackedDownload.RemoteBook.Books;
 
-            if (artist == null || albums.Empty())
+            if (author == null || books.Empty())
             {
-                _logger.Warn("Unable to ignore download for unknown artist/album");
+                _logger.Warn("Unable to ignore download for unknown author/book");
                 return false;
             }
 
             var downloadIgnoredEvent = new DownloadIgnoredEvent
                                       {
-                                          AuthorId = artist.Id,
-                                          BookIds = albums.Select(e => e.Id).ToList(),
-                                          Quality = trackedDownload.RemoteAlbum.ParsedAlbumInfo.Quality,
+                                          AuthorId = author.Id,
+                                          BookIds = books.Select(e => e.Id).ToList(),
+                                          Quality = trackedDownload.RemoteBook.ParsedBookInfo.Quality,
                                           SourceTitle = trackedDownload.DownloadItem.Title,
                                           DownloadClient = trackedDownload.DownloadItem.DownloadClient,
                                           DownloadId = trackedDownload.DownloadItem.DownloadId,

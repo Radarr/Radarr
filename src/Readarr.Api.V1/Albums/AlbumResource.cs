@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Music;
 using Readarr.Api.V1.Artist;
 using Readarr.Api.V1.TrackFiles;
 using Readarr.Http.REST;
@@ -31,7 +31,7 @@ namespace Readarr.Api.V1.Albums
         public List<MediaCover> Images { get; set; }
         public List<Links> Links { get; set; }
         public AlbumStatisticsResource Statistics { get; set; }
-        public AddAlbumOptions AddOptions { get; set; }
+        public AddBookOptions AddOptions { get; set; }
         public string RemoteCover { get; set; }
 
         //Hiding this so people don't think its usable (only used to set the initial state)
@@ -79,7 +79,7 @@ namespace Readarr.Api.V1.Albums
                 return null;
             }
 
-            var artist = resource.Artist?.ToModel() ?? new NzbDrone.Core.Music.Author();
+            var artist = resource.Artist?.ToModel() ?? new NzbDrone.Core.Books.Author();
 
             return new Book
             {

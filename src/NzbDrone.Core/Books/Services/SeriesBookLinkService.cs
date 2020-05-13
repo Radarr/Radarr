@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public interface ISeriesBookLinkService
     {

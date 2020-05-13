@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 {
     public class NewznabRequestGeneratorFixture : CoreTest<NewznabRequestGenerator>
     {
-        private AlbumSearchCriteria _singleAlbumSearchCriteria;
+        private BookSearchCriteria _singleAlbumSearchCriteria;
         private NewznabCapabilities _capabilities;
 
         [SetUp]
@@ -23,10 +23,10 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
                 ApiKey = "abcd",
             };
 
-            _singleAlbumSearchCriteria = new AlbumSearchCriteria
+            _singleAlbumSearchCriteria = new BookSearchCriteria
             {
-                Artist = new Music.Author { Name = "Alien Ant Farm" },
-                AlbumTitle = "TruANT"
+                Author = new Books.Author { Name = "Alien Ant Farm" },
+                BookTitle = "TruANT"
             };
 
             _capabilities = new NewznabCapabilities();
@@ -51,15 +51,15 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         [Test]
         public void should_search_by_artist_and_album_if_supported()
         {
-            _capabilities.SupportedAudioSearchParameters = new[] { "q", "artist", "album" };
+            _capabilities.SupportedAudioSearchParameters = new[] { "q", "author", "book" };
 
             var results = Subject.GetSearchRequests(_singleAlbumSearchCriteria);
             results.GetTier(0).Should().HaveCount(1);
 
             var page = results.GetAllTiers().First().First();
 
-            page.Url.Query.Should().Contain("artist=Alien%20Ant%20Farm");
-            page.Url.Query.Should().Contain("album=TruANT");
+            page.Url.Query.Should().Contain("author=Alien%20Ant%20Farm");
+            page.Url.Query.Should().Contain("book=TruANT");
         }
     }
 }

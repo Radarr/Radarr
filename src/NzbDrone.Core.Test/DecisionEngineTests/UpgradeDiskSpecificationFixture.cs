@@ -5,9 +5,9 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -19,8 +19,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [Ignore("Pending Readarr fixes")]
     public class UpgradeDiskSpecificationFixture : CoreTest<UpgradeDiskSpecification>
     {
-        private RemoteAlbum _parseResultMulti;
-        private RemoteAlbum _parseResultSingle;
+        private RemoteBook _parseResultMulti;
+        private RemoteBook _parseResultSingle;
         private BookFile _firstFile;
         private BookFile _secondFile;
 
@@ -45,21 +45,21 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                          .Build();
 
             Mocker.GetMock<IMediaFileService>()
-                  .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
+                  .Setup(c => c.GetFilesByBook(It.IsAny<int>()))
                   .Returns(new List<BookFile> { _firstFile, _secondFile });
 
-            _parseResultMulti = new RemoteAlbum
+            _parseResultMulti = new RemoteBook
             {
-                Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
-                Albums = doubleAlbumList
+                Author = fakeArtist,
+                ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+                Books = doubleAlbumList
             };
 
-            _parseResultSingle = new RemoteAlbum
+            _parseResultSingle = new RemoteBook
             {
-                Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
-                Albums = singleAlbumList
+                Author = fakeArtist,
+                ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+                Books = singleAlbumList
             };
         }
 
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_album_has_no_existing_file()
         {
-            _parseResultSingle.Albums.First().BookFiles = new List<BookFile>();
+            _parseResultSingle.Books.First().BookFiles = new List<BookFile>();
 
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
         }
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_single_album_doesnt_exist_on_disk()
         {
-            _parseResultSingle.Albums = new List<Book>();
+            _parseResultSingle.Books = new List<Book>();
 
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
         }
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _firstFile.Quality = new QualityModel(Quality.MP3_320);
             _secondFile.Quality = new QualityModel(Quality.MP3_320);
-            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320);
+            _parseResultSingle.ParsedBookInfo.Quality = new QualityModel(Quality.MP3_320);
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
         }
 
@@ -129,7 +129,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_be_true_if_some_tracks_are_upgradable_and_none_are_downgrades()
         {
             WithFirstFileUpgradable();
-            _parseResultSingle.ParsedAlbumInfo.Quality = _secondFile.Quality;
+            _parseResultSingle.ParsedBookInfo.Quality = _secondFile.Quality;
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
         }
 
@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_be_false_if_some_tracks_are_upgradable_and_some_are_downgrades()
         {
             WithFirstFileUpgradable();
-            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320);
+            _parseResultSingle.ParsedBookInfo.Quality = new QualityModel(Quality.MP3_320);
             Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
         }
     }

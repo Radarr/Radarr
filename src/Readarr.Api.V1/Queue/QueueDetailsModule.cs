@@ -38,7 +38,7 @@ namespace Readarr.Api.V1.Queue
 
             if (authorIdQuery.HasValue)
             {
-                return fullQueue.Where(q => q.Artist?.Id == (int)authorIdQuery).ToResource(includeArtist, includeAlbum);
+                return fullQueue.Where(q => q.Author?.Id == (int)authorIdQuery).ToResource(includeArtist, includeAlbum);
             }
 
             if (bookIdsQuery.HasValue)
@@ -49,7 +49,7 @@ namespace Readarr.Api.V1.Queue
                                                 .Select(e => Convert.ToInt32(e))
                                                 .ToList();
 
-                return fullQueue.Where(q => q.Album != null && bookIds.Contains(q.Album.Id)).ToResource(includeArtist, includeAlbum);
+                return fullQueue.Where(q => q.Book != null && bookIds.Contains(q.Book.Id)).ToResource(includeArtist, includeAlbum);
             }
 
             return fullQueue.ToResource(includeArtist, includeAlbum);

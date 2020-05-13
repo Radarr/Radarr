@@ -3,55 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Music.Events;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
-    public interface IRefreshAlbumService
+    public interface IRefreshBookService
     {
-        bool RefreshAlbumInfo(Book album, List<Book> remoteAlbums, Author remoteData, bool forceUpdateFileTags);
-        bool RefreshAlbumInfo(List<Book> albums, List<Book> remoteAlbums, Author remoteData, bool forceAlbumRefresh, bool forceUpdateFileTags, DateTime? lastUpdate);
+        bool RefreshBookInfo(Book book, List<Book> remoteBooks, Author remoteData, bool forceUpdateFileTags);
+        bool RefreshBookInfo(List<Book> books, List<Book> remoteBooks, Author remoteData, bool forceBookRefresh, bool forceUpdateFileTags, DateTime? lastUpdate);
     }
 
-    public class RefreshAlbumService : RefreshEntityServiceBase<Book, object>, IRefreshAlbumService
+    public class RefreshBookService : RefreshEntityServiceBase<Book, object>, IRefreshBookService
     {
-        private readonly IAlbumService _albumService;
-        private readonly IArtistService _artistService;
-        private readonly IAddArtistService _addArtistService;
-        private readonly IProvideBookInfo _albumInfo;
+        private readonly IBookService _bookService;
+        private readonly IAuthorService _authorService;
+        private readonly IAddAuthorService _addAuthorService;
+        private readonly IProvideBookInfo _bookInfo;
         private readonly IMediaFileService _mediaFileService;
         private readonly IHistoryService _historyService;
         private readonly IEventAggregator _eventAggregator;
-        private readonly ICheckIfAlbumShouldBeRefreshed _checkIfAlbumShouldBeRefreshed;
+        private readonly ICheckIfBookShouldBeRefreshed _checkIfBookShouldBeRefreshed;
         private readonly IMapCoversToLocal _mediaCoverService;
         private readonly Logger _logger;
 
-        public RefreshAlbumService(IAlbumService albumService,
-                                   IArtistService artistService,
-                                   IAddArtistService addArtistService,
-                                   IArtistMetadataService artistMetadataService,
-                                   IProvideBookInfo albumInfo,
+        public RefreshBookService(IBookService bookService,
+                                   IAuthorService authorService,
+                                   IAddAuthorService addAuthorService,
+                                   IAuthorMetadataService authorMetadataService,
+                                   IProvideBookInfo bookInfo,
                                    IMediaFileService mediaFileService,
                                    IHistoryService historyService,
                                    IEventAggregator eventAggregator,
-                                   ICheckIfAlbumShouldBeRefreshed checkIfAlbumShouldBeRefreshed,
+                                   ICheckIfBookShouldBeRefreshed checkIfBookShouldBeRefreshed,
                                    IMapCoversToLocal mediaCoverService,
                                    Logger logger)
-        : base(logger, artistMetadataService)
+        : base(logger, authorMetadataService)
         {
-            _albumService = albumService;
-            _artistService = artistService;
-            _addArtistService = addArtistService;
-            _albumInfo = albumInfo;
+            _bookService = bookService;
+            _authorService = authorService;
+            _addAuthorService = addAuthorService;
+            _bookInfo = bookInfo;
             _mediaFileService = mediaFileService;
             _historyService = historyService;
             _eventAggregator = eventAggregator;
-            _checkIfAlbumShouldBeRefreshed = checkIfAlbumShouldBeRefreshed;
+            _checkIfBookShouldBeRefreshed = checkIfBookShouldBeRefreshed;
             _mediaCoverService = mediaCoverService;
             _logger = logger;
         }
@@ -83,29 +83,29 @@ namespace NzbDrone.Core.Music
 
         protected override void EnsureNewParent(Book local, Book remote)
         {
-            // Make sure the appropriate artist exists (it could be that an album changes parent)
-            // The artistMetadata entry will be in the db but make sure a corresponding artist is too
-            // so that the album doesn't just disappear.
+            // Make sure the appropriate author exists (it could be that an book changes parent)
+            // The authorMetadata entry will be in the db but make sure a corresponding author is too
+            // so that the book doesn't just disappear.
 
             // TODO filter by metadata id before hitting database
-            _logger.Trace($"Ensuring parent artist exists [{remote.AuthorMetadata.Value.ForeignAuthorId}]");
+            _logger.Trace($"Ensuring parent author exists [{remote.AuthorMetadata.Value.ForeignAuthorId}]");
 
-            var newArtist = _artistService.FindById(remote.AuthorMetadata.Value.ForeignAuthorId);
+            var newAuthor = _authorService.FindById(remote.AuthorMetadata.Value.ForeignAuthorId);
 
-            if (newArtist == null)
+            if (newAuthor == null)
             {
-                var oldArtist = local.Author.Value;
+                var oldAuthor = local.Author.Value;
                 var addArtist = new Author
                 {
                     Metadata = remote.AuthorMetadata.Value,
-                    MetadataProfileId = oldArtist.MetadataProfileId,
-                    QualityProfileId = oldArtist.QualityProfileId,
-                    RootFolderPath = oldArtist.RootFolderPath,
-                    Monitored = oldArtist.Monitored,
-                    Tags = oldArtist.Tags
+                    MetadataProfileId = oldAuthor.MetadataProfileId,
+                    QualityProfileId = oldAuthor.QualityProfileId,
+                    RootFolderPath = oldAuthor.RootFolderPath,
+                    Monitored = oldAuthor.Monitored,
+                    Tags = oldAuthor.Tags
                 };
-                _logger.Debug($"Adding missing parent artist {addArtist}");
-                _addArtistService.AddArtist(addArtist);
+                _logger.Debug($"Adding missing parent author {addArtist}");
+                _addAuthorService.AddAuthor(addArtist);
             }
         }
 
@@ -113,7 +113,7 @@ namespace NzbDrone.Core.Music
         {
             // not manually added and has no files
             return local.AddOptions.AddType != AlbumAddType.Manual &&
-                !_mediaFileService.GetFilesByAlbum(local.Id).Any();
+                !_mediaFileService.GetFilesByBook(local.Id).Any();
         }
 
         protected override void LogProgress(Book local)
@@ -163,38 +163,38 @@ namespace NzbDrone.Core.Music
 
         protected override UpdateResult MergeEntity(Book local, Book target, Book remote)
         {
-            _logger.Warn($"Album {local} was merged with {remote} because the original was a duplicate.");
+            _logger.Warn($"Book {local} was merged with {remote} because the original was a duplicate.");
 
-            // Update album ids for trackfiles
-            var files = _mediaFileService.GetFilesByAlbum(local.Id);
+            // Update book ids for trackfiles
+            var files = _mediaFileService.GetFilesByBook(local.Id);
             files.ForEach(x => x.BookId = target.Id);
             _mediaFileService.Update(files);
 
-            // Update album ids for history
-            var items = _historyService.GetByAlbum(local.Id, null);
+            // Update book ids for history
+            var items = _historyService.GetByBook(local.Id, null);
             items.ForEach(x => x.BookId = target.Id);
             _historyService.UpdateMany(items);
 
-            // Finally delete the old album
-            _albumService.DeleteMany(new List<Book> { local });
+            // Finally delete the old book
+            _bookService.DeleteMany(new List<Book> { local });
 
             return UpdateResult.UpdateTags;
         }
 
         protected override Book GetEntityByForeignId(Book local)
         {
-            return _albumService.FindById(local.ForeignBookId);
+            return _bookService.FindById(local.ForeignBookId);
         }
 
         protected override void SaveEntity(Book local)
         {
-            // Use UpdateMany to avoid firing the album edited event
-            _albumService.UpdateMany(new List<Book> { local });
+            // Use UpdateMany to avoid firing the book edited event
+            _bookService.UpdateMany(new List<Book> { local });
         }
 
         protected override void DeleteEntity(Book local, bool deleteFiles)
         {
-            _albumService.DeleteAlbum(local.Id, true);
+            _bookService.DeleteBook(local.Id, true);
         }
 
         protected override List<object> GetRemoteChildren(Book local, Book remote)
@@ -232,40 +232,40 @@ namespace NzbDrone.Core.Music
         protected override void PublishEntityUpdatedEvent(Book entity)
         {
             // Fetch fresh from DB so all lazy loads are available
-            _eventAggregator.PublishEvent(new AlbumUpdatedEvent(_albumService.GetAlbum(entity.Id)));
+            _eventAggregator.PublishEvent(new BookUpdatedEvent(_bookService.GetBook(entity.Id)));
         }
 
-        public bool RefreshAlbumInfo(List<Book> albums, List<Book> remoteAlbums, Author remoteData, bool forceAlbumRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
+        public bool RefreshBookInfo(List<Book> books, List<Book> remoteBooks, Author remoteData, bool forceAlbumRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
         {
             var updated = false;
 
-            HashSet<string> updatedMusicbrainzAlbums = null;
+            HashSet<string> updatedGoodreadsBooks = null;
 
             if (lastUpdate.HasValue && lastUpdate.Value.AddDays(14) > DateTime.UtcNow)
             {
-                updatedMusicbrainzAlbums = _albumInfo.GetChangedAlbums(lastUpdate.Value);
+                updatedGoodreadsBooks = _bookInfo.GetChangedBooks(lastUpdate.Value);
             }
 
-            foreach (var album in albums)
+            foreach (var book in books)
             {
                 if (forceAlbumRefresh ||
-                    (updatedMusicbrainzAlbums == null && _checkIfAlbumShouldBeRefreshed.ShouldRefresh(album)) ||
-                    (updatedMusicbrainzAlbums != null && updatedMusicbrainzAlbums.Contains(album.ForeignBookId)))
+                    (updatedGoodreadsBooks == null && _checkIfBookShouldBeRefreshed.ShouldRefresh(book)) ||
+                    (updatedGoodreadsBooks != null && updatedGoodreadsBooks.Contains(book.ForeignBookId)))
                 {
-                    updated |= RefreshAlbumInfo(album, remoteAlbums, remoteData, forceUpdateFileTags);
+                    updated |= RefreshBookInfo(book, remoteBooks, remoteData, forceUpdateFileTags);
                 }
                 else
                 {
-                    _logger.Debug("Skipping refresh of album: {0}", album.Title);
+                    _logger.Debug("Skipping refresh of book: {0}", book.Title);
                 }
             }
 
             return updated;
         }
 
-        public bool RefreshAlbumInfo(Book album, List<Book> remoteAlbums, Author remoteData, bool forceUpdateFileTags)
+        public bool RefreshBookInfo(Book book, List<Book> remoteBooks, Author remoteData, bool forceUpdateFileTags)
         {
-            return RefreshEntityInfo(album, remoteAlbums, remoteData, true, forceUpdateFileTags, null);
+            return RefreshEntityInfo(book, remoteBooks, remoteData, true, forceUpdateFileTags, null);
         }
     }
 }

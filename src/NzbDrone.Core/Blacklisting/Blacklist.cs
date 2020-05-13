@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Blacklisting
@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Blacklisting
     public class Blacklist : ModelBase
     {
         public int AuthorId { get; set; }
-        public Author Artist { get; set; }
+        public Author Author { get; set; }
         public List<int> BookIds { get; set; }
         public string SourceTitle { get; set; }
         public QualityModel Quality { get; set; }

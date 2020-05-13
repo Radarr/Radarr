@@ -5,13 +5,13 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Profiles.Qualities;
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
     {
         private QualityProfile _profile;
         private DelayProfile _delayProfile;
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
 
         [SetUp]
         public void Setup()
@@ -41,8 +41,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                         .With(s => s.QualityProfile = _profile)
                                         .Build();
 
-            _remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                   .With(r => r.Artist = artist)
+            _remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                   .With(r => r.Author = artist)
                                                    .Build();
 
             _profile.Items = new List<QualityProfileQualityItem>();
@@ -52,14 +52,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _profile.Cutoff = Quality.AZW3.Id;
 
-            _remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
+            _remoteAlbum.ParsedBookInfo = new ParsedBookInfo();
             _remoteAlbum.Release = new ReleaseInfo();
             _remoteAlbum.Release.DownloadProtocol = DownloadProtocol.Usenet;
 
-            _remoteAlbum.Albums = Builder<Book>.CreateListOfSize(1).Build().ToList();
+            _remoteAlbum.Books = Builder<Book>.CreateListOfSize(1).Build().ToList();
 
             Mocker.GetMock<IMediaFileService>()
-                .Setup(s => s.GetFilesByAlbum(It.IsAny<int>()))
+                .Setup(s => s.GetFilesByBook(It.IsAny<int>()))
                 .Returns(new List<BookFile> { });
 
             Mocker.GetMock<IDelayProfileService>()
@@ -67,14 +67,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                   .Returns(_delayProfile);
 
             Mocker.GetMock<IPendingReleaseService>()
-                  .Setup(s => s.GetPendingRemoteAlbums(It.IsAny<int>()))
-                  .Returns(new List<RemoteAlbum>());
+                  .Setup(s => s.GetPendingRemoteBooks(It.IsAny<int>()))
+                  .Returns(new List<RemoteBook>());
         }
 
         private void GivenExistingFile(QualityModel quality)
         {
             Mocker.GetMock<IMediaFileService>()
-                .Setup(s => s.GetFilesByAlbum(It.IsAny<int>()))
+                .Setup(s => s.GetFilesByBook(It.IsAny<int>()))
                 .Returns(new List<BookFile>
                 {
                     new BookFile
@@ -94,18 +94,18 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_user_invoked_search()
         {
-            Subject.IsSatisfiedBy(new RemoteAlbum(), new AlbumSearchCriteria { UserInvokedSearch = true }).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(new RemoteBook(), new BookSearchCriteria { UserInvokedSearch = true }).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_be_false_when_system_invoked_search_and_release_is_younger_than_delay()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MOBI);
+            _remoteAlbum.ParsedBookInfo.Quality = new QualityModel(Quality.MOBI);
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteAlbum, new AlbumSearchCriteria()).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteAlbum, new BookSearchCriteria()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -119,7 +119,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_quality_is_last_allowed_in_profile()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320);
+            _remoteAlbum.ParsedBookInfo.Quality = new QualityModel(Quality.MP3_320);
 
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }
@@ -127,7 +127,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_older_than_delay()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MOBI);
+            _remoteAlbum.ParsedBookInfo.Quality = new QualityModel(Quality.MOBI);
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow.AddHours(-10);
 
             _delayProfile.UsenetDelay = 60;
@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_release_is_younger_than_delay()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MOBI);
+            _remoteAlbum.ParsedBookInfo.Quality = new QualityModel(Quality.MOBI);
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_a_proper_for_existing_album()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2));
+            _remoteAlbum.ParsedBookInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2));
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             GivenExistingFile(new QualityModel(Quality.MP3_320));
@@ -167,7 +167,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_release_is_a_real_for_existing_album()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(real: 1));
+            _remoteAlbum.ParsedBookInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(real: 1));
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             GivenExistingFile(new QualityModel(Quality.MP3_320));
@@ -185,7 +185,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_release_is_proper_for_existing_album_of_different_quality()
         {
-            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.AZW3, new Revision(version: 2));
+            _remoteAlbum.ParsedBookInfo.Quality = new QualityModel(Quality.AZW3, new Revision(version: 2));
             _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
             GivenExistingFile(new QualityModel(Quality.PDF));

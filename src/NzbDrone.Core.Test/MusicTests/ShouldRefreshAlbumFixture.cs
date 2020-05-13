@@ -2,13 +2,13 @@ using System;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MusicTests
 {
     [TestFixture]
-    public class ShouldRefreshAlbumFixture : TestBase<ShouldRefreshAlbum>
+    public class ShouldRefreshAlbumFixture : TestBase<ShouldRefreshBook>
     {
         private Book _album;
 

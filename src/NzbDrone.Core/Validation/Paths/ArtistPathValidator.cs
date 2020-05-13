@@ -1,17 +1,17 @@
 ﻿using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class ArtistPathValidator : PropertyValidator
+    public class AuthorPathValidator : PropertyValidator
     {
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
 
-        public ArtistPathValidator(IArtistService artistService)
-            : base("Path is already configured for another artist")
+        public AuthorPathValidator(IAuthorService authorService)
+            : base("Path is already configured for another author")
         {
-            _artistService = artistService;
+            _authorService = authorService;
         }
 
         protected override bool IsValid(PropertyValidatorContext context)
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Validation.Paths
             dynamic instance = context.ParentContext.InstanceToValidate;
             var instanceId = (int)instance.Id;
 
-            return !_artistService.GetAllArtists().Exists(s => s.Path.PathEquals(context.PropertyValue.ToString()) && s.Id != instanceId);
+            return !_authorService.GetAllAuthors().Exists(s => s.Path.PathEquals(context.PropertyValue.ToString()) && s.Id != instanceId);
         }
     }
 }

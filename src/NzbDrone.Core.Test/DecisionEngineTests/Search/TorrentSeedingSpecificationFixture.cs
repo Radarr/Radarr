@@ -2,11 +2,11 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.TorrentRss;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Test.Common;
 
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
     public class TorrentSeedingSpecificationFixture : TestBase<TorrentSeedingSpecification>
     {
         private Author _artist;
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
         private IndexerDefinition _indexerDefinition;
 
         [SetUp]
@@ -24,9 +24,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             _artist = Builder<Author>.CreateNew().With(s => s.Id = 1).Build();
 
-            _remoteAlbum = new RemoteAlbum
+            _remoteAlbum = new RemoteBook
             {
-                Artist = _artist,
+                Author = _artist,
                 Release = new TorrentInfo
                 {
                     IndexerId = 1,

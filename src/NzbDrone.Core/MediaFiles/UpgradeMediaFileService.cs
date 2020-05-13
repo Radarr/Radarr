@@ -5,7 +5,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Books.Calibre;
-using NzbDrone.Core.MediaFiles.TrackImport;
+using NzbDrone.Core.MediaFiles.BookImport;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RootFolders;
 
@@ -13,7 +13,7 @@ namespace NzbDrone.Core.MediaFiles
 {
     public interface IUpgradeMediaFiles
     {
-        TrackFileMoveResult UpgradeTrackFile(BookFile trackFile, LocalTrack localTrack, bool copyOnly = false);
+        BookFileMoveResult UpgradeBookFile(BookFile bookFile, LocalBook localBook, bool copyOnly = false);
     }
 
     public class UpgradeMediaFileService : IUpgradeMediaFiles
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IMediaFileService _mediaFileService;
         private readonly IAudioTagService _audioTagService;
-        private readonly IMoveTrackFiles _trackFileMover;
+        private readonly IMoveBookFiles _bookFileMover;
         private readonly IDiskProvider _diskProvider;
         private readonly IRootFolderService _rootFolderService;
         private readonly IRootFolderWatchingService _rootFolderWatchingService;
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.MediaFiles
         public UpgradeMediaFileService(IRecycleBinProvider recycleBinProvider,
                                        IMediaFileService mediaFileService,
                                        IAudioTagService audioTagService,
-                                       IMoveTrackFiles trackFileMover,
+                                       IMoveBookFiles bookFileMover,
                                        IDiskProvider diskProvider,
                                        IRootFolderService rootFolderService,
                                        IRootFolderWatchingService rootFolderWatchingService,
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.MediaFiles
             _recycleBinProvider = recycleBinProvider;
             _mediaFileService = mediaFileService;
             _audioTagService = audioTagService;
-            _trackFileMover = trackFileMover;
+            _bookFileMover = bookFileMover;
             _diskProvider = diskProvider;
             _rootFolderService = rootFolderService;
             _rootFolderWatchingService = rootFolderWatchingService;
@@ -49,18 +49,18 @@ namespace NzbDrone.Core.MediaFiles
             _logger = logger;
         }
 
-        public TrackFileMoveResult UpgradeTrackFile(BookFile trackFile, LocalTrack localTrack, bool copyOnly = false)
+        public BookFileMoveResult UpgradeBookFile(BookFile bookFile, LocalBook localBook, bool copyOnly = false)
         {
-            var moveFileResult = new TrackFileMoveResult();
-            var existingFiles = localTrack.Album.BookFiles.Value;
+            var moveFileResult = new BookFileMoveResult();
+            var existingFiles = localBook.Book.BookFiles.Value;
 
-            var rootFolderPath = _diskProvider.GetParentFolder(localTrack.Artist.Path);
+            var rootFolderPath = _diskProvider.GetParentFolder(localBook.Author.Path);
             var rootFolder = _rootFolderService.GetBestRootFolder(rootFolderPath);
             var isCalibre = rootFolder.IsCalibreLibrary && rootFolder.CalibreSettings != null;
 
             var settings = rootFolder.CalibreSettings;
 
-            // If there are existing track files and the root folder is missing, throw, so the old file isn't left behind during the import process.
+            // If there are existing book files and the root folder is missing, throw, so the old file isn't left behind during the import process.
             if (existingFiles.Any() && !_diskProvider.FolderExists(rootFolderPath))
             {
                 throw new RootFolderNotFoundException($"Root folder '{rootFolderPath}' was not found.");
@@ -71,11 +71,11 @@ namespace NzbDrone.Core.MediaFiles
                 var trackFilePath = file.Path;
                 var subfolder = rootFolderPath.GetRelativePath(_diskProvider.GetParentFolder(trackFilePath));
 
-                trackFile.CalibreId = file.CalibreId;
+                bookFile.CalibreId = file.CalibreId;
 
                 if (_diskProvider.FileExists(trackFilePath))
                 {
-                    _logger.Debug("Removing existing track file: {0}", file);
+                    _logger.Debug("Removing existing book file: {0}", file);
 
                     if (!isCalibre)
                     {
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.MediaFiles
                         _calibre.RemoveFormats(file.CalibreId,
                                               new[]
                                               {
-                                                  Path.GetExtension(trackFile.Path)
+                                                  Path.GetExtension(bookFile.Path)
                                               },
                                               settings);
                     }
@@ -100,20 +100,20 @@ namespace NzbDrone.Core.MediaFiles
             {
                 if (copyOnly)
                 {
-                    moveFileResult.TrackFile = _trackFileMover.CopyTrackFile(trackFile, localTrack);
+                    moveFileResult.BookFile = _bookFileMover.CopyBookFile(bookFile, localBook);
                 }
                 else
                 {
-                    moveFileResult.TrackFile = _trackFileMover.MoveTrackFile(trackFile, localTrack);
+                    moveFileResult.BookFile = _bookFileMover.MoveBookFile(bookFile, localBook);
                 }
 
-                _audioTagService.WriteTags(trackFile, true);
+                _audioTagService.WriteTags(bookFile, true);
             }
             else
             {
-                var source = trackFile.Path;
+                var source = bookFile.Path;
 
-                moveFileResult.TrackFile = CalibreAddAndConvert(trackFile, settings);
+                moveFileResult.BookFile = CalibreAddAndConvert(bookFile, settings);
 
                 if (!copyOnly)
                 {

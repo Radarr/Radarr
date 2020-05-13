@@ -33,9 +33,9 @@ namespace NzbDrone.Core.Download
 
         public override DownloadProtocol Protocol => DownloadProtocol.Usenet;
 
-        protected abstract string AddFromNzbFile(RemoteAlbum remoteAlbum, string filename, byte[] fileContent);
+        protected abstract string AddFromNzbFile(RemoteBook remoteAlbum, string filename, byte[] fileContent);
 
-        public override string Download(RemoteAlbum remoteAlbum)
+        public override string Download(RemoteBook remoteAlbum)
         {
             var url = remoteAlbum.Release.DownloadUrl;
             var filename = FileNameBuilder.CleanFileName(remoteAlbum.Release.Title) + ".nzb";
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Download
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                 {
-                    _logger.Error(ex, "Downloading nzb file for album '{0}' failed since it no longer exists ({1})", remoteAlbum.Release.Title, url);
+                    _logger.Error(ex, "Downloading nzb file for book '{0}' failed since it no longer exists ({1})", remoteAlbum.Release.Title, url);
                     throw new ReleaseUnavailableException(remoteAlbum.Release, "Downloading torrent failed", ex);
                 }
 

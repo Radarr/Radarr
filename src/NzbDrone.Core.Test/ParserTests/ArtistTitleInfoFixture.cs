@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             const string title = "Alien Ant Farm - TruAnt [Flac]";
 
-            var result = Parser.Parser.ParseAlbumTitle(title).ArtistTitleInfo;
+            var result = Parser.Parser.ParseBookTitle(title).AuthorTitleInfo;
 
             result.Year.Should().Be(0);
         }
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             const string title = "Alien Ant Farm - TruAnt [Flac]";
 
-            var result = Parser.Parser.ParseAlbumTitle(title).ArtistTitleInfo;
+            var result = Parser.Parser.ParseBookTitle(title).AuthorTitleInfo;
 
             result.Title.Should().Be(result.TitleWithoutYear);
         }
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             const string title = "Alien Ant Farm - TruAnt [Flac]";
 
-            var result = Parser.Parser.ParseAlbumTitle(title).ArtistTitleInfo;
+            var result = Parser.Parser.ParseBookTitle(title).AuthorTitleInfo;
 
             result.Year.Should().Be(2004);
         }
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             const string title = "Alien Ant Farm - TruAnt [Flac]";
 
-            var result = Parser.Parser.ParseAlbumTitle(title).ArtistTitleInfo;
+            var result = Parser.Parser.ParseBookTitle(title).AuthorTitleInfo;
 
             result.Title.Should().Be("House 2004");
         }
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             const string title = "Alien Ant Farm - TruAnt [Flac]";
 
-            var result = Parser.Parser.ParseAlbumTitle(title).ArtistTitleInfo;
+            var result = Parser.Parser.ParseBookTitle(title).AuthorTitleInfo;
 
             result.TitleWithoutYear.Should().Be("House");
         }

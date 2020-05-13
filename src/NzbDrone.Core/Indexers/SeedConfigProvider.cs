@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Indexers
 {
     public interface ISeedConfigProvider
     {
-        TorrentSeedConfiguration GetSeedConfiguration(RemoteAlbum release);
+        TorrentSeedConfiguration GetSeedConfiguration(RemoteBook release);
     }
 
     public class SeedConfigProvider : ISeedConfigProvider
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Indexers
             _indexerFactory = indexerFactory;
         }
 
-        public TorrentSeedConfiguration GetSeedConfiguration(RemoteAlbum remoteAlbum)
+        public TorrentSeedConfiguration GetSeedConfiguration(RemoteBook remoteAlbum)
         {
             if (remoteAlbum.Release.DownloadProtocol != DownloadProtocol.Torrent)
             {
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Indexers
                         Ratio = torrentIndexerSettings.SeedCriteria.SeedRatio
                     };
 
-                    var seedTime = remoteAlbum.ParsedAlbumInfo.Discography ? torrentIndexerSettings.SeedCriteria.DiscographySeedTime : torrentIndexerSettings.SeedCriteria.SeedTime;
+                    var seedTime = remoteAlbum.ParsedBookInfo.Discography ? torrentIndexerSettings.SeedCriteria.DiscographySeedTime : torrentIndexerSettings.SeedCriteria.SeedTime;
                     if (seedTime.HasValue)
                     {
                         seedConfig.SeedTime = TimeSpan.FromMinutes(seedTime.Value);

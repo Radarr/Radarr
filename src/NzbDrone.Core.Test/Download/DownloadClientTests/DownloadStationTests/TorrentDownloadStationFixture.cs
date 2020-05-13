@@ -360,7 +360,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                   .Callback(PrepareClientToReturnQueuedItem);
         }
 
-        protected override RemoteAlbum CreateRemoteAlbum()
+        protected override RemoteBook CreateRemoteAlbum()
         {
             var album = base.CreateRemoteAlbum();
 

@@ -11,7 +11,7 @@ using NLog.Config;
 using NLog.Targets;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Core.MediaFiles.TrackImport.Manual;
+using NzbDrone.Core.MediaFiles.BookImport.Manual;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
@@ -261,7 +261,7 @@ namespace NzbDrone.Integration.Test
                 artist.MetadataProfileId = 1;
                 artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
                 artist.Monitored = true;
-                artist.AddOptions = new Core.Music.AddArtistOptions();
+                artist.AddOptions = new Core.Books.AddAuthorOptions();
                 Directory.CreateDirectory(artist.Path);
 
                 result = Artist.Post(artist);

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 
 namespace NzbDrone.Core.MetadataSource
 {

@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Download
@@ -21,8 +21,8 @@ namespace NzbDrone.Core.Test.Download
                 .Setup(x => x.AutoRedownloadFailed)
                 .Returns(true);
 
-            Mocker.GetMock<IAlbumService>()
-                .Setup(x => x.GetAlbumsByArtist(It.IsAny<int>()))
+            Mocker.GetMock<IBookService>()
+                .Setup(x => x.GetBooksByAuthor(It.IsAny<int>()))
                 .Returns(Builder<Book>.CreateListOfSize(3).Build() as List<Book>);
         }
 
@@ -75,14 +75,14 @@ namespace NzbDrone.Core.Test.Download
             Subject.Handle(failedEvent);
 
             Mocker.GetMock<IManageCommandQueue>()
-                .Verify(x => x.Push(It.Is<AlbumSearchCommand>(c => c.BookIds.Count == 1 &&
+                .Verify(x => x.Push(It.Is<BookSearchCommand>(c => c.BookIds.Count == 1 &&
                                                               c.BookIds[0] == 2),
                                     It.IsAny<CommandPriority>(),
                                     It.IsAny<CommandTrigger>()),
                         Times.Once());
 
             Mocker.GetMock<IManageCommandQueue>()
-                .Verify(x => x.Push(It.IsAny<ArtistSearchCommand>(), It.IsAny<CommandPriority>(), It.IsAny<CommandTrigger>()),
+                .Verify(x => x.Push(It.IsAny<AuthorSearchCommand>(), It.IsAny<CommandPriority>(), It.IsAny<CommandTrigger>()),
                         Times.Never());
         }
 
@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Test.Download
             Subject.Handle(failedEvent);
 
             Mocker.GetMock<IManageCommandQueue>()
-                .Verify(x => x.Push(It.Is<AlbumSearchCommand>(c => c.BookIds.Count == 2 &&
+                .Verify(x => x.Push(It.Is<BookSearchCommand>(c => c.BookIds.Count == 2 &&
                                                               c.BookIds[0] == 2 &&
                                                               c.BookIds[1] == 3),
                                     It.IsAny<CommandPriority>(),
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Test.Download
                         Times.Once());
 
             Mocker.GetMock<IManageCommandQueue>()
-                .Verify(x => x.Push(It.IsAny<ArtistSearchCommand>(), It.IsAny<CommandPriority>(), It.IsAny<CommandTrigger>()),
+                .Verify(x => x.Push(It.IsAny<AuthorSearchCommand>(), It.IsAny<CommandPriority>(), It.IsAny<CommandTrigger>()),
                         Times.Never());
         }
 
@@ -123,13 +123,13 @@ namespace NzbDrone.Core.Test.Download
             Subject.Handle(failedEvent);
 
             Mocker.GetMock<IManageCommandQueue>()
-                .Verify(x => x.Push(It.Is<ArtistSearchCommand>(c => c.AuthorId == failedEvent.AuthorId),
+                .Verify(x => x.Push(It.Is<AuthorSearchCommand>(c => c.AuthorId == failedEvent.AuthorId),
                                     It.IsAny<CommandPriority>(),
                                     It.IsAny<CommandTrigger>()),
                         Times.Once());
 
             Mocker.GetMock<IManageCommandQueue>()
-                .Verify(x => x.Push(It.IsAny<AlbumSearchCommand>(), It.IsAny<CommandPriority>(), It.IsAny<CommandTrigger>()),
+                .Verify(x => x.Push(It.IsAny<BookSearchCommand>(), It.IsAny<CommandPriority>(), It.IsAny<CommandTrigger>()),
                         Times.Never());
         }
     }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Notifications.Slack.Payloads;
 using NzbDrone.Core.Validation;
 
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Notifications.Slack
                                   new Attachment
                                   {
                                       Fallback = message.Message,
-                                      Title = message.Artist.Name,
+                                      Title = message.Author.Name,
                                       Text = message.Message,
                                       Color = "warning"
                                   }
@@ -37,14 +37,14 @@ namespace NzbDrone.Core.Notifications.Slack
             _proxy.SendPayload(payload, Settings);
         }
 
-        public override void OnReleaseImport(AlbumDownloadMessage message)
+        public override void OnReleaseImport(BookDownloadMessage message)
         {
             var attachments = new List<Attachment>
             {
                 new Attachment
                 {
                     Fallback = message.Message,
-                    Title = message.Artist.Name,
+                    Title = message.Author.Name,
                     Text = message.Message,
                     Color = "good"
                 }
@@ -54,13 +54,13 @@ namespace NzbDrone.Core.Notifications.Slack
             _proxy.SendPayload(payload, Settings);
         }
 
-        public override void OnRename(Author artist)
+        public override void OnRename(Author author)
         {
             var attachments = new List<Attachment>
                               {
                                   new Attachment
                                   {
-                                      Title = artist.Name,
+                                      Title = author.Name,
                                   }
                               };
 
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Notifications.Slack
             _proxy.SendPayload(payload, Settings);
         }
 
-        public override void OnTrackRetag(TrackRetagMessage message)
+        public override void OnTrackRetag(BookRetagMessage message)
         {
             var attachments = new List<Attachment>
                               {
@@ -119,7 +119,7 @@ namespace NzbDrone.Core.Notifications.Slack
             _proxy.SendPayload(payload, Settings);
         }
 
-        public override void OnImportFailure(AlbumDownloadMessage message)
+        public override void OnImportFailure(BookDownloadMessage message)
         {
             var attachments = new List<Attachment>
             {

@@ -3,10 +3,10 @@ using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 
@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         {
             var importListItem1 = new ImportListItemInfo
             {
-                Artist = "Linkin Park"
+                Author = "Linkin Park"
             };
 
             _importListReports = new List<ImportListItemInfo> { importListItem1 };
@@ -59,18 +59,18 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Setup(v => v.All())
                 .Returns(new List<ImportListExclusion>());
 
-            Mocker.GetMock<IAddAlbumService>()
-                .Setup(v => v.AddAlbums(It.IsAny<List<Book>>(), false))
+            Mocker.GetMock<IAddBookService>()
+                .Setup(v => v.AddBooks(It.IsAny<List<Book>>(), false))
                 .Returns<List<Book>, bool>((x, y) => x);
 
-            Mocker.GetMock<IAddArtistService>()
-                .Setup(v => v.AddArtists(It.IsAny<List<Author>>(), false))
+            Mocker.GetMock<IAddAuthorService>()
+                .Setup(v => v.AddAuthors(It.IsAny<List<Author>>(), false))
                 .Returns<List<Author>, bool>((x, y) => x);
         }
 
         private void WithAlbum()
         {
-            _importListReports.First().Album = "Meteora";
+            _importListReports.First().Book = "Meteora";
         }
 
         private void WithAuthorId()
@@ -85,14 +85,14 @@ namespace NzbDrone.Core.Test.ImportListTests
 
         private void WithExistingArtist()
         {
-            Mocker.GetMock<IArtistService>()
+            Mocker.GetMock<IAuthorService>()
                 .Setup(v => v.FindById(_importListReports.First().ArtistMusicBrainzId))
                 .Returns(new Author { ForeignAuthorId = _importListReports.First().ArtistMusicBrainzId });
         }
 
         private void WithExistingAlbum()
         {
-            Mocker.GetMock<IAlbumService>()
+            Mocker.GetMock<IBookService>()
                 .Setup(v => v.FindById(_importListReports.First().AlbumMusicBrainzId))
                 .Returns(new Book { ForeignBookId = _importListReports.First().AlbumMusicBrainzId });
         }
@@ -193,8 +193,8 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Subject.Execute(new ImportListSyncCommand());
 
-            Mocker.GetMock<IAddArtistService>()
-                .Verify(v => v.AddArtists(It.Is<List<Author>>(t => t.Count == 0), false));
+            Mocker.GetMock<IAddAuthorService>()
+                .Verify(v => v.AddAuthors(It.Is<List<Author>>(t => t.Count == 0), false));
         }
 
         [Test]
@@ -205,8 +205,8 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Subject.Execute(new ImportListSyncCommand());
 
-            Mocker.GetMock<IAddArtistService>()
-                .Verify(v => v.AddArtists(It.Is<List<Author>>(t => t.Count == 0), false));
+            Mocker.GetMock<IAddAuthorService>()
+                .Verify(v => v.AddAuthors(It.Is<List<Author>>(t => t.Count == 0), false));
         }
 
         [Test]
@@ -217,8 +217,8 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Subject.Execute(new ImportListSyncCommand());
 
-            Mocker.GetMock<IAddAlbumService>()
-                .Verify(v => v.AddAlbums(It.Is<List<Book>>(t => t.Count == 1), false));
+            Mocker.GetMock<IAddBookService>()
+                .Verify(v => v.AddBooks(It.Is<List<Book>>(t => t.Count == 1), false));
         }
 
         [TestCase(ImportListMonitorType.None, false)]
@@ -231,8 +231,8 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Subject.Execute(new ImportListSyncCommand());
 
-            Mocker.GetMock<IAddArtistService>()
-                .Verify(v => v.AddArtists(It.Is<List<Author>>(t => t.Count == 1 && t.First().Monitored == expectedArtistMonitored), false));
+            Mocker.GetMock<IAddAuthorService>()
+                .Verify(v => v.AddAuthors(It.Is<List<Author>>(t => t.Count == 1 && t.First().Monitored == expectedArtistMonitored), false));
         }
 
         [TestCase(ImportListMonitorType.None, false)]
@@ -245,8 +245,8 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Subject.Execute(new ImportListSyncCommand());
 
-            Mocker.GetMock<IAddAlbumService>()
-                .Verify(v => v.AddAlbums(It.Is<List<Book>>(t => t.Count == 1 && t.First().Monitored == expectedAlbumMonitored), false));
+            Mocker.GetMock<IAddBookService>()
+                .Verify(v => v.AddBooks(It.Is<List<Book>>(t => t.Count == 1 && t.First().Monitored == expectedAlbumMonitored), false));
         }
 
         [Test]
@@ -257,8 +257,8 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Subject.Execute(new ImportListSyncCommand());
 
-            Mocker.GetMock<IAddArtistService>()
-                .Verify(v => v.AddArtists(It.Is<List<Author>>(t => t.Count == 0), false));
+            Mocker.GetMock<IAddAuthorService>()
+                .Verify(v => v.AddAuthors(It.Is<List<Author>>(t => t.Count == 0), false));
         }
 
         [Test]
@@ -269,8 +269,8 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Subject.Execute(new ImportListSyncCommand());
 
-            Mocker.GetMock<IAddAlbumService>()
-                .Verify(v => v.AddAlbums(It.Is<List<Book>>(t => t.Count == 0), false));
+            Mocker.GetMock<IAddBookService>()
+                .Verify(v => v.AddBooks(It.Is<List<Book>>(t => t.Count == 0), false));
         }
 
         [Test]
@@ -282,8 +282,8 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Subject.Execute(new ImportListSyncCommand());
 
-            Mocker.GetMock<IAddAlbumService>()
-                .Verify(v => v.AddAlbums(It.Is<List<Book>>(t => t.Count == 0), false));
+            Mocker.GetMock<IAddBookService>()
+                .Verify(v => v.AddBooks(It.Is<List<Book>>(t => t.Count == 0), false));
         }
     }
 }

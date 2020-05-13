@@ -179,7 +179,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             };
         }
 
-        protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteBook remoteAlbum, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteAlbum.SeedConfiguration, Settings);
@@ -195,7 +195,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteBook remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteAlbum.SeedConfiguration, Settings);

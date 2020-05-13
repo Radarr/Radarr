@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Download.Aggregation
 {
     public interface IRemoteAlbumAggregationService
     {
-        RemoteAlbum Augment(RemoteAlbum remoteAlbum);
+        RemoteBook Augment(RemoteBook remoteAlbum);
     }
 
     public class RemoteAlbumAggregationService : IRemoteAlbumAggregationService
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Download.Aggregation
             _logger = logger;
         }
 
-        public RemoteAlbum Augment(RemoteAlbum remoteAlbum)
+        public RemoteBook Augment(RemoteBook remoteAlbum)
         {
             foreach (var augmenter in _augmenters)
             {

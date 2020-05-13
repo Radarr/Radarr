@@ -6,8 +6,8 @@ using Equ;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Music;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MusicTests

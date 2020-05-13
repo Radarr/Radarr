@@ -4,8 +4,8 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
@@ -20,20 +20,20 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         {
             var artist = Builder<Author>.CreateNew().Build();
             var albums = Builder<Book>.CreateListOfSize(2).All().With(x => x.Title = "IdenticalTitle").Build().ToList();
-            var criteria = new AlbumSearchCriteria
+            var criteria = new BookSearchCriteria
             {
-                Artist = artist,
-                Albums = albums
+                Author = artist,
+                Books = albums
             };
 
-            var parsed = new ParsedAlbumInfo
+            var parsed = new ParsedBookInfo
             {
-                AlbumTitle = "IdenticalTitle"
+                BookTitle = "IdenticalTitle"
             };
 
             Subject.GetAlbums(parsed, artist, criteria).Should().BeEquivalentTo(new List<Book>());
 
-            Mocker.GetMock<IAlbumService>()
+            Mocker.GetMock<IBookService>()
                 .Verify(s => s.FindByTitle(artist.AuthorMetadataId, "IdenticalTitle"), Times.Once());
         }
     }

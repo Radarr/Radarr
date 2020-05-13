@@ -5,11 +5,11 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.Extras.Files
 {
@@ -26,24 +26,24 @@ namespace NzbDrone.Core.Extras.Files
     }
 
     public abstract class ExtraFileService<TExtraFile> : IExtraFileService<TExtraFile>,
-                                                         IHandleAsync<ArtistDeletedEvent>,
-                                                         IHandle<TrackFileDeletedEvent>
+                                                         IHandleAsync<AuthorDeletedEvent>,
+                                                         IHandle<BookFileDeletedEvent>
         where TExtraFile : ExtraFile, new()
     {
         private readonly IExtraFileRepository<TExtraFile> _repository;
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
         private readonly IDiskProvider _diskProvider;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly Logger _logger;
 
         public ExtraFileService(IExtraFileRepository<TExtraFile> repository,
-                                IArtistService artistService,
+                                IAuthorService authorService,
                                 IDiskProvider diskProvider,
                                 IRecycleBinProvider recycleBinProvider,
                                 Logger logger)
         {
             _repository = repository;
-            _artistService = artistService;
+            _authorService = authorService;
             _diskProvider = diskProvider;
             _recycleBinProvider = recycleBinProvider;
             _logger = logger;
@@ -51,12 +51,12 @@ namespace NzbDrone.Core.Extras.Files
 
         public List<TExtraFile> GetFilesByArtist(int authorId)
         {
-            return _repository.GetFilesByArtist(authorId);
+            return _repository.GetFilesByAuthor(authorId);
         }
 
         public List<TExtraFile> GetFilesByTrackFile(int trackFileId)
         {
-            return _repository.GetFilesByTrackFile(trackFileId);
+            return _repository.GetFilesByBookFile(trackFileId);
         }
 
         public TExtraFile FindByPath(string path)
@@ -95,15 +95,15 @@ namespace NzbDrone.Core.Extras.Files
             _repository.DeleteMany(ids);
         }
 
-        public void HandleAsync(ArtistDeletedEvent message)
+        public void HandleAsync(AuthorDeletedEvent message)
         {
-            _logger.Debug("Deleting Extra from database for artist: {0}", message.Artist);
-            _repository.DeleteForArtist(message.Artist.Id);
+            _logger.Debug("Deleting Extra from database for author: {0}", message.Author);
+            _repository.DeleteForAuthor(message.Author.Id);
         }
 
-        public void Handle(TrackFileDeletedEvent message)
+        public void Handle(BookFileDeletedEvent message)
         {
-            var trackFile = message.TrackFile;
+            var bookFile = message.BookFile;
 
             if (message.Reason == DeleteMediaFileReason.NoLinkedEpisodes)
             {
@@ -111,23 +111,23 @@ namespace NzbDrone.Core.Extras.Files
             }
             else
             {
-                var artist = trackFile.Artist.Value;
+                var author = bookFile.Author.Value;
 
-                foreach (var extra in _repository.GetFilesByTrackFile(trackFile.Id))
+                foreach (var extra in _repository.GetFilesByBookFile(bookFile.Id))
                 {
-                    var path = Path.Combine(artist.Path, extra.RelativePath);
+                    var path = Path.Combine(author.Path, extra.RelativePath);
 
                     if (_diskProvider.FileExists(path))
                     {
                         // Send to the recycling bin so they can be recovered if necessary
-                        var subfolder = _diskProvider.GetParentFolder(artist.Path).GetRelativePath(_diskProvider.GetParentFolder(path));
+                        var subfolder = _diskProvider.GetParentFolder(author.Path).GetRelativePath(_diskProvider.GetParentFolder(path));
                         _recycleBinProvider.DeleteFile(path, subfolder);
                     }
                 }
             }
 
-            _logger.Debug("Deleting Extra from database for track file: {0}", trackFile);
-            _repository.DeleteForTrackFile(trackFile.Id);
+            _logger.Debug("Deleting Extra from database for track file: {0}", bookFile);
+            _repository.DeleteForBookFile(bookFile.Id);
         }
     }
 }

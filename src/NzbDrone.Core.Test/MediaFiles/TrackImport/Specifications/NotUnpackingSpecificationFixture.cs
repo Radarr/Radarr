@@ -4,19 +4,19 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MediaFiles.TrackImport.Specifications;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.BookImport.Specifications;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
+namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
 {
     [TestFixture]
     public class NotUnpackingSpecificationFixture : CoreTest<NotUnpackingSpecification>
     {
-        private LocalTrack _localTrack;
+        private LocalBook _localTrack;
 
         [SetUp]
         public void Setup()
@@ -25,11 +25,11 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
                 .SetupGet(s => s.DownloadClientWorkingFolders)
                 .Returns("_UNPACK_|_FAILED_");
 
-            _localTrack = new LocalTrack
+            _localTrack = new LocalBook
             {
                 Path = @"C:\Test\Unsorted Music\Kid.Rock\Kid.Rock.Cowboy.mp3".AsOsAgnostic(),
                 Size = 100,
-                Artist = Builder<Author>.CreateNew().Build()
+                Author = Builder<Author>.CreateNew().Build()
             };
         }
 

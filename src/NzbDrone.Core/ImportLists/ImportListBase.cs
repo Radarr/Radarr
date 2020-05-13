@@ -64,7 +64,7 @@ namespace NzbDrone.Core.ImportLists
 
         protected virtual IList<ImportListItemInfo> CleanupListItems(IEnumerable<ImportListItemInfo> releases)
         {
-            var result = releases.DistinctBy(r => new { r.Artist, r.Album }).ToList();
+            var result = releases.DistinctBy(r => new { r.Author, r.Book }).ToList();
 
             result.ForEach(c =>
             {

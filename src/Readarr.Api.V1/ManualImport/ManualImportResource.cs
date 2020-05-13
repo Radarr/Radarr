@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.DecisionEngine;
-using NzbDrone.Core.MediaFiles.TrackImport.Manual;
+using NzbDrone.Core.MediaFiles.BookImport.Manual;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using Readarr.Api.V1.Albums;
@@ -41,8 +41,8 @@ namespace Readarr.Api.V1.ManualImport
                 Path = model.Path,
                 Name = model.Name,
                 Size = model.Size,
-                Artist = model.Artist.ToResource(),
-                Album = model.Album.ToResource(),
+                Artist = model.Author.ToResource(),
+                Album = model.Book.ToResource(),
                 Quality = model.Quality,
 
                 //QualityWeight

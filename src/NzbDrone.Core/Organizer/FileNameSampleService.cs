@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -10,15 +10,15 @@ namespace NzbDrone.Core.Organizer
     {
         SampleResult GetStandardTrackSample(NamingConfig nameSpec);
         SampleResult GetMultiDiscTrackSample(NamingConfig nameSpec);
-        string GetArtistFolderSample(NamingConfig nameSpec);
+        string GetAuthorFolderSample(NamingConfig nameSpec);
     }
 
     public class FileNameSampleService : IFilenameSampleService
     {
         private readonly IBuildFileNames _buildFileNames;
 
-        private static Author _standardArtist;
-        private static Book _standardAlbum;
+        private static Author _standardAuthor;
+        private static Book _standardBook;
         private static BookFile _singleTrackFile;
         private static List<string> _preferredWords;
 
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Organizer
         {
             _buildFileNames = buildFileNames;
 
-            _standardArtist = new Author
+            _standardAuthor = new Author
             {
                 Metadata = new AuthorMetadata
                 {
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Organizer
                 }
             };
 
-            _standardAlbum = new Book
+            _standardBook = new Book
             {
                 Title = "The Book Title",
                 ReleaseDate = System.DateTime.Today,
@@ -54,8 +54,8 @@ namespace NzbDrone.Core.Organizer
             _singleTrackFile = new BookFile
             {
                 Quality = new QualityModel(Quality.MP3_320, new Revision(2)),
-                Path = "/music/Artist.Name.Album.Name.TrackNum.Track.Title.MP3256.mp3",
-                SceneName = "Artist.Name.Album.Name.TrackNum.Track.Title.MP3256",
+                Path = "/music/Author.Name.Book.Name.TrackNum.Track.Title.MP3256.mp3",
+                SceneName = "Author.Name.Book.Name.TrackNum.Track.Title.MP3256",
                 ReleaseGroup = "RlsGrp",
                 MediaInfo = mediaInfo
             };
@@ -70,10 +70,10 @@ namespace NzbDrone.Core.Organizer
         {
             var result = new SampleResult
             {
-                FileName = BuildTrackSample(_standardArtist, _standardAlbum, _singleTrackFile, nameSpec),
-                Artist = _standardArtist,
-                Album = _standardAlbum,
-                TrackFile = _singleTrackFile
+                FileName = BuildTrackSample(_standardAuthor, _standardBook, _singleTrackFile, nameSpec),
+                Author = _standardAuthor,
+                Book = _standardBook,
+                BookFile = _singleTrackFile
             };
 
             return result;
@@ -83,25 +83,25 @@ namespace NzbDrone.Core.Organizer
         {
             var result = new SampleResult
             {
-                FileName = BuildTrackSample(_standardArtist, _standardAlbum, _singleTrackFile, nameSpec),
-                Artist = _standardArtist,
-                Album = _standardAlbum,
-                TrackFile = _singleTrackFile
+                FileName = BuildTrackSample(_standardAuthor, _standardBook, _singleTrackFile, nameSpec),
+                Author = _standardAuthor,
+                Book = _standardBook,
+                BookFile = _singleTrackFile
             };
 
             return result;
         }
 
-        public string GetArtistFolderSample(NamingConfig nameSpec)
+        public string GetAuthorFolderSample(NamingConfig nameSpec)
         {
-            return _buildFileNames.GetArtistFolder(_standardArtist, nameSpec);
+            return _buildFileNames.GetAuthorFolder(_standardAuthor, nameSpec);
         }
 
-        private string BuildTrackSample(Author artist, Book album, BookFile trackFile, NamingConfig nameSpec)
+        private string BuildTrackSample(Author author, Book book, BookFile bookFile, NamingConfig nameSpec)
         {
             try
             {
-                return _buildFileNames.BuildTrackFileName(artist, album, trackFile, nameSpec, _preferredWords);
+                return _buildFileNames.BuildBookFileName(author, book, bookFile, nameSpec, _preferredWords);
             }
             catch (NamingFormatException)
             {

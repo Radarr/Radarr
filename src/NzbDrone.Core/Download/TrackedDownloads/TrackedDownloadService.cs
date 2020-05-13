@@ -5,15 +5,15 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Books;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.Download.TrackedDownloads
 {
-    public interface ITrackedDownloadService : IHandle<AlbumDeletedEvent>
+    public interface ITrackedDownloadService : IHandle<BookDeletedEvent>
     {
         TrackedDownload Find(string downloadId);
         void StopTracking(string downloadId);
@@ -54,16 +54,16 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
         public void UpdateAlbumCache(int bookId)
         {
-            var updateCacheItems = _cache.Values.Where(x => x.RemoteAlbum != null && x.RemoteAlbum.Albums.Any(a => a.Id == bookId)).ToList();
+            var updateCacheItems = _cache.Values.Where(x => x.RemoteBook != null && x.RemoteBook.Books.Any(a => a.Id == bookId)).ToList();
 
             foreach (var item in updateCacheItems)
             {
-                var parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(item.DownloadItem.Title);
-                item.RemoteAlbum = null;
+                var parsedAlbumInfo = Parser.Parser.ParseBookTitle(item.DownloadItem.Title);
+                item.RemoteBook = null;
 
                 if (parsedAlbumInfo != null)
                 {
-                    item.RemoteAlbum = _parsingService.Map(parsedAlbumInfo);
+                    item.RemoteBook = _parsingService.Map(parsedAlbumInfo);
                 }
             }
 
@@ -116,14 +116,14 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
             try
             {
-                var parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(trackedDownload.DownloadItem.Title);
+                var parsedBookInfo = Parser.Parser.ParseBookTitle(trackedDownload.DownloadItem.Title);
                 var historyItems = _historyService.FindByDownloadId(downloadItem.DownloadId)
                     .OrderByDescending(h => h.Date)
                     .ToList();
 
-                if (parsedAlbumInfo != null)
+                if (parsedBookInfo != null)
                 {
-                    trackedDownload.RemoteAlbum = _parsingService.Map(parsedAlbumInfo);
+                    trackedDownload.RemoteBook = _parsingService.Map(parsedBookInfo);
                 }
 
                 if (historyItems.Any())
@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                         trackedDownload.State = state;
                     }
 
-                    if (firstHistoryItem.EventType == HistoryEventType.AlbumImportIncomplete)
+                    if (firstHistoryItem.EventType == HistoryEventType.BookImportIncomplete)
                     {
                         var messages = Json.Deserialize<List<TrackedDownloadStatusMessage>>(firstHistoryItem?.Data["statusMessages"]).ToArray();
                         trackedDownload.Warn(messages);
@@ -153,35 +153,35 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     var grabbedEvent = historyItems.FirstOrDefault(v => v.EventType == HistoryEventType.Grabbed);
                     trackedDownload.Indexer = grabbedEvent?.Data["indexer"];
 
-                    if (parsedAlbumInfo == null ||
-                        trackedDownload.RemoteAlbum == null ||
-                        trackedDownload.RemoteAlbum.Artist == null ||
-                        trackedDownload.RemoteAlbum.Albums.Empty())
+                    if (parsedBookInfo == null ||
+                        trackedDownload.RemoteBook == null ||
+                        trackedDownload.RemoteBook.Author == null ||
+                        trackedDownload.RemoteBook.Books.Empty())
                     {
                         // Try parsing the original source title and if that fails, try parsing it as a special
                         // TODO: Pass the TVDB ID and TVRage IDs in as well so we have a better chance for finding the item
-                        var historyArtist = firstHistoryItem.Artist;
-                        var historyAlbums = new List<Book> { firstHistoryItem.Album };
+                        var historyAuthor = firstHistoryItem.Author;
+                        var historyBooks = new List<Book> { firstHistoryItem.Book };
 
-                        parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(firstHistoryItem.SourceTitle);
+                        parsedBookInfo = Parser.Parser.ParseBookTitle(firstHistoryItem.SourceTitle);
 
-                        if (parsedAlbumInfo != null)
+                        if (parsedBookInfo != null)
                         {
-                            trackedDownload.RemoteAlbum = _parsingService.Map(parsedAlbumInfo,
+                            trackedDownload.RemoteBook = _parsingService.Map(parsedBookInfo,
                                 firstHistoryItem.AuthorId,
                                 historyItems.Where(v => v.EventType == HistoryEventType.Grabbed).Select(h => h.BookId)
                                     .Distinct());
                         }
                         else
                         {
-                            parsedAlbumInfo =
+                            parsedBookInfo =
                                 Parser.Parser.ParseAlbumTitleWithSearchCriteria(firstHistoryItem.SourceTitle,
-                                    historyArtist,
-                                    historyAlbums);
+                                    historyAuthor,
+                                    historyBooks);
 
-                            if (parsedAlbumInfo != null)
+                            if (parsedBookInfo != null)
                             {
-                                trackedDownload.RemoteAlbum = _parsingService.Map(parsedAlbumInfo,
+                                trackedDownload.RemoteBook = _parsingService.Map(parsedBookInfo,
                                     firstHistoryItem.AuthorId,
                                     historyItems.Where(v => v.EventType == HistoryEventType.Grabbed).Select(h => h.BookId)
                                         .Distinct());
@@ -190,16 +190,16 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     }
                 }
 
-                // Track it so it can be displayed in the queue even though we can't determine which artist it is for
-                if (trackedDownload.RemoteAlbum == null)
+                // Track it so it can be displayed in the queue even though we can't determine which author it is for
+                if (trackedDownload.RemoteBook == null)
                 {
-                    _logger.Trace("No Album found for download '{0}'", trackedDownload.DownloadItem.Title);
-                    trackedDownload.Warn("No Album found for download '{0}'", trackedDownload.DownloadItem.Title);
+                    _logger.Trace("No Book found for download '{0}'", trackedDownload.DownloadItem.Title);
+                    trackedDownload.Warn("No Book found for download '{0}'", trackedDownload.DownloadItem.Title);
                 }
             }
             catch (Exception e)
             {
-                _logger.Debug(e, "Failed to find album for " + downloadItem.Title);
+                _logger.Debug(e, "Failed to find book for " + downloadItem.Title);
                 return null;
             }
 
@@ -231,13 +231,13 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 existingItem.CanBeRemoved != downloadItem.CanBeRemoved ||
                 existingItem.CanMoveFiles != downloadItem.CanMoveFiles)
             {
-                _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} ReadarrStage={4} Album='{5}' OutputPath={6}.",
+                _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} ReadarrStage={4} Book='{5}' OutputPath={6}.",
                     downloadItem.DownloadClient,
                     downloadItem.Title,
                     downloadItem.Status,
                     downloadItem.CanBeRemoved ? "" : downloadItem.CanMoveFiles ? " (busy)" : " (readonly)",
                     trackedDownload.State,
-                    trackedDownload.RemoteAlbum?.ParsedAlbumInfo,
+                    trackedDownload.RemoteBook?.ParsedBookInfo,
                     downloadItem.OutputPath);
             }
         }
@@ -246,7 +246,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         {
             switch (history.EventType)
             {
-                case HistoryEventType.AlbumImportIncomplete:
+                case HistoryEventType.BookImportIncomplete:
                     return TrackedDownloadState.ImportFailed;
                 case HistoryEventType.DownloadImported:
                     return TrackedDownloadState.Imported;
@@ -265,9 +265,9 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             return TrackedDownloadState.Downloading;
         }
 
-        public void Handle(AlbumDeletedEvent message)
+        public void Handle(BookDeletedEvent message)
         {
-            UpdateAlbumCache(message.Album.Id);
+            UpdateAlbumCache(message.Book.Id);
         }
     }
 }

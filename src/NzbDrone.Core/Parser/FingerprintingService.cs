@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Parser
     {
         bool IsSetup();
         Version FpcalcVersion();
-        void Lookup(List<LocalTrack> tracks, double threshold);
+        void Lookup(List<LocalBook> tracks, double threshold);
     }
 
     public class AcoustId
@@ -324,7 +324,7 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
-        public void Lookup(List<LocalTrack> tracks, double threshold)
+        public void Lookup(List<LocalBook> tracks, double threshold)
         {
             if (!IsSetup())
             {
@@ -334,7 +334,7 @@ namespace NzbDrone.Core.Parser
             Lookup(tracks.Select(x => Tuple.Create(x, GetFingerprint(x.Path))).ToList(), threshold);
         }
 
-        public void Lookup(List<Tuple<LocalTrack, AcoustId>> files, double threshold)
+        public void Lookup(List<Tuple<LocalBook, AcoustId>> files, double threshold)
         {
             var toLookup = files.Where(x => x.Item2 != null).ToList();
             if (!toLookup.Any())
@@ -347,7 +347,7 @@ namespace NzbDrone.Core.Parser
             ParseResponse(response, toLookup, threshold);
         }
 
-        public HttpRequest GenerateRequest(List<Tuple<LocalTrack, AcoustId>> toLookup)
+        public HttpRequest GenerateRequest(List<Tuple<LocalBook, AcoustId>> toLookup)
         {
             var httpRequest = _customerRequestBuilder.Create()
                 .WithRateLimit(0.334)
@@ -414,7 +414,7 @@ namespace NzbDrone.Core.Parser
             return response;
         }
 
-        private void ParseResponse(LookupResponse response, List<Tuple<LocalTrack, AcoustId>> toLookup, double threshold)
+        private void ParseResponse(LookupResponse response, List<Tuple<LocalBook, AcoustId>> toLookup, double threshold)
         {
             if (response == null)
             {

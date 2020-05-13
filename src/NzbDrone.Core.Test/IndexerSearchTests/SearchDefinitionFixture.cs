@@ -1,18 +1,18 @@
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.IndexerSearchTests
 {
-    public class AlbumSearchDefinitionFixture : CoreTest<AlbumSearchCriteria>
+    public class AlbumSearchDefinitionFixture : CoreTest<BookSearchCriteria>
     {
         [TestCase("Mötley Crüe", "Motley+Crue")]
         [TestCase("방탄소년단", "방탄소년단")]
         public void should_replace_some_special_characters_artist(string artist, string expected)
         {
-            Subject.Artist = new Author { Name = artist };
+            Subject.Author = new Author { Name = artist };
             Subject.ArtistQuery.Should().Be(expected);
         }
 
@@ -24,14 +24,14 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
         [TestCase("Section.80", "Section+80")]
         public void should_replace_some_special_characters(string album, string expected)
         {
-            Subject.AlbumTitle = album;
+            Subject.BookTitle = album;
             Subject.AlbumQuery.Should().Be(expected);
         }
 
         [TestCase("+", "+")]
         public void should_not_replace_some_special_characters_if_result_empty_string(string album, string expected)
         {
-            Subject.AlbumTitle = album;
+            Subject.BookTitle = album;
             Subject.AlbumQuery.Should().Be(expected);
         }
     }

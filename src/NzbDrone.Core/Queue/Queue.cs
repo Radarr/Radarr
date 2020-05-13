@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -11,8 +11,8 @@ namespace NzbDrone.Core.Queue
 {
     public class Queue : ModelBase
     {
-        public Author Artist { get; set; }
-        public Book Album { get; set; }
+        public Author Author { get; set; }
+        public Book Book { get; set; }
         public QualityModel Quality { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Queue
         public TrackedDownloadState? TrackedDownloadState { get; set; }
         public List<TrackedDownloadStatusMessage> StatusMessages { get; set; }
         public string DownloadId { get; set; }
-        public RemoteAlbum RemoteAlbum { get; set; }
+        public RemoteBook RemoteBook { get; set; }
         public DownloadProtocol Protocol { get; set; }
         public string DownloadClient { get; set; }
         public string Indexer { get; set; }

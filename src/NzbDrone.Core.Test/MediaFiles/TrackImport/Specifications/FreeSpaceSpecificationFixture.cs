@@ -4,20 +4,20 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MediaFiles.TrackImport.Specifications;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.BookImport.Specifications;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
+namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
 {
     [TestFixture]
     public class FreeSpaceSpecificationFixture : CoreTest<FreeSpaceSpecification>
     {
         private Author _artist;
-        private LocalTrack _localTrack;
+        private LocalBook _localTrack;
         private string _rootFolder;
 
         [SetUp]
@@ -29,11 +29,11 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
                                      .With(s => s.Path = Path.Combine(_rootFolder, "Alice in Chains"))
                                      .Build();
 
-            _localTrack = new LocalTrack
+            _localTrack = new LocalBook
             {
                 Path = @"C:\Test\Unsorted\Alice in Chains\Alice in Chains - track1.mp3".AsOsAgnostic(),
-                Album = new Book(),
-                Artist = _artist
+                Book = new Book(),
+                Author = _artist
             };
         }
 

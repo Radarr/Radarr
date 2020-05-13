@@ -3,8 +3,8 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Housekeeping.Housekeepers;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 

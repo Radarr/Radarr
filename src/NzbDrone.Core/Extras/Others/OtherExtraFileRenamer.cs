@@ -2,14 +2,14 @@ using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras.Others
 {
     public interface IOtherExtraFileRenamer
     {
-        void RenameOtherExtraFile(Author artist, string path);
+        void RenameOtherExtraFile(Author author, string path);
     }
 
     public class OtherExtraFileRenamer : IOtherExtraFileRenamer
@@ -17,11 +17,11 @@ namespace NzbDrone.Core.Extras.Others
         private readonly Logger _logger;
         private readonly IDiskProvider _diskProvider;
         private readonly IRecycleBinProvider _recycleBinProvider;
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
         private readonly IOtherExtraFileService _otherExtraFileService;
 
         public OtherExtraFileRenamer(IOtherExtraFileService otherExtraFileService,
-                                     IArtistService artistService,
+                                     IAuthorService authorService,
                                      IRecycleBinProvider recycleBinProvider,
                                      IDiskProvider diskProvider,
                                      Logger logger)
@@ -29,18 +29,18 @@ namespace NzbDrone.Core.Extras.Others
             _logger = logger;
             _diskProvider = diskProvider;
             _recycleBinProvider = recycleBinProvider;
-            _artistService = artistService;
+            _authorService = authorService;
             _otherExtraFileService = otherExtraFileService;
         }
 
-        public void RenameOtherExtraFile(Author artist, string path)
+        public void RenameOtherExtraFile(Author author, string path)
         {
             if (!_diskProvider.FileExists(path))
             {
                 return;
             }
 
-            var relativePath = artist.Path.GetRelativePath(path);
+            var relativePath = author.Path.GetRelativePath(path);
 
             var otherExtraFile = _otherExtraFileService.FindByPath(relativePath);
             if (otherExtraFile != null)
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Extras.Others
                 var newPath = path + "-orig";
 
                 // Recycle an existing -orig file.
-                RemoveOtherExtraFile(artist, newPath);
+                RemoveOtherExtraFile(author, newPath);
 
                 // Rename the file to .*-orig
                 _diskProvider.MoveFile(path, newPath);
@@ -58,14 +58,14 @@ namespace NzbDrone.Core.Extras.Others
             }
         }
 
-        private void RemoveOtherExtraFile(Author artist, string path)
+        private void RemoveOtherExtraFile(Author author, string path)
         {
             if (!_diskProvider.FileExists(path))
             {
                 return;
             }
 
-            var relativePath = artist.Path.GetRelativePath(path);
+            var relativePath = author.Path.GetRelativePath(path);
 
             var otherExtraFile = _otherExtraFileService.FindByPath(relativePath);
             if (otherExtraFile != null)

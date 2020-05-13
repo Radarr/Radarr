@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             }
         }
 
-        protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteBook remoteAlbum, string hash, string magnetLink)
         {
             var priority = (RTorrentPriority)(remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
 
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteBook remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             var priority = (RTorrentPriority)(remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority);
 

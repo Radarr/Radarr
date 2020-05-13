@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Download
 {
     public interface IDownloadService
     {
-        void DownloadReport(RemoteAlbum remoteAlbum);
+        void DownloadReport(RemoteBook remoteAlbum);
     }
 
     public class DownloadService : IDownloadService
@@ -45,10 +45,10 @@ namespace NzbDrone.Core.Download
             _logger = logger;
         }
 
-        public void DownloadReport(RemoteAlbum remoteAlbum)
+        public void DownloadReport(RemoteBook remoteAlbum)
         {
-            Ensure.That(remoteAlbum.Artist, () => remoteAlbum.Artist).IsNotNull();
-            Ensure.That(remoteAlbum.Albums, () => remoteAlbum.Albums).HasItems();
+            Ensure.That(remoteAlbum.Author, () => remoteAlbum.Author).IsNotNull();
+            Ensure.That(remoteAlbum.Books, () => remoteAlbum.Books).HasItems();
 
             var downloadTitle = remoteAlbum.Release.Title;
             var downloadClient = _downloadClientProvider.GetDownloadClient(remoteAlbum.Release.DownloadProtocol);
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Download
                 throw;
             }
 
-            var albumGrabbedEvent = new AlbumGrabbedEvent(remoteAlbum);
+            var albumGrabbedEvent = new BookGrabbedEvent(remoteAlbum);
             albumGrabbedEvent.DownloadClient = downloadClient.Name;
 
             if (!string.IsNullOrWhiteSpace(downloadClientId))

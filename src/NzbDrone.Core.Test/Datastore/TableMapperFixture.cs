@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using Dapper;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Converters;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Test.Datastore
 {

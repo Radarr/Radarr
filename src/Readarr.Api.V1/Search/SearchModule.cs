@@ -35,9 +35,9 @@ namespace Readarr.Api.V1.Search
                 var resource = new SearchResource();
                 resource.Id = id++;
 
-                if (result is NzbDrone.Core.Music.Author)
+                if (result is NzbDrone.Core.Books.Author)
                 {
-                    var artist = (NzbDrone.Core.Music.Author)result;
+                    var artist = (NzbDrone.Core.Books.Author)result;
                     resource.Artist = artist.ToResource();
                     resource.ForeignId = artist.ForeignAuthorId;
 
@@ -47,9 +47,9 @@ namespace Readarr.Api.V1.Search
                         resource.Artist.RemotePoster = poster.Url;
                     }
                 }
-                else if (result is NzbDrone.Core.Music.Book)
+                else if (result is NzbDrone.Core.Books.Book)
                 {
-                    var album = (NzbDrone.Core.Music.Book)result;
+                    var album = (NzbDrone.Core.Books.Book)result;
                     resource.Album = album.ToResource();
                     resource.ForeignId = album.ForeignBookId;
 

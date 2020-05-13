@@ -1,32 +1,32 @@
 using System.Linq;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
-    [CheckOn(typeof(ArtistDeletedEvent))]
-    [CheckOn(typeof(ArtistMovedEvent))]
+    [CheckOn(typeof(AuthorDeletedEvent))]
+    [CheckOn(typeof(AuthorMovedEvent))]
     [CheckOn(typeof(TrackImportedEvent), CheckOnCondition.FailedOnly)]
     [CheckOn(typeof(TrackImportFailedEvent), CheckOnCondition.SuccessfulOnly)]
     public class RootFolderCheck : HealthCheckBase
     {
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
         private readonly IImportListFactory _importListFactory;
         private readonly IDiskProvider _diskProvider;
 
-        public RootFolderCheck(IArtistService artistService, IImportListFactory importListFactory, IDiskProvider diskProvider)
+        public RootFolderCheck(IAuthorService authorService, IImportListFactory importListFactory, IDiskProvider diskProvider)
         {
-            _artistService = artistService;
+            _authorService = authorService;
             _importListFactory = importListFactory;
             _diskProvider = diskProvider;
         }
 
         public override HealthCheck Check()
         {
-            var missingRootFolders = _artistService.GetAllArtists()
+            var missingRootFolders = _authorService.GetAllAuthors()
                                                    .Select(s => _diskProvider.GetParentFolder(s.Path))
                                                    .Distinct()
                                                    .Where(s => !_diskProvider.FolderExists(s))

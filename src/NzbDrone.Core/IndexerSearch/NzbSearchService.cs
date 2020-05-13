@@ -6,10 +6,10 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.TPL;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.IndexerSearch
@@ -23,86 +23,86 @@ namespace NzbDrone.Core.IndexerSearch
     public class NzbSearchService : ISearchForNzb
     {
         private readonly IIndexerFactory _indexerFactory;
-        private readonly IAlbumService _albumService;
-        private readonly IArtistService _artistService;
+        private readonly IBookService _bookService;
+        private readonly IAuthorService _authorService;
         private readonly IMakeDownloadDecision _makeDownloadDecision;
         private readonly Logger _logger;
 
         public NzbSearchService(IIndexerFactory indexerFactory,
-                                IAlbumService albumService,
-                                IArtistService artistService,
+                                IBookService bookService,
+                                IAuthorService authorService,
                                 IMakeDownloadDecision makeDownloadDecision,
                                 Logger logger)
         {
             _indexerFactory = indexerFactory;
-            _albumService = albumService;
-            _artistService = artistService;
+            _bookService = bookService;
+            _authorService = authorService;
             _makeDownloadDecision = makeDownloadDecision;
             _logger = logger;
         }
 
         public List<DownloadDecision> AlbumSearch(int bookId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
-            var album = _albumService.GetAlbum(bookId);
-            return AlbumSearch(album, missingOnly, userInvokedSearch, interactiveSearch);
+            var book = _bookService.GetBook(bookId);
+            return AlbumSearch(book, missingOnly, userInvokedSearch, interactiveSearch);
         }
 
         public List<DownloadDecision> ArtistSearch(int authorId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
-            var artist = _artistService.GetArtist(authorId);
-            return ArtistSearch(artist, missingOnly, userInvokedSearch, interactiveSearch);
+            var author = _authorService.GetAuthor(authorId);
+            return ArtistSearch(author, missingOnly, userInvokedSearch, interactiveSearch);
         }
 
-        public List<DownloadDecision> ArtistSearch(Author artist, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
+        public List<DownloadDecision> ArtistSearch(Author author, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
-            var searchSpec = Get<ArtistSearchCriteria>(artist, userInvokedSearch, interactiveSearch);
-            var albums = _albumService.GetAlbumsByArtist(artist.Id);
+            var searchSpec = Get<AuthorSearchCriteria>(author, userInvokedSearch, interactiveSearch);
+            var albums = _bookService.GetBooksByAuthor(author.Id);
 
             albums = albums.Where(a => a.Monitored).ToList();
 
-            searchSpec.Albums = albums;
+            searchSpec.Books = albums;
 
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
-        public List<DownloadDecision> AlbumSearch(Book album, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
+        public List<DownloadDecision> AlbumSearch(Book book, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
-            var artist = _artistService.GetArtist(album.AuthorId);
+            var author = _authorService.GetAuthor(book.AuthorId);
 
-            var searchSpec = Get<AlbumSearchCriteria>(artist, new List<Book> { album }, userInvokedSearch, interactiveSearch);
+            var searchSpec = Get<BookSearchCriteria>(author, new List<Book> { book }, userInvokedSearch, interactiveSearch);
 
-            searchSpec.AlbumTitle = album.Title;
-            if (album.ReleaseDate.HasValue)
+            searchSpec.BookTitle = book.Title;
+            if (book.ReleaseDate.HasValue)
             {
-                searchSpec.AlbumYear = album.ReleaseDate.Value.Year;
+                searchSpec.BookYear = book.ReleaseDate.Value.Year;
             }
 
-            if (album.Disambiguation.IsNotNullOrWhiteSpace())
+            if (book.Disambiguation.IsNotNullOrWhiteSpace())
             {
-                searchSpec.Disambiguation = album.Disambiguation;
+                searchSpec.Disambiguation = book.Disambiguation;
             }
 
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
-        private TSpec Get<TSpec>(Author artist, List<Book> albums, bool userInvokedSearch, bool interactiveSearch)
+        private TSpec Get<TSpec>(Author author, List<Book> albums, bool userInvokedSearch, bool interactiveSearch)
             where TSpec : SearchCriteriaBase, new()
         {
             var spec = new TSpec();
 
-            spec.Albums = albums;
-            spec.Artist = artist;
+            spec.Books = albums;
+            spec.Author = author;
             spec.UserInvokedSearch = userInvokedSearch;
             spec.InteractiveSearch = interactiveSearch;
 
             return spec;
         }
 
-        private static TSpec Get<TSpec>(Author artist, bool userInvokedSearch, bool interactiveSearch)
+        private static TSpec Get<TSpec>(Author author, bool userInvokedSearch, bool interactiveSearch)
             where TSpec : SearchCriteriaBase, new()
         {
             var spec = new TSpec();
-            spec.Artist = artist;
+            spec.Author = author;
             spec.UserInvokedSearch = userInvokedSearch;
             spec.InteractiveSearch = interactiveSearch;
 

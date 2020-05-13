@@ -6,10 +6,10 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients.Sabnzbd;
 using NzbDrone.Core.Download.Clients.Sabnzbd.Responses;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.Validation;
 using NzbDrone.Test.Common;
@@ -354,7 +354,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.SabnzbdTests
                     .Returns(new SabnzbdAddResponse { Ids = new List<string> { "readarrtest" } });
 
             var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Albums = Builder<Book>.CreateListOfSize(1)
+            remoteAlbum.Books = Builder<Book>.CreateListOfSize(1)
                                                       .All()
                                                       .With(e => e.ReleaseDate = DateTime.Today)
                                                       .Build()

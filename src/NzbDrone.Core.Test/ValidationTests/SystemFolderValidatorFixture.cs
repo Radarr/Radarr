@@ -4,7 +4,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.Test.Common;

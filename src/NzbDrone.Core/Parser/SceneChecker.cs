@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Parser
                 return false;
             }
 
-            var parsedTitle = Parser.ParseMusicTitle(title);
+            var parsedTitle = Parser.ParseTitle(title);
 
             if (parsedTitle == null ||
                 parsedTitle.ReleaseGroup == null ||

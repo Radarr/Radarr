@@ -4,8 +4,8 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Crypto;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download.Pending;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
@@ -34,16 +34,16 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                   .Setup(s => s.All())
                   .Returns(_pending);
 
-            Mocker.GetMock<IArtistService>()
-                  .Setup(s => s.GetArtist(It.IsAny<int>()))
+            Mocker.GetMock<IAuthorService>()
+                  .Setup(s => s.GetAuthor(It.IsAny<int>()))
                   .Returns(new Author());
 
-            Mocker.GetMock<IArtistService>()
-                  .Setup(s => s.GetArtists(It.IsAny<IEnumerable<int>>()))
+            Mocker.GetMock<IAuthorService>()
+                  .Setup(s => s.GetAuthors(It.IsAny<IEnumerable<int>>()))
                   .Returns(new List<Author> { new Author() });
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetAlbums(It.IsAny<ParsedAlbumInfo>(), It.IsAny<Author>(), null))
+                  .Setup(s => s.GetAlbums(It.IsAny<ParsedBookInfo>(), It.IsAny<Author>(), null))
                   .Returns(new List<Book> { _album });
         }
 
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _pending.Add(new PendingRelease
             {
                 Id = id,
-                ParsedAlbumInfo = new ParsedAlbumInfo { AlbumTitle = album }
+                ParsedBookInfo = new ParsedBookInfo { BookTitle = album }
             });
         }
 
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         {
             AddPending(id: 1, album: "Album");
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-album{1}", 1, _album.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-book{1}", 1, _album.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             AddPending(id: 3, album: "Album 3");
             AddPending(id: 4, album: "Album 3");
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-album{1}", 3, _album.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-book{1}", 3, _album.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             AddPending(id: 3, album: "Album 2");
             AddPending(id: 4, album: "Album 3");
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-album{1}", 1, _album.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-book{1}", 1, _album.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 

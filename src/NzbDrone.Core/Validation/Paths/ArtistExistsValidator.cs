@@ -1,16 +1,16 @@
 ﻿using FluentValidation.Validators;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 
 namespace NzbDrone.Core.Validation.Paths
 {
     public class ArtistExistsValidator : PropertyValidator
     {
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
 
-        public ArtistExistsValidator(IArtistService artistService)
-            : base("This artist has already been added.")
+        public ArtistExistsValidator(IAuthorService authorService)
+            : base("This author has already been added.")
         {
-            _artistService = artistService;
+            _authorService = authorService;
         }
 
         protected override bool IsValid(PropertyValidatorContext context)
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Validation.Paths
                 return true;
             }
 
-            return !_artistService.GetAllArtists().Exists(s => s.Metadata.Value.ForeignAuthorId == context.PropertyValue.ToString());
+            return !_authorService.GetAllAuthors().Exists(s => s.Metadata.Value.ForeignAuthorId == context.PropertyValue.ToString());
         }
     }
 }

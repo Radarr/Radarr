@@ -4,22 +4,22 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 {
     [TestFixture]
 
-    public class ArtistMetadataRepositoryFixture : DbTest<ArtistMetadataRepository, AuthorMetadata>
+    public class ArtistMetadataRepositoryFixture : DbTest<AuthorMetadataRepository, AuthorMetadata>
     {
-        private ArtistMetadataRepository _artistMetadataRepo;
+        private AuthorMetadataRepository _artistMetadataRepo;
         private List<AuthorMetadata> _metadataList;
 
         [SetUp]
         public void Setup()
         {
-            _artistMetadataRepo = Mocker.Resolve<ArtistMetadataRepository>();
+            _artistMetadataRepo = Mocker.Resolve<AuthorMetadataRepository>();
             _metadataList = Builder<AuthorMetadata>.CreateListOfSize(10).All().With(x => x.Id = 0).BuildList();
         }
 

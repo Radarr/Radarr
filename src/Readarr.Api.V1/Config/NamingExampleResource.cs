@@ -16,10 +16,10 @@ namespace Readarr.Api.V1.Config
             {
                 Id = model.Id,
 
-                RenameTracks = model.RenameTracks,
+                RenameBooks = model.RenameBooks,
                 ReplaceIllegalCharacters = model.ReplaceIllegalCharacters,
-                StandardTrackFormat = model.StandardTrackFormat,
-                ArtistFolderFormat = model.ArtistFolderFormat
+                StandardBookFormat = model.StandardBookFormat,
+                ArtistFolderFormat = model.AuthorFolderFormat
             };
         }
 
@@ -39,10 +39,10 @@ namespace Readarr.Api.V1.Config
             {
                 Id = resource.Id,
 
-                RenameTracks = resource.RenameTracks,
+                RenameBooks = resource.RenameBooks,
                 ReplaceIllegalCharacters = resource.ReplaceIllegalCharacters,
-                StandardTrackFormat = resource.StandardTrackFormat,
-                ArtistFolderFormat = resource.ArtistFolderFormat,
+                StandardBookFormat = resource.StandardBookFormat,
+                AuthorFolderFormat = resource.ArtistFolderFormat,
             };
         }
     }

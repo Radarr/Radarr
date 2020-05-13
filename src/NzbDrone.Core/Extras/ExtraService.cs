@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Extras.Files;
@@ -11,58 +12,57 @@ using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Extras
 {
     public interface IExtraService
     {
-        void ImportTrack(LocalTrack localTrack, BookFile trackFile, bool isReadOnly);
+        void ImportTrack(LocalBook localBook, BookFile bookFile, bool isReadOnly);
     }
 
     public class ExtraService : IExtraService,
                                 IHandle<MediaCoversUpdatedEvent>,
                                 IHandle<TrackFolderCreatedEvent>,
-                                IHandle<ArtistRenamedEvent>
+                                IHandle<AuthorRenamedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
-        private readonly IAlbumService _albumService;
+        private readonly IBookService _bookService;
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
         private readonly List<IManageExtraFiles> _extraFileManagers;
         private readonly Logger _logger;
 
         public ExtraService(IMediaFileService mediaFileService,
-                            IAlbumService albumService,
+                            IBookService bookService,
                             IDiskProvider diskProvider,
                             IConfigService configService,
                             List<IManageExtraFiles> extraFileManagers,
                             Logger logger)
         {
             _mediaFileService = mediaFileService;
-            _albumService = albumService;
+            _bookService = bookService;
             _diskProvider = diskProvider;
             _configService = configService;
             _extraFileManagers = extraFileManagers.OrderBy(e => e.Order).ToList();
             _logger = logger;
         }
 
-        public void ImportTrack(LocalTrack localTrack, BookFile trackFile, bool isReadOnly)
+        public void ImportTrack(LocalBook localBook, BookFile bookFile, bool isReadOnly)
         {
-            ImportExtraFiles(localTrack, trackFile, isReadOnly);
+            ImportExtraFiles(localBook, bookFile, isReadOnly);
 
-            CreateAfterImport(localTrack.Artist, trackFile);
+            CreateAfterImport(localBook.Author, bookFile);
         }
 
-        public void ImportExtraFiles(LocalTrack localTrack, BookFile trackFile, bool isReadOnly)
+        public void ImportExtraFiles(LocalBook localBook, BookFile bookFile, bool isReadOnly)
         {
             if (!_configService.ImportExtraFiles)
             {
                 return;
             }
 
-            var sourcePath = localTrack.Path;
+            var sourcePath = localBook.Path;
             var sourceFolder = _diskProvider.GetParentFolder(sourcePath);
             var sourceFileName = Path.GetFileNameWithoutExtension(sourcePath);
             var files = _diskProvider.GetFiles(sourceFolder, SearchOption.TopDirectoryOnly);
@@ -105,7 +105,7 @@ namespace NzbDrone.Core.Extras
                     foreach (var extraFileManager in _extraFileManagers)
                     {
                         var extension = Path.GetExtension(matchingFilename);
-                        var extraFile = extraFileManager.Import(localTrack.Artist, trackFile, matchingFilename, extension, isReadOnly);
+                        var extraFile = extraFileManager.Import(localBook.Author, bookFile, matchingFilename, extension, isReadOnly);
 
                         if (extraFile != null)
                         {
@@ -120,51 +120,51 @@ namespace NzbDrone.Core.Extras
             }
         }
 
-        private void CreateAfterImport(Author artist, BookFile trackFile)
+        private void CreateAfterImport(Author author, BookFile bookFile)
         {
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.CreateAfterTrackImport(artist, trackFile);
+                extraFileManager.CreateAfterTrackImport(author, bookFile);
             }
         }
 
         public void Handle(MediaCoversUpdatedEvent message)
         {
-            var artist = message.Artist;
+            var author = message.Author;
 
-            var trackFiles = GetTrackFiles(artist.Id);
+            var bookFiles = GetBookFiles(author.Id);
 
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.CreateAfterArtistScan(artist, trackFiles);
+                extraFileManager.CreateAfterAuthorScan(author, bookFiles);
             }
         }
 
         public void Handle(TrackFolderCreatedEvent message)
         {
-            var artist = message.Artist;
-            var album = _albumService.GetAlbum(message.TrackFile.BookId);
+            var author = message.Author;
+            var book = _bookService.GetBook(message.BookFile.BookId);
 
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.CreateAfterTrackImport(artist, album, message.ArtistFolder, message.AlbumFolder);
+                extraFileManager.CreateAfterBookImport(author, book, message.AuthorFolder, message.BookFolder);
             }
         }
 
-        public void Handle(ArtistRenamedEvent message)
+        public void Handle(AuthorRenamedEvent message)
         {
-            var artist = message.Artist;
-            var trackFiles = GetTrackFiles(artist.Id);
+            var author = message.Author;
+            var bookFiles = GetBookFiles(author.Id);
 
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.MoveFilesAfterRename(artist, trackFiles);
+                extraFileManager.MoveFilesAfterRename(author, bookFiles);
             }
         }
 
-        private List<BookFile> GetTrackFiles(int authorId)
+        private List<BookFile> GetBookFiles(int authorId)
         {
-            return _mediaFileService.GetFilesByArtist(authorId);
+            return _mediaFileService.GetFilesByAuthor(authorId);
         }
     }
 }

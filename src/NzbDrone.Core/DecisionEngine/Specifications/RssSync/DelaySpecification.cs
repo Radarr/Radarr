@@ -37,7 +37,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
         public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Temporary;
 
-        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria != null && searchCriteria.UserInvokedSearch)
             {
@@ -45,8 +45,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var qualityProfile = subject.Artist.QualityProfile.Value;
-            var delayProfile = _delayProfileService.BestForTags(subject.Artist.Tags);
+            var qualityProfile = subject.Author.QualityProfile.Value;
+            var delayProfile = _delayProfileService.BestForTags(subject.Author.Tags);
             var delay = delayProfile.GetProtocolDelay(subject.Release.DownloadProtocol);
             var isPreferredProtocol = subject.Release.DownloadProtocol == delayProfile.PreferredProtocol;
 
@@ -60,18 +60,18 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             if (isPreferredProtocol)
             {
-                foreach (var album in subject.Albums)
+                foreach (var book in subject.Books)
                 {
-                    var trackFiles = _mediaFileService.GetFilesByAlbum(album.Id);
+                    var bookFiles = _mediaFileService.GetFilesByBook(book.Id);
 
-                    if (trackFiles.Any())
+                    if (bookFiles.Any())
                     {
-                        var currentQualities = trackFiles.Select(c => c.Quality).Distinct().ToList();
+                        var currentQualities = bookFiles.Select(c => c.Quality).Distinct().ToList();
 
                         var upgradable = _upgradableSpecification.IsUpgradable(qualityProfile,
                                                                                currentQualities,
-                                                                               _preferredWordServiceCalculator.Calculate(subject.Artist, trackFiles[0].GetSceneOrFileName()),
-                                                                               subject.ParsedAlbumInfo.Quality,
+                                                                               _preferredWordServiceCalculator.Calculate(subject.Author, bookFiles[0].GetSceneOrFileName()),
+                                                                               subject.ParsedBookInfo.Quality,
                                                                                subject.PreferredWordScore);
                         if (upgradable)
                         {
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             // If quality meets or exceeds the best allowed quality in the profile accept it immediately
             var bestQualityInProfile = qualityProfile.LastAllowedQuality();
-            var isBestInProfile = qualityComparer.Compare(subject.ParsedAlbumInfo.Quality.Quality, bestQualityInProfile) >= 0;
+            var isBestInProfile = qualityComparer.Compare(subject.ParsedBookInfo.Quality.Quality, bestQualityInProfile) >= 0;
 
             if (isBestInProfile && isPreferredProtocol)
             {
@@ -92,9 +92,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var bookIds = subject.Albums.Select(e => e.Id);
+            var bookIds = subject.Books.Select(e => e.Id);
 
-            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Artist.Id, bookIds.ToArray());
+            var oldest = _pendingReleaseService.OldestPendingRelease(subject.Author.Id, bookIds.ToArray());
 
             if (oldest != null && oldest.Release.AgeMinutes > delay)
             {

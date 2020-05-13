@@ -2,24 +2,24 @@ using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.TrackImport.Specifications;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.BookImport.Specifications;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
+namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
 {
     [TestFixture]
     public class SameFileSpecificationFixture : CoreTest<SameFileSpecification>
     {
-        private LocalTrack _localTrack;
+        private LocalBook _localTrack;
 
         [SetUp]
         public void Setup()
         {
-            _localTrack = Builder<LocalTrack>.CreateNew()
+            _localTrack = Builder<LocalBook>.CreateNew()
                                                  .With(l => l.Size = 150.Megabytes())
                                                  .Build();
         }
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
         [Test]
         public void should_be_accepted_if_no_existing_file()
         {
-            _localTrack.Album = Builder<Book>.CreateNew()
+            _localTrack.Book = Builder<Book>.CreateNew()
                 .Build();
 
             Subject.IsSatisfiedBy(_localTrack, null).Accepted.Should().BeTrue();
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
         [Test]
         public void should_be_accepted_if_file_size_is_different()
         {
-            _localTrack.Album = Builder<Book>.CreateNew()
+            _localTrack.Book = Builder<Book>.CreateNew()
                 .With(e => e.BookFiles = new LazyLoaded<List<BookFile>>(
                           new List<BookFile>
                           {
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
         [Test]
         public void should_be_reject_if_file_size_is_the_same()
         {
-            _localTrack.Album = Builder<Book>.CreateNew()
+            _localTrack.Book = Builder<Book>.CreateNew()
                 .With(e => e.BookFiles = new LazyLoaded<List<BookFile>>(
                           new List<BookFile>
                           {

@@ -3,22 +3,22 @@ using System.IO;
 using System.Linq;
 using Dapper;
 using NzbDrone.Common;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IMediaFileRepository : IBasicRepository<BookFile>
     {
-        List<BookFile> GetFilesByArtist(int authorId);
-        List<BookFile> GetFilesByAlbum(int bookId);
+        List<BookFile> GetFilesByAuthor(int authorId);
+        List<BookFile> GetFilesByBook(int bookId);
         List<BookFile> GetUnmappedFiles();
         List<BookFile> GetFilesWithBasePath(string path);
         List<BookFile> GetFileWithPath(List<string> paths);
         BookFile GetFileWithPath(string path);
-        void DeleteFilesByAlbum(int bookId);
-        void UnlinkFilesByAlbum(int bookId);
+        void DeleteFilesByBook(int bookId);
+        void UnlinkFilesByBook(int bookId);
     }
 
     public class MediaFileRepository : BasicRepository<BookFile>, IMediaFileRepository
@@ -32,36 +32,36 @@ namespace NzbDrone.Core.MediaFiles
         // needed more often than not so better to load it all now
         protected override SqlBuilder Builder() => new SqlBuilder()
             .LeftJoin<BookFile, Book>((t, a) => t.BookId == a.Id)
-            .LeftJoin<Book, Author>((album, artist) => album.AuthorMetadataId == artist.AuthorMetadataId)
+            .LeftJoin<Book, Author>((book, author) => book.AuthorMetadataId == author.AuthorMetadataId)
             .LeftJoin<Author, AuthorMetadata>((a, m) => a.AuthorMetadataId == m.Id);
 
         protected override List<BookFile> Query(SqlBuilder builder) => Query(_database, builder).ToList();
 
         public static IEnumerable<BookFile> Query(IDatabase database, SqlBuilder builder)
         {
-            return database.QueryJoined<BookFile, Book, Author, AuthorMetadata>(builder, (file, album, artist, metadata) => Map(file, album, artist, metadata));
+            return database.QueryJoined<BookFile, Book, Author, AuthorMetadata>(builder, (file, book, author, metadata) => Map(file, book, author, metadata));
         }
 
-        private static BookFile Map(BookFile file, Book album, Author artist, AuthorMetadata metadata)
+        private static BookFile Map(BookFile file, Book book, Author author, AuthorMetadata metadata)
         {
-            file.Album = album;
+            file.Book = book;
 
-            if (artist != null)
+            if (author != null)
             {
-                artist.Metadata = metadata;
+                author.Metadata = metadata;
             }
 
-            file.Artist = artist;
+            file.Author = author;
 
             return file;
         }
 
-        public List<BookFile> GetFilesByArtist(int authorId)
+        public List<BookFile> GetFilesByAuthor(int authorId)
         {
             return Query(Builder().Where<Author>(a => a.Id == authorId));
         }
 
-        public List<BookFile> GetFilesByAlbum(int bookId)
+        public List<BookFile> GetFilesByBook(int bookId)
         {
             return Query(Builder().Where<BookFile>(f => f.BookId == bookId));
         }
@@ -76,12 +76,12 @@ namespace NzbDrone.Core.MediaFiles
 #pragma warning restore CS0472
         }
 
-        public void DeleteFilesByAlbum(int bookId)
+        public void DeleteFilesByBook(int bookId)
         {
             Delete(x => x.BookId == bookId);
         }
 
-        public void UnlinkFilesByAlbum(int bookId)
+        public void UnlinkFilesByBook(int bookId)
         {
             var files = Query(x => x.BookId == bookId);
             files.ForEach(x => x.BookId = 0);
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.MediaFiles
 
         private BookFile MapTrack(BookFile file, Book book)
         {
-            file.Album = book;
+            file.Book = book;
             return file;
         }
     }

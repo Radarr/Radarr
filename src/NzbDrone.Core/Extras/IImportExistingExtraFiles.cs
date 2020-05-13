@@ -1,12 +1,12 @@
 using System.Collections.Generic;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Extras.Files;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras
 {
     public interface IImportExistingExtraFiles
     {
         int Order { get; }
-        IEnumerable<ExtraFile> ProcessFiles(Author artist, List<string> filesOnDisk, List<string> importedFiles);
+        IEnumerable<ExtraFile> ProcessFiles(Author author, List<string> filesOnDisk, List<string> importedFiles);
     }
 }

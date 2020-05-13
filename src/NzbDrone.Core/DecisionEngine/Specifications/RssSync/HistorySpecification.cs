@@ -35,7 +35,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
         public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria != null)
             {
@@ -46,10 +46,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             var cdhEnabled = _configService.EnableCompletedDownloadHandling;
 
             _logger.Debug("Performing history status check on report");
-            foreach (var album in subject.Albums)
+            foreach (var book in subject.Books)
             {
-                _logger.Debug("Checking current status of album [{0}] in history", album.Id);
-                var mostRecent = _historyService.MostRecentForAlbum(album.Id);
+                _logger.Debug("Checking current status of book [{0}] in history", book.Id);
+                var mostRecent = _historyService.MostRecentForBook(book.Id);
 
                 if (mostRecent != null && mostRecent.EventType == HistoryEventType.Grabbed)
                 {
@@ -60,22 +60,22 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                         continue;
                     }
 
-                    // The artist will be the same as the one in history since it's the same album.
-                    // Instead of fetching the artist from the DB reuse the known artist.
-                    var preferredWordScore = _preferredWordServiceCalculator.Calculate(subject.Artist, mostRecent.SourceTitle);
+                    // The author will be the same as the one in history since it's the same book.
+                    // Instead of fetching the author from the DB reuse the known author.
+                    var preferredWordScore = _preferredWordServiceCalculator.Calculate(subject.Author, mostRecent.SourceTitle);
 
                     var cutoffUnmet = _upgradableSpecification.CutoffNotMet(
-                        subject.Artist.QualityProfile,
+                        subject.Author.QualityProfile,
                         new List<QualityModel> { mostRecent.Quality },
                         preferredWordScore,
-                        subject.ParsedAlbumInfo.Quality,
+                        subject.ParsedBookInfo.Quality,
                         subject.PreferredWordScore);
 
                     var upgradeable = _upgradableSpecification.IsUpgradable(
-                        subject.Artist.QualityProfile,
+                        subject.Author.QualityProfile,
                         new List<QualityModel> { mostRecent.Quality },
                         preferredWordScore,
-                        subject.ParsedAlbumInfo.Quality,
+                        subject.ParsedBookInfo.Quality,
                         subject.PreferredWordScore);
 
                     if (!cutoffUnmet)

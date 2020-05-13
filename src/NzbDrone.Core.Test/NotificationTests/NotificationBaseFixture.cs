@@ -2,7 +2,7 @@ using System;
 using FluentAssertions;
 using FluentValidation.Results;
 using NUnit.Framework;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.NotificationTests
                 throw new NotImplementedException();
             }
 
-            public override void OnReleaseImport(AlbumDownloadMessage message)
+            public override void OnReleaseImport(BookDownloadMessage message)
             {
                 TestLogger.Info("OnDownload was called");
             }
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnGrab was called");
             }
 
-            public override void OnReleaseImport(AlbumDownloadMessage message)
+            public override void OnReleaseImport(BookDownloadMessage message)
             {
                 TestLogger.Info("OnAlbumDownload was called");
             }
@@ -72,12 +72,12 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnDownloadFailure was called");
             }
 
-            public override void OnImportFailure(AlbumDownloadMessage message)
+            public override void OnImportFailure(BookDownloadMessage message)
             {
                 TestLogger.Info("OnImportFailure was called");
             }
 
-            public override void OnTrackRetag(TrackRetagMessage message)
+            public override void OnTrackRetag(BookRetagMessage message)
             {
                 TestLogger.Info("OnTrackRetag was called");
             }

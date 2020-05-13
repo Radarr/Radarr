@@ -4,11 +4,11 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.TorrentRss;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Test.Common;
 
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private Author _artist;
         private Book _album1;
         private Book _album2;
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
         private IndexerDefinition _indexerDefinition;
 
         [SetUp]
@@ -30,10 +30,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _album1 = Builder<Book>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
             _album2 = Builder<Book>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
 
-            _remoteAlbum = new RemoteAlbum
+            _remoteAlbum = new RemoteBook
             {
-                Artist = _artist,
-                Albums = new List<Book> { _album1 },
+                Author = _artist,
+                Books = new List<Book> { _album1 },
                 Release = new TorrentInfo
                 {
                     IndexerId = 1,
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_release_contains_multiple_albums()
         {
-            _remoteAlbum.Albums.Add(_album2);
+            _remoteAlbum.Books.Add(_album2);
 
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
         }

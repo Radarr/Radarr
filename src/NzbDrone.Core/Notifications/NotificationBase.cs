@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Notifications
@@ -40,11 +40,11 @@ namespace NzbDrone.Core.Notifications
         {
         }
 
-        public virtual void OnReleaseImport(AlbumDownloadMessage message)
+        public virtual void OnReleaseImport(BookDownloadMessage message)
         {
         }
 
-        public virtual void OnRename(Author artist)
+        public virtual void OnRename(Author author)
         {
         }
 
@@ -56,11 +56,11 @@ namespace NzbDrone.Core.Notifications
         {
         }
 
-        public virtual void OnImportFailure(AlbumDownloadMessage message)
+        public virtual void OnImportFailure(BookDownloadMessage message)
         {
         }
 
-        public virtual void OnTrackRetag(TrackRetagMessage message)
+        public virtual void OnTrackRetag(BookRetagMessage message)
         {
         }
 

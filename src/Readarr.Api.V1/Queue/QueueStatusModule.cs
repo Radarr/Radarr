@@ -44,12 +44,12 @@ namespace Readarr.Api.V1.Queue
             var resource = new QueueStatusResource
             {
                 TotalCount = queue.Count + pending.Count,
-                Count = queue.Count(q => q.Artist != null) + pending.Count,
-                UnknownCount = queue.Count(q => q.Artist == null),
-                Errors = queue.Any(q => q.Artist != null && q.TrackedDownloadStatus == TrackedDownloadStatus.Error),
-                Warnings = queue.Any(q => q.Artist != null && q.TrackedDownloadStatus == TrackedDownloadStatus.Warning),
-                UnknownErrors = queue.Any(q => q.Artist == null && q.TrackedDownloadStatus == TrackedDownloadStatus.Error),
-                UnknownWarnings = queue.Any(q => q.Artist == null && q.TrackedDownloadStatus == TrackedDownloadStatus.Warning)
+                Count = queue.Count(q => q.Author != null) + pending.Count,
+                UnknownCount = queue.Count(q => q.Author == null),
+                Errors = queue.Any(q => q.Author != null && q.TrackedDownloadStatus == TrackedDownloadStatus.Error),
+                Warnings = queue.Any(q => q.Author != null && q.TrackedDownloadStatus == TrackedDownloadStatus.Warning),
+                UnknownErrors = queue.Any(q => q.Author == null && q.TrackedDownloadStatus == TrackedDownloadStatus.Error),
+                UnknownWarnings = queue.Any(q => q.Author == null && q.TrackedDownloadStatus == TrackedDownloadStatus.Warning)
             };
 
             _broadcastDebounce.Resume();

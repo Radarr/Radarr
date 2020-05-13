@@ -1,22 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.History
 {
     public interface IHistoryRepository : IBasicRepository<History>
     {
-        History MostRecentForAlbum(int bookId);
+        History MostRecentForBook(int bookId);
         History MostRecentForDownloadId(string downloadId);
         List<History> FindByDownloadId(string downloadId);
-        List<History> GetByArtist(int authorId, HistoryEventType? eventType);
-        List<History> GetByAlbum(int bookId, HistoryEventType? eventType);
+        List<History> GetByAuthor(int authorId, HistoryEventType? eventType);
+        List<History> GetByBook(int bookId, HistoryEventType? eventType);
         List<History> FindDownloadHistory(int idAuthorId, QualityModel quality);
-        void DeleteForArtist(int authorId);
+        void DeleteForAuthor(int authorId);
         List<History> Since(DateTime date, HistoryEventType? eventType);
     }
 
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.History
         {
         }
 
-        public History MostRecentForAlbum(int bookId)
+        public History MostRecentForBook(int bookId)
         {
             return Query(h => h.BookId == bookId)
                 .OrderByDescending(h => h.Date)
@@ -48,15 +48,15 @@ namespace NzbDrone.Core.History
                 .Join<History, Author>((h, a) => h.AuthorId == a.Id)
                 .Join<History, Book>((h, a) => h.BookId == a.Id)
                 .Where<History>(h => h.DownloadId == downloadId),
-                (history, artist, album) =>
+                (history, author, book) =>
                 {
-                    history.Artist = artist;
-                    history.Album = album;
+                    history.Author = author;
+                    history.Book = book;
                     return history;
                 }).ToList();
         }
 
-        public List<History> GetByArtist(int authorId, HistoryEventType? eventType)
+        public List<History> GetByAuthor(int authorId, HistoryEventType? eventType)
         {
             var builder = Builder().Where<History>(h => h.AuthorId == authorId);
 
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.History
             return Query(builder).OrderByDescending(h => h.Date).ToList();
         }
 
-        public List<History> GetByAlbum(int bookId, HistoryEventType? eventType)
+        public List<History> GetByBook(int bookId, HistoryEventType? eventType)
         {
             var builder = Builder()
                 .Join<History, Book>((h, a) => h.BookId == a.Id)
@@ -81,9 +81,9 @@ namespace NzbDrone.Core.History
 
             return _database.QueryJoined<History, Book>(
                 builder,
-                (history, album) =>
+                (history, book) =>
                 {
-                    history.Album = album;
+                    history.Book = book;
                     return history;
                 }).OrderByDescending(h => h.Date).ToList();
         }
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.History
                          allowed.Contains(h.EventType));
         }
 
-        public void DeleteForArtist(int authorId)
+        public void DeleteForAuthor(int authorId)
         {
             Delete(c => c.AuthorId == authorId);
         }
@@ -107,10 +107,10 @@ namespace NzbDrone.Core.History
             .Join<History, Book>((h, a) => h.BookId == a.Id);
 
         protected override IEnumerable<History> PagedQuery(SqlBuilder builder) =>
-            _database.QueryJoined<History, Author, Book>(builder, (history, artist, album) =>
+            _database.QueryJoined<History, Author, Book>(builder, (history, author, book) =>
                     {
-                        history.Artist = artist;
-                        history.Album = album;
+                        history.Author = author;
+                        history.Book = book;
                         return history;
                     });
 

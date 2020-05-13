@@ -6,7 +6,7 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Profiles.Qualities;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public class Author : Entity<Author>
     {
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Music
         public int MetadataProfileId { get; set; }
         public HashSet<int> Tags { get; set; }
         [MemberwiseEqualityIgnore]
-        public AddArtistOptions AddOptions { get; set; }
+        public AddAuthorOptions AddOptions { get; set; }
 
         // Dynamically loaded from DB
         [MemberwiseEqualityIgnore]

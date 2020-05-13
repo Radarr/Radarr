@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Extras.Files;
-using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.BookImport.Aggregation;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Extras.Others
@@ -28,12 +28,12 @@ namespace NzbDrone.Core.Extras.Others
 
         public override int Order => 2;
 
-        public override IEnumerable<ExtraFile> ProcessFiles(Author artist, List<string> filesOnDisk, List<string> importedFiles)
+        public override IEnumerable<ExtraFile> ProcessFiles(Author author, List<string> filesOnDisk, List<string> importedFiles)
         {
-            _logger.Debug("Looking for existing extra files in {0}", artist.Path);
+            _logger.Debug("Looking for existing extra files in {0}", author.Path);
 
             var extraFiles = new List<OtherExtraFile>();
-            var filterResult = FilterAndClean(artist, filesOnDisk, importedFiles);
+            var filterResult = FilterAndClean(author, filesOnDisk, importedFiles);
 
             foreach (var possibleExtraFile in filterResult.FilesOnDisk)
             {
@@ -45,10 +45,10 @@ namespace NzbDrone.Core.Extras.Others
                     continue;
                 }
 
-                var localTrack = new LocalTrack
+                var localTrack = new LocalBook
                 {
                     FileTrackInfo = Parser.Parser.ParseMusicPath(possibleExtraFile),
-                    Artist = artist,
+                    Author = author,
                     Path = possibleExtraFile
                 };
 
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Extras.Others
                     continue;
                 }
 
-                if (localTrack.Album == null)
+                if (localTrack.Book == null)
                 {
                     _logger.Debug("Cannot find related book for: {0}", possibleExtraFile);
                     continue;
@@ -70,9 +70,9 @@ namespace NzbDrone.Core.Extras.Others
 
                 var extraFile = new OtherExtraFile
                 {
-                    AuthorId = artist.Id,
-                    BookId = localTrack.Album.Id,
-                    RelativePath = artist.Path.GetRelativePath(possibleExtraFile),
+                    AuthorId = author.Id,
+                    BookId = localTrack.Book.Id,
+                    RelativePath = author.Path.GetRelativePath(possibleExtraFile),
                     Extension = extension
                 };
 

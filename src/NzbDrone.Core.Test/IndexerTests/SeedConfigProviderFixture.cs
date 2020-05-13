@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.IndexerTests
                   .Setup(v => v.Get(It.IsAny<int>()))
                   .Throws(new ModelNotFoundException(typeof(IndexerDefinition), 0));
 
-            var result = Subject.GetSeedConfiguration(new RemoteAlbum
+            var result = Subject.GetSeedConfiguration(new RemoteBook
             {
                 Release = new ReleaseInfo
                 {
@@ -45,14 +45,14 @@ namespace NzbDrone.Core.Test.IndexerTests
                          Settings = settings
                      });
 
-            var result = Subject.GetSeedConfiguration(new RemoteAlbum
+            var result = Subject.GetSeedConfiguration(new RemoteBook
             {
                 Release = new ReleaseInfo()
                 {
                     DownloadProtocol = DownloadProtocol.Torrent,
                     IndexerId = 1
                 },
-                ParsedAlbumInfo = new ParsedAlbumInfo
+                ParsedBookInfo = new ParsedBookInfo
                 {
                     Discography = true
                 }

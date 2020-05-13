@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Nancy;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using Readarr.Http;
 using Readarr.Http.REST;
 

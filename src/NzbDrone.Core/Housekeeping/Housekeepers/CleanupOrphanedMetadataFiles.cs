@@ -56,8 +56,8 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      WHERE Id IN (
                                      SELECT MetadataFiles.Id FROM MetadataFiles
                                      LEFT OUTER JOIN BookFiles
-                                     ON MetadataFiles.TrackFileId = BookFiles.Id
-                                     WHERE MetadataFiles.TrackFileId > 0
+                                     ON MetadataFiles.BookFileId = BookFiles.Id
+                                     WHERE MetadataFiles.BookFileId > 0
                                      AND BookFiles.Id IS NULL)");
             }
         }
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                      WHERE Id IN (
                                      SELECT Id FROM MetadataFiles
                                      WHERE Type IN (2, 5)
-                                     AND TrackFileId = 0)");
+                                     AND BookFileId = 0)");
             }
         }
     }

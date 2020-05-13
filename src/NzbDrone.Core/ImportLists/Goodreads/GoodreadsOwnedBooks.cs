@@ -48,9 +48,9 @@ namespace NzbDrone.Core.ImportLists.Goodreads
 
             var result = reviews.Select(x => new ImportListItemInfo
             {
-                Artist = x.Book.Authors.First().Name.CleanSpaces(),
+                Author = x.Book.Authors.First().Name.CleanSpaces(),
                 ArtistMusicBrainzId = x.Book.Authors.First().Id.ToString(),
-                Album = x.Book.TitleWithoutSeries.CleanSpaces(),
+                Book = x.Book.TitleWithoutSeries.CleanSpaces(),
                 AlbumMusicBrainzId = x.Book.Id.ToString()
             }).ToList();
 

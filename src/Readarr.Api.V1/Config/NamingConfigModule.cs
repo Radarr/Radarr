@@ -32,8 +32,8 @@ namespace Readarr.Api.V1.Config
 
             Get("/examples", x => GetExamples(this.Bind<NamingConfigResource>()));
 
-            SharedValidator.RuleFor(c => c.StandardTrackFormat).ValidTrackFormat();
-            SharedValidator.RuleFor(c => c.ArtistFolderFormat).ValidArtistFolderFormat();
+            SharedValidator.RuleFor(c => c.StandardBookFormat).ValidBookFormat();
+            SharedValidator.RuleFor(c => c.ArtistFolderFormat).ValidAuthorFolderFormat();
         }
 
         private void UpdateNamingConfig(NamingConfigResource resource)
@@ -49,7 +49,7 @@ namespace Readarr.Api.V1.Config
             var nameSpec = _namingConfigService.GetConfig();
             var resource = nameSpec.ToResource();
 
-            if (resource.StandardTrackFormat.IsNotNullOrWhiteSpace())
+            if (resource.StandardBookFormat.IsNotNullOrWhiteSpace())
             {
                 var basicConfig = _filenameBuilder.GetBasicNamingConfig(nameSpec);
                 basicConfig.AddToResource(resource);
@@ -79,9 +79,9 @@ namespace Readarr.Api.V1.Config
                     ? null
                     : singleTrackSampleResult.FileName;
 
-            sampleResource.ArtistFolderExample = nameSpec.ArtistFolderFormat.IsNullOrWhiteSpace()
+            sampleResource.ArtistFolderExample = nameSpec.AuthorFolderFormat.IsNullOrWhiteSpace()
                 ? null
-                : _filenameSampleService.GetArtistFolderSample(nameSpec);
+                : _filenameSampleService.GetAuthorFolderSample(nameSpec);
 
             return sampleResource;
         }

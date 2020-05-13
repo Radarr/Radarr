@@ -7,12 +7,12 @@ using FizzWare.NBuilder;
 using FizzWare.NBuilder.PropertyNaming;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.MediaFiles.TrackImport.Identification;
+using NzbDrone.Core.MediaFiles.BookImport.Identification;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
+namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
 {
     // we need to use random strings to test the va (so we don't just get artist1, artist2 etc which are too similar)
     // but the standard random value namer would give paths that are too long on windows
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
     [TestFixture]
     public class TrackGroupingServiceFixture : CoreTest<TrackGroupingService>
     {
-        private List<LocalTrack> GivenTracks(string root, string artist, string album, int count)
+        private List<LocalBook> GivenTracks(string root, string artist, string album, int count)
         {
             var fileInfos = Builder<ParsedTrackInfo>
                 .CreateListOfSize(count)
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                 .With(f => f.ReleaseMBId = null)
                 .Build();
 
-            var tracks = fileInfos.Select(x => Builder<LocalTrack>
+            var tracks = fileInfos.Select(x => Builder<LocalBook>
                                           .CreateNew()
                                           .With(y => y.FileTrackInfo = x)
                                           .With(y => y.Path = Path.Combine(root, x.Title))
@@ -86,13 +86,13 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             return tracks;
         }
 
-        private List<LocalTrack> GivenTracksWithNoTags(string root, int count)
+        private List<LocalBook> GivenTracksWithNoTags(string root, int count)
         {
-            var outp = new List<LocalTrack>();
+            var outp = new List<LocalBook>();
 
             for (int i = 0; i < count; i++)
             {
-                var track = Builder<LocalTrack>
+                var track = Builder<LocalBook>
                     .CreateNew()
                     .With(y => y.FileTrackInfo = new ParsedTrackInfo())
                     .With(y => y.Path = Path.Combine(root, $"{i}.mp3"))
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
         }
 
         [Repeat(100)]
-        private List<LocalTrack> GivenVaTracks(string root, string album, int count)
+        private List<LocalBook> GivenVaTracks(string root, string album, int count)
         {
             var settings = new BuilderSettings();
             settings.SetPropertyNamerFor<ParsedTrackInfo>(new RandomValueNamerShortStrings(settings));
@@ -119,7 +119,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                 .With(f => f.ReleaseMBId = null)
                 .Build();
 
-            var tracks = fileInfos.Select(x => Builder<LocalTrack>
+            var tracks = fileInfos.Select(x => Builder<LocalBook>
                                           .CreateNew()
                                           .With(y => y.FileTrackInfo = x)
                                           .With(y => y.Path = Path.Combine(@"C:\music\incoming".AsOsAgnostic(), x.Title))
@@ -199,7 +199,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             TrackGroupingService.LooksLikeSingleRelease(tracks).Should().Be(true);
 
             output.Count.Should().Be(1);
-            output[0].LocalTracks.Count.Should().Be(count);
+            output[0].LocalBooks.Count.Should().Be(count);
         }
 
         [TestCase("cd")]
@@ -215,7 +215,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(1);
-            output[0].LocalTracks.Count.Should().Be(15);
+            output[0].LocalBooks.Count.Should().Be(15);
         }
 
         [Test]
@@ -229,8 +229,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(2);
-            output[0].LocalTracks.Count.Should().Be(10);
-            output[1].LocalTracks.Count.Should().Be(5);
+            output[0].LocalBooks.Count.Should().Be(10);
+            output[1].LocalBooks.Count.Should().Be(5);
         }
 
         [Test]
@@ -244,7 +244,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(1);
-            output[0].LocalTracks.Count.Should().Be(15);
+            output[0].LocalBooks.Count.Should().Be(15);
         }
 
         [Test]
@@ -258,8 +258,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(2);
-            output[0].LocalTracks.Count.Should().Be(1);
-            output[1].LocalTracks.Count.Should().Be(1);
+            output[0].LocalBooks.Count.Should().Be(1);
+            output[1].LocalBooks.Count.Should().Be(1);
         }
 
         [Test]
@@ -273,14 +273,14 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(2);
-            output[0].LocalTracks.Count.Should().Be(10);
-            output[1].LocalTracks.Count.Should().Be(5);
+            output[0].LocalBooks.Count.Should().Be(10);
+            output[1].LocalBooks.Count.Should().Be(5);
         }
 
         [Test]
         public void should_separate_many_albums_in_same_directory()
         {
-            var tracks = new List<LocalTrack>();
+            var tracks = new List<LocalBook>();
             for (int i = 0; i < 100; i++)
             {
                 tracks.AddRange(GivenTracks($"C:\\music".AsOsAgnostic(), "artist" + i, "album" + i, 10));
@@ -291,7 +291,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(100);
-            output.Select(x => x.LocalTracks.Count).Distinct().Should().BeEquivalentTo(new List<int> { 10 });
+            output.Select(x => x.LocalBooks.Count).Distinct().Should().BeEquivalentTo(new List<int> { 10 });
         }
 
         [Test]
@@ -305,8 +305,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(2);
-            output[0].LocalTracks.Count.Should().Be(10);
-            output[1].LocalTracks.Count.Should().Be(5);
+            output[0].LocalBooks.Count.Should().Be(10);
+            output[1].LocalBooks.Count.Should().Be(5);
         }
 
         [Test]
@@ -320,7 +320,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(1);
-            output[0].LocalTracks.Count.Should().Be(10);
+            output[0].LocalBooks.Count.Should().Be(10);
         }
 
         [Test]
@@ -335,8 +335,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var output = Subject.GroupTracks(tracks);
 
             output.Count.Should().Be(2);
-            output[0].LocalTracks.Count.Should().Be(10);
-            output[1].LocalTracks.Count.Should().Be(5);
+            output[0].LocalBooks.Count.Should().Be(10);
+            output[1].LocalBooks.Count.Should().Be(5);
         }
 
         [Test]
@@ -349,7 +349,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(1);
-            output[0].LocalTracks.Count.Should().Be(10);
+            output[0].LocalBooks.Count.Should().Be(10);
         }
 
         [Test]
@@ -363,7 +363,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             var output = Subject.GroupTracks(tracks);
             output.Count.Should().Be(1);
-            output[0].LocalTracks.Count.Should().Be(12);
+            output[0].LocalBooks.Count.Should().Be(12);
         }
 
         [Test]
@@ -380,12 +380,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             foreach (var group in output)
             {
                 TestLogger.Debug($"*** group {group} ***");
-                TestLogger.Debug(string.Join("\n", group.LocalTracks.Select(x => x.Path)));
+                TestLogger.Debug(string.Join("\n", group.LocalBooks.Select(x => x.Path)));
             }
 
             output.Count.Should().Be(2);
-            output[0].LocalTracks.Count.Should().Be(10);
-            output[1].LocalTracks.Count.Should().Be(10);
+            output[0].LocalBooks.Count.Should().Be(10);
+            output[1].LocalBooks.Count.Should().Be(10);
         }
     }
 }

@@ -4,13 +4,13 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Crypto;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Jobs;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
@@ -23,21 +23,21 @@ namespace NzbDrone.Core.Download.Pending
         void Add(DownloadDecision decision, PendingReleaseReason reason);
         void AddMany(List<Tuple<DownloadDecision, PendingReleaseReason>> decisions);
         List<ReleaseInfo> GetPending();
-        List<RemoteAlbum> GetPendingRemoteAlbums(int authorId);
+        List<RemoteBook> GetPendingRemoteBooks(int authorId);
         List<Queue.Queue> GetPendingQueue();
         Queue.Queue FindPendingQueueItem(int queueId);
         void RemovePendingQueueItems(int queueId);
-        RemoteAlbum OldestPendingRelease(int authorId, int[] bookIds);
+        RemoteBook OldestPendingRelease(int authorId, int[] bookIds);
     }
 
     public class PendingReleaseService : IPendingReleaseService,
-                                         IHandle<ArtistDeletedEvent>,
-                                         IHandle<AlbumGrabbedEvent>,
+                                         IHandle<AuthorDeletedEvent>,
+                                         IHandle<BookGrabbedEvent>,
                                          IHandle<RssSyncCompleteEvent>
     {
         private readonly IIndexerStatusService _indexerStatusService;
         private readonly IPendingReleaseRepository _repository;
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
         private readonly IParsingService _parsingService;
         private readonly IDelayProfileService _delayProfileService;
         private readonly ITaskManager _taskManager;
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Download.Pending
 
         public PendingReleaseService(IIndexerStatusService indexerStatusService,
                                     IPendingReleaseRepository repository,
-                                    IArtistService artistService,
+                                    IAuthorService authorService,
                                     IParsingService parsingService,
                                     IDelayProfileService delayProfileService,
                                     ITaskManager taskManager,
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Download.Pending
         {
             _indexerStatusService = indexerStatusService;
             _repository = repository;
-            _artistService = artistService;
+            _authorService = authorService;
             _parsingService = parsingService;
             _delayProfileService = delayProfileService;
             _taskManager = taskManager;
@@ -73,25 +73,25 @@ namespace NzbDrone.Core.Download.Pending
 
         public void AddMany(List<Tuple<DownloadDecision, PendingReleaseReason>> decisions)
         {
-            foreach (var artistDecisions in decisions.GroupBy(v => v.Item1.RemoteAlbum.Artist.Id))
+            foreach (var authorDecisions in decisions.GroupBy(v => v.Item1.RemoteBook.Author.Id))
             {
-                var artist = artistDecisions.First().Item1.RemoteAlbum.Artist;
-                var alreadyPending = _repository.AllByAuthorId(artist.Id);
+                var author = authorDecisions.First().Item1.RemoteBook.Author;
+                var alreadyPending = _repository.AllByAuthorId(author.Id);
 
-                alreadyPending = IncludeRemoteAlbums(alreadyPending, artistDecisions.ToDictionaryIgnoreDuplicates(v => v.Item1.RemoteAlbum.Release.Title, v => v.Item1.RemoteAlbum));
-                var alreadyPendingByAlbum = CreateAlbumLookup(alreadyPending);
+                alreadyPending = IncludeRemoteBooks(alreadyPending, authorDecisions.ToDictionaryIgnoreDuplicates(v => v.Item1.RemoteBook.Release.Title, v => v.Item1.RemoteBook));
+                var alreadyPendingByAlbum = CreateBookLookup(alreadyPending);
 
-                foreach (var pair in artistDecisions)
+                foreach (var pair in authorDecisions)
                 {
                     var decision = pair.Item1;
                     var reason = pair.Item2;
 
-                    var bookIds = decision.RemoteAlbum.Albums.Select(e => e.Id);
+                    var bookIds = decision.RemoteBook.Books.Select(e => e.Id);
 
                     var existingReports = bookIds.SelectMany(v => alreadyPendingByAlbum[v] ?? Enumerable.Empty<PendingRelease>())
                                                     .Distinct().ToList();
 
-                    var matchingReports = existingReports.Where(MatchingReleasePredicate(decision.RemoteAlbum.Release)).ToList();
+                    var matchingReports = existingReports.Where(MatchingReleasePredicate(decision.RemoteBook.Release)).ToList();
 
                     if (matchingReports.Any())
                     {
@@ -99,39 +99,39 @@ namespace NzbDrone.Core.Download.Pending
 
                         if (matchingReport.Reason != reason)
                         {
-                            _logger.Debug("The release {0} is already pending with reason {1}, changing to {2}", decision.RemoteAlbum, matchingReport.Reason, reason);
+                            _logger.Debug("The release {0} is already pending with reason {1}, changing to {2}", decision.RemoteBook, matchingReport.Reason, reason);
                             matchingReport.Reason = reason;
                             _repository.Update(matchingReport);
                         }
                         else
                         {
-                            _logger.Debug("The release {0} is already pending with reason {1}, not adding again", decision.RemoteAlbum, reason);
+                            _logger.Debug("The release {0} is already pending with reason {1}, not adding again", decision.RemoteBook, reason);
                         }
 
                         if (matchingReports.Count() > 1)
                         {
-                            _logger.Debug("The release {0} had {1} duplicate pending, removing duplicates.", decision.RemoteAlbum, matchingReports.Count() - 1);
+                            _logger.Debug("The release {0} had {1} duplicate pending, removing duplicates.", decision.RemoteBook, matchingReports.Count() - 1);
 
                             foreach (var duplicate in matchingReports.Skip(1))
                             {
                                 _repository.Delete(duplicate.Id);
                                 alreadyPending.Remove(duplicate);
-                                alreadyPendingByAlbum = CreateAlbumLookup(alreadyPending);
+                                alreadyPendingByAlbum = CreateBookLookup(alreadyPending);
                             }
                         }
 
                         continue;
                     }
 
-                    _logger.Debug("Adding release {0} to pending releases with reason {1}", decision.RemoteAlbum, reason);
+                    _logger.Debug("Adding release {0} to pending releases with reason {1}", decision.RemoteBook, reason);
                     Insert(decision, reason);
                 }
             }
         }
 
-        private ILookup<int, PendingRelease> CreateAlbumLookup(IEnumerable<PendingRelease> alreadyPending)
+        private ILookup<int, PendingRelease> CreateBookLookup(IEnumerable<PendingRelease> alreadyPending)
         {
-            return alreadyPending.SelectMany(v => v.RemoteAlbum.Albums
+            return alreadyPending.SelectMany(v => v.RemoteBook.Books
                     .Select(d => new { Album = d, PendingRelease = v }))
                 .ToLookup(v => v.Album.Id, v => v.PendingRelease);
         }
@@ -155,9 +155,9 @@ namespace NzbDrone.Core.Download.Pending
             return releases.Where(release => !blockedIndexers.Contains(release.IndexerId)).ToList();
         }
 
-        public List<RemoteAlbum> GetPendingRemoteAlbums(int authorId)
+        public List<RemoteBook> GetPendingRemoteBooks(int authorId)
         {
-            return IncludeRemoteAlbums(_repository.AllByAuthorId(authorId)).Select(v => v.RemoteAlbum).ToList();
+            return IncludeRemoteBooks(_repository.AllByAuthorId(authorId)).Select(v => v.RemoteBook).ToList();
         }
 
         public List<Queue.Queue> GetPendingQueue()
@@ -166,12 +166,12 @@ namespace NzbDrone.Core.Download.Pending
 
             var nextRssSync = new Lazy<DateTime>(() => _taskManager.GetNextExecution(typeof(RssSyncCommand)));
 
-            var pendingReleases = IncludeRemoteAlbums(_repository.WithoutFallback());
+            var pendingReleases = IncludeRemoteBooks(_repository.WithoutFallback());
             foreach (var pendingRelease in pendingReleases)
             {
-                foreach (var album in pendingRelease.RemoteAlbum.Albums)
+                foreach (var book in pendingRelease.RemoteBook.Books)
                 {
-                    var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteAlbum));
+                    var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteBook));
 
                     if (ect < nextRssSync.Value)
                     {
@@ -191,32 +191,32 @@ namespace NzbDrone.Core.Download.Pending
 
                     var queue = new Queue.Queue
                     {
-                        Id = GetQueueId(pendingRelease, album),
-                        Artist = pendingRelease.RemoteAlbum.Artist,
-                        Album = album,
-                        Quality = pendingRelease.RemoteAlbum.ParsedAlbumInfo.Quality,
+                        Id = GetQueueId(pendingRelease, book),
+                        Author = pendingRelease.RemoteBook.Author,
+                        Book = book,
+                        Quality = pendingRelease.RemoteBook.ParsedBookInfo.Quality,
                         Title = pendingRelease.Title,
-                        Size = pendingRelease.RemoteAlbum.Release.Size,
-                        Sizeleft = pendingRelease.RemoteAlbum.Release.Size,
-                        RemoteAlbum = pendingRelease.RemoteAlbum,
+                        Size = pendingRelease.RemoteBook.Release.Size,
+                        Sizeleft = pendingRelease.RemoteBook.Release.Size,
+                        RemoteBook = pendingRelease.RemoteBook,
                         Timeleft = timeleft,
                         EstimatedCompletionTime = ect,
                         Status = pendingRelease.Reason.ToString(),
-                        Protocol = pendingRelease.RemoteAlbum.Release.DownloadProtocol,
-                        Indexer = pendingRelease.RemoteAlbum.Release.Indexer
+                        Protocol = pendingRelease.RemoteBook.Release.DownloadProtocol,
+                        Indexer = pendingRelease.RemoteBook.Release.Indexer
                     };
 
                     queued.Add(queue);
                 }
             }
 
-            //Return best quality release for each album
-            var deduped = queued.GroupBy(q => q.Album.Id).Select(g =>
+            //Return best quality release for each book
+            var deduped = queued.GroupBy(q => q.Book.Id).Select(g =>
             {
-                var artist = g.First().Artist;
+                var author = g.First().Author;
 
-                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(artist.QualityProfile))
-                        .ThenBy(q => PrioritizeDownloadProtocol(q.Artist, q.Protocol))
+                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(author.QualityProfile))
+                        .ThenBy(q => PrioritizeDownloadProtocol(q.Author, q.Protocol))
                         .First();
             });
 
@@ -231,83 +231,83 @@ namespace NzbDrone.Core.Download.Pending
         public void RemovePendingQueueItems(int queueId)
         {
             var targetItem = FindPendingRelease(queueId);
-            var artistReleases = _repository.AllByAuthorId(targetItem.AuthorId);
+            var authorReleases = _repository.AllByAuthorId(targetItem.AuthorId);
 
-            var releasesToRemove = artistReleases.Where(
-                c => c.ParsedAlbumInfo.AlbumTitle == targetItem.ParsedAlbumInfo.AlbumTitle);
+            var releasesToRemove = authorReleases.Where(
+                c => c.ParsedBookInfo.BookTitle == targetItem.ParsedBookInfo.BookTitle);
 
             _repository.DeleteMany(releasesToRemove.Select(c => c.Id));
         }
 
-        public RemoteAlbum OldestPendingRelease(int authorId, int[] bookIds)
+        public RemoteBook OldestPendingRelease(int authorId, int[] bookIds)
         {
-            var artistReleases = GetPendingReleases(authorId);
+            var authorReleases = GetPendingReleases(authorId);
 
-            return artistReleases.Select(r => r.RemoteAlbum)
-                                 .Where(r => r.Albums.Select(e => e.Id).Intersect(bookIds).Any())
+            return authorReleases.Select(r => r.RemoteBook)
+                                 .Where(r => r.Books.Select(e => e.Id).Intersect(bookIds).Any())
                                  .OrderByDescending(p => p.Release.AgeHours)
                                  .FirstOrDefault();
         }
 
         private List<PendingRelease> GetPendingReleases()
         {
-            return IncludeRemoteAlbums(_repository.All().ToList());
+            return IncludeRemoteBooks(_repository.All().ToList());
         }
 
         private List<PendingRelease> GetPendingReleases(int authorId)
         {
-            return IncludeRemoteAlbums(_repository.AllByAuthorId(authorId).ToList());
+            return IncludeRemoteBooks(_repository.AllByAuthorId(authorId).ToList());
         }
 
-        private List<PendingRelease> IncludeRemoteAlbums(List<PendingRelease> releases, Dictionary<string, RemoteAlbum> knownRemoteAlbums = null)
+        private List<PendingRelease> IncludeRemoteBooks(List<PendingRelease> releases, Dictionary<string, RemoteBook> knownRemoteBooks = null)
         {
             var result = new List<PendingRelease>();
 
-            var artistMap = new Dictionary<int, Author>();
+            var authorMap = new Dictionary<int, Author>();
 
-            if (knownRemoteAlbums != null)
+            if (knownRemoteBooks != null)
             {
-                foreach (var artist in knownRemoteAlbums.Values.Select(v => v.Artist))
+                foreach (var author in knownRemoteBooks.Values.Select(v => v.Author))
                 {
-                    if (!artistMap.ContainsKey(artist.Id))
+                    if (!authorMap.ContainsKey(author.Id))
                     {
-                        artistMap[artist.Id] = artist;
+                        authorMap[author.Id] = author;
                     }
                 }
             }
 
-            foreach (var artist in _artistService.GetArtists(releases.Select(v => v.AuthorId).Distinct().Where(v => !artistMap.ContainsKey(v))))
+            foreach (var author in _authorService.GetAuthors(releases.Select(v => v.AuthorId).Distinct().Where(v => !authorMap.ContainsKey(v))))
             {
-                artistMap[artist.Id] = artist;
+                authorMap[author.Id] = author;
             }
 
             foreach (var release in releases)
             {
-                var artist = artistMap.GetValueOrDefault(release.AuthorId);
+                var author = authorMap.GetValueOrDefault(release.AuthorId);
 
-                // Just in case the artist was removed, but wasn't cleaned up yet (housekeeper will clean it up)
-                if (artist == null)
+                // Just in case the author was removed, but wasn't cleaned up yet (housekeeper will clean it up)
+                if (author == null)
                 {
                     return null;
                 }
 
-                List<Book> albums;
+                List<Book> books;
 
-                RemoteAlbum knownRemoteAlbum;
-                if (knownRemoteAlbums != null && knownRemoteAlbums.TryGetValue(release.Release.Title, out knownRemoteAlbum))
+                RemoteBook knownRemoteBook;
+                if (knownRemoteBooks != null && knownRemoteBooks.TryGetValue(release.Release.Title, out knownRemoteBook))
                 {
-                    albums = knownRemoteAlbum.Albums;
+                    books = knownRemoteBook.Books;
                 }
                 else
                 {
-                    albums = _parsingService.GetAlbums(release.ParsedAlbumInfo, artist);
+                    books = _parsingService.GetAlbums(release.ParsedBookInfo, author);
                 }
 
-                release.RemoteAlbum = new RemoteAlbum
+                release.RemoteBook = new RemoteBook
                 {
-                    Artist = artist,
-                    Albums = albums,
-                    ParsedAlbumInfo = release.ParsedAlbumInfo,
+                    Author = author,
+                    Books = books,
+                    ParsedBookInfo = release.ParsedBookInfo,
                     Release = release.Release
                 };
 
@@ -321,10 +321,10 @@ namespace NzbDrone.Core.Download.Pending
         {
             _repository.Insert(new PendingRelease
             {
-                AuthorId = decision.RemoteAlbum.Artist.Id,
-                ParsedAlbumInfo = decision.RemoteAlbum.ParsedAlbumInfo,
-                Release = decision.RemoteAlbum.Release,
-                Title = decision.RemoteAlbum.Release.Title,
+                AuthorId = decision.RemoteBook.Author.Id,
+                ParsedBookInfo = decision.RemoteBook.ParsedBookInfo,
+                Release = decision.RemoteBook.Release,
+                Title = decision.RemoteBook.Release.Title,
                 Added = DateTime.UtcNow,
                 Reason = reason
             });
@@ -345,21 +345,21 @@ namespace NzbDrone.Core.Download.Pending
                    p.Release.Indexer == release.Indexer;
         }
 
-        private int GetDelay(RemoteAlbum remoteAlbum)
+        private int GetDelay(RemoteBook remoteAlbum)
         {
-            var delayProfile = _delayProfileService.AllForTags(remoteAlbum.Artist.Tags).OrderBy(d => d.Order).First();
+            var delayProfile = _delayProfileService.AllForTags(remoteAlbum.Author.Tags).OrderBy(d => d.Order).First();
             var delay = delayProfile.GetProtocolDelay(remoteAlbum.Release.DownloadProtocol);
             var minimumAge = _configService.MinimumAge;
 
             return new[] { delay, minimumAge }.Max();
         }
 
-        private void RemoveGrabbed(RemoteAlbum remoteAlbum)
+        private void RemoveGrabbed(RemoteBook remoteBook)
         {
-            var pendingReleases = GetPendingReleases(remoteAlbum.Artist.Id);
-            var bookIds = remoteAlbum.Albums.Select(e => e.Id);
+            var pendingReleases = GetPendingReleases(remoteBook.Author.Id);
+            var bookIds = remoteBook.Books.Select(e => e.Id);
 
-            var existingReports = pendingReleases.Where(r => r.RemoteAlbum.Albums.Select(e => e.Id)
+            var existingReports = pendingReleases.Where(r => r.RemoteBook.Books.Select(e => e.Id)
                                                              .Intersect(bookIds)
                                                              .Any())
                                                              .ToList();
@@ -369,12 +369,12 @@ namespace NzbDrone.Core.Download.Pending
                 return;
             }
 
-            var profile = remoteAlbum.Artist.QualityProfile.Value;
+            var profile = remoteBook.Author.QualityProfile.Value;
 
             foreach (var existingReport in existingReports)
             {
-                var compare = new QualityModelComparer(profile).Compare(remoteAlbum.ParsedAlbumInfo.Quality,
-                                                                        existingReport.RemoteAlbum.ParsedAlbumInfo.Quality);
+                var compare = new QualityModelComparer(profile).Compare(remoteBook.ParsedBookInfo.Quality,
+                                                                        existingReport.RemoteBook.ParsedBookInfo.Quality);
 
                 //Only remove lower/equal quality pending releases
                 //It is safer to retry these releases on the next round than remove it and try to re-add it (if its still in the feed)
@@ -393,7 +393,7 @@ namespace NzbDrone.Core.Download.Pending
 
             foreach (var rejectedRelease in rejected)
             {
-                var matching = pending.Where(MatchingReleasePredicate(rejectedRelease.RemoteAlbum.Release));
+                var matching = pending.Where(MatchingReleasePredicate(rejectedRelease.RemoteBook.Release));
 
                 foreach (var pendingRelease in matching)
                 {
@@ -405,17 +405,17 @@ namespace NzbDrone.Core.Download.Pending
 
         private PendingRelease FindPendingRelease(int queueId)
         {
-            return GetPendingReleases().First(p => p.RemoteAlbum.Albums.Any(e => queueId == GetQueueId(p, e)));
+            return GetPendingReleases().First(p => p.RemoteBook.Books.Any(e => queueId == GetQueueId(p, e)));
         }
 
-        private int GetQueueId(PendingRelease pendingRelease, Book album)
+        private int GetQueueId(PendingRelease pendingRelease, Book book)
         {
-            return HashConverter.GetHashInt31(string.Format("pending-{0}-album{1}", pendingRelease.Id, album.Id));
+            return HashConverter.GetHashInt31(string.Format("pending-{0}-book{1}", pendingRelease.Id, book.Id));
         }
 
-        private int PrioritizeDownloadProtocol(Author artist, DownloadProtocol downloadProtocol)
+        private int PrioritizeDownloadProtocol(Author author, DownloadProtocol downloadProtocol)
         {
-            var delayProfile = _delayProfileService.BestForTags(artist.Tags);
+            var delayProfile = _delayProfileService.BestForTags(author.Tags);
 
             if (downloadProtocol == delayProfile.PreferredProtocol)
             {
@@ -425,14 +425,14 @@ namespace NzbDrone.Core.Download.Pending
             return 1;
         }
 
-        public void Handle(ArtistDeletedEvent message)
+        public void Handle(AuthorDeletedEvent message)
         {
-            _repository.DeleteByAuthorId(message.Artist.Id);
+            _repository.DeleteByAuthorId(message.Author.Id);
         }
 
-        public void Handle(AlbumGrabbedEvent message)
+        public void Handle(BookGrabbedEvent message)
         {
-            RemoveGrabbed(message.Album);
+            RemoveGrabbed(message.Book);
         }
 
         public void Handle(RssSyncCompleteEvent message)

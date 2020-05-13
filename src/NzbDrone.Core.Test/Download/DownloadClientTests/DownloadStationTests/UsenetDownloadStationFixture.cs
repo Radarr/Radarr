@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         protected string _defaultDestination = "somepath";
         protected OsPath _physicalPath = new OsPath("/mnt/sdb1/mydata");
 
-        protected RemoteAlbum _remoteAlbum;
+        protected RemoteBook _remoteAlbum;
 
         protected Dictionary<string, object> _downloadStationConfigItems;
 

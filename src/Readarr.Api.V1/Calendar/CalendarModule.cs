@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.ArtistStats;
+using NzbDrone.Core.AuthorStats;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Music;
 using NzbDrone.SignalR;
 using Readarr.Api.V1.Albums;
 using Readarr.Http.Extensions;
@@ -13,12 +13,12 @@ namespace Readarr.Api.V1.Calendar
 {
     public class CalendarModule : AlbumModuleWithSignalR
     {
-        public CalendarModule(IAlbumService albumService,
-                              IArtistStatisticsService artistStatisticsService,
+        public CalendarModule(IBookService bookService,
+                              IAuthorStatisticsService artistStatisticsService,
                               IMapCoversToLocal coverMapper,
                               IUpgradableSpecification upgradableSpecification,
                               IBroadcastSignalRMessage signalRBroadcaster)
-            : base(albumService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "calendar")
+            : base(bookService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "calendar")
         {
             GetResourceAll = GetCalendar;
         }
@@ -46,7 +46,7 @@ namespace Readarr.Api.V1.Calendar
                 end = DateTime.Parse(queryEnd.Value);
             }
 
-            var resources = MapToResource(_albumService.AlbumsBetweenDates(start, end, includeUnmonitored), includeArtist);
+            var resources = MapToResource(_bookService.BooksBetweenDates(start, end, includeUnmonitored), includeArtist);
 
             return resources.OrderBy(e => e.ReleaseDate).ToList();
         }

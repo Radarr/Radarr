@@ -4,9 +4,9 @@ using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(f => f.DefaultMetadataProfileId = 1)
                 .BuildList();
 
-            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(artistList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
             Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
             Mocker.GetMock<IMetadataProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
@@ -152,7 +152,7 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(f => f.DefaultMetadataProfileId = 1)
                 .BuildList();
 
-            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(artistList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
             Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
             Mocker.GetMock<IMetadataProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
@@ -184,7 +184,7 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(f => f.DefaultMetadataProfileId = profile.Id)
                 .BuildList();
 
-            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(artistList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
             Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
             Mocker.GetMock<IMetadataProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
@@ -216,7 +216,7 @@ namespace NzbDrone.Core.Test.Profiles.Metadata
                 .With(f => f.DefaultMetadataProfileId = 2)
                 .BuildList();
 
-            Mocker.GetMock<IArtistService>().Setup(c => c.GetAllArtists()).Returns(artistList);
+            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(artistList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
             Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
             Mocker.GetMock<IMetadataProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);

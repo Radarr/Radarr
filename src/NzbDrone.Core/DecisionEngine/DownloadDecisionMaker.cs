@@ -68,69 +68,69 @@ namespace NzbDrone.Core.DecisionEngine
 
                 try
                 {
-                    var parsedAlbumInfo = Parser.Parser.ParseAlbumTitle(report.Title);
+                    var parsedBookInfo = Parser.Parser.ParseBookTitle(report.Title);
 
-                    if (parsedAlbumInfo == null)
+                    if (parsedBookInfo == null)
                     {
                         if (searchCriteria != null)
                         {
-                            parsedAlbumInfo = Parser.Parser.ParseAlbumTitleWithSearchCriteria(report.Title,
-                                                                                              searchCriteria.Artist,
-                                                                                              searchCriteria.Albums);
+                            parsedBookInfo = Parser.Parser.ParseAlbumTitleWithSearchCriteria(report.Title,
+                                                                                              searchCriteria.Author,
+                                                                                              searchCriteria.Books);
                         }
                         else
                         {
                             // try parsing fuzzy
-                            parsedAlbumInfo = _parsingService.ParseAlbumTitleFuzzy(report.Title);
+                            parsedBookInfo = _parsingService.ParseAlbumTitleFuzzy(report.Title);
                         }
                     }
 
-                    if (parsedAlbumInfo != null)
+                    if (parsedBookInfo != null)
                     {
-                        if (!parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
+                        if (!parsedBookInfo.AuthorName.IsNullOrWhiteSpace())
                         {
-                            var remoteAlbum = _parsingService.Map(parsedAlbumInfo, searchCriteria);
+                            var remoteBook = _parsingService.Map(parsedBookInfo, searchCriteria);
 
                             // try parsing again using the search criteria, in case it parsed but parsed incorrectly
-                            if ((remoteAlbum.Artist == null || remoteAlbum.Albums.Empty()) && searchCriteria != null)
+                            if ((remoteBook.Author == null || remoteBook.Books.Empty()) && searchCriteria != null)
                             {
-                                _logger.Debug("Artist/Album null for {0}, reparsing with search criteria", report.Title);
+                                _logger.Debug("Author/Book null for {0}, reparsing with search criteria", report.Title);
                                 var parsedAlbumInfoWithCriteria = Parser.Parser.ParseAlbumTitleWithSearchCriteria(report.Title,
-                                                                                                                  searchCriteria.Artist,
-                                                                                                                  searchCriteria.Albums);
+                                                                                                                  searchCriteria.Author,
+                                                                                                                  searchCriteria.Books);
 
-                                if (parsedAlbumInfoWithCriteria != null && parsedAlbumInfoWithCriteria.ArtistName.IsNotNullOrWhiteSpace())
+                                if (parsedAlbumInfoWithCriteria != null && parsedAlbumInfoWithCriteria.AuthorName.IsNotNullOrWhiteSpace())
                                 {
-                                    remoteAlbum = _parsingService.Map(parsedAlbumInfoWithCriteria, searchCriteria);
+                                    remoteBook = _parsingService.Map(parsedAlbumInfoWithCriteria, searchCriteria);
                                 }
                             }
 
-                            remoteAlbum.Release = report;
+                            remoteBook.Release = report;
 
-                            if (remoteAlbum.Artist == null)
+                            if (remoteBook.Author == null)
                             {
-                                decision = new DownloadDecision(remoteAlbum, new Rejection("Unknown Artist"));
+                                decision = new DownloadDecision(remoteBook, new Rejection("Unknown Author"));
 
-                                // shove in the searched artist in case of forced download in interactive search
+                                // shove in the searched author in case of forced download in interactive search
                                 if (searchCriteria != null)
                                 {
-                                    remoteAlbum.Artist = searchCriteria.Artist;
-                                    remoteAlbum.Albums = searchCriteria.Albums;
+                                    remoteBook.Author = searchCriteria.Author;
+                                    remoteBook.Books = searchCriteria.Books;
                                 }
                             }
-                            else if (remoteAlbum.Albums.Empty())
+                            else if (remoteBook.Books.Empty())
                             {
-                                decision = new DownloadDecision(remoteAlbum, new Rejection("Unable to parse albums from release name"));
+                                decision = new DownloadDecision(remoteBook, new Rejection("Unable to parse books from release name"));
                                 if (searchCriteria != null)
                                 {
-                                    remoteAlbum.Albums = searchCriteria.Albums;
+                                    remoteBook.Books = searchCriteria.Books;
                                 }
                             }
                             else
                             {
-                                _aggregationService.Augment(remoteAlbum);
-                                remoteAlbum.DownloadAllowed = remoteAlbum.Albums.Any();
-                                decision = GetDecisionForReport(remoteAlbum, searchCriteria);
+                                _aggregationService.Augment(remoteBook);
+                                remoteBook.DownloadAllowed = remoteBook.Books.Any();
+                                decision = GetDecisionForReport(remoteBook, searchCriteria);
                             }
                         }
                     }
@@ -139,8 +139,8 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     _logger.Error(e, "Couldn't process release.");
 
-                    var remoteAlbum = new RemoteAlbum { Release = report };
-                    decision = new DownloadDecision(remoteAlbum, new Rejection("Unexpected error processing release"));
+                    var remoteBook = new RemoteBook { Release = report };
+                    decision = new DownloadDecision(remoteBook, new Rejection("Unexpected error processing release"));
                 }
 
                 reportNumber++;
@@ -161,13 +161,13 @@ namespace NzbDrone.Core.DecisionEngine
             }
         }
 
-        private DownloadDecision GetDecisionForReport(RemoteAlbum remoteAlbum, SearchCriteriaBase searchCriteria = null)
+        private DownloadDecision GetDecisionForReport(RemoteBook remoteBook, SearchCriteriaBase searchCriteria = null)
         {
             var reasons = new Rejection[0];
 
             foreach (var specifications in _specifications.GroupBy(v => v.Priority).OrderBy(v => v.Key))
             {
-                reasons = specifications.Select(c => EvaluateSpec(c, remoteAlbum, searchCriteria))
+                reasons = specifications.Select(c => EvaluateSpec(c, remoteBook, searchCriteria))
                                                         .Where(c => c != null)
                                                         .ToArray();
 
@@ -177,14 +177,14 @@ namespace NzbDrone.Core.DecisionEngine
                 }
             }
 
-            return new DownloadDecision(remoteAlbum, reasons.ToArray());
+            return new DownloadDecision(remoteBook, reasons.ToArray());
         }
 
-        private Rejection EvaluateSpec(IDecisionEngineSpecification spec, RemoteAlbum remoteAlbum, SearchCriteriaBase searchCriteriaBase = null)
+        private Rejection EvaluateSpec(IDecisionEngineSpecification spec, RemoteBook remoteBook, SearchCriteriaBase searchCriteriaBase = null)
         {
             try
             {
-                var result = spec.IsSatisfiedBy(remoteAlbum, searchCriteriaBase);
+                var result = spec.IsSatisfiedBy(remoteBook, searchCriteriaBase);
 
                 if (!result.Accepted)
                 {
@@ -197,9 +197,9 @@ namespace NzbDrone.Core.DecisionEngine
             }
             catch (Exception e)
             {
-                e.Data.Add("report", remoteAlbum.Release.ToJson());
-                e.Data.Add("parsed", remoteAlbum.ParsedAlbumInfo.ToJson());
-                _logger.Error(e, "Couldn't evaluate decision on {0}", remoteAlbum.Release.Title);
+                e.Data.Add("report", remoteBook.Release.ToJson());
+                e.Data.Add("parsed", remoteBook.ParsedBookInfo.ToJson());
+                _logger.Error(e, "Couldn't evaluate decision on {0}", remoteBook.Release.Title);
                 return new Rejection($"{spec.GetType().Name}: {e.Message}");
             }
 

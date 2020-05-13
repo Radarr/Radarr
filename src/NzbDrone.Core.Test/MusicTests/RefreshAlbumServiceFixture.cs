@@ -5,18 +5,18 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MusicTests
 {
     [TestFixture]
-    public class RefreshAlbumServiceFixture : CoreTest<RefreshAlbumService>
+    public class RefreshAlbumServiceFixture : CoreTest<RefreshBookService>
     {
         private Author _artist;
         private List<Book> _albums;
@@ -36,28 +36,28 @@ namespace NzbDrone.Core.Test.MusicTests
                 .With(s => s.Books = _albums)
                 .Build();
 
-            Mocker.GetMock<IArtistService>()
-                  .Setup(s => s.GetArtist(_artist.Id))
+            Mocker.GetMock<IAuthorService>()
+                  .Setup(s => s.GetAuthor(_artist.Id))
                   .Returns(_artist);
 
-            Mocker.GetMock<IArtistMetadataService>()
+            Mocker.GetMock<IAuthorMetadataService>()
                 .Setup(s => s.UpsertMany(It.IsAny<List<AuthorMetadata>>()))
                 .Returns(true);
 
             Mocker.GetMock<IProvideBookInfo>()
                 .Setup(s => s.GetBookInfo(It.IsAny<string>()))
-                  .Callback(() => { throw new AlbumNotFoundException(album1.ForeignBookId); });
+                  .Callback(() => { throw new BookNotFoundException(album1.ForeignBookId); });
 
-            Mocker.GetMock<ICheckIfAlbumShouldBeRefreshed>()
+            Mocker.GetMock<ICheckIfBookShouldBeRefreshed>()
                 .Setup(s => s.ShouldRefresh(It.IsAny<Book>()))
                 .Returns(true);
 
             Mocker.GetMock<IMediaFileService>()
-                .Setup(x => x.GetFilesByAlbum(It.IsAny<int>()))
+                .Setup(x => x.GetFilesByBook(It.IsAny<int>()))
                 .Returns(new List<BookFile>());
 
             Mocker.GetMock<IHistoryService>()
-                .Setup(x => x.GetByAlbum(It.IsAny<int>(), It.IsAny<HistoryEventType?>()))
+                .Setup(x => x.GetByBook(It.IsAny<int>(), It.IsAny<HistoryEventType?>()))
                 .Returns(new List<History.History>());
         }
 
@@ -68,9 +68,9 @@ namespace NzbDrone.Core.Test.MusicTests
             newAlbumInfo.AuthorMetadata = _albums.First().AuthorMetadata.Value.JsonClone();
             newAlbumInfo.ForeignBookId = _albums.First().ForeignBookId + 1;
 
-            Subject.RefreshAlbumInfo(_albums, new List<Book> { newAlbumInfo }, null, false, false, null);
+            Subject.RefreshBookInfo(_albums, new List<Book> { newAlbumInfo }, null, false, false, null);
 
-            Mocker.GetMock<IAlbumService>()
+            Mocker.GetMock<IBookService>()
                 .Verify(v => v.UpdateMany(It.Is<List<Book>>(s => s.First().ForeignBookId == newAlbumInfo.ForeignBookId)));
         }
 
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Test.MusicTests
             clash.AuthorMetadata = existing.AuthorMetadata.Value.JsonClone();
             clash.ForeignBookId += 1;
 
-            Mocker.GetMock<IAlbumService>()
+            Mocker.GetMock<IBookService>()
                 .Setup(x => x.FindById(clash.ForeignBookId))
                 .Returns(clash);
 
@@ -92,14 +92,14 @@ namespace NzbDrone.Core.Test.MusicTests
             newAlbumInfo.AuthorMetadata = existing.AuthorMetadata.Value.JsonClone();
             newAlbumInfo.ForeignBookId = _albums.First().ForeignBookId + 1;
 
-            Subject.RefreshAlbumInfo(_albums, new List<Book> { newAlbumInfo }, null, false, false, null);
+            Subject.RefreshBookInfo(_albums, new List<Book> { newAlbumInfo }, null, false, false, null);
 
             // check old album is deleted
-            Mocker.GetMock<IAlbumService>()
+            Mocker.GetMock<IBookService>()
                 .Verify(v => v.DeleteMany(It.Is<List<Book>>(x => x.First().ForeignBookId == existing.ForeignBookId)));
 
             // check that clash gets updated
-            Mocker.GetMock<IAlbumService>()
+            Mocker.GetMock<IBookService>()
                 .Verify(v => v.UpdateMany(It.Is<List<Book>>(s => s.First().ForeignBookId == newAlbumInfo.ForeignBookId)));
 
             ExceptionVerification.ExpectedWarns(1);

@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public class MonitoringOptions : IEmbeddedDocument
     {
         public MonitoringOptions()
         {
-            AlbumsToMonitor = new List<string>();
+            BooksToMonitor = new List<string>();
         }
 
         public MonitorTypes Monitor { get; set; }
-        public List<string> AlbumsToMonitor { get; set; }
+        public List<string> BooksToMonitor { get; set; }
         public bool Monitored { get; set; }
     }
 

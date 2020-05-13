@@ -19,13 +19,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
-            if (subject.ParsedAlbumInfo.Discography)
+            if (subject.ParsedBookInfo.Discography)
             {
                 _logger.Debug("Checking if all albums in discography release have released. {0}", subject.Release.Title);
 
-                if (subject.Albums.Any(e => !e.ReleaseDate.HasValue || e.ReleaseDate.Value.After(DateTime.UtcNow)))
+                if (subject.Books.Any(e => !e.ReleaseDate.HasValue || e.ReleaseDate.Value.After(DateTime.UtcNow)))
                 {
                     _logger.Debug("Discography release {0} rejected. All albums haven't released yet.", subject.Release.Title);
                     return Decision.Reject("Discography release rejected. All albums haven't released yet.");

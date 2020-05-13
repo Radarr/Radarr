@@ -4,19 +4,19 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
 {
     [TestFixture]
-    public class AlbumRepositoryFixture : DbTest<AlbumService, Book>
+    public class AlbumRepositoryFixture : DbTest<BookService, Book>
     {
         private Author _artist;
         private Book _album;
         private Book _albumSpecial;
         private List<Book> _albums;
-        private AlbumRepository _albumRepo;
+        private BookRepository _albumRepo;
 
         [SetUp]
         public void Setup()
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
                 AuthorMetadataId = 1
             };
 
-            _albumRepo = Mocker.Resolve<AlbumRepository>();
+            _albumRepo = Mocker.Resolve<BookRepository>();
 
             _album = new Book
             {
@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         {
             GivenMultipleAlbums();
 
-            var result = _albumRepo.GetNextAlbums(new[] { _artist.AuthorMetadataId });
+            var result = _albumRepo.GetNextBooks(new[] { _artist.AuthorMetadataId });
             result.Should().BeEquivalentTo(_albums.Take(1));
         }
 
@@ -153,7 +153,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
         {
             GivenMultipleAlbums();
 
-            var result = _albumRepo.GetLastAlbums(new[] { _artist.AuthorMetadataId });
+            var result = _albumRepo.GetLastBooks(new[] { _artist.AuthorMetadataId });
             result.Should().BeEquivalentTo(_albums.Skip(2).Take(1));
         }
     }

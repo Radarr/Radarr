@@ -17,19 +17,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteAlbum remoteAlbum, SearchCriteriaBase searchCriteria)
+        public Decision IsSatisfiedBy(RemoteBook remoteAlbum, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria == null)
             {
                 return Decision.Accept();
             }
 
-            var criteriaAlbum = searchCriteria.Albums.Select(v => v.Id).ToList();
-            var remoteAlbums = remoteAlbum.Albums.Select(v => v.Id).ToList();
+            var criteriaAlbum = searchCriteria.Books.Select(v => v.Id).ToList();
+            var remoteAlbums = remoteAlbum.Books.Select(v => v.Id).ToList();
 
             if (!criteriaAlbum.Intersect(remoteAlbums).Any())
             {
-                _logger.Debug("Release rejected since the album wasn't requested: {0}", remoteAlbum.ParsedAlbumInfo);
+                _logger.Debug("Release rejected since the book wasn't requested: {0}", remoteAlbum.ParsedBookInfo);
                 return Decision.Reject("Album wasn't requested");
             }
 

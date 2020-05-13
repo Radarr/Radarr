@@ -5,12 +5,12 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -19,11 +19,11 @@ namespace NzbDrone.Core.History
     public interface IHistoryService
     {
         PagingSpec<History> Paged(PagingSpec<History> pagingSpec);
-        History MostRecentForAlbum(int bookId);
+        History MostRecentForBook(int bookId);
         History MostRecentForDownloadId(string downloadId);
         History Get(int historyId);
-        List<History> GetByArtist(int authorId, HistoryEventType? eventType);
-        List<History> GetByAlbum(int bookId, HistoryEventType? eventType);
+        List<History> GetByAuthor(int authorId, HistoryEventType? eventType);
+        List<History> GetByBook(int bookId, HistoryEventType? eventType);
         List<History> Find(string downloadId, HistoryEventType eventType);
         List<History> FindByDownloadId(string downloadId);
         List<History> Since(DateTime date, HistoryEventType? eventType);
@@ -31,15 +31,15 @@ namespace NzbDrone.Core.History
     }
 
     public class HistoryService : IHistoryService,
-                                  IHandle<AlbumGrabbedEvent>,
-                                  IHandle<AlbumImportIncompleteEvent>,
+                                  IHandle<BookGrabbedEvent>,
+                                  IHandle<BookImportIncompleteEvent>,
                                   IHandle<TrackImportedEvent>,
                                   IHandle<DownloadFailedEvent>,
                                   IHandle<DownloadCompletedEvent>,
-                                  IHandle<TrackFileDeletedEvent>,
-                                  IHandle<TrackFileRenamedEvent>,
-                                  IHandle<TrackFileRetaggedEvent>,
-                                  IHandle<ArtistDeletedEvent>,
+                                  IHandle<BookFileDeletedEvent>,
+                                  IHandle<BookFileRenamedEvent>,
+                                  IHandle<BookFileRetaggedEvent>,
+                                  IHandle<AuthorDeletedEvent>,
                                   IHandle<DownloadIgnoredEvent>
     {
         private readonly IHistoryRepository _historyRepository;
@@ -56,9 +56,9 @@ namespace NzbDrone.Core.History
             return _historyRepository.GetPaged(pagingSpec);
         }
 
-        public History MostRecentForAlbum(int bookId)
+        public History MostRecentForBook(int bookId)
         {
-            return _historyRepository.MostRecentForAlbum(bookId);
+            return _historyRepository.MostRecentForBook(bookId);
         }
 
         public History MostRecentForDownloadId(string downloadId)
@@ -71,14 +71,14 @@ namespace NzbDrone.Core.History
             return _historyRepository.Get(historyId);
         }
 
-        public List<History> GetByArtist(int authorId, HistoryEventType? eventType)
+        public List<History> GetByAuthor(int authorId, HistoryEventType? eventType)
         {
-            return _historyRepository.GetByArtist(authorId, eventType);
+            return _historyRepository.GetByAuthor(authorId, eventType);
         }
 
-        public List<History> GetByAlbum(int bookId, HistoryEventType? eventType)
+        public List<History> GetByBook(int bookId, HistoryEventType? eventType)
         {
-            return _historyRepository.GetByAlbum(bookId, eventType);
+            return _historyRepository.GetByBook(bookId, eventType);
         }
 
         public List<History> Find(string downloadId, HistoryEventType eventType)
@@ -93,11 +93,11 @@ namespace NzbDrone.Core.History
 
         private string FindDownloadId(TrackImportedEvent trackedDownload)
         {
-            _logger.Debug("Trying to find downloadId for {0} from history", trackedDownload.ImportedTrack.Path);
+            _logger.Debug("Trying to find downloadId for {0} from history", trackedDownload.ImportedBook.Path);
 
-            var bookIds = new List<int> { trackedDownload.TrackInfo.Album.Id };
+            var bookIds = new List<int> { trackedDownload.BookInfo.Book.Id };
 
-            var allHistory = _historyRepository.FindDownloadHistory(trackedDownload.TrackInfo.Artist.Id, trackedDownload.ImportedTrack.Quality);
+            var allHistory = _historyRepository.FindDownloadHistory(trackedDownload.BookInfo.Author.Id, trackedDownload.ImportedBook.Quality);
 
             //Find download related items for these episdoes
             var albumsHistory = allHistory.Where(h => bookIds.Contains(h.BookId)).ToList();
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.History
 
             if (stillDownloading.Any())
             {
-                var matchingHistory = stillDownloading.Where(c => c.BookId == trackedDownload.TrackInfo.Album.Id).ToList();
+                var matchingHistory = stillDownloading.Where(c => c.BookId == trackedDownload.BookInfo.Book.Id).ToList();
 
                 if (matchingHistory.Count != 1)
                 {
@@ -134,41 +134,41 @@ namespace NzbDrone.Core.History
             return downloadId;
         }
 
-        public void Handle(AlbumGrabbedEvent message)
+        public void Handle(BookGrabbedEvent message)
         {
-            foreach (var album in message.Album.Albums)
+            foreach (var book in message.Book.Books)
             {
                 var history = new History
                 {
                     EventType = HistoryEventType.Grabbed,
                     Date = DateTime.UtcNow,
-                    Quality = message.Album.ParsedAlbumInfo.Quality,
-                    SourceTitle = message.Album.Release.Title,
-                    AuthorId = album.AuthorId,
-                    BookId = album.Id,
+                    Quality = message.Book.ParsedBookInfo.Quality,
+                    SourceTitle = message.Book.Release.Title,
+                    AuthorId = book.AuthorId,
+                    BookId = book.Id,
                     DownloadId = message.DownloadId
                 };
 
-                history.Data.Add("Indexer", message.Album.Release.Indexer);
-                history.Data.Add("NzbInfoUrl", message.Album.Release.InfoUrl);
-                history.Data.Add("ReleaseGroup", message.Album.ParsedAlbumInfo.ReleaseGroup);
-                history.Data.Add("Age", message.Album.Release.Age.ToString());
-                history.Data.Add("AgeHours", message.Album.Release.AgeHours.ToString());
-                history.Data.Add("AgeMinutes", message.Album.Release.AgeMinutes.ToString());
-                history.Data.Add("PublishedDate", message.Album.Release.PublishDate.ToString("s") + "Z");
+                history.Data.Add("Indexer", message.Book.Release.Indexer);
+                history.Data.Add("NzbInfoUrl", message.Book.Release.InfoUrl);
+                history.Data.Add("ReleaseGroup", message.Book.ParsedBookInfo.ReleaseGroup);
+                history.Data.Add("Age", message.Book.Release.Age.ToString());
+                history.Data.Add("AgeHours", message.Book.Release.AgeHours.ToString());
+                history.Data.Add("AgeMinutes", message.Book.Release.AgeMinutes.ToString());
+                history.Data.Add("PublishedDate", message.Book.Release.PublishDate.ToString("s") + "Z");
                 history.Data.Add("DownloadClient", message.DownloadClient);
-                history.Data.Add("Size", message.Album.Release.Size.ToString());
-                history.Data.Add("DownloadUrl", message.Album.Release.DownloadUrl);
-                history.Data.Add("Guid", message.Album.Release.Guid);
-                history.Data.Add("Protocol", ((int)message.Album.Release.DownloadProtocol).ToString());
-                history.Data.Add("DownloadForced", (!message.Album.DownloadAllowed).ToString());
+                history.Data.Add("Size", message.Book.Release.Size.ToString());
+                history.Data.Add("DownloadUrl", message.Book.Release.DownloadUrl);
+                history.Data.Add("Guid", message.Book.Release.Guid);
+                history.Data.Add("Protocol", ((int)message.Book.Release.DownloadProtocol).ToString());
+                history.Data.Add("DownloadForced", (!message.Book.DownloadAllowed).ToString());
 
-                if (!message.Album.ParsedAlbumInfo.ReleaseHash.IsNullOrWhiteSpace())
+                if (!message.Book.ParsedBookInfo.ReleaseHash.IsNullOrWhiteSpace())
                 {
-                    history.Data.Add("ReleaseHash", message.Album.ParsedAlbumInfo.ReleaseHash);
+                    history.Data.Add("ReleaseHash", message.Book.ParsedBookInfo.ReleaseHash);
                 }
 
-                var torrentRelease = message.Album.Release as TorrentInfo;
+                var torrentRelease = message.Book.Release as TorrentInfo;
 
                 if (torrentRelease != null)
                 {
@@ -179,18 +179,18 @@ namespace NzbDrone.Core.History
             }
         }
 
-        public void Handle(AlbumImportIncompleteEvent message)
+        public void Handle(BookImportIncompleteEvent message)
         {
-            foreach (var album in message.TrackedDownload.RemoteAlbum.Albums)
+            foreach (var book in message.TrackedDownload.RemoteBook.Books)
             {
                 var history = new History
                 {
-                    EventType = HistoryEventType.AlbumImportIncomplete,
+                    EventType = HistoryEventType.BookImportIncomplete,
                     Date = DateTime.UtcNow,
-                    Quality = message.TrackedDownload.RemoteAlbum.ParsedAlbumInfo?.Quality ?? new QualityModel(),
+                    Quality = message.TrackedDownload.RemoteBook.ParsedBookInfo?.Quality ?? new QualityModel(),
                     SourceTitle = message.TrackedDownload.DownloadItem.Title,
-                    AuthorId = album.AuthorId,
-                    BookId = album.Id,
+                    AuthorId = book.AuthorId,
+                    BookId = book.Id,
                     DownloadId = message.TrackedDownload.DownloadItem.DownloadId
                 };
 
@@ -217,17 +217,17 @@ namespace NzbDrone.Core.History
             {
                 EventType = HistoryEventType.TrackFileImported,
                 Date = DateTime.UtcNow,
-                Quality = message.TrackInfo.Quality,
-                SourceTitle = message.ImportedTrack.SceneName ?? Path.GetFileNameWithoutExtension(message.TrackInfo.Path),
-                AuthorId = message.TrackInfo.Artist.Id,
-                BookId = message.TrackInfo.Album.Id,
+                Quality = message.BookInfo.Quality,
+                SourceTitle = message.ImportedBook.SceneName ?? Path.GetFileNameWithoutExtension(message.BookInfo.Path),
+                AuthorId = message.BookInfo.Author.Id,
+                BookId = message.BookInfo.Book.Id,
                 DownloadId = downloadId
             };
 
             //Won't have a value since we publish this event before saving to DB.
             //history.Data.Add("FileId", message.ImportedEpisode.Id.ToString());
-            history.Data.Add("DroppedPath", message.TrackInfo.Path);
-            history.Data.Add("ImportedPath", message.ImportedTrack.Path);
+            history.Data.Add("DroppedPath", message.BookInfo.Path);
+            history.Data.Add("ImportedPath", message.ImportedBook.Path);
             history.Data.Add("DownloadClient", message.DownloadClient);
 
             _historyRepository.Insert(history);
@@ -257,16 +257,16 @@ namespace NzbDrone.Core.History
 
         public void Handle(DownloadCompletedEvent message)
         {
-            foreach (var album in message.TrackedDownload.RemoteAlbum.Albums)
+            foreach (var book in message.TrackedDownload.RemoteBook.Books)
             {
                 var history = new History
                 {
                     EventType = HistoryEventType.DownloadImported,
                     Date = DateTime.UtcNow,
-                    Quality = message.TrackedDownload.RemoteAlbum.ParsedAlbumInfo?.Quality ?? new QualityModel(),
+                    Quality = message.TrackedDownload.RemoteBook.ParsedBookInfo?.Quality ?? new QualityModel(),
                     SourceTitle = message.TrackedDownload.DownloadItem.Title,
-                    AuthorId = album.AuthorId,
-                    BookId = album.Id,
+                    AuthorId = book.AuthorId,
+                    BookId = book.Id,
                     DownloadId = message.TrackedDownload.DownloadItem.DownloadId
                 };
 
@@ -274,16 +274,16 @@ namespace NzbDrone.Core.History
             }
         }
 
-        public void Handle(TrackFileDeletedEvent message)
+        public void Handle(BookFileDeletedEvent message)
         {
             if (message.Reason == DeleteMediaFileReason.NoLinkedEpisodes)
             {
-                _logger.Debug("Removing track file from DB as part of cleanup routine, not creating history event.");
+                _logger.Debug("Removing book file from DB as part of cleanup routine, not creating history event.");
                 return;
             }
             else if (message.Reason == DeleteMediaFileReason.ManualOverride)
             {
-                _logger.Debug("Removing track file from DB as part of manual override of existing file, not creating history event.");
+                _logger.Debug("Removing book file from DB as part of manual override of existing file, not creating history event.");
                 return;
             }
 
@@ -291,10 +291,10 @@ namespace NzbDrone.Core.History
             {
                 EventType = HistoryEventType.TrackFileDeleted,
                 Date = DateTime.UtcNow,
-                Quality = message.TrackFile.Quality,
-                SourceTitle = message.TrackFile.Path,
-                AuthorId = message.TrackFile.Artist.Value.Id,
-                BookId = message.TrackFile.BookId
+                Quality = message.BookFile.Quality,
+                SourceTitle = message.BookFile.Path,
+                AuthorId = message.BookFile.Author.Value.Id,
+                BookId = message.BookFile.BookId
             };
 
             history.Data.Add("Reason", message.Reason.ToString());
@@ -302,19 +302,19 @@ namespace NzbDrone.Core.History
             _historyRepository.Insert(history);
         }
 
-        public void Handle(TrackFileRenamedEvent message)
+        public void Handle(BookFileRenamedEvent message)
         {
             var sourcePath = message.OriginalPath;
-            var path = message.TrackFile.Path;
+            var path = message.BookFile.Path;
 
             var history = new History
             {
                 EventType = HistoryEventType.TrackFileRenamed,
                 Date = DateTime.UtcNow,
-                Quality = message.TrackFile.Quality,
+                Quality = message.BookFile.Quality,
                 SourceTitle = message.OriginalPath,
-                AuthorId = message.TrackFile.Artist.Value.Id,
-                BookId = message.TrackFile.BookId
+                AuthorId = message.BookFile.Author.Value.Id,
+                BookId = message.BookFile.BookId
             };
 
             history.Data.Add("SourcePath", sourcePath);
@@ -323,18 +323,18 @@ namespace NzbDrone.Core.History
             _historyRepository.Insert(history);
         }
 
-        public void Handle(TrackFileRetaggedEvent message)
+        public void Handle(BookFileRetaggedEvent message)
         {
-            var path = message.TrackFile.Path;
+            var path = message.BookFile.Path;
 
             var history = new History
             {
                 EventType = HistoryEventType.TrackFileRetagged,
                 Date = DateTime.UtcNow,
-                Quality = message.TrackFile.Quality,
+                Quality = message.BookFile.Quality,
                 SourceTitle = path,
-                AuthorId = message.TrackFile.Artist.Value.Id,
-                BookId = message.TrackFile.BookId
+                AuthorId = message.BookFile.Author.Value.Id,
+                BookId = message.BookFile.BookId
             };
 
             history.Data.Add("TagsScrubbed", message.Scrubbed.ToString());
@@ -348,9 +348,9 @@ namespace NzbDrone.Core.History
             _historyRepository.Insert(history);
         }
 
-        public void Handle(ArtistDeletedEvent message)
+        public void Handle(AuthorDeletedEvent message)
         {
-            _historyRepository.DeleteForArtist(message.Artist.Id);
+            _historyRepository.DeleteForAuthor(message.Author.Id);
         }
 
         public void Handle(DownloadIgnoredEvent message)

@@ -21,7 +21,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
             var releaseInfo = subject.Release;
 
@@ -43,12 +43,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             var indexerSettings = indexer.Settings as IIndexerSettings;
 
-            if (subject.Albums.Count != 1 || indexerSettings?.EarlyReleaseLimit == null)
+            if (subject.Books.Count != 1 || indexerSettings?.EarlyReleaseLimit == null)
             {
                 return Decision.Accept();
             }
 
-            var releaseDate = subject.Albums.First().ReleaseDate;
+            var releaseDate = subject.Books.First().ReleaseDate;
 
             if (releaseDate == null)
             {

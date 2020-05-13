@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Notifications
 {
     public class NotificationService
-        : IHandle<AlbumGrabbedEvent>,
-          IHandle<AlbumImportedEvent>,
-          IHandle<ArtistRenamedEvent>,
+        : IHandle<BookGrabbedEvent>,
+          IHandle<BookImportedEvent>,
+          IHandle<AuthorRenamedEvent>,
           IHandle<HealthCheckFailedEvent>,
           IHandle<DownloadFailedEvent>,
-          IHandle<AlbumImportIncompleteEvent>,
-          IHandle<TrackFileRetaggedEvent>
+          IHandle<BookImportIncompleteEvent>,
+          IHandle<BookFileRetaggedEvent>
     {
         private readonly INotificationFactory _notificationFactory;
         private readonly Logger _logger;
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Notifications
             _logger = logger;
         }
 
-        private string GetMessage(Author artist, List<Book> albums, QualityModel quality)
+        private string GetMessage(Author author, List<Book> albums, QualityModel quality)
         {
             var qualityString = quality.Quality.ToString();
 
@@ -44,15 +44,15 @@ namespace NzbDrone.Core.Notifications
             var albumTitles = string.Join(" + ", albums.Select(e => e.Title));
 
             return string.Format("{0} - {1} - [{2}]",
-                                    artist.Name,
+                                    author.Name,
                                     albumTitles,
                                     qualityString);
         }
 
-        private string GetAlbumDownloadMessage(Author artist, Book album, List<BookFile> tracks)
+        private string GetAlbumDownloadMessage(Author author, Book album, List<BookFile> tracks)
         {
             return string.Format("{0} - {1} ({2} Tracks Imported)",
-                artist.Name,
+                author.Name,
                 album.Title,
                 tracks.Count);
         }
@@ -69,14 +69,14 @@ namespace NzbDrone.Core.Notifications
             return text.IsNullOrWhiteSpace() ? "<missing>" : text;
         }
 
-        private string GetTrackRetagMessage(Author artist, BookFile trackFile, Dictionary<string, Tuple<string, string>> diff)
+        private string GetTrackRetagMessage(Author author, BookFile bookFile, Dictionary<string, Tuple<string, string>> diff)
         {
             return string.Format("{0}:\n{1}",
-                                 trackFile.Path,
+                                 bookFile.Path,
                                  string.Join("\n", diff.Select(x => $"{x.Key}: {FormatMissing(x.Value.Item1)} → {FormatMissing(x.Value.Item2)}")));
         }
 
-        private bool ShouldHandleArtist(ProviderDefinition definition, Author artist)
+        private bool ShouldHandleArtist(ProviderDefinition definition, Author author)
         {
             if (definition.Tags.Empty())
             {
@@ -84,14 +84,14 @@ namespace NzbDrone.Core.Notifications
                 return true;
             }
 
-            if (definition.Tags.Intersect(artist.Tags).Any())
+            if (definition.Tags.Intersect(author.Tags).Any())
             {
-                _logger.Debug("Notification and artist have one or more intersecting tags.");
+                _logger.Debug("Notification and author have one or more intersecting tags.");
                 return true;
             }
 
             //TODO: this message could be more clear
-            _logger.Debug("{0} does not have any intersecting tags with {1}. Notification will not be sent.", definition.Name, artist.Name);
+            _logger.Debug("{0} does not have any intersecting tags with {1}. Notification will not be sent.", definition.Name, author.Name);
             return false;
         }
 
@@ -110,14 +110,14 @@ namespace NzbDrone.Core.Notifications
             return false;
         }
 
-        public void Handle(AlbumGrabbedEvent message)
+        public void Handle(BookGrabbedEvent message)
         {
             var grabMessage = new GrabMessage
             {
-                Message = GetMessage(message.Album.Artist, message.Album.Albums, message.Album.ParsedAlbumInfo.Quality),
-                Artist = message.Album.Artist,
-                Quality = message.Album.ParsedAlbumInfo.Quality,
-                Album = message.Album,
+                Message = GetMessage(message.Book.Author, message.Book.Books, message.Book.ParsedBookInfo.Quality),
+                Author = message.Book.Author,
+                Quality = message.Book.ParsedBookInfo.Quality,
+                Book = message.Book,
                 DownloadClient = message.DownloadClient,
                 DownloadId = message.DownloadId
             };
@@ -126,7 +126,7 @@ namespace NzbDrone.Core.Notifications
             {
                 try
                 {
-                    if (!ShouldHandleArtist(notification.Definition, message.Album.Artist))
+                    if (!ShouldHandleArtist(notification.Definition, message.Book.Author))
                     {
                         continue;
                     }
@@ -140,21 +140,21 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
-        public void Handle(AlbumImportedEvent message)
+        public void Handle(BookImportedEvent message)
         {
             if (!message.NewDownload)
             {
                 return;
             }
 
-            var downloadMessage = new AlbumDownloadMessage
+            var downloadMessage = new BookDownloadMessage
             {
-                Message = GetAlbumDownloadMessage(message.Artist, message.Album, message.ImportedTracks),
-                Artist = message.Artist,
-                Album = message.Album,
+                Message = GetAlbumDownloadMessage(message.Author, message.Book, message.ImportedBooks),
+                Author = message.Author,
+                Book = message.Book,
                 DownloadClient = message.DownloadClient,
                 DownloadId = message.DownloadId,
-                TrackFiles = message.ImportedTracks,
+                BookFiles = message.ImportedBooks,
                 OldFiles = message.OldFiles,
             };
 
@@ -162,7 +162,7 @@ namespace NzbDrone.Core.Notifications
             {
                 try
                 {
-                    if (ShouldHandleArtist(notification.Definition, message.Artist))
+                    if (ShouldHandleArtist(notification.Definition, message.Author))
                     {
                         if (downloadMessage.OldFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
                         {
@@ -177,15 +177,15 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
-        public void Handle(ArtistRenamedEvent message)
+        public void Handle(AuthorRenamedEvent message)
         {
             foreach (var notification in _notificationFactory.OnRenameEnabled())
             {
                 try
                 {
-                    if (ShouldHandleArtist(notification.Definition, message.Artist))
+                    if (ShouldHandleArtist(notification.Definition, message.Author))
                     {
-                        notification.OnRename(message.Artist);
+                        notification.OnRename(message.Author);
                     }
                 }
                 catch (Exception ex)
@@ -226,45 +226,45 @@ namespace NzbDrone.Core.Notifications
 
             foreach (var notification in _notificationFactory.OnDownloadFailureEnabled())
             {
-                if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteAlbum.Artist))
+                if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteBook.Author))
                 {
                     notification.OnDownloadFailure(downloadFailedMessage);
                 }
             }
         }
 
-        public void Handle(AlbumImportIncompleteEvent message)
+        public void Handle(BookImportIncompleteEvent message)
         {
             // TODO: Build out this message so that we can pass on what failed and what was successful
-            var downloadMessage = new AlbumDownloadMessage
+            var downloadMessage = new BookDownloadMessage
             {
                 Message = GetAlbumIncompleteImportMessage(message.TrackedDownload.DownloadItem.Title),
             };
 
             foreach (var notification in _notificationFactory.OnImportFailureEnabled())
             {
-                if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteAlbum.Artist))
+                if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteBook.Author))
                 {
                     notification.OnImportFailure(downloadMessage);
                 }
             }
         }
 
-        public void Handle(TrackFileRetaggedEvent message)
+        public void Handle(BookFileRetaggedEvent message)
         {
-            var retagMessage = new TrackRetagMessage
+            var retagMessage = new BookRetagMessage
             {
-                Message = GetTrackRetagMessage(message.Artist, message.TrackFile, message.Diff),
-                Artist = message.Artist,
-                Album = message.TrackFile.Album,
-                TrackFile = message.TrackFile,
+                Message = GetTrackRetagMessage(message.Author, message.BookFile, message.Diff),
+                Author = message.Author,
+                Book = message.BookFile.Book,
+                BookFile = message.BookFile,
                 Diff = message.Diff,
                 Scrubbed = message.Scrubbed
             };
 
             foreach (var notification in _notificationFactory.OnTrackRetagEnabled())
             {
-                if (ShouldHandleArtist(notification.Definition, message.Artist))
+                if (ShouldHandleArtist(notification.Definition, message.Author))
                 {
                     notification.OnTrackRetag(retagMessage);
                 }

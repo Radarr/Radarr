@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         public DownloadClientItem DownloadItem { get; set; }
         public TrackedDownloadState State { get; set; }
         public TrackedDownloadStatus Status { get; private set; }
-        public RemoteAlbum RemoteAlbum { get; set; }
+        public RemoteBook RemoteBook { get; set; }
         public TrackedDownloadStatusMessage[] StatusMessages { get; private set; }
         public DownloadProtocol Protocol { get; set; }
         public string Indexer { get; set; }

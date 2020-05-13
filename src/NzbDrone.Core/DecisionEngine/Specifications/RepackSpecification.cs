@@ -23,21 +23,21 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
-            if (!subject.ParsedAlbumInfo.Quality.Revision.IsRepack)
+            if (!subject.ParsedBookInfo.Quality.Revision.IsRepack)
             {
                 return Decision.Accept();
             }
 
-            foreach (var album in subject.Albums)
+            foreach (var book in subject.Books)
             {
-                var releaseGroup = subject.ParsedAlbumInfo.ReleaseGroup;
-                var trackFiles = _mediaFileService.GetFilesByAlbum(album.Id);
+                var releaseGroup = subject.ParsedBookInfo.ReleaseGroup;
+                var bookFiles = _mediaFileService.GetFilesByBook(book.Id);
 
-                foreach (var file in trackFiles)
+                foreach (var file in bookFiles)
                 {
-                    if (_upgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedAlbumInfo.Quality))
+                    if (_upgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedBookInfo.Quality))
                     {
                         var fileReleaseGroup = file.ReleaseGroup;
 

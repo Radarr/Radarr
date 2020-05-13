@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
     public class RarbgTorrentInfo
     {
         // For Future if RARBG decides to return metadata
-        public string artist { get; set; }
-        public string album { get; set; }
+        public string author { get; set; }
+        public string book { get; set; }
     }
 }

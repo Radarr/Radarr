@@ -4,6 +4,6 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
 {
     public interface IAggregateRemoteAlbum
     {
-        RemoteAlbum Aggregate(RemoteAlbum remoteAlbum);
+        RemoteBook Aggregate(RemoteBook remoteAlbum);
     }
 }

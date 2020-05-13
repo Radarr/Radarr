@@ -19,7 +19,7 @@ namespace Readarr.Api.V1.Parse
         private ParseResource Parse()
         {
             var title = Request.Query.Title.Value as string;
-            var parsedAlbumInfo = Parser.ParseAlbumTitle(title);
+            var parsedAlbumInfo = Parser.ParseBookTitle(title);
 
             if (parsedAlbumInfo == null)
             {
@@ -33,9 +33,9 @@ namespace Readarr.Api.V1.Parse
                 return new ParseResource
                 {
                     Title = title,
-                    ParsedAlbumInfo = remoteAlbum.ParsedAlbumInfo,
-                    Artist = remoteAlbum.Artist.ToResource(),
-                    Albums = remoteAlbum.Albums.ToResource()
+                    ParsedAlbumInfo = remoteAlbum.ParsedBookInfo,
+                    Artist = remoteAlbum.Author.ToResource(),
+                    Albums = remoteAlbum.Books.ToResource()
                 };
             }
             else

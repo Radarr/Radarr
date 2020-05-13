@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
@@ -37,8 +37,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Bad Format", "badformat")]
         public void should_parse_artist_name(string postTitle, string title)
         {
-            var result = Parser.Parser.ParseArtistName(postTitle).CleanArtistName();
-            result.Should().Be(title.CleanArtistName());
+            var result = Parser.Parser.ParseArtistName(postTitle).CleanAuthorName();
+            result.Should().Be(title.CleanAuthorName());
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             const string title = "Carniv\u00E0le";
 
-            title.CleanArtistName().Should().Be("carnivale");
+            title.CleanAuthorName().Should().Be("carnivale");
         }
 
         [TestCase("Songs of Experience (Deluxe Edition)", "Songs of Experience")]
@@ -80,13 +80,13 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Discovery TV - Gold Rush : 02 Road From Hell [S04].mp4")]
         public void should_clean_up_invalid_path_characters(string postTitle)
         {
-            Parser.Parser.ParseAlbumTitle(postTitle);
+            Parser.Parser.ParseBookTitle(postTitle);
         }
 
         [TestCase("[scnzbefnet][509103] Jay-Z - 4:44 (Deluxe Edition) (2017) 320", "Jay-Z")]
         public void should_remove_request_info_from_title(string postTitle, string title)
         {
-            Parser.Parser.ParseAlbumTitle(postTitle).ArtistName.Should().Be(title);
+            Parser.Parser.ParseBookTitle(postTitle).AuthorName.Should().Be(title);
         }
 
         [TestCase("02 Unchained.flac")] // This isn't valid on any regex we have. We must always have an artist
@@ -94,8 +94,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [Ignore("Ignore Test until track parsing rework")]
         public void should_parse_quality_from_extension(string title)
         {
-            Parser.Parser.ParseAlbumTitle(title).Quality.Quality.Should().NotBe(Quality.Unknown);
-            Parser.Parser.ParseAlbumTitle(title).Quality.QualityDetectionSource.Should().Be(QualityDetectionSource.Extension);
+            Parser.Parser.ParseBookTitle(title).Quality.Quality.Should().NotBe(Quality.Unknown);
+            Parser.Parser.ParseBookTitle(title).Quality.QualityDetectionSource.Should().Be(QualityDetectionSource.Extension);
         }
 
         [TestCase("VA - The Best 101 Love Ballads (2017) MP3 [192 kbps]", "VA", "The Best 101 Love Ballads")]
@@ -177,9 +177,9 @@ namespace NzbDrone.Core.Test.ParserTests
         // [TestCase("Metallica - ...And Justice for All (1988) [FLAC Lossless]", "Metallica", "...And Justice for All")]
         public void should_parse_artist_name_and_album_title(string postTitle, string name, string title, bool discography = false)
         {
-            var parseResult = Parser.Parser.ParseAlbumTitle(postTitle);
-            parseResult.ArtistName.Should().Be(name);
-            parseResult.AlbumTitle.Should().Be(title);
+            var parseResult = Parser.Parser.ParseBookTitle(postTitle);
+            parseResult.AuthorName.Should().Be(name);
+            parseResult.BookTitle.Should().Be(title);
             parseResult.Discography.Should().Be(discography);
         }
 
@@ -193,8 +193,8 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             GivenSearchCriteria("Black Sabbath", "Black Sabbath");
             var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
-            parseResult.ArtistName.ToLowerInvariant().Should().Be("black sabbath");
-            parseResult.AlbumTitle.ToLowerInvariant().Should().Be("black sabbath");
+            parseResult.AuthorName.ToLowerInvariant().Should().Be("black sabbath");
+            parseResult.BookTitle.ToLowerInvariant().Should().Be("black sabbath");
         }
 
         [TestCase("Captain-Discography_1998_-_2001-CD-FLAC-2007-UTP", 1998, 2001)]
@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Caetano Veloso Discografia Completa MP3 @256", 0, 0)]
         public void should_parse_year_or_year_range_from_discography(string releaseTitle, int startyear, int endyear)
         {
-            var parseResult = Parser.Parser.ParseAlbumTitle(releaseTitle);
+            var parseResult = Parser.Parser.ParseBookTitle(releaseTitle);
             parseResult.Discography.Should().BeTrue();
             parseResult.DiscographyStart.Should().Be(startyear);
             parseResult.DiscographyEnd.Should().Be(endyear);
@@ -229,7 +229,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             GivenSearchCriteria(artist, album);
             var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
-            parseResult.AlbumTitle.Should().Be(album);
+            parseResult.BookTitle.Should().Be(album);
         }
 
         [TestCase("???", "Album", "??? Album FLAC")]
@@ -240,7 +240,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             GivenSearchCriteria(artist, album);
             var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
-            parseResult.ArtistName.Should().Be(artist);
+            parseResult.AuthorName.Should().Be(artist);
         }
 
         [TestCase("Michael Bubl\u00E9", "Michael Bubl\u00E9", @"Michael Buble Michael Buble CD FLAC 2003 PERFECT")]
@@ -248,8 +248,8 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             GivenSearchCriteria(artist, album);
             var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
-            parseResult.ArtistName.Should().Be("Michael Buble");
-            parseResult.AlbumTitle.Should().Be("Michael Buble");
+            parseResult.AuthorName.Should().Be("Michael Buble");
+            parseResult.BookTitle.Should().Be("Michael Buble");
         }
 
         [Test]
@@ -262,8 +262,8 @@ namespace NzbDrone.Core.Test.ParserTests
             GivenSearchCriteria("Michael Bubl\u00E9", "To Be Loved");
             var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(
                 "Michael Buble Christmas (Deluxe Special Edition) CD FLAC 2012 UNDERTONE iNT", _artist, _albums);
-            parseResult.ArtistName.Should().Be("Michael Buble");
-            parseResult.AlbumTitle.Should().Be("Christmas");
+            parseResult.AuthorName.Should().Be("Michael Buble");
+            parseResult.BookTitle.Should().Be("Christmas");
         }
     }
 }

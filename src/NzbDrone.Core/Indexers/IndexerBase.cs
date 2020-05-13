@@ -67,8 +67,8 @@ namespace NzbDrone.Core.Indexers
 
         public abstract IList<ReleaseInfo> FetchRecent();
 
-        public abstract IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria);
-        public abstract IList<ReleaseInfo> Fetch(ArtistSearchCriteria searchCriteria);
+        public abstract IList<ReleaseInfo> Fetch(BookSearchCriteria searchCriteria);
+        public abstract IList<ReleaseInfo> Fetch(AuthorSearchCriteria searchCriteria);
 
         protected virtual IList<ReleaseInfo> CleanupReleases(IEnumerable<ReleaseInfo> releases)
         {

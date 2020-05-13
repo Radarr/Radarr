@@ -2,9 +2,9 @@
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 
@@ -22,12 +22,12 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         {
             _albums = new List<Book>();
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(r => r.Albums = _albums)
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(r => r.Books = _albums)
                                                       .Build();
 
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
-                                                       .With(t => t.RemoteAlbum = remoteAlbum)
+                                                       .With(t => t.RemoteBook = remoteAlbum)
                                                        .Build();
 
             _historyItems = new List<History.History>();

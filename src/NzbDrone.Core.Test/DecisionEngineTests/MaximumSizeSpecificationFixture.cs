@@ -9,12 +9,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     public class MaximumSizeSpecificationFixture : CoreTest<MaximumSizeSpecification>
     {
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
 
         [SetUp]
         public void Setup()
         {
-            _remoteAlbum = new RemoteAlbum() { Release = new ReleaseInfo() };
+            _remoteAlbum = new RemoteBook() { Release = new ReleaseInfo() };
         }
 
         private void WithMaximumSize(int size)

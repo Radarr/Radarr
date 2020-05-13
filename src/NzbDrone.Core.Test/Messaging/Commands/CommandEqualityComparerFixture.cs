@@ -8,8 +8,8 @@ using NUnit.Framework;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch;
+using NzbDrone.Core.MediaFiles.BookImport.Manual;
 using NzbDrone.Core.MediaFiles.Commands;
-using NzbDrone.Core.MediaFiles.TrackImport.Manual;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Update.Commands;
 using NzbDrone.Test.Common;
@@ -27,8 +27,8 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         [Test]
         public void should_return_true_when_there_are_no_properties()
         {
-            var command1 = new DownloadedAlbumsScanCommand();
-            var command2 = new DownloadedAlbumsScanCommand();
+            var command1 = new DownloadedBooksScanCommand();
+            var command2 = new DownloadedBooksScanCommand();
 
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeTrue();
         }
@@ -36,8 +36,8 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         [Test]
         public void should_return_true_when_single_property_matches()
         {
-            var command1 = new AlbumSearchCommand { BookIds = new List<int> { 1 } };
-            var command2 = new AlbumSearchCommand { BookIds = new List<int> { 1 } };
+            var command1 = new BookSearchCommand { BookIds = new List<int> { 1 } };
+            var command2 = new BookSearchCommand { BookIds = new List<int> { 1 } };
 
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeTrue();
         }
@@ -45,8 +45,8 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         [Test]
         public void should_return_false_when_single_property_doesnt_match()
         {
-            var command1 = new AlbumSearchCommand { BookIds = new List<int> { 1 } };
-            var command2 = new AlbumSearchCommand { BookIds = new List<int> { 2 } };
+            var command1 = new BookSearchCommand { BookIds = new List<int> { 1 } };
+            var command2 = new BookSearchCommand { BookIds = new List<int> { 2 } };
 
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeFalse();
         }
@@ -54,8 +54,8 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         [Test]
         public void should_return_false_when_only_one_has_properties()
         {
-            var command1 = new ArtistSearchCommand();
-            var command2 = new ArtistSearchCommand { AuthorId = 2 };
+            var command1 = new AuthorSearchCommand();
+            var command2 = new AuthorSearchCommand { AuthorId = 2 };
 
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeFalse();
         }
@@ -63,8 +63,8 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         [Test]
         public void should_return_false_when_only_one_has_null_property()
         {
-            var command1 = new AlbumSearchCommand(null);
-            var command2 = new AlbumSearchCommand(new List<int>());
+            var command1 = new BookSearchCommand(null);
+            var command2 = new BookSearchCommand(new List<int>());
 
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeFalse();
         }
@@ -78,8 +78,8 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         [Test]
         public void should_return_false_when_commands_list_are_different_lengths()
         {
-            var command1 = new AlbumSearchCommand { BookIds = new List<int> { 1 } };
-            var command2 = new AlbumSearchCommand { BookIds = new List<int> { 1, 2 } };
+            var command1 = new BookSearchCommand { BookIds = new List<int> { 1 } };
+            var command2 = new BookSearchCommand { BookIds = new List<int> { 1, 2 } };
 
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeFalse();
         }
@@ -87,8 +87,8 @@ namespace NzbDrone.Core.Test.Messaging.Commands
         [Test]
         public void should_return_false_when_commands_list_dont_match()
         {
-            var command1 = new AlbumSearchCommand { BookIds = new List<int> { 1 } };
-            var command2 = new AlbumSearchCommand { BookIds = new List<int> { 2 } };
+            var command1 = new BookSearchCommand { BookIds = new List<int> { 1 } };
+            var command2 = new BookSearchCommand { BookIds = new List<int> { 2 } };
 
             CommandEqualityComparer.Instance.Equals(command1, command2).Should().BeFalse();
         }

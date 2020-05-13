@@ -4,11 +4,11 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -32,16 +32,16 @@ namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
 
             _grabHistory = Builder<History.History>.CreateListOfSize(2).BuildList();
 
-            var remoteAlbum = new RemoteAlbum
+            var remoteAlbum = new RemoteBook
             {
-                Artist = new Author(),
-                Albums = new List<Book> { new Book { Id = 1 } }
+                Author = new Author(),
+                Books = new List<Book> { new Book { Id = 1 } }
             };
 
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
                     .With(c => c.State = TrackedDownloadState.Downloading)
                     .With(c => c.DownloadItem = completed)
-                    .With(c => c.RemoteAlbum = remoteAlbum)
+                    .With(c => c.RemoteBook = remoteAlbum)
                     .Build();
 
             Mocker.GetMock<IHistoryService>()

@@ -2,17 +2,17 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.TrackImport.Specifications;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.BookImport.Specifications;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Specifications
+namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
 {
     [TestFixture]
     public class UpgradeSpecificationFixture : CoreTest<UpgradeSpecification>

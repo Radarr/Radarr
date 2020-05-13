@@ -5,7 +5,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public interface IRefreshSeriesService
     {
@@ -14,19 +14,19 @@ namespace NzbDrone.Core.Music
 
     public class RefreshSeriesService : RefreshEntityServiceBase<Series, SeriesBookLink>, IRefreshSeriesService
     {
-        private readonly IAlbumService _bookService;
+        private readonly IBookService _bookService;
         private readonly ISeriesService _seriesService;
         private readonly ISeriesBookLinkService _linkService;
         private readonly IRefreshSeriesBookLinkService _refreshLinkService;
         private readonly Logger _logger;
 
-        public RefreshSeriesService(IAlbumService bookService,
+        public RefreshSeriesService(IBookService bookService,
                                     ISeriesService seriesService,
                                     ISeriesBookLinkService linkService,
                                     IRefreshSeriesBookLinkService refreshLinkService,
-                                    IArtistMetadataService artistMetadataService,
+                                    IAuthorMetadataService authorMetadataService,
                                     Logger logger)
-        : base(logger, artistMetadataService)
+        : base(logger, authorMetadataService)
         {
             _bookService = bookService;
             _seriesService = seriesService;
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Music
 
         protected override void SaveEntity(Series local)
         {
-            // Use UpdateMany to avoid firing the album edited event
+            // Use UpdateMany to avoid firing the book edited event
             _seriesService.UpdateMany(new List<Series> { local });
         }
 
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Music
             var existingBySeries = _seriesService.FindById(remoteSeries.Select(x => x.ForeignSeriesId));
             var existing = existingByAuthor.Concat(existingBySeries).GroupBy(x => x.ForeignSeriesId).Select(x => x.First()).ToList();
 
-            var books = _bookService.GetAlbumsByArtistMetadataId(authorMetadataId);
+            var books = _bookService.GetBooksByAuthorMetadataId(authorMetadataId);
             var bookDict = books.ToDictionary(x => x.ForeignWorkId);
             var links = new List<SeriesBookLink>();
 

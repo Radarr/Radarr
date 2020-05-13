@@ -5,24 +5,24 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.MediaFiles
 {
     public interface IMediaFileService
     {
-        BookFile Add(BookFile trackFile);
-        void AddMany(List<BookFile> trackFiles);
-        void Update(BookFile trackFile);
-        void Update(List<BookFile> trackFile);
-        void Delete(BookFile trackFile, DeleteMediaFileReason reason);
-        void DeleteMany(List<BookFile> trackFiles, DeleteMediaFileReason reason);
-        List<BookFile> GetFilesByArtist(int authorId);
-        List<BookFile> GetFilesByAlbum(int bookId);
+        BookFile Add(BookFile bookFile);
+        void AddMany(List<BookFile> bookFiles);
+        void Update(BookFile bookFile);
+        void Update(List<BookFile> bookFiles);
+        void Delete(BookFile bookFile, DeleteMediaFileReason reason);
+        void DeleteMany(List<BookFile> bookFiles, DeleteMediaFileReason reason);
+        List<BookFile> GetFilesByAuthor(int authorId);
+        List<BookFile> GetFilesByBook(int bookId);
         List<BookFile> GetUnmappedFiles();
         List<IFileInfo> FilterUnchangedFiles(List<IFileInfo> files, FilterFilesType filter);
         BookFile Get(int id);
@@ -30,12 +30,12 @@ namespace NzbDrone.Core.MediaFiles
         List<BookFile> GetFilesWithBasePath(string path);
         List<BookFile> GetFileWithPath(List<string> path);
         BookFile GetFileWithPath(string path);
-        void UpdateMediaInfo(List<BookFile> trackFiles);
+        void UpdateMediaInfo(List<BookFile> bookFiles);
     }
 
     public class MediaFileService : IMediaFileService,
-        IHandle<ArtistMovedEvent>,
-        IHandleAsync<AlbumDeletedEvent>,
+        IHandle<AuthorMovedEvent>,
+        IHandleAsync<BookDeletedEvent>,
         IHandleAsync<ModelEvent<RootFolder>>
     {
         private readonly IEventAggregator _eventAggregator;
@@ -49,51 +49,51 @@ namespace NzbDrone.Core.MediaFiles
             _logger = logger;
         }
 
-        public BookFile Add(BookFile trackFile)
+        public BookFile Add(BookFile bookFile)
         {
-            var addedFile = _mediaFileRepository.Insert(trackFile);
-            _eventAggregator.PublishEvent(new TrackFileAddedEvent(addedFile));
+            var addedFile = _mediaFileRepository.Insert(bookFile);
+            _eventAggregator.PublishEvent(new BookFileAddedEvent(addedFile));
             return addedFile;
         }
 
-        public void AddMany(List<BookFile> trackFiles)
+        public void AddMany(List<BookFile> bookFiles)
         {
-            _mediaFileRepository.InsertMany(trackFiles);
-            foreach (var addedFile in trackFiles)
+            _mediaFileRepository.InsertMany(bookFiles);
+            foreach (var addedFile in bookFiles)
             {
-                _eventAggregator.PublishEvent(new TrackFileAddedEvent(addedFile));
+                _eventAggregator.PublishEvent(new BookFileAddedEvent(addedFile));
             }
         }
 
-        public void Update(BookFile trackFile)
+        public void Update(BookFile bookFile)
         {
-            _mediaFileRepository.Update(trackFile);
+            _mediaFileRepository.Update(bookFile);
         }
 
-        public void Update(List<BookFile> trackFiles)
+        public void Update(List<BookFile> bookFiles)
         {
-            _mediaFileRepository.UpdateMany(trackFiles);
+            _mediaFileRepository.UpdateMany(bookFiles);
         }
 
-        public void Delete(BookFile trackFile, DeleteMediaFileReason reason)
+        public void Delete(BookFile bookFile, DeleteMediaFileReason reason)
         {
-            _mediaFileRepository.Delete(trackFile);
+            _mediaFileRepository.Delete(bookFile);
 
             // If the trackfile wasn't mapped to a track, don't publish an event
-            if (trackFile.BookId > 0)
+            if (bookFile.BookId > 0)
             {
-                _eventAggregator.PublishEvent(new TrackFileDeletedEvent(trackFile, reason));
+                _eventAggregator.PublishEvent(new BookFileDeletedEvent(bookFile, reason));
             }
         }
 
-        public void DeleteMany(List<BookFile> trackFiles, DeleteMediaFileReason reason)
+        public void DeleteMany(List<BookFile> bookFiles, DeleteMediaFileReason reason)
         {
-            _mediaFileRepository.DeleteMany(trackFiles);
+            _mediaFileRepository.DeleteMany(bookFiles);
 
             // publish events where trackfile was mapped to a track
-            foreach (var trackFile in trackFiles.Where(x => x.BookId > 0))
+            foreach (var bookFile in bookFiles.Where(x => x.BookId > 0))
             {
-                _eventAggregator.PublishEvent(new TrackFileDeletedEvent(trackFile, reason));
+                _eventAggregator.PublishEvent(new BookFileDeletedEvent(bookFile, reason));
             }
         }
 
@@ -138,7 +138,7 @@ namespace NzbDrone.Core.MediaFiles
                 unwanted = combined
                     .Where(x => x.DiskFile.Length == x.DbFile.Size &&
                            Math.Abs((x.DiskFile.LastWriteTimeUtc - x.DbFile.Modified).TotalSeconds) <= 1 &&
-                           (x.DbFile.Album == null || (x.DbFile.Album.IsLoaded && x.DbFile.Album.Value != null)))
+                           (x.DbFile.Book == null || (x.DbFile.Book.IsLoaded && x.DbFile.Book.Value != null)))
                     .Select(x => x.DiskFile)
                     .ToList();
                 _logger.Trace($"{unwanted.Count} unchanged and matched files");
@@ -176,14 +176,14 @@ namespace NzbDrone.Core.MediaFiles
             return _mediaFileRepository.GetFileWithPath(path);
         }
 
-        public List<BookFile> GetFilesByArtist(int authorId)
+        public List<BookFile> GetFilesByAuthor(int authorId)
         {
-            return _mediaFileRepository.GetFilesByArtist(authorId);
+            return _mediaFileRepository.GetFilesByAuthor(authorId);
         }
 
-        public List<BookFile> GetFilesByAlbum(int bookId)
+        public List<BookFile> GetFilesByBook(int bookId)
         {
-            return _mediaFileRepository.GetFilesByAlbum(bookId);
+            return _mediaFileRepository.GetFilesByBook(bookId);
         }
 
         public List<BookFile> GetUnmappedFiles()
@@ -191,12 +191,12 @@ namespace NzbDrone.Core.MediaFiles
             return _mediaFileRepository.GetUnmappedFiles();
         }
 
-        public void UpdateMediaInfo(List<BookFile> trackFiles)
+        public void UpdateMediaInfo(List<BookFile> bookFiles)
         {
-            _mediaFileRepository.SetFields(trackFiles, t => t.MediaInfo);
+            _mediaFileRepository.SetFields(bookFiles, t => t.MediaInfo);
         }
 
-        public void Handle(ArtistMovedEvent message)
+        public void Handle(AuthorMovedEvent message)
         {
             var files = _mediaFileRepository.GetFilesWithBasePath(message.SourcePath);
 
@@ -209,15 +209,15 @@ namespace NzbDrone.Core.MediaFiles
             Update(files);
         }
 
-        public void HandleAsync(AlbumDeletedEvent message)
+        public void HandleAsync(BookDeletedEvent message)
         {
             if (message.DeleteFiles)
             {
-                _mediaFileRepository.DeleteFilesByAlbum(message.Album.Id);
+                _mediaFileRepository.DeleteFilesByBook(message.Book.Id);
             }
             else
             {
-                _mediaFileRepository.UnlinkFilesByAlbum(message.Album.Id);
+                _mediaFileRepository.UnlinkFilesByBook(message.Book.Id);
             }
         }
 

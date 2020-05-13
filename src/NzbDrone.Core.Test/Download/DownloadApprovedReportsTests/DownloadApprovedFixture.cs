@@ -4,13 +4,13 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -37,20 +37,20 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
                             .Build();
         }
 
-        private RemoteAlbum GetRemoteAlbum(List<Book> albums, QualityModel quality, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
+        private RemoteBook GetRemoteAlbum(List<Book> albums, QualityModel quality, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
         {
-            var remoteAlbum = new RemoteAlbum();
-            remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
-            remoteAlbum.ParsedAlbumInfo.Quality = quality;
+            var remoteAlbum = new RemoteBook();
+            remoteAlbum.ParsedBookInfo = new ParsedBookInfo();
+            remoteAlbum.ParsedBookInfo.Quality = quality;
 
-            remoteAlbum.Albums = new List<Book>();
-            remoteAlbum.Albums.AddRange(albums);
+            remoteAlbum.Books = new List<Book>();
+            remoteAlbum.Books.AddRange(albums);
 
             remoteAlbum.Release = new ReleaseInfo();
             remoteAlbum.Release.DownloadProtocol = downloadProtocol;
             remoteAlbum.Release.PublishDate = DateTime.UtcNow;
 
-            remoteAlbum.Artist = Builder<Author>.CreateNew()
+            remoteAlbum.Author = Builder<Author>.CreateNew()
                 .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                 .Build();
 
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteAlbum));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteBook>()), Times.Once());
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteAlbum));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteBook>()), Times.Once());
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteBook>()), Times.Once());
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteAlbum));
 
-            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteAlbum>())).Throws(new Exception());
+            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteBook>())).Throws(new Exception());
             Subject.ProcessDecisions(decisions).Grabbed.Should().BeEmpty();
             ExceptionVerification.ExpectedWarns(1);
         }
@@ -174,8 +174,8 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_return_an_empty_list_when_none_are_appproved()
         {
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(new RemoteAlbum(), new Rejection("Failure!")));
-            decisions.Add(new DownloadDecision(new RemoteAlbum(), new Rejection("Failure!")));
+            decisions.Add(new DownloadDecision(new RemoteBook(), new Rejection("Failure!")));
+            decisions.Add(new DownloadDecision(new RemoteBook(), new Rejection("Failure!")));
 
             Subject.GetQualifiedReports(decisions).Should().BeEmpty();
         }
@@ -190,7 +190,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteAlbum, new Rejection("Failure!", RejectionType.Temporary)));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Never());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteBook>()), Times.Never());
         }
 
         [Test]
@@ -231,11 +231,11 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteAlbum));
             decisions.Add(new DownloadDecision(remoteAlbum));
 
-            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteAlbum>()))
+            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteBook>()))
                   .Throws(new DownloadClientUnavailableException("Download client failed"));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteAlbum>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteBook>()), Times.Once());
         }
 
         [Test]
@@ -249,12 +249,12 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteAlbum));
             decisions.Add(new DownloadDecision(remoteAlbum2));
 
-            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.Is<RemoteAlbum>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)))
+            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.Is<RemoteBook>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)))
                   .Throws(new DownloadClientUnavailableException("Download client failed"));
 
             Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteAlbum>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)), Times.Once());
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteAlbum>(r => r.Release.DownloadProtocol == DownloadProtocol.Torrent)), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteBook>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteBook>(r => r.Release.DownloadProtocol == DownloadProtocol.Torrent)), Times.Once());
         }
 
         [Test]
@@ -267,7 +267,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteAlbum));
 
             Mocker.GetMock<IDownloadService>()
-                  .Setup(s => s.DownloadReport(It.IsAny<RemoteAlbum>()))
+                  .Setup(s => s.DownloadReport(It.IsAny<RemoteBook>()))
                   .Throws(new ReleaseUnavailableException(remoteAlbum.Release, "That 404 Error is not just a Quirk"));
 
             var result = Subject.ProcessDecisions(decisions);

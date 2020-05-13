@@ -31,7 +31,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
             var cdhEnabled = _configService.EnableCompletedDownloadHandling;
 
@@ -42,17 +42,17 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             }
 
             _logger.Debug("Performing already imported check on report");
-            foreach (var album in subject.Albums)
+            foreach (var book in subject.Books)
             {
-                var trackFiles = _mediaFileService.GetFilesByAlbum(album.Id);
+                var bookFiles = _mediaFileService.GetFilesByBook(book.Id);
 
-                if (trackFiles.Count() == 0)
+                if (bookFiles.Count() == 0)
                 {
-                    _logger.Debug("Skipping already imported check for album without files");
+                    _logger.Debug("Skipping already imported check for book without files");
                     continue;
                 }
 
-                var historyForAlbum = _historyService.GetByAlbum(album.Id, null);
+                var historyForAlbum = _historyService.GetByBook(book.Id, null);
                 var lastGrabbed = historyForAlbum.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
 
                 if (lastGrabbed == null)

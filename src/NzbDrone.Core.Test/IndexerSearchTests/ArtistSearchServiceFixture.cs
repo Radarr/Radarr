@@ -2,17 +2,17 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.IndexerSearch;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.IndexerSearchTests
 {
     [TestFixture]
-    public class ArtistSearchServiceFixture : CoreTest<ArtistSearchService>
+    public class ArtistSearchServiceFixture : CoreTest<AuthorSearchService>
     {
         private Author _artist;
 
@@ -21,8 +21,8 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
         {
             _artist = new Author();
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(s => s.GetArtist(It.IsAny<int>()))
+            Mocker.GetMock<IAuthorService>()
+                .Setup(s => s.GetAuthor(It.IsAny<int>()))
                 .Returns(_artist);
 
             Mocker.GetMock<ISearchForNzb>()
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
                 new Book { Monitored = true }
             };
 
-            Subject.Execute(new ArtistSearchCommand { AuthorId = _artist.Id, Trigger = CommandTrigger.Manual });
+            Subject.Execute(new AuthorSearchCommand { AuthorId = _artist.Id, Trigger = CommandTrigger.Manual });
 
             Mocker.GetMock<ISearchForNzb>()
                 .Verify(v => v.ArtistSearch(_artist.Id, false, true, false),

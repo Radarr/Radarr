@@ -19,9 +19,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
-            if (_blacklistService.Blacklisted(subject.Artist.Id, subject.Release))
+            if (_blacklistService.Blacklisted(subject.Author.Id, subject.Release))
             {
                 _logger.Debug("{0} is blacklisted, rejecting.", subject.Release.Title);
                 return Decision.Reject("Release is blacklisted");

@@ -12,7 +12,7 @@ using NzbDrone.Core.Messaging.Events;
 namespace NzbDrone.Core.Download.TrackedDownloads
 {
     public class DownloadMonitoringService : IExecute<RefreshMonitoredDownloadsCommand>,
-                                             IHandle<AlbumGrabbedEvent>,
+                                             IHandle<BookGrabbedEvent>,
                                              IHandle<TrackImportedEvent>,
                                              IHandle<DownloadsProcessedEvent>,
                                              IHandle<TrackedDownloadsRemovedEvent>
@@ -159,7 +159,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             Refresh();
         }
 
-        public void Handle(AlbumGrabbedEvent message)
+        public void Handle(BookGrabbedEvent message)
         {
             _refreshDebounce.Execute();
         }

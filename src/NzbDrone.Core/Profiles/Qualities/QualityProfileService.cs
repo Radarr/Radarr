@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.RootFolders;
 
@@ -24,19 +24,19 @@ namespace NzbDrone.Core.Profiles.Qualities
     public class QualityProfileService : IProfileService, IHandle<ApplicationStartedEvent>
     {
         private readonly IProfileRepository _profileRepository;
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
         private readonly IImportListFactory _importListFactory;
         private readonly IRootFolderService _rootFolderService;
         private readonly Logger _logger;
 
         public QualityProfileService(IProfileRepository profileRepository,
-                                     IArtistService artistService,
+                                     IAuthorService authorService,
                                      IImportListFactory importListFactory,
                                      IRootFolderService rootFolderService,
                                      Logger logger)
         {
             _profileRepository = profileRepository;
-            _artistService = artistService;
+            _authorService = authorService;
             _importListFactory = importListFactory;
             _rootFolderService = rootFolderService;
             _logger = logger;
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Profiles.Qualities
 
         public void Delete(int id)
         {
-            if (_artistService.GetAllArtists().Any(c => c.QualityProfileId == id) ||
+            if (_authorService.GetAllAuthors().Any(c => c.QualityProfileId == id) ||
                 _importListFactory.All().Any(c => c.ProfileId == id) ||
                 _rootFolderService.All().Any(c => c.DefaultQualityProfileId == id))
             {

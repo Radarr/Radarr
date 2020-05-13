@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 
 namespace Readarr.Api.V1.AlbumStudio
 {

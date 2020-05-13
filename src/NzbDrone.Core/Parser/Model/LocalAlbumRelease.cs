@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.MediaFiles.TrackImport.Identification;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
+using NzbDrone.Core.MediaFiles.BookImport.Identification;
 
 namespace NzbDrone.Core.Parser.Model
 {
@@ -12,46 +12,46 @@ namespace NzbDrone.Core.Parser.Model
     {
         public LocalAlbumRelease()
         {
-            LocalTracks = new List<LocalTrack>();
+            LocalBooks = new List<LocalBook>();
 
             // A dummy distance, will be replaced
             Distance = new Distance();
             Distance.Add("album_id", 1.0);
         }
 
-        public LocalAlbumRelease(List<LocalTrack> tracks)
+        public LocalAlbumRelease(List<LocalBook> tracks)
         {
-            LocalTracks = tracks;
+            LocalBooks = tracks;
 
             // A dummy distance, will be replaced
             Distance = new Distance();
             Distance.Add("album_id", 1.0);
         }
 
-        public List<LocalTrack> LocalTracks { get; set; }
-        public int TrackCount => LocalTracks.Count;
+        public List<LocalBook> LocalBooks { get; set; }
+        public int TrackCount => LocalBooks.Count;
 
         public Distance Distance { get; set; }
         public Book Book { get; set; }
-        public List<LocalTrack> ExistingTracks { get; set; }
+        public List<LocalBook> ExistingTracks { get; set; }
         public bool NewDownload { get; set; }
 
         public void PopulateMatch()
         {
             if (Book != null)
             {
-                LocalTracks = LocalTracks.Concat(ExistingTracks).DistinctBy(x => x.Path).ToList();
-                foreach (var localTrack in LocalTracks)
+                LocalBooks = LocalBooks.Concat(ExistingTracks).DistinctBy(x => x.Path).ToList();
+                foreach (var localTrack in LocalBooks)
                 {
-                    localTrack.Album = Book;
-                    localTrack.Artist = Book.Author.Value;
+                    localTrack.Book = Book;
+                    localTrack.Author = Book.Author.Value;
                 }
             }
         }
 
         public override string ToString()
         {
-            return "[" + string.Join(", ", LocalTracks.Select(x => Path.GetDirectoryName(x.Path)).Distinct()) + "]";
+            return "[" + string.Join(", ", LocalBooks.Select(x => Path.GetDirectoryName(x.Path)).Distinct()) + "]";
         }
     }
 }

@@ -56,8 +56,8 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                          WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE Type = 2
-                                         GROUP BY TrackFileId, Consumer
-                                         HAVING COUNT(TrackFileId) > 1
+                                         GROUP BY BookFileId, Consumer
+                                         HAVING COUNT(BookFileId) > 1
                                      )");
             }
         }
@@ -70,8 +70,8 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                          WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
                                          WHERE Type = 5
-                                         GROUP BY TrackFileId, Consumer
-                                         HAVING COUNT(TrackFileId) > 1
+                                         GROUP BY BookFileId, Consumer
+                                         HAVING COUNT(BookFileId) > 1
                                      )");
             }
         }

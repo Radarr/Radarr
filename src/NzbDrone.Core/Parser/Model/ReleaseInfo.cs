@@ -15,8 +15,8 @@ namespace NzbDrone.Core.Parser.Model
         public string CommentUrl { get; set; }
         public int IndexerId { get; set; }
         public string Indexer { get; set; }
-        public string Artist { get; set; }
-        public string Album { get; set; }
+        public string Author { get; set; }
+        public string Book { get; set; }
         public DownloadProtocol DownloadProtocol { get; set; }
         public DateTime PublishDate { get; set; }
 

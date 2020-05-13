@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Notifications.Gotify
             _proxy.SendNotification(BOOK_GRABBED_TITLE, grabMessage.Message, Settings);
         }
 
-        public override void OnReleaseImport(AlbumDownloadMessage message)
+        public override void OnReleaseImport(BookDownloadMessage message)
         {
             _proxy.SendNotification(BOOK_DOWNLOADED_TITLE, message.Message, Settings);
         }
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Notifications.Gotify
             _proxy.SendNotification(DOWNLOAD_FAILURE_TITLE, message.Message, Settings);
         }
 
-        public override void OnImportFailure(AlbumDownloadMessage message)
+        public override void OnImportFailure(BookDownloadMessage message)
         {
             _proxy.SendNotification(IMPORT_FAILURE_TITLE, message.Message, Settings);
         }

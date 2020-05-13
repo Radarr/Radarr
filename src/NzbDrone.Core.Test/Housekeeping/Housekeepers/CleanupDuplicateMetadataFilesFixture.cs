@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
                                              .With(m => m.Type = MetadataType.TrackMetadata)
-                                             .With(m => m.TrackFileId = 1)
+                                             .With(m => m.BookFileId = 1)
                                              .BuildListOfNew();
 
             Db.InsertMany(files);
@@ -156,7 +156,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
                                              .With(m => m.Type = MetadataType.TrackMetadata)
-                                             .With(m => m.TrackFileId = 1)
+                                             .With(m => m.BookFileId = 1)
                                              .With(m => m.Consumer = "XbmcMetadata")
                                              .BuildListOfNew();
 

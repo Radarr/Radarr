@@ -5,6 +5,7 @@ using Dapper;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFilters;
 using NzbDrone.Core.Datastore.Converters;
@@ -20,7 +21,6 @@ using NzbDrone.Core.Instrumentation;
 using NzbDrone.Core.Jobs;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
@@ -127,16 +127,16 @@ namespace NzbDrone.Core.Datastore
                                                            .Where<Book>(b => b.Id == book.Id)).ToList(),
                           b => b.Id > 0)
                 .LazyLoad(a => a.Author,
-                          (db, album) => ArtistRepository.Query(db,
+                          (db, book) => AuthorRepository.Query(db,
                                                                 new SqlBuilder()
                                                                 .Join<Author, AuthorMetadata>((a, m) => a.AuthorMetadataId == m.Id)
-                                                                .Where<Author>(a => a.AuthorMetadataId == album.AuthorMetadataId)).SingleOrDefault(),
+                                                                .Where<Author>(a => a.AuthorMetadataId == book.AuthorMetadataId)).SingleOrDefault(),
                           a => a.AuthorMetadataId > 0);
 
             Mapper.Entity<BookFile>("BookFiles").RegisterModel()
-                .HasOne(f => f.Album, f => f.BookId)
-                .LazyLoad(x => x.Artist,
-                          (db, f) => ArtistRepository.Query(db,
+                .HasOne(f => f.Book, f => f.BookId)
+                .LazyLoad(x => x.Author,
+                          (db, f) => AuthorRepository.Query(db,
                                                             new SqlBuilder()
                                                             .Join<Author, AuthorMetadata>((a, m) => a.AuthorMetadataId == m.Id)
                                                             .Join<Author, Book>((l, r) => l.AuthorMetadataId == r.AuthorMetadataId)
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<OtherExtraFile>("ExtraFiles").RegisterModel();
 
             Mapper.Entity<PendingRelease>("PendingReleases").RegisterModel()
-                  .Ignore(e => e.RemoteAlbum);
+                  .Ignore(e => e.RemoteBook);
 
             Mapper.Entity<RemotePathMapping>("RemotePathMappings").RegisterModel();
             Mapper.Entity<Tag>("Tags").RegisterModel();
@@ -193,7 +193,7 @@ namespace NzbDrone.Core.Datastore
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<KeyValuePair<string, int>>>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<KeyValuePair<string, int>>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<string>>());
-            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ParsedAlbumInfo>());
+            SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ParsedBookInfo>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ParsedTrackInfo>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ReleaseInfo>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<HashSet<int>>());

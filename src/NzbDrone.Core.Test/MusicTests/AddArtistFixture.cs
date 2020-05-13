@@ -6,9 +6,9 @@ using FluentValidation;
 using FluentValidation.Results;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -40,10 +40,10 @@ namespace NzbDrone.Core.Test.MusicTests
         private void GivenValidPath()
         {
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.GetArtistFolder(It.IsAny<Author>(), null))
+                  .Setup(s => s.GetAuthorFolder(It.IsAny<Author>(), null))
                   .Returns<Author, NamingConfig>((c, n) => c.Name);
 
-            Mocker.GetMock<IAddArtistValidator>()
+            Mocker.GetMock<IAddAuthorValidator>()
                   .Setup(s => s.Validate(It.IsAny<Author>()))
                   .Returns(new ValidationResult());
         }
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.MusicTests
             GivenValidArtist(newArtist.ForeignAuthorId);
             GivenValidPath();
 
-            var artist = Subject.AddArtist(newArtist);
+            var artist = Subject.AddAuthor(newArtist);
 
             artist.Name.Should().Be(_fakeArtist.Name);
         }
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.MusicTests
             GivenValidArtist(newArtist.ForeignAuthorId);
             GivenValidPath();
 
-            var artist = Subject.AddArtist(newArtist);
+            var artist = Subject.AddAuthor(newArtist);
 
             artist.Path.Should().Be(Path.Combine(newArtist.RootFolderPath, _fakeArtist.Name));
         }
@@ -93,14 +93,14 @@ namespace NzbDrone.Core.Test.MusicTests
 
             GivenValidArtist(newArtist.ForeignAuthorId);
 
-            Mocker.GetMock<IAddArtistValidator>()
+            Mocker.GetMock<IAddAuthorValidator>()
                   .Setup(s => s.Validate(It.IsAny<Author>()))
                   .Returns(new ValidationResult(new List<ValidationFailure>
                                                 {
                                                     new ValidationFailure("Path", "Test validation failure")
                                                 }));
 
-            Assert.Throws<ValidationException>(() => Subject.AddArtist(newArtist));
+            Assert.Throws<ValidationException>(() => Subject.AddAuthor(newArtist));
         }
 
         [Test]
@@ -114,16 +114,16 @@ namespace NzbDrone.Core.Test.MusicTests
 
             Mocker.GetMock<IProvideAuthorInfo>()
                   .Setup(s => s.GetAuthorInfo(newArtist.ForeignAuthorId))
-                  .Throws(new ArtistNotFoundException(newArtist.ForeignAuthorId));
+                  .Throws(new AuthorNotFoundException(newArtist.ForeignAuthorId));
 
-            Mocker.GetMock<IAddArtistValidator>()
+            Mocker.GetMock<IAddAuthorValidator>()
                   .Setup(s => s.Validate(It.IsAny<Author>()))
                   .Returns(new ValidationResult(new List<ValidationFailure>
                                                 {
                                                     new ValidationFailure("Path", "Test validation failure")
                                                 }));
 
-            Assert.Throws<ValidationException>(() => Subject.AddArtist(newArtist));
+            Assert.Throws<ValidationException>(() => Subject.AddAuthor(newArtist));
 
             ExceptionVerification.ExpectedErrors(1);
         }
@@ -142,11 +142,11 @@ namespace NzbDrone.Core.Test.MusicTests
             GivenValidArtist(newArtist.ForeignAuthorId);
             GivenValidPath();
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(x => x.ArtistPathExists(newArtist.Path))
+            Mocker.GetMock<IAuthorService>()
+                .Setup(x => x.AuthorPathExists(newArtist.Path))
                 .Returns(true);
 
-            var artist = Subject.AddArtist(newArtist);
+            var artist = Subject.AddAuthor(newArtist);
             artist.Path.Should().Be(newArtist.Path + " (Disambiguation)");
         }
 
@@ -164,23 +164,23 @@ namespace NzbDrone.Core.Test.MusicTests
             GivenValidArtist(newArtist.ForeignAuthorId);
             GivenValidPath();
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(x => x.ArtistPathExists(newArtist.Path))
+            Mocker.GetMock<IAuthorService>()
+                .Setup(x => x.AuthorPathExists(newArtist.Path))
                 .Returns(true);
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(x => x.ArtistPathExists(newArtist.Path + " (Disambiguation)"))
+            Mocker.GetMock<IAuthorService>()
+                .Setup(x => x.AuthorPathExists(newArtist.Path + " (Disambiguation)"))
                 .Returns(true);
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(x => x.ArtistPathExists(newArtist.Path + " (Disambiguation) (1)"))
+            Mocker.GetMock<IAuthorService>()
+                .Setup(x => x.AuthorPathExists(newArtist.Path + " (Disambiguation) (1)"))
                 .Returns(true);
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(x => x.ArtistPathExists(newArtist.Path + " (Disambiguation) (2)"))
+            Mocker.GetMock<IAuthorService>()
+                .Setup(x => x.AuthorPathExists(newArtist.Path + " (Disambiguation) (2)"))
                 .Returns(true);
 
-            var artist = Subject.AddArtist(newArtist);
+            var artist = Subject.AddAuthor(newArtist);
             artist.Path.Should().Be(newArtist.Path + " (Disambiguation) (3)");
         }
 
@@ -198,19 +198,19 @@ namespace NzbDrone.Core.Test.MusicTests
             GivenValidArtist(newArtist.ForeignAuthorId);
             GivenValidPath();
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(x => x.ArtistPathExists(newArtist.Path))
+            Mocker.GetMock<IAuthorService>()
+                .Setup(x => x.AuthorPathExists(newArtist.Path))
                 .Returns(true);
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(x => x.ArtistPathExists(newArtist.Path + " (1)"))
+            Mocker.GetMock<IAuthorService>()
+                .Setup(x => x.AuthorPathExists(newArtist.Path + " (1)"))
                 .Returns(true);
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(x => x.ArtistPathExists(newArtist.Path + " (2)"))
+            Mocker.GetMock<IAuthorService>()
+                .Setup(x => x.AuthorPathExists(newArtist.Path + " (2)"))
                 .Returns(true);
 
-            var artist = Subject.AddArtist(newArtist);
+            var artist = Subject.AddAuthor(newArtist);
             artist.Path.Should().Be(newArtist.Path + " (3)");
         }
     }

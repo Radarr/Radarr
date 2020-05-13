@@ -1,6 +1,6 @@
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Test.Framework;
 
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
             Subject.GetArtist(title);
 
-            Mocker.GetMock<IArtistService>()
+            Mocker.GetMock<IAuthorService>()
                   .Verify(s => s.FindByName(title), Times.Once());
         }
 
@@ -27,8 +27,8 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
             Subject.GetArtist(title);
 
-            Mocker.GetMock<IArtistService>()
-                  .Verify(s => s.FindByName(Parser.Parser.ParseAlbumTitle(title).ArtistName), Times.Once());
+            Mocker.GetMock<IAuthorService>()
+                  .Verify(s => s.FindByName(Parser.Parser.ParseBookTitle(title).AuthorName), Times.Once());
         }
     }
 }

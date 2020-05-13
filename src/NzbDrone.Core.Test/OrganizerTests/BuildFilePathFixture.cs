@@ -1,7 +1,7 @@
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.OrganizerTests
                 .With(s => s.Title = "Fake: Book")
                 .Build();
 
-            Subject.BuildTrackFilePath(fakeArtist, fakeAlbum, filename, ".mobi").Should().Be(expectedPath.AsOsAgnostic());
+            Subject.BuildBookFilePath(fakeArtist, fakeAlbum, filename, ".mobi").Should().Be(expectedPath.AsOsAgnostic());
         }
     }
 }

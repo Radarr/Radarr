@@ -5,10 +5,10 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download.Pending;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
@@ -25,8 +25,8 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         private Book _album;
         private QualityProfile _profile;
         private ReleaseInfo _release;
-        private ParsedAlbumInfo _parsedAlbumInfo;
-        private RemoteAlbum _remoteAlbum;
+        private ParsedBookInfo _parsedAlbumInfo;
+        private RemoteBook _remoteAlbum;
         private List<PendingRelease> _heldReleases;
 
         [SetUp]
@@ -54,13 +54,13 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
-            _parsedAlbumInfo = Builder<ParsedAlbumInfo>.CreateNew().Build();
+            _parsedAlbumInfo = Builder<ParsedBookInfo>.CreateNew().Build();
             _parsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320);
 
-            _remoteAlbum = new RemoteAlbum();
-            _remoteAlbum.Albums = new List<Book> { _album };
-            _remoteAlbum.Artist = _artist;
-            _remoteAlbum.ParsedAlbumInfo = _parsedAlbumInfo;
+            _remoteAlbum = new RemoteBook();
+            _remoteAlbum.Books = new List<Book> { _album };
+            _remoteAlbum.Author = _artist;
+            _remoteAlbum.ParsedBookInfo = _parsedAlbumInfo;
             _remoteAlbum.Release = _release;
 
             _temporarilyRejected = new DownloadDecision(_remoteAlbum, new Rejection("Temp Rejected", RejectionType.Temporary));
@@ -75,16 +75,16 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                   .Setup(s => s.AllByAuthorId(It.IsAny<int>()))
                   .Returns<int>(i => _heldReleases.Where(v => v.AuthorId == i).ToList());
 
-            Mocker.GetMock<IArtistService>()
-                  .Setup(s => s.GetArtist(It.IsAny<int>()))
+            Mocker.GetMock<IAuthorService>()
+                  .Setup(s => s.GetAuthor(It.IsAny<int>()))
                   .Returns(_artist);
 
-            Mocker.GetMock<IArtistService>()
-                  .Setup(s => s.GetArtists(It.IsAny<IEnumerable<int>>()))
+            Mocker.GetMock<IAuthorService>()
+                  .Setup(s => s.GetAuthors(It.IsAny<IEnumerable<int>>()))
                   .Returns(new List<Author> { _artist });
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetAlbums(It.IsAny<ParsedAlbumInfo>(), _artist, null))
+                  .Setup(s => s.GetAlbums(It.IsAny<ParsedBookInfo>(), _artist, null))
                   .Returns(new List<Book> { _album });
 
             Mocker.GetMock<IPrioritizeDownloadDecision>()

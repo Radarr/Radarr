@@ -5,9 +5,9 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Queue;
 using NzbDrone.Core.Test.Framework;
@@ -34,16 +34,16 @@ namespace NzbDrone.Core.Test.QueueTests
                 .With(e => e.AuthorId = artist.Id)
                 .Build();
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                .With(r => r.Artist = artist)
-                .With(r => r.Albums = new List<Book>(albums))
-                .With(r => r.ParsedAlbumInfo = new ParsedAlbumInfo())
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                .With(r => r.Author = artist)
+                .With(r => r.Books = new List<Book>(albums))
+                .With(r => r.ParsedBookInfo = new ParsedBookInfo())
                 .Build();
 
             _trackedDownloads = Builder<TrackedDownload>.CreateListOfSize(1)
                 .All()
                 .With(v => v.DownloadItem = downloadItem)
-                .With(v => v.RemoteAlbum = remoteAlbum)
+                .With(v => v.RemoteBook = remoteAlbum)
                 .Build()
                 .ToList();
 

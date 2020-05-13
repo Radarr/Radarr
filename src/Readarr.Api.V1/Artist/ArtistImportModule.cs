@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Nancy;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using Readarr.Http;
 using Readarr.Http.Extensions;
 
@@ -8,12 +8,12 @@ namespace Readarr.Api.V1.Artist
 {
     public class ArtistImportModule : ReadarrRestModule<ArtistResource>
     {
-        private readonly IAddArtistService _addArtistService;
+        private readonly IAddAuthorService _addAuthorService;
 
-        public ArtistImportModule(IAddArtistService addArtistService)
+        public ArtistImportModule(IAddAuthorService addAuthorService)
             : base("/artist/import")
         {
-            _addArtistService = addArtistService;
+            _addAuthorService = addAuthorService;
             Post("/", x => Import());
         }
 
@@ -22,7 +22,7 @@ namespace Readarr.Api.V1.Artist
             var resource = Request.Body.FromJson<List<ArtistResource>>();
             var newArtists = resource.ToModel();
 
-            return _addArtistService.AddArtists(newArtists).ToResource();
+            return _addAuthorService.AddAuthors(newArtists).ToResource();
         }
     }
 }

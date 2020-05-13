@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public interface IRefreshSeriesBookLinkService
     {

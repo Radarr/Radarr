@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("QZC4HDl7ncmzyUj9amucWe1ddKU1oFMZDd8r0dEDUsTd")]
         public void should_not_parse_crap(string title)
         {
-            Parser.Parser.ParseAlbumTitle(title).Should().BeNull();
+            Parser.Parser.ParseBookTitle(title).Should().BeNull();
             ExceptionVerification.IgnoreWarns();
         }
 
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
                 hash = BitConverter.ToString(hashData).Replace("-", "");
 
-                if (Parser.Parser.ParseAlbumTitle(hash) == null)
+                if (Parser.Parser.ParseBookTitle(hash) == null)
                 {
                     success++;
                 }
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.ParserTests
                     hash.Append(charset[hashAlgo.Next() % charset.Length]);
                 }
 
-                if (Parser.Parser.ParseAlbumTitle(hash.ToString()) == null)
+                if (Parser.Parser.ParseBookTitle(hash.ToString()) == null)
                 {
                     success++;
                 }
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("thebiggestloser1618finale")]
         public void should_not_parse_file_name_without_proper_spacing(string fileName)
         {
-            Parser.Parser.ParseAlbumTitle(fileName).Should().BeNull();
+            Parser.Parser.ParseBookTitle(fileName).Should().BeNull();
         }
     }
 }

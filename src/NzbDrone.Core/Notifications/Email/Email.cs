@@ -24,11 +24,11 @@ namespace NzbDrone.Core.Notifications.Email
             _emailService.SendEmail(Settings, BOOK_GRABBED_TITLE_BRANDED, body);
         }
 
-        public override void OnReleaseImport(AlbumDownloadMessage message)
+        public override void OnReleaseImport(BookDownloadMessage message)
         {
             var body = $"{message.Message} Downloaded and sorted.";
 
-            var paths = Settings.AttachFiles ? message.TrackFiles.SelectList(a => a.Path) : null;
+            var paths = Settings.AttachFiles ? message.BookFiles.SelectList(a => a.Path) : null;
 
             _emailService.SendEmail(Settings, BOOK_DOWNLOADED_TITLE_BRANDED, body, false, paths);
         }
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Notifications.Email
             _emailService.SendEmail(Settings, DOWNLOAD_FAILURE_TITLE_BRANDED, message.Message);
         }
 
-        public override void OnImportFailure(AlbumDownloadMessage message)
+        public override void OnImportFailure(BookDownloadMessage message)
         {
             _emailService.SendEmail(Settings, IMPORT_FAILURE_TITLE_BRANDED, message.Message);
         }

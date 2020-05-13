@@ -1,7 +1,7 @@
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Qualities;
 using Readarr.Api.V1.RootFolders;
 

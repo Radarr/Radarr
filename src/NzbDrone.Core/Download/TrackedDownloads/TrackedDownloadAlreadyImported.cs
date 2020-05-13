@@ -19,14 +19,14 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 return false;
             }
 
-            if (trackedDownload.RemoteAlbum == null || trackedDownload.RemoteAlbum.Albums == null)
+            if (trackedDownload.RemoteBook == null || trackedDownload.RemoteBook.Books == null)
             {
                 return true;
             }
 
-            var allAlbumsImportedInHistory = trackedDownload.RemoteAlbum.Albums.All(album =>
+            var allAlbumsImportedInHistory = trackedDownload.RemoteBook.Books.All(book =>
             {
-                var lastHistoryItem = historyItems.FirstOrDefault(h => h.BookId == album.Id);
+                var lastHistoryItem = historyItems.FirstOrDefault(h => h.BookId == book.Id);
 
                 if (lastHistoryItem == null)
                 {

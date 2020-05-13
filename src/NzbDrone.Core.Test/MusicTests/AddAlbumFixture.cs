@@ -5,9 +5,9 @@ using FluentAssertions;
 using FluentValidation;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -15,7 +15,7 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.MusicTests
 {
     [TestFixture]
-    public class AddAlbumFixture : CoreTest<AddAlbumService>
+    public class AddAlbumFixture : CoreTest<AddBookService>
     {
         private Author _fakeArtist;
         private Book _fakeAlbum;
@@ -42,15 +42,15 @@ namespace NzbDrone.Core.Test.MusicTests
                                       _fakeAlbum,
                                       new List<AuthorMetadata> { _fakeArtist.Metadata.Value }));
 
-            Mocker.GetMock<IAddArtistService>()
-                .Setup(s => s.AddArtist(It.IsAny<Author>(), It.IsAny<bool>()))
+            Mocker.GetMock<IAddAuthorService>()
+                .Setup(s => s.AddAuthor(It.IsAny<Author>(), It.IsAny<bool>()))
                 .Returns(_fakeArtist);
         }
 
         private void GivenValidPath()
         {
             Mocker.GetMock<IBuildFileNames>()
-                  .Setup(s => s.GetArtistFolder(It.IsAny<Author>(), null))
+                  .Setup(s => s.GetAuthorFolder(It.IsAny<Author>(), null))
                   .Returns<Author, NamingConfig>((c, n) => c.Name);
         }
 
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.MusicTests
             GivenValidAlbum(newAlbum.ForeignBookId);
             GivenValidPath();
 
-            var album = Subject.AddAlbum(newAlbum);
+            var album = Subject.AddBook(newAlbum);
 
             album.Title.Should().Be(_fakeAlbum.Title);
         }
@@ -86,9 +86,9 @@ namespace NzbDrone.Core.Test.MusicTests
 
             Mocker.GetMock<IProvideBookInfo>()
                   .Setup(s => s.GetBookInfo(newAlbum.ForeignBookId))
-                  .Throws(new AlbumNotFoundException(newAlbum.ForeignBookId));
+                  .Throws(new BookNotFoundException(newAlbum.ForeignBookId));
 
-            Assert.Throws<ValidationException>(() => Subject.AddAlbum(newAlbum));
+            Assert.Throws<ValidationException>(() => Subject.AddBook(newAlbum));
 
             ExceptionVerification.ExpectedErrors(1);
         }

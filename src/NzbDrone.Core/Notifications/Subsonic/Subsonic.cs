@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 
 namespace NzbDrone.Core.Notifications.Subsonic
 {
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
             Notify(Settings, header, grabMessage.Message);
         }
 
-        public override void OnReleaseImport(AlbumDownloadMessage message)
+        public override void OnReleaseImport(BookDownloadMessage message)
         {
             const string header = "Readarr - Downloaded";
 
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
             Update();
         }
 
-        public override void OnRename(Author artist)
+        public override void OnRename(Author author)
         {
             Update();
         }
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
             Notify(Settings, HEALTH_ISSUE_TITLE_BRANDED, healthCheck.Message);
         }
 
-        public override void OnTrackRetag(TrackRetagMessage message)
+        public override void OnTrackRetag(BookRetagMessage message)
         {
             Notify(Settings, BOOK_RETAGGED_TITLE_BRANDED, message.Message);
         }

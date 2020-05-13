@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.History
@@ -20,8 +20,8 @@ namespace NzbDrone.Core.History
         public string SourceTitle { get; set; }
         public QualityModel Quality { get; set; }
         public DateTime Date { get; set; }
-        public Book Album { get; set; }
-        public Author Artist { get; set; }
+        public Book Book { get; set; }
+        public Author Author { get; set; }
         public HistoryEventType EventType { get; set; }
         public Dictionary<string, string> Data { get; set; }
 
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.History
         DownloadFailed = 4,
         TrackFileDeleted = 5,
         TrackFileRenamed = 6,
-        AlbumImportIncomplete = 7,
+        BookImportIncomplete = 7,
         DownloadImported = 8,
         TrackFileRetagged = 9,
         DownloadIgnored = 10

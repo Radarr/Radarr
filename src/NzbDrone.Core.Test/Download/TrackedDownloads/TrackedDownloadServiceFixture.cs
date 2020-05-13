@@ -3,12 +3,12 @@ using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
@@ -39,19 +39,19 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         {
             GivenDownloadHistory();
 
-            var remoteAlbum = new RemoteAlbum
+            var remoteAlbum = new RemoteBook
             {
-                Artist = new Author() { Id = 5 },
-                Albums = new List<Book> { new Book { Id = 4 } },
-                ParsedAlbumInfo = new ParsedAlbumInfo()
+                Author = new Author() { Id = 5 },
+                Books = new List<Book> { new Book { Id = 4 } },
+                ParsedBookInfo = new ParsedBookInfo()
                 {
-                    AlbumTitle = "Audio Album",
-                    ArtistName = "Audio Artist"
+                    BookTitle = "Audio Album",
+                    AuthorName = "Audio Artist"
                 }
             };
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.Map(It.Is<ParsedAlbumInfo>(i => i.AlbumTitle == "Audio Album" && i.ArtistName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
+                  .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Album" && i.AuthorName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
                   .Returns(remoteAlbum);
 
             var client = new DownloadClientDefinition()
@@ -69,10 +69,10 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             var trackedDownload = Subject.TrackDownload(client, item);
 
             trackedDownload.Should().NotBeNull();
-            trackedDownload.RemoteAlbum.Should().NotBeNull();
-            trackedDownload.RemoteAlbum.Artist.Should().NotBeNull();
-            trackedDownload.RemoteAlbum.Artist.Id.Should().Be(5);
-            trackedDownload.RemoteAlbum.Albums.First().Id.Should().Be(4);
+            trackedDownload.RemoteBook.Should().NotBeNull();
+            trackedDownload.RemoteBook.Author.Should().NotBeNull();
+            trackedDownload.RemoteBook.Author.Id.Should().Be(5);
+            trackedDownload.RemoteBook.Books.First().Id.Should().Be(4);
         }
 
         [Test]
@@ -80,19 +80,19 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         {
             GivenDownloadHistory();
 
-            var remoteAlbum = new RemoteAlbum
+            var remoteAlbum = new RemoteBook
             {
-                Artist = new Author() { Id = 5 },
-                Albums = new List<Book> { new Book { Id = 4 } },
-                ParsedAlbumInfo = new ParsedAlbumInfo()
+                Author = new Author() { Id = 5 },
+                Books = new List<Book> { new Book { Id = 4 } },
+                ParsedBookInfo = new ParsedBookInfo()
                 {
-                    AlbumTitle = "Audio Album",
-                    ArtistName = "Audio Artist"
+                    BookTitle = "Audio Album",
+                    AuthorName = "Audio Artist"
                 }
             };
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.Map(It.Is<ParsedAlbumInfo>(i => i.AlbumTitle == "Audio Album" && i.ArtistName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
+                  .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Album" && i.AuthorName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
                   .Returns(remoteAlbum);
 
             var client = new DownloadClientDefinition()
@@ -113,16 +113,16 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
             // simulate deletion - album no longer maps
             Mocker.GetMock<IParsingService>()
-                .Setup(s => s.Map(It.Is<ParsedAlbumInfo>(i => i.AlbumTitle == "Audio Album" && i.ArtistName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
-                .Returns(default(RemoteAlbum));
+                .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Album" && i.AuthorName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
+                .Returns(default(RemoteBook));
 
             // handle deletion event
-            Subject.Handle(new AlbumDeletedEvent(remoteAlbum.Albums.First(), false, false));
+            Subject.Handle(new BookDeletedEvent(remoteAlbum.Books.First(), false, false));
 
             // verify download has null remote album
             var trackedDownloads = Subject.GetTrackedDownloads();
             trackedDownloads.Should().HaveCount(1);
-            trackedDownloads.First().RemoteAlbum.Should().BeNull();
+            trackedDownloads.First().RemoteBook.Should().BeNull();
         }
     }
 }

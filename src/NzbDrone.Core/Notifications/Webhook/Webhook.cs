@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.Webhook
@@ -20,19 +20,19 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         public override void OnGrab(GrabMessage message)
         {
-            var remoteAlbum = message.Album;
+            var remoteAlbum = message.Book;
             var quality = message.Quality;
 
             var payload = new WebhookGrabPayload
             {
                 EventType = "Grab",
-                Artist = new WebhookArtist(message.Artist),
-                Albums = remoteAlbum.Albums.ConvertAll(x => new WebhookAlbum(x)
+                Author = new WebhookAuthor(message.Author),
+                Books = remoteAlbum.Books.ConvertAll(x => new WebhookBook(x)
                 {
                     // TODO: Stop passing these parameters inside an album v3
                     Quality = quality.Quality.Name,
                     QualityVersion = quality.Revision.Version,
-                    ReleaseGroup = remoteAlbum.ParsedAlbumInfo.ReleaseGroup
+                    ReleaseGroup = remoteAlbum.ParsedBookInfo.ReleaseGroup
                 }),
                 Release = new WebhookRelease(quality, remoteAlbum)
             };
@@ -40,39 +40,39 @@ namespace NzbDrone.Core.Notifications.Webhook
             _proxy.SendWebhook(payload, Settings);
         }
 
-        public override void OnReleaseImport(AlbumDownloadMessage message)
+        public override void OnReleaseImport(BookDownloadMessage message)
         {
-            var trackFiles = message.TrackFiles;
+            var bookFiles = message.BookFiles;
 
             var payload = new WebhookImportPayload
             {
                 EventType = "Download",
-                Artist = new WebhookArtist(message.Artist),
-                Book = new WebhookAlbum(message.Album),
-                TrackFiles = trackFiles.ConvertAll(x => new WebhookTrackFile(x)),
+                Author = new WebhookAuthor(message.Author),
+                Book = new WebhookBook(message.Book),
+                BookFiles = bookFiles.ConvertAll(x => new WebhookBookFile(x)),
                 IsUpgrade = message.OldFiles.Any()
             };
 
             _proxy.SendWebhook(payload, Settings);
         }
 
-        public override void OnRename(Author artist)
+        public override void OnRename(Author author)
         {
             var payload = new WebhookPayload
             {
                 EventType = "Rename",
-                Artist = new WebhookArtist(artist)
+                Author = new WebhookAuthor(author)
             };
 
             _proxy.SendWebhook(payload, Settings);
         }
 
-        public override void OnTrackRetag(TrackRetagMessage message)
+        public override void OnTrackRetag(BookRetagMessage message)
         {
             var payload = new WebhookPayload
             {
                 EventType = "Retag",
-                Artist = new WebhookArtist(message.Artist)
+                Author = new WebhookAuthor(message.Author)
             };
 
             _proxy.SendWebhook(payload, Settings);
@@ -96,16 +96,16 @@ namespace NzbDrone.Core.Notifications.Webhook
                 var payload = new WebhookGrabPayload
                 {
                     EventType = "Test",
-                    Artist = new WebhookArtist()
+                    Author = new WebhookAuthor()
                     {
                         Id = 1,
                         Name = "Test Name",
                         Path = "C:\\testpath",
                         MBId = "aaaaa-aaa-aaaa-aaaaaa"
                     },
-                    Albums = new List<WebhookAlbum>()
+                    Books = new List<WebhookBook>()
                     {
-                            new WebhookAlbum()
+                            new WebhookBook()
                             {
                                 Id = 123,
                                 Title = "Test title"

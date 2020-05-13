@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.ParserTests
         // TODO: Rewrite this test to something that makes sense.
         public void should_parse_artist_names(string title)
         {
-            Parser.Parser.ParseMusicTitle(title).ArtistTitle.Should().Be(title);
+            Parser.Parser.ParseTitle(title).ArtistTitle.Should().Be(title);
             ExceptionVerification.IgnoreWarns();
         }
     }

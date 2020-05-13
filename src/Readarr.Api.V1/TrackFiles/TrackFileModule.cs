@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nancy;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 using NzbDrone.SignalR;
 using Readarr.Http;
 using Readarr.Http.Extensions;
@@ -17,30 +17,30 @@ using HttpStatusCode = System.Net.HttpStatusCode;
 namespace Readarr.Api.V1.TrackFiles
 {
     public class TrackFileModule : ReadarrRestModuleWithSignalR<TrackFileResource, BookFile>,
-                                 IHandle<TrackFileAddedEvent>,
-                                 IHandle<TrackFileDeletedEvent>
+                                 IHandle<BookFileAddedEvent>,
+                                 IHandle<BookFileDeletedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
         private readonly IDeleteMediaFiles _mediaFileDeletionService;
         private readonly IAudioTagService _audioTagService;
-        private readonly IArtistService _artistService;
-        private readonly IAlbumService _albumService;
+        private readonly IAuthorService _authorService;
+        private readonly IBookService _bookService;
         private readonly IUpgradableSpecification _upgradableSpecification;
 
         public TrackFileModule(IBroadcastSignalRMessage signalRBroadcaster,
                                IMediaFileService mediaFileService,
                                IDeleteMediaFiles mediaFileDeletionService,
                                IAudioTagService audioTagService,
-                               IArtistService artistService,
-                               IAlbumService albumService,
+                               IAuthorService authorService,
+                               IBookService bookService,
                                IUpgradableSpecification upgradableSpecification)
             : base(signalRBroadcaster)
         {
             _mediaFileService = mediaFileService;
             _mediaFileDeletionService = mediaFileDeletionService;
             _audioTagService = audioTagService;
-            _artistService = artistService;
-            _albumService = albumService;
+            _authorService = authorService;
+            _bookService = bookService;
             _upgradableSpecification = upgradableSpecification;
 
             GetResourceById = GetTrackFile;
@@ -54,9 +54,9 @@ namespace Readarr.Api.V1.TrackFiles
 
         private TrackFileResource MapToResource(BookFile trackFile)
         {
-            if (trackFile.BookId > 0 && trackFile.Artist != null && trackFile.Artist.Value != null)
+            if (trackFile.BookId > 0 && trackFile.Author != null && trackFile.Author.Value != null)
             {
-                return trackFile.ToResource(trackFile.Artist.Value, _upgradableSpecification);
+                return trackFile.ToResource(trackFile.Author.Value, _upgradableSpecification);
             }
             else
             {
@@ -92,9 +92,9 @@ namespace Readarr.Api.V1.TrackFiles
             if (authorIdQuery.HasValue && !bookIdQuery.HasValue)
             {
                 int authorId = Convert.ToInt32(authorIdQuery.Value);
-                var artist = _artistService.GetArtist(authorId);
+                var artist = _authorService.GetAuthor(authorId);
 
-                return _mediaFileService.GetFilesByArtist(authorId).ConvertAll(f => f.ToResource(artist, _upgradableSpecification));
+                return _mediaFileService.GetFilesByAuthor(authorId).ConvertAll(f => f.ToResource(artist, _upgradableSpecification));
             }
 
             if (bookIdQuery.HasValue)
@@ -108,9 +108,9 @@ namespace Readarr.Api.V1.TrackFiles
                 var result = new List<TrackFileResource>();
                 foreach (var bookId in bookIds)
                 {
-                    var album = _albumService.GetAlbum(bookId);
-                    var albumArtist = _artistService.GetArtist(album.AuthorId);
-                    result.AddRange(_mediaFileService.GetFilesByAlbum(album.Id).ConvertAll(f => f.ToResource(albumArtist, _upgradableSpecification)));
+                    var album = _bookService.GetBook(bookId);
+                    var albumArtist = _authorService.GetAuthor(album.AuthorId);
+                    result.AddRange(_mediaFileService.GetFilesByBook(album.Id).ConvertAll(f => f.ToResource(albumArtist, _upgradableSpecification)));
                 }
 
                 return result;
@@ -151,7 +151,7 @@ namespace Readarr.Api.V1.TrackFiles
 
             _mediaFileService.Update(trackFiles);
 
-            return ResponseWithCode(trackFiles.ConvertAll(f => f.ToResource(trackFiles.First().Artist.Value, _upgradableSpecification)),
+            return ResponseWithCode(trackFiles.ConvertAll(f => f.ToResource(trackFiles.First().Author.Value, _upgradableSpecification)),
                                Nancy.HttpStatusCode.Accepted);
         }
 
@@ -164,9 +164,9 @@ namespace Readarr.Api.V1.TrackFiles
                 throw new NzbDroneClientException(HttpStatusCode.NotFound, "Track file not found");
             }
 
-            if (trackFile.BookId > 0 && trackFile.Artist != null && trackFile.Artist.Value != null)
+            if (trackFile.BookId > 0 && trackFile.Author != null && trackFile.Author.Value != null)
             {
-                _mediaFileDeletionService.DeleteTrackFile(trackFile.Artist.Value, trackFile);
+                _mediaFileDeletionService.DeleteTrackFile(trackFile.Author.Value, trackFile);
             }
             else
             {
@@ -178,7 +178,7 @@ namespace Readarr.Api.V1.TrackFiles
         {
             var resource = Request.Body.FromJson<TrackFileListResource>();
             var trackFiles = _mediaFileService.Get(resource.TrackFileIds);
-            var artist = trackFiles.First().Artist.Value;
+            var artist = trackFiles.First().Author.Value;
 
             foreach (var trackFile in trackFiles)
             {
@@ -188,14 +188,14 @@ namespace Readarr.Api.V1.TrackFiles
             return new object();
         }
 
-        public void Handle(TrackFileAddedEvent message)
+        public void Handle(BookFileAddedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, MapToResource(message.TrackFile));
+            BroadcastResourceChange(ModelAction.Updated, MapToResource(message.BookFile));
         }
 
-        public void Handle(TrackFileDeletedEvent message)
+        public void Handle(BookFileDeletedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Deleted, MapToResource(message.TrackFile));
+            BroadcastResourceChange(ModelAction.Deleted, MapToResource(message.BookFile));
         }
     }
 }

@@ -32,7 +32,7 @@ class Naming extends Component {
     this.setState({
       isNamingModalOpen: true,
       namingModalOptions: {
-        name: 'standardTrackFormat',
+        name: 'standardBookFormat',
         album: true,
         track: true,
         additional: true
@@ -40,11 +40,11 @@ class Naming extends Component {
     });
   }
 
-  onArtistFolderNamingModalOpenClick = () => {
+  onAuthorFolderNamingModalOpenClick = () => {
     this.setState({
       isNamingModalOpen: true,
       namingModalOptions: {
-        name: 'artistFolderFormat'
+        name: 'authorFolderFormat'
       }
     });
   }
@@ -73,24 +73,24 @@ class Naming extends Component {
       namingModalOptions
     } = this.state;
 
-    const renameTracks = hasSettings && settings.renameTracks.value;
+    const renameBooks = hasSettings && settings.renameBooks.value;
 
-    const standardTrackFormatHelpTexts = [];
-    const standardTrackFormatErrors = [];
-    const artistFolderFormatHelpTexts = [];
-    const artistFolderFormatErrors = [];
+    const standardBookFormatHelpTexts = [];
+    const standardBookFormatErrors = [];
+    const authorFolderFormatHelpTexts = [];
+    const authorFolderFormatErrors = [];
 
     if (examplesPopulated) {
       if (examples.singleTrackExample) {
-        standardTrackFormatHelpTexts.push(`Single Track: ${examples.singleTrackExample}`);
+        standardBookFormatHelpTexts.push(`Single Track: ${examples.singleTrackExample}`);
       } else {
-        standardTrackFormatErrors.push({ message: 'Single Track: Invalid Format' });
+        standardBookFormatErrors.push({ message: 'Single Track: Invalid Format' });
       }
 
       if (examples.artistFolderExample) {
-        artistFolderFormatHelpTexts.push(`Example: ${examples.artistFolderExample}`);
+        authorFolderFormatHelpTexts.push(`Example: ${examples.artistFolderExample}`);
       } else {
-        artistFolderFormatErrors.push({ message: 'Invalid Format' });
+        authorFolderFormatErrors.push({ message: 'Invalid Format' });
       }
     }
 
@@ -114,10 +114,10 @@ class Naming extends Component {
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
-                  name="renameTracks"
+                  name="renameBooks"
                   helpText="Readarr will use the existing file name if renaming is disabled"
                   onChange={onInputChange}
-                  {...settings.renameTracks}
+                  {...settings.renameBooks}
                 />
               </FormGroup>
 
@@ -134,20 +134,20 @@ class Naming extends Component {
               </FormGroup>
 
               {
-                renameTracks &&
+                renameBooks &&
                   <div>
                     <FormGroup size={sizes.LARGE}>
-                      <FormLabel>Standard Track Format</FormLabel>
+                      <FormLabel>Standard Book Format</FormLabel>
 
                       <FormInputGroup
                         inputClassName={styles.namingInput}
                         type={inputTypes.TEXT}
-                        name="standardTrackFormat"
+                        name="standardBookFormat"
                         buttons={<FormInputButton onPress={this.onStandardNamingModalOpenClick}>?</FormInputButton>}
                         onChange={onInputChange}
-                        {...settings.standardTrackFormat}
-                        helpTexts={standardTrackFormatHelpTexts}
-                        errors={[...standardTrackFormatErrors, ...settings.standardTrackFormat.errors]}
+                        {...settings.standardBookFormat}
+                        helpTexts={standardBookFormatHelpTexts}
+                        errors={[...standardBookFormatErrors, ...settings.standardBookFormat.errors]}
                       />
                     </FormGroup>
                   </div>
@@ -162,12 +162,12 @@ class Naming extends Component {
                 <FormInputGroup
                   inputClassName={styles.namingInput}
                   type={inputTypes.TEXT}
-                  name="artistFolderFormat"
-                  buttons={<FormInputButton onPress={this.onArtistFolderNamingModalOpenClick}>?</FormInputButton>}
+                  name="authorFolderFormat"
+                  buttons={<FormInputButton onPress={this.onAuthorFolderNamingModalOpenClick}>?</FormInputButton>}
                   onChange={onInputChange}
-                  {...settings.artistFolderFormat}
-                  helpTexts={['Used when adding a new artist or moving an artist via the artist editor', ...artistFolderFormatHelpTexts]}
-                  errors={[...artistFolderFormatErrors, ...settings.artistFolderFormat.errors]}
+                  {...settings.authorFolderFormat}
+                  helpTexts={['Used when adding a new artist or moving an author via the author editor', ...authorFolderFormatHelpTexts]}
+                  errors={[...authorFolderFormatErrors, ...settings.authorFolderFormat.errors]}
                 />
               </FormGroup>
 

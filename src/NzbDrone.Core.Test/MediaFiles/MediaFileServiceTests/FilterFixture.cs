@@ -7,9 +7,9 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -213,7 +213,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
                         Path = "C:\\file2.avi".AsOsAgnostic(),
                         Size = 10,
                         Modified = _lastWrite,
-                        Album = new LazyLoaded<Book>(null)
+                        Book = new LazyLoaded<Book>(null)
                     }
                 });
 
@@ -239,7 +239,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
                         Path = "C:\\file2.avi".AsOsAgnostic(),
                         Size = 10,
                         Modified = _lastWrite,
-                        Album = Builder<Book>.CreateNew().Build()
+                        Book = Builder<Book>.CreateNew().Build()
                     }
                 });
 

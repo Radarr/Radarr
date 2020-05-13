@@ -8,7 +8,7 @@ using Ical.Net.Serialization;
 using Nancy;
 using Nancy.Responses;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Tags;
 using Readarr.Http.Extensions;
 
@@ -16,15 +16,15 @@ namespace Readarr.Api.V1.Calendar
 {
     public class CalendarFeedModule : ReadarrV1FeedModule
     {
-        private readonly IAlbumService _albumService;
-        private readonly IArtistService _artistService;
+        private readonly IBookService _bookService;
+        private readonly IAuthorService _authorService;
         private readonly ITagService _tagService;
 
-        public CalendarFeedModule(IAlbumService albumService, IArtistService artistService, ITagService tagService)
+        public CalendarFeedModule(IBookService bookService, IAuthorService authorService, ITagService tagService)
             : base("calendar")
         {
-            _albumService = albumService;
-            _artistService = artistService;
+            _bookService = bookService;
+            _authorService = authorService;
             _tagService = tagService;
 
             Get("/Readarr.ics", options => GetCalendarFeed());
@@ -61,7 +61,7 @@ namespace Readarr.Api.V1.Calendar
                 tags.AddRange(tagInput.Split(',').Select(_tagService.GetTag).Select(t => t.Id));
             }
 
-            var albums = _albumService.AlbumsBetweenDates(start, end, unmonitored);
+            var albums = _bookService.BooksBetweenDates(start, end, unmonitored);
             var calendar = new Ical.Net.Calendar
             {
                 ProductId = "-//readarr.com//Readarr//EN"
@@ -73,7 +73,7 @@ namespace Readarr.Api.V1.Calendar
 
             foreach (var album in albums.OrderBy(v => v.ReleaseDate.Value))
             {
-                var artist = _artistService.GetArtist(album.AuthorId); // Temp fix TODO: Figure out why Album.Artist is not populated during AlbumsBetweenDates Query
+                var artist = _authorService.GetAuthor(album.AuthorId); // Temp fix TODO: Figure out why Album.Artist is not populated during AlbumsBetweenDates Query
 
                 if (tags.Any() && tags.None(artist.Tags.Contains))
                 {

@@ -2,16 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.ArtistStats;
+using NzbDrone.Core.AuthorStats;
+using NzbDrone.Core.Books;
+using NzbDrone.Core.Books.Commands;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Commands;
-using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
@@ -21,45 +21,45 @@ using Readarr.Http.Extensions;
 
 namespace Readarr.Api.V1.Artist
 {
-    public class ArtistModule : ReadarrRestModuleWithSignalR<ArtistResource, NzbDrone.Core.Music.Author>,
-                                IHandle<AlbumImportedEvent>,
-                                IHandle<AlbumEditedEvent>,
-                                IHandle<TrackFileDeletedEvent>,
-                                IHandle<ArtistUpdatedEvent>,
-                                IHandle<ArtistEditedEvent>,
-                                IHandle<ArtistDeletedEvent>,
-                                IHandle<ArtistRenamedEvent>,
+    public class ArtistModule : ReadarrRestModuleWithSignalR<ArtistResource, NzbDrone.Core.Books.Author>,
+                                IHandle<BookImportedEvent>,
+                                IHandle<BookEditedEvent>,
+                                IHandle<BookFileDeletedEvent>,
+                                IHandle<AuthorUpdatedEvent>,
+                                IHandle<AuthorEditedEvent>,
+                                IHandle<AuthorDeletedEvent>,
+                                IHandle<AuthorRenamedEvent>,
                                 IHandle<MediaCoversUpdatedEvent>
     {
-        private readonly IArtistService _artistService;
-        private readonly IAlbumService _albumService;
-        private readonly IAddArtistService _addArtistService;
-        private readonly IArtistStatisticsService _artistStatisticsService;
+        private readonly IAuthorService _authorService;
+        private readonly IBookService _bookService;
+        private readonly IAddAuthorService _addAuthorService;
+        private readonly IAuthorStatisticsService _artistStatisticsService;
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly IRootFolderService _rootFolderService;
 
         public ArtistModule(IBroadcastSignalRMessage signalRBroadcaster,
-                            IArtistService artistService,
-                            IAlbumService albumService,
-                            IAddArtistService addArtistService,
-                            IArtistStatisticsService artistStatisticsService,
+                            IAuthorService authorService,
+                            IBookService bookService,
+                            IAddAuthorService addAuthorService,
+                            IAuthorStatisticsService artistStatisticsService,
                             IMapCoversToLocal coverMapper,
                             IManageCommandQueue commandQueueManager,
                             IRootFolderService rootFolderService,
                             RootFolderValidator rootFolderValidator,
                             MappedNetworkDriveValidator mappedNetworkDriveValidator,
-                            ArtistPathValidator artistPathValidator,
+                            AuthorPathValidator artistPathValidator,
                             ArtistExistsValidator artistExistsValidator,
-                            ArtistAncestorValidator artistAncestorValidator,
+                            AuthorAncestorValidator artistAncestorValidator,
                             SystemFolderValidator systemFolderValidator,
                             QualityProfileExistsValidator qualityProfileExistsValidator,
                             MetadataProfileExistsValidator metadataProfileExistsValidator)
             : base(signalRBroadcaster)
         {
-            _artistService = artistService;
-            _albumService = albumService;
-            _addArtistService = addArtistService;
+            _authorService = authorService;
+            _bookService = bookService;
+            _addAuthorService = addAuthorService;
             _artistStatisticsService = artistStatisticsService;
 
             _coverMapper = coverMapper;
@@ -98,11 +98,11 @@ namespace Readarr.Api.V1.Artist
 
         private ArtistResource GetArtist(int id)
         {
-            var artist = _artistService.GetArtist(id);
+            var artist = _authorService.GetAuthor(id);
             return GetArtistResource(artist);
         }
 
-        private ArtistResource GetArtistResource(NzbDrone.Core.Music.Author artist)
+        private ArtistResource GetArtistResource(NzbDrone.Core.Books.Author artist)
         {
             if (artist == null)
             {
@@ -122,8 +122,8 @@ namespace Readarr.Api.V1.Artist
 
         private List<ArtistResource> AllArtists()
         {
-            var artistStats = _artistStatisticsService.ArtistStatistics();
-            var artistsResources = _artistService.GetAllArtists().ToResource();
+            var artistStats = _artistStatisticsService.AuthorStatistics();
+            var artistsResources = _authorService.GetAllAuthors().ToResource();
 
             MapCoversToLocal(artistsResources.ToArray());
             LinkNextPreviousAlbums(artistsResources.ToArray());
@@ -135,7 +135,7 @@ namespace Readarr.Api.V1.Artist
 
         private int AddArtist(ArtistResource artistResource)
         {
-            var artist = _addArtistService.AddArtist(artistResource.ToModel());
+            var artist = _addAuthorService.AddAuthor(artistResource.ToModel());
 
             return artist.Id;
         }
@@ -143,14 +143,14 @@ namespace Readarr.Api.V1.Artist
         private void UpdateArtist(ArtistResource artistResource)
         {
             var moveFiles = Request.GetBooleanQueryParameter("moveFiles");
-            var artist = _artistService.GetArtist(artistResource.Id);
+            var artist = _authorService.GetAuthor(artistResource.Id);
 
             if (moveFiles)
             {
                 var sourcePath = artist.Path;
                 var destinationPath = artistResource.Path;
 
-                _commandQueueManager.Push(new MoveArtistCommand
+                _commandQueueManager.Push(new MoveAuthorCommand
                 {
                     AuthorId = artist.Id,
                     SourcePath = sourcePath,
@@ -161,7 +161,7 @@ namespace Readarr.Api.V1.Artist
 
             var model = artistResource.ToModel(artist);
 
-            _artistService.UpdateArtist(model);
+            _authorService.UpdateAuthor(model);
 
             BroadcastResourceChange(ModelAction.Updated, artistResource);
         }
@@ -171,21 +171,21 @@ namespace Readarr.Api.V1.Artist
             var deleteFiles = Request.GetBooleanQueryParameter("deleteFiles");
             var addImportListExclusion = Request.GetBooleanQueryParameter("addImportListExclusion");
 
-            _artistService.DeleteArtist(id, deleteFiles, addImportListExclusion);
+            _authorService.DeleteAuthor(id, deleteFiles, addImportListExclusion);
         }
 
         private void MapCoversToLocal(params ArtistResource[] artists)
         {
             foreach (var artistResource in artists)
             {
-                _coverMapper.ConvertToLocalUrls(artistResource.Id, MediaCoverEntity.Artist, artistResource.Images);
+                _coverMapper.ConvertToLocalUrls(artistResource.Id, MediaCoverEntity.Author, artistResource.Images);
             }
         }
 
         private void LinkNextPreviousAlbums(params ArtistResource[] artists)
         {
-            var nextAlbums = _albumService.GetNextAlbumsByArtistMetadataId(artists.Select(x => x.ArtistMetadataId));
-            var lastAlbums = _albumService.GetLastAlbumsByArtistMetadataId(artists.Select(x => x.ArtistMetadataId));
+            var nextAlbums = _bookService.GetNextBooksByAuthorMetadataId(artists.Select(x => x.ArtistMetadataId));
+            var lastAlbums = _bookService.GetLastBooksByAuthorMetadataId(artists.Select(x => x.ArtistMetadataId));
 
             foreach (var artistResource in artists)
             {
@@ -196,10 +196,10 @@ namespace Readarr.Api.V1.Artist
 
         private void FetchAndLinkArtistStatistics(ArtistResource resource)
         {
-            LinkArtistStatistics(resource, _artistStatisticsService.ArtistStatistics(resource.Id));
+            LinkArtistStatistics(resource, _artistStatisticsService.AuthorStatistics(resource.Id));
         }
 
-        private void LinkArtistStatistics(List<ArtistResource> resources, List<ArtistStatistics> artistStatistics)
+        private void LinkArtistStatistics(List<ArtistResource> resources, List<AuthorStatistics> artistStatistics)
         {
             foreach (var artist in resources)
             {
@@ -213,7 +213,7 @@ namespace Readarr.Api.V1.Artist
             }
         }
 
-        private void LinkArtistStatistics(ArtistResource resource, ArtistStatistics artistStatistics)
+        private void LinkArtistStatistics(ArtistResource resource, AuthorStatistics artistStatistics)
         {
             resource.Statistics = artistStatistics.ToResource();
         }
@@ -239,49 +239,49 @@ namespace Readarr.Api.V1.Artist
             resource.RootFolderPath = _rootFolderService.GetBestRootFolderPath(resource.Path);
         }
 
-        public void Handle(AlbumImportedEvent message)
+        public void Handle(BookImportedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Artist));
+            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Author));
         }
 
-        public void Handle(AlbumEditedEvent message)
+        public void Handle(BookEditedEvent message)
         {
             BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Album.Author.Value));
         }
 
-        public void Handle(TrackFileDeletedEvent message)
+        public void Handle(BookFileDeletedEvent message)
         {
             if (message.Reason == DeleteMediaFileReason.Upgrade)
             {
                 return;
             }
 
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.TrackFile.Artist.Value));
+            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.BookFile.Author.Value));
         }
 
-        public void Handle(ArtistUpdatedEvent message)
+        public void Handle(AuthorUpdatedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Artist));
+            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Author));
         }
 
-        public void Handle(ArtistEditedEvent message)
+        public void Handle(AuthorEditedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Artist));
+            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Author));
         }
 
-        public void Handle(ArtistDeletedEvent message)
+        public void Handle(AuthorDeletedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Deleted, message.Artist.ToResource());
+            BroadcastResourceChange(ModelAction.Deleted, message.Author.ToResource());
         }
 
-        public void Handle(ArtistRenamedEvent message)
+        public void Handle(AuthorRenamedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, message.Artist.Id);
+            BroadcastResourceChange(ModelAction.Updated, message.Author.Id);
         }
 
         public void Handle(MediaCoversUpdatedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Artist));
+            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Author));
         }
     }
 }

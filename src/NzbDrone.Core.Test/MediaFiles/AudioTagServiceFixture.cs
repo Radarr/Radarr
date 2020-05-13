@@ -8,9 +8,9 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -316,8 +316,8 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
                 .Build();
 
             var file = Builder<BookFile>.CreateNew()
-                .With(x => x.Album = album)
-                .With(x => x.Artist = artist)
+                .With(x => x.Book = album)
+                .With(x => x.Author = artist)
                 .Build();
 
             return file;

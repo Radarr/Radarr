@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         private string _pneumaticFolder;
         private string _strmFolder;
         private string _nzbPath;
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
 
         [SetUp]
         public void Setup()
@@ -30,12 +30,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             _nzbPath = Path.Combine(_pneumaticFolder, _title + ".nzb").AsOsAgnostic();
             _strmFolder = @"d:\unsorted tv\".AsOsAgnostic();
 
-            _remoteAlbum = new RemoteAlbum();
+            _remoteAlbum = new RemoteBook();
             _remoteAlbum.Release = new ReleaseInfo();
             _remoteAlbum.Release.Title = _title;
             _remoteAlbum.Release.DownloadUrl = _nzbUrl;
 
-            _remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
+            _remoteAlbum.ParsedBookInfo = new ParsedBookInfo();
 
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new PneumaticSettings
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         public void should_throw_if_discography_download()
         {
             _remoteAlbum.Release.Title = "Alien Ant Farm - Discography";
-            _remoteAlbum.ParsedAlbumInfo.Discography = true;
+            _remoteAlbum.ParsedBookInfo.Discography = true;
 
             Assert.Throws<NotSupportedException>(() => Subject.Download(_remoteAlbum));
         }

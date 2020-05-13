@@ -1,20 +1,20 @@
-﻿using NzbDrone.Common.Messaging;
-using NzbDrone.Core.Music;
+using NzbDrone.Common.Messaging;
+using NzbDrone.Core.Books;
 
 namespace NzbDrone.Core.MediaFiles.Events
 {
     public class TrackFolderCreatedEvent : IEvent
     {
-        public Author Artist { get; private set; }
-        public BookFile TrackFile { get; private set; }
-        public string ArtistFolder { get; set; }
-        public string AlbumFolder { get; set; }
+        public Author Author { get; private set; }
+        public BookFile BookFile { get; private set; }
+        public string AuthorFolder { get; set; }
+        public string BookFolder { get; set; }
         public string TrackFolder { get; set; }
 
-        public TrackFolderCreatedEvent(Author artist, BookFile trackFile)
+        public TrackFolderCreatedEvent(Author author, BookFile bookFile)
         {
-            Artist = artist;
-            TrackFile = trackFile;
+            Author = author;
+            BookFile = bookFile;
         }
     }
 }

@@ -5,8 +5,8 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DiskSpace;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -52,8 +52,8 @@ namespace NzbDrone.Core.Test.DiskSpace
 
         private void GivenArtist(params Author[] artist)
         {
-            Mocker.GetMock<IArtistService>()
-                  .Setup(v => v.GetAllArtists())
+            Mocker.GetMock<IAuthorService>()
+                  .Setup(v => v.GetAllAuthors())
                   .Returns(artist.ToList());
         }
 

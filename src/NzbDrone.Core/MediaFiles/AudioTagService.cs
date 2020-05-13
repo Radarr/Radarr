@@ -6,13 +6,13 @@ using NLog.Fluent;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using TagLib;
@@ -24,19 +24,19 @@ namespace NzbDrone.Core.MediaFiles
         ParsedTrackInfo ReadTags(string file);
         void WriteTags(BookFile trackfile, bool newDownload, bool force = false);
         void SyncTags(List<Book> tracks);
-        List<RetagTrackFilePreview> GetRetagPreviewsByArtist(int authorId);
-        List<RetagTrackFilePreview> GetRetagPreviewsByAlbum(int authorId);
+        List<RetagBookFilePreview> GetRetagPreviewsByArtist(int authorId);
+        List<RetagBookFilePreview> GetRetagPreviewsByAlbum(int authorId);
     }
 
     public class AudioTagService : IAudioTagService,
-        IExecute<RetagArtistCommand>,
+        IExecute<RetagAuthorCommand>,
         IExecute<RetagFilesCommand>
     {
         private readonly IConfigService _configService;
         private readonly IMediaFileService _mediaFileService;
         private readonly IDiskProvider _diskProvider;
         private readonly IRootFolderWatchingService _rootFolderWatchingService;
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
         private readonly IMapCoversToLocal _mediaCoverService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.MediaFiles
                                IMediaFileService mediaFileService,
                                IDiskProvider diskProvider,
                                IRootFolderWatchingService rootFolderWatchingService,
-                               IArtistService artistService,
+                               IAuthorService authorService,
                                IMapCoversToLocal mediaCoverService,
                                IEventAggregator eventAggregator,
                                Logger logger)
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileService = mediaFileService;
             _diskProvider = diskProvider;
             _rootFolderWatchingService = rootFolderWatchingService;
-            _artistService = artistService;
+            _authorService = authorService;
             _mediaCoverService = mediaCoverService;
             _eventAggregator = eventAggregator;
             _logger = logger;
@@ -145,7 +145,7 @@ namespace NzbDrone.Core.MediaFiles
 
             UpdateTrackfileSizeAndModified(trackfile, path);
 
-            _eventAggregator.PublishEvent(new TrackFileRetaggedEvent(trackfile.Artist.Value, trackfile, diff, _configService.ScrubAudioTags));
+            _eventAggregator.PublishEvent(new BookFileRetaggedEvent(trackfile.Author.Value, trackfile, diff, _configService.ScrubAudioTags));
         }
 
         public void SyncTags(List<Book> books)
@@ -164,35 +164,35 @@ namespace NzbDrone.Core.MediaFiles
 
                 foreach (var file in trackFiles)
                 {
-                    // populate tracks (which should also have release/album/artist set) because
+                    // populate tracks (which should also have release/book/author set) because
                     // not all of the updates will have been committed to the database yet
-                    file.Album = book;
+                    file.Book = book;
                     WriteTags(file, false);
                 }
             }
         }
 
-        public List<RetagTrackFilePreview> GetRetagPreviewsByArtist(int authorId)
+        public List<RetagBookFilePreview> GetRetagPreviewsByArtist(int authorId)
         {
-            var files = _mediaFileService.GetFilesByArtist(authorId);
+            var files = _mediaFileService.GetFilesByAuthor(authorId);
 
             return GetPreviews(files).ToList();
         }
 
-        public List<RetagTrackFilePreview> GetRetagPreviewsByAlbum(int bookId)
+        public List<RetagBookFilePreview> GetRetagPreviewsByAlbum(int bookId)
         {
-            var files = _mediaFileService.GetFilesByAlbum(bookId);
+            var files = _mediaFileService.GetFilesByBook(bookId);
 
             return GetPreviews(files).ToList();
         }
 
-        private IEnumerable<RetagTrackFilePreview> GetPreviews(List<BookFile> files)
+        private IEnumerable<RetagBookFilePreview> GetPreviews(List<BookFile> files)
         {
-            foreach (var f in files.OrderBy(x => x.Album.Value.Title))
+            foreach (var f in files.OrderBy(x => x.Book.Value.Title))
             {
                 var file = f;
 
-                if (f.Album.Value == null)
+                if (f.Book.Value == null)
                 {
                     _logger.Warn($"File {f} is not linked to any books");
                     continue;
@@ -204,11 +204,11 @@ namespace NzbDrone.Core.MediaFiles
 
                 if (diff.Any())
                 {
-                    yield return new RetagTrackFilePreview
+                    yield return new RetagBookFilePreview
                     {
-                        AuthorId = file.Artist.Value.Id,
-                        BookId = file.Album.Value.Id,
-                        TrackFileId = file.Id,
+                        AuthorId = file.Author.Value.Id,
+                        BookId = file.Book.Value.Id,
+                        BookFileId = file.Id,
                         Path = file.Path,
                         Changes = diff
                     };
@@ -218,33 +218,33 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Execute(RetagFilesCommand message)
         {
-            var artist = _artistService.GetArtist(message.AuthorId);
+            var author = _authorService.GetAuthor(message.AuthorId);
             var trackFiles = _mediaFileService.Get(message.Files);
 
-            _logger.ProgressInfo("Re-tagging {0} files for {1}", trackFiles.Count, artist.Name);
+            _logger.ProgressInfo("Re-tagging {0} files for {1}", trackFiles.Count, author.Name);
             foreach (var file in trackFiles)
             {
                 WriteTags(file, false, force: true);
             }
 
-            _logger.ProgressInfo("Selected track files re-tagged for {0}", artist.Name);
+            _logger.ProgressInfo("Selected track files re-tagged for {0}", author.Name);
         }
 
-        public void Execute(RetagArtistCommand message)
+        public void Execute(RetagAuthorCommand message)
         {
             _logger.Debug("Re-tagging all files for selected artists");
-            var artistToRename = _artistService.GetArtists(message.AuthorIds);
+            var artistToRename = _authorService.GetAuthors(message.AuthorIds);
 
-            foreach (var artist in artistToRename)
+            foreach (var author in artistToRename)
             {
-                var trackFiles = _mediaFileService.GetFilesByArtist(artist.Id);
-                _logger.ProgressInfo("Re-tagging all files in artist: {0}", artist.Name);
+                var trackFiles = _mediaFileService.GetFilesByAuthor(author.Id);
+                _logger.ProgressInfo("Re-tagging all files in author: {0}", author.Name);
                 foreach (var file in trackFiles)
                 {
                     WriteTags(file, false, force: true);
                 }
 
-                _logger.ProgressInfo("All track files re-tagged for {0}", artist.Name);
+                _logger.ProgressInfo("All track files re-tagged for {0}", author.Name);
             }
         }
     }

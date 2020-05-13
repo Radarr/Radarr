@@ -3,9 +3,9 @@ using System.Linq;
 using Dapper;
 using FizzWare.NBuilder;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
@@ -70,10 +70,10 @@ namespace NzbDrone.Core.Test.Datastore
             Assert.IsNotEmpty(tracks);
             foreach (var track in tracks)
             {
-                Assert.IsFalse(track.Artist.IsLoaded);
-                Assert.IsNotNull(track.Artist.Value);
-                Assert.IsTrue(track.Artist.IsLoaded);
-                Assert.IsTrue(track.Artist.Value.Metadata.IsLoaded);
+                Assert.IsFalse(track.Author.IsLoaded);
+                Assert.IsNotNull(track.Author.Value);
+                Assert.IsTrue(track.Author.IsLoaded);
+                Assert.IsTrue(track.Author.Value.Metadata.IsLoaded);
             }
         }
 
@@ -104,9 +104,9 @@ namespace NzbDrone.Core.Test.Datastore
             Assert.IsNotEmpty(files);
             foreach (var file in files)
             {
-                Assert.IsTrue(file.Album.IsLoaded);
-                Assert.IsTrue(file.Artist.IsLoaded);
-                Assert.IsTrue(file.Artist.Value.Metadata.IsLoaded);
+                Assert.IsTrue(file.Book.IsLoaded);
+                Assert.IsTrue(file.Author.IsLoaded);
+                Assert.IsTrue(file.Author.Value.Metadata.IsLoaded);
             }
         }
 
@@ -121,18 +121,18 @@ namespace NzbDrone.Core.Test.Datastore
                 .Join<Author, AuthorMetadata>((a, m) => a.AuthorMetadataId == m.Id),
                 (file, album, artist, metadata) =>
                 {
-                    file.Album = album;
-                    file.Artist = artist;
-                    file.Artist.Value.Metadata = metadata;
+                    file.Book = album;
+                    file.Author = artist;
+                    file.Author.Value.Metadata = metadata;
                     return file;
                 });
 
             Assert.IsNotEmpty(files);
             foreach (var file in files)
             {
-                Assert.IsTrue(file.Album.IsLoaded);
-                Assert.IsTrue(file.Artist.IsLoaded);
-                Assert.IsTrue(file.Artist.Value.Metadata.IsLoaded);
+                Assert.IsTrue(file.Book.IsLoaded);
+                Assert.IsTrue(file.Author.IsLoaded);
+                Assert.IsTrue(file.Author.Value.Metadata.IsLoaded);
             }
         }
     }

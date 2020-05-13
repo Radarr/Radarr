@@ -48,10 +48,10 @@ namespace Readarr.Api.V1.Queue
             return new QueueResource
             {
                 Id = model.Id,
-                AuthorId = model.Artist?.Id,
-                BookId = model.Album?.Id,
-                Artist = includeArtist && model.Artist != null ? model.Artist.ToResource() : null,
-                Album = includeAlbum && model.Album != null ? model.Album.ToResource() : null,
+                AuthorId = model.Author?.Id,
+                BookId = model.Book?.Id,
+                Artist = includeArtist && model.Author != null ? model.Author.ToResource() : null,
+                Album = includeAlbum && model.Book != null ? model.Book.ToResource() : null,
                 Quality = model.Quality,
                 Size = model.Size,
                 Title = model.Title,

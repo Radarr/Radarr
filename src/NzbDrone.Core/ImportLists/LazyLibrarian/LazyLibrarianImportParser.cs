@@ -34,8 +34,8 @@ namespace NzbDrone.Core.ImportLists.LazyLibrarianImport
             {
                 items.AddIfNotNull(new ImportListItemInfo
                 {
-                    Artist = item.AuthorName,
-                    Album = item.BookName,
+                    Author = item.AuthorName,
+                    Book = item.BookName,
                     AlbumMusicBrainzId = item.BookId
                 });
             }

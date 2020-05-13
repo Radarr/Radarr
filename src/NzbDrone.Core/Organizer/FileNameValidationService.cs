@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Organizer
 
         public ValidationFailure ValidateTrackFilename(SampleResult sampleResult)
         {
-            var validationFailure = new ValidationFailure("StandardTrackFormat", ERROR_MESSAGE);
+            var validationFailure = new ValidationFailure("StandardBookFormat", ERROR_MESSAGE);
 
             //TODO Add Validation for TrackFilename
             //var parsedEpisodeInfo = Parser.Parser.ParseTitle(sampleResult.FileName);

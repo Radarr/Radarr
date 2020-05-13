@@ -7,15 +7,15 @@ namespace NzbDrone.Core.Organizer
     {
         public static NamingConfig Default => new NamingConfig
         {
-            RenameTracks = false,
+            RenameBooks = false,
             ReplaceIllegalCharacters = true,
-            StandardTrackFormat = "{Album Title}" + Path.DirectorySeparatorChar + "{Artist Name} - {Album Title}",
-            ArtistFolderFormat = "{Artist Name}",
+            StandardBookFormat = "{Book Title}" + Path.DirectorySeparatorChar + "{Author Name} - {Book Title}",
+            AuthorFolderFormat = "{Author Name}",
         };
 
-        public bool RenameTracks { get; set; }
+        public bool RenameBooks { get; set; }
         public bool ReplaceIllegalCharacters { get; set; }
-        public string StandardTrackFormat { get; set; }
-        public string ArtistFolderFormat { get; set; }
+        public string StandardBookFormat { get; set; }
+        public string AuthorFolderFormat { get; set; }
     }
 }

@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 
@@ -16,8 +16,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     {
         private MonitoredAlbumSpecification _monitoredAlbumSpecification;
 
-        private RemoteAlbum _parseResultMulti;
-        private RemoteAlbum _parseResultSingle;
+        private RemoteBook _parseResultMulti;
+        private RemoteBook _parseResultSingle;
         private Author _fakeArtist;
         private Book _firstAlbum;
         private Book _secondAlbum;
@@ -37,16 +37,16 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var singleAlbumList = new List<Book> { _firstAlbum };
             var doubleAlbumList = new List<Book> { _firstAlbum, _secondAlbum };
 
-            _parseResultMulti = new RemoteAlbum
+            _parseResultMulti = new RemoteBook
             {
-                Artist = _fakeArtist,
-                Albums = doubleAlbumList
+                Author = _fakeArtist,
+                Books = doubleAlbumList
             };
 
-            _parseResultSingle = new RemoteAlbum
+            _parseResultSingle = new RemoteBook
             {
-                Artist = _fakeArtist,
-                Albums = singleAlbumList
+                Author = _fakeArtist,
+                Books = singleAlbumList
             };
         }
 
@@ -107,28 +107,28 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_true_for_single_album_search()
         {
             _fakeArtist.Monitored = false;
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria()).Accepted.Should().BeTrue();
+            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new BookSearchCriteria()).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_if_album_is_not_monitored_and_monitoredEpisodesOnly_flag_is_false()
         {
             WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria { MonitoredEpisodesOnly = false }).Accepted.Should().BeTrue();
+            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new BookSearchCriteria { MonitoredBooksOnly = false }).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_false_if_album_is_not_monitored_and_monitoredEpisodesOnly_flag_is_true()
         {
             WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria { MonitoredEpisodesOnly = true }).Accepted.Should().BeFalse();
+            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new BookSearchCriteria { MonitoredBooksOnly = true }).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_false_if_all_albums_are_not_monitored_for_discography_pack_release()
         {
             WithSecondAlbumUnmonitored();
-            _parseResultMulti.ParsedAlbumInfo = new ParsedAlbumInfo()
+            _parseResultMulti.ParsedBookInfo = new ParsedBookInfo()
             {
                 Discography = true
             };

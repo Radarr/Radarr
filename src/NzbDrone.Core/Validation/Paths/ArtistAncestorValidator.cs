@@ -1,18 +1,18 @@
 using System.Linq;
 using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 
 namespace NzbDrone.Core.Validation.Paths
 {
-    public class ArtistAncestorValidator : PropertyValidator
+    public class AuthorAncestorValidator : PropertyValidator
     {
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
 
-        public ArtistAncestorValidator(IArtistService artistService)
-            : base("Path is an ancestor of an existing artist")
+        public AuthorAncestorValidator(IAuthorService authorService)
+            : base("Path is an ancestor of an existing author")
         {
-            _artistService = artistService;
+            _authorService = authorService;
         }
 
         protected override bool IsValid(PropertyValidatorContext context)
@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Validation.Paths
                 return true;
             }
 
-            return !_artistService.GetAllArtists().Any(s => context.PropertyValue.ToString().IsParentPath(s.Path));
+            return !_authorService.GetAllAuthors().Any(s => context.PropertyValue.ToString().IsParentPath(s.Path));
         }
     }
 }

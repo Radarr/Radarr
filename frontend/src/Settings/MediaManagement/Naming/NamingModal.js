@@ -28,35 +28,35 @@ const caseOptions = [
 
 const fileNameTokens = [
   {
-    token: '{Artist Name} - {Album Title} - {track:00} - {Track Title} {Quality Full}',
-    example: 'Artist Name - Album Title - 01 - Track Title MP3-320 Proper'
+    token: '{Author Name} - {Book Title} - {track:00} - {Track Title} {Quality Full}',
+    example: 'Author Name - Book Title - 01 - Track Title MP3-320 Proper'
   },
   {
-    token: '{Artist.Name}.{Album.Title}.{track:00}.{TrackClean.Title}.{Quality.Full}',
-    example: 'Artist.Name.Album.Title.01.Track.Title.MP3-320'
+    token: '{Author.Name}.{Book.Title}.{track:00}.{TrackClean.Title}.{Quality.Full}',
+    example: 'Author.Name.Book.Title.01.Track.Title.MP3-320'
   }
 ];
 
 const artistTokens = [
-  { token: '{Artist Name}', example: 'Artist Name' },
+  { token: '{Author Name}', example: 'Author Name' },
 
-  { token: '{Artist NameThe}', example: 'Artist Name, The' },
+  { token: '{Author NameThe}', example: 'Author Name, The' },
 
-  { token: '{Artist CleanName}', example: 'Artist Name' },
+  { token: '{Author CleanName}', example: 'Author Name' },
 
-  { token: '{Artist Disambiguation}', example: 'Disambiguation' }
+  { token: '{Author Disambiguation}', example: 'Disambiguation' }
 ];
 
 const albumTokens = [
-  { token: '{Album Title}', example: 'Album Title' },
+  { token: '{Book Title}', example: 'Book Title' },
 
-  { token: '{Album TitleThe}', example: 'Album Title, The' },
+  { token: '{Book TitleThe}', example: 'Book Title, The' },
 
-  { token: '{Album CleanTitle}', example: 'Album Title' },
+  { token: '{Book CleanTitle}', example: 'Book Title' },
 
-  { token: '{Album Type}', example: 'Album Type' },
+  { token: '{Book Type}', example: 'Book Type' },
 
-  { token: '{Album Disambiguation}', example: 'Disambiguation' }
+  { token: '{Book Disambiguation}', example: 'Disambiguation' }
 ];
 
 const mediumTokens = [
@@ -101,7 +101,7 @@ const otherTokens = [
 ];
 
 const originalTokens = [
-  { token: '{Original Title}', example: 'Artist.Name.Album.Name.2018.FLAC-EVOLVE' },
+  { token: '{Original Title}', example: 'Author.Name.Book.Name.2018.FLAC-EVOLVE' },
   { token: '{Original Filename}', example: '01 - track name' }
 ];
 
@@ -243,7 +243,7 @@ class NamingModal extends Component {
                 </FieldSet>
             }
 
-            <FieldSet legend="Artist">
+            <FieldSet legend="Author">
               <div className={styles.groups}>
                 {
                   artistTokens.map(({ token, example }) => {
@@ -268,7 +268,7 @@ class NamingModal extends Component {
             {
               album &&
                 <div>
-                  <FieldSet legend="Album">
+                  <FieldSet legend="Book">
                     <div className={styles.groups}>
                       {
                         albumTokens.map(({ token, example }) => {

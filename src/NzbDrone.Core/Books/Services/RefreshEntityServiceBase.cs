@@ -4,18 +4,18 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public abstract class RefreshEntityServiceBase<TEntity, TChild>
     {
         private readonly Logger _logger;
-        private readonly IArtistMetadataService _artistMetadataService;
+        private readonly IAuthorMetadataService _authorMetadataService;
 
         protected RefreshEntityServiceBase(Logger logger,
-                                           IArtistMetadataService artistMetadataService)
+                                           IAuthorMetadataService authorMetadataService)
         {
             _logger = logger;
-            _artistMetadataService = artistMetadataService;
+            _authorMetadataService = authorMetadataService;
         }
 
         public enum UpdateResult
@@ -209,7 +209,7 @@ namespace NzbDrone.Core.Music
         public UpdateResult UpdateArtistMetadata(List<AuthorMetadata> data)
         {
             var remoteMetadata = data.DistinctBy(x => x.ForeignAuthorId).ToList();
-            var updated = _artistMetadataService.UpsertMany(remoteMetadata);
+            var updated = _authorMetadataService.UpsertMany(remoteMetadata);
             return updated ? UpdateResult.UpdateTags : UpdateResult.None;
         }
 

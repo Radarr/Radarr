@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MetadataSource
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.MetadataSource
             WithSeries("Talking Dead");
             WithSeries("The Walking Dead");
 
-            _artist.Sort(new SearchArtistComparer("the walking dead"));
+            _artist.Sort(new SearchAuthorComparer("the walking dead"));
 
             _artist.First().Name.Should().Be("The Walking Dead");
         }
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.MetadataSource
             WithSeries("Talking Dead");
             WithSeries("The Walking Dead");
 
-            _artist.Sort(new SearchArtistComparer("walking dead"));
+            _artist.Sort(new SearchAuthorComparer("walking dead"));
 
             _artist.First().Name.Should().Be("The Walking Dead");
         }
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.MetadataSource
             WithSeries("The Blacklist");
             WithSeries("Blacklist");
 
-            _artist.Sort(new SearchArtistComparer("blacklist"));
+            _artist.Sort(new SearchAuthorComparer("blacklist"));
 
             _artist.First().Name.Should().Be("Blacklist");
         }
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.MetadataSource
             WithSeries("Blacklist");
             WithSeries("The Blacklist");
 
-            _artist.Sort(new SearchArtistComparer("the blacklist"));
+            _artist.Sort(new SearchAuthorComparer("the blacklist"));
 
             _artist.First().Name.Should().Be("The Blacklist");
         }

@@ -19,7 +19,7 @@ function createMapStateToProps() {
       props.isFetching = organizePreview.isFetching || naming.isFetching;
       props.isPopulated = organizePreview.isPopulated && naming.isPopulated;
       props.error = organizePreview.error || naming.error;
-      props.trackFormat = naming.item.standardTrackFormat;
+      props.trackFormat = naming.item.standardBookFormat;
       props.path = artist.path;
 
       return props;

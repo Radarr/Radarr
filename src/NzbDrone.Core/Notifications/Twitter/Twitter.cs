@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Notifications.Twitter
             _twitterService.SendNotification($"Grabbed: {message.Message}", Settings);
         }
 
-        public override void OnReleaseImport(AlbumDownloadMessage message)
+        public override void OnReleaseImport(BookDownloadMessage message)
         {
             _twitterService.SendNotification($"Imported: {message.Message}", Settings);
         }
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Notifications.Twitter
             _twitterService.SendNotification($"Download Failed: {message.Message}", Settings);
         }
 
-        public override void OnImportFailure(AlbumDownloadMessage message)
+        public override void OnImportFailure(BookDownloadMessage message)
         {
             _twitterService.SendNotification($"Import Failed: {message.Message}", Settings);
         }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public class AuthorMetadata : Entity<AuthorMetadata>
     {
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Music
         public string Overview { get; set; }
         public string Disambiguation { get; set; }
         public string Type { get; set; }
-        public ArtistStatusType Status { get; set; }
+        public AuthorStatusType Status { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
         public List<Links> Links { get; set; }
         public List<string> Genres { get; set; }

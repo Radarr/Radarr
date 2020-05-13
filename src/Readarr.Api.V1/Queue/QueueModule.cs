@@ -51,7 +51,7 @@ namespace Readarr.Api.V1.Queue
             var orderByFunc = GetOrderByFunc(pagingSpec);
 
             var queue = _queueService.GetQueue();
-            var filteredQueue = includeUnknownArtistItems ? queue : queue.Where(q => q.Artist != null);
+            var filteredQueue = includeUnknownArtistItems ? queue : queue.Where(q => q.Author != null);
             var pending = _pendingReleaseService.GetPendingQueue();
             var fullQueue = filteredQueue.Concat(pending).ToList();
             IOrderedEnumerable<NzbDrone.Core.Queue.Queue> ordered;
@@ -119,15 +119,15 @@ namespace Readarr.Api.V1.Queue
                 case "status":
                     return q => q.Status;
                 case "authors.sortName":
-                    return q => q.Artist?.SortName;
+                    return q => q.Author?.SortName;
                 case "title":
                     return q => q.Title;
                 case "album":
-                    return q => q.Album;
+                    return q => q.Book;
                 case "books.title":
-                    return q => q.Album?.Title;
+                    return q => q.Book?.Title;
                 case "album.releaseDate":
-                    return q => q.Album?.ReleaseDate;
+                    return q => q.Book?.ReleaseDate;
                 case "quality":
                     return q => q.Quality;
                 case "progress":

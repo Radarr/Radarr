@@ -50,8 +50,8 @@ namespace NzbDrone.Core.Download
 
             foreach (var report in prioritizedDecisions)
             {
-                var remoteAlbum = report.RemoteAlbum;
-                var downloadProtocol = report.RemoteAlbum.Release.DownloadProtocol;
+                var remoteAlbum = report.RemoteBook;
+                var downloadProtocol = report.RemoteBook.Release.DownloadProtocol;
 
                 //Skip if already grabbed
                 if (IsAlbumProcessed(grabbed, report))
@@ -116,14 +116,14 @@ namespace NzbDrone.Core.Download
         internal List<DownloadDecision> GetQualifiedReports(IEnumerable<DownloadDecision> decisions)
         {
             //Process both approved and temporarily rejected
-            return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && c.RemoteAlbum.Albums.Any()).ToList();
+            return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && c.RemoteBook.Books.Any()).ToList();
         }
 
         private bool IsAlbumProcessed(List<DownloadDecision> decisions, DownloadDecision report)
         {
-            var bookIds = report.RemoteAlbum.Albums.Select(e => e.Id).ToList();
+            var bookIds = report.RemoteBook.Books.Select(e => e.Id).ToList();
 
-            return decisions.SelectMany(r => r.RemoteAlbum.Albums)
+            return decisions.SelectMany(r => r.RemoteBook.Books)
                             .Select(e => e.Id)
                             .ToList()
                             .Intersect(bookIds)

@@ -5,11 +5,11 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -19,10 +19,10 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 {
     [TestFixture]
-    public class DeletedTrackFileSpecificationFixture : CoreTest<DeletedTrackFileSpecification>
+    public class DeletedTrackFileSpecificationFixture : CoreTest<DeletedBookFileSpecification>
     {
-        private RemoteAlbum _parseResultMulti;
-        private RemoteAlbum _parseResultSingle;
+        private RemoteBook _parseResultMulti;
+        private RemoteBook _parseResultSingle;
         private BookFile _firstFile;
         private BookFile _secondFile;
 
@@ -60,18 +60,18 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                          .With(c => c.Path = @"C:\Music\My.Artist".AsOsAgnostic())
                          .Build();
 
-            _parseResultMulti = new RemoteAlbum
+            _parseResultMulti = new RemoteBook
             {
-                Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
-                Albums = doubleAlbumList
+                Author = fakeArtist,
+                ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+                Books = doubleAlbumList
             };
 
-            _parseResultSingle = new RemoteAlbum
+            _parseResultSingle = new RemoteBook
             {
-                Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
-                Albums = singleAlbumList
+                Author = fakeArtist,
+                ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+                Books = singleAlbumList
             };
 
             GivenUnmonitorDeletedTracks(true);
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         private void SetupMediaFile(List<BookFile> files)
         {
             Mocker.GetMock<IMediaFileService>()
-                              .Setup(v => v.GetFilesByAlbum(It.IsAny<int>()))
+                              .Setup(v => v.GetFilesByBook(It.IsAny<int>()))
                               .Returns(files);
         }
 
@@ -111,7 +111,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_return_true_when_searching()
         {
-            Subject.IsSatisfiedBy(_parseResultSingle, new ArtistSearchCriteria()).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, new AuthorSearchCriteria()).Accepted.Should().BeTrue();
         }
 
         [Test]

@@ -3,16 +3,16 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.ArtistStats;
+using NzbDrone.Core.AuthorStats;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ArtistStatsTests
 {
     [TestFixture]
-    public class ArtistStatisticsFixture : DbTest<ArtistStatisticsRepository, Author>
+    public class ArtistStatisticsFixture : DbTest<AuthorStatisticsRepository, Author>
     {
         private Author _artist;
         private Book _album;
@@ -33,8 +33,8 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
             Db.Insert(_album);
 
             _trackFile = Builder<BookFile>.CreateNew()
-                .With(e => e.Artist = _artist)
-                .With(e => e.Album = _album)
+                .With(e => e.Author = _artist)
+                .With(e => e.Book = _album)
                 .With(e => e.BookId == _album.Id)
                 .With(e => e.Quality = new QualityModel(Quality.MP3_320))
                 .BuildNew();
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         [Test]
         public void should_get_stats_for_artist()
         {
-            var stats = Subject.ArtistStatistics();
+            var stats = Subject.AuthorStatistics();
 
             stats.Should().HaveCount(1);
         }
@@ -56,10 +56,10 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         [Test]
         public void should_not_include_unmonitored_track_in_track_count()
         {
-            var stats = Subject.ArtistStatistics();
+            var stats = Subject.AuthorStatistics();
 
             stats.Should().HaveCount(1);
-            stats.First().TrackCount.Should().Be(0);
+            stats.First().BookCount.Should().Be(0);
         }
 
         [Test]
@@ -67,16 +67,16 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         {
             GivenTrackFile();
 
-            var stats = Subject.ArtistStatistics();
+            var stats = Subject.AuthorStatistics();
 
             stats.Should().HaveCount(1);
-            stats.First().TrackCount.Should().Be(1);
+            stats.First().BookCount.Should().Be(1);
         }
 
         [Test]
         public void should_have_size_on_disk_of_zero_when_no_track_file()
         {
-            var stats = Subject.ArtistStatistics();
+            var stats = Subject.AuthorStatistics();
 
             stats.Should().HaveCount(1);
             stats.First().SizeOnDisk.Should().Be(0);
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         {
             GivenTrackFile();
 
-            var stats = Subject.ArtistStatistics();
+            var stats = Subject.AuthorStatistics();
 
             stats.Should().HaveCount(1);
             stats.First().SizeOnDisk.Should().Be(_trackFile.Size);

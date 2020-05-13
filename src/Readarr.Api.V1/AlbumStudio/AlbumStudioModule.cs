@@ -1,19 +1,19 @@
 using System.Linq;
 using Nancy;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using Readarr.Http.Extensions;
 
 namespace Readarr.Api.V1.AlbumStudio
 {
     public class AlbumStudioModule : ReadarrV1Module
     {
-        private readonly IArtistService _artistService;
-        private readonly IAlbumMonitoredService _albumMonitoredService;
+        private readonly IAuthorService _authorService;
+        private readonly IBookMonitoredService _albumMonitoredService;
 
-        public AlbumStudioModule(IArtistService artistService, IAlbumMonitoredService albumMonitoredService)
+        public AlbumStudioModule(IAuthorService authorService, IBookMonitoredService albumMonitoredService)
             : base("/albumstudio")
         {
-            _artistService = artistService;
+            _authorService = authorService;
             _albumMonitoredService = albumMonitoredService;
             Post("/", artist => UpdateAll());
         }
@@ -22,7 +22,7 @@ namespace Readarr.Api.V1.AlbumStudio
         {
             //Read from request
             var request = Request.Body.FromJson<AlbumStudioResource>();
-            var artistToUpdate = _artistService.GetArtists(request.Artist.Select(s => s.Id));
+            var artistToUpdate = _authorService.GetAuthors(request.Artist.Select(s => s.Id));
 
             foreach (var s in request.Artist)
             {
@@ -38,7 +38,7 @@ namespace Readarr.Api.V1.AlbumStudio
                     artist.Monitored = false;
                 }
 
-                _albumMonitoredService.SetAlbumMonitoredStatus(artist, request.MonitoringOptions);
+                _albumMonitoredService.SetBookMonitoredStatus(artist, request.MonitoringOptions);
             }
 
             return ResponseWithCode("ok", HttpStatusCode.Accepted);

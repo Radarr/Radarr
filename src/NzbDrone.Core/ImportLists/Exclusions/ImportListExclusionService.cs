@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music.Events;
 
 namespace NzbDrone.Core.ImportLists.Exclusions
 {
@@ -18,8 +18,8 @@ namespace NzbDrone.Core.ImportLists.Exclusions
     }
 
     public class ImportListExclusionService : IImportListExclusionService,
-                                              IHandleAsync<ArtistDeletedEvent>,
-                                              IHandleAsync<AlbumDeletedEvent>
+                                              IHandleAsync<AuthorDeletedEvent>,
+                                              IHandleAsync<BookDeletedEvent>
     {
         private readonly IImportListExclusionRepository _repo;
 
@@ -72,14 +72,14 @@ namespace NzbDrone.Core.ImportLists.Exclusions
             return _repo.All().ToList();
         }
 
-        public void HandleAsync(ArtistDeletedEvent message)
+        public void HandleAsync(AuthorDeletedEvent message)
         {
             if (!message.AddImportListExclusion)
             {
                 return;
             }
 
-            var existingExclusion = _repo.FindByForeignId(message.Artist.ForeignAuthorId);
+            var existingExclusion = _repo.FindByForeignId(message.Author.ForeignAuthorId);
 
             if (existingExclusion != null)
             {
@@ -88,21 +88,21 @@ namespace NzbDrone.Core.ImportLists.Exclusions
 
             var importExclusion = new ImportListExclusion
             {
-                ForeignId = message.Artist.ForeignAuthorId,
-                Name = message.Artist.Name
+                ForeignId = message.Author.ForeignAuthorId,
+                Name = message.Author.Name
             };
 
             _repo.Insert(importExclusion);
         }
 
-        public void HandleAsync(AlbumDeletedEvent message)
+        public void HandleAsync(BookDeletedEvent message)
         {
             if (!message.AddImportListExclusion)
             {
                 return;
             }
 
-            var existingExclusion = _repo.FindByForeignId(message.Album.ForeignBookId);
+            var existingExclusion = _repo.FindByForeignId(message.Book.ForeignBookId);
 
             if (existingExclusion != null)
             {
@@ -111,8 +111,8 @@ namespace NzbDrone.Core.ImportLists.Exclusions
 
             var importExclusion = new ImportListExclusion
             {
-                ForeignId = message.Album.ForeignBookId,
-                Name = $"{message.Album.AuthorMetadata.Value.Name} - {message.Album.Title}"
+                ForeignId = message.Book.ForeignBookId,
+                Name = $"{message.Book.AuthorMetadata.Value.Name} - {message.Book.Title}"
             };
 
             _repo.Insert(importExclusion);

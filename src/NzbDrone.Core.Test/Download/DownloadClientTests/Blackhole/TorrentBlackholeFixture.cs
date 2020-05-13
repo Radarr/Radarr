@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             _magnetFilePath = Path.ChangeExtension(_filePath, extension);
         }
 
-        protected override RemoteAlbum CreateRemoteAlbum()
+        protected override RemoteBook CreateRemoteAlbum()
         {
             var remoteAlbum = base.CreateRemoteAlbum();
             var torrentInfo = new TorrentInfo();

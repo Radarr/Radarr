@@ -11,12 +11,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class RawDiskSpecificationFixture : CoreTest<RawDiskSpecification>
     {
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
 
         [SetUp]
         public void Setup()
         {
-            _remoteAlbum = new RemoteAlbum
+            _remoteAlbum = new RemoteBook
             {
                 Release = new ReleaseInfo() { DownloadProtocol = DownloadProtocol.Torrent }
             };

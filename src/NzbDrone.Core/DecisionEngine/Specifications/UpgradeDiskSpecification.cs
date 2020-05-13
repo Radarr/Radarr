@@ -26,9 +26,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
-            foreach (var file in subject.Albums.SelectMany(c => c.BookFiles.Value))
+            foreach (var file in subject.Books.SelectMany(c => c.BookFiles.Value))
             {
                 if (file == null)
                 {
@@ -38,10 +38,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
                 _logger.Debug("Comparing file quality and language with report. Existing file is {0}", file.Quality);
 
-                if (!_upgradableSpecification.IsUpgradable(subject.Artist.QualityProfile,
+                if (!_upgradableSpecification.IsUpgradable(subject.Author.QualityProfile,
                                                            new List<QualityModel> { file.Quality },
-                                                           _preferredWordServiceCalculator.Calculate(subject.Artist, file.GetSceneOrFileName()),
-                                                           subject.ParsedAlbumInfo.Quality,
+                                                           _preferredWordServiceCalculator.Calculate(subject.Author, file.GetSceneOrFileName()),
+                                                           subject.ParsedBookInfo.Quality,
                                                            subject.PreferredWordScore))
                 {
                     return Decision.Reject("Existing file on disk is of equal or higher preference: {0}", file.Quality);

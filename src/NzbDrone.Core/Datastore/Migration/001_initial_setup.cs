@@ -168,11 +168,9 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Create.TableForModel("NamingConfig")
                 .WithColumn("ReplaceIllegalCharacters").AsBoolean().WithDefaultValue(true)
-                .WithColumn("ArtistFolderFormat").AsString().Nullable()
-                .WithColumn("RenameTracks").AsBoolean().Nullable()
-                .WithColumn("StandardTrackFormat").AsString().Nullable()
-                .WithColumn("AlbumFolderFormat").AsString().Nullable()
-                .WithColumn("MultiDiscTrackFormat").AsString().Nullable();
+                .WithColumn("AuthorFolderFormat").AsString().Nullable()
+                .WithColumn("RenameBooks").AsBoolean().Nullable()
+                .WithColumn("StandardBookFormat").AsString().Nullable();
 
             Create.TableForModel("Blacklist")
                 .WithColumn("SourceTitle").AsString()
@@ -201,7 +199,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("RelativePath").AsString().NotNullable()
                 .WithColumn("LastUpdated").AsDateTime().NotNullable()
                 .WithColumn("BookId").AsInt32().Nullable()
-                .WithColumn("TrackFileId").AsInt32().Nullable()
+                .WithColumn("BookFileId").AsInt32().Nullable()
                 .WithColumn("Hash").AsString().Nullable()
                 .WithColumn("Added").AsDateTime().Nullable()
                 .WithColumn("Extension").AsString().NotNullable();
@@ -219,7 +217,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Added").AsDateTime()
                 .WithColumn("Release").AsString()
                 .WithColumn("AuthorId").AsInt32().WithDefaultValue(0)
-                .WithColumn("ParsedAlbumInfo").AsString().WithDefaultValue("")
+                .WithColumn("ParsedBookInfo").AsString().WithDefaultValue("")
                 .WithColumn("Reason").AsInt32().WithDefaultValue(0);
 
             Create.TableForModel("RemotePathMappings")
@@ -274,7 +272,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Create.TableForModel("ExtraFiles")
                 .WithColumn("AuthorId").AsInt32().NotNullable()
                 .WithColumn("BookId").AsInt32().NotNullable()
-                .WithColumn("TrackFileId").AsInt32().NotNullable()
+                .WithColumn("BookFileId").AsInt32().NotNullable()
                 .WithColumn("RelativePath").AsString().NotNullable()
                 .WithColumn("Extension").AsString().NotNullable()
                 .WithColumn("Added").AsDateTime().NotNullable()

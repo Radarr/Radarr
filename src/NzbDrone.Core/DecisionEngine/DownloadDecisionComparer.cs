@@ -63,25 +63,25 @@ namespace NzbDrone.Core.DecisionEngine
         {
             if (_configService.DownloadPropersAndRepacks == ProperDownloadTypes.DoNotPrefer)
             {
-                return CompareAll(CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Artist.QualityProfile.Value.GetIndex(remoteAlbum.ParsedAlbumInfo.Quality.Quality)),
-                    CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.ParsedAlbumInfo.Quality.Revision.Real));
+                return CompareAll(CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum => remoteAlbum.Author.QualityProfile.Value.GetIndex(remoteAlbum.ParsedBookInfo.Quality.Quality)),
+                    CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum => remoteAlbum.ParsedBookInfo.Quality.Revision.Real));
             }
 
-            return CompareAll(CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Artist.QualityProfile.Value.GetIndex(remoteAlbum.ParsedAlbumInfo.Quality.Quality)),
-                           CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.ParsedAlbumInfo.Quality.Revision.Real),
-                           CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.ParsedAlbumInfo.Quality.Revision.Version));
+            return CompareAll(CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum => remoteAlbum.Author.QualityProfile.Value.GetIndex(remoteAlbum.ParsedBookInfo.Quality.Quality)),
+                           CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum => remoteAlbum.ParsedBookInfo.Quality.Revision.Real),
+                           CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum => remoteAlbum.ParsedBookInfo.Quality.Revision.Version));
         }
 
         private int ComparePreferredWordScore(DownloadDecision x, DownloadDecision y)
         {
-            return CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.PreferredWordScore);
+            return CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum => remoteAlbum.PreferredWordScore);
         }
 
         private int CompareProtocol(DownloadDecision x, DownloadDecision y)
         {
-            var result = CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum =>
+            var result = CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum =>
             {
-                var delayProfile = _delayProfileService.BestForTags(remoteAlbum.Artist.Tags);
+                var delayProfile = _delayProfileService.BestForTags(remoteAlbum.Author.Tags);
                 var downloadProtocol = remoteAlbum.Release.DownloadProtocol;
                 return downloadProtocol == delayProfile.PreferredProtocol;
             });
@@ -91,36 +91,36 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareAlbumCount(DownloadDecision x, DownloadDecision y)
         {
-            var discographyCompare = CompareBy(x.RemoteAlbum,
-                y.RemoteAlbum,
-                remoteAlbum => remoteAlbum.ParsedAlbumInfo.Discography);
+            var discographyCompare = CompareBy(x.RemoteBook,
+                y.RemoteBook,
+                remoteAlbum => remoteAlbum.ParsedBookInfo.Discography);
 
             if (discographyCompare != 0)
             {
                 return discographyCompare;
             }
 
-            return CompareByReverse(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Albums.Count);
+            return CompareByReverse(x.RemoteBook, y.RemoteBook, remoteAlbum => remoteAlbum.Books.Count);
         }
 
         private int ComparePeersIfTorrent(DownloadDecision x, DownloadDecision y)
         {
             // Different protocols should get caught when checking the preferred protocol,
             // since we're dealing with the same series in our comparisions
-            if (x.RemoteAlbum.Release.DownloadProtocol != DownloadProtocol.Torrent ||
-                y.RemoteAlbum.Release.DownloadProtocol != DownloadProtocol.Torrent)
+            if (x.RemoteBook.Release.DownloadProtocol != DownloadProtocol.Torrent ||
+                y.RemoteBook.Release.DownloadProtocol != DownloadProtocol.Torrent)
             {
                 return 0;
             }
 
             return CompareAll(
-                CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum =>
+                CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum =>
                 {
                     var seeders = TorrentInfo.GetSeeders(remoteAlbum.Release);
 
                     return seeders.HasValue && seeders.Value > 0 ? Math.Round(Math.Log10(seeders.Value)) : 0;
                 }),
-                CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum =>
+                CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum =>
                 {
                     var peers = TorrentInfo.GetPeers(remoteAlbum.Release);
 
@@ -130,13 +130,13 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareAgeIfUsenet(DownloadDecision x, DownloadDecision y)
         {
-            if (x.RemoteAlbum.Release.DownloadProtocol != DownloadProtocol.Usenet ||
-                y.RemoteAlbum.Release.DownloadProtocol != DownloadProtocol.Usenet)
+            if (x.RemoteBook.Release.DownloadProtocol != DownloadProtocol.Usenet ||
+                y.RemoteBook.Release.DownloadProtocol != DownloadProtocol.Usenet)
             {
                 return 0;
             }
 
-            return CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum =>
+            return CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum =>
             {
                 var ageHours = remoteAlbum.Release.AgeHours;
                 var age = remoteAlbum.Release.Age;
@@ -163,7 +163,7 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareSize(DownloadDecision x, DownloadDecision y)
         {
             // TODO: Is smaller better? Smaller for usenet could mean no par2 files.
-            return CompareBy(x.RemoteAlbum, y.RemoteAlbum, remoteAlbum => remoteAlbum.Release.Size.Round(200.Megabytes()));
+            return CompareBy(x.RemoteBook, y.RemoteBook, remoteAlbum => remoteAlbum.Release.Size.Round(200.Megabytes()));
         }
     }
 }

@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Releases;
 using NzbDrone.Core.Test.Framework;
@@ -13,14 +13,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [TestFixture]
     public class ReleaseRestrictionsSpecificationFixture : CoreTest<ReleaseRestrictionsSpecification>
     {
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
 
         [SetUp]
         public void Setup()
         {
-            _remoteAlbum = new RemoteAlbum
+            _remoteAlbum = new RemoteBook
             {
-                Artist = new Author
+                Author = new Author
                 {
                     Tags = new HashSet<int>()
                 },

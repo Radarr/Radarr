@@ -4,9 +4,9 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [TestFixture]
     public class RepackSpecificationFixture : CoreTest<RepackSpecification>
     {
-        private ParsedAlbumInfo _parsedAlbumInfo;
+        private ParsedBookInfo _parsedAlbumInfo;
         private List<Book> _albums;
         private List<BookFile> _trackFiles;
 
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             Mocker.Resolve<UpgradableSpecification>();
 
-            _parsedAlbumInfo = Builder<ParsedAlbumInfo>.CreateNew()
+            _parsedAlbumInfo = Builder<ParsedBookInfo>.CreateNew()
                                                            .With(p => p.Quality = new QualityModel(Quality.FLAC,
                                                                new Revision(2, 0, false)))
                                                            .With(p => p.ReleaseGroup = "Readarr")
@@ -41,16 +41,16 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                             .BuildList();
 
             Mocker.GetMock<IMediaFileService>()
-                  .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
+                  .Setup(c => c.GetFilesByBook(It.IsAny<int>()))
                   .Returns(_trackFiles);
         }
 
         [Test]
         public void should_return_true_if_it_is_not_a_repack()
         {
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(e => e.ParsedAlbumInfo = _parsedAlbumInfo)
-                                                      .With(e => e.Albums = _albums)
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+                                                      .With(e => e.Books = _albums)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteAlbum, null)
@@ -63,14 +63,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_true_if_there_are_is_no_track_files()
         {
             Mocker.GetMock<IMediaFileService>()
-                  .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
+                  .Setup(c => c.GetFilesByBook(It.IsAny<int>()))
                   .Returns(new List<BookFile>());
 
             _parsedAlbumInfo.Quality.Revision.IsRepack = true;
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(e => e.ParsedAlbumInfo = _parsedAlbumInfo)
-                                                      .With(e => e.Albums = _albums)
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+                                                      .With(e => e.Books = _albums)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteAlbum, null)
@@ -95,9 +95,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(e => e.ParsedAlbumInfo = _parsedAlbumInfo)
-                                                      .With(e => e.Albums = _albums)
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+                                                      .With(e => e.Books = _albums)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteAlbum, null)
@@ -122,9 +122,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(e => e.ParsedAlbumInfo = _parsedAlbumInfo)
-                                                      .With(e => e.Albums = _albums)
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+                                                      .With(e => e.Books = _albums)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteAlbum, null)
@@ -151,9 +151,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _trackFiles.First().ReleaseGroup = "NotReadarr";
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(e => e.ParsedAlbumInfo = _parsedAlbumInfo)
-                                                      .With(e => e.Albums = _albums)
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+                                                      .With(e => e.Books = _albums)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteAlbum, null)
@@ -178,9 +178,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(e => e.ParsedAlbumInfo = _parsedAlbumInfo)
-                                                      .With(e => e.Albums = _albums)
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+                                                      .With(e => e.Books = _albums)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteAlbum, null)
@@ -205,9 +205,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(e => e.ParsedAlbumInfo = _parsedAlbumInfo)
-                                                      .With(e => e.Albums = _albums)
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+                                                      .With(e => e.Books = _albums)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteAlbum, null)
@@ -234,9 +234,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            var remoteAlbum = Builder<RemoteAlbum>.CreateNew()
-                                                      .With(e => e.ParsedAlbumInfo = _parsedAlbumInfo)
-                                                      .With(e => e.Albums = _albums)
+            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+                                                      .With(e => e.Books = _albums)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteAlbum, null)

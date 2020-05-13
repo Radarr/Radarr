@@ -1,4 +1,4 @@
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Notifications
@@ -8,12 +8,12 @@ namespace NzbDrone.Core.Notifications
         string Link { get; }
 
         void OnGrab(GrabMessage grabMessage);
-        void OnReleaseImport(AlbumDownloadMessage message);
-        void OnRename(Author artist);
+        void OnReleaseImport(BookDownloadMessage message);
+        void OnRename(Author author);
         void OnHealthIssue(HealthCheck.HealthCheck healthCheck);
         void OnDownloadFailure(DownloadFailedMessage message);
-        void OnImportFailure(AlbumDownloadMessage message);
-        void OnTrackRetag(TrackRetagMessage message);
+        void OnImportFailure(BookDownloadMessage message);
+        void OnTrackRetag(BookRetagMessage message);
         bool SupportsOnGrab { get; }
         bool SupportsOnReleaseImport { get; }
         bool SupportsOnUpgrade { get; }

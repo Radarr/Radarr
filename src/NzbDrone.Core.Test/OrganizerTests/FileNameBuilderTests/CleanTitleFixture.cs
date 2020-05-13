@@ -3,8 +3,8 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _trackFile = new BookFile { Quality = new QualityModel(Quality.MP3_320), ReleaseGroup = "ReadarrTest" };
 
             _namingConfig = NamingConfig.Default;
-            _namingConfig.RenameTracks = true;
+            _namingConfig.RenameBooks = true;
 
             Mocker.GetMock<INamingConfigService>()
                   .Setup(c => c.GetConfig()).Returns(_namingConfig);
@@ -66,9 +66,9 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         public void should_get_expected_title_back(string name, string expected)
         {
             _artist.Name = name;
-            _namingConfig.StandardTrackFormat = "{Artist CleanName}";
+            _namingConfig.StandardBookFormat = "{Author CleanName}";
 
-            Subject.BuildTrackFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _album, _trackFile)
                    .Should().Be(expected);
         }
     }

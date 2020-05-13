@@ -2,9 +2,9 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Delay;
 using NzbDrone.Core.Test.Framework;
@@ -14,15 +14,15 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [TestFixture]
     public class ProtocolSpecificationFixture : CoreTest<ProtocolSpecification>
     {
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
         private DelayProfile _delayProfile;
 
         [SetUp]
         public void Setup()
         {
-            _remoteAlbum = new RemoteAlbum();
+            _remoteAlbum = new RemoteBook();
             _remoteAlbum.Release = new ReleaseInfo();
-            _remoteAlbum.Artist = new Author();
+            _remoteAlbum.Author = new Author();
 
             _delayProfile = new DelayProfile();
 

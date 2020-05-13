@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music.Events;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Blacklisting
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Blacklisting
 
                                     IExecute<ClearBlacklistCommand>,
                                     IHandle<DownloadFailedEvent>,
-                                    IHandleAsync<ArtistDeletedEvent>
+                                    IHandleAsync<AuthorDeletedEvent>
     {
         private readonly IBlacklistRepository _blacklistRepository;
 
@@ -155,9 +155,9 @@ namespace NzbDrone.Core.Blacklisting
             _blacklistRepository.Insert(blacklist);
         }
 
-        public void HandleAsync(ArtistDeletedEvent message)
+        public void HandleAsync(AuthorDeletedEvent message)
         {
-            var blacklisted = _blacklistRepository.BlacklistedByArtist(message.Artist.Id);
+            var blacklisted = _blacklistRepository.BlacklistedByArtist(message.Author.Id);
 
             _blacklistRepository.DeleteMany(blacklisted);
         }

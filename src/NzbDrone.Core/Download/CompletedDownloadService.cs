@@ -4,13 +4,13 @@ using System.IO;
 using System.Linq;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.MediaFiles.BookImport;
 using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.MediaFiles.TrackImport;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Download
 {
@@ -24,27 +24,27 @@ namespace NzbDrone.Core.Download
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IHistoryService _historyService;
-        private readonly IDownloadedTracksImportService _downloadedTracksImportService;
-        private readonly IArtistService _artistService;
+        private readonly IDownloadedBooksImportService _downloadedTracksImportService;
+        private readonly IAuthorService _authorService;
         private readonly ITrackedDownloadAlreadyImported _trackedDownloadAlreadyImported;
 
         public CompletedDownloadService(IEventAggregator eventAggregator,
                                         IHistoryService historyService,
-                                        IDownloadedTracksImportService downloadedTracksImportService,
-                                        IArtistService artistService,
+                                        IDownloadedBooksImportService downloadedTracksImportService,
+                                        IAuthorService authorService,
                                         ITrackedDownloadAlreadyImported trackedDownloadAlreadyImported)
         {
             _eventAggregator = eventAggregator;
             _historyService = historyService;
             _downloadedTracksImportService = downloadedTracksImportService;
-            _artistService = artistService;
+            _authorService = authorService;
             _trackedDownloadAlreadyImported = trackedDownloadAlreadyImported;
         }
 
         public void Check(TrackedDownload trackedDownload)
         {
             if (trackedDownload.DownloadItem.Status != DownloadItemStatus.Completed ||
-                trackedDownload.RemoteAlbum == null)
+                trackedDownload.RemoteBook == null)
             {
                 return;
             }
@@ -78,18 +78,18 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            var artist = trackedDownload.RemoteAlbum.Artist;
+            var author = trackedDownload.RemoteBook.Author;
 
-            if (artist == null)
+            if (author == null)
             {
                 if (historyItem != null)
                 {
-                    artist = _artistService.GetArtist(historyItem.AuthorId);
+                    author = _authorService.GetAuthor(historyItem.AuthorId);
                 }
 
-                if (artist == null)
+                if (author == null)
                 {
-                    trackedDownload.Warn("Artist name mismatch, automatic import is not possible.");
+                    trackedDownload.Warn("Author name mismatch, automatic import is not possible.");
                     return;
                 }
             }
@@ -102,13 +102,13 @@ namespace NzbDrone.Core.Download
             trackedDownload.State = TrackedDownloadState.Importing;
 
             var outputPath = trackedDownload.DownloadItem.OutputPath.FullPath;
-            var importResults = _downloadedTracksImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteAlbum.Artist, trackedDownload.DownloadItem);
+            var importResults = _downloadedTracksImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteBook.Author, trackedDownload.DownloadItem);
 
             if (importResults.Empty())
             {
                 trackedDownload.State = TrackedDownloadState.ImportFailed;
                 trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
-                _eventAggregator.PublishEvent(new AlbumImportIncompleteEvent(trackedDownload));
+                _eventAggregator.PublishEvent(new BookImportIncompleteEvent(trackedDownload));
                 return;
             }
 
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Download
                     .ToArray();
 
                 trackedDownload.Warn(statusMessages);
-                _eventAggregator.PublishEvent(new AlbumImportIncompleteEvent(trackedDownload));
+                _eventAggregator.PublishEvent(new BookImportIncompleteEvent(trackedDownload));
                 return;
             }
         }
@@ -136,8 +136,8 @@ namespace NzbDrone.Core.Download
         public bool VerifyImport(TrackedDownload trackedDownload, List<ImportResult> importResults)
         {
             var allItemsImported = importResults.Where(c => c.Result == ImportResultType.Imported)
-                                                   .Select(c => c.ImportDecision.Item.Album)
-                                                   .Count() >= Math.Max(1, trackedDownload.RemoteAlbum.Albums.Count);
+                                                   .Select(c => c.ImportDecision.Item.Book)
+                                                   .Count() >= Math.Max(1, trackedDownload.RemoteBook.Books.Count);
 
             if (allItemsImported)
             {

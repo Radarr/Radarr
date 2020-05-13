@@ -12,9 +12,9 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
             _preferredWordServiceCalculator = preferredWordServiceCalculator;
         }
 
-        public RemoteAlbum Aggregate(RemoteAlbum remoteAlbum)
+        public RemoteBook Aggregate(RemoteBook remoteAlbum)
         {
-            remoteAlbum.PreferredWordScore = _preferredWordServiceCalculator.Calculate(remoteAlbum.Artist, remoteAlbum.Release.Title);
+            remoteAlbum.PreferredWordScore = _preferredWordServiceCalculator.Calculate(remoteAlbum.Author, remoteAlbum.Release.Title);
 
             return remoteAlbum;
         }

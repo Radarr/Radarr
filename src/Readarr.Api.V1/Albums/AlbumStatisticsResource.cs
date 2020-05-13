@@ -1,4 +1,4 @@
-using NzbDrone.Core.ArtistStats;
+using NzbDrone.Core.AuthorStats;
 
 namespace Readarr.Api.V1.Albums
 {
@@ -25,7 +25,7 @@ namespace Readarr.Api.V1.Albums
 
     public static class AlbumStatisticsResourceMapper
     {
-        public static AlbumStatisticsResource ToResource(this AlbumStatistics model)
+        public static AlbumStatisticsResource ToResource(this BookStatistics model)
         {
             if (model == null)
             {
@@ -34,9 +34,8 @@ namespace Readarr.Api.V1.Albums
 
             return new AlbumStatisticsResource
             {
-                TrackFileCount = model.TrackFileCount,
-                TrackCount = model.TrackCount,
-                TotalTrackCount = model.TotalTrackCount,
+                TrackFileCount = model.BookFileCount,
+                TrackCount = model.BookCount,
                 SizeOnDisk = model.SizeOnDisk
             };
         }

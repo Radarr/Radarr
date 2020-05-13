@@ -64,10 +64,10 @@ namespace Readarr.Api.V1.Indexers
     {
         public static ReleaseResource ToResource(this DownloadDecision model)
         {
-            var releaseInfo = model.RemoteAlbum.Release;
-            var parsedAlbumInfo = model.RemoteAlbum.ParsedAlbumInfo;
-            var remoteAlbum = model.RemoteAlbum;
-            var torrentInfo = (model.RemoteAlbum.Release as TorrentInfo) ?? new TorrentInfo();
+            var releaseInfo = model.RemoteBook.Release;
+            var parsedAlbumInfo = model.RemoteBook.ParsedBookInfo;
+            var remoteAlbum = model.RemoteBook;
+            var torrentInfo = (model.RemoteBook.Release as TorrentInfo) ?? new TorrentInfo();
 
             // TODO: Clean this mess up. don't mix data from multiple classes, use sub-resources instead? (Got a huge Deja Vu, didn't we talk about this already once?)
             return new ReleaseResource
@@ -85,8 +85,8 @@ namespace Readarr.Api.V1.Indexers
                 ReleaseGroup = parsedAlbumInfo.ReleaseGroup,
                 ReleaseHash = parsedAlbumInfo.ReleaseHash,
                 Title = releaseInfo.Title,
-                ArtistName = parsedAlbumInfo.ArtistName,
-                AlbumTitle = parsedAlbumInfo.AlbumTitle,
+                ArtistName = parsedAlbumInfo.AuthorName,
+                AlbumTitle = parsedAlbumInfo.BookTitle,
                 Discography = parsedAlbumInfo.Discography,
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,

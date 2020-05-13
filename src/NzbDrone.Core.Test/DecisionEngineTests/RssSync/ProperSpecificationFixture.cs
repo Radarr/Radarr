@@ -4,12 +4,12 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -21,8 +21,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
     public class ProperSpecificationFixture : CoreTest<ProperSpecification>
     {
-        private RemoteAlbum _parseResultMulti;
-        private RemoteAlbum _parseResultSingle;
+        private RemoteBook _parseResultMulti;
+        private RemoteBook _parseResultSingle;
         private BookFile _firstFile;
         private BookFile _secondFile;
 
@@ -42,21 +42,21 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                          .Build();
 
             Mocker.GetMock<IMediaFileService>()
-                .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
+                .Setup(c => c.GetFilesByBook(It.IsAny<int>()))
                 .Returns(new List<BookFile> { _firstFile, _secondFile });
 
-            _parseResultMulti = new RemoteAlbum
+            _parseResultMulti = new RemoteBook
             {
-                Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MOBI, new Revision(version: 2)) },
-                Albums = doubleAlbumList
+                Author = fakeArtist,
+                ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MOBI, new Revision(version: 2)) },
+                Books = doubleAlbumList
             };
 
-            _parseResultSingle = new RemoteAlbum
+            _parseResultSingle = new RemoteBook
             {
-                Artist = fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MOBI, new Revision(version: 2)) },
-                Albums = singleAlbumList
+                Author = fakeArtist,
+                ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MOBI, new Revision(version: 2)) },
+                Books = singleAlbumList
             };
         }
 
@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             WithFirstFileUpgradable();
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
-            Subject.IsSatisfiedBy(_parseResultSingle, new AlbumSearchCriteria()).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, new BookSearchCriteria()).Accepted.Should().BeTrue();
         }
 
         [Test]

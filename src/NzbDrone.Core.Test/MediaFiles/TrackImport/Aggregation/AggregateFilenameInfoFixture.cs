@@ -5,19 +5,19 @@ using System.IO;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators;
+using NzbDrone.Core.MediaFiles.BookImport.Aggregation.Aggregators;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
+namespace NzbDrone.Core.Test.MediaFiles.BookImport.Aggregation.Aggregators
 {
     [TestFixture]
     public class AggregateFilenameInfoFixture : CoreTest<AggregateFilenameInfo>
     {
         private LocalAlbumRelease GivenTracks(List<string> files, string root)
         {
-            var tracks = files.Select(x => new LocalTrack
+            var tracks = files.Select(x => new LocalBook
             {
                 Path = Path.Combine(root, x),
                 FileTrackInfo = new ParsedTrackInfo
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
             return new LocalAlbumRelease(tracks);
         }
 
-        private void VerifyData(LocalTrack track, string artist, string title, int trackNum, int disc)
+        private void VerifyData(LocalBook track, string artist, string title, int trackNum, int disc)
         {
             track.FileTrackInfo.ArtistTitle.Should().Be(artist);
             track.FileTrackInfo.Title.Should().Be(title);
@@ -49,10 +49,10 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
 
             Subject.Aggregate(release, true);
 
-            VerifyData(release.LocalTracks[0], "Adele", "Daydreamer", 1, 1);
-            VerifyData(release.LocalTracks[1], "Adele", "Best for Last", 2, 1);
-            VerifyData(release.LocalTracks[2], "Adele", "Chasing Pavements", 3, 1);
-            VerifyData(release.LocalTracks[3], "Adele", "That's It, I Quit, I'm Moving On", 3, 2);
+            VerifyData(release.LocalBooks[0], "Adele", "Daydreamer", 1, 1);
+            VerifyData(release.LocalBooks[1], "Adele", "Best for Last", 2, 1);
+            VerifyData(release.LocalBooks[2], "Adele", "Chasing Pavements", 3, 1);
+            VerifyData(release.LocalBooks[3], "Adele", "That's It, I Quit, I'm Moving On", 3, 2);
         }
 
         public static class TestCaseFactory
@@ -159,7 +159,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
             return outp;
         }
 
-        private void VerifyDataAuto(List<LocalTrack> tracks, string[] tokens, string whitespace)
+        private void VerifyDataAuto(List<LocalBook> tracks, string[] tokens, string whitespace)
         {
             for (int i = 1; i <= tracks.Count; i++)
             {
@@ -200,7 +200,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Aggregation.Aggregators
 
             Subject.Aggregate(release, true);
 
-            VerifyDataAuto(release.LocalTracks, testcase.Item1, testcase.Item3);
+            VerifyDataAuto(release.LocalBooks, testcase.Item1, testcase.Item3);
         }
     }
 }

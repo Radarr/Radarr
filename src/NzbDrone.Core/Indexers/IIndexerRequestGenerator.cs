@@ -5,7 +5,7 @@ namespace NzbDrone.Core.Indexers
     public interface IIndexerRequestGenerator
     {
         IndexerPageableRequestChain GetRecentRequests();
-        IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria);
-        IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria);
+        IndexerPageableRequestChain GetSearchRequests(BookSearchCriteria searchCriteria);
+        IndexerPageableRequestChain GetSearchRequests(AuthorSearchCriteria searchCriteria);
     }
 }

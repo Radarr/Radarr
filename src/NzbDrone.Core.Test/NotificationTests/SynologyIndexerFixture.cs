@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.Notifications.Synology;
 using NzbDrone.Core.Test.Framework;
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.NotificationTests
     public class SynologyIndexerFixture : CoreTest<SynologyIndexer>
     {
         private Author _artist;
-        private AlbumDownloadMessage _upgrade;
+        private BookDownloadMessage _upgrade;
         private string _rootPath = @"C:\Test\".AsOsAgnostic();
 
         [SetUp]
@@ -26,11 +26,11 @@ namespace NzbDrone.Core.Test.NotificationTests
                 Path = _rootPath,
             };
 
-            _upgrade = new AlbumDownloadMessage()
+            _upgrade = new BookDownloadMessage()
             {
-                Artist = _artist,
+                Author = _artist,
 
-                TrackFiles = new List<BookFile>
+                BookFiles = new List<BookFile>
                 {
                     new BookFile
                     {

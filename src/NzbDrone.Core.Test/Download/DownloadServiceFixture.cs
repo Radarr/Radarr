@@ -6,11 +6,11 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.Download
     [TestFixture]
     public class DownloadServiceFixture : CoreTest<DownloadService>
     {
-        private RemoteAlbum _parseResult;
+        private RemoteBook _parseResult;
         private List<IDownloadClient> _downloadClients;
         [SetUp]
         public void Setup()
@@ -45,10 +45,10 @@ namespace NzbDrone.Core.Test.Download
                 .With(v => v.DownloadUrl = "http://test.site/download1.ext")
                 .Build();
 
-            _parseResult = Builder<RemoteAlbum>.CreateNew()
-                   .With(c => c.Artist = Builder<Author>.CreateNew().Build())
+            _parseResult = Builder<RemoteBook>.CreateNew()
+                   .With(c => c.Author = Builder<Author>.CreateNew().Build())
                    .With(c => c.Release = releaseInfo)
-                   .With(c => c.Albums = episodes)
+                   .With(c => c.Books = episodes)
                    .Build();
         }
 
@@ -80,42 +80,42 @@ namespace NzbDrone.Core.Test.Download
         public void Download_report_should_publish_on_grab_event()
         {
             var mock = WithUsenetClient();
-            mock.Setup(s => s.Download(It.IsAny<RemoteAlbum>()));
+            mock.Setup(s => s.Download(It.IsAny<RemoteBook>()));
 
             Subject.DownloadReport(_parseResult);
 
-            VerifyEventPublished<AlbumGrabbedEvent>();
+            VerifyEventPublished<BookGrabbedEvent>();
         }
 
         [Test]
         public void Download_report_should_grab_using_client()
         {
             var mock = WithUsenetClient();
-            mock.Setup(s => s.Download(It.IsAny<RemoteAlbum>()));
+            mock.Setup(s => s.Download(It.IsAny<RemoteBook>()));
 
             Subject.DownloadReport(_parseResult);
 
-            mock.Verify(s => s.Download(It.IsAny<RemoteAlbum>()), Times.Once());
+            mock.Verify(s => s.Download(It.IsAny<RemoteBook>()), Times.Once());
         }
 
         [Test]
         public void Download_report_should_not_publish_on_failed_grab_event()
         {
             var mock = WithUsenetClient();
-            mock.Setup(s => s.Download(It.IsAny<RemoteAlbum>()))
+            mock.Setup(s => s.Download(It.IsAny<RemoteBook>()))
                 .Throws(new WebException());
 
             Assert.Throws<WebException>(() => Subject.DownloadReport(_parseResult));
 
-            VerifyEventNotPublished<AlbumGrabbedEvent>();
+            VerifyEventNotPublished<BookGrabbedEvent>();
         }
 
         [Test]
         public void Download_report_should_trigger_indexer_backoff_on_indexer_error()
         {
             var mock = WithUsenetClient();
-            mock.Setup(s => s.Download(It.IsAny<RemoteAlbum>()))
-                .Callback<RemoteAlbum>(v =>
+            mock.Setup(s => s.Download(It.IsAny<RemoteBook>()))
+                .Callback<RemoteBook>(v =>
                 {
                     throw new ReleaseDownloadException(v.Release, "Error", new WebException());
                 });
@@ -134,8 +134,8 @@ namespace NzbDrone.Core.Test.Download
             response.Headers["Retry-After"] = "300";
 
             var mock = WithUsenetClient();
-            mock.Setup(s => s.Download(It.IsAny<RemoteAlbum>()))
-                .Callback<RemoteAlbum>(v =>
+            mock.Setup(s => s.Download(It.IsAny<RemoteBook>()))
+                .Callback<RemoteBook>(v =>
                 {
                     throw new ReleaseDownloadException(v.Release, "Error", new TooManyRequestsException(request, response));
                 });
@@ -154,8 +154,8 @@ namespace NzbDrone.Core.Test.Download
             response.Headers["Retry-After"] = DateTime.UtcNow.AddSeconds(300).ToString("r");
 
             var mock = WithUsenetClient();
-            mock.Setup(s => s.Download(It.IsAny<RemoteAlbum>()))
-                .Callback<RemoteAlbum>(v =>
+            mock.Setup(s => s.Download(It.IsAny<RemoteBook>()))
+                .Callback<RemoteBook>(v =>
                 {
                     throw new ReleaseDownloadException(v.Release, "Error", new TooManyRequestsException(request, response));
                 });
@@ -171,7 +171,7 @@ namespace NzbDrone.Core.Test.Download
         public void Download_report_should_not_trigger_indexer_backoff_on_downloadclient_error()
         {
             var mock = WithUsenetClient();
-            mock.Setup(s => s.Download(It.IsAny<RemoteAlbum>()))
+            mock.Setup(s => s.Download(It.IsAny<RemoteBook>()))
                 .Throws(new DownloadClientException("Some Error"));
 
             Assert.Throws<DownloadClientException>(() => Subject.DownloadReport(_parseResult));
@@ -184,8 +184,8 @@ namespace NzbDrone.Core.Test.Download
         public void Download_report_should_not_trigger_indexer_backoff_on_indexer_404_error()
         {
             var mock = WithUsenetClient();
-            mock.Setup(s => s.Download(It.IsAny<RemoteAlbum>()))
-                .Callback<RemoteAlbum>(v =>
+            mock.Setup(s => s.Download(It.IsAny<RemoteBook>()))
+                .Callback<RemoteBook>(v =>
                 {
                     throw new ReleaseUnavailableException(v.Release, "Error", new WebException());
                 });
@@ -201,8 +201,8 @@ namespace NzbDrone.Core.Test.Download
         {
             Assert.Throws<DownloadClientUnavailableException>(() => Subject.DownloadReport(_parseResult));
 
-            Mocker.GetMock<IDownloadClient>().Verify(c => c.Download(It.IsAny<RemoteAlbum>()), Times.Never());
-            VerifyEventNotPublished<AlbumGrabbedEvent>();
+            Mocker.GetMock<IDownloadClient>().Verify(c => c.Download(It.IsAny<RemoteBook>()), Times.Never());
+            VerifyEventNotPublished<BookGrabbedEvent>();
         }
 
         [Test]
@@ -224,8 +224,8 @@ namespace NzbDrone.Core.Test.Download
             Subject.DownloadReport(_parseResult);
 
             Mocker.GetMock<IDownloadClientStatusService>().Verify(c => c.GetBlockedProviders(), Times.Never());
-            mockUsenet.Verify(c => c.Download(It.IsAny<RemoteAlbum>()), Times.Once());
-            VerifyEventPublished<AlbumGrabbedEvent>();
+            mockUsenet.Verify(c => c.Download(It.IsAny<RemoteBook>()), Times.Once());
+            VerifyEventPublished<BookGrabbedEvent>();
         }
 
         [Test]
@@ -236,8 +236,8 @@ namespace NzbDrone.Core.Test.Download
 
             Subject.DownloadReport(_parseResult);
 
-            mockTorrent.Verify(c => c.Download(It.IsAny<RemoteAlbum>()), Times.Never());
-            mockUsenet.Verify(c => c.Download(It.IsAny<RemoteAlbum>()), Times.Once());
+            mockTorrent.Verify(c => c.Download(It.IsAny<RemoteBook>()), Times.Never());
+            mockUsenet.Verify(c => c.Download(It.IsAny<RemoteBook>()), Times.Once());
         }
 
         [Test]
@@ -250,8 +250,8 @@ namespace NzbDrone.Core.Test.Download
 
             Subject.DownloadReport(_parseResult);
 
-            mockTorrent.Verify(c => c.Download(It.IsAny<RemoteAlbum>()), Times.Once());
-            mockUsenet.Verify(c => c.Download(It.IsAny<RemoteAlbum>()), Times.Never());
+            mockTorrent.Verify(c => c.Download(It.IsAny<RemoteBook>()), Times.Once());
+            mockUsenet.Verify(c => c.Download(It.IsAny<RemoteBook>()), Times.Never());
         }
     }
 }

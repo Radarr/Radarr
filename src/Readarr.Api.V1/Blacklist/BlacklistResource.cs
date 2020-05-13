@@ -43,7 +43,7 @@ namespace Readarr.Api.V1.Blacklist
                 Indexer = model.Indexer,
                 Message = model.Message,
 
-                Artist = model.Artist.ToResource()
+                Artist = model.Author.ToResource()
             };
         }
     }

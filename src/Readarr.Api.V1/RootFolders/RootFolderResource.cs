@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Books.Calibre;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.RootFolders;
 using Readarr.Http.REST;
 

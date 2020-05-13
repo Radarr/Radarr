@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Crypto;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Queue
@@ -47,11 +47,11 @@ namespace NzbDrone.Core.Queue
 
         private IEnumerable<Queue> MapQueue(TrackedDownload trackedDownload)
         {
-            if (trackedDownload.RemoteAlbum?.Albums != null && trackedDownload.RemoteAlbum.Albums.Any())
+            if (trackedDownload.RemoteBook?.Books != null && trackedDownload.RemoteBook.Books.Any())
             {
-                foreach (var album in trackedDownload.RemoteAlbum.Albums)
+                foreach (var book in trackedDownload.RemoteBook.Books)
                 {
-                    yield return MapQueueItem(trackedDownload, album);
+                    yield return MapQueueItem(trackedDownload, book);
                 }
             }
             else
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Queue
             }
         }
 
-        private Queue MapQueueItem(TrackedDownload trackedDownload, Book album)
+        private Queue MapQueueItem(TrackedDownload trackedDownload, Book book)
         {
             bool downloadForced = false;
             var history = _historyService.Find(trackedDownload.DownloadItem.DownloadId, HistoryEventType.Grabbed).FirstOrDefault();
@@ -71,9 +71,9 @@ namespace NzbDrone.Core.Queue
 
             var queue = new Queue
             {
-                Artist = trackedDownload.RemoteAlbum?.Artist,
-                Album = album,
-                Quality = trackedDownload.RemoteAlbum?.ParsedAlbumInfo.Quality ?? new QualityModel(Quality.Unknown),
+                Author = trackedDownload.RemoteBook?.Author,
+                Book = book,
+                Quality = trackedDownload.RemoteBook?.ParsedBookInfo.Quality ?? new QualityModel(Quality.Unknown),
                 Title = Parser.Parser.RemoveFileExtension(trackedDownload.DownloadItem.Title),
                 Size = trackedDownload.DownloadItem.TotalSize,
                 Sizeleft = trackedDownload.DownloadItem.RemainingSize,
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Queue
                 TrackedDownloadState = trackedDownload.State,
                 StatusMessages = trackedDownload.StatusMessages.ToList(),
                 ErrorMessage = trackedDownload.DownloadItem.Message,
-                RemoteAlbum = trackedDownload.RemoteAlbum,
+                RemoteBook = trackedDownload.RemoteBook,
                 DownloadId = trackedDownload.DownloadItem.DownloadId,
                 Protocol = trackedDownload.Protocol,
                 DownloadClient = trackedDownload.DownloadItem.DownloadClient,
@@ -92,9 +92,9 @@ namespace NzbDrone.Core.Queue
                 DownloadForced = downloadForced
             };
 
-            if (album != null)
+            if (book != null)
             {
-                queue.Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}-album{1}", trackedDownload.DownloadItem.DownloadId, album.Id));
+                queue.Id = HashConverter.GetHashInt31(string.Format("trackedDownload-{0}-book{1}", trackedDownload.DownloadItem.DownloadId, book.Id));
             }
             else
             {

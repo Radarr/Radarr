@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Download.Clients.Blackhole
                 yield return newWatchItem;
             }
 
-            foreach (var audioFile in _diskScanService.FilterFiles(watchFolder, _diskScanService.GetAudioFiles(watchFolder, false)))
+            foreach (var audioFile in _diskScanService.FilterFiles(watchFolder, _diskScanService.GetBookFiles(watchFolder, false)))
             {
                 var title = FileNameBuilder.CleanFileName(audioFile.Name);
 

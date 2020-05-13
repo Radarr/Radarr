@@ -507,23 +507,23 @@ namespace NzbDrone.Core.MediaFiles
                 };
             }
 
-            var artist = tag.AlbumArtists?.FirstOrDefault();
+            var author = tag.AlbumArtists?.FirstOrDefault();
 
-            if (artist.IsNullOrWhiteSpace())
+            if (author.IsNullOrWhiteSpace())
             {
-                artist = tag.Performers?.FirstOrDefault();
+                author = tag.Performers?.FirstOrDefault();
             }
 
-            var artistTitleInfo = new ArtistTitleInfo
+            var artistTitleInfo = new AuthorTitleInfo
             {
-                Title = artist,
+                Title = author,
                 Year = (int)tag.Year
             };
 
             return new ParsedTrackInfo
             {
                 AlbumTitle = tag.Album,
-                ArtistTitle = artist,
+                ArtistTitle = author,
                 DiscNumber = (int)tag.Disc,
                 DiscCount = (int)tag.DiscCount,
                 Year = tag.Year,

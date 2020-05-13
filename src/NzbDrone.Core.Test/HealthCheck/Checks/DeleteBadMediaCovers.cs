@@ -6,11 +6,11 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Housekeeping.Housekeepers;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -33,8 +33,8 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             _metadata = Builder<MetadataFile>.CreateListOfSize(1)
                .Build().ToList();
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(c => c.GetAllArtists())
+            Mocker.GetMock<IAuthorService>()
+                .Setup(c => c.GetAllAuthors())
                 .Returns(_artist);
 
             Mocker.GetMock<IMetadataFileService>()
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Subject.Clean();
 
             Mocker.GetMock<IConfigService>().VerifySet(c => c.CleanupMetadataImages = true, Times.Never());
-            Mocker.GetMock<IArtistService>().Verify(c => c.GetAllArtists(), Times.Never());
+            Mocker.GetMock<IAuthorService>().Verify(c => c.GetAllAuthors(), Times.Never());
 
             AssertImageWasNotRemoved();
         }

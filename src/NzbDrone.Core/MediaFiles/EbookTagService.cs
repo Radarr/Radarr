@@ -43,7 +43,7 @@ namespace NzbDrone.Core.MediaFiles
                 case ".mobi":
                     return ReadAzw3(file.FullName);
                 default:
-                    return Parser.Parser.ParseMusicTitle(file.FullName);
+                    return Parser.Parser.ParseTitle(file.FullName);
             }
         }
 

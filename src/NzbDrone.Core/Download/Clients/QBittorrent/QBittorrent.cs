@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
         }
 
-        protected override string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteBook remoteAlbum, string hash, string magnetLink)
         {
             if (!Proxy.GetConfig(Settings).DhtEnabled && !magnetLink.Contains("&tr="))
             {
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteBook remoteAlbum, string hash, string filename, byte[] fileContent)
         {
             Proxy.AddTorrentFromFile(filename, fileContent, Settings);
 

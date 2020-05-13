@@ -3,13 +3,13 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.MusicTests
 {
     [TestFixture]
-    public class ShouldRefreshArtistFixture : TestBase<ShouldRefreshArtist>
+    public class ShouldRefreshArtistFixture : TestBase<ShouldRefreshAuthor>
     {
         private Author _artist;
 
@@ -17,11 +17,11 @@ namespace NzbDrone.Core.Test.MusicTests
         public void Setup()
         {
             _artist = Builder<Author>.CreateNew()
-                                     .With(v => v.Metadata.Value.Status == ArtistStatusType.Continuing)
+                                     .With(v => v.Metadata.Value.Status == AuthorStatusType.Continuing)
                                      .Build();
 
-            Mocker.GetMock<IAlbumService>()
-                  .Setup(s => s.GetAlbumsByArtist(_artist.Id))
+            Mocker.GetMock<IBookService>()
+                  .Setup(s => s.GetBooksByAuthor(_artist.Id))
                   .Returns(Builder<Book>.CreateListOfSize(2)
                                            .All()
                                            .With(e => e.ReleaseDate = DateTime.Today.AddDays(-100))
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.MusicTests
 
         private void GivenArtistIsEnded()
         {
-            _artist.Metadata.Value.Status = ArtistStatusType.Ended;
+            _artist.Metadata.Value.Status = AuthorStatusType.Ended;
         }
 
         private void GivenArtistLastRefreshedMonthsAgo()
@@ -56,8 +56,8 @@ namespace NzbDrone.Core.Test.MusicTests
 
         private void GivenRecentlyAired()
         {
-            Mocker.GetMock<IAlbumService>()
-                              .Setup(s => s.GetAlbumsByArtist(_artist.Id))
+            Mocker.GetMock<IBookService>()
+                              .Setup(s => s.GetBooksByAuthor(_artist.Id))
                               .Returns(Builder<Book>.CreateListOfSize(2)
                                                        .TheFirst(1)
                                                        .With(e => e.ReleaseDate = DateTime.Today.AddDays(-7))

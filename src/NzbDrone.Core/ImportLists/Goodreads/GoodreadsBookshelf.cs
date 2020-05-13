@@ -49,8 +49,8 @@ namespace NzbDrone.Core.ImportLists.Goodreads
 
             return reviews.Select(x => new ImportListItemInfo
             {
-                Artist = x.Book.Authors.First().Name.CleanSpaces(),
-                Album = x.Book.TitleWithoutSeries.CleanSpaces(),
+                Author = x.Book.Authors.First().Name.CleanSpaces(),
+                Book = x.Book.TitleWithoutSeries.CleanSpaces(),
                 AlbumMusicBrainzId = x.Book.Uri.Replace("kca://book/", string.Empty)
             }).ToList();
         }

@@ -24,7 +24,7 @@ namespace Readarr.Api.V1.Artist
             return MapToResource(searchResults).ToList();
         }
 
-        private static IEnumerable<ArtistResource> MapToResource(IEnumerable<NzbDrone.Core.Music.Author> artist)
+        private static IEnumerable<ArtistResource> MapToResource(IEnumerable<NzbDrone.Core.Books.Author> artist)
         {
             foreach (var currentArtist in artist)
             {

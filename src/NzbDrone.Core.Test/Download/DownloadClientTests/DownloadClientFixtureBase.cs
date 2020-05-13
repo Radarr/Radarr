@@ -5,10 +5,10 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RemotePathMappings;
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
                 .Returns(30);
 
             Mocker.GetMock<IParsingService>()
-                .Setup(s => s.Map(It.IsAny<ParsedAlbumInfo>(), null))
+                .Setup(s => s.Map(It.IsAny<ParsedBookInfo>(), null))
                 .Returns(() => CreateRemoteAlbum());
 
             Mocker.GetMock<IHttpClient>()
@@ -42,19 +42,19 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
                 .Returns<string, OsPath>((h, r) => r);
         }
 
-        protected virtual RemoteAlbum CreateRemoteAlbum()
+        protected virtual RemoteBook CreateRemoteAlbum()
         {
-            var remoteAlbum = new RemoteAlbum();
+            var remoteAlbum = new RemoteBook();
             remoteAlbum.Release = new ReleaseInfo();
             remoteAlbum.Release.Title = _title;
             remoteAlbum.Release.DownloadUrl = _downloadUrl;
             remoteAlbum.Release.DownloadProtocol = Subject.Protocol;
 
-            remoteAlbum.ParsedAlbumInfo = new ParsedAlbumInfo();
+            remoteAlbum.ParsedBookInfo = new ParsedBookInfo();
 
-            remoteAlbum.Albums = new List<Book>();
+            remoteAlbum.Books = new List<Book>();
 
-            remoteAlbum.Artist = new Author();
+            remoteAlbum.Author = new Author();
 
             return remoteAlbum;
         }

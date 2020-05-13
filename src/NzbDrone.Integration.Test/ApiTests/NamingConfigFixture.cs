@@ -24,12 +24,12 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void should_be_able_to_update()
         {
             var config = NamingConfig.GetSingle();
-            config.RenameTracks = false;
-            config.StandardTrackFormat = "{Artist Name} - {Album Title} - {track:00} - {Track Title}";
+            config.RenameBooks = false;
+            config.StandardBookFormat = "{Author Name} - {Book Title}";
 
             var result = NamingConfig.Put(config);
-            result.RenameTracks.Should().BeFalse();
-            result.StandardTrackFormat.Should().Be(config.StandardTrackFormat);
+            result.RenameBooks.Should().BeFalse();
+            result.StandardBookFormat.Should().Be(config.StandardBookFormat);
         }
 
         [Test]
@@ -38,8 +38,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             IgnoreOnMonoVersions("5.12", "5.14");
 
             var config = NamingConfig.GetSingle();
-            config.RenameTracks = true;
-            config.StandardTrackFormat = "";
+            config.RenameBooks = true;
+            config.StandardBookFormat = "";
 
             var errors = NamingConfig.InvalidPut(config);
             errors.Should().NotBeNull();
@@ -51,8 +51,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             IgnoreOnMonoVersions("5.12", "5.14");
 
             var config = NamingConfig.GetSingle();
-            config.RenameTracks = true;
-            config.StandardTrackFormat = "{track:00}";
+            config.RenameBooks = true;
+            config.StandardBookFormat = "{track:00}";
 
             var errors = NamingConfig.InvalidPut(config);
             errors.Should().NotBeNull();
@@ -64,8 +64,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             IgnoreOnMonoVersions("5.12", "5.14");
 
             var config = NamingConfig.GetSingle();
-            config.RenameTracks = false;
-            config.StandardTrackFormat = "";
+            config.RenameBooks = false;
+            config.StandardBookFormat = "";
 
             var errors = NamingConfig.InvalidPut(config);
             errors.Should().NotBeNull();
@@ -77,8 +77,8 @@ namespace NzbDrone.Integration.Test.ApiTests
             IgnoreOnMonoVersions("5.12", "5.14");
 
             var config = NamingConfig.GetSingle();
-            config.RenameTracks = true;
-            config.StandardTrackFormat = "";
+            config.RenameBooks = true;
+            config.StandardBookFormat = "";
 
             var errors = NamingConfig.InvalidPut(config);
             errors.Should().NotBeNull();
@@ -90,7 +90,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             IgnoreOnMonoVersions("5.12", "5.14");
 
             var config = NamingConfig.GetSingle();
-            config.RenameTracks = true;
+            config.RenameBooks = true;
             config.ArtistFolderFormat = "This and That";
 
             var errors = NamingConfig.InvalidPut(config);

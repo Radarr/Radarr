@@ -6,7 +6,7 @@ namespace NzbDrone.Core.DecisionEngine
 {
     public class DownloadDecision
     {
-        public RemoteAlbum RemoteAlbum { get; private set; }
+        public RemoteBook RemoteBook { get; private set; }
         public IEnumerable<Rejection> Rejections { get; private set; }
 
         public bool Approved => !Rejections.Any();
@@ -27,9 +27,9 @@ namespace NzbDrone.Core.DecisionEngine
             }
         }
 
-        public DownloadDecision(RemoteAlbum album, params Rejection[] rejections)
+        public DownloadDecision(RemoteBook book, params Rejection[] rejections)
         {
-            RemoteAlbum = album;
+            RemoteBook = book;
             Rejections = rejections.ToList();
         }
 
@@ -37,10 +37,10 @@ namespace NzbDrone.Core.DecisionEngine
         {
             if (Approved)
             {
-                return "[OK] " + RemoteAlbum;
+                return "[OK] " + RemoteBook;
             }
 
-            return "[Rejected " + Rejections.Count() + "]" + RemoteAlbum;
+            return "[Rejected " + Rejections.Count() + "]" + RemoteBook;
         }
     }
 }

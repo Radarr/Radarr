@@ -4,8 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Datastore
@@ -177,7 +177,7 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void enum_as_int()
         {
-            _subject = WhereMetadata(x => x.Status == ArtistStatusType.Continuing);
+            _subject = WhereMetadata(x => x.Status == AuthorStatusType.Continuing);
 
             _subject.ToString().Should().Be($"(\"AuthorMetadata\".\"Status\" = @Clause1_P1)");
         }
@@ -185,7 +185,7 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void enum_in_list()
         {
-            var allowed = new List<ArtistStatusType> { ArtistStatusType.Continuing, ArtistStatusType.Ended };
+            var allowed = new List<AuthorStatusType> { AuthorStatusType.Continuing, AuthorStatusType.Ended };
             _subject = WhereMetadata(x => allowed.Contains(x.Status));
 
             _subject.ToString().Should().Be($"(\"AuthorMetadata\".\"Status\" IN @Clause1_P1)");
@@ -194,7 +194,7 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void enum_in_array()
         {
-            var allowed = new ArtistStatusType[] { ArtistStatusType.Continuing, ArtistStatusType.Ended };
+            var allowed = new AuthorStatusType[] { AuthorStatusType.Continuing, AuthorStatusType.Ended };
             _subject = WhereMetadata(x => allowed.Contains(x.Status));
 
             _subject.ToString().Should().Be($"(\"AuthorMetadata\".\"Status\" IN @Clause1_P1)");

@@ -53,7 +53,7 @@ namespace Readarr.Api.V1.Queue
                 throw new NotFoundException();
             }
 
-            _downloadService.DownloadReport(pendingRelease.RemoteAlbum);
+            _downloadService.DownloadReport(pendingRelease.RemoteBook);
 
             return new object();
         }
@@ -71,7 +71,7 @@ namespace Readarr.Api.V1.Queue
                     throw new NotFoundException();
                 }
 
-                _downloadService.DownloadReport(pendingRelease.RemoteAlbum);
+                _downloadService.DownloadReport(pendingRelease.RemoteBook);
             }
 
             return new object();

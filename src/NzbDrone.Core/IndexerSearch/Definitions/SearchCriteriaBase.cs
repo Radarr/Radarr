@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 
 namespace NzbDrone.Core.IndexerSearch.Definitions
 {
@@ -12,20 +12,21 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         private static readonly Regex NonWord = new Regex(@"[\W]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex BeginningThe = new Regex(@"^the\s", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        public virtual bool MonitoredEpisodesOnly { get; set; }
+        public virtual bool MonitoredBooksOnly { get; set; }
         public virtual bool UserInvokedSearch { get; set; }
         public virtual bool InteractiveSearch { get; set; }
 
-        public Author Artist { get; set; }
-        public List<Book> Albums { get; set; }
+        public Author Author { get; set; }
+        public List<Book> Books { get; set; }
 
-        public string ArtistQuery => GetQueryTitle(Artist.Name);
+        public string ArtistQuery => GetQueryTitle(Author.Name);
 
         public static string GetQueryTitle(string title)
         {
             Ensure.That(title, () => title).IsNotNullOrWhiteSpace();
 
             // Most VA albums are listed as VA, not Various Artists
+            // TODO: Needed in Readarr??
             if (title == "Various Artists")
             {
                 title = "VA";

@@ -5,20 +5,20 @@ using System.Text;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras.Files
 {
     public interface IManageExtraFiles
     {
         int Order { get; }
-        IEnumerable<ExtraFile> CreateAfterArtistScan(Author artist, List<BookFile> trackFiles);
-        IEnumerable<ExtraFile> CreateAfterTrackImport(Author artist, BookFile trackFile);
-        IEnumerable<ExtraFile> CreateAfterTrackImport(Author artist, Book album, string artistFolder, string albumFolder);
-        IEnumerable<ExtraFile> MoveFilesAfterRename(Author artist, List<BookFile> trackFiles);
-        ExtraFile Import(Author artist, BookFile trackFile, string path, string extension, bool readOnly);
+        IEnumerable<ExtraFile> CreateAfterAuthorScan(Author author, List<BookFile> bookFiles);
+        IEnumerable<ExtraFile> CreateAfterTrackImport(Author author, BookFile bookFile);
+        IEnumerable<ExtraFile> CreateAfterBookImport(Author author, Book book, string authorFolder, string bookFolder);
+        IEnumerable<ExtraFile> MoveFilesAfterRename(Author author, List<BookFile> bookFiles);
+        ExtraFile Import(Author author, BookFile bookFile, string path, string extension, bool readOnly);
     }
 
     public abstract class ExtraFileManager<TExtraFile> : IManageExtraFiles
@@ -41,16 +41,16 @@ namespace NzbDrone.Core.Extras.Files
         }
 
         public abstract int Order { get; }
-        public abstract IEnumerable<ExtraFile> CreateAfterArtistScan(Author artist, List<BookFile> trackFiles);
-        public abstract IEnumerable<ExtraFile> CreateAfterTrackImport(Author artist, BookFile trackFile);
-        public abstract IEnumerable<ExtraFile> CreateAfterTrackImport(Author artist, Book album, string artistFolder, string albumFolder);
-        public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Author artist, List<BookFile> trackFiles);
-        public abstract ExtraFile Import(Author artist, BookFile trackFile, string path, string extension, bool readOnly);
+        public abstract IEnumerable<ExtraFile> CreateAfterAuthorScan(Author author, List<BookFile> bookFiles);
+        public abstract IEnumerable<ExtraFile> CreateAfterTrackImport(Author author, BookFile bookFile);
+        public abstract IEnumerable<ExtraFile> CreateAfterBookImport(Author author, Book book, string authorFolder, string albumFolder);
+        public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Author author, List<BookFile> bookFiles);
+        public abstract ExtraFile Import(Author author, BookFile bookFile, string path, string extension, bool readOnly);
 
-        protected TExtraFile ImportFile(Author artist, BookFile trackFile, string path, bool readOnly, string extension, string fileNameSuffix = null)
+        protected TExtraFile ImportFile(Author author, BookFile bookFile, string path, bool readOnly, string extension, string fileNameSuffix = null)
         {
-            var newFolder = Path.GetDirectoryName(trackFile.Path);
-            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(trackFile.Path));
+            var newFolder = Path.GetDirectoryName(bookFile.Path);
+            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(bookFile.Path));
 
             if (fileNameSuffix.IsNotNullOrWhiteSpace())
             {
@@ -71,18 +71,18 @@ namespace NzbDrone.Core.Extras.Files
 
             return new TExtraFile
             {
-                AuthorId = artist.Id,
-                BookId = trackFile.BookId,
-                TrackFileId = trackFile.Id,
-                RelativePath = artist.Path.GetRelativePath(newFileName),
+                AuthorId = author.Id,
+                BookId = bookFile.BookId,
+                BookFileId = bookFile.Id,
+                RelativePath = author.Path.GetRelativePath(newFileName),
                 Extension = extension
             };
         }
 
-        protected TExtraFile MoveFile(Author artist, BookFile trackFile, TExtraFile extraFile, string fileNameSuffix = null)
+        protected TExtraFile MoveFile(Author author, BookFile bookFile, TExtraFile extraFile, string fileNameSuffix = null)
         {
-            var newFolder = Path.GetDirectoryName(trackFile.Path);
-            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(trackFile.Path));
+            var newFolder = Path.GetDirectoryName(bookFile.Path);
+            var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(bookFile.Path));
 
             if (fileNameSuffix.IsNotNullOrWhiteSpace())
             {
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Extras.Files
 
             filenameBuilder.Append(extraFile.Extension);
 
-            var existingFileName = Path.Combine(artist.Path, extraFile.RelativePath);
+            var existingFileName = Path.Combine(author.Path, extraFile.RelativePath);
             var newFileName = Path.Combine(newFolder, filenameBuilder.ToString());
 
             if (newFileName.PathNotEquals(existingFileName))
@@ -99,7 +99,7 @@ namespace NzbDrone.Core.Extras.Files
                 try
                 {
                     _diskProvider.MoveFile(existingFileName, newFileName);
-                    extraFile.RelativePath = artist.Path.GetRelativePath(newFileName);
+                    extraFile.RelativePath = author.Path.GetRelativePath(newFileName);
 
                     return extraFile;
                 }

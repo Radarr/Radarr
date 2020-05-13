@@ -9,11 +9,11 @@ namespace NzbDrone.Core.Download.Pending
         public int AuthorId { get; set; }
         public string Title { get; set; }
         public DateTime Added { get; set; }
-        public ParsedAlbumInfo ParsedAlbumInfo { get; set; }
+        public ParsedBookInfo ParsedBookInfo { get; set; }
         public ReleaseInfo Release { get; set; }
         public PendingReleaseReason Reason { get; set; }
 
         //Not persisted
-        public RemoteAlbum RemoteAlbum { get; set; }
+        public RemoteBook RemoteBook { get; set; }
     }
 }

@@ -6,26 +6,26 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.TrackImport;
-using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
-using NzbDrone.Core.MediaFiles.TrackImport.Identification;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.BookImport;
+using NzbDrone.Core.MediaFiles.BookImport.Aggregation;
+using NzbDrone.Core.MediaFiles.BookImport.Identification;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MediaFiles.TrackImport
+namespace NzbDrone.Core.Test.MediaFiles.BookImport
 {
     [TestFixture]
     public class ImportDecisionMakerFixture : FileSystemTest<ImportDecisionMaker>
     {
         private List<IFileInfo> _fileInfos;
-        private LocalTrack _localTrack;
+        private LocalBook _localTrack;
         private Author _artist;
         private Book _album;
         private QualityModel _quality;
@@ -41,13 +41,13 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         private Mock<IImportDecisionEngineSpecification<LocalAlbumRelease>> _albumfail2;
         private Mock<IImportDecisionEngineSpecification<LocalAlbumRelease>> _albumfail3;
 
-        private Mock<IImportDecisionEngineSpecification<LocalTrack>> _pass1;
-        private Mock<IImportDecisionEngineSpecification<LocalTrack>> _pass2;
-        private Mock<IImportDecisionEngineSpecification<LocalTrack>> _pass3;
+        private Mock<IImportDecisionEngineSpecification<LocalBook>> _pass1;
+        private Mock<IImportDecisionEngineSpecification<LocalBook>> _pass2;
+        private Mock<IImportDecisionEngineSpecification<LocalBook>> _pass3;
 
-        private Mock<IImportDecisionEngineSpecification<LocalTrack>> _fail1;
-        private Mock<IImportDecisionEngineSpecification<LocalTrack>> _fail2;
-        private Mock<IImportDecisionEngineSpecification<LocalTrack>> _fail3;
+        private Mock<IImportDecisionEngineSpecification<LocalBook>> _fail1;
+        private Mock<IImportDecisionEngineSpecification<LocalBook>> _fail2;
+        private Mock<IImportDecisionEngineSpecification<LocalBook>> _fail3;
 
         [SetUp]
         public void Setup()
@@ -60,13 +60,13 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             _albumfail2 = new Mock<IImportDecisionEngineSpecification<LocalAlbumRelease>>();
             _albumfail3 = new Mock<IImportDecisionEngineSpecification<LocalAlbumRelease>>();
 
-            _pass1 = new Mock<IImportDecisionEngineSpecification<LocalTrack>>();
-            _pass2 = new Mock<IImportDecisionEngineSpecification<LocalTrack>>();
-            _pass3 = new Mock<IImportDecisionEngineSpecification<LocalTrack>>();
+            _pass1 = new Mock<IImportDecisionEngineSpecification<LocalBook>>();
+            _pass2 = new Mock<IImportDecisionEngineSpecification<LocalBook>>();
+            _pass3 = new Mock<IImportDecisionEngineSpecification<LocalBook>>();
 
-            _fail1 = new Mock<IImportDecisionEngineSpecification<LocalTrack>>();
-            _fail2 = new Mock<IImportDecisionEngineSpecification<LocalTrack>>();
-            _fail3 = new Mock<IImportDecisionEngineSpecification<LocalTrack>>();
+            _fail1 = new Mock<IImportDecisionEngineSpecification<LocalBook>>();
+            _fail2 = new Mock<IImportDecisionEngineSpecification<LocalBook>>();
+            _fail3 = new Mock<IImportDecisionEngineSpecification<LocalBook>>();
 
             _albumpass1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalAlbumRelease>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
             _albumpass2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalAlbumRelease>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
@@ -76,13 +76,13 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             _albumfail2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalAlbumRelease>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_albumfail2"));
             _albumfail3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalAlbumRelease>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_albumfail3"));
 
-            _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
-            _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
-            _pass3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
+            _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
+            _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
+            _pass3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
 
-            _fail1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail1"));
-            _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail2"));
-            _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail3"));
+            _fail1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail1"));
+            _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail2"));
+            _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail3"));
 
             _artist = Builder<Author>.CreateNew()
                 .With(e => e.QualityProfileId = 1)
@@ -95,17 +95,17 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
 
             _quality = new QualityModel(Quality.MP3_320);
 
-            _localTrack = new LocalTrack
+            _localTrack = new LocalBook
             {
-                Artist = _artist,
+                Author = _artist,
                 Quality = _quality,
-                Album = new Book(),
+                Book = new Book(),
                 Path = @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV.avi".AsOsAgnostic()
             };
 
             _idOverrides = new IdentificationOverrides
             {
-                Artist = _artist
+                Author = _artist
             };
 
             _idConfig = new ImportDecisionMakerConfig();
@@ -113,8 +113,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             GivenAudioFiles(new List<string> { @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV.avi".AsOsAgnostic() });
 
             Mocker.GetMock<IIdentificationService>()
-                .Setup(s => s.Identify(It.IsAny<List<LocalTrack>>(), It.IsAny<IdentificationOverrides>(), It.IsAny<ImportDecisionMakerConfig>()))
-                .Returns((List<LocalTrack> tracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config) =>
+                .Setup(s => s.Identify(It.IsAny<List<LocalBook>>(), It.IsAny<IdentificationOverrides>(), It.IsAny<ImportDecisionMakerConfig>()))
+                .Returns((List<LocalBook> tracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config) =>
                 {
                     var ret = new LocalAlbumRelease(tracks);
                     ret.Book = _album;
@@ -146,10 +146,10 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         private void GivenAugmentationSuccess()
         {
             Mocker.GetMock<IAugmentingService>()
-                  .Setup(s => s.Augment(It.IsAny<LocalTrack>(), It.IsAny<bool>()))
-                  .Callback<LocalTrack, bool>((localTrack, otherFiles) =>
+                  .Setup(s => s.Augment(It.IsAny<LocalBook>(), It.IsAny<bool>()))
+                  .Callback<LocalBook, bool>((localTrack, otherFiles) =>
                   {
-                      localTrack.Album = _localTrack.Album;
+                      localTrack.Book = _localTrack.Book;
                   });
         }
 
@@ -183,12 +183,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
 
             Subject.GetImportDecisions(_fileInfos, null, itemInfo, _idConfig);
 
-            _fail1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Once());
-            _fail2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Once());
-            _fail3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Once());
-            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Once());
-            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Once());
-            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _fail1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _fail2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _fail3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Once());
         }
 
         [Test]
@@ -203,12 +203,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
 
             Subject.GetImportDecisions(_fileInfos, null, itemInfo, _idConfig);
 
-            _fail1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Never());
-            _fail2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Never());
-            _fail3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Never());
-            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Never());
-            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Never());
-            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalTrack>(), It.IsAny<DownloadClientItem>()), Times.Never());
+            _fail1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Never());
+            _fail2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Never());
+            _fail3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Never());
+            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Never());
+            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Never());
+            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>()), Times.Never());
         }
 
         [Test]
@@ -283,7 +283,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             GivenSpecifications(_pass1);
 
             Mocker.GetMock<IAugmentingService>()
-                  .Setup(c => c.Augment(It.IsAny<LocalTrack>(), It.IsAny<bool>()))
+                  .Setup(c => c.Augment(It.IsAny<LocalBook>(), It.IsAny<bool>()))
                   .Throws<TestException>();
 
             GivenAudioFiles(new[]
@@ -296,7 +296,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             var decisions = Subject.GetImportDecisions(_fileInfos, _idOverrides, null, _idConfig);
 
             Mocker.GetMock<IAugmentingService>()
-                  .Verify(c => c.Augment(It.IsAny<LocalTrack>(), It.IsAny<bool>()), Times.Exactly(_fileInfos.Count));
+                  .Verify(c => c.Augment(It.IsAny<LocalBook>(), It.IsAny<bool>()), Times.Exactly(_fileInfos.Count));
 
             ExceptionVerification.ExpectedErrors(3);
         }
@@ -314,8 +314,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
                 });
 
             Mocker.GetMock<IIdentificationService>()
-                .Setup(s => s.Identify(It.IsAny<List<LocalTrack>>(), It.IsAny<IdentificationOverrides>(), It.IsAny<ImportDecisionMakerConfig>()))
-                .Returns((List<LocalTrack> tracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config) =>
+                .Setup(s => s.Identify(It.IsAny<List<LocalBook>>(), It.IsAny<IdentificationOverrides>(), It.IsAny<ImportDecisionMakerConfig>()))
+                .Returns((List<LocalBook> tracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config) =>
                     {
                         return new List<LocalAlbumRelease> { new LocalAlbumRelease(tracks) };
                     });
@@ -323,7 +323,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             var decisions = Subject.GetImportDecisions(_fileInfos, _idOverrides, null, _idConfig);
 
             Mocker.GetMock<IAugmentingService>()
-                  .Verify(c => c.Augment(It.IsAny<LocalTrack>(), It.IsAny<bool>()), Times.Exactly(_fileInfos.Count));
+                  .Verify(c => c.Augment(It.IsAny<LocalBook>(), It.IsAny<bool>()), Times.Exactly(_fileInfos.Count));
 
             decisions.Should().HaveCount(3);
             decisions.First().Rejections.Should().NotBeEmpty();
@@ -344,7 +344,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
             var decisions = Subject.GetImportDecisions(_fileInfos, _idOverrides, null, _idConfig);
 
             Mocker.GetMock<IAugmentingService>()
-                  .Verify(c => c.Augment(It.IsAny<LocalTrack>(), It.IsAny<bool>()), Times.Exactly(_fileInfos.Count));
+                  .Verify(c => c.Augment(It.IsAny<LocalBook>(), It.IsAny<bool>()), Times.Exactly(_fileInfos.Count));
 
             decisions.Should().HaveCount(3);
             decisions.First().Rejections.Should().NotBeEmpty();
@@ -354,7 +354,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport
         public void should_return_a_decision_when_exception_is_caught()
         {
             Mocker.GetMock<IAugmentingService>()
-                  .Setup(c => c.Augment(It.IsAny<LocalTrack>(), It.IsAny<bool>()))
+                  .Setup(c => c.Augment(It.IsAny<LocalBook>(), It.IsAny<bool>()))
                   .Throws<TestException>();
 
             GivenAudioFiles(new[]

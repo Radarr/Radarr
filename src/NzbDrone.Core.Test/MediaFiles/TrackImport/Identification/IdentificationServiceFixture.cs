@@ -8,32 +8,32 @@ using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Books;
+using NzbDrone.Core.Books.Commands;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.TrackImport;
-using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
-using NzbDrone.Core.MediaFiles.TrackImport.Aggregation.Aggregators;
-using NzbDrone.Core.MediaFiles.TrackImport.Identification;
+using NzbDrone.Core.MediaFiles.BookImport;
+using NzbDrone.Core.MediaFiles.BookImport.Aggregation;
+using NzbDrone.Core.MediaFiles.BookImport.Aggregation.Aggregators;
+using NzbDrone.Core.MediaFiles.BookImport.Identification;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.SkyHook;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Commands;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
+namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
 {
     [TestFixture]
     public class IdentificationServiceFixture : DbTest
     {
-        private ArtistService _artistService;
-        private AddArtistService _addArtistService;
-        private RefreshArtistService _refreshArtistService;
+        private AuthorService _authorService;
+        private AddArtistService _addAuthorService;
+        private RefreshAuthorService _refreshArtistService;
 
         private IdentificationService _Subject;
 
@@ -43,18 +43,18 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             UseRealHttp();
 
             // Resolve all the parts we need
-            Mocker.SetConstant<IArtistRepository>(Mocker.Resolve<ArtistRepository>());
-            Mocker.SetConstant<IArtistMetadataRepository>(Mocker.Resolve<ArtistMetadataRepository>());
-            Mocker.SetConstant<IAlbumRepository>(Mocker.Resolve<AlbumRepository>());
+            Mocker.SetConstant<IAuthorRepository>(Mocker.Resolve<AuthorRepository>());
+            Mocker.SetConstant<IAuthorMetadataRepository>(Mocker.Resolve<AuthorMetadataRepository>());
+            Mocker.SetConstant<IBookRepository>(Mocker.Resolve<BookRepository>());
             Mocker.SetConstant<IImportListExclusionRepository>(Mocker.Resolve<ImportListExclusionRepository>());
             Mocker.SetConstant<IMediaFileRepository>(Mocker.Resolve<MediaFileRepository>());
 
             Mocker.GetMock<IMetadataProfileService>().Setup(x => x.Exists(It.IsAny<int>())).Returns(true);
 
-            _artistService = Mocker.Resolve<ArtistService>();
-            Mocker.SetConstant<IArtistService>(_artistService);
-            Mocker.SetConstant<IArtistMetadataService>(Mocker.Resolve<ArtistMetadataService>());
-            Mocker.SetConstant<IAlbumService>(Mocker.Resolve<AlbumService>());
+            _authorService = Mocker.Resolve<AuthorService>();
+            Mocker.SetConstant<IAuthorService>(_authorService);
+            Mocker.SetConstant<IAuthorMetadataService>(Mocker.Resolve<AuthorMetadataService>());
+            Mocker.SetConstant<IBookService>(Mocker.Resolve<BookService>());
             Mocker.SetConstant<IImportListExclusionService>(Mocker.Resolve<ImportListExclusionService>());
             Mocker.SetConstant<IMediaFileService>(Mocker.Resolve<MediaFileService>());
 
@@ -62,12 +62,12 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             Mocker.SetConstant<IProvideAuthorInfo>(Mocker.Resolve<SkyHookProxy>());
             Mocker.SetConstant<IProvideBookInfo>(Mocker.Resolve<SkyHookProxy>());
 
-            _addArtistService = Mocker.Resolve<AddArtistService>();
+            _addAuthorService = Mocker.Resolve<AddArtistService>();
 
-            Mocker.SetConstant<IRefreshAlbumService>(Mocker.Resolve<RefreshAlbumService>());
-            _refreshArtistService = Mocker.Resolve<RefreshArtistService>();
+            Mocker.SetConstant<IRefreshBookService>(Mocker.Resolve<RefreshBookService>());
+            _refreshArtistService = Mocker.Resolve<RefreshAuthorService>();
 
-            Mocker.GetMock<IAddArtistValidator>().Setup(x => x.Validate(It.IsAny<Author>())).Returns(new ValidationResult());
+            Mocker.GetMock<IAddAuthorValidator>().Setup(x => x.Validate(It.IsAny<Author>())).Returns(new ValidationResult());
 
             Mocker.SetConstant<ITrackGroupingService>(Mocker.Resolve<TrackGroupingService>());
             Mocker.SetConstant<ICandidateService>(Mocker.Resolve<CandidateService>());
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             Mocker.GetMock<IMetadataProfileService>().Setup(x => x.Get(profile.Id)).Returns(profile);
         }
 
-        private List<Author> GivenArtists(List<ArtistTestCase> artists)
+        private List<Author> GivenArtists(List<AuthorTestCase> artists)
         {
             var outp = new List<Author>();
             for (int i = 0; i < artists.Count; i++)
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                 var meta = artists[i].MetadataProfile;
                 meta.Id = i + 1;
                 GivenMetadataProfile(meta);
-                outp.Add(GivenArtist(artists[i].Artist, meta.Id));
+                outp.Add(GivenArtist(artists[i].Author, meta.Id));
             }
 
             return outp;
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
         private Author GivenArtist(string foreignAuthorId, int metadataProfileId)
         {
-            var artist = _addArtistService.AddArtist(new Author
+            var artist = _addAuthorService.AddAuthor(new Author
             {
                 Metadata = new AuthorMetadata
                 {
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
                 MetadataProfileId = metadataProfileId
             });
 
-            var command = new RefreshArtistCommand
+            var command = new RefreshAuthorCommand
             {
                 AuthorId = artist.Id,
                 Trigger = CommandTrigger.Unspecified
@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
 
             _refreshArtistService.Execute(command);
 
-            return _artistService.FindById(foreignAuthorId);
+            return _authorService.FindById(foreignAuthorId);
         }
 
         private void GivenFingerprints(List<AcoustIdTestCase> fingerprints)
@@ -131,8 +131,8 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             Mocker.GetMock<IFingerprintingService>().Setup(x => x.IsSetup()).Returns(true);
 
             Mocker.GetMock<IFingerprintingService>()
-                .Setup(x => x.Lookup(It.IsAny<List<LocalTrack>>(), It.IsAny<double>()))
-                .Callback((List<LocalTrack> track, double thres) =>
+                .Setup(x => x.Lookup(It.IsAny<List<LocalBook>>(), It.IsAny<double>()))
+                .Callback((List<LocalBook> track, double thres) =>
                     {
                         track.ForEach(x => x.AcoustIdResults = fingerprints.SingleOrDefault(f => f.Path == x.Path).AcoustIdResults);
                     });
@@ -172,11 +172,11 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackImport.Identification
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Identification", file);
             var testcase = JsonConvert.DeserializeObject<IdTestCase>(File.ReadAllText(path));
 
-            var artists = GivenArtists(testcase.LibraryArtists);
-            var specifiedArtist = artists.SingleOrDefault(x => x.Metadata.Value.ForeignAuthorId == testcase.Artist);
-            var idOverrides = new IdentificationOverrides { Artist = specifiedArtist };
+            var artists = GivenArtists(testcase.LibraryAuthors);
+            var specifiedArtist = artists.SingleOrDefault(x => x.Metadata.Value.ForeignAuthorId == testcase.Author);
+            var idOverrides = new IdentificationOverrides { Author = specifiedArtist };
 
-            var tracks = testcase.Tracks.Select(x => new LocalTrack
+            var tracks = testcase.Tracks.Select(x => new LocalBook
             {
                 Path = x.Path.AsOsAgnostic(),
                 FileTrackInfo = x.FileTrackInfo

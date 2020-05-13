@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             _proxy = proxy;
         }
 
-        protected override string AddFromNzbFile(RemoteAlbum remoteAlbum, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteBook remoteAlbum, string filename, byte[] fileContent)
         {
             var category = Settings.MusicCategory;
             var priority = remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority;

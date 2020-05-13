@@ -4,12 +4,12 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private Author _artist;
         private QualityModel _mp3;
         private QualityModel _flac;
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
         private List<History.History> _history;
         private BookFile _firstFile;
 
@@ -49,11 +49,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _mp3 = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _flac = new QualityModel(Quality.FLAC, new Revision(version: 1));
 
-            _remoteAlbum = new RemoteAlbum
+            _remoteAlbum = new RemoteBook
             {
-                Artist = _artist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = _mp3 },
-                Albums = singleAlbumList,
+                Author = _artist,
+                ParsedBookInfo = new ParsedBookInfo { Quality = _mp3 },
+                Books = singleAlbumList,
                 Release = Builder<ReleaseInfo>.CreateNew()
                                               .Build()
             };
@@ -65,11 +65,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Returns(true);
 
             Mocker.GetMock<IHistoryService>()
-                  .Setup(s => s.GetByAlbum(It.IsAny<int>(), null))
+                  .Setup(s => s.GetByBook(It.IsAny<int>(), null))
                   .Returns(_history);
 
             Mocker.GetMock<IMediaFileService>()
-                  .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
+                  .Setup(c => c.GetFilesByBook(It.IsAny<int>()))
                   .Returns(new List<BookFile> { _firstFile });
         }
 
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_be_accepted_if_album_does_not_have_a_file()
         {
             Mocker.GetMock<IMediaFileService>()
-                .Setup(c => c.GetFilesByAlbum(It.IsAny<int>()))
+                .Setup(c => c.GetFilesByBook(It.IsAny<int>()))
                 .Returns(new List<BookFile> { });
 
             Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();

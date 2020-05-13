@@ -17,42 +17,42 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteAlbum subject, SearchCriteriaBase searchCriteria)
+        public virtual Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria != null)
             {
-                if (!searchCriteria.MonitoredEpisodesOnly)
+                if (!searchCriteria.MonitoredBooksOnly)
                 {
                     _logger.Debug("Skipping monitored check during search");
                     return Decision.Accept();
                 }
             }
 
-            if (!subject.Artist.Monitored)
+            if (!subject.Author.Monitored)
             {
-                _logger.Debug("{0} is present in the DB but not tracked. Rejecting.", subject.Artist);
-                return Decision.Reject("Artist is not monitored");
+                _logger.Debug("{0} is present in the DB but not tracked. Rejecting.", subject.Author);
+                return Decision.Reject("Author is not monitored");
             }
 
-            var monitoredCount = subject.Albums.Count(album => album.Monitored);
-            if (monitoredCount == subject.Albums.Count)
+            var monitoredCount = subject.Books.Count(book => book.Monitored);
+            if (monitoredCount == subject.Books.Count)
             {
                 return Decision.Accept();
             }
 
-            if (subject.Albums.Count == 1)
+            if (subject.Books.Count == 1)
             {
-                _logger.Debug("Album is not monitored. Rejecting", monitoredCount, subject.Albums.Count);
+                _logger.Debug("Album is not monitored. Rejecting", monitoredCount, subject.Books.Count);
                 return Decision.Reject("Album is not monitored");
             }
 
             if (monitoredCount == 0)
             {
-                _logger.Debug("No albums in the release are monitored. Rejecting", monitoredCount, subject.Albums.Count);
+                _logger.Debug("No albums in the release are monitored. Rejecting", monitoredCount, subject.Books.Count);
             }
             else
             {
-                _logger.Debug("Only {0}/{1} albums in the release are monitored. Rejecting", monitoredCount, subject.Albums.Count);
+                _logger.Debug("Only {0}/{1} albums in the release are monitored. Rejecting", monitoredCount, subject.Books.Count);
             }
 
             return Decision.Reject("Album is not monitored");

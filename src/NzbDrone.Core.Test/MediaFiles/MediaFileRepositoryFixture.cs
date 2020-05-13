@@ -3,8 +3,8 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
@@ -55,10 +55,10 @@ namespace NzbDrone.Core.Test.MediaFiles
         public void get_files_by_artist()
         {
             VerifyData();
-            var artistFiles = Subject.GetFilesByArtist(_artist.Id);
+            var artistFiles = Subject.GetFilesByAuthor(_artist.Id);
             VerifyEagerLoaded(artistFiles);
 
-            artistFiles.Should().OnlyContain(c => c.Artist.Value.Id == _artist.Id);
+            artistFiles.Should().OnlyContain(c => c.Author.Value.Id == _artist.Id);
         }
 
         [Test]
@@ -109,17 +109,17 @@ namespace NzbDrone.Core.Test.MediaFiles
             var file = Subject.GetFileWithPath(@"C:\Test\Path\Artist\somefile2.flac".AsOsAgnostic());
 
             file.Should().NotBeNull();
-            file.Album.IsLoaded.Should().BeTrue();
-            file.Album.Value.Should().NotBeNull();
-            file.Artist.IsLoaded.Should().BeTrue();
-            file.Artist.Value.Should().NotBeNull();
+            file.Book.IsLoaded.Should().BeTrue();
+            file.Book.Value.Should().NotBeNull();
+            file.Author.IsLoaded.Should().BeTrue();
+            file.Author.Value.Should().NotBeNull();
         }
 
         [Test]
         public void get_files_by_album()
         {
             VerifyData();
-            var files = Subject.GetFilesByAlbum(_album.Id);
+            var files = Subject.GetFilesByBook(_album.Id);
             VerifyEagerLoaded(files);
 
             files.Should().OnlyContain(c => c.BookId == _album.Id);
@@ -136,12 +136,12 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             foreach (var file in files)
             {
-                file.Album.IsLoaded.Should().BeTrue();
-                file.Album.Value.Should().NotBeNull();
-                file.Artist.IsLoaded.Should().BeTrue();
-                file.Artist.Value.Should().NotBeNull();
-                file.Artist.Value.Metadata.IsLoaded.Should().BeTrue();
-                file.Artist.Value.Metadata.Value.Should().NotBeNull();
+                file.Book.IsLoaded.Should().BeTrue();
+                file.Book.Value.Should().NotBeNull();
+                file.Author.IsLoaded.Should().BeTrue();
+                file.Author.Value.Should().NotBeNull();
+                file.Author.Value.Metadata.IsLoaded.Should().BeTrue();
+                file.Author.Value.Metadata.Value.Should().NotBeNull();
             }
         }
 
@@ -149,10 +149,10 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             foreach (var file in files)
             {
-                file.Album.IsLoaded.Should().BeFalse();
-                file.Album.Value.Should().BeNull();
-                file.Artist.IsLoaded.Should().BeFalse();
-                file.Artist.Value.Should().BeNull();
+                file.Book.IsLoaded.Should().BeFalse();
+                file.Book.Value.Should().BeNull();
+                file.Author.IsLoaded.Should().BeFalse();
+                file.Author.Value.Should().BeNull();
             }
         }
 
@@ -160,7 +160,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         public void delete_files_by_album_should_work_if_join_fails()
         {
             Db.Delete(_album);
-            Subject.DeleteFilesByAlbum(_album.Id);
+            Subject.DeleteFilesByBook(_album.Id);
 
             Db.All<BookFile>().Where(x => x.BookId == _album.Id).Should().HaveCount(0);
         }

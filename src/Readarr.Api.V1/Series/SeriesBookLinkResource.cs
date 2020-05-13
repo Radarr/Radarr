@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using Readarr.Http.REST;
 
 namespace Readarr.Api.V1.Series

@@ -2,22 +2,22 @@ using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
+using NzbDrone.Core.Books.Commands;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Music;
-using NzbDrone.Core.Music.Commands;
 using Readarr.Http.Extensions;
 
 namespace Readarr.Api.V1.Artist
 {
     public class ArtistEditorModule : ReadarrV1Module
     {
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
         private readonly IManageCommandQueue _commandQueueManager;
 
-        public ArtistEditorModule(IArtistService artistService, IManageCommandQueue commandQueueManager)
+        public ArtistEditorModule(IAuthorService authorService, IManageCommandQueue commandQueueManager)
             : base("/artist/editor")
         {
-            _artistService = artistService;
+            _authorService = authorService;
             _commandQueueManager = commandQueueManager;
             Put("/", artist => SaveAll());
             Delete("/", artist => DeleteArtist());
@@ -26,8 +26,8 @@ namespace Readarr.Api.V1.Artist
         private object SaveAll()
         {
             var resource = Request.Body.FromJson<ArtistEditorResource>();
-            var artistToUpdate = _artistService.GetArtists(resource.AuthorIds);
-            var artistToMove = new List<BulkMoveArtist>();
+            var artistToUpdate = _authorService.GetAuthors(resource.AuthorIds);
+            var artistToMove = new List<BulkMoveAuthor>();
 
             foreach (var artist in artistToUpdate)
             {
@@ -49,7 +49,7 @@ namespace Readarr.Api.V1.Artist
                 if (resource.RootFolderPath.IsNotNullOrWhiteSpace())
                 {
                     artist.RootFolderPath = resource.RootFolderPath;
-                    artistToMove.Add(new BulkMoveArtist
+                    artistToMove.Add(new BulkMoveAuthor
                     {
                         AuthorId = artist.Id,
                         SourcePath = artist.Path
@@ -78,14 +78,14 @@ namespace Readarr.Api.V1.Artist
 
             if (resource.MoveFiles && artistToMove.Any())
             {
-                _commandQueueManager.Push(new BulkMoveArtistCommand
+                _commandQueueManager.Push(new BulkMoveAuthorCommand
                 {
                     DestinationRootFolder = resource.RootFolderPath,
-                    Artist = artistToMove
+                    Author = artistToMove
                 });
             }
 
-            return ResponseWithCode(_artistService.UpdateArtists(artistToUpdate, !resource.MoveFiles)
+            return ResponseWithCode(_authorService.UpdateAuthors(artistToUpdate, !resource.MoveFiles)
                                  .ToResource(),
                                  HttpStatusCode.Accepted);
         }
@@ -96,7 +96,7 @@ namespace Readarr.Api.V1.Artist
 
             foreach (var authorId in resource.AuthorIds)
             {
-                _artistService.DeleteArtist(authorId, false);
+                _authorService.DeleteAuthor(authorId, false);
             }
 
             return new object();

@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Law_and_Order_SVU", "lawordersvu")]
         public void should_normalize_artist_title(string parsedArtistName, string artistName)
         {
-            var result = parsedArtistName.CleanArtistName();
+            var result = parsedArtistName.CleanAuthorName();
             result.Should().Be(artistName);
         }
 
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("24", "24")]
         public void should_remove_special_characters_and_casing(string dirty, string clean)
         {
-            var result = dirty.CleanArtistName();
+            var result = dirty.CleanAuthorName();
             result.Should().Be(clean);
         }
 
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, word);
-                dirty.CleanArtistName().Should().Be("wordword");
+                dirty.CleanAuthorName().Should().Be("wordword");
             }
         }
 
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, "a");
-                dirty.CleanArtistName().Should().Be("wordword");
+                dirty.CleanAuthorName().Should().Be("wordword");
             }
         }
 
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, word);
-                dirty.CleanArtistName().Should().Be("word" + word.ToLower() + "word");
+                dirty.CleanAuthorName().Should().Be("word" + word.ToLower() + "word");
             }
         }
 
@@ -101,7 +101,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Daily.Show", "thedailyshow")]
         public void should_not_remove_from_the_beginning_of_the_title(string parsedArtistName, string artistName)
         {
-            var result = parsedArtistName.CleanArtistName();
+            var result = parsedArtistName.CleanAuthorName();
             result.Should().Be(artistName);
         }
 
@@ -123,14 +123,14 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, word);
-                dirty.CleanArtistName().Should().Be(word + "wordword");
+                dirty.CleanAuthorName().Should().Be(word + "wordword");
             }
         }
 
         [Test]
         public void should_not_clean_trailing_a()
         {
-            "Tokyo Ghoul A".CleanArtistName().Should().Be("tokyoghoula");
+            "Tokyo Ghoul A".CleanAuthorName().Should().Be("tokyoghoula");
         }
 
         [TestCase("3%", "3percent")]
@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Big Jay Oakerson's What's Your F@%king Deal?!", "bigjayoakersonswhatsyourfkingdeal")]
         public void should_replace_percent_sign_with_percent_following_numbers(string input, string expected)
         {
-            input.CleanArtistName().Should().Be(expected);
+            input.CleanAuthorName().Should().Be(expected);
         }
     }
 }

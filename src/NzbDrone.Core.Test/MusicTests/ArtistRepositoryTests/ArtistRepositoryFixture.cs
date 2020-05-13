@@ -5,7 +5,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -15,16 +15,16 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 {
     [TestFixture]
 
-    public class ArtistRepositoryFixture : DbTest<ArtistRepository, Author>
+    public class ArtistRepositoryFixture : DbTest<AuthorRepository, Author>
     {
-        private ArtistRepository _artistRepo;
-        private ArtistMetadataRepository _artistMetadataRepo;
+        private AuthorRepository _artistRepo;
+        private AuthorMetadataRepository _artistMetadataRepo;
 
         [SetUp]
         public void Setup()
         {
-            _artistRepo = Mocker.Resolve<ArtistRepository>();
-            _artistMetadataRepo = Mocker.Resolve<ArtistMetadataRepository>();
+            _artistRepo = Mocker.Resolve<AuthorRepository>();
+            _artistMetadataRepo = Mocker.Resolve<AuthorMetadataRepository>();
         }
 
         private void AddArtist(string name, string foreignId, List<string> oldIds = null)
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             var artist = Builder<Author>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Metadata = metadata)
-                .With(a => a.CleanName = Parser.Parser.CleanArtistName(name))
+                .With(a => a.CleanName = Parser.Parser.CleanAuthorName(name))
                 .With(a => a.ForeignAuthorId = foreignId)
                 .BuildNew();
 
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
         public void should_find_artist_in_db_by_name(string name)
         {
             GivenArtists();
-            var artist = _artistRepo.FindByName(Parser.Parser.CleanArtistName(name));
+            var artist = _artistRepo.FindByName(Parser.Parser.CleanAuthorName(name));
 
             artist.Should().NotBeNull();
             artist.Name.Should().Be(name);
@@ -119,7 +119,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 
             _artistRepo.All().Should().HaveCount(4);
 
-            var artist = _artistRepo.FindByName(Parser.Parser.CleanArtistName(name));
+            var artist = _artistRepo.FindByName(Parser.Parser.CleanAuthorName(name));
             artist.Should().BeNull();
         }
 
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             var artist1 = Builder<Author>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Metadata = metadata)
-                .With(a => a.CleanName = Parser.Parser.CleanArtistName(name))
+                .With(a => a.CleanName = Parser.Parser.CleanAuthorName(name))
                 .BuildNew();
 
             var artist2 = artist1.JsonClone();

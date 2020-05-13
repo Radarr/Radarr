@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Download.Clients.NzbVortex
             _proxy = proxy;
         }
 
-        protected override string AddFromNzbFile(RemoteAlbum remoteAlbum, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteBook remoteAlbum, string filename, byte[] fileContent)
         {
             var priority = remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
 

@@ -14,14 +14,14 @@ namespace NzbDrone.Core.Test.IndexerTests.IntegrationTests
     [IntegrationTest]
     public class IndexerIntegrationTests : CoreTest
     {
-        private AlbumSearchCriteria _albumSearchCriteria;
+        private BookSearchCriteria _albumSearchCriteria;
 
         [SetUp]
         public void SetUp()
         {
             UseRealHttp();
 
-            _albumSearchCriteria = new AlbumSearchCriteria()
+            _albumSearchCriteria = new BookSearchCriteria()
             {
             };
         }

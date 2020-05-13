@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
 {
     [TestFixture]
 
-    public class FindByNameInexactFixture : CoreTest<ArtistService>
+    public class FindByNameInexactFixture : CoreTest<AuthorService>
     {
         private List<Author> _artists;
 
@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
         {
             return Builder<Author>.CreateNew()
                 .With(a => a.Name = name)
-                .With(a => a.CleanName = Parser.Parser.CleanArtistName(name))
+                .With(a => a.CleanName = Parser.Parser.CleanAuthorName(name))
                 .With(a => a.ForeignAuthorId = name)
                 .BuildNew();
         }
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
             _artists.Add(CreateArtist("The Black Eyed Peas"));
             _artists.Add(CreateArtist("The Black Keys"));
 
-            Mocker.GetMock<IArtistRepository>()
+            Mocker.GetMock<IAuthorRepository>()
                 .Setup(s => s.All())
                 .Returns(_artists);
         }
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
             _artists.Add(CreateArtist("Black Keys"));
             _artists.Add(CreateArtist("The Black Eyed Peas"));
 
-            Mocker.GetMock<IArtistRepository>()
+            Mocker.GetMock<IAuthorRepository>()
                 .Setup(s => s.All())
                 .Returns(_artists);
 

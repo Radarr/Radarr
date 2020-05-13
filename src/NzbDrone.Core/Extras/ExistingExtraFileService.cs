@@ -10,7 +10,7 @@ using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Extras
 {
-    public class ExistingExtraFileService : IHandle<ArtistScannedEvent>
+    public class ExistingExtraFileService : IHandle<AuthorScannedEvent>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IDiskScanService _diskScanService;
@@ -28,29 +28,29 @@ namespace NzbDrone.Core.Extras
             _logger = logger;
         }
 
-        public void Handle(ArtistScannedEvent message)
+        public void Handle(AuthorScannedEvent message)
         {
-            var artist = message.Artist;
+            var author = message.Author;
             var extraFiles = new List<ExtraFile>();
 
-            if (!_diskProvider.FolderExists(artist.Path))
+            if (!_diskProvider.FolderExists(author.Path))
             {
                 return;
             }
 
-            _logger.Debug("Looking for existing extra files in {0}", artist.Path);
+            _logger.Debug("Looking for existing extra files in {0}", author.Path);
 
-            var filesOnDisk = _diskScanService.GetNonAudioFiles(artist.Path);
-            var possibleExtraFiles = _diskScanService.FilterFiles(artist.Path, filesOnDisk);
+            var filesOnDisk = _diskScanService.GetNonBookFiles(author.Path);
+            var possibleExtraFiles = _diskScanService.FilterFiles(author.Path, filesOnDisk);
 
             var filteredFiles = possibleExtraFiles;
             var importedFiles = new List<string>();
 
             foreach (var existingExtraFileImporter in _existingExtraFileImporters)
             {
-                var imported = existingExtraFileImporter.ProcessFiles(artist, filteredFiles, importedFiles);
+                var imported = existingExtraFileImporter.ProcessFiles(author, filteredFiles, importedFiles);
 
-                importedFiles.AddRange(imported.Select(f => Path.Combine(artist.Path, f.RelativePath)));
+                importedFiles.AddRange(imported.Select(f => Path.Combine(author.Path, f.RelativePath)));
             }
 
             _logger.Info("Found {0} extra files", extraFiles.Count);

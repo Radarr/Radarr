@@ -7,7 +7,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public class Book : Entity<Book>
     {
@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Music
             Genres = new List<string>();
             Ratings = new Ratings();
             Author = new Author();
-            AddOptions = new AddAlbumOptions();
+            AddOptions = new AddBookOptions();
         }
 
         // These correspond to columns in the Albums table
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Music
         public DateTime? LastInfoSync { get; set; }
         public DateTime Added { get; set; }
         [MemberwiseEqualityIgnore]
-        public AddAlbumOptions AddOptions { get; set; }
+        public AddBookOptions AddOptions { get; set; }
 
         // These are dynamically queried from other tables
         [MemberwiseEqualityIgnore]

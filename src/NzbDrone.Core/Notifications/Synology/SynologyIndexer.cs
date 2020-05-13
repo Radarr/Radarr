@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 
 namespace NzbDrone.Core.Notifications.Synology
 {
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Notifications.Synology
         public override string Link => "https://www.synology.com";
         public override string Name => "Synology Indexer";
 
-        public override void OnReleaseImport(AlbumDownloadMessage message)
+        public override void OnReleaseImport(BookDownloadMessage message)
         {
             if (Settings.UpdateLibrary)
             {
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Notifications.Synology
                     _indexerProxy.DeleteFile(fullPath);
                 }
 
-                foreach (var newFile in message.TrackFiles)
+                foreach (var newFile in message.BookFiles)
                 {
                     var fullPath = newFile.Path;
 
@@ -38,19 +38,19 @@ namespace NzbDrone.Core.Notifications.Synology
             }
         }
 
-        public override void OnRename(Author artist)
+        public override void OnRename(Author author)
         {
             if (Settings.UpdateLibrary)
             {
-                _indexerProxy.UpdateFolder(artist.Path);
+                _indexerProxy.UpdateFolder(author.Path);
             }
         }
 
-        public override void OnTrackRetag(TrackRetagMessage message)
+        public override void OnTrackRetag(BookRetagMessage message)
         {
             if (Settings.UpdateLibrary)
             {
-                _indexerProxy.UpdateFolder(message.Artist.Path);
+                _indexerProxy.UpdateFolder(message.Author.Path);
             }
         }
 

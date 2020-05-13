@@ -1,13 +1,13 @@
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 
 namespace NzbDrone.Core.Extras.Metadata.Files
 {
     public interface ICleanMetadataService
     {
-        void Clean(Author artist);
+        void Clean(Author author);
     }
 
     public class CleanExtraFileService : ICleanMetadataService
@@ -25,15 +25,15 @@ namespace NzbDrone.Core.Extras.Metadata.Files
             _logger = logger;
         }
 
-        public void Clean(Author artist)
+        public void Clean(Author author)
         {
-            _logger.Debug("Cleaning missing metadata files for artist: {0}", artist.Name);
+            _logger.Debug("Cleaning missing metadata files for author: {0}", author.Name);
 
-            var metadataFiles = _metadataFileService.GetFilesByArtist(artist.Id);
+            var metadataFiles = _metadataFileService.GetFilesByArtist(author.Id);
 
             foreach (var metadataFile in metadataFiles)
             {
-                if (!_diskProvider.FileExists(Path.Combine(artist.Path, metadataFile.RelativePath)))
+                if (!_diskProvider.FileExists(Path.Combine(author.Path, metadataFile.RelativePath)))
                 {
                     _logger.Debug("Deleting metadata file from database: {0}", metadataFile.RelativePath);
                     _metadataFileService.Delete(metadataFile.Id);

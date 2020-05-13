@@ -4,11 +4,11 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     public class DownloadDecisionMakerFixture : CoreTest<DownloadDecisionMaker>
     {
         private List<ReleaseInfo> _reports;
-        private RemoteAlbum _remoteAlbum;
+        private RemoteBook _remoteAlbum;
 
         private Mock<IDecisionEngineSpecification> _pass1;
         private Mock<IDecisionEngineSpecification> _pass2;
@@ -45,26 +45,26 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _failDelayed1 = new Mock<IDecisionEngineSpecification>();
 
-            _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Accept);
-            _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Accept);
-            _pass3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Accept);
+            _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null)).Returns(Decision.Accept);
+            _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null)).Returns(Decision.Accept);
+            _pass3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null)).Returns(Decision.Accept);
 
-            _fail1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("fail1"));
-            _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("fail2"));
-            _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("fail3"));
+            _fail1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null)).Returns(Decision.Reject("fail1"));
+            _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null)).Returns(Decision.Reject("fail2"));
+            _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null)).Returns(Decision.Reject("fail3"));
 
-            _failDelayed1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null)).Returns(Decision.Reject("failDelayed1"));
+            _failDelayed1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null)).Returns(Decision.Reject("failDelayed1"));
             _failDelayed1.SetupGet(c => c.Priority).Returns(SpecificationPriority.Disk);
 
             _reports = new List<ReleaseInfo> { new ReleaseInfo { Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT" } };
-            _remoteAlbum = new RemoteAlbum
+            _remoteAlbum = new RemoteBook
             {
-                Artist = new Author(),
-                Albums = new List<Book> { new Book() }
+                Author = new Author(),
+                Books = new List<Book> { new Book() }
             };
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(c => c.Map(It.IsAny<ParsedAlbumInfo>(), It.IsAny<SearchCriteriaBase>()))
+                  .Setup(c => c.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()))
                   .Returns(_remoteAlbum);
         }
 
@@ -154,11 +154,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var results = Subject.GetRssDecision(_reports).ToList();
 
-            Mocker.GetMock<IParsingService>().Verify(c => c.Map(It.IsAny<ParsedAlbumInfo>(), It.IsAny<SearchCriteriaBase>()), Times.Never());
+            Mocker.GetMock<IParsingService>().Verify(c => c.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()), Times.Never());
 
-            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
-            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
-            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
+            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
+            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
+            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
 
             results.Should().BeEmpty();
         }
@@ -171,11 +171,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var results = Subject.GetRssDecision(_reports).ToList();
 
-            Mocker.GetMock<IParsingService>().Verify(c => c.Map(It.IsAny<ParsedAlbumInfo>(), It.IsAny<SearchCriteriaBase>()), Times.Never());
+            Mocker.GetMock<IParsingService>().Verify(c => c.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()), Times.Never());
 
-            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
-            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
-            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
+            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
+            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
+            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
 
             results.Should().BeEmpty();
         }
@@ -185,13 +185,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            _remoteAlbum.Artist = null;
+            _remoteAlbum.Author = null;
 
             Subject.GetRssDecision(_reports);
 
-            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
-            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
-            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
+            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
+            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
+            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
         }
 
         [Test]
@@ -199,7 +199,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1);
 
-            Mocker.GetMock<IParsingService>().Setup(c => c.Map(It.IsAny<ParsedAlbumInfo>(), It.IsAny<SearchCriteriaBase>()))
+            Mocker.GetMock<IParsingService>().Setup(c => c.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()))
                      .Throws<TestException>();
 
             _reports = new List<ReleaseInfo>
@@ -211,7 +211,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Subject.GetRssDecision(_reports);
 
-            Mocker.GetMock<IParsingService>().Verify(c => c.Map(It.IsAny<ParsedAlbumInfo>(), It.IsAny<SearchCriteriaBase>()), Times.Exactly(_reports.Count));
+            Mocker.GetMock<IParsingService>().Verify(c => c.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()), Times.Exactly(_reports.Count));
 
             ExceptionVerification.ExpectedErrors(3);
         }
@@ -221,7 +221,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            _remoteAlbum.Artist = null;
+            _remoteAlbum.Author = null;
 
             var result = Subject.GetRssDecision(_reports);
 
@@ -239,7 +239,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .With(v => v.Author, new LazyLoaded<Author>(artist))
                 .BuildList();
 
-            var criteria = new ArtistSearchCriteria { Albums = albums.Take(1).ToList() };
+            var criteria = new AuthorSearchCriteria { Books = albums.Take(1).ToList() };
 
             var reports = albums.Select(v =>
                 new ReleaseInfo()
@@ -248,14 +248,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 }).ToList();
 
             Mocker.GetMock<IParsingService>()
-                .Setup(v => v.Map(It.IsAny<ParsedAlbumInfo>(), It.IsAny<SearchCriteriaBase>()))
-                .Returns<ParsedAlbumInfo, SearchCriteriaBase>((p, c) =>
-                    new RemoteAlbum
+                .Setup(v => v.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()))
+                .Returns<ParsedBookInfo, SearchCriteriaBase>((p, c) =>
+                    new RemoteBook
                     {
                         DownloadAllowed = true,
-                        ParsedAlbumInfo = p,
-                        Artist = artist,
-                        Albums = albums.Where(v => v.Title == p.AlbumTitle).ToList()
+                        ParsedBookInfo = p,
+                        Author = artist,
+                        Books = albums.Where(v => v.Title == p.BookTitle).ToList()
                     });
 
             Mocker.SetConstant<IEnumerable<IDecisionEngineSpecification>>(new List<IDecisionEngineSpecification>
@@ -275,13 +275,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            _remoteAlbum.Artist = null;
+            _remoteAlbum.Author = null;
 
             var result = Subject.GetRssDecision(_reports);
 
             result.Should().HaveCount(1);
 
-            result.First().RemoteAlbum.DownloadAllowed.Should().BeFalse();
+            result.First().RemoteBook.DownloadAllowed.Should().BeFalse();
         }
 
         [Test]
@@ -289,13 +289,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            _remoteAlbum.Albums = new List<Book>();
+            _remoteAlbum.Books = new List<Book>();
 
             var result = Subject.GetRssDecision(_reports);
 
             result.Should().HaveCount(1);
 
-            result.First().RemoteAlbum.DownloadAllowed.Should().BeFalse();
+            result.First().RemoteBook.DownloadAllowed.Should().BeFalse();
         }
 
         [Test]
@@ -303,7 +303,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1);
 
-            Mocker.GetMock<IParsingService>().Setup(c => c.Map(It.IsAny<ParsedAlbumInfo>(), It.IsAny<SearchCriteriaBase>()))
+            Mocker.GetMock<IParsingService>().Setup(c => c.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()))
                      .Throws<TestException>();
 
             _reports = new List<ReleaseInfo>

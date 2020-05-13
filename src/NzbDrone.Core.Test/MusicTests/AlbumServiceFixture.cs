@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
 {
     [TestFixture]
-    public class AlbumServiceFixture : CoreTest<AlbumService>
+    public class AlbumServiceFixture : CoreTest<BookService>
     {
         private List<Book> _albums;
 
@@ -28,8 +28,8 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
                 CleanTitle = "",
             });
 
-            Mocker.GetMock<IAlbumRepository>()
-                .Setup(s => s.GetAlbumsByArtistMetadataId(It.IsAny<int>()))
+            Mocker.GetMock<IBookRepository>()
+                .Setup(s => s.GetBooksByAuthorMetadataId(It.IsAny<int>()))
                 .Returns(_albums);
         }
 

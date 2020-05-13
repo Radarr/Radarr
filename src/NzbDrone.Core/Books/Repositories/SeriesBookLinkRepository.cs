@@ -2,7 +2,7 @@
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public interface ISeriesBookLinkRepository : IBasicRepository<SeriesBookLink>
     {

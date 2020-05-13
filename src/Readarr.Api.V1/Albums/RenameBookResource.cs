@@ -15,7 +15,7 @@ namespace Readarr.Api.V1.Albums
 
     public static class RenameTrackResourceMapper
     {
-        public static RenameTrackResource ToResource(this NzbDrone.Core.MediaFiles.RenameTrackFilePreview model)
+        public static RenameTrackResource ToResource(this NzbDrone.Core.MediaFiles.RenameBookFilePreview model)
         {
             if (model == null)
             {
@@ -26,13 +26,13 @@ namespace Readarr.Api.V1.Albums
             {
                 AuthorId = model.AuthorId,
                 BookId = model.BookId,
-                TrackFileId = model.TrackFileId,
+                TrackFileId = model.BookFileId,
                 ExistingPath = model.ExistingPath,
                 NewPath = model.NewPath
             };
         }
 
-        public static List<RenameTrackResource> ToResource(this IEnumerable<NzbDrone.Core.MediaFiles.RenameTrackFilePreview> models)
+        public static List<RenameTrackResource> ToResource(this IEnumerable<NzbDrone.Core.MediaFiles.RenameBookFilePreview> models)
         {
             return models.Select(ToResource).ToList();
         }

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -23,8 +23,8 @@ namespace NzbDrone.Core.MediaFiles
         public int CalibreId { get; set; }
 
         // These are queried from the database
-        public LazyLoaded<Author> Artist { get; set; }
-        public LazyLoaded<Book> Album { get; set; }
+        public LazyLoaded<Author> Author { get; set; }
+        public LazyLoaded<Book> Book { get; set; }
 
         public override string ToString()
         {

@@ -4,12 +4,12 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.DecisionEngine.Specifications.RssSync;
 using NzbDrone.Core.History;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
@@ -25,8 +25,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private HistorySpecification _upgradeHistory;
 
-        private RemoteAlbum _parseResultMulti;
-        private RemoteAlbum _parseResultSingle;
+        private RemoteBook _parseResultMulti;
+        private RemoteBook _parseResultSingle;
         private QualityModel _upgradableQuality;
         private QualityModel _notupgradableQuality;
         private Author _fakeArtist;
@@ -54,18 +54,18 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 })
                 .Build();
 
-            _parseResultMulti = new RemoteAlbum
+            _parseResultMulti = new RemoteBook
             {
-                Artist = _fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
-                Albums = doubleAlbumList
+                Author = _fakeArtist,
+                ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+                Books = doubleAlbumList
             };
 
-            _parseResultSingle = new RemoteAlbum
+            _parseResultSingle = new RemoteBook
             {
-                Artist = _fakeArtist,
-                ParsedAlbumInfo = new ParsedAlbumInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
-                Albums = singleAlbumList
+                Author = _fakeArtist,
+                ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
+                Books = singleAlbumList
             };
 
             _upgradableQuality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void GivenMostRecentForAlbum(int bookId, string downloadId, QualityModel quality, DateTime date, HistoryEventType eventType)
         {
-            Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForAlbum(bookId))
+            Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForBook(bookId))
                   .Returns(new History.History { DownloadId = downloadId, Quality = quality, Date = date, EventType = eventType });
         }
 
@@ -92,13 +92,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_it_is_a_search()
         {
-            _upgradeHistory.IsSatisfiedBy(_parseResultMulti, new AlbumSearchCriteria()).Accepted.Should().BeTrue();
+            _upgradeHistory.IsSatisfiedBy(_parseResultMulti, new BookSearchCriteria()).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_if_latest_history_item_is_null()
         {
-            Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForAlbum(It.IsAny<int>())).Returns((History.History)null);
+            Mocker.GetMock<IHistoryService>().Setup(s => s.MostRecentForBook(It.IsAny<int>())).Returns((History.History)null);
             _upgradeHistory.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeTrue();
         }
 
@@ -165,7 +165,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_not_be_upgradable_if_album_is_of_same_quality_as_existing()
         {
             _fakeArtist.QualityProfile = new QualityProfile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
+            _parseResultSingle.ParsedBookInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _upgradableQuality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
 
             GivenMostRecentForAlbum(FIRST_ALBUM_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
@@ -177,7 +177,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_not_be_upgradable_if_cutoff_already_met()
         {
             _fakeArtist.QualityProfile = new QualityProfile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
+            _parseResultSingle.ParsedBookInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _upgradableQuality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
 
             GivenMostRecentForAlbum(FIRST_ALBUM_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, HistoryEventType.Grabbed);
@@ -205,7 +205,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenCdhDisabled();
             _fakeArtist.QualityProfile = new QualityProfile { Cutoff = Quality.MP3_320.Id, Items = Qualities.QualityFixture.GetDefaultQualities() };
-            _parseResultSingle.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
+            _parseResultSingle.ParsedBookInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _upgradableQuality = new QualityModel(Quality.MP3_320, new Revision(version: 1));
 
             GivenMostRecentForAlbum(FIRST_ALBUM_ID, "test", _upgradableQuality, DateTime.UtcNow.AddDays(-100), HistoryEventType.Grabbed);

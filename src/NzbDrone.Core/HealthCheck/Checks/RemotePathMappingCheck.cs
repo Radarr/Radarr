@@ -106,9 +106,9 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 var failureMessage = (TrackImportFailedEvent)message;
 
                 // if we can see the file exists but the import failed then likely a permissions issue
-                if (failureMessage.TrackInfo != null)
+                if (failureMessage.BookInfo != null)
                 {
-                    var trackPath = failureMessage.TrackInfo.Path;
+                    var trackPath = failureMessage.BookInfo.Path;
                     if (_diskProvider.FileExists(trackPath))
                     {
                         return new HealthCheck(GetType(), HealthCheckResult.Error, $"Readarr can see but not access downloaded track {trackPath}.  Likely permissions error.", "#permissions-error");

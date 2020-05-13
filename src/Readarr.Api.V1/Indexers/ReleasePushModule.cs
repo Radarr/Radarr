@@ -52,7 +52,7 @@ namespace Readarr.Api.V1.Indexers
 
             var firstDecision = decisions.FirstOrDefault();
 
-            if (firstDecision?.RemoteAlbum.ParsedAlbumInfo == null)
+            if (firstDecision?.RemoteBook.ParsedBookInfo == null)
             {
                 throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Title", "Unable to parse", release.Title) });
             }

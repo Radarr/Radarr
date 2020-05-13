@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var pendingRelease = Builder<PendingRelease>.CreateNew()
                 .With(h => h.Reason = PendingReleaseReason.DownloadClientUnavailable)
                 .With(h => h.Added = DateTime.UtcNow.AddDays(-21))
-                .With(h => h.ParsedAlbumInfo = new ParsedAlbumInfo())
+                .With(h => h.ParsedBookInfo = new ParsedBookInfo())
                 .With(h => h.Release = new ReleaseInfo())
                 .BuildNew();
 
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var pendingRelease = Builder<PendingRelease>.CreateNew()
                 .With(h => h.Reason = PendingReleaseReason.Fallback)
                 .With(h => h.Added = DateTime.UtcNow.AddDays(-21))
-                .With(h => h.ParsedAlbumInfo = new ParsedAlbumInfo())
+                .With(h => h.ParsedBookInfo = new ParsedBookInfo())
                 .With(h => h.Release = new ReleaseInfo())
                 .BuildNew();
 
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             var pendingRelease = Builder<PendingRelease>.CreateNew()
                 .With(h => h.Reason = PendingReleaseReason.Delay)
                 .With(h => h.Added = DateTime.UtcNow.AddDays(-21))
-                .With(h => h.ParsedAlbumInfo = new ParsedAlbumInfo())
+                .With(h => h.ParsedBookInfo = new ParsedBookInfo())
                 .With(h => h.Release = new ReleaseInfo())
                 .BuildNew();
 

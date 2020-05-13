@@ -166,7 +166,7 @@ namespace NzbDrone.Core.ImportLists
 
         protected virtual bool IsValidRelease(ImportListItemInfo release)
         {
-            if (release.Album.IsNullOrWhiteSpace() && release.Artist.IsNullOrWhiteSpace())
+            if (release.Book.IsNullOrWhiteSpace() && release.Author.IsNullOrWhiteSpace())
             {
                 return false;
             }

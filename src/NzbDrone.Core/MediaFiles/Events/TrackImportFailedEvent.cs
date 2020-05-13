@@ -8,15 +8,15 @@ namespace NzbDrone.Core.MediaFiles.Events
     public class TrackImportFailedEvent : IEvent
     {
         public Exception Exception { get; set; }
-        public LocalTrack TrackInfo { get; }
+        public LocalBook BookInfo { get; }
         public bool NewDownload { get; }
         public string DownloadClient { get; }
         public string DownloadId { get; }
 
-        public TrackImportFailedEvent(Exception exception, LocalTrack trackInfo, bool newDownload, DownloadClientItem downloadClientItem)
+        public TrackImportFailedEvent(Exception exception, LocalBook bookInfo, bool newDownload, DownloadClientItem downloadClientItem)
         {
             Exception = exception;
-            TrackInfo = trackInfo;
+            BookInfo = bookInfo;
             NewDownload = newDownload;
 
             if (downloadClientItem != null)

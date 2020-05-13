@@ -40,17 +40,17 @@ namespace Readarr.Api.V1.History
 
             if (includeArtist)
             {
-                resource.Artist = model.Artist.ToResource();
+                resource.Artist = model.Author.ToResource();
             }
 
             if (includeAlbum)
             {
-                resource.Album = model.Album.ToResource();
+                resource.Album = model.Book.ToResource();
             }
 
-            if (model.Artist != null)
+            if (model.Author != null)
             {
-                resource.QualityCutoffNotMet = _upgradableSpecification.QualityCutoffNotMet(model.Artist.QualityProfile.Value, model.Quality);
+                resource.QualityCutoffNotMet = _upgradableSpecification.QualityCutoffNotMet(model.Author.QualityProfile.Value, model.Quality);
             }
 
             return resource;
@@ -135,10 +135,10 @@ namespace Readarr.Api.V1.History
             {
                 int bookId = Convert.ToInt32(queryBookId.Value);
 
-                return _historyService.GetByAlbum(bookId, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum)).ToList();
+                return _historyService.GetByBook(bookId, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum)).ToList();
             }
 
-            return _historyService.GetByArtist(authorId, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum)).ToList();
+            return _historyService.GetByAuthor(authorId, eventType).Select(h => MapToResource(h, includeArtist, includeAlbum)).ToList();
         }
 
         private object MarkAsFailed()

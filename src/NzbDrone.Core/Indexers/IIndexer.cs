@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Indexers
         DownloadProtocol Protocol { get; }
 
         IList<ReleaseInfo> FetchRecent();
-        IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria);
-        IList<ReleaseInfo> Fetch(ArtistSearchCriteria searchCriteria);
+        IList<ReleaseInfo> Fetch(BookSearchCriteria searchCriteria);
+        IList<ReleaseInfo> Fetch(AuthorSearchCriteria searchCriteria);
     }
 }

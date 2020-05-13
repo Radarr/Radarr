@@ -12,70 +12,70 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
-    public interface IAddArtistService
+    public interface IAddAuthorService
     {
-        Author AddArtist(Author newArtist, bool doRefresh = true);
-        List<Author> AddArtists(List<Author> newArtists, bool doRefresh = true);
+        Author AddAuthor(Author newAuthor, bool doRefresh = true);
+        List<Author> AddAuthors(List<Author> newAuthors, bool doRefresh = true);
     }
 
-    public class AddArtistService : IAddArtistService
+    public class AddArtistService : IAddAuthorService
     {
-        private readonly IArtistService _artistService;
-        private readonly IArtistMetadataService _artistMetadataService;
-        private readonly IProvideAuthorInfo _artistInfo;
+        private readonly IAuthorService _authorService;
+        private readonly IAuthorMetadataService _authorMetadataService;
+        private readonly IProvideAuthorInfo _authorInfo;
         private readonly IBuildFileNames _fileNameBuilder;
-        private readonly IAddArtistValidator _addArtistValidator;
+        private readonly IAddAuthorValidator _addAuthorValidator;
         private readonly Logger _logger;
 
-        public AddArtistService(IArtistService artistService,
-                                IArtistMetadataService artistMetadataService,
-                                IProvideAuthorInfo artistInfo,
+        public AddArtistService(IAuthorService authorService,
+                                IAuthorMetadataService authorMetadataService,
+                                IProvideAuthorInfo authorInfo,
                                 IBuildFileNames fileNameBuilder,
-                                IAddArtistValidator addArtistValidator,
+                                IAddAuthorValidator addAuthorValidator,
                                 Logger logger)
         {
-            _artistService = artistService;
-            _artistMetadataService = artistMetadataService;
-            _artistInfo = artistInfo;
+            _authorService = authorService;
+            _authorMetadataService = authorMetadataService;
+            _authorInfo = authorInfo;
             _fileNameBuilder = fileNameBuilder;
-            _addArtistValidator = addArtistValidator;
+            _addAuthorValidator = addAuthorValidator;
             _logger = logger;
         }
 
-        public Author AddArtist(Author newArtist, bool doRefresh = true)
+        public Author AddAuthor(Author newAuthor, bool doRefresh = true)
         {
-            Ensure.That(newArtist, () => newArtist).IsNotNull();
+            Ensure.That(newAuthor, () => newAuthor).IsNotNull();
 
-            newArtist = AddSkyhookData(newArtist);
-            newArtist = SetPropertiesAndValidate(newArtist);
+            newAuthor = AddSkyhookData(newAuthor);
+            newAuthor = SetPropertiesAndValidate(newAuthor);
 
-            _logger.Info("Adding Artist {0} Path: [{1}]", newArtist, newArtist.Path);
+            _logger.Info("Adding Author {0} Path: [{1}]", newAuthor, newAuthor.Path);
 
             // add metadata
-            _artistMetadataService.Upsert(newArtist.Metadata.Value);
-            newArtist.AuthorMetadataId = newArtist.Metadata.Value.Id;
+            _authorMetadataService.Upsert(newAuthor.Metadata.Value);
+            newAuthor.AuthorMetadataId = newAuthor.Metadata.Value.Id;
 
-            // add the artist itself
-            _artistService.AddArtist(newArtist, doRefresh);
+            // add the author itself
+            _authorService.AddAuthor(newAuthor, doRefresh);
 
-            return newArtist;
+            return newAuthor;
         }
 
-        public List<Author> AddArtists(List<Author> newArtists, bool doRefresh = true)
+        public List<Author> AddAuthors(List<Author> newAuthors, bool doRefresh = true)
         {
             var added = DateTime.UtcNow;
-            var artistsToAdd = new List<Author>();
+            var authorsToAdd = new List<Author>();
 
-            foreach (var s in newArtists)
+            foreach (var s in newAuthors)
             {
                 try
                 {
-                    var artist = AddSkyhookData(s);
-                    artist = SetPropertiesAndValidate(artist);
-                    artist.Added = added;
-                    artistsToAdd.Add(artist);
+                    var author = AddSkyhookData(s);
+                    author = SetPropertiesAndValidate(author);
+                    author.Added = added;
+                    authorsToAdd.Add(author);
                 }
                 catch (Exception ex)
                 {
@@ -85,53 +85,53 @@ namespace NzbDrone.Core.Music
             }
 
             // add metadata
-            _artistMetadataService.UpsertMany(artistsToAdd.Select(x => x.Metadata.Value).ToList());
-            artistsToAdd.ForEach(x => x.AuthorMetadataId = x.Metadata.Value.Id);
+            _authorMetadataService.UpsertMany(authorsToAdd.Select(x => x.Metadata.Value).ToList());
+            authorsToAdd.ForEach(x => x.AuthorMetadataId = x.Metadata.Value.Id);
 
-            return _artistService.AddArtists(artistsToAdd, doRefresh);
+            return _authorService.AddAuthors(authorsToAdd, doRefresh);
         }
 
-        private Author AddSkyhookData(Author newArtist)
+        private Author AddSkyhookData(Author newAuthor)
         {
-            Author artist;
+            Author author;
 
             try
             {
-                artist = _artistInfo.GetAuthorInfo(newArtist.Metadata.Value.ForeignAuthorId);
+                author = _authorInfo.GetAuthorInfo(newAuthor.Metadata.Value.ForeignAuthorId);
             }
-            catch (ArtistNotFoundException)
+            catch (AuthorNotFoundException)
             {
-                _logger.Error("ReadarrId {0} was not found, it may have been removed from Musicbrainz.", newArtist.Metadata.Value.ForeignAuthorId);
+                _logger.Error("ReadarrId {0} was not found, it may have been removed from Goodreads.", newAuthor.Metadata.Value.ForeignAuthorId);
 
                 throw new ValidationException(new List<ValidationFailure>
                                               {
-                                                  new ValidationFailure("MusicbrainzId", "An artist with this ID was not found", newArtist.Metadata.Value.ForeignAuthorId)
+                                                  new ValidationFailure("MusicbrainzId", "An author with this ID was not found", newAuthor.Metadata.Value.ForeignAuthorId)
                                               });
             }
 
-            artist.ApplyChanges(newArtist);
+            author.ApplyChanges(newAuthor);
 
-            return artist;
+            return author;
         }
 
-        private Author SetPropertiesAndValidate(Author newArtist)
+        private Author SetPropertiesAndValidate(Author newAuthor)
         {
-            var path = newArtist.Path;
+            var path = newAuthor.Path;
             if (string.IsNullOrWhiteSpace(path))
             {
-                var folderName = _fileNameBuilder.GetArtistFolder(newArtist);
-                path = Path.Combine(newArtist.RootFolderPath, folderName);
+                var folderName = _fileNameBuilder.GetAuthorFolder(newAuthor);
+                path = Path.Combine(newAuthor.RootFolderPath, folderName);
             }
 
-            // Disambiguate artist path if it exists already
-            if (_artistService.ArtistPathExists(path))
+            // Disambiguate author path if it exists already
+            if (_authorService.AuthorPathExists(path))
             {
-                if (newArtist.Metadata.Value.Disambiguation.IsNotNullOrWhiteSpace())
+                if (newAuthor.Metadata.Value.Disambiguation.IsNotNullOrWhiteSpace())
                 {
-                    path += $" ({newArtist.Metadata.Value.Disambiguation})";
+                    path += $" ({newAuthor.Metadata.Value.Disambiguation})";
                 }
 
-                if (_artistService.ArtistPathExists(path))
+                if (_authorService.AuthorPathExists(path))
                 {
                     var basepath = path;
                     int i = 0;
@@ -140,28 +140,28 @@ namespace NzbDrone.Core.Music
                         i++;
                         path = basepath + $" ({i})";
                     }
-                    while (_artistService.ArtistPathExists(path));
+                    while (_authorService.AuthorPathExists(path));
                 }
             }
 
-            newArtist.Path = path;
-            newArtist.CleanName = newArtist.Metadata.Value.Name.CleanArtistName();
-            newArtist.SortName = Parser.Parser.NormalizeTitle(newArtist.Metadata.Value.Name).ToLower();
-            newArtist.Added = DateTime.UtcNow;
+            newAuthor.Path = path;
+            newAuthor.CleanName = newAuthor.Metadata.Value.Name.CleanAuthorName();
+            newAuthor.SortName = Parser.Parser.NormalizeTitle(newAuthor.Metadata.Value.Name).ToLower();
+            newAuthor.Added = DateTime.UtcNow;
 
-            if (newArtist.AddOptions != null && newArtist.AddOptions.Monitor == MonitorTypes.None)
+            if (newAuthor.AddOptions != null && newAuthor.AddOptions.Monitor == MonitorTypes.None)
             {
-                newArtist.Monitored = false;
+                newAuthor.Monitored = false;
             }
 
-            var validationResult = _addArtistValidator.Validate(newArtist);
+            var validationResult = _addAuthorValidator.Validate(newAuthor);
 
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult.Errors);
             }
 
-            return newArtist;
+            return newAuthor;
         }
     }
 }

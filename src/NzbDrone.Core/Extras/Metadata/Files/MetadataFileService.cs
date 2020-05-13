@@ -1,8 +1,8 @@
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.Extras.Metadata.Files
 {
@@ -12,8 +12,8 @@ namespace NzbDrone.Core.Extras.Metadata.Files
 
     public class MetadataFileService : ExtraFileService<MetadataFile>, IMetadataFileService
     {
-        public MetadataFileService(IExtraFileRepository<MetadataFile> repository, IArtistService artistService, IDiskProvider diskProvider, IRecycleBinProvider recycleBinProvider, Logger logger)
-            : base(repository, artistService, diskProvider, recycleBinProvider, logger)
+        public MetadataFileService(IExtraFileRepository<MetadataFile> repository, IAuthorService authorService, IDiskProvider diskProvider, IRecycleBinProvider recycleBinProvider, Logger logger)
+            : base(repository, authorService, diskProvider, recycleBinProvider, logger)
         {
         }
     }

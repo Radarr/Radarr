@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Indexers
             return FetchReleases(g => g.GetRecentRequests(), true);
         }
 
-        public override IList<ReleaseInfo> Fetch(AlbumSearchCriteria searchCriteria)
+        public override IList<ReleaseInfo> Fetch(BookSearchCriteria searchCriteria)
         {
             if (!SupportsSearch)
             {
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Indexers
             return FetchReleases(g => g.GetSearchRequests(searchCriteria));
         }
 
-        public override IList<ReleaseInfo> Fetch(ArtistSearchCriteria searchCriteria)
+        public override IList<ReleaseInfo> Fetch(AuthorSearchCriteria searchCriteria)
         {
             if (!SupportsSearch)
             {

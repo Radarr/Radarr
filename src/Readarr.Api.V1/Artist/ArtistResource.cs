@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Music;
 using Readarr.Http.REST;
 
 namespace Readarr.Api.V1.Artist
@@ -16,9 +16,9 @@ namespace Readarr.Api.V1.Artist
         //Todo: We should get the entire Profile instead of ID and Name separately
         [JsonIgnore]
         public int ArtistMetadataId { get; set; }
-        public ArtistStatusType Status { get; set; }
+        public AuthorStatusType Status { get; set; }
 
-        public bool Ended => Status == ArtistStatusType.Ended;
+        public bool Ended => Status == AuthorStatusType.Ended;
 
         public string ArtistName { get; set; }
         public string ForeignAuthorId { get; set; }
@@ -51,7 +51,7 @@ namespace Readarr.Api.V1.Artist
         public string SortName { get; set; }
         public HashSet<int> Tags { get; set; }
         public DateTime Added { get; set; }
-        public AddArtistOptions AddOptions { get; set; }
+        public AddAuthorOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
 
         public ArtistStatisticsResource Statistics { get; set; }
@@ -59,7 +59,7 @@ namespace Readarr.Api.V1.Artist
 
     public static class ArtistResourceMapper
     {
-        public static ArtistResource ToResource(this NzbDrone.Core.Music.Author model)
+        public static ArtistResource ToResource(this NzbDrone.Core.Books.Author model)
         {
             if (model == null)
             {
@@ -107,18 +107,18 @@ namespace Readarr.Api.V1.Artist
             };
         }
 
-        public static NzbDrone.Core.Music.Author ToModel(this ArtistResource resource)
+        public static NzbDrone.Core.Books.Author ToModel(this ArtistResource resource)
         {
             if (resource == null)
             {
                 return null;
             }
 
-            return new NzbDrone.Core.Music.Author
+            return new NzbDrone.Core.Books.Author
             {
                 Id = resource.Id,
 
-                Metadata = new NzbDrone.Core.Music.AuthorMetadata
+                Metadata = new NzbDrone.Core.Books.AuthorMetadata
                 {
                     ForeignAuthorId = resource.ForeignAuthorId,
                     GoodreadsId = resource.GoodreadsId,
@@ -150,7 +150,7 @@ namespace Readarr.Api.V1.Artist
             };
         }
 
-        public static NzbDrone.Core.Music.Author ToModel(this ArtistResource resource, NzbDrone.Core.Music.Author artist)
+        public static NzbDrone.Core.Books.Author ToModel(this ArtistResource resource, NzbDrone.Core.Books.Author artist)
         {
             var updatedArtist = resource.ToModel();
 
@@ -159,12 +159,12 @@ namespace Readarr.Api.V1.Artist
             return artist;
         }
 
-        public static List<ArtistResource> ToResource(this IEnumerable<NzbDrone.Core.Music.Author> artist)
+        public static List<ArtistResource> ToResource(this IEnumerable<NzbDrone.Core.Books.Author> artist)
         {
             return artist.Select(ToResource).ToList();
         }
 
-        public static List<NzbDrone.Core.Music.Author> ToModel(this IEnumerable<ArtistResource> resources)
+        public static List<NzbDrone.Core.Books.Author> ToModel(this IEnumerable<ArtistResource> resources)
         {
             return resources.Select(ToModel).ToList();
         }

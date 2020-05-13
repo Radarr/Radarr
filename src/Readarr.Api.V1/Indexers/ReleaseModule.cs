@@ -24,7 +24,7 @@ namespace Readarr.Api.V1.Indexers
         private readonly IDownloadService _downloadService;
         private readonly Logger _logger;
 
-        private readonly ICached<RemoteAlbum> _remoteAlbumCache;
+        private readonly ICached<RemoteBook> _remoteAlbumCache;
 
         public ReleaseModule(IFetchAndParseRss rssFetcherAndParser,
                              ISearchForNzb nzbSearchService,
@@ -47,7 +47,7 @@ namespace Readarr.Api.V1.Indexers
             PostValidator.RuleFor(s => s.IndexerId).ValidId();
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
 
-            _remoteAlbumCache = cacheManager.GetCache<RemoteAlbum>(GetType(), "remoteAlbums");
+            _remoteAlbumCache = cacheManager.GetCache<RemoteBook>(GetType(), "remoteAlbums");
         }
 
         private object DownloadRelease(ReleaseResource release)
@@ -135,7 +135,7 @@ namespace Readarr.Api.V1.Indexers
         protected override ReleaseResource MapDecision(DownloadDecision decision, int initialWeight)
         {
             var resource = base.MapDecision(decision, initialWeight);
-            _remoteAlbumCache.Set(GetCacheKey(resource), decision.RemoteAlbum, TimeSpan.FromMinutes(30));
+            _remoteAlbumCache.Set(GetCacheKey(resource), decision.RemoteBook, TimeSpan.FromMinutes(30));
             return resource;
         }
 

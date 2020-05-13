@@ -3,7 +3,7 @@ using Equ;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 
-namespace NzbDrone.Core.Music
+namespace NzbDrone.Core.Books
 {
     public class Series : Entity<Series>
     {

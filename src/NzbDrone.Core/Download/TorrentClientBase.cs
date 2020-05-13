@@ -38,10 +38,10 @@ namespace NzbDrone.Core.Download
 
         public virtual bool PreferTorrentFile => false;
 
-        protected abstract string AddFromMagnetLink(RemoteAlbum remoteAlbum, string hash, string magnetLink);
-        protected abstract string AddFromTorrentFile(RemoteAlbum remoteAlbum, string hash, string filename, byte[] fileContent);
+        protected abstract string AddFromMagnetLink(RemoteBook remoteAlbum, string hash, string magnetLink);
+        protected abstract string AddFromTorrentFile(RemoteBook remoteAlbum, string hash, string filename, byte[] fileContent);
 
-        public override string Download(RemoteAlbum remoteAlbum)
+        public override string Download(RemoteBook remoteAlbum)
         {
             var torrentInfo = remoteAlbum.Release as TorrentInfo;
 
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.Download
             return null;
         }
 
-        private string DownloadFromWebUrl(RemoteAlbum remoteAlbum, string torrentUrl)
+        private string DownloadFromWebUrl(RemoteBook remoteAlbum, string torrentUrl)
         {
             byte[] torrentFile = null;
 
@@ -162,7 +162,7 @@ namespace NzbDrone.Core.Download
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                 {
-                    _logger.Error(ex, "Downloading torrent file for album '{0}' failed since it no longer exists ({1})", remoteAlbum.Release.Title, torrentUrl);
+                    _logger.Error(ex, "Downloading torrent file for book '{0}' failed since it no longer exists ({1})", remoteAlbum.Release.Title, torrentUrl);
                     throw new ReleaseUnavailableException(remoteAlbum.Release, "Downloading torrent failed", ex);
                 }
 
@@ -199,7 +199,7 @@ namespace NzbDrone.Core.Download
             return actualHash;
         }
 
-        private string DownloadFromMagnetUrl(RemoteAlbum remoteAlbum, string magnetUrl)
+        private string DownloadFromMagnetUrl(RemoteBook remoteAlbum, string magnetUrl)
         {
             string hash = null;
             string actualHash = null;

@@ -26,10 +26,10 @@ namespace Readarr.Api.V1.Indexers
 
             release.ReleaseWeight = initialWeight;
 
-            if (decision.RemoteAlbum.Artist != null)
+            if (decision.RemoteBook.Author != null)
             {
-                release.QualityWeight = decision.RemoteAlbum
-                                                .Artist
+                release.QualityWeight = decision.RemoteBook
+                                                .Author
                                                 .QualityProfile.Value.GetIndex(release.Quality.Quality).Index * 100;
             }
 

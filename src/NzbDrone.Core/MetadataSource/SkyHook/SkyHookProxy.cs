@@ -6,9 +6,9 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Music;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
@@ -16,22 +16,22 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
-        private readonly IArtistService _authorService;
-        private readonly IAlbumService _bookService;
+        private readonly IAuthorService _authorService;
+        private readonly IBookService _bookService;
         private readonly IMetadataRequestBuilder _requestBuilder;
         private readonly ICached<HashSet<string>> _cache;
 
         public SkyHookProxy(IHttpClient httpClient,
                             IMetadataRequestBuilder requestBuilder,
-                            IArtistService authorService,
-                            IAlbumService albumService,
+                            IAuthorService authorService,
+                            IBookService bookService,
                             Logger logger,
                             ICacheManager cacheManager)
         {
             _httpClient = httpClient;
             _requestBuilder = requestBuilder;
             _authorService = authorService;
-            _bookService = albumService;
+            _bookService = bookService;
             _cache = cacheManager.GetCache<HashSet<string>>(GetType());
             _logger = logger;
         }
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 if (httpResponse.StatusCode == HttpStatusCode.NotFound)
                 {
-                    throw new ArtistNotFoundException(foreignAuthorId);
+                    throw new AuthorNotFoundException(foreignAuthorId);
                 }
                 else if (httpResponse.StatusCode == HttpStatusCode.BadRequest)
                 {
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return MapAuthor(httpResponse.Resource);
         }
 
-        public HashSet<string> GetChangedAlbums(DateTime startTime)
+        public HashSet<string> GetChangedBooks(DateTime startTime)
         {
             return _cache.Get("ChangedAlbums", () => GetChangedAlbumsUncached(startTime), TimeSpan.FromMinutes(30));
         }
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 if (httpResponse.StatusCode == HttpStatusCode.NotFound)
                 {
-                    throw new AlbumNotFoundException(foreignBookId);
+                    throw new BookNotFoundException(foreignBookId);
                 }
                 else if (httpResponse.StatusCode == HttpStatusCode.BadRequest)
                 {
@@ -129,7 +129,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return books.Select(x => x.Author.Value).ToList();
         }
 
-        public List<Book> SearchForNewBook(string title, string artist)
+        public List<Book> SearchForNewBook(string title, string author)
         {
             try
             {
@@ -168,9 +168,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
 
                 var q = title.ToLower().Trim();
-                if (artist != null)
+                if (author != null)
                 {
-                    q += " " + artist;
+                    q += " " + author;
                 }
 
                 var httpRequest = _requestBuilder.GetRequestBuilder().Create()
@@ -276,7 +276,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var result = new Author
             {
                 Metadata = metadata,
-                CleanName = Parser.Parser.CleanArtistName(metadata.Name),
+                CleanName = Parser.Parser.CleanAuthorName(metadata.Name),
                 SortName = Parser.Parser.NormalizeTitle(metadata.Name),
                 Books = books,
                 Series = series
@@ -380,7 +380,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 Title = resource.Title.CleanSpaces(),
                 Language = resource.Language,
                 Publisher = resource.Publisher,
-                CleanTitle = Parser.Parser.CleanArtistName(resource.Title),
+                CleanTitle = Parser.Parser.CleanAuthorName(resource.Title),
                 Overview = resource.Description,
                 ReleaseDate = resource.ReleaseDate,
                 Ratings = new Ratings { Votes = resource.RatingCount, Value = (decimal)resource.AverageRating }
@@ -428,7 +428,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                         author = new Author
                         {
-                            CleanName = Parser.Parser.CleanArtistName(authorMetadata.Name),
+                            CleanName = Parser.Parser.CleanAuthorName(authorMetadata.Name),
                             Metadata = authorMetadata
                         };
                     }

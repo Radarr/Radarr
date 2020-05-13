@@ -3,10 +3,10 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.Extras.Metadata.Files;
-using NzbDrone.Core.MediaFiles.TrackImport.Aggregation;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.BookImport.Aggregation;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
@@ -36,18 +36,18 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override int Order => 0;
 
-        public override IEnumerable<ExtraFile> ProcessFiles(Author artist, List<string> filesOnDisk, List<string> importedFiles)
+        public override IEnumerable<ExtraFile> ProcessFiles(Author author, List<string> filesOnDisk, List<string> importedFiles)
         {
-            _logger.Debug("Looking for existing metadata in {0}", artist.Path);
+            _logger.Debug("Looking for existing metadata in {0}", author.Path);
 
             var metadataFiles = new List<MetadataFile>();
-            var filterResult = FilterAndClean(artist, filesOnDisk, importedFiles);
+            var filterResult = FilterAndClean(author, filesOnDisk, importedFiles);
 
             foreach (var possibleMetadataFile in filterResult.FilesOnDisk)
             {
                 foreach (var consumer in _consumers)
                 {
-                    var metadata = consumer.FindMetadataFile(artist, possibleMetadataFile);
+                    var metadata = consumer.FindMetadataFile(author, possibleMetadataFile);
 
                     if (metadata == null)
                     {
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Extras.Metadata
 
                     if (metadata.Type == MetadataType.AlbumImage || metadata.Type == MetadataType.AlbumMetadata)
                     {
-                        var localAlbum = _parsingService.GetLocalAlbum(possibleMetadataFile, artist);
+                        var localAlbum = _parsingService.GetLocalAlbum(possibleMetadataFile, author);
 
                         if (localAlbum == null)
                         {
@@ -69,10 +69,10 @@ namespace NzbDrone.Core.Extras.Metadata
 
                     if (metadata.Type == MetadataType.TrackMetadata)
                     {
-                        var localTrack = new LocalTrack
+                        var localTrack = new LocalBook
                         {
                             FileTrackInfo = Parser.Parser.ParseMusicPath(possibleMetadataFile),
-                            Artist = artist,
+                            Author = author,
                             Path = possibleMetadataFile
                         };
 
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Extras.Metadata
                             continue;
                         }
 
-                        if (localTrack.Album == null)
+                        if (localTrack.Book == null)
                         {
                             _logger.Debug("Cannot find related book for: {0}", possibleMetadataFile);
                             continue;

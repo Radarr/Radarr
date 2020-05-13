@@ -26,12 +26,12 @@ namespace NzbDrone.Core.Indexers.Nyaa
             return pageableRequests;
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(AlbumSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(BookSearchCriteria searchCriteria)
         {
             throw new System.NotImplementedException();
         }
 
-        public virtual IndexerPageableRequestChain GetSearchRequests(ArtistSearchCriteria searchCriteria)
+        public virtual IndexerPageableRequestChain GetSearchRequests(AuthorSearchCriteria searchCriteria)
         {
             throw new System.NotImplementedException();
         }

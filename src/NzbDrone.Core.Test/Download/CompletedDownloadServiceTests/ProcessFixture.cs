@@ -4,10 +4,10 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
                     .With(c => c.State = TrackedDownloadState.Downloading)
                     .With(c => c.DownloadItem = completed)
-                    .With(c => c.RemoteAlbum = remoteAlbum)
+                    .With(c => c.RemoteBook = remoteAlbum)
                     .Build();
 
             Mocker.GetMock<IDownloadClient>()
@@ -51,15 +51,15 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetArtist("Drone.S01E01.HDTV"))
-                  .Returns(remoteAlbum.Artist);
+                  .Returns(remoteAlbum.Author);
         }
 
-        private RemoteAlbum BuildRemoteAlbum()
+        private RemoteBook BuildRemoteAlbum()
         {
-            return new RemoteAlbum
+            return new RemoteBook
             {
-                Artist = new Author(),
-                Albums = new List<Book> { new Book { Id = 1 } }
+                Author = new Author(),
+                Books = new List<Book> { new Book { Id = 1 } }
             };
         }
 
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         {
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetArtist(It.IsAny<string>()))
-                  .Returns(_trackedDownload.RemoteAlbum.Artist);
+                  .Returns(_trackedDownload.RemoteBook.Author);
         }
 
         private void GivenABadlyNamedDownload()
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetArtist("Droned S01E01"))
-                  .Returns(BuildRemoteAlbum().Artist);
+                  .Returns(BuildRemoteAlbum().Author);
         }
 
         [TestCase(DownloadItemStatus.Downloading)]
@@ -145,7 +145,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         public void should_not_process_if_the_download_cannot_be_tracked_using_the_source_title_as_it_was_initiated_externally()
         {
             GivenABadlyNamedDownload();
-            _trackedDownload.RemoteAlbum.Artist = null;
+            _trackedDownload.RemoteBook.Author = null;
 
             Mocker.GetMock<IHistoryService>()
                   .Setup(s => s.MostRecentForDownloadId(It.Is<string>(i => i == "1234")));
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         [Test]
         public void should_not_process_when_there_is_a_title_mismatch()
         {
-            _trackedDownload.RemoteAlbum.Artist = null;
+            _trackedDownload.RemoteBook.Author = null;
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetArtist("Drone.S01E01.HDTV"))
                   .Returns((Author)null);

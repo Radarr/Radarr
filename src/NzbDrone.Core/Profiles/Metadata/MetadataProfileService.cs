@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.Profiles.Metadata
@@ -30,19 +30,19 @@ namespace NzbDrone.Core.Profiles.Metadata
         private static readonly Regex PartOrSetRegex = new Regex(@"(?:\d+ of \d+|\d+/\d+|(?<from>\d+)-(?<to>\d+))");
 
         private readonly IMetadataProfileRepository _profileRepository;
-        private readonly IArtistService _artistService;
+        private readonly IAuthorService _authorService;
         private readonly IImportListFactory _importListFactory;
         private readonly IRootFolderService _rootFolderService;
         private readonly Logger _logger;
 
         public MetadataProfileService(IMetadataProfileRepository profileRepository,
-                                      IArtistService artistService,
+                                      IAuthorService authorService,
                                       IImportListFactory importListFactory,
                                       IRootFolderService rootFolderService,
                                       Logger logger)
         {
             _profileRepository = profileRepository;
-            _artistService = artistService;
+            _authorService = authorService;
             _importListFactory = importListFactory;
             _rootFolderService = rootFolderService;
             _logger = logger;
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Profiles.Metadata
             var profile = _profileRepository.Get(id);
 
             if (profile.Name == NONE_PROFILE_NAME ||
-                _artistService.GetAllArtists().Any(c => c.MetadataProfileId == id) ||
+                _authorService.GetAllAuthors().Any(c => c.MetadataProfileId == id) ||
                 _importListFactory.All().Any(c => c.MetadataProfileId == id) ||
                 _rootFolderService.All().Any(c => c.DefaultMetadataProfileId == id))
             {

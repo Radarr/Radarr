@@ -8,8 +8,8 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Profiles.Releases;
 using NzbDrone.Core.Qualities;
 
@@ -17,11 +17,11 @@ namespace NzbDrone.Core.Organizer
 {
     public interface IBuildFileNames
     {
-        string BuildTrackFileName(Author artist, Book album, BookFile trackFile, NamingConfig namingConfig = null, List<string> preferredWords = null);
-        string BuildTrackFilePath(Author artist, Book album, string fileName, string extension);
-        string BuildAlbumPath(Author artist, Book album);
+        string BuildBookFileName(Author author, Book book, BookFile bookFile, NamingConfig namingConfig = null, List<string> preferredWords = null);
+        string BuildBookFilePath(Author author, Book book, string fileName, string extension);
+        string BuildBookPath(Author author, Book book);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
-        string GetArtistFolder(Author artist, NamingConfig namingConfig = null);
+        string GetAuthorFolder(Author author, NamingConfig namingConfig = null);
     }
 
     public class FileNameBuilder : IBuildFileNames
@@ -29,8 +29,8 @@ namespace NzbDrone.Core.Organizer
         private readonly INamingConfigService _namingConfigService;
         private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly IPreferredWordService _preferredWordService;
-        private readonly ICached<TrackFormat[]> _trackFormatCache;
-        private readonly ICached<AbsoluteTrackFormat[]> _absoluteTrackFormatCache;
+        private readonly ICached<BookFormat[]> _trackFormatCache;
+        private readonly ICached<AbsoluteBookFormat[]> _absoluteTrackFormatCache;
         private readonly Logger _logger;
 
         private static readonly Regex TitleRegex = new Regex(@"\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9]+))?(?<suffix>[- ._)\]]*)\}",
@@ -47,13 +47,10 @@ namespace NzbDrone.Core.Organizer
 
         public static readonly Regex ReleaseDateRegex = new Regex(@"\{Release(\s|\W|_)Year\}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static readonly Regex ArtistNameRegex = new Regex(@"(?<token>\{(?:Artist)(?<separator>[- ._])(Clean)?Name(The)?\})",
+        public static readonly Regex AuthorNameRegex = new Regex(@"(?<token>\{(?:Author)(?<separator>[- ._])(Clean)?Name(The)?\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static readonly Regex AlbumTitleRegex = new Regex(@"(?<token>\{(?:Album)(?<separator>[- ._])(Clean)?Title(The)?\})",
-                                                                            RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        public static readonly Regex TrackTitleRegex = new Regex(@"(?<token>\{(?:Track)(?<separator>[- ._])(Clean)?Title(The)?\})",
+        public static readonly Regex BookTitleRegex = new Regex(@"(?<token>\{(?:Book)(?<separator>[- ._])(Clean)?Title(The)?\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex FileNameCleanupRegex = new Regex(@"([- ._])(\1)+", RegexOptions.Compiled);
@@ -78,41 +75,41 @@ namespace NzbDrone.Core.Organizer
             _namingConfigService = namingConfigService;
             _qualityDefinitionService = qualityDefinitionService;
             _preferredWordService = preferredWordService;
-            _trackFormatCache = cacheManager.GetCache<TrackFormat[]>(GetType(), "trackFormat");
-            _absoluteTrackFormatCache = cacheManager.GetCache<AbsoluteTrackFormat[]>(GetType(), "absoluteTrackFormat");
+            _trackFormatCache = cacheManager.GetCache<BookFormat[]>(GetType(), "bookFormat");
+            _absoluteTrackFormatCache = cacheManager.GetCache<AbsoluteBookFormat[]>(GetType(), "absoluteBookFormat");
             _logger = logger;
         }
 
-        public string BuildTrackFileName(Author artist, Book album, BookFile trackFile, NamingConfig namingConfig = null, List<string> preferredWords = null)
+        public string BuildBookFileName(Author author, Book book, BookFile bookFile, NamingConfig namingConfig = null, List<string> preferredWords = null)
         {
             if (namingConfig == null)
             {
                 namingConfig = _namingConfigService.GetConfig();
             }
 
-            if (!namingConfig.RenameTracks)
+            if (!namingConfig.RenameBooks)
             {
-                return GetOriginalFileName(trackFile);
+                return GetOriginalFileName(bookFile);
             }
 
-            if (namingConfig.StandardTrackFormat.IsNullOrWhiteSpace())
+            if (namingConfig.StandardBookFormat.IsNullOrWhiteSpace())
             {
                 throw new NamingFormatException("File name format cannot be empty");
             }
 
-            var pattern = namingConfig.StandardTrackFormat;
+            var pattern = namingConfig.StandardBookFormat;
 
             var subFolders = pattern.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
             var safePattern = subFolders.Aggregate("", (current, folderLevel) => Path.Combine(current, folderLevel));
 
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
-            AddArtistTokens(tokenHandlers, artist);
-            AddAlbumTokens(tokenHandlers, album);
-            AddTrackFileTokens(tokenHandlers, trackFile);
-            AddQualityTokens(tokenHandlers, artist, trackFile);
-            AddMediaInfoTokens(tokenHandlers, trackFile);
-            AddPreferredWords(tokenHandlers, artist, trackFile, preferredWords);
+            AddAuthorTokens(tokenHandlers, author);
+            AddBookTokens(tokenHandlers, book);
+            AddBookFileTokens(tokenHandlers, bookFile);
+            AddQualityTokens(tokenHandlers, author, bookFile);
+            AddMediaInfoTokens(tokenHandlers, bookFile);
+            AddPreferredWords(tokenHandlers, author, bookFile, preferredWords);
 
             var fileName = ReplaceTokens(safePattern, tokenHandlers, namingConfig).Trim();
             fileName = FileNameCleanupRegex.Replace(fileName, match => match.Captures[0].Value[0].ToString());
@@ -121,25 +118,25 @@ namespace NzbDrone.Core.Organizer
             return fileName;
         }
 
-        public string BuildTrackFilePath(Author artist, Book album, string fileName, string extension)
+        public string BuildBookFilePath(Author author, Book book, string fileName, string extension)
         {
             Ensure.That(extension, () => extension).IsNotNullOrWhiteSpace();
 
-            var path = BuildAlbumPath(artist, album);
+            var path = BuildBookPath(author, book);
 
             return Path.Combine(path, fileName + extension);
         }
 
-        public string BuildAlbumPath(Author artist, Book album)
+        public string BuildBookPath(Author author, Book book)
         {
-            var path = artist.Path;
+            var path = author.Path;
 
             return path;
         }
 
         public BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec)
         {
-            var trackFormat = GetTrackFormat(nameSpec.StandardTrackFormat).LastOrDefault();
+            var trackFormat = GetTrackFormat(nameSpec.StandardBookFormat).LastOrDefault();
 
             if (trackFormat == null)
             {
@@ -151,7 +148,7 @@ namespace NzbDrone.Core.Organizer
                 Separator = trackFormat.Separator
             };
 
-            var titleTokens = TitleRegex.Matches(nameSpec.StandardTrackFormat);
+            var titleTokens = TitleRegex.Matches(nameSpec.StandardBookFormat);
 
             foreach (Match match in titleTokens)
             {
@@ -163,7 +160,7 @@ namespace NzbDrone.Core.Organizer
                     basicNamingConfig.ReplaceSpaces = true;
                 }
 
-                if (token.StartsWith("{Artist", StringComparison.InvariantCultureIgnoreCase))
+                if (token.StartsWith("{Author", StringComparison.InvariantCultureIgnoreCase))
                 {
                     basicNamingConfig.IncludeArtistName = true;
                 }
@@ -182,7 +179,7 @@ namespace NzbDrone.Core.Organizer
             return basicNamingConfig;
         }
 
-        public string GetArtistFolder(Author artist, NamingConfig namingConfig = null)
+        public string GetAuthorFolder(Author author, NamingConfig namingConfig = null)
         {
             if (namingConfig == null)
             {
@@ -191,9 +188,9 @@ namespace NzbDrone.Core.Organizer
 
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
-            AddArtistTokens(tokenHandlers, artist);
+            AddAuthorTokens(tokenHandlers, author);
 
-            return CleanFolderName(ReplaceTokens(namingConfig.ArtistFolderFormat, tokenHandlers, namingConfig));
+            return CleanFolderName(ReplaceTokens(namingConfig.AuthorFolderFormat, tokenHandlers, namingConfig));
         }
 
         public static string CleanTitle(string title)
@@ -230,32 +227,32 @@ namespace NzbDrone.Core.Organizer
             return name.Trim(' ', '.');
         }
 
-        private void AddArtistTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Author artist)
+        private void AddAuthorTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Author author)
         {
-            tokenHandlers["{Artist Name}"] = m => artist.Name;
-            tokenHandlers["{Artist CleanName}"] = m => CleanTitle(artist.Name);
-            tokenHandlers["{Artist NameThe}"] = m => TitleThe(artist.Name);
+            tokenHandlers["{Author Name}"] = m => author.Name;
+            tokenHandlers["{Author CleanName}"] = m => CleanTitle(author.Name);
+            tokenHandlers["{Author NameThe}"] = m => TitleThe(author.Name);
 
-            if (artist.Metadata.Value.Disambiguation != null)
+            if (author.Metadata.Value.Disambiguation != null)
             {
-                tokenHandlers["{Artist Disambiguation}"] = m => artist.Metadata.Value.Disambiguation;
+                tokenHandlers["{Author Disambiguation}"] = m => author.Metadata.Value.Disambiguation;
             }
         }
 
-        private void AddAlbumTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Book album)
+        private void AddBookTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Book book)
         {
-            tokenHandlers["{Album Title}"] = m => album.Title;
-            tokenHandlers["{Album CleanTitle}"] = m => CleanTitle(album.Title);
-            tokenHandlers["{Album TitleThe}"] = m => TitleThe(album.Title);
+            tokenHandlers["{Book Title}"] = m => book.Title;
+            tokenHandlers["{Book CleanTitle}"] = m => CleanTitle(book.Title);
+            tokenHandlers["{Book TitleThe}"] = m => TitleThe(book.Title);
 
-            if (album.Disambiguation != null)
+            if (book.Disambiguation != null)
             {
-                tokenHandlers["{Album Disambiguation}"] = m => album.Disambiguation;
+                tokenHandlers["{Book Disambiguation}"] = m => book.Disambiguation;
             }
 
-            if (album.ReleaseDate.HasValue)
+            if (book.ReleaseDate.HasValue)
             {
-                tokenHandlers["{Release Year}"] = m => album.ReleaseDate.Value.Year.ToString();
+                tokenHandlers["{Release Year}"] = m => book.ReleaseDate.Value.Year.ToString();
             }
             else
             {
@@ -263,19 +260,19 @@ namespace NzbDrone.Core.Organizer
             }
         }
 
-        private void AddTrackFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, BookFile trackFile)
+        private void AddBookFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, BookFile bookFile)
         {
-            tokenHandlers["{Original Title}"] = m => GetOriginalTitle(trackFile);
-            tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(trackFile);
-            tokenHandlers["{Release Group}"] = m => trackFile.ReleaseGroup ?? m.DefaultValue("Readarr");
+            tokenHandlers["{Original Title}"] = m => GetOriginalTitle(bookFile);
+            tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(bookFile);
+            tokenHandlers["{Release Group}"] = m => bookFile.ReleaseGroup ?? m.DefaultValue("Readarr");
         }
 
-        private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Author artist, BookFile trackFile)
+        private void AddQualityTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Author author, BookFile bookFile)
         {
-            var qualityTitle = _qualityDefinitionService.Get(trackFile.Quality.Quality).Title;
-            var qualityProper = GetQualityProper(trackFile.Quality);
+            var qualityTitle = _qualityDefinitionService.Get(bookFile.Quality.Quality).Title;
+            var qualityProper = GetQualityProper(bookFile.Quality);
 
-            //var qualityReal = GetQualityReal(artist, trackFile.Quality);
+            //var qualityReal = GetQualityReal(author, bookFile.Quality);
             tokenHandlers["{Quality Full}"] = m => string.Format("{0}", qualityTitle);
             tokenHandlers["{Quality Title}"] = m => qualityTitle;
             tokenHandlers["{Quality Proper}"] = m => qualityProper;
@@ -283,33 +280,33 @@ namespace NzbDrone.Core.Organizer
             //tokenHandlers["{Quality Real}"] = m => qualityReal;
         }
 
-        private void AddMediaInfoTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, BookFile trackFile)
+        private void AddMediaInfoTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, BookFile bookFile)
         {
-            if (trackFile.MediaInfo == null)
+            if (bookFile.MediaInfo == null)
             {
-                _logger.Trace("Media info is unavailable for {0}", trackFile);
+                _logger.Trace("Media info is unavailable for {0}", bookFile);
 
                 return;
             }
 
-            var audioCodec = MediaInfoFormatter.FormatAudioCodec(trackFile.MediaInfo);
-            var audioChannels = MediaInfoFormatter.FormatAudioChannels(trackFile.MediaInfo);
+            var audioCodec = MediaInfoFormatter.FormatAudioCodec(bookFile.MediaInfo);
+            var audioChannels = MediaInfoFormatter.FormatAudioChannels(bookFile.MediaInfo);
             var audioChannelsFormatted = audioChannels > 0 ?
                                 audioChannels.ToString("F1", CultureInfo.InvariantCulture) :
                                 string.Empty;
 
             tokenHandlers["{MediaInfo AudioCodec}"] = m => audioCodec;
             tokenHandlers["{MediaInfo AudioChannels}"] = m => audioChannelsFormatted;
-            tokenHandlers["{MediaInfo AudioBitRate}"] = m => MediaInfoFormatter.FormatAudioBitrate(trackFile.MediaInfo);
-            tokenHandlers["{MediaInfo AudioBitsPerSample}"] = m => MediaInfoFormatter.FormatAudioBitsPerSample(trackFile.MediaInfo);
-            tokenHandlers["{MediaInfo AudioSampleRate}"] = m => MediaInfoFormatter.FormatAudioSampleRate(trackFile.MediaInfo);
+            tokenHandlers["{MediaInfo AudioBitRate}"] = m => MediaInfoFormatter.FormatAudioBitrate(bookFile.MediaInfo);
+            tokenHandlers["{MediaInfo AudioBitsPerSample}"] = m => MediaInfoFormatter.FormatAudioBitsPerSample(bookFile.MediaInfo);
+            tokenHandlers["{MediaInfo AudioSampleRate}"] = m => MediaInfoFormatter.FormatAudioSampleRate(bookFile.MediaInfo);
         }
 
-        private void AddPreferredWords(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Author artist, BookFile trackFile, List<string> preferredWords = null)
+        private void AddPreferredWords(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Author author, BookFile bookFile, List<string> preferredWords = null)
         {
             if (preferredWords == null)
             {
-                preferredWords = _preferredWordService.GetMatchingPreferredWords(artist, trackFile.GetSceneOrFileName());
+                preferredWords = _preferredWordService.GetMatchingPreferredWords(author, bookFile.GetSceneOrFileName());
             }
 
             tokenHandlers["{Preferred Words}"] = m => string.Join(" ", preferredWords);
@@ -365,14 +362,14 @@ namespace NzbDrone.Core.Organizer
             return replacementText;
         }
 
-        private TrackFormat[] GetTrackFormat(string pattern)
+        private BookFormat[] GetTrackFormat(string pattern)
         {
             return _trackFormatCache.Get(pattern, () => SeasonEpisodePatternRegex.Matches(pattern).OfType<Match>()
-                .Select(match => new TrackFormat
+                .Select(match => new BookFormat
                 {
-                    TrackSeparator = match.Groups["episodeSeparator"].Value,
+                    BookSeparator = match.Groups["episodeSeparator"].Value,
                     Separator = match.Groups["separator"].Value,
-                    TrackPattern = match.Groups["episode"].Value,
+                    BookPattern = match.Groups["episode"].Value,
                 }).ToArray());
         }
 
@@ -391,19 +388,19 @@ namespace NzbDrone.Core.Organizer
             return string.Empty;
         }
 
-        private string GetOriginalTitle(BookFile trackFile)
+        private string GetOriginalTitle(BookFile bookFile)
         {
-            if (trackFile.SceneName.IsNullOrWhiteSpace())
+            if (bookFile.SceneName.IsNullOrWhiteSpace())
             {
-                return GetOriginalFileName(trackFile);
+                return GetOriginalFileName(bookFile);
             }
 
-            return trackFile.SceneName;
+            return bookFile.SceneName;
         }
 
-        private string GetOriginalFileName(BookFile trackFile)
+        private string GetOriginalFileName(BookFile bookFile)
         {
-            return Path.GetFileNameWithoutExtension(trackFile.Path);
+            return Path.GetFileNameWithoutExtension(bookFile.Path);
         }
     }
 

@@ -5,9 +5,9 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
@@ -18,14 +18,14 @@ namespace NzbDrone.Core.Test.MediaFiles
     public class UpgradeMediaFileServiceFixture : CoreTest<UpgradeMediaFileService>
     {
         private BookFile _trackFile;
-        private LocalTrack _localTrack;
+        private LocalBook _localTrack;
         private string _rootPath = @"C:\Test\Music\Artist".AsOsAgnostic();
 
         [SetUp]
         public void Setup()
         {
-            _localTrack = new LocalTrack();
-            _localTrack.Artist = new Author
+            _localTrack = new LocalBook();
+            _localTrack.Author = new Author
             {
                 Path = _rootPath
             };
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
         private void GivenSingleTrackWithSingleTrackFile()
         {
-            _localTrack.Album = Builder<Book>.CreateNew()
+            _localTrack.Book = Builder<Book>.CreateNew()
                 .With(e => e.BookFiles = new LazyLoaded<List<BookFile>>(
                           new List<BookFile>
                           {
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenSingleTrackWithSingleTrackFile();
 
-            Subject.UpgradeTrackFile(_trackFile, _localTrack);
+            Subject.UpgradeBookFile(_trackFile, _localTrack);
 
             Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>(), It.IsAny<string>()), Times.Once());
         }
@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenSingleTrackWithSingleTrackFile();
 
-            Subject.UpgradeTrackFile(_trackFile, _localTrack);
+            Subject.UpgradeBookFile(_trackFile, _localTrack);
 
             Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(It.IsAny<BookFile>(), DeleteMediaFileReason.Upgrade), Times.Once());
         }
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Setup(c => c.FileExists(It.IsAny<string>()))
                 .Returns(false);
 
-            Subject.UpgradeTrackFile(_trackFile, _localTrack);
+            Subject.UpgradeBookFile(_trackFile, _localTrack);
 
             // Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localTrack.Album.BookFiles.Value, DeleteMediaFileReason.Upgrade), Times.Once());
         }
@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Setup(c => c.FileExists(It.IsAny<string>()))
                 .Returns(false);
 
-            Subject.UpgradeTrackFile(_trackFile, _localTrack);
+            Subject.UpgradeBookFile(_trackFile, _localTrack);
 
             Mocker.GetMock<IRecycleBinProvider>().Verify(v => v.DeleteFile(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
@@ -119,18 +119,18 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenSingleTrackWithSingleTrackFile();
 
-            Subject.UpgradeTrackFile(_trackFile, _localTrack).OldFiles.Count.Should().Be(1);
+            Subject.UpgradeBookFile(_trackFile, _localTrack).OldFiles.Count.Should().Be(1);
         }
 
         [Test]
         [Ignore("Pending readarr fix")]
         public void should_import_if_existing_file_doesnt_exist_in_db()
         {
-            _localTrack.Album = Builder<Book>.CreateNew()
+            _localTrack.Book = Builder<Book>.CreateNew()
                 .With(e => e.BookFiles = new LazyLoaded<List<BookFile>>())
                 .Build();
 
-            Subject.UpgradeTrackFile(_trackFile, _localTrack);
+            Subject.UpgradeBookFile(_trackFile, _localTrack);
 
             // Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localTrack.Album.BookFiles.Value, It.IsAny<DeleteMediaFileReason>()), Times.Never());
         }

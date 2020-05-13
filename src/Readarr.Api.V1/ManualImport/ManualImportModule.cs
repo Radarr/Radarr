@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using NLog;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.TrackImport.Manual;
-using NzbDrone.Core.Music;
+using NzbDrone.Core.MediaFiles.BookImport.Manual;
 using NzbDrone.Core.Qualities;
 using Readarr.Http;
 using Readarr.Http.Extensions;
@@ -13,18 +13,18 @@ namespace Readarr.Api.V1.ManualImport
 {
     public class ManualImportModule : ReadarrRestModule<ManualImportResource>
     {
-        private readonly IArtistService _artistService;
-        private readonly IAlbumService _albumService;
+        private readonly IAuthorService _authorService;
+        private readonly IBookService _bookService;
         private readonly IManualImportService _manualImportService;
         private readonly Logger _logger;
 
         public ManualImportModule(IManualImportService manualImportService,
-                                  IArtistService artistService,
-                                  IAlbumService albumService,
+                                  IAuthorService authorService,
+                                  IBookService bookService,
                                   Logger logger)
         {
-            _artistService = artistService;
-            _albumService = albumService;
+            _authorService = authorService;
+            _bookService = bookService;
             _manualImportService = manualImportService;
             _logger = logger;
 
@@ -70,8 +70,8 @@ namespace Readarr.Api.V1.ManualImport
                     Path = resource.Path,
                     Name = resource.Name,
                     Size = resource.Size,
-                    Artist = resource.Artist == null ? null : _artistService.GetArtist(resource.Artist.Id),
-                    Album = resource.Album == null ? null : _albumService.GetAlbum(resource.Album.Id),
+                    Author = resource.Artist == null ? null : _authorService.GetAuthor(resource.Artist.Id),
+                    Book = resource.Album == null ? null : _bookService.GetBook(resource.Album.Id),
                     Quality = resource.Quality,
                     DownloadId = resource.DownloadId,
                     AdditionalFile = resource.AdditionalFile,

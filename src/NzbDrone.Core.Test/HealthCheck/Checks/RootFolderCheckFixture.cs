@@ -4,9 +4,9 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.HealthCheck.Checks;
 using NzbDrone.Core.ImportLists;
-using NzbDrone.Core.Music;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
@@ -24,8 +24,8 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                 .Build()
                 .ToList();
 
-            Mocker.GetMock<IArtistService>()
-                  .Setup(s => s.GetAllArtists())
+            Mocker.GetMock<IAuthorService>()
+                  .Setup(s => s.GetAllAuthors())
                   .Returns(artist);
 
             Mocker.GetMock<IImportListFactory>()
@@ -44,8 +44,8 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [Test]
         public void should_not_return_error_when_no_artist()
         {
-            Mocker.GetMock<IArtistService>()
-                  .Setup(s => s.GetAllArtists())
+            Mocker.GetMock<IAuthorService>()
+                  .Setup(s => s.GetAllAuthors())
                   .Returns(new List<Author>());
 
             Mocker.GetMock<IImportListFactory>()

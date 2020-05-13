@@ -24,7 +24,7 @@ namespace Readarr.Api.V1.Albums
             return MapToResource(searchResults).ToList();
         }
 
-        private static IEnumerable<AlbumResource> MapToResource(IEnumerable<NzbDrone.Core.Music.Book> albums)
+        private static IEnumerable<AlbumResource> MapToResource(IEnumerable<NzbDrone.Core.Books.Book> albums)
         {
             foreach (var currentAlbum in albums)
             {

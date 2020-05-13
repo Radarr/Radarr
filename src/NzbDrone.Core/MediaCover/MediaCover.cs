@@ -20,8 +20,8 @@ namespace NzbDrone.Core.MediaCover
 
     public enum MediaCoverEntity
     {
-        Artist = 0,
-        Album = 1
+        Author = 0,
+        Book = 1
     }
 
     public class MediaCover : MemberwiseEquatable<MediaCover>, IEmbeddedDocument
