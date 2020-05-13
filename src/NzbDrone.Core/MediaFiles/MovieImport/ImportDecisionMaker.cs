@@ -54,7 +54,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource)
         {
-            return GetImportDecisions(videoFiles, movie, downloadClientItem, folderInfo, sceneSource, true);
+            // Modified filterExistingFiles to false
+            return GetImportDecisions(videoFiles, movie, downloadClientItem, folderInfo, sceneSource, false);
         }
 
         public List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource, bool filterExistingFiles)
