@@ -206,6 +206,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
         private int CheckIfImportingExistingFile(LocalMovie localMovie)
         {
+            if (localMovie.Path == null || localMovie.Movie == null || localMovie.Movie.MovieFile == null)
+            {
+                return 0;
+            }
+
             //Get existing Mediafiles for Movie
             string temp2;
             if (new OsPath(localMovie.Movie.Path).IsWindowsPath)
