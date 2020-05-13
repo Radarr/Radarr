@@ -7,6 +7,7 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Movies;
@@ -23,6 +24,8 @@ namespace NzbDrone.Core.Test.MediaFiles
         private string _droneFactory = "c:\\drop\\".AsOsAgnostic();
         private string[] _subFolders = new[] { "c:\\root\\foldername".AsOsAgnostic() };
         private string[] _videoFiles = new[] { "c:\\root\\foldername\\47.ronin.2013.ext".AsOsAgnostic() };
+
+        private TrackedDownload _trackedDownload;
 
         [SetUp]
         public void Setup()
@@ -45,6 +48,22 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IImportApprovedMovie>()
                   .Setup(s => s.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto))
                   .Returns(new List<ImportResult>());
+
+            var downloadItem = Builder<DownloadClientItem>.CreateNew()
+                .With(v => v.DownloadId = "sab1")
+                .With(v => v.Status = DownloadItemStatus.Downloading)
+                .Build();
+
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
+                .With(v => v.Movie = new Movie())
+                .Build();
+
+            _trackedDownload = new TrackedDownload
+            {
+                DownloadItem = downloadItem,
+                RemoteMovie = remoteMovie,
+                State = TrackedDownloadState.Downloading
+            };
         }
 
         private void GivenValidMovie()
@@ -52,6 +71,29 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetMovie(It.IsAny<string>()))
                   .Returns(Builder<Movie>.CreateNew().Build());
+        }
+
+        private void GivenSuccessfulImport()
+        {
+            var localMovie = new LocalMovie();
+
+            var imported = new List<ImportDecision>();
+            imported.Add(new ImportDecision(localMovie));
+
+            Mocker.GetMock<IMakeImportDecision>()
+                  .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>(), null, true, true))
+                  .Returns(imported);
+
+            Mocker.GetMock<IImportApprovedMovie>()
+                  .Setup(s => s.Import(It.IsAny<List<ImportDecision>>(), It.IsAny<bool>(), It.IsAny<DownloadClientItem>(), It.IsAny<ImportMode>()))
+                  .Returns(imported.Select(i => new ImportResult(i)).ToList())
+                  .Callback(() => WasImportedResponse());
+        }
+
+        private void WasImportedResponse()
+        {
+            Mocker.GetMock<IDiskScanService>().Setup(c => c.GetVideoFiles(It.IsAny<string>(), It.IsAny<bool>()))
+                  .Returns(new string[0]);
         }
 
         [Test]
@@ -121,6 +163,51 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IDiskProvider>()
                   .Verify(v => v.GetFolderSize(It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void should_not_delete_folder_after_import()
+        {
+            GivenValidMovie();
+
+            GivenSuccessfulImport();
+
+            _trackedDownload.DownloadItem.CanMoveFiles = false;
+
+            Subject.ProcessPath(_droneFactory, ImportMode.Auto, _trackedDownload.RemoteMovie.Movie, _trackedDownload.DownloadItem);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Never());
+        }
+
+        [Test]
+        public void should_delete_folder_if_importmode_move()
+        {
+            GivenValidMovie();
+
+            GivenSuccessfulImport();
+
+            _trackedDownload.DownloadItem.CanMoveFiles = false;
+
+            Subject.ProcessPath(_droneFactory, ImportMode.Move, _trackedDownload.RemoteMovie.Movie, _trackedDownload.DownloadItem);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Once());
+        }
+
+        [Test]
+        public void should_not_delete_folder_if_importmode_copy()
+        {
+            GivenValidMovie();
+
+            GivenSuccessfulImport();
+
+            _trackedDownload.DownloadItem.CanMoveFiles = true;
+
+            Subject.ProcessPath(_droneFactory, ImportMode.Copy, _trackedDownload.RemoteMovie.Movie, _trackedDownload.DownloadItem);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Never());
         }
 
         [Test]
