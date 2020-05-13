@@ -75,23 +75,28 @@ namespace NzbDrone.Core.MediaFiles
         {
             var rootFolder = _rootFolderService.GetBestRootFolderPath(movie.Path);
 
-            if (!_diskProvider.FolderExists(rootFolder))
-            {
-                _logger.Warn("Movies' root folder ({0}) doesn't exist.", rootFolder);
-                _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderDoesNotExist));
-                return;
-            }
+            var movieFolderExists = _diskProvider.FolderExists(movie.Path);
 
-            if (_diskProvider.GetDirectories(rootFolder).Empty())
+            if (!movieFolderExists)
             {
-                _logger.Warn("Movies' root folder ({0}) is empty.", rootFolder);
-                _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderIsEmpty));
-                return;
+                if (!_diskProvider.FolderExists(rootFolder))
+                {
+                    _logger.Warn("Movie's root folder ({0}) doesn't exist.", rootFolder);
+                    _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderDoesNotExist));
+                    return;
+                }
+
+                if (_diskProvider.FolderEmpty(rootFolder))
+                {
+                    _logger.Warn("Movie's root folder ({0}) is empty.", rootFolder);
+                    _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderIsEmpty));
+                    return;
+                }
             }
 
             _logger.ProgressInfo("Scanning disk for {0}", movie.Title);
 
-            if (!_diskProvider.FolderExists(movie.Path))
+            if (!movieFolderExists)
             {
                 if (_configService.CreateEmptyMovieFolders)
                 {

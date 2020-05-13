@@ -5,9 +5,12 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -17,28 +20,58 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
     public class ScanFixture : CoreTest<DiskScanService>
     {
         private Movie _movie;
+        private string _rootFolder;
+        private string _otherMovieFolder;
 
         [SetUp]
         public void Setup()
         {
+            _rootFolder = @"C:\Test\Movies".AsOsAgnostic();
+            _otherMovieFolder = @"C:\Test\Movies\OtherMovie".AsOsAgnostic();
+            var movieFolder = @"C:\Test\Movies\Movie".AsOsAgnostic();
+
             _movie = Builder<Movie>.CreateNew()
-                                     .With(s => s.Path = @"C:\Test\Movies\Movie".AsOsAgnostic())
+                .With(s => s.Path = movieFolder)
                                      .Build();
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderExists(It.IsAny<string>()))
+                  .Returns(false);
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetParentFolder(It.IsAny<string>()))
                   .Returns((string path) => Directory.GetParent(path).FullName);
+
+            Mocker.GetMock<IRootFolderService>()
+                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>()))
+                  .Returns(_rootFolder);
         }
 
-        private void GivenParentFolderExists()
+        private void GivenRootFolder(params string[] subfolders)
         {
             Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.FolderExists(It.IsAny<string>()))
+                .Setup(s => s.FolderExists(_rootFolder))
                   .Returns(true);
 
             Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetDirectories(It.IsAny<string>()))
-                  .Returns(new string[] { @"C:\Test\Movies\Movie2".AsOsAgnostic() });
+                  .Setup(s => s.GetDirectories(_rootFolder))
+                  .Returns(subfolders);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderEmpty(_rootFolder))
+                  .Returns(subfolders.Empty());
+
+            foreach (var folder in subfolders)
+            {
+                Mocker.GetMock<IDiskProvider>()
+                  .Setup(s => s.FolderExists(folder))
+                  .Returns(true);
+            }
+        }
+
+        private void GivenMovieFolder()
+        {
+            GivenRootFolder(_movie.Path);
         }
 
         private void GivenFiles(IEnumerable<string> files)
@@ -55,6 +88,12 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
 
             ExceptionVerification.ExpectedWarns(1);
 
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.GetFiles(_movie.Path, SearchOption.AllDirectories), Times.Never());
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.CreateFolder(_movie.Path), Times.Never());
+
             Mocker.GetMock<IMediaFileTableCleanupService>()
                 .Verify(v => v.Clean(It.IsAny<Movie>(), It.IsAny<List<string>>()), Times.Never());
         }
@@ -62,26 +101,44 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_if_movie_root_folder_is_empty()
         {
-            Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.FolderExists(It.IsAny<string>()))
-                  .Returns(true);
-
-            Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetDirectories(It.IsAny<string>()))
-                  .Returns(new string[0]);
+            GivenRootFolder();
 
             Subject.Scan(_movie);
 
             ExceptionVerification.ExpectedWarns(1);
 
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.GetFiles(_movie.Path, SearchOption.AllDirectories), Times.Never());
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.CreateFolder(_movie.Path), Times.Never());
+
             Mocker.GetMock<IMediaFileTableCleanupService>()
-                  .Verify(v => v.Clean(It.IsAny<Movie>(), new List<string>()), Times.Never());
+                  .Verify(v => v.Clean(It.IsAny<Movie>(), It.IsAny<List<string>>()), Times.Never());
+
+            Mocker.GetMock<IMakeImportDecision>()
+                  .Verify(v => v.GetImportDecisions(It.IsAny<List<string>>(), _movie), Times.Never());
+        }
+
+        [Test]
+        public void should_create_if_movie_folder_does_not_exist_but_create_folder_enabled()
+        {
+            GivenRootFolder(_otherMovieFolder);
+
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.CreateEmptyMovieFolders)
+                  .Returns(true);
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.CreateFolder(_movie.Path), Times.Once());
         }
 
         [Test]
         public void should_not_scan_extras_subfolder()
         {
-            GivenParentFolderExists();
+            GivenMovieFolder();
 
             GivenFiles(new List<string>
                        {
@@ -99,9 +156,41 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
+        public void should_not_create_if_movie_folder_does_not_exist_and_create_folder_disabled()
+        {
+            GivenRootFolder(_otherMovieFolder);
+
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.CreateEmptyMovieFolders)
+                  .Returns(false);
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.CreateFolder(_movie.Path), Times.Never());
+        }
+
+        [Test]
+        public void should_clean_but_not_import_if_movie_folder_does_not_exist()
+        {
+            GivenRootFolder(_otherMovieFolder);
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IDiskProvider>()
+                  .Verify(v => v.FolderExists(_movie.Path), Times.Once());
+
+            Mocker.GetMock<IMediaFileTableCleanupService>()
+                  .Verify(v => v.Clean(It.IsAny<Movie>(), It.IsAny<List<string>>()), Times.Once());
+
+            Mocker.GetMock<IMakeImportDecision>()
+                  .Verify(v => v.GetImportDecisions(It.IsAny<List<string>>(), _movie), Times.Never());
+        }
+
+        [Test]
         public void should_not_scan_AppleDouble_subfolder()
         {
-            GivenParentFolderExists();
+            GivenMovieFolder();
 
             GivenFiles(new List<string>
                        {
@@ -119,8 +208,9 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_scan_extras_movie_and_subfolders()
         {
-            GivenParentFolderExists();
             _movie.Path = @"C:\Test\Movies\Extras".AsOsAgnostic();
+
+            GivenMovieFolder();
 
             GivenFiles(new List<string>
                        {
@@ -141,7 +231,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_subfolders_that_start_with_period()
         {
-            GivenParentFolderExists();
+            GivenMovieFolder();
 
             GivenFiles(new List<string>
                        {
@@ -160,7 +250,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_subfolder_of_season_folder_that_starts_with_a_period()
         {
-            GivenParentFolderExists();
+            GivenMovieFolder();
 
             GivenFiles(new List<string>
                        {
@@ -180,7 +270,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_Synology_eaDir()
         {
-            GivenParentFolderExists();
+            GivenMovieFolder();
 
             GivenFiles(new List<string>
                        {
@@ -197,7 +287,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_thumb_folder()
         {
-            GivenParentFolderExists();
+            GivenMovieFolder();
 
             GivenFiles(new List<string>
                        {
@@ -214,8 +304,9 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_scan_dotHack_folder()
         {
-            GivenParentFolderExists();
             _movie.Path = @"C:\Test\TV\.hack".AsOsAgnostic();
+
+            GivenMovieFolder();
 
             GivenFiles(new List<string>
                        {
@@ -230,9 +321,9 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
-        public void should_find_files_at_root_of_series_folder()
+        public void should_find_files_at_root_of_movie_folder()
         {
-            GivenParentFolderExists();
+            GivenMovieFolder();
 
             GivenFiles(new List<string>
                        {
@@ -249,7 +340,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_exclude_osx_metadata_files()
         {
-            GivenParentFolderExists();
+            GivenMovieFolder();
 
             GivenFiles(new List<string>
                        {
