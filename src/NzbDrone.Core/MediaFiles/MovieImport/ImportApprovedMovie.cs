@@ -148,7 +148,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                         movieFile.RelativePath = localMovie.Movie.Path.GetRelativePath(movieFile.Path);
                     }
 
-                    if (isExistingFileHasChanged)
+                    if (isExistingFileHasChanged == 2)
                     {
                         _mediaFileService.Update(movieFile);
                     }
