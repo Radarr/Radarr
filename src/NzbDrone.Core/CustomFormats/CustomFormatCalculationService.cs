@@ -120,7 +120,7 @@ namespace NzbDrone.Core.CustomFormats
             var parsed = _parsingService.ParseMovieInfo(history.SourceTitle, null);
 
             Enum.TryParse(history.Data.GetValueOrDefault("indexerFlags"), true, out IndexerFlags flags);
-            int.TryParse(history.Data.GetValueOrDefault("size"), out var size);
+            long.TryParse(history.Data.GetValueOrDefault("size"), out var size);
 
             var info = new ParsedMovieInfo
             {

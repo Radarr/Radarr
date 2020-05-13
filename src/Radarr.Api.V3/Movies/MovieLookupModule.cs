@@ -32,7 +32,7 @@ namespace Radarr.Api.V3.Movies
             int tmdbId = -1;
             if (int.TryParse(Request.Query.tmdbId, out tmdbId))
             {
-                var result = _movieInfo.GetMovieInfo(tmdbId, null, true).Item1;
+                var result = _movieInfo.GetMovieInfo(tmdbId, true).Item1;
                 return result.ToResource();
             }
 
