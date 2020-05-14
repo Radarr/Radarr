@@ -1,6 +1,4 @@
-<p align="center">
-<img src="/Logo/text256.png" alt="Radarr">
-</p>
+# Radarr
 
 **New UI Development:** For an overview of the new UI development see [DEVELOPMENT.md](https://github.com/Radarr/Radarr/blob/aphrodite/DEVELOPMENT.md).
 
