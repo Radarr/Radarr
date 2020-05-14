@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NLog;
 using NLog.Extensions.Logging;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
@@ -72,7 +74,21 @@ namespace Radarr.Host
                     {
                         options.ConfigureHttpsDefaults(configureOptions =>
                         {
-                            var certificate = new X509Certificate2(_configFileProvider.SslCertPath, _configFileProvider.SslCertPassword, X509KeyStorageFlags.DefaultKeySet);
+                            X509Certificate2 certificate;
+
+                            try
+                            {
+                                certificate = new X509Certificate2(sslCertPath, _configFileProvider.SslCertPassword, X509KeyStorageFlags.DefaultKeySet);
+                            }
+                            catch (CryptographicException ex)
+                            {
+                                if (ex.HResult == 0x2 || ex.HResult == 0x2006D080)
+                                {
+                                    throw new RadarrStartupException(ex, $"The SSL certificate file {sslCertPath} does not exist");
+                                }
+
+                                throw new RadarrStartupException(ex);
+                            }
 
                             configureOptions.ServerCertificate = certificate;
                         });
