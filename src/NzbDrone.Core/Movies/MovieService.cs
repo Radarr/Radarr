@@ -94,20 +94,6 @@ namespace NzbDrone.Core.Movies
 
         public Movie AddMovie(Movie newMovie)
         {
-            Ensure.That(newMovie, () => newMovie).IsNotNull();
-
-            if (string.IsNullOrWhiteSpace(newMovie.Path))
-            {
-                var folderName = _fileNameBuilder.GetMovieFolder(newMovie);
-                newMovie.Path = Path.Combine(newMovie.RootFolderPath, folderName);
-            }
-
-            _logger.Info("Adding Movie {0} Path: [{1}]", newMovie, newMovie.Path);
-
-            newMovie.CleanTitle = newMovie.Title.CleanSeriesTitle();
-            newMovie.SortTitle = MovieTitleNormalizer.Normalize(newMovie.Title, newMovie.TmdbId);
-            newMovie.Added = DateTime.UtcNow;
-
             _movieRepository.Insert(newMovie);
             _eventAggregator.PublishEvent(new MovieAddedEvent(GetMovie(newMovie.Id)));
 
@@ -116,33 +102,7 @@ namespace NzbDrone.Core.Movies
 
         public List<Movie> AddMovies(List<Movie> newMovies)
         {
-            newMovies.ForEach(m => Ensure.That(m, () => m).IsNotNull());
-
-            newMovies.ForEach(m =>
-            {
-                if (string.IsNullOrWhiteSpace(m.Path))
-                {
-                    var folderName = _fileNameBuilder.GetMovieFolder(m);
-                    m.Path = Path.Combine(m.RootFolderPath, folderName);
-                }
-
-                m.CleanTitle = m.Title.CleanSeriesTitle();
-                m.SortTitle = MovieTitleNormalizer.Normalize(m.Title, m.TmdbId);
-                m.Added = DateTime.UtcNow;
-            });
-
-            var potentialMovieCount = newMovies.Count;
-
-            newMovies = newMovies.DistinctBy(movie => movie.TmdbId).ToList(); // Ensure we don't add the same movie twice
-
-            var existingMovies = FindByTmdbId(newMovies.Select(x => x.TmdbId).ToList());
-
-            newMovies = newMovies.ExceptBy(n => n.TmdbId, existingMovies, e => e.TmdbId, EqualityComparer<int>.Default).ToList(); // Ensure we don't add a movie that already exists
-
             _movieRepository.InsertMany(newMovies);
-
-            _logger.Debug("Adding {0} movies, {1} duplicates detected and skipped", newMovies.Count, potentialMovieCount - newMovies.Count);
-
             _eventAggregator.PublishEvent(new MoviesImportedEvent(newMovies.Select(s => s.Id).ToList()));
 
             return newMovies;
@@ -161,13 +121,13 @@ namespace NzbDrone.Core.Movies
         private Movie FindByTitle(string cleanTitle, int? year)
         {
             cleanTitle = cleanTitle.ToLowerInvariant();
-            string cleanTitleWithRomanNumbers = cleanTitle;
-            string cleanTitleWithArabicNumbers = cleanTitle;
+            var cleanTitleWithRomanNumbers = cleanTitle;
+            var cleanTitleWithArabicNumbers = cleanTitle;
 
-            foreach (ArabicRomanNumeral arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
+            foreach (var arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
             {
-                string arabicNumber = arabicRomanNumeral.ArabicNumeralAsString;
-                string romanNumber = arabicRomanNumeral.RomanNumeral;
+                var arabicNumber = arabicRomanNumeral.ArabicNumeralAsString;
+                var romanNumber = arabicRomanNumeral.RomanNumeral;
                 cleanTitleWithRomanNumbers = cleanTitleWithRomanNumbers.Replace(arabicNumber, romanNumber);
                 cleanTitleWithArabicNumbers = cleanTitleWithArabicNumbers.Replace(romanNumber, arabicNumber);
             }
