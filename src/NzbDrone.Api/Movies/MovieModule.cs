@@ -28,11 +28,13 @@ namespace NzbDrone.Api.Movies
     {
         private const string TITLE_SLUG_ROUTE = "/titleslug/(?<slug>[^/]+)";
 
-        protected readonly IMovieService _moviesService;
+        private readonly IMovieService _movieService;
+        private readonly IAddMovieService _addMovieService;
         private readonly IMapCoversToLocal _coverMapper;
 
         public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
-                           IMovieService moviesService,
+                           IMovieService movieService,
+                           IAddMovieService addMovieService,
                            IMapCoversToLocal coverMapper,
                            RootFolderValidator rootFolderValidator,
                            MappedNetworkDriveValidator mappedNetworkDriveValidator,
@@ -43,7 +45,8 @@ namespace NzbDrone.Api.Movies
                            ProfileExistsValidator profileExistsValidator)
         : base(signalRBroadcaster)
         {
-            _moviesService = moviesService;
+            _movieService = movieService;
+            _addMovieService = addMovieService;
 
             _coverMapper = coverMapper;
 
@@ -80,7 +83,7 @@ namespace NzbDrone.Api.Movies
 
         private MovieResource GetMovie(int id)
         {
-            var movies = _moviesService.GetMovie(id);
+            var movies = _movieService.GetMovie(id);
             return MapToResource(movies);
         }
 
@@ -99,7 +102,7 @@ namespace NzbDrone.Api.Movies
 
         private List<MovieResource> AllMovie()
         {
-            var moviesResources = _moviesService.GetAllMovies().ToResource();
+            var moviesResources = _movieService.GetAllMovies().ToResource();
 
             MapCoversToLocal(moviesResources.ToArray());
 
@@ -110,14 +113,14 @@ namespace NzbDrone.Api.Movies
         {
             var model = moviesResource.ToModel();
 
-            return _moviesService.AddMovie(model).Id;
+            return _addMovieService.AddMovie(model).Id;
         }
 
         private void UpdateMovie(MovieResource moviesResource)
         {
-            var model = moviesResource.ToModel(_moviesService.GetMovie(moviesResource.Id));
+            var model = moviesResource.ToModel(_movieService.GetMovie(moviesResource.Id));
 
-            _moviesService.UpdateMovie(model);
+            _movieService.UpdateMovie(model);
 
             BroadcastResourceChange(ModelAction.Updated, moviesResource);
         }
@@ -139,7 +142,7 @@ namespace NzbDrone.Api.Movies
                 addExclusion = Convert.ToBoolean(addExclusionQuery.Value);
             }
 
-            _moviesService.DeleteMovie(id, deleteFiles, addExclusion);
+            _movieService.DeleteMovie(id, deleteFiles, addExclusion);
         }
 
         private void MapCoversToLocal(params MovieResource[] movies)

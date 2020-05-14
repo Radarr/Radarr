@@ -8,21 +8,21 @@ namespace Radarr.Api.V3.Movies
 {
     public class MovieImportModule : RadarrRestModule<MovieResource>
     {
-        private readonly IMovieService _movieService;
+        private readonly IAddMovieService _addMovieService;
 
-        public MovieImportModule(IMovieService movieService)
+        public MovieImportModule(IAddMovieService addMovieService)
             : base("/movie/import")
         {
-            _movieService = movieService;
+            _addMovieService = addMovieService;
             Post("/", x => Import());
         }
 
         private object Import()
         {
             var resource = Request.Body.FromJson<List<MovieResource>>();
-            var newSeries = resource.ToModel();
+            var newMovies = resource.ToModel();
 
-            return _movieService.AddMovies(newSeries).ToResource();
+            return _addMovieService.AddMovies(newMovies).ToResource();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using Moq;
@@ -279,7 +279,7 @@ namespace NzbDrone.Core.Test.NetImport
 
             Subject.Execute(_command);
 
-            Mocker.GetMock<IMovieService>()
+            Mocker.GetMock<IAddMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 5)), Times.Once());
         }
 
@@ -293,7 +293,7 @@ namespace NzbDrone.Core.Test.NetImport
 
             Subject.Execute(_command);
 
-            Mocker.GetMock<IMovieService>()
+            Mocker.GetMock<IAddMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 8)), Times.Once());
         }
 
@@ -307,7 +307,7 @@ namespace NzbDrone.Core.Test.NetImport
 
             Subject.Execute(_command);
 
-            Mocker.GetMock<IMovieService>()
+            Mocker.GetMock<IAddMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 5)), Times.Once());
         }
 
@@ -323,7 +323,7 @@ namespace NzbDrone.Core.Test.NetImport
 
             Subject.Execute(_command);
 
-            Mocker.GetMock<IMovieService>()
+            Mocker.GetMock<IAddMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7)), Times.Once());
         }
 
@@ -341,7 +341,7 @@ namespace NzbDrone.Core.Test.NetImport
 
             Subject.Execute(_command);
 
-            Mocker.GetMock<IMovieService>()
+            Mocker.GetMock<IAddMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && !s.Any(m => m.TmdbId == _moviesList2[0].TmdbId))), Times.Once());
         }
 
@@ -359,7 +359,7 @@ namespace NzbDrone.Core.Test.NetImport
 
             Subject.Execute(_command);
 
-            Mocker.GetMock<IMovieService>()
+            Mocker.GetMock<IAddMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && !s.Any(m => m.TmdbId == _moviesList2[0].TmdbId))), Times.Once());
         }
 

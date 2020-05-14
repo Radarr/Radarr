@@ -11,13 +11,13 @@ namespace NzbDrone.Api.NetImport
 {
     public class ListImportModule : NzbDroneApiModule
     {
-        private readonly IMovieService _movieService;
+        private readonly IAddMovieService _addMovieService;
         private readonly ISearchForNewMovie _movieSearch;
 
-        public ListImportModule(IMovieService movieService, ISearchForNewMovie movieSearch)
+        public ListImportModule(IAddMovieService addMovieService, ISearchForNewMovie movieSearch)
             : base("/movie/import")
         {
-            _movieService = movieService;
+            _addMovieService = addMovieService;
             _movieSearch = movieSearch;
             Put("/", movie => SaveAll());
         }
@@ -28,7 +28,7 @@ namespace NzbDrone.Api.NetImport
 
             var movies = resources.Select(movieResource => _movieSearch.MapMovieToTmdbMovie(movieResource.ToModel())).Where(m => m != null).DistinctBy(m => m.TmdbId).ToList();
 
-            return ResponseWithCode(_movieService.AddMovies(movies).ToResource(), HttpStatusCode.Accepted);
+            return ResponseWithCode(_addMovieService.AddMovies(movies).ToResource(), HttpStatusCode.Accepted);
         }
     }
 }
