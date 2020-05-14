@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
         public List<XbmcMovie> GetMovies(XbmcSettings settings)
         {
-            var response = ProcessRequest(settings, "VideoLibrary.GetMovies", new[] { "file", "imdbnumber" });
+            var response = ProcessRequest(settings, "VideoLibrary.GetMovies", new List<string> { "file", "imdbnumber" });
 
             return Json.Deserialize<MovieResponse>(response).Result.Movies;
         }
