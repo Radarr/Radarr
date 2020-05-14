@@ -19,7 +19,7 @@ namespace Readarr.Api.V1.Config
                 RenameBooks = model.RenameBooks,
                 ReplaceIllegalCharacters = model.ReplaceIllegalCharacters,
                 StandardBookFormat = model.StandardBookFormat,
-                ArtistFolderFormat = model.AuthorFolderFormat
+                AuthorFolderFormat = model.AuthorFolderFormat
             };
         }
 
@@ -42,7 +42,7 @@ namespace Readarr.Api.V1.Config
                 RenameBooks = resource.RenameBooks,
                 ReplaceIllegalCharacters = resource.ReplaceIllegalCharacters,
                 StandardBookFormat = resource.StandardBookFormat,
-                AuthorFolderFormat = resource.ArtistFolderFormat,
+                AuthorFolderFormat = resource.AuthorFolderFormat,
             };
         }
     }

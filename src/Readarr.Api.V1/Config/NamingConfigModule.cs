@@ -33,7 +33,7 @@ namespace Readarr.Api.V1.Config
             Get("/examples", x => GetExamples(this.Bind<NamingConfigResource>()));
 
             SharedValidator.RuleFor(c => c.StandardBookFormat).ValidBookFormat();
-            SharedValidator.RuleFor(c => c.ArtistFolderFormat).ValidAuthorFolderFormat();
+            SharedValidator.RuleFor(c => c.AuthorFolderFormat).ValidAuthorFolderFormat();
         }
 
         private void UpdateNamingConfig(NamingConfigResource resource)
