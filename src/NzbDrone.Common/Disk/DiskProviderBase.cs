@@ -236,6 +236,8 @@ namespace NzbDrone.Common.Disk
 
             RemoveReadOnly(source);
 
+            Logger.Trace("MoveFile");
+
             // NET Core is too eager to copy/delete if overwrite is false
             // Therefore we also set overwrite if we know destination doesn't exist
             MoveFileInternal(source, destination, overwrite || !destExists);
@@ -262,6 +264,7 @@ namespace NzbDrone.Common.Disk
 
         protected virtual void MoveFileInternal(string source, string destination, bool overwrite)
         {
+            Logger.Trace("MoveFileInternal base");
 #if NETCOREAPP
             File.Move(source, destination, overwrite);
 #else

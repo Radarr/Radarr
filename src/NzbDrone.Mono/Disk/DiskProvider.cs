@@ -183,6 +183,8 @@ namespace NzbDrone.Mono.Disk
         {
             var sourceInfo = UnixFileSystemInfo.GetFileSystemEntry(source);
 
+            _logger.Trace("Move file internal override");
+
             if (sourceInfo.IsSymbolicLink)
             {
                 var isSameDir = UnixPath.GetDirectoryName(source) == UnixPath.GetDirectoryName(destination);
@@ -217,7 +219,9 @@ namespace NzbDrone.Mono.Disk
             else if ((PlatformInfo.Platform == PlatformType.Mono && PlatformInfo.GetVersion() >= new Version(6, 0)) ||
                      PlatformInfo.Platform == PlatformType.NetCore)
             {
+                _logger.Trace("Doing transferfilepatched");
                 TransferFilePatched(source, destination, overwrite, true);
+                _logger.Trace("Finished transferfilepatched");
             }
             else
             {
@@ -235,6 +239,7 @@ namespace NzbDrone.Mono.Disk
             // Mono 6.x till 6.10 doesn't properly try use rename first.
             if (move && PlatformInfo.Platform == PlatformType.Mono && PlatformInfo.GetVersion() < new Version(6, 10))
             {
+                _logger.Trace("Mono move bug");
                 if (Syscall.lstat(source, out var sourcestat) == 0 &&
                     Syscall.lstat(destination, out var deststat) != 0 &&
                     Syscall.rename(source, destination) == 0)
@@ -248,6 +253,7 @@ namespace NzbDrone.Mono.Disk
             {
                 if (move)
                 {
+                    _logger.Trace("Trying base movefileinternal");
                     base.MoveFileInternal(source, destination, overwrite);
                 }
                 else
@@ -257,6 +263,7 @@ namespace NzbDrone.Mono.Disk
             }
             catch (UnauthorizedAccessException)
             {
+                _logger.Trace("Caught error");
                 var srcInfo = new FileInfo(source);
                 var dstInfo = new FileInfo(destination);
                 var exists = dstInfo.Exists && srcInfo.Exists;
@@ -347,6 +354,8 @@ namespace NzbDrone.Mono.Disk
                     }
                 }
             }
+
+            _logger.Trace("Base move succeeded", source);
         }
 
         public override bool TryCreateHardLink(string source, string destination)

@@ -360,6 +360,7 @@ namespace NzbDrone.Common.Disk
 
             if (mode.HasFlag(TransferMode.Move))
             {
+                _logger.Trace($"Using verification mode {verificationMode}");
                 if (verificationMode == DiskTransferVerificationMode.Transactional || verificationMode == DiskTransferVerificationMode.TryTransactional)
                 {
                     if (TryMoveFileTransactional(sourcePath, targetPath, originalSize, verificationMode))
@@ -615,6 +616,7 @@ namespace NzbDrone.Common.Disk
 
         private void TryMoveFileVerified(string sourcePath, string targetPath, long originalSize)
         {
+            _logger.Trace("Trying Verified move");
             try
             {
                 _diskProvider.MoveFile(sourcePath, targetPath);
@@ -627,6 +629,7 @@ namespace NzbDrone.Common.Disk
             }
             catch
             {
+                _logger.Trace("Verified move error");
                 RollbackPartialMove(sourcePath, targetPath);
                 throw;
             }
