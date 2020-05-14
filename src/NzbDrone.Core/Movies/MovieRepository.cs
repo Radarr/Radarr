@@ -101,8 +101,9 @@ namespace NzbDrone.Core.Movies
 
         public List<Movie> FindByTitles(List<string> titles)
         {
-            return Query(Builder().OrWhere<Movie>(x => titles.Contains(x.CleanTitle))
-                         .OrWhere<AlternativeTitle>(x => titles.Contains(x.CleanTitle)));
+            var distinct = titles.Distinct().ToList();
+            return Query(Builder().OrWhere<Movie>(x => distinct.Contains(x.CleanTitle))
+                         .OrWhere<AlternativeTitle>(x => distinct.Contains(x.CleanTitle)));
         }
 
         public List<Movie> FindByTitleInexact(string cleanTitle)

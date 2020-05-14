@@ -170,6 +170,16 @@ namespace NzbDrone.Core.Test.Datastore
         }
 
         [Test]
+        public void where_in_string_list()
+        {
+            var list = new List<string> { "first", "second", "third" };
+
+            _subject = Where(x => list.Contains(x.CleanTitle));
+
+            _subject.ToString().Should().Be($"(\"Movies\".\"CleanTitle\" IN @Clause1_P1)");
+        }
+
+        [Test]
         public void enum_as_int()
         {
             _subject = Where(x => x.Status == MovieStatusType.Announced);
