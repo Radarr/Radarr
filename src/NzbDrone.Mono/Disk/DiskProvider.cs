@@ -179,7 +179,7 @@ namespace NzbDrone.Mono.Disk
             }
         }
 
-        protected override void MoveFileInternal(string source, string destination, bool overwrite)
+        protected override void MoveFileInternal(string source, string destination)
         {
             var sourceInfo = UnixFileSystemInfo.GetFileSystemEntry(source);
 
@@ -217,11 +217,11 @@ namespace NzbDrone.Mono.Disk
             else if ((PlatformInfo.Platform == PlatformType.Mono && PlatformInfo.GetVersion() >= new Version(6, 0)) ||
                      PlatformInfo.Platform == PlatformType.NetCore)
             {
-                TransferFilePatched(source, destination, overwrite, true);
+                TransferFilePatched(source, destination, false, true);
             }
             else
             {
-                base.MoveFileInternal(source, destination, overwrite);
+                base.MoveFileInternal(source, destination);
             }
         }
 
@@ -233,7 +233,9 @@ namespace NzbDrone.Mono.Disk
             // Catch the exception and attempt to handle these edgecases
 
             // Mono 6.x till 6.10 doesn't properly try use rename first.
-            if (move && PlatformInfo.Platform == PlatformType.Mono && PlatformInfo.GetVersion() < new Version(6, 10))
+            if (move &&
+                ((PlatformInfo.Platform == PlatformType.Mono && PlatformInfo.GetVersion() < new Version(6, 10)) ||
+                 (PlatformInfo.Platform == PlatformType.NetCore)))
             {
                 if (Syscall.lstat(source, out var sourcestat) == 0 &&
                     Syscall.lstat(destination, out var deststat) != 0 &&
@@ -248,11 +250,11 @@ namespace NzbDrone.Mono.Disk
             {
                 if (move)
                 {
-                    base.MoveFileInternal(source, destination, overwrite);
+                    base.MoveFileInternal(source, destination);
                 }
                 else
                 {
-                    base.CopyFileInternal(source, destination, overwrite);
+                    base.CopyFileInternal(source, destination);
                 }
             }
             catch (UnauthorizedAccessException)
