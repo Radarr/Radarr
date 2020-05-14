@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Net.Sockets;
+using Microsoft.AspNetCore.Connections;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
@@ -49,8 +51,22 @@ namespace NzbDrone.Console
             {
                 System.Console.WriteLine("");
                 System.Console.WriteLine("");
-                Logger.Fatal(ex.Message + ". This can happen if another instance of Radarr is already running another application is using the same port (default: 7878) or the user has insufficient permissions");
+                Logger.Fatal(ex.Message + " This can happen if another instance of Radarr is already running another application is using the same port (default: 7878) or the user has insufficient permissions");
                 Exit(ExitCodes.RecoverableFailure);
+            }
+            catch (IOException ex)
+            {
+                if (ex.InnerException is AddressInUseException)
+                {
+                    System.Console.WriteLine("");
+                    System.Console.WriteLine("");
+                    Logger.Fatal(ex.Message + " This can happen if another instance of Radarr is already running another application is using the same port (default: 7878) or the user has insufficient permissions");
+                    Exit(ExitCodes.RecoverableFailure);
+                }
+                else
+                {
+                    throw;
+                }
             }
             catch (RemoteAccessException ex)
             {
