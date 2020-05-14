@@ -796,7 +796,7 @@ stages:
     - Unit_Test
     - Integration
     - Automation
-    condition: always()
+    condition: eq(variables['system.pullrequest.isfork'], false)
     displayName: Build Status Report
     jobs:
     - job:
