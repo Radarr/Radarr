@@ -227,18 +227,13 @@ namespace NzbDrone.Common.Disk
                 throw new IOException(string.Format("Source and destination can't be the same {0}", source));
             }
 
-            var destExists = FileExists(destination);
-
-            if (destExists && overwrite)
+            if (FileExists(destination) && overwrite)
             {
                 DeleteFile(destination);
             }
 
             RemoveReadOnly(source);
-
-            // NET Core is too eager to copy/delete if overwrite is false
-            // Therefore we also set overwrite if we know destination doesn't exist
-            MoveFileInternal(source, destination, overwrite || !destExists);
+            MoveFileInternal(source, destination);
         }
 
         public void MoveFolder(string source, string destination, bool overwrite = false)
@@ -260,13 +255,9 @@ namespace NzbDrone.Common.Disk
             Directory.Move(source, destination);
         }
 
-        protected virtual void MoveFileInternal(string source, string destination, bool overwrite)
+        protected virtual void MoveFileInternal(string source, string destination)
         {
-#if NETCOREAPP
-            File.Move(source, destination, overwrite);
-#else
             File.Move(source, destination);
-#endif
         }
 
         public abstract bool TryCreateHardLink(string source, string destination);
