@@ -16,15 +16,18 @@ namespace NzbDrone.Core.ThingiProvider
         {
         }
 
-        protected override IEnumerable<TProviderDefinition> GetResults(SqlBuilder.Template sql)
+        protected override List<TProviderDefinition> Query(SqlBuilder builder)
         {
+            var type = typeof(TProviderDefinition);
+            var sql = builder.Select(type).AddSelectTemplate(type);
+
             var results = new List<TProviderDefinition>();
 
             using (var conn = _database.OpenConnection())
             using (var reader = conn.ExecuteReader(sql.RawSql, sql.Parameters))
             {
                 var parser = reader.GetRowParser<TProviderDefinition>(typeof(TProviderDefinition));
-                var settingsIndex = reader.GetOrdinal("Settings");
+                var settingsIndex = reader.GetOrdinal(nameof(ProviderDefinition.Settings));
                 var serializerSettings = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
                 while (reader.Read())
