@@ -353,6 +353,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return "VC1";
             }
 
+            if (videoFormat.ContainsIgnoreCase("AV1"))
+            {
+                return "AV1";
+            }
+
             if (videoFormat.ContainsIgnoreCase("VP6") || videoFormat.ContainsIgnoreCase("VP7") ||
                 videoFormat.ContainsIgnoreCase("VP8") || videoFormat.ContainsIgnoreCase("VP9"))
             {
