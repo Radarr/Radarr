@@ -47,6 +47,8 @@ namespace NzbDrone.Core.Datastore
 
         protected readonly IDatabase _database;
         protected readonly string _table;
+        protected string _selectTemplate;
+        protected string _deleteTemplate;
 
         public BasicRepository(IDatabase database, IEventAggregator eventAggregator)
         {
@@ -60,19 +62,42 @@ namespace NzbDrone.Core.Datastore
 
             var excluded = TableMapping.Mapper.ExcludeProperties(type).Select(x => x.Name).ToList();
             excluded.Add(_keyProperty.Name);
-            _properties = type.GetProperties().Where(x => x.IsMappableProperty() && !excluded.Contains(x.Name)).ToList();
+            _properties = type.GetProperties().Where(x => !excluded.Contains(x.Name)).ToList();
 
             _insertSql = GetInsertSql();
             _updateSql = GetUpdateSql(_properties);
+
+            _selectTemplate = $"SELECT /**select**/ FROM {_table} /**join**/ /**innerjoin**/ /**leftjoin**/ /**where**/ /**orderby**/";
+            _deleteTemplate = $"DELETE FROM {_table} /**where**/";
         }
 
-        protected virtual SqlBuilder Builder() => new SqlBuilder();
+        protected virtual SqlBuilder BuilderBase() => new SqlBuilder();
+        protected virtual SqlBuilder Builder() => BuilderBase().SelectAll();
 
-        protected virtual List<TModel> Query(SqlBuilder builder) => _database.Query<TModel>(builder).ToList();
+        protected virtual IEnumerable<TModel> GetResults(SqlBuilder.Template sql)
+        {
+            using (var conn = _database.OpenConnection())
+            {
+                return conn.Query<TModel>(sql.RawSql, sql.Parameters);
+            }
+        }
 
-        protected List<TModel> Query(Expression<Func<TModel, bool>> where) => Query(Builder().Where(where));
+        protected List<TModel> Query(Expression<Func<TModel, bool>> where)
+        {
+            return Query(Builder().Where<TModel>(where));
+        }
 
-        protected virtual List<TModel> QueryDistinct(SqlBuilder builder) => _database.QueryDistinct<TModel>(builder).ToList();
+        protected List<TModel> Query(SqlBuilder builder)
+        {
+            return Query(builder, GetResults);
+        }
+
+        protected List<TModel> Query(SqlBuilder builder, Func<SqlBuilder.Template, IEnumerable<TModel>> queryFunc)
+        {
+            var sql = builder.AddTemplate(_selectTemplate).LogQuery();
+
+            return queryFunc(sql).ToList();
+        }
 
         public int Count()
         {
@@ -172,7 +197,6 @@ namespace NzbDrone.Core.Datastore
 
         private TModel Insert(IDbConnection connection, IDbTransaction transaction, TModel model)
         {
-            SqlBuilderExtensions.LogQuery(_insertSql, model);
             var multi = connection.QueryMultiple(_insertSql, model, transaction);
             var id = (int)multi.Read().First().id;
             _keyProperty.SetValue(model, id);
@@ -238,7 +262,7 @@ namespace NzbDrone.Core.Datastore
 
         protected void Delete(SqlBuilder builder)
         {
-            var sql = builder.AddDeleteTemplate(typeof(TModel)).LogQuery();
+            var sql = builder.AddTemplate(_deleteTemplate).LogQuery();
 
             using (var conn = _database.OpenConnection())
             {
@@ -344,7 +368,7 @@ namespace NzbDrone.Core.Datastore
         private string GetUpdateSql(List<PropertyInfo> propertiesToUpdate)
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("UPDATE {0} SET ", _table);
+            sb.AppendFormat("update {0} set ", _table);
 
             for (var i = 0; i < propertiesToUpdate.Count; i++)
             {
@@ -356,7 +380,7 @@ namespace NzbDrone.Core.Datastore
                 }
             }
 
-            sb.Append($" WHERE \"{_keyProperty.Name}\" = @{_keyProperty.Name}");
+            sb.Append($" where \"{_keyProperty.Name}\" = @{_keyProperty.Name}");
 
             return sb.ToString();
         }
@@ -365,8 +389,6 @@ namespace NzbDrone.Core.Datastore
         {
             var sql = propertiesToUpdate == _properties ? _updateSql : GetUpdateSql(propertiesToUpdate);
 
-            SqlBuilderExtensions.LogQuery(sql, model);
-
             connection.Execute(sql, model, transaction: transaction);
         }
 
@@ -374,20 +396,15 @@ namespace NzbDrone.Core.Datastore
         {
             var sql = propertiesToUpdate == _properties ? _updateSql : GetUpdateSql(propertiesToUpdate);
 
-            foreach (var model in models)
-            {
-                SqlBuilderExtensions.LogQuery(sql, model);
-            }
-
             connection.Execute(sql, models, transaction: transaction);
         }
 
-        protected virtual SqlBuilder PagedBuilder() => Builder();
-        protected virtual IEnumerable<TModel> PagedQuery(SqlBuilder sql) => Query(sql);
+        protected virtual SqlBuilder PagedBuilder() => BuilderBase();
+        protected virtual IEnumerable<TModel> PagedSelector(SqlBuilder.Template sql) => GetResults(sql);
 
         public virtual PagingSpec<TModel> GetPaged(PagingSpec<TModel> pagingSpec)
         {
-            pagingSpec.Records = GetPagedRecords(PagedBuilder(), pagingSpec, PagedQuery);
+            pagingSpec.Records = GetPagedRecords(PagedBuilder().SelectAll(), pagingSpec, PagedSelector);
             pagingSpec.TotalRecords = GetPagedRecordCount(PagedBuilder().SelectCount(), pagingSpec);
 
             return pagingSpec;
@@ -403,7 +420,7 @@ namespace NzbDrone.Core.Datastore
             }
         }
 
-        protected List<TModel> GetPagedRecords(SqlBuilder builder, PagingSpec<TModel> pagingSpec, Func<SqlBuilder, IEnumerable<TModel>> queryFunc)
+        protected List<TModel> GetPagedRecords(SqlBuilder builder, PagingSpec<TModel> pagingSpec, Func<SqlBuilder.Template, IEnumerable<TModel>> queryFunc)
         {
             AddFilters(builder, pagingSpec);
 
@@ -411,22 +428,16 @@ namespace NzbDrone.Core.Datastore
             var pagingOffset = (pagingSpec.Page - 1) * pagingSpec.PageSize;
             builder.OrderBy($"{pagingSpec.SortKey} {sortDirection} LIMIT {pagingSpec.PageSize} OFFSET {pagingOffset}");
 
-            return queryFunc(builder).ToList();
+            var sql = builder.AddTemplate(_selectTemplate).LogQuery();
+
+            return queryFunc(sql).ToList();
         }
 
-        protected int GetPagedRecordCount(SqlBuilder builder, PagingSpec<TModel> pagingSpec, string template = null)
+        protected int GetPagedRecordCount(SqlBuilder builder, PagingSpec<TModel> pagingSpec)
         {
             AddFilters(builder, pagingSpec);
 
-            SqlBuilder.Template sql;
-            if (template != null)
-            {
-                sql = builder.AddTemplate(template).LogQuery();
-            }
-            else
-            {
-                sql = builder.AddPageCountTemplate(typeof(TModel));
-            }
+            var sql = builder.AddTemplate(_selectTemplate).LogQuery();
 
             using (var conn = _database.OpenConnection())
             {

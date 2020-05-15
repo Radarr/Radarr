@@ -3,36 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Dapper;
+using NzbDrone.Common.Reflection;
 
 namespace NzbDrone.Core.Datastore
 {
+    public static class MappingExtensions
+    {
+        public static PropertyInfo GetMemberName<T>(this Expression<Func<T, object>> member)
+        {
+            var memberExpression = member.Body as MemberExpression;
+            if (memberExpression == null)
+            {
+                memberExpression = (member.Body as UnaryExpression).Operand as MemberExpression;
+            }
+
+            return (PropertyInfo)memberExpression.Member;
+        }
+    }
+
     public class TableMapper
     {
         public TableMapper()
         {
             IgnoreList = new Dictionary<Type, List<PropertyInfo>>();
-            LazyLoadList = new Dictionary<Type, List<LazyLoadedProperty>>();
             TableMap = new Dictionary<Type, string>();
         }
 
         public Dictionary<Type, List<PropertyInfo>> IgnoreList { get; set; }
-        public Dictionary<Type, List<LazyLoadedProperty>> LazyLoadList { get; set; }
         public Dictionary<Type, string> TableMap { get; set; }
 
         public ColumnMapper<TEntity> Entity<TEntity>(string tableName)
-            where TEntity : ModelBase
         {
-            var type = typeof(TEntity);
-            TableMap.Add(type, tableName);
+            TableMap.Add(typeof(TEntity), tableName);
 
-            if (IgnoreList.TryGetValue(type, out var list))
+            if (IgnoreList.TryGetValue(typeof(TEntity), out var list))
             {
-                return new ColumnMapper<TEntity>(list, LazyLoadList[type]);
+                return new ColumnMapper<TEntity>(list);
             }
 
-            IgnoreList[type] = new List<PropertyInfo>();
-            LazyLoadList[type] = new List<LazyLoadedProperty>();
-            return new ColumnMapper<TEntity>(IgnoreList[type], LazyLoadList[type]);
+            list = new List<PropertyInfo>();
+            IgnoreList[typeof(TEntity)] = list;
+            return new ColumnMapper<TEntity>(list);
         }
 
         public List<PropertyInfo> ExcludeProperties(Type x)
@@ -44,44 +56,21 @@ namespace NzbDrone.Core.Datastore
         {
             return TableMap.ContainsKey(x) ? TableMap[x] : null;
         }
-
-        public string SelectTemplate(Type x)
-        {
-            return $"SELECT /**select**/ FROM {TableMap[x]} /**join**/ /**innerjoin**/ /**leftjoin**/ /**where**/ /**groupby**/ /**having**/ /**orderby**/";
-        }
-
-        public string DeleteTemplate(Type x)
-        {
-            return $"DELETE FROM {TableMap[x]} /**where**/";
-        }
-
-        public string PageCountTemplate(Type x)
-        {
-            return $"SELECT /**select**/ FROM {TableMap[x]} /**join**/ /**innerjoin**/ /**leftjoin**/ /**where**/";
-        }
-    }
-
-    public class LazyLoadedProperty
-    {
-        public PropertyInfo Property { get; set; }
-        public ILazyLoaded LazyLoad { get; set; }
     }
 
     public class ColumnMapper<T>
-    where T : ModelBase
     {
         private readonly List<PropertyInfo> _ignoreList;
-        private readonly List<LazyLoadedProperty> _lazyLoadList;
 
-        public ColumnMapper(List<PropertyInfo> ignoreList, List<LazyLoadedProperty> lazyLoadList)
+        public ColumnMapper(List<PropertyInfo> ignoreList)
         {
             _ignoreList = ignoreList;
-            _lazyLoadList = lazyLoadList;
         }
 
         public ColumnMapper<T> AutoMapPropertiesWhere(Func<PropertyInfo, bool> predicate)
         {
-            var properties = typeof(T).GetProperties();
+            Type entityType = typeof(T);
+            var properties = entityType.GetProperties();
             _ignoreList.AddRange(properties.Where(x => !predicate(x)));
 
             return this;
@@ -89,7 +78,7 @@ namespace NzbDrone.Core.Datastore
 
         public ColumnMapper<T> RegisterModel()
         {
-            return AutoMapPropertiesWhere(x => x.IsMappableProperty());
+            return AutoMapPropertiesWhere(IsMappableProperty);
         }
 
         public ColumnMapper<T> Ignore(Expression<Func<T, object>> property)
@@ -98,31 +87,30 @@ namespace NzbDrone.Core.Datastore
             return this;
         }
 
-        public ColumnMapper<T> LazyLoad<TChild>(Expression<Func<T, LazyLoaded<TChild>>> property, Func<IDatabase, T, TChild> query, Func<T, bool> condition)
+        public static bool IsMappableProperty(MemberInfo memberInfo)
         {
-            var lazyLoad = new LazyLoaded<T, TChild>(query, condition);
+            var propertyInfo = memberInfo as PropertyInfo;
 
-            var item = new LazyLoadedProperty
+            if (propertyInfo == null)
             {
-                Property = property.GetMemberName(),
-                LazyLoad = lazyLoad
-            };
+                return false;
+            }
 
-            _lazyLoadList.Add(item);
+            if (!propertyInfo.IsReadable() || !propertyInfo.IsWritable())
+            {
+                return false;
+            }
 
-            return this;
-        }
+            // This is a bit of a hack but is the only way to see if a type has a handler set in Dapper
+#pragma warning disable 618
+            SqlMapper.LookupDbType(propertyInfo.PropertyType, "", false, out var handler);
+#pragma warning restore 618
+            if (propertyInfo.PropertyType.IsSimpleType() || handler != null)
+            {
+                return true;
+            }
 
-        public ColumnMapper<T> HasOne<TChild>(Expression<Func<T, LazyLoaded<TChild>>> portalExpression, Func<T, int> childIdSelector)
-            where TChild : ModelBase
-        {
-            return LazyLoad(portalExpression,
-                            (db, parent) =>
-                            {
-                                var id = childIdSelector(parent);
-                                return db.Query<TChild>(new SqlBuilder().Where<TChild>(x => x.Id == id)).SingleOrDefault();
-                            },
-                            parent => childIdSelector(parent) > 0);
+            return false;
         }
     }
 }

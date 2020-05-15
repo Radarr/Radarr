@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Dapper;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
@@ -23,11 +24,11 @@ namespace NzbDrone.Core.Profiles
             _customFormatService = customFormatService;
         }
 
-        protected override List<Profile> Query(SqlBuilder builder)
+        protected override IEnumerable<Profile> GetResults(SqlBuilder.Template sql)
         {
             var cfs = _customFormatService.All().ToDictionary(c => c.Id);
 
-            var profiles = base.Query(builder);
+            var profiles = base.GetResults(sql);
 
             // Do the conversions from Id to full CustomFormat object here instead of in
             // CustomFormatIntConverter to remove need to for a static property containing
