@@ -105,7 +105,7 @@ namespace NzbDrone.Core.AuthorStats
         public void Handle(BookEditedEvent message)
         {
             _cache.Remove("AllAuthors");
-            _cache.Remove(message.Album.AuthorId.ToString());
+            _cache.Remove(message.Book.AuthorId.ToString());
         }
 
         [EventHandleOrder(EventHandleOrder.First)]

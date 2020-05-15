@@ -4,8 +4,8 @@ namespace Readarr.Api.V1.Config
 {
     public class NamingExampleResource
     {
-        public string SingleTrackExample { get; set; }
-        public string ArtistFolderExample { get; set; }
+        public string SingleBookExample { get; set; }
+        public string AuthorFolderExample { get; set; }
     }
 
     public static class NamingConfigResourceMapper

@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         private void GivenUnmonitorDeletedTracks(bool enabled)
         {
             Mocker.GetMock<IConfigService>()
-                  .SetupGet(v => v.AutoUnmonitorPreviouslyDownloadedTracks)
+                  .SetupGet(v => v.AutoUnmonitorPreviouslyDownloadedBooks)
                   .Returns(enabled);
         }
 

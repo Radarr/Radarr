@@ -9,7 +9,7 @@ namespace NzbDrone.Integration.Test
     {
         protected NzbDroneRunner _runner;
 
-        public override string ArtistRootFolder => GetTempDirectory("ArtistRootFolder");
+        public override string AuthorRootFolder => GetTempDirectory("AuthorRootFolder");
 
         protected override string RootUrl => "http://localhost:8787/";
 

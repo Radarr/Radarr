@@ -32,14 +32,14 @@ namespace NzbDrone.Core.History
     {
         Unknown = 0,
         Grabbed = 1,
-        ArtistFolderImported = 2,
-        TrackFileImported = 3,
+        AuthorFolderImported = 2,
+        BookFileImported = 3,
         DownloadFailed = 4,
-        TrackFileDeleted = 5,
-        TrackFileRenamed = 6,
+        BookFileDeleted = 5,
+        BookFileRenamed = 6,
         BookImportIncomplete = 7,
         DownloadImported = 8,
-        TrackFileRetagged = 9,
+        BookFileRetagged = 9,
         DownloadIgnored = 10
     }
 }

@@ -21,7 +21,7 @@ namespace NzbDrone.Automation.Test
         {
             _page.LibraryNavIcon.Click();
             _page.WaitForNoSpinner();
-            _page.Find(By.CssSelector("div[class*='ArtistIndex']")).Should().NotBeNull();
+            _page.Find(By.CssSelector("div[class*='AuthorIndex']")).Should().NotBeNull();
         }
 
         [Test]

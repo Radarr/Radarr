@@ -4,8 +4,8 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.MediaFiles.BookImport.Manual;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
-using Readarr.Api.V1.Albums;
-using Readarr.Api.V1.Artist;
+using Readarr.Api.V1.Author;
+using Readarr.Api.V1.Books;
 using Readarr.Http.REST;
 
 namespace Readarr.Api.V1.ManualImport
@@ -15,8 +15,8 @@ namespace Readarr.Api.V1.ManualImport
         public string Path { get; set; }
         public string Name { get; set; }
         public long Size { get; set; }
-        public ArtistResource Artist { get; set; }
-        public AlbumResource Album { get; set; }
+        public AuthorResource Author { get; set; }
+        public BookResource Book { get; set; }
         public QualityModel Quality { get; set; }
         public int QualityWeight { get; set; }
         public string DownloadId { get; set; }
@@ -41,8 +41,8 @@ namespace Readarr.Api.V1.ManualImport
                 Path = model.Path,
                 Name = model.Name,
                 Size = model.Size,
-                Artist = model.Author.ToResource(),
-                Album = model.Book.ToResource(),
+                Author = model.Author.ToResource(),
+                Book = model.Book.ToResource(),
                 Quality = model.Quality,
 
                 //QualityWeight

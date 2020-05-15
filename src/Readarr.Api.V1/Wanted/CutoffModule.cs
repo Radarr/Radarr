@@ -5,29 +5,29 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.SignalR;
-using Readarr.Api.V1.Albums;
+using Readarr.Api.V1.Books;
 using Readarr.Http;
 using Readarr.Http.Extensions;
 
 namespace Readarr.Api.V1.Wanted
 {
-    public class CutoffModule : AlbumModuleWithSignalR
+    public class CutoffModule : BookModuleWithSignalR
     {
-        private readonly IBookCutoffService _albumCutoffService;
+        private readonly IBookCutoffService _bookCutoffService;
 
-        public CutoffModule(IBookCutoffService albumCutoffService,
+        public CutoffModule(IBookCutoffService bookCutoffService,
                             IBookService bookService,
-                            IAuthorStatisticsService artistStatisticsService,
+                            IAuthorStatisticsService authorStatisticsService,
                             IMapCoversToLocal coverMapper,
                             IUpgradableSpecification upgradableSpecification,
                             IBroadcastSignalRMessage signalRBroadcaster)
-            : base(bookService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "wanted/cutoff")
+            : base(bookService, authorStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "wanted/cutoff")
         {
-            _albumCutoffService = albumCutoffService;
-            GetResourcePaged = GetCutoffUnmetAlbums;
+            _bookCutoffService = bookCutoffService;
+            GetResourcePaged = GetCutoffUnmetBooks;
         }
 
-        private PagingResource<AlbumResource> GetCutoffUnmetAlbums(PagingResource<AlbumResource> pagingResource)
+        private PagingResource<BookResource> GetCutoffUnmetBooks(PagingResource<BookResource> pagingResource)
         {
             var pagingSpec = new PagingSpec<Book>
             {
@@ -37,7 +37,7 @@ namespace Readarr.Api.V1.Wanted
                 SortDirection = pagingResource.SortDirection
             };
 
-            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
+            var includeAuthor = Request.GetBooleanQueryParameter("includeAuthor");
             var filter = pagingResource.Filters.FirstOrDefault(f => f.Key == "monitored");
 
             if (filter != null && filter.Value == "false")
@@ -49,7 +49,7 @@ namespace Readarr.Api.V1.Wanted
                 pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Author.Value.Monitored == true);
             }
 
-            var resource = ApplyToPage(_albumCutoffService.BooksWhereCutoffUnmet, pagingSpec, v => MapToResource(v, includeArtist));
+            var resource = ApplyToPage(_bookCutoffService.BooksWhereCutoffUnmet, pagingSpec, v => MapToResource(v, includeAuthor));
 
             return resource;
         }

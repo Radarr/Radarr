@@ -1,6 +1,6 @@
 using NzbDrone.Core.Parser;
-using Readarr.Api.V1.Albums;
-using Readarr.Api.V1.Artist;
+using Readarr.Api.V1.Author;
+using Readarr.Api.V1.Books;
 using Readarr.Http;
 
 namespace Readarr.Api.V1.Parse
@@ -33,9 +33,9 @@ namespace Readarr.Api.V1.Parse
                 return new ParseResource
                 {
                     Title = title,
-                    ParsedAlbumInfo = remoteAlbum.ParsedBookInfo,
-                    Artist = remoteAlbum.Author.ToResource(),
-                    Albums = remoteAlbum.Books.ToResource()
+                    ParsedBookInfo = remoteAlbum.ParsedBookInfo,
+                    Author = remoteAlbum.Author.ToResource(),
+                    Books = remoteAlbum.Books.ToResource()
                 };
             }
             else
@@ -43,7 +43,7 @@ namespace Readarr.Api.V1.Parse
                 return new ParseResource
                 {
                     Title = title,
-                    ParsedAlbumInfo = parsedAlbumInfo
+                    ParsedBookInfo = parsedAlbumInfo
                 };
             }
         }

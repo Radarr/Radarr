@@ -4,8 +4,8 @@ using System.Linq;
 using Nancy;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
-using Readarr.Api.V1.Albums;
-using Readarr.Api.V1.Artist;
+using Readarr.Api.V1.Author;
+using Readarr.Api.V1.Books;
 using Readarr.Http;
 
 namespace Readarr.Api.V1.Search
@@ -37,26 +37,26 @@ namespace Readarr.Api.V1.Search
 
                 if (result is NzbDrone.Core.Books.Author)
                 {
-                    var artist = (NzbDrone.Core.Books.Author)result;
-                    resource.Artist = artist.ToResource();
-                    resource.ForeignId = artist.ForeignAuthorId;
+                    var author = (NzbDrone.Core.Books.Author)result;
+                    resource.Author = author.ToResource();
+                    resource.ForeignId = author.ForeignAuthorId;
 
-                    var poster = artist.Metadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
+                    var poster = author.Metadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                     if (poster != null)
                     {
-                        resource.Artist.RemotePoster = poster.Url;
+                        resource.Author.RemotePoster = poster.Url;
                     }
                 }
                 else if (result is NzbDrone.Core.Books.Book)
                 {
-                    var album = (NzbDrone.Core.Books.Book)result;
-                    resource.Album = album.ToResource();
-                    resource.ForeignId = album.ForeignBookId;
+                    var book = (NzbDrone.Core.Books.Book)result;
+                    resource.Book = book.ToResource();
+                    resource.ForeignId = book.ForeignBookId;
 
-                    var cover = album.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Cover);
+                    var cover = book.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Cover);
                     if (cover != null)
                     {
-                        resource.Album.RemoteCover = cover.Url;
+                        resource.Book.RemoteCover = cover.Url;
                     }
                 }
                 else

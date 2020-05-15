@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using Readarr.Api.V1.Artist;
+using Readarr.Api.V1.Author;
 using Readarr.Api.V1.Blacklist;
 
 namespace NzbDrone.Integration.Test.ApiTests
@@ -8,13 +8,13 @@ namespace NzbDrone.Integration.Test.ApiTests
     [TestFixture]
     public class BlacklistFixture : IntegrationTest
     {
-        private ArtistResource _artist;
+        private AuthorResource _artist;
 
         [Test]
         [Ignore("Adding to blacklist not supported")]
         public void should_be_able_to_add_to_blacklist()
         {
-            _artist = EnsureArtist("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling");
+            _artist = EnsureAuthor("amzn1.gr.author.v1.SHA8asP5mFyLIP9NlujvLQ", "1", "J.K. Rowling");
 
             Blacklist.Post(new BlacklistResource
             {

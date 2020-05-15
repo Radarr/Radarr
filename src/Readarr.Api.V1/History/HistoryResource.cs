@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Qualities;
-using Readarr.Api.V1.Albums;
-using Readarr.Api.V1.Artist;
+using Readarr.Api.V1.Author;
+using Readarr.Api.V1.Books;
 using Readarr.Http.REST;
 
 namespace Readarr.Api.V1.History
@@ -22,8 +22,8 @@ namespace Readarr.Api.V1.History
 
         public Dictionary<string, string> Data { get; set; }
 
-        public AlbumResource Album { get; set; }
-        public ArtistResource Artist { get; set; }
+        public BookResource Book { get; set; }
+        public AuthorResource Author { get; set; }
     }
 
     public static class HistoryResourceMapper

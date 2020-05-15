@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Configuration
             return _repository.Get(key.ToLower()) != null;
         }
 
-        public bool AutoUnmonitorPreviouslyDownloadedTracks
+        public bool AutoUnmonitorPreviouslyDownloadedBooks
         {
             get { return GetValueBoolean("AutoUnmonitorPreviouslyDownloadedTracks"); }
             set { SetValue("AutoUnmonitorPreviouslyDownloadedTracks", value); }
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("RemoveFailedDownloads", value); }
         }
 
-        public bool CreateEmptyArtistFolders
+        public bool CreateEmptyAuthorFolders
         {
             get { return GetValueBoolean("CreateEmptyArtistFolders", false); }
 

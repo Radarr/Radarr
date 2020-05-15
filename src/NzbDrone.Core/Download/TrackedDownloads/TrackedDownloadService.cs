@@ -257,7 +257,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             }
 
             // Since DownloadComplete is a new event type, we can't assume it exists for old downloads
-            if (history.EventType == HistoryEventType.TrackFileImported)
+            if (history.EventType == HistoryEventType.BookFileImported)
             {
                 return DateTime.UtcNow.Subtract(history.Date).TotalSeconds < 60 ? TrackedDownloadState.Importing : TrackedDownloadState.Imported;
             }

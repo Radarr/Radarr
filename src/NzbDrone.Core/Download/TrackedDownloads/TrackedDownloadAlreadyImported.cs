@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                     return false;
                 }
 
-                return new[] { HistoryEventType.DownloadImported, HistoryEventType.TrackFileImported }.Contains(lastHistoryItem.EventType);
+                return new[] { HistoryEventType.DownloadImported, HistoryEventType.BookFileImported }.Contains(lastHistoryItem.EventType);
             });
 
             return allAlbumsImportedInHistory;

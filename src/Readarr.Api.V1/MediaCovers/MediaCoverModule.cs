@@ -10,8 +10,8 @@ namespace Readarr.Api.V1.MediaCovers
 {
     public class MediaCoverModule : ReadarrV1Module
     {
-        private const string MEDIA_COVER_ARTIST_ROUTE = @"/Artist/(?<authorId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
-        private const string MEDIA_COVER_ALBUM_ROUTE = @"/Album/(?<authorId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
+        private const string MEDIA_COVER_AUTHOR_ROUTE = @"/Author/(?<authorId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
+        private const string MEDIA_COVER_BOOK_ROUTE = @"/Book/(?<authorId>\d+)/(?<filename>(.+)\.(jpg|png|gif))";
 
         private static readonly Regex RegexResizedImage = new Regex(@"-\d+(?=\.(jpg|png|gif)$)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -24,8 +24,8 @@ namespace Readarr.Api.V1.MediaCovers
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;
 
-            Get(MEDIA_COVER_ARTIST_ROUTE, options => GetArtistMediaCover(options.authorId, options.filename));
-            Get(MEDIA_COVER_ALBUM_ROUTE, options => GetAlbumMediaCover(options.authorId, options.filename));
+            Get(MEDIA_COVER_AUTHOR_ROUTE, options => GetArtistMediaCover(options.authorId, options.filename));
+            Get(MEDIA_COVER_BOOK_ROUTE, options => GetAlbumMediaCover(options.authorId, options.filename));
         }
 
         private object GetArtistMediaCover(int authorId, string filename)
@@ -50,7 +50,7 @@ namespace Readarr.Api.V1.MediaCovers
 
         private object GetAlbumMediaCover(int bookId, string filename)
         {
-            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", "Albums", bookId.ToString(), filename);
+            var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", "Books", bookId.ToString(), filename);
 
             if (!_diskProvider.FileExists(filePath) || _diskProvider.GetFileSize(filePath) == 0)
             {

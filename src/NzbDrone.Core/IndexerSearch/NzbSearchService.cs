@@ -16,8 +16,8 @@ namespace NzbDrone.Core.IndexerSearch
 {
     public interface ISearchForNzb
     {
-        List<DownloadDecision> AlbumSearch(int bookId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch);
-        List<DownloadDecision> ArtistSearch(int authorId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch);
+        List<DownloadDecision> BookSearch(int bookId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch);
+        List<DownloadDecision> AuthorSearch(int authorId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch);
     }
 
     public class NzbSearchService : ISearchForNzb
@@ -41,13 +41,13 @@ namespace NzbDrone.Core.IndexerSearch
             _logger = logger;
         }
 
-        public List<DownloadDecision> AlbumSearch(int bookId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
+        public List<DownloadDecision> BookSearch(int bookId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
             var book = _bookService.GetBook(bookId);
             return AlbumSearch(book, missingOnly, userInvokedSearch, interactiveSearch);
         }
 
-        public List<DownloadDecision> ArtistSearch(int authorId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
+        public List<DownloadDecision> AuthorSearch(int authorId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
             var author = _authorService.GetAuthor(authorId);
             return ArtistSearch(author, missingOnly, userInvokedSearch, interactiveSearch);

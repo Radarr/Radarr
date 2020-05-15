@@ -5,25 +5,25 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.SignalR;
-using Readarr.Api.V1.Albums;
+using Readarr.Api.V1.Books;
 using Readarr.Http;
 using Readarr.Http.Extensions;
 
 namespace Readarr.Api.V1.Wanted
 {
-    public class MissingModule : AlbumModuleWithSignalR
+    public class MissingModule : BookModuleWithSignalR
     {
         public MissingModule(IBookService bookService,
-                             IAuthorStatisticsService artistStatisticsService,
+                             IAuthorStatisticsService authorStatisticsService,
                              IMapCoversToLocal coverMapper,
                              IUpgradableSpecification upgradableSpecification,
                              IBroadcastSignalRMessage signalRBroadcaster)
-            : base(bookService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "wanted/missing")
+            : base(bookService, authorStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "wanted/missing")
         {
-            GetResourcePaged = GetMissingAlbums;
+            GetResourcePaged = GetMissingBooks;
         }
 
-        private PagingResource<AlbumResource> GetMissingAlbums(PagingResource<AlbumResource> pagingResource)
+        private PagingResource<BookResource> GetMissingBooks(PagingResource<BookResource> pagingResource)
         {
             var pagingSpec = new PagingSpec<Book>
             {
@@ -33,7 +33,7 @@ namespace Readarr.Api.V1.Wanted
                 SortDirection = pagingResource.SortDirection
             };
 
-            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
+            var includeAuthor = Request.GetBooleanQueryParameter("includeAuthor");
             var monitoredFilter = pagingResource.Filters.FirstOrDefault(f => f.Key == "monitored");
 
             if (monitoredFilter != null && monitoredFilter.Value == "false")
@@ -45,7 +45,7 @@ namespace Readarr.Api.V1.Wanted
                 pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Author.Value.Monitored == true);
             }
 
-            var resource = ApplyToPage(_bookService.BooksWithoutFiles, pagingSpec, v => MapToResource(v, includeArtist));
+            var resource = ApplyToPage(_bookService.BooksWithoutFiles, pagingSpec, v => MapToResource(v, includeAuthor));
 
             return resource;
         }

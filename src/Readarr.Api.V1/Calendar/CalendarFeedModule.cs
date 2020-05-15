@@ -61,35 +61,35 @@ namespace Readarr.Api.V1.Calendar
                 tags.AddRange(tagInput.Split(',').Select(_tagService.GetTag).Select(t => t.Id));
             }
 
-            var albums = _bookService.BooksBetweenDates(start, end, unmonitored);
+            var books = _bookService.BooksBetweenDates(start, end, unmonitored);
             var calendar = new Ical.Net.Calendar
             {
                 ProductId = "-//readarr.com//Readarr//EN"
             };
 
-            var calendarName = "Readarr Music Schedule";
+            var calendarName = "Readarr Book Schedule";
             calendar.AddProperty(new CalendarProperty("NAME", calendarName));
             calendar.AddProperty(new CalendarProperty("X-WR-CALNAME", calendarName));
 
-            foreach (var album in albums.OrderBy(v => v.ReleaseDate.Value))
+            foreach (var book in books.OrderBy(v => v.ReleaseDate.Value))
             {
-                var artist = _authorService.GetAuthor(album.AuthorId); // Temp fix TODO: Figure out why Album.Artist is not populated during AlbumsBetweenDates Query
+                var author = _authorService.GetAuthor(book.AuthorId); // Temp fix TODO: Figure out why Album.Artist is not populated during AlbumsBetweenDates Query
 
-                if (tags.Any() && tags.None(artist.Tags.Contains))
+                if (tags.Any() && tags.None(author.Tags.Contains))
                 {
                     continue;
                 }
 
                 var occurrence = calendar.Create<CalendarEvent>();
-                occurrence.Uid = "Readarr_album_" + album.Id;
+                occurrence.Uid = "Readarr_book_" + book.Id;
 
                 //occurrence.Status = album.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
-                occurrence.Description = album.Overview;
-                occurrence.Categories = album.Genres;
+                occurrence.Description = book.Overview;
+                occurrence.Categories = book.Genres;
 
-                occurrence.Start = new CalDateTime(album.ReleaseDate.Value.ToLocalTime()) { HasTime = false };
+                occurrence.Start = new CalDateTime(book.ReleaseDate.Value.ToLocalTime()) { HasTime = false };
 
-                occurrence.Summary = $"{artist.Name} - {album.Title}";
+                occurrence.Summary = $"{author.Name} - {book.Title}";
             }
 
             var serializer = (IStringSerializer)new SerializerFactory().Build(calendar.GetType(), new SerializationContext());

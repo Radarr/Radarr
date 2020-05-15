@@ -1,5 +1,5 @@
-using Readarr.Api.V1.Albums;
-using Readarr.Api.V1.Artist;
+using Readarr.Api.V1.Author;
+using Readarr.Api.V1.Books;
 using Readarr.Http.REST;
 
 namespace Readarr.Api.V1.Search
@@ -8,7 +8,7 @@ namespace Readarr.Api.V1.Search
     SearchResource : RestResource
     {
         public string ForeignId { get; set; }
-        public ArtistResource Artist { get; set; }
-        public AlbumResource Album { get; set; }
+        public AuthorResource Author { get; set; }
+        public BookResource Book { get; set; }
     }
 }

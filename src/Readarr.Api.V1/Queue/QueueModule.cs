@@ -38,20 +38,20 @@ namespace Readarr.Api.V1.Queue
         private PagingResource<QueueResource> GetQueue(PagingResource<QueueResource> pagingResource)
         {
             var pagingSpec = pagingResource.MapToPagingSpec<QueueResource, NzbDrone.Core.Queue.Queue>("timeleft", SortDirection.Ascending);
-            var includeUnknownArtistItems = Request.GetBooleanQueryParameter("includeUnknownArtistItems");
-            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
-            var includeAlbum = Request.GetBooleanQueryParameter("includeAlbum");
+            var includeUnknownAuthorItems = Request.GetBooleanQueryParameter("includeUnknownAuthorItems");
+            var includeAuthor = Request.GetBooleanQueryParameter("includeAuthor");
+            var includeBook = Request.GetBooleanQueryParameter("includeBook");
 
-            return ApplyToPage((spec) => GetQueue(spec, includeUnknownArtistItems), pagingSpec, (q) => MapToResource(q, includeArtist, includeAlbum));
+            return ApplyToPage((spec) => GetQueue(spec, includeUnknownAuthorItems), pagingSpec, (q) => MapToResource(q, includeAuthor, includeBook));
         }
 
-        private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec, bool includeUnknownArtistItems)
+        private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec, bool includeUnknownAuthorItems)
         {
             var ascending = pagingSpec.SortDirection == SortDirection.Ascending;
             var orderByFunc = GetOrderByFunc(pagingSpec);
 
             var queue = _queueService.GetQueue();
-            var filteredQueue = includeUnknownArtistItems ? queue : queue.Where(q => q.Author != null);
+            var filteredQueue = includeUnknownAuthorItems ? queue : queue.Where(q => q.Author != null);
             var pending = _pendingReleaseService.GetPendingQueue();
             var fullQueue = filteredQueue.Concat(pending).ToList();
             IOrderedEnumerable<NzbDrone.Core.Queue.Queue> ordered;
@@ -122,11 +122,11 @@ namespace Readarr.Api.V1.Queue
                     return q => q.Author?.SortName;
                 case "title":
                     return q => q.Title;
-                case "album":
+                case "book":
                     return q => q.Book;
-                case "books.title":
+                case "book.title":
                     return q => q.Book?.Title;
-                case "album.releaseDate":
+                case "book.releaseDate":
                     return q => q.Book?.ReleaseDate;
                 case "quality":
                     return q => q.Quality;
@@ -138,9 +138,9 @@ namespace Readarr.Api.V1.Queue
             }
         }
 
-        private QueueResource MapToResource(NzbDrone.Core.Queue.Queue queueItem, bool includeArtist, bool includeAlbum)
+        private QueueResource MapToResource(NzbDrone.Core.Queue.Queue queueItem, bool includeAuthor, bool includeBook)
         {
-            return queueItem.ToResource(includeArtist, includeAlbum);
+            return queueItem.ToResource(includeAuthor, includeBook);
         }
 
         public void Handle(QueueUpdatedEvent message)

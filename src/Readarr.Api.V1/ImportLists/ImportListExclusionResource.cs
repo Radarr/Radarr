@@ -8,7 +8,7 @@ namespace Readarr.Api.V1.ImportLists
     public class ImportListExclusionResource : RestResource
     {
         public string ForeignId { get; set; }
-        public string ArtistName { get; set; }
+        public string AuthorName { get; set; }
     }
 
     public static class ImportListExclusionResourceMapper
@@ -24,7 +24,7 @@ namespace Readarr.Api.V1.ImportLists
             {
                 Id = model.Id,
                 ForeignId = model.ForeignId,
-                ArtistName = model.Name,
+                AuthorName = model.Name,
             };
         }
 
@@ -39,7 +39,7 @@ namespace Readarr.Api.V1.ImportLists
             {
                 Id = resource.Id,
                 ForeignId = resource.ForeignId,
-                Name = resource.ArtistName
+                Name = resource.AuthorName
             };
         }
 

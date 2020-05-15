@@ -5,8 +5,8 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Qualities;
-using Readarr.Api.V1.Albums;
-using Readarr.Api.V1.Artist;
+using Readarr.Api.V1.Author;
+using Readarr.Api.V1.Books;
 using Readarr.Http.REST;
 
 namespace Readarr.Api.V1.Queue
@@ -15,8 +15,8 @@ namespace Readarr.Api.V1.Queue
     {
         public int? AuthorId { get; set; }
         public int? BookId { get; set; }
-        public ArtistResource Artist { get; set; }
-        public AlbumResource Album { get; set; }
+        public AuthorResource Author { get; set; }
+        public BookResource Book { get; set; }
         public QualityModel Quality { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }
@@ -50,8 +50,8 @@ namespace Readarr.Api.V1.Queue
                 Id = model.Id,
                 AuthorId = model.Author?.Id,
                 BookId = model.Book?.Id,
-                Artist = includeArtist && model.Author != null ? model.Author.ToResource() : null,
-                Album = includeAlbum && model.Book != null ? model.Book.ToResource() : null,
+                Author = includeArtist && model.Author != null ? model.Author.ToResource() : null,
+                Book = includeAlbum && model.Book != null ? model.Book.ToResource() : null,
                 Quality = model.Quality,
                 Size = model.Size,
                 Title = model.Title,
@@ -72,9 +72,9 @@ namespace Readarr.Api.V1.Queue
             };
         }
 
-        public static List<QueueResource> ToResource(this IEnumerable<NzbDrone.Core.Queue.Queue> models, bool includeArtist, bool includeAlbum)
+        public static List<QueueResource> ToResource(this IEnumerable<NzbDrone.Core.Queue.Queue> models, bool includeAuthor, bool includeBook)
         {
-            return models.Select((m) => ToResource(m, includeArtist, includeAlbum)).ToList();
+            return models.Select((m) => ToResource(m, includeAuthor, includeBook)).ToList();
         }
     }
 }

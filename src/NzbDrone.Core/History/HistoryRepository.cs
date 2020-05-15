@@ -90,7 +90,7 @@ namespace NzbDrone.Core.History
 
         public List<History> FindDownloadHistory(int idAuthorId, QualityModel quality)
         {
-            var allowed = new[] { HistoryEventType.Grabbed, HistoryEventType.DownloadFailed, HistoryEventType.TrackFileImported };
+            var allowed = new[] { HistoryEventType.Grabbed, HistoryEventType.DownloadFailed, HistoryEventType.BookFileImported };
 
             return Query(h => h.AuthorId == idAuthorId &&
                          h.Quality == quality &&

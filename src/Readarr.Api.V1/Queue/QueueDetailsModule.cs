@@ -27,8 +27,8 @@ namespace Readarr.Api.V1.Queue
 
         private List<QueueResource> GetQueue()
         {
-            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
-            var includeAlbum = Request.GetBooleanQueryParameter("includeAlbum", true);
+            var includeAuthor = Request.GetBooleanQueryParameter("includeAuthor");
+            var includeBook = Request.GetBooleanQueryParameter("includeBook", true);
             var queue = _queueService.GetQueue();
             var pending = _pendingReleaseService.GetPendingQueue();
             var fullQueue = queue.Concat(pending);
@@ -38,7 +38,7 @@ namespace Readarr.Api.V1.Queue
 
             if (authorIdQuery.HasValue)
             {
-                return fullQueue.Where(q => q.Author?.Id == (int)authorIdQuery).ToResource(includeArtist, includeAlbum);
+                return fullQueue.Where(q => q.Author?.Id == (int)authorIdQuery).ToResource(includeAuthor, includeBook);
             }
 
             if (bookIdsQuery.HasValue)
@@ -49,10 +49,10 @@ namespace Readarr.Api.V1.Queue
                                                 .Select(e => Convert.ToInt32(e))
                                                 .ToList();
 
-                return fullQueue.Where(q => q.Book != null && bookIds.Contains(q.Book.Id)).ToResource(includeArtist, includeAlbum);
+                return fullQueue.Where(q => q.Book != null && bookIds.Contains(q.Book.Id)).ToResource(includeAuthor, includeBook);
             }
 
-            return fullQueue.ToResource(includeArtist, includeAlbum);
+            return fullQueue.ToResource(includeAuthor, includeBook);
         }
 
         public void Handle(QueueUpdatedEvent message)

@@ -22,7 +22,7 @@ namespace NzbDrone.Core.IndexerSearch
 
         public void Execute(AuthorSearchCommand message)
         {
-            var decisions = _nzbSearchService.ArtistSearch(message.AuthorId, false, message.Trigger == CommandTrigger.Manual, false);
+            var decisions = _nzbSearchService.AuthorSearch(message.AuthorId, false, message.Trigger == CommandTrigger.Manual, false);
             var processed = _processDownloadDecisions.ProcessDecisions(decisions);
 
             _logger.ProgressInfo("Author search completed. {0} reports downloaded.", processed.Grabbed.Count);

@@ -215,7 +215,7 @@ namespace NzbDrone.Core.History
 
             var history = new History
             {
-                EventType = HistoryEventType.TrackFileImported,
+                EventType = HistoryEventType.BookFileImported,
                 Date = DateTime.UtcNow,
                 Quality = message.BookInfo.Quality,
                 SourceTitle = message.ImportedBook.SceneName ?? Path.GetFileNameWithoutExtension(message.BookInfo.Path),
@@ -289,7 +289,7 @@ namespace NzbDrone.Core.History
 
             var history = new History
             {
-                EventType = HistoryEventType.TrackFileDeleted,
+                EventType = HistoryEventType.BookFileDeleted,
                 Date = DateTime.UtcNow,
                 Quality = message.BookFile.Quality,
                 SourceTitle = message.BookFile.Path,
@@ -309,7 +309,7 @@ namespace NzbDrone.Core.History
 
             var history = new History
             {
-                EventType = HistoryEventType.TrackFileRenamed,
+                EventType = HistoryEventType.BookFileRenamed,
                 Date = DateTime.UtcNow,
                 Quality = message.BookFile.Quality,
                 SourceTitle = message.OriginalPath,
@@ -329,7 +329,7 @@ namespace NzbDrone.Core.History
 
             var history = new History
             {
-                EventType = HistoryEventType.TrackFileRetagged,
+                EventType = HistoryEventType.BookFileRetagged,
                 Date = DateTime.UtcNow,
                 Quality = message.BookFile.Quality,
                 SourceTitle = path,

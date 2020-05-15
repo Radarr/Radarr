@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Qualities;
-using Readarr.Api.V1.Artist;
+using Readarr.Api.V1.Author;
 using Readarr.Http.REST;
 
 namespace Readarr.Api.V1.Blacklist
@@ -18,7 +18,7 @@ namespace Readarr.Api.V1.Blacklist
         public string Indexer { get; set; }
         public string Message { get; set; }
 
-        public ArtistResource Artist { get; set; }
+        public AuthorResource Author { get; set; }
     }
 
     public static class BlacklistResourceMapper
@@ -43,7 +43,7 @@ namespace Readarr.Api.V1.Blacklist
                 Indexer = model.Indexer,
                 Message = model.Message,
 
-                Artist = model.Author.ToResource()
+                Author = model.Author.ToResource()
             };
         }
     }

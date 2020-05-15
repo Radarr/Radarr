@@ -17,9 +17,9 @@ using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common;
 using NzbDrone.Test.Common.Categories;
-using Readarr.Api.V1.Albums;
-using Readarr.Api.V1.Artist;
+using Readarr.Api.V1.Author;
 using Readarr.Api.V1.Blacklist;
+using Readarr.Api.V1.Books;
 using Readarr.Api.V1.Config;
 using Readarr.Api.V1.DownloadClient;
 using Readarr.Api.V1.History;
@@ -38,7 +38,7 @@ namespace NzbDrone.Integration.Test
         public ClientBase<BlacklistResource> Blacklist;
         public CommandClient Commands;
         public DownloadClientClient DownloadClients;
-        public AlbumClient Albums;
+        public BookClient Books;
         public ClientBase<HistoryResource> History;
         public ClientBase<HostConfigResource> HostConfig;
         public IndexerClient Indexers;
@@ -49,10 +49,10 @@ namespace NzbDrone.Integration.Test
         public ReleaseClient Releases;
         public ReleasePushClient ReleasePush;
         public ClientBase<RootFolderResource> RootFolders;
-        public ArtistClient Artist;
+        public AuthorClient Author;
         public ClientBase<TagResource> Tags;
-        public ClientBase<AlbumResource> WantedMissing;
-        public ClientBase<AlbumResource> WantedCutoffUnmet;
+        public ClientBase<BookResource> WantedMissing;
+        public ClientBase<BookResource> WantedCutoffUnmet;
 
         private List<SignalRMessage> _signalRReceived;
 
@@ -72,7 +72,7 @@ namespace NzbDrone.Integration.Test
 
         public string TempDirectory { get; private set; }
 
-        public abstract string ArtistRootFolder { get; }
+        public abstract string AuthorRootFolder { get; }
 
         protected abstract string RootUrl { get; }
 
@@ -101,7 +101,7 @@ namespace NzbDrone.Integration.Test
             Blacklist = new ClientBase<BlacklistResource>(RestClient, ApiKey);
             Commands = new CommandClient(RestClient, ApiKey);
             DownloadClients = new DownloadClientClient(RestClient, ApiKey);
-            Albums = new AlbumClient(RestClient, ApiKey);
+            Books = new BookClient(RestClient, ApiKey);
             History = new ClientBase<HistoryResource>(RestClient, ApiKey);
             HostConfig = new ClientBase<HostConfigResource>(RestClient, ApiKey, "config/host");
             Indexers = new IndexerClient(RestClient, ApiKey);
@@ -112,10 +112,10 @@ namespace NzbDrone.Integration.Test
             Releases = new ReleaseClient(RestClient, ApiKey);
             ReleasePush = new ReleasePushClient(RestClient, ApiKey);
             RootFolders = new ClientBase<RootFolderResource>(RestClient, ApiKey);
-            Artist = new ArtistClient(RestClient, ApiKey);
+            Author = new AuthorClient(RestClient, ApiKey);
             Tags = new ClientBase<TagResource>(RestClient, ApiKey);
-            WantedMissing = new ClientBase<AlbumResource>(RestClient, ApiKey, "wanted/missing");
-            WantedCutoffUnmet = new ClientBase<AlbumResource>(RestClient, ApiKey, "wanted/cutoff");
+            WantedMissing = new ClientBase<BookResource>(RestClient, ApiKey, "wanted/missing");
+            WantedCutoffUnmet = new ClientBase<BookResource>(RestClient, ApiKey, "wanted/cutoff");
         }
 
         [OneTimeTearDown]
@@ -249,33 +249,33 @@ namespace NzbDrone.Integration.Test
             Assert.Fail("Timed on wait");
         }
 
-        public ArtistResource EnsureArtist(string authorId, string goodreadsBookId, string artistName, bool? monitored = null)
+        public AuthorResource EnsureAuthor(string authorId, string goodreadsBookId, string authorName, bool? monitored = null)
         {
-            var result = Artist.All().FirstOrDefault(v => v.ForeignAuthorId == authorId);
+            var result = Author.All().FirstOrDefault(v => v.ForeignAuthorId == authorId);
 
             if (result == null)
             {
-                var lookup = Artist.Lookup("readarr:" + goodreadsBookId);
-                var artist = lookup.First();
-                artist.QualityProfileId = 1;
-                artist.MetadataProfileId = 1;
-                artist.Path = Path.Combine(ArtistRootFolder, artist.ArtistName);
-                artist.Monitored = true;
-                artist.AddOptions = new Core.Books.AddAuthorOptions();
-                Directory.CreateDirectory(artist.Path);
+                var lookup = Author.Lookup("readarr:" + goodreadsBookId);
+                var author = lookup.First();
+                author.QualityProfileId = 1;
+                author.MetadataProfileId = 1;
+                author.Path = Path.Combine(AuthorRootFolder, author.AuthorName);
+                author.Monitored = true;
+                author.AddOptions = new Core.Books.AddAuthorOptions();
+                Directory.CreateDirectory(author.Path);
 
-                result = Artist.Post(artist);
+                result = Author.Post(author);
                 Commands.WaitAll();
-                WaitForCompletion(() => Albums.GetAlbumsInArtist(result.Id).Count > 0);
+                WaitForCompletion(() => Books.GetBooksInAuthor(result.Id).Count > 0);
             }
 
             var changed = false;
 
-            if (result.RootFolderPath != ArtistRootFolder)
+            if (result.RootFolderPath != AuthorRootFolder)
             {
                 changed = true;
-                result.RootFolderPath = ArtistRootFolder;
-                result.Path = Path.Combine(ArtistRootFolder, result.ArtistName);
+                result.RootFolderPath = AuthorRootFolder;
+                result.Path = Path.Combine(AuthorRootFolder, result.AuthorName);
             }
 
             if (monitored.HasValue)
@@ -289,7 +289,7 @@ namespace NzbDrone.Integration.Test
 
             if (changed)
             {
-                Artist.Put(result);
+                Author.Put(result);
             }
 
             return result;
@@ -297,22 +297,22 @@ namespace NzbDrone.Integration.Test
 
         public void EnsureNoArtist(string readarrId, string artistTitle)
         {
-            var result = Artist.All().FirstOrDefault(v => v.ForeignAuthorId == readarrId);
+            var result = Author.All().FirstOrDefault(v => v.ForeignAuthorId == readarrId);
 
             if (result != null)
             {
-                Artist.Delete(result.Id);
+                Author.Delete(result.Id);
             }
         }
 
-        public void EnsureTrackFile(ArtistResource artist, int bookId, Quality quality)
+        public void EnsureBookFile(AuthorResource artist, int bookId, Quality quality)
         {
-            var result = Albums.GetAlbumsInArtist(artist.Id).Single(v => v.Id == bookId);
+            var result = Books.GetBooksInAuthor(artist.Id).Single(v => v.Id == bookId);
 
             // if (result.BookFile == null)
             if (true)
             {
-                var path = Path.Combine(ArtistRootFolder, artist.ArtistName, "Track.mp3");
+                var path = Path.Combine(AuthorRootFolder, artist.AuthorName, "Track.mp3");
 
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.WriteAllText(path, "Fake Track");
@@ -332,7 +332,7 @@ namespace NzbDrone.Integration.Test
                 });
                 Commands.WaitAll();
 
-                var track = Albums.GetAlbumsInArtist(artist.Id).Single(x => x.Id == bookId);
+                var track = Books.GetBooksInAuthor(artist.Id).Single(x => x.Id == bookId);
 
                 // track.BookFileId.Should().NotBe(0);
             }

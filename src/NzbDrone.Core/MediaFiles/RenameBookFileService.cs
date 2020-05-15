@@ -15,13 +15,13 @@ using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.MediaFiles
 {
-    public interface IRenameTrackFileService
+    public interface IRenameBookFileService
     {
         List<RenameBookFilePreview> GetRenamePreviews(int authorId);
         List<RenameBookFilePreview> GetRenamePreviews(int authorId, int bookId);
     }
 
-    public class RenameBookFileService : IRenameTrackFileService, IExecute<RenameFilesCommand>, IExecute<RenameAuthorCommand>
+    public class RenameBookFileService : IRenameBookFileService, IExecute<RenameFilesCommand>, IExecute<RenameAuthorCommand>
     {
         private readonly IAuthorService _authorService;
         private readonly IMediaFileService _mediaFileService;

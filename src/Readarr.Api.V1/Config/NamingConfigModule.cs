@@ -75,11 +75,11 @@ namespace Readarr.Api.V1.Config
 
             var singleTrackSampleResult = _filenameSampleService.GetStandardTrackSample(nameSpec);
 
-            sampleResource.SingleTrackExample = _filenameValidationService.ValidateTrackFilename(singleTrackSampleResult) != null
+            sampleResource.SingleBookExample = _filenameValidationService.ValidateTrackFilename(singleTrackSampleResult) != null
                     ? null
                     : singleTrackSampleResult.FileName;
 
-            sampleResource.ArtistFolderExample = nameSpec.AuthorFolderFormat.IsNullOrWhiteSpace()
+            sampleResource.AuthorFolderExample = nameSpec.AuthorFolderFormat.IsNullOrWhiteSpace()
                 ? null
                 : _filenameSampleService.GetAuthorFolderSample(nameSpec);
 

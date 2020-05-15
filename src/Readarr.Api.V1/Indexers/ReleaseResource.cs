@@ -28,8 +28,8 @@ namespace Readarr.Api.V1.Indexers
         public bool Discography { get; set; }
         public bool SceneSource { get; set; }
         public string AirDate { get; set; }
-        public string ArtistName { get; set; }
-        public string AlbumTitle { get; set; }
+        public string AuthorName { get; set; }
+        public string BookTitle { get; set; }
         public bool Approved { get; set; }
         public bool TemporarilyRejected { get; set; }
         public bool Rejected { get; set; }
@@ -65,15 +65,15 @@ namespace Readarr.Api.V1.Indexers
         public static ReleaseResource ToResource(this DownloadDecision model)
         {
             var releaseInfo = model.RemoteBook.Release;
-            var parsedAlbumInfo = model.RemoteBook.ParsedBookInfo;
-            var remoteAlbum = model.RemoteBook;
+            var parsedBookInfo = model.RemoteBook.ParsedBookInfo;
+            var remoteBook = model.RemoteBook;
             var torrentInfo = (model.RemoteBook.Release as TorrentInfo) ?? new TorrentInfo();
 
             // TODO: Clean this mess up. don't mix data from multiple classes, use sub-resources instead? (Got a huge Deja Vu, didn't we talk about this already once?)
             return new ReleaseResource
             {
                 Guid = releaseInfo.Guid,
-                Quality = parsedAlbumInfo.Quality,
+                Quality = parsedBookInfo.Quality,
 
                 //QualityWeight
                 Age = releaseInfo.Age,
@@ -82,12 +82,12 @@ namespace Readarr.Api.V1.Indexers
                 Size = releaseInfo.Size,
                 IndexerId = releaseInfo.IndexerId,
                 Indexer = releaseInfo.Indexer,
-                ReleaseGroup = parsedAlbumInfo.ReleaseGroup,
-                ReleaseHash = parsedAlbumInfo.ReleaseHash,
+                ReleaseGroup = parsedBookInfo.ReleaseGroup,
+                ReleaseHash = parsedBookInfo.ReleaseHash,
                 Title = releaseInfo.Title,
-                ArtistName = parsedAlbumInfo.AuthorName,
-                AlbumTitle = parsedAlbumInfo.BookTitle,
-                Discography = parsedAlbumInfo.Discography,
+                AuthorName = parsedBookInfo.AuthorName,
+                BookTitle = parsedBookInfo.BookTitle,
+                Discography = parsedBookInfo.Discography,
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,
                 Rejected = model.Rejected,
@@ -96,10 +96,10 @@ namespace Readarr.Api.V1.Indexers
                 CommentUrl = releaseInfo.CommentUrl,
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
-                DownloadAllowed = remoteAlbum.DownloadAllowed,
+                DownloadAllowed = remoteBook.DownloadAllowed,
 
                 //ReleaseWeight
-                PreferredWordScore = remoteAlbum.PreferredWordScore,
+                PreferredWordScore = remoteBook.PreferredWordScore,
 
                 MagnetUrl = torrentInfo.MagnetUrl,
                 InfoHash = torrentInfo.InfoHash,

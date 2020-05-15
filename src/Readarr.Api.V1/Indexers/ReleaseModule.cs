@@ -24,7 +24,7 @@ namespace Readarr.Api.V1.Indexers
         private readonly IDownloadService _downloadService;
         private readonly Logger _logger;
 
-        private readonly ICached<RemoteBook> _remoteAlbumCache;
+        private readonly ICached<RemoteBook> _remoteBookCache;
 
         public ReleaseModule(IFetchAndParseRss rssFetcherAndParser,
                              ISearchForNzb nzbSearchService,
@@ -47,12 +47,12 @@ namespace Readarr.Api.V1.Indexers
             PostValidator.RuleFor(s => s.IndexerId).ValidId();
             PostValidator.RuleFor(s => s.Guid).NotEmpty();
 
-            _remoteAlbumCache = cacheManager.GetCache<RemoteBook>(GetType(), "remoteAlbums");
+            _remoteBookCache = cacheManager.GetCache<RemoteBook>(GetType(), "remoteBooks");
         }
 
         private object DownloadRelease(ReleaseResource release)
         {
-            var remoteAlbum = _remoteAlbumCache.Find(GetCacheKey(release));
+            var remoteAlbum = _remoteBookCache.Find(GetCacheKey(release));
 
             if (remoteAlbum == null)
             {
@@ -78,46 +78,46 @@ namespace Readarr.Api.V1.Indexers
         {
             if (Request.Query.bookId.HasValue)
             {
-                return GetAlbumReleases(Request.Query.bookId);
+                return GetBookReleases(Request.Query.bookId);
             }
 
             if (Request.Query.authorId.HasValue)
             {
-                return GetArtistReleases(Request.Query.authorId);
+                return GetAuthorReleases(Request.Query.authorId);
             }
 
             return GetRss();
         }
 
-        private List<ReleaseResource> GetAlbumReleases(int bookId)
+        private List<ReleaseResource> GetBookReleases(int bookId)
         {
             try
             {
-                var decisions = _nzbSearchService.AlbumSearch(bookId, true, true, true);
+                var decisions = _nzbSearchService.BookSearch(bookId, true, true, true);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
 
                 return MapDecisions(prioritizedDecisions);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Album search failed");
+                _logger.Error(ex, "Book search failed");
             }
 
             return new List<ReleaseResource>();
         }
 
-        private List<ReleaseResource> GetArtistReleases(int authorId)
+        private List<ReleaseResource> GetAuthorReleases(int authorId)
         {
             try
             {
-                var decisions = _nzbSearchService.ArtistSearch(authorId, false, true, true);
+                var decisions = _nzbSearchService.AuthorSearch(authorId, false, true, true);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisions(decisions);
 
                 return MapDecisions(prioritizedDecisions);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Artist search failed");
+                _logger.Error(ex, "Author search failed");
             }
 
             return new List<ReleaseResource>();
@@ -135,7 +135,7 @@ namespace Readarr.Api.V1.Indexers
         protected override ReleaseResource MapDecision(DownloadDecision decision, int initialWeight)
         {
             var resource = base.MapDecision(decision, initialWeight);
-            _remoteAlbumCache.Set(GetCacheKey(resource), decision.RemoteBook, TimeSpan.FromMinutes(30));
+            _remoteBookCache.Set(GetCacheKey(resource), decision.RemoteBook, TimeSpan.FromMinutes(30));
             return resource;
         }
 

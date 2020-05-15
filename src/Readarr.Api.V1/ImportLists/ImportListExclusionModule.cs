@@ -23,7 +23,7 @@ namespace Readarr.Api.V1.ImportLists
             DeleteResource = DeleteImportListExclusionResource;
 
             SharedValidator.RuleFor(c => c.ForeignId).NotEmpty().SetValidator(guidValidator).SetValidator(importListExclusionExistsValidator);
-            SharedValidator.RuleFor(c => c.ArtistName).NotEmpty();
+            SharedValidator.RuleFor(c => c.AuthorName).NotEmpty();
         }
 
         private ImportListExclusionResource GetImportListExclusion(int id)

@@ -6,32 +6,32 @@ using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.SignalR;
-using Readarr.Api.V1.Albums;
+using Readarr.Api.V1.Books;
 using Readarr.Http.Extensions;
 
 namespace Readarr.Api.V1.Calendar
 {
-    public class CalendarModule : AlbumModuleWithSignalR
+    public class CalendarModule : BookModuleWithSignalR
     {
         public CalendarModule(IBookService bookService,
-                              IAuthorStatisticsService artistStatisticsService,
+                              IAuthorStatisticsService authorStatisticsService,
                               IMapCoversToLocal coverMapper,
                               IUpgradableSpecification upgradableSpecification,
                               IBroadcastSignalRMessage signalRBroadcaster)
-            : base(bookService, artistStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "calendar")
+            : base(bookService, authorStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "calendar")
         {
             GetResourceAll = GetCalendar;
         }
 
-        private List<AlbumResource> GetCalendar()
+        private List<BookResource> GetCalendar()
         {
             var start = DateTime.Today;
             var end = DateTime.Today.AddDays(2);
             var includeUnmonitored = Request.GetBooleanQueryParameter("unmonitored");
-            var includeArtist = Request.GetBooleanQueryParameter("includeArtist");
+            var includeAuthor = Request.GetBooleanQueryParameter("includeAuthor");
 
             //TODO: Add Album Image support to AlbumModuleWithSignalR
-            var includeAlbumImages = Request.GetBooleanQueryParameter("includeAlbumImages");
+            var includeBookImages = Request.GetBooleanQueryParameter("includeBookImages");
 
             var queryStart = Request.Query.Start;
             var queryEnd = Request.Query.End;
@@ -46,7 +46,7 @@ namespace Readarr.Api.V1.Calendar
                 end = DateTime.Parse(queryEnd.Value);
             }
 
-            var resources = MapToResource(_bookService.BooksBetweenDates(start, end, includeUnmonitored), includeArtist);
+            var resources = MapToResource(_bookService.BooksBetweenDates(start, end, includeUnmonitored), includeAuthor);
 
             return resources.OrderBy(e => e.ReleaseDate).ToList();
         }

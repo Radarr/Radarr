@@ -33,7 +33,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
         public virtual Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
-            if (!_configService.AutoUnmonitorPreviouslyDownloadedTracks)
+            if (!_configService.AutoUnmonitorPreviouslyDownloadedBooks)
             {
                 return Decision.Accept();
             }
