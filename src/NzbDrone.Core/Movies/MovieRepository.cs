@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Movies
             _profileRepository = profileRepository;
         }
 
-        protected override SqlBuilder Builder() => new SqlBuilder()
+        protected override SqlBuilder BuilderBase() => new SqlBuilder()
             .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
             .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
             .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId);
@@ -65,33 +65,40 @@ namespace NzbDrone.Core.Movies
             return movieEntry;
         }
 
-        protected override List<Movie> Query(SqlBuilder builder)
+        protected override IEnumerable<Movie> GetResults(SqlBuilder.Template sql)
         {
             var movieDictionary = new Dictionary<int, Movie>();
 
-            _ = _database.QueryJoined<Movie, Profile, AlternativeTitle, MovieFile>(
-                builder,
-                (movie, profile, altTitle, file) => Map(movieDictionary, movie, profile, altTitle, file));
+            using (var conn = _database.OpenConnection())
+            {
+                conn.Query<Movie, Profile, AlternativeTitle, MovieFile, Movie>(
+                    sql.RawSql,
+                    (movie, profile, altTitle, file) => Map(movieDictionary, movie, profile, altTitle, file),
+                    sql.Parameters);
+            }
 
-            return movieDictionary.Values.ToList();
+            return movieDictionary.Values;
         }
 
         public override IEnumerable<Movie> All()
         {
             // the skips the join on profile and populates manually
             // to avoid repeatedly deserializing the same profile
-            var builder = new SqlBuilder()
-                .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
-                .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId);
+            var noProfileTemplate = $"SELECT /**select**/ FROM {_table} /**leftjoin**/ /**where**/ /**orderby**/";
+            var sql = Builder().AddTemplate(noProfileTemplate).LogQuery();
 
             var movieDictionary = new Dictionary<int, Movie>();
             var profiles = _profileRepository.All().ToDictionary(x => x.Id);
 
-            _ = _database.QueryJoined<Movie, AlternativeTitle, MovieFile>(
-                builder,
-                (movie, altTitle, file) => Map(movieDictionary, movie, profiles[movie.ProfileId], altTitle, file));
+            using (var conn = _database.OpenConnection())
+            {
+                conn.Query<Movie, AlternativeTitle, MovieFile, Movie>(
+                    sql.RawSql,
+                    (movie, altTitle, file) => Map(movieDictionary, movie, profiles[movie.ProfileId], altTitle, file),
+                    sql.Parameters);
+            }
 
-            return movieDictionary.Values.ToList();
+            return movieDictionary.Values;
         }
 
         public bool MoviePathExists(string path)
@@ -156,24 +163,23 @@ namespace NzbDrone.Core.Movies
             return Query(builder);
         }
 
-        public SqlBuilder MoviesWithoutFilesBuilder() => Builder()
-            .Where<Movie>(x => x.MovieFileId == 0);
+        public SqlBuilder MoviesWithoutFilesBuilder() => BuilderBase().Where<Movie>(x => x.MovieFileId == 0);
 
         public PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec)
         {
-            pagingSpec.Records = GetPagedRecords(MoviesWithoutFilesBuilder(), pagingSpec, PagedQuery);
+            pagingSpec.Records = GetPagedRecords(MoviesWithoutFilesBuilder().SelectAll(), pagingSpec, PagedSelector);
             pagingSpec.TotalRecords = GetPagedRecordCount(MoviesWithoutFilesBuilder().SelectCount(), pagingSpec);
 
             return pagingSpec;
         }
 
-        public SqlBuilder MoviesWhereCutoffUnmetBuilder(List<QualitiesBelowCutoff> qualitiesBelowCutoff) => Builder()
+        public SqlBuilder MoviesWhereCutoffUnmetBuilder(List<QualitiesBelowCutoff> qualitiesBelowCutoff) => BuilderBase()
                 .Where<Movie>(x => x.MovieFileId != 0)
                 .Where(BuildQualityCutoffWhereClause(qualitiesBelowCutoff));
 
         public PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
-            pagingSpec.Records = GetPagedRecords(MoviesWhereCutoffUnmetBuilder(qualitiesBelowCutoff), pagingSpec, PagedQuery);
+            pagingSpec.Records = GetPagedRecords(MoviesWhereCutoffUnmetBuilder(qualitiesBelowCutoff).SelectAll(), pagingSpec, PagedSelector);
             pagingSpec.TotalRecords = GetPagedRecordCount(MoviesWhereCutoffUnmetBuilder(qualitiesBelowCutoff).SelectCount(), pagingSpec);
 
             return pagingSpec;
