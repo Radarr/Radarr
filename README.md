@@ -24,6 +24,7 @@ Readarr is a ebook (and maybe eventually magazine/audiobook) collection manager 
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60)](https://discord.gg/WWd5ZGg)
 [![GitHub](https://img.shields.io/badge/github-issues-red.svg?maxAge=60)](https://github.com/Readarr/Readarr/issues)
 [![GitHub Wiki](https://img.shields.io/badge/github-wiki-181717.svg?maxAge=60)](https://github.com/Readarr/Readarr/wiki)
+[![Docker Pulls](https://img.shields.io/docker/pulls/hotio/readarr)](https://hub.docker.com/r/hotio/readarr)
 
 ## Contributors
 
