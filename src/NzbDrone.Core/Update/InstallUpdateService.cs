@@ -128,6 +128,12 @@ namespace NzbDrone.Core.Update
             _logger.Info("Preparing client");
             _diskTransferService.TransferFolder(_appFolderInfo.GetUpdateClientFolder(updatePackage.Version), updateSandboxFolder, TransferMode.Move, false);
 
+            // Set executable flag on update app
+            if (OsInfo.IsOsx)
+            {
+                _diskProvider.SetPermissions(_appFolderInfo.GetUpdateClientExePath(), "0755", null, null);
+            }
+
             _logger.Info("Starting update client {0}", _appFolderInfo.GetUpdateClientExePath());
             _logger.ProgressInfo("Radarr will restart shortly.");
 
