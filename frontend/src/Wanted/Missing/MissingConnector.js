@@ -16,11 +16,11 @@ import Missing from './Missing';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.wanted.missing,
-    createCommandExecutingSelector(commandNames.MISSING_ALBUM_SEARCH),
-    (missing, isSearchingForMissingAlbums) => {
+    createCommandExecutingSelector(commandNames.MISSING_BOOK_SEARCH),
+    (missing, isSearchingForMissingBooks) => {
 
       return {
-        isSearchingForMissingAlbums,
+        isSearchingForMissingBooks,
         isSaving: missing.items.filter((m) => m.isSaving).length > 1,
         ...missing
       };
@@ -47,7 +47,7 @@ class MissingConnector extends Component {
       gotoMissingFirstPage
     } = this.props;
 
-    registerPagePopulator(this.repopulate, ['trackFileUpdated']);
+    registerPagePopulator(this.repopulate, ['bookFileUpdated']);
 
     if (useCurrentPage) {
       fetchMissing();
@@ -117,14 +117,14 @@ class MissingConnector extends Component {
 
   onSearchSelectedPress = (selected) => {
     this.props.executeCommand({
-      name: commandNames.ALBUM_SEARCH,
+      name: commandNames.BOOK_SEARCH,
       bookIds: selected
     });
   }
 
   onSearchAllMissingPress = () => {
     this.props.executeCommand({
-      name: commandNames.MISSING_ALBUM_SEARCH
+      name: commandNames.MISSING_BOOK_SEARCH
     });
   }
 

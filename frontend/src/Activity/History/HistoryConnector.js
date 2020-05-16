@@ -7,23 +7,18 @@ import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
 import withCurrentPage from 'Components/withCurrentPage';
 import * as historyActions from 'Store/Actions/historyActions';
-import { fetchAlbums, clearAlbums } from 'Store/Actions/albumActions';
-import { fetchTracks, clearTracks } from 'Store/Actions/trackActions';
+import { fetchBooks, clearBooks } from 'Store/Actions/bookActions';
 import History from './History';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.history,
-    (state) => state.albums,
-    (state) => state.tracks,
-    (history, albums, tracks) => {
+    (state) => state.books,
+    (history, books) => {
       return {
-        isAlbumsFetching: albums.isFetching,
-        isAlbumsPopulated: albums.isPopulated,
-        albumsError: albums.error,
-        isTracksFetching: tracks.isFetching,
-        isTracksPopulated: tracks.isPopulated,
-        tracksError: tracks.error,
+        isBooksFetching: books.isFetching,
+        isBooksPopulated: books.isPopulated,
+        booksError: books.error,
         ...history
       };
     }
@@ -32,10 +27,8 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   ...historyActions,
-  fetchAlbums,
-  clearAlbums,
-  fetchTracks,
-  clearTracks
+  fetchBooks,
+  clearBooks
 };
 
 class HistoryConnector extends Component {
@@ -62,16 +55,10 @@ class HistoryConnector extends Component {
   componentDidUpdate(prevProps) {
     if (hasDifferentItems(prevProps.items, this.props.items)) {
       const bookIds = selectUniqueIds(this.props.items, 'bookId');
-      const trackIds = selectUniqueIds(this.props.items, 'trackId');
       if (bookIds.length) {
-        this.props.fetchAlbums({ bookIds });
+        this.props.fetchBooks({ bookIds });
       } else {
-        this.props.clearAlbums();
-      }
-      if (trackIds.length) {
-        this.props.fetchTracks({ trackIds });
-      } else {
-        this.props.clearTracks();
+        this.props.clearBooks();
       }
     }
   }
@@ -79,8 +66,7 @@ class HistoryConnector extends Component {
   componentWillUnmount() {
     unregisterPagePopulator(this.repopulate);
     this.props.clearHistory();
-    this.props.clearAlbums();
-    this.props.clearTracks();
+    this.props.clearBooks();
   }
 
   //
@@ -162,10 +148,8 @@ HistoryConnector.propTypes = {
   setHistoryFilter: PropTypes.func.isRequired,
   setHistoryTableOption: PropTypes.func.isRequired,
   clearHistory: PropTypes.func.isRequired,
-  fetchAlbums: PropTypes.func.isRequired,
-  clearAlbums: PropTypes.func.isRequired,
-  fetchTracks: PropTypes.func.isRequired,
-  clearTracks: PropTypes.func.isRequired
+  fetchBooks: PropTypes.func.isRequired,
+  clearBooks: PropTypes.func.isRequired
 };
 
 export default withCurrentPage(

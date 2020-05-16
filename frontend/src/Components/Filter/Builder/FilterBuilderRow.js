@@ -11,7 +11,7 @@ import MetadataProfileFilterBuilderRowValueConnector from './MetadataProfileFilt
 import ProtocolFilterBuilderRowValue from './ProtocolFilterBuilderRowValue';
 import QualityFilterBuilderRowValueConnector from './QualityFilterBuilderRowValueConnector';
 import QualityProfileFilterBuilderRowValueConnector from './QualityProfileFilterBuilderRowValueConnector';
-import ArtistStatusFilterBuilderRowValue from './ArtistStatusFilterBuilderRowValue';
+import AuthorStatusFilterBuilderRowValue from './AuthorStatusFilterBuilderRowValue';
 import TagFilterBuilderRowValueConnector from './TagFilterBuilderRowValueConnector';
 import styles from './FilterBuilderRow.css';
 
@@ -72,8 +72,8 @@ function getRowValueConnector(selectedFilterBuilderProp) {
     case filterBuilderValueTypes.QUALITY_PROFILE:
       return QualityProfileFilterBuilderRowValueConnector;
 
-    case filterBuilderValueTypes.ARTIST_STATUS:
-      return ArtistStatusFilterBuilderRowValue;
+    case filterBuilderValueTypes.AUTHOR_STATUS:
+      return AuthorStatusFilterBuilderRowValue;
 
     case filterBuilderValueTypes.TAG:
       return TagFilterBuilderRowValueConnector;

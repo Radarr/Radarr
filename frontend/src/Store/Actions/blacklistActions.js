@@ -28,7 +28,7 @@ export const defaultState = {
   columns: [
     {
       name: 'authors.sortName',
-      label: 'Artist Name',
+      label: 'Author Name',
       isSortable: true,
       isVisible: true
     },

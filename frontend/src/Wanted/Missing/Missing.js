@@ -86,7 +86,7 @@ class Missing extends Component {
   onToggleSelectedPress = () => {
     const bookIds = this.getSelectedIds();
 
-    this.props.batchToggleMissingAlbums({
+    this.props.batchToggleMissingBooks({
       bookIds,
       monitored: !getMonitoredValue(this.props)
     });
@@ -126,7 +126,7 @@ class Missing extends Component {
       filters,
       columns,
       totalRecords,
-      isSearchingForMissingAlbums,
+      isSearchingForMissingBooks,
       isSaving,
       onFilterSelect,
       ...otherProps
@@ -150,7 +150,7 @@ class Missing extends Component {
             <PageToolbarButton
               label="Search Selected"
               iconName={icons.SEARCH}
-              isDisabled={!itemsSelected || isSearchingForMissingAlbums}
+              isDisabled={!itemsSelected || isSearchingForMissingBooks}
               onPress={this.onSearchSelectedPress}
             />
 
@@ -168,7 +168,7 @@ class Missing extends Component {
               label="Search All"
               iconName={icons.SEARCH}
               isDisabled={!items.length}
-              isSpinning={isSearchingForMissingAlbums}
+              isSpinning={isSearchingForMissingBooks}
               onPress={this.onSearchAllMissingPress}
             />
 
@@ -250,11 +250,11 @@ class Missing extends Component {
                 <ConfirmModal
                   isOpen={isConfirmSearchAllMissingModalOpen}
                   kind={kinds.DANGER}
-                  title="Search for all missing albums"
+                  title="Search for all missing books"
                   message={
                     <div>
                       <div>
-                        Are you sure you want to search for all {totalRecords} missing albums?
+                        Are you sure you want to search for all {totalRecords} missing books?
                       </div>
                       <div>
                         This cannot be cancelled once started without restarting Readarr.
@@ -288,11 +288,11 @@ Missing.propTypes = {
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
-  isSearchingForMissingAlbums: PropTypes.bool.isRequired,
+  isSearchingForMissingBooks: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
   onSearchSelectedPress: PropTypes.func.isRequired,
-  batchToggleMissingAlbums: PropTypes.func.isRequired,
+  batchToggleMissingBooks: PropTypes.func.isRequired,
   onSearchAllMissingPress: PropTypes.func.isRequired
 };
 

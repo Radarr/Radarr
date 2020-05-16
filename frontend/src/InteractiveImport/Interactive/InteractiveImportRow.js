@@ -9,9 +9,9 @@ import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
-import TrackQuality from 'Album/TrackQuality';
-import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
-import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
+import BookQuality from 'Book/BookQuality';
+import SelectAuthorModal from 'InteractiveImport/Author/SelectAuthorModal';
+import SelectBookModal from 'InteractiveImport/Book/SelectBookModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
 import styles from './InteractiveImportRow.css';
@@ -25,8 +25,8 @@ class InteractiveImportRow extends Component {
     super(props, context);
 
     this.state = {
-      isSelectArtistModalOpen: false,
-      isSelectAlbumModalOpen: false,
+      isSelectAuthorModalOpen: false,
+      isSelectBookModalOpen: false,
       isSelectQualityModalOpen: false
     };
   }
@@ -34,14 +34,14 @@ class InteractiveImportRow extends Component {
   componentDidMount() {
     const {
       id,
-      artist,
-      album,
+      author,
+      book,
       quality
     } = this.props;
 
     if (
-      artist &&
-      album != null &&
+      author &&
+      book != null &&
       quality
     ) {
       this.props.onSelectedChange({ id, value: true });
@@ -51,16 +51,16 @@ class InteractiveImportRow extends Component {
   componentDidUpdate(prevProps) {
     const {
       id,
-      artist,
-      album,
+      author,
+      book,
       quality,
       isSelected,
       onValidRowChange
     } = this.props;
 
     if (
-      prevProps.artist === artist &&
-      prevProps.album === album &&
+      prevProps.author === author &&
+      prevProps.book === book &&
       prevProps.quality === quality &&
       prevProps.isSelected === isSelected
     ) {
@@ -68,8 +68,8 @@ class InteractiveImportRow extends Component {
     }
 
     const isValid = !!(
-      artist &&
-      album &&
+      author &&
+      book &&
       quality
     );
 
@@ -97,25 +97,25 @@ class InteractiveImportRow extends Component {
   //
   // Listeners
 
-  onSelectArtistPress = () => {
-    this.setState({ isSelectArtistModalOpen: true });
+  onSelectAuthorPress = () => {
+    this.setState({ isSelectAuthorModalOpen: true });
   }
 
-  onSelectAlbumPress = () => {
-    this.setState({ isSelectAlbumModalOpen: true });
+  onSelectBookPress = () => {
+    this.setState({ isSelectBookModalOpen: true });
   }
 
   onSelectQualityPress = () => {
     this.setState({ isSelectQualityModalOpen: true });
   }
 
-  onSelectArtistModalClose = (changed) => {
-    this.setState({ isSelectArtistModalOpen: false });
+  onSelectAuthorModalClose = (changed) => {
+    this.setState({ isSelectAuthorModalOpen: false });
     this.selectRowAfterChange(changed);
   }
 
-  onSelectAlbumModalClose = (changed) => {
-    this.setState({ isSelectAlbumModalOpen: false });
+  onSelectBookModalClose = (changed) => {
+    this.setState({ isSelectBookModalOpen: false });
     this.selectRowAfterChange(changed);
   }
 
@@ -130,10 +130,10 @@ class InteractiveImportRow extends Component {
   render() {
     const {
       id,
-      allowArtistChange,
+      allowAuthorChange,
       path,
-      artist,
-      album,
+      author,
+      book,
       quality,
       size,
       rejections,
@@ -143,19 +143,19 @@ class InteractiveImportRow extends Component {
     } = this.props;
 
     const {
-      isSelectArtistModalOpen,
-      isSelectAlbumModalOpen,
+      isSelectAuthorModalOpen,
+      isSelectBookModalOpen,
       isSelectQualityModalOpen
     } = this.state;
 
-    const artistName = artist ? artist.artistName : '';
-    let albumTitle = '';
-    if (album) {
-      albumTitle = album.disambiguation ? `${album.title} (${album.disambiguation})` : album.title;
+    const authorName = author ? author.authorName : '';
+    let bookTitle = '';
+    if (book) {
+      bookTitle = book.disambiguation ? `${book.title} (${book.disambiguation})` : book.title;
     }
 
-    const showArtistPlaceholder = isSelected && !artist;
-    const showAlbumNumberPlaceholder = isSelected && !!artist && !album;
+    const showAuthorPlaceholder = isSelected && !author;
+    const showBookNumberPlaceholder = isSelected && !!author && !book;
     const showQualityPlaceholder = isSelected && !quality;
 
     const pathCellContents = (
@@ -190,22 +190,22 @@ class InteractiveImportRow extends Component {
         </TableRowCell>
 
         <TableRowCellButton
-          isDisabled={!allowArtistChange}
-          title={allowArtistChange ? 'Click to change artist' : undefined}
-          onPress={this.onSelectArtistPress}
+          isDisabled={!allowAuthorChange}
+          title={allowAuthorChange ? 'Click to change author' : undefined}
+          onPress={this.onSelectAuthorPress}
         >
           {
-            showArtistPlaceholder ? <InteractiveImportRowCellPlaceholder /> : artistName
+            showAuthorPlaceholder ? <InteractiveImportRowCellPlaceholder /> : authorName
           }
         </TableRowCellButton>
 
         <TableRowCellButton
-          isDisabled={!artist}
-          title={artist ? 'Click to change album' : undefined}
-          onPress={this.onSelectAlbumPress}
+          isDisabled={!author}
+          title={author ? 'Click to change book' : undefined}
+          onPress={this.onSelectBookPress}
         >
           {
-            showAlbumNumberPlaceholder ? <InteractiveImportRowCellPlaceholder /> : albumTitle
+            showBookNumberPlaceholder ? <InteractiveImportRowCellPlaceholder /> : bookTitle
           }
         </TableRowCellButton>
 
@@ -221,7 +221,7 @@ class InteractiveImportRow extends Component {
 
           {
             !showQualityPlaceholder && !!quality &&
-              <TrackQuality
+              <BookQuality
                 className={styles.label}
                 quality={quality}
               />
@@ -262,17 +262,17 @@ class InteractiveImportRow extends Component {
           }
         </TableRowCell>
 
-        <SelectArtistModal
-          isOpen={isSelectArtistModalOpen}
+        <SelectAuthorModal
+          isOpen={isSelectAuthorModalOpen}
           ids={[id]}
-          onModalClose={this.onSelectArtistModalClose}
+          onModalClose={this.onSelectAuthorModalClose}
         />
 
-        <SelectAlbumModal
-          isOpen={isSelectAlbumModalOpen}
+        <SelectBookModal
+          isOpen={isSelectBookModalOpen}
           ids={[id]}
-          authorId={artist && artist.id}
-          onModalClose={this.onSelectAlbumModalClose}
+          authorId={author && author.id}
+          onModalClose={this.onSelectBookModalClose}
         />
 
         <SelectQualityModal
@@ -291,10 +291,10 @@ class InteractiveImportRow extends Component {
 
 InteractiveImportRow.propTypes = {
   id: PropTypes.number.isRequired,
-  allowArtistChange: PropTypes.bool.isRequired,
+  allowAuthorChange: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired,
-  artist: PropTypes.object,
-  album: PropTypes.object,
+  author: PropTypes.object,
+  book: PropTypes.object,
   quality: PropTypes.object,
   size: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,

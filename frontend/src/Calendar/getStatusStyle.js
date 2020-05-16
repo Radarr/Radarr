@@ -1,14 +1,14 @@
 /* eslint max-params: 0 */
 import moment from 'moment';
 
-function getStatusStyle(episodeNumber, downloading, startTime, isMonitored, percentOfTracks) {
+function getStatusStyle(episodeNumber, downloading, startTime, isMonitored, percentOfBooks) {
   const currentTime = moment();
 
-  if (percentOfTracks === 100) {
+  if (percentOfBooks === 100) {
     return 'downloaded';
   }
 
-  if (percentOfTracks > 0) {
+  if (percentOfBooks > 0) {
     return 'partial';
   }
 

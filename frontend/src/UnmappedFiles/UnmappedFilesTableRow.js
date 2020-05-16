@@ -6,9 +6,9 @@ import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
-import TrackQuality from 'Album/TrackQuality';
+import BookQuality from 'Book/BookQuality';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
-import FileDetailsModal from 'TrackFile/FileDetailsModal';
+import FileDetailsModal from 'BookFile/FileDetailsModal';
 import styles from './UnmappedFilesTableRow.css';
 
 class UnmappedFilesTableRow extends Component {
@@ -131,7 +131,7 @@ class UnmappedFilesTableRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
-                  <TrackQuality
+                  <BookQuality
                     quality={quality}
                   />
                 </VirtualTableRowCell>
@@ -187,7 +187,7 @@ class UnmappedFilesTableRow extends Component {
         <ConfirmModal
           isOpen={isConfirmDeleteModalOpen}
           kind={kinds.DANGER}
-          title="Delete Track File"
+          title="Delete Book File"
           message={`Are you sure you want to delete ${path}?`}
           confirmLabel="Delete"
           onConfirm={this.onConfirmDelete}

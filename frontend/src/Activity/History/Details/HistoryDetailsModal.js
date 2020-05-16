@@ -17,16 +17,16 @@ function getHeaderTitle(eventType) {
       return 'Grabbed';
     case 'downloadFailed':
       return 'Download Failed';
-    case 'trackFileImported':
-      return 'Track Imported';
-    case 'trackFileDeleted':
-      return 'Track File Deleted';
-    case 'trackFileRenamed':
-      return 'Track File Renamed';
-    case 'trackFileRetagged':
-      return 'Track File Tags Updated';
-    case 'albumImportIncomplete':
-      return 'Album Import Incomplete';
+    case 'bookFileImported':
+      return 'Book Imported';
+    case 'bookFileDeleted':
+      return 'Book File Deleted';
+    case 'bookFileRenamed':
+      return 'Book File Renamed';
+    case 'bookFileRetagged':
+      return 'Book File Tags Updated';
+    case 'bookImportIncomplete':
+      return 'Book Import Incomplete';
     case 'downloadImported':
       return 'Download Completed';
     case 'downloadIgnored':

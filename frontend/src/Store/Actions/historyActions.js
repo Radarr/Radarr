@@ -99,8 +99,8 @@ export const defaultState = {
       ]
     },
     {
-      key: 'trackFileImported',
-      label: 'Track Imported',
+      key: 'bookFileImported',
+      label: 'Book Imported',
       filters: [
         {
           key: 'eventType',

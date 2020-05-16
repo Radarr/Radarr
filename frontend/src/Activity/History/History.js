@@ -22,7 +22,7 @@ class History extends Component {
 
   shouldComponentUpdate(nextProps) {
     // Don't update when fetching has completed if items have changed,
-    // before albums start fetching or when albums start fetching.
+    // before books start fetching or when books start fetching.
 
     if (
       (
@@ -30,7 +30,7 @@ class History extends Component {
         nextProps.isPopulated &&
         hasDifferentItems(this.props.items, nextProps.items)
       ) ||
-      (!this.props.isAlbumsFetching && nextProps.isAlbumsFetching)
+      (!this.props.isBooksFetching && nextProps.isBooksFetching)
     ) {
       return false;
     }
@@ -51,17 +51,17 @@ class History extends Component {
       selectedFilterKey,
       filters,
       totalRecords,
-      isAlbumsFetching,
-      isAlbumsPopulated,
-      albumsError,
+      isBooksFetching,
+      isBooksPopulated,
+      booksError,
       onFilterSelect,
       onFirstPagePress,
       ...otherProps
     } = this.props;
 
-    const isFetchingAny = isFetching || isAlbumsFetching;
-    const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length);
-    const hasError = error || albumsError;
+    const isFetchingAny = isFetching || isBooksFetching;
+    const isAllPopulated = isPopulated && (isBooksPopulated || !items.length);
+    const hasError = error || booksError;
 
     return (
       <PageContent title="History">
@@ -109,7 +109,7 @@ class History extends Component {
 
           {
             // If history isPopulated and it's empty show no history found and don't
-            // wait for the albums to populate because they are never coming.
+            // wait for the books to populate because they are never coming.
 
             isPopulated && !hasError && !items.length &&
               <div>
@@ -162,9 +162,9 @@ History.propTypes = {
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
-  isAlbumsFetching: PropTypes.bool.isRequired,
-  isAlbumsPopulated: PropTypes.bool.isRequired,
-  albumsError: PropTypes.object,
+  isBooksFetching: PropTypes.bool.isRequired,
+  isBooksPopulated: PropTypes.bool.isRequired,
+  booksError: PropTypes.object,
   onFilterSelect: PropTypes.func.isRequired,
   onFirstPagePress: PropTypes.func.isRequired
 };

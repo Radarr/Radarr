@@ -16,7 +16,7 @@ function TagDetailsModalContent(props) {
   const {
     label,
     isTagUsed,
-    artist,
+    author,
     delayProfiles,
     importLists,
     notifications,
@@ -38,13 +38,13 @@ function TagDetailsModalContent(props) {
         }
 
         {
-          !!artist.length &&
-            <FieldSet legend="Artists">
+          !!author.length &&
+            <FieldSet legend="Authors">
               {
-                artist.map((item) => {
+                author.map((item) => {
                   return (
                     <div key={item.id}>
-                      {item.artistName}
+                      {item.authorName}
                     </div>
                   );
                 })
@@ -184,7 +184,7 @@ function TagDetailsModalContent(props) {
 TagDetailsModalContent.propTypes = {
   label: PropTypes.string.isRequired,
   isTagUsed: PropTypes.bool.isRequired,
-  artist: PropTypes.arrayOf(PropTypes.object).isRequired,
+  author: PropTypes.arrayOf(PropTypes.object).isRequired,
   delayProfiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   importLists: PropTypes.arrayOf(PropTypes.object).isRequired,
   notifications: PropTypes.arrayOf(PropTypes.object).isRequired,

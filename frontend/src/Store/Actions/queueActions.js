@@ -25,7 +25,7 @@ const paged = `${section}.paged`;
 
 export const defaultState = {
   options: {
-    includeUnknownArtistItems: false
+    includeUnknownAuthorItems: false
   },
 
   status: {
@@ -150,7 +150,7 @@ export const persistState = [
 // Helpers
 
 function fetchDataAugmenter(getState, payload, data) {
-  data.includeUnknownArtistItems = getState().queue.options.includeUnknownArtistItems;
+  data.includeUnknownAuthorItems = getState().queue.options.includeUnknownAuthorItems;
 }
 
 //

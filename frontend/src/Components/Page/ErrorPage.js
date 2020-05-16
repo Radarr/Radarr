@@ -7,7 +7,7 @@ function ErrorPage(props) {
   const {
     version,
     isLocalStorageSupported,
-    artistError,
+    authorError,
     customFiltersError,
     tagsError,
     qualityProfilesError,
@@ -20,8 +20,8 @@ function ErrorPage(props) {
 
   if (!isLocalStorageSupported) {
     errorMessage = 'Local Storage is not supported or disabled. A plugin or private browsing may have disabled it.';
-  } else if (artistError) {
-    errorMessage = getErrorMessage(artistError, 'Failed to load artist from API');
+  } else if (authorError) {
+    errorMessage = getErrorMessage(authorError, 'Failed to load author from API');
   } else if (customFiltersError) {
     errorMessage = getErrorMessage(customFiltersError, 'Failed to load custom filters from API');
   } else if (tagsError) {
@@ -52,7 +52,7 @@ function ErrorPage(props) {
 ErrorPage.propTypes = {
   version: PropTypes.string.isRequired,
   isLocalStorageSupported: PropTypes.bool.isRequired,
-  artistError: PropTypes.object,
+  authorError: PropTypes.object,
   customFiltersError: PropTypes.object,
   tagsError: PropTypes.object,
   qualityProfilesError: PropTypes.object,

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createAllArtistSelector from 'Store/Selectors/createAllArtistSelector';
+import createAllAuthorSelector from 'Store/Selectors/createAllAuthorsSelector';
 import TagDetailsModalContent from './TagDetailsModalContent';
 
 function findMatchingItems(ids, items) {
@@ -9,10 +9,10 @@ function findMatchingItems(ids, items) {
   });
 }
 
-function createMatchingArtistSelector() {
+function createMatchingAuthorSelector() {
   return createSelector(
     (state, { authorIds }) => authorIds,
-    createAllArtistSelector(),
+    createAllAuthorSelector(),
     findMatchingItems
   );
 }
@@ -51,14 +51,14 @@ function createMatchingReleaseProfilesSelector() {
 
 function createMapStateToProps() {
   return createSelector(
-    createMatchingArtistSelector(),
+    createMatchingAuthorSelector(),
     createMatchingDelayProfilesSelector(),
     createMatchingImportListsSelector(),
     createMatchingNotificationsSelector(),
     createMatchingReleaseProfilesSelector(),
-    (artist, delayProfiles, importLists, notifications, releaseProfiles) => {
+    (author, delayProfiles, importLists, notifications, releaseProfiles) => {
       return {
-        artist,
+        author,
         delayProfiles,
         importLists,
         notifications,

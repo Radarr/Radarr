@@ -1,0 +1,45 @@
+.cell {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  display: flex;
+  align-items: center;
+}
+
+.selectCell {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  display: flex;
+  align-items: center;
+}
+
+.status,
+.monitored {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  display: flex;
+  align-items: center;
+  padding: 0;
+  width: 20px;
+}
+
+.statusIcon {
+  width: 20px !important;
+}
+
+.title {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: 110px;
+}
+
+.books {
+  composes: cell;
+
+  display: flex;
+  flex-grow: 4;
+  flex-wrap: wrap;
+  min-width: 400px;
+}

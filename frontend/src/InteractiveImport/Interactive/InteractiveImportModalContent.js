@@ -21,8 +21,8 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
-import SelectArtistModal from 'InteractiveImport/Artist/SelectArtistModal';
-import SelectAlbumModal from 'InteractiveImport/Album/SelectAlbumModal';
+import SelectAuthorModal from 'InteractiveImport/Author/SelectAuthorModal';
+import SelectBookModal from 'InteractiveImport/Book/SelectBookModal';
 import ConfirmImportModal from 'InteractiveImport/Confirmation/ConfirmImportModal';
 import InteractiveImportRow from './InteractiveImportRow';
 import styles from './InteractiveImportModalContent.css';
@@ -35,13 +35,13 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'artist',
-    label: 'Artist',
+    name: 'author',
+    label: 'Author',
     isSortable: true,
     isVisible: true
   },
   {
-    name: 'album',
+    name: 'book',
     label: 'Book',
     isVisible: true
   },
@@ -77,8 +77,8 @@ const importModeOptions = [
 ];
 
 const SELECT = 'select';
-const ARTIST = 'artist';
-const ALBUM = 'album';
+const AUTHOR = 'author';
+const BOOK = 'book';
 const QUALITY = 'quality';
 
 const replaceExistingFilesOptions = {
@@ -101,9 +101,9 @@ class InteractiveImportModalContent extends Component {
       selectedState: {},
       invalidRowsSelected: [],
       selectModalOpen: null,
-      albumsImported: [],
+      booksImported: [],
       isConfirmImportModalOpen: false,
-      inconsistentAlbumReleases: false
+      inconsistentBookReleases: false
     };
   }
 
@@ -112,14 +112,14 @@ class InteractiveImportModalContent extends Component {
     const selectedItems = _.filter(this.props.items, (x) => _.includes(selectedIds, x.id));
 
     const inconsistent = _(selectedItems)
-      .map((x) => ({ bookId: x.album ? x.album.id : 0, releaseId: x.albumReleaseId }))
+      .map((x) => ({ bookId: x.book ? x.book.id : 0, releaseId: x.bookReleaseId }))
       .groupBy('bookId')
-      .mapValues((album) => _(album).groupBy((x) => x.releaseId).values().value().length)
+      .mapValues((book) => _(book).groupBy((x) => x.releaseId).values().value().length)
       .values()
       .some((x) => x !== undefined && x > 1);
 
-    if (inconsistent !== this.state.inconsistentAlbumReleases) {
-      this.setState({ inconsistentAlbumReleases: inconsistent });
+    if (inconsistent !== this.state.inconsistentBookReleases) {
+      this.setState({ inconsistentBookReleases: inconsistent });
     }
   }
 
@@ -161,16 +161,16 @@ class InteractiveImportModalContent extends Component {
 
     // potentially deleting files
     const selectedIds = this.getSelectedIds();
-    const albumsImported = _(this.props.items)
+    const booksImported = _(this.props.items)
       .filter((x) => _.includes(selectedIds, x.id))
-      .keyBy((x) => x.album.id)
-      .map((x) => x.album)
+      .keyBy((x) => x.book.id)
+      .map((x) => x.book)
       .value();
 
-    console.log(albumsImported);
+    console.log(booksImported);
 
     this.setState({
-      albumsImported,
+      booksImported,
       isConfirmImportModalOpen: true
     });
   }
@@ -205,7 +205,7 @@ class InteractiveImportModalContent extends Component {
     this.setState({ selectModalOpen: value });
   }
 
-  onClearTrackMappingPress = () => {
+  onClearBookMappingPress = () => {
     const selectedIds = this.getSelectedIds();
 
     selectedIds.forEach((id) => {
@@ -216,7 +216,7 @@ class InteractiveImportModalContent extends Component {
     });
   }
 
-  onGetTrackMappingPress = () => {
+  onGetBookMappingPress = () => {
     this.props.saveInteractiveImportItem({ id: this.getSelectedIds() });
   }
 
@@ -234,7 +234,7 @@ class InteractiveImportModalContent extends Component {
   render() {
     const {
       downloadId,
-      allowArtistChange,
+      allowAuthorChange,
       showFilterExistingFiles,
       showReplaceExistingFiles,
       showImportMode,
@@ -261,9 +261,9 @@ class InteractiveImportModalContent extends Component {
       selectedState,
       invalidRowsSelected,
       selectModalOpen,
-      albumsImported,
+      booksImported,
       isConfirmImportModalOpen,
-      inconsistentAlbumReleases
+      inconsistentBookReleases
     } = this.state;
 
     const selectedIds = this.getSelectedIds();
@@ -272,14 +272,14 @@ class InteractiveImportModalContent extends Component {
 
     const bulkSelectOptions = [
       { key: SELECT, value: 'Select...', disabled: true },
-      { key: ALBUM, value: 'Select Album' },
+      { key: BOOK, value: 'Select Book' },
       { key: QUALITY, value: 'Select Quality' }
     ];
 
-    if (allowArtistChange) {
+    if (allowAuthorChange) {
       bulkSelectOptions.splice(1, 0, {
-        key: ARTIST,
-        value: 'Select Artist'
+        key: AUTHOR,
+        value: 'Select Author'
       });
     }
 
@@ -395,7 +395,7 @@ class InteractiveImportModalContent extends Component {
                           isSelected={selectedState[item.id]}
                           isSaving={isSaving}
                           {...item}
-                          allowArtistChange={allowArtistChange}
+                          allowAuthorChange={allowAuthorChange}
                           onSelectedChange={this.onSelectedChange}
                           onValidRowChange={this.onValidRowChange}
                         />
@@ -448,7 +448,7 @@ class InteractiveImportModalContent extends Component {
 
             <Button
               kind={kinds.SUCCESS}
-              isDisabled={!selectedIds.length || !!invalidRowsSelected.length || inconsistentAlbumReleases}
+              isDisabled={!selectedIds.length || !!invalidRowsSelected.length || inconsistentBookReleases}
               onPress={this.onImportSelectedPress}
             >
               Import
@@ -456,16 +456,16 @@ class InteractiveImportModalContent extends Component {
           </div>
         </ModalFooter>
 
-        <SelectArtistModal
-          isOpen={selectModalOpen === ARTIST}
+        <SelectAuthorModal
+          isOpen={selectModalOpen === AUTHOR}
           ids={selectedIds}
           onModalClose={this.onSelectModalClose}
         />
 
-        <SelectAlbumModal
-          isOpen={selectModalOpen === ALBUM}
+        <SelectBookModal
+          isOpen={selectModalOpen === BOOK}
           ids={selectedIds}
-          authorId={selectedItem && selectedItem.artist && selectedItem.artist.id}
+          authorId={selectedItem && selectedItem.author && selectedItem.author.id}
           onModalClose={this.onSelectModalClose}
         />
 
@@ -480,7 +480,7 @@ class InteractiveImportModalContent extends Component {
 
         <ConfirmImportModal
           isOpen={isConfirmImportModalOpen}
-          albums={albumsImported}
+          books={booksImported}
           onModalClose={this.onConfirmImportModalClose}
           onConfirmImportPress={this.onConfirmImportPress}
         />
@@ -492,7 +492,7 @@ class InteractiveImportModalContent extends Component {
 
 InteractiveImportModalContent.propTypes = {
   downloadId: PropTypes.string,
-  allowArtistChange: PropTypes.bool.isRequired,
+  allowAuthorChange: PropTypes.bool.isRequired,
   showImportMode: PropTypes.bool.isRequired,
   showFilterExistingFiles: PropTypes.bool.isRequired,
   showReplaceExistingFiles: PropTypes.bool.isRequired,
@@ -520,7 +520,7 @@ InteractiveImportModalContent.propTypes = {
 };
 
 InteractiveImportModalContent.defaultProps = {
-  allowArtistChange: true,
+  allowAuthorChange: true,
   showFilterExistingFiles: false,
   showReplaceExistingFiles: false,
   showImportMode: true,

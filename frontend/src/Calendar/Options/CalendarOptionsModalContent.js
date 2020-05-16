@@ -91,7 +91,7 @@ class CalendarOptionsModalContent extends Component {
 
   render() {
     const {
-      collapseMultipleAlbums,
+      collapseMultipleBooks,
       showCutoffUnmetIcon,
       onModalClose
     } = this.props;
@@ -113,13 +113,13 @@ class CalendarOptionsModalContent extends Component {
           <FieldSet legend="Local">
             <Form>
               <FormGroup>
-                <FormLabel>Collapse Multiple Albums</FormLabel>
+                <FormLabel>Collapse Multiple Books</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
-                  name="collapseMultipleAlbums"
-                  value={collapseMultipleAlbums}
-                  helpText="Collapse multiple albums releasing on the same day"
+                  name="collapseMultipleBooks"
+                  value={collapseMultipleBooks}
+                  helpText="Collapse multiple books releasing on the same day"
                   onChange={this.onOptionInputChange}
                 />
               </FormGroup>
@@ -202,7 +202,7 @@ class CalendarOptionsModalContent extends Component {
 }
 
 CalendarOptionsModalContent.propTypes = {
-  collapseMultipleAlbums: PropTypes.bool.isRequired,
+  collapseMultipleBooks: PropTypes.bool.isRequired,
   showCutoffUnmetIcon: PropTypes.bool.isRequired,
   firstDayOfWeek: PropTypes.number.isRequired,
   calendarWeekColumnHeader: PropTypes.string.isRequired,

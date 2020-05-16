@@ -119,7 +119,7 @@ class CalendarLinkModalContent extends Component {
                 type={inputTypes.CHECK}
                 name="unmonitored"
                 value={unmonitored}
-                helpText="Include unmonitored albums in the iCal feed"
+                helpText="Include unmonitored books in the iCal feed"
                 onChange={this.onInputChange}
               />
             </FormGroup>
@@ -155,7 +155,7 @@ class CalendarLinkModalContent extends Component {
                 type={inputTypes.TAG}
                 name="tags"
                 value={tags}
-                helpText="Feed will only contain artists with at least one matching tag"
+                helpText="Feed will only contain authors with at least one matching tag"
                 onChange={this.onInputChange}
               />
             </FormGroup>

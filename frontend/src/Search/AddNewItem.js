@@ -8,8 +8,8 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import TextInput from 'Components/Form/TextInput';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
-import AddNewArtistSearchResultConnector from './Artist/AddNewArtistSearchResultConnector';
-import AddNewAlbumSearchResultConnector from './Album/AddNewAlbumSearchResultConnector';
+import AddNewAuthorSearchResultConnector from './Author/AddNewAuthorSearchResultConnector';
+import AddNewBookSearchResultConnector from './Book/AddNewBookSearchResultConnector';
 import styles from './AddNewItem.css';
 
 class AddNewItem extends Component {
@@ -131,22 +131,22 @@ class AddNewItem extends Component {
               <div className={styles.searchResults}>
                 {
                   items.map((item) => {
-                    if (item.artist) {
-                      const artist = item.artist;
+                    if (item.author) {
+                      const author = item.author;
                       return (
-                        <AddNewArtistSearchResultConnector
+                        <AddNewAuthorSearchResultConnector
                           key={item.id}
-                          {...artist}
+                          {...author}
                         />
                       );
-                    } else if (item.album) {
-                      const album = item.album;
+                    } else if (item.book) {
+                      const book = item.book;
                       return (
-                        <AddNewAlbumSearchResultConnector
+                        <AddNewBookSearchResultConnector
                           key={item.id}
-                          isExistingAlbum={'id' in album && album.id !== 0}
-                          isExistingArtist={'id' in album.artist && album.artist.id !== 0}
-                          {...album}
+                          isExistingBook={'id' in book && book.id !== 0}
+                          isExistingAuthor={'id' in book.author && book.author.id !== 0}
+                          {...book}
                         />
                       );
                     }

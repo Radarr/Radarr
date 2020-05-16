@@ -111,7 +111,7 @@ function EditReleaseProfileModalContent(props) {
             <FormInputGroup
               type={inputTypes.TAG}
               name="tags"
-              helpText="Release profiles will apply to artists with at least one matching tag. Leave blank to apply to all artists"
+              helpText="Release profiles will apply to authors with at least one matching tag. Leave blank to apply to all authors"
               {...tags}
               onChange={onInputChange}
             />

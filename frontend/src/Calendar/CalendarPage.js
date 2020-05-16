@@ -9,7 +9,7 @@ import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
-import NoArtist from 'Artist/NoArtist';
+import NoAuthor from 'Author/NoAuthor';
 import CalendarLinkModal from './iCal/CalendarLinkModal';
 import CalendarOptionsModal from './Options/CalendarOptionsModal';
 import LegendConnector from './Legend/LegendConnector';
@@ -75,8 +75,8 @@ class CalendarPage extends Component {
     const {
       selectedFilterKey,
       filters,
-      hasArtist,
-      artistError,
+      hasAuthor,
+      authorError,
       missingBookIds,
       isSearchingForMissing,
       useCurrentPage,
@@ -90,7 +90,7 @@ class CalendarPage extends Component {
 
     const isMeasured = this.state.width > 0;
 
-    const PageComponent = hasArtist ? CalendarConnector : NoArtist;
+    const PageComponent = hasAuthor ? CalendarConnector : NoAuthor;
 
     return (
       <PageContent title="Calendar">
@@ -120,7 +120,7 @@ class CalendarPage extends Component {
 
             <FilterMenu
               alignMenu={align.RIGHT}
-              isDisabled={!hasArtist}
+              isDisabled={!hasAuthor}
               selectedFilterKey={selectedFilterKey}
               filters={filters}
               customFilters={[]}
@@ -134,14 +134,14 @@ class CalendarPage extends Component {
           innerClassName={styles.calendarInnerPageBody}
         >
           {
-            artistError &&
+            authorError &&
             <div className={styles.errorMessage}>
-              {getErrorMessage(artistError, 'Failed to load artist from API')}
+              {getErrorMessage(authorError, 'Failed to load author from API')}
             </div>
           }
 
           {
-            !artistError &&
+            !authorError &&
               <Measure
                 whitelist={['width']}
                 onMeasure={this.onMeasure}
@@ -157,7 +157,7 @@ class CalendarPage extends Component {
           }
 
           {
-            hasArtist && !!artistError &&
+            hasAuthor && !!authorError &&
               <LegendConnector />
           }
         </PageContentBodyConnector>
@@ -180,8 +180,8 @@ class CalendarPage extends Component {
 CalendarPage.propTypes = {
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
-  hasArtist: PropTypes.bool.isRequired,
-  artistError: PropTypes.object,
+  hasAuthor: PropTypes.bool.isRequired,
+  authorError: PropTypes.object,
   missingBookIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   isSearchingForMissing: PropTypes.bool.isRequired,
   useCurrentPage: PropTypes.bool.isRequired,

@@ -11,7 +11,7 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Popover from 'Components/Tooltip/Popover';
-import TrackQuality from 'Album/TrackQuality';
+import BookQuality from 'Book/BookQuality';
 import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
 import Peers from './Peers';
 import styles from './InteractiveSearchRow.css';
@@ -161,7 +161,7 @@ class InteractiveSearchRow extends Component {
         </TableRowCell>
 
         <TableRowCell className={styles.quality}>
-          <TrackQuality quality={quality} />
+          <BookQuality quality={quality} />
         </TableRowCell>
 
         <TableRowCell className={styles.preferredWordScore}>
@@ -214,7 +214,7 @@ class InteractiveSearchRow extends Component {
           isOpen={this.state.isConfirmGrabModalOpen}
           kind={kinds.WARNING}
           title="Grab Release"
-          message={`Readarr was unable to determine which artist and album this release was for. Readarr may be unable to automatically import this release. Do you want to grab '${title}'?`}
+          message={`Readarr was unable to determine which author and book this release was for. Readarr may be unable to automatically import this release. Do you want to grab '${title}'?`}
           confirmLabel="Grab"
           onConfirm={this.onGrabConfirm}
           onCancel={this.onGrabCancel}

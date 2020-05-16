@@ -121,11 +121,11 @@ class RetagPreviewModalContent extends Component {
                     items.map((item) => {
                       return (
                         <RetagPreviewRow
-                          key={item.trackFileId}
-                          id={item.trackFileId}
+                          key={item.bookFileId}
+                          id={item.bookFileId}
                           path={item.path}
                           changes={item.changes}
-                          isSelected={selectedState[item.trackFileId]}
+                          isSelected={selectedState[item.bookFileId]}
                           onSelectedChange={this.onSelectedChange}
                         />
                       );

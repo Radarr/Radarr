@@ -43,7 +43,7 @@ class CalendarEvent extends Component {
   render() {
     const {
       id,
-      artist,
+      author,
       title,
       titleSlug,
       releaseDate,
@@ -55,15 +55,15 @@ class CalendarEvent extends Component {
       colorImpairedMode
     } = this.props;
 
-    if (!artist) {
+    if (!author) {
       return null;
     }
 
     const startTime = moment(releaseDate);
-    // const endTime = startTime.add(artist.runtime, 'minutes');
+    // const endTime = startTime.add(author.runtime, 'minutes');
     const downloading = !!(queueItem || grabbed);
-    const isMonitored = artist.monitored && monitored;
-    const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored, statistics.percentOfTracks);
+    const isMonitored = author.monitored && monitored;
+    const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored, statistics.percentOfBooks);
 
     return (
       <div>
@@ -77,9 +77,9 @@ class CalendarEvent extends Component {
           onPress={this.onPress}
         >
           <div className={styles.info}>
-            <div className={styles.artistName}>
-              <Link to={`/author/${artist.titleSlug}`}>
-                {artist.artistName}
+            <div className={styles.authorName}>
+              <Link to={`/author/${author.titleSlug}`}>
+                {author.authorName}
               </Link>
             </div>
 
@@ -97,13 +97,13 @@ class CalendarEvent extends Component {
               <Icon
                 className={styles.statusIcon}
                 name={icons.DOWNLOADING}
-                title="Album is downloading"
+                title="Book is downloading"
               />
             }
           </div>
 
-          <div className={styles.albumInfo}>
-            <div className={styles.albumTitle}>
+          <div className={styles.bookInfo}>
+            <div className={styles.bookTitle}>
               <Link to={`/book/${titleSlug}`}>
                 {title}
               </Link>
@@ -117,7 +117,7 @@ class CalendarEvent extends Component {
 
 CalendarEvent.propTypes = {
   id: PropTypes.number.isRequired,
-  artist: PropTypes.object.isRequired,
+  author: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   statistics: PropTypes.object.isRequired,
@@ -132,7 +132,7 @@ CalendarEvent.propTypes = {
 
 CalendarEvent.defaultProps = {
   statistics: {
-    percentOfTracks: 0
+    percentOfBooks: 0
   }
 };
 

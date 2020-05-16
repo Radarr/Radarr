@@ -6,8 +6,8 @@ import IconButton from 'Components/Link/IconButton';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import TrackQuality from 'Album/TrackQuality';
-import ArtistNameLink from 'Artist/ArtistNameLink';
+import BookQuality from 'Book/BookQuality';
+import AuthorNameLink from 'Author/AuthorNameLink';
 import BlacklistDetailsModal from './BlacklistDetailsModal';
 import styles from './BlacklistRow.css';
 
@@ -40,7 +40,7 @@ class BlacklistRow extends Component {
 
   render() {
     const {
-      artist,
+      author,
       sourceTitle,
       quality,
       date,
@@ -51,7 +51,7 @@ class BlacklistRow extends Component {
       onRemovePress
     } = this.props;
 
-    if (!artist) {
+    if (!author) {
       return null;
     }
 
@@ -71,9 +71,9 @@ class BlacklistRow extends Component {
             if (name === 'authors.sortName') {
               return (
                 <TableRowCell key={name}>
-                  <ArtistNameLink
-                    titleSlug={artist.titleSlug}
-                    artistName={artist.artistName}
+                  <AuthorNameLink
+                    titleSlug={author.titleSlug}
+                    authorName={author.authorName}
                   />
                 </TableRowCell>
               );
@@ -93,7 +93,7 @@ class BlacklistRow extends Component {
                   key={name}
                   className={styles.quality}
                 >
-                  <TrackQuality
+                  <BookQuality
                     quality={quality}
                   />
                 </TableRowCell>
@@ -161,7 +161,7 @@ class BlacklistRow extends Component {
 
 BlacklistRow.propTypes = {
   id: PropTypes.number.isRequired,
-  artist: PropTypes.object.isRequired,
+  author: PropTypes.object.isRequired,
   sourceTitle: PropTypes.string.isRequired,
   quality: PropTypes.object.isRequired,
   date: PropTypes.string.isRequired,

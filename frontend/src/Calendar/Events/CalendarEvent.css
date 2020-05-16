@@ -12,19 +12,19 @@
 }
 
 .info,
-.albumInfo {
+.bookInfo {
   display: flex;
 }
 
-.artistName,
-.albumTitle {
+.authorName,
+.bookTitle {
   @add-mixin truncate;
 
   flex: 1 0 1px;
   margin-right: 10px;
 }
 
-.artistName {
+.authorName {
   color: #3a3f51;
   font-size: $defaultFontSize;
 }

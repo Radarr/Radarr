@@ -10,8 +10,8 @@ function createQueueItemSelector() {
       }
 
       return details.find((item) => {
-        if (item.album) {
-          return item.album.id === bookId;
+        if (item.book) {
+          return item.book.id === bookId;
         }
 
         return false;

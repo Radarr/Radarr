@@ -8,7 +8,7 @@ import titleCase from 'Utilities/String/titleCase';
 import { fetchCommands, updateCommand, finishCommand } from 'Store/Actions/commandActions';
 import { setAppValue, setVersion } from 'Store/Actions/appActions';
 import { update, updateItem, removeItem } from 'Store/Actions/baseActions';
-import { fetchArtist } from 'Store/Actions/artistActions';
+import { fetchAuthor } from 'Store/Actions/authorActions';
 import { fetchHealth } from 'Store/Actions/systemActions';
 import { fetchQueue, fetchQueueDetails } from 'Store/Actions/queueActions';
 import { fetchRootFolders } from 'Store/Actions/settingsActions';
@@ -45,7 +45,7 @@ const mapDispatchToProps = {
   dispatchUpdate: update,
   dispatchUpdateItem: updateItem,
   dispatchRemoveItem: removeItem,
-  dispatchFetchArtist: fetchArtist,
+  dispatchFetchAuthor: fetchAuthor,
   dispatchFetchHealth: fetchHealth,
   dispatchFetchQueue: fetchQueue,
   dispatchFetchQueueDetails: fetchQueueDetails,
@@ -175,9 +175,9 @@ class SignalRConnector extends Component {
     }
   }
 
-  handleAlbum = (body) => {
+  handleBook = (body) => {
     const action = body.action;
-    const section = 'albums';
+    const section = 'books';
 
     if (action === 'updated') {
       this.props.dispatchUpdateItem({
@@ -193,18 +193,8 @@ class SignalRConnector extends Component {
     }
   }
 
-  handleTrack = (body) => {
-    if (body.action === 'updated') {
-      this.props.dispatchUpdateItem({
-        section: 'tracks',
-        updateOnly: true,
-        ...body.resource
-      });
-    }
-  }
-
-  handleTrackfile = (body) => {
-    const section = 'trackFiles';
+  handleBookfile = (body) => {
+    const section = 'bookFiles';
 
     if (body.action === 'updated') {
       this.props.dispatchUpdateItem({ section, ...body.resource });
@@ -213,16 +203,16 @@ class SignalRConnector extends Component {
     }
 
     // Repopulate the page to handle recently imported file
-    repopulatePage('trackFileUpdated');
+    repopulatePage('bookFileUpdated');
   }
 
   handleHealth = () => {
     this.props.dispatchFetchHealth();
   }
 
-  handleArtist = (body) => {
+  handleAuthor = (body) => {
     const action = body.action;
-    const section = 'artist';
+    const section = 'authors';
 
     if (action === 'updated') {
       this.props.dispatchUpdateItem({ section, ...body.resource });
@@ -315,7 +305,7 @@ class SignalRConnector extends Component {
 
     const {
       dispatchFetchCommands,
-      dispatchFetchArtist,
+      dispatchFetchAuthor,
       dispatchSetAppValue
     } = this.props;
 
@@ -328,7 +318,7 @@ class SignalRConnector extends Component {
 
     // Repopulate the page (if a repopulator is set) to ensure things
     // are in sync after reconnecting.
-    dispatchFetchArtist();
+    dispatchFetchAuthor();
     dispatchFetchCommands();
     repopulatePage();
   }
@@ -363,7 +353,7 @@ SignalRConnector.propTypes = {
   dispatchUpdate: PropTypes.func.isRequired,
   dispatchUpdateItem: PropTypes.func.isRequired,
   dispatchRemoveItem: PropTypes.func.isRequired,
-  dispatchFetchArtist: PropTypes.func.isRequired,
+  dispatchFetchAuthor: PropTypes.func.isRequired,
   dispatchFetchHealth: PropTypes.func.isRequired,
   dispatchFetchQueue: PropTypes.func.isRequired,
   dispatchFetchQueueDetails: PropTypes.func.isRequired,

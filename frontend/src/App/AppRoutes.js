@@ -4,13 +4,13 @@ import { Route, Redirect } from 'react-router-dom';
 import getPathWithUrlBase from 'Utilities/getPathWithUrlBase';
 import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
-import ArtistIndexConnector from 'Artist/Index/ArtistIndexConnector';
+import AuthorIndexConnector from 'Author/Index/AuthorIndexConnector';
 import AddNewItemConnector from 'Search/AddNewItemConnector';
-import ArtistEditorConnector from 'Artist/Editor/ArtistEditorConnector';
-import AlbumStudioConnector from 'AlbumStudio/AlbumStudioConnector';
+import AuthorEditorConnector from 'Author/Editor/AuthorEditorConnector';
+import BookshelfConnector from 'Bookshelf/BookshelfConnector';
 import UnmappedFilesTableConnector from 'UnmappedFiles/UnmappedFilesTableConnector';
-import ArtistDetailsPageConnector from 'Artist/Details/ArtistDetailsPageConnector';
-import AlbumDetailsPageConnector from 'Album/Details/AlbumDetailsPageConnector';
+import AuthorDetailsPageConnector from 'Author/Details/AuthorDetailsPageConnector';
+import BookDetailsPageConnector from 'Book/Details/BookDetailsPageConnector';
 import CalendarPageConnector from 'Calendar/CalendarPageConnector';
 import HistoryConnector from 'Activity/History/HistoryConnector';
 import QueueConnector from 'Activity/Queue/QueueConnector';
@@ -44,13 +44,13 @@ function AppRoutes(props) {
   return (
     <Switch>
       {/*
-        Artist
+        Author
       */}
 
       <Route
         exact={true}
         path="/"
-        component={ArtistIndexConnector}
+        component={AuthorIndexConnector}
       />
 
       {
@@ -76,13 +76,13 @@ function AppRoutes(props) {
       />
 
       <Route
-        path="/artisteditor"
-        component={ArtistEditorConnector}
+        path="/authoreditor"
+        component={AuthorEditorConnector}
       />
 
       <Route
-        path="/albumstudio"
-        component={AlbumStudioConnector}
+        path="/bookshelf"
+        component={BookshelfConnector}
       />
 
       <Route
@@ -92,12 +92,12 @@ function AppRoutes(props) {
 
       <Route
         path="/author/:titleSlug"
-        component={ArtistDetailsPageConnector}
+        component={AuthorDetailsPageConnector}
       />
 
       <Route
         path="/book/:titleSlug"
-        component={AlbumDetailsPageConnector}
+        component={BookDetailsPageConnector}
       />
 
       {/*

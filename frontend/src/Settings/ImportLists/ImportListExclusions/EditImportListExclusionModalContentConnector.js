@@ -8,7 +8,7 @@ import { setImportListExclusionValue, saveImportListExclusion } from 'Store/Acti
 import EditImportListExclusionModalContent from './EditImportListExclusionModalContent';
 
 const newImportListExclusion = {
-  artistName: '',
+  authorName: '',
   foreignId: ''
 };
 

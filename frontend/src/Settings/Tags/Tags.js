@@ -14,7 +14,7 @@ function Tags(props) {
 
   if (!items.length) {
     return (
-      <div>No tags have been added yet. Add tags to link artists with delay profiles, restrictions, or notifications. Click <Link to='https://github.com/readarr/Readarr/wiki/Tags'>here</Link> to find out more about tags in Readarr.</div>
+      <div>No tags have been added yet. Add tags to link authors with delay profiles, restrictions, or notifications. Click <Link to='https://github.com/readarr/Readarr/wiki/Tags'>here</Link> to find out more about tags in Readarr.</div>
     );
   }
 

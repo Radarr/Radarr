@@ -30,6 +30,7 @@ import {
   faBan as fasBan,
   faBars as fasBars,
   faBolt as fasBolt,
+  faBook as fasBook,
   faBookmark as fasBookmark,
   faBookReader as fasBookReader,
   faBug as fasBug,
@@ -111,7 +112,7 @@ import {
 export const ACTIONS = fasBolt;
 export const ACTIVITY = farClock;
 export const ADD = fasPlus;
-export const ADD_MISSING_ARTISTS = fasSearchPlus;
+export const ADD_MISSING_AUTHORS = fasSearchPlus;
 export const ALTERNATE_TITLES = farClone;
 export const ADVANCED_SETTINGS = fasCog;
 export const ARROW_LEFT = fasArrowCircleLeft;
@@ -120,6 +121,7 @@ export const ARROW_RIGHT_NO_CIRCLE = fasLongArrowAltRight;
 export const ARROW_UP = fasArrowCircleUp;
 export const BACKUP = farFileArchive;
 export const BAN = fasBan;
+export const BOOK = fasBook;
 export const BUG = fasBug;
 export const CALENDAR = fasCalendarAlt;
 export const CALENDAR_O = farCalendar;
@@ -194,8 +196,8 @@ export const SAVE = fasSave;
 export const SCHEDULED = farClock;
 export const SCORE = fasUserPlus;
 export const SEARCH = fasSearch;
-export const ARTIST_CONTINUING = fasPlay;
-export const ARTIST_ENDED = fasStop;
+export const AUTHOR_CONTINUING = fasPlay;
+export const AUTHOR_ENDED = fasStop;
 export const SETTINGS = fasCogs;
 export const SHUTDOWN = fasPowerOff;
 export const SORT = fasSort;

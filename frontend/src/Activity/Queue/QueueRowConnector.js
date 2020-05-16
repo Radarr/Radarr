@@ -4,25 +4,25 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { grabQueueItem, removeQueueItem } from 'Store/Actions/queueActions';
-import createArtistSelector from 'Store/Selectors/createArtistSelector';
-import createAlbumSelector from 'Store/Selectors/createAlbumSelector';
+import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
+import createBookSelector from 'Store/Selectors/createBookSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import QueueRow from './QueueRow';
 
 function createMapStateToProps() {
   return createSelector(
-    createArtistSelector(),
-    createAlbumSelector(),
+    createAuthorSelector(),
+    createBookSelector(),
     createUISettingsSelector(),
-    (artist, album, uiSettings) => {
+    (author, book, uiSettings) => {
       const result = _.pick(uiSettings, [
         'showRelativeDates',
         'shortDateFormat',
         'timeFormat'
       ]);
 
-      result.artist = artist;
-      result.album = album;
+      result.author = author;
+      result.book = book;
 
       return result;
     }
@@ -63,7 +63,7 @@ class QueueRowConnector extends Component {
 
 QueueRowConnector.propTypes = {
   id: PropTypes.number.isRequired,
-  album: PropTypes.object,
+  book: PropTypes.object,
   grabQueueItem: PropTypes.func.isRequired,
   removeQueueItem: PropTypes.func.isRequired
 };

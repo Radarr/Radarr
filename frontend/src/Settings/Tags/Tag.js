@@ -88,7 +88,7 @@ class Tag extends Component {
               {
                 !!authorIds.length &&
                   <div>
-                    {authorIds.length} artists
+                    {authorIds.length} authors
                   </div>
               }
 

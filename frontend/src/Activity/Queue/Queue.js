@@ -42,7 +42,7 @@ class Queue extends Component {
 
   shouldComponentUpdate(nextProps) {
     // Don't update when fetching has completed if items have changed,
-    // before albums start fetching or when albums start fetching.
+    // before books start fetching or when books start fetching.
 
     if (
       this.props.isFetching &&
@@ -53,7 +53,7 @@ class Queue extends Component {
       return false;
     }
 
-    if (!this.props.isAlbumsFetching && nextProps.isAlbumsFetching) {
+    if (!this.props.isBooksFetching && nextProps.isBooksFetching) {
       return false;
     }
 
@@ -125,9 +125,9 @@ class Queue extends Component {
       isPopulated,
       error,
       items,
-      isAlbumsFetching,
-      isAlbumsPopulated,
-      albumsError,
+      isBooksFetching,
+      isBooksPopulated,
+      booksError,
       columns,
       totalRecords,
       isGrabbing,
@@ -145,9 +145,9 @@ class Queue extends Component {
       isPendingSelected
     } = this.state;
 
-    const isRefreshing = isFetching || isAlbumsFetching || isRefreshMonitoredDownloadsExecuting;
-    const isAllPopulated = isPopulated && (isAlbumsPopulated || !items.length || items.every((e) => !e.bookId));
-    const hasError = error || albumsError;
+    const isRefreshing = isFetching || isBooksFetching || isRefreshMonitoredDownloadsExecuting;
+    const isAllPopulated = isPopulated && (isBooksPopulated || !items.length || items.every((e) => !e.bookId));
+    const hasError = error || booksError;
     const selectedIds = this.getSelectedIds();
     const selectedCount = selectedIds.length;
     const disableSelectedActions = selectedCount === 0;
@@ -280,9 +280,9 @@ Queue.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isAlbumsFetching: PropTypes.bool.isRequired,
-  isAlbumsPopulated: PropTypes.bool.isRequired,
-  albumsError: PropTypes.object,
+  isBooksFetching: PropTypes.bool.isRequired,
+  isBooksPopulated: PropTypes.bool.isRequired,
+  booksError: PropTypes.object,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
   isGrabbing: PropTypes.bool.isRequired,

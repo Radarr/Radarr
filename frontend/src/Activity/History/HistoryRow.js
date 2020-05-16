@@ -5,9 +5,9 @@ import IconButton from 'Components/Link/IconButton';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import AlbumTitleLink from 'Album/AlbumTitleLink';
-import TrackQuality from 'Album/TrackQuality';
-import ArtistNameLink from 'Artist/ArtistNameLink';
+import BookTitleLink from 'Book/BookTitleLink';
+import BookQuality from 'Book/BookQuality';
+import AuthorNameLink from 'Author/AuthorNameLink';
 import HistoryEventTypeCell from './HistoryEventTypeCell';
 import HistoryDetailsModal from './Details/HistoryDetailsModal';
 import styles from './HistoryRow.css';
@@ -51,8 +51,8 @@ class HistoryRow extends Component {
 
   render() {
     const {
-      artist,
-      album,
+      author,
+      book,
       quality,
       qualityCutoffNotMet,
       eventType,
@@ -66,7 +66,7 @@ class HistoryRow extends Component {
       onMarkAsFailedPress
     } = this.props;
 
-    if (!artist || !album) {
+    if (!author || !book) {
       return null;
     }
 
@@ -96,9 +96,9 @@ class HistoryRow extends Component {
             if (name === 'authors.sortName') {
               return (
                 <TableRowCell key={name}>
-                  <ArtistNameLink
-                    titleSlug={artist.titleSlug}
-                    artistName={artist.artistName}
+                  <AuthorNameLink
+                    titleSlug={author.titleSlug}
+                    authorName={author.authorName}
                   />
                 </TableRowCell>
               );
@@ -107,10 +107,10 @@ class HistoryRow extends Component {
             if (name === 'books.title') {
               return (
                 <TableRowCell key={name}>
-                  <AlbumTitleLink
-                    titleSlug={album.titleSlug}
-                    title={album.title}
-                    disambiguation={album.disambiguation}
+                  <BookTitleLink
+                    titleSlug={book.titleSlug}
+                    title={book.title}
+                    disambiguation={book.disambiguation}
                   />
                 </TableRowCell>
               );
@@ -119,7 +119,7 @@ class HistoryRow extends Component {
             if (name === 'quality') {
               return (
                 <TableRowCell key={name}>
-                  <TrackQuality
+                  <BookQuality
                     quality={quality}
                     isCutoffMet={qualityCutoffNotMet}
                   />
@@ -206,8 +206,8 @@ class HistoryRow extends Component {
 
 HistoryRow.propTypes = {
   bookId: PropTypes.number,
-  artist: PropTypes.object.isRequired,
-  album: PropTypes.object,
+  author: PropTypes.object.isRequired,
+  book: PropTypes.object,
   quality: PropTypes.object.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   eventType: PropTypes.string.isRequired,

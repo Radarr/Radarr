@@ -1,18 +1,18 @@
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import createAllArtistSelector from './createAllArtistSelector';
+import createAllAuthorsSelector from './createAllAuthorsSelector';
 
 function createProfileInUseSelector(profileProp) {
   return createSelector(
     (state, { id }) => id,
-    createAllArtistSelector(),
+    createAllAuthorsSelector(),
     (state) => state.settings.importLists.items,
-    (id, artist, lists) => {
+    (id, author, lists) => {
       if (!id) {
         return false;
       }
 
-      if (_.some(artist, { [profileProp]: id }) || _.some(lists, { [profileProp]: id })) {
+      if (_.some(author, { [profileProp]: id }) || _.some(lists, { [profileProp]: id })) {
         return true;
       }
 

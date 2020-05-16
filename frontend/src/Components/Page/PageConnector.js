@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { saveDimensions, setIsSidebarVisible } from 'Store/Actions/appActions';
 import { fetchCustomFilters } from 'Store/Actions/customFilterActions';
-import { fetchArtist } from 'Store/Actions/artistActions';
+import { fetchAuthor } from 'Store/Actions/authorActions';
 import { fetchTags } from 'Store/Actions/tagActions';
 import { fetchQualityProfiles, fetchMetadataProfiles, fetchUISettings, fetchImportLists } from 'Store/Actions/settingsActions';
 import { fetchStatus } from 'Store/Actions/systemActions';
@@ -138,8 +138,8 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    dispatchFetchArtist() {
-      dispatch(fetchArtist());
+    dispatchFetchAuthor() {
+      dispatch(fetchAuthor());
     },
     dispatchFetchCustomFilters() {
       dispatch(fetchCustomFilters());
@@ -186,7 +186,7 @@ class PageConnector extends Component {
 
   componentDidMount() {
     if (!this.props.isPopulated) {
-      this.props.dispatchFetchArtist();
+      this.props.dispatchFetchAuthor();
       this.props.dispatchFetchCustomFilters();
       this.props.dispatchFetchTags();
       this.props.dispatchFetchQualityProfiles();
@@ -211,7 +211,7 @@ class PageConnector extends Component {
     const {
       isPopulated,
       hasError,
-      dispatchFetchArtist,
+      dispatchFetchAuthor,
       dispatchFetchTags,
       dispatchFetchQualityProfiles,
       dispatchFetchMetadataProfiles,
@@ -249,7 +249,7 @@ PageConnector.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   hasError: PropTypes.bool.isRequired,
   isSidebarVisible: PropTypes.bool.isRequired,
-  dispatchFetchArtist: PropTypes.func.isRequired,
+  dispatchFetchAuthor: PropTypes.func.isRequired,
   dispatchFetchCustomFilters: PropTypes.func.isRequired,
   dispatchFetchTags: PropTypes.func.isRequired,
   dispatchFetchQualityProfiles: PropTypes.func.isRequired,

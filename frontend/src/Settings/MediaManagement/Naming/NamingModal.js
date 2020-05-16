@@ -28,16 +28,16 @@ const caseOptions = [
 
 const fileNameTokens = [
   {
-    token: '{Author Name} - {Book Title} - {track:00} - {Track Title} {Quality Full}',
-    example: 'Author Name - Book Title - 01 - Track Title MP3-320 Proper'
+    token: '{Author Name} - {Book Title} - {Quality Full}',
+    example: 'Author Name - Book Title - MP3-320 Proper'
   },
   {
-    token: '{Author.Name}.{Book.Title}.{track:00}.{TrackClean.Title}.{Quality.Full}',
-    example: 'Author.Name.Book.Title.01.Track.Title.MP3-320'
+    token: '{Author.Name}.{Book.Title}.{Quality.Full}',
+    example: 'Author.Name.Book.Title.MP3-320'
   }
 ];
 
-const artistTokens = [
+const authorTokens = [
   { token: '{Author Name}', example: 'Author Name' },
 
   { token: '{Author NameThe}', example: 'Author Name, The' },
@@ -47,7 +47,7 @@ const artistTokens = [
   { token: '{Author Disambiguation}', example: 'Disambiguation' }
 ];
 
-const albumTokens = [
+const bookTokens = [
   { token: '{Book Title}', example: 'Book Title' },
 
   { token: '{Book TitleThe}', example: 'Book Title, The' },
@@ -68,18 +68,8 @@ const mediumFormatTokens = [
   { token: '{Medium Format}', example: 'CD' }
 ];
 
-const trackTokens = [
-  { token: '{track:0}', example: '1' },
-  { token: '{track:00}', example: '01' }
-];
-
 const releaseDateTokens = [
   { token: '{Release Year}', example: '2016' }
-];
-
-const trackTitleTokens = [
-  { token: '{Track Title}', example: 'Track Title' },
-  { token: '{Track CleanTitle}', example: 'Track Title' }
 ];
 
 const qualityTokens = [
@@ -102,7 +92,7 @@ const otherTokens = [
 
 const originalTokens = [
   { token: '{Original Title}', example: 'Author.Name.Book.Name.2018.FLAC-EVOLVE' },
-  { token: '{Original Filename}', example: '01 - track name' }
+  { token: '{Original Filename}', example: '01 - book name' }
 ];
 
 class NamingModal extends Component {
@@ -175,8 +165,7 @@ class NamingModal extends Component {
       value,
       isOpen,
       advancedSettings,
-      album,
-      track,
+      book,
       additional,
       onInputChange,
       onModalClose
@@ -246,7 +235,7 @@ class NamingModal extends Component {
             <FieldSet legend="Author">
               <div className={styles.groups}>
                 {
-                  artistTokens.map(({ token, example }) => {
+                  authorTokens.map(({ token, example }) => {
                     return (
                       <NamingOption
                         key={token}
@@ -266,12 +255,12 @@ class NamingModal extends Component {
             </FieldSet>
 
             {
-              album &&
+              book &&
                 <div>
                   <FieldSet legend="Book">
                     <div className={styles.groups}>
                       {
-                        albumTokens.map(({ token, example }) => {
+                        bookTokens.map(({ token, example }) => {
                           return (
                             <NamingOption
                               key={token}
@@ -315,7 +304,7 @@ class NamingModal extends Component {
             }
 
             {
-              track &&
+              book &&
                 <div>
                   <FieldSet legend="Medium">
                     <div className={styles.groups}>
@@ -361,56 +350,12 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Track">
-                    <div className={styles.groups}>
-                      {
-                        trackTokens.map(({ token, example }) => {
-                          return (
-                            <NamingOption
-                              key={token}
-                              name={name}
-                              value={value}
-                              token={token}
-                              example={example}
-                              tokenSeparator={tokenSeparator}
-                              tokenCase={tokenCase}
-                              onPress={this.onOptionPress}
-                            />
-                          );
-                        }
-                        )
-                      }
-                    </div>
-                  </FieldSet>
-
                 </div>
             }
 
             {
               additional &&
                 <div>
-                  <FieldSet legend="Track Title">
-                    <div className={styles.groups}>
-                      {
-                        trackTitleTokens.map(({ token, example }) => {
-                          return (
-                            <NamingOption
-                              key={token}
-                              name={name}
-                              value={value}
-                              token={token}
-                              example={example}
-                              tokenSeparator={tokenSeparator}
-                              tokenCase={tokenCase}
-                              onPress={this.onOptionPress}
-                            />
-                          );
-                        }
-                        )
-                      }
-                    </div>
-                  </FieldSet>
-
                   <FieldSet legend="Quality">
                     <div className={styles.groups}>
                       {
@@ -525,16 +470,14 @@ NamingModal.propTypes = {
   value: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   advancedSettings: PropTypes.bool.isRequired,
-  album: PropTypes.bool.isRequired,
-  track: PropTypes.bool.isRequired,
+  book: PropTypes.bool.isRequired,
   additional: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
 NamingModal.defaultProps = {
-  album: false,
-  track: false,
+  book: false,
   additional: false
 };
 

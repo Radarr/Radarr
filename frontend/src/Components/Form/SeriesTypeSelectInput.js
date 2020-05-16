@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SelectInput from './SelectInput';
 
-const artistTypeOptions = [
+const authorTypeOptions = [
   { key: 'standard', value: 'Standard' },
   { key: 'daily', value: 'Daily' },
   { key: 'anime', value: 'Anime' }
 ];
 
 function SeriesTypeSelectInput(props) {
-  const values = [...artistTypeOptions];
+  const values = [...authorTypeOptions];
 
   const {
     includeNoChange,

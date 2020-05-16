@@ -60,8 +60,8 @@ export const defaultState = {
       isVisible: false
     },
     {
-      name: 'trackCount',
-      label: 'Track Count',
+      name: 'bookCount',
+      label: 'Book Count',
       isVisible: false
     },
     {
@@ -94,7 +94,7 @@ export const defaultState = {
 // Actions Types
 
 export const FETCH_SERIES = 'series/fetchSeries';
-export const SET_SERIES_SORT = 'albums/setSeriesSort';
+export const SET_SERIES_SORT = 'books/setSeriesSort';
 export const CLEAR_SERIES = 'series/clearSeries';
 
 //

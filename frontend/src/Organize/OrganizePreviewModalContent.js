@@ -125,11 +125,11 @@ class OrganizePreviewModalContent extends Component {
                     items.map((item) => {
                       return (
                         <OrganizePreviewRow
-                          key={item.trackFileId}
-                          id={item.trackFileId}
+                          key={item.bookFileId}
+                          id={item.bookFileId}
                           existingPath={item.existingPath}
                           newPath={item.newPath}
-                          isSelected={selectedState[item.trackFileId]}
+                          isSelected={selectedState[item.bookFileId]}
                           onSelectedChange={this.onSelectedChange}
                         />
                       );

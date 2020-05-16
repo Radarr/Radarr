@@ -4,9 +4,9 @@ import * as calendar from './calendarActions';
 import * as captcha from './captchaActions';
 import * as customFilters from './customFilterActions';
 import * as commands from './commandActions';
-import * as albums from './albumActions';
-import * as trackFiles from './trackFileActions';
-import * as albumHistory from './albumHistoryActions';
+import * as books from './bookActions';
+import * as bookFiles from './bookFileActions';
+import * as bookHistory from './bookHistoryActions';
 import * as history from './historyActions';
 import * as interactiveImportActions from './interactiveImportActions';
 import * as oAuth from './oAuthActions';
@@ -16,17 +16,16 @@ import * as paths from './pathActions';
 import * as providerOptions from './providerOptionActions';
 import * as queue from './queueActions';
 import * as releases from './releaseActions';
-import * as albumStudio from './albumStudioActions';
-import * as artist from './artistActions';
-import * as artistEditor from './artistEditorActions';
-import * as artistHistory from './artistHistoryActions';
-import * as artistIndex from './artistIndexActions';
+import * as bookStudio from './bookshelfActions';
+import * as author from './authorActions';
+import * as authorEditor from './authorEditorActions';
+import * as authorHistory from './authorHistoryActions';
+import * as authorIndex from './authorIndexActions';
 import * as series from './seriesActions';
 import * as search from './searchActions';
 import * as settings from './settingsActions';
 import * as system from './systemActions';
 import * as tags from './tagActions';
-import * as tracks from './trackActions';
 import * as wanted from './wantedActions';
 
 export default [
@@ -36,9 +35,9 @@ export default [
   calendar,
   commands,
   customFilters,
-  albums,
-  trackFiles,
-  albumHistory,
+  books,
+  bookFiles,
+  bookHistory,
   history,
   interactiveImportActions,
   oAuth,
@@ -48,16 +47,15 @@ export default [
   providerOptions,
   queue,
   releases,
-  albumStudio,
-  artist,
-  artistEditor,
-  artistHistory,
-  artistIndex,
+  bookStudio,
+  author,
+  authorEditor,
+  authorHistory,
+  authorIndex,
   series,
   search,
   settings,
   system,
   tags,
-  tracks,
   wanted
 ];

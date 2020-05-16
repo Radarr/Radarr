@@ -9,21 +9,21 @@ const fuseOptions = {
   maxPatternLength: 32,
   minMatchCharLength: 1,
   keys: [
-    'artistName',
+    'authorName',
     'tags.label'
   ]
 };
 
-function getSuggestions(artists, value) {
+function getSuggestions(authors, value) {
   const limit = 10;
   let suggestions = [];
 
   if (value.length === 1) {
-    for (let i = 0; i < artists.length; i++) {
-      const s = artists[i];
+    for (let i = 0; i < authors.length; i++) {
+      const s = authors[i];
       if (s.firstCharacter === value.toLowerCase()) {
         suggestions.push({
-          item: artists[i],
+          item: authors[i],
           indices: [
             [0, 0]
           ],
@@ -41,7 +41,7 @@ function getSuggestions(artists, value) {
       }
     }
   } else {
-    const fuse = new Fuse(artists, fuseOptions);
+    const fuse = new Fuse(authors, fuseOptions);
     suggestions = fuse.search(value, { limit });
   }
 
@@ -54,9 +54,9 @@ self.addEventListener('message', (e) => {
   }
 
   const {
-    artists,
+    authors,
     value
   } = e.data;
 
-  self.postMessage(getSuggestions(artists, value));
+  self.postMessage(getSuggestions(authors, value));
 });

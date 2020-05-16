@@ -1,5 +1,5 @@
-import migrateAddArtistDefaults from './migrateAddArtistDefaults';
+import migrateAddAuthorDefaults from './migrateAddAuthorDefaults';
 
 export default function migrate(persistedState) {
-  migrateAddArtistDefaults(persistedState);
+  migrateAddAuthorDefaults(persistedState);
 }

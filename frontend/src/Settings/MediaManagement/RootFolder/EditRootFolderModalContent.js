@@ -14,8 +14,8 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import Popover from 'Components/Tooltip/Popover';
-import ArtistMonitoringOptionsPopoverContent from 'AddArtist/ArtistMonitoringOptionsPopoverContent';
-import ArtistMetadataProfilePopoverContent from 'AddArtist/ArtistMetadataProfilePopoverContent';
+import AuthorMonitoringOptionsPopoverContent from 'AddAuthor/AuthorMonitoringOptionsPopoverContent';
+import AuthorMetadataProfilePopoverContent from 'AddAuthor/AuthorMetadataProfilePopoverContent';
 import styles from './EditRootFolderModalContent.css';
 
 function EditRootFolderModalContent(props) {
@@ -227,13 +227,13 @@ function EditRootFolderModalContent(props) {
                       />
                     }
                     title="Monitoring Options"
-                    body={<ArtistMonitoringOptionsPopoverContent />}
+                    body={<AuthorMonitoringOptionsPopoverContent />}
                     position={tooltipPositions.RIGHT}
                   />
                 </FormLabel>
 
                 <FormInputGroup
-                  type={inputTypes.MONITOR_ALBUMS_SELECT}
+                  type={inputTypes.MONITOR_BOOKS_SELECT}
                   name="defaultMonitorOption"
                   onChange={onInputChange}
                   {...defaultMonitorOption}
@@ -265,7 +265,7 @@ function EditRootFolderModalContent(props) {
                       />
                     }
                     title="Metadata Profile"
-                    body={<ArtistMetadataProfilePopoverContent />}
+                    body={<AuthorMetadataProfilePopoverContent />}
                     position={tooltipPositions.RIGHT}
                   />
                 </FormLabel>

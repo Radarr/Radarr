@@ -34,7 +34,7 @@ const downloadPropersAndRepacksOptions = [
 
 const fileDateOptions = [
   { key: 'none', value: 'None' },
-  { key: 'albumReleaseDate', value: 'Album Release Date' }
+  { key: 'bookReleaseDate', value: 'Book Release Date' }
 ];
 
 class MediaManagement extends Component {
@@ -96,14 +96,14 @@ class MediaManagement extends Component {
                         isAdvanced={true}
                         size={sizes.MEDIUM}
                       >
-                        <FormLabel>Create empty artist folders</FormLabel>
+                        <FormLabel>Create empty author folders</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.CHECK}
-                          name="createEmptyArtistFolders"
-                          helpText="Create missing artist folders during disk scan"
+                          name="createEmptyAuthorFolders"
+                          helpText="Create missing author folders during disk scan"
                           onChange={onInputChange}
-                          {...settings.createEmptyArtistFolders}
+                          {...settings.createEmptyAuthorFolders}
                         />
                       </FormGroup>
 
@@ -117,7 +117,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="deleteEmptyFolders"
-                          helpText="Delete empty artist and album folders during disk scan and when track files are deleted"
+                          helpText="Delete empty author folders during disk scan and when book files are deleted"
                           onChange={onInputChange}
                           {...settings.deleteEmptyFolders}
                         />
@@ -142,7 +142,7 @@ class MediaManagement extends Component {
                             <FormInputGroup
                               type={inputTypes.CHECK}
                               name="skipFreeSpaceCheckWhenImporting"
-                              helpText="Use when Readarr is unable to detect free space from your artist root folder"
+                              helpText="Use when Readarr is unable to detect free space from your author root folder"
                               onChange={onInputChange}
                               {...settings.skipFreeSpaceCheckWhenImporting}
                             />
@@ -189,7 +189,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="importExtraFiles"
-                          helpText="Import matching extra files (subtitles, nfo, etc) after importing an track file"
+                          helpText="Import matching extra files (subtitles, nfo, etc) after importing an book file"
                           onChange={onInputChange}
                           {...settings.importExtraFiles}
                         />
@@ -222,14 +222,14 @@ class MediaManagement extends Component {
                   legend="File Management"
                 >
                   <FormGroup size={sizes.MEDIUM}>
-                    <FormLabel>Ignore Deleted Tracks</FormLabel>
+                    <FormLabel>Ignore Deleted Books</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.CHECK}
-                      name="autoUnmonitorPreviouslyDownloadedTracks"
-                      helpText="Tracks deleted from disk are automatically unmonitored in Readarr"
+                      name="autoUnmonitorPreviouslyDownloadedBooks"
+                      helpText="Books deleted from disk are automatically unmonitored in Readarr"
                       onChange={onInputChange}
-                      {...settings.autoUnmonitorPreviouslyDownloadedTracks}
+                      {...settings.autoUnmonitorPreviouslyDownloadedBooks}
                     />
                   </FormGroup>
 
@@ -278,12 +278,12 @@ class MediaManagement extends Component {
                     advancedSettings={advancedSettings}
                     isAdvanced={true}
                   >
-                    <FormLabel>Rescan Artist Folder after Refresh</FormLabel>
+                    <FormLabel>Rescan Author Folder after Refresh</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="rescanAfterRefresh"
-                      helpText="Rescan the artist folder after refreshing the artist"
+                      helpText="Rescan the author folder after refreshing the author"
                       helpTextWarning="Readarr will not automatically detect changes to files when not set to 'Always'"
                       values={rescanAfterRefreshOptions}
                       onChange={onInputChange}
@@ -300,7 +300,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="allowFingerprinting"
-                      helpText="Use fingerprinting to improve accuracy of track matching"
+                      helpText="Use fingerprinting to improve accuracy of book matching"
                       helpTextWarning="This requires Readarr to read parts of the file which will slow down scans and may cause high disk or network activity."
                       values={allowFingerprintingOptions}
                       onChange={onInputChange}
@@ -333,7 +333,7 @@ class MediaManagement extends Component {
                     <FormInputGroup
                       type={inputTypes.PATH}
                       name="recycleBin"
-                      helpText="Track files will go here when deleted instead of being permanently deleted"
+                      helpText="Book files will go here when deleted instead of being permanently deleted"
                       onChange={onInputChange}
                       {...settings.recycleBin}
                     />
@@ -403,7 +403,7 @@ class MediaManagement extends Component {
                         <FormInputGroup
                           type={inputTypes.TEXT}
                           name="folderChmod"
-                          helpText="Octal, applied to artist/album folders created by Readarr"
+                          helpText="Octal, applied to author/book folders created by Readarr"
                           values={fileDateOptions}
                           onChange={onInputChange}
                           {...settings.folderChmod}

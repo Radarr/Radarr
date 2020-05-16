@@ -14,18 +14,18 @@ class QueueOptions extends Component {
     super(props, context);
 
     this.state = {
-      includeUnknownArtistItems: props.includeUnknownArtistItems
+      includeUnknownAuthorItems: props.includeUnknownAuthorItems
     };
   }
 
   componentDidUpdate(prevProps) {
     const {
-      includeUnknownArtistItems
+      includeUnknownAuthorItems
     } = this.props;
 
-    if (includeUnknownArtistItems !== prevProps.includeUnknownArtistItems) {
+    if (includeUnknownAuthorItems !== prevProps.includeUnknownAuthorItems) {
       this.setState({
-        includeUnknownArtistItems
+        includeUnknownAuthorItems
       });
     }
   }
@@ -48,19 +48,19 @@ class QueueOptions extends Component {
 
   render() {
     const {
-      includeUnknownArtistItems
+      includeUnknownAuthorItems
     } = this.state;
 
     return (
       <Fragment>
         <FormGroup>
-          <FormLabel>Show Unknown Artist Items</FormLabel>
+          <FormLabel>Show Unknown Author Items</FormLabel>
 
           <FormInputGroup
             type={inputTypes.CHECK}
-            name="includeUnknownArtistItems"
-            value={includeUnknownArtistItems}
-            helpText="Show items without a artist in the queue, this could include removed artists, movies or anything else in Readarr's category"
+            name="includeUnknownAuthorItems"
+            value={includeUnknownAuthorItems}
+            helpText="Show items without a author in the queue, this could include removed authors, movies or anything else in Readarr's category"
             onChange={this.onOptionChange}
           />
         </FormGroup>
@@ -70,7 +70,7 @@ class QueueOptions extends Component {
 }
 
 QueueOptions.propTypes = {
-  includeUnknownArtistItems: PropTypes.bool.isRequired,
+  includeUnknownAuthorItems: PropTypes.bool.isRequired,
   onOptionChange: PropTypes.func.isRequired
 };
 

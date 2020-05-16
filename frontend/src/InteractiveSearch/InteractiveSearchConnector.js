@@ -34,9 +34,9 @@ function createMapDispatchToProps(dispatch, props) {
     },
 
     onFilterSelect(selectedFilterKey) {
-      const action = props.type === 'album' ?
-        releaseActions.setAlbumReleasesFilter :
-        releaseActions.setArtistReleasesFilter;
+      const action = props.type === 'book' ?
+        releaseActions.setBookReleasesFilter :
+        releaseActions.setAuthorReleasesFilter;
 
       dispatch(action({ selectedFilterKey }));
     },

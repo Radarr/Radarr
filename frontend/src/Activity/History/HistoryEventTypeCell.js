@@ -9,19 +9,19 @@ function getIconName(eventType) {
   switch (eventType) {
     case 'grabbed':
       return icons.DOWNLOADING;
-    case 'artistFolderImported':
+    case 'authorFolderImported':
       return icons.DRIVE;
-    case 'trackFileImported':
+    case 'bookFileImported':
       return icons.DOWNLOADED;
     case 'downloadFailed':
       return icons.DOWNLOADING;
-    case 'trackFileDeleted':
+    case 'bookFileDeleted':
       return icons.DELETE;
-    case 'trackFileRenamed':
+    case 'bookFileRenamed':
       return icons.ORGANIZE;
-    case 'trackFileRetagged':
+    case 'bookFileRetagged':
       return icons.RETAG;
-    case 'albumImportIncomplete':
+    case 'bookImportIncomplete':
       return icons.DOWNLOADED;
     case 'downloadImported':
       return icons.DOWNLOADED;
@@ -36,7 +36,7 @@ function getIconKind(eventType) {
   switch (eventType) {
     case 'downloadFailed':
       return kinds.DANGER;
-    case 'albumImportIncomplete':
+    case 'bookImportIncomplete':
       return kinds.WARNING;
     default:
       return kinds.DEFAULT;
@@ -46,25 +46,25 @@ function getIconKind(eventType) {
 function getTooltip(eventType, data) {
   switch (eventType) {
     case 'grabbed':
-      return `Album grabbed from ${data.indexer} and sent to ${data.downloadClient}`;
-    case 'artistFolderImported':
-      return 'Track imported from artist folder';
-    case 'trackFileImported':
-      return 'Track downloaded successfully and picked up from download client';
+      return `Book grabbed from ${data.indexer} and sent to ${data.downloadClient}`;
+    case 'authorFolderImported':
+      return 'Book imported from author folder';
+    case 'bookFileImported':
+      return 'Book downloaded successfully and picked up from download client';
     case 'downloadFailed':
-      return 'Album download failed';
-    case 'trackFileDeleted':
-      return 'Track file deleted';
-    case 'trackFileRenamed':
-      return 'Track file renamed';
-    case 'trackFileRetagged':
-      return 'Track file tags updated';
-    case 'albumImportIncomplete':
+      return 'Book download failed';
+    case 'bookFileDeleted':
+      return 'Book file deleted';
+    case 'bookFileRenamed':
+      return 'Book file renamed';
+    case 'bookFileRetagged':
+      return 'Book file tags updated';
+    case 'bookImportIncomplete':
       return 'Files downloaded but not all could be imported';
     case 'downloadImported':
       return 'Download completed and successfully imported';
     case 'downloadIgnored':
-      return 'Album Download Ignored';
+      return 'Book Download Ignored';
     default:
       return 'Unknown event';
   }

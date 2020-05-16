@@ -44,8 +44,8 @@ function EditImportListModalContent(props) {
 
   const monitorOptions = [
     { key: 'none', value: 'None' },
-    { key: 'specificAlbum', value: 'Specific Book' },
-    { key: 'entireArtist', value: 'All Author Books' }
+    { key: 'specificBook', value: 'Specific Book' },
+    { key: 'entireAuthor', value: 'All Author Books' }
   ];
 
   const {

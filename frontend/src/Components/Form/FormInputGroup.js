@@ -8,14 +8,14 @@ import CheckInput from './CheckInput';
 import DeviceInputConnector from './DeviceInputConnector';
 import PlaylistInputConnector from './PlaylistInputConnector';
 import KeyValueListInput from './KeyValueListInput';
-import MonitorAlbumsSelectInput from './MonitorAlbumsSelectInput';
+import MonitorBooksSelectInput from './MonitorBooksSelectInput';
 import NumberInput from './NumberInput';
 import OAuthInputConnector from './OAuthInputConnector';
 import PasswordInput from './PasswordInput';
 import PathInputConnector from './PathInputConnector';
 import QualityProfileSelectInputConnector from './QualityProfileSelectInputConnector';
 import MetadataProfileSelectInputConnector from './MetadataProfileSelectInputConnector';
-import AlbumReleaseSelectInputConnector from './AlbumReleaseSelectInputConnector';
+import BookReleaseSelectInputConnector from './BookReleaseSelectInputConnector';
 import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
 import SeriesTypeSelectInput from './SeriesTypeSelectInput';
 import EnhancedSelectInput from './EnhancedSelectInput';
@@ -45,8 +45,8 @@ function getComponent(type) {
     case inputTypes.KEY_VALUE_LIST:
       return KeyValueListInput;
 
-    case inputTypes.MONITOR_ALBUMS_SELECT:
-      return MonitorAlbumsSelectInput;
+    case inputTypes.MONITOR_BOOKS_SELECT:
+      return MonitorBooksSelectInput;
 
     case inputTypes.NUMBER:
       return NumberInput;
@@ -66,8 +66,8 @@ function getComponent(type) {
     case inputTypes.METADATA_PROFILE_SELECT:
       return MetadataProfileSelectInputConnector;
 
-    case inputTypes.ALBUM_RELEASE_SELECT:
-      return AlbumReleaseSelectInputConnector;
+    case inputTypes.BOOK_RELEASE_SELECT:
+      return BookReleaseSelectInputConnector;
 
     case inputTypes.ROOT_FOLDER_SELECT:
       return RootFolderSelectInputConnector;

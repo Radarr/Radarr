@@ -170,7 +170,7 @@ function HistoryDetails(props) {
     );
   }
 
-  if (eventType === 'trackFileImported') {
+  if (eventType === 'bookFileImported') {
     const {
       droppedPath,
       importedPath
@@ -205,7 +205,7 @@ function HistoryDetails(props) {
     );
   }
 
-  if (eventType === 'trackFileDeleted') {
+  if (eventType === 'bookFileDeleted') {
     const {
       reason
     } = data;
@@ -241,7 +241,7 @@ function HistoryDetails(props) {
     );
   }
 
-  if (eventType === 'trackFileRenamed') {
+  if (eventType === 'bookFileRenamed') {
     const {
       sourcePath,
       path
@@ -262,7 +262,7 @@ function HistoryDetails(props) {
     );
   }
 
-  if (eventType === 'trackFileRetagged') {
+  if (eventType === 'bookFileRetagged') {
     const {
       diff,
       tagsScrubbed
@@ -293,7 +293,7 @@ function HistoryDetails(props) {
     );
   }
 
-  if (eventType === 'albumImportIncomplete') {
+  if (eventType === 'bookImportIncomplete') {
     const {
       statusMessages
     } = data;

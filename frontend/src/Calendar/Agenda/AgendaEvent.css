@@ -30,15 +30,15 @@
   border: none !important;
 }
 
-.artistName,
-.albumTitle {
+.authorName,
+.bookTitle {
   @add-mixin truncate;
 
   flex: 0 1 300px;
   margin-right: 10px;
 }
 
-.albumTitle {
+.bookTitle {
   flex: 1 1 1px;
 }
 
@@ -46,7 +46,7 @@
   flex: 0 0 100px;
 }
 
-.albumSeparator {
+.bookSeparator {
   display: none;
 }
 
@@ -98,7 +98,7 @@
 
   .date,
   .time,
-  .artistName {
+  .authorName {
     flex: 0 0 100%;
   }
 
@@ -106,7 +106,7 @@
     flex: 0 0 auto;
   }
 
-  .albumSeparator {
+  .bookSeparator {
     display: inline-block;
     margin: 0 5px;
   }

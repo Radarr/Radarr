@@ -1,0 +1,19 @@
+.monitored,
+.status {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  padding: 0;
+  width: 20px;
+}
+
+.sortName {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 110px;
+}
+
+.bookCount {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  padding: 12px;
+}

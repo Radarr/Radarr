@@ -33,8 +33,7 @@ class Naming extends Component {
       isNamingModalOpen: true,
       namingModalOptions: {
         name: 'standardBookFormat',
-        album: true,
-        track: true,
+        book: true,
         additional: true
       }
     });
@@ -81,21 +80,21 @@ class Naming extends Component {
     const authorFolderFormatErrors = [];
 
     if (examplesPopulated) {
-      if (examples.singleTrackExample) {
-        standardBookFormatHelpTexts.push(`Single Track: ${examples.singleTrackExample}`);
+      if (examples.singleBookExample) {
+        standardBookFormatHelpTexts.push(`Single Book: ${examples.singleBookExample}`);
       } else {
-        standardBookFormatErrors.push({ message: 'Single Track: Invalid Format' });
+        standardBookFormatErrors.push({ message: 'Single Book: Invalid Format' });
       }
 
-      if (examples.artistFolderExample) {
-        authorFolderFormatHelpTexts.push(`Example: ${examples.artistFolderExample}`);
+      if (examples.authorFolderExample) {
+        authorFolderFormatHelpTexts.push(`Example: ${examples.authorFolderExample}`);
       } else {
         authorFolderFormatErrors.push({ message: 'Invalid Format' });
       }
     }
 
     return (
-      <FieldSet legend="Track Naming">
+      <FieldSet legend="Book Naming">
         {
           isFetching &&
             <LoadingIndicator />
@@ -110,7 +109,7 @@ class Naming extends Component {
           hasSettings && !isFetching && !error &&
             <Form>
               <FormGroup size={sizes.MEDIUM}>
-                <FormLabel>Rename Tracks</FormLabel>
+                <FormLabel>Rename Books</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
@@ -157,7 +156,7 @@ class Naming extends Component {
                 advancedSettings={advancedSettings}
                 isAdvanced={true}
               >
-                <FormLabel>Artist Folder Format</FormLabel>
+                <FormLabel>Author Folder Format</FormLabel>
 
                 <FormInputGroup
                   inputClassName={styles.namingInput}
@@ -166,7 +165,7 @@ class Naming extends Component {
                   buttons={<FormInputButton onPress={this.onAuthorFolderNamingModalOpenClick}>?</FormInputButton>}
                   onChange={onInputChange}
                   {...settings.authorFolderFormat}
-                  helpTexts={['Used when adding a new artist or moving an author via the author editor', ...authorFolderFormatHelpTexts]}
+                  helpTexts={['Used when adding a new author or moving an author via the author editor', ...authorFolderFormatHelpTexts]}
                   errors={[...authorFolderFormatErrors, ...settings.authorFolderFormat.errors]}
                 />
               </FormGroup>

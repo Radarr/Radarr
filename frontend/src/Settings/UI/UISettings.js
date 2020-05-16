@@ -180,10 +180,10 @@ class UISettings extends Component {
                     <div className={styles.columnGroup}>
                       <FormInputGroup
                         type={inputTypes.CHECK}
-                        name="expandAlbumByDefault"
-                        helpText="Albums"
+                        name="expandBookByDefault"
+                        helpText="Books"
                         onChange={onInputChange}
-                        {...settings.expandAlbumByDefault}
+                        {...settings.expandBookByDefault}
                       />
 
                       <FormInputGroup

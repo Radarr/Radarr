@@ -85,7 +85,7 @@ class CutoffUnmet extends Component {
   onToggleSelectedPress = () => {
     const bookIds = this.getSelectedIds();
 
-    this.props.batchToggleCutoffUnmetAlbums({
+    this.props.batchToggleCutoffUnmetBooks({
       bookIds,
       monitored: !getMonitoredValue(this.props)
     });
@@ -117,7 +117,7 @@ class CutoffUnmet extends Component {
       filters,
       columns,
       totalRecords,
-      isSearchingForCutoffUnmetAlbums,
+      isSearchingForCutoffUnmetBooks,
       isSaving,
       onFilterSelect,
       ...otherProps
@@ -140,7 +140,7 @@ class CutoffUnmet extends Component {
             <PageToolbarButton
               label="Search Selected"
               iconName={icons.SEARCH}
-              isDisabled={!itemsSelected || isSearchingForCutoffUnmetAlbums}
+              isDisabled={!itemsSelected || isSearchingForCutoffUnmetBooks}
               onPress={this.onSearchSelectedPress}
             />
 
@@ -158,7 +158,7 @@ class CutoffUnmet extends Component {
               label="Search All"
               iconName={icons.SEARCH}
               isDisabled={!items.length}
-              isSpinning={isSearchingForCutoffUnmetAlbums}
+              isSpinning={isSearchingForCutoffUnmetBooks}
               onPress={this.onSearchAllCutoffUnmetPress}
             />
 
@@ -233,11 +233,11 @@ class CutoffUnmet extends Component {
                 <ConfirmModal
                   isOpen={isConfirmSearchAllCutoffUnmetModalOpen}
                   kind={kinds.DANGER}
-                  title="Search for all Cutoff Unmet albums"
+                  title="Search for all Cutoff Unmet books"
                   message={
                     <div>
                       <div>
-                        Are you sure you want to search for all {totalRecords} Cutoff Unmet albums?
+                        Are you sure you want to search for all {totalRecords} Cutoff Unmet books?
                       </div>
                       <div>
                         This cannot be cancelled once started without restarting Readarr.
@@ -265,11 +265,11 @@ CutoffUnmet.propTypes = {
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
-  isSearchingForCutoffUnmetAlbums: PropTypes.bool.isRequired,
+  isSearchingForCutoffUnmetBooks: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
   onSearchSelectedPress: PropTypes.func.isRequired,
-  batchToggleCutoffUnmetAlbums: PropTypes.func.isRequired,
+  batchToggleCutoffUnmetBooks: PropTypes.func.isRequired,
   onSearchAllCutoffUnmetPress: PropTypes.func.isRequired
 };
 

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import albumEntities from 'Album/albumEntities';
-import AlbumTitleLink from 'Album/AlbumTitleLink';
-import EpisodeStatusConnector from 'Album/EpisodeStatusConnector';
-import AlbumSearchCellConnector from 'Album/AlbumSearchCellConnector';
-import ArtistNameLink from 'Artist/ArtistNameLink';
+import bookEntities from 'Book/bookEntities';
+import BookTitleLink from 'Book/BookTitleLink';
+import EpisodeStatusConnector from 'Book/EpisodeStatusConnector';
+import BookSearchCellConnector from 'Book/BookSearchCellConnector';
+import AuthorNameLink from 'Author/AuthorNameLink';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
@@ -14,8 +14,8 @@ import styles from './CutoffUnmetRow.css';
 function CutoffUnmetRow(props) {
   const {
     id,
-    trackFileId,
-    artist,
+    bookFileId,
+    author,
     releaseDate,
     titleSlug,
     title,
@@ -25,7 +25,7 @@ function CutoffUnmetRow(props) {
     onSelectedChange
   } = props;
 
-  if (!artist) {
+  if (!author) {
     return null;
   }
 
@@ -51,9 +51,9 @@ function CutoffUnmetRow(props) {
           if (name === 'authors.sortName') {
             return (
               <TableRowCell key={name}>
-                <ArtistNameLink
-                  titleSlug={artist.titleSlug}
-                  artistName={artist.artistName}
+                <AuthorNameLink
+                  titleSlug={author.titleSlug}
+                  authorName={author.authorName}
                 />
               </TableRowCell>
             );
@@ -62,7 +62,7 @@ function CutoffUnmetRow(props) {
           if (name === 'books.title') {
             return (
               <TableRowCell key={name}>
-                <AlbumTitleLink
+                <BookTitleLink
                   titleSlug={titleSlug}
                   title={title}
                   disambiguation={disambiguation}
@@ -88,8 +88,8 @@ function CutoffUnmetRow(props) {
               >
                 <EpisodeStatusConnector
                   bookId={id}
-                  trackFileId={trackFileId}
-                  albumEntity={albumEntities.WANTED_CUTOFF_UNMET}
+                  bookFileId={bookFileId}
+                  bookEntity={bookEntities.WANTED_CUTOFF_UNMET}
                 />
               </TableRowCell>
             );
@@ -97,13 +97,13 @@ function CutoffUnmetRow(props) {
 
           if (name === 'actions') {
             return (
-              <AlbumSearchCellConnector
+              <BookSearchCellConnector
                 key={name}
                 bookId={id}
-                authorId={artist.id}
-                albumTitle={title}
-                albumEntity={albumEntities.WANTED_CUTOFF_UNMET}
-                showOpenArtistButton={true}
+                authorId={author.id}
+                bookTitle={title}
+                bookEntity={bookEntities.WANTED_CUTOFF_UNMET}
+                showOpenAuthorButton={true}
               />
             );
           }
@@ -117,8 +117,8 @@ function CutoffUnmetRow(props) {
 
 CutoffUnmetRow.propTypes = {
   id: PropTypes.number.isRequired,
-  trackFileId: PropTypes.number,
-  artist: PropTypes.object.isRequired,
+  bookFileId: PropTypes.number,
+  author: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,

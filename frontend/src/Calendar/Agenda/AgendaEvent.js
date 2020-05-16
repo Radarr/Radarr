@@ -39,7 +39,7 @@ class AgendaEvent extends Component {
   render() {
     const {
       id,
-      artist,
+      author,
       title,
       titleSlug,
       releaseDate,
@@ -54,10 +54,10 @@ class AgendaEvent extends Component {
     } = this.props;
 
     const startTime = moment(releaseDate);
-    // const endTime = startTime.add(artist.runtime, 'minutes');
+    // const endTime = startTime.add(author.runtime, 'minutes');
     const downloading = !!(queueItem || grabbed);
-    const isMonitored = artist.monitored && monitored;
-    const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored, statistics.percentOfTracks);
+    const isMonitored = author.monitored && monitored;
+    const statusStyle = getStatusStyle(id, downloading, startTime, isMonitored, statistics.percentOfBooks);
 
     return (
       <div>
@@ -85,15 +85,15 @@ class AgendaEvent extends Component {
             {formatTime(releaseDate, timeFormat)}
           </div>
 
-          <div className={styles.artistName}>
-            <Link to={`/author/${artist.titleSlug}`}>
-              {artist.artistName}
+          <div className={styles.authorName}>
+            <Link to={`/author/${author.titleSlug}`}>
+              {author.authorName}
             </Link>
           </div>
 
-          <div className={styles.albumSeparator}> - </div>
+          <div className={styles.bookSeparator}> - </div>
 
-          <div className={styles.albumTitle}>
+          <div className={styles.bookTitle}>
             <Link to={`/book/${titleSlug}`}>
               {title}
             </Link>
@@ -110,7 +110,7 @@ class AgendaEvent extends Component {
             !queueItem && grabbed &&
               <Icon
                 name={icons.DOWNLOADING}
-                title="Album is downloading"
+                title="Book is downloading"
               />
           }
         </Link>
@@ -121,10 +121,10 @@ class AgendaEvent extends Component {
 
 AgendaEvent.propTypes = {
   id: PropTypes.number.isRequired,
-  artist: PropTypes.object.isRequired,
+  author: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
-  albumType: PropTypes.string.isRequired,
+  bookType: PropTypes.string.isRequired,
   releaseDate: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   statistics: PropTypes.object.isRequired,
@@ -138,7 +138,7 @@ AgendaEvent.propTypes = {
 
 AgendaEvent.defaultProps = {
   statistics: {
-    percentOfTracks: 0
+    percentOfBooks: 0
   }
 };
 

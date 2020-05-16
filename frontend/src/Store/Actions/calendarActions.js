@@ -41,7 +41,7 @@ export const defaultState = {
   searchMissingCommandId: null,
 
   options: {
-    collapseMultipleAlbums: false,
+    collapseMultipleBooks: false,
     showCutoffUnmetIcon: false
   },
 
@@ -348,7 +348,7 @@ export const actionHandlers = handleThunks({
     const { bookIds } = payload;
 
     const commandPayload = {
-      name: commandNames.ALBUM_SEARCH,
+      name: commandNames.BOOK_SEARCH,
       bookIds
     };
 

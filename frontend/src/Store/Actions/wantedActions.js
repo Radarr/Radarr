@@ -4,7 +4,7 @@ import { filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createClearReducer from './Creators/Reducers/createClearReducer';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
-import createBatchToggleAlbumMonitoredHandler from './Creators/createBatchToggleAlbumMonitoredHandler';
+import createBatchToggleBookMonitoredHandler from './Creators/createBatchToggleBookMonitoredHandler';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
 import createHandleActions from './Creators/createHandleActions';
 
@@ -172,7 +172,7 @@ export const SET_MISSING_FILTER = 'wanted/missing/setMissingFilter';
 export const SET_MISSING_TABLE_OPTION = 'wanted/missing/setMissingTableOption';
 export const CLEAR_MISSING = 'wanted/missing/clearMissing';
 
-export const BATCH_TOGGLE_MISSING_ALBUMS = 'wanted/missing/batchToggleMissingAlbums';
+export const BATCH_TOGGLE_MISSING_BOOKS = 'wanted/missing/batchToggleMissingBooks';
 
 export const FETCH_CUTOFF_UNMET = 'wanted/cutoffUnmet/fetchCutoffUnmet';
 export const GOTO_FIRST_CUTOFF_UNMET_PAGE = 'wanted/cutoffUnmet/gotoCutoffUnmetFirstPage';
@@ -185,7 +185,7 @@ export const SET_CUTOFF_UNMET_FILTER = 'wanted/cutoffUnmet/setCutoffUnmetFilter'
 export const SET_CUTOFF_UNMET_TABLE_OPTION = 'wanted/cutoffUnmet/setCutoffUnmetTableOption';
 export const CLEAR_CUTOFF_UNMET = 'wanted/cutoffUnmet/clearCutoffUnmet';
 
-export const BATCH_TOGGLE_CUTOFF_UNMET_ALBUMS = 'wanted/cutoffUnmet/batchToggleCutoffUnmetAlbums';
+export const BATCH_TOGGLE_CUTOFF_UNMET_BOOKS = 'wanted/cutoffUnmet/batchToggleCutoffUnmetBooks';
 
 //
 // Action Creators
@@ -201,7 +201,7 @@ export const setMissingFilter = createThunk(SET_MISSING_FILTER);
 export const setMissingTableOption = createAction(SET_MISSING_TABLE_OPTION);
 export const clearMissing = createAction(CLEAR_MISSING);
 
-export const batchToggleMissingAlbums = createThunk(BATCH_TOGGLE_MISSING_ALBUMS);
+export const batchToggleMissingBooks = createThunk(BATCH_TOGGLE_MISSING_BOOKS);
 
 export const fetchCutoffUnmet = createThunk(FETCH_CUTOFF_UNMET);
 export const gotoCutoffUnmetFirstPage = createThunk(GOTO_FIRST_CUTOFF_UNMET_PAGE);
@@ -214,7 +214,7 @@ export const setCutoffUnmetFilter = createThunk(SET_CUTOFF_UNMET_FILTER);
 export const setCutoffUnmetTableOption = createAction(SET_CUTOFF_UNMET_TABLE_OPTION);
 export const clearCutoffUnmet = createAction(CLEAR_CUTOFF_UNMET);
 
-export const batchToggleCutoffUnmetAlbums = createThunk(BATCH_TOGGLE_CUTOFF_UNMET_ALBUMS);
+export const batchToggleCutoffUnmetBooks = createThunk(BATCH_TOGGLE_CUTOFF_UNMET_BOOKS);
 
 //
 // Action Handlers
@@ -237,7 +237,7 @@ export const actionHandlers = handleThunks({
     }
   ),
 
-  [BATCH_TOGGLE_MISSING_ALBUMS]: createBatchToggleAlbumMonitoredHandler('wanted.missing', fetchMissing),
+  [BATCH_TOGGLE_MISSING_BOOKS]: createBatchToggleBookMonitoredHandler('wanted.missing', fetchMissing),
 
   ...createServerSideCollectionHandlers(
     'wanted.cutoffUnmet',
@@ -255,7 +255,7 @@ export const actionHandlers = handleThunks({
     }
   ),
 
-  [BATCH_TOGGLE_CUTOFF_UNMET_ALBUMS]: createBatchToggleAlbumMonitoredHandler('wanted.cutoffUnmet', fetchCutoffUnmet)
+  [BATCH_TOGGLE_CUTOFF_UNMET_BOOKS]: createBatchToggleBookMonitoredHandler('wanted.cutoffUnmet', fetchCutoffUnmet)
 
 });
 

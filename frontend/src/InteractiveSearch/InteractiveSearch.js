@@ -104,7 +104,7 @@ function InteractiveSearch(props) {
       {
         !isFetching && error ?
           <div>
-            Unable to load results for this album search. Try again later
+            Unable to load results for this book search. Try again later
           </div> :
           null
       }

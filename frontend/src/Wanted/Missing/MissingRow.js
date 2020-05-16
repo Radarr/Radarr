@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import albumEntities from 'Album/albumEntities';
-import AlbumTitleLink from 'Album/AlbumTitleLink';
-import AlbumSearchCellConnector from 'Album/AlbumSearchCellConnector';
-import ArtistNameLink from 'Artist/ArtistNameLink';
+import bookEntities from 'Book/bookEntities';
+import BookTitleLink from 'Book/BookTitleLink';
+import BookSearchCellConnector from 'Book/BookSearchCellConnector';
+import AuthorNameLink from 'Author/AuthorNameLink';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
@@ -12,7 +12,7 @@ import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 function MissingRow(props) {
   const {
     id,
-    artist,
+    author,
     releaseDate,
     titleSlug,
     title,
@@ -22,7 +22,7 @@ function MissingRow(props) {
     onSelectedChange
   } = props;
 
-  if (!artist) {
+  if (!author) {
     return null;
   }
 
@@ -48,9 +48,9 @@ function MissingRow(props) {
           if (name === 'authors.sortName') {
             return (
               <TableRowCell key={name}>
-                <ArtistNameLink
-                  titleSlug={artist.titleSlug}
-                  artistName={artist.artistName}
+                <AuthorNameLink
+                  titleSlug={author.titleSlug}
+                  authorName={author.authorName}
                 />
               </TableRowCell>
             );
@@ -59,7 +59,7 @@ function MissingRow(props) {
           if (name === 'books.title') {
             return (
               <TableRowCell key={name}>
-                <AlbumTitleLink
+                <BookTitleLink
                   titleSlug={titleSlug}
                   title={title}
                   disambiguation={disambiguation}
@@ -79,13 +79,13 @@ function MissingRow(props) {
 
           if (name === 'actions') {
             return (
-              <AlbumSearchCellConnector
+              <BookSearchCellConnector
                 key={name}
                 bookId={id}
-                authorId={artist.id}
-                albumTitle={title}
-                albumEntity={albumEntities.WANTED_MISSING}
-                showOpenArtistButton={true}
+                authorId={author.id}
+                bookTitle={title}
+                bookEntity={bookEntities.WANTED_MISSING}
+                showOpenAuthorButton={true}
               />
             );
           }
@@ -99,7 +99,7 @@ function MissingRow(props) {
 
 MissingRow.propTypes = {
   id: PropTypes.number.isRequired,
-  artist: PropTypes.object.isRequired,
+  author: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,

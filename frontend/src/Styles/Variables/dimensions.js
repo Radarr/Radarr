@@ -46,8 +46,8 @@ module.exports = {
   // Modal
   modalBodyPadding: '30px',
 
-  // Artist
-  artistIndexColumnPadding: '20px',
-  artistIndexColumnPaddingSmallScreen: '10px',
-  artistIndexOverviewInfoRowHeight: '21px'
+  // Author
+  authorIndexColumnPadding: '20px',
+  authorIndexColumnPaddingSmallScreen: '10px',
+  authorIndexOverviewInfoRowHeight: '21px'
 };

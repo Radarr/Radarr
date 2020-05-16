@@ -98,7 +98,7 @@ function Settings() {
         </Link>
 
         <div className={styles.summary}>
-          Create metadata files when tracks are imported or artist are refreshed
+          Create metadata files when books are imported or author are refreshed
         </div>
 
         <Link
@@ -109,7 +109,7 @@ function Settings() {
         </Link>
 
         <div className={styles.summary}>
-          Manage artist, profile, restriction, and notification tags
+          Manage author, profile, restriction, and notification tags
         </div>
 
         <Link

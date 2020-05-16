@@ -31,7 +31,7 @@ function EditImportListExclusionModalContent(props) {
   } = props;
 
   const {
-    artistName,
+    authorName,
     foreignId
   } = item;
 
@@ -62,9 +62,9 @@ function EditImportListExclusionModalContent(props) {
 
                 <FormInputGroup
                   type={inputTypes.TEXT}
-                  name="artistName"
-                  helpText="The name of the artist/album to exclude (can be anything meaningful)"
-                  {...artistName}
+                  name="authorName"
+                  helpText="The name of the author/book to exclude (can be anything meaningful)"
+                  {...authorName}
                   onChange={onInputChange}
                 />
               </FormGroup>
@@ -75,7 +75,7 @@ function EditImportListExclusionModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.TEXT}
                   name="foreignId"
-                  helpText="The Musicbrainz Id of the artist/album to exclude"
+                  helpText="The Musicbrainz Id of the author/book to exclude"
                   {...foreignId}
                   onChange={onInputChange}
                 />
@@ -115,7 +115,7 @@ function EditImportListExclusionModalContent(props) {
 }
 
 const ImportListExclusionShape = {
-  artistName: PropTypes.shape(stringSettingShape).isRequired,
+  authorName: PropTypes.shape(stringSettingShape).isRequired,
   foreignId: PropTypes.shape(stringSettingShape).isRequired
 };
 

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createArtistSelector from 'Store/Selectors/createArtistSelector';
+import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import { fetchOrganizePreview } from 'Store/Actions/organizePreviewActions';
 import { fetchNamingSettings } from 'Store/Actions/settingsActions';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -13,14 +13,14 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.organizePreview,
     (state) => state.settings.naming,
-    createArtistSelector(),
-    (organizePreview, naming, artist) => {
+    createAuthorSelector(),
+    (organizePreview, naming, author) => {
       const props = { ...organizePreview };
       props.isFetching = organizePreview.isFetching || naming.isFetching;
       props.isPopulated = organizePreview.isPopulated && naming.isPopulated;
       props.error = organizePreview.error || naming.error;
       props.trackFormat = naming.item.standardBookFormat;
-      props.path = artist.path;
+      props.path = author.path;
 
       return props;
     }
