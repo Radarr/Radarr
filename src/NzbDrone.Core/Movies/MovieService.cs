@@ -351,20 +351,23 @@ namespace NzbDrone.Core.Movies
                 }
             }
 
-            if (movie.Year > 1850)
+            if (movie.Title.IsNotNullOrWhiteSpace())
             {
-                result = FindByTitle(movie.Title.CleanSeriesTitle(), movie.Year);
-                if (result != null)
+                if (movie.Year > 1850)
                 {
-                    return true;
+                    result = FindByTitle(movie.Title.CleanSeriesTitle(), movie.Year);
+                    if (result != null)
+                    {
+                        return true;
+                    }
                 }
-            }
-            else
-            {
-                result = FindByTitle(movie.Title.CleanSeriesTitle());
-                if (result != null)
+                else
                 {
-                    return true;
+                    result = FindByTitle(movie.Title.CleanSeriesTitle());
+                    if (result != null)
+                    {
+                        return true;
+                    }
                 }
             }
 
