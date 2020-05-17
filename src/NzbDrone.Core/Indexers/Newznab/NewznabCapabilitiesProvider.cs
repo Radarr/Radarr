@@ -128,14 +128,14 @@ namespace NzbDrone.Core.Indexers.Newznab
                     capabilities.SupportsAggregateIdSearch = true;
                 }
 
-                var xmlAudioSearch = xmlSearching.Element("audio-search");
+                var xmlAudioSearch = xmlSearching.Element("book-search");
                 if (xmlAudioSearch == null || xmlAudioSearch.Attribute("available").Value != "yes")
                 {
-                    capabilities.SupportedAudioSearchParameters = null;
+                    capabilities.SupportedBookSearchParameters = null;
                 }
                 else if (xmlAudioSearch.Attribute("supportedParams") != null)
                 {
-                    capabilities.SupportedAudioSearchParameters = xmlAudioSearch.Attribute("supportedParams").Value.Split(',');
+                    capabilities.SupportedBookSearchParameters = xmlAudioSearch.Attribute("supportedParams").Value.Split(',');
                 }
             }
 

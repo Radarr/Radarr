@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
         public void should_replace_some_special_characters_artist(string artist, string expected)
         {
             Subject.Author = new Author { Name = artist };
-            Subject.ArtistQuery.Should().Be(expected);
+            Subject.AuthorQuery.Should().Be(expected);
         }
 
         [TestCase("…and Justice for All", "and+Justice+for+All")]
@@ -25,14 +25,14 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
         public void should_replace_some_special_characters(string album, string expected)
         {
             Subject.BookTitle = album;
-            Subject.AlbumQuery.Should().Be(expected);
+            Subject.BookQuery.Should().Be(expected);
         }
 
         [TestCase("+", "+")]
         public void should_not_replace_some_special_characters_if_result_empty_string(string album, string expected)
         {
             Subject.BookTitle = album;
-            Subject.AlbumQuery.Should().Be(expected);
+            Subject.BookQuery.Should().Be(expected);
         }
     }
 }

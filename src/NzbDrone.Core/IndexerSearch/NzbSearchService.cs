@@ -44,7 +44,7 @@ namespace NzbDrone.Core.IndexerSearch
         public List<DownloadDecision> BookSearch(int bookId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
             var book = _bookService.GetBook(bookId);
-            return AlbumSearch(book, missingOnly, userInvokedSearch, interactiveSearch);
+            return BookSearch(book, missingOnly, userInvokedSearch, interactiveSearch);
         }
 
         public List<DownloadDecision> AuthorSearch(int authorId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
@@ -56,22 +56,23 @@ namespace NzbDrone.Core.IndexerSearch
         public List<DownloadDecision> ArtistSearch(Author author, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
             var searchSpec = Get<AuthorSearchCriteria>(author, userInvokedSearch, interactiveSearch);
-            var albums = _bookService.GetBooksByAuthor(author.Id);
+            var books = _bookService.GetBooksByAuthor(author.Id);
 
-            albums = albums.Where(a => a.Monitored).ToList();
+            books = books.Where(a => a.Monitored).ToList();
 
-            searchSpec.Books = albums;
+            searchSpec.Books = books;
 
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
-        public List<DownloadDecision> AlbumSearch(Book book, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
+        public List<DownloadDecision> BookSearch(Book book, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
             var author = _authorService.GetAuthor(book.AuthorId);
 
             var searchSpec = Get<BookSearchCriteria>(author, new List<Book> { book }, userInvokedSearch, interactiveSearch);
 
             searchSpec.BookTitle = book.Title;
+            searchSpec.BookIsbn = book.Isbn13;
             if (book.ReleaseDate.HasValue)
             {
                 searchSpec.BookYear = book.ReleaseDate.Value.Year;

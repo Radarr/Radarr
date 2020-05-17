@@ -91,8 +91,8 @@ namespace NzbDrone.Core.Indexers.Torznab
                     return null;
                 }
 
-                if (capabilities.SupportedAudioSearchParameters != null &&
-                    new[] { "author", "book" }.All(v => capabilities.SupportedAudioSearchParameters.Contains(v)))
+                if (capabilities.SupportedBookSearchParameters != null &&
+                    new[] { "author", "title" }.All(v => capabilities.SupportedBookSearchParameters.Contains(v)))
                 {
                     return null;
                 }

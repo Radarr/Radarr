@@ -19,7 +19,7 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         public Author Author { get; set; }
         public List<Book> Books { get; set; }
 
-        public string ArtistQuery => GetQueryTitle(Author.Name);
+        public string AuthorQuery => GetQueryTitle(Author.Name);
 
         public static string GetQueryTitle(string title)
         {

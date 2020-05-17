@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            pageableRequests.Add(GetPagedRequests("search", null, "{0}+{1}", searchCriteria.ArtistQuery, searchCriteria.AlbumQuery));
+            pageableRequests.Add(GetPagedRequests("search", null, "{0}+{1}", searchCriteria.AuthorQuery, searchCriteria.BookQuery));
 
             return pageableRequests;
         }
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            pageableRequests.Add(GetPagedRequests("search", null, "{0}", searchCriteria.ArtistQuery));
+            pageableRequests.Add(GetPagedRequests("search", null, "{0}", searchCriteria.AuthorQuery));
 
             return pageableRequests;
         }

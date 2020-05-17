@@ -38,10 +38,10 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
 
-                return capabilities.SupportedAudioSearchParameters != null &&
-                       capabilities.SupportedAudioSearchParameters.Contains("q") &&
-                       capabilities.SupportedAudioSearchParameters.Contains("author") &&
-                       capabilities.SupportedAudioSearchParameters.Contains("book");
+                return capabilities.SupportedBookSearchParameters != null &&
+                       capabilities.SupportedBookSearchParameters.Contains("q") &&
+                       capabilities.SupportedBookSearchParameters.Contains("author") &&
+                       capabilities.SupportedBookSearchParameters.Contains("title");
             }
         }
 
@@ -51,9 +51,9 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
 
-            if (capabilities.SupportedAudioSearchParameters != null)
+            if (capabilities.SupportedBookSearchParameters != null)
             {
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "music", ""));
+                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "book", ""));
             }
             else if (capabilities.SupportedSearchParameters != null)
             {
@@ -69,9 +69,9 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             if (SupportsAudioSearch)
             {
-                AddAudioPageableRequests(pageableRequests,
+                AddBookPageableRequests(pageableRequests,
                     searchCriteria,
-                    NewsnabifyTitle($"&author={searchCriteria.ArtistQuery}&book={searchCriteria.AlbumQuery}"));
+                    NewsnabifyTitle($"&author={searchCriteria.AuthorQuery}&title={searchCriteria.BookQuery}"));
             }
 
             if (SupportsSearch)
@@ -81,7 +81,14 @@ namespace NzbDrone.Core.Indexers.Newznab
                 pageableRequests.Add(GetPagedRequests(MaxPages,
                     Settings.Categories,
                     "search",
-                    NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}+{searchCriteria.AlbumQuery}")));
+                    NewsnabifyTitle($"&q={searchCriteria.BookIsbn}")));
+
+                pageableRequests.AddTier();
+
+                pageableRequests.Add(GetPagedRequests(MaxPages,
+                    Settings.Categories,
+                    "search",
+                    NewsnabifyTitle($"&q={searchCriteria.AuthorQuery}+{searchCriteria.BookQuery}")));
             }
 
             return pageableRequests;
@@ -93,9 +100,9 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             if (SupportsAudioSearch)
             {
-                AddAudioPageableRequests(pageableRequests,
+                AddBookPageableRequests(pageableRequests,
                     searchCriteria,
-                    NewsnabifyTitle($"&author={searchCriteria.ArtistQuery}"));
+                    NewsnabifyTitle($"&author={searchCriteria.AuthorQuery}"));
             }
 
             if (SupportsSearch)
@@ -105,17 +112,17 @@ namespace NzbDrone.Core.Indexers.Newznab
                 pageableRequests.Add(GetPagedRequests(MaxPages,
                     Settings.Categories,
                     "search",
-                    NewsnabifyTitle($"&q={searchCriteria.ArtistQuery}")));
+                    NewsnabifyTitle($"&q={searchCriteria.AuthorQuery}")));
             }
 
             return pageableRequests;
         }
 
-        private void AddAudioPageableRequests(IndexerPageableRequestChain chain, SearchCriteriaBase searchCriteria, string parameters)
+        private void AddBookPageableRequests(IndexerPageableRequestChain chain, SearchCriteriaBase searchCriteria, string parameters)
         {
             chain.AddTier();
 
-            chain.Add(GetPagedRequests(MaxPages, Settings.Categories, "music", $"&q={parameters}"));
+            chain.Add(GetPagedRequests(MaxPages, Settings.Categories, "book", $"&q={parameters}"));
         }
 
         private IEnumerable<IndexerRequest> GetPagedRequests(int maxPages, IEnumerable<int> categories, string searchType, string parameters)

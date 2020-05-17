@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         [Test]
         public void should_search_by_artist_and_album_if_supported()
         {
-            _capabilities.SupportedAudioSearchParameters = new[] { "q", "author", "book" };
+            _capabilities.SupportedBookSearchParameters = new[] { "q", "author", "title" };
 
             var results = Subject.GetSearchRequests(_singleAlbumSearchCriteria);
             results.GetTier(0).Should().HaveCount(1);
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             var page = results.GetAllTiers().First().First();
 
             page.Url.Query.Should().Contain("author=Alien%20Ant%20Farm");
-            page.Url.Query.Should().Contain("book=TruANT");
+            page.Url.Query.Should().Contain("title=TruANT");
         }
     }
 }
