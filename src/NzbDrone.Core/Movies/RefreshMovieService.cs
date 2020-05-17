@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -52,7 +53,7 @@ namespace NzbDrone.Core.Movies
             _logger = logger;
         }
 
-        private void RefreshMovieInfo(Movie movie)
+        private void RefreshMovieInfo(Movie movie, Task<Tuple<Movie, List<Credit>>> dataTask)
         {
             _logger.ProgressInfo("Updating Info for {0}", movie.Title);
 
@@ -61,7 +62,7 @@ namespace NzbDrone.Core.Movies
 
             try
             {
-                var tuple = _movieInfo.GetMovieInfo(movie.TmdbId);
+                var tuple = dataTask.GetAwaiter().GetResult();
                 movieInfo = tuple.Item1;
                 credits = tuple.Item2;
             }
@@ -172,10 +173,11 @@ namespace NzbDrone.Core.Movies
             if (message.MovieId.HasValue)
             {
                 var movie = _movieService.GetMovie(message.MovieId.Value);
+                var movieData = _movieInfo.GetMovieInfoAsync(movie.TmdbId);
 
                 try
                 {
-                    RefreshMovieInfo(movie);
+                    RefreshMovieInfo(movie, movieData);
                     RescanMovie(movie, isNew, trigger);
                 }
                 catch (MovieNotFoundException)
@@ -200,31 +202,44 @@ namespace NzbDrone.Core.Movies
                     updatedTMDBMovies = _movieInfo.GetChangedMovies(message.LastStartTime.Value);
                 }
 
-                foreach (var movie in allMovie)
-                {
-                    if ((updatedTMDBMovies.Count == 0 && _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie)) || updatedTMDBMovies.Contains(movie.TmdbId) || message.Trigger == CommandTrigger.Manual)
-                    {
-                        try
-                        {
-                            RefreshMovieInfo(movie);
-                        }
-                        catch (MovieNotFoundException)
-                        {
-                            _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from The Movie Database.", movie.Title, movie.ImdbId);
-                            continue;
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.Error(e, "Couldn't refresh info for {0}", movie);
-                        }
+                var toRefresh = allMovie
+                    .Where(movie => (updatedTMDBMovies.Count == 0 && _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie)) ||
+                           updatedTMDBMovies.Contains(movie.TmdbId) ||
+                           message.Trigger == CommandTrigger.Manual)
+                    .ToDictionary(x => _movieInfo.GetMovieInfoAsync(x.TmdbId), x => x);
 
-                        RescanMovie(movie, false, trigger);
-                    }
-                    else
+                var tasks = toRefresh.Keys.ToList();
+
+                var skipped = allMovie.Except(toRefresh.Values);
+
+                foreach (var movie in skipped)
+                {
+                    _logger.Info("Skipping refresh of movie: {0}", movie.Title);
+                    RescanMovie(movie, false, trigger);
+                }
+
+                while (tasks.Count > 0)
+                {
+                    var finishedTask = Task.WhenAny(tasks).GetAwaiter().GetResult();
+                    tasks.Remove(finishedTask);
+
+                    var movie = toRefresh[finishedTask];
+
+                    try
                     {
-                        _logger.Info("Skipping refresh of movie: {0}", movie.Title);
-                        RescanMovie(movie, false, trigger);
+                        RefreshMovieInfo(movie, finishedTask);
                     }
+                    catch (MovieNotFoundException)
+                    {
+                        _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from The Movie Database.", movie.Title, movie.ImdbId);
+                        continue;
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(e, "Couldn't refresh info for {0}", movie);
+                    }
+
+                    RescanMovie(movie, false, trigger);
                 }
             }
         }
