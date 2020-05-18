@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 mapper.Execute(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT Id FROM MetadataFiles
-                                     WHERE Type IN (4, 6)
+                                     WHERE Type IN (2, 4)
                                      AND BookId = 0)");
             }
         }
@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 mapper.Execute(@"DELETE FROM MetadataFiles
                                      WHERE Id IN (
                                      SELECT Id FROM MetadataFiles
-                                     WHERE Type IN (2, 5)
+                                     WHERE Type IN (2, 4)
                                      AND BookFileId = 0)");
             }
         }

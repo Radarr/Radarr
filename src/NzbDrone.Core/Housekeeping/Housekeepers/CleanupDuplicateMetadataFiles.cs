@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             DeleteDuplicateArtistMetadata();
             DeleteDuplicateBookMetadata();
-            DeleteDuplicateBookImages();
+            DeleteDuplicateBookFileMetadata();
         }
 
         private void DeleteDuplicateArtistMetadata()
@@ -40,21 +40,21 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 mapper.Execute(@"DELETE FROM MetadataFiles
                                          WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
-                                         WHERE Type = 2
-                                         GROUP BY BookFileId, Consumer
-                                         HAVING COUNT(BookFileId) > 1
+                                         WHERE Type IN (2, 4)
+                                         GROUP BY BookId, Consumer
+                                         HAVING COUNT(BookId) > 1
                                      )");
             }
         }
 
-        private void DeleteDuplicateBookImages()
+        private void DeleteDuplicateBookFileMetadata()
         {
             using (var mapper = _database.OpenConnection())
             {
                 mapper.Execute(@"DELETE FROM MetadataFiles
                                          WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
-                                         WHERE Type = 4
+                                         WHERE Type IN (2, 4)
                                          GROUP BY BookFileId, Consumer
                                          HAVING COUNT(BookFileId) > 1
                                      )");
