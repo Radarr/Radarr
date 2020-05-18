@@ -120,7 +120,7 @@ class SignalRConnector extends Component {
 
     this.connection.on('receiveMessage', this.onReceiveMessage);
 
-    this.connection.start().then(this.onConnected);
+    this.connection.start().then(this.onStart, this.onStartFail);
   }
 
   componentWillUnmount() {
@@ -286,7 +286,19 @@ class SignalRConnector extends Component {
   //
   // Listeners
 
-  onConnected = () => {
+  onStartFail = (error) => {
+    console.error('[signalR] failed to connect');
+    console.error(error);
+
+    this.props.dispatchSetAppValue({
+      isConnected: false,
+      isReconnecting: false,
+      isDisconnected: false,
+      isRestarting: false
+    });
+  }
+
+  onStart = () => {
     console.debug('[signalR] connected');
 
     this.props.dispatchSetAppValue({
