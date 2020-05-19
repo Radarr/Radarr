@@ -54,6 +54,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Leaving Jeruselem by Railway (1897) [DVD].mp4", "Leaving Jeruselem by Railway")]
         [TestCase("Climax.2018.1080p.AMZN.WEB-DL.DD5.1.H.264-NTG", "Climax")]
         [TestCase("Movie.Title.Imax.2018.1080p.AMZN.WEB-DL.DD5.1.H.264-NTG", "Movie Title")]
+        [TestCase("www.Torrenting.org - Revenge.2008.720p.X264-DIMENSION", "Revenge")]
         public void should_parse_movie_title(string postTitle, string title)
         {
             Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
