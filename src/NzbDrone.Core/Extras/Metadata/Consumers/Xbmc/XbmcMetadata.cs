@@ -118,7 +118,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 var xws = new XmlWriterSettings();
                 xws.OmitXmlDeclaration = true;
                 xws.Indent = false;
-  
+
                 using (var xw = XmlWriter.Create(sb, xws))
                 {
                     var doc = new XDocument();
