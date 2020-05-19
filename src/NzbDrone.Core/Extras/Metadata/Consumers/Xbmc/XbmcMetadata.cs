@@ -118,7 +118,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 var xws = new XmlWriterSettings();
                 xws.OmitXmlDeclaration = true;
                 xws.Indent = false;
-
+  
                 using (var xw = XmlWriter.Create(sb, xws))
                 {
                     var doc = new XDocument();
@@ -282,15 +282,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     xmlResult += doc.ToString();
                     xmlResult += Environment.NewLine;
                 }
-            }
-
-            if (Settings.MovieMetadataURL)
-            {
-                xmlResult += "https://www.themoviedb.org/movie/" + movie.TmdbId;
-                xmlResult += Environment.NewLine;
-
-                xmlResult += "https://www.imdb.com/title/" + movie.ImdbId;
-                xmlResult += Environment.NewLine;
             }
 
             var metadataFileName = GetMovieMetadataFilename(movieFile.RelativePath);
