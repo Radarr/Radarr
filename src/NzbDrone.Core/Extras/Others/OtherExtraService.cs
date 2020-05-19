@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Extras.Others
             return Enumerable.Empty<ExtraFile>();
         }
 
-        public override IEnumerable<ExtraFile> CreateAfterTrackImport(Author author, BookFile bookFile)
+        public override IEnumerable<ExtraFile> CreateAfterBookImport(Author author, BookFile bookFile)
         {
             return Enumerable.Empty<ExtraFile>();
         }
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Extras.Others
 
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Author author, List<BookFile> bookFiles)
         {
-            var extraFiles = _otherExtraFileService.GetFilesByArtist(author.Id);
+            var extraFiles = _otherExtraFileService.GetFilesByAuthor(author.Id);
             var movedFiles = new List<OtherExtraFile>();
 
             foreach (var bookFile in bookFiles)

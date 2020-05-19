@@ -44,7 +44,7 @@ namespace NzbDrone.Core.MediaFiles
 
         private bool ChangeFileDate(BookFile bookFile, Book book)
         {
-            var trackFilePath = bookFile.Path;
+            var bookFilePath = bookFile.Path;
 
             switch (_configService.FileDate)
             {
@@ -52,14 +52,14 @@ namespace NzbDrone.Core.MediaFiles
                     {
                         if (!book.ReleaseDate.HasValue)
                         {
-                            _logger.Debug("Could not create valid date to change file [{0}]", trackFilePath);
+                            _logger.Debug("Could not create valid date to change file [{0}]", bookFilePath);
                             return false;
                         }
 
                         var relDate = book.ReleaseDate.Value;
 
                         // avoiding false +ve checks and set date skewing by not using UTC (Windows)
-                        var oldDateTime = _diskProvider.FileGetLastWrite(trackFilePath);
+                        var oldDateTime = _diskProvider.FileGetLastWrite(bookFilePath);
 
                         if (OsInfo.IsNotWindows && relDate < EpochTime)
                         {
@@ -71,14 +71,14 @@ namespace NzbDrone.Core.MediaFiles
                         {
                             try
                             {
-                                _diskProvider.FileSetLastWriteTime(trackFilePath, relDate);
-                                _logger.Debug("Date of file [{0}] changed from '{1}' to '{2}'", trackFilePath, oldDateTime, relDate);
+                                _diskProvider.FileSetLastWriteTime(bookFilePath, relDate);
+                                _logger.Debug("Date of file [{0}] changed from '{1}' to '{2}'", bookFilePath, oldDateTime, relDate);
 
                                 return true;
                             }
                             catch (Exception ex)
                             {
-                                _logger.Warn(ex, "Unable to set date of file [" + trackFilePath + "]");
+                                _logger.Warn(ex, "Unable to set date of file [" + bookFilePath + "]");
                             }
                         }
 

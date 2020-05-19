@@ -167,7 +167,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             _logger.Debug("{0} removed correctly", downloadId);
         }
 
-        protected override string AddFromNzbFile(RemoteBook remoteAlbum, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteBook remoteBook, string filename, byte[] fileContent)
         {
             var hashedSerialNumber = _serialNumberProvider.GetSerialNumber(Settings);
 
@@ -179,7 +179,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
             if (item != null)
             {
-                _logger.Debug("{0} added correctly", remoteAlbum);
+                _logger.Debug("{0} added correctly", remoteBook);
                 return CreateDownloadId(item.Id, hashedSerialNumber);
             }
 

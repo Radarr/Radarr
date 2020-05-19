@@ -52,20 +52,20 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             }
         }
 
-        protected override string AddFromMagnetLink(RemoteBook remoteAlbum, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteBook remoteBook, string hash, string magnetLink)
         {
             _proxy.AddTorrentFromUrl(magnetLink, Settings);
-            _proxy.SetTorrentSeedingConfiguration(hash, remoteAlbum.SeedConfiguration, Settings);
+            _proxy.SetTorrentSeedingConfiguration(hash, remoteBook.SeedConfiguration, Settings);
 
             if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
                 _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
             }
 
-            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
+            var isRecentBook = remoteBook.IsRecentBook();
 
-            if ((isRecentAlbum && Settings.RecentTvPriority == (int)UTorrentPriority.First) ||
-                (!isRecentAlbum && Settings.OlderTvPriority == (int)UTorrentPriority.First))
+            if ((isRecentBook && Settings.RecentTvPriority == (int)UTorrentPriority.First) ||
+                (!isRecentBook && Settings.OlderTvPriority == (int)UTorrentPriority.First))
             {
                 _proxy.MoveTorrentToTopInQueue(hash, Settings);
             }
@@ -75,20 +75,20 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteBook remoteAlbum, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteBook remoteBook, string hash, string filename, byte[] fileContent)
         {
             _proxy.AddTorrentFromFile(filename, fileContent, Settings);
-            _proxy.SetTorrentSeedingConfiguration(hash, remoteAlbum.SeedConfiguration, Settings);
+            _proxy.SetTorrentSeedingConfiguration(hash, remoteBook.SeedConfiguration, Settings);
 
             if (Settings.MusicCategory.IsNotNullOrWhiteSpace())
             {
                 _proxy.SetTorrentLabel(hash, Settings.MusicCategory, Settings);
             }
 
-            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
+            var isRecentBook = remoteBook.IsRecentBook();
 
-            if ((isRecentAlbum && Settings.RecentTvPriority == (int)UTorrentPriority.First) ||
-                (!isRecentAlbum && Settings.OlderTvPriority == (int)UTorrentPriority.First))
+            if ((isRecentBook && Settings.RecentTvPriority == (int)UTorrentPriority.First) ||
+                (!isRecentBook && Settings.OlderTvPriority == (int)UTorrentPriority.First))
             {
                 _proxy.MoveTorrentToTopInQueue(hash, Settings);
             }

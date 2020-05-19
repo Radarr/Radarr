@@ -345,10 +345,10 @@ namespace NzbDrone.Core.Download.Pending
                    p.Release.Indexer == release.Indexer;
         }
 
-        private int GetDelay(RemoteBook remoteAlbum)
+        private int GetDelay(RemoteBook remoteBook)
         {
-            var delayProfile = _delayProfileService.AllForTags(remoteAlbum.Author.Tags).OrderBy(d => d.Order).First();
-            var delay = delayProfile.GetProtocolDelay(remoteAlbum.Release.DownloadProtocol);
+            var delayProfile = _delayProfileService.AllForTags(remoteBook.Author.Tags).OrderBy(d => d.Order).First();
+            var delay = delayProfile.GetProtocolDelay(remoteBook.Release.DownloadProtocol);
             var minimumAge = _configService.MinimumAge;
 
             return new[] { delay, minimumAge }.Max();

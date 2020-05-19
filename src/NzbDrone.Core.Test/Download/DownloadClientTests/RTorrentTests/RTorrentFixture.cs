@@ -115,9 +115,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.RTorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
         }

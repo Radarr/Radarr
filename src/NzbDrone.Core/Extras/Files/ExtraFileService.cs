@@ -16,8 +16,8 @@ namespace NzbDrone.Core.Extras.Files
     public interface IExtraFileService<TExtraFile>
         where TExtraFile : ExtraFile, new()
     {
-        List<TExtraFile> GetFilesByArtist(int authorId);
-        List<TExtraFile> GetFilesByTrackFile(int trackFileId);
+        List<TExtraFile> GetFilesByAuthor(int authorId);
+        List<TExtraFile> GetFilesByBookFile(int bookFileId);
         TExtraFile FindByPath(string path);
         void Upsert(TExtraFile extraFile);
         void Upsert(List<TExtraFile> extraFiles);
@@ -49,14 +49,14 @@ namespace NzbDrone.Core.Extras.Files
             _logger = logger;
         }
 
-        public List<TExtraFile> GetFilesByArtist(int authorId)
+        public List<TExtraFile> GetFilesByAuthor(int authorId)
         {
             return _repository.GetFilesByAuthor(authorId);
         }
 
-        public List<TExtraFile> GetFilesByTrackFile(int trackFileId)
+        public List<TExtraFile> GetFilesByBookFile(int bookFileId)
         {
-            return _repository.GetFilesByBookFile(trackFileId);
+            return _repository.GetFilesByBookFile(bookFileId);
         }
 
         public TExtraFile FindByPath(string path)

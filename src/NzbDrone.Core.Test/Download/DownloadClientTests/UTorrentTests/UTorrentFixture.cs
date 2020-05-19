@@ -232,9 +232,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -256,10 +256,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Release.DownloadUrl = magnetUrl;
+            var remoteBook = CreateRemoteAlbum();
+            remoteBook.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().Be(expectedHash);
         }
@@ -355,9 +355,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
             GivenRedirectToMagnet();
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -368,9 +368,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.UTorrentTests
             GivenRedirectToTorrent();
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
         }

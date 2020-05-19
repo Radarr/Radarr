@@ -7,14 +7,14 @@ namespace NzbDrone.Core.Books
         public AddBookOptions()
         {
             // default in case not set in db
-            AddType = AlbumAddType.Automatic;
+            AddType = BookAddType.Automatic;
         }
 
-        public AlbumAddType AddType { get; set; }
-        public bool SearchForNewAlbum { get; set; }
+        public BookAddType AddType { get; set; }
+        public bool SearchForNewBook { get; set; }
     }
 
-    public enum AlbumAddType
+    public enum BookAddType
     {
         Automatic,
         Manual

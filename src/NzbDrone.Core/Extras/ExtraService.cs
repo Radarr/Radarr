@@ -124,7 +124,7 @@ namespace NzbDrone.Core.Extras
         {
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.CreateAfterTrackImport(author, bookFile);
+                extraFileManager.CreateAfterBookImport(author, bookFile);
             }
         }
 

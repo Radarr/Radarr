@@ -263,9 +263,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -275,10 +275,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         {
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Release.DownloadUrl = magnetUrl;
+            var remoteBook = CreateRemoteAlbum();
+            remoteBook.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().Be(expectedHash);
         }
@@ -290,10 +290,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
                   .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
                   .Returns(new QBittorrentPreferences() { DhtEnabled = false });
 
-            var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR";
+            var remoteBook = CreateRemoteAlbum();
+            remoteBook.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR";
 
-            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteAlbum));
+            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteBook));
         }
 
         [Test]
@@ -303,10 +303,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
                   .Setup(s => s.GetConfig(It.IsAny<QBittorrentSettings>()))
                   .Returns(new QBittorrentPreferences { DhtEnabled = false });
 
-            var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp://abc";
+            var remoteBook = CreateRemoteAlbum();
+            remoteBook.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp://abc";
 
-            Assert.DoesNotThrow(() => Subject.Download(remoteAlbum));
+            Assert.DoesNotThrow(() => Subject.Download(remoteBook));
 
             Mocker.GetMock<IQBittorrentProxy>()
                   .Verify(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()), Times.Once());
@@ -318,9 +318,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenHighPriority();
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             Mocker.GetMock<IQBittorrentProxy>()
                   .Verify(v => v.MoveTorrentToTopInQueue(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()), Times.Once());
@@ -336,9 +336,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
                   .Setup(v => v.MoveTorrentToTopInQueue(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()))
                   .Throws(new HttpException(new HttpResponse(new HttpRequest("http://me.local/"), new HttpHeader(), new byte[0], System.Net.HttpStatusCode.Forbidden)));
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -370,9 +370,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenRedirectToMagnet();
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -383,9 +383,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             GivenRedirectToTorrent();
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
         }

@@ -15,9 +15,9 @@ namespace NzbDrone.Core.Parser
     {
         Author GetArtist(string title);
         Author GetArtistFromTag(string file);
-        RemoteBook Map(ParsedBookInfo parsedAlbumInfo, SearchCriteriaBase searchCriteria = null);
-        RemoteBook Map(ParsedBookInfo parsedAlbumInfo, int authorId, IEnumerable<int> bookIds);
-        List<Book> GetAlbums(ParsedBookInfo parsedAlbumInfo, Author author, SearchCriteriaBase searchCriteria = null);
+        RemoteBook Map(ParsedBookInfo parsedBookInfo, SearchCriteriaBase searchCriteria = null);
+        RemoteBook Map(ParsedBookInfo parsedBookInfo, int authorId, IEnumerable<int> bookIds);
+        List<Book> GetAlbums(ParsedBookInfo parsedBookInfo, Author author, SearchCriteriaBase searchCriteria = null);
 
         ParsedBookInfo ParseAlbumTitleFuzzy(string title);
 
@@ -45,11 +45,11 @@ namespace NzbDrone.Core.Parser
 
         public Author GetArtist(string title)
         {
-            var parsedAlbumInfo = Parser.ParseBookTitle(title);
+            var parsedBookInfo = Parser.ParseBookTitle(title);
 
-            if (parsedAlbumInfo != null && !parsedAlbumInfo.AuthorName.IsNullOrWhiteSpace())
+            if (parsedBookInfo != null && !parsedBookInfo.AuthorName.IsNullOrWhiteSpace())
             {
-                title = parsedAlbumInfo.AuthorName;
+                title = parsedBookInfo.AuthorName;
             }
 
             var artistInfo = _authorService.FindByName(title);
@@ -95,53 +95,53 @@ namespace NzbDrone.Core.Parser
             return author;
         }
 
-        public RemoteBook Map(ParsedBookInfo parsedAlbumInfo, SearchCriteriaBase searchCriteria = null)
+        public RemoteBook Map(ParsedBookInfo parsedBookInfo, SearchCriteriaBase searchCriteria = null)
         {
-            var remoteAlbum = new RemoteBook
+            var remoteBook = new RemoteBook
             {
-                ParsedBookInfo = parsedAlbumInfo,
+                ParsedBookInfo = parsedBookInfo,
             };
 
-            var author = GetArtist(parsedAlbumInfo, searchCriteria);
+            var author = GetArtist(parsedBookInfo, searchCriteria);
 
             if (author == null)
             {
-                return remoteAlbum;
+                return remoteBook;
             }
 
-            remoteAlbum.Author = author;
-            remoteAlbum.Books = GetAlbums(parsedAlbumInfo, author, searchCriteria);
+            remoteBook.Author = author;
+            remoteBook.Books = GetAlbums(parsedBookInfo, author, searchCriteria);
 
-            return remoteAlbum;
+            return remoteBook;
         }
 
-        public List<Book> GetAlbums(ParsedBookInfo parsedAlbumInfo, Author author, SearchCriteriaBase searchCriteria = null)
+        public List<Book> GetAlbums(ParsedBookInfo parsedBookInfo, Author author, SearchCriteriaBase searchCriteria = null)
         {
-            var albumTitle = parsedAlbumInfo.BookTitle;
+            var albumTitle = parsedBookInfo.BookTitle;
             var result = new List<Book>();
 
-            if (parsedAlbumInfo.BookTitle == null)
+            if (parsedBookInfo.BookTitle == null)
             {
                 return new List<Book>();
             }
 
             Book albumInfo = null;
 
-            if (parsedAlbumInfo.Discography)
+            if (parsedBookInfo.Discography)
             {
-                if (parsedAlbumInfo.DiscographyStart > 0)
+                if (parsedBookInfo.DiscographyStart > 0)
                 {
                     return _bookService.AuthorBooksBetweenDates(author,
-                        new DateTime(parsedAlbumInfo.DiscographyStart, 1, 1),
-                        new DateTime(parsedAlbumInfo.DiscographyEnd, 12, 31),
+                        new DateTime(parsedBookInfo.DiscographyStart, 1, 1),
+                        new DateTime(parsedBookInfo.DiscographyEnd, 12, 31),
                         false);
                 }
 
-                if (parsedAlbumInfo.DiscographyEnd > 0)
+                if (parsedBookInfo.DiscographyEnd > 0)
                 {
                     return _bookService.AuthorBooksBetweenDates(author,
                         new DateTime(1800, 1, 1),
-                        new DateTime(parsedAlbumInfo.DiscographyEnd, 12, 31),
+                        new DateTime(parsedBookInfo.DiscographyEnd, 12, 31),
                         false);
                 }
 
@@ -156,13 +156,13 @@ namespace NzbDrone.Core.Parser
             if (albumInfo == null)
             {
                 // TODO: Search by Title and Year instead of just Title when matching
-                albumInfo = _bookService.FindByTitle(author.AuthorMetadataId, parsedAlbumInfo.BookTitle);
+                albumInfo = _bookService.FindByTitle(author.AuthorMetadataId, parsedBookInfo.BookTitle);
             }
 
             if (albumInfo == null)
             {
-                _logger.Debug("Trying inexact book match for {0}", parsedAlbumInfo.BookTitle);
-                albumInfo = _bookService.FindByTitleInexact(author.AuthorMetadataId, parsedAlbumInfo.BookTitle);
+                _logger.Debug("Trying inexact book match for {0}", parsedBookInfo.BookTitle);
+                albumInfo = _bookService.FindByTitleInexact(author.AuthorMetadataId, parsedBookInfo.BookTitle);
             }
 
             if (albumInfo != null)
@@ -171,45 +171,45 @@ namespace NzbDrone.Core.Parser
             }
             else
             {
-                _logger.Debug("Unable to find {0}", parsedAlbumInfo);
+                _logger.Debug("Unable to find {0}", parsedBookInfo);
             }
 
             return result;
         }
 
-        public RemoteBook Map(ParsedBookInfo parsedAlbumInfo, int authorId, IEnumerable<int> bookIds)
+        public RemoteBook Map(ParsedBookInfo parsedBookInfo, int authorId, IEnumerable<int> bookIds)
         {
             return new RemoteBook
             {
-                ParsedBookInfo = parsedAlbumInfo,
+                ParsedBookInfo = parsedBookInfo,
                 Author = _authorService.GetAuthor(authorId),
                 Books = _bookService.GetBooks(bookIds)
             };
         }
 
-        private Author GetArtist(ParsedBookInfo parsedAlbumInfo, SearchCriteriaBase searchCriteria)
+        private Author GetArtist(ParsedBookInfo parsedBookInfo, SearchCriteriaBase searchCriteria)
         {
             Author author = null;
 
             if (searchCriteria != null)
             {
-                if (searchCriteria.Author.CleanName == parsedAlbumInfo.AuthorName.CleanAuthorName())
+                if (searchCriteria.Author.CleanName == parsedBookInfo.AuthorName.CleanAuthorName())
                 {
                     return searchCriteria.Author;
                 }
             }
 
-            author = _authorService.FindByName(parsedAlbumInfo.AuthorName);
+            author = _authorService.FindByName(parsedBookInfo.AuthorName);
 
             if (author == null)
             {
-                _logger.Debug("Trying inexact author match for {0}", parsedAlbumInfo.AuthorName);
-                author = _authorService.FindByNameInexact(parsedAlbumInfo.AuthorName);
+                _logger.Debug("Trying inexact author match for {0}", parsedBookInfo.AuthorName);
+                author = _authorService.FindByNameInexact(parsedBookInfo.AuthorName);
             }
 
             if (author == null)
             {
-                _logger.Debug("No matching author {0}", parsedAlbumInfo.AuthorName);
+                _logger.Debug("No matching author {0}", parsedBookInfo.AuthorName);
                 return null;
             }
 
@@ -251,7 +251,7 @@ namespace NzbDrone.Core.Parser
 
             if (bestAuthor != null)
             {
-                return Parser.ParseAlbumTitleWithSearchCriteria(title, bestAuthor, new List<Book> { bestBook });
+                return Parser.ParseBookTitleWithSearchCriteria(title, bestAuthor, new List<Book> { bestBook });
             }
 
             return null;

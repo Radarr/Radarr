@@ -52,9 +52,9 @@ namespace Readarr.Api.V1.Indexers
 
         private object DownloadRelease(ReleaseResource release)
         {
-            var remoteAlbum = _remoteBookCache.Find(GetCacheKey(release));
+            var remoteBook = _remoteBookCache.Find(GetCacheKey(release));
 
-            if (remoteAlbum == null)
+            if (remoteBook == null)
             {
                 _logger.Debug("Couldn't find requested release in cache, cache timeout probably expired.");
 
@@ -63,7 +63,7 @@ namespace Readarr.Api.V1.Indexers
 
             try
             {
-                _downloadService.DownloadReport(remoteAlbum);
+                _downloadService.DownloadReport(remoteBook);
             }
             catch (ReleaseDownloadException ex)
             {

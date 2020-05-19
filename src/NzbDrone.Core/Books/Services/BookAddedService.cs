@@ -37,11 +37,11 @@ namespace NzbDrone.Core.Books
         public void SearchForRecentlyAdded(int authorId)
         {
             var allBooks = _bookService.GetBooksByAuthor(authorId);
-            var toSearch = allBooks.Where(x => x.AddOptions.SearchForNewAlbum).ToList();
+            var toSearch = allBooks.Where(x => x.AddOptions.SearchForNewBook).ToList();
 
             if (toSearch.Any())
             {
-                toSearch.ForEach(x => x.AddOptions.SearchForNewAlbum = false);
+                toSearch.ForEach(x => x.AddOptions.SearchForNewBook = false);
 
                 _bookService.SetAddOptions(toSearch);
             }

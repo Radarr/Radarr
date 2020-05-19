@@ -89,17 +89,17 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
 
         protected override RemoteBook CreateRemoteAlbum()
         {
-            var remoteAlbum = base.CreateRemoteAlbum();
+            var remoteBook = base.CreateRemoteAlbum();
             var torrentInfo = new TorrentInfo();
 
-            torrentInfo.Title = remoteAlbum.Release.Title;
-            torrentInfo.DownloadUrl = remoteAlbum.Release.DownloadUrl;
-            torrentInfo.DownloadProtocol = remoteAlbum.Release.DownloadProtocol;
+            torrentInfo.Title = remoteBook.Release.Title;
+            torrentInfo.DownloadUrl = remoteBook.Release.DownloadUrl;
+            torrentInfo.DownloadProtocol = remoteBook.Release.DownloadProtocol;
             torrentInfo.MagnetUrl = "magnet:?xt=urn:btih:755248817d32b00cc853e633ecdc48e4c21bff15&dn=Artist.Album.FLAC.loseless-DEFiNE%5Brartv%5D&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710";
 
-            remoteAlbum.Release = torrentInfo;
+            remoteBook.Release = torrentInfo;
 
-            return remoteAlbum;
+            return remoteBook;
         }
 
         [Test]
@@ -141,9 +141,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void Download_should_download_file_if_it_doesnt_exist()
         {
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            Subject.Download(remoteAlbum);
+            Subject.Download(remoteBook);
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Once());
@@ -155,9 +155,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         {
             GivenMagnetFilePath();
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().SaveMagnetFiles = true;
-            var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Release.DownloadUrl = null;
-            Subject.Download(remoteAlbum);
+            var remoteBook = CreateRemoteAlbum();
+            remoteBook.Release.DownloadUrl = null;
+            Subject.Download(remoteBook);
             Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_magnetFilePath), Times.Once());
@@ -173,10 +173,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().SaveMagnetFiles = true;
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().MagnetFileExtension = magnetFileExtension;
 
-            var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Release.DownloadUrl = null;
+            var remoteBook = CreateRemoteAlbum();
+            remoteBook.Release.DownloadUrl = null;
 
-            Subject.Download(remoteAlbum);
+            Subject.Download(remoteBook);
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Never());
@@ -188,10 +188,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         public void Download_should_not_save_magnet_if_disabled()
         {
             GivenMagnetFilePath();
-            var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Release.DownloadUrl = null;
+            var remoteBook = CreateRemoteAlbum();
+            remoteBook.Release.DownloadUrl = null;
 
-            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteAlbum));
+            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteBook));
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Never());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Never());
@@ -204,9 +204,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         {
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().SaveMagnetFiles = true;
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            Subject.Download(remoteAlbum);
+            Subject.Download(remoteBook);
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Once());
@@ -220,10 +220,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             var illegalTitle = "Radiohead - Scotch Mist [2008/FLAC/Lossless]";
             var expectedFilename = Path.Combine(_blackholeFolder, "Radiohead - Scotch Mist [2008+FLAC+Lossless]" + Path.GetExtension(_filePath));
 
-            var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Release.Title = illegalTitle;
+            var remoteBook = CreateRemoteAlbum();
+            remoteBook.Release.Title = illegalTitle;
 
-            Subject.Download(remoteAlbum);
+            Subject.Download(remoteBook);
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(expectedFilename), Times.Once());
@@ -233,10 +233,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void Download_should_throw_if_magnet_and_torrent_url_does_not_exist()
         {
-            var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Release.DownloadUrl = null;
+            var remoteBook = CreateRemoteAlbum();
+            remoteBook.Release.DownloadUrl = null;
 
-            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteAlbum));
+            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteBook));
         }
 
         [Test]
@@ -308,9 +308,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void should_return_null_hash()
         {
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            Subject.Download(remoteAlbum).Should().BeNull();
+            Subject.Download(remoteBook).Should().BeNull();
         }
     }
 }

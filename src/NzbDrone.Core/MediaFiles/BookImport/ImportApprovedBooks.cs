@@ -42,7 +42,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly Logger _logger;
 
-        public ImportApprovedBooks(IUpgradeMediaFiles trackFileUpgrader,
+        public ImportApprovedBooks(IUpgradeMediaFiles bookFileUpgrader,
                                     IMediaFileService mediaFileService,
                                     IAudioTagService audioTagService,
                                     IAuthorService authorService,
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                                     IManageCommandQueue commandQueueManager,
                                     Logger logger)
         {
-            _bookFileUpgrader = trackFileUpgrader;
+            _bookFileUpgrader = bookFileUpgrader;
             _mediaFileService = mediaFileService;
             _audioTagService = audioTagService;
             _authorService = authorService;
@@ -304,7 +304,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                     author.Tags = rootFolder.DefaultTags;
                     author.AddOptions = new AddAuthorOptions
                     {
-                        SearchForMissingAlbums = false,
+                        SearchForMissingBooks = false,
                         Monitored = author.Monitored,
                         Monitor = rootFolder.DefaultMonitorOption
                     };

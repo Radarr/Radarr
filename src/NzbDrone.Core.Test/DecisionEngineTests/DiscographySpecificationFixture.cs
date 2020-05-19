@@ -15,13 +15,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [TestFixture]
     public class DiscographySpecificationFixture : CoreTest<DiscographySpecification>
     {
-        private RemoteBook _remoteAlbum;
+        private RemoteBook _remoteBook;
 
         [SetUp]
         public void Setup()
         {
             var artist = Builder<Author>.CreateNew().With(s => s.Id = 1234).Build();
-            _remoteAlbum = new RemoteBook
+            _remoteBook = new RemoteBook
             {
                 ParsedBookInfo = new ParsedBookInfo
                 {
@@ -46,29 +46,29 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_is_not_a_discography()
         {
-            _remoteAlbum.ParsedBookInfo.Discography = false;
-            _remoteAlbum.Books.Last().ReleaseDate = DateTime.UtcNow.AddDays(+2);
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            _remoteBook.ParsedBookInfo.Discography = false;
+            _remoteBook.Books.Last().ReleaseDate = DateTime.UtcNow.AddDays(+2);
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_if_all_albums_have_released()
         {
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_false_if_one_album_has_not_released()
         {
-            _remoteAlbum.Books.Last().ReleaseDate = DateTime.UtcNow.AddDays(+2);
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            _remoteBook.Books.Last().ReleaseDate = DateTime.UtcNow.AddDays(+2);
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_false_if_an_album_does_not_have_an_release_date()
         {
-            _remoteAlbum.Books.Last().ReleaseDate = null;
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            _remoteBook.Books.Last().ReleaseDate = null;
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
     }
 }

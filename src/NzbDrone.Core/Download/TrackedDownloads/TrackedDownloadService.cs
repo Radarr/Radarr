@@ -58,12 +58,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
             foreach (var item in updateCacheItems)
             {
-                var parsedAlbumInfo = Parser.Parser.ParseBookTitle(item.DownloadItem.Title);
+                var parsedBookInfo = Parser.Parser.ParseBookTitle(item.DownloadItem.Title);
                 item.RemoteBook = null;
 
-                if (parsedAlbumInfo != null)
+                if (parsedBookInfo != null)
                 {
-                    item.RemoteBook = _parsingService.Map(parsedAlbumInfo);
+                    item.RemoteBook = _parsingService.Map(parsedBookInfo);
                 }
             }
 
@@ -175,7 +175,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                         else
                         {
                             parsedBookInfo =
-                                Parser.Parser.ParseAlbumTitleWithSearchCriteria(firstHistoryItem.SourceTitle,
+                                Parser.Parser.ParseBookTitleWithSearchCriteria(firstHistoryItem.SourceTitle,
                                     historyAuthor,
                                     historyBooks);
 

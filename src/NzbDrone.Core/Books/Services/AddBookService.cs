@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Books
             _importListExclusionService.Delete(book.AuthorMetadata.Value.ForeignAuthorId);
 
             // Note it's a manual addition so it's not deleted on next refresh
-            book.AddOptions.AddType = AlbumAddType.Manual;
+            book.AddOptions.AddType = BookAddType.Manual;
 
             // Add the author if necessary
             var dbAuthor = _authorService.FindById(book.AuthorMetadata.Value.ForeignAuthorId);

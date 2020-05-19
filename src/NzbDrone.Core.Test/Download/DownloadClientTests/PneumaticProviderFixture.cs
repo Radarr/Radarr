@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         private string _pneumaticFolder;
         private string _strmFolder;
         private string _nzbPath;
-        private RemoteBook _remoteAlbum;
+        private RemoteBook _remoteBook;
 
         [SetUp]
         public void Setup()
@@ -30,12 +30,12 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             _nzbPath = Path.Combine(_pneumaticFolder, _title + ".nzb").AsOsAgnostic();
             _strmFolder = @"d:\unsorted tv\".AsOsAgnostic();
 
-            _remoteAlbum = new RemoteBook();
-            _remoteAlbum.Release = new ReleaseInfo();
-            _remoteAlbum.Release.Title = _title;
-            _remoteAlbum.Release.DownloadUrl = _nzbUrl;
+            _remoteBook = new RemoteBook();
+            _remoteBook.Release = new ReleaseInfo();
+            _remoteBook.Release.Title = _title;
+            _remoteBook.Release.DownloadUrl = _nzbUrl;
 
-            _remoteAlbum.ParsedBookInfo = new ParsedBookInfo();
+            _remoteBook.ParsedBookInfo = new ParsedBookInfo();
 
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new PneumaticSettings
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         [Test]
         public void should_download_file_if_it_doesnt_exist()
         {
-            Subject.Download(_remoteAlbum);
+            Subject.Download(_remoteBook);
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(_nzbUrl, _nzbPath, null), Times.Once());
         }
@@ -63,16 +63,16 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         {
             WithFailedDownload();
 
-            Assert.Throws<WebException>(() => Subject.Download(_remoteAlbum));
+            Assert.Throws<WebException>(() => Subject.Download(_remoteBook));
         }
 
         [Test]
         public void should_throw_if_discography_download()
         {
-            _remoteAlbum.Release.Title = "Alien Ant Farm - Discography";
-            _remoteAlbum.ParsedBookInfo.Discography = true;
+            _remoteBook.Release.Title = "Alien Ant Farm - Discography";
+            _remoteBook.ParsedBookInfo.Discography = true;
 
-            Assert.Throws<NotSupportedException>(() => Subject.Download(_remoteAlbum));
+            Assert.Throws<NotSupportedException>(() => Subject.Download(_remoteBook));
         }
 
         [Test]
@@ -86,9 +86,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         {
             var illegalTitle = "Saturday Night Live - S38E08 - Jeremy Renner/Maroon 5 [SDTV]";
             var expectedFilename = Path.Combine(_pneumaticFolder, "Saturday Night Live - S38E08 - Jeremy Renner+Maroon 5 [SDTV].nzb");
-            _remoteAlbum.Release.Title = illegalTitle;
+            _remoteBook.Release.Title = illegalTitle;
 
-            Subject.Download(_remoteAlbum);
+            Subject.Download(_remoteBook);
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.DownloadFile(It.IsAny<string>(), expectedFilename, null), Times.Once());
         }

@@ -23,12 +23,12 @@ namespace NzbDrone.Core.DecisionEngine
     {
         private readonly IEnumerable<IDecisionEngineSpecification> _specifications;
         private readonly IParsingService _parsingService;
-        private readonly IRemoteAlbumAggregationService _aggregationService;
+        private readonly IRemoteBookAggregationService _aggregationService;
         private readonly Logger _logger;
 
         public DownloadDecisionMaker(IEnumerable<IDecisionEngineSpecification> specifications,
             IParsingService parsingService,
-            IRemoteAlbumAggregationService aggregationService,
+            IRemoteBookAggregationService aggregationService,
             Logger logger)
         {
             _specifications = specifications;
@@ -39,15 +39,15 @@ namespace NzbDrone.Core.DecisionEngine
 
         public List<DownloadDecision> GetRssDecision(List<ReleaseInfo> reports)
         {
-            return GetAlbumDecisions(reports).ToList();
+            return GetBookDecisions(reports).ToList();
         }
 
         public List<DownloadDecision> GetSearchDecision(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteriaBase)
         {
-            return GetAlbumDecisions(reports, searchCriteriaBase).ToList();
+            return GetBookDecisions(reports, searchCriteriaBase).ToList();
         }
 
-        private IEnumerable<DownloadDecision> GetAlbumDecisions(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteria = null)
+        private IEnumerable<DownloadDecision> GetBookDecisions(List<ReleaseInfo> reports, SearchCriteriaBase searchCriteria = null)
         {
             if (reports.Any())
             {
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.DecisionEngine
                     {
                         if (searchCriteria != null)
                         {
-                            parsedBookInfo = Parser.Parser.ParseAlbumTitleWithSearchCriteria(report.Title,
+                            parsedBookInfo = Parser.Parser.ParseBookTitleWithSearchCriteria(report.Title,
                                                                                               searchCriteria.Author,
                                                                                               searchCriteria.Books);
                         }
@@ -95,13 +95,13 @@ namespace NzbDrone.Core.DecisionEngine
                             if ((remoteBook.Author == null || remoteBook.Books.Empty()) && searchCriteria != null)
                             {
                                 _logger.Debug("Author/Book null for {0}, reparsing with search criteria", report.Title);
-                                var parsedAlbumInfoWithCriteria = Parser.Parser.ParseAlbumTitleWithSearchCriteria(report.Title,
+                                var parsedBookInfoWithCriteria = Parser.Parser.ParseBookTitleWithSearchCriteria(report.Title,
                                                                                                                   searchCriteria.Author,
                                                                                                                   searchCriteria.Books);
 
-                                if (parsedAlbumInfoWithCriteria != null && parsedAlbumInfoWithCriteria.AuthorName.IsNotNullOrWhiteSpace())
+                                if (parsedBookInfoWithCriteria != null && parsedBookInfoWithCriteria.AuthorName.IsNotNullOrWhiteSpace())
                                 {
-                                    remoteBook = _parsingService.Map(parsedAlbumInfoWithCriteria, searchCriteria);
+                                    remoteBook = _parsingService.Map(parsedBookInfoWithCriteria, searchCriteria);
                                 }
                             }
 

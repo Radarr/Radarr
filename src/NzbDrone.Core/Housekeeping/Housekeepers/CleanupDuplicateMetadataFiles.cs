@@ -15,9 +15,8 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         public void Clean()
         {
             DeleteDuplicateArtistMetadata();
-            DeleteDuplicateAlbumMetadata();
-            DeleteDuplicateTrackMetadata();
-            DeleteDuplicateTrackImages();
+            DeleteDuplicateBookMetadata();
+            DeleteDuplicateBookImages();
         }
 
         private void DeleteDuplicateArtistMetadata()
@@ -34,21 +33,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
             }
         }
 
-        private void DeleteDuplicateAlbumMetadata()
-        {
-            using (var mapper = _database.OpenConnection())
-            {
-                mapper.Execute(@"DELETE FROM MetadataFiles
-                                         WHERE Id IN (
-                                         SELECT Id FROM MetadataFiles
-                                         WHERE Type = 6
-                                         GROUP BY BookId, Consumer
-                                         HAVING COUNT(BookId) > 1
-                                     )");
-            }
-        }
-
-        private void DeleteDuplicateTrackMetadata()
+        private void DeleteDuplicateBookMetadata()
         {
             using (var mapper = _database.OpenConnection())
             {
@@ -62,14 +47,14 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
             }
         }
 
-        private void DeleteDuplicateTrackImages()
+        private void DeleteDuplicateBookImages()
         {
             using (var mapper = _database.OpenConnection())
             {
                 mapper.Execute(@"DELETE FROM MetadataFiles
                                          WHERE Id IN (
                                          SELECT Id FROM MetadataFiles
-                                         WHERE Type = 5
+                                         WHERE Type = 4
                                          GROUP BY BookFileId, Consumer
                                          HAVING COUNT(BookFileId) > 1
                                      )");

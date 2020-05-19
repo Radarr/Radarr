@@ -113,9 +113,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void Download_should_download_file_if_it_doesnt_exist()
         {
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            Subject.Download(remoteAlbum);
+            Subject.Download(remoteBook);
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(_filePath), Times.Once());
@@ -128,10 +128,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             var illegalTitle = "Radiohead - Scotch Mist [2008/FLAC/Lossless]";
             var expectedFilename = Path.Combine(_blackholeFolder, "Radiohead - Scotch Mist [2008+FLAC+Lossless]" + Path.GetExtension(_filePath));
 
-            var remoteAlbum = CreateRemoteAlbum();
-            remoteAlbum.Release.Title = illegalTitle;
+            var remoteBook = CreateRemoteAlbum();
+            remoteBook.Release.Title = illegalTitle;
 
-            Subject.Download(remoteAlbum);
+            Subject.Download(remoteBook);
 
             Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Once());
             Mocker.GetMock<IDiskProvider>().Verify(c => c.OpenWriteStream(expectedFilename), Times.Once());

@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Extras.Files
     {
         int Order { get; }
         IEnumerable<ExtraFile> CreateAfterAuthorScan(Author author, List<BookFile> bookFiles);
-        IEnumerable<ExtraFile> CreateAfterTrackImport(Author author, BookFile bookFile);
+        IEnumerable<ExtraFile> CreateAfterBookImport(Author author, BookFile bookFile);
         IEnumerable<ExtraFile> CreateAfterBookImport(Author author, Book book, string authorFolder, string bookFolder);
         IEnumerable<ExtraFile> MoveFilesAfterRename(Author author, List<BookFile> bookFiles);
         ExtraFile Import(Author author, BookFile bookFile, string path, string extension, bool readOnly);
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Extras.Files
 
         public abstract int Order { get; }
         public abstract IEnumerable<ExtraFile> CreateAfterAuthorScan(Author author, List<BookFile> bookFiles);
-        public abstract IEnumerable<ExtraFile> CreateAfterTrackImport(Author author, BookFile bookFile);
+        public abstract IEnumerable<ExtraFile> CreateAfterBookImport(Author author, BookFile bookFile);
         public abstract IEnumerable<ExtraFile> CreateAfterBookImport(Author author, Book book, string authorFolder, string albumFolder);
         public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Author author, List<BookFile> bookFiles);
         public abstract ExtraFile Import(Author author, BookFile bookFile, string path, string extension, bool readOnly);

@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Books
         List<Book> AuthorBooksBetweenDates(Author author, DateTime startDate, DateTime endDate, bool includeUnmonitored);
         void SetMonitoredFlat(Book book, bool monitored);
         void SetMonitored(IEnumerable<int> ids, bool monitored);
-        List<Book> GetArtistAlbumsWithFiles(Author author);
+        List<Book> GetAuthorBooksWithFiles(Author author);
     }
 
     public class BookRepository : BasicRepository<Book>, IBookRepository
@@ -190,7 +190,7 @@ namespace NzbDrone.Core.Books
                 .ExclusiveOrDefault();
         }
 
-        public List<Book> GetArtistAlbumsWithFiles(Author author)
+        public List<Book> GetAuthorBooksWithFiles(Author author)
         {
             return Query(Builder()
                          .Join<Book, BookFile>((t, f) => t.Id == f.BookId)

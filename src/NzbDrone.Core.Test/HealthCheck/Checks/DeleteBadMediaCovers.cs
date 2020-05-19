@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                 .Returns(_artist);
 
             Mocker.GetMock<IMetadataFileService>()
-                .Setup(c => c.GetFilesByArtist(_artist.First().Id))
+                .Setup(c => c.GetFilesByAuthor(_artist.First().Id))
                 .Returns(_metadata);
 
             Mocker.GetMock<IConfigService>().SetupGet(c => c.CleanupMetadataImages).Returns(true);
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_not_process_non_image_files()
         {
             _metadata.First().RelativePath = "album\\file.xml".AsOsAgnostic();
-            _metadata.First().Type = MetadataType.TrackMetadata;
+            _metadata.First().Type = MetadataType.BookMetadata;
 
             Subject.Clean();
 
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             var imagePath = "C:\\Music\\Album\\image.jpg".AsOsAgnostic();
             _metadata.First().LastUpdated = new DateTime(2014, 12, 29);
             _metadata.First().RelativePath = "Album\\image.jpg".AsOsAgnostic();
-            _metadata.First().Type = MetadataType.ArtistImage;
+            _metadata.First().Type = MetadataType.AuthorImage;
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.OpenReadStream(imagePath))
@@ -111,7 +111,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         {
             var imagePath = "C:\\Music\\Album\\image.jpg".AsOsAgnostic();
             _metadata.First().LastUpdated = new DateTime(2014, 12, 29);
-            _metadata.First().Type = MetadataType.AlbumImage;
+            _metadata.First().Type = MetadataType.BookImage;
             _metadata.First().RelativePath = "Album\\image.jpg".AsOsAgnostic();
 
             Mocker.GetMock<IDiskProvider>()

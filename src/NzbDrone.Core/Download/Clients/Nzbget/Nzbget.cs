@@ -34,17 +34,17 @@ namespace NzbDrone.Core.Download.Clients.Nzbget
             _proxy = proxy;
         }
 
-        protected override string AddFromNzbFile(RemoteBook remoteAlbum, string filename, byte[] fileContent)
+        protected override string AddFromNzbFile(RemoteBook remoteBook, string filename, byte[] fileContent)
         {
             var category = Settings.MusicCategory;
-            var priority = remoteAlbum.IsRecentAlbum() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
+            var priority = remoteBook.IsRecentBook() ? Settings.RecentTvPriority : Settings.OlderTvPriority;
 
             var addpaused = Settings.AddPaused;
             var response = _proxy.DownloadNzb(fileContent, filename, category, priority, addpaused, Settings);
 
             if (response == null)
             {
-                throw new DownloadClientRejectedReleaseException(remoteAlbum.Release, "NZBGet rejected the NZB for an unknown reason");
+                throw new DownloadClientRejectedReleaseException(remoteBook.Release, "NZBGet rejected the NZB for an unknown reason");
             }
 
             return response;

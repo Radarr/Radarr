@@ -13,12 +13,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [TestFixture]
     public class ReleaseRestrictionsSpecificationFixture : CoreTest<ReleaseRestrictionsSpecification>
     {
-        private RemoteBook _remoteAlbum;
+        private RemoteBook _remoteBook;
 
         [SetUp]
         public void Setup()
         {
-            _remoteAlbum = new RemoteBook
+            _remoteBook = new RemoteBook
             {
                 Author = new Author
                 {
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Setup(s => s.AllForTags(It.IsAny<HashSet<int>>()))
                   .Returns(new List<ReleaseProfile>());
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions("WEBRip", null);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions("doesnt,exist", null);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(null, "ignored");
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(null, "edited");
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
 
         [TestCase("EdiTED")]
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(required, null);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [TestCase("EdiTED")]
@@ -108,13 +108,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(null, ignored);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_be_false_when_release_contains_one_restricted_word_and_one_required_word()
         {
-            _remoteAlbum.Release.Title = "[ www.Speed.cd ] - Katy Perry - Witness (2017) MP3 [320 kbps] ";
+            _remoteBook.Release.Title = "[ www.Speed.cd ] - Katy Perry - Witness (2017) MP3 [320 kbps] ";
 
             Mocker.GetMock<IReleaseProfileService>()
                   .Setup(s => s.AllForTags(It.IsAny<HashSet<int>>()))
@@ -123,7 +123,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                new ReleaseProfile { Required = "320", Ignored = "www.Speed.cd" }
                            });
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
 
         [TestCase("/WEB/", true)]
@@ -134,7 +134,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(pattern, null);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().Be(expected);
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().Be(expected);
         }
     }
 }

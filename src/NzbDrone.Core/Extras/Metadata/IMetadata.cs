@@ -11,11 +11,9 @@ namespace NzbDrone.Core.Extras.Metadata
         string GetFilenameAfterMove(Author author, BookFile bookFile, MetadataFile metadataFile);
         string GetFilenameAfterMove(Author author, string albumPath, MetadataFile metadataFile);
         MetadataFile FindMetadataFile(Author author, string path);
-        MetadataFileResult ArtistMetadata(Author author);
-        MetadataFileResult AlbumMetadata(Author author, Book book, string albumPath);
-        MetadataFileResult TrackMetadata(Author author, BookFile bookFile);
-        List<ImageFileResult> ArtistImages(Author author);
-        List<ImageFileResult> AlbumImages(Author author, Book book, string albumPath);
-        List<ImageFileResult> TrackImages(Author author, BookFile bookFile);
+        MetadataFileResult AuthorMetadata(Author author);
+        MetadataFileResult BookMetadata(Author author, BookFile bookFile);
+        List<ImageFileResult> AuthorImages(Author author);
+        List<ImageFileResult> BookImages(Author author, BookFile bookFile);
     }
 }

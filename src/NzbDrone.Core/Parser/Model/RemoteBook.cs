@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Parser.Model
             Books = new List<Book>();
         }
 
-        public bool IsRecentAlbum()
+        public bool IsRecentBook()
         {
             return Books.Any(e => e.ReleaseDate >= DateTime.UtcNow.Date.AddDays(-14));
         }

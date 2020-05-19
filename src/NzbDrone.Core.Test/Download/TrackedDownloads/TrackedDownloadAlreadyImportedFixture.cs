@@ -22,12 +22,12 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         {
             _albums = new List<Book>();
 
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+            var remoteBook = Builder<RemoteBook>.CreateNew()
                                                       .With(r => r.Books = _albums)
                                                       .Build();
 
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
-                                                       .With(t => t.RemoteBook = remoteAlbum)
+                                                       .With(t => t.RemoteBook = remoteBook)
                                                        .Build();
 
             _historyItems = new List<History.History>();

@@ -33,14 +33,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         protected string _defaultDestination = "somepath";
         protected OsPath _physicalPath = new OsPath("/mnt/sdb1/mydata");
 
-        protected RemoteBook _remoteAlbum;
+        protected RemoteBook _remoteBook;
 
         protected Dictionary<string, object> _downloadStationConfigItems;
 
         [SetUp]
         public void Setup()
         {
-            _remoteAlbum = CreateRemoteAlbum();
+            _remoteBook = CreateRemoteAlbum();
 
             _settings = new DownloadStationSettings()
             {
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination", "shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteBook.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination", "shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteBook.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination", "shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteBook.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination", "shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteBook.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                     Detail = new Dictionary<string, string>
                     {
                         { "destination", "shared/folder" },
-                        { "uri", FileNameBuilder.CleanFileName(_remoteAlbum.Release.Title) + ".nzb" }
+                        { "uri", FileNameBuilder.CleanFileName(_remoteBook.Release.Title) + ".nzb" }
                     },
                     Transfer = new Dictionary<string, string>
                     {
@@ -264,9 +264,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenTvDirectory();
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -281,9 +281,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenMusicCategory();
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -297,9 +297,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenSerialNumber();
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -372,13 +372,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         [Test]
         public void Download_should_throw_and_not_add_task_if_cannot_get_serial_number()
         {
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
             Mocker.GetMock<ISerialNumberProvider>()
                   .Setup(s => s.GetSerialNumber(_settings))
                   .Throws(new ApplicationException("Some unknown exception, HttpException or DownloadClientException"));
 
-            Assert.Throws(Is.InstanceOf<Exception>(), () => Subject.Download(remoteAlbum));
+            Assert.Throws(Is.InstanceOf<Exception>(), () => Subject.Download(remoteBook));
 
             Mocker.GetMock<IDownloadStationTaskProxy>()
                   .Verify(v => v.AddTaskFromUrl(It.IsAny<string>(), null, _settings), Times.Never());

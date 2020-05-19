@@ -158,11 +158,11 @@ namespace NzbDrone.Core.MediaFiles
             // get the tracks to update
             foreach (var book in books)
             {
-                var trackFiles = book.BookFiles.Value;
+                var bookFiles = book.BookFiles.Value;
 
-                _logger.Debug($"Syncing audio tags for {trackFiles.Count} files");
+                _logger.Debug($"Syncing audio tags for {bookFiles.Count} files");
 
-                foreach (var file in trackFiles)
+                foreach (var file in bookFiles)
                 {
                     // populate tracks (which should also have release/book/author set) because
                     // not all of the updates will have been committed to the database yet
@@ -219,10 +219,10 @@ namespace NzbDrone.Core.MediaFiles
         public void Execute(RetagFilesCommand message)
         {
             var author = _authorService.GetAuthor(message.AuthorId);
-            var trackFiles = _mediaFileService.Get(message.Files);
+            var bookFiles = _mediaFileService.Get(message.Files);
 
-            _logger.ProgressInfo("Re-tagging {0} files for {1}", trackFiles.Count, author.Name);
-            foreach (var file in trackFiles)
+            _logger.ProgressInfo("Re-tagging {0} files for {1}", bookFiles.Count, author.Name);
+            foreach (var file in bookFiles)
             {
                 WriteTags(file, false, force: true);
             }
@@ -237,9 +237,9 @@ namespace NzbDrone.Core.MediaFiles
 
             foreach (var author in artistToRename)
             {
-                var trackFiles = _mediaFileService.GetFilesByAuthor(author.Id);
+                var bookFiles = _mediaFileService.GetFilesByAuthor(author.Id);
                 _logger.ProgressInfo("Re-tagging all files in author: {0}", author.Name);
-                foreach (var file in trackFiles)
+                foreach (var file in bookFiles)
                 {
                     WriteTags(file, false, force: true);
                 }

@@ -33,12 +33,12 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
                                                     .With(h => h.Title = "Drone.S01E01.HDTV")
                                                     .Build();
 
-            var remoteAlbum = BuildRemoteAlbum();
+            var remoteBook = BuildRemoteAlbum();
 
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
                     .With(c => c.State = TrackedDownloadState.Downloading)
                     .With(c => c.DownloadItem = completed)
-                    .With(c => c.RemoteBook = remoteAlbum)
+                    .With(c => c.RemoteBook = remoteBook)
                     .Build();
 
             Mocker.GetMock<IDownloadClient>()
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetArtist("Drone.S01E01.HDTV"))
-                  .Returns(remoteAlbum.Author);
+                  .Returns(remoteBook.Author);
         }
 
         private Book CreateAlbum(int id)

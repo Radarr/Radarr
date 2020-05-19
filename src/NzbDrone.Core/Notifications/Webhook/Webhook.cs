@@ -20,21 +20,21 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         public override void OnGrab(GrabMessage message)
         {
-            var remoteAlbum = message.Book;
+            var remoteBook = message.Book;
             var quality = message.Quality;
 
             var payload = new WebhookGrabPayload
             {
                 EventType = "Grab",
                 Author = new WebhookAuthor(message.Author),
-                Books = remoteAlbum.Books.ConvertAll(x => new WebhookBook(x)
+                Books = remoteBook.Books.ConvertAll(x => new WebhookBook(x)
                 {
                     // TODO: Stop passing these parameters inside an album v3
                     Quality = quality.Quality.Name,
                     QualityVersion = quality.Revision.Version,
-                    ReleaseGroup = remoteAlbum.ParsedBookInfo.ReleaseGroup
+                    ReleaseGroup = remoteBook.ParsedBookInfo.ReleaseGroup
                 }),
-                Release = new WebhookRelease(quality, remoteAlbum)
+                Release = new WebhookRelease(quality, remoteBook)
             };
 
             _proxy.SendWebhook(payload, Settings);

@@ -19,21 +19,21 @@ namespace NzbDrone.Core.Indexers
             _indexerFactory = indexerFactory;
         }
 
-        public TorrentSeedConfiguration GetSeedConfiguration(RemoteBook remoteAlbum)
+        public TorrentSeedConfiguration GetSeedConfiguration(RemoteBook remoteBook)
         {
-            if (remoteAlbum.Release.DownloadProtocol != DownloadProtocol.Torrent)
+            if (remoteBook.Release.DownloadProtocol != DownloadProtocol.Torrent)
             {
                 return null;
             }
 
-            if (remoteAlbum.Release.IndexerId == 0)
+            if (remoteBook.Release.IndexerId == 0)
             {
                 return null;
             }
 
             try
             {
-                var indexer = _indexerFactory.Get(remoteAlbum.Release.IndexerId);
+                var indexer = _indexerFactory.Get(remoteBook.Release.IndexerId);
                 var torrentIndexerSettings = indexer.Settings as ITorrentIndexerSettings;
 
                 if (torrentIndexerSettings != null && torrentIndexerSettings.SeedCriteria != null)
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Indexers
                         Ratio = torrentIndexerSettings.SeedCriteria.SeedRatio
                     };
 
-                    var seedTime = remoteAlbum.ParsedBookInfo.Discography ? torrentIndexerSettings.SeedCriteria.DiscographySeedTime : torrentIndexerSettings.SeedCriteria.SeedTime;
+                    var seedTime = remoteBook.ParsedBookInfo.Discography ? torrentIndexerSettings.SeedCriteria.DiscographySeedTime : torrentIndexerSettings.SeedCriteria.SeedTime;
                     if (seedTime.HasValue)
                     {
                         seedConfig.SeedTime = TimeSpan.FromMinutes(seedTime.Value);

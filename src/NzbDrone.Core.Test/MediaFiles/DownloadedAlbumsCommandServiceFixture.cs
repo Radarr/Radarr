@@ -41,14 +41,14 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .With(v => v.Status = DownloadItemStatus.Downloading)
                 .Build();
 
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+            var remoteBook = Builder<RemoteBook>.CreateNew()
                 .With(v => v.Author = new Author())
                 .Build();
 
             _trackedDownload = new TrackedDownload
             {
                 DownloadItem = downloadItem,
-                RemoteBook = remoteAlbum,
+                RemoteBook = remoteBook,
                 State = TrackedDownloadState.Downloading
             };
         }

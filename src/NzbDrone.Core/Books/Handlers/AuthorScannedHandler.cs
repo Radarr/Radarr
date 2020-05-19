@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Books
                 _logger.Info("[{0}] was recently added, performing post-add actions", author.Name);
                 _bookMonitoredService.SetBookMonitoredStatus(author, author.AddOptions);
 
-                if (author.AddOptions.SearchForMissingAlbums)
+                if (author.AddOptions.SearchForMissingBooks)
                 {
                     _commandQueueManager.Push(new MissingBookSearchCommand(author.Id));
                 }

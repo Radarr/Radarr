@@ -3,7 +3,7 @@ using NzbDrone.Core.Profiles.Releases;
 
 namespace NzbDrone.Core.Download.Aggregation.Aggregators
 {
-    public class AggregatePreferredWordScore : IAggregateRemoteAlbum
+    public class AggregatePreferredWordScore : IAggregateRemoteBook
     {
         private readonly IPreferredWordService _preferredWordServiceCalculator;
 
@@ -12,11 +12,11 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
             _preferredWordServiceCalculator = preferredWordServiceCalculator;
         }
 
-        public RemoteBook Aggregate(RemoteBook remoteAlbum)
+        public RemoteBook Aggregate(RemoteBook remoteBook)
         {
-            remoteAlbum.PreferredWordScore = _preferredWordServiceCalculator.Calculate(remoteAlbum.Author, remoteAlbum.Release.Title);
+            remoteBook.PreferredWordScore = _preferredWordServiceCalculator.Calculate(remoteBook.Author, remoteBook.Release.Title);
 
-            return remoteAlbum;
+            return remoteBook;
         }
     }
 }

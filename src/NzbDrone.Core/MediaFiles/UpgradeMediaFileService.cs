@@ -68,18 +68,18 @@ namespace NzbDrone.Core.MediaFiles
 
             foreach (var file in existingFiles)
             {
-                var trackFilePath = file.Path;
-                var subfolder = rootFolderPath.GetRelativePath(_diskProvider.GetParentFolder(trackFilePath));
+                var bookFilePath = file.Path;
+                var subfolder = rootFolderPath.GetRelativePath(_diskProvider.GetParentFolder(bookFilePath));
 
                 bookFile.CalibreId = file.CalibreId;
 
-                if (_diskProvider.FileExists(trackFilePath))
+                if (_diskProvider.FileExists(bookFilePath))
                 {
                     _logger.Debug("Removing existing book file: {0}", file);
 
                     if (!isCalibre)
                     {
-                        _recycleBinProvider.DeleteFile(trackFilePath, subfolder);
+                        _recycleBinProvider.DeleteFile(bookFilePath, subfolder);
                     }
                     else
                     {

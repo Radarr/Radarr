@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override IEnumerable<ExtraFile> CreateAfterAuthorScan(Author author, List<BookFile> bookFiles)
         {
-            var metadataFiles = _metadataFileService.GetFilesByArtist(author.Id);
+            var metadataFiles = _metadataFileService.GetFilesByAuthor(author.Id);
             _cleanMetadataService.Clean(author);
 
             if (!_diskProvider.FolderExists(author.Path))
@@ -76,22 +76,12 @@ namespace NzbDrone.Core.Extras.Metadata
             {
                 var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
 
-                files.AddIfNotNull(ProcessArtistMetadata(consumer, author, consumerFiles));
-                files.AddRange(ProcessArtistImages(consumer, author, consumerFiles));
+                files.AddIfNotNull(ProcessAuthorMetadata(consumer, author, consumerFiles));
+                files.AddRange(ProcessAuthorImages(consumer, author, consumerFiles));
 
-                var albumGroups = bookFiles.GroupBy(s => Path.GetDirectoryName(s.Path)).ToList();
-
-                foreach (var group in albumGroups)
+                foreach (var bookFile in bookFiles)
                 {
-                    var book = _bookService.GetBook(group.First().BookId);
-                    var albumFolder = group.Key;
-                    files.AddIfNotNull(ProcessAlbumMetadata(consumer, author, book, albumFolder, consumerFiles));
-                    files.AddRange(ProcessAlbumImages(consumer, author, book, albumFolder, consumerFiles));
-
-                    foreach (var bookFile in group)
-                    {
-                        files.AddIfNotNull(ProcessTrackMetadata(consumer, author, bookFile, consumerFiles));
-                    }
+                    files.AddIfNotNull(ProcessBookMetadata(consumer, author, bookFile, consumerFiles));
                 }
             }
 
@@ -100,13 +90,13 @@ namespace NzbDrone.Core.Extras.Metadata
             return files;
         }
 
-        public override IEnumerable<ExtraFile> CreateAfterTrackImport(Author author, BookFile bookFile)
+        public override IEnumerable<ExtraFile> CreateAfterBookImport(Author author, BookFile bookFile)
         {
             var files = new List<MetadataFile>();
 
             foreach (var consumer in _metadataFactory.Enabled())
             {
-                files.AddIfNotNull(ProcessTrackMetadata(consumer, author, bookFile, new List<MetadataFile>()));
+                files.AddIfNotNull(ProcessBookMetadata(consumer, author, bookFile, new List<MetadataFile>()));
             }
 
             _metadataFileService.Upsert(files);
@@ -114,11 +104,11 @@ namespace NzbDrone.Core.Extras.Metadata
             return files;
         }
 
-        public override IEnumerable<ExtraFile> CreateAfterBookImport(Author author, Book book, string artistFolder, string albumFolder)
+        public override IEnumerable<ExtraFile> CreateAfterBookImport(Author author, Book book, string authorFolder, string albumFolder)
         {
-            var metadataFiles = _metadataFileService.GetFilesByArtist(author.Id);
+            var metadataFiles = _metadataFileService.GetFilesByAuthor(author.Id);
 
-            if (artistFolder.IsNullOrWhiteSpace() && albumFolder.IsNullOrWhiteSpace())
+            if (authorFolder.IsNullOrWhiteSpace() && albumFolder.IsNullOrWhiteSpace())
             {
                 return new List<MetadataFile>();
             }
@@ -129,10 +119,10 @@ namespace NzbDrone.Core.Extras.Metadata
             {
                 var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
 
-                if (artistFolder.IsNotNullOrWhiteSpace())
+                if (authorFolder.IsNotNullOrWhiteSpace())
                 {
-                    files.AddIfNotNull(ProcessArtistMetadata(consumer, author, consumerFiles));
-                    files.AddRange(ProcessArtistImages(consumer, author, consumerFiles));
+                    files.AddIfNotNull(ProcessAuthorMetadata(consumer, author, consumerFiles));
+                    files.AddRange(ProcessAuthorImages(consumer, author, consumerFiles));
                 }
             }
 
@@ -143,7 +133,7 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Author author, List<BookFile> bookFiles)
         {
-            var metadataFiles = _metadataFileService.GetFilesByArtist(author.Id);
+            var metadataFiles = _metadataFileService.GetFilesByAuthor(author.Id);
             var movedFiles = new List<MetadataFile>();
             var distinctTrackFilePaths = bookFiles.DistinctBy(s => Path.GetDirectoryName(s.Path)).ToList();
 
@@ -155,7 +145,7 @@ namespace NzbDrone.Core.Extras.Metadata
                 {
                     var metadataFilesForConsumer = GetMetadataFilesForConsumer(consumer, metadataFiles)
                         .Where(m => m.BookId == filePath.BookId)
-                        .Where(m => m.Type == MetadataType.AlbumImage || m.Type == MetadataType.AlbumMetadata)
+                        .Where(m => m.Type == MetadataType.BookImage || m.Type == MetadataType.BookMetadata)
                         .ToList();
 
                     foreach (var metadataFile in metadataFilesForConsumer)
@@ -220,9 +210,9 @@ namespace NzbDrone.Core.Extras.Metadata
             return artistMetadata.Where(c => c.Consumer == consumer.GetType().Name).ToList();
         }
 
-        private MetadataFile ProcessArtistMetadata(IMetadata consumer, Author author, List<MetadataFile> existingMetadataFiles)
+        private MetadataFile ProcessAuthorMetadata(IMetadata consumer, Author author, List<MetadataFile> existingMetadataFiles)
         {
-            var artistMetadata = consumer.ArtistMetadata(author);
+            var artistMetadata = consumer.AuthorMetadata(author);
 
             if (artistMetadata == null)
             {
@@ -231,12 +221,12 @@ namespace NzbDrone.Core.Extras.Metadata
 
             var hash = artistMetadata.Contents.SHA256Hash();
 
-            var metadata = GetMetadataFile(author, existingMetadataFiles, e => e.Type == MetadataType.ArtistMetadata) ??
+            var metadata = GetMetadataFile(author, existingMetadataFiles, e => e.Type == MetadataType.AuthorMetadata) ??
                                new MetadataFile
                                {
                                    AuthorId = author.Id,
                                    Consumer = consumer.GetType().Name,
-                                   Type = MetadataType.ArtistMetadata
+                                   Type = MetadataType.AuthorMetadata
                                };
 
             if (hash == metadata.Hash)
@@ -265,55 +255,9 @@ namespace NzbDrone.Core.Extras.Metadata
             return metadata;
         }
 
-        private MetadataFile ProcessAlbumMetadata(IMetadata consumer, Author author, Book book, string albumPath, List<MetadataFile> existingMetadataFiles)
+        private MetadataFile ProcessBookMetadata(IMetadata consumer, Author author, BookFile bookFile, List<MetadataFile> existingMetadataFiles)
         {
-            var albumMetadata = consumer.AlbumMetadata(author, book, albumPath);
-
-            if (albumMetadata == null)
-            {
-                return null;
-            }
-
-            var hash = albumMetadata.Contents.SHA256Hash();
-
-            var metadata = GetMetadataFile(author, existingMetadataFiles, e => e.Type == MetadataType.AlbumMetadata && e.BookId == book.Id) ??
-                               new MetadataFile
-                               {
-                                   AuthorId = author.Id,
-                                   BookId = book.Id,
-                                   Consumer = consumer.GetType().Name,
-                                   Type = MetadataType.AlbumMetadata
-                               };
-
-            if (hash == metadata.Hash)
-            {
-                if (albumMetadata.RelativePath != metadata.RelativePath)
-                {
-                    metadata.RelativePath = albumMetadata.RelativePath;
-
-                    return metadata;
-                }
-
-                return null;
-            }
-
-            var fullPath = Path.Combine(author.Path, albumMetadata.RelativePath);
-
-            _otherExtraFileRenamer.RenameOtherExtraFile(author, fullPath);
-
-            _logger.Debug("Writing Album Metadata to: {0}", fullPath);
-            SaveMetadataFile(fullPath, albumMetadata.Contents);
-
-            metadata.Hash = hash;
-            metadata.RelativePath = albumMetadata.RelativePath;
-            metadata.Extension = Path.GetExtension(fullPath);
-
-            return metadata;
-        }
-
-        private MetadataFile ProcessTrackMetadata(IMetadata consumer, Author author, BookFile bookFile, List<MetadataFile> existingMetadataFiles)
-        {
-            var trackMetadata = consumer.TrackMetadata(author, bookFile);
+            var trackMetadata = consumer.BookMetadata(author, bookFile);
 
             if (trackMetadata == null)
             {
@@ -324,7 +268,7 @@ namespace NzbDrone.Core.Extras.Metadata
 
             _otherExtraFileRenamer.RenameOtherExtraFile(author, fullPath);
 
-            var existingMetadata = GetMetadataFile(author, existingMetadataFiles, c => c.Type == MetadataType.TrackMetadata &&
+            var existingMetadata = GetMetadataFile(author, existingMetadataFiles, c => c.Type == MetadataType.BookMetadata &&
                                                                                   c.BookFileId == bookFile.Id);
 
             if (existingMetadata != null)
@@ -346,7 +290,7 @@ namespace NzbDrone.Core.Extras.Metadata
                                BookId = bookFile.BookId,
                                BookFileId = bookFile.Id,
                                Consumer = consumer.GetType().Name,
-                               Type = MetadataType.TrackMetadata,
+                               Type = MetadataType.BookMetadata,
                                RelativePath = trackMetadata.RelativePath,
                                Extension = Path.GetExtension(fullPath)
                            };
@@ -364,11 +308,11 @@ namespace NzbDrone.Core.Extras.Metadata
             return metadata;
         }
 
-        private List<MetadataFile> ProcessArtistImages(IMetadata consumer, Author author, List<MetadataFile> existingMetadataFiles)
+        private List<MetadataFile> ProcessAuthorImages(IMetadata consumer, Author author, List<MetadataFile> existingMetadataFiles)
         {
             var result = new List<MetadataFile>();
 
-            foreach (var image in consumer.ArtistImages(author))
+            foreach (var image in consumer.AuthorImages(author))
             {
                 var fullPath = Path.Combine(author.Path, image.RelativePath);
 
@@ -380,53 +324,16 @@ namespace NzbDrone.Core.Extras.Metadata
 
                 _otherExtraFileRenamer.RenameOtherExtraFile(author, fullPath);
 
-                var metadata = GetMetadataFile(author, existingMetadataFiles, c => c.Type == MetadataType.ArtistImage &&
+                var metadata = GetMetadataFile(author, existingMetadataFiles, c => c.Type == MetadataType.AuthorImage &&
                                                                               c.RelativePath == image.RelativePath) ??
                                new MetadataFile
                                {
                                    AuthorId = author.Id,
                                    Consumer = consumer.GetType().Name,
-                                   Type = MetadataType.ArtistImage,
+                                   Type = MetadataType.AuthorImage,
                                    RelativePath = image.RelativePath,
                                    Extension = Path.GetExtension(fullPath)
                                };
-
-                DownloadImage(author, image);
-
-                result.Add(metadata);
-            }
-
-            return result;
-        }
-
-        private List<MetadataFile> ProcessAlbumImages(IMetadata consumer, Author author, Book book, string albumFolder, List<MetadataFile> existingMetadataFiles)
-        {
-            var result = new List<MetadataFile>();
-
-            foreach (var image in consumer.AlbumImages(author, book, albumFolder))
-            {
-                var fullPath = Path.Combine(author.Path, image.RelativePath);
-
-                if (_diskProvider.FileExists(fullPath))
-                {
-                    _logger.Debug("Album image already exists: {0}", fullPath);
-                    continue;
-                }
-
-                _otherExtraFileRenamer.RenameOtherExtraFile(author, fullPath);
-
-                var metadata = GetMetadataFile(author, existingMetadataFiles, c => c.Type == MetadataType.AlbumImage &&
-                                                                                c.BookId == book.Id &&
-                                                                                c.RelativePath == image.RelativePath) ??
-                            new MetadataFile
-                            {
-                                AuthorId = author.Id,
-                                BookId = book.Id,
-                                Consumer = consumer.GetType().Name,
-                                Type = MetadataType.AlbumImage,
-                                RelativePath = image.RelativePath,
-                                Extension = Path.GetExtension(fullPath)
-                            };
 
                 DownloadImage(author, image);
 

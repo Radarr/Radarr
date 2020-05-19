@@ -46,12 +46,10 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public abstract MetadataFile FindMetadataFile(Author author, string path);
 
-        public abstract MetadataFileResult ArtistMetadata(Author author);
-        public abstract MetadataFileResult AlbumMetadata(Author author, Book book, string albumPath);
-        public abstract MetadataFileResult TrackMetadata(Author author, BookFile bookFile);
-        public abstract List<ImageFileResult> ArtistImages(Author author);
-        public abstract List<ImageFileResult> AlbumImages(Author author, Book book, string albumPath);
-        public abstract List<ImageFileResult> TrackImages(Author author, BookFile bookFile);
+        public abstract MetadataFileResult AuthorMetadata(Author author);
+        public abstract MetadataFileResult BookMetadata(Author author, BookFile bookFile);
+        public abstract List<ImageFileResult> AuthorImages(Author author);
+        public abstract List<ImageFileResult> BookImages(Author author, BookFile bookFile);
 
         public virtual object RequestAction(string action, IDictionary<string, string> query)
         {

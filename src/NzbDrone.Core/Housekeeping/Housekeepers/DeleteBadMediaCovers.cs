@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
             foreach (var author in artists)
             {
-                var images = _metaFileService.GetFilesByArtist(author.Id)
+                var images = _metaFileService.GetFilesByAuthor(author.Id)
                     .Where(c => c.LastUpdated > new DateTime(2014, 12, 27) && imageExtensions.Any(x => c.RelativePath.EndsWith(x, StringComparison.InvariantCultureIgnoreCase)));
 
                 foreach (var image in images)

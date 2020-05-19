@@ -9,14 +9,14 @@ namespace NzbDrone.Core.Notifications.Webhook
         {
         }
 
-        public WebhookRelease(QualityModel quality, RemoteBook remoteAlbum)
+        public WebhookRelease(QualityModel quality, RemoteBook remoteBook)
         {
             Quality = quality.Quality.Name;
             QualityVersion = quality.Revision.Version;
-            ReleaseGroup = remoteAlbum.ParsedBookInfo.ReleaseGroup;
-            ReleaseTitle = remoteAlbum.Release.Title;
-            Indexer = remoteAlbum.Release.Indexer;
-            Size = remoteAlbum.Release.Size;
+            ReleaseGroup = remoteBook.ParsedBookInfo.ReleaseGroup;
+            ReleaseTitle = remoteBook.Release.Title;
+            Indexer = remoteBook.Release.Indexer;
+            Size = remoteBook.Release.Size;
         }
 
         public string Quality { get; set; }

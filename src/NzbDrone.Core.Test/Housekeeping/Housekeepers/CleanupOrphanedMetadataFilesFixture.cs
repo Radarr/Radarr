@@ -148,7 +148,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             var metadataFile = Builder<MetadataFile>.CreateNew()
                 .With(m => m.AuthorId = artist.Id)
-                .With(m => m.Type = MetadataType.AlbumMetadata)
+                .With(m => m.Type = MetadataType.BookMetadata)
                 .With(m => m.BookId = 0)
                 .With(m => m.BookFileId = null)
                 .BuildNew();
@@ -168,7 +168,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             var metadataFile = Builder<MetadataFile>.CreateNew()
                 .With(m => m.AuthorId = artist.Id)
-                .With(m => m.Type = MetadataType.AlbumImage)
+                .With(m => m.Type = MetadataType.BookImage)
                 .With(m => m.BookId = 0)
                 .With(m => m.BookFileId = null)
                 .BuildNew();
@@ -188,7 +188,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             var metadataFile = Builder<MetadataFile>.CreateNew()
                                                  .With(m => m.AuthorId = artist.Id)
-                                                 .With(m => m.Type = MetadataType.TrackMetadata)
+                                                 .With(m => m.Type = MetadataType.BookMetadata)
                                                  .With(m => m.BookFileId = 0)
                                                  .BuildNew();
 

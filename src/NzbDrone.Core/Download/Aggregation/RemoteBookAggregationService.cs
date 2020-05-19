@@ -6,30 +6,30 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Download.Aggregation
 {
-    public interface IRemoteAlbumAggregationService
+    public interface IRemoteBookAggregationService
     {
-        RemoteBook Augment(RemoteBook remoteAlbum);
+        RemoteBook Augment(RemoteBook remoteBook);
     }
 
-    public class RemoteAlbumAggregationService : IRemoteAlbumAggregationService
+    public class RemoteBookAggregationService : IRemoteBookAggregationService
     {
-        private readonly IEnumerable<IAggregateRemoteAlbum> _augmenters;
+        private readonly IEnumerable<IAggregateRemoteBook> _augmenters;
         private readonly Logger _logger;
 
-        public RemoteAlbumAggregationService(IEnumerable<IAggregateRemoteAlbum> augmenters,
+        public RemoteBookAggregationService(IEnumerable<IAggregateRemoteBook> augmenters,
                                   Logger logger)
         {
             _augmenters = augmenters;
             _logger = logger;
         }
 
-        public RemoteBook Augment(RemoteBook remoteAlbum)
+        public RemoteBook Augment(RemoteBook remoteBook)
         {
             foreach (var augmenter in _augmenters)
             {
                 try
                 {
-                    augmenter.Aggregate(remoteAlbum);
+                    augmenter.Aggregate(remoteBook);
                 }
                 catch (Exception ex)
                 {
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Download.Aggregation
                 }
             }
 
-            return remoteAlbum;
+            return remoteBook;
         }
     }
 }

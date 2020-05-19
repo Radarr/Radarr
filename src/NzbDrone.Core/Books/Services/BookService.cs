@@ -228,7 +228,7 @@ namespace NzbDrone.Core.Books
 
         public List<Book> GetAuthorBooksWithFiles(Author author)
         {
-            return _bookRepository.GetArtistAlbumsWithFiles(author);
+            return _bookRepository.GetAuthorBooksWithFiles(author);
         }
 
         public void InsertMany(List<Book> books)

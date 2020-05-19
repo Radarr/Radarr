@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Download
 
             foreach (var report in prioritizedDecisions)
             {
-                var remoteAlbum = report.RemoteBook;
+                var remoteBook = report.RemoteBook;
                 var downloadProtocol = report.RemoteBook.Release.DownloadProtocol;
 
                 //Skip if already grabbed
@@ -74,19 +74,19 @@ namespace NzbDrone.Core.Download
 
                 try
                 {
-                    _downloadService.DownloadReport(remoteAlbum);
+                    _downloadService.DownloadReport(remoteBook);
                     grabbed.Add(report);
                 }
                 catch (ReleaseUnavailableException)
                 {
-                    _logger.Warn("Failed to download release from indexer, no longer available. " + remoteAlbum);
+                    _logger.Warn("Failed to download release from indexer, no longer available. " + remoteBook);
                     rejected.Add(report);
                 }
                 catch (Exception ex)
                 {
                     if (ex is DownloadClientUnavailableException || ex is DownloadClientAuthenticationException)
                     {
-                        _logger.Debug(ex, "Failed to send release to download client, storing until later. " + remoteAlbum);
+                        _logger.Debug(ex, "Failed to send release to download client, storing until later. " + remoteBook);
                         PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.DownloadClientUnavailable);
 
                         if (downloadProtocol == DownloadProtocol.Usenet)
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Download
                     }
                     else
                     {
-                        _logger.Warn(ex, "Couldn't add report to download queue. " + remoteAlbum);
+                        _logger.Warn(ex, "Couldn't add report to download queue. " + remoteBook);
                     }
                 }
             }

@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class QualityAllowedByProfileSpecificationFixture : CoreTest<QualityAllowedByProfileSpecification>
     {
-        private RemoteBook _remoteAlbum;
+        private RemoteBook _remoteBook;
 
         public static object[] AllowedTestCases =
         {
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                          .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.MP3_320.Id })
                          .Build();
 
-            _remoteAlbum = new RemoteBook
+            _remoteBook = new RemoteBook
             {
                 Author = fakeArtist,
                 ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
@@ -47,20 +47,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [TestCaseSource(nameof(AllowedTestCases))]
         public void should_allow_if_quality_is_defined_in_profile(Quality qualityType)
         {
-            _remoteAlbum.ParsedBookInfo.Quality.Quality = qualityType;
-            _remoteAlbum.Author.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_320, Quality.MP3_320);
+            _remoteBook.ParsedBookInfo.Quality.Quality = qualityType;
+            _remoteBook.Author.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_320, Quality.MP3_320);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         [TestCaseSource(nameof(DeniedTestCases))]
         public void should_not_allow_if_quality_is_not_defined_in_profile(Quality qualityType)
         {
-            _remoteAlbum.ParsedBookInfo.Quality.Quality = qualityType;
-            _remoteAlbum.Author.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_320, Quality.MP3_320);
+            _remoteBook.ParsedBookInfo.Quality.Quality = qualityType;
+            _remoteBook.Author.QualityProfile.Value.Items = Qualities.QualityFixture.GetDefaultQualities(Quality.MP3_320, Quality.MP3_320, Quality.MP3_320);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
     }
 }

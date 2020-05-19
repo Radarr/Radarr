@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [TestFixture]
     public class RepackSpecificationFixture : CoreTest<RepackSpecification>
     {
-        private ParsedBookInfo _parsedAlbumInfo;
+        private ParsedBookInfo _parsedBookInfo;
         private List<Book> _albums;
         private List<BookFile> _trackFiles;
 
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             Mocker.Resolve<UpgradableSpecification>();
 
-            _parsedAlbumInfo = Builder<ParsedBookInfo>.CreateNew()
+            _parsedBookInfo = Builder<ParsedBookInfo>.CreateNew()
                                                            .With(p => p.Quality = new QualityModel(Quality.FLAC,
                                                                new Revision(2, 0, false)))
                                                            .With(p => p.ReleaseGroup = "Readarr")
@@ -48,12 +48,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_it_is_not_a_repack()
         {
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
-                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+            var remoteBook = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedBookInfo)
                                                       .With(e => e.Books = _albums)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteAlbum, null)
+            Subject.IsSatisfiedBy(remoteBook, null)
                    .Accepted
                    .Should()
                    .BeTrue();
@@ -66,14 +66,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Setup(c => c.GetFilesByBook(It.IsAny<int>()))
                   .Returns(new List<BookFile>());
 
-            _parsedAlbumInfo.Quality.Revision.IsRepack = true;
+            _parsedBookInfo.Quality.Revision.IsRepack = true;
 
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
-                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+            var remoteBook = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedBookInfo)
                                                       .With(e => e.Books = _albums)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteAlbum, null)
+            Subject.IsSatisfiedBy(remoteBook, null)
                    .Accepted
                    .Should()
                    .BeTrue();
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_is_a_repack_for_a_different_quality()
         {
-            _parsedAlbumInfo.Quality.Revision.IsRepack = true;
+            _parsedBookInfo.Quality.Revision.IsRepack = true;
 
             _trackFiles.Select(c =>
             {
@@ -95,12 +95,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
-                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+            var remoteBook = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedBookInfo)
                                                       .With(e => e.Books = _albums)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteAlbum, null)
+            Subject.IsSatisfiedBy(remoteBook, null)
                    .Accepted
                    .Should()
                    .BeTrue();
@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_is_a_repack_for_all_existing_files()
         {
-            _parsedAlbumInfo.Quality.Revision.IsRepack = true;
+            _parsedBookInfo.Quality.Revision.IsRepack = true;
 
             _trackFiles.Select(c =>
             {
@@ -122,12 +122,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
-                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+            var remoteBook = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedBookInfo)
                                                       .With(e => e.Books = _albums)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteAlbum, null)
+            Subject.IsSatisfiedBy(remoteBook, null)
                    .Accepted
                    .Should()
                    .BeTrue();
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_is_a_repack_for_some_but_not_all_trackfiles()
         {
-            _parsedAlbumInfo.Quality.Revision.IsRepack = true;
+            _parsedBookInfo.Quality.Revision.IsRepack = true;
 
             _trackFiles.Select(c =>
             {
@@ -151,12 +151,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _trackFiles.First().ReleaseGroup = "NotReadarr";
 
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
-                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+            var remoteBook = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedBookInfo)
                                                       .With(e => e.Books = _albums)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteAlbum, null)
+            Subject.IsSatisfiedBy(remoteBook, null)
                    .Accepted
                    .Should()
                    .BeFalse();
@@ -165,7 +165,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_is_a_repack_for_different_group()
         {
-            _parsedAlbumInfo.Quality.Revision.IsRepack = true;
+            _parsedBookInfo.Quality.Revision.IsRepack = true;
 
             _trackFiles.Select(c =>
             {
@@ -178,12 +178,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
-                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+            var remoteBook = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedBookInfo)
                                                       .With(e => e.Books = _albums)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteAlbum, null)
+            Subject.IsSatisfiedBy(remoteBook, null)
                    .Accepted
                    .Should()
                    .BeFalse();
@@ -192,7 +192,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_release_group_for_existing_file_is_unknown()
         {
-            _parsedAlbumInfo.Quality.Revision.IsRepack = true;
+            _parsedBookInfo.Quality.Revision.IsRepack = true;
 
             _trackFiles.Select(c =>
             {
@@ -205,12 +205,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
-                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+            var remoteBook = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedBookInfo)
                                                       .With(e => e.Books = _albums)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteAlbum, null)
+            Subject.IsSatisfiedBy(remoteBook, null)
                    .Accepted
                    .Should()
                    .BeFalse();
@@ -219,8 +219,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_release_group_for_release_is_unknown()
         {
-            _parsedAlbumInfo.Quality.Revision.IsRepack = true;
-            _parsedAlbumInfo.ReleaseGroup = null;
+            _parsedBookInfo.Quality.Revision.IsRepack = true;
+            _parsedBookInfo.ReleaseGroup = null;
 
             _trackFiles.Select(c =>
             {
@@ -234,12 +234,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 return c;
             }).ToList();
 
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
-                                                      .With(e => e.ParsedBookInfo = _parsedAlbumInfo)
+            var remoteBook = Builder<RemoteBook>.CreateNew()
+                                                      .With(e => e.ParsedBookInfo = _parsedBookInfo)
                                                       .With(e => e.Books = _albums)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteAlbum, null)
+            Subject.IsSatisfiedBy(remoteBook, null)
                    .Accepted
                    .Should()
                    .BeFalse();

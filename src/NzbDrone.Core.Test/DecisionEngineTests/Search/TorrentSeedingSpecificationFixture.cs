@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
     public class TorrentSeedingSpecificationFixture : TestBase<TorrentSeedingSpecification>
     {
         private Author _artist;
-        private RemoteBook _remoteAlbum;
+        private RemoteBook _remoteBook;
         private IndexerDefinition _indexerDefinition;
 
         [SetUp]
@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             _artist = Builder<Author>.CreateNew().With(s => s.Id = 1).Build();
 
-            _remoteAlbum = new RemoteBook
+            _remoteBook = new RemoteBook
             {
                 Author = _artist,
                 Release = new TorrentInfo
@@ -47,27 +47,27 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
 
         private void GivenReleaseSeeders(int? seeders)
         {
-            (_remoteAlbum.Release as TorrentInfo).Seeders = seeders;
+            (_remoteBook.Release as TorrentInfo).Seeders = seeders;
         }
 
         [Test]
         public void should_return_true_if_not_torrent()
         {
-            _remoteAlbum.Release = new ReleaseInfo
+            _remoteBook.Release = new ReleaseInfo
             {
                 IndexerId = 1,
                 Title = "Artist - Album [FLAC-RlsGrp]"
             };
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_if_indexer_not_specified()
         {
-            _remoteAlbum.Release.IndexerId = 0;
+            _remoteBook.Release.IndexerId = 0;
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
                   .Setup(v => v.Get(It.IsAny<int>()))
                   .Callback<int>(i => { throw new ModelNotFoundException(typeof(IndexerDefinition), i); });
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             GivenReleaseSeeders(null);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [TestCase(5)]
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             GivenReleaseSeeders(seeders);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [TestCase(0)]
@@ -103,7 +103,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             GivenReleaseSeeders(seeders);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
     }
 }

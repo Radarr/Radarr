@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Download
             get;
         }
 
-        public abstract string Download(RemoteBook remoteAlbum);
+        public abstract string Download(RemoteBook remoteBook);
         public abstract IEnumerable<DownloadClientItem> GetItems();
         public abstract void RemoveItem(string downloadId, bool deleteData);
         public abstract DownloadClientInfo GetStatus();

@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Extras
 
         public virtual ImportExistingExtraFileFilterResult<TExtraFile> FilterAndClean(Author author, List<string> filesOnDisk, List<string> importedFiles)
         {
-            var authorFiles = _extraFileService.GetFilesByArtist(author.Id);
+            var authorFiles = _extraFileService.GetFilesByAuthor(author.Id);
 
             Clean(author, filesOnDisk, importedFiles, authorFiles);
 

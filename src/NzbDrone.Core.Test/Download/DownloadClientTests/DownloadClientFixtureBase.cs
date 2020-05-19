@@ -44,19 +44,19 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
 
         protected virtual RemoteBook CreateRemoteAlbum()
         {
-            var remoteAlbum = new RemoteBook();
-            remoteAlbum.Release = new ReleaseInfo();
-            remoteAlbum.Release.Title = _title;
-            remoteAlbum.Release.DownloadUrl = _downloadUrl;
-            remoteAlbum.Release.DownloadProtocol = Subject.Protocol;
+            var remoteBook = new RemoteBook();
+            remoteBook.Release = new ReleaseInfo();
+            remoteBook.Release.Title = _title;
+            remoteBook.Release.DownloadUrl = _downloadUrl;
+            remoteBook.Release.DownloadProtocol = Subject.Protocol;
 
-            remoteAlbum.ParsedBookInfo = new ParsedBookInfo();
+            remoteBook.ParsedBookInfo = new ParsedBookInfo();
 
-            remoteAlbum.Books = new List<Book>();
+            remoteBook.Books = new List<Book>();
 
-            remoteAlbum.Author = new Author();
+            remoteBook.Author = new Author();
 
-            return remoteAlbum;
+            return remoteBook;
         }
 
         protected void VerifyIdentifiable(DownloadClientItem downloadClientItem)

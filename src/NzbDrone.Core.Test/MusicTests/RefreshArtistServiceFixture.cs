@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.MusicTests
         private Book _album1;
         private Book _album2;
         private List<Book> _albums;
-        private List<Book> _remoteAlbums;
+        private List<Book> _remoteBooks;
 
         [SetUp]
         public void Setup()
@@ -40,8 +40,8 @@ namespace NzbDrone.Core.Test.MusicTests
 
             _albums = new List<Book> { _album1, _album2 };
 
-            _remoteAlbums = _albums.JsonClone();
-            _remoteAlbums.ForEach(x => x.Id = 0);
+            _remoteBooks = _albums.JsonClone();
+            _remoteBooks.ForEach(x => x.Id = 0);
 
             var metadata = Builder<AuthorMetadata>.CreateNew().Build();
             var series = Builder<Series>.CreateListOfSize(1).BuildList();
@@ -116,7 +116,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtistInfo = _artist.JsonClone();
             newArtistInfo.Metadata = _artist.Metadata.Value.JsonClone();
-            newArtistInfo.Books = _remoteAlbums;
+            newArtistInfo.Books = _remoteBooks;
 
             GivenNewArtistInfo(newArtistInfo);
             GivenAlbumsForRefresh(_albums);
@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Test.MusicTests
             {
                 new MediaCover.MediaCover(MediaCover.MediaCoverTypes.Logo, "dummy")
             };
-            newArtistInfo.Books = _remoteAlbums;
+            newArtistInfo.Books = _remoteBooks;
 
             GivenNewArtistInfo(newArtistInfo);
             GivenAlbumsForRefresh(new List<Book>());
@@ -189,7 +189,7 @@ namespace NzbDrone.Core.Test.MusicTests
         {
             var newArtistInfo = _artist.JsonClone();
             newArtistInfo.Metadata = _artist.Metadata.Value.JsonClone();
-            newArtistInfo.Books = _remoteAlbums;
+            newArtistInfo.Books = _remoteBooks;
             newArtistInfo.ForeignAuthorId = _artist.ForeignAuthorId + 1;
             newArtistInfo.Metadata.Value.Id = 100;
 
@@ -242,7 +242,7 @@ namespace NzbDrone.Core.Test.MusicTests
 
             var newArtistInfo = clash.JsonClone();
             newArtistInfo.Metadata = clash.Metadata.Value.JsonClone();
-            newArtistInfo.Books = _remoteAlbums;
+            newArtistInfo.Books = _remoteBooks;
 
             GivenNewArtistInfo(newArtistInfo);
 

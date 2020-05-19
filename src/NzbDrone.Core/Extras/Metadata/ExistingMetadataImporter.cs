@@ -54,20 +54,20 @@ namespace NzbDrone.Core.Extras.Metadata
                         continue;
                     }
 
-                    if (metadata.Type == MetadataType.AlbumImage || metadata.Type == MetadataType.AlbumMetadata)
+                    if (metadata.Type == MetadataType.BookImage || metadata.Type == MetadataType.BookMetadata)
                     {
                         var localAlbum = _parsingService.GetLocalAlbum(possibleMetadataFile, author);
 
                         if (localAlbum == null)
                         {
-                            _logger.Debug("Extra file folder has multiple Albums: {0}", possibleMetadataFile);
+                            _logger.Debug("Extra file folder has multiple Books: {0}", possibleMetadataFile);
                             continue;
                         }
 
                         metadata.BookId = localAlbum.Id;
                     }
 
-                    if (metadata.Type == MetadataType.TrackMetadata)
+                    if (metadata.Type == MetadataType.BookMetadata)
                     {
                         var localTrack = new LocalBook
                         {

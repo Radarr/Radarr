@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Books
         protected override bool ShouldDelete(Book local)
         {
             // not manually added and has no files
-            return local.AddOptions.AddType != AlbumAddType.Manual &&
+            return local.AddOptions.AddType != BookAddType.Manual &&
                 !_mediaFileService.GetFilesByBook(local.Id).Any();
         }
 

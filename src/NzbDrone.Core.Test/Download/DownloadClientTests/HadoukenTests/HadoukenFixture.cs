@@ -200,9 +200,9 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.HadoukenTests
         {
             GivenSuccessfulDownload();
 
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            var id = Subject.Download(remoteAlbum);
+            var id = Subject.Download(remoteBook);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -279,14 +279,14 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.HadoukenTests
         [Test]
         public void Download_from_magnet_link_should_return_hash_uppercase()
         {
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
-            remoteAlbum.Release.DownloadUrl = "magnet:?xt=urn:btih:a45129e59d8750f9da982f53552b1e4f0457ee9f";
+            remoteBook.Release.DownloadUrl = "magnet:?xt=urn:btih:a45129e59d8750f9da982f53552b1e4f0457ee9f";
 
             Mocker.GetMock<IHadoukenProxy>()
                .Setup(v => v.AddTorrentUri(It.IsAny<HadoukenSettings>(), It.IsAny<string>()));
 
-            var result = Subject.Download(remoteAlbum);
+            var result = Subject.Download(remoteBook);
 
             Assert.IsFalse(result.Any(c => char.IsLower(c)));
         }
@@ -294,13 +294,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.HadoukenTests
         [Test]
         public void Download_from_torrent_file_should_return_hash_uppercase()
         {
-            var remoteAlbum = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteAlbum();
 
             Mocker.GetMock<IHadoukenProxy>()
                .Setup(v => v.AddTorrentFile(It.IsAny<HadoukenSettings>(), It.IsAny<byte[]>()))
                .Returns("hash");
 
-            var result = Subject.Download(remoteAlbum);
+            var result = Subject.Download(remoteBook);
 
             Assert.IsFalse(result.Any(c => char.IsLower(c)));
         }

@@ -11,12 +11,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
     public class RawDiskSpecificationFixture : CoreTest<RawDiskSpecification>
     {
-        private RemoteBook _remoteAlbum;
+        private RemoteBook _remoteBook;
 
         [SetUp]
         public void Setup()
         {
-            _remoteAlbum = new RemoteBook
+            _remoteBook = new RemoteBook
             {
                 Release = new ReleaseInfo() { DownloadProtocol = DownloadProtocol.Torrent }
             };
@@ -24,41 +24,41 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void WithContainer(string container)
         {
-            _remoteAlbum.Release.Container = container;
+            _remoteBook.Release.Container = container;
         }
 
         [Test]
         public void should_return_true_if_no_container_specified()
         {
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_if_flac()
         {
             WithContainer("FLAC");
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_false_if_vob()
         {
             WithContainer("VOB");
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_return_false_if_iso()
         {
             WithContainer("ISO");
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
 
         [Test]
         public void should_compare_case_insensitive()
         {
             WithContainer("vob");
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
     }
 }

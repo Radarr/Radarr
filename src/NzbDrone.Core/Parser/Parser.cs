@@ -319,7 +319,7 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
-        public static ParsedBookInfo ParseAlbumTitleWithSearchCriteria(string title, Author author, List<Book> album)
+        public static ParsedBookInfo ParseBookTitleWithSearchCriteria(string title, Author author, List<Book> books)
         {
             try
             {
@@ -328,12 +328,12 @@ namespace NzbDrone.Core.Parser
                     return null;
                 }
 
-                var artistName = author.Name == "Various Artists" ? "VA" : author.Name.RemoveAccent();
+                var authorName = author.Name == "Various Artists" ? "VA" : author.Name.RemoveAccent();
 
-                Logger.Debug("Parsing string '{0}' using search criteria author: '{1}' album: '{2}'",
+                Logger.Debug("Parsing string '{0}' using search criteria author: '{1}' books: '{2}'",
                              title,
-                             artistName.RemoveAccent(),
-                             string.Join(", ", album.Select(a => a.Title.RemoveAccent())));
+                             authorName.RemoveAccent(),
+                             string.Join(", ", books.Select(a => a.Title.RemoveAccent())));
 
                 var releaseTitle = RemoveFileExtension(title);
 
@@ -343,23 +343,23 @@ namespace NzbDrone.Core.Parser
 
                 simpleTitle = CleanTorrentSuffixRegex.Replace(simpleTitle);
 
-                var bestAlbum = album.OrderByDescending(x => simpleTitle.FuzzyContains(x.Title)).First();
+                var bestAlbum = books.OrderByDescending(x => simpleTitle.FuzzyContains(x.Title)).First();
 
-                var foundArtist = GetTitleFuzzy(simpleTitle, artistName, out var remainder);
-                var foundAlbum = GetTitleFuzzy(remainder, bestAlbum.Title, out _);
+                var foundAuthor = GetTitleFuzzy(simpleTitle, authorName, out var remainder);
+                var foundBook = GetTitleFuzzy(remainder, bestAlbum.Title, out _);
 
-                Logger.Trace($"Found {foundArtist} - {foundAlbum} with fuzzy parser");
+                Logger.Trace($"Found {foundAuthor} - {foundBook} with fuzzy parser");
 
-                if (foundArtist == null || foundAlbum == null)
+                if (foundAuthor == null || foundBook == null)
                 {
                     return null;
                 }
 
                 var result = new ParsedBookInfo
                 {
-                    AuthorName = foundArtist,
-                    AuthorTitleInfo = GetArtistTitleInfo(foundArtist),
-                    BookTitle = foundAlbum
+                    AuthorName = foundAuthor,
+                    AuthorTitleInfo = GetAuthorTitleInfo(foundAuthor),
+                    BookTitle = foundBook
                 };
 
                 try
@@ -732,7 +732,7 @@ namespace NzbDrone.Core.Parser
             return result;
         }
 
-        private static AuthorTitleInfo GetArtistTitleInfo(string title)
+        private static AuthorTitleInfo GetAuthorTitleInfo(string title)
         {
             var artistTitleInfo = new AuthorTitleInfo();
             artistTitleInfo.Title = title;
@@ -772,7 +772,7 @@ namespace NzbDrone.Core.Parser
 
             result.AuthorName = artistName;
             result.BookTitle = albumTitle;
-            result.AuthorTitleInfo = GetArtistTitleInfo(result.AuthorName);
+            result.AuthorTitleInfo = GetAuthorTitleInfo(result.AuthorName);
             result.ReleaseDate = releaseYear.ToString();
             result.ReleaseVersion = releaseVersion;
 

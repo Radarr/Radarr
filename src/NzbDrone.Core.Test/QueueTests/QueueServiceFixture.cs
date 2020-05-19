@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.QueueTests
                 .With(e => e.AuthorId = artist.Id)
                 .Build();
 
-            var remoteAlbum = Builder<RemoteBook>.CreateNew()
+            var remoteBook = Builder<RemoteBook>.CreateNew()
                 .With(r => r.Author = artist)
                 .With(r => r.Books = new List<Book>(albums))
                 .With(r => r.ParsedBookInfo = new ParsedBookInfo())
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.QueueTests
             _trackedDownloads = Builder<TrackedDownload>.CreateListOfSize(1)
                 .All()
                 .With(v => v.DownloadItem = downloadItem)
-                .With(v => v.RemoteBook = remoteAlbum)
+                .With(v => v.RemoteBook = remoteBook)
                 .Build()
                 .ToList();
 

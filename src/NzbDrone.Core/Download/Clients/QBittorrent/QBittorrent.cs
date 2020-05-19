@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
         }
 
-        protected override string AddFromMagnetLink(RemoteBook remoteAlbum, string hash, string magnetLink)
+        protected override string AddFromMagnetLink(RemoteBook remoteBook, string hash, string magnetLink)
         {
             if (!Proxy.GetConfig(Settings).DhtEnabled && !magnetLink.Contains("&tr="))
             {
@@ -71,34 +71,34 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
             Proxy.AddTorrentFromUrl(magnetLink, Settings);
 
-            var isRecentAlbum = remoteAlbum.IsRecentAlbum();
+            var isRecentBook = remoteBook.IsRecentBook();
 
-            if ((isRecentAlbum && Settings.RecentTvPriority == (int)QBittorrentPriority.First) ||
-                (!isRecentAlbum && Settings.OlderTvPriority == (int)QBittorrentPriority.First))
+            if ((isRecentBook && Settings.RecentTvPriority == (int)QBittorrentPriority.First) ||
+                (!isRecentBook && Settings.OlderTvPriority == (int)QBittorrentPriority.First))
             {
                 Proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
             }
 
             SetInitialState(hash.ToLower());
 
-            if (remoteAlbum.SeedConfiguration != null && (remoteAlbum.SeedConfiguration.Ratio.HasValue || remoteAlbum.SeedConfiguration.SeedTime.HasValue))
+            if (remoteBook.SeedConfiguration != null && (remoteBook.SeedConfiguration.Ratio.HasValue || remoteBook.SeedConfiguration.SeedTime.HasValue))
             {
-                Proxy.SetTorrentSeedingConfiguration(hash.ToLower(), remoteAlbum.SeedConfiguration, Settings);
+                Proxy.SetTorrentSeedingConfiguration(hash.ToLower(), remoteBook.SeedConfiguration, Settings);
             }
 
             return hash;
         }
 
-        protected override string AddFromTorrentFile(RemoteBook remoteAlbum, string hash, string filename, byte[] fileContent)
+        protected override string AddFromTorrentFile(RemoteBook remoteBook, string hash, string filename, byte[] fileContent)
         {
             Proxy.AddTorrentFromFile(filename, fileContent, Settings);
 
             try
             {
-                var isRecentAlbum = remoteAlbum.IsRecentAlbum();
+                var isRecentBook = remoteBook.IsRecentBook();
 
-                if ((isRecentAlbum && Settings.RecentTvPriority == (int)QBittorrentPriority.First) ||
-                 (!isRecentAlbum && Settings.OlderTvPriority == (int)QBittorrentPriority.First))
+                if ((isRecentBook && Settings.RecentTvPriority == (int)QBittorrentPriority.First) ||
+                 (!isRecentBook && Settings.OlderTvPriority == (int)QBittorrentPriority.First))
                 {
                     Proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
                 }
@@ -110,9 +110,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
             SetInitialState(hash.ToLower());
 
-            if (remoteAlbum.SeedConfiguration != null && (remoteAlbum.SeedConfiguration.Ratio.HasValue || remoteAlbum.SeedConfiguration.SeedTime.HasValue))
+            if (remoteBook.SeedConfiguration != null && (remoteBook.SeedConfiguration.Ratio.HasValue || remoteBook.SeedConfiguration.SeedTime.HasValue))
             {
-                Proxy.SetTorrentSeedingConfiguration(hash.ToLower(), remoteAlbum.SeedConfiguration, Settings);
+                Proxy.SetTorrentSeedingConfiguration(hash.ToLower(), remoteBook.SeedConfiguration, Settings);
             }
 
             return hash;

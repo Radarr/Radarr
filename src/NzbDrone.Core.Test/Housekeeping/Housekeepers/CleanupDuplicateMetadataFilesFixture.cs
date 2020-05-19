@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
-                                             .With(m => m.Type = MetadataType.ArtistMetadata)
+                                             .With(m => m.Type = MetadataType.AuthorMetadata)
                                              .With(m => m.AuthorId = 1)
                                              .BuildListOfNew();
 
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
-                                             .With(m => m.Type = MetadataType.ArtistMetadata)
+                                             .With(m => m.Type = MetadataType.AuthorMetadata)
                                              .With(m => m.Consumer = "XbmcMetadata")
                                              .BuildListOfNew();
 
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
-                                             .With(m => m.Type = MetadataType.ArtistMetadata)
+                                             .With(m => m.Type = MetadataType.AuthorMetadata)
                                              .With(m => m.AuthorId = 1)
                                              .With(m => m.Consumer = "XbmcMetadata")
                                              .BuildListOfNew();
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
-                                             .With(m => m.Type = MetadataType.AlbumMetadata)
+                                             .With(m => m.Type = MetadataType.BookMetadata)
                                              .With(m => m.AuthorId = 1)
                                              .With(m => m.BookId = 1)
                                              .BuildListOfNew();
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
-                                             .With(m => m.Type = MetadataType.AlbumMetadata)
+                                             .With(m => m.Type = MetadataType.BookMetadata)
                                              .With(m => m.Consumer = "XbmcMetadata")
                                              .With(m => m.AuthorId = 1)
                                              .BuildListOfNew();
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
-                                             .With(m => m.Type = MetadataType.AlbumMetadata)
+                                             .With(m => m.Type = MetadataType.BookMetadata)
                                              .With(m => m.AuthorId = 1)
                                              .With(m => m.BookId = 1)
                                              .With(m => m.Consumer = "XbmcMetadata")
@@ -127,7 +127,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
-                                             .With(m => m.Type = MetadataType.TrackMetadata)
+                                             .With(m => m.Type = MetadataType.BookMetadata)
                                              .With(m => m.BookFileId = 1)
                                              .BuildListOfNew();
 
@@ -141,7 +141,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
-                                             .With(m => m.Type = MetadataType.TrackMetadata)
+                                             .With(m => m.Type = MetadataType.BookMetadata)
                                              .With(m => m.Consumer = "XbmcMetadata")
                                              .BuildListOfNew();
 
@@ -155,7 +155,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
-                                             .With(m => m.Type = MetadataType.TrackMetadata)
+                                             .With(m => m.Type = MetadataType.BookMetadata)
                                              .With(m => m.BookFileId = 1)
                                              .With(m => m.Consumer = "XbmcMetadata")
                                              .BuildListOfNew();

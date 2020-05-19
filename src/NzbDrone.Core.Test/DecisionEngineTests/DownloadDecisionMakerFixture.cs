@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     public class DownloadDecisionMakerFixture : CoreTest<DownloadDecisionMaker>
     {
         private List<ReleaseInfo> _reports;
-        private RemoteBook _remoteAlbum;
+        private RemoteBook _remoteBook;
 
         private Mock<IDecisionEngineSpecification> _pass1;
         private Mock<IDecisionEngineSpecification> _pass2;
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _failDelayed1.SetupGet(c => c.Priority).Returns(SpecificationPriority.Disk);
 
             _reports = new List<ReleaseInfo> { new ReleaseInfo { Title = "Coldplay-A Head Full Of Dreams-CD-FLAC-2015-PERFECT" } };
-            _remoteAlbum = new RemoteBook
+            _remoteBook = new RemoteBook
             {
                 Author = new Author(),
                 Books = new List<Book> { new Book() }
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Mocker.GetMock<IParsingService>()
                   .Setup(c => c.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()))
-                  .Returns(_remoteAlbum);
+                  .Returns(_remoteBook);
         }
 
         private void GivenSpecifications(params Mock<IDecisionEngineSpecification>[] mocks)
@@ -80,12 +80,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Subject.GetRssDecision(_reports).ToList();
 
-            _fail1.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
-            _fail2.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
-            _fail3.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
-            _pass1.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
-            _pass2.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
-            _pass3.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
+            _fail1.Verify(c => c.IsSatisfiedBy(_remoteBook, null), Times.Once());
+            _fail2.Verify(c => c.IsSatisfiedBy(_remoteBook, null), Times.Once());
+            _fail3.Verify(c => c.IsSatisfiedBy(_remoteBook, null), Times.Once());
+            _pass1.Verify(c => c.IsSatisfiedBy(_remoteBook, null), Times.Once());
+            _pass2.Verify(c => c.IsSatisfiedBy(_remoteBook, null), Times.Once());
+            _pass3.Verify(c => c.IsSatisfiedBy(_remoteBook, null), Times.Once());
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenSpecifications(_pass1, _failDelayed1);
 
             Subject.GetRssDecision(_reports).ToList();
-            _failDelayed1.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Once());
+            _failDelayed1.Verify(c => c.IsSatisfiedBy(_remoteBook, null), Times.Once());
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Subject.GetRssDecision(_reports).ToList();
 
-            _failDelayed1.Verify(c => c.IsSatisfiedBy(_remoteAlbum, null), Times.Never());
+            _failDelayed1.Verify(c => c.IsSatisfiedBy(_remoteBook, null), Times.Never());
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            _remoteAlbum.Author = null;
+            _remoteBook.Author = null;
 
             Subject.GetRssDecision(_reports);
 
@@ -221,7 +221,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            _remoteAlbum.Author = null;
+            _remoteBook.Author = null;
 
             var result = Subject.GetRssDecision(_reports);
 
@@ -260,7 +260,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Mocker.SetConstant<IEnumerable<IDecisionEngineSpecification>>(new List<IDecisionEngineSpecification>
             {
-                Mocker.Resolve<NzbDrone.Core.DecisionEngine.Specifications.Search.AlbumRequestedSpecification>()
+                Mocker.Resolve<NzbDrone.Core.DecisionEngine.Specifications.Search.BookRequestedSpecification>()
             });
 
             var decisions = Subject.GetSearchDecision(reports, criteria);
@@ -275,7 +275,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            _remoteAlbum.Author = null;
+            _remoteBook.Author = null;
 
             var result = Subject.GetRssDecision(_reports);
 
@@ -289,7 +289,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
-            _remoteAlbum.Books = new List<Book>();
+            _remoteBook.Books = new List<Book>();
 
             var result = Subject.GetRssDecision(_reports);
 

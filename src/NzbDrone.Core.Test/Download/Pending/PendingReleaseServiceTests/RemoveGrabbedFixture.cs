@@ -25,8 +25,8 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         private Book _album;
         private QualityProfile _profile;
         private ReleaseInfo _release;
-        private ParsedBookInfo _parsedAlbumInfo;
-        private RemoteBook _remoteAlbum;
+        private ParsedBookInfo _parsedBookInfo;
+        private RemoteBook _remoteBook;
         private List<PendingRelease> _heldReleases;
 
         [SetUp]
@@ -54,16 +54,16 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
-            _parsedAlbumInfo = Builder<ParsedBookInfo>.CreateNew().Build();
-            _parsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320);
+            _parsedBookInfo = Builder<ParsedBookInfo>.CreateNew().Build();
+            _parsedBookInfo.Quality = new QualityModel(Quality.MP3_320);
 
-            _remoteAlbum = new RemoteBook();
-            _remoteAlbum.Books = new List<Book> { _album };
-            _remoteAlbum.Author = _artist;
-            _remoteAlbum.ParsedBookInfo = _parsedAlbumInfo;
-            _remoteAlbum.Release = _release;
+            _remoteBook = new RemoteBook();
+            _remoteBook.Books = new List<Book> { _album };
+            _remoteBook.Author = _artist;
+            _remoteBook.ParsedBookInfo = _parsedBookInfo;
+            _remoteBook.Release = _release;
 
-            _temporarilyRejected = new DownloadDecision(_remoteAlbum, new Rejection("Temp Rejected", RejectionType.Temporary));
+            _temporarilyRejected = new DownloadDecision(_remoteBook, new Rejection("Temp Rejected", RejectionType.Temporary));
 
             _heldReleases = new List<PendingRelease>();
 
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
         private void GivenHeldRelease(QualityModel quality)
         {
-            var parsedEpisodeInfo = _parsedAlbumInfo.JsonClone();
+            var parsedEpisodeInfo = _parsedBookInfo.JsonClone();
             parsedEpisodeInfo.Quality = quality;
 
             var heldReleases = Builder<PendingRelease>.CreateListOfSize(1)
@@ -110,9 +110,9 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [Test]
         public void should_delete_if_the_grabbed_quality_is_the_same()
         {
-            GivenHeldRelease(_parsedAlbumInfo.Quality);
+            GivenHeldRelease(_parsedBookInfo.Quality);
 
-            Subject.Handle(new BookGrabbedEvent(_remoteAlbum));
+            Subject.Handle(new BookGrabbedEvent(_remoteBook));
 
             VerifyDelete();
         }
@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         {
             GivenHeldRelease(new QualityModel(Quality.MP3_320));
 
-            Subject.Handle(new BookGrabbedEvent(_remoteAlbum));
+            Subject.Handle(new BookGrabbedEvent(_remoteBook));
 
             VerifyDelete();
         }
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         {
             GivenHeldRelease(new QualityModel(Quality.FLAC));
 
-            Subject.Handle(new BookGrabbedEvent(_remoteAlbum));
+            Subject.Handle(new BookGrabbedEvent(_remoteBook));
 
             VerifyNoDelete();
         }

@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Books
 {
     public interface IRefreshSeriesService
     {
-        bool RefreshSeriesInfo(int authorMetadataId, List<Series> remoteAlbums, Author remoteData, bool forceAlbumRefresh, bool forceUpdateFileTags, DateTime? lastUpdate);
+        bool RefreshSeriesInfo(int authorMetadataId, List<Series> remoteBooks, Author remoteData, bool forceAlbumRefresh, bool forceUpdateFileTags, DateTime? lastUpdate);
     }
 
     public class RefreshSeriesService : RefreshEntityServiceBase<Series, SeriesBookLink>, IRefreshSeriesService

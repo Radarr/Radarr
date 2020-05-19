@@ -167,7 +167,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             // Will eventually need adding locally if we find a match
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            List<Book> remoteAlbums = null;
+            List<Book> remoteBooks = null;
             var candidates = new List<CandidateAlbumRelease>();
 
             var goodreads = localAlbumRelease.LocalBooks.Select(x => x.FileTrackInfo.GoodreadsId).Distinct().ToList();
@@ -182,32 +182,32 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                     {
                         _logger.Trace($"Searching by goodreads id {id}");
 
-                        remoteAlbums = _bookSearchService.SearchByGoodreadsId(id);
+                        remoteBooks = _bookSearchService.SearchByGoodreadsId(id);
                     }
                 }
 
-                if ((remoteAlbums == null || !remoteAlbums.Any()) &&
+                if ((remoteBooks == null || !remoteBooks.Any()) &&
                     isbns.Count == 1 &&
                     isbns[0].IsNotNullOrWhiteSpace())
                 {
                     _logger.Trace($"Searching by isbn {isbns[0]}");
 
-                    remoteAlbums = _bookSearchService.SearchByIsbn(isbns[0]);
+                    remoteBooks = _bookSearchService.SearchByIsbn(isbns[0]);
                 }
 
                 // Calibre puts junk asins into books it creates so check for sensible length
-                if ((remoteAlbums == null || !remoteAlbums.Any()) &&
+                if ((remoteBooks == null || !remoteBooks.Any()) &&
                     asins.Count == 1 &&
                     asins[0].IsNotNullOrWhiteSpace() &&
                     asins[0].Length == 10)
                 {
                     _logger.Trace($"Searching by asin {asins[0]}");
 
-                    remoteAlbums = _bookSearchService.SearchByAsin(asins[0]);
+                    remoteBooks = _bookSearchService.SearchByAsin(asins[0]);
                 }
 
                 // if no asin/isbn or no result, fall back to text search
-                if (remoteAlbums == null || !remoteAlbums.Any())
+                if (remoteBooks == null || !remoteBooks.Any())
                 {
                     // fall back to author / book name search
                     string artistTag;
@@ -228,24 +228,24 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                         return candidates;
                     }
 
-                    remoteAlbums = _bookSearchService.SearchForNewBook(albumTag, artistTag);
+                    remoteBooks = _bookSearchService.SearchForNewBook(albumTag, artistTag);
 
-                    if (!remoteAlbums.Any())
+                    if (!remoteBooks.Any())
                     {
                         var albumSearch = _bookSearchService.SearchForNewBook(albumTag, null);
                         var artistSearch = _bookSearchService.SearchForNewBook(artistTag, null);
 
-                        remoteAlbums = albumSearch.Concat(artistSearch).DistinctBy(x => x.ForeignBookId).ToList();
+                        remoteBooks = albumSearch.Concat(artistSearch).DistinctBy(x => x.ForeignBookId).ToList();
                     }
                 }
             }
             catch (SkyHookException e)
             {
                 _logger.Info(e, "Skipping book due to SkyHook error");
-                remoteAlbums = new List<Book>();
+                remoteBooks = new List<Book>();
             }
 
-            foreach (var book in remoteAlbums)
+            foreach (var book in remoteBooks)
             {
                 candidates.Add(new CandidateAlbumRelease
                 {

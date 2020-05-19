@@ -33,12 +33,12 @@ namespace NzbDrone.Core.Download
 
         public override DownloadProtocol Protocol => DownloadProtocol.Usenet;
 
-        protected abstract string AddFromNzbFile(RemoteBook remoteAlbum, string filename, byte[] fileContent);
+        protected abstract string AddFromNzbFile(RemoteBook remoteBook, string filename, byte[] fileContent);
 
-        public override string Download(RemoteBook remoteAlbum)
+        public override string Download(RemoteBook remoteBook)
         {
-            var url = remoteAlbum.Release.DownloadUrl;
-            var filename = FileNameBuilder.CleanFileName(remoteAlbum.Release.Title) + ".nzb";
+            var url = remoteBook.Release.DownloadUrl;
+            var filename = FileNameBuilder.CleanFileName(remoteBook.Release.Title) + ".nzb";
 
             byte[] nzbData;
 
@@ -47,21 +47,21 @@ namespace NzbDrone.Core.Download
                 var nzbDataRequest = new HttpRequest(url);
 
                 // TODO: Look into moving download request handling to indexer
-                if (remoteAlbum.Release.BasicAuthString.IsNotNullOrWhiteSpace())
+                if (remoteBook.Release.BasicAuthString.IsNotNullOrWhiteSpace())
                 {
-                    nzbDataRequest.Headers.Set("Authorization", "Basic " + remoteAlbum.Release.BasicAuthString);
+                    nzbDataRequest.Headers.Set("Authorization", "Basic " + remoteBook.Release.BasicAuthString);
                 }
 
                 nzbData = _httpClient.Get(nzbDataRequest).ResponseData;
 
-                _logger.Debug("Downloaded nzb for release '{0}' finished ({1} bytes from {2})", remoteAlbum.Release.Title, nzbData.Length, url);
+                _logger.Debug("Downloaded nzb for release '{0}' finished ({1} bytes from {2})", remoteBook.Release.Title, nzbData.Length, url);
             }
             catch (HttpException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                 {
-                    _logger.Error(ex, "Downloading nzb file for book '{0}' failed since it no longer exists ({1})", remoteAlbum.Release.Title, url);
-                    throw new ReleaseUnavailableException(remoteAlbum.Release, "Downloading torrent failed", ex);
+                    _logger.Error(ex, "Downloading nzb file for book '{0}' failed since it no longer exists ({1})", remoteBook.Release.Title, url);
+                    throw new ReleaseUnavailableException(remoteBook.Release, "Downloading torrent failed", ex);
                 }
 
                 if ((int)ex.Response.StatusCode == 429)
@@ -70,22 +70,22 @@ namespace NzbDrone.Core.Download
                 }
                 else
                 {
-                    _logger.Error(ex, "Downloading nzb for release '{0}' failed ({1})", remoteAlbum.Release.Title, url);
+                    _logger.Error(ex, "Downloading nzb for release '{0}' failed ({1})", remoteBook.Release.Title, url);
                 }
 
-                throw new ReleaseDownloadException(remoteAlbum.Release, "Downloading nzb failed", ex);
+                throw new ReleaseDownloadException(remoteBook.Release, "Downloading nzb failed", ex);
             }
             catch (WebException ex)
             {
-                _logger.Error(ex, "Downloading nzb for release '{0}' failed ({1})", remoteAlbum.Release.Title, url);
+                _logger.Error(ex, "Downloading nzb for release '{0}' failed ({1})", remoteBook.Release.Title, url);
 
-                throw new ReleaseDownloadException(remoteAlbum.Release, "Downloading nzb failed", ex);
+                throw new ReleaseDownloadException(remoteBook.Release, "Downloading nzb failed", ex);
             }
 
             _nzbValidationService.Validate(filename, nzbData);
 
-            _logger.Info("Adding report [{0}] to the queue.", remoteAlbum.Release.Title);
-            return AddFromNzbFile(remoteAlbum, filename, nzbData);
+            _logger.Info("Adding report [{0}] to the queue.", remoteBook.Release.Title);
+            return AddFromNzbFile(remoteBook, filename, nzbData);
         }
     }
 }

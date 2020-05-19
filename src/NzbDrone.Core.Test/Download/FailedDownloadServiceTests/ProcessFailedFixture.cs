@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
 
             _grabHistory = Builder<History.History>.CreateListOfSize(2).BuildList();
 
-            var remoteAlbum = new RemoteBook
+            var remoteBook = new RemoteBook
             {
                 Author = new Author(),
                 Books = new List<Book> { new Book { Id = 1 } }
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.Download.FailedDownloadServiceTests
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
                     .With(c => c.State = TrackedDownloadState.DownloadFailedPending)
                     .With(c => c.DownloadItem = completed)
-                    .With(c => c.RemoteBook = remoteAlbum)
+                    .With(c => c.RemoteBook = remoteBook)
                     .Build();
 
             Mocker.GetMock<IHistoryService>()

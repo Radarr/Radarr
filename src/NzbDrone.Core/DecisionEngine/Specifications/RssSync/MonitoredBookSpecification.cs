@@ -5,11 +5,11 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 {
-    public class MonitoredAlbumSpecification : IDecisionEngineSpecification
+    public class MonitoredBookSpecification : IDecisionEngineSpecification
     {
         private readonly Logger _logger;
 
-        public MonitoredAlbumSpecification(Logger logger)
+        public MonitoredBookSpecification(Logger logger)
         {
             _logger = logger;
         }
@@ -42,20 +42,20 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             if (subject.Books.Count == 1)
             {
-                _logger.Debug("Album is not monitored. Rejecting", monitoredCount, subject.Books.Count);
-                return Decision.Reject("Album is not monitored");
+                _logger.Debug("Book is not monitored. Rejecting", monitoredCount, subject.Books.Count);
+                return Decision.Reject("Book is not monitored");
             }
 
             if (monitoredCount == 0)
             {
-                _logger.Debug("No albums in the release are monitored. Rejecting", monitoredCount, subject.Books.Count);
+                _logger.Debug("No books in the release are monitored. Rejecting", monitoredCount, subject.Books.Count);
             }
             else
             {
-                _logger.Debug("Only {0}/{1} albums in the release are monitored. Rejecting", monitoredCount, subject.Books.Count);
+                _logger.Debug("Only {0}/{1} books in the release are monitored. Rejecting", monitoredCount, subject.Books.Count);
             }
 
-            return Decision.Reject("Album is not monitored");
+            return Decision.Reject("Book is not monitored");
         }
     }
 }

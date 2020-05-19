@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Download
 {
     public interface IDownloadService
     {
-        void DownloadReport(RemoteBook remoteAlbum);
+        void DownloadReport(RemoteBook remoteBook);
     }
 
     public class DownloadService : IDownloadService
@@ -45,39 +45,39 @@ namespace NzbDrone.Core.Download
             _logger = logger;
         }
 
-        public void DownloadReport(RemoteBook remoteAlbum)
+        public void DownloadReport(RemoteBook remoteBook)
         {
-            Ensure.That(remoteAlbum.Author, () => remoteAlbum.Author).IsNotNull();
-            Ensure.That(remoteAlbum.Books, () => remoteAlbum.Books).HasItems();
+            Ensure.That(remoteBook.Author, () => remoteBook.Author).IsNotNull();
+            Ensure.That(remoteBook.Books, () => remoteBook.Books).HasItems();
 
-            var downloadTitle = remoteAlbum.Release.Title;
-            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteAlbum.Release.DownloadProtocol);
+            var downloadTitle = remoteBook.Release.Title;
+            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteBook.Release.DownloadProtocol);
 
             if (downloadClient == null)
             {
-                throw new DownloadClientUnavailableException($"{remoteAlbum.Release.DownloadProtocol} Download client isn't configured yet");
+                throw new DownloadClientUnavailableException($"{remoteBook.Release.DownloadProtocol} Download client isn't configured yet");
             }
 
             // Get the seed configuration for this release.
-            remoteAlbum.SeedConfiguration = _seedConfigProvider.GetSeedConfiguration(remoteAlbum);
+            remoteBook.SeedConfiguration = _seedConfigProvider.GetSeedConfiguration(remoteBook);
 
             // Limit grabs to 2 per second.
-            if (remoteAlbum.Release.DownloadUrl.IsNotNullOrWhiteSpace() && !remoteAlbum.Release.DownloadUrl.StartsWith("magnet:"))
+            if (remoteBook.Release.DownloadUrl.IsNotNullOrWhiteSpace() && !remoteBook.Release.DownloadUrl.StartsWith("magnet:"))
             {
-                var url = new HttpUri(remoteAlbum.Release.DownloadUrl);
+                var url = new HttpUri(remoteBook.Release.DownloadUrl);
                 _rateLimitService.WaitAndPulse(url.Host, TimeSpan.FromSeconds(2));
             }
 
             string downloadClientId;
             try
             {
-                downloadClientId = downloadClient.Download(remoteAlbum);
+                downloadClientId = downloadClient.Download(remoteBook);
                 _downloadClientStatusService.RecordSuccess(downloadClient.Definition.Id);
-                _indexerStatusService.RecordSuccess(remoteAlbum.Release.IndexerId);
+                _indexerStatusService.RecordSuccess(remoteBook.Release.IndexerId);
             }
             catch (ReleaseUnavailableException)
             {
-                _logger.Trace("Release {0} no longer available on indexer.", remoteAlbum);
+                _logger.Trace("Release {0} no longer available on indexer.", remoteBook);
                 throw;
             }
             catch (ReleaseDownloadException ex)
@@ -85,17 +85,17 @@ namespace NzbDrone.Core.Download
                 var http429 = ex.InnerException as TooManyRequestsException;
                 if (http429 != null)
                 {
-                    _indexerStatusService.RecordFailure(remoteAlbum.Release.IndexerId, http429.RetryAfter);
+                    _indexerStatusService.RecordFailure(remoteBook.Release.IndexerId, http429.RetryAfter);
                 }
                 else
                 {
-                    _indexerStatusService.RecordFailure(remoteAlbum.Release.IndexerId);
+                    _indexerStatusService.RecordFailure(remoteBook.Release.IndexerId);
                 }
 
                 throw;
             }
 
-            var albumGrabbedEvent = new BookGrabbedEvent(remoteAlbum);
+            var albumGrabbedEvent = new BookGrabbedEvent(remoteBook);
             albumGrabbedEvent.DownloadClient = downloadClient.Name;
 
             if (!string.IsNullOrWhiteSpace(downloadClientId))

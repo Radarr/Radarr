@@ -19,23 +19,23 @@ namespace Readarr.Api.V1.Parse
         private ParseResource Parse()
         {
             var title = Request.Query.Title.Value as string;
-            var parsedAlbumInfo = Parser.ParseBookTitle(title);
+            var parsedBookInfo = Parser.ParseBookTitle(title);
 
-            if (parsedAlbumInfo == null)
+            if (parsedBookInfo == null)
             {
                 return null;
             }
 
-            var remoteAlbum = _parsingService.Map(parsedAlbumInfo);
+            var remoteBook = _parsingService.Map(parsedBookInfo);
 
-            if (remoteAlbum != null)
+            if (remoteBook != null)
             {
                 return new ParseResource
                 {
                     Title = title,
-                    ParsedBookInfo = remoteAlbum.ParsedBookInfo,
-                    Author = remoteAlbum.Author.ToResource(),
-                    Books = remoteAlbum.Books.ToResource()
+                    ParsedBookInfo = remoteBook.ParsedBookInfo,
+                    Author = remoteBook.Author.ToResource(),
+                    Books = remoteBook.Books.ToResource()
                 };
             }
             else
@@ -43,7 +43,7 @@ namespace Readarr.Api.V1.Parse
                 return new ParseResource
                 {
                     Title = title,
-                    ParsedBookInfo = parsedAlbumInfo
+                    ParsedBookInfo = parsedBookInfo
                 };
             }
         }

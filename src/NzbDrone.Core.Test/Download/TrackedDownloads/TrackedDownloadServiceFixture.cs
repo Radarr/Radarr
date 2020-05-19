@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         {
             GivenDownloadHistory();
 
-            var remoteAlbum = new RemoteBook
+            var remoteBook = new RemoteBook
             {
                 Author = new Author() { Id = 5 },
                 Books = new List<Book> { new Book { Id = 4 } },
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Album" && i.AuthorName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
-                  .Returns(remoteAlbum);
+                  .Returns(remoteBook);
 
             var client = new DownloadClientDefinition()
             {
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         {
             GivenDownloadHistory();
 
-            var remoteAlbum = new RemoteBook
+            var remoteBook = new RemoteBook
             {
                 Author = new Author() { Id = 5 },
                 Books = new List<Book> { new Book { Id = 4 } },
@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Album" && i.AuthorName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
-                  .Returns(remoteAlbum);
+                  .Returns(remoteBook);
 
             var client = new DownloadClientDefinition()
             {
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                 .Returns(default(RemoteBook));
 
             // handle deletion event
-            Subject.Handle(new BookDeletedEvent(remoteAlbum.Books.First(), false, false));
+            Subject.Handle(new BookDeletedEvent(remoteBook.Books.First(), false, false));
 
             // verify download has null remote album
             var trackedDownloads = Subject.GetTrackedDownloads();

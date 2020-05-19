@@ -41,7 +41,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             foreach (var queueItem in matchingAlbum)
             {
-                var remoteAlbum = queueItem.RemoteBook;
+                var remoteBook = queueItem.RemoteBook;
                 var qualityProfile = subject.Author.QualityProfile.Value;
 
                 // To avoid a race make sure it's not FailedPending (failed awaiting removal/search).
@@ -52,34 +52,34 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     continue;
                 }
 
-                _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteAlbum.ParsedBookInfo.Quality);
+                _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0}", remoteBook.ParsedBookInfo.Quality);
 
                 var queuedItemPreferredWordScore = _preferredWordServiceCalculator.Calculate(subject.Author, queueItem.Title);
 
                 if (!_upgradableSpecification.CutoffNotMet(qualityProfile,
-                                                           new List<QualityModel> { remoteAlbum.ParsedBookInfo.Quality },
+                                                           new List<QualityModel> { remoteBook.ParsedBookInfo.Quality },
                                                            queuedItemPreferredWordScore,
                                                            subject.ParsedBookInfo.Quality,
                                                            subject.PreferredWordScore))
                 {
-                    return Decision.Reject("Release in queue already meets cutoff: {0}", remoteAlbum.ParsedBookInfo.Quality);
+                    return Decision.Reject("Release in queue already meets cutoff: {0}", remoteBook.ParsedBookInfo.Quality);
                 }
 
-                _logger.Debug("Checking if release is higher quality than queued release. Queued: {0}", remoteAlbum.ParsedBookInfo.Quality);
+                _logger.Debug("Checking if release is higher quality than queued release. Queued: {0}", remoteBook.ParsedBookInfo.Quality);
 
                 if (!_upgradableSpecification.IsUpgradable(qualityProfile,
-                                                           new List<QualityModel> { remoteAlbum.ParsedBookInfo.Quality },
+                                                           new List<QualityModel> { remoteBook.ParsedBookInfo.Quality },
                                                            queuedItemPreferredWordScore,
                                                            subject.ParsedBookInfo.Quality,
                                                            subject.PreferredWordScore))
                 {
-                    return Decision.Reject("Release in queue is of equal or higher preference: {0}", remoteAlbum.ParsedBookInfo.Quality);
+                    return Decision.Reject("Release in queue is of equal or higher preference: {0}", remoteBook.ParsedBookInfo.Quality);
                 }
 
-                _logger.Debug("Checking if profiles allow upgrading. Queued: {0}", remoteAlbum.ParsedBookInfo.Quality);
+                _logger.Debug("Checking if profiles allow upgrading. Queued: {0}", remoteBook.ParsedBookInfo.Quality);
 
                 if (!_upgradableSpecification.IsUpgradeAllowed(qualityProfile,
-                                                               new List<QualityModel> { remoteAlbum.ParsedBookInfo.Quality },
+                                                               new List<QualityModel> { remoteBook.ParsedBookInfo.Quality },
                                                                subject.ParsedBookInfo.Quality))
                 {
                     return Decision.Reject("Another release is queued and the Quality profile does not allow upgrades");

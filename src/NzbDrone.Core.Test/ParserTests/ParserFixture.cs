@@ -192,7 +192,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_artist_name_and_album_title_by_search_criteria(string releaseTitle)
         {
             GivenSearchCriteria("Black Sabbath", "Black Sabbath");
-            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
+            var parseResult = Parser.Parser.ParseBookTitleWithSearchCriteria(releaseTitle, _artist, _albums);
             parseResult.AuthorName.ToLowerInvariant().Should().Be("black sabbath");
             parseResult.BookTitle.ToLowerInvariant().Should().Be("black sabbath");
         }
@@ -214,7 +214,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_not_parse_artist_name_and_album_title_by_incorrect_search_criteria()
         {
             GivenSearchCriteria("Abba", "Abba");
-            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria("Black Sabbath  Black Sabbath FLAC", _artist, _albums);
+            var parseResult = Parser.Parser.ParseBookTitleWithSearchCriteria("Black Sabbath  Black Sabbath FLAC", _artist, _albums);
             parseResult.Should().BeNull();
         }
 
@@ -228,7 +228,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_escape_albums(string artist, string album, string releaseTitle)
         {
             GivenSearchCriteria(artist, album);
-            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
+            var parseResult = Parser.Parser.ParseBookTitleWithSearchCriteria(releaseTitle, _artist, _albums);
             parseResult.BookTitle.Should().Be(album);
         }
 
@@ -239,7 +239,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_escape_artists(string artist, string album, string releaseTitle)
         {
             GivenSearchCriteria(artist, album);
-            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
+            var parseResult = Parser.Parser.ParseBookTitleWithSearchCriteria(releaseTitle, _artist, _albums);
             parseResult.AuthorName.Should().Be(artist);
         }
 
@@ -247,7 +247,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_match_with_accent_in_artist_and_album(string artist, string album, string releaseTitle)
         {
             GivenSearchCriteria(artist, album);
-            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(releaseTitle, _artist, _albums);
+            var parseResult = Parser.Parser.ParseBookTitleWithSearchCriteria(releaseTitle, _artist, _albums);
             parseResult.AuthorName.Should().Be("Michael Buble");
             parseResult.BookTitle.Should().Be("Michael Buble");
         }
@@ -260,7 +260,7 @@ namespace NzbDrone.Core.Test.ParserTests
             GivenSearchCriteria("Michael Bubl\u00E9", "love");
             GivenSearchCriteria("Michael Bubl\u00E9", "Christmas");
             GivenSearchCriteria("Michael Bubl\u00E9", "To Be Loved");
-            var parseResult = Parser.Parser.ParseAlbumTitleWithSearchCriteria(
+            var parseResult = Parser.Parser.ParseBookTitleWithSearchCriteria(
                 "Michael Buble Christmas (Deluxe Special Edition) CD FLAC 2012 UNDERTONE iNT", _artist, _albums);
             parseResult.AuthorName.Should().Be("Michael Buble");
             parseResult.BookTitle.Should().Be("Christmas");

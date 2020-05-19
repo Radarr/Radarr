@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
     {
         private Author _artist1;
         private Author _artist2;
-        private RemoteBook _remoteAlbum = new RemoteBook();
+        private RemoteBook _remoteBook = new RemoteBook();
         private SearchCriteriaBase _searchCriteria = new BookSearchCriteria();
 
         [SetUp]
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
             _artist1 = Builder<Author>.CreateNew().With(s => s.Id = 1).Build();
             _artist2 = Builder<Author>.CreateNew().With(s => s.Id = 2).Build();
 
-            _remoteAlbum.Author = _artist1;
+            _remoteBook.Author = _artist1;
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             _searchCriteria.Author = _artist2;
 
-            Subject.IsSatisfiedBy(_remoteAlbum, _searchCriteria).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, _searchCriteria).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             _searchCriteria.Author = _artist1;
 
-            Subject.IsSatisfiedBy(_remoteAlbum, _searchCriteria).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, _searchCriteria).Accepted.Should().BeTrue();
         }
     }
 }

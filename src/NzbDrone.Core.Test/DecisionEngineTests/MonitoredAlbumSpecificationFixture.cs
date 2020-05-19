@@ -12,9 +12,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
 
-    public class MonitoredAlbumSpecificationFixture : CoreTest<MonitoredAlbumSpecification>
+    public class MonitoredAlbumSpecificationFixture : CoreTest<MonitoredBookSpecification>
     {
-        private MonitoredAlbumSpecification _monitoredAlbumSpecification;
+        private MonitoredBookSpecification _monitoredAlbumSpecification;
 
         private RemoteBook _parseResultMulti;
         private RemoteBook _parseResultSingle;
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            _monitoredAlbumSpecification = Mocker.Resolve<MonitoredAlbumSpecification>();
+            _monitoredAlbumSpecification = Mocker.Resolve<MonitoredBookSpecification>();
 
             _fakeArtist = Builder<Author>.CreateNew()
                 .With(c => c.Monitored = true)

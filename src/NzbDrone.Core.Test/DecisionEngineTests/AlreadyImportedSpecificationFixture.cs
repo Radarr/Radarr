@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private Author _artist;
         private QualityModel _mp3;
         private QualityModel _flac;
-        private RemoteBook _remoteAlbum;
+        private RemoteBook _remoteBook;
         private List<History.History> _history;
         private BookFile _firstFile;
 
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _mp3 = new QualityModel(Quality.MP3_320, new Revision(version: 1));
             _flac = new QualityModel(Quality.FLAC, new Revision(version: 1));
 
-            _remoteAlbum = new RemoteBook
+            _remoteBook = new RemoteBook
             {
                 Author = _artist,
                 ParsedBookInfo = new ParsedBookInfo { Quality = _mp3 },
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenCdhDisabled();
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -107,13 +107,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Setup(c => c.GetFilesByBook(It.IsAny<int>()))
                 .Returns(new List<BookFile> { });
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_be_accepted_if_album_does_not_have_grabbed_event()
         {
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenHistoryItem(Guid.NewGuid().ToString().ToUpper(), TITLE, _mp3, HistoryEventType.Grabbed);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenHistoryItem(downloadId, TITLE, _mp3, HistoryEventType.Grabbed);
             GivenHistoryItem(downloadId, TITLE, _mp3, HistoryEventType.DownloadImported);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -143,12 +143,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenHistoryItem(downloadId, TITLE, _mp3, HistoryEventType.Grabbed);
             GivenHistoryItem(downloadId, TITLE, _flac, HistoryEventType.DownloadImported);
 
-            _remoteAlbum.Release = Builder<TorrentInfo>.CreateNew()
+            _remoteBook.Release = Builder<TorrentInfo>.CreateNew()
                                                          .With(t => t.DownloadProtocol = DownloadProtocol.Torrent)
                                                          .With(t => t.InfoHash = downloadId)
                                                          .Build();
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -159,12 +159,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenHistoryItem(downloadId, TITLE, _mp3, HistoryEventType.Grabbed);
             GivenHistoryItem(downloadId, TITLE, _flac, HistoryEventType.DownloadImported);
 
-            _remoteAlbum.Release = Builder<TorrentInfo>.CreateNew()
+            _remoteBook.Release = Builder<TorrentInfo>.CreateNew()
                                                          .With(t => t.DownloadProtocol = DownloadProtocol.Torrent)
                                                          .With(t => t.InfoHash = null)
                                                          .Build();
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -173,12 +173,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenHistoryItem(null, TITLE, _mp3, HistoryEventType.Grabbed);
             GivenHistoryItem(null, TITLE, _flac, HistoryEventType.DownloadImported);
 
-            _remoteAlbum.Release = Builder<TorrentInfo>.CreateNew()
+            _remoteBook.Release = Builder<TorrentInfo>.CreateNew()
                                                          .With(t => t.DownloadProtocol = DownloadProtocol.Torrent)
                                                          .With(t => t.InfoHash = null)
                                                          .Build();
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -189,12 +189,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenHistoryItem(downloadId, TITLE, _mp3, HistoryEventType.Grabbed);
             GivenHistoryItem(downloadId, TITLE, _flac, HistoryEventType.DownloadImported);
 
-            _remoteAlbum.Release = Builder<TorrentInfo>.CreateNew()
+            _remoteBook.Release = Builder<TorrentInfo>.CreateNew()
                                                          .With(t => t.DownloadProtocol = DownloadProtocol.Torrent)
                                                          .With(t => t.InfoHash = downloadId)
                                                          .Build();
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
     }
 }

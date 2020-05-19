@@ -38,23 +38,23 @@ namespace NzbDrone.Core.Download
 
         public virtual bool PreferTorrentFile => false;
 
-        protected abstract string AddFromMagnetLink(RemoteBook remoteAlbum, string hash, string magnetLink);
-        protected abstract string AddFromTorrentFile(RemoteBook remoteAlbum, string hash, string filename, byte[] fileContent);
+        protected abstract string AddFromMagnetLink(RemoteBook remoteBook, string hash, string magnetLink);
+        protected abstract string AddFromTorrentFile(RemoteBook remoteBook, string hash, string filename, byte[] fileContent);
 
-        public override string Download(RemoteBook remoteAlbum)
+        public override string Download(RemoteBook remoteBook)
         {
-            var torrentInfo = remoteAlbum.Release as TorrentInfo;
+            var torrentInfo = remoteBook.Release as TorrentInfo;
 
             string magnetUrl = null;
             string torrentUrl = null;
 
-            if (remoteAlbum.Release.DownloadUrl.IsNotNullOrWhiteSpace() && remoteAlbum.Release.DownloadUrl.StartsWith("magnet:"))
+            if (remoteBook.Release.DownloadUrl.IsNotNullOrWhiteSpace() && remoteBook.Release.DownloadUrl.StartsWith("magnet:"))
             {
-                magnetUrl = remoteAlbum.Release.DownloadUrl;
+                magnetUrl = remoteBook.Release.DownloadUrl;
             }
             else
             {
-                torrentUrl = remoteAlbum.Release.DownloadUrl;
+                torrentUrl = remoteBook.Release.DownloadUrl;
             }
 
             if (torrentInfo != null && !torrentInfo.MagnetUrl.IsNullOrWhiteSpace())
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Download
                 {
                     try
                     {
-                        return DownloadFromWebUrl(remoteAlbum, torrentUrl);
+                        return DownloadFromWebUrl(remoteBook, torrentUrl);
                     }
                     catch (Exception ex)
                     {
@@ -85,11 +85,11 @@ namespace NzbDrone.Core.Download
                 {
                     try
                     {
-                        return DownloadFromMagnetUrl(remoteAlbum, magnetUrl);
+                        return DownloadFromMagnetUrl(remoteBook, magnetUrl);
                     }
                     catch (NotSupportedException ex)
                     {
-                        throw new ReleaseDownloadException(remoteAlbum.Release, "Magnet not supported by download client. ({0})", ex.Message);
+                        throw new ReleaseDownloadException(remoteBook.Release, "Magnet not supported by download client. ({0})", ex.Message);
                     }
                 }
             }
@@ -99,13 +99,13 @@ namespace NzbDrone.Core.Download
                 {
                     try
                     {
-                        return DownloadFromMagnetUrl(remoteAlbum, magnetUrl);
+                        return DownloadFromMagnetUrl(remoteBook, magnetUrl);
                     }
                     catch (NotSupportedException ex)
                     {
                         if (torrentUrl.IsNullOrWhiteSpace())
                         {
-                            throw new ReleaseDownloadException(remoteAlbum.Release, "Magnet not supported by download client. ({0})", ex.Message);
+                            throw new ReleaseDownloadException(remoteBook.Release, "Magnet not supported by download client. ({0})", ex.Message);
                         }
 
                         _logger.Debug("Magnet not supported by download client, trying torrent. ({0})", ex.Message);
@@ -114,14 +114,14 @@ namespace NzbDrone.Core.Download
 
                 if (torrentUrl.IsNotNullOrWhiteSpace())
                 {
-                    return DownloadFromWebUrl(remoteAlbum, torrentUrl);
+                    return DownloadFromWebUrl(remoteBook, torrentUrl);
                 }
             }
 
             return null;
         }
 
-        private string DownloadFromWebUrl(RemoteBook remoteAlbum, string torrentUrl)
+        private string DownloadFromWebUrl(RemoteBook remoteBook, string torrentUrl)
         {
             byte[] torrentFile = null;
 
@@ -145,10 +145,10 @@ namespace NzbDrone.Core.Download
                     {
                         if (locationHeader.StartsWith("magnet:"))
                         {
-                            return DownloadFromMagnetUrl(remoteAlbum, locationHeader);
+                            return DownloadFromMagnetUrl(remoteBook, locationHeader);
                         }
 
-                        return DownloadFromWebUrl(remoteAlbum, locationHeader);
+                        return DownloadFromWebUrl(remoteBook, locationHeader);
                     }
 
                     throw new WebException("Remote website tried to redirect without providing a location.");
@@ -156,14 +156,14 @@ namespace NzbDrone.Core.Download
 
                 torrentFile = response.ResponseData;
 
-                _logger.Debug("Downloading torrent for release '{0}' finished ({1} bytes from {2})", remoteAlbum.Release.Title, torrentFile.Length, torrentUrl);
+                _logger.Debug("Downloading torrent for release '{0}' finished ({1} bytes from {2})", remoteBook.Release.Title, torrentFile.Length, torrentUrl);
             }
             catch (HttpException ex)
             {
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                 {
-                    _logger.Error(ex, "Downloading torrent file for book '{0}' failed since it no longer exists ({1})", remoteAlbum.Release.Title, torrentUrl);
-                    throw new ReleaseUnavailableException(remoteAlbum.Release, "Downloading torrent failed", ex);
+                    _logger.Error(ex, "Downloading torrent file for book '{0}' failed since it no longer exists ({1})", remoteBook.Release.Title, torrentUrl);
+                    throw new ReleaseUnavailableException(remoteBook.Release, "Downloading torrent failed", ex);
                 }
 
                 if ((int)ex.Response.StatusCode == 429)
@@ -172,34 +172,34 @@ namespace NzbDrone.Core.Download
                 }
                 else
                 {
-                    _logger.Error(ex, "Downloading torrent file for release '{0}' failed ({1})", remoteAlbum.Release.Title, torrentUrl);
+                    _logger.Error(ex, "Downloading torrent file for release '{0}' failed ({1})", remoteBook.Release.Title, torrentUrl);
                 }
 
-                throw new ReleaseDownloadException(remoteAlbum.Release, "Downloading torrent failed", ex);
+                throw new ReleaseDownloadException(remoteBook.Release, "Downloading torrent failed", ex);
             }
             catch (WebException ex)
             {
-                _logger.Error(ex, "Downloading torrent file for release '{0}' failed ({1})", remoteAlbum.Release.Title, torrentUrl);
+                _logger.Error(ex, "Downloading torrent file for release '{0}' failed ({1})", remoteBook.Release.Title, torrentUrl);
 
-                throw new ReleaseDownloadException(remoteAlbum.Release, "Downloading torrent failed", ex);
+                throw new ReleaseDownloadException(remoteBook.Release, "Downloading torrent failed", ex);
             }
 
-            var filename = string.Format("{0}.torrent", FileNameBuilder.CleanFileName(remoteAlbum.Release.Title));
+            var filename = string.Format("{0}.torrent", FileNameBuilder.CleanFileName(remoteBook.Release.Title));
             var hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
-            var actualHash = AddFromTorrentFile(remoteAlbum, hash, filename, torrentFile);
+            var actualHash = AddFromTorrentFile(remoteBook, hash, filename, torrentFile);
 
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)
             {
                 _logger.Debug(
                     "{0} did not return the expected InfoHash for '{1}', Readarr could potentially lose track of the download in progress.",
                     Definition.Implementation,
-                    remoteAlbum.Release.DownloadUrl);
+                    remoteBook.Release.DownloadUrl);
             }
 
             return actualHash;
         }
 
-        private string DownloadFromMagnetUrl(RemoteBook remoteAlbum, string magnetUrl)
+        private string DownloadFromMagnetUrl(RemoteBook remoteBook, string magnetUrl)
         {
             string hash = null;
             string actualHash = null;
@@ -210,14 +210,14 @@ namespace NzbDrone.Core.Download
             }
             catch (FormatException ex)
             {
-                _logger.Error(ex, "Failed to parse magnetlink for release '{0}': '{1}'", remoteAlbum.Release.Title, magnetUrl);
+                _logger.Error(ex, "Failed to parse magnetlink for release '{0}': '{1}'", remoteBook.Release.Title, magnetUrl);
 
                 return null;
             }
 
             if (hash != null)
             {
-                actualHash = AddFromMagnetLink(remoteAlbum, hash, magnetUrl);
+                actualHash = AddFromMagnetLink(remoteBook, hash, magnetUrl);
             }
 
             if (actualHash.IsNotNullOrWhiteSpace() && hash != actualHash)
@@ -225,7 +225,7 @@ namespace NzbDrone.Core.Download
                 _logger.Debug(
                     "{0} did not return the expected InfoHash for '{1}', Readarr could potentially lose track of the download in progress.",
                     Definition.Implementation,
-                    remoteAlbum.Release.DownloadUrl);
+                    remoteBook.Release.DownloadUrl);
             }
 
             return actualHash;

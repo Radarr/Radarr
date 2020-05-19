@@ -39,32 +39,32 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
 
         private RemoteBook GetRemoteAlbum(List<Book> albums, QualityModel quality, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
         {
-            var remoteAlbum = new RemoteBook();
-            remoteAlbum.ParsedBookInfo = new ParsedBookInfo();
-            remoteAlbum.ParsedBookInfo.Quality = quality;
+            var remoteBook = new RemoteBook();
+            remoteBook.ParsedBookInfo = new ParsedBookInfo();
+            remoteBook.ParsedBookInfo.Quality = quality;
 
-            remoteAlbum.Books = new List<Book>();
-            remoteAlbum.Books.AddRange(albums);
+            remoteBook.Books = new List<Book>();
+            remoteBook.Books.AddRange(albums);
 
-            remoteAlbum.Release = new ReleaseInfo();
-            remoteAlbum.Release.DownloadProtocol = downloadProtocol;
-            remoteAlbum.Release.PublishDate = DateTime.UtcNow;
+            remoteBook.Release = new ReleaseInfo();
+            remoteBook.Release.DownloadProtocol = downloadProtocol;
+            remoteBook.Release.PublishDate = DateTime.UtcNow;
 
-            remoteAlbum.Author = Builder<Author>.CreateNew()
+            remoteBook.Author = Builder<Author>.CreateNew()
                 .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                 .Build();
 
-            return remoteAlbum;
+            return remoteBook;
         }
 
         [Test]
         public void should_download_report_if_album_was_not_already_downloaded()
         {
             var albums = new List<Book> { GetAlbum(1) };
-            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+            var remoteBook = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteBook));
 
             Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteBook>()), Times.Once());
@@ -74,11 +74,11 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_only_download_album_once()
         {
             var albums = new List<Book> { GetAlbum(1) };
-            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+            var remoteBook = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum));
-            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteBook));
+            decisions.Add(new DownloadDecision(remoteBook));
 
             Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteBook>()), Times.Once());
@@ -87,17 +87,17 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_not_download_if_any_album_was_already_downloaded()
         {
-            var remoteAlbum1 = GetRemoteAlbum(
+            var remoteBook1 = GetRemoteAlbum(
                                                     new List<Book> { GetAlbum(1) },
                                                     new QualityModel(Quality.MP3_320));
 
-            var remoteAlbum2 = GetRemoteAlbum(
+            var remoteBook2 = GetRemoteAlbum(
                                                     new List<Book> { GetAlbum(1), GetAlbum(2) },
                                                     new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum1));
-            decisions.Add(new DownloadDecision(remoteAlbum2));
+            decisions.Add(new DownloadDecision(remoteBook1));
+            decisions.Add(new DownloadDecision(remoteBook2));
 
             Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteBook>()), Times.Once());
@@ -107,10 +107,10 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_return_downloaded_reports()
         {
             var albums = new List<Book> { GetAlbum(1) };
-            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+            var remoteBook = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteBook));
 
             Subject.ProcessDecisions(decisions).Grabbed.Should().HaveCount(1);
         }
@@ -118,17 +118,17 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_return_all_downloaded_reports()
         {
-            var remoteAlbum1 = GetRemoteAlbum(
+            var remoteBook1 = GetRemoteAlbum(
                                                     new List<Book> { GetAlbum(1) },
                                                     new QualityModel(Quality.MP3_320));
 
-            var remoteAlbum2 = GetRemoteAlbum(
+            var remoteBook2 = GetRemoteAlbum(
                                                     new List<Book> { GetAlbum(2) },
                                                     new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum1));
-            decisions.Add(new DownloadDecision(remoteAlbum2));
+            decisions.Add(new DownloadDecision(remoteBook1));
+            decisions.Add(new DownloadDecision(remoteBook2));
 
             Subject.ProcessDecisions(decisions).Grabbed.Should().HaveCount(2);
         }
@@ -136,22 +136,22 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         [Test]
         public void should_only_return_downloaded_reports()
         {
-            var remoteAlbum1 = GetRemoteAlbum(
+            var remoteBook1 = GetRemoteAlbum(
                                                     new List<Book> { GetAlbum(1) },
                                                     new QualityModel(Quality.MP3_320));
 
-            var remoteAlbum2 = GetRemoteAlbum(
+            var remoteBook2 = GetRemoteAlbum(
                                                     new List<Book> { GetAlbum(2) },
                                                     new QualityModel(Quality.MP3_320));
 
-            var remoteAlbum3 = GetRemoteAlbum(
+            var remoteBook3 = GetRemoteAlbum(
                                                     new List<Book> { GetAlbum(2) },
                                                     new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum1));
-            decisions.Add(new DownloadDecision(remoteAlbum2));
-            decisions.Add(new DownloadDecision(remoteAlbum3));
+            decisions.Add(new DownloadDecision(remoteBook1));
+            decisions.Add(new DownloadDecision(remoteBook2));
+            decisions.Add(new DownloadDecision(remoteBook3));
 
             Subject.ProcessDecisions(decisions).Grabbed.Should().HaveCount(2);
         }
@@ -160,10 +160,10 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_not_add_to_downloaded_list_when_download_fails()
         {
             var albums = new List<Book> { GetAlbum(1) };
-            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+            var remoteBook = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteBook));
 
             Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteBook>())).Throws(new Exception());
             Subject.ProcessDecisions(decisions).Grabbed.Should().BeEmpty();
@@ -184,10 +184,10 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_not_grab_if_pending()
         {
             var albums = new List<Book> { GetAlbum(1) };
-            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+            var remoteBook = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum, new Rejection("Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(remoteBook, new Rejection("Failure!", RejectionType.Temporary)));
 
             Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteBook>()), Times.Never());
@@ -197,11 +197,11 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_not_add_to_pending_if_album_was_grabbed()
         {
             var albums = new List<Book> { GetAlbum(1) };
-            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+            var remoteBook = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum));
-            decisions.Add(new DownloadDecision(remoteAlbum, new Rejection("Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(remoteBook));
+            decisions.Add(new DownloadDecision(remoteBook, new Rejection("Failure!", RejectionType.Temporary)));
 
             Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IPendingReleaseService>().Verify(v => v.AddMany(It.IsAny<List<Tuple<DownloadDecision, PendingReleaseReason>>>()), Times.Never());
@@ -211,11 +211,11 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_add_to_pending_even_if_already_added_to_pending()
         {
             var albums = new List<Book> { GetAlbum(1) };
-            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+            var remoteBook = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum, new Rejection("Failure!", RejectionType.Temporary)));
-            decisions.Add(new DownloadDecision(remoteAlbum, new Rejection("Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(remoteBook, new Rejection("Failure!", RejectionType.Temporary)));
+            decisions.Add(new DownloadDecision(remoteBook, new Rejection("Failure!", RejectionType.Temporary)));
 
             Subject.ProcessDecisions(decisions);
             Mocker.GetMock<IPendingReleaseService>().Verify(v => v.AddMany(It.IsAny<List<Tuple<DownloadDecision, PendingReleaseReason>>>()), Times.Once());
@@ -225,11 +225,11 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_add_to_failed_if_already_failed_for_that_protocol()
         {
             var albums = new List<Book> { GetAlbum(1) };
-            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+            var remoteBook = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum));
-            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteBook));
+            decisions.Add(new DownloadDecision(remoteBook));
 
             Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteBook>()))
                   .Throws(new DownloadClientUnavailableException("Download client failed"));
@@ -242,12 +242,12 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_not_add_to_failed_if_failed_for_a_different_protocol()
         {
             var albums = new List<Book> { GetAlbum(1) };
-            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320), DownloadProtocol.Usenet);
-            var remoteAlbum2 = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320), DownloadProtocol.Torrent);
+            var remoteBook = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320), DownloadProtocol.Usenet);
+            var remoteBook2 = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320), DownloadProtocol.Torrent);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum));
-            decisions.Add(new DownloadDecision(remoteAlbum2));
+            decisions.Add(new DownloadDecision(remoteBook));
+            decisions.Add(new DownloadDecision(remoteBook2));
 
             Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.Is<RemoteBook>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)))
                   .Throws(new DownloadClientUnavailableException("Download client failed"));
@@ -261,14 +261,14 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
         public void should_add_to_rejected_if_release_unavailable_on_indexer()
         {
             var albums = new List<Book> { GetAlbum(1) };
-            var remoteAlbum = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
+            var remoteBook = GetRemoteAlbum(albums, new QualityModel(Quality.MP3_320));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteAlbum));
+            decisions.Add(new DownloadDecision(remoteBook));
 
             Mocker.GetMock<IDownloadService>()
                   .Setup(s => s.DownloadReport(It.IsAny<RemoteBook>()))
-                  .Throws(new ReleaseUnavailableException(remoteAlbum.Release, "That 404 Error is not just a Quirk"));
+                  .Throws(new ReleaseUnavailableException(remoteBook.Release, "That 404 Error is not just a Quirk"));
 
             var result = Subject.ProcessDecisions(decisions);
 

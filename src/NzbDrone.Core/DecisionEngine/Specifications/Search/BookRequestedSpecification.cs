@@ -1,14 +1,15 @@
+using System.Linq;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications.Search
 {
-    public class AuthorSpecification : IDecisionEngineSpecification
+    public class BookRequestedSpecification : IDecisionEngineSpecification
     {
         private readonly Logger _logger;
 
-        public AuthorSpecification(Logger logger)
+        public BookRequestedSpecification(Logger logger)
         {
             _logger = logger;
         }
@@ -23,12 +24,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
                 return Decision.Accept();
             }
 
-            _logger.Debug("Checking if author matches searched author");
+            var criteriaBook = searchCriteria.Books.Select(v => v.Id).ToList();
+            var remoteBooks = remoteBook.Books.Select(v => v.Id).ToList();
 
-            if (remoteBook.Author.Id != searchCriteria.Author.Id)
+            if (!criteriaBook.Intersect(remoteBooks).Any())
             {
-                _logger.Debug("Author {0} does not match {1}", remoteBook.Author, searchCriteria.Author);
-                return Decision.Reject("Wrong author");
+                _logger.Debug("Release rejected since the book wasn't requested: {0}", remoteBook.ParsedBookInfo);
+                return Decision.Reject("Book wasn't requested");
             }
 
             return Decision.Accept();

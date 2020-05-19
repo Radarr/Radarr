@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private Author _artist;
         private Book _album1;
         private Book _album2;
-        private RemoteBook _remoteAlbum;
+        private RemoteBook _remoteBook;
         private IndexerDefinition _indexerDefinition;
 
         [SetUp]
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _album1 = Builder<Book>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
             _album2 = Builder<Book>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
 
-            _remoteAlbum = new RemoteBook
+            _remoteBook = new RemoteBook
             {
                 Author = _artist,
                 Books = new List<Book> { _album1 },
@@ -54,23 +54,23 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void GivenPublishDateFromToday(int days)
         {
-            _remoteAlbum.Release.PublishDate = DateTime.Today.AddDays(days);
+            _remoteBook.Release.PublishDate = DateTime.Today.AddDays(days);
         }
 
         [Test]
         public void should_return_true_if_indexer_not_specified()
         {
-            _remoteAlbum.Release.IndexerId = 0;
+            _remoteBook.Release.IndexerId = 0;
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_return_true_if_release_contains_multiple_albums()
         {
-            _remoteAlbum.Books.Add(_album2);
+            _remoteBook.Books.Add(_album2);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Setup(v => v.Get(It.IsAny<int>()))
                   .Callback<int>(i => { throw new ModelNotFoundException(typeof(IndexerDefinition), i); });
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [TestCase(-2)]
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenPublishDateFromToday(days);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [TestCase(-10)]
@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenPublishDateFromToday(days);
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeFalse();
         }
 
         [TestCase(-10)]
@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _indexerDefinition.Settings = new TorrentRssIndexerSettings { EarlyReleaseLimit = null };
 
-            Subject.IsSatisfiedBy(_remoteAlbum, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
     }
 }
