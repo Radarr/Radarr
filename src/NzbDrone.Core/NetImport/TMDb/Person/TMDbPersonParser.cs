@@ -9,13 +9,10 @@ namespace NzbDrone.Core.NetImport.TMDb.Person
     public class TMDbPersonParser : TMDbParser
     {
         private readonly TMDbPersonSettings _settings;
-        private readonly ISearchForNewMovie _skyhookProxy;
 
-        public TMDbPersonParser(TMDbPersonSettings settings, ISearchForNewMovie skyhookProxy)
-            : base(skyhookProxy)
+        public TMDbPersonParser(TMDbPersonSettings settings)
         {
             _settings = settings;
-            _skyhookProxy = skyhookProxy;
         }
 
         public override IList<Movie> ParseResponse(NetImportResponse importResponse)

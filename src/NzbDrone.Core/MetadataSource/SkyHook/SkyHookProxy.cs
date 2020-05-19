@@ -456,18 +456,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return newAlternativeTitle;
         }
 
-        private static MovieCollection MapCollection(CollectionResource arg)
-        {
-            var newCollection = new MovieCollection
-            {
-                Name = arg.Name,
-                TmdbId = arg.TmdbId,
-                Images = arg.Images.Select(MapImage).ToList()
-            };
-
-            return newCollection;
-        }
-
         private static Ratings MapRatings(RatingResource rating)
         {
             if (rating == null)

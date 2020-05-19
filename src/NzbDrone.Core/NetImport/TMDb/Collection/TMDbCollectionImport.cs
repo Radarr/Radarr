@@ -1,4 +1,4 @@
-﻿using NLog;
+using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.NetImport.TMDb.Collection
 
         public override IParseNetImportResponse GetParser()
         {
-            return new TMDbCollectionParser(_skyhookProxy);
+            return new TMDbCollectionParser();
         }
 
         public override INetImportRequestGenerator GetRequestGenerator()

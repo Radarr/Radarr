@@ -8,14 +8,6 @@ namespace NzbDrone.Core.NetImport.TMDb.Collection
 {
     public class TMDbCollectionParser : TMDbParser
     {
-        private readonly ISearchForNewMovie _skyhookProxy;
-
-        public TMDbCollectionParser(ISearchForNewMovie skyhookProxy)
-            : base(skyhookProxy)
-        {
-            _skyhookProxy = skyhookProxy;
-        }
-
         public override IList<Movie> ParseResponse(NetImportResponse importResponse)
         {
             var movies = new List<Movie>();
@@ -41,7 +33,7 @@ namespace NzbDrone.Core.NetImport.TMDb.Collection
                     continue;
                 }
 
-                movies.AddIfNotNull(new Movie { TmdbId = movie.id });
+                movies.AddIfNotNull(MapListMovie(movie));
             }
 
             return movies;
