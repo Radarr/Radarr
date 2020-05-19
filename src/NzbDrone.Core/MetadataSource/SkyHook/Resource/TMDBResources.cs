@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
 {
@@ -200,8 +200,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
     public class ListResponseRoot
     {
         public string id { get; set; }
-        public Item[] results { get; set; }
-        public int total_results { get; set; }
+        public List<ListItem> items { get; set; }
+        public int item_count { get; set; }
         public string iso_639_1 { get; set; }
         public string name { get; set; }
         public object poster_path { get; set; }
@@ -224,7 +224,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public int id { get; set; }
     }
 
-    public class Item : MovieResult
+    public class ListItem : MovieResult
     {
         public string media_type { get; set; }
         public string first_air_date { get; set; }

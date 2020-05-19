@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Http;
 
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.NetImport.TMDb.List
             Logger.Info($"Importing TMDb movies from list: {Settings.ListId}");
 
             var requestBuilder = RequestBuilder.Create()
-                                               .SetSegment("api", "4")
+                                               .SetSegment("api", "3")
                                                .SetSegment("route", "list")
                                                .SetSegment("id", Settings.ListId)
                                                .SetSegment("secondaryRoute", "");
