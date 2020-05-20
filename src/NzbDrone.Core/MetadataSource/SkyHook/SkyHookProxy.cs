@@ -60,9 +60,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             request.AllowAutoRedirect = true;
             request.SuppressHttpError = true;
 
-            var response = _httpClient.Get<MovieSearchRoot>(request);
+            var response = _httpClient.Get<MovieSearchResource>(request);
 
-            return new HashSet<int>(response.Resource.Results.Select(c => c.id));
+            return new HashSet<int>(response.Resource.Results.Select(c => c.Id));
         }
 
         public async Task<Tuple<Movie, List<Credit>>> GetMovieInfoAsync(int tmdbId)

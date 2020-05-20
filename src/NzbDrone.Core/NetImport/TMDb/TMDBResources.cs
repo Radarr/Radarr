@@ -1,86 +1,133 @@
+using Newtonsoft.Json;
+
 namespace NzbDrone.Core.NetImport.TMDb
 {
-    public class MovieSearchRoot
+    public class MovieSearchResource
     {
         public int Page { get; set; }
-        public MovieResult[] Results { get; set; }
-        public int total_results { get; set; }
-        public int total_pages { get; set; }
+        public MovieResultResource[] Results { get; set; }
+
+        [JsonProperty("total_results")]
+        public int TotalResults { get; set; }
+
+        [JsonProperty("total_pages")]
+        public int TotalPages { get; set; }
     }
 
-    public class AuthRefreshTokenResponse
+    public class AuthRefreshTokenResource
     {
-        public string request_token { get; set; }
+        [JsonProperty("request_token")]
+        public string RequestToken { get; set; }
     }
 
-    public class AuthAccessTokenResponse
+    public class AuthAccessTokenResource
     {
-        public string access_token { get; set; }
-        public string account_id { get; set; }
+        [JsonProperty("access_token")]
+        public string AccessToken { get; set; }
+
+        [JsonProperty("account_id")]
+        public string AccountId { get; set; }
     }
 
-    public class MovieResult
+    public class MovieResultResource
     {
-        public string poster_path { get; set; }
-        public bool adult { get; set; }
-        public string overview { get; set; }
-        public string release_date { get; set; }
-        public int?[] genre_ids { get; set; }
-        public int id { get; set; }
-        public string original_title { get; set; }
-        public string original_language { get; set; }
-        public string title { get; set; }
-        public string backdrop_path { get; set; }
-        public float popularity { get; set; }
-        public int vote_count { get; set; }
-        public bool video { get; set; }
-        public float vote_average { get; set; }
-        public string trailer_key { get; set; }
-        public string trailer_site { get; set; }
-        public string physical_release { get; set; }
-        public string physical_release_note { get; set; }
+        [JsonProperty("poster_path")]
+        public string PosterPath { get; set; }
+        public bool Adult { get; set; }
+        public string Overview { get; set; }
+
+        [JsonProperty("release_date")]
+        public string ReleaseDate { get; set; }
+
+        [JsonProperty("genre_ids")]
+        public int?[] GenreIds { get; set; }
+        public int Id { get; set; }
+
+        [JsonProperty("original_title")]
+        public string OriginalTitle { get; set; }
+
+        [JsonProperty("original_language")]
+        public string OriginalLanguage { get; set; }
+        public string Title { get; set; }
+
+        [JsonProperty("backdrop_path")]
+        public string BackdropPath { get; set; }
+        public float Popularity { get; set; }
+
+        [JsonProperty("vote_count")]
+        public int VoteCount { get; set; }
+        public bool Video { get; set; }
+
+        [JsonProperty("vote_average")]
+        public float VoteAverage { get; set; }
+
+        [JsonProperty("trailer_key")]
+        public string TrailerKey { get; set; }
+
+        [JsonProperty("trailer_site")]
+        public string TrailerSite { get; set; }
+
+        [JsonProperty("physical_release")]
+        public string PhysicalRelease { get; set; }
+
+        [JsonProperty("physical_release_note")]
+        public string PhysicalReleaseNote { get; set; }
     }
 
-    public class CreditsResult : MovieResult
+    public class CreditsResultResource : MovieResultResource
     {
-        public string department { get; set; }
-        public string job { get; set; }
-        public string credit_id { get; set; }
+        public string Department { get; set; }
+        public string Job { get; set; }
+
+        [JsonProperty("credit_id")]
+        public string CreditId { get; set; }
     }
 
-    public class ListResponseRoot
+    public class ListResponseResource
     {
-        public string id { get; set; }
-        public Item[] items { get; set; }
-        public int item_count { get; set; }
-        public string iso_639_1 { get; set; }
-        public string name { get; set; }
-        public object poster_path { get; set; }
+        public string Id { get; set; }
+        public ListItemResource[] Items { get; set; }
+
+        [JsonProperty("item_count")]
+        public int ItemCount { get; set; }
+
+        [JsonProperty("iso_639_1")]
+        public string Iso639 { get; set; }
+        public string Name { get; set; }
+
+        [JsonProperty("poster_path")]
+        public object PosterPath { get; set; }
     }
 
-    public class CollectionResponseRoot
+    public class CollectionResponseResource
     {
-        public int id { get; set; }
-        public string name { get; set; }
-        public string overview { get; set; }
-        public string poster_path { get; set; }
-        public string backdrop_path { get; set; }
-        public MovieResult[] parts { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Overview { get; set; }
+
+        [JsonProperty("poster_path")]
+        public string PosterPath { get; set; }
+
+        [JsonProperty("backdrop_path")]
+        public string BackdropPath { get; set; }
+        public MovieResultResource[] Parts { get; set; }
     }
 
-    public class PersonCreditsRoot
+    public class PersonCreditsResource
     {
-        public CreditsResult[] cast { get; set; }
-        public CreditsResult[] crew { get; set; }
-        public int id { get; set; }
+        public CreditsResultResource[] Cast { get; set; }
+        public CreditsResultResource[] Crew { get; set; }
+        public int Id { get; set; }
     }
 
-    public class Item : MovieResult
+    public class ListItemResource : MovieResultResource
     {
-        public string media_type { get; set; }
-        public string first_air_date { get; set; }
-        public string[] origin_country { get; set; }
-        public string name { get; set; }
-        public string original_name { get; set; }
+        [JsonProperty("media_type")]
+        public string MediaType { get; set; }
+        [JsonProperty("origin_country")]
+        public string[] OriginCountry { get; set; }
+        public string Name { get; set; }
+        [JsonProperty("original_name")]
+        public string OriginalName { get; set; }
     }
 }
