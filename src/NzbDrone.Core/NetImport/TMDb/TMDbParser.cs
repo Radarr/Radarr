@@ -22,7 +22,7 @@ namespace NzbDrone.Core.NetImport.TMDb
                 return movies;
             }
 
-            var jsonResponse = JsonConvert.DeserializeObject<MovieSearchRoot>(importResponse.Content);
+            var jsonResponse = JsonConvert.DeserializeObject<MovieSearchResource>(importResponse.Content);
 
             // no movies were return
             if (jsonResponse == null)
@@ -33,24 +33,24 @@ namespace NzbDrone.Core.NetImport.TMDb
             return jsonResponse.Results.SelectList(MapListMovie);
         }
 
-        protected Movie MapListMovie(MovieResult movieResult)
+        protected Movie MapListMovie(MovieResultResource movieResult)
         {
             var movie =  new Movie
             {
-                TmdbId = movieResult.id,
-                Overview = movieResult.overview,
-                Title = movieResult.original_title,
-                SortTitle = Parser.Parser.NormalizeTitle(movieResult.original_title),
+                TmdbId = movieResult.Id,
+                Overview = movieResult.Overview,
+                Title = movieResult.OriginalTitle,
+                SortTitle = Parser.Parser.NormalizeTitle(movieResult.OriginalTitle),
                 Images = new List<MediaCover.MediaCover>()
             };
 
-            if (movieResult.release_date.IsNotNullOrWhiteSpace())
+            if (movieResult.ReleaseDate.IsNotNullOrWhiteSpace())
             {
-                DateTime.TryParse(movieResult.release_date, out var releaseDate);
+                DateTime.TryParse(movieResult.ReleaseDate, out var releaseDate);
                 movie.Year = releaseDate.Year;
             }
 
-            movie.Images.AddIfNotNull(MapPosterImage(movieResult.poster_path));
+            movie.Images.AddIfNotNull(MapPosterImage(movieResult.PosterPath));
 
             return movie;
         }
