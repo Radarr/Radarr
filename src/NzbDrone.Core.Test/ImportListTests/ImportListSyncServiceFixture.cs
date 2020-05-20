@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             Mocker.GetMock<IImportListFactory>()
                 .Setup(v => v.Get(It.IsAny<int>()))
-                .Returns(new ImportListDefinition { ShouldMonitor = ImportListMonitorType.SpecificAlbum });
+                .Returns(new ImportListDefinition { ShouldMonitor = ImportListMonitorType.SpecificBook });
 
             Mocker.GetMock<IFetchAndParseImportList>()
                 .Setup(v => v.Fetch())
@@ -222,8 +222,8 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [TestCase(ImportListMonitorType.None, false)]
-        [TestCase(ImportListMonitorType.SpecificAlbum, true)]
-        [TestCase(ImportListMonitorType.EntireArtist, true)]
+        [TestCase(ImportListMonitorType.SpecificBook, true)]
+        [TestCase(ImportListMonitorType.EntireAuthor, true)]
         public void should_add_if_not_existing_artist(ImportListMonitorType monitor, bool expectedArtistMonitored)
         {
             WithAuthorId();
@@ -236,8 +236,8 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [TestCase(ImportListMonitorType.None, false)]
-        [TestCase(ImportListMonitorType.SpecificAlbum, true)]
-        [TestCase(ImportListMonitorType.EntireArtist, true)]
+        [TestCase(ImportListMonitorType.SpecificBook, true)]
+        [TestCase(ImportListMonitorType.EntireAuthor, true)]
         public void should_add_if_not_existing_album(ImportListMonitorType monitor, bool expectedAlbumMonitored)
         {
             WithBookId();

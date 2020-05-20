@@ -19,7 +19,7 @@ namespace NzbDrone.Core.ImportLists
     public enum ImportListMonitorType
     {
         None,
-        SpecificAlbum,
-        EntireArtist
+        SpecificBook,
+        EntireAuthor
     }
 }

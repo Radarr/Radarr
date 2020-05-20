@@ -221,7 +221,7 @@ namespace NzbDrone.Core.ImportLists
                     },
                 };
 
-                if (importList.ShouldMonitor == ImportListMonitorType.SpecificAlbum)
+                if (importList.ShouldMonitor == ImportListMonitorType.SpecificBook)
                 {
                     toAdd.Author.Value.AddOptions.BooksToMonitor.Add(toAdd.ForeignBookId);
                 }
