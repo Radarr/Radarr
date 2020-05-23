@@ -30,7 +30,7 @@ namespace Radarr.Api.V3.Indexers
         public string ReleaseHash { get; set; }
         public string Title { get; set; }
         public bool SceneSource { get; set; }
-        public string MovieTitle { get; set; }
+        public List<string> MovieTitles { get; set; }
         public List<Language> Languages { get; set; }
         public bool Approved { get; set; }
         public bool TemporarilyRejected { get; set; }
@@ -84,7 +84,7 @@ namespace Radarr.Api.V3.Indexers
                 ReleaseGroup = parsedMovieInfo.ReleaseGroup,
                 ReleaseHash = parsedMovieInfo.ReleaseHash,
                 Title = releaseInfo.Title,
-                MovieTitle = parsedMovieInfo.MovieTitle,
+                MovieTitles = parsedMovieInfo.MovieTitles,
                 Languages = parsedMovieInfo.Languages,
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,

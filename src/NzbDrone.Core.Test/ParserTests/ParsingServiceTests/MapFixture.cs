@@ -38,43 +38,43 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
             _parsedMovieInfo = new ParsedMovieInfo
             {
-                MovieTitle = _movie.Title,
+                MovieTitles = new List<string>() { _movie.Title },
                 Year = _movie.Year,
             };
 
             _wrongYearInfo = new ParsedMovieInfo
             {
-                MovieTitle = _movie.Title,
+                MovieTitles = new List<string>() { _movie.Title },
                 Year = 1900,
             };
 
             _wrongTitleInfo = new ParsedMovieInfo
             {
-                MovieTitle = "Other Title",
+                MovieTitles = new List<string>() { "Other Title" },
                 Year = 2015
             };
 
             _alternativeTitleInfo = new ParsedMovieInfo
             {
-                MovieTitle = _movie.AlternativeTitles.First().Title,
+                MovieTitles = new List<string>() { _movie.AlternativeTitles.First().Title },
                 Year = _movie.Year,
             };
 
             _romanTitleInfo = new ParsedMovieInfo
             {
-                MovieTitle = "Fack Ju Göthe II",
+                MovieTitles = new List<string>() { "Fack Ju Göthe II" },
                 Year = _movie.Year,
             };
 
             _umlautInfo = new ParsedMovieInfo
             {
-                MovieTitle = "Fack Ju Goethe 2",
+                MovieTitles = new List<string>() { "Fack Ju Goethe 2" },
                 Year = _movie.Year
             };
 
             _umlautAltInfo = new ParsedMovieInfo
             {
-                MovieTitle = "Fack Ju Goethe 2: Same same",
+                MovieTitles = new List<string>() { "Fack Ju Goethe 2: Same same" },
                 Year = _movie.Year
             };
 

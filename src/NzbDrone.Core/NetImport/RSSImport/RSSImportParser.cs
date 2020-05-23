@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
 
             if (result != null)
             {
-                releaseInfo.Title = result.MovieTitle;
+                releaseInfo.Title = result.PrimaryMovieTitle;
                 releaseInfo.Year = result.Year;
                 releaseInfo.ImdbId = result.ImdbId;
             }

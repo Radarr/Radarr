@@ -247,9 +247,9 @@ namespace NzbDrone.Core.Parser
                                 //TODO: Add tests for this!
                                 var simpleReleaseTitle = SimpleReleaseTitleRegex.Replace(title, string.Empty);
 
-                                if (result.MovieTitle.IsNotNullOrWhiteSpace())
+                                if (result.PrimaryMovieTitle.IsNotNullOrWhiteSpace())
                                 {
-                                    simpleReleaseTitle = simpleReleaseTitle.Replace(result.MovieTitle, result.MovieTitle.Contains(".") ? "A.Movie" : "A Movie");
+                                    simpleReleaseTitle = simpleReleaseTitle.Replace(result.PrimaryMovieTitle, result.PrimaryMovieTitle.Contains(".") ? "A.Movie" : "A Movie");
                                 }
 
                                 result.Languages = LanguageParser.EnhanceLanguages(simpleReleaseTitle, LanguageParser.ParseLanguages(releaseTitle));
@@ -531,18 +531,19 @@ namespace NzbDrone.Core.Parser
                 result.Edition = matchCollection[0].Groups["edition"].Value.Replace(".", " ");
             }
 
-            result.MovieTitle = movieName;
+            var movieTitles = new List<string>();
+            movieTitles.Add(movieName);
 
-            if (movieName.IsNotNullOrWhiteSpace())
-            {
-                //Delete parentheses of the form (aka ...).
-                var unbracketedName = BracketedAlternativeTitleRegex.Replace(movieName, "$1 AKA $2");
+            //Delete parentheses of the form (aka ...).
+            var unbracketedName = BracketedAlternativeTitleRegex.Replace(movieName, "$1 AKA $2");
 
-                //Split by AKA and filter out empty and duplicate names.
-                result.AlternativeMovieTitles = new List<string>(AlternativeTitleRegex
-                    .Split(unbracketedName)
-                    .Where(alternativeName => alternativeName.IsNotNullOrWhiteSpace() && alternativeName != movieName));
-            }
+            //Split by AKA and filter out empty and duplicate names.
+            movieTitles
+                .AddRange(AlternativeTitleRegex
+                        .Split(unbracketedName)
+                        .Where(alternativeName => alternativeName.IsNotNullOrWhiteSpace() && alternativeName != movieName));
+
+            result.MovieTitles = movieTitles;
 
             Logger.Debug("Movie Parsed. {0}", result);
 

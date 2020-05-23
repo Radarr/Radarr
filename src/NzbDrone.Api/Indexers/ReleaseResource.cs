@@ -31,7 +31,7 @@ namespace NzbDrone.Api.Indexers
         public int SeasonNumber { get; set; }
         public List<Language> Languages { get; set; }
         public int Year { get; set; }
-        public string MovieTitle { get; set; }
+        public List<string> MovieTitles { get; set; }
         public int[] EpisodeNumbers { get; set; }
         public int[] AbsoluteEpisodeNumbers { get; set; }
         public bool Approved { get; set; }
@@ -109,7 +109,7 @@ namespace NzbDrone.Api.Indexers
                 Title = releaseInfo.Title,
                 Languages = parsedMovieInfo.Languages,
                 Year = parsedMovieInfo.Year,
-                MovieTitle = parsedMovieInfo.MovieTitle,
+                MovieTitles = parsedMovieInfo.MovieTitles,
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,
                 Rejected = model.Rejected,

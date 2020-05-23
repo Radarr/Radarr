@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Parser
     public interface IParsingService
     {
         Movie GetMovie(string title);
+        Movie GetMovieFromPath(string path);
         MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
         ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers);
         ParsedMovieInfo EnhanceMovieInfo(ParsedMovieInfo parsedMovieInfo, List<object> helpers = null);
@@ -121,14 +122,56 @@ namespace NzbDrone.Core.Parser
                 return _movieService.FindByTitle(title);
             }
 
-            var movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
+            return LookupParsedMovie(parsedMovieInfo);
+        }
 
-            if (movies == null)
+        public Movie GetMovieFromPath(string path)
+        {
+            var parsedMovieInfo = Parser.ParseMoviePath(path, isLenient: false);
+
+            if (parsedMovieInfo != null)
             {
-                movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitle.Replace("DC", "").Trim());
+                return LookupParsedMovie(parsedMovieInfo);
             }
 
-            return movies;
+            return null;
+        }
+
+        private Movie LookupParsedMovie(ParsedMovieInfo parsedMovieInfo)
+        {
+            var movie = LookupParsedMovie(parsedMovieInfo, requireExactYear: true);
+
+            if (movie == null)
+            {
+                movie = LookupParsedMovie(parsedMovieInfo, requireExactYear: false);
+            }
+
+            return movie;
+        }
+
+        private Movie LookupParsedMovie(ParsedMovieInfo parsedMovieInfo, bool requireExactYear = false, bool allowInexactMatch = false)
+        {
+            //Try each parsed title in sequence and return the first.
+            return parsedMovieInfo.MovieTitles
+                .Select(movieTitle => LookupMovie(movieTitle, parsedMovieInfo.Year, requireExactYear, allowInexactMatch))
+                .FirstOrDefault(movie => movie != null);
+        }
+
+        private Movie LookupMovie(string parsedTitle, int parsedYear, bool requireExactYear, bool allowInexactMatch)
+        {
+            if (!allowInexactMatch)
+            {
+                if (requireExactYear)
+                {
+                    return _movieService.FindByTitle(parsedTitle, parsedYear);
+                }
+                else
+                {
+                    return _movieService.FindByTitle(parsedTitle);
+                }
+            }
+
+            return _movieService.FindByTitleInexact(parsedTitle, requireExactYear ? (int?)parsedYear : null);
         }
 
         public MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null)
@@ -172,7 +215,7 @@ namespace NzbDrone.Core.Parser
             }
 
             // nothing found up to here => logging that and returning null
-            _logger.Debug($"No matching movie {parsedMovieInfo.MovieTitle}");
+            _logger.Debug($"No matching movie {parsedMovieInfo.PrimaryMovieTitle}");
             return result;
         }
 
@@ -206,14 +249,14 @@ namespace NzbDrone.Core.Parser
 
             if (parsedMovieInfo.Year > 1800)
             {
-                movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
+                movieByTitleAndOrYear = LookupParsedMovie(parsedMovieInfo, requireExactYear: true);
                 if (isNotNull(movieByTitleAndOrYear))
                 {
                     result = new MappingResult { Movie = movieByTitleAndOrYear };
                     return true;
                 }
 
-                movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
+                movieByTitleAndOrYear = LookupParsedMovie(parsedMovieInfo, requireExactYear: false);
                 if (isNotNull(movieByTitleAndOrYear))
                 {
                     result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.WrongYear };
@@ -222,7 +265,7 @@ namespace NzbDrone.Core.Parser
 
                 if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
                 {
-                    movieByTitleAndOrYear = _movieService.FindByTitleInexact(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
+                    movieByTitleAndOrYear = LookupParsedMovie(parsedMovieInfo, requireExactYear: true, allowInexactMatch: true);
                     if (isNotNull(movieByTitleAndOrYear))
                     {
                         result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.SuccessLenientMapping };
@@ -234,7 +277,7 @@ namespace NzbDrone.Core.Parser
                 return false;
             }
 
-            movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
+            movieByTitleAndOrYear = LookupParsedMovie(parsedMovieInfo, requireExactYear: false);
             if (isNotNull(movieByTitleAndOrYear))
             {
                 result = new MappingResult { Movie = movieByTitleAndOrYear };
@@ -243,7 +286,7 @@ namespace NzbDrone.Core.Parser
 
             if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
             {
-                movieByTitleAndOrYear = _movieService.FindByTitleInexact(parsedMovieInfo.MovieTitle, null);
+                movieByTitleAndOrYear = LookupParsedMovie(parsedMovieInfo, requireExactYear: false, allowInexactMatch: true);
                 if (isNotNull(movieByTitleAndOrYear))
                 {
                     result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.SuccessLenientMapping };
@@ -268,11 +311,11 @@ namespace NzbDrone.Core.Parser
                 possibleTitles.Add(altTitle.CleanTitle);
             }
 
-            string cleanTitle = parsedMovieInfo.MovieTitle.CleanSeriesTitle();
+            var cleanTitles = parsedMovieInfo.MovieTitles.Select(title => title.CleanSeriesTitle());
 
             foreach (string title in possibleTitles)
             {
-                if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                if (cleanTitles.Contains(title))
                 {
                     possibleMovie = searchCriteria.Movie;
                 }
@@ -283,12 +326,12 @@ namespace NzbDrone.Core.Parser
                     string romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
                     //_logger.Debug(cleanTitle);
-                    if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                    if (cleanTitles.Contains(title.Replace(arabicNumeral, romanNumeral)))
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
 
-                    if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle().Replace(arabicNumeral, romanNumeral))
+                    if (cleanTitles.Select(cleanTitle => cleanTitle.Replace(arabicNumeral, romanNumeral)).Contains(title))
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
@@ -309,8 +352,7 @@ namespace NzbDrone.Core.Parser
 
             if (_config.ParsingLeniency == ParsingLeniencyType.MappingLenient)
             {
-                if (searchCriteria.Movie.CleanTitle.Contains(cleanTitle) ||
-                    cleanTitle.Contains(searchCriteria.Movie.CleanTitle))
+                if (cleanTitles.Where(cleanTitle => searchCriteria.Movie.CleanTitle.Contains(cleanTitle) || cleanTitle.Contains(searchCriteria.Movie.CleanTitle)).Any())
                 {
                     possibleMovie = searchCriteria.Movie;
                     if ((parsedMovieInfo.Year > 1800 && parsedMovieInfo.Year == possibleMovie.Year) || possibleMovie.SecondaryYear == parsedMovieInfo.Year)
@@ -351,13 +393,13 @@ namespace NzbDrone.Core.Parser
                     case MappingResultType.NotParsable:
                         return $"Failed to find movie title in release name {ReleaseName}";
                     case MappingResultType.TitleNotFound:
-                        return $"Could not find {RemoteMovie.ParsedMovieInfo.MovieTitle}";
+                        return $"Could not find {RemoteMovie.ParsedMovieInfo.PrimaryMovieTitle}";
                     case MappingResultType.WrongYear:
                         return $"Failed to map movie, expected year {RemoteMovie.Movie.Year}, but found {RemoteMovie.ParsedMovieInfo.Year}";
                     case MappingResultType.WrongTitle:
                         var comma = RemoteMovie.Movie.AlternativeTitles.Count > 0 ? ", " : "";
                         return
-                            $"Failed to map movie, found title {RemoteMovie.ParsedMovieInfo.MovieTitle}, expected one of: {RemoteMovie.Movie.Title}{comma}{string.Join(", ", RemoteMovie.Movie.AlternativeTitles)}";
+                            $"Failed to map movie, found titles {string.Join(", ", RemoteMovie.ParsedMovieInfo.MovieTitles)}, expected one of: {RemoteMovie.Movie.Title}{comma}{string.Join(", ", RemoteMovie.Movie.AlternativeTitles)}";
                     default:
                         return $"Failed to map movie for unkown reasons";
                 }

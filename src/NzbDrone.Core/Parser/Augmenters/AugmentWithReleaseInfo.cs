@@ -36,10 +36,11 @@ namespace NzbDrone.Core.Parser.Augmenters
                 catch (Exception)
                 {
                     //_logger.Debug("Indexer with id {0} does not exist, skipping minimum seeder checks.", subject.Release.IndexerId);
-                }                // First, let's augment the language!
+                }
 
+                // First, let's augment the language!
                 var languageTitle = movieInfo.SimpleReleaseTitle;
-                if (movieInfo.MovieTitle.IsNotNullOrWhiteSpace())
+                if (movieInfo.PrimaryMovieTitle.IsNotNullOrWhiteSpace())
                 {
                     if (languageTitle.ToLower().Contains("multi") && indexerSettings?.MultiLanguages?.Any() == true)
                     {

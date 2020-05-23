@@ -115,7 +115,7 @@ namespace NzbDrone.Api.Movies
 
                     m = new Core.Movies.Movie
                     {
-                        Title = parsedTitle.MovieTitle,
+                        Title = parsedTitle.PrimaryMovieTitle,
                         Year = parsedTitle.Year,
                         ImdbId = parsedTitle.ImdbId,
                         Path = f.Path,

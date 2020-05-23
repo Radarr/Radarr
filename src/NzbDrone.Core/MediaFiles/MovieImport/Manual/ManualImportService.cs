@@ -143,7 +143,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
             if (movie == null)
             {
-                _parsingService.GetMovie(relativeFile.Split('\\', '/')[0]);
+                movie = _parsingService.GetMovie(relativeFile.Split('\\', '/')[0]);
             }
 
             if (movie == null)
@@ -164,12 +164,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
             if (movie == null)
             {
-                var relativeParseInfo = Parser.Parser.ParseMoviePath(relativeFile, false);
-
-                if (relativeParseInfo != null)
-                {
-                    movie = _movieService.FindByTitle(relativeParseInfo.MovieTitle);
-                }
+                movie = _parsingService.GetMovieFromPath(relativeFile);
             }
 
             if (movie == null)

@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Parser.Model
 {
     public class ParsedMovieInfo
     {
-        public string MovieTitle { get; set; }
-        public List<string> AlternativeMovieTitles { get; set; }
+        public List<string> MovieTitles { get; set; } = new List<string>();
         public string SimpleReleaseTitle { get; set; }
         public QualityModel Quality { get; set; }
         public List<Language> Languages { get; set; } = new List<Language>();
@@ -20,9 +20,22 @@ namespace NzbDrone.Core.Parser.Model
         [JsonIgnore]
         public Dictionary<string, object> ExtraInfo { get; set; } = new Dictionary<string, object>();
 
+        public string PrimaryMovieTitle
+        {
+            get
+            {
+                if (MovieTitles.Count > 0)
+                {
+                    return MovieTitles[0];
+                }
+
+                return null;
+            }
+        }
+
         public override string ToString()
         {
-            return string.Format("{0} - {1} {2}", MovieTitle, Year, Quality);
+            return string.Format("{0} - {1} {2}", PrimaryMovieTitle, Year, Quality);
         }
 
 #if LIBRARY

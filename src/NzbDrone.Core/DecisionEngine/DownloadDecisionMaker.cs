@@ -77,12 +77,12 @@ namespace NzbDrone.Core.DecisionEngine
 
                     MappingResult result = null;
 
-                    if (parsedMovieInfo == null || parsedMovieInfo.MovieTitle.IsNullOrWhiteSpace())
+                    if (parsedMovieInfo == null || parsedMovieInfo.PrimaryMovieTitle.IsNullOrWhiteSpace())
                     {
                         _logger.Debug("{0} could not be parsed :(.", report.Title);
                         parsedMovieInfo = new ParsedMovieInfo
                         {
-                            MovieTitle = report.Title,
+                            MovieTitles = new List<string>() { report.Title },
                             SimpleReleaseTitle = report.Title.SimplifyReleaseTitle(),
                             Year = 1290,
                             Languages = new List<Language> { Language.Unknown },
