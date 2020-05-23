@@ -60,6 +60,56 @@ namespace NzbDrone.Core.Test.ParserTests
             Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
         }
 
+        [TestCase(
+            "L'hypothèse.du.tableau.volé.AKA.The.Hypothesis.of.the.Stolen.Painting.1978.1080p.CINET.WEB-DL.AAC2.0.x264-Cinefeel.mkv",
+            "L'hypothèse du tableau volé AKA The Hypothesis of the Stolen Painting",
+            new string[] { "L'hypothèse du tableau volé", "The Hypothesis of the Stolen Painting" })]
+        [TestCase(
+            "Akahige.AKA.Red.Beard.1965.CD1.CRiTERiON.DVDRip.XviD-KG.avi",
+            "Akahige AKA Red Beard",
+            new string[] { "Akahige", "Red Beard" })]
+        [TestCase(
+            "Akasen.chitai.AKA.Street.of.Shame.1956.1080p.BluRay.x264.FLAC.1.0.mkv",
+            "Akasen chitai AKA Street of Shame",
+            new string[] { "Akasen chitai", "Street of Shame" })]
+        [TestCase(
+            "Time.Under.Fire.(aka.Beneath.the.Bermuda.Triangle).1997.DVDRip.x264.CG-Grzechsin.mkv",
+            "Time Under Fire (aka Beneath the Bermuda Triangle)",
+            new string[] { "Time Under Fire", "Beneath the Bermuda Triangle" })]
+        [TestCase(
+            "Nochnoy.prodavet. AKA.Graveyard.Shift.2005.DVDRip.x264-HANDJOB.mkv",
+            "Nochnoy prodavet  AKA Graveyard Shift",
+            new string[] { "Nochnoy prodavet", "Graveyard Shift" })]
+        [TestCase(
+            "AKA.2002.DVDRip.x264-HANDJOB.mkv",
+            "AKA",
+            new string[] { })]
+        [TestCase(
+            "Unbreakable.2000.BluRay.1080p.DTS.x264.dxva-EuReKA.mkv",
+            "Unbreakable",
+            new string[] { })]
+        [TestCase(
+            "Aka Ana (2008).avi",
+            "Aka Ana",
+            new string[] { })]
+        [TestCase(
+            "Return to Return to Nuke 'em High aka Volume 2 (2018) 1080p.mp4",
+            "Return to Return to Nuke 'em High aka Volume 2",
+            new string[] { "Return to Return to Nuke 'em High", "Volume 2" })]
+        public void should_parse_movie_alternative_titles(string postTitle, string standardTitle, string[] alternativeTitles)
+        {
+            var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            movieInfo.MovieTitle.Should().Be(standardTitle);
+
+            movieInfo.AlternativeMovieTitles.Count.Should().Be(alternativeTitles.Length);
+
+            for (var i = 0; i < movieInfo.AlternativeMovieTitles.Count; i += 1)
+            {
+                movieInfo.AlternativeMovieTitles[i].Should().Be(alternativeTitles[i]);
+            }
+        }
+
         [TestCase("(1995) Ghost in the Shell", "Ghost in the Shell")]
         public void should_parse_movie_folder_name(string postTitle, string title)
         {

@@ -84,6 +84,12 @@ namespace NzbDrone.Core.Parser
         //Regex to detect whether the title was reversed.
         private static readonly Regex ReversedTitleRegex = new Regex(@"(?:^|[-._ ])(p027|p0801)[-._ ]", RegexOptions.Compiled);
 
+        //Regex to split movie titles that contain `AKA`.
+        private static readonly Regex AlternativeTitleRegex = new Regex(@"[ ]+AKA[ ]+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        // Regex to unbracket alternative titles.
+        private static readonly Regex BracketedAlternativeTitleRegex = new Regex(@"(.*) \([ ]*AKA[ ]+(.*)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private static readonly Regex NormalizeRegex = new Regex(@"((?:\b|_)(?<!^|[^a-zA-Z0-9_']\w[^a-zA-Z0-9_'])(a(?!$|[^a-zA-Z0-9_']\w[^a-zA-Z0-9_'])|an|the|and|or|of)(?:\b|_))|\W|_",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -526,6 +532,17 @@ namespace NzbDrone.Core.Parser
             }
 
             result.MovieTitle = movieName;
+
+            if (movieName.IsNotNullOrWhiteSpace())
+            {
+                //Delete parentheses of the form (aka ...).
+                var unbracketedName = BracketedAlternativeTitleRegex.Replace(movieName, "$1 AKA $2");
+
+                //Split by AKA and filter out empty and duplicate names.
+                result.AlternativeMovieTitles = new List<string>(AlternativeTitleRegex
+                    .Split(unbracketedName)
+                    .Where(alternativeName => alternativeName.IsNotNullOrWhiteSpace() && alternativeName != movieName));
+            }
 
             Logger.Debug("Movie Parsed. {0}", result);
 
