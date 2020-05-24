@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -122,17 +121,12 @@ namespace NzbDrone.Core.NetImport
                 _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
             }
 
-            var tasks = listedMovies.Select(x => _movieSearch.MapMovieToTmdbMovieAsync(x)).ToList();
-
             var importExclusions = new List<string>();
             var moviesToAdd = new List<Movie>();
 
-            while (tasks.Count > 0)
+            foreach (var movie in listedMovies)
             {
-                var finishedTask = Task.WhenAny(tasks).GetAwaiter().GetResult();
-                tasks.Remove(finishedTask);
-
-                var mapped = finishedTask.GetAwaiter().GetResult();
+                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
 
                 if (mapped != null && mapped.TmdbId > 0)
                 {
