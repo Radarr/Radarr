@@ -1,6 +1,4 @@
-using System;
 using System.ServiceProcess;
-using System.Threading;
 using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
@@ -90,9 +88,6 @@ namespace Radarr.Host
                 //Console.CancelKeyPress += (sender, eventArgs) => eventArgs.Cancel = true;
                 //_cancelHandler = new CancelHandler();
             }
-
-            ThreadPool.GetMinThreads(out var minWorker, out var minIOC);
-            ThreadPool.SetMinThreads(Math.Max(4, minWorker), Math.Max(4, minIOC));
 
             _runtimeInfo.IsExiting = false;
             DbFactory.RegisterDatabase(_container);
