@@ -206,11 +206,10 @@ namespace NzbDrone.Core.Movies
                     .Where(movie => (updatedTMDBMovies.Count == 0 && _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie)) ||
                            updatedTMDBMovies.Contains(movie.TmdbId) ||
                            message.Trigger == CommandTrigger.Manual)
-                    .ToDictionary(x => _movieInfo.GetMovieInfoAsync(x.TmdbId), x => x);
+                    .ToList();
 
-                var tasks = toRefresh.Keys.ToList();
-
-                var skipped = allMovie.Except(toRefresh.Values);
+                var tasks = toRefresh.Take(5).Select(x => _movieInfo.GetMovieInfoAsync(x.TmdbId)).ToList();
+                var skipped = allMovie.Except(toRefresh);
 
                 foreach (var movie in skipped)
                 {
@@ -218,16 +217,18 @@ namespace NzbDrone.Core.Movies
                     RescanMovie(movie, false, trigger);
                 }
 
-                while (tasks.Count > 0)
+                for (var i = 0; i < toRefresh.Count; i++)
                 {
-                    var finishedTask = Task.WhenAny(tasks).GetAwaiter().GetResult();
-                    tasks.Remove(finishedTask);
+                    var movie = toRefresh[i];
 
-                    var movie = toRefresh[finishedTask];
+                    if (i + 5 < toRefresh.Count)
+                    {
+                        tasks.Add(_movieInfo.GetMovieInfoAsync(toRefresh[i + 5].TmdbId));
+                    }
 
                     try
                     {
-                        RefreshMovieInfo(movie, finishedTask);
+                        RefreshMovieInfo(movie, tasks[i]);
                     }
                     catch (MovieNotFoundException)
                     {
