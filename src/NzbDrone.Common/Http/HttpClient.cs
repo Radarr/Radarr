@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.EnvironmentInfo;
@@ -24,16 +23,6 @@ namespace NzbDrone.Common.Http
         HttpResponse Head(HttpRequest request);
         HttpResponse Post(HttpRequest request);
         HttpResponse<T> Post<T>(HttpRequest request)
-            where T : new();
-
-        Task<HttpResponse> ExecuteAsync(HttpRequest request);
-        Task DownloadFileAsync(string url, string fileName);
-        Task<HttpResponse> GetAsync(HttpRequest request);
-        Task<HttpResponse<T>> GetAsync<T>(HttpRequest request)
-            where T : new();
-        Task<HttpResponse> HeadAsync(HttpRequest request);
-        Task<HttpResponse> PostAsync(HttpRequest request);
-        Task<HttpResponse<T>> PostAsync<T>(HttpRequest request)
             where T : new();
     }
 
@@ -65,11 +54,11 @@ namespace NzbDrone.Common.Http
             _cookieContainerCache = cacheManager.GetCache<CookieContainer>(typeof(HttpClient));
         }
 
-        public async Task<HttpResponse> ExecuteAsync(HttpRequest request)
+        public HttpResponse Execute(HttpRequest request)
         {
             var cookieContainer = InitializeRequestCookies(request);
 
-            var response = await ExecuteRequestAsync(request, cookieContainer);
+            var response = ExecuteRequest(request, cookieContainer);
 
             if (request.AllowAutoRedirect && response.HasHttpRedirect)
             {
@@ -88,7 +77,7 @@ namespace NzbDrone.Common.Http
                         throw new WebException($"Too many automatic redirections were attempted for {autoRedirectChain.Join(" -> ")}", WebExceptionStatus.ProtocolError);
                     }
 
-                    response = await ExecuteRequestAsync(request, cookieContainer);
+                    response = ExecuteRequest(request, cookieContainer);
                 }
                 while (response.HasHttpRedirect);
             }
@@ -115,12 +104,7 @@ namespace NzbDrone.Common.Http
             return response;
         }
 
-        public HttpResponse Execute(HttpRequest request)
-        {
-            return ExecuteAsync(request).GetAwaiter().GetResult();
-        }
-
-        private async Task<HttpResponse> ExecuteRequestAsync(HttpRequest request, CookieContainer cookieContainer)
+        private HttpResponse ExecuteRequest(HttpRequest request, CookieContainer cookieContainer)
         {
             foreach (var interceptor in _requestInterceptors)
             {
@@ -129,7 +113,7 @@ namespace NzbDrone.Common.Http
 
             if (request.RateLimit != TimeSpan.Zero)
             {
-                await _rateLimitService.WaitAndPulseAsync(request.Url.Host, request.RateLimit);
+                _rateLimitService.WaitAndPulse(request.Url.Host, request.RateLimit);
             }
 
             _logger.Trace(request);
@@ -138,7 +122,7 @@ namespace NzbDrone.Common.Http
 
             PrepareRequestCookies(request, cookieContainer);
 
-            var response = await _httpDispatcher.GetResponseAsync(request, cookieContainer);
+            var response = _httpDispatcher.GetResponse(request, cookieContainer);
 
             HandleResponseCookies(response, cookieContainer);
 
@@ -247,7 +231,7 @@ namespace NzbDrone.Common.Http
             }
         }
 
-        public async Task DownloadFileAsync(string url, string fileName)
+        public void DownloadFile(string url, string fileName)
         {
             try
             {
@@ -263,7 +247,7 @@ namespace NzbDrone.Common.Http
                 using (var webClient = new GZipWebClient())
                 {
                     webClient.Headers.Add(HttpRequestHeader.UserAgent, _userAgentBuilder.GetUserAgent());
-                    await webClient.DownloadFileTaskAsync(url, fileName);
+                    webClient.DownloadFile(url, fileName);
                     stopWatch.Stop();
                     _logger.Debug("Downloading Completed. took {0:0}s", stopWatch.Elapsed.Seconds);
                 }
@@ -271,92 +255,47 @@ namespace NzbDrone.Common.Http
             catch (WebException e)
             {
                 _logger.Warn("Failed to get response from: {0} {1}", url, e.Message);
-
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
-
                 throw;
             }
             catch (Exception e)
             {
                 _logger.Warn(e, "Failed to get response from: " + url);
-
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
-
                 throw;
             }
         }
 
-        public void DownloadFile(string url, string fileName)
-        {
-            // https://docs.microsoft.com/en-us/archive/msdn-magazine/2015/july/async-programming-brownfield-async-development#the-thread-pool-hack
-            Task.Run(() => DownloadFileAsync(url, fileName)).GetAwaiter().GetResult();
-        }
-
-        public Task<HttpResponse> GetAsync(HttpRequest request)
-        {
-            request.Method = HttpMethod.GET;
-            return ExecuteAsync(request);
-        }
-
         public HttpResponse Get(HttpRequest request)
         {
-            return Task.Run(() => GetAsync(request)).GetAwaiter().GetResult();
-        }
-
-        public async Task<HttpResponse<T>> GetAsync<T>(HttpRequest request)
-            where T : new()
-        {
-            var response = await GetAsync(request);
-            CheckResponseContentType(response);
-            return new HttpResponse<T>(response);
+            request.Method = HttpMethod.GET;
+            return Execute(request);
         }
 
         public HttpResponse<T> Get<T>(HttpRequest request)
             where T : new()
         {
-            return Task.Run(() => GetAsync<T>(request)).GetAwaiter().GetResult();
-        }
-
-        public Task<HttpResponse> HeadAsync(HttpRequest request)
-        {
-            request.Method = HttpMethod.HEAD;
-            return ExecuteAsync(request);
+            var response = Get(request);
+            CheckResponseContentType(response);
+            return new HttpResponse<T>(response);
         }
 
         public HttpResponse Head(HttpRequest request)
         {
-            return Task.Run(() => HeadAsync(request)).GetAwaiter().GetResult();
-        }
-
-        public Task<HttpResponse> PostAsync(HttpRequest request)
-        {
-            request.Method = HttpMethod.POST;
-            return ExecuteAsync(request);
+            request.Method = HttpMethod.HEAD;
+            return Execute(request);
         }
 
         public HttpResponse Post(HttpRequest request)
         {
-            return Task.Run(() => PostAsync(request)).GetAwaiter().GetResult();
-        }
-
-        public async Task<HttpResponse<T>> PostAsync<T>(HttpRequest request)
-            where T : new()
-        {
-            var response = await PostAsync(request);
-            CheckResponseContentType(response);
-            return new HttpResponse<T>(response);
+            request.Method = HttpMethod.POST;
+            return Execute(request);
         }
 
         public HttpResponse<T> Post<T>(HttpRequest request)
             where T : new()
         {
-            return Task.Run(() => PostAsync<T>(request)).GetAwaiter().GetResult();
+            var response = Post(request);
+            CheckResponseContentType(response);
+            return new HttpResponse<T>(response);
         }
 
         private void CheckResponseContentType(HttpResponse response)

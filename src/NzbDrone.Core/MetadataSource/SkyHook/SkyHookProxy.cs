@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
@@ -15,6 +14,7 @@ using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Credits;
+using NzbDrone.Core.NetImport.ImportExclusions;
 using NzbDrone.Core.NetImport.TMDb;
 using NzbDrone.Core.Parser;
 
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return new HashSet<int>(response.Resource.Results.Select(c => c.Id));
         }
 
-        public async Task<Tuple<Movie, List<Credit>>> GetMovieInfoAsync(int tmdbId)
+        public Tuple<Movie, List<Credit>> GetMovieInfo(int tmdbId)
         {
             var httpRequest = _radarrMetadata.Create()
                                              .SetSegment("route", "movie")
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = await _httpClient.GetAsync<MovieResource>(httpRequest);
+            var httpResponse = _httpClient.Get<MovieResource>(httpRequest);
 
             if (httpResponse.HasHttpError)
             {
@@ -96,11 +96,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var movie = MapMovie(httpResponse.Resource);
 
             return new Tuple<Movie, List<Credit>>(movie, credits.ToList());
-        }
-
-        public Tuple<Movie, List<Credit>> GetMovieInfo(int tmdbId)
-        {
-            return GetMovieInfoAsync(tmdbId).GetAwaiter().GetResult();
         }
 
         public Movie GetMovieByImdbId(string imdbId)
@@ -241,14 +236,14 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return title;
         }
 
-        public async Task<Movie> MapMovieToTmdbMovieAsync(Movie movie)
+        public Movie MapMovieToTmdbMovie(Movie movie)
         {
             try
             {
                 Movie newMovie = movie;
                 if (movie.TmdbId > 0)
                 {
-                    newMovie = (await GetMovieInfoAsync(movie.TmdbId)).Item1;
+                    newMovie = GetMovieInfo(movie.TmdbId).Item1;
                 }
                 else if (movie.ImdbId.IsNotNullOrWhiteSpace())
                 {
@@ -286,11 +281,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 _logger.Warn(ex, "Couldn't map movie {0} to a movie on The Movie DB. It will not be added :(", movie.Title);
                 return null;
             }
-        }
-
-        public Movie MapMovieToTmdbMovie(Movie movie)
-        {
-            return MapMovieToTmdbMovieAsync(movie).GetAwaiter().GetResult();
         }
 
         public List<Movie> SearchForNewMovie(string title)
