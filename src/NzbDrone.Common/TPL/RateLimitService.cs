@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common.Cache;
 
@@ -9,7 +8,6 @@ namespace NzbDrone.Common.TPL
     public interface IRateLimitService
     {
         void WaitAndPulse(string key, TimeSpan interval);
-        Task WaitAndPulseAsync(string key, TimeSpan interval);
     }
 
     public class RateLimitService : IRateLimitService
@@ -25,35 +23,19 @@ namespace NzbDrone.Common.TPL
 
         public void WaitAndPulse(string key, TimeSpan interval)
         {
-            var delay = GetDelay(key, interval);
-
-            if (delay.TotalSeconds > 0.0)
-            {
-                _logger.Trace("Rate Limit triggered, delaying '{0}' for {1:0.000} sec", key, delay.TotalSeconds);
-                System.Threading.Thread.Sleep(delay);
-            }
-        }
-
-        public async Task WaitAndPulseAsync(string key, TimeSpan interval)
-        {
-            var delay = GetDelay(key, interval);
-
-            if (delay.TotalSeconds > 0.0)
-            {
-                _logger.Trace("Rate Limit triggered, delaying '{0}' for {1:0.000} sec", key, delay.TotalSeconds);
-                await Task.Delay(delay);
-            }
-        }
-
-        private TimeSpan GetDelay(string key, TimeSpan interval)
-        {
             var waitUntil = _rateLimitStore.AddOrUpdate(key,
                 (s) => DateTime.UtcNow + interval,
                 (s, i) => new DateTime(Math.Max(DateTime.UtcNow.Ticks, i.Ticks), DateTimeKind.Utc) + interval);
 
             waitUntil -= interval;
 
-            return waitUntil - DateTime.UtcNow;
+            var delay = waitUntil - DateTime.UtcNow;
+
+            if (delay.TotalSeconds > 0.0)
+            {
+                _logger.Trace("Rate Limit triggered, delaying '{0}' for {1:0.000} sec", key, delay.TotalSeconds);
+                System.Threading.Thread.Sleep(delay);
+            }
         }
     }
 }

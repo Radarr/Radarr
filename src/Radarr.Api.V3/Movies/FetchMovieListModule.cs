@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Nancy;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaCover;
@@ -28,14 +27,22 @@ namespace Radarr.Api.V3.Movies
         {
             var results = _fetchNetImport.FetchAndFilter((int)Request.Query.listId, false);
 
-            var tasks = results.Where(movie => movie.TmdbId == 0 || !movie.Images.Any() || movie.Overview.IsNullOrWhiteSpace())
-                .Select(x => _movieSearch.MapMovieToTmdbMovieAsync(x));
+            List<Movie> realResults = new List<Movie>();
 
-            var realResults = results.Where(movie => movie.TmdbId != 0 && movie.Images.Any() && movie.Overview.IsNotNullOrWhiteSpace()).ToList();
+            foreach (var movie in results)
+            {
+                var mapped = movie;
 
-            var mapped = Task.WhenAll(tasks).GetAwaiter().GetResult();
+                if (movie.TmdbId == 0 || !movie.Images.Any() || movie.Overview.IsNullOrWhiteSpace())
+                {
+                    mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                }
 
-            realResults.AddRange(mapped.Where(x => x != null));
+                if (mapped != null)
+                {
+                    realResults.Add(mapped);
+                }
+            }
 
             return MapToResource(realResults);
         }
