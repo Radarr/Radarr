@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
@@ -32,15 +33,15 @@ namespace NzbDrone.Core.Test.MovieTests
                   .Returns(_movie);
 
             Mocker.GetMock<IProvideMovieInfo>()
-                  .Setup(s => s.GetMovieInfo(It.IsAny<int>()))
-                  .Callback<int>((i) => { throw new MovieNotFoundException(i); });
+                  .Setup(s => s.GetMovieInfoAsync(It.IsAny<int>()))
+                .ThrowsAsync(new MovieNotFoundException(1));
         }
 
         private void GivenNewMovieInfo(Movie movie)
         {
             Mocker.GetMock<IProvideMovieInfo>()
-                  .Setup(s => s.GetMovieInfo(_movie.TmdbId))
-                  .Returns(new Tuple<Movie, List<Credit>>(movie, new List<Credit>()));
+                .Setup(s => s.GetMovieInfoAsync(_movie.TmdbId))
+                .ReturnsAsync(new Tuple<Movie, List<Credit>>(movie, new List<Credit>()));
         }
 
         [Test]
