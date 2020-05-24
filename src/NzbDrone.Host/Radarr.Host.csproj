@@ -10,8 +10,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Owin" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="3.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Owin" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="3.1.4" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NLog.Extensions.Logging" Version="1.6.2" />

@@ -991,10 +991,10 @@
     normalize-path "^2.0.1"
     through2 "^2.0.3"
 
-"@microsoft/signalr@3.1.3":
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-3.1.3.tgz#250df3fcabe9e637a61e696edcd97f93a96bbcd3"
-  integrity sha512-jcjzvPDP3VbtmUoTDwgKEjaQ1m4FgSiS00zvybcF8UweAkdWUAYsaMXTISEk7E5nD0jrxyMMdSuPGgw9AcG46w==
+"@microsoft/signalr@3.1.4":
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-3.1.4.tgz#1082d2063be2d04d4b4699c6a2fb17232127ff43"
+  integrity sha512-GobftNY4dH0ewciBvfeJU2oQwa4ceXoHplSMlOZdf0G+NSjITFAjhSYFqSUyIRSmkDark17R5hGeuvd58/9Ivg==
   dependencies:
     eventsource "^1.0.7"
     request "^2.88.0"
