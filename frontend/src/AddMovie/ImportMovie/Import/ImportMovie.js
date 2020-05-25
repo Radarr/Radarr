@@ -5,7 +5,7 @@ import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import ImportMovieTableConnector from './ImportMovieTableConnector';
 import ImportMovieFooterConnector from './ImportMovieFooterConnector';
 
@@ -93,7 +93,7 @@ class ImportMovie extends Component {
 
     return (
       <PageContent title="Import Movies">
-        <PageContentBodyConnector
+        <PageContentBody
           registerScroller={this.setScrollerRef}
           onScroll={this.onScroll}
         >
@@ -128,7 +128,7 @@ class ImportMovie extends Component {
                 onRemoveSelectedStateItem={this.onRemoveSelectedStateItem}
               />
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
 
         {
           !rootFoldersError && rootFoldersPopulated && !!unmappedFolders.length &&

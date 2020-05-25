@@ -17,7 +17,7 @@ import Measure from 'Components/Measure';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
@@ -255,7 +255,7 @@ class MovieDetails extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
-        <PageContentBodyConnector innerClassName={styles.innerContentBody}>
+        <PageContentBody innerClassName={styles.innerContentBody}>
           <div className={styles.header}>
             <div
               className={styles.backdrop}
@@ -614,7 +614,7 @@ class MovieDetails extends Component {
             showImportMode={false}
             onModalClose={this.onInteractiveImportModalClose}
           />
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

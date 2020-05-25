@@ -13,7 +13,7 @@ import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import TablePager from 'Components/Table/TablePager';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
@@ -193,7 +193,7 @@ class Queue extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
-        <PageContentBodyConnector>
+        <PageContentBody>
           {
             isRefreshing && !isAllPopulated &&
               <LoadingIndicator />
@@ -250,7 +250,7 @@ class Queue extends Component {
                 />
               </div>
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
 
         <RemoveQueueItemsModal
           isOpen={isConfirmRemoveModalOpen}

@@ -5,7 +5,7 @@ import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItems';
 import { align, icons, sortDirections } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageJumpBar from 'Components/Page/PageJumpBar';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
@@ -259,7 +259,7 @@ class AddListMovie extends Component {
         </PageToolbar>
 
         <div className={styles.pageContentBodyWrapper}>
-          <PageContentBodyConnector
+          <PageContentBody
             registerScroller={this.setScrollerRef}
             className={styles.contentBody}
             innerClassName={styles[`${view}InnerContentBody`]}
@@ -296,7 +296,7 @@ class AddListMovie extends Component {
                   <div className={styles.noResults}>Couldn't find any results</div>
                 </div>
             }
-          </PageContentBodyConnector>
+          </PageContentBody>
 
           {
             isLoaded && !!jumpBarItems.order.length &&

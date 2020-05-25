@@ -9,7 +9,7 @@ import toggleSelected from 'Utilities/Table/toggleSelected';
 import { align, icons, kinds, sortDirections } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageJumpBar from 'Components/Page/PageJumpBar';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
@@ -476,7 +476,7 @@ class MovieIndex extends Component {
         </PageToolbar>
 
         <div className={styles.pageContentBodyWrapper}>
-          <PageContentBodyConnector
+          <PageContentBody
             registerScroller={this.setScrollerRef}
             className={styles.contentBody}
             innerClassName={styles[`${view}InnerContentBody`]}
@@ -524,7 +524,7 @@ class MovieIndex extends Component {
               !error && isPopulated && !items.length &&
                 <NoMovie totalItems={totalItems} />
             }
-          </PageContentBodyConnector>
+          </PageContentBody>
 
           {
             isLoaded && !!jumpBarItems.order.length &&

@@ -8,7 +8,7 @@ import Icon from 'Components/Icon';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import TextInput from 'Components/Form/TextInput';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import AddNewMovieSearchResultConnector from './AddNewMovieSearchResultConnector';
 import styles from './AddNewMovie.css';
 
@@ -88,7 +88,7 @@ class AddNewMovie extends Component {
 
     return (
       <PageContent title="Add New Movie">
-        <PageContentBodyConnector>
+        <PageContentBody>
           <div className={styles.searchContainer}>
             <div className={styles.searchIconContainer}>
               <Icon
@@ -191,7 +191,7 @@ class AddNewMovie extends Component {
           }
 
           <div />
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

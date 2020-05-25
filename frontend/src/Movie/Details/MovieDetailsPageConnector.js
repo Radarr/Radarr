@@ -6,7 +6,7 @@ import { createSelector } from 'reselect';
 import { push } from 'connected-react-router';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import NotFound from 'Components/NotFound';
 import MovieDetailsConnector from './MovieDetailsConnector';
@@ -74,9 +74,9 @@ class MovieDetailsPageConnector extends Component {
     if (isFetching && !isPopulated) {
       return (
         <PageContent title='loading'>
-          <PageContentBodyConnector>
+          <PageContentBody>
             <LoadingIndicator />
-          </PageContentBodyConnector>
+          </PageContentBody>
         </PageContent>
       );
     }

@@ -7,7 +7,7 @@ import Icon from 'Components/Icon';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FileBrowserModal from 'Components/FileBrowser/FileBrowserModal';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import ImportMovieRootFolderRowConnector from './ImportMovieRootFolderRowConnector';
@@ -77,7 +77,7 @@ class ImportMovieSelectFolder extends Component {
 
     return (
       <PageContent title="Import Movies">
-        <PageContentBodyConnector>
+        <PageContentBody>
           {
             isFetching && !isPopulated &&
               <LoadingIndicator />
@@ -169,7 +169,7 @@ class ImportMovieSelectFolder extends Component {
                 />
               </div>
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

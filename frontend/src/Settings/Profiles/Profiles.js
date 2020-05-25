@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import Link from 'Components/Link/Link';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import QualityProfilesConnector from './Quality/QualityProfilesConnector';
@@ -23,7 +23,7 @@ class Profiles extends Component {
           showSave={false}
         />
 
-        <PageContentBodyConnector>
+        <PageContentBody>
           <DndProvider backend={HTML5Backend}>
             <QualityProfilesConnector />
             <DelayProfilesConnector />
@@ -33,7 +33,7 @@ class Profiles extends Component {
               instead.
             </div>
           </DndProvider>
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

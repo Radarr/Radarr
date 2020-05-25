@@ -4,7 +4,7 @@ import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import { align, icons } from 'Helpers/Props';
 import PageContent from 'Components/Page/PageContent';
 import Measure from 'Components/Measure';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
@@ -140,7 +140,7 @@ class CalendarPage extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
-        <PageContentBodyConnector
+        <PageContentBody
           className={styles.calendarPageBody}
           innerClassName={styles.calendarInnerPageBody}
         >
@@ -171,7 +171,7 @@ class CalendarPage extends Component {
             hasMovie && !movieError &&
               <LegendConnector />
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
 
         <CalendarLinkModal
           isOpen={isCalendarLinkModalOpen}
