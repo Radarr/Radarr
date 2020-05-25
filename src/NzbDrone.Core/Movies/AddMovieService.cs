@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Movies
             }
             catch (MovieNotFoundException)
             {
-                _logger.Error("TmdbId {1} was not found, it may have been removed from TMDb.", newMovie.TmdbId);
+                _logger.Error("TmdbId {0} was not found, it may have been removed from TMDb.", newMovie.TmdbId);
 
                 throw new ValidationException(new List<ValidationFailure>
                                               {
