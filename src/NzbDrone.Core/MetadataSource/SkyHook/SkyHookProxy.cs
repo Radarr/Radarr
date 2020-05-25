@@ -14,7 +14,6 @@ using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Credits;
-using NzbDrone.Core.NetImport.ImportExclusions;
 using NzbDrone.Core.NetImport.TMDb;
 using NzbDrone.Core.Parser;
 
@@ -170,31 +169,31 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var now = DateTime.Now;
 
             //handle the case when we have both theatrical and physical release dates
-            if (movie.InCinemas.HasValue && movie.PhysicalRelease.HasValue)
+            if (resource.InCinema.HasValue && resource.PhysicalRelease.HasValue)
             {
-                if (now < movie.InCinemas)
+                if (now < resource.InCinema)
                 {
                     movie.Status = MovieStatusType.Announced;
                 }
-                else if (now >= movie.InCinemas)
+                else if (now >= resource.InCinema)
                 {
                     movie.Status = MovieStatusType.InCinemas;
                 }
 
-                if (now >= movie.PhysicalRelease)
+                if (now >= resource.PhysicalRelease)
                 {
                     movie.Status = MovieStatusType.Released;
                 }
             }
 
             //handle the case when we have theatrical release dates but we dont know the physical release date
-            else if (movie.InCinemas.HasValue && (now >= movie.InCinemas))
+            else if (resource.InCinema.HasValue && (now >= resource.InCinema))
             {
                 movie.Status = MovieStatusType.InCinemas;
             }
 
             //handle the case where we only have a physical release date
-            else if (movie.PhysicalRelease.HasValue && (now >= movie.PhysicalRelease))
+            else if ((resource.PhysicalRelease.HasValue && (now >= resource.PhysicalRelease)) || (resource.DigitalRelease.HasValue && (now >= resource.DigitalRelease)))
             {
                 movie.Status = MovieStatusType.Released;
             }
