@@ -16,6 +16,7 @@ using NzbDrone.Core.MetadataSource.RadarrAPI;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.IndexerSearch;
 
 namespace NzbDrone.Core.Movies
 {
@@ -177,6 +178,9 @@ namespace NzbDrone.Core.Movies
                         try
                         {
                             RefreshMovieInfo(movie);
+
+                            // Initiate indexer search if update library is manually triggered
+                            _commandQueueManager.Push(new MoviesSearchCommand { MovieIds = new List<int> { movie.Id } });
                         }
                         catch (Exception e)
                         {

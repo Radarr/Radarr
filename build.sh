@@ -1,5 +1,5 @@
 #! /bin/bash
-msBuild='/MSBuild/15.0/Bin'
+msBuild='/MSBuild/Current/Bin'
 outputFolder='./_output'
 outputFolderMono='./_output_mono'
 outputFolderOsx='./_output_osx'

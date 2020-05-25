@@ -290,7 +290,7 @@ namespace NzbDrone.Core.Organizer
             var colonReplacementFormat = colonReplacement.GetFormatString();
 
             string result = name;
-            string[] badCharacters = { "\\", "/", "<", ">", "?", "*", ":", "|", "\"" };
+            string[] badCharacters = { "/", "<", ">", "?", "*", ":", "|", "\"" };
             string[] goodCharacters = { "+", "+", "", "", "!", "-", colonReplacementFormat, "", "" };
 
             for (int i = 0; i < badCharacters.Length; i++)
