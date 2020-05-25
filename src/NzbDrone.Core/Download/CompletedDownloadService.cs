@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Download
             if (allMoviesImported)
             {
                 trackedDownload.State = TrackedDownloadState.Imported;
-                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
+                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, trackedDownload.RemoteMovie.Movie.Id));
                 return true;
             }
 
@@ -156,7 +156,7 @@ namespace NzbDrone.Core.Download
                 if (allMoviesImportedInHistory)
                 {
                     trackedDownload.State = TrackedDownloadState.Imported;
-                    _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
+                    _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, trackedDownload.RemoteMovie.Movie.Id));
                     return true;
                 }
             }

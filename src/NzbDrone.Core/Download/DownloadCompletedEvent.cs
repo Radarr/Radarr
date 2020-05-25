@@ -6,10 +6,12 @@ namespace NzbDrone.Core.Download
     public class DownloadCompletedEvent : IEvent
     {
         public TrackedDownload TrackedDownload { get; private set; }
+        public int MovieId { get; set; }
 
-        public DownloadCompletedEvent(TrackedDownload trackedDownload)
+        public DownloadCompletedEvent(TrackedDownload trackedDownload, int movieId)
         {
             TrackedDownload = trackedDownload;
+            MovieId = movieId;
         }
     }
 }
