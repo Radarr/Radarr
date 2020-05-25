@@ -9,5 +9,6 @@ namespace NzbDrone.Core.AuthorStats
         public int BookFileCount { get; set; }
         public int BookCount { get; set; }
         public long SizeOnDisk { get; set; }
+        public int TotalBookCount { get; set; }
     }
 }

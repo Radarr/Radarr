@@ -6,10 +6,10 @@ namespace Readarr.Api.V1.Books
     {
         public int BookFileCount { get; set; }
         public int BookCount { get; set; }
-        public int TotalTrackCount { get; set; }
+        public int TotalBookCount { get; set; }
         public long SizeOnDisk { get; set; }
 
-        public decimal PercentOfTracks
+        public decimal PercentOfBooks
         {
             get
             {
@@ -36,7 +36,8 @@ namespace Readarr.Api.V1.Books
             {
                 BookFileCount = model.BookFileCount,
                 BookCount = model.BookCount,
-                SizeOnDisk = model.SizeOnDisk
+                SizeOnDisk = model.SizeOnDisk,
+                TotalBookCount = model.TotalBookCount
             };
         }
     }
