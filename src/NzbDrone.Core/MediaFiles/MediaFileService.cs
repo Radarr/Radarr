@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles
         List<MovieFile> GetMovies(IEnumerable<int> ids);
     }
 
-    public class MediaFileService : IMediaFileService, IHandleAsync<MovieDeletedEvent>
+    public class MediaFileService : IMediaFileService, IHandleAsync<MoviesDeletedEvent>
     {
         private readonly IMediaFileRepository _mediaFileRepository;
         private readonly IMovieRepository _movieRepository;
@@ -106,10 +106,9 @@ namespace NzbDrone.Core.MediaFiles
             return _mediaFileRepository.Get(id);
         }
 
-        public void HandleAsync(MovieDeletedEvent message)
+        public void HandleAsync(MoviesDeletedEvent message)
         {
-            var files = GetFilesByMovie(message.Movie.Id);
-            _mediaFileRepository.DeleteMany(files);
+            _mediaFileRepository.DeleteForMovies(message.Movies.Select(m => m.Id).ToList());
         }
     }
 }

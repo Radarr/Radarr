@@ -25,8 +25,8 @@ namespace NzbDrone.Core.Extras.Files
     }
 
     public abstract class ExtraFileService<TExtraFile> : IExtraFileService<TExtraFile>,
-                                                         IHandleAsync<MovieDeletedEvent>,
-                                                         IHandleAsync<MovieFileDeletedEvent>
+                                                         IHandleAsync<MovieFileDeletedEvent>,
+                                                         IHandleAsync<MoviesDeletedEvent>
         where TExtraFile : ExtraFile, new()
     {
         private readonly IExtraFileRepository<TExtraFile> _repository;
@@ -94,10 +94,9 @@ namespace NzbDrone.Core.Extras.Files
             _repository.DeleteMany(ids);
         }
 
-        public void HandleAsync(MovieDeletedEvent message)
+        public void HandleAsync(MoviesDeletedEvent message)
         {
-            _logger.Debug("Deleting Extra from database for movie: {0}", message.Movie);
-            _repository.DeleteForMovie(message.Movie.Id);
+            _repository.DeleteForMovies(message.Movies.Select(m => m.Id).ToList());
         }
 
         public void HandleAsync(MovieFileDeletedEvent message)

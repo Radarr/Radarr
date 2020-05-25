@@ -9,7 +9,8 @@ namespace NzbDrone.Core.Blacklisting
     {
         List<Blacklist> BlacklistedByTitle(int movieId, string sourceTitle);
         List<Blacklist> BlacklistedByTorrentInfoHash(int movieId, string torrentInfoHash);
-        List<Blacklist> BlacklistedByMovie(int movieId);
+        List<Blacklist> BlacklistedByMovies(List<int> movieIds);
+        void DeleteForMovies(List<int> movieIds);
     }
 
     public class BlacklistRepository : BasicRepository<Blacklist>, IBlacklistRepository
@@ -29,9 +30,14 @@ namespace NzbDrone.Core.Blacklisting
             return Query(x => x.MovieId == movieId && x.TorrentInfoHash.Contains(torrentInfoHash));
         }
 
-        public List<Blacklist> BlacklistedByMovie(int movieId)
+        public List<Blacklist> BlacklistedByMovies(List<int> movieIds)
         {
-            return Query(x => x.MovieId == movieId);
+            return Query(x => movieIds.Contains(x.MovieId));
+        }
+
+        public void DeleteForMovies(List<int> movieIds)
+        {
+            Delete(x => movieIds.Contains(x.MovieId));
         }
 
         protected override SqlBuilder PagedBuilder() => new SqlBuilder().Join<Blacklist, Movie>((b, m) => b.MovieId == m.Id);

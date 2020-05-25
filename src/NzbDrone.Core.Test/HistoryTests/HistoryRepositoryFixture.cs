@@ -6,6 +6,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
@@ -14,9 +15,19 @@ namespace NzbDrone.Core.Test.HistoryTests
     [TestFixture]
     public class HistoryRepositoryFixture : DbTest<HistoryRepository, MovieHistory>
     {
+        private Movie _movie1;
+        private Movie _movie2;
+
         [SetUp]
         public void Setup()
         {
+            _movie1 = Builder<Movie>.CreateNew()
+                                    .With(s => s.Id = 7)
+                                    .Build();
+
+            _movie2 = Builder<Movie>.CreateNew()
+                                    .With(s => s.Id = 8)
+                                    .Build();
         }
 
         [Test]
@@ -111,6 +122,32 @@ namespace NzbDrone.Core.Test.HistoryTests
 
             movieHistory.Should().HaveCount(2);
             movieHistory.First().EventType.Should().Be(MovieHistoryEventType.Grabbed);
+        }
+
+        [Test]
+        public void should_delete_history_items_by_movieId()
+        {
+            var items = Builder<MovieHistory>.CreateListOfSize(5)
+                .TheFirst(1)
+                .With(c => c.MovieId = _movie2.Id)
+                .TheRest()
+                .With(c => c.MovieId = _movie1.Id)
+                .All()
+                .With(c => c.Id = 0)
+                .With(c => c.Quality = new QualityModel(Quality.Bluray1080p))
+                .With(c => c.Languages = new List<Language> { Language.English })
+                .With(c => c.EventType = MovieHistoryEventType.Grabbed)
+                .BuildListOfNew();
+
+            Db.InsertMany(items);
+
+            Subject.DeleteForMovies(new List<int> { _movie1.Id });
+
+            var removedItems = Subject.GetByMovieId(_movie1.Id, null);
+            var nonRemovedItems = Subject.GetByMovieId(_movie2.Id, null);
+
+            removedItems.Should().HaveCount(0);
+            nonRemovedItems.Should().HaveCount(1);
         }
     }
 }

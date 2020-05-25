@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, Movie movie);
     }
 
-    public class AlternativeTitleService : IAlternativeTitleService, IHandleAsync<MovieDeletedEvent>
+    public class AlternativeTitleService : IAlternativeTitleService, IHandleAsync<MoviesDeletedEvent>
     {
         private readonly IAlternativeTitleRepository _titleRepo;
         private readonly IConfigService _configService;
@@ -99,10 +99,9 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             return titles;
         }
 
-        public void HandleAsync(MovieDeletedEvent message)
+        public void HandleAsync(MoviesDeletedEvent message)
         {
-            var title = GetAllTitlesForMovie(message.Movie.Id);
-            _titleRepo.DeleteMany(title);
+            _titleRepo.DeleteForMovies(message.Movies.Select(m => m.Id).ToList());
         }
     }
 }

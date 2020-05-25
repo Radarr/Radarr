@@ -1,35 +1,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.NetImport.ImportExclusions
 {
     public interface IImportExclusionsService
     {
         List<ImportExclusion> GetAllExclusions();
-        bool IsMovieExcluded(int tmdbid);
+        bool IsMovieExcluded(int tmdbId);
         ImportExclusion AddExclusion(ImportExclusion exclusion);
         void RemoveExclusion(ImportExclusion exclusion);
         ImportExclusion GetById(int id);
     }
 
-    public class ImportExclusionsService : IImportExclusionsService
+    public class ImportExclusionsService : IImportExclusionsService, IHandleAsync<MoviesDeletedEvent>
     {
         private readonly IImportExclusionsRepository _exclusionRepository;
-        private readonly IConfigService _configService;
-        private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public ImportExclusionsService(IImportExclusionsRepository exclusionRepository,
-                             IEventAggregator eventAggregator,
-                             IConfigService configService,
                              Logger logger)
         {
             _exclusionRepository = exclusionRepository;
-            _eventAggregator = eventAggregator;
-            _configService = configService;
             _logger = logger;
         }
 
@@ -48,9 +42,9 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
             return _exclusionRepository.All().ToList();
         }
 
-        public bool IsMovieExcluded(int tmdbid)
+        public bool IsMovieExcluded(int tmdbId)
         {
-            return _exclusionRepository.IsMovieExcluded(tmdbid);
+            return _exclusionRepository.IsMovieExcluded(tmdbId);
         }
 
         public void RemoveExclusion(ImportExclusion exclusion)
@@ -61,6 +55,15 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
         public ImportExclusion GetById(int id)
         {
             return _exclusionRepository.Get(id);
+        }
+
+        public void HandleAsync(MoviesDeletedEvent message)
+        {
+            if (message.AddExclusion)
+            {
+                _logger.Debug("Adding {0} Deleted Movies to Net Import Exclusions", message.Movies.Count);
+                _exclusionRepository.InsertMany(message.Movies.Select(m => new ImportExclusion { TmdbId = m.TmdbId, MovieTitle = m.Title, MovieYear = m.Year }).ToList());
+            }
         }
     }
 }

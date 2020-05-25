@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Extras.Files
     public interface IExtraFileRepository<TExtraFile> : IBasicRepository<TExtraFile>
         where TExtraFile : ExtraFile, new()
     {
-        void DeleteForMovie(int movieId);
+        void DeleteForMovies(List<int> movieIds);
         void DeleteForMovieFile(int movieFileId);
         List<TExtraFile> GetFilesByMovie(int movieId);
         List<TExtraFile> GetFilesByMovieFile(int movieFileId);
@@ -23,9 +23,9 @@ namespace NzbDrone.Core.Extras.Files
         {
         }
 
-        public void DeleteForMovie(int movieId)
+        public void DeleteForMovies(List<int> movieIds)
         {
-            Delete(x => x.MovieId == movieId);
+            Delete(x => movieIds.Contains(x.MovieId));
         }
 
         public void DeleteForMovieFile(int movieFileId)

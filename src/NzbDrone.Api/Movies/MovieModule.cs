@@ -20,9 +20,9 @@ namespace NzbDrone.Api.Movies
     public class MovieModule : RadarrRestModuleWithSignalR<MovieResource, Movie>,
                                 IHandle<MovieImportedEvent>,
                                 IHandle<MovieFileDeletedEvent>,
+                                IHandle<MoviesDeletedEvent>,
                                 IHandle<MovieUpdatedEvent>,
                                 IHandle<MovieEditedEvent>,
-                                IHandle<MovieDeletedEvent>,
                                 IHandle<MovieRenamedEvent>,
                                 IHandle<MediaCoversUpdatedEvent>
     {
@@ -168,6 +168,14 @@ namespace NzbDrone.Api.Movies
             BroadcastResourceChange(ModelAction.Updated, message.MovieFile.MovieId);
         }
 
+        public void Handle(MoviesDeletedEvent message)
+        {
+            foreach (var movie in message.Movies)
+            {
+                BroadcastResourceChange(ModelAction.Deleted, movie.Id);
+            }
+        }
+
         public void Handle(MovieUpdatedEvent message)
         {
             BroadcastResourceChange(ModelAction.Updated, message.Movie.Id);
@@ -176,11 +184,6 @@ namespace NzbDrone.Api.Movies
         public void Handle(MovieEditedEvent message)
         {
             BroadcastResourceChange(ModelAction.Updated, message.Movie.Id);
-        }
-
-        public void Handle(MovieDeletedEvent message)
-        {
-            BroadcastResourceChange(ModelAction.Deleted, message.Movie.ToResource());
         }
 
         public void Handle(MovieRenamedEvent message)

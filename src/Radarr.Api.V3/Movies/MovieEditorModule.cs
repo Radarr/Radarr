@@ -94,10 +94,7 @@ namespace Radarr.Api.V3.Movies
         {
             var resource = Request.Body.FromJson<MovieEditorResource>();
 
-            foreach (var id in resource.MovieIds)
-            {
-                _movieService.DeleteMovie(id, resource.DeleteFiles, resource.AddNetImportExclusion);
-            }
+            _movieService.DeleteMovies(resource.MovieIds, resource.DeleteFiles, resource.AddNetImportExclusion);
 
             return new object();
         }

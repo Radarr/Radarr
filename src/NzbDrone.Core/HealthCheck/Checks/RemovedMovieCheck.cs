@@ -6,8 +6,8 @@ using NzbDrone.Core.Movies.Events;
 namespace NzbDrone.Core.HealthCheck.Checks
 {
     [CheckOn(typeof(MovieUpdatedEvent))]
-    [CheckOn(typeof(MovieDeletedEvent), CheckOnCondition.FailedOnly)]
-    public class RemovedSeriesCheck : HealthCheckBase, ICheckOnCondition<MovieUpdatedEvent>, ICheckOnCondition<MovieDeletedEvent>
+    [CheckOn(typeof(MoviesDeletedEvent), CheckOnCondition.FailedOnly)]
+    public class RemovedSeriesCheck : HealthCheckBase, ICheckOnCondition<MovieUpdatedEvent>, ICheckOnCondition<MoviesDeletedEvent>
     {
         private readonly IMovieService _movieService;
 
@@ -35,9 +35,9 @@ namespace NzbDrone.Core.HealthCheck.Checks
             return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format("Movie {0} was removed from TMDb", movieText), "#movie-was-removed-from-tmdb");
         }
 
-        public bool ShouldCheckOnEvent(MovieDeletedEvent message)
+        public bool ShouldCheckOnEvent(MoviesDeletedEvent message)
         {
-            return message.Movie.Status == MovieStatusType.Deleted;
+            return message.Movies.Any(m => m.Status == MovieStatusType.Deleted);
         }
 
         public bool ShouldCheckOnEvent(MovieUpdatedEvent message)

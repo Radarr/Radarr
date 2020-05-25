@@ -7,7 +7,7 @@ using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
-    [CheckOn(typeof(MovieDeletedEvent))]
+    [CheckOn(typeof(MoviesDeletedEvent))]
     [CheckOn(typeof(MovieMovedEvent))]
     [CheckOn(typeof(MoviesImportedEvent), CheckOnCondition.FailedOnly)]
     [CheckOn(typeof(MovieImportFailedEvent), CheckOnCondition.SuccessfulOnly)]
