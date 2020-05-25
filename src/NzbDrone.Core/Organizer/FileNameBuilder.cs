@@ -214,6 +214,12 @@ namespace NzbDrone.Core.Organizer
 
         private void AddReleaseDateTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, int releaseYear)
         {
+            if (releaseYear == 0)
+            {
+                tokenHandlers["{Release Year}"] = m => string.Empty;
+                return;
+            }
+
             tokenHandlers["{Release Year}"] = m => string.Format("{0}", releaseYear.ToString()); //Do I need m.CustomFormat?
         }
 
