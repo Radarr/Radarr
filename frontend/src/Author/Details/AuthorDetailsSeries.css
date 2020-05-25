@@ -113,6 +113,11 @@
   text-align: center;
 }
 
+.seriesTitle {
+  display: flex;
+  padding-left: 15px;
+}
+
 @media only screen and (max-width: $breakpointSmall) {
   .bookType {
     border-right: 0;

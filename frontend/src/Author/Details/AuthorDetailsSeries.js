@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import MonitorToggleButton from 'Components/MonitorToggleButton';
 import getToggledRange from 'Utilities/Table/getToggledRange';
 import { icons, sortDirections } from 'Helpers/Props';
 import Icon from 'Components/Icon';
@@ -53,6 +54,14 @@ class AuthorDetailsSeries extends Component {
     onExpandPress(id, true);
   }
 
+  isSeriesMonitored(series) {
+    return series.items.every((book) => book.monitored);
+  }
+
+  isSeriesSaving(series) {
+    return series.items.some((book) => book.isSaving);
+  }
+
   //
   // Listeners
 
@@ -83,6 +92,12 @@ class AuthorDetailsSeries extends Component {
     this.props.onMonitorBookPress(_.uniq(bookIds), monitored);
   }
 
+  onMonitorSeriesPress = (monitored, { shiftKey }) => {
+    const bookIds = this.props.items.map((book) => book.id);
+
+    this.props.onMonitorBookPress(_.uniq(bookIds), monitored);
+  }
+
   //
   // Render
 
@@ -97,47 +112,58 @@ class AuthorDetailsSeries extends Component {
       sortDirection,
       onSortPress,
       isSmallScreen,
-      onTableOptionChange
+      onTableOptionChange,
+      authorMonitored
     } = this.props;
 
     return (
       <div
         className={styles.bookType}
       >
-        <Link
-          className={styles.expandButton}
-          onPress={this.onExpandPress}
-        >
-          <div className={styles.header}>
-            <div className={styles.left}>
-              {
-                <div>
-                  <span className={styles.bookTypeLabel}>
-                    {label}
-                  </span>
+        <div className={styles.seriesTitle}>
+          <MonitorToggleButton
+            size={24}
+            monitored={this.isSeriesMonitored(this.props)}
+            isDisabled={!authorMonitored}
+            isSaving={this.isSeriesSaving(this.props)}
+            onPress={this.onMonitorSeriesPress}
+          />
 
-                  <span className={styles.bookCount}>
-                    ({items.length} Books)
-                  </span>
-                </div>
+          <Link
+            className={styles.expandButton}
+            onPress={this.onExpandPress}
+          >
+            <div className={styles.header}>
+              <div className={styles.left}>
+                {
+                  <div>
+                    <span className={styles.bookTypeLabel}>
+                      {label}
+                    </span>
+
+                    <span className={styles.bookCount}>
+                      ({items.length} Books)
+                    </span>
+                  </div>
+                }
+
+              </div>
+
+              <Icon
+                className={styles.expandButtonIcon}
+                name={isExpanded ? icons.COLLAPSE : icons.EXPAND}
+                title={isExpanded ? 'Hide books' : 'Show books'}
+                size={24}
+              />
+
+              {
+                !isSmallScreen &&
+                  <span>&nbsp;</span>
               }
 
             </div>
-
-            <Icon
-              className={styles.expandButtonIcon}
-              name={isExpanded ? icons.COLLAPSE : icons.EXPAND}
-              title={isExpanded ? 'Hide books' : 'Show books'}
-              size={24}
-            />
-
-            {
-              !isSmallScreen &&
-                <span>&nbsp;</span>
-            }
-
-          </div>
-        </Link>
+          </Link>
+        </div>
 
         <div>
           {
@@ -199,7 +225,8 @@ AuthorDetailsSeries.propTypes = {
   onExpandPress: PropTypes.func.isRequired,
   onSortPress: PropTypes.func.isRequired,
   onMonitorBookPress: PropTypes.func.isRequired,
-  uiSettings: PropTypes.object.isRequired
+  uiSettings: PropTypes.object.isRequired,
+  authorMonitored: PropTypes.object.isRequired
 };
 
 export default AuthorDetailsSeries;
