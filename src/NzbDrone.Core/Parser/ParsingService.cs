@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.Augmenters;
@@ -139,6 +140,12 @@ namespace NzbDrone.Core.Parser
             {
                 result = new MappingResult { MappingResultType = MappingResultType.Unknown };
                 result.Movie = null;
+            }
+
+            //Use movie language as fallback if we could't parse a language (more accurate than just using English)
+            if (parsedMovieInfo.Languages.Count <= 1 && parsedMovieInfo.Languages.First() == Language.Unknown && result.Movie != null)
+            {
+                parsedMovieInfo.Languages = new List<Language> { result.Movie.OriginalLanguage };
             }
 
             result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;

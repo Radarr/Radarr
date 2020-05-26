@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.Movies
@@ -16,7 +18,9 @@ namespace NzbDrone.Core.Movies
             Genres = new List<string>();
             Tags = new HashSet<int>();
             AlternativeTitles = new List<AlternativeTitle>();
+            Translations = new List<MovieTranslation>();
             Recommendations = new List<int>();
+            OriginalLanguage = Language.English;
         }
 
         public int TmdbId { get; set; }
@@ -46,7 +50,7 @@ namespace NzbDrone.Core.Movies
         public DateTime Added { get; set; }
         public DateTime? InCinemas { get; set; }
         public DateTime? PhysicalRelease { get; set; }
-        public string PhysicalReleaseNote { get; set; }
+        public DateTime? DigitalRelease { get; set; }
         public Profile Profile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
@@ -56,10 +60,12 @@ namespace NzbDrone.Core.Movies
 
         //Get Loaded via a Join Query
         public List<AlternativeTitle> AlternativeTitles { get; set; }
+        public List<MovieTranslation> Translations { get; set; }
         public int? SecondaryYear { get; set; }
-        public int SecondaryYearSourceId { get; set; }
         public string YouTubeTrailerId { get; set; }
         public string Studio { get; set; }
+        public string OriginalTitle { get; set; }
+        public Language OriginalLanguage { get; set; }
         public List<int> Recommendations { get; set; }
 
         public bool IsRecentMovie
@@ -122,7 +128,23 @@ namespace NzbDrone.Core.Movies
                 case MovieStatusType.Released:
                 case MovieStatusType.PreDB:
                 default:
-                    minimumAvailabilityDate = PhysicalRelease.HasValue ? PhysicalRelease.Value : (InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue);
+                    if (PhysicalRelease.HasValue && DigitalRelease.HasValue)
+                    {
+                        minimumAvailabilityDate = new DateTime(Math.Min(PhysicalRelease.Value.Ticks, DigitalRelease.Value.Ticks));
+                    }
+                    else if (PhysicalRelease.HasValue)
+                    {
+                        minimumAvailabilityDate = PhysicalRelease.Value;
+                    }
+                    else if (DigitalRelease.HasValue)
+                    {
+                        minimumAvailabilityDate = DigitalRelease.Value;
+                    }
+                    else
+                    {
+                        minimumAvailabilityDate = InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue;
+                    }
+
                     break;
             }
 

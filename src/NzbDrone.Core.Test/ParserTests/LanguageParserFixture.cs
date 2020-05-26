@@ -11,13 +11,20 @@ namespace NzbDrone.Core.Test.ParserTests
     public class LanguageParserFixture : CoreTest
     {
         [TestCase("Pulp.Fiction.1994.English.1080p.XviD-LOL")]
-        [TestCase("The Danish Girl 2015")]
-        [TestCase("Fantastic.Beasts.The.Crimes.Of.Grindelwald.2018.2160p.WEBRip.x265.10bit.HDR.DD5.1-GASMASK")]
         public void should_parse_language_english(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
 
             result.Languages.Should().BeEquivalentTo(Language.English);
+        }
+
+        [TestCase("The Danish Girl 2015")]
+        [TestCase("Fantastic.Beasts.The.Crimes.Of.Grindelwald.2018.2160p.WEBRip.x265.10bit.HDR.DD5.1-GASMASK")]
+        public void should_parse_language_unknown(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.Unknown);
         }
 
         [TestCase("Pulp.Fiction.1994.French.1080p.XviD-LOL")]
@@ -26,6 +33,15 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
 
             result.Languages.Should().BeEquivalentTo(Language.French);
+        }
+
+        [TestCase("E.T. the Extra-Terrestrial.1982.Ger.Eng.AC3.DL.BDRip.x264-iNCEPTiON")]
+        public void should_parse_language_english_german(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().Contain(Language.German);
+            result.Languages.Should().Contain(Language.English);
         }
 
         [TestCase("Pulp.Fiction.1994.Spanish.1080p.XviD-LOL")]

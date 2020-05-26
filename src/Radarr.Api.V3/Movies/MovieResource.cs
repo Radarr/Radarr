@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.Parser;
 using Radarr.Api.V3.MovieFiles;
 using Radarr.Http.REST;
 
@@ -22,6 +25,7 @@ namespace Radarr.Api.V3.Movies
 
         //View Only
         public string Title { get; set; }
+        public string OriginalTitle { get; set; }
         public List<AlternativeTitleResource> AlternateTitles { get; set; }
         public int? SecondaryYear { get; set; }
         public int SecondaryYearSourceId { get; set; }
@@ -86,10 +90,10 @@ namespace Radarr.Api.V3.Movies
                 Id = model.Id,
                 TmdbId = model.TmdbId,
                 Title = model.Title,
+                OriginalTitle = model.Title,
                 SortTitle = model.SortTitle,
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
-                PhysicalReleaseNote = model.PhysicalReleaseNote,
                 HasFile = model.HasFile,
 
                 SizeOnDisk = size,
@@ -100,7 +104,6 @@ namespace Radarr.Api.V3.Movies
 
                 Year = model.Year,
                 SecondaryYear = model.SecondaryYear,
-                SecondaryYearSourceId = model.SecondaryYearSourceId,
 
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,
@@ -131,7 +134,69 @@ namespace Radarr.Api.V3.Movies
             };
         }
 
-        public static MovieResource ToResource(this Movie model, IUpgradableSpecification upgradableSpecification)
+        public static MovieResource ToResource(this Movie model, MovieTranslation movieTranslation)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+
+            long size = model.MovieFile?.Size ?? 0;
+            MovieFileResource movieFile = model.MovieFile?.ToResource(model);
+
+            var translatedTitle = movieTranslation?.Title ?? model.Title;
+            var translatedOverview = movieTranslation?.Overview ?? model.Overview;
+
+            return new MovieResource
+            {
+                Id = model.Id,
+                TmdbId = model.TmdbId,
+                Title = translatedTitle,
+                OriginalTitle = model.Title,
+                SortTitle = translatedTitle.NormalizeTitle(),
+                InCinemas = model.InCinemas,
+                PhysicalRelease = model.PhysicalRelease,
+                HasFile = model.HasFile,
+
+                SizeOnDisk = size,
+                Status = model.Status,
+                Overview = translatedOverview,
+
+                Images = model.Images,
+
+                Year = model.Year,
+                SecondaryYear = model.SecondaryYear,
+
+                Path = model.Path,
+                QualityProfileId = model.ProfileId,
+
+                Monitored = model.Monitored,
+                MinimumAvailability = model.MinimumAvailability,
+
+                IsAvailable = model.IsAvailable(),
+                FolderName = model.FolderName(),
+
+                Runtime = model.Runtime,
+                CleanTitle = model.CleanTitle,
+                ImdbId = model.ImdbId,
+                TitleSlug = model.TitleSlug,
+                RootFolderPath = model.RootFolderPath,
+                Certification = model.Certification,
+                Website = model.Website,
+                Genres = model.Genres,
+                Tags = model.Tags,
+                Added = model.Added,
+                AddOptions = model.AddOptions,
+                AlternateTitles = model.AlternativeTitles.ToResource(),
+                Ratings = model.Ratings,
+                MovieFile = movieFile,
+                YouTubeTrailerId = model.YouTubeTrailerId,
+                Studio = model.Studio,
+                Collection = model.Collection
+            };
+        }
+
+        public static MovieResource ToResource(this Movie model, IUpgradableSpecification upgradableSpecification, MovieTranslation movieTranslation)
         {
             if (model == null)
             {
@@ -141,26 +206,27 @@ namespace Radarr.Api.V3.Movies
             long size = model.MovieFile?.Size ?? 0;
             MovieFileResource movieFile = model.MovieFile?.ToResource(model, upgradableSpecification);
 
+            var translatedTitle = movieTranslation?.Title ?? model.Title;
+            var translatedOverview = movieTranslation?.Overview ?? model.Overview;
+
             return new MovieResource
             {
                 Id = model.Id,
                 TmdbId = model.TmdbId,
-                Title = model.Title,
-                SortTitle = model.SortTitle,
+                Title = translatedTitle,
+                SortTitle = translatedTitle.NormalizeTitle(),
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
-                PhysicalReleaseNote = model.PhysicalReleaseNote,
                 HasFile = model.HasFile,
 
                 SizeOnDisk = size,
                 Status = model.Status,
-                Overview = model.Overview,
+                Overview = translatedOverview,
 
                 Images = model.Images,
 
                 Year = model.Year,
                 SecondaryYear = model.SecondaryYear,
-                SecondaryYearSourceId = model.SecondaryYearSourceId,
 
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,
@@ -207,7 +273,6 @@ namespace Radarr.Api.V3.Movies
                 SortTitle = resource.SortTitle,
                 InCinemas = resource.InCinemas,
                 PhysicalRelease = resource.PhysicalRelease,
-                PhysicalReleaseNote = resource.PhysicalReleaseNote,
 
                 Overview = resource.Overview,
 
@@ -215,7 +280,6 @@ namespace Radarr.Api.V3.Movies
 
                 Year = resource.Year,
                 SecondaryYear = resource.SecondaryYear,
-                SecondaryYearSourceId = resource.SecondaryYearSourceId,
 
                 Path = resource.Path,
                 ProfileId = resource.QualityProfileId,
@@ -252,11 +316,6 @@ namespace Radarr.Api.V3.Movies
         public static List<MovieResource> ToResource(this IEnumerable<Movie> movies)
         {
             return movies.Select(ToResource).ToList();
-        }
-
-        public static List<MovieResource> ToResource(this IEnumerable<Movie> movies, IUpgradableSpecification upgradableSpecification)
-        {
-            return movies.ToList().ConvertAll(f => f.ToResource(upgradableSpecification));
         }
 
         public static List<Movie> ToModel(this IEnumerable<MovieResource> resources)

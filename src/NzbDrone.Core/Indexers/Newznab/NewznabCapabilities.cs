@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Indexers.Newznab
 {
@@ -7,7 +7,6 @@ namespace NzbDrone.Core.Indexers.Newznab
         public int DefaultPageSize { get; set; }
         public int MaxPageSize { get; set; }
         public string[] SupportedSearchParameters { get; set; }
-        public string[] SupportedTvSearchParameters { get; set; }
         public string[] SupportedMovieSearchParameters { get; set; }
         public bool SupportsAggregateIdSearch { get; set; }
         public List<NewznabCategory> Categories { get; set; }
@@ -18,7 +17,6 @@ namespace NzbDrone.Core.Indexers.Newznab
             MaxPageSize = 100;
             SupportedSearchParameters = new[] { "q" };
             SupportedMovieSearchParameters = new[] { "q", "imdbid", "imdbtitle", "imdbyear" };
-            SupportedTvSearchParameters = new[] { "q", "rid", "season", "ep" }; // This should remain 'rid' for older newznab installs.
             SupportsAggregateIdSearch = false;
             Categories = new List<NewznabCategory>();
         }

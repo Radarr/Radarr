@@ -5,6 +5,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser;
@@ -34,47 +35,55 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                                    .With(m => m.CleanTitle = "fackjugoethe2")
                                    .With(m => m.Year = 2015)
                                    .With(m => m.AlternativeTitles = new List<AlternativeTitle> { new AlternativeTitle("Fack Ju Göthe 2: Same same") })
+                                   .With(m => m.OriginalLanguage = Language.English)
                                    .Build();
 
             _parsedMovieInfo = new ParsedMovieInfo
             {
                 MovieTitle = _movie.Title,
+                Languages = new List<Language> { Language.English },
                 Year = _movie.Year,
             };
 
             _wrongYearInfo = new ParsedMovieInfo
             {
                 MovieTitle = _movie.Title,
+                Languages = new List<Language> { Language.English },
                 Year = 1900,
             };
 
             _wrongTitleInfo = new ParsedMovieInfo
             {
                 MovieTitle = "Other Title",
+                Languages = new List<Language> { Language.English },
                 Year = 2015
             };
 
             _alternativeTitleInfo = new ParsedMovieInfo
             {
                 MovieTitle = _movie.AlternativeTitles.First().Title,
+                Languages = new List<Language> { Language.English },
                 Year = _movie.Year,
             };
 
             _romanTitleInfo = new ParsedMovieInfo
             {
                 MovieTitle = "Fack Ju Göthe II",
+                Languages = new List<Language> { Language.English },
                 Year = _movie.Year,
             };
 
             _umlautInfo = new ParsedMovieInfo
             {
                 MovieTitle = "Fack Ju Goethe 2",
+                Languages = new List<Language> { Language.English },
                 Year = _movie.Year
             };
 
             _umlautAltInfo = new ParsedMovieInfo
             {
                 MovieTitle = "Fack Ju Goethe 2: Same same",
+                Languages = new List<Language> { Language.English },
                 Year = _movie.Year
             };
 

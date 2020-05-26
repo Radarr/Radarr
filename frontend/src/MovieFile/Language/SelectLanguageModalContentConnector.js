@@ -18,11 +18,14 @@ function createMapStateToProps() {
         items
       } = languages;
 
+      const filterItems = ['Any', 'Unknown'];
+      const filteredLanguages = items.filter((lang) => !filterItems.includes(lang.name));
+
       return {
         isFetching,
         isPopulated,
         error,
-        items
+        items: filteredLanguages
       };
     }
   );

@@ -27,7 +27,7 @@ namespace NzbDrone.Api.Config
             {
                 Id = model.Id,
 
-                RenameEpisodes = model.RenameEpisodes,
+                RenameEpisodes = model.RenameMovies,
                 ReplaceIllegalCharacters = model.ReplaceIllegalCharacters,
                 ColonReplacementFormat = model.ColonReplacementFormat,
                 MultiEpisodeStyle = model.MultiEpisodeStyle,
@@ -59,7 +59,7 @@ namespace NzbDrone.Api.Config
             {
                 Id = resource.Id,
 
-                RenameEpisodes = resource.RenameEpisodes,
+                RenameMovies = resource.RenameEpisodes,
                 ReplaceIllegalCharacters = resource.ReplaceIllegalCharacters,
                 ColonReplacementFormat = resource.ColonReplacementFormat,
                 StandardMovieFormat = resource.StandardMovieFormat,

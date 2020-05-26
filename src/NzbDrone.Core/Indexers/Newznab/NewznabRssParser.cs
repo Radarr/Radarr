@@ -77,21 +77,6 @@ namespace NzbDrone.Core.Indexers.Newznab
             releaseInfo = base.ProcessItem(item, releaseInfo);
             releaseInfo.ImdbId = GetImdbId(item);
 
-            //// This shouldn't be needed with changes to the DownloadDecisionMaker
-            //var imdbMovieTitle = GetImdbTitle(item);
-            //var imdbYear = GetImdbYear(item);
-
-            //// Fun, lets try to add year to the releaseTitle for our foriegn friends :)
-            //// if (!releaseInfo.Title.ContainsIgnoreCase(imdbMovieTitle + "." + imdbYear))
-            //var isMatch = Regex.IsMatch(releaseInfo.Title, $@"^{imdbMovieTitle}.*{imdbYear}", RegexOptions.IgnoreCase);
-            //if (!isMatch)
-            //{
-            //    if (imdbYear != 1900 && imdbMovieTitle != string.Empty)
-            //    {
-            //        // releaseInfo.Title = releaseInfo.Title.Replace(imdbMovieTitle, imdbMovieTitle + "." + imdbYear);
-            //        releaseInfo.Title = Regex.Replace(releaseInfo.Title, imdbMovieTitle, imdbMovieTitle + "." + imdbYear, RegexOptions.IgnoreCase);
-            //    }
-            //}
             return releaseInfo;
         }
 

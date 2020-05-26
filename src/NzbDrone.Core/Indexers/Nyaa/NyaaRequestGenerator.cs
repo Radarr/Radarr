@@ -58,7 +58,16 @@ namespace NzbDrone.Core.Indexers.Nyaa
 
         public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
         {
-            return new IndexerPageableRequestChain();
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            foreach (var queryTitle in searchCriteria.QueryTitles)
+            {
+                pageableRequests.Add(GetPagedRequests(MaxPages,
+                    string.Format("&term={0}",
+                    PrepareQuery(string.Format("{0} {1}", queryTitle, searchCriteria.Movie.Year)))));
+            }
+
+            return pageableRequests;
         }
 
         public Func<IDictionary<string, string>> GetCookies { get; set; }

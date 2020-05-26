@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_not_delete_subtitle_files_that_have_a_coresponding_movie()
         {
             var movie = Builder<Movie>.CreateNew()
-                                        .BuildNew();
+                                      .BuildNew();
 
             Db.Insert(movie);
 
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_delete_subtitle_files_that_dont_have_a_coresponding_movie_file()
         {
             var movie = Builder<Movie>.CreateNew()
-                                        .BuildNew();
+                                      .BuildNew();
 
             Db.Insert(movie);
 
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_not_delete_subtitle_files_that_have_a_coresponding_movie_file()
         {
             var movie = Builder<Movie>.CreateNew()
-                                        .BuildNew();
+                                      .BuildNew();
 
             var movieFile = Builder<MovieFile>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())

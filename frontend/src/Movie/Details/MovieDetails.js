@@ -243,7 +243,7 @@ class MovieDetails extends Component {
       collection,
       overview,
       youTubeTrailerId,
-      inCinemas,
+      isAvailable,
       images,
       tags,
       isSaving,
@@ -483,7 +483,7 @@ class MovieDetails extends Component {
                       <MovieStatusLabel
                         hasMovieFiles={hasMovieFiles}
                         monitored={monitored}
-                        inCinemas={inCinemas}
+                        isAvailable={isAvailable}
                       />
                     </span>
                   </InfoLabel>
@@ -722,6 +722,7 @@ MovieDetails.propTypes = {
   studio: PropTypes.string,
   collection: PropTypes.object,
   youTubeTrailerId: PropTypes.string,
+  isAvailable: PropTypes.bool.isRequired,
   inCinemas: PropTypes.string,
   overview: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,

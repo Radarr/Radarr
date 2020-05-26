@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Credits;
+using NzbDrone.Core.Movies.Translations;
 
 namespace NzbDrone.Core.MetadataSource
 {
