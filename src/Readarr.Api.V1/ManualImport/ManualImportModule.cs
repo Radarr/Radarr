@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nancy;
@@ -41,10 +42,23 @@ namespace Readarr.Api.V1.ManualImport
         {
             var folder = (string)Request.Query.folder;
             var downloadId = (string)Request.Query.downloadId;
+            NzbDrone.Core.Books.Author author = null;
+
+            var authorIdQuery = Request.Query.authorId;
+            if (authorIdQuery.HasValue)
+            {
+                var authorId = Convert.ToInt32(authorIdQuery.Value);
+
+                if (authorId > 0)
+                {
+                    author = _authorService.GetAuthor(authorId);
+                }
+            }
+
             var filter = Request.GetBooleanQueryParameter("filterExistingFiles", true) ? FilterFilesType.Matched : FilterFilesType.None;
             var replaceExistingFiles = Request.GetBooleanQueryParameter("replaceExistingFiles", true);
 
-            return _manualImportService.GetMediaFiles(folder, downloadId, filter, replaceExistingFiles).ToResource().Select(AddQualityWeight).ToList();
+            return _manualImportService.GetMediaFiles(folder, downloadId, author, filter, replaceExistingFiles).ToResource().Select(AddQualityWeight).ToList();
         }
 
         private ManualImportResource AddQualityWeight(ManualImportResource item)

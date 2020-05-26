@@ -52,6 +52,7 @@ class InteractiveImportModalContentConnector extends Component {
 
   componentDidMount() {
     const {
+      authorId,
       downloadId,
       folder
     } = this.props;
@@ -62,6 +63,7 @@ class InteractiveImportModalContentConnector extends Component {
     } = this.state;
 
     this.props.fetchInteractiveImportItems({
+      authorId,
       downloadId,
       folder,
       filterExistingFiles,
@@ -78,11 +80,13 @@ class InteractiveImportModalContentConnector extends Component {
     if (prevState.filterExistingFiles !== filterExistingFiles ||
         prevState.replaceExistingFiles !== replaceExistingFiles) {
       const {
+        authorId,
         downloadId,
         folder
       } = this.props;
 
       this.props.fetchInteractiveImportItems({
+        authorId,
         downloadId,
         folder,
         filterExistingFiles,
@@ -195,6 +199,7 @@ class InteractiveImportModalContentConnector extends Component {
 }
 
 InteractiveImportModalContentConnector.propTypes = {
+  authorId: PropTypes.number,
   downloadId: PropTypes.string,
   folder: PropTypes.string,
   filterExistingFiles: PropTypes.bool.isRequired,
@@ -210,6 +215,7 @@ InteractiveImportModalContentConnector.propTypes = {
 };
 
 InteractiveImportModalContentConnector.defaultProps = {
+  authorId: 0,
   filterExistingFiles: true,
   replaceExistingFiles: false
 };

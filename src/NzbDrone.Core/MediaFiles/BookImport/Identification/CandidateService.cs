@@ -60,16 +60,16 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             //         tagCandidate = GetDbCandidatesByRelease(new List<AlbumRelease> { tagMbidRelease }, includeExisting);
             //     }
             // }
-            if (idOverrides?.Album != null)
+            if (idOverrides?.Book != null)
             {
                 // use the release from file tags if it exists and agrees with the specified book
-                if (tagMbidRelease?.Id == idOverrides.Album.Id)
+                if (tagMbidRelease?.Id == idOverrides.Book.Id)
                 {
                     candidateReleases = tagCandidate;
                 }
                 else
                 {
-                    candidateReleases = GetDbCandidatesByAlbum(idOverrides.Album, includeExisting);
+                    candidateReleases = GetDbCandidatesByAlbum(idOverrides.Book, includeExisting);
                 }
             }
             else if (idOverrides?.Author != null)

@@ -408,7 +408,7 @@ class InteractiveImportModalContent extends Component {
 
           {
             isPopulated && !items.length && !isFetching &&
-              'No audio files were found in the selected folder'
+              'No book files were found in the selected folder'
           }
         </ModalBody>
 

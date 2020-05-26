@@ -125,6 +125,14 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 
             if (candidateReleases.Count == 0)
             {
+                // can't find any candidates even after fingerprinting
+                // populate the overrides and return
+                foreach (var localTrack in localAlbumRelease.LocalBooks)
+                {
+                    localTrack.Book = idOverrides.Book;
+                    localTrack.Author = idOverrides.Author;
+                }
+
                 return;
             }
 

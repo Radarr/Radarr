@@ -24,7 +24,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
     public class IdentificationOverrides
     {
         public Author Author { get; set; }
-        public Book Album { get; set; }
+        public Book Book { get; set; }
     }
 
     public class ImportDecisionMakerInfo

@@ -676,6 +676,7 @@ class AuthorDetails extends Component {
 
           <InteractiveImportModal
             isOpen={isInteractiveImportModalOpen}
+            authorId={id}
             folder={path}
             allowAuthorChange={false}
             showFilterExistingFiles={true}
