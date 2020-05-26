@@ -118,17 +118,6 @@ namespace NzbDrone.Core.Indexers.Newznab
                     capabilities.SupportedSearchParameters = xmlBasicSearch.Attribute("supportedParams").Value.Split(',');
                 }
 
-                var xmlTvSearch = xmlSearching.Element("tv-search");
-                if (xmlTvSearch == null || xmlTvSearch.Attribute("available").Value != "yes")
-                {
-                    capabilities.SupportedTvSearchParameters = null;
-                }
-                else if (xmlTvSearch.Attribute("supportedParams") != null)
-                {
-                    capabilities.SupportedTvSearchParameters = xmlTvSearch.Attribute("supportedParams").Value.Split(',');
-                    capabilities.SupportsAggregateIdSearch = true;
-                }
-
                 var xmlMovieSearch = xmlSearching.Element("movie-search");
                 if (xmlMovieSearch == null || xmlMovieSearch.Attribute("available").Value != "yes")
                 {

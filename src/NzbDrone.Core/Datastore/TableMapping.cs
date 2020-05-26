@@ -26,6 +26,7 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Credits;
+using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
 using NzbDrone.Core.Notifications;
@@ -104,6 +105,8 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(s => s.RootFolderPath);
 
             Mapper.Entity<AlternativeTitle>("AlternativeTitles").RegisterModel();
+
+            Mapper.Entity<MovieTranslation>("MovieTranslations").RegisterModel();
 
             Mapper.Entity<Credit>("Credits").RegisterModel();
 

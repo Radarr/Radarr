@@ -15,6 +15,7 @@ using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.Movies.Translations;
 
 namespace NzbDrone.Core.Movies
 {
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.Movies
     {
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IMovieService _movieService;
+        private readonly IMovieTranslationService _movieTranslationService;
         private readonly IAlternativeTitleService _titleService;
         private readonly ICreditService _creditService;
         private readonly IEventAggregator _eventAggregator;
@@ -33,6 +35,7 @@ namespace NzbDrone.Core.Movies
 
         public RefreshMovieService(IProvideMovieInfo movieInfo,
                                     IMovieService movieService,
+                                    IMovieTranslationService movieTranslationService,
                                     IAlternativeTitleService titleService,
                                     ICreditService creditService,
                                     IEventAggregator eventAggregator,
@@ -43,6 +46,7 @@ namespace NzbDrone.Core.Movies
         {
             _movieInfo = movieInfo;
             _movieService = movieService;
+            _movieTranslationService = movieTranslationService;
             _titleService = titleService;
             _creditService = creditService;
             _eventAggregator = eventAggregator;
@@ -104,8 +108,11 @@ namespace NzbDrone.Core.Movies
             movie.Year = movieInfo.Year;
             movie.SecondaryYear = movieInfo.SecondaryYear;
             movie.PhysicalRelease = movieInfo.PhysicalRelease;
+            movie.DigitalRelease = movieInfo.DigitalRelease;
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
             movie.Studio = movieInfo.Studio;
+            movie.OriginalTitle = movieInfo.OriginalTitle;
+            movie.OriginalLanguage = movieInfo.OriginalLanguage;
             movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
             movie.Recommendations = movieInfo.Recommendations;
 
@@ -120,6 +127,7 @@ namespace NzbDrone.Core.Movies
             }
 
             movie.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movie);
+            _movieTranslationService.UpdateTranslations(movieInfo.Translations, movie);
 
             _movieService.UpdateMovie(new List<Movie> { movie }, true);
             _creditService.UpdateCredits(credits, movie);

@@ -22,7 +22,18 @@ namespace NzbDrone.Core.Indexers.Newznab
             PageSize = 100;
         }
 
-        private bool SupportsMovieSearch
+        private bool SupportsSearch
+        {
+            get
+            {
+                var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
+
+                return capabilities.SupportedSearchParameters != null &&
+                       capabilities.SupportedSearchParameters.Contains("q");
+            }
+        }
+
+        private bool SupportsImdbSearch
         {
             get
             {
@@ -30,6 +41,27 @@ namespace NzbDrone.Core.Indexers.Newznab
 
                 return capabilities.SupportedMovieSearchParameters != null &&
                        capabilities.SupportedMovieSearchParameters.Contains("imdbid");
+            }
+        }
+
+        private bool SupportsTmdbSearch
+        {
+            get
+            {
+                var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
+
+                return capabilities.SupportedMovieSearchParameters != null &&
+                       capabilities.SupportedMovieSearchParameters.Contains("tmdbid");
+            }
+        }
+
+        private bool SupportsAggregatedIdSearch
+        {
+            get
+            {
+                var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
+
+                return capabilities.SupportsAggregateIdSearch;
             }
         }
 
@@ -56,34 +88,68 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            if (!Settings.SearchByTitle && SupportsMovieSearch && searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace())
+            AddMovieIdPageableRequests(pageableRequests, MaxPages, Settings.Categories, searchCriteria);
+
+            return pageableRequests;
+        }
+
+        private void AddMovieIdPageableRequests(IndexerPageableRequestChain chain, int maxPages, IEnumerable<int> categories, SearchCriteriaBase searchCriteria)
+        {
+            var includeTmdbSearch = SupportsTmdbSearch && searchCriteria.Movie.TmdbId > 0;
+            var includeImdbSearch = SupportsImdbSearch && searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace();
+
+            if (SupportsAggregatedIdSearch && (includeTmdbSearch || includeImdbSearch))
             {
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "movie", $"&imdbid={searchCriteria.Movie.ImdbId.Substring(2)}"));
+                var ids = "";
+
+                if (includeTmdbSearch)
+                {
+                    ids += "&tmdbid=" + searchCriteria.Movie.TmdbId;
+                }
+
+                if (includeImdbSearch)
+                {
+                    ids += "&imdbid=" + searchCriteria.Movie.ImdbId.Substring(2);
+                }
+
+                chain.Add(GetPagedRequests(maxPages, categories, "movie", ids));
             }
             else
             {
-                var altTitles = searchCriteria.Movie.AlternativeTitles.Take(5).Select(t => t.Title).ToList();
-                altTitles.Add(searchCriteria.Movie.Title);
-
-                var realMaxPages = (int)MaxPages / altTitles.Count();
-
-                //pageableRequests.Add(GetPagedRequests(MaxPages - (altTitles.Count() * realMaxPages), Settings.Categories, "search", $"&q={searchTitle}%20{searchCriteria.Movie.Year}"));
-
-                //Also use alt titles for searching.
-                foreach (string altTitle in altTitles)
+                if (includeTmdbSearch)
                 {
-                    var searchAltTitle = System.Web.HttpUtility.UrlPathEncode(Parser.Parser.ReplaceGermanUmlauts(Parser.Parser.NormalizeTitle(altTitle)));
-                    var queryString = $"&q={searchAltTitle}";
-                    if (!Settings.RemoveYear)
-                    {
-                        queryString += $"%20{searchCriteria.Movie.Year}";
-                    }
-
-                    pageableRequests.Add(GetPagedRequests(realMaxPages, Settings.Categories, "search", queryString));
+                    chain.Add(GetPagedRequests(maxPages,
+                        categories,
+                        "movie",
+                        string.Format("&tmdbid={0}", searchCriteria.Movie.TmdbId)));
+                }
+                else if (includeImdbSearch)
+                {
+                    chain.Add(GetPagedRequests(maxPages,
+                        categories,
+                        "movie",
+                        string.Format("&imdbid={0}", searchCriteria.Movie.ImdbId.Substring(2))));
                 }
             }
 
-            return pageableRequests;
+            if (SupportsSearch)
+            {
+                chain.AddTier();
+                foreach (var queryTitle in searchCriteria.QueryTitles)
+                {
+                    var searchQuery = queryTitle;
+
+                    if (!Settings.RemoveYear)
+                    {
+                        searchQuery = string.Format("{0} {1}", searchQuery, searchCriteria.Movie.Year);
+                    }
+
+                    chain.Add(GetPagedRequests(MaxPages,
+                        Settings.Categories,
+                        "movie",
+                        string.Format("&q={0}", NewsnabifyTitle(searchQuery))));
+                }
+            }
         }
 
         private IEnumerable<IndexerRequest> GetPagedRequests(int maxPages, IEnumerable<int> categories, string searchType, string parameters)
@@ -113,6 +179,11 @@ namespace NzbDrone.Core.Indexers.Newznab
                     yield return new IndexerRequest(string.Format("{0}&offset={1}&limit={2}{3}", baseUrl, page * PageSize, PageSize, parameters), HttpAccept.Rss);
                 }
             }
+        }
+
+        private static string NewsnabifyTitle(string title)
+        {
+            return title.Replace("+", "%20");
         }
 
         public Func<IDictionary<string, string>> GetCookies { get; set; }

@@ -25,37 +25,33 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 
             languages.AddRange(localMovie.DownloadClientMovieInfo?.Languages ?? new List<Language>());
 
-            if (!languages.Any(l => l != Language.English))
+            if (!languages.Any(l => l != Language.Unknown))
             {
                 languages = localMovie.FolderMovieInfo?.Languages ?? new List<Language>();
             }
 
-            if (!languages.Any(l => l != Language.English))
+            if (!languages.Any(l => l != Language.Unknown))
             {
                 languages = localMovie.FileMovieInfo?.Languages ?? new List<Language>();
             }
 
             if (!languages.Any())
             {
-                languages.Add(Language.English);
+                languages.Add(Language.Unknown);
+            }
+
+            languages = languages.Distinct().ToList();
+
+            if (languages.Count == 1 && languages.Contains(Language.Unknown))
+            {
+                languages = new List<Language> { localMovie.Movie.OriginalLanguage };
             }
 
             _logger.Debug("Using languages: {0}", languages.Select(l => l.Name).ToList().Join(","));
 
-            localMovie.Languages = languages.Distinct().ToList();
+            localMovie.Languages = languages;
 
             return localMovie;
-        }
-
-        private List<Language> GetLanguage(ParsedMovieInfo parsedMovieInfo)
-        {
-            if (parsedMovieInfo == null)
-            {
-                // English is the default language when otherwise unknown
-                return new List<Language> { Language.English };
-            }
-
-            return parsedMovieInfo.Languages;
         }
     }
 }

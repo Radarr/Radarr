@@ -27,7 +27,10 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
             _title1 = titles[0];
             _title2 = titles[1];
             _title3 = titles[2];
-            _movie = Builder<Movie>.CreateNew().With(m => m.CleanTitle = "myothertitle").With(m => m.Id = 1).Build();
+            _movie = Builder<Movie>.CreateNew()
+                .With(m => m.CleanTitle = "myothertitle")
+                .With(m => m.Id = 1)
+                .Build();
         }
 
         private void GivenExistingTitles(params AlternativeTitle[] titles)

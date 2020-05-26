@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Moq;
@@ -25,7 +26,8 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
             _movieSearchCriteria = new MovieSearchCriteria
             {
-                Movie = new Movies.Movie { ImdbId = "tt0076759", Title = "Star Wars", Year = 1977 }
+                Movie = new Movies.Movie { ImdbId = "tt0076759", Title = "Star Wars", Year = 1977, TmdbId = 11 },
+                SceneTitles = new List<string> { "Star Wars" }
             };
 
             _capabilities = new NewznabCapabilities();
@@ -66,7 +68,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         {
             var results = Subject.GetSearchRequests(_movieSearchCriteria);
 
-            results.GetAllTiers().Should().HaveCount(1);
+            results.GetAllTiers().Should().HaveCount(2);
 
             var pages = results.GetAllTiers().First().Take(3).ToList();
 
@@ -80,7 +82,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         {
             var results = Subject.GetSearchRequests(_movieSearchCriteria);
 
-            results.GetAllTiers().Should().HaveCount(1);
+            results.GetAllTiers().Should().HaveCount(2);
 
             var pages = results.GetAllTiers().First().Take(500).ToList();
 
@@ -99,7 +101,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             var page = results.GetAllTiers().First().First();
 
             page.Url.Query.Should().NotContain("imdbid=0076759");
-            page.Url.Query.Should().Contain("q=star");
+            page.Url.Query.Should().Contain("q=Star");
         }
 
         [Test]
@@ -113,6 +115,94 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             var page = results.GetAllTiers().First().First();
 
             page.Url.Query.Should().Contain("imdbid=0076759");
+        }
+
+        [Test]
+        public void should_search_by_tmdbid_if_supported()
+        {
+            _capabilities.SupportedMovieSearchParameters = new[] { "q", "tmdbid" };
+
+            var results = Subject.GetSearchRequests(_movieSearchCriteria);
+            results.GetTier(0).Should().HaveCount(1);
+
+            var page = results.GetAllTiers().First().First();
+
+            page.Url.Query.Should().Contain("tmdbid=11");
+        }
+
+        [Test]
+        public void should_prefer_search_by_tmdbid_if_rid_supported()
+        {
+            _capabilities.SupportedMovieSearchParameters = new[] { "q", "tmdbid", "imdbid" };
+
+            var results = Subject.GetSearchRequests(_movieSearchCriteria);
+            results.GetTier(0).Should().HaveCount(1);
+
+            var page = results.GetAllTiers().First().First();
+
+            page.Url.Query.Should().Contain("tmdbid=11");
+            page.Url.Query.Should().NotContain("imdbid=0076759");
+        }
+
+        [Test]
+        public void should_use_aggregrated_id_search_if_supported()
+        {
+            _capabilities.SupportedMovieSearchParameters = new[] { "q", "tmdbid", "imdbid" };
+            _capabilities.SupportsAggregateIdSearch = true;
+
+            var results = Subject.GetSearchRequests(_movieSearchCriteria);
+            results.GetTier(0).Should().HaveCount(1);
+
+            var page = results.GetTier(0).First().First();
+
+            page.Url.Query.Should().Contain("tmdbid=11");
+            page.Url.Query.Should().Contain("imdbid=0076759");
+        }
+
+        [Test]
+        public void should_not_use_aggregrated_id_search_if_no_ids_supported()
+        {
+            _capabilities.SupportedMovieSearchParameters = new[] { "q" };
+            _capabilities.SupportsAggregateIdSearch = true; // Turns true if indexer supplies supportedParams.
+
+            var results = Subject.GetSearchRequests(_movieSearchCriteria);
+            results.Tiers.Should().Be(1);
+            results.GetTier(0).Should().HaveCount(1);
+
+            var page = results.GetTier(0).First().First();
+
+            page.Url.Query.Should().Contain("q=");
+        }
+
+        [Test]
+        public void should_not_use_aggregrated_id_search_if_no_ids_are_known()
+        {
+            _capabilities.SupportedMovieSearchParameters = new[] { "q", "imdbid" };
+            _capabilities.SupportsAggregateIdSearch = true; // Turns true if indexer supplies supportedParams.
+
+            _movieSearchCriteria.Movie.ImdbId = null;
+
+            var results = Subject.GetSearchRequests(_movieSearchCriteria);
+
+            var page = results.GetTier(0).First().First();
+
+            page.Url.Query.Should().Contain("q=");
+        }
+
+        [Test]
+        public void should_fallback_to_q()
+        {
+            _capabilities.SupportedMovieSearchParameters = new[] { "q", "tmdbid", "imdbid" };
+            _capabilities.SupportsAggregateIdSearch = true;
+
+            var results = Subject.GetSearchRequests(_movieSearchCriteria);
+            results.Tiers.Should().Be(2);
+
+            var pageTier2 = results.GetTier(1).First().First();
+
+            pageTier2.Url.Query.Should().NotContain("tmdbid=11");
+            pageTier2.Url.Query.Should().NotContain("imdbid=0076759");
+            pageTier2.Url.Query.Should().Contain("q=");
         }
     }
 }

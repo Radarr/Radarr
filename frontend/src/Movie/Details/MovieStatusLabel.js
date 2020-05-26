@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import moment from 'moment';
 import styles from './MovieStatusLabel.css';
 
-function getMovieStatus(hasFile, isMonitored, inCinemas) {
-  const currentTime = moment();
+function getMovieStatus(hasFile, isMonitored, isAvailable) {
 
   if (hasFile) {
     return 'Downloaded';
@@ -14,7 +12,7 @@ function getMovieStatus(hasFile, isMonitored, inCinemas) {
     return 'Unmonitored';
   }
 
-  if (inCinemas.isBefore(currentTime) && !hasFile) {
+  if (isAvailable && !hasFile) {
     return 'Missing';
   }
 
@@ -25,10 +23,10 @@ function MovieStatusLabel(props) {
   const {
     hasMovieFiles,
     monitored,
-    inCinemas
+    isAvailable
   } = props;
 
-  const status = getMovieStatus(hasMovieFiles, monitored, moment(inCinemas));
+  const status = getMovieStatus(hasMovieFiles, monitored, isAvailable);
 
   return (
     <span
@@ -42,7 +40,7 @@ function MovieStatusLabel(props) {
 MovieStatusLabel.propTypes = {
   hasMovieFiles: PropTypes.bool.isRequired,
   monitored: PropTypes.bool.isRequired,
-  inCinemas: PropTypes.string
+  isAvailable: PropTypes.bool.isRequired
 };
 
 MovieStatusLabel.defaultProps = {

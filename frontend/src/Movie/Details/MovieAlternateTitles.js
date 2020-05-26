@@ -6,7 +6,7 @@ function MovieAlternateTitles({ alternateTitles }) {
   return (
     <ul>
       {
-        alternateTitles.map((alternateTitle) => {
+        alternateTitles.filter((x, i, a) => a.indexOf(x) === i).map((alternateTitle) => {
           return (
             <li
               key={alternateTitle}

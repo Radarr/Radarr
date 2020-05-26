@@ -55,6 +55,7 @@ class UISettings extends Component {
       hasSettings,
       onInputChange,
       onSavePress,
+      languages,
       ...otherProps
     } = this.props;
 
@@ -174,6 +175,22 @@ class UISettings extends Component {
                     />
                   </FormGroup>
                 </FieldSet>
+
+                <FieldSet
+                  legend="Language"
+                >
+                  <FormGroup>
+                    <FormLabel>Movie Info Language</FormLabel>
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="movieInfoLanguage"
+                      values={languages}
+                      helpText="Language that Radarr will use to display Movie Title in UI"
+                      onChange={onInputChange}
+                      {...settings.movieInfoLanguage}
+                    />
+                  </FormGroup>
+                </FieldSet>
               </Form>
           }
         </PageContentBody>
@@ -189,6 +206,7 @@ UISettings.propTypes = {
   settings: PropTypes.object.isRequired,
   hasSettings: PropTypes.bool.isRequired,
   onSavePress: PropTypes.func.isRequired,
+  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   onInputChange: PropTypes.func.isRequired
 };
 
