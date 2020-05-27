@@ -39,8 +39,6 @@ namespace NzbDrone.Core.NetImport.Trakt
             // Limit not smaller than 1 and not larger than 100
             RuleFor(c => c.Limit)
                 .GreaterThan(0)
-
-            //    .InclusiveBetween(1, 500)
                 .WithMessage("Must be integer greater than 0");
         }
     }
@@ -52,7 +50,6 @@ namespace NzbDrone.Core.NetImport.Trakt
 
         public TraktSettingsBase()
         {
-            Link = "https://api.trakt.tv";
             SignIn = "startOAuth";
             Rating = "0-100";
             Certification = "NR,G,PG,PG-13,R,NC-17";
@@ -61,9 +58,11 @@ namespace NzbDrone.Core.NetImport.Trakt
             Limit = 100;
         }
 
-        public string OAuthUrl => "http://radarr.aeonlucid.com/v1/trakt/redirect";
-        public string RenewUri => "http://radarr.aeonlucid.com/v1/trakt/refresh";
-        public string ClientId => "964f67b126ade0112c4ae1f0aea3a8fb03190f71117bd83af6a0560a99bc52e6";
+        public string Link => "https://api.trakt.tv";
+        public string OAuthUrl => "https://api.trakt.tv/oauth/authorize";
+        public string RedirectUri => "https://auth.servarr.com/v1/trakt/auth";
+        public string RenewUri => "https://auth.servarr.com/v1/trakt/renew";
+        public string ClientId => "64508a8bf370cee550dde4806469922fd7cd70afb2d5690e3ee7f75ae784b70e";
         public virtual string Scope => "";
 
         [FieldDefinition(0, Label = "Access Token", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
@@ -77,9 +76,6 @@ namespace NzbDrone.Core.NetImport.Trakt
 
         [FieldDefinition(0, Label = "Auth User", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
         public string AuthUser { get; set; }
-
-        [FieldDefinition(0, Label = "Trakt API URL", HelpText = "Link to to Trakt API URL, do not change unless you know what you are doing.")]
-        public string Link { get; set; }
 
         [FieldDefinition(1, Label = "Rating", HelpText = "Filter movies by rating range (0-100)")]
         public string Rating { get; set; }
