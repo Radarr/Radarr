@@ -50,7 +50,10 @@ namespace NzbDrone.Core.NetImport.Trakt
             if (action == "startOAuth")
             {
                 var request = new HttpRequestBuilder(Settings.OAuthUrl)
-                    .AddQueryParam("target", query["callbackUrl"])
+                    .AddQueryParam("client_id", Settings.ClientId)
+                    .AddQueryParam("response_type", "code")
+                    .AddQueryParam("redirect_uri", Settings.RedirectUri)
+                    .AddQueryParam("state", query["callbackUrl"])
                     .Build();
 
                 return new
@@ -62,10 +65,10 @@ namespace NzbDrone.Core.NetImport.Trakt
             {
                 return new
                 {
-                    accessToken = query["access"],
-                    expires = DateTime.UtcNow.AddSeconds(4838400),
-                    refreshToken = query["refresh"],
-                    authUser = GetUserName(query["access"])
+                    accessToken = query["access_token"],
+                    expires = DateTime.UtcNow.AddSeconds(int.Parse(query["expires_in"])),
+                    refreshToken = query["refresh_token"],
+                    authUser = GetUserName(query["access_token"])
                 };
             }
 
@@ -109,7 +112,7 @@ namespace NzbDrone.Core.NetImport.Trakt
             Settings.Validate().Filter("RefreshToken").ThrowOnError();
 
             var request = new HttpRequestBuilder(Settings.RenewUri)
-                .AddQueryParam("refresh", Settings.RefreshToken)
+                .AddQueryParam("refresh_token", Settings.RefreshToken)
                 .Build();
 
             try
