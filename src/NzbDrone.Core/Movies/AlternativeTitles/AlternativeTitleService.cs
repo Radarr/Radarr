@@ -82,6 +82,9 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             // Then make sure they are all distinct titles
             titles = titles.DistinctBy(t => t.CleanTitle).ToList();
 
+            // Make sure we are not adding titles that exist for other movies (until language PR goes in)
+            titles = titles.Where(t => !_titleRepo.All().Any(e => e.CleanTitle == t.CleanTitle && e.MovieId != t.MovieId)).ToList();
+
             // Now find titles to delete, update and insert.
             var existingTitles = _titleRepo.FindByMovieId(movieId);
 
