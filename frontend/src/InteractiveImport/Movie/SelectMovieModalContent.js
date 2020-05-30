@@ -147,6 +147,7 @@ class SelectMovieModalContent extends Component {
           <Scroller
             registerScroller={this.setScrollerRef}
             className={styles.scroller}
+            autoFocus={false}
           >
             <div>
               {
@@ -159,6 +160,7 @@ class SelectMovieModalContent extends Component {
                     items={suggestions}
                     isSmallScreen={false}
                     scroller={scroller}
+                    focusScroller={false}
                     rowRenderer={this.rowRenderer}
                   />
               }

@@ -95,6 +95,7 @@ class VirtualTable extends Component {
       className,
       items,
       scroller,
+      focusScroller,
       header,
       headerHeight,
       rowRenderer,
@@ -135,6 +136,7 @@ class VirtualTable extends Component {
               <Scroller
                 className={className}
                 scrollDirection={scrollDirections.HORIZONTAL}
+                autoFocus={focusScroller}
               >
                 {header}
                 <div ref={registerChild}>
@@ -179,6 +181,7 @@ VirtualTable.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   scrollIndex: PropTypes.number,
   scroller: PropTypes.instanceOf(Element).isRequired,
+  focusScroller: PropTypes.bool.isRequired,
   header: PropTypes.node.isRequired,
   headerHeight: PropTypes.number.isRequired,
   rowRenderer: PropTypes.func.isRequired
@@ -186,7 +189,8 @@ VirtualTable.propTypes = {
 
 VirtualTable.defaultProps = {
   className: styles.tableContainer,
-  headerHeight: 38
+  headerHeight: 38,
+  focusScroller: true
 };
 
 export default VirtualTable;
