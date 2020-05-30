@@ -94,7 +94,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 
                 if (response != null && response.Resource != null)
                 {
-                    return response.Resource.User.Username;
+                    return response.Resource.User.Ids.Slug;
                 }
             }
             catch (HttpException)

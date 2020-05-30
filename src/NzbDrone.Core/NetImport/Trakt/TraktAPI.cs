@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace NzbDrone.Core.NetImport.Trakt
 {
     public class TraktMovieIdsResource
@@ -49,5 +51,11 @@ namespace NzbDrone.Core.NetImport.Trakt
     public class TraktUserResource
     {
         public string Username { get; set; }
+        public TraktUserIdsResource Ids { get; set; }
+    }
+
+    public class TraktUserIdsResource
+    {
+        public string Slug { get; set; }
     }
 }
