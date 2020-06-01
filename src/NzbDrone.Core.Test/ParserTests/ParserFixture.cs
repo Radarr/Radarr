@@ -129,6 +129,14 @@ namespace NzbDrone.Core.Test.ParserTests
             parsed.Languages.First().Should().Be(Language.English);
         }
 
+        [TestCase("The Italian Job 2008 [tt1234567] 720p BluRay X264", "tt1234567")]
+        [TestCase("The Italian Job 2008 [tt12345678] 720p BluRay X264", "tt12345678")]
+        public void should_parse_imdb_in_title(string postTitle, string imdb)
+        {
+            var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
+            parsed.ImdbId.Should().Be(imdb);
+        }
+
         [TestCase("123", "tt0000123")]
         [TestCase("1234567", "tt1234567")]
         [TestCase("tt1234567", "tt1234567")]
