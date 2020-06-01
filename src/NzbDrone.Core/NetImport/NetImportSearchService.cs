@@ -126,17 +126,18 @@ namespace NzbDrone.Core.NetImport
 
             foreach (var movie in listedMovies)
             {
-                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                //No need to map for movies that already have TMDB, We do it in the Add Service
+                var mapped =  movie.TmdbId > 0 ? movie : _movieSearch.MapMovieToTmdbMovie(movie);
 
                 if (mapped != null && mapped.TmdbId > 0)
                 {
                     if (_exclusionService.IsMovieExcluded(mapped.TmdbId))
                     {
-                        _logger.Debug($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it was found on the exclusions list");
+                        _logger.Debug($"{mapped.Title} ({mapped.TmdbId}) will not be added since it was found on the exclusions list");
                     }
                     else if (_movieService.MovieExists(mapped))
                     {
-                        _logger.Trace($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it exists in Library");
+                        _logger.Trace($"{mapped.Title} ({mapped.TmdbId}) will not be added since it exists in Library");
                     }
                     else
                     {
