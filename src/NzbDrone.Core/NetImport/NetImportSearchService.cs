@@ -126,8 +126,7 @@ namespace NzbDrone.Core.NetImport
 
             foreach (var movie in listedMovies)
             {
-                //No need to map for movies that already have TMDB, We do it in the Add Service
-                var mapped =  movie.TmdbId > 0 ? movie : _movieSearch.MapMovieToTmdbMovie(movie);
+                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
 
                 if (mapped != null && mapped.TmdbId > 0)
                 {
