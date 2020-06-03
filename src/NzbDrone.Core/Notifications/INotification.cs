@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Notifications
@@ -12,6 +12,7 @@ namespace NzbDrone.Core.Notifications
         void OnMovieRename(Movie movie);
         void OnHealthIssue(HealthCheck.HealthCheck healthCheck);
         void OnDelete(DeleteMessage deleteMessage);
+        void ProcessQueue();
         bool SupportsOnGrab { get; }
         bool SupportsOnDownload { get; }
         bool SupportsOnUpgrade { get; }
