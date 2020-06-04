@@ -62,7 +62,6 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R480p);
         }
 
-        [TestCase("The.Shield.S01E13.NTSC.x264-CtrlSD", false)]
         [TestCase("The.Girls.Next.Door.S03E06.DVDRip.XviD-WiDE", false)]
         [TestCase("The.Girls.Next.Door.S03E06.DVD.Rip.XviD-WiDE", false)]
         [TestCase("the.shield.1x13.circles.ws.xvidvd-tns", false)]
@@ -71,6 +70,15 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_dvd_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.DVD, proper, Resolution.R480p);
+        }
+
+        [TestCase("Barbie.Fairytopia.Magic.of.the.Rainbow.2007.DVD5.NTSC", false)]
+        [TestCase("Barbie.Fairytopia.Magic.of.the.Rainbow.2007.DVD9.NTSC", false)]
+        [TestCase("Barbie.Fairytopia.Magic.of.the.Rainbow.2007.DVDR.NTSC", false)]
+        [TestCase("Barbie.Fairytopia.Magic.of.the.Rainbow.2007.DVD-R.NTSC", false)]
+        public void should_parse_dvdr_quality(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Source.DVD, proper, Resolution.R480p, Modifier.REMUX);
         }
 
         [TestCase("Elementary.S01E10.The.Leviathan.480p.WEB-DL.x264-mSD", false)]

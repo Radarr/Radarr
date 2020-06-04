@@ -21,8 +21,8 @@ namespace NzbDrone.Core.Parser
                                                                 (?<hdtv>HDTV)|
                                                                 (?<bdrip>BDRip)|
                                                                 (?<brrip>BRRip)|
-                                                                (?<dvdr>DVD-R|DVDR)|
-                                                                (?<dvd>DVD|DVDRip|NTSC|PAL|xvidvd)|
+                                                                (?<dvdr>DVD-R|DVDR|DVD5|DVD9)|
+                                                                (?<dvd>DVD(?!-R)|DVDRip|xvidvd)|
                                                                 (?<dsr>WS[-_. ]DSR|DSR)|
                                                                 (?<regional>R[0-9]{1}|REGIONAL)|
                                                                 (?<scr>SCR|SCREENER|DVDSCR|DVDSCREENER)|
@@ -315,6 +315,12 @@ namespace NzbDrone.Core.Parser
                             result.Quality = Quality.Bluray480p;
                             return result;
                     }
+                }
+
+                if (sourceMatch.Groups["dvdr"].Success)
+                {
+                    result.Quality = Quality.DVDR;
+                    return result;
                 }
 
                 if (sourceMatch.Groups["dvd"].Success)
