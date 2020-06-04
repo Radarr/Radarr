@@ -137,6 +137,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                     details.Add(new XElement("plot", movie.Overview));
                     details.Add(new XElement("id", movie.ImdbId));
+                    details.Add(new XElement("tmdbid", movie.TmdbId));
 
                     if (movie.ImdbId.IsNotNullOrWhiteSpace())
                     {
@@ -169,6 +170,15 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         setElement.Add(new XElement("name", movie.Collection.Name));
 
                         details.Add(setElement);
+                    }
+
+                    if (movie.Collection?.TmdbId > 0)
+                    {
+                        details.Add(new XElement("tmdbCollectionId", movie.Collection.TmdbId));
+
+                        var uniqueSetId = new XElement("uniqueid", movie.Collection.TmdbId);
+                        uniqueSetId.SetAttributeValue("type", "tmdbSet");
+                        details.Add(uniqueSetId);
                     }
 
                     foreach (var genre in movie.Genres)
