@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -50,8 +50,8 @@ namespace NzbDrone.Core.RemotePathMappings
 
         public RemotePathMapping Add(RemotePathMapping mapping)
         {
-            mapping.LocalPath = new OsPath(mapping.LocalPath).AsDirectory().FullPath;
-            mapping.RemotePath = new OsPath(mapping.RemotePath).AsDirectory().FullPath;
+            mapping.LocalPath = new OsPath(mapping.LocalPath.Trim()).AsDirectory().FullPath;
+            mapping.RemotePath = new OsPath(mapping.RemotePath.Trim()).AsDirectory().FullPath;
 
             var all = All();
 

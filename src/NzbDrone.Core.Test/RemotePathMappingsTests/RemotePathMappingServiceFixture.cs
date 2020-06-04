@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -121,6 +121,25 @@ namespace NzbDrone.Core.Test.RemotePathMappingsTests
         [TestCase(@"D:/with/forward/slashes", @"D:\with\forward\slashes\")]
         [TestCase(@"D:/with/mixed\slashes", @"D:\with\mixed\slashes\")]
         public void should_fix_wrong_slashes_on_add(string remotePath, string cleanedPath)
+        {
+            GivenMapping();
+
+            var mapping = new RemotePathMapping
+            {
+                Host = "my-server.localdomain",
+                RemotePath = remotePath,
+                LocalPath = @"D:\mountedstorage\downloads\tv".AsOsAgnostic()
+            };
+
+            var result = Subject.Add(mapping);
+
+            result.RemotePath.Should().Be(cleanedPath);
+        }
+
+        [TestCase(@" \\server\share\with\whitespace\ ", @"\\server\share\with\whitespace\")]
+        [TestCase(@" D:\with\whitespace\", @"D:\with\whitespace\")]
+        [TestCase(@"D:\with\whitespace\ ", @"D:\with\whitespace\")]
+        public void should_trim_whitespace_on_add(string remotePath, string cleanedPath)
         {
             GivenMapping();
 
