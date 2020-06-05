@@ -10,8 +10,6 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
-using NzbDrone.Core.NetImport.ImportExclusions;
-using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.RomanNumerals;
 
@@ -39,6 +37,7 @@ namespace NzbDrone.Core.Movies
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         void SetFileId(Movie movie, MovieFile movieFile);
         void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false);
+        void DeleteMovies(List<int> movieIds, bool deleteFiles, bool addExclusion = false);
         List<Movie> GetAllMovies();
         List<Movie> AllForTag(int tagId);
         Movie UpdateMovie(Movie movie);
@@ -54,24 +53,18 @@ namespace NzbDrone.Core.Movies
         private readonly IMovieRepository _movieRepository;
         private readonly IConfigService _configService;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IBuildFileNames _fileNameBuilder;
-        private readonly IImportExclusionsService _exclusionService;
         private readonly IBuildMoviePaths _moviePathBuilder;
         private readonly Logger _logger;
 
         public MovieService(IMovieRepository movieRepository,
                              IEventAggregator eventAggregator,
-                             IBuildFileNames fileNameBuilder,
                              IConfigService configService,
-                             IImportExclusionsService exclusionService,
                              IBuildMoviePaths moviePathBuilder,
                              Logger logger)
         {
             _movieRepository = movieRepository;
             _eventAggregator = eventAggregator;
-            _fileNameBuilder = fileNameBuilder;
             _configService = configService;
-            _exclusionService = exclusionService;
             _moviePathBuilder = moviePathBuilder;
             _logger = logger;
         }
@@ -233,14 +226,24 @@ namespace NzbDrone.Core.Movies
         public void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false)
         {
             var movie = _movieRepository.Get(movieId);
-            if (addExclusion)
-            {
-                _exclusionService.AddExclusion(new ImportExclusion { TmdbId = movie.TmdbId, MovieTitle = movie.Title, MovieYear = movie.Year });
-            }
 
             _movieRepository.Delete(movieId);
-            _eventAggregator.PublishEvent(new MovieDeletedEvent(movie, deleteFiles));
-            _logger.Info("Deleted movie {}", movie);
+            _eventAggregator.PublishEvent(new MoviesDeletedEvent(new List<Movie> { movie }, deleteFiles, addExclusion));
+            _logger.Info("Deleted movie {0}", movie);
+        }
+
+        public void DeleteMovies(List<int> movieIds, bool deleteFiles, bool addExclusion = false)
+        {
+            var moviesToDelete = _movieRepository.Get(movieIds).ToList();
+
+            _movieRepository.DeleteMany(movieIds);
+
+            _eventAggregator.PublishEvent(new MoviesDeletedEvent(moviesToDelete, deleteFiles, addExclusion));
+
+            foreach (var movie in moviesToDelete)
+            {
+                _logger.Info("Deleted movie {0}", movie);
+            }
         }
 
         public List<Movie> GetAllMovies()

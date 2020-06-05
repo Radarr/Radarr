@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Download.History
     public interface IDownloadHistoryRepository : IBasicRepository<DownloadHistory>
     {
         List<DownloadHistory> FindByDownloadId(string downloadId);
-        void DeleteByMovieId(int movieId);
+        void DeleteByMovieIds(List<int> movieIds);
     }
 
     public class DownloadHistoryRepository : BasicRepository<DownloadHistory>, IDownloadHistoryRepository
@@ -23,9 +23,9 @@ namespace NzbDrone.Core.Download.History
             return Query(x => x.DownloadId == downloadId).OrderByDescending(h => h.Date).ToList();
         }
 
-        public void DeleteByMovieId(int movieId)
+        public void DeleteByMovieIds(List<int> movieIds)
         {
-            Delete(r => r.MovieId == movieId);
+            Delete(r => movieIds.Contains(r.MovieId));
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -47,7 +48,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Db.InsertMany(files);
 
-            Subject.DeleteForMovie(_movie.Id);
+            Subject.DeleteForMovies(new List<int> { _movie.Id });
 
             var remainingFiles = Subject.GetFilesByMovie(_movie.Id);
 

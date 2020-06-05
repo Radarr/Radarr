@@ -16,7 +16,7 @@ namespace NzbDrone.Core.History
         List<MovieHistory> FindByDownloadId(string downloadId);
         List<MovieHistory> FindDownloadHistory(int movieId, QualityModel quality);
         List<MovieHistory> GetByMovieId(int movieId, MovieHistoryEventType? eventType);
-        void DeleteForMovie(int movieId);
+        void DeleteForMovies(List<int> movieIds);
         MovieHistory MostRecentForMovie(int movieId);
         List<MovieHistory> Since(DateTime date, MovieHistoryEventType? eventType);
     }
@@ -68,9 +68,9 @@ namespace NzbDrone.Core.History
             return query.OrderByDescending(h => h.Date).ToList();
         }
 
-        public void DeleteForMovie(int movieId)
+        public void DeleteForMovies(List<int> movieIds)
         {
-            Delete(c => c.MovieId == movieId);
+            Delete(c => movieIds.Contains(c.MovieId));
         }
 
         protected override SqlBuilder PagedBuilder() => new SqlBuilder()

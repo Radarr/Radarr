@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.Events;
@@ -19,7 +20,7 @@ namespace NzbDrone.Core.Download.History
                                           IHandle<DownloadCompletedEvent>,
                                           IHandle<DownloadFailedEvent>,
                                           IHandle<DownloadIgnoredEvent>,
-                                          IHandle<MovieDeletedEvent>
+                                          IHandle<MoviesDeletedEvent>
     {
         private readonly IDownloadHistoryRepository _repository;
         private readonly IHistoryService _historyService;
@@ -213,9 +214,9 @@ namespace NzbDrone.Core.Download.History
             _repository.Insert(history);
         }
 
-        public void Handle(MovieDeletedEvent message)
+        public void Handle(MoviesDeletedEvent message)
         {
-            _repository.DeleteByMovieId(message.Movie.Id);
+            _repository.DeleteByMovieIds(message.Movies.Select(m => m.Id).ToList());
         }
     }
 }

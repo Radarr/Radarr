@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles
     }
 
     public class MediaFileDeletionService : IDeleteMediaFiles,
-                                            IHandleAsync<MovieDeletedEvent>,
+                                            IHandleAsync<MoviesDeletedEvent>,
                                             IHandle<MovieFileDeletedEvent>
     {
         private readonly IDiskProvider _diskProvider;
@@ -83,36 +83,38 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileService.Delete(movieFile, DeleteMediaFileReason.Manual);
         }
 
-        public void HandleAsync(MovieDeletedEvent message)
+        public void HandleAsync(MoviesDeletedEvent message)
         {
             if (message.DeleteFiles)
             {
-                var movie = message.Movie;
                 var allMovies = _movieService.GetAllMovies();
 
-                foreach (var s in allMovies)
+                foreach (var movie in message.Movies)
                 {
-                    if (s.Id == movie.Id)
+                    foreach (var s in allMovies)
                     {
-                        continue;
+                        if (s.Id == movie.Id)
+                        {
+                            continue;
+                        }
+
+                        if (movie.Path.IsParentPath(s.Path))
+                        {
+                            _logger.Error("Movie path: '{0}' is a parent of another movie, not deleting files.", movie.Path);
+                            return;
+                        }
+
+                        if (movie.Path.PathEquals(s.Path))
+                        {
+                            _logger.Error("Movie path: '{0}' is the same as another movie, not deleting files.", movie.Path);
+                            return;
+                        }
                     }
 
-                    if (movie.Path.IsParentPath(s.Path))
+                    if (_diskProvider.FolderExists(movie.Path))
                     {
-                        _logger.Error("Movie path: '{0}' is a parent of another movie, not deleting files.", movie.Path);
-                        return;
+                        _recycleBinProvider.DeleteFolder(movie.Path);
                     }
-
-                    if (movie.Path.PathEquals(s.Path))
-                    {
-                        _logger.Error("Movie path: '{0}' is the same as another movie, not deleting files.", movie.Path);
-                        return;
-                    }
-                }
-
-                if (_diskProvider.FolderExists(message.Movie.Path))
-                {
-                    _recycleBinProvider.DeleteFolder(message.Movie.Path);
                 }
             }
         }

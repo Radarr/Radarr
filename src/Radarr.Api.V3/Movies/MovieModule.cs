@@ -25,7 +25,7 @@ namespace Radarr.Api.V3.Movies
                                 IHandle<MovieFileDeletedEvent>,
                                 IHandle<MovieUpdatedEvent>,
                                 IHandle<MovieEditedEvent>,
-                                IHandle<MovieDeletedEvent>,
+                                IHandle<MoviesDeletedEvent>,
                                 IHandle<MovieRenamedEvent>,
                                 IHandle<MediaCoversUpdatedEvent>
     {
@@ -220,9 +220,12 @@ namespace Radarr.Api.V3.Movies
             BroadcastResourceChange(ModelAction.Updated, message.Movie.Id);
         }
 
-        public void Handle(MovieDeletedEvent message)
+        public void Handle(MoviesDeletedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Deleted, message.Movie.ToResource());
+            foreach (var movie in message.Movies)
+            {
+                BroadcastResourceChange(ModelAction.Deleted, movie.Id);
+            }
         }
 
         public void Handle(MovieRenamedEvent message)
