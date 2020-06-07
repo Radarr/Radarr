@@ -19,9 +19,6 @@ namespace Radarr.Api.V3.Config
 
         public bool SetPermissionsLinux { get; set; }
         public string FileChmod { get; set; }
-        public string FolderChmod { get; set; }
-        public string ChownUser { get; set; }
-        public string ChownGroup { get; set; }
 
         public bool SkipFreeSpaceCheckWhenImporting { get; set; }
         public int MinimumFreeSpaceWhenImporting { get; set; }
@@ -49,9 +46,6 @@ namespace Radarr.Api.V3.Config
 
                 SetPermissionsLinux = model.SetPermissionsLinux,
                 FileChmod = model.FileChmod,
-                FolderChmod = model.FolderChmod,
-                ChownUser = model.ChownUser,
-                ChownGroup = model.ChownGroup,
 
                 SkipFreeSpaceCheckWhenImporting = model.SkipFreeSpaceCheckWhenImporting,
                 MinimumFreeSpaceWhenImporting = model.MinimumFreeSpaceWhenImporting,
