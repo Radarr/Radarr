@@ -31,7 +31,7 @@ namespace NzbDrone.Core.NetImport
 
         public abstract NetImportFetchResult Fetch();
 
-        public NetImportBase(INetImportStatusService netImportStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
+        protected NetImportBase(INetImportStatusService netImportStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
         {
             _netImportStatusService = netImportStatusService;
             _configService = configService;
