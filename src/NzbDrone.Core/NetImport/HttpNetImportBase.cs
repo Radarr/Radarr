@@ -30,7 +30,7 @@ namespace NzbDrone.Core.NetImport
         public abstract INetImportRequestGenerator GetRequestGenerator();
         public abstract IParseNetImportResponse GetParser();
 
-        public HttpNetImportBase(IHttpClient httpClient, INetImportStatusService netImportStatusService,  IConfigService configService, IParsingService parsingService, Logger logger)
+        protected HttpNetImportBase(IHttpClient httpClient, INetImportStatusService netImportStatusService,  IConfigService configService, IParsingService parsingService, Logger logger)
             : base(netImportStatusService, configService, parsingService, logger)
         {
             _httpClient = httpClient;
