@@ -122,7 +122,7 @@ namespace NzbDrone.Update.UpdateEngine
                     // Set executable flag on Readarr app
                     if (OsInfo.IsOsx || (OsInfo.IsLinux && PlatformInfo.IsNetCore))
                     {
-                        _diskProvider.SetPermissions(Path.Combine(installationFolder, "Readarr"), "0755", null, null);
+                        _diskProvider.SetPermissions(Path.Combine(installationFolder, "Readarr"), "0755");
                     }
                 }
                 catch (Exception e)

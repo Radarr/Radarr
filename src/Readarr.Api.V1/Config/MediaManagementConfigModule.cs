@@ -1,17 +1,18 @@
-﻿using FluentValidation;
+using FluentValidation;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 
 namespace Readarr.Api.V1.Config
 {
     public class MediaManagementConfigModule : ReadarrConfigModule<MediaManagementConfigResource>
     {
-        public MediaManagementConfigModule(IConfigService configService, PathExistsValidator pathExistsValidator)
+        public MediaManagementConfigModule(IConfigService configService, PathExistsValidator pathExistsValidator, FileChmodValidator fileChmodValidator)
             : base(configService)
         {
             SharedValidator.RuleFor(c => c.RecycleBinCleanupDays).GreaterThanOrEqualTo(0);
-            SharedValidator.RuleFor(c => c.FileChmod).NotEmpty();
-            SharedValidator.RuleFor(c => c.FolderChmod).NotEmpty();
+            SharedValidator.RuleFor(c => c.FileChmod).SetValidator(fileChmodValidator).When(c => !string.IsNullOrEmpty(c.FileChmod) && (OsInfo.IsLinux || OsInfo.IsOsx));
             SharedValidator.RuleFor(c => c.RecycleBin).IsValidPath().SetValidator(pathExistsValidator).When(c => !string.IsNullOrWhiteSpace(c.RecycleBin));
             SharedValidator.RuleFor(c => c.MinimumFreeSpaceWhenImporting).GreaterThanOrEqualTo(100);
         }

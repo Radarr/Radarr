@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Update
             // Set executable flag on update app
             if (OsInfo.IsOsx || (OsInfo.IsLinux && PlatformInfo.IsNetCore))
             {
-                _diskProvider.SetPermissions(_appFolderInfo.GetUpdateClientExePath(updatePackage.Runtime), "0755", null, null);
+                _diskProvider.SetPermissions(_appFolderInfo.GetUpdateClientExePath(updatePackage.Runtime), "0755");
             }
 
             _logger.Info("Starting update client {0}", _appFolderInfo.GetUpdateClientExePath(updatePackage.Runtime));

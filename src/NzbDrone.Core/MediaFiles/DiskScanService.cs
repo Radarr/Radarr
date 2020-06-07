@@ -14,6 +14,7 @@ using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Books.Calibre;
 using NzbDrone.Core.MediaFiles.BookImport;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Commands;
@@ -39,6 +40,7 @@ namespace NzbDrone.Core.MediaFiles
         public static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(?:extras|@eadir|extrafanart|plex versions|\.[^\\/]+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         public static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|^Thumbs\.db$|^\.DS_store$|\.partial~$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private readonly IConfigService _configService;
         private readonly IDiskProvider _diskProvider;
         private readonly ICalibreProxy _calibre;
         private readonly IMediaFileService _mediaFileService;
@@ -50,7 +52,8 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
-        public DiskScanService(IDiskProvider diskProvider,
+        public DiskScanService(IConfigService configService,
+                               IDiskProvider diskProvider,
                                ICalibreProxy calibre,
                                IMediaFileService mediaFileService,
                                IMakeImportDecision importDecisionMaker,
@@ -61,6 +64,7 @@ namespace NzbDrone.Core.MediaFiles
                                IEventAggregator eventAggregator,
                                Logger logger)
         {
+            _configService = configService;
             _diskProvider = diskProvider;
             _calibre = calibre;
 
