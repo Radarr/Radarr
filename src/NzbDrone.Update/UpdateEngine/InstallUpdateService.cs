@@ -125,7 +125,7 @@ namespace NzbDrone.Update.UpdateEngine
                     // Set executable flag on app
                     if (OsInfo.IsOsx || (OsInfo.IsLinux && PlatformInfo.IsNetCore))
                     {
-                        _diskProvider.SetPermissions(Path.Combine(installationFolder, "Radarr"), "0755", null, null);
+                        _diskProvider.SetPermissions(Path.Combine(installationFolder, "Radarr"), "0755");
                     }
                 }
                 catch (Exception e)
