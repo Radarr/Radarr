@@ -174,6 +174,23 @@ namespace NzbDrone.Core.Test.ParserTests
             parsed.Languages.First().Should().Be(Language.English);
         }
 
+        [TestCase("The.Purge.3.Election.Year.2016.German.DTS.DL.720p.BluRay.x264-MULTiPLEX")]
+        public void should_not_parse_multi_language_in_releasegroup(string postTitle)
+        {
+            var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
+            parsed.Languages.Count().Should().Be(1);
+            parsed.Languages.First().Should().Be(Language.German);
+        }
+
+        [TestCase("The.Purge.3.Election.Year.2016.German.Multi.DTS.DL.720p.BluRay.x264-MULTiPLEX")]
+        public void should_parse_multi_language(string postTitle)
+        {
+            var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
+            parsed.Languages.Count().Should().Be(2);
+            parsed.Languages.Should().Contain(Language.German);
+            parsed.Languages.Should().Contain(Language.English, "Added by the multi tag in the release name");
+        }
+
         [TestCase("The Italian Job 2008 [tt1234567] 720p BluRay X264", "tt1234567")]
         [TestCase("The Italian Job 2008 [tt12345678] 720p BluRay X264", "tt12345678")]
         public void should_parse_imdb_in_title(string postTitle, string imdb)

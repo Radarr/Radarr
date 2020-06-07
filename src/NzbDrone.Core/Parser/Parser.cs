@@ -240,17 +240,6 @@ namespace NzbDrone.Core.Parser
                                     simpleReleaseTitle = simpleReleaseTitle.Replace(simpleTitleReplaceString, simpleTitleReplaceString.Contains(".") ? "A.Movie" : "A Movie");
                                 }
 
-                                result.Languages = LanguageParser.ParseLanguages(simpleReleaseTitle);
-                                Logger.Debug("Languages parsed: {0}", string.Join(", ", result.Languages));
-
-                                result.Quality = QualityParser.ParseQuality(title);
-                                Logger.Debug("Quality parsed: {0}", result.Quality);
-
-                                if (result.Edition.IsNullOrWhiteSpace())
-                                {
-                                    result.Edition = ParseEdition(simpleReleaseTitle);
-                                }
-
                                 result.ReleaseGroup = ParseReleaseGroup(simpleReleaseTitle);
 
                                 var subGroup = GetSubGroup(match);
@@ -260,6 +249,18 @@ namespace NzbDrone.Core.Parser
                                 }
 
                                 Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
+
+                                result.Languages = LanguageParser.ParseLanguages(result.ReleaseGroup.IsNotNullOrWhiteSpace() ? simpleReleaseTitle.Replace(result.ReleaseGroup, "RlsGrp") : simpleReleaseTitle);
+                                Logger.Debug("Languages parsed: {0}", string.Join(", ", result.Languages));
+
+                                result.Quality = QualityParser.ParseQuality(title);
+                                Logger.Debug("Quality parsed: {0}", result.Quality);
+
+                                if (result.Edition.IsNullOrWhiteSpace())
+                                {
+                                    result.Edition = ParseEdition(simpleReleaseTitle);
+                                    Logger.Debug("Edition parsed: {0}", result.Edition);
+                                }
 
                                 result.ReleaseHash = GetReleaseHash(match);
                                 if (!result.ReleaseHash.IsNullOrWhiteSpace())
