@@ -11,6 +11,7 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
         List<ImportExclusion> GetAllExclusions();
         bool IsMovieExcluded(int tmdbId);
         ImportExclusion AddExclusion(ImportExclusion exclusion);
+        List<ImportExclusion> AddExclusions(List<ImportExclusion> exclusions);
         void RemoveExclusion(ImportExclusion exclusion);
         ImportExclusion GetById(int id);
     }
@@ -35,6 +36,13 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
             }
 
             return _exclusionRepository.Insert(exclusion);
+        }
+
+        public List<ImportExclusion> AddExclusions(List<ImportExclusion> exclusions)
+        {
+            _exclusionRepository.InsertMany(exclusions);
+
+            return exclusions;
         }
 
         public List<ImportExclusion> GetAllExclusions()

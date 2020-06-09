@@ -47,7 +47,7 @@ module.exports = {
   modalBodyPadding: '30px',
 
   // Movie
-  movieIndexColumnPadding: '20px',
-  movieIndexColumnPaddingSmallScreen: '10px',
+  movieIndexColumnPadding: '10px',
+  movieIndexColumnPaddingSmallScreen: '5px',
   movieIndexOverviewInfoRowHeight: '21px'
 };

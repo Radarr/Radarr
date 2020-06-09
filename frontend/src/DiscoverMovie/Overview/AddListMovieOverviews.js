@@ -5,78 +5,34 @@ import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import dimensions from 'Styles/Variables/dimensions';
 import Measure from 'Components/Measure';
-import MovieIndexItemConnector from 'Movie/Index/MovieIndexItemConnector';
-import MovieIndexPoster from './MovieIndexPoster';
-import styles from './MovieIndexPosters.css';
+import AddListMovieItemConnector from 'DiscoverMovie/AddListMovieItemConnector';
+import AddListMovieOverviewConnector from './AddListMovieOverviewConnector';
+import styles from './AddListMovieOverviews.css';
 
 // Poster container dimensions
 const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
 const columnPaddingSmallScreen = parseInt(dimensions.movieIndexColumnPaddingSmallScreen);
-const progressBarHeight = parseInt(dimensions.progressBarSmallHeight);
-const detailedProgressBarHeight = parseInt(dimensions.progressBarMediumHeight);
 
-const additionalColumnCount = {
-  small: 3,
-  medium: 2,
-  large: 1
-};
+function calculatePosterWidth(posterSize, isSmallScreen) {
+  const maxiumPosterWidth = isSmallScreen ? 152 : 162;
 
-function calculateColumnWidth(width, posterSize, isSmallScreen) {
-  const maxiumColumnWidth = isSmallScreen ? 172 : 182;
-  const columns = Math.floor(width / maxiumColumnWidth);
-  const remainder = width % maxiumColumnWidth;
-
-  if (remainder === 0 && posterSize === 'large') {
-    return maxiumColumnWidth;
+  if (posterSize === 'large') {
+    return maxiumPosterWidth;
   }
 
-  return Math.floor(width / (columns + additionalColumnCount[posterSize]));
+  if (posterSize === 'medium') {
+    return Math.floor(maxiumPosterWidth * 0.75);
+  }
+
+  return Math.floor(maxiumPosterWidth * 0.5);
 }
 
-function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions) {
-  const {
-    detailedProgressBar,
-    showTitle,
-    showMonitored,
-    showQualityProfile
-  } = posterOptions;
-
-  const nextAiringHeight = 19;
+function calculateRowHeight(posterHeight, sortKey, isSmallScreen, overviewOptions) {
 
   const heights = [
     posterHeight,
-    detailedProgressBar ? detailedProgressBarHeight : progressBarHeight,
-    nextAiringHeight,
     isSmallScreen ? columnPaddingSmallScreen : columnPadding
   ];
-
-  if (showTitle) {
-    heights.push(19);
-  }
-
-  if (showMonitored) {
-    heights.push(19);
-  }
-
-  if (showQualityProfile) {
-    heights.push(19);
-  }
-
-  switch (sortKey) {
-    case 'studio':
-    case 'added':
-    case 'path':
-    case 'sizeOnDisk':
-      heights.push(19);
-      break;
-    case 'qualityProfileId':
-      if (!showQualityProfile) {
-        heights.push(19);
-      }
-      break;
-    default:
-      // No need to add a height of 0
-  }
 
   return heights.reduce((acc, height) => acc + height, 0);
 }
@@ -85,7 +41,7 @@ function calculatePosterHeight(posterWidth) {
   return Math.ceil((250 / 170) * posterWidth);
 }
 
-class MovieIndexPosters extends Component {
+class AddListMovieOverviews extends Component {
 
   //
   // Lifecycle
@@ -95,47 +51,37 @@ class MovieIndexPosters extends Component {
 
     this.state = {
       width: 0,
-      columnWidth: 182,
       columnCount: 1,
       posterWidth: 162,
       posterHeight: 238,
       rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {})
     };
 
-    this._isInitialized = false;
     this._grid = null;
-    this._padding = props.isSmallScreen ? columnPaddingSmallScreen : columnPadding;
   }
 
   componentDidUpdate(prevProps, prevState) {
     const {
       items,
       sortKey,
-      posterOptions,
-      jumpToCharacter,
-      isSmallScreen,
-      isMovieEditorActive
+      overviewOptions,
+      jumpToCharacter
     } = this.props;
 
     const {
       width,
-      columnWidth,
-      columnCount,
       rowHeight
     } = this.state;
 
     if (prevProps.sortKey !== sortKey ||
-        prevProps.posterOptions !== posterOptions) {
-      this.calculateGrid(width, isSmallScreen);
+        prevProps.overviewOptions !== overviewOptions) {
+      this.calculateGrid();
     }
 
     if (this._grid &&
         (prevState.width !== width ||
-            prevState.columnWidth !== columnWidth ||
-            prevState.columnCount !== columnCount ||
             prevState.rowHeight !== rowHeight ||
-            hasDifferentItemsOrOrder(prevProps.items, items) ||
-            prevState.isMovieEditorActive !== isMovieEditorActive)) {
+            hasDifferentItemsOrOrder(prevProps.items, items, 'tmdbId'))) {
       // recomputeGridSize also forces Grid to discard its cache of rendered cells
       this._grid.recomputeGridSize();
     }
@@ -144,10 +90,9 @@ class MovieIndexPosters extends Component {
       const index = getIndexOfFirstCharacter(items, jumpToCharacter);
 
       if (this._grid && index != null) {
-        const row = Math.floor(index / columnCount);
 
         this._grid.scrollToCell({
-          rowIndex: row,
+          rowIndex: index,
           columnIndex: 0
         });
       }
@@ -164,53 +109,42 @@ class MovieIndexPosters extends Component {
   calculateGrid = (width = this.state.width, isSmallScreen) => {
     const {
       sortKey,
-      posterOptions
+      overviewOptions
     } = this.props;
 
-    const columnWidth = calculateColumnWidth(width, posterOptions.size, isSmallScreen);
-    const columnCount = Math.max(Math.floor(width / columnWidth), 1);
-    const posterWidth = columnWidth - this._padding * 2;
+    const posterWidth = calculatePosterWidth(overviewOptions.size, isSmallScreen);
     const posterHeight = calculatePosterHeight(posterWidth);
-    const rowHeight = calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions);
+    const rowHeight = calculateRowHeight(posterHeight, sortKey, isSmallScreen, overviewOptions);
 
     this.setState({
       width,
-      columnWidth,
-      columnCount,
       posterWidth,
       posterHeight,
       rowHeight
     });
   }
 
-  cellRenderer = ({ key, rowIndex, columnIndex, style }) => {
+  cellRenderer = ({ key, rowIndex, style }) => {
     const {
       items,
       sortKey,
-      posterOptions,
+      overviewOptions,
       showRelativeDates,
       shortDateFormat,
+      longDateFormat,
       timeFormat,
+      isSmallScreen,
       selectedState,
-      isMovieEditorActive,
       onSelectedChange
     } = this.props;
 
     const {
       posterWidth,
       posterHeight,
-      columnCount
+      rowHeight
     } = this.state;
 
-    const {
-      detailedProgressBar,
-      showTitle,
-      showMonitored,
-      showQualityProfile
-    } = posterOptions;
-
-    const movieIdx = rowIndex * columnCount + columnIndex;
-    const movie = items[movieIdx];
+    const movie = items[rowIndex];
 
     if (!movie) {
       return null;
@@ -220,29 +154,24 @@ class MovieIndexPosters extends Component {
       <div
         className={styles.container}
         key={key}
-        style={{
-          ...style,
-          padding: this._padding
-        }}
+        style={style}
       >
-        <MovieIndexItemConnector
-          key={movie.id}
-          component={MovieIndexPoster}
+        <AddListMovieItemConnector
+          key={movie.tmdbId}
+          component={AddListMovieOverviewConnector}
           sortKey={sortKey}
           posterWidth={posterWidth}
           posterHeight={posterHeight}
-          detailedProgressBar={detailedProgressBar}
-          showTitle={showTitle}
-          showMonitored={showMonitored}
-          showQualityProfile={showQualityProfile}
+          rowHeight={rowHeight}
+          overviewOptions={overviewOptions}
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
+          longDateFormat={longDateFormat}
           timeFormat={timeFormat}
-          movieId={movie.id}
-          qualityProfileId={movie.qualityProfileId}
-          isSelected={selectedState[movie.id]}
+          isSmallScreen={isSmallScreen}
+          movieId={movie.tmdbId}
+          isSelected={selectedState[movie.tmdbId]}
           onSelectedChange={onSelectedChange}
-          isMovieEditorActive={isMovieEditorActive}
         />
       </div>
     );
@@ -268,12 +197,8 @@ class MovieIndexPosters extends Component {
 
     const {
       width,
-      columnWidth,
-      columnCount,
       rowHeight
     } = this.state;
-
-    const rowCount = Math.ceil(items.length / columnCount);
 
     return (
       <Measure
@@ -295,9 +220,9 @@ class MovieIndexPosters extends Component {
                   className={styles.grid}
                   autoHeight={true}
                   height={height}
-                  columnCount={columnCount}
-                  columnWidth={columnWidth}
-                  rowCount={rowCount}
+                  columnCount={1}
+                  columnWidth={width}
+                  rowCount={items.length}
                   rowHeight={rowHeight}
                   width={width}
                   onScroll={onChildScroll}
@@ -306,7 +231,7 @@ class MovieIndexPosters extends Component {
                   cellRenderer={this.cellRenderer}
                   selectedState={selectedState}
                   scrollToAlignment={'start'}
-                  isScrollingOptOut={true}
+                  isScrollingOptout={true}
                 />
               </div>
             );
@@ -318,19 +243,19 @@ class MovieIndexPosters extends Component {
   }
 }
 
-MovieIndexPosters.propTypes = {
+AddListMovieOverviews.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
-  posterOptions: PropTypes.object.isRequired,
+  overviewOptions: PropTypes.object.isRequired,
   jumpToCharacter: PropTypes.string,
   scroller: PropTypes.instanceOf(Element).isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
+  longDateFormat: PropTypes.string.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
   selectedState: PropTypes.object.isRequired,
-  onSelectedChange: PropTypes.func.isRequired,
-  isMovieEditorActive: PropTypes.bool.isRequired
+  onSelectedChange: PropTypes.func.isRequired
 };
 
-export default MovieIndexPosters;
+export default AddListMovieOverviews;

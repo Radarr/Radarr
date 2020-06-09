@@ -22,6 +22,7 @@ export const SET_NET_IMPORT_EXCLUSION_VALUE = 'settings/netImportExclusions/setN
 // Action Creators
 
 export const fetchNetImportExclusions = createThunk(FETCH_NET_IMPORT_EXCLUSIONS);
+
 export const saveNetImportExclusion = createThunk(SAVE_NET_IMPORT_EXCLUSION);
 export const deleteNetImportExclusion = createThunk(DELETE_NET_IMPORT_EXCLUSION);
 
@@ -55,6 +56,7 @@ export default {
 
   actionHandlers: {
     [FETCH_NET_IMPORT_EXCLUSIONS]: createFetchHandler(section, '/exclusions'),
+
     [SAVE_NET_IMPORT_EXCLUSION]: createSaveProviderHandler(section, '/exclusions'),
     [DELETE_NET_IMPORT_EXCLUSION]: createRemoveItemHandler(section, '/exclusions')
   },

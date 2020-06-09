@@ -3,6 +3,7 @@ using FluentValidation;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
 using Radarr.Http;
+using Radarr.Http.Extensions;
 
 namespace Radarr.Api.V3.NetImport
 {
@@ -15,9 +16,9 @@ namespace Radarr.Api.V3.NetImport
         {
             _exclusionService = exclusionService;
             GetResourceAll = GetAll;
-            CreateResource = AddExclusion;
             DeleteResource = RemoveExclusion;
             GetResourceById = GetById;
+            Post("/", x => AddExclusions());
 
             SharedValidator.RuleFor(c => c.TmdbId).GreaterThan(0);
             SharedValidator.RuleFor(c => c.MovieTitle).NotEmpty();
@@ -34,12 +35,13 @@ namespace Radarr.Api.V3.NetImport
             return _exclusionService.GetById(id).ToResource();
         }
 
-        public int AddExclusion(ImportExclusionsResource exclusionResource)
+        public object AddExclusions()
         {
-            var model = exclusionResource.ToModel();
+            var resource = Request.Body.FromJson<List<ImportExclusionsResource>>();
+            var newMovies = resource.ToModel();
 
             // TODO: Add some more validation here and auto pull the title if not provided
-            return _exclusionService.AddExclusion(model).Id;
+            return _exclusionService.AddExclusions(newMovies).ToResource();
         }
 
         public void RemoveExclusion(int id)

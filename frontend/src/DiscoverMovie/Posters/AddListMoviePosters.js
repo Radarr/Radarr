@@ -5,9 +5,9 @@ import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import dimensions from 'Styles/Variables/dimensions';
 import Measure from 'Components/Measure';
-import MovieIndexItemConnector from 'Movie/Index/MovieIndexItemConnector';
-import MovieIndexPoster from './MovieIndexPoster';
-import styles from './MovieIndexPosters.css';
+import AddListMovieItemConnector from 'DiscoverMovie/AddListMovieItemConnector';
+import AddListMoviePosterConnector from './AddListMoviePosterConnector';
+import styles from './AddListMoviePosters.css';
 
 // Poster container dimensions
 const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
@@ -36,9 +36,7 @@ function calculateColumnWidth(width, posterSize, isSmallScreen) {
 function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions) {
   const {
     detailedProgressBar,
-    showTitle,
-    showMonitored,
-    showQualityProfile
+    showTitle
   } = posterOptions;
 
   const nextAiringHeight = 19;
@@ -54,26 +52,8 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
     heights.push(19);
   }
 
-  if (showMonitored) {
-    heights.push(19);
-  }
-
-  if (showQualityProfile) {
-    heights.push(19);
-  }
-
   switch (sortKey) {
     case 'studio':
-    case 'added':
-    case 'path':
-    case 'sizeOnDisk':
-      heights.push(19);
-      break;
-    case 'qualityProfileId':
-      if (!showQualityProfile) {
-        heights.push(19);
-      }
-      break;
     default:
       // No need to add a height of 0
   }
@@ -85,7 +65,7 @@ function calculatePosterHeight(posterWidth) {
   return Math.ceil((250 / 170) * posterWidth);
 }
 
-class MovieIndexPosters extends Component {
+class AddListMoviePosters extends Component {
 
   //
   // Lifecycle
@@ -114,7 +94,7 @@ class MovieIndexPosters extends Component {
       posterOptions,
       jumpToCharacter,
       isSmallScreen,
-      isMovieEditorActive
+      selectedState
     } = this.props;
 
     const {
@@ -134,8 +114,8 @@ class MovieIndexPosters extends Component {
             prevState.columnWidth !== columnWidth ||
             prevState.columnCount !== columnCount ||
             prevState.rowHeight !== rowHeight ||
-            hasDifferentItemsOrOrder(prevProps.items, items) ||
-            prevState.isMovieEditorActive !== isMovieEditorActive)) {
+            prevProps.selectedState !== selectedState ||
+            hasDifferentItemsOrOrder(prevProps.items, items, 'tmdbId'))) {
       // recomputeGridSize also forces Grid to discard its cache of rendered cells
       this._grid.recomputeGridSize();
     }
@@ -192,7 +172,6 @@ class MovieIndexPosters extends Component {
       shortDateFormat,
       timeFormat,
       selectedState,
-      isMovieEditorActive,
       onSelectedChange
     } = this.props;
 
@@ -203,10 +182,7 @@ class MovieIndexPosters extends Component {
     } = this.state;
 
     const {
-      detailedProgressBar,
-      showTitle,
-      showMonitored,
-      showQualityProfile
+      showTitle
     } = posterOptions;
 
     const movieIdx = rowIndex * columnCount + columnIndex;
@@ -225,24 +201,19 @@ class MovieIndexPosters extends Component {
           padding: this._padding
         }}
       >
-        <MovieIndexItemConnector
-          key={movie.id}
-          component={MovieIndexPoster}
+        <AddListMovieItemConnector
+          key={movie.tmdbId}
+          component={AddListMoviePosterConnector}
           sortKey={sortKey}
           posterWidth={posterWidth}
           posterHeight={posterHeight}
-          detailedProgressBar={detailedProgressBar}
           showTitle={showTitle}
-          showMonitored={showMonitored}
-          showQualityProfile={showQualityProfile}
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
-          movieId={movie.id}
-          qualityProfileId={movie.qualityProfileId}
-          isSelected={selectedState[movie.id]}
+          movieId={movie.tmdbId}
+          isSelected={selectedState[movie.tmdbId]}
           onSelectedChange={onSelectedChange}
-          isMovieEditorActive={isMovieEditorActive}
         />
       </div>
     );
@@ -318,7 +289,7 @@ class MovieIndexPosters extends Component {
   }
 }
 
-MovieIndexPosters.propTypes = {
+AddListMoviePosters.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   posterOptions: PropTypes.object.isRequired,
@@ -329,8 +300,7 @@ MovieIndexPosters.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
   selectedState: PropTypes.object.isRequired,
-  onSelectedChange: PropTypes.func.isRequired,
-  isMovieEditorActive: PropTypes.bool.isRequired
+  onSelectedChange: PropTypes.func.isRequired
 };
 
-export default MovieIndexPosters;
+export default AddListMoviePosters;

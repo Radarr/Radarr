@@ -8,8 +8,9 @@ import { setNetImportExclusionValue, saveNetImportExclusion } from 'Store/Action
 import EditNetImportExclusionModalContent from './EditNetImportExclusionModalContent';
 
 const newNetImportExclusion = {
-  artistName: '',
-  foreignId: ''
+  movieTitle: '',
+  tmdbId: 0,
+  movieYear: 0
 };
 
 function createNetImportExclusionSelector() {

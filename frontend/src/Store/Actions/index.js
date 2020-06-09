@@ -5,6 +5,7 @@ import * as calendar from './calendarActions';
 import * as captcha from './captchaActions';
 import * as customFilters from './customFilterActions';
 import * as commands from './commandActions';
+import * as discoverMovie from './discoverMovieActions';
 import * as movieFiles from './movieFileActions';
 import * as extraFiles from './extraFileActions';
 import * as history from './historyActions';
@@ -33,6 +34,7 @@ export default [
   captcha,
   commands,
   customFilters,
+  discoverMovie,
   movieFiles,
   extraFiles,
   history,

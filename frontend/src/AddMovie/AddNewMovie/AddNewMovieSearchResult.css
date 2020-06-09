@@ -67,7 +67,7 @@
 
 .exclusionIcon {
   margin-left: 10px;
-  color: #bc3737;
+  color: $dangerColor;
   pointer-events: all;
 }
 

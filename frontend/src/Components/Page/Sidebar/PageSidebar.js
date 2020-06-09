@@ -35,10 +35,6 @@ const links = [
       {
         title: 'Discover',
         to: '/add/discover'
-      },
-      {
-        title: 'Lists',
-        to: '/add/list'
       }
     ]
   },

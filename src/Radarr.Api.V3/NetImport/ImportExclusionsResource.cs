@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.NetImport.ImportExclusions;
 
 namespace Radarr.Api.V3.NetImport
 {
@@ -13,7 +14,7 @@ namespace Radarr.Api.V3.NetImport
 
     public static class ImportExclusionsResourceMapper
     {
-        public static ImportExclusionsResource ToResource(this NzbDrone.Core.NetImport.ImportExclusions.ImportExclusion model)
+        public static ImportExclusionsResource ToResource(this ImportExclusion model)
         {
             if (model == null)
             {
@@ -29,19 +30,24 @@ namespace Radarr.Api.V3.NetImport
             };
         }
 
-        public static List<ImportExclusionsResource> ToResource(this IEnumerable<NzbDrone.Core.NetImport.ImportExclusions.ImportExclusion> exclusions)
+        public static List<ImportExclusionsResource> ToResource(this IEnumerable<ImportExclusion> exclusions)
         {
             return exclusions.Select(ToResource).ToList();
         }
 
-        public static NzbDrone.Core.NetImport.ImportExclusions.ImportExclusion ToModel(this ImportExclusionsResource resource)
+        public static ImportExclusion ToModel(this ImportExclusionsResource resource)
         {
-            return new NzbDrone.Core.NetImport.ImportExclusions.ImportExclusion
+            return new ImportExclusion
             {
                 TmdbId = resource.TmdbId,
                 MovieTitle = resource.MovieTitle,
                 MovieYear = resource.MovieYear
             };
+        }
+
+        public static List<ImportExclusion> ToModel(this IEnumerable<ImportExclusionsResource> resources)
+        {
+            return resources.Select(ToModel).ToList();
         }
     }
 }
