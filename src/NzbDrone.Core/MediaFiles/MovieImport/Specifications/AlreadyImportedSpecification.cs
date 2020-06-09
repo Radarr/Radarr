@@ -44,12 +44,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
             if (lastImported == null)
             {
+                _logger.Trace("Movie file has not been imported");
                 return Decision.Accept();
             }
 
             // If the release was grabbed again after importing don't reject it
             if (lastGrabbed != null && lastGrabbed.Date.After(lastImported.Date))
             {
+                _logger.Trace("Movie file was grabbed again after importing");
                 return Decision.Accept();
             }
 

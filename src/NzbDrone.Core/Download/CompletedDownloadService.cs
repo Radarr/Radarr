@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download.TrackedDownloads;
@@ -28,13 +29,15 @@ namespace NzbDrone.Core.Download
         private readonly IParsingService _parsingService;
         private readonly IMovieService _movieService;
         private readonly ITrackedDownloadAlreadyImported _trackedDownloadAlreadyImported;
+        private readonly Logger _logger;
 
         public CompletedDownloadService(IEventAggregator eventAggregator,
                                         IHistoryService historyService,
                                         IDownloadedMovieImportService downloadedMovieImportService,
                                         IParsingService parsingService,
                                         IMovieService movieService,
-                                        ITrackedDownloadAlreadyImported trackedDownloadAlreadyImported)
+                                        ITrackedDownloadAlreadyImported trackedDownloadAlreadyImported,
+                                        Logger logger)
         {
             _eventAggregator = eventAggregator;
             _historyService = historyService;
@@ -42,6 +45,7 @@ namespace NzbDrone.Core.Download
             _parsingService = parsingService;
             _movieService = movieService;
             _trackedDownloadAlreadyImported = trackedDownloadAlreadyImported;
+            _logger = logger;
         }
 
         public void Check(TrackedDownload trackedDownload)
@@ -137,6 +141,7 @@ namespace NzbDrone.Core.Download
 
             if (allMoviesImported)
             {
+                _logger.Debug("All movies were imported for {0}", trackedDownload.DownloadItem.Title);
                 trackedDownload.State = TrackedDownloadState.Imported;
                 _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, trackedDownload.RemoteMovie.Movie.Id));
                 return true;
@@ -155,12 +160,14 @@ namespace NzbDrone.Core.Download
 
                 if (allMoviesImportedInHistory)
                 {
+                    _logger.Debug("All movies were imported in history for {0}", trackedDownload.DownloadItem.Title);
                     trackedDownload.State = TrackedDownloadState.Imported;
                     _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, trackedDownload.RemoteMovie.Movie.Id));
                     return true;
                 }
             }
 
+            _logger.Debug("Not all movies have been imported for {0}", trackedDownload.DownloadItem.Title);
             return false;
         }
     }

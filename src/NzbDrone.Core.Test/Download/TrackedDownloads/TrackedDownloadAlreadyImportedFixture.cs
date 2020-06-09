@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Movies;
@@ -26,8 +27,12 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                                                       .With(r => r.Movie = _movie)
                                                       .Build();
 
+            var downloadItem = Builder<DownloadClientItem>.CreateNew()
+                                                         .Build();
+
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
                                                        .With(t => t.RemoteMovie = remoteMovie)
+                                                       .With(t => t.DownloadItem = downloadItem)
                                                        .Build();
 
             _historyItems = new List<MovieHistory>();
