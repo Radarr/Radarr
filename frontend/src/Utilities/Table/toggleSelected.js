@@ -1,7 +1,7 @@
 import areAllSelected from './areAllSelected';
 import getToggledRange from './getToggledRange';
 
-function toggleSelected(state, items, id, selected, shiftKey) {
+function toggleSelected(state, items, id, selected, shiftKey, idProp = 'id') {
   const lastToggled = state.lastToggled;
   const selectedState = {
     ...state.selectedState,
@@ -16,7 +16,7 @@ function toggleSelected(state, items, id, selected, shiftKey) {
     const { lower, upper } = getToggledRange(items, id, lastToggled);
 
     for (let i = lower; i < upper; i++) {
-      selectedState[items[i].id] = selected;
+      selectedState[items[i][idProp]] = selected;
     }
   }
 

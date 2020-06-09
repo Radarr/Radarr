@@ -1,0 +1,65 @@
+.cell {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  display: flex;
+  align-items: center;
+}
+
+.status {
+  composes: cell;
+
+  flex: 0 0 60px;
+}
+
+.collection,
+.sortTitle {
+  composes: cell;
+
+  flex: 4 0 110px;
+}
+
+.studio {
+  composes: cell;
+
+  flex: 2 0 90px;
+}
+
+.inCinemas,
+.physicalRelease,
+.genres {
+  composes: cell;
+
+  flex: 0 0 180px;
+}
+
+.movieStatus,
+.certification {
+  composes: cell;
+
+  flex: 0 0 100px;
+}
+
+.ratings {
+  composes: cell;
+
+  flex: 0 0 80px;
+}
+
+.tags {
+  composes: cell;
+
+  flex: 1 0 60px;
+}
+
+.actions {
+  composes: cell;
+
+  flex: 0 1 90px;
+  min-width: 60px;
+}
+
+.checkInput {
+  composes: input from '~Components/Form/CheckInput.css';
+
+  margin-top: 0;
+}

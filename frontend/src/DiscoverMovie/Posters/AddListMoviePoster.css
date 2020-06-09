@@ -42,12 +42,6 @@ $hoverScale: 1.05;
   font-size: 20px;
 }
 
-.nextAiring {
-  background-color: #fafbfc;
-  text-align: center;
-  font-size: $smallFontSize;
-}
-
 .title {
   @add-mixin truncate;
 
@@ -56,7 +50,7 @@ $hoverScale: 1.05;
   font-size: $smallFontSize;
 }
 
-.ended {
+.excluded {
   position: absolute;
   top: 0;
   right: 0;
