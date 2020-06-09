@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Movies
             Genres = new List<string>();
             Tags = new HashSet<int>();
             AlternativeTitles = new List<AlternativeTitle>();
+            Recommendations = new List<int>();
         }
 
         public int TmdbId { get; set; }
@@ -59,6 +60,7 @@ namespace NzbDrone.Core.Movies
         public int SecondaryYearSourceId { get; set; }
         public string YouTubeTrailerId { get; set; }
         public string Studio { get; set; }
+        public List<int> Recommendations { get; set; }
 
         public bool IsRecentMovie
         {

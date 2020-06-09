@@ -107,6 +107,7 @@ namespace NzbDrone.Core.Movies
             movie.YouTubeTrailerId = movieInfo.YouTubeTrailerId;
             movie.Studio = movieInfo.Studio;
             movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
+            movie.Recommendations = movieInfo.Recommendations;
 
             try
             {

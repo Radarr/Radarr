@@ -43,6 +43,7 @@ namespace NzbDrone.Core.Movies
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movie, bool useExistingRelativeFolder);
         List<Movie> FilterExistingMovies(List<Movie> movies);
+        List<Movie> GetRecommendedMovies();
         bool MoviePathExists(string folder);
         void RemoveAddOptions(Movie movie);
     }
@@ -391,6 +392,28 @@ namespace NzbDrone.Core.Movies
                 .Union(rest.ExceptBy(m => m.Title.CleanSeriesTitle(), allMovies, m => m.CleanTitle, EqualityComparer<string>.Default)).ToList();
 
             return ret;
+        }
+
+        public List<Movie> GetRecommendedMovies()
+        {
+            // Get all recommended movies, plus all movies on enabled lists
+            var netImportMovies = new List<Movie>();
+
+            var allMovies = GetAllMovies();
+
+            // Ensure we only return distinct ids that do not exist in DB already, first 100 that are from latest movies add first
+            var distinctRecommendations = allMovies.OrderByDescending(x => x.Added)
+                                                   .SelectMany(m => m.Recommendations.Select(c => c))
+                                                   .Where(r => !allMovies.Any(m => m.TmdbId == r))
+                                                   .Distinct()
+                                                   .Take(100);
+
+            foreach (var recommendation in distinctRecommendations)
+            {
+                netImportMovies.Add(new Movie { TmdbId = recommendation });
+            }
+
+            return netImportMovies;
         }
 
         public void Handle(MovieFileAddedEvent message)

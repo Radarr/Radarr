@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Languages;
@@ -97,6 +98,31 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return new Tuple<Movie, List<Credit>>(movie, credits.ToList());
         }
 
+        public List<Movie> GetBulkMovieInfo(List<int> tmdbIds)
+        {
+            var httpRequest = _radarrMetadata.Create()
+                                             .SetSegment("route", "movie/bulk")
+                                             .Build();
+
+            httpRequest.Headers.ContentType = "application/json";
+
+            httpRequest.SetContent(tmdbIds.ToJson());
+
+            httpRequest.AllowAutoRedirect = true;
+            httpRequest.SuppressHttpError = true;
+
+            var httpResponse = _httpClient.Post<List<MovieResource>>(httpRequest);
+
+            if (httpResponse.HasHttpError || httpResponse.Resource.Count == 0)
+            {
+                throw new HttpException(httpRequest, httpResponse);
+            }
+
+            var movies = httpResponse.Resource.Select(MapMovie).ToList();
+
+            return movies;
+        }
+
         public Movie GetMovieByImdbId(string imdbId)
         {
             var httpRequest = _radarrMetadata.Create()
@@ -165,6 +191,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Certification = resource.Certifications.FirstOrDefault(m => m.Country == certificationCountry)?.Certification;
             movie.Ratings = resource.Ratings.Select(MapRatings).FirstOrDefault() ?? new Ratings();
             movie.Genres = resource.Genres;
+            movie.Recommendations = resource.Recommendations.Select(r => r.TmdbId).ToList();
 
             var now = DateTime.Now;
 
