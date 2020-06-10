@@ -213,7 +213,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.YouTubeTrailerId = resource.YoutubeTrailerId;
             movie.Studio = resource.Studio;
 
-            if (movie.Collection != null)
+            if (resource.Collection != null)
             {
                 movie.Collection = new MovieCollection { Name = resource.Collection.Name, TmdbId = resource.Collection.TmdbId };
             }
