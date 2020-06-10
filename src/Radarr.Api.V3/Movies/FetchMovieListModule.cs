@@ -14,12 +14,14 @@ namespace Radarr.Api.V3.Movies
     {
         private readonly IFetchNetImport _fetchNetImport;
         private readonly ISearchForNewMovie _movieSearch;
+        private readonly IProvideMovieInfo _movieInfo;
 
-        public FetchMovieListModule(IFetchNetImport netImport, ISearchForNewMovie movieSearch)
+        public FetchMovieListModule(IFetchNetImport netImport, ISearchForNewMovie movieSearch, IProvideMovieInfo movieInfo)
             : base("/netimport/movies")
         {
             _fetchNetImport = netImport;
             _movieSearch = movieSearch;
+            _movieInfo = movieInfo;
             Get("/", x => Search());
         }
 
@@ -29,7 +31,11 @@ namespace Radarr.Api.V3.Movies
 
             List<Movie> realResults = new List<Movie>();
 
-            foreach (var movie in results)
+            var bulkResults = results.Where(r => r.TmdbId != 0);
+
+            bulkResults = _movieInfo.GetBulkMovieInfo(bulkResults.Select(m => m.TmdbId).ToList());
+
+            foreach (var movie in results.Where(r => r.TmdbId == 0))
             {
                 var mapped = movie;
 
@@ -43,6 +49,8 @@ namespace Radarr.Api.V3.Movies
                     realResults.Add(mapped);
                 }
             }
+
+            realResults.AddRange(bulkResults);
 
             return MapToResource(realResults);
         }
