@@ -74,7 +74,11 @@ class MovieSearchInput extends Component {
 
     if (item.type === LOADING_TYPE) {
       return (
-        <LoadingIndicator />
+        <LoadingIndicator
+          className={styles.loading}
+          rippleClassName={styles.ripple}
+          size={30}
+        />
       );
     }
 
@@ -124,7 +128,7 @@ class MovieSearchInput extends Component {
       highlightedSuggestionIndex
     } = this._autosuggest.state;
 
-    if (!suggestions.length || suggestions[0].type === LOADING_TYPE || highlightedSectionIndex) {
+    if (!suggestions.length || highlightedSectionIndex) {
       this.props.onGoToAddNewMovie(value);
       this._autosuggest.input.blur();
       this.reset();

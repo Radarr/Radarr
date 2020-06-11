@@ -58,7 +58,7 @@
     "esprint": "0.7.0",
     "file-loader": "6.0.0",
     "filesize": "6.1.0",
-    "fuse.js": "5.1.0",
+    "fuse.js": "6.0.4",
     "gulp": "4.0.2",
     "gulp-cached": "1.1.1",
     "gulp-concat": "2.6.1",
