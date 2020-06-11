@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.MusicTests
         private void GivenFailedMove()
         {
             Mocker.GetMock<IDiskTransferService>()
-                .Setup(s => s.TransferFolder(It.IsAny<string>(), It.IsAny<string>(), TransferMode.Move, true))
+                .Setup(s => s.TransferFolder(It.IsAny<string>(), It.IsAny<string>(), TransferMode.Move))
                 .Throws<IOException>();
         }
 
@@ -95,8 +95,7 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Verify(
                     v => v.TransferFolder(_command.SourcePath,
                                           _command.DestinationPath,
-                                          TransferMode.Move,
-                                          It.IsAny<bool>()),
+                                          TransferMode.Move),
                     Times.Once());
 
             Mocker.GetMock<IBuildFileNames>()
@@ -119,8 +118,7 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Verify(
                     v => v.TransferFolder(_bulkCommand.Author.First().SourcePath,
                                           expectedPath,
-                                          TransferMode.Move,
-                                          It.IsAny<bool>()),
+                                          TransferMode.Move),
                     Times.Once());
         }
 
@@ -137,8 +135,7 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Verify(
                     v => v.TransferFolder(_command.SourcePath,
                         _command.DestinationPath,
-                        TransferMode.Move,
-                        It.IsAny<bool>()), Times.Never());
+                        TransferMode.Move), Times.Never());
 
             Mocker.GetMock<IBuildFileNames>()
                 .Verify(v => v.GetAuthorFolder(It.IsAny<Author>(), null), Times.Never());

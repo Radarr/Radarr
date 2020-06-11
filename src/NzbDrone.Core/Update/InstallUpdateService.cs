@@ -134,7 +134,7 @@ namespace NzbDrone.Core.Update
             }
 
             _logger.Info("Preparing client");
-            _diskTransferService.TransferFolder(_appFolderInfo.GetUpdateClientFolder(), updateSandboxFolder, TransferMode.Move, false);
+            _diskTransferService.TransferFolder(_appFolderInfo.GetUpdateClientFolder(), updateSandboxFolder, TransferMode.Move);
 
             // Set executable flag on update app
             if (OsInfo.IsOsx || (OsInfo.IsLinux && PlatformInfo.IsNetCore))

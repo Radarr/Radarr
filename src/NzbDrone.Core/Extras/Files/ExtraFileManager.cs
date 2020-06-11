@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Extras.Files
                 transferMode = _configService.CopyUsingHardlinks ? TransferMode.HardLinkOrCopy : TransferMode.Copy;
             }
 
-            _diskTransferService.TransferFile(path, newFileName, transferMode, true, false);
+            _diskTransferService.TransferFile(path, newFileName, transferMode, true);
 
             return new TExtraFile
             {
