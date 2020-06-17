@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
+using NLog.Fluent;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
@@ -150,21 +152,33 @@ namespace NzbDrone.Core.Download
             // Double check if all movies were imported by checking the history if at least one
             // file was imported. This will allow the decision engine to reject already imported
             // episode files and still mark the download complete when all files are imported.
-            if (importResults.Any(c => c.Result == ImportResultType.Imported))
-            {
-                var historyItems = _historyService.FindByDownloadId(trackedDownload.DownloadItem.DownloadId)
+            var atLeastOneMovieImported = importResults.Any(c => c.Result == ImportResultType.Imported);
+
+            var historyItems = _historyService.FindByDownloadId(trackedDownload.DownloadItem.DownloadId)
                                                   .OrderByDescending(h => h.Date)
                                                   .ToList();
 
-                var allMoviesImportedInHistory = _trackedDownloadAlreadyImported.IsImported(trackedDownload, historyItems);
+            var allMoviesImportedInHistory = _trackedDownloadAlreadyImported.IsImported(trackedDownload, historyItems);
 
-                if (allMoviesImportedInHistory)
+            if (allMoviesImportedInHistory)
+            {
+                if (atLeastOneMovieImported)
                 {
                     _logger.Debug("All movies were imported in history for {0}", trackedDownload.DownloadItem.Title);
                     trackedDownload.State = TrackedDownloadState.Imported;
                     _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, trackedDownload.RemoteMovie.Movie.Id));
+
                     return true;
                 }
+
+                _logger.Debug()
+                       .Message("No Movies were just imported, but all movies were previously imported, possible issue with download history.")
+                       .Property("MovieId", trackedDownload.RemoteMovie.Movie.Id)
+                       .Property("DownloadId", trackedDownload.DownloadItem.DownloadId)
+                       .Property("Title", trackedDownload.DownloadItem.Title)
+                       .Property("Path", trackedDownload.DownloadItem.OutputPath.ToString())
+                       .WriteSentryWarn("DownloadHistoryIncomplete")
+                       .Write();
             }
 
             _logger.Debug("Not all movies have been imported for {0}", trackedDownload.DownloadItem.Title);

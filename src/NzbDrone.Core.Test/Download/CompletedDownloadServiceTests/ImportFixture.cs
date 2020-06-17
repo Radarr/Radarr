@@ -56,6 +56,10 @@ namespace NzbDrone.Core.Test.Download
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.GetMovie("Drone.1998"))
                   .Returns(remoteMovie.Movie);
+
+            Mocker.GetMock<IHistoryService>()
+                  .Setup(s => s.FindByDownloadId(It.IsAny<string>()))
+                  .Returns(new List<MovieHistory>());
         }
 
         private RemoteMovie BuildRemoteMovie()
