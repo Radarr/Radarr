@@ -110,6 +110,14 @@ namespace NzbDrone.Core.Download
             trackedDownload.State = TrackedDownloadState.Importing;
 
             var outputPath = trackedDownload.DownloadItem.OutputPath.FullPath;
+
+            if (trackedDownload.RemoteMovie == null)
+            {
+                trackedDownload.State = TrackedDownloadState.ImportPending;
+                trackedDownload.Warn("Unknown Movie", outputPath);
+                return;
+            }
+
             var importResults = _downloadedMovieImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteMovie.Movie, trackedDownload.DownloadItem);
 
             if (VerifyImport(trackedDownload, importResults))
