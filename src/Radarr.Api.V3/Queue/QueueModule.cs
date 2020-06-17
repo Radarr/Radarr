@@ -125,7 +125,7 @@ namespace Radarr.Api.V3.Queue
                 case "status":
                     return q => q.Status;
                 case "movies.sortTitle":
-                    return q => q.Movie?.SortTitle;
+                    return q => q.Movie?.SortTitle ?? string.Empty;
                 case "title":
                     return q => q.Title;
                 case "languages":
