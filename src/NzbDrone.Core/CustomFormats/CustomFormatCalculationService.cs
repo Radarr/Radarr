@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Blacklisting;
@@ -59,10 +60,24 @@ namespace NzbDrone.Core.CustomFormats
 
         public static List<CustomFormat> ParseCustomFormat(MovieFile movieFile, List<CustomFormat> allCustomFormats)
         {
+            var sceneName = string.Empty;
+            if (movieFile.SceneName.IsNotNullOrWhiteSpace())
+            {
+                sceneName = movieFile.SceneName;
+            }
+            else if (movieFile.OriginalFilePath.IsNotNullOrWhiteSpace())
+            {
+                sceneName = movieFile.OriginalFilePath;
+            }
+            else if (movieFile.RelativePath.IsNotNullOrWhiteSpace())
+            {
+                sceneName = Path.GetFileName(movieFile.RelativePath);
+            }
+
             var info = new ParsedMovieInfo
             {
                 MovieTitle = movieFile.Movie.Title,
-                SimpleReleaseTitle = movieFile.GetSceneOrFileName().SimplifyReleaseTitle(),
+                SimpleReleaseTitle = sceneName.SimplifyReleaseTitle(),
                 Quality = movieFile.Quality,
                 Languages = movieFile.Languages,
                 ReleaseGroup = movieFile.ReleaseGroup,
