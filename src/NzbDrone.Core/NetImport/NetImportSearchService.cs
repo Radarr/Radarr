@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -136,39 +136,39 @@ namespace NzbDrone.Core.NetImport
 
 
             var importExclusions = new List<string>();
+            var moviesToAdd = new List<Movie>();
 
             //var downloadedCount = 0;
             foreach (var movie in listedMovies)
             {
                 var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
-                if (mapped != null && !_exclusionService.IsMovieExcluded(mapped.TmdbId))
+                if (mapped != null && mapped.TmdbId > 0)
                 {
-                    //List<DownloadDecision> decisions;
-                    mapped.AddOptions = new AddMovieOptions {SearchForMovie = true};
-                    _movieService.AddMovie(mapped);
-
-                    //// Search for movie
-                    //try
-                    //{
-                    //    decisions = _nzbSearchService.MovieSearch(mapped.Id, false);
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    _logger.Error(ex, $"Unable to search in list for movie {mapped.Id}");
-                    //    continue;
-                    //}
-
-                    //var processed = _processDownloadDecisions.ProcessDecisions(decisions);
-                    //downloadedCount += processed.Grabbed.Count;
-                }
-                else
-                {
-                    if (mapped != null)
+                    if (_exclusionService.IsMovieExcluded(mapped.TmdbId))
                     {
-                        _logger.Info($"{mapped.Title} ({mapped.TitleSlug}) will not be added since it was found on the exclusions list");
+                        _logger.Debug($"{mapped.Title} ({mapped.TmdbId}) will not be added since it was found on the exclusions list");
+                    }
+                    else if (_movieService.MovieExists(mapped))
+                    {
+                        _logger.Trace($"{mapped.Title} ({mapped.TmdbId}) will not be added since it exists in Library");
+                    }
+                    else
+                    {
+                        if (!moviesToAdd.Any(c => c.TmdbId == mapped.TmdbId))
+                        {
+                            mapped.AddOptions = new AddMovieOptions { SearchForMovie = true };
+                            moviesToAdd.Add(mapped);
+                        }
                     }
                 }
             }
+
+            if (moviesToAdd.Any())
+            {
+                _logger.Info($"Adding {moviesToAdd.Count()} movies from your auto enabled lists to library");
+            }
+
+            _movieService.AddMovies(moviesToAdd);
 
             //_logger.ProgressInfo("Movie search completed. {0} reports downloaded.", downloadedCount);
         }
