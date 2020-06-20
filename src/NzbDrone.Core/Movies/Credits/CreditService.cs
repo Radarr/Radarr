@@ -71,8 +71,10 @@ namespace NzbDrone.Core.Movies.Credits
             // Should never have multiple credits with same credit_id, but check to ensure incase TMDB is on fritz
             var dupeFreeCredits = credits.DistinctBy(m => m.CreditTmdbId).ToList();
 
-            var insert = dupeFreeCredits.Where(t => !existingCredits.Any(c => c.CreditTmdbId == t.CreditTmdbId)).ToList();
-            var update = existingCredits.Where(t => dupeFreeCredits.Any(c => c.CreditTmdbId == t.CreditTmdbId)).ToList();
+            dupeFreeCredits.ForEach(c => c.Id = existingCredits.FirstOrDefault(t => t.CreditTmdbId == c.CreditTmdbId)?.Id ?? 0);
+
+            var insert = dupeFreeCredits.Where(t => t.Id == 0).ToList();
+            var update = dupeFreeCredits.Where(t => t.Id > 0).ToList();
             var delete = existingCredits.Where(t => !dupeFreeCredits.Any(c => c.CreditTmdbId == t.CreditTmdbId)).ToList();
 
             _creditRepo.DeleteMany(delete);
