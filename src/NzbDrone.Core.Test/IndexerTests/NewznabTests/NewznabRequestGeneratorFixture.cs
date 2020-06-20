@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -20,7 +20,6 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             {
                 BaseUrl = "http://127.0.0.1:1234/",
                 Categories = new[] { 1, 2 },
-                AnimeCategories = new[] { 3, 4 },
                 ApiKey = "abcd",
             };
 
@@ -45,13 +44,13 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
             var page = results.GetAllTiers().First().First();
 
-            page.Url.Query.Should().Contain("&cat=1,2,3,4&");
+            page.Url.Query.Should().Contain("&cat=1,2&");
         }
 
         [Test]
         public void should_not_have_duplicate_categories()
         {
-            Subject.Settings.Categories = new[] { 1, 2, 3 };
+            Subject.Settings.Categories = new[] { 1, 2, 2, 3 };
 
             var results = Subject.GetRecentRequests();
 
@@ -59,7 +58,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
             var page = results.GetAllTiers().First().First();
 
-            page.Url.FullUri.Should().Contain("&cat=1,2,3,4&");
+            page.Url.FullUri.Should().Contain("&cat=1,2,3&");
         }
 
         [Test]

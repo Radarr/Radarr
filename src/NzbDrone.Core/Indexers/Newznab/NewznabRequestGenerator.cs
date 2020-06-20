@@ -42,11 +42,11 @@ namespace NzbDrone.Core.Indexers.Newznab
             // Some indexers might forget to enable movie search, but normal search still works fine. Thus we force a normal search.
             if (capabilities.SupportedMovieSearchParameters != null)
             {
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories.Concat(Settings.AnimeCategories), "movie", ""));
+                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "movie", ""));
             }
             else if (capabilities.SupportedSearchParameters != null)
             {
-                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories.Concat(Settings.AnimeCategories), "search", ""));
+                pageableRequests.Add(GetPagedRequests(MaxPages, Settings.Categories, "search", ""));
             }
 
             return pageableRequests;
