@@ -31,14 +31,7 @@ namespace NzbDrone.Core.MetadataSource.RadarrAPI
         {
             _httpClient = httpClient;
 
-            if (configFile.Branch == "nightly")
-            {
-                APIURL = "https://staging.api.radarr.video";
-            }
-            else
-            {
-                APIURL = "https://api.radarr.video/v2";
-            }
+            APIURL = "https://api.radarr.video/v2";
 
             RadarrAPI = new HttpRequestBuilder(APIURL+"/{route}/{action}")
                                                         .CreateFactory();

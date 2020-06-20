@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.NetImport.Radarr
             Path = "";
         }
 
-        [FieldDefinition(0, Label = "Radarr API URL", HelpText = "Link to to Radarr API URL. Use https://staging.api.radarr.video if you are on nightly.")]
+        [FieldDefinition(0, Label = "Radarr API URL", HelpText = "Link to to Radarr API URL.")]
         public string APIURL { get; set; }
 
         [FieldDefinition(1, Label = "Path to list", HelpText = "Path to the list proxied by the Radarr API. Check the wiki for available lists.")]
