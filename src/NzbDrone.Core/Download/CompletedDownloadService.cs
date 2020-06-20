@@ -111,7 +111,7 @@ namespace NzbDrone.Core.Download
 
             var outputPath = trackedDownload.DownloadItem.OutputPath.FullPath;
 
-            if (trackedDownload.RemoteMovie == null)
+            if (trackedDownload.RemoteMovie?.Movie == null)
             {
                 trackedDownload.State = TrackedDownloadState.ImportPending;
                 trackedDownload.Warn("Unknown Movie", outputPath);
