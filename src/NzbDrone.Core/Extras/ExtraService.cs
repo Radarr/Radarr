@@ -51,6 +51,18 @@ namespace NzbDrone.Core.Extras
         {
             ImportExtraFiles(localMovie, movieFile, isReadOnly);
 
+            if (localMovie.IsImmutableSubdirectory)
+            {
+                var newMovieFile = (MovieFile)movieFile.Clone();
+                string baseDirectoryName = newMovieFile.OriginalFilePath.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar })[0];
+                string filenamePlaceholder = baseDirectoryName + ".placeholder";
+                newMovieFile.RelativePath = filenamePlaceholder;
+                newMovieFile.OriginalFilePath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(newMovieFile.OriginalFilePath)), filenamePlaceholder);
+                newMovieFile.Path = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(newMovieFile.Path)), filenamePlaceholder);
+
+                movieFile = newMovieFile;
+            }
+
             CreateAfterImport(localMovie.Movie, movieFile);
         }
 
@@ -62,6 +74,11 @@ namespace NzbDrone.Core.Extras
             }
 
             var sourcePath = localMovie.Path;
+            if (localMovie.IsImmutableSubdirectory)
+            {
+                sourcePath = Path.GetDirectoryName(sourcePath);
+            }
+
             var sourceFolder = _diskProvider.GetParentFolder(sourcePath);
             var sourceFileName = Path.GetFileNameWithoutExtension(sourcePath);
             var files = _diskProvider.GetFiles(sourceFolder, SearchOption.TopDirectoryOnly);

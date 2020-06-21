@@ -10,7 +10,7 @@ using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles
 {
-    public class MovieFile : ModelBase
+    public class MovieFile : ModelBase, ICloneable
     {
         public int MovieId { get; set; }
         public string RelativePath { get; set; }
@@ -30,6 +30,11 @@ namespace NzbDrone.Core.MediaFiles
         public override string ToString()
         {
             return string.Format("[{0}] {1}", Id, RelativePath);
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
 
         public string GetSceneOrFileName()

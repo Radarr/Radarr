@@ -145,7 +145,11 @@ namespace NzbDrone.Core.Parser
         public static ParsedMovieInfo ParseMoviePath(string path)
         {
             var fileInfo = new FileInfo(path);
+            return ParseMoviePath(fileInfo);
+        }
 
+        public static ParsedMovieInfo ParseMoviePath(FileInfo fileInfo)
+        {
             var result = ParseMovieTitle(fileInfo.Name, true);
 
             if (result == null)

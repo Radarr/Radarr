@@ -66,6 +66,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             {
                 var localMovie = importDecision.LocalMovie;
                 var oldFiles = new List<MovieFile>();
+                bool allowImportMovie = true;
 
                 try
                 {
@@ -73,8 +74,16 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     if (importResults.Select(r => r.ImportDecision.LocalMovie.Movie)
                                          .Select(m => m.Id).Contains(localMovie.Movie.Id))
                     {
-                        importResults.Add(new ImportResult(importDecision, "Movie has already been imported"));
-                        continue;
+                        if (!localMovie.IsImmutableSubdirectory)
+                        {
+                            importResults.Add(new ImportResult(importDecision, "Movie has already been imported"));
+                            continue;
+                        }
+                        else
+                        {
+                            // For immutable subdirectories: Process all files but only import the first video file.
+                            allowImportMovie = false;
+                        }
                     }
 
                     var movieFile = new MovieFile();
@@ -131,7 +140,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     _mediaFileService.Add(movieFile);
                     importResults.Add(new ImportResult(importDecision));
 
-                    if (newDownload)
+                    if (newDownload && allowImportMovie)
                     {
                         _extraService.ImportMovie(localMovie, movieFile, copyOnly);
                     }
