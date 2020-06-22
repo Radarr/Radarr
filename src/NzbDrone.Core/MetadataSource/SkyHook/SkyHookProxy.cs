@@ -317,6 +317,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 lowerTitle = lowerTitle.Replace(".", "");
 
+                var parserTitle = lowerTitle;
+
                 var parserResult = Parser.Parser.ParseMovieTitle(title, true);
 
                 var yearTerm = "";
@@ -324,7 +326,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 if (parserResult != null && parserResult.MovieTitle != title)
                 {
                     //Parser found something interesting!
-                    lowerTitle = parserResult.MovieTitle.ToLower().Replace(".", " "); //TODO Update so not every period gets replaced (e.g. R.I.P.D.)
+                    parserTitle = parserResult.MovieTitle.ToLower().Replace(".", " "); //TODO Update so not every period gets replaced (e.g. R.I.P.D.)
                     if (parserResult.Year > 1800)
                     {
                         yearTerm = parserResult.Year.ToString();
@@ -343,7 +345,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     }
                 }
 
-                lowerTitle = StripTrailingTheFromTitle(lowerTitle);
+                parserTitle = StripTrailingTheFromTitle(parserTitle);
 
                 if (lowerTitle.StartsWith("imdb:") || lowerTitle.StartsWith("imdbid:"))
                 {
@@ -387,7 +389,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     }
                 }
 
-                var searchTerm = lowerTitle.Replace("_", "+").Replace(" ", "+").Replace(".", "+");
+                var searchTerm = parserTitle.Replace("_", "+").Replace(" ", "+").Replace(".", "+");
 
                 var firstChar = searchTerm.First();
 
