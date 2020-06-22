@@ -191,7 +191,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Certification = resource.Certifications.FirstOrDefault(m => m.Country == certificationCountry)?.Certification;
             movie.Ratings = resource.Ratings.Select(MapRatings).FirstOrDefault() ?? new Ratings();
             movie.Genres = resource.Genres;
-            movie.Recommendations = resource.Recommendations.Select(r => r.TmdbId).ToList();
+            movie.Recommendations = resource.Recommendations?.Select(r => r.TmdbId).ToList() ?? new List<int>();
 
             var now = DateTime.Now;
 
