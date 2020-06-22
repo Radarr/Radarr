@@ -48,9 +48,9 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     return DetectSampleResult.NotSample;
                 }
 
-                if (new Quality[] { Quality.DVD, Quality.Bluray720p }.Contains(MediaFileExtensions.GetQualityForExtension(extension)))
+                if (new string[] { ".iso", ".img", ".m2ts" }.Contains(extension, StringComparer.OrdinalIgnoreCase))
                 {
-                    _logger.Debug($"Skipping sample check for DVD image file '{path}'");
+                    _logger.Debug($"Skipping sample check for DVD/BR image file '{path}'");
                     return DetectSampleResult.NotSample;
                 }
             }
