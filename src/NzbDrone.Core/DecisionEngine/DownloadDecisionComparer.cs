@@ -98,10 +98,10 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareProtocol(DownloadDecision x, DownloadDecision y)
         {
-            var result = CompareBy(x.RemoteMovie, y.RemoteMovie, remoteEpisode =>
+            var result = CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie =>
             {
-                var delayProfile = _delayProfileService.BestForTags(remoteEpisode.Movie.Tags);
-                var downloadProtocol = remoteEpisode.Release.DownloadProtocol;
+                var delayProfile = _delayProfileService.BestForTags(remoteMovie.Movie.Tags);
+                var downloadProtocol = remoteMovie.Release.DownloadProtocol;
                 return downloadProtocol == delayProfile.PreferredProtocol;
             });
 
@@ -119,15 +119,15 @@ namespace NzbDrone.Core.DecisionEngine
             }
 
             return CompareAll(
-                CompareBy(x.RemoteMovie, y.RemoteMovie, remoteEpisode =>
+                CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie =>
                 {
-                    var seeders = TorrentInfo.GetSeeders(remoteEpisode.Release);
+                    var seeders = TorrentInfo.GetSeeders(remoteMovie.Release);
 
                     return seeders.HasValue && seeders.Value > 0 ? Math.Round(Math.Log10(seeders.Value)) : 0;
                 }),
-                CompareBy(x.RemoteMovie, y.RemoteMovie, remoteEpisode =>
+                CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie =>
                 {
-                    var peers = TorrentInfo.GetPeers(remoteEpisode.Release);
+                    var peers = TorrentInfo.GetPeers(remoteMovie.Release);
 
                     return peers.HasValue && peers.Value > 0 ? Math.Round(Math.Log10(peers.Value)) : 0;
                 }));
@@ -141,10 +141,10 @@ namespace NzbDrone.Core.DecisionEngine
                 return 0;
             }
 
-            return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteEpisode =>
+            return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie =>
             {
-                var ageHours = remoteEpisode.Release.AgeHours;
-                var age = remoteEpisode.Release.Age;
+                var ageHours = remoteMovie.Release.AgeHours;
+                var age = remoteMovie.Release.Age;
 
                 if (ageHours < 1)
                 {
