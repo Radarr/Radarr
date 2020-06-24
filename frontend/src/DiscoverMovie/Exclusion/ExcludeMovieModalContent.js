@@ -51,7 +51,7 @@ class ExcludeMovieModalContent extends Component {
             kind={kinds.DANGER}
             onPress={this.onExcludeMovieConfirmed}
           >
-            Exlude
+            Exclude
           </Button>
         </ModalFooter>
       </ModalContent>
