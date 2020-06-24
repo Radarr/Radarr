@@ -10,7 +10,7 @@ namespace NzbDrone.Core.MediaFiles
 
         static MediaFileExtensions()
         {
-            _fileExtensions = new Dictionary<string, Quality>
+            _fileExtensions = new Dictionary<string, Quality>(StringComparer.OrdinalIgnoreCase)
             {
                 //Unknown
                 { ".webm", Quality.Unknown },
@@ -75,9 +75,9 @@ namespace NzbDrone.Core.MediaFiles
 
         public static Quality GetQualityForExtension(string extension)
         {
-            if (_fileExtensions.ContainsKey(extension))
+            if (_fileExtensions.TryGetValue(extension, out var quality))
             {
-                return _fileExtensions[extension];
+                return quality;
             }
 
             return Quality.Unknown;

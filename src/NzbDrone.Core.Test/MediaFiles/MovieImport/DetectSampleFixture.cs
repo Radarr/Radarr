@@ -62,6 +62,36 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         }
 
         [Test]
+        public void should_return_false_for_iso()
+        {
+            _localMovie.Path = @"C:\Test\some movie (2000).iso";
+
+            ShouldBeNotSample();
+
+            Mocker.GetMock<IVideoFileInfoReader>().Verify(c => c.GetRunTime(It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void should_return_false_for_img()
+        {
+            _localMovie.Path = @"C:\Test\some movie (2000).img";
+
+            ShouldBeNotSample();
+
+            Mocker.GetMock<IVideoFileInfoReader>().Verify(c => c.GetRunTime(It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
+        public void should_return_false_for_m2ts()
+        {
+            _localMovie.Path = @"C:\Test\some movie (2000).m2ts";
+
+            ShouldBeNotSample();
+
+            Mocker.GetMock<IVideoFileInfoReader>().Verify(c => c.GetRunTime(It.IsAny<string>()), Times.Never());
+        }
+
+        [Test]
         public void should_use_runtime()
         {
             GivenRuntime(120);
