@@ -131,13 +131,13 @@ namespace NzbDrone.Core.Update
             // Set executable flag on update app
             if (OsInfo.IsOsx)
             {
-                _diskProvider.SetPermissions(_appFolderInfo.GetUpdateClientExePath(), "0755", null, null);
+                _diskProvider.SetPermissions(_appFolderInfo.GetUpdateClientExePath(updatePackage.Version), "0755", null, null);
             }
 
-            _logger.Info("Starting update client {0}", _appFolderInfo.GetUpdateClientExePath());
+            _logger.Info("Starting update client {0}", _appFolderInfo.GetUpdateClientExePath(updatePackage.Version));
             _logger.ProgressInfo("Radarr will restart shortly.");
 
-            _processProvider.Start(_appFolderInfo.GetUpdateClientExePath(), GetUpdaterArgs(updateSandboxFolder));
+            _processProvider.Start(_appFolderInfo.GetUpdateClientExePath(updatePackage.Version), GetUpdaterArgs(updateSandboxFolder));
         }
 
         private void EnsureValidBranch(UpdatePackage package)

@@ -263,7 +263,7 @@ namespace NzbDrone.Common.Test
         [Test]
         public void GetUpdateClientExePath()
         {
-            GetIAppDirectoryInfo().GetUpdateClientExePath().Should().BeEquivalentTo(@"C:\Temp\radarr_update\Radarr.Update.exe".AsOsAgnostic());
+            GetIAppDirectoryInfo().GetUpdateClientExePath(new Version("0.2.0.1480")).Should().BeEquivalentTo(@"C:\Temp\radarr_update\Radarr.Update.exe".AsOsAgnostic());
         }
 
         [Test]

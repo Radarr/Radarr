@@ -192,12 +192,12 @@ namespace NzbDrone.Common.Extensions
             return directories;
         }
 
-        public static string ProcessNameToExe(this string processName)
+        private static string ProcessNameToExe(this string processName, Version version)
         {
             // Windows always has exe (but is shunted to net core)
             // Linux is kept on mono pending manual upgrade to net core so has .exe
             // macOS is shunted to net core and does not have .exe
-            if (OsInfo.IsWindows || OsInfo.IsLinux)
+            if (OsInfo.IsWindows || OsInfo.IsLinux || version.Major == 0)
             {
                 processName += ".exe";
             }
@@ -272,9 +272,9 @@ namespace NzbDrone.Common.Extensions
             }
         }
 
-        public static string GetUpdateClientExePath(this IAppFolderInfo appFolderInfo)
+        public static string GetUpdateClientExePath(this IAppFolderInfo appFolderInfo, Version version)
         {
-            return Path.Combine(GetUpdateSandboxFolder(appFolderInfo), UPDATE_CLIENT_EXE_NAME).ProcessNameToExe();
+            return Path.Combine(GetUpdateSandboxFolder(appFolderInfo), UPDATE_CLIENT_EXE_NAME).ProcessNameToExe(version);
         }
 
         public static string GetBackupFolder(this IAppFolderInfo appFolderInfo)
