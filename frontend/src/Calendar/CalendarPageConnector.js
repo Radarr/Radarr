@@ -79,6 +79,8 @@ function createMapStateToProps() {
         colorImpairedMode: uiSettings.enableColorImpairedMode,
         hasMovie: !!movieCount.count,
         movieError: movieCount.error,
+        movieIsFetching: movieCount.isFetching,
+        movieIsPopulated: movieCount.isPopulated,
         missingMovieIds,
         isRssSyncExecuting,
         isSearchingForMissing

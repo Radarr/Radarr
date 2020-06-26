@@ -10,6 +10,7 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import NoMovie from 'Movie/NoMovie';
 import CalendarLinkModal from './iCal/CalendarLinkModal';
 import CalendarOptionsModal from './Options/CalendarOptionsModal';
@@ -78,6 +79,8 @@ class CalendarPage extends Component {
       filters,
       hasMovie,
       movieError,
+      movieIsFetching,
+      movieIsPopulated,
       missingMovieIds,
       isRssSyncExecuting,
       isSearchingForMissing,
@@ -92,7 +95,6 @@ class CalendarPage extends Component {
     } = this.state;
 
     const isMeasured = this.state.width > 0;
-    const PageComponent = hasMovie ? CalendarConnector : NoMovie;
 
     return (
       <PageContent title="Calendar">
@@ -145,6 +147,11 @@ class CalendarPage extends Component {
           innerClassName={styles.calendarInnerPageBody}
         >
           {
+            movieIsFetching && !movieIsPopulated &&
+              <LoadingIndicator />
+          }
+
+          {
             movieError &&
               <div className={styles.errorMessage}>
                 {getErrorMessage(movieError, 'Failed to load movie from API')}
@@ -152,19 +159,24 @@ class CalendarPage extends Component {
           }
 
           {
-            !movieError &&
+            !movieError && movieIsPopulated && hasMovie &&
               <Measure
                 whitelist={['width']}
                 onMeasure={this.onMeasure}
               >
                 {
                   isMeasured ?
-                    <PageComponent
+                    <CalendarConnector
                       useCurrentPage={useCurrentPage}
                     /> :
                     <div />
                 }
               </Measure>
+          }
+
+          {
+            !movieError && movieIsPopulated && !hasMovie &&
+              <NoMovie />
           }
 
           {
@@ -192,6 +204,8 @@ CalendarPage.propTypes = {
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasMovie: PropTypes.bool.isRequired,
   movieError: PropTypes.object,
+  movieIsFetching: PropTypes.bool.isRequired,
+  movieIsPopulated: PropTypes.bool.isRequired,
   missingMovieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   isRssSyncExecuting: PropTypes.bool.isRequired,
   isSearchingForMissing: PropTypes.bool.isRequired,
