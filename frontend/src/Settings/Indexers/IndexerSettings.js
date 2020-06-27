@@ -43,8 +43,8 @@ class IndexerSettings extends Component {
     }
   }
 
-  // Render
   //
+  // Render
 
   render() {
     const {

@@ -38,6 +38,9 @@ class MetadataSettings extends Component {
     }
   }
 
+  //
+  // Render
+  
   render() {
     const {
       isSaving,
