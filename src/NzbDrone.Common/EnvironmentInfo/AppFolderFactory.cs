@@ -117,7 +117,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             catch (Exception ex)
             {
                 _logger.Debug(ex, ex.Message);
-                throw new RadarrStartupException("Unable to migrate DB from nzbdrone.db to {1}. Migrate manually", _appFolderInfo.GetDatabase());
+                throw new RadarrStartupException("Unable to migrate DB from nzbdrone.db to {0}. Migrate manually", _appFolderInfo.GetDatabase());
             }
         }
 
