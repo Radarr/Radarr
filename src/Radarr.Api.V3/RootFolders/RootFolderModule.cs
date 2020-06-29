@@ -4,6 +4,7 @@ using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
 using Radarr.Http;
+using Radarr.Http.Extensions;
 
 namespace Radarr.Api.V3.RootFolders
 {
@@ -41,7 +42,9 @@ namespace Radarr.Api.V3.RootFolders
 
         private RootFolderResource GetRootFolder(int id)
         {
-            return _rootFolderService.Get(id).ToResource();
+            var timeout = Request.GetBooleanQueryParameter("timeout", true);
+
+            return _rootFolderService.Get(id, timeout).ToResource();
         }
 
         private int CreateRootFolder(RootFolderResource rootFolderResource)

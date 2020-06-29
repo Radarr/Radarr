@@ -66,7 +66,7 @@ namespace NzbDrone.Api.Movies
 
             Profile tempProfile = _profileService.All().First();
 
-            RootFolder rootFolder = _rootFolderService.Get(Request.Query.Id);
+            RootFolder rootFolder = _rootFolderService.Get(Request.Query.Id, true);
 
             int page = Request.Query.page;
             int per_page = Request.Query.per_page;

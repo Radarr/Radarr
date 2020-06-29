@@ -79,7 +79,6 @@ class ImportMovie extends Component {
       rootFolderId,
       path,
       rootFoldersFetching,
-      rootFoldersPopulated,
       rootFoldersError,
       unmappedFolders
     } = this.props;
@@ -98,24 +97,30 @@ class ImportMovie extends Component {
           onScroll={this.onScroll}
         >
           {
-            rootFoldersFetching && !rootFoldersPopulated &&
-              <LoadingIndicator />
+            rootFoldersFetching ? <LoadingIndicator /> : null
           }
 
           {
-            !rootFoldersFetching && !!rootFoldersError &&
-              <div>Unable to load root folders</div>
+            !rootFoldersFetching && !!rootFoldersError ?
+              <div>Unable to load root folders</div> :
+              null
           }
 
           {
-            !rootFoldersError && rootFoldersPopulated && !unmappedFolders.length &&
+            !rootFoldersError &&
+            !rootFoldersFetching &&
+            !unmappedFolders.length ?
               <div>
                 All movies in {path} have been imported
-              </div>
+              </div> :
+              null
           }
 
           {
-            !rootFoldersError && rootFoldersPopulated && !!unmappedFolders.length && scroller &&
+            !rootFoldersError &&
+            !rootFoldersFetching &&
+            !!unmappedFolders.length &&
+            scroller ?
               <ImportMovieTableConnector
                 rootFolderId={rootFolderId}
                 unmappedFolders={unmappedFolders}
@@ -126,17 +131,21 @@ class ImportMovie extends Component {
                 onSelectAllChange={this.onSelectAllChange}
                 onSelectedChange={this.onSelectedChange}
                 onRemoveSelectedStateItem={this.onRemoveSelectedStateItem}
-              />
+              /> :
+              null
           }
         </PageContentBody>
 
         {
-          !rootFoldersError && rootFoldersPopulated && !!unmappedFolders.length &&
+          !rootFoldersError &&
+          !rootFoldersFetching &&
+          !!unmappedFolders.length ?
             <ImportMovieFooterConnector
               selectedIds={this.getSelectedIds()}
               onInputChange={this.onInputChange}
               onImportPress={this.onImportPress}
-            />
+            /> :
+            null
         }
       </PageContent>
     );

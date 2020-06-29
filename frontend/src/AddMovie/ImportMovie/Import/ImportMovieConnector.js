@@ -71,15 +71,14 @@ class ImportMovieConnector extends Component {
 
   componentDidMount() {
     const {
+      rootFolderId,
       qualityProfiles,
       defaultQualityProfileId,
       dispatchFetchRootFolders,
       dispatchSetAddMovieDefault
     } = this.props;
 
-    if (!this.props.rootFoldersPopulated) {
-      dispatchFetchRootFolders();
-    }
+    dispatchFetchRootFolders({ id: rootFolderId, timeout: false });
 
     let setDefaults = false;
     const setDefaultPayload = {};
@@ -139,6 +138,8 @@ const routeMatchShape = createRouteMatchShape({
 
 ImportMovieConnector.propTypes = {
   match: routeMatchShape.isRequired,
+  rootFolderId: PropTypes.number.isRequired,
+  rootFoldersFetching: PropTypes.bool.isRequired,
   rootFoldersPopulated: PropTypes.bool.isRequired,
   qualityProfiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   defaultQualityProfileId: PropTypes.number.isRequired,
