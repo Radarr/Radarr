@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using NLog;
@@ -12,7 +13,7 @@ using NzbDrone.Core.MediaCover;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
 {
-    public class SkyHookProxy : IProvideAuthorInfo, ISearchForNewAuthor, IProvideBookInfo, ISearchForNewBook, ISearchForNewEntity
+    public class SkyHookProxy
     {
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
@@ -85,6 +86,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Tuple<string, Book, List<AuthorMetadata>> GetBookInfo(string foreignBookId)
         {
+            return null;
+            /*
             _logger.Debug("Getting Book with ReadarrAPI.MetadataID of {0}", foreignBookId);
 
             var httpRequest = _requestBuilder.GetRequestBuilder().Create()
@@ -115,11 +118,12 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var b = httpResponse.Resource;
             var book = MapBook(b);
 
-            var authors = httpResponse.Resource.AuthorMetadata.SelectList(MapAuthor);
-            var authorid = GetAuthorId(b);
-            book.AuthorMetadata = authors.First(x => x.ForeignAuthorId == authorid);
+            // var authors = httpResponse.Resource.AuthorMetadata.SelectList(MapAuthor);
+            var authorid = GetAuthorId(b).ToString();
 
-            return new Tuple<string, Book, List<AuthorMetadata>>(authorid, book, authors);
+            // book.AuthorMetadata = authors.First(x => x.ForeignAuthorId == authorid);
+            return new Tuple<string, Book, List<AuthorMetadata>>(authorid, book, null);
+            */
         }
 
         public List<Author> SearchForNewAuthor(string title)
@@ -233,11 +237,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
         }
 
-        public List<Book> SearchForNewAlbumByRecordingIds(List<string> recordingIds)
-        {
-            return null;
-        }
-
         public List<object> SearchForNewEntity(string title)
         {
             var books = SearchForNewBook(title, null);
@@ -260,10 +259,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         private Author MapAuthor(AuthorResource resource)
         {
-            var metadata = MapAuthor(resource.AuthorMetadata.First(x => x.ForeignId == resource.ForeignId));
+            var metadata = MapAuthor(resource.AuthorMetadata.First(x => x.GoodreadsId == resource.GoodreadsId));
 
-            var books = resource.Books
-                .Where(x => GetAuthorId(x) == resource.ForeignId)
+            var books = resource.Works
+                .Where(x => GetAuthorId(x) == resource.GoodreadsId)
                 .Select(MapBook)
                 .ToList();
 
@@ -291,50 +290,26 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var seriesDict = series.ToDictionary(x => x.ForeignSeriesId);
 
             // only take series where there are some works
-            foreach (var s in resource.Series.Where(x => x.BookLinks.Any()))
+            foreach (var s in resource.Series.Where(x => x.Works.Any()))
             {
-                if (seriesDict.TryGetValue(s.ForeignId, out var curr))
+                if (seriesDict.TryGetValue(s.GoodreadsId.ToString(), out var curr))
                 {
-                    curr.LinkItems = s.BookLinks.Where(x => bookDict.ContainsKey(x.BookId)).Select(l => new SeriesBookLink
+                    curr.LinkItems = s.Works.Where(x => bookDict.ContainsKey(x.GoodreadsId.ToString())).Select(l => new SeriesBookLink
                     {
-                        Book = bookDict[l.BookId],
+                        Book = bookDict[l.GoodreadsId.ToString()],
                         Series = curr,
-                        IsPrimary = l.Primary
+                        IsPrimary = l.Primary,
+                        Position = l.Position
                     }).ToList();
                 }
             }
-
-            foreach (var b in resource.Books)
-            {
-                if (bookDict.TryGetValue(b.ForeignId, out var curr))
-                {
-                    curr.SeriesLinks = b.SeriesLinks.Where(l => seriesDict.ContainsKey(l.SeriesId)).Select(l => new SeriesBookLink
-                    {
-                        Series = seriesDict[l.SeriesId],
-                        Position = l.Position,
-                        Book = curr
-                    }).ToList();
-                }
-            }
-
-            _ = series.SelectMany(x => x.LinkItems.Value)
-                .Join(books.SelectMany(x => x.SeriesLinks.Value),
-                      sl => Tuple.Create(sl.Series.Value.ForeignSeriesId, sl.Book.Value.ForeignBookId),
-                      bl => Tuple.Create(bl.Series.Value.ForeignSeriesId, bl.Book.Value.ForeignBookId),
-                      (sl, bl) =>
-                      {
-                          sl.Position = bl.Position;
-                          bl.IsPrimary = sl.IsPrimary;
-                          return sl;
-                      }).ToList();
         }
 
         private static AuthorMetadata MapAuthor(AuthorSummaryResource resource)
         {
             var author = new AuthorMetadata
             {
-                ForeignAuthorId = resource.ForeignId,
-                GoodreadsId = resource.GoodreadsId,
+                ForeignAuthorId = resource.GoodreadsId.ToString(),
                 TitleSlug = resource.TitleSlug,
                 Name = resource.Name.CleanSpaces(),
                 Overview = resource.Description,
@@ -350,7 +325,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 });
             }
 
-            author.Links.Add(new Links { Url = resource.WebUrl, Name = "Goodreads" });
+            author.Links.Add(new Links { Url = resource.Url, Name = "Goodreads" });
 
             return author;
         }
@@ -359,7 +334,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             var series = new Series
             {
-                ForeignSeriesId = resource.ForeignId,
+                ForeignSeriesId = resource.GoodreadsId.ToString(),
                 Title = resource.Title,
                 Description = resource.Description
             };
@@ -367,37 +342,95 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return series;
         }
 
-        private static Book MapBook(BookResource resource)
+        private static Book MapBook(WorkResource resource)
         {
             var book = new Book
             {
-                ForeignBookId = resource.ForeignId,
-                ForeignWorkId = resource.WorkForeignId,
-                GoodreadsId = resource.GoodreadsId,
+                ForeignBookId = resource.GoodreadsId.ToString(),
+                Title = resource.Title,
+                TitleSlug = resource.TitleSlug,
+                CleanTitle = Parser.Parser.CleanAuthorName(resource.Title),
+                ReleaseDate = resource.ReleaseDate,
+            };
+
+            book.Links.Add(new Links { Url = resource.Url, Name = "Goodreads Editions" });
+
+            if (resource.Books != null)
+            {
+                book.Editions = resource.Books.Select(x => MapEdition(x)).ToList();
+
+                // monitor the most rated release
+                var mostPopular = book.Editions.Value.OrderByDescending(x => x.Ratings.Votes).FirstOrDefault();
+                if (mostPopular != null)
+                {
+                    mostPopular.Monitored = true;
+
+                    // fix work title if missing
+                    if (book.Title.IsNullOrWhiteSpace())
+                    {
+                        book.Title = mostPopular.Title;
+                    }
+                }
+            }
+            else
+            {
+                book.Editions = new List<Edition>();
+            }
+
+            Debug.Assert(!book.Editions.Value.Any() || book.Editions.Value.Count(x => x.Monitored) == 1, "one edition monitored");
+
+            book.AnyEditionOk = true;
+
+            var ratingCount = book.Editions.Value.Sum(x => x.Ratings.Votes);
+
+            if (ratingCount > 0)
+            {
+                book.Ratings = new Ratings
+                {
+                    Votes = ratingCount,
+                    Value = book.Editions.Value.Sum(x => x.Ratings.Votes * x.Ratings.Value) / ratingCount
+                };
+            }
+            else
+            {
+                book.Ratings = new Ratings { Votes = 0, Value = 0 };
+            }
+
+            return book;
+        }
+
+        private static Edition MapEdition(BookResource resource)
+        {
+            var edition = new Edition
+            {
+                ForeignEditionId = resource.GoodreadsId.ToString(),
                 TitleSlug = resource.TitleSlug,
                 Isbn13 = resource.Isbn13,
                 Asin = resource.Asin,
                 Title = resource.Title.CleanSpaces(),
                 Language = resource.Language,
-                Publisher = resource.Publisher,
-                CleanTitle = Parser.Parser.CleanAuthorName(resource.Title),
                 Overview = resource.Description,
+                Format = resource.Format,
+                IsEbook = resource.IsEbook,
+                Disambiguation = resource.EditionInformation,
+                Publisher = resource.Publisher,
+                PageCount = resource.NumPages ?? 0,
                 ReleaseDate = resource.ReleaseDate,
                 Ratings = new Ratings { Votes = resource.RatingCount, Value = (decimal)resource.AverageRating }
             };
 
             if (resource.ImageUrl.IsNotNullOrWhiteSpace())
             {
-                book.Images.Add(new MediaCover.MediaCover
+                edition.Images.Add(new MediaCover.MediaCover
                 {
                     Url = resource.ImageUrl,
                     CoverType = MediaCoverTypes.Cover
                 });
             }
 
-            book.Links.Add(new Links { Url = resource.WebUrl, Name = "Goodreads" });
+            edition.Links.Add(new Links { Url = resource.Url, Name = "Goodreads Book" });
 
-            return book;
+            return edition;
         }
 
         private List<Book> MapSearchResult(BookSearchResource resource)
@@ -406,25 +439,25 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             var result = new List<Book>();
 
-            foreach (var b in resource.Books)
+            foreach (var b in resource.Works)
             {
-                var book = _bookService.FindById(b.ForeignId);
+                var book = _bookService.FindById(b.GoodreadsId.ToString());
                 if (book == null)
                 {
                     book = MapBook(b);
 
                     var authorid = GetAuthorId(b);
 
-                    if (authorid == null)
+                    if (authorid == 0)
                     {
                         continue;
                     }
 
-                    var author = _authorService.FindById(authorid);
+                    var author = _authorService.FindById(authorid.ToString());
 
                     if (author == null)
                     {
-                        var authorMetadata = metadata[authorid];
+                        var authorMetadata = metadata[authorid.ToString()];
 
                         author = new Author
                         {
@@ -447,9 +480,9 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return result;
         }
 
-        private string GetAuthorId(BookResource b)
+        private int GetAuthorId(WorkResource b)
         {
-            return b.Contributors.FirstOrDefault()?.ForeignId;
+            return b.Books.First().Contributors.FirstOrDefault()?.GoodreadsId ?? 0;
         }
     }
 }

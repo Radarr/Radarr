@@ -74,7 +74,7 @@ namespace NzbDrone.Core.MediaFiles
             foreach (var f in files)
             {
                 var file = f;
-                var book = file.Book.Value;
+                var book = file.Edition.Value;
                 var bookFilePath = file.Path;
 
                 if (book == null)

@@ -9,8 +9,10 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
         public string Path { get; set; }
         public int AuthorId { get; set; }
         public int BookId { get; set; }
+        public int EditionId { get; set; }
         public QualityModel Quality { get; set; }
         public string DownloadId { get; set; }
+        public bool DisableReleaseSwitching { get; set; }
 
         public bool Equals(ManualImportFile other)
         {

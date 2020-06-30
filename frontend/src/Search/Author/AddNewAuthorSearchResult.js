@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
+import stripHtml from 'Utilities/String/stripHtml';
 import { icons, kinds, sizes } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
@@ -69,12 +70,10 @@ class AddNewAuthorSearchResult extends Component {
   render() {
     const {
       foreignAuthorId,
-      goodreadsId,
       titleSlug,
       authorName,
       year,
       disambiguation,
-      authorType,
       status,
       overview,
       ratings,
@@ -89,7 +88,7 @@ class AddNewAuthorSearchResult extends Component {
 
     const linkProps = isExistingAuthor ? { to: `/author/${titleSlug}` } : { onPress: this.onPress };
 
-    const endedString = authorType === 'Person' ? 'Deceased' : 'Ended';
+    const endedString = 'Deceased';
 
     const height = calculateHeight(230, isSmallScreen);
 
@@ -143,7 +142,7 @@ class AddNewAuthorSearchResult extends Component {
 
               <Link
                 className={styles.mbLink}
-                to={`https://goodreads.com/author/show/${goodreadsId}`}
+                to={`https://goodreads.com/author/show/${foreignAuthorId}`}
                 onPress={this.onMBLinkPress}
               >
                 <Icon
@@ -155,17 +154,13 @@ class AddNewAuthorSearchResult extends Component {
             </div>
 
             <div>
-              <Label size={sizes.LARGE}>
-                <HeartRating
-                  rating={ratings.value}
-                  iconSize={13}
-                />
-              </Label>
-
               {
-                authorType ?
+                ratings.votes > 0 ?
                   <Label size={sizes.LARGE}>
-                    {authorType}
+                    <HeartRating
+                      rating={ratings.value}
+                      iconSize={13}
+                    />
                   </Label> :
                   null
               }
@@ -191,7 +186,7 @@ class AddNewAuthorSearchResult extends Component {
               <TextTruncate
                 truncateText="…"
                 line={Math.floor(height / (defaultFontSize * lineHeight))}
-                text={overview}
+                text={stripHtml(overview)}
               />
             </div>
           </div>
@@ -214,12 +209,10 @@ class AddNewAuthorSearchResult extends Component {
 
 AddNewAuthorSearchResult.propTypes = {
   foreignAuthorId: PropTypes.string.isRequired,
-  goodreadsId: PropTypes.number.isRequired,
   titleSlug: PropTypes.string.isRequired,
   authorName: PropTypes.string.isRequired,
   year: PropTypes.number,
   disambiguation: PropTypes.string,
-  authorType: PropTypes.string,
   status: PropTypes.string.isRequired,
   overview: PropTypes.string,
   ratings: PropTypes.object.isRequired,

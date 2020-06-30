@@ -36,7 +36,6 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
             {
                 Title = "ANThology",
                 ForeignBookId = "1",
-                ForeignWorkId = "1",
                 TitleSlug = "1-ANThology",
                 CleanTitle = "anthology",
                 Author = _artist,
@@ -50,7 +49,6 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
             {
                 Title = "+",
                 ForeignBookId = "2",
-                ForeignWorkId = "2",
                 TitleSlug = "2-_",
                 CleanTitle = "",
                 Author = _artist,

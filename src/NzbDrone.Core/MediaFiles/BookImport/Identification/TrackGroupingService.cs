@@ -14,7 +14,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 {
     public interface ITrackGroupingService
     {
-        List<LocalAlbumRelease> GroupTracks(List<LocalBook> localTracks);
+        List<LocalEdition> GroupTracks(List<LocalBook> localTracks);
     }
 
     public class TrackGroupingService : ITrackGroupingService
@@ -25,17 +25,17 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
         private static readonly string MultiDiscPatternFormat = @"^(?<root>.*%s[\W_]*)\d";
         private static readonly List<string> VariousArtistTitles = new List<string> { "", "various artists", "various", "va", "unknown" };
 
-        public List<LocalAlbumRelease> GroupTracks(List<LocalBook> localTracks)
+        public List<LocalEdition> GroupTracks(List<LocalBook> localTracks)
         {
             _logger.ProgressInfo($"Grouping {localTracks.Count} tracks");
 
-            var releases = new List<LocalAlbumRelease>();
+            var releases = new List<LocalEdition>();
 
             // text files are always single file releases
             var textfiles = localTracks.Where(x => MediaFileExtensions.TextExtensions.Contains(Path.GetExtension(x.Path)));
             foreach (var file in textfiles)
             {
-                releases.Add(new LocalAlbumRelease(new List<LocalBook> { file }));
+                releases.Add(new LocalEdition(new List<LocalBook> { file }));
             }
 
             // first attempt, assume grouped by folder
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 var tracks = group.ToList();
                 if (LooksLikeSingleRelease(tracks))
                 {
-                    releases.Add(new LocalAlbumRelease(tracks));
+                    releases.Add(new LocalEdition(tracks));
                 }
                 else
                 {
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 var tracks = group.ToList();
                 if (LooksLikeSingleRelease(tracks))
                 {
-                    releases.Add(new LocalAlbumRelease(tracks));
+                    releases.Add(new LocalEdition(tracks));
                 }
                 else
                 {
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             foreach (var group in unprocessed2.GroupBy(x => new { x.FileTrackInfo.ArtistTitle, x.FileTrackInfo.AlbumTitle }))
             {
                 _logger.Debug("Falling back to grouping by album+author tag");
-                releases.Add(new LocalAlbumRelease(group.ToList()));
+                releases.Add(new LocalEdition(group.ToList()));
             }
 
             return releases;

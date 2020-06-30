@@ -4,16 +4,17 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 {
     public class SeriesResource
     {
-        public string ForeignId { get; set; }
+        public int GoodreadsId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 
-        public List<SeriesBookLinkResource> BookLinks { get; set; }
+        public List<SeriesWorkLinkResource> Works { get; set; }
     }
 
-    public class SeriesBookLinkResource
+    public class SeriesWorkLinkResource
     {
-        public string BookId { get; set; }
+        public int GoodreadsId { get; set; }
+        public string Position { get; set; }
         public bool Primary { get; set; }
     }
 }

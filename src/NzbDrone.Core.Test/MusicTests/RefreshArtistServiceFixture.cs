@@ -45,10 +45,12 @@ namespace NzbDrone.Core.Test.MusicTests
 
             var metadata = Builder<AuthorMetadata>.CreateNew().Build();
             var series = Builder<Series>.CreateListOfSize(1).BuildList();
+            var profile = Builder<MetadataProfile>.CreateNew().Build();
 
             _artist = Builder<Author>.CreateNew()
                 .With(a => a.Metadata = metadata)
                 .With(a => a.Series = series)
+                .With(a => a.MetadataProfile = profile)
                 .Build();
 
             Mocker.GetMock<IAuthorService>(MockBehavior.Strict)
@@ -63,8 +65,8 @@ namespace NzbDrone.Core.Test.MusicTests
                 .Returns(_albums);
 
             Mocker.GetMock<IProvideAuthorInfo>()
-                  .Setup(s => s.GetAuthorInfo(It.IsAny<string>()))
-                  .Callback(() => { throw new AuthorNotFoundException(_artist.ForeignAuthorId); });
+                .Setup(s => s.GetAuthorAndBooks(It.IsAny<string>(), It.IsAny<double>()))
+                .Callback(() => { throw new AuthorNotFoundException(_artist.ForeignAuthorId); });
 
             Mocker.GetMock<IMediaFileService>()
                 .Setup(x => x.GetFilesByAuthor(It.IsAny<int>()))
@@ -86,8 +88,8 @@ namespace NzbDrone.Core.Test.MusicTests
         private void GivenNewArtistInfo(Author artist)
         {
             Mocker.GetMock<IProvideAuthorInfo>()
-                  .Setup(s => s.GetAuthorInfo(_artist.ForeignAuthorId))
-                  .Returns(artist);
+                .Setup(s => s.GetAuthorAndBooks(_artist.ForeignAuthorId, It.IsAny<double>()))
+                .Returns(artist);
         }
 
         private void GivenArtistFiles()

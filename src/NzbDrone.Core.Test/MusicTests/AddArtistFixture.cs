@@ -16,7 +16,7 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.MusicTests
 {
     [TestFixture]
-    public class AddArtistFixture : CoreTest<AddArtistService>
+    public class AddArtistFixture : CoreTest<AddAuthorService>
     {
         private Author _fakeArtist;
 

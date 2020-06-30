@@ -19,12 +19,12 @@ namespace NzbDrone.Core.MediaFiles
         public string ReleaseGroup { get; set; }
         public QualityModel Quality { get; set; }
         public MediaInfoModel MediaInfo { get; set; }
-        public int BookId { get; set; }
+        public int EditionId { get; set; }
         public int CalibreId { get; set; }
 
         // These are queried from the database
         public LazyLoaded<Author> Author { get; set; }
-        public LazyLoaded<Book> Book { get; set; }
+        public LazyLoaded<Edition> Edition { get; set; }
 
         public override string ToString()
         {

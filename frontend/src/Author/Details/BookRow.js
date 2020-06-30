@@ -73,7 +73,6 @@ class BookRow extends Component {
       title,
       position,
       ratings,
-      disambiguation,
       isSaving,
       authorMonitored,
       titleSlug,
@@ -124,7 +123,6 @@ class BookRow extends Component {
                   <BookTitleLink
                     titleSlug={titleSlug}
                     title={title}
-                    disambiguation={disambiguation}
                   />
                 </TableRowCell>
               );
@@ -208,7 +206,6 @@ BookRow.propTypes = {
   title: PropTypes.string.isRequired,
   position: PropTypes.string,
   ratings: PropTypes.object.isRequired,
-  disambiguation: PropTypes.string,
   titleSlug: PropTypes.string.isRequired,
   isSaving: PropTypes.bool,
   authorMonitored: PropTypes.bool.isRequired,

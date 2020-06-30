@@ -38,7 +38,13 @@ namespace NzbDrone.Core.Test.OrganizerTests
                 .With(s => s.Title = "Fake: Book")
                 .Build();
 
-            Subject.BuildBookFilePath(fakeArtist, fakeAlbum, filename, ".mobi").Should().Be(expectedPath.AsOsAgnostic());
+            var fakeEdition = Builder<Edition>
+                .CreateNew()
+                .With(s => s.Title = fakeAlbum.Title)
+                .With(s => s.Book = fakeAlbum)
+                .Build();
+
+            Subject.BuildBookFilePath(fakeArtist, fakeEdition, filename, ".mobi").Should().Be(expectedPath.AsOsAgnostic());
         }
     }
 }

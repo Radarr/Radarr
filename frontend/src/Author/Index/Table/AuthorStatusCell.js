@@ -8,14 +8,11 @@ import styles from './AuthorStatusCell.css';
 function AuthorStatusCell(props) {
   const {
     className,
-    authorType,
     monitored,
     status,
     component: Component,
     ...otherProps
   } = props;
-
-  const endedString = authorType === 'Person' ? 'Deceased' : 'Ended';
 
   return (
     <Component
@@ -31,7 +28,7 @@ function AuthorStatusCell(props) {
       <Icon
         className={styles.statusIcon}
         name={status === 'ended' ? icons.AUTHOR_ENDED : icons.AUTHOR_CONTINUING}
-        title={status === 'ended' ? endedString : 'Continuing'}
+        title={status === 'ended' ? 'Deceased' : 'Continuing'}
       />
     </Component>
   );
@@ -39,7 +36,6 @@ function AuthorStatusCell(props) {
 
 AuthorStatusCell.propTypes = {
   className: PropTypes.string.isRequired,
-  authorType: PropTypes.string,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   component: PropTypes.elementType

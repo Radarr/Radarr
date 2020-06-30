@@ -117,7 +117,7 @@ namespace NzbDrone.Core.Books.Calibre
 
         public void SetFields(BookFile file, CalibreSettings settings)
         {
-            var book = file.Book.Value;
+            var book = file.Edition.Value;
 
             var cover = book.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Cover);
             string image = null;
@@ -144,7 +144,6 @@ namespace NzbDrone.Core.Books.Calibre
                     rating = book.Ratings.Value * 2,
                     identifiers = new Dictionary<string, string>
                     {
-                        { "goodreads", book.GoodreadsId.ToString() },
                         { "isbn", book.Isbn13 },
                         { "asin", book.Asin }
                     }

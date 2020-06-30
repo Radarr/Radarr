@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
@@ -16,13 +17,15 @@ namespace NzbDrone.Core.Books
         }
 
         public string ForeignAuthorId { get; set; }
-        public int GoodreadsId { get; set; }
         public string TitleSlug { get; set; }
         public string Name { get; set; }
         public List<string> Aliases { get; set; }
         public string Overview { get; set; }
         public string Disambiguation { get; set; }
-        public string Type { get; set; }
+        public string Gender { get; set; }
+        public string Hometown { get; set; }
+        public DateTime? Born { get; set; }
+        public DateTime? Died { get; set; }
         public AuthorStatusType Status { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
         public List<Links> Links { get; set; }
@@ -37,13 +40,15 @@ namespace NzbDrone.Core.Books
         public override void UseMetadataFrom(AuthorMetadata other)
         {
             ForeignAuthorId = other.ForeignAuthorId;
-            GoodreadsId = other.GoodreadsId;
             TitleSlug = other.TitleSlug;
             Name = other.Name;
             Aliases = other.Aliases;
             Overview = other.Overview.IsNullOrWhiteSpace() ? Overview : other.Overview;
             Disambiguation = other.Disambiguation;
-            Type = other.Type;
+            Gender = other.Gender;
+            Hometown = other.Hometown;
+            Born = other.Born;
+            Died = other.Died;
             Status = other.Status;
             Images = other.Images.Any() ? other.Images : Images;
             Links = other.Links;

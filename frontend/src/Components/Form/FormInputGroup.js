@@ -15,7 +15,7 @@ import PasswordInput from './PasswordInput';
 import PathInputConnector from './PathInputConnector';
 import QualityProfileSelectInputConnector from './QualityProfileSelectInputConnector';
 import MetadataProfileSelectInputConnector from './MetadataProfileSelectInputConnector';
-import BookReleaseSelectInputConnector from './BookReleaseSelectInputConnector';
+import BookEditionSelectInputConnector from './BookEditionSelectInputConnector';
 import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
 import SeriesTypeSelectInput from './SeriesTypeSelectInput';
 import EnhancedSelectInput from './EnhancedSelectInput';
@@ -66,8 +66,8 @@ function getComponent(type) {
     case inputTypes.METADATA_PROFILE_SELECT:
       return MetadataProfileSelectInputConnector;
 
-    case inputTypes.BOOK_RELEASE_SELECT:
-      return BookReleaseSelectInputConnector;
+    case inputTypes.BOOK_EDITION_SELECT:
+      return BookEditionSelectInputConnector;
 
     case inputTypes.ROOT_FOLDER_SELECT:
       return RootFolderSelectInputConnector;

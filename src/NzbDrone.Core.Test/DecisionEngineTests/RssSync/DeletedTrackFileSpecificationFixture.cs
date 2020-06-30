@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                     Path = "/My.Artist.S01E01.mp3",
                     Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
                     DateAdded = DateTime.Now,
-                    BookId = 1
+                    EditionId = 1
                 };
             _secondFile =
                 new BookFile
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                     Path = "/My.Artist.S01E02.mp3",
                     Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
                     DateAdded = DateTime.Now,
-                    BookId = 2
+                    EditionId = 2
                 };
 
             var singleAlbumList = new List<Book> { new Book { Id = 1 } };

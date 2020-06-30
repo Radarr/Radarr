@@ -7,6 +7,7 @@ import TextTruncate from 'react-text-truncate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
+import stripHtml from 'Utilities/String/stripHtml';
 import { align, icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import fonts from 'Styles/Variables/fonts';
 import HeartRating from 'Components/HeartRating';
@@ -18,6 +19,7 @@ import Tooltip from 'Components/Tooltip/Tooltip';
 import BookCover from 'Book/BookCover';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 // import RetagPreviewModalConnector from 'Retag/RetagPreviewModalConnector';
+import EditBookModalConnector from 'Book/Edit/EditBookModalConnector';
 import DeleteBookModal from 'Book/Delete/DeleteBookModal';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
@@ -44,28 +46,6 @@ function getFanartUrl(images) {
   }
 }
 
-function formatDuration(timeSpan) {
-  const duration = moment.duration(timeSpan);
-  const hours = duration.get('hours');
-  const minutes = duration.get('minutes');
-  let hoursText = 'Hours';
-  let minText = 'Minutes';
-
-  if (minutes === 1) {
-    minText = 'Minute';
-  }
-
-  if (hours === 0) {
-    return `${minutes} ${minText}`;
-  }
-
-  if (hours === 1) {
-    hoursText = 'Hour';
-  }
-
-  return `${hours} ${hoursText} ${minutes} ${minText}`;
-}
-
 function getExpandedState(newState) {
   return {
     allExpanded: newState.allSelected,
@@ -85,6 +65,7 @@ class BookDetails extends Component {
     this.state = {
       isOrganizeModalOpen: false,
       isRetagModalOpen: false,
+      isEditBookModalOpen: false,
       isDeleteBookModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
@@ -112,8 +93,17 @@ class BookDetails extends Component {
     this.setState({ isRetagModalOpen: false });
   }
 
+  onEditBookPress = () => {
+    this.setState({ isEditBookModalOpen: true });
+  }
+
+  onEditBookModalClose = () => {
+    this.setState({ isEditBookModalOpen: false });
+  }
+
   onDeleteBookPress = () => {
     this.setState({
+      isEditBookModalOpen: false,
       isDeleteBookModalOpen: true
     });
   }
@@ -153,8 +143,7 @@ class BookDetails extends Component {
       id,
       titleSlug,
       title,
-      disambiguation,
-      duration,
+      pageCount,
       overview,
       statistics = {},
       monitored,
@@ -179,6 +168,7 @@ class BookDetails extends Component {
     const {
       isOrganizeModalOpen,
       // isRetagModalOpen,
+      isEditBookModalOpen,
       isDeleteBookModalOpen,
       allExpanded,
       allCollapsed,
@@ -221,6 +211,12 @@ class BookDetails extends Component {
             />
 
             <PageToolbarSeparator />
+
+            <PageToolbarButton
+              label="Edit"
+              iconName={icons.EDIT}
+              onPress={this.onEditBookPress}
+            />
 
             <PageToolbarButton
               label="Delete"
@@ -272,8 +268,9 @@ class BookDetails extends Component {
                     </div>
 
                     <div className={styles.title}>
-                      {title}{disambiguation ? ` (${disambiguation})` : ''}
+                      {title}
                     </div>
+
                   </div>
 
                   <div className={styles.bookNavigationButtons}>
@@ -306,9 +303,9 @@ class BookDetails extends Component {
                 <div className={styles.details}>
                   <div>
                     {
-                      !!duration &&
+                      !!pageCount &&
                         <span className={styles.duration}>
-                          {formatDuration(duration)}
+                          {`${pageCount} pages`}
                         </span>
                     }
 
@@ -397,7 +394,7 @@ class BookDetails extends Component {
                 <div className={styles.overview}>
                   <TextTruncate
                     line={Math.floor(125 / (defaultFontSize * lineHeight))}
-                    text={overview.replace(/<[^>]*>?/gm, '')}
+                    text={stripHtml(overview)}
                   />
                 </div>
               </div>
@@ -488,6 +485,14 @@ class BookDetails extends Component {
           {/*   onModalClose={this.onRetagModalClose} */}
           {/* /> */}
 
+          <EditBookModalConnector
+            isOpen={isEditBookModalOpen}
+            bookId={id}
+            authorId={author.id}
+            onModalClose={this.onEditBookModalClose}
+            onDeleteAuthorPress={this.onDeleteBookPress}
+          />
+
           <DeleteBookModal
             isOpen={isDeleteBookModalOpen}
             bookId={id}
@@ -505,8 +510,7 @@ BookDetails.propTypes = {
   id: PropTypes.number.isRequired,
   titleSlug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  disambiguation: PropTypes.string,
-  duration: PropTypes.number,
+  pageCount: PropTypes.number,
   overview: PropTypes.string,
   statistics: PropTypes.object.isRequired,
   releaseDate: PropTypes.string.isRequired,

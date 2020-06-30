@@ -186,7 +186,8 @@ namespace NzbDrone.Common.Http.Dispatchers
                         webRequest.TransferEncoding = header.Value;
                         break;
                     case "User-Agent":
-                        throw new NotSupportedException("User-Agent other than Readarr not allowed.");
+                        webRequest.UserAgent = header.Value;
+                        break;
                     case "Proxy-Connection":
                         throw new NotImplementedException();
                     default:

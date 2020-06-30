@@ -18,12 +18,12 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
             {
                 // Unlink where track no longer exists
                 mapper.Execute(@"UPDATE BookFiles
-                                     SET BookId = 0
+                                     SET EditionId = 0
                                      WHERE Id IN (
                                      SELECT BookFiles.Id FROM BookFiles
-                                     LEFT OUTER JOIN Books
-                                     ON BookFiles.BookId = Books.Id
-                                     WHERE Books.Id IS NULL)");
+                                     LEFT OUTER JOIN Editions
+                                     ON BookFiles.EditionId = Editions.Id
+                                     WHERE Editions.Id IS NULL)");
             }
         }
     }

@@ -226,7 +226,7 @@ AuthorDetailsSeries.propTypes = {
   onSortPress: PropTypes.func.isRequired,
   onMonitorBookPress: PropTypes.func.isRequired,
   uiSettings: PropTypes.object.isRequired,
-  authorMonitored: PropTypes.object.isRequired
+  authorMonitored: PropTypes.bool.isRequired
 };
 
 export default AuthorDetailsSeries;

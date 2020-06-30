@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Books
         public List<Book> GetBooksByFileIds(IEnumerable<int> fileIds)
         {
             return Query(new SqlBuilder()
-                         .Join<Book, BookFile>((l, r) => l.Id == r.BookId)
+                         .Join<Book, BookFile>((l, r) => l.Id == r.EditionId)
                          .Where<BookFile>(f => fileIds.Contains(f.Id)))
                 .DistinctBy(x => x.Id)
                 .ToList();
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Books
 #pragma warning disable CS0472
         private SqlBuilder AlbumsWithoutFilesBuilder(DateTime currentTime) => Builder()
             .Join<Book, Author>((l, r) => l.AuthorMetadataId == r.AuthorMetadataId)
-            .LeftJoin<Book, BookFile>((t, f) => t.Id == f.BookId)
+            .LeftJoin<Book, BookFile>((t, f) => t.Id == f.EditionId)
             .Where<BookFile>(f => f.Id == null)
             .Where<Book>(a => a.ReleaseDate <= currentTime);
 #pragma warning restore CS0472
@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Books
 
         private SqlBuilder AlbumsWhereCutoffUnmetBuilder(List<QualitiesBelowCutoff> qualitiesBelowCutoff) => Builder()
             .Join<Book, Author>((l, r) => l.AuthorMetadataId == r.AuthorMetadataId)
-            .Join<Book, BookFile>((t, f) => t.Id == f.BookId)
+            .Join<Book, BookFile>((t, f) => t.Id == f.EditionId)
             .Where(BuildQualityCutoffWhereClause(qualitiesBelowCutoff));
 
         private string BuildQualityCutoffWhereClause(List<QualitiesBelowCutoff> qualitiesBelowCutoff)
@@ -193,7 +193,7 @@ namespace NzbDrone.Core.Books
         public List<Book> GetAuthorBooksWithFiles(Author author)
         {
             return Query(Builder()
-                         .Join<Book, BookFile>((t, f) => t.Id == f.BookId)
+                         .Join<Book, BookFile>((t, f) => t.Id == f.EditionId)
                          .Where<Book>(x => x.AuthorMetadataId == author.AuthorMetadataId));
         }
     }

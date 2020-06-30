@@ -84,7 +84,7 @@ namespace Readarr.Api.V1.Calendar
                 occurrence.Uid = "Readarr_book_" + book.Id;
 
                 //occurrence.Status = album.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
-                occurrence.Description = book.Overview;
+                occurrence.Description = book.Editions.Value.Single(x => x.Monitored).Overview;
                 occurrence.Categories = book.Genres;
 
                 occurrence.Start = new CalDateTime(book.ReleaseDate.Value.ToLocalTime()) { HasTime = false };

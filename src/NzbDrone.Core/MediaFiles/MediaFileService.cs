@@ -23,6 +23,7 @@ namespace NzbDrone.Core.MediaFiles
         void DeleteMany(List<BookFile> bookFiles, DeleteMediaFileReason reason);
         List<BookFile> GetFilesByAuthor(int authorId);
         List<BookFile> GetFilesByBook(int bookId);
+        List<BookFile> GetFilesByEdition(int editionId);
         List<BookFile> GetUnmappedFiles();
         List<IFileInfo> FilterUnchangedFiles(List<IFileInfo> files, FilterFilesType filter);
         BookFile Get(int id);
@@ -80,7 +81,7 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileRepository.Delete(bookFile);
 
             // If the trackfile wasn't mapped to a track, don't publish an event
-            if (bookFile.BookId > 0)
+            if (bookFile.EditionId > 0)
             {
                 _eventAggregator.PublishEvent(new BookFileDeletedEvent(bookFile, reason));
             }
@@ -91,7 +92,7 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileRepository.DeleteMany(bookFiles);
 
             // publish events where trackfile was mapped to a track
-            foreach (var bookFile in bookFiles.Where(x => x.BookId > 0))
+            foreach (var bookFile in bookFiles.Where(x => x.EditionId > 0))
             {
                 _eventAggregator.PublishEvent(new BookFileDeletedEvent(bookFile, reason));
             }
@@ -138,7 +139,7 @@ namespace NzbDrone.Core.MediaFiles
                 unwanted = combined
                     .Where(x => x.DiskFile.Length == x.DbFile.Size &&
                            Math.Abs((x.DiskFile.LastWriteTimeUtc - x.DbFile.Modified).TotalSeconds) <= 1 &&
-                           (x.DbFile.Book == null || (x.DbFile.Book.IsLoaded && x.DbFile.Book.Value != null)))
+                           (x.DbFile.Edition == null || (x.DbFile.Edition.IsLoaded && x.DbFile.Edition.Value != null)))
                     .Select(x => x.DiskFile)
                     .ToList();
                 _logger.Trace($"{unwanted.Count} unchanged and matched files");
@@ -184,6 +185,11 @@ namespace NzbDrone.Core.MediaFiles
         public List<BookFile> GetFilesByBook(int bookId)
         {
             return _mediaFileRepository.GetFilesByBook(bookId);
+        }
+
+        public List<BookFile> GetFilesByEdition(int editionId)
+        {
+            return _mediaFileRepository.GetFilesByEdition(editionId);
         }
 
         public List<BookFile> GetUnmappedFiles()

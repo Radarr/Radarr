@@ -51,10 +51,23 @@ namespace NzbDrone.Core.Test.Datastore
 
             Db.InsertMany(albums);
 
+            var editions = new List<Edition>();
+            foreach (var album in albums)
+            {
+                editions.Add(
+                    Builder<Edition>.CreateNew()
+                    .With(v => v.Id = 0)
+                    .With(v => v.BookId = album.Id)
+                    .With(v => v.ForeignEditionId = "test" + album.Id)
+                    .Build());
+            }
+
+            Db.InsertMany(editions);
+
             var trackFiles = Builder<BookFile>.CreateListOfSize(1)
                 .All()
                 .With(v => v.Id = 0)
-                .With(v => v.BookId = albums[0].Id)
+                .With(v => v.EditionId = editions[0].Id)
                 .With(v => v.Quality = new QualityModel())
                 .BuildListOfNew();
 
@@ -97,40 +110,15 @@ namespace NzbDrone.Core.Test.Datastore
             var db = Mocker.Resolve<IDatabase>();
             var files = MediaFileRepository.Query(db,
                                                   new SqlBuilder()
-                                                  .Join<BookFile, Book>((t, a) => t.BookId == a.Id)
+                                                  .Join<BookFile, Edition>((t, a) => t.EditionId == a.Id)
+                                                  .Join<Edition, Book>((e, b) => e.BookId == b.Id)
                                                   .Join<Book, Author>((album, artist) => album.AuthorMetadataId == artist.AuthorMetadataId)
                                                   .Join<Author, AuthorMetadata>((a, m) => a.AuthorMetadataId == m.Id));
 
             Assert.IsNotEmpty(files);
             foreach (var file in files)
             {
-                Assert.IsTrue(file.Book.IsLoaded);
-                Assert.IsTrue(file.Author.IsLoaded);
-                Assert.IsTrue(file.Author.Value.Metadata.IsLoaded);
-            }
-        }
-
-        [Test]
-        public void should_lazy_load_tracks_if_not_joined_to_trackfile()
-        {
-            var db = Mocker.Resolve<IDatabase>();
-            var files = db.QueryJoined<BookFile, Book, Author, AuthorMetadata>(
-                new SqlBuilder()
-                .Join<BookFile, Book>((t, a) => t.BookId == a.Id)
-                .Join<Book, Author>((album, artist) => album.AuthorMetadataId == artist.AuthorMetadataId)
-                .Join<Author, AuthorMetadata>((a, m) => a.AuthorMetadataId == m.Id),
-                (file, album, artist, metadata) =>
-                {
-                    file.Book = album;
-                    file.Author = artist;
-                    file.Author.Value.Metadata = metadata;
-                    return file;
-                });
-
-            Assert.IsNotEmpty(files);
-            foreach (var file in files)
-            {
-                Assert.IsTrue(file.Book.IsLoaded);
+                Assert.IsTrue(file.Edition.IsLoaded);
                 Assert.IsTrue(file.Author.IsLoaded);
                 Assert.IsTrue(file.Author.Value.Metadata.IsLoaded);
             }

@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
     {
         private Author _artist;
         private Book _album;
+        private Edition _edition;
         private BookFile _trackFile;
         private NamingConfig _namingConfig;
 
@@ -37,7 +38,13 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _album = Builder<Book>
                 .CreateNew()
                 .With(s => s.Title = "Hybrid Theory")
+                .Build();
+
+            _edition = Builder<Edition>
+                .CreateNew()
+                .With(s => s.Title = _album.Title)
                 .With(s => s.Disambiguation = "The Best Album")
+                .With(s => s.Book = _album)
                 .Build();
 
             _namingConfig = NamingConfig.Default;
@@ -78,7 +85,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author Name}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin Park");
         }
 
@@ -87,7 +94,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author_Name}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin_Park");
         }
 
@@ -96,7 +103,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author.Name}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin.Park");
         }
 
@@ -105,7 +112,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author-Name}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin-Park");
         }
 
@@ -114,7 +121,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{AUTHOR NAME}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("LINKIN PARK");
         }
 
@@ -123,7 +130,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{aUtHoR-nAmE}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(_artist.Name.Replace(' ', '-'));
         }
 
@@ -132,7 +139,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{author name}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("linkin park");
         }
 
@@ -142,7 +149,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.StandardBookFormat = "{Author.CleanName}";
             _artist.Name = "Linkin Park (1997)";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin.Park.1997");
         }
 
@@ -151,16 +158,16 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author Disambiguation}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("US Rock Band");
         }
 
         [Test]
-        public void should_replace_Album_space_Title()
+        public void should_replace_edition_space_Title()
         {
             _namingConfig.StandardBookFormat = "{Book Title}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Hybrid Theory");
         }
 
@@ -169,7 +176,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Book Disambiguation}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                 .Should().Be("The Best Album");
         }
 
@@ -178,7 +185,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Book_Title}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Hybrid_Theory");
         }
 
@@ -187,7 +194,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Book.Title}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Hybrid.Theory");
         }
 
@@ -196,7 +203,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Book-Title}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Hybrid-Theory");
         }
 
@@ -205,7 +212,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{BOOK TITLE}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("HYBRID THEORY");
         }
 
@@ -214,7 +221,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{bOoK-tItLE}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(_album.Title.Replace(' ', '-'));
         }
 
@@ -223,7 +230,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{book title}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("hybrid theory");
         }
 
@@ -233,7 +240,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.StandardBookFormat = "{Author.CleanName}";
             _artist.Name = "Hybrid Theory (2000)";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Hybrid.Theory.2000");
         }
 
@@ -242,7 +249,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Quality Title}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("MP3-320");
         }
 
@@ -251,7 +258,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{MediaInfo AudioCodec}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("FLAC");
         }
 
@@ -260,7 +267,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{MediaInfo AudioBitRate}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("320 kbps");
         }
 
@@ -269,7 +276,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{MediaInfo AudioChannels}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("2.0");
         }
 
@@ -278,7 +285,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{MediaInfo AudioBitsPerSample}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("16bit");
         }
 
@@ -287,7 +294,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{MediaInfo AudioSampleRate}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("44.1kHz");
         }
 
@@ -296,7 +303,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author Name} - {Book Title} - [{Quality Title}]";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin Park - Hybrid Theory - [MP3-320]");
         }
 
@@ -306,7 +313,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.RenameBooks = false;
             _trackFile.Path = "Linkin Park - 06 - Test";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.Path));
         }
 
@@ -317,7 +324,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _trackFile.Path = "Linkin Park - 06 - Test";
             _trackFile.SceneName = "SceneName";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.Path));
         }
 
@@ -327,7 +334,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _namingConfig.RenameBooks = false;
             _trackFile.Path = @"C:\Test\Unsorted\Artist - 01 - Test";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.Path));
         }
 
@@ -336,7 +343,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Release Group}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(_trackFile.ReleaseGroup);
         }
 
@@ -349,7 +356,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _trackFile.SceneName = "Linkin.Park.Meteora.320-LOL";
             _trackFile.Path = "30 Rock - 01 - Test";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin Park - Linkin.Park.Meteora.320-LOL");
         }
 
@@ -358,7 +365,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author.Name}.{Book.Title}";
 
-            Subject.BuildBookFileName(new Author { Name = "In The Woods." }, new Book { Title = "30 Rock" }, _trackFile)
+            Subject.BuildBookFileName(new Author { Name = "In The Woods." }, new Edition { Title = "30 Rock" }, _trackFile)
                    .Should().Be("In.The.Woods.30.Rock");
         }
 
@@ -367,7 +374,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author.Name}.{Book.Title}";
 
-            Subject.BuildBookFileName(new Author { Name = "In The Woods..." }, new Book { Title = "30 Rock" }, _trackFile)
+            Subject.BuildBookFileName(new Author { Name = "In The Woods..." }, new Edition { Title = "30 Rock" }, _trackFile)
                    .Should().Be("In.The.Woods.30.Rock");
         }
 
@@ -376,7 +383,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author.Name}{_Book.Title_}{Quality.Title}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin.Park_Hybrid.Theory_MP3-320");
         }
 
@@ -385,7 +392,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author.Name}{_Book.Title_}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin.Park_Hybrid.Theory");
         }
 
@@ -395,7 +402,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _artist.Name = "Venture Bros.";
             _namingConfig.StandardBookFormat = "{Author.Name}.{Book.Title}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Venture.Bros.Hybrid.Theory");
         }
 
@@ -408,7 +415,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _trackFile.SceneName = null;
             _trackFile.Path = "existing.file.mkv";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(Path.GetFileNameWithoutExtension(_trackFile.Path));
         }
 
@@ -421,7 +428,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _trackFile.SceneName = "30.Rock.S01E01.xvid-LOL";
             _trackFile.Path = "30 Rock - S01E01 - Test";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("30.Rock.S01E01.xvid-LOL");
         }
 
@@ -430,7 +437,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Quality Title} {Quality Proper}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("MP3-320");
         }
 
@@ -439,7 +446,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author Name} - {Book Title} [{Quality Title}] {[Quality Proper]}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin Park - Hybrid Theory [MP3-320]");
         }
 
@@ -448,7 +455,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = "{Author Name} - {Book Title} [{Quality Full}]";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Linkin Park - Hybrid Theory [MP3-320]");
         }
 
@@ -460,7 +467,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = string.Format("{{Quality{0}Title}}{0}{{Quality{0}Proper}}", separator);
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("MP3-320");
         }
 
@@ -472,7 +479,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardBookFormat = string.Format("{{Quality{0}Title}}{0}{{Quality{0}Proper}}{0}{{Book{0}Title}}", separator);
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(string.Format("MP3-320{0}Hybrid{0}Theory", separator));
         }
 
@@ -485,7 +492,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _trackFile.SceneName = "30.Rock.S01E01.xvid-LOL";
             _trackFile.Path = "30 Rock - S01E01 - Test";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("30 Rock - 30 Rock - S01E01 - Test");
         }
 
@@ -498,7 +505,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _trackFile.SceneName = "30.Rock.S01E01.xvid-LOL";
             _trackFile.Path = "30 Rock - S01E01 - Test";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("30 Rock - S01E01 - Test");
         }
 
@@ -508,7 +515,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _trackFile.ReleaseGroup = null;
             _namingConfig.StandardBookFormat = "{Release Group}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be("Readarr");
         }
 
@@ -520,7 +527,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _trackFile.ReleaseGroup = null;
             _namingConfig.StandardBookFormat = pattern;
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(expectedFileName);
         }
 
@@ -532,7 +539,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _trackFile.ReleaseGroup = releaseGroup;
             _namingConfig.StandardBookFormat = "{Release Group}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(releaseGroup);
         }
     }

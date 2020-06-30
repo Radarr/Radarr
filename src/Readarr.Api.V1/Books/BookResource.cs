@@ -15,17 +15,14 @@ namespace Readarr.Api.V1.Books
         public string Title { get; set; }
         public string Disambiguation { get; set; }
         public string Overview { get; set; }
-        public string Publisher { get; set; }
-        public string Language { get; set; }
         public int AuthorId { get; set; }
         public string ForeignBookId { get; set; }
-        public int GoodreadsId { get; set; }
         public string TitleSlug { get; set; }
-        public string Isbn { get; set; }
-        public string Asin { get; set; }
         public bool Monitored { get; set; }
+        public bool AnyEditionOk { get; set; }
         public Ratings Ratings { get; set; }
         public DateTime? ReleaseDate { get; set; }
+        public int PageCount { get; set; }
         public List<string> Genres { get; set; }
         public AuthorResource Author { get; set; }
         public List<MediaCover> Images { get; set; }
@@ -33,6 +30,7 @@ namespace Readarr.Api.V1.Books
         public BookStatisticsResource Statistics { get; set; }
         public AddBookOptions AddOptions { get; set; }
         public string RemoteCover { get; set; }
+        public List<EditionResource> Editions { get; set; }
 
         //Hiding this so people don't think its usable (only used to set the initial state)
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -48,27 +46,27 @@ namespace Readarr.Api.V1.Books
                 return null;
             }
 
+            var selectedEdition = model.Editions?.Value.Where(x => x.Monitored).SingleOrDefault();
+
             return new BookResource
             {
                 Id = model.Id,
                 AuthorId = model.AuthorId,
                 ForeignBookId = model.ForeignBookId,
-                GoodreadsId = model.GoodreadsId,
                 TitleSlug = model.TitleSlug,
-                Asin = model.Asin,
-                Isbn = model.Isbn13,
                 Monitored = model.Monitored,
+                AnyEditionOk = model.AnyEditionOk,
                 ReleaseDate = model.ReleaseDate,
+                PageCount = selectedEdition?.PageCount ?? 0,
                 Genres = model.Genres,
-                Title = model.Title,
-                Disambiguation = model.Disambiguation,
-                Overview = model.Overview,
-                Publisher = model.Publisher,
-                Language = model.Language,
-                Images = model.Images,
-                Links = model.Links,
-                Ratings = model.Ratings,
-                Author = model.Author?.Value.ToResource()
+                Title = selectedEdition?.Title ?? model.Title,
+                Disambiguation = selectedEdition?.Disambiguation,
+                Overview = selectedEdition?.Overview,
+                Images = selectedEdition?.Images ?? new List<MediaCover>(),
+                Links = model.Links.Concat(selectedEdition?.Links ?? new List<Links>()).ToList(),
+                Ratings = selectedEdition?.Ratings ?? new Ratings(),
+                Author = model.Author?.Value.ToResource(),
+                Editions = model.Editions?.Value.ToResource() ?? new List<EditionResource>()
             };
         }
 
@@ -85,17 +83,11 @@ namespace Readarr.Api.V1.Books
             {
                 Id = resource.Id,
                 ForeignBookId = resource.ForeignBookId,
-                GoodreadsId = resource.GoodreadsId,
                 TitleSlug = resource.TitleSlug,
-                Asin = resource.Asin,
-                Isbn13 = resource.Isbn,
                 Title = resource.Title,
-                Disambiguation = resource.Disambiguation,
-                Overview = resource.Overview,
-                Publisher = resource.Publisher,
-                Language = resource.Language,
-                Images = resource.Images,
                 Monitored = resource.Monitored,
+                AnyEditionOk = resource.AnyEditionOk,
+                Editions = resource.Editions.ToModel(),
                 AddOptions = resource.AddOptions,
                 Author = author,
                 AuthorMetadata = author.Metadata.Value
@@ -107,6 +99,7 @@ namespace Readarr.Api.V1.Books
             var updatedBook = resource.ToModel();
 
             book.ApplyChanges(updatedBook);
+            book.Editions = updatedBook.Editions;
 
             return book;
         }

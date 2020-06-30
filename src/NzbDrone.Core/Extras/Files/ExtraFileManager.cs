@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Extras.Files
             return new TExtraFile
             {
                 AuthorId = author.Id,
-                BookId = bookFile.BookId,
+                BookId = bookFile.EditionId,
                 BookFileId = bookFile.Id,
                 RelativePath = author.Path.GetRelativePath(newFileName),
                 Extension = extension

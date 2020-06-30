@@ -49,7 +49,7 @@ namespace Readarr.Api.V1.BookFiles
             return new BookFileResource
             {
                 Id = model.Id,
-                BookId = model.BookId,
+                BookId = model.EditionId,
                 Path = model.Path,
                 Size = model.Size,
                 DateAdded = model.DateAdded,
@@ -71,7 +71,7 @@ namespace Readarr.Api.V1.BookFiles
                 Id = model.Id,
 
                 AuthorId = author.Id,
-                BookId = model.BookId,
+                BookId = model.EditionId,
                 Path = model.Path,
                 Size = model.Size,
                 DateAdded = model.DateAdded,

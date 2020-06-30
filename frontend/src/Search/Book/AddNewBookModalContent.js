@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
+import stripHtml from 'Utilities/String/stripHtml';
 import { kinds } from 'Helpers/Props';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import CheckInput from 'Components/Form/CheckInput';
@@ -93,7 +94,7 @@ class AddNewBookModalContent extends Component {
                     <TextTruncate
                       truncateText="…"
                       line={8}
-                      text={overview}
+                      text={stripHtml(overview)}
                     />
                   </div> :
                   null

@@ -18,12 +18,12 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var trackFile = Builder<BookFile>.CreateNew()
                 .With(h => h.Quality = new QualityModel())
-                .With(h => h.BookId = 1)
+                .With(h => h.EditionId = 1)
                 .BuildNew();
 
             Db.Insert(trackFile);
             Subject.Clean();
-            AllStoredModels[0].BookId.Should().Be(0);
+            AllStoredModels[0].EditionId.Should().Be(0);
         }
     }
 }

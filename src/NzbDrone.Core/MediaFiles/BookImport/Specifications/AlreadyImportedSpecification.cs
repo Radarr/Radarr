@@ -4,12 +4,11 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.History;
-using NzbDrone.Core.MediaFiles.BookImport;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 {
-    public class AlreadyImportedSpecification : IImportDecisionEngineSpecification<LocalAlbumRelease>
+    public class AlreadyImportedSpecification : IImportDecisionEngineSpecification<LocalEdition>
     {
         private readonly IHistoryService _historyService;
         private readonly Logger _logger;
@@ -23,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 
         public SpecificationPriority Priority => SpecificationPriority.Database;
 
-        public Decision IsSatisfiedBy(LocalAlbumRelease localAlbumRelease, DownloadClientItem downloadClientItem)
+        public Decision IsSatisfiedBy(LocalEdition localAlbumRelease, DownloadClientItem downloadClientItem)
         {
             if (downloadClientItem == null)
             {
@@ -31,7 +30,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
                 return Decision.Accept();
             }
 
-            var albumRelease = localAlbumRelease.Book;
+            var albumRelease = localAlbumRelease.Edition;
 
             if ((!albumRelease?.BookFiles?.Value?.Any()) ?? true)
             {

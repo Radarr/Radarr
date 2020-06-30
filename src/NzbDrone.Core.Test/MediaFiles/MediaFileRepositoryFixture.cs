@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Test.MediaFiles
     {
         private Author _artist;
         private Book _album;
+        private Edition _edition;
 
         [SetUp]
         public void Setup()
@@ -37,12 +38,20 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Build();
             Db.Insert(_album);
 
+            _edition = Builder<Edition>.CreateNew()
+                .With(a => a.Id = 0)
+                .With(a => a.BookId = _album.Id)
+                .Build();
+            Db.Insert(_edition);
+
             var files = Builder<BookFile>.CreateListOfSize(10)
                 .All()
                 .With(c => c.Id = 0)
                 .With(c => c.Quality = new QualityModel(Quality.MP3_320))
                 .TheFirst(5)
-                .With(c => c.BookId = _album.Id)
+                .With(c => c.EditionId = _edition.Id)
+                .TheRest()
+                .With(c => c.EditionId = 0)
                 .TheFirst(1)
                 .With(c => c.Path = @"C:\Test\Path\Artist\somefile1.flac".AsOsAgnostic())
                 .TheNext(1)
@@ -109,8 +118,8 @@ namespace NzbDrone.Core.Test.MediaFiles
             var file = Subject.GetFileWithPath(@"C:\Test\Path\Artist\somefile2.flac".AsOsAgnostic());
 
             file.Should().NotBeNull();
-            file.Book.IsLoaded.Should().BeTrue();
-            file.Book.Value.Should().NotBeNull();
+            file.Edition.IsLoaded.Should().BeTrue();
+            file.Edition.Value.Should().NotBeNull();
             file.Author.IsLoaded.Should().BeTrue();
             file.Author.Value.Should().NotBeNull();
         }
@@ -122,7 +131,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             var files = Subject.GetFilesByBook(_album.Id);
             VerifyEagerLoaded(files);
 
-            files.Should().OnlyContain(c => c.BookId == _album.Id);
+            files.Should().OnlyContain(c => c.EditionId == _album.Id);
         }
 
         private void VerifyData()
@@ -136,8 +145,8 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             foreach (var file in files)
             {
-                file.Book.IsLoaded.Should().BeTrue();
-                file.Book.Value.Should().NotBeNull();
+                file.Edition.IsLoaded.Should().BeTrue();
+                file.Edition.Value.Should().NotBeNull();
                 file.Author.IsLoaded.Should().BeTrue();
                 file.Author.Value.Should().NotBeNull();
                 file.Author.Value.Metadata.IsLoaded.Should().BeTrue();
@@ -149,8 +158,8 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             foreach (var file in files)
             {
-                file.Book.IsLoaded.Should().BeFalse();
-                file.Book.Value.Should().BeNull();
+                file.Edition.IsLoaded.Should().BeFalse();
+                file.Edition.Value.Should().BeNull();
                 file.Author.IsLoaded.Should().BeFalse();
                 file.Author.Value.Should().BeNull();
             }
@@ -162,7 +171,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Db.Delete(_album);
             Subject.DeleteFilesByBook(_album.Id);
 
-            Db.All<BookFile>().Where(x => x.BookId == _album.Id).Should().HaveCount(0);
+            Db.All<BookFile>().Where(x => x.EditionId == _album.Id).Should().HaveCount(0);
         }
     }
 }

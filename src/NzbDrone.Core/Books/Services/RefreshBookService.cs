@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Books.Events;
 using NzbDrone.Core.History;
@@ -18,12 +20,14 @@ namespace NzbDrone.Core.Books
         bool RefreshBookInfo(List<Book> books, List<Book> remoteBooks, Author remoteData, bool forceBookRefresh, bool forceUpdateFileTags, DateTime? lastUpdate);
     }
 
-    public class RefreshBookService : RefreshEntityServiceBase<Book, object>, IRefreshBookService
+    public class RefreshBookService : RefreshEntityServiceBase<Book, Edition>, IRefreshBookService
     {
         private readonly IBookService _bookService;
         private readonly IAuthorService _authorService;
         private readonly IAddAuthorService _addAuthorService;
+        private readonly IEditionService _editionService;
         private readonly IProvideBookInfo _bookInfo;
+        private readonly IRefreshEditionService _refreshEditionService;
         private readonly IMediaFileService _mediaFileService;
         private readonly IHistoryService _historyService;
         private readonly IEventAggregator _eventAggregator;
@@ -32,22 +36,26 @@ namespace NzbDrone.Core.Books
         private readonly Logger _logger;
 
         public RefreshBookService(IBookService bookService,
-                                   IAuthorService authorService,
-                                   IAddAuthorService addAuthorService,
-                                   IAuthorMetadataService authorMetadataService,
-                                   IProvideBookInfo bookInfo,
-                                   IMediaFileService mediaFileService,
-                                   IHistoryService historyService,
-                                   IEventAggregator eventAggregator,
-                                   ICheckIfBookShouldBeRefreshed checkIfBookShouldBeRefreshed,
-                                   IMapCoversToLocal mediaCoverService,
-                                   Logger logger)
+                                  IAuthorService authorService,
+                                  IAddAuthorService addAuthorService,
+                                  IEditionService editionService,
+                                  IAuthorMetadataService authorMetadataService,
+                                  IProvideBookInfo bookInfo,
+                                  IRefreshEditionService refreshEditionService,
+                                  IMediaFileService mediaFileService,
+                                  IHistoryService historyService,
+                                  IEventAggregator eventAggregator,
+                                  ICheckIfBookShouldBeRefreshed checkIfBookShouldBeRefreshed,
+                                  IMapCoversToLocal mediaCoverService,
+                                  Logger logger)
         : base(logger, authorMetadataService)
         {
             _bookService = bookService;
             _authorService = authorService;
             _addAuthorService = addAuthorService;
+            _editionService = editionService;
             _bookInfo = bookInfo;
+            _refreshEditionService = refreshEditionService;
             _mediaFileService = mediaFileService;
             _historyService = historyService;
             _eventAggregator = eventAggregator;
@@ -60,7 +68,7 @@ namespace NzbDrone.Core.Books
         {
             var result = new RemoteData();
 
-            var book = remote.SingleOrDefault(x => x.ForeignWorkId == local.ForeignWorkId);
+            var book = remote.SingleOrDefault(x => x.ForeignBookId == local.ForeignBookId);
 
             if (book == null && ShouldDelete(local))
             {
@@ -69,7 +77,7 @@ namespace NzbDrone.Core.Books
 
             if (book == null)
             {
-                book = data.Books.Value.SingleOrDefault(x => x.ForeignWorkId == local.ForeignWorkId);
+                book = data.Books.Value.SingleOrDefault(x => x.ForeignBookId == local.ForeignBookId);
             }
 
             result.Entity = book;
@@ -167,7 +175,7 @@ namespace NzbDrone.Core.Books
 
             // Update book ids for trackfiles
             var files = _mediaFileService.GetFilesByBook(local.Id);
-            files.ForEach(x => x.BookId = target.Id);
+            files.ForEach(x => x.EditionId = target.Id);
             _mediaFileService.Update(files);
 
             // Update book ids for history
@@ -197,36 +205,70 @@ namespace NzbDrone.Core.Books
             _bookService.DeleteBook(local.Id, true);
         }
 
-        protected override List<object> GetRemoteChildren(Book local, Book remote)
+        protected override List<Edition> GetRemoteChildren(Book local, Book remote)
         {
-            return new List<object>();
+            return remote.Editions.Value.DistinctBy(m => m.ForeignEditionId).ToList();
         }
 
-        protected override List<object> GetLocalChildren(Book entity, List<object> remoteChildren)
+        protected override List<Edition> GetLocalChildren(Book entity, List<Edition> remoteChildren)
         {
-            return new List<object>();
+            return _editionService.GetEditionsForRefresh(entity.Id, remoteChildren.Select(x => x.ForeignEditionId));
         }
 
-        protected override Tuple<object, List<object>> GetMatchingExistingChildren(List<object> existingChildren, object remote)
+        protected override Tuple<Edition, List<Edition>> GetMatchingExistingChildren(List<Edition> existingChildren, Edition remote)
         {
-            return null;
+            var existingChild = existingChildren.SingleOrDefault(x => x.ForeignEditionId == remote.ForeignEditionId);
+            return Tuple.Create(existingChild, new List<Edition>());
         }
 
-        protected override void PrepareNewChild(object child, Book entity)
+        protected override void PrepareNewChild(Edition child, Book entity)
         {
+            child.BookId = entity.Id;
+            child.Book = entity;
         }
 
-        protected override void PrepareExistingChild(object local, object remote, Book entity)
+        protected override void PrepareExistingChild(Edition local, Edition remote, Book entity)
         {
+            local.BookId = entity.Id;
+            local.Book = entity;
+
+            remote.UseDbFieldsFrom(local);
         }
 
-        protected override void AddChildren(List<object> children)
+        protected override void AddChildren(List<Edition> children)
         {
+            // hack - add the chilren in refresh children so we can control monitored status
         }
 
-        protected override bool RefreshChildren(SortedChildren localChildren, List<object> remoteChildren, Author remoteData, bool forceChildRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
+        private void MonitorSingleEdition(List<Edition> releases)
         {
-            return false;
+            var monitored = releases.Where(x => x.Monitored).ToList();
+            if (!monitored.Any())
+            {
+                monitored = releases;
+            }
+
+            var toMonitor = monitored.OrderByDescending(x => _mediaFileService.GetFilesByEdition(x.Id).Count)
+                .ThenByDescending(x => x.Ratings.Votes)
+                .First();
+
+            releases.ForEach(x => x.Monitored = false);
+            toMonitor.Monitored = true;
+
+            Debug.Assert(!releases.Any() || releases.Count(x => x.Monitored) == 1, "one edition monitored");
+        }
+
+        protected override bool RefreshChildren(SortedChildren localChildren, List<Edition> remoteChildren, Author remoteData, bool forceChildRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
+        {
+            // make sure only one of the releases ends up monitored
+            localChildren.Old.ForEach(x => x.Monitored = false);
+            MonitorSingleEdition(localChildren.Future);
+
+            localChildren.All.ForEach(x => _logger.Trace($"release: {x} monitored: {x.Monitored}"));
+
+            _editionService.InsertMany(localChildren.Added);
+
+            return _refreshEditionService.RefreshEditionInfo(localChildren.Added, localChildren.Updated, localChildren.Merged, localChildren.Deleted, localChildren.UpToDate, remoteChildren, forceUpdateFileTags);
         }
 
         protected override void PublishEntityUpdatedEvent(Book entity)

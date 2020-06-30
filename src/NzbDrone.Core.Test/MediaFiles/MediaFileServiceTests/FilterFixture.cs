@@ -213,7 +213,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
                         Path = "C:\\file2.avi".AsOsAgnostic(),
                         Size = 10,
                         Modified = _lastWrite,
-                        Book = new LazyLoaded<Book>(null)
+                        Edition = new LazyLoaded<Edition>(null)
                     }
                 });
 
@@ -239,7 +239,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileServiceTests
                         Path = "C:\\file2.avi".AsOsAgnostic(),
                         Size = 10,
                         Modified = _lastWrite,
-                        Book = Builder<Book>.CreateNew().Build()
+                        Edition = Builder<Edition>.CreateNew().Build()
                     }
                 });
 

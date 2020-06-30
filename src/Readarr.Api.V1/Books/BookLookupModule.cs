@@ -29,7 +29,7 @@ namespace Readarr.Api.V1.Books
             foreach (var currentBook in books)
             {
                 var resource = currentBook.ToResource();
-                var cover = currentBook.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Cover);
+                var cover = currentBook.Editions.Value.Single(x => x.Monitored).Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Cover);
                 if (cover != null)
                 {
                     resource.RemoteCover = cover.Url;

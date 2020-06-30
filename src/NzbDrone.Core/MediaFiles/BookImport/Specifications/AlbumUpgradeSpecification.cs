@@ -7,7 +7,7 @@ using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 {
-    public class AlbumUpgradeSpecification : IImportDecisionEngineSpecification<LocalAlbumRelease>
+    public class AlbumUpgradeSpecification : IImportDecisionEngineSpecification<LocalEdition>
     {
         private readonly Logger _logger;
 
@@ -16,9 +16,9 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalAlbumRelease item, DownloadClientItem downloadClientItem)
+        public Decision IsSatisfiedBy(LocalEdition item, DownloadClientItem downloadClientItem)
         {
-            var qualityComparer = new QualityModelComparer(item.Book.Author.Value.QualityProfile);
+            var qualityComparer = new QualityModelComparer(item.Edition.Book.Value.Author.Value.QualityProfile);
 
             // min quality of all new tracks
             var newMinQuality = item.LocalBooks.Select(x => x.Quality).OrderBy(x => x, qualityComparer).First();

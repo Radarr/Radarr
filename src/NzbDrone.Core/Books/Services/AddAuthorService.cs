@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Books
         List<Author> AddAuthors(List<Author> newAuthors, bool doRefresh = true);
     }
 
-    public class AddArtistService : IAddAuthorService
+    public class AddAuthorService : IAddAuthorService
     {
         private readonly IAuthorService _authorService;
         private readonly IAuthorMetadataService _authorMetadataService;
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Books
         private readonly IAddAuthorValidator _addAuthorValidator;
         private readonly Logger _logger;
 
-        public AddArtistService(IAuthorService authorService,
+        public AddAuthorService(IAuthorService authorService,
                                 IAuthorMetadataService authorMetadataService,
                                 IProvideAuthorInfo authorInfo,
                                 IBuildFileNames fileNameBuilder,

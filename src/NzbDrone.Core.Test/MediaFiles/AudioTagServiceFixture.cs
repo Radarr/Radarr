@@ -315,8 +315,12 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
                 .With(x => x.Author = artist)
                 .Build();
 
-            var file = Builder<BookFile>.CreateNew()
+            var edition = Builder<Edition>.CreateNew()
                 .With(x => x.Book = album)
+                .Build();
+
+            var file = Builder<BookFile>.CreateNew()
+                .With(x => x.Edition = edition)
                 .With(x => x.Author = artist)
                 .Build();
 

@@ -4,15 +4,15 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Books;
-using NzbDrone.Core.MetadataSource.SkyHook;
+using NzbDrone.Core.MetadataSource.Goodreads;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MetadataSource.SkyHook
+namespace NzbDrone.Core.Test.MetadataSource.Goodreads
 {
     [TestFixture]
-    public class SkyHookProxySearchFixture : CoreTest<SkyHookProxy>
+    public class GoodreadsProxySearchFixture : CoreTest<GoodreadsProxy>
     {
         [SetUp]
         public void Setup()
@@ -45,10 +45,10 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         }
 
         [TestCase("Harry Potter and the sorcerer's stone", null, "Harry Potter and the Sorcerer's Stone")]
-        [TestCase("readarr:3", null, "Harry Potter and the Sorcerer's Stone")]
-        [TestCase("readarr: 3", null, "Harry Potter and the Sorcerer's Stone")]
-        [TestCase("readarrid:3", null, "Harry Potter and the Sorcerer's Stone")]
-        [TestCase("goodreads:3", null, "Harry Potter and the Sorcerer's Stone")]
+        [TestCase("readarr:3", null, "Harry Potter and the Philosopher's Stone")]
+        [TestCase("readarr: 3", null, "Harry Potter and the Philosopher's Stone")]
+        [TestCase("readarrid:3", null, "Harry Potter and the Philosopher's Stone")]
+        [TestCase("goodreads:3", null, "Harry Potter and the Philosopher's Stone")]
         [TestCase("asin:B0192CTMYG", null, "Harry Potter and the Sorcerer's Stone")]
         [TestCase("isbn:9780439554930", null, "Harry Potter and the Sorcerer's Stone")]
         public void successful_album_search(string title, string artist, string expected)

@@ -143,6 +143,59 @@ namespace NzbDrone.Core.Test.MusicTests
             item1.Should().Be(item2);
         }
 
+        private Edition GivenEdition()
+        {
+            return _fixture.Build<Edition>()
+                .Without(x => x.Book)
+                .Without(x => x.BookFiles)
+                .Create();
+        }
+
+        [Test]
+        public void two_equivalent_editions_should_be_equal()
+        {
+            var item1 = GivenEdition();
+            var item2 = item1.JsonClone();
+
+            item1.Should().NotBeSameAs(item2);
+            item1.Should().Be(item2);
+        }
+
+        [Test]
+        [TestCaseSource(typeof(EqualityPropertySource<Edition>), "TestCases")]
+        public void two_different_editions_should_not_be_equal(PropertyInfo prop)
+        {
+            var item1 = GivenEdition();
+            var item2 = item1.JsonClone();
+            var different = GivenEdition();
+
+            // make item2 different in the property under consideration
+            if (prop.PropertyType == typeof(bool))
+            {
+                prop.SetValue(item2, !(bool)prop.GetValue(item1));
+            }
+            else
+            {
+                prop.SetValue(item2, prop.GetValue(different));
+            }
+
+            item1.Should().NotBeSameAs(item2);
+            item1.Should().NotBe(item2);
+        }
+
+        [Test]
+        public void metadata_and_db_fields_should_replicate_edition()
+        {
+            var item1 = GivenEdition();
+            var item2 = GivenEdition();
+
+            item1.Should().NotBe(item2);
+
+            item1.UseMetadataFrom(item2);
+            item1.UseDbFieldsFrom(item2);
+            item1.Should().Be(item2);
+        }
+
         private Author GivenArtist()
         {
             return _fixture.Build<Author>()

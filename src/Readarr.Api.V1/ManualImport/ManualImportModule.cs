@@ -16,16 +16,19 @@ namespace Readarr.Api.V1.ManualImport
     {
         private readonly IAuthorService _authorService;
         private readonly IBookService _bookService;
+        private readonly IEditionService _editionService;
         private readonly IManualImportService _manualImportService;
         private readonly Logger _logger;
 
         public ManualImportModule(IManualImportService manualImportService,
                                   IAuthorService authorService,
+                                  IEditionService editionService,
                                   IBookService bookService,
                                   Logger logger)
         {
             _authorService = authorService;
             _bookService = bookService;
+            _editionService = editionService;
             _manualImportService = manualImportService;
             _logger = logger;
 
@@ -86,10 +89,12 @@ namespace Readarr.Api.V1.ManualImport
                     Size = resource.Size,
                     Author = resource.Author == null ? null : _authorService.GetAuthor(resource.Author.Id),
                     Book = resource.Book == null ? null : _bookService.GetBook(resource.Book.Id),
+                    Edition = resource.EditionId == 0 ? null : _editionService.GetEdition(resource.EditionId),
                     Quality = resource.Quality,
                     DownloadId = resource.DownloadId,
                     AdditionalFile = resource.AdditionalFile,
-                    ReplaceExistingFiles = resource.ReplaceExistingFiles
+                    ReplaceExistingFiles = resource.ReplaceExistingFiles,
+                    DisableReleaseSwitching = resource.DisableReleaseSwitching
                 });
             }
 

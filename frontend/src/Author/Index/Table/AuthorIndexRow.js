@@ -82,7 +82,6 @@ class AuthorIndexRow extends Component {
       status,
       authorName,
       titleSlug,
-      authorType,
       qualityProfile,
       metadataProfile,
       nextBook,
@@ -134,7 +133,6 @@ class AuthorIndexRow extends Component {
                 <AuthorStatusCell
                   key={name}
                   className={styles[name]}
-                  authorType={authorType}
                   monitored={monitored}
                   status={status}
                   component={VirtualTableRowCell}
@@ -180,17 +178,6 @@ class AuthorIndexRow extends Component {
                         authorName={authorName}
                       />
                   }
-                </VirtualTableRowCell>
-              );
-            }
-
-            if (name === 'authorType') {
-              return (
-                <VirtualTableRowCell
-                  key={name}
-                  className={styles[name]}
-                >
-                  {authorType}
                 </VirtualTableRowCell>
               );
             }
@@ -421,7 +408,6 @@ AuthorIndexRow.propTypes = {
   status: PropTypes.string.isRequired,
   authorName: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
-  authorType: PropTypes.string,
   qualityProfile: PropTypes.object.isRequired,
   metadataProfile: PropTypes.object.isRequired,
   nextBook: PropTypes.object,

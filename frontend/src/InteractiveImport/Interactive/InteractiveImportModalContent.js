@@ -23,6 +23,7 @@ import TableBody from 'Components/Table/TableBody';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import SelectAuthorModal from 'InteractiveImport/Author/SelectAuthorModal';
 import SelectBookModal from 'InteractiveImport/Book/SelectBookModal';
+import SelectEditionModal from 'InteractiveImport/Edition/SelectEditionModal';
 import ConfirmImportModal from 'InteractiveImport/Confirmation/ConfirmImportModal';
 import InteractiveImportRow from './InteractiveImportRow';
 import styles from './InteractiveImportModalContent.css';
@@ -79,6 +80,7 @@ const importModeOptions = [
 const SELECT = 'select';
 const AUTHOR = 'author';
 const BOOK = 'book';
+const EDITION = 'edition';
 const QUALITY = 'quality';
 
 const replaceExistingFilesOptions = {
@@ -112,7 +114,7 @@ class InteractiveImportModalContent extends Component {
     const selectedItems = _.filter(this.props.items, (x) => _.includes(selectedIds, x.id));
 
     const inconsistent = _(selectedItems)
-      .map((x) => ({ bookId: x.book ? x.book.id : 0, releaseId: x.bookReleaseId }))
+      .map((x) => ({ bookId: x.book ? x.book.id : 0, releaseId: x.EditionId }))
       .groupBy('bookId')
       .mapValues((book) => _(book).groupBy((x) => x.releaseId).values().value().length)
       .values()
@@ -273,6 +275,7 @@ class InteractiveImportModalContent extends Component {
     const bulkSelectOptions = [
       { key: SELECT, value: 'Select...', disabled: true },
       { key: BOOK, value: 'Select Book' },
+      { key: EDITION, value: 'Select Edition' },
       { key: QUALITY, value: 'Select Quality' }
     ];
 
@@ -466,6 +469,13 @@ class InteractiveImportModalContent extends Component {
           isOpen={selectModalOpen === BOOK}
           ids={selectedIds}
           authorId={selectedItem && selectedItem.author && selectedItem.author.id}
+          onModalClose={this.onSelectModalClose}
+        />
+
+        <SelectEditionModal
+          isOpen={selectModalOpen === EDITION}
+          importIdsByBook={_.chain(items).filter((x) => x.album).groupBy((x) => x.book.id).mapValues((x) => x.map((y) => y.id)).value()}
+          books={_.chain(items).filter((x) => x.book).keyBy((x) => x.book.id).mapValues((x) => ({ matchedEditionId: x.editionId, book: x.book })).values().value()}
           onModalClose={this.onSelectModalClose}
         />
 

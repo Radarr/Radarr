@@ -9,7 +9,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.BookImport.Aggregation.Aggregators
 {
-    public class AggregateFilenameInfo : IAggregate<LocalAlbumRelease>
+    public class AggregateFilenameInfo : IAggregate<LocalEdition>
     {
         private readonly Logger _logger;
 
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Aggregation.Aggregators
             _logger = logger;
         }
 
-        public LocalAlbumRelease Aggregate(LocalAlbumRelease release, bool others)
+        public LocalEdition Aggregate(LocalEdition release, bool others)
         {
             var tracks = release.LocalBooks;
             if (tracks.Count(x => x.FileTrackInfo.Title.IsNullOrWhiteSpace()) > 0

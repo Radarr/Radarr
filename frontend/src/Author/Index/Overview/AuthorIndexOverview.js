@@ -4,6 +4,7 @@ import TextTruncate from 'react-text-truncate';
 import { icons } from 'Helpers/Props';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
+import stripHtml from 'Utilities/String/stripHtml';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
@@ -113,7 +114,8 @@ class AuthorIndexOverview extends Component {
 
     const elementStyle = {
       width: `${posterWidth}px`,
-      height: `${posterHeight}px`
+      height: `${posterHeight}px`,
+      objectFit: 'contain'
     };
 
     const contentHeight = getContentHeight(rowHeight, isSmallScreen);
@@ -203,7 +205,7 @@ class AuthorIndexOverview extends Component {
               >
                 <TextTruncate
                   line={Math.floor(overviewHeight / (defaultFontSize * lineHeight))}
-                  text={overview}
+                  text={stripHtml(overview)}
                 />
               </Link>
 

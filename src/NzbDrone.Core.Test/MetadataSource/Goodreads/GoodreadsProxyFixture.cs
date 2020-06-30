@@ -5,14 +5,14 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Exceptions;
-using NzbDrone.Core.MetadataSource.SkyHook;
+using NzbDrone.Core.MetadataSource.Goodreads;
 using NzbDrone.Core.Profiles.Metadata;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.MetadataSource.SkyHook
+namespace NzbDrone.Core.Test.MetadataSource.Goodreads
 {
     [TestFixture]
-    public class SkyHookProxyFixture : CoreTest<SkyHookProxy>
+    public class GoodreadsProxyFixture : CoreTest<GoodreadsProxy>
     {
         private MetadataProfile _metadataProfile;
 
@@ -32,8 +32,8 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
                 .Returns(true);
         }
 
-        [TestCase("amzn1.gr.author.v1.qTrNu9-PIaaBj5gYRDmN4Q", "Terry Pratchett")]
-        [TestCase("amzn1.gr.author.v1.afCyJgprpWE2xJU2_z3zTQ", "Robert Harris")]
+        [TestCase("1654", "Terry Pratchett")]
+        [TestCase("575", "Robert Harris")]
         public void should_be_able_to_get_author_detail(string mbId, string name)
         {
             var details = Subject.GetAuthorInfo(mbId);
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             details.Name.Should().Be(name);
         }
 
-        [TestCase("amzn1.gr.book.v1.2rp8a0vJ8clGzMzZf61R9Q", "Guards! Guards!")]
+        [TestCase("64216", "Guards! Guards!")]
         public void should_be_able_to_get_book_detail(string mbId, string name)
         {
             var details = Subject.GetBookInfo(mbId);
@@ -75,9 +75,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             author.Metadata.Value.Overview.Should().NotBeNullOrWhiteSpace();
             author.Metadata.Value.Images.Should().NotBeEmpty();
             author.ForeignAuthorId.Should().NotBeNullOrWhiteSpace();
-            author.Books.IsLoaded.Should().BeTrue();
-            author.Books.Value.Should().NotBeEmpty();
-            author.Books.Value.Should().OnlyContain(x => x.CleanTitle != null);
         }
 
         private void ValidateAlbums(List<Book> albums, bool idOnly = false)

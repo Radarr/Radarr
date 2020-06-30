@@ -141,10 +141,11 @@ class AddNewItem extends Component {
                       );
                     } else if (item.book) {
                       const book = item.book;
+                      const edition = book.editions[0];
                       return (
                         <AddNewBookSearchResultConnector
                           key={item.id}
-                          isExistingBook={'id' in book && book.id !== 0}
+                          isExistingBook={'id' in edition && edition.id !== 0}
                           isExistingAuthor={'id' in book.author && book.author.id !== 0}
                           {...book}
                         />

@@ -74,12 +74,6 @@ export const defaultState = {
       isModifiable: false
     },
     {
-      name: 'authorType',
-      label: 'Type',
-      isSortable: true,
-      isVisible: true
-    },
-    {
       name: 'qualityProfileId',
       label: 'Quality Profile',
       isSortable: true,

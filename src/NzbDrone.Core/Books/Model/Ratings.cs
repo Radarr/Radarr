@@ -7,5 +7,7 @@ namespace NzbDrone.Core.Books
     {
         public int Votes { get; set; }
         public decimal Value { get; set; }
+
+        public double Popularity => (double)Value * Votes;
     }
 }

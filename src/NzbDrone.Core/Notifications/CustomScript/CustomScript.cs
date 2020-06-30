@@ -43,7 +43,6 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Readarr_Author_Id", author.Id.ToString());
             environmentVariables.Add("Readarr_Author_Name", author.Metadata.Value.Name);
             environmentVariables.Add("Readarr_Author_MBId", author.Metadata.Value.ForeignAuthorId);
-            environmentVariables.Add("Readarr_Author_Type", author.Metadata.Value.Type);
             environmentVariables.Add("Readarr_Release_BookCount", remoteBook.Books.Count.ToString());
             environmentVariables.Add("Readarr_Release_BookReleaseDates", string.Join(",", remoteBook.Books.Select(e => e.ReleaseDate)));
             environmentVariables.Add("Readarr_Release_BookTitles", string.Join("|", remoteBook.Books.Select(e => e.Title)));
@@ -70,7 +69,6 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Readarr_Author_Name", author.Metadata.Value.Name);
             environmentVariables.Add("Readarr_Author_Path", author.Path);
             environmentVariables.Add("Readarr_Author_MBId", author.Metadata.Value.ForeignAuthorId);
-            environmentVariables.Add("Readarr_Author_Type", author.Metadata.Value.Type);
             environmentVariables.Add("Readarr_Book_Id", book.Id.ToString());
             environmentVariables.Add("Readarr_Book_Title", book.Title);
             environmentVariables.Add("Readarr_Book_MBId", book.ForeignBookId);
@@ -100,7 +98,6 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Readarr_Author_Name", author.Metadata.Value.Name);
             environmentVariables.Add("Readarr_Author_Path", author.Path);
             environmentVariables.Add("Readarr_Author_MBId", author.Metadata.Value.ForeignAuthorId);
-            environmentVariables.Add("Readarr_Author_Type", author.Metadata.Value.Type);
 
             ExecuteScript(environmentVariables);
         }
@@ -117,7 +114,6 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Readarr_Author_Name", author.Metadata.Value.Name);
             environmentVariables.Add("Readarr_Author_Path", author.Path);
             environmentVariables.Add("Readarr_Author_MBId", author.Metadata.Value.ForeignAuthorId);
-            environmentVariables.Add("Readarr_Author_Type", author.Metadata.Value.Type);
             environmentVariables.Add("Readarr_Book_Id", book.Id.ToString());
             environmentVariables.Add("Readarr_Book_Title", book.Title);
             environmentVariables.Add("Readarr_Book_MBId", book.ForeignBookId);

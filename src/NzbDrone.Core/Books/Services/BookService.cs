@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -45,21 +46,32 @@ namespace NzbDrone.Core.Books
                                 IHandle<AuthorDeletedEvent>
     {
         private readonly IBookRepository _bookRepository;
+        private readonly IEditionService _editionService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
         public BookService(IBookRepository bookRepository,
-                            IEventAggregator eventAggregator,
-                            Logger logger)
+                           IEditionService editionService,
+                           IEventAggregator eventAggregator,
+                           Logger logger)
         {
             _bookRepository = bookRepository;
+            _editionService = editionService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
 
         public Book AddBook(Book newBook, bool doRefresh = true)
         {
-            _bookRepository.Insert(newBook);
+            var editions = newBook.Editions.Value;
+            editions.ForEach(x => x.Monitored = newBook.Id > 0);
+
+            _bookRepository.Upsert(newBook);
+
+            editions.ForEach(x => x.BookId = newBook.Id);
+
+            _editionService.InsertMany(editions);
+            _editionService.SetMonitored(editions.First());
 
             _eventAggregator.PublishEvent(new BookAddedEvent(GetBook(newBook.Id), doRefresh));
 

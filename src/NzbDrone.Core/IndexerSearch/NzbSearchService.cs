@@ -72,15 +72,11 @@ namespace NzbDrone.Core.IndexerSearch
             var searchSpec = Get<BookSearchCriteria>(author, new List<Book> { book }, userInvokedSearch, interactiveSearch);
 
             searchSpec.BookTitle = book.Title;
-            searchSpec.BookIsbn = book.Isbn13;
+
+            // searchSpec.BookIsbn = book.Isbn13;
             if (book.ReleaseDate.HasValue)
             {
                 searchSpec.BookYear = book.ReleaseDate.Value.Year;
-            }
-
-            if (book.Disambiguation.IsNotNullOrWhiteSpace())
-            {
-                searchSpec.Disambiguation = book.Disambiguation;
             }
 
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);

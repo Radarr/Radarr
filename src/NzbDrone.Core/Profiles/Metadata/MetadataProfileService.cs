@@ -7,6 +7,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.RootFolders;
 
@@ -31,18 +32,24 @@ namespace NzbDrone.Core.Profiles.Metadata
 
         private readonly IMetadataProfileRepository _profileRepository;
         private readonly IAuthorService _authorService;
+        private readonly IBookService _bookService;
+        private readonly IMediaFileService _mediaFileService;
         private readonly IImportListFactory _importListFactory;
         private readonly IRootFolderService _rootFolderService;
         private readonly Logger _logger;
 
         public MetadataProfileService(IMetadataProfileRepository profileRepository,
                                       IAuthorService authorService,
+                                      IBookService bookService,
+                                      IMediaFileService mediaFileService,
                                       IImportListFactory importListFactory,
                                       IRootFolderService rootFolderService,
                                       Logger logger)
         {
             _profileRepository = profileRepository;
             _authorService = authorService;
+            _bookService = bookService;
+            _mediaFileService = mediaFileService;
             _importListFactory = importListFactory;
             _rootFolderService = rootFolderService;
             _logger = logger;
@@ -99,36 +106,64 @@ namespace NzbDrone.Core.Profiles.Metadata
                 .GroupBy(x => x.Book.Value)
                 .ToDictionary(x => x.Key, y => y.ToList());
 
-            return FilterBooks(input.Books.Value, seriesLinks, profileId);
+            var dbAuthor = _authorService.FindById(input.ForeignAuthorId);
+            var localBooks = dbAuthor?.Books.Value ?? new List<Book>();
+            var localFiles = _mediaFileService.GetFilesByAuthor(dbAuthor?.Id ?? 0);
+
+            return FilterBooks(input.Books.Value, localBooks, localFiles, seriesLinks, profileId);
         }
 
-        private List<Book> FilterBooks(IEnumerable<Book> books, Dictionary<Book, List<SeriesBookLink>> seriesLinks, int metadataProfileId)
+        private List<Book> FilterBooks(IEnumerable<Book> remoteBooks, List<Book> localBooks, List<BookFile> localFiles, Dictionary<Book, List<SeriesBookLink>> seriesLinks, int metadataProfileId)
         {
             var profile = Get(metadataProfileId);
-            var allowedLanguages = profile.AllowedLanguages.IsNotNullOrWhiteSpace() ? new HashSet<string>(profile.AllowedLanguages.Split(',').Select(x => x.Trim().ToLower())) : new HashSet<string>();
 
-            _logger.Trace($"Filtering:\n{books.Select(x => x.ToString()).Join("\n")}");
+            _logger.Trace($"Filtering:\n{remoteBooks.Select(x => x.ToString()).Join("\n")}");
 
-            var hash = new HashSet<Book>(books);
-            var titles = new HashSet<string>(books.Select(x => x.Title));
+            var hash = new HashSet<Book>(remoteBooks);
+            var titles = new HashSet<string>(remoteBooks.Select(x => x.Title));
 
-            FilterByPredicate(hash, profile, (x, p) => x.Ratings.Votes >= p.MinRatingCount && (double)x.Ratings.Value >= p.MinRating, "rating criteria not met");
-            FilterByPredicate(hash, profile, (x, p) => !p.SkipMissingDate || x.ReleaseDate.HasValue, "release date is missing");
-            FilterByPredicate(hash, profile, (x, p) => !p.SkipMissingIsbn || x.Isbn13.IsNotNullOrWhiteSpace() || x.Asin.IsNotNullOrWhiteSpace(), "isbn and asin is missing");
-            FilterByPredicate(hash, profile, (x, p) => !p.SkipPartsAndSets || !IsPartOrSet(x, seriesLinks.GetValueOrDefault(x), titles), "book is part of set");
-            FilterByPredicate(hash, profile, (x, p) => !p.SkipSeriesSecondary || !seriesLinks.ContainsKey(x) || seriesLinks[x].Any(y => y.IsPrimary), "book is a secondary series item");
-            FilterByPredicate(hash, profile, (x, p) => !allowedLanguages.Any() || allowedLanguages.Contains(x.Language?.ToLower() ?? "null"), "book language not allowed");
+            var localHash = new HashSet<string>(localBooks.Where(x => x.AddOptions.AddType == BookAddType.Manual).Select(x => x.ForeignBookId));
+            localHash.UnionWith(localFiles.Select(x => x.Edition.Value.Book.Value.ForeignBookId));
+
+            FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, (x, p) => (x.Ratings.Popularity >= p.MinPopularity) || x.ReleaseDate > DateTime.UtcNow, "rating criteria not met");
+            FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, (x, p) => !p.SkipMissingDate || x.ReleaseDate.HasValue, "release date is missing");
+            FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, (x, p) => !p.SkipPartsAndSets || !IsPartOrSet(x, seriesLinks.GetValueOrDefault(x), titles), "book is part of set");
+            FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, (x, p) => !p.SkipSeriesSecondary || !seriesLinks.ContainsKey(x) || seriesLinks[x].Any(y => y.IsPrimary), "book is a secondary series item");
+
+            foreach (var book in hash)
+            {
+                var localEditions = localBooks.SingleOrDefault(x => x.ForeignBookId == book.ForeignBookId)?.Editions.Value ?? new List<Edition>();
+
+                book.Editions = FilterEditions(book.Editions.Value, localEditions, localFiles, profile);
+            }
+
+            FilterByPredicate(hash, x => x.ForeignBookId, localHash, profile, (x, p) => x.Editions.Value.Any(), "all editions filterd out");
 
             return hash.ToList();
         }
 
-        private void FilterByPredicate(HashSet<Book> books, MetadataProfile profile, Func<Book, MetadataProfile, bool> bookAllowed, string message)
+        private List<Edition> FilterEditions(IEnumerable<Edition> editions, List<Edition> localEditions, List<BookFile> localFiles, MetadataProfile profile)
         {
-            var filtered = new HashSet<Book>(books.Where(x => !bookAllowed(x, profile)));
+            var allowedLanguages = profile.AllowedLanguages.IsNotNullOrWhiteSpace() ? new HashSet<string>(profile.AllowedLanguages.Split(',').Select(x => x.Trim().ToLower())) : new HashSet<string>();
+
+            var hash = new HashSet<Edition>(editions);
+
+            var localHash = new HashSet<string>(localEditions.Where(x => x.ManualAdd).Select(x => x.ForeignEditionId));
+            localHash.UnionWith(localFiles.Select(x => x.Edition.Value.ForeignEditionId));
+
+            FilterByPredicate(hash, x => x.ForeignEditionId, localHash, profile, (x, p) => !allowedLanguages.Any() || allowedLanguages.Contains(x.Language?.ToLower() ?? "null"), "edition language not allowed");
+            FilterByPredicate(hash, x => x.ForeignEditionId, localHash, profile, (x, p) => !p.SkipMissingIsbn || x.Isbn13.IsNotNullOrWhiteSpace() || x.Asin.IsNotNullOrWhiteSpace(), "isbn and asin is missing");
+
+            return hash.ToList();
+        }
+
+        private void FilterByPredicate<T>(HashSet<T> remoteItems, Func<T, string> getId, HashSet<string> localItems, MetadataProfile profile, Func<T, MetadataProfile, bool> bookAllowed, string message)
+        {
+            var filtered = new HashSet<T>(remoteItems.Where(x => !bookAllowed(x, profile) && !localItems.Contains(getId(x))));
             if (filtered.Any())
             {
-                _logger.Trace($"Skipping {filtered.Count} books because {message}:\n{filtered.ConcatToString(x => x.ToString(), "\n")}");
-                books.RemoveWhere(x => filtered.Contains(x));
+                _logger.Trace($"Skipping {filtered.Count} {typeof(T).Name} because {message}:\n{filtered.ConcatToString(x => x.ToString(), "\n")}");
+                remoteItems.RemoveWhere(x => filtered.Contains(x));
             }
         }
 
@@ -170,7 +205,7 @@ namespace NzbDrone.Core.Profiles.Metadata
             // make sure empty profile exists and is actually empty
             // TODO: reinstate
             if (emptyProfile != null &&
-                emptyProfile.MinRating == 100)
+                emptyProfile.MinPopularity == 1e10)
             {
                 return;
             }
@@ -182,8 +217,7 @@ namespace NzbDrone.Core.Profiles.Metadata
                 Add(new MetadataProfile
                 {
                     Name = "Standard",
-                    MinRating = 0,
-                    MinRatingCount = 100,
+                    MinPopularity = 350,
                     SkipMissingDate = true,
                     SkipPartsAndSets = true,
                     AllowedLanguages = "eng, en-US, en-GB"
@@ -213,7 +247,7 @@ namespace NzbDrone.Core.Profiles.Metadata
             Add(new MetadataProfile
             {
                 Name = NONE_PROFILE_NAME,
-                MinRating = 100
+                MinPopularity = 1e10
             });
         }
     }

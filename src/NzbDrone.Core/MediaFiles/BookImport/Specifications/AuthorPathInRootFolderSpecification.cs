@@ -8,7 +8,7 @@ using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 {
-    public class AuthorPathInRootFolderSpecification : IImportDecisionEngineSpecification<LocalAlbumRelease>
+    public class AuthorPathInRootFolderSpecification : IImportDecisionEngineSpecification<LocalEdition>
     {
         private readonly IRootFolderService _rootFolderService;
         private readonly Logger _logger;
@@ -20,10 +20,10 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalAlbumRelease item, DownloadClientItem downloadClientItem)
+        public Decision IsSatisfiedBy(LocalEdition item, DownloadClientItem downloadClientItem)
         {
             // Prevent imports to artists that are no longer inside a root folder Readarr manages
-            var author = item.Book.Author.Value;
+            var author = item.Edition.Book.Value.Author.Value;
 
             // a new author will have empty path, and will end up having path assinged based on file location
             var pathToCheck = author.Path.IsNotNullOrWhiteSpace() ? author.Path : item.LocalBooks.First().Path.GetParentPath();

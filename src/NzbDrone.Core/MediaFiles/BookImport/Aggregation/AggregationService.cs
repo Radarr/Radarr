@@ -11,18 +11,18 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Aggregation
     public interface IAugmentingService
     {
         LocalBook Augment(LocalBook localTrack, bool otherFiles);
-        LocalAlbumRelease Augment(LocalAlbumRelease localAlbum);
+        LocalEdition Augment(LocalEdition localAlbum);
     }
 
     public class AugmentingService : IAugmentingService
     {
         private readonly IEnumerable<IAggregate<LocalBook>> _trackAugmenters;
-        private readonly IEnumerable<IAggregate<LocalAlbumRelease>> _albumAugmenters;
+        private readonly IEnumerable<IAggregate<LocalEdition>> _albumAugmenters;
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
         public AugmentingService(IEnumerable<IAggregate<LocalBook>> trackAugmenters,
-                                 IEnumerable<IAggregate<LocalAlbumRelease>> albumAugmenters,
+                                 IEnumerable<IAggregate<LocalEdition>> albumAugmenters,
                                  IDiskProvider diskProvider,
                                  Logger logger)
         {
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Aggregation
             return localTrack;
         }
 
-        public LocalAlbumRelease Augment(LocalAlbumRelease localAlbum)
+        public LocalEdition Augment(LocalEdition localAlbum)
         {
             foreach (var augmenter in _albumAugmenters)
             {

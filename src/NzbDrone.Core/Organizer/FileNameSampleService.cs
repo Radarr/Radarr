@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Organizer
 
         private static Author _standardAuthor;
         private static Book _standardBook;
+        private static Edition _standardEdition;
         private static BookFile _singleTrackFile;
         private static List<string> _preferredWords;
 
@@ -39,7 +40,14 @@ namespace NzbDrone.Core.Organizer
             {
                 Title = "The Book Title",
                 ReleaseDate = System.DateTime.Today,
-                Disambiguation = "First Book"
+                Author = _standardAuthor,
+                AuthorMetadata = _standardAuthor.Metadata.Value
+            };
+
+            _standardEdition = new Edition
+            {
+                Title = "The Edition Title",
+                Book = _standardBook
             };
 
             var mediaInfo = new MediaInfoModel()
@@ -57,7 +65,8 @@ namespace NzbDrone.Core.Organizer
                 Path = "/music/Author.Name.Book.Name.TrackNum.Track.Title.MP3256.mp3",
                 SceneName = "Author.Name.Book.Name.TrackNum.Track.Title.MP3256",
                 ReleaseGroup = "RlsGrp",
-                MediaInfo = mediaInfo
+                MediaInfo = mediaInfo,
+                Edition = _standardEdition
             };
 
             _preferredWords = new List<string>
@@ -70,7 +79,7 @@ namespace NzbDrone.Core.Organizer
         {
             var result = new SampleResult
             {
-                FileName = BuildTrackSample(_standardAuthor, _standardBook, _singleTrackFile, nameSpec),
+                FileName = BuildTrackSample(_standardAuthor, _singleTrackFile, nameSpec),
                 Author = _standardAuthor,
                 Book = _standardBook,
                 BookFile = _singleTrackFile
@@ -83,7 +92,7 @@ namespace NzbDrone.Core.Organizer
         {
             var result = new SampleResult
             {
-                FileName = BuildTrackSample(_standardAuthor, _standardBook, _singleTrackFile, nameSpec),
+                FileName = BuildTrackSample(_standardAuthor, _singleTrackFile, nameSpec),
                 Author = _standardAuthor,
                 Book = _standardBook,
                 BookFile = _singleTrackFile
@@ -97,11 +106,11 @@ namespace NzbDrone.Core.Organizer
             return _buildFileNames.GetAuthorFolder(_standardAuthor, nameSpec);
         }
 
-        private string BuildTrackSample(Author author, Book book, BookFile bookFile, NamingConfig nameSpec)
+        private string BuildTrackSample(Author author, BookFile bookFile, NamingConfig nameSpec)
         {
             try
             {
-                return _buildFileNames.BuildBookFileName(author, book, bookFile, nameSpec, _preferredWords);
+                return _buildFileNames.BuildBookFileName(author, bookFile.Edition.Value, bookFile, nameSpec, _preferredWords);
             }
             catch (NamingFormatException)
             {

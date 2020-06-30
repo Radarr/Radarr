@@ -6,6 +6,7 @@ import TextTruncate from 'react-text-truncate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
+import stripHtml from 'Utilities/String/stripHtml';
 import { align, icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import fonts from 'Styles/Variables/fonts';
 import HeartRating from 'Components/HeartRating';
@@ -166,7 +167,6 @@ class AuthorDetails extends Component {
       overview,
       links,
       images,
-      authorType,
       alternateTitles,
       tags,
       isSaving,
@@ -206,7 +206,6 @@ class AuthorDetails extends Component {
     } = this.state;
 
     const continuing = status === 'continuing';
-    const endedString = authorType === 'Person' ? 'Deceased' : 'Ended';
 
     let bookFilesCountMessage = 'No book files';
 
@@ -458,7 +457,7 @@ class AuthorDetails extends Component {
                     />
 
                     <span className={styles.qualityProfileName}>
-                      {continuing ? 'Continuing' : endedString}
+                      {continuing ? 'Continuing' : 'Deceased'}
                     </span>
                   </Label>
 
@@ -515,7 +514,7 @@ class AuthorDetails extends Component {
                 <div className={styles.overview}>
                   <TextTruncate
                     line={Math.floor(125 / (defaultFontSize * lineHeight))}
-                    text={overview.replace(/<[^>]*>?/gm, '')}
+                    text={stripHtml(overview)}
                   />
                 </div>
               </div>
@@ -697,9 +696,8 @@ AuthorDetails.propTypes = {
   statistics: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
-  authorType: PropTypes.string,
   status: PropTypes.string.isRequired,
-  overview: PropTypes.string.isRequired,
+  overview: PropTypes.string,
   links: PropTypes.arrayOf(PropTypes.object).isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.string).isRequired,

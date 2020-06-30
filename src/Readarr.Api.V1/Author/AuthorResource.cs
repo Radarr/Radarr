@@ -22,10 +22,8 @@ namespace Readarr.Api.V1.Author
 
         public string AuthorName { get; set; }
         public string ForeignAuthorId { get; set; }
-        public int GoodreadsId { get; set; }
         public string TitleSlug { get; set; }
         public string Overview { get; set; }
-        public string AuthorType { get; set; }
         public string Disambiguation { get; set; }
         public List<Links> Links { get; set; }
 
@@ -77,7 +75,6 @@ namespace Readarr.Api.V1.Author
 
                 Status = model.Metadata.Value.Status,
                 Overview = model.Metadata.Value.Overview,
-                AuthorType = model.Metadata.Value.Type,
                 Disambiguation = model.Metadata.Value.Disambiguation,
 
                 Images = model.Metadata.Value.Images.JsonClone(),
@@ -91,7 +88,6 @@ namespace Readarr.Api.V1.Author
 
                 CleanName = model.CleanName,
                 ForeignAuthorId = model.Metadata.Value.ForeignAuthorId,
-                GoodreadsId = model.Metadata.Value.GoodreadsId,
                 TitleSlug = model.Metadata.Value.TitleSlug,
 
                 // Root folder path is now calculated from the artist path
@@ -120,7 +116,6 @@ namespace Readarr.Api.V1.Author
                 Metadata = new NzbDrone.Core.Books.AuthorMetadata
                 {
                     ForeignAuthorId = resource.ForeignAuthorId,
-                    GoodreadsId = resource.GoodreadsId,
                     TitleSlug = resource.TitleSlug,
                     Name = resource.AuthorName,
                     Status = resource.Status,
@@ -129,7 +124,6 @@ namespace Readarr.Api.V1.Author
                     Images = resource.Images,
                     Genres = resource.Genres,
                     Ratings = resource.Ratings,
-                    Type = resource.AuthorType
                 },
 
                 //AlternateTitles
@@ -145,7 +139,7 @@ namespace Readarr.Api.V1.Author
 
                 Tags = resource.Tags,
                 Added = resource.Added,
-                AddOptions = resource.AddOptions,
+                AddOptions = resource.AddOptions
             };
         }
 

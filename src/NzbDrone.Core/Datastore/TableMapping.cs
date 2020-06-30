@@ -123,8 +123,11 @@ namespace NzbDrone.Core.Datastore
                 .HasOne(r => r.AuthorMetadata, r => r.AuthorMetadataId)
                 .LazyLoad(x => x.BookFiles,
                           (db, book) => db.Query<BookFile>(new SqlBuilder()
-                                                           .Join<BookFile, Book>((l, r) => l.BookId == r.Id)
+                                                           .Join<BookFile, Book>((l, r) => l.EditionId == r.Id)
                                                            .Where<Book>(b => b.Id == book.Id)).ToList(),
+                          b => b.Id > 0)
+                .LazyLoad(x => x.Editions,
+                          (db, book) => db.Query<Edition>(new SqlBuilder().Where<Edition>(e => e.BookId == book.Id)).ToList(),
                           b => b.Id > 0)
                 .LazyLoad(a => a.Author,
                           (db, book) => AuthorRepository.Query(db,
@@ -133,14 +136,22 @@ namespace NzbDrone.Core.Datastore
                                                                 .Where<Author>(a => a.AuthorMetadataId == book.AuthorMetadataId)).SingleOrDefault(),
                           a => a.AuthorMetadataId > 0);
 
+            Mapper.Entity<Edition>("Editions").RegisterModel()
+                .HasOne(r => r.Book, r => r.BookId)
+                .LazyLoad(x => x.BookFiles,
+                          (db, book) => db.Query<BookFile>(new SqlBuilder()
+                                                           .Join<BookFile, Book>((l, r) => l.EditionId == r.Id)
+                                                           .Where<Book>(b => b.Id == book.Id)).ToList(),
+                          b => b.Id > 0);
+
             Mapper.Entity<BookFile>("BookFiles").RegisterModel()
-                .HasOne(f => f.Book, f => f.BookId)
+                .HasOne(f => f.Edition, f => f.EditionId)
                 .LazyLoad(x => x.Author,
                           (db, f) => AuthorRepository.Query(db,
                                                             new SqlBuilder()
                                                             .Join<Author, AuthorMetadata>((a, m) => a.AuthorMetadataId == m.Id)
                                                             .Join<Author, Book>((l, r) => l.AuthorMetadataId == r.AuthorMetadataId)
-                                                            .Where<Book>(a => a.Id == f.BookId)).SingleOrDefault(),
+                                                            .Where<Book>(a => a.Id == f.EditionId)).SingleOrDefault(),
                           t => t.Id > 0);
 
             Mapper.Entity<QualityDefinition>("QualityDefinitions").RegisterModel()

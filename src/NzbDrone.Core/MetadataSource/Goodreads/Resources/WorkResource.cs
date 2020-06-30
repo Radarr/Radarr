@@ -125,7 +125,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             var originalPublicationDay = element.ElementAsInt("original_publication_day");
             if (originalPublicationYear != 0)
             {
-                OriginalPublicationDate = new DateTime(originalPublicationYear, Math.Max(originalPublicationMonth, 1), Math.Max(originalPublicationDay, 1));
+                OriginalPublicationDate = new DateTime(originalPublicationYear, Math.Max(originalPublicationMonth, 1), Math.Max(originalPublicationDay, 1), 0, 0, 0, DateTimeKind.Utc);
             }
 
             OriginalTitle = element.ElementAsString("original_title");

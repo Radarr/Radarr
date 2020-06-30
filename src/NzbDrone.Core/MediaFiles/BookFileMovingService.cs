@@ -60,9 +60,9 @@ namespace NzbDrone.Core.MediaFiles
 
         public BookFile MoveBookFile(BookFile bookFile, Author author)
         {
-            var book = _bookService.GetBook(bookFile.BookId);
-            var newFileName = _buildFileNames.BuildBookFileName(author, book, bookFile);
-            var filePath = _buildFileNames.BuildBookFilePath(author, book, newFileName, Path.GetExtension(bookFile.Path));
+            var book = _bookService.GetBook(bookFile.EditionId);
+            var newFileName = _buildFileNames.BuildBookFileName(author, bookFile.Edition.Value, bookFile);
+            var filePath = _buildFileNames.BuildBookFilePath(author, bookFile.Edition.Value, newFileName, Path.GetExtension(bookFile.Path));
 
             EnsureBookFolder(bookFile, author, book, filePath);
 
@@ -73,8 +73,8 @@ namespace NzbDrone.Core.MediaFiles
 
         public BookFile MoveBookFile(BookFile bookFile, LocalBook localBook)
         {
-            var newFileName = _buildFileNames.BuildBookFileName(localBook.Author, localBook.Book, bookFile);
-            var filePath = _buildFileNames.BuildBookFilePath(localBook.Author, localBook.Book, newFileName, Path.GetExtension(localBook.Path));
+            var newFileName = _buildFileNames.BuildBookFileName(localBook.Author, localBook.Edition, bookFile);
+            var filePath = _buildFileNames.BuildBookFilePath(localBook.Author, localBook.Edition, newFileName, Path.GetExtension(localBook.Path));
 
             EnsureTrackFolder(bookFile, localBook, filePath);
 
@@ -85,8 +85,8 @@ namespace NzbDrone.Core.MediaFiles
 
         public BookFile CopyBookFile(BookFile bookFile, LocalBook localBook)
         {
-            var newFileName = _buildFileNames.BuildBookFileName(localBook.Author, localBook.Book, bookFile);
-            var filePath = _buildFileNames.BuildBookFilePath(localBook.Author, localBook.Book, newFileName, Path.GetExtension(localBook.Path));
+            var newFileName = _buildFileNames.BuildBookFileName(localBook.Author, localBook.Edition, bookFile);
+            var filePath = _buildFileNames.BuildBookFilePath(localBook.Author, localBook.Edition, newFileName, Path.GetExtension(localBook.Path));
 
             EnsureTrackFolder(bookFile, localBook, filePath);
 
@@ -147,7 +147,7 @@ namespace NzbDrone.Core.MediaFiles
         private void EnsureBookFolder(BookFile bookFile, Author author, Book book, string filePath)
         {
             var trackFolder = Path.GetDirectoryName(filePath);
-            var bookFolder = _buildFileNames.BuildBookPath(author, book);
+            var bookFolder = _buildFileNames.BuildBookPath(author);
             var authorFolder = author.Path;
             var rootFolder = new OsPath(authorFolder).Directory.FullPath;
 

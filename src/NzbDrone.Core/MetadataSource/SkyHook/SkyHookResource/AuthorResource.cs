@@ -2,6 +2,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 {
     public class AuthorResource : BulkResource
     {
-        public string ForeignId { get; set; }
+        public int GoodreadsId { get; set; }
     }
 }

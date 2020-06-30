@@ -17,9 +17,9 @@ namespace NzbDrone.Core.Organizer
 {
     public interface IBuildFileNames
     {
-        string BuildBookFileName(Author author, Book book, BookFile bookFile, NamingConfig namingConfig = null, List<string> preferredWords = null);
-        string BuildBookFilePath(Author author, Book book, string fileName, string extension);
-        string BuildBookPath(Author author, Book book);
+        string BuildBookFileName(Author author, Edition edition, BookFile bookFile, NamingConfig namingConfig = null, List<string> preferredWords = null);
+        string BuildBookFilePath(Author author, Edition edition, string fileName, string extension);
+        string BuildBookPath(Author author);
         BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec);
         string GetAuthorFolder(Author author, NamingConfig namingConfig = null);
     }
@@ -30,7 +30,6 @@ namespace NzbDrone.Core.Organizer
         private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly IPreferredWordService _preferredWordService;
         private readonly ICached<BookFormat[]> _trackFormatCache;
-        private readonly ICached<AbsoluteBookFormat[]> _absoluteTrackFormatCache;
         private readonly Logger _logger;
 
         private static readonly Regex TitleRegex = new Regex(@"\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9]+))?(?<suffix>[- ._)\]]*)\}",
@@ -76,11 +75,10 @@ namespace NzbDrone.Core.Organizer
             _qualityDefinitionService = qualityDefinitionService;
             _preferredWordService = preferredWordService;
             _trackFormatCache = cacheManager.GetCache<BookFormat[]>(GetType(), "bookFormat");
-            _absoluteTrackFormatCache = cacheManager.GetCache<AbsoluteBookFormat[]>(GetType(), "absoluteBookFormat");
             _logger = logger;
         }
 
-        public string BuildBookFileName(Author author, Book book, BookFile bookFile, NamingConfig namingConfig = null, List<string> preferredWords = null)
+        public string BuildBookFileName(Author author, Edition edition, BookFile bookFile, NamingConfig namingConfig = null, List<string> preferredWords = null)
         {
             if (namingConfig == null)
             {
@@ -105,7 +103,7 @@ namespace NzbDrone.Core.Organizer
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
 
             AddAuthorTokens(tokenHandlers, author);
-            AddBookTokens(tokenHandlers, book);
+            AddBookTokens(tokenHandlers, edition);
             AddBookFileTokens(tokenHandlers, bookFile);
             AddQualityTokens(tokenHandlers, author, bookFile);
             AddMediaInfoTokens(tokenHandlers, bookFile);
@@ -118,20 +116,18 @@ namespace NzbDrone.Core.Organizer
             return fileName;
         }
 
-        public string BuildBookFilePath(Author author, Book book, string fileName, string extension)
+        public string BuildBookFilePath(Author author, Edition edition, string fileName, string extension)
         {
             Ensure.That(extension, () => extension).IsNotNullOrWhiteSpace();
 
-            var path = BuildBookPath(author, book);
+            var path = BuildBookPath(author);
 
             return Path.Combine(path, fileName + extension);
         }
 
-        public string BuildBookPath(Author author, Book book)
+        public string BuildBookPath(Author author)
         {
-            var path = author.Path;
-
-            return path;
+            return author.Path;
         }
 
         public BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec)
@@ -239,20 +235,20 @@ namespace NzbDrone.Core.Organizer
             }
         }
 
-        private void AddBookTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Book book)
+        private void AddBookTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Edition edition)
         {
-            tokenHandlers["{Book Title}"] = m => book.Title;
-            tokenHandlers["{Book CleanTitle}"] = m => CleanTitle(book.Title);
-            tokenHandlers["{Book TitleThe}"] = m => TitleThe(book.Title);
+            tokenHandlers["{Book Title}"] = m => edition.Title;
+            tokenHandlers["{Book CleanTitle}"] = m => CleanTitle(edition.Title);
+            tokenHandlers["{Book TitleThe}"] = m => TitleThe(edition.Title);
 
-            if (book.Disambiguation != null)
+            if (edition.Disambiguation != null)
             {
-                tokenHandlers["{Book Disambiguation}"] = m => book.Disambiguation;
+                tokenHandlers["{Book Disambiguation}"] = m => edition.Disambiguation;
             }
 
-            if (book.ReleaseDate.HasValue)
+            if (edition.ReleaseDate.HasValue)
             {
-                tokenHandlers["{Release Year}"] = m => book.ReleaseDate.Value.Year.ToString();
+                tokenHandlers["{Release Year}"] = m => edition.ReleaseDate.Value.Year.ToString();
             }
             else
             {

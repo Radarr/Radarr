@@ -256,7 +256,7 @@ namespace NzbDrone.Core.Notifications
             {
                 Message = GetTrackRetagMessage(message.Author, message.BookFile, message.Diff),
                 Author = message.Author,
-                Book = message.BookFile.Book,
+                Book = message.BookFile.Edition.Value.Book.Value,
                 BookFile = message.BookFile,
                 Diff = message.Diff,
                 Scrubbed = message.Scrubbed

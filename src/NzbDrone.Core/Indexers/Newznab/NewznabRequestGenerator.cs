@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
         }
 
-        private bool SupportsAudioSearch
+        private bool SupportsBookSearch
         {
             get
             {
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            if (SupportsAudioSearch)
+            if (SupportsBookSearch)
             {
                 AddBookPageableRequests(pageableRequests,
                     searchCriteria,
@@ -78,12 +78,17 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 pageableRequests.AddTier();
 
-                pageableRequests.Add(GetPagedRequests(MaxPages,
+/*                pageableRequests.Add(GetPagedRequests(MaxPages,
                     Settings.Categories,
                     "search",
                     NewsnabifyTitle($"&q={searchCriteria.BookIsbn}")));
 
-                pageableRequests.AddTier();
+                pageableRequests.AddTier();*/
+
+                pageableRequests.Add(GetPagedRequests(MaxPages,
+                    Settings.Categories,
+                    "search",
+                    NewsnabifyTitle($"&q={searchCriteria.BookQuery}+{searchCriteria.AuthorQuery}")));
 
                 pageableRequests.Add(GetPagedRequests(MaxPages,
                     Settings.Categories,
@@ -98,7 +103,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            if (SupportsAudioSearch)
+            if (SupportsBookSearch)
             {
                 AddBookPageableRequests(pageableRequests,
                     searchCriteria,
@@ -122,7 +127,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             chain.AddTier();
 
-            chain.Add(GetPagedRequests(MaxPages, Settings.Categories, "book", $"&q={parameters}"));
+            chain.Add(GetPagedRequests(MaxPages, Settings.Categories, "book", $"{parameters}"));
         }
 
         private IEnumerable<IndexerRequest> GetPagedRequests(int maxPages, IEnumerable<int> categories, string searchType, string parameters)

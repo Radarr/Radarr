@@ -143,7 +143,7 @@ namespace NzbDrone.Core.Extras
         public void Handle(TrackFolderCreatedEvent message)
         {
             var author = message.Author;
-            var book = _bookService.GetBook(message.BookFile.BookId);
+            var book = _bookService.GetBook(message.BookFile.EditionId);
 
             foreach (var extraFileManager in _extraFileManagers)
             {

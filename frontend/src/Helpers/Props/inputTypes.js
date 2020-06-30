@@ -11,7 +11,7 @@ export const PASSWORD = 'password';
 export const PATH = 'path';
 export const QUALITY_PROFILE_SELECT = 'qualityProfileSelect';
 export const METADATA_PROFILE_SELECT = 'metadataProfileSelect';
-export const BOOK_RELEASE_SELECT = 'bookReleaseSelect';
+export const BOOK_EDITION_SELECT = 'bookEditionSelect';
 export const ROOT_FOLDER_SELECT = 'rootFolderSelect';
 export const SELECT = 'select';
 export const SERIES_TYPE_SELECT = 'authorTypeSelect';
@@ -33,7 +33,7 @@ export const all = [
   PATH,
   QUALITY_PROFILE_SELECT,
   METADATA_PROFILE_SELECT,
-  BOOK_RELEASE_SELECT,
+  BOOK_EDITION_SELECT,
   ROOT_FOLDER_SELECT,
   SELECT,
   SERIES_TYPE_SELECT,

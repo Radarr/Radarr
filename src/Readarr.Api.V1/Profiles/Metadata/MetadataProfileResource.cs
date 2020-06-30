@@ -8,8 +8,7 @@ namespace Readarr.Api.V1.Profiles.Metadata
     public class MetadataProfileResource : RestResource
     {
         public string Name { get; set; }
-        public double MinRating { get; set; }
-        public int MinRatingCount { get; set; }
+        public double MinPopularity { get; set; }
         public bool SkipMissingDate { get; set; }
         public bool SkipMissingIsbn { get; set; }
         public bool SkipPartsAndSets { get; set; }
@@ -30,8 +29,7 @@ namespace Readarr.Api.V1.Profiles.Metadata
             {
                 Id = model.Id,
                 Name = model.Name,
-                MinRating = model.MinRating,
-                MinRatingCount = model.MinRatingCount,
+                MinPopularity = model.MinPopularity,
                 SkipMissingDate = model.SkipMissingDate,
                 SkipMissingIsbn = model.SkipMissingIsbn,
                 SkipPartsAndSets = model.SkipPartsAndSets,
@@ -51,8 +49,7 @@ namespace Readarr.Api.V1.Profiles.Metadata
             {
                 Id = resource.Id,
                 Name = resource.Name,
-                MinRating = resource.MinRating,
-                MinRatingCount = resource.MinRatingCount,
+                MinPopularity = resource.MinPopularity,
                 SkipMissingDate = resource.SkipMissingDate,
                 SkipMissingIsbn = resource.SkipMissingIsbn,
                 SkipPartsAndSets = resource.SkipPartsAndSets,

@@ -158,7 +158,7 @@ export const actionHandlers = handleThunks({
     }).request;
 
     promise.done((data) => {
-      data.releases = itemToAdd.book.releases;
+      data.editions = itemToAdd.book.editions;
       itemToAdd.book = data;
       dispatch(batchActions([
         updateItem({ section: 'authors', ...data.author }),

@@ -27,7 +27,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 
         private static readonly RegexReplace StripSeriesRegex = new RegexReplace(@"\([^\)].+?\)$", string.Empty, RegexOptions.Compiled);
 
-        public static Distance BookDistance(List<LocalBook> localTracks, Book release)
+        public static Distance BookDistance(List<LocalBook> localTracks, Edition edition)
         {
             var dist = new Distance();
 
@@ -39,22 +39,22 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 artists.Add(artists[0].Split(',').Select(x => x.Trim()).Reverse().ConcatToString(" "));
             }
 
-            dist.AddString("artist", artists, release.AuthorMetadata.Value.Name);
-            Logger.Trace("artist: '{0}' vs '{1}'; {2}", artists.ConcatToString("' or '"), release.AuthorMetadata.Value.Name, dist.NormalizedDistance());
+            dist.AddString("artist", artists, edition.Book.Value.AuthorMetadata.Value.Name);
+            Logger.Trace("artist: '{0}' vs '{1}'; {2}", artists.ConcatToString("' or '"), edition.Book.Value.AuthorMetadata.Value.Name, dist.NormalizedDistance());
 
             var title = localTracks.MostCommon(x => x.FileTrackInfo.AlbumTitle) ?? "";
-            var titleOptions = new List<string> { release.Title };
+            var titleOptions = new List<string> { edition.Title, edition.Book.Value.Title };
             if (titleOptions[0].Contains("#"))
             {
                 titleOptions.Add(StripSeriesRegex.Replace(titleOptions[0]));
             }
 
-            if (release.SeriesLinks?.Value?.Any() ?? false)
+            if (edition.Book.Value.SeriesLinks?.Value?.Any() ?? false)
             {
-                foreach (var l in release.SeriesLinks.Value)
+                foreach (var l in edition.Book.Value.SeriesLinks.Value)
                 {
-                    titleOptions.Add($"{l.Series.Value.Title} {l.Position} {release.Title}");
-                    titleOptions.Add($"{release.Title} {l.Series.Value.Title} {l.Position}");
+                    titleOptions.Add($"{l.Series.Value.Title} {l.Position} {edition.Title}");
+                    titleOptions.Add($"{edition.Title} {l.Series.Value.Title} {l.Position}");
                 }
             }
 
@@ -63,9 +63,9 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 
             // Year
             var localYear = localTracks.MostCommon(x => x.FileTrackInfo.Year);
-            if (localYear > 0 && release.ReleaseDate.HasValue)
+            if (localYear > 0 && edition.ReleaseDate.HasValue)
             {
-                var albumYear = release.ReleaseDate?.Year ?? 0;
+                var albumYear = edition.ReleaseDate?.Year ?? 0;
                 if (localYear == albumYear)
                 {
                     dist.Add("year", 0.0);
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                     dist.AddRatio("year", diff, diff_max);
                 }
 
-                Logger.Trace($"year: {localYear} vs {release.ReleaseDate?.Year}; {dist.NormalizedDistance()}");
+                Logger.Trace($"year: {localYear} vs {edition.ReleaseDate?.Year}; {dist.NormalizedDistance()}");
             }
 
             return dist;

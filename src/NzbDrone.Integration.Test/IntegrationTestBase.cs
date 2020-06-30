@@ -305,9 +305,9 @@ namespace NzbDrone.Integration.Test
             }
         }
 
-        public void EnsureBookFile(AuthorResource artist, int bookId, Quality quality)
+        public void EnsureBookFile(AuthorResource artist, int bookId, int editionId, Quality quality)
         {
-            var result = Books.GetBooksInAuthor(artist.Id).Single(v => v.Id == bookId);
+            var result = Books.GetBooksInAuthor(artist.Id).Single(v => v.Id == editionId);
 
             // if (result.BookFile == null)
             if (true)
@@ -326,13 +326,14 @@ namespace NzbDrone.Integration.Test
                                 Path = path,
                                 AuthorId = artist.Id,
                                 BookId = bookId,
+                                EditionId = editionId,
                                 Quality = new QualityModel(quality)
                             }
                     }
                 });
                 Commands.WaitAll();
 
-                var track = Books.GetBooksInAuthor(artist.Id).Single(x => x.Id == bookId);
+                var track = Books.GetBooksInAuthor(artist.Id).Single(x => x.Id == editionId);
 
                 // track.BookFileId.Should().NotBe(0);
             }

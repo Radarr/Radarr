@@ -139,7 +139,7 @@ namespace NzbDrone.Core.ImportLists
 
             if (report.AlbumMusicBrainzId.IsNotNullOrWhiteSpace() && int.TryParse(report.AlbumMusicBrainzId, out var goodreadsId))
             {
-                mappedAlbum = _bookSearchService.SearchByGoodreadsId(goodreadsId).FirstOrDefault(x => x.GoodreadsId == goodreadsId);
+                mappedAlbum = _bookSearchService.SearchByGoodreadsId(goodreadsId).FirstOrDefault(x => int.TryParse(x.ForeignBookId, out var bookId) && bookId == goodreadsId);
             }
             else
             {

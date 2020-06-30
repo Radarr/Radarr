@@ -23,7 +23,7 @@ namespace NzbDrone.Core.MediaFiles
     {
         ParsedTrackInfo ReadTags(string file);
         void WriteTags(BookFile trackfile, bool newDownload, bool force = false);
-        void SyncTags(List<Book> tracks);
+        void SyncTags(List<Edition> tracks);
         List<RetagBookFilePreview> GetRetagPreviewsByArtist(int authorId);
         List<RetagBookFilePreview> GetRetagPreviewsByAlbum(int authorId);
     }
@@ -148,7 +148,7 @@ namespace NzbDrone.Core.MediaFiles
             _eventAggregator.PublishEvent(new BookFileRetaggedEvent(trackfile.Author.Value, trackfile, diff, _configService.ScrubAudioTags));
         }
 
-        public void SyncTags(List<Book> books)
+        public void SyncTags(List<Edition> editions)
         {
             if (_configService.WriteAudioTags != WriteAudioTagsType.Sync)
             {
@@ -156,9 +156,9 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             // get the tracks to update
-            foreach (var book in books)
+            foreach (var edition in editions)
             {
-                var bookFiles = book.BookFiles.Value;
+                var bookFiles = edition.BookFiles.Value;
 
                 _logger.Debug($"Syncing audio tags for {bookFiles.Count} files");
 
@@ -166,7 +166,7 @@ namespace NzbDrone.Core.MediaFiles
                 {
                     // populate tracks (which should also have release/book/author set) because
                     // not all of the updates will have been committed to the database yet
-                    file.Book = book;
+                    file.Edition = edition;
                     WriteTags(file, false);
                 }
             }
@@ -188,11 +188,11 @@ namespace NzbDrone.Core.MediaFiles
 
         private IEnumerable<RetagBookFilePreview> GetPreviews(List<BookFile> files)
         {
-            foreach (var f in files.OrderBy(x => x.Book.Value.Title))
+            foreach (var f in files.OrderBy(x => x.Edition.Value.Title))
             {
                 var file = f;
 
-                if (f.Book.Value == null)
+                if (f.Edition.Value == null)
                 {
                     _logger.Warn($"File {f} is not linked to any books");
                     continue;
@@ -207,7 +207,7 @@ namespace NzbDrone.Core.MediaFiles
                     yield return new RetagBookFilePreview
                     {
                         AuthorId = file.Author.Value.Id,
-                        BookId = file.Book.Value.Id,
+                        BookId = file.Edition.Value.Id,
                         BookFileId = file.Id,
                         Path = file.Path,
                         Changes = diff

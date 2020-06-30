@@ -24,6 +24,8 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
         /// </summary>
         public string Title { get; private set; }
 
+        public string TitleWithoutSeries { get; private set; }
+
         /// <summary>
         /// The description of this book.
         /// </summary>
@@ -63,11 +65,6 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
         /// The cover image for this book.
         /// </summary>
         public string ImageUrl { get; private set; }
-
-        /// <summary>
-        /// The small cover image for this book.
-        /// </summary>
-        public string SmallImageUrl { get; private set; }
 
         /// <summary>
         /// The date this book was published.
@@ -124,6 +121,8 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
         /// </summary>
         public string Url { get; private set; }
 
+        public string EditionsUrl { get; private set; }
+
         /// <summary>
         /// The aggregate information for this work across all editions of the book.
         /// </summary>
@@ -171,14 +170,16 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
         {
             Id = element.ElementAsLong("id");
             Title = element.ElementAsString("title");
+            TitleWithoutSeries = element.ElementAsString("title_without_series");
             Isbn = element.ElementAsString("isbn");
             Isbn13 = element.ElementAsString("isbn13");
             Asin = element.ElementAsString("asin");
             KindleAsin = element.ElementAsString("kindle_asin");
             MarketplaceId = element.ElementAsString("marketplace_id");
             CountryCode = element.ElementAsString("country_code");
-            ImageUrl = element.ElementAsString("image_url");
-            SmallImageUrl = element.ElementAsString("small_image_url");
+            ImageUrl = element.ElementAsString("large_image_url") ??
+                element.ElementAsString("image_url") ??
+                element.ElementAsString("small_image_url");
             PublicationDate = element.ElementAsMultiDateField("publication");
             Publisher = element.ElementAsString("publisher");
             LanguageCode = element.ElementAsString("language_code");
@@ -190,7 +191,8 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             EditionInformation = element.ElementAsString("edition_information");
             RatingsCount = element.ElementAsInt("ratings_count");
             TextReviewsCount = element.ElementAsInt("text_reviews_count");
-            Url = element.ElementAsString("url");
+            Url = element.ElementAsString("link");
+            EditionsUrl = element.ElementAsString("editions_url");
             ReviewsWidget = element.ElementAsString("reviews_widget");
 
             var workElement = element.Element("work");

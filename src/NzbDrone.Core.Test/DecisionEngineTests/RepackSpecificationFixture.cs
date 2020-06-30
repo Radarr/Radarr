@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _trackFiles = Builder<BookFile>.CreateListOfSize(3)
                                             .All()
-                                            .With(t => t.BookId = _albums.First().Id)
+                                            .With(t => t.EditionId = _albums.First().Id)
                                             .BuildList();
 
             Mocker.GetMock<IMediaFileService>()

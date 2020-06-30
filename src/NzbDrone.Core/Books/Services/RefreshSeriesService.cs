@@ -129,13 +129,13 @@ namespace NzbDrone.Core.Books
             var existing = existingByAuthor.Concat(existingBySeries).GroupBy(x => x.ForeignSeriesId).Select(x => x.First()).ToList();
 
             var books = _bookService.GetBooksByAuthorMetadataId(authorMetadataId);
-            var bookDict = books.ToDictionary(x => x.ForeignWorkId);
+            var bookDict = books.ToDictionary(x => x.ForeignBookId);
             var links = new List<SeriesBookLink>();
 
             foreach (var s in remoteData.Series.Value)
             {
                 s.LinkItems.Value.ForEach(x => x.Series = s);
-                links.AddRange(s.LinkItems.Value.Where(x => bookDict.ContainsKey(x.Book.Value.ForeignWorkId)));
+                links.AddRange(s.LinkItems.Value.Where(x => bookDict.ContainsKey(x.Book.Value.ForeignBookId)));
             }
 
             var grouped = links.GroupBy(x => x.Series.Value);

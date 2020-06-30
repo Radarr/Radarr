@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
     {
         private Author _artist;
         private Book _album;
+        private Edition _edition;
         private BookFile _trackFile;
 
         [SetUp]
@@ -32,10 +33,16 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
                 .BuildNew();
             Db.Insert(_album);
 
+            _edition = Builder<Edition>.CreateNew()
+                .With(e => e.BookId = _album.Id)
+                .With(e => e.Monitored = true)
+                .BuildNew();
+            Db.Insert(_edition);
+
             _trackFile = Builder<BookFile>.CreateNew()
                 .With(e => e.Author = _artist)
-                .With(e => e.Book = _album)
-                .With(e => e.BookId == _album.Id)
+                .With(e => e.Edition = _edition)
+                .With(e => e.EditionId == _edition.Id)
                 .With(e => e.Quality = new QualityModel(Quality.MP3_320))
                 .BuildNew();
         }

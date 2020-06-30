@@ -91,7 +91,7 @@ namespace NzbDrone.Core.MediaCover
 
                 if (coverEntity == MediaCoverEntity.Book)
                 {
-                    mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/Albums/" + entityId + "/" + mediaCover.CoverType.ToString().ToLower() + mediaCover.Extension;
+                    mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/Books/" + entityId + "/" + mediaCover.CoverType.ToString().ToLower() + mediaCover.Extension;
                 }
                 else
                 {
@@ -113,7 +113,7 @@ namespace NzbDrone.Core.MediaCover
 
         private string GetAlbumCoverPath(int bookId)
         {
-            return Path.Combine(_coverRootFolder, "Albums", bookId.ToString());
+            return Path.Combine(_coverRootFolder, "Books", bookId.ToString());
         }
 
         private void EnsureArtistCovers(Author author)
@@ -163,7 +163,7 @@ namespace NzbDrone.Core.MediaCover
 
         public void EnsureAlbumCovers(Book book)
         {
-            foreach (var cover in book.Images.Where(e => e.CoverType == MediaCoverTypes.Cover))
+            foreach (var cover in book.Editions.Value.Single(x => x.Monitored).Images.Where(e => e.CoverType == MediaCoverTypes.Cover))
             {
                 var fileName = GetCoverPath(book.Id, MediaCoverEntity.Book, cover.CoverType, cover.Extension, null);
                 var alreadyExists = false;

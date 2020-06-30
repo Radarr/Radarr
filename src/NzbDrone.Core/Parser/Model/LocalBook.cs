@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Parser.Model
         public List<string> AcoustIdResults { get; set; }
         public Author Author { get; set; }
         public Book Book { get; set; }
+        public Edition Edition { get; set; }
         public Distance Distance { get; set; }
         public QualityModel Quality { get; set; }
         public bool ExistingFile { get; set; }

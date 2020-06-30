@@ -54,11 +54,19 @@ namespace NzbDrone.Core.Test.MusicTests
                   .Returns<Author, NamingConfig>((c, n) => c.Name);
         }
 
-        private Book AlbumToAdd(string bookId, string authorId)
+        private Book AlbumToAdd(string editionId, string bookId, string authorId)
         {
             return new Book
             {
                 ForeignBookId = bookId,
+                Editions = new List<Edition>
+                {
+                    new Edition
+                    {
+                        ForeignEditionId = editionId,
+                        Monitored = true
+                    }
+                },
                 AuthorMetadata = new AuthorMetadata
                 {
                     ForeignAuthorId = authorId
@@ -69,9 +77,9 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_be_able_to_add_a_album_without_passing_in_name()
         {
-            var newAlbum = AlbumToAdd("5537624c-3d2f-4f5c-8099-df916082c85c", "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493");
+            var newAlbum = AlbumToAdd("edition", "book", "author");
 
-            GivenValidAlbum(newAlbum.ForeignBookId);
+            GivenValidAlbum("edition");
             GivenValidPath();
 
             var album = Subject.AddBook(newAlbum);
@@ -82,11 +90,11 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_throw_if_album_cannot_be_found()
         {
-            var newAlbum = AlbumToAdd("5537624c-3d2f-4f5c-8099-df916082c85c", "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493");
+            var newAlbum = AlbumToAdd("edition", "book", "author");
 
             Mocker.GetMock<IProvideBookInfo>()
-                  .Setup(s => s.GetBookInfo(newAlbum.ForeignBookId))
-                  .Throws(new BookNotFoundException(newAlbum.ForeignBookId));
+                  .Setup(s => s.GetBookInfo("edition"))
+                  .Throws(new BookNotFoundException("edition"));
 
             Assert.Throws<ValidationException>(() => Subject.AddBook(newAlbum));
 

@@ -23,6 +23,7 @@ namespace Readarr.Http.ErrorManagement
         public Response HandleException(NancyContext context, Exception exception)
         {
             _logger.Trace("Handling Exception");
+            _logger.Warn(exception);
 
             if (exception is ApiException apiException)
             {
@@ -57,6 +58,7 @@ namespace Readarr.Http.ErrorManagement
 
             if (exception is ModelConflictException conflictException)
             {
+                _logger.Error(exception, "DB error");
                 return new ErrorModel
                 {
                     Message = exception.Message,

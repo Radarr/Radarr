@@ -19,7 +19,7 @@ using NzbDrone.Core.MediaFiles.BookImport.Aggregation.Aggregators;
 using NzbDrone.Core.MediaFiles.BookImport.Identification;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.MetadataSource.SkyHook;
+using NzbDrone.Core.MetadataSource.Goodreads;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Metadata;
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
     public class IdentificationServiceFixture : DbTest
     {
         private AuthorService _authorService;
-        private AddArtistService _addAuthorService;
+        private AddAuthorService _addAuthorService;
         private RefreshAuthorService _refreshArtistService;
 
         private IdentificationService _Subject;
@@ -59,10 +59,10 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
             Mocker.SetConstant<IMediaFileService>(Mocker.Resolve<MediaFileService>());
 
             Mocker.SetConstant<IConfigService>(Mocker.Resolve<IConfigService>());
-            Mocker.SetConstant<IProvideAuthorInfo>(Mocker.Resolve<SkyHookProxy>());
-            Mocker.SetConstant<IProvideBookInfo>(Mocker.Resolve<SkyHookProxy>());
+            Mocker.SetConstant<IProvideAuthorInfo>(Mocker.Resolve<GoodreadsProxy>());
+            Mocker.SetConstant<IProvideBookInfo>(Mocker.Resolve<GoodreadsProxy>());
 
-            _addAuthorService = Mocker.Resolve<AddArtistService>();
+            _addAuthorService = Mocker.Resolve<AddAuthorService>();
 
             Mocker.SetConstant<IRefreshBookService>(Mocker.Resolve<RefreshBookService>());
             _refreshArtistService = Mocker.Resolve<RefreshAuthorService>();
@@ -73,11 +73,11 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
             Mocker.SetConstant<ICandidateService>(Mocker.Resolve<CandidateService>());
 
             // set up the augmenters
-            List<IAggregate<LocalAlbumRelease>> aggregators = new List<IAggregate<LocalAlbumRelease>>
+            List<IAggregate<LocalEdition>> aggregators = new List<IAggregate<LocalEdition>>
             {
                 Mocker.Resolve<AggregateFilenameInfo>()
             };
-            Mocker.SetConstant<IEnumerable<IAggregate<LocalAlbumRelease>>>(aggregators);
+            Mocker.SetConstant<IEnumerable<IAggregate<LocalEdition>>>(aggregators);
             Mocker.SetConstant<IAugmentingService>(Mocker.Resolve<AugmentingService>());
 
             _Subject = Mocker.Resolve<IdentificationService>();

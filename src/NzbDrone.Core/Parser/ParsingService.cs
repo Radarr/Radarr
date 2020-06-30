@@ -266,10 +266,10 @@ namespace NzbDrone.Core.Parser
 
             var tracksInAlbum = _mediaFileService.GetFilesByAuthor(author.Id)
                 .FindAll(s => Path.GetDirectoryName(s.Path) == filename)
-                .DistinctBy(s => s.BookId)
+                .DistinctBy(s => s.EditionId)
                 .ToList();
 
-            return tracksInAlbum.Count == 1 ? _bookService.GetBook(tracksInAlbum.First().BookId) : null;
+            return tracksInAlbum.Count == 1 ? _bookService.GetBook(tracksInAlbum.First().EditionId) : null;
         }
     }
 }

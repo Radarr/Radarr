@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Extras.Metadata
                 foreach (var filePath in distinctTrackFilePaths)
                 {
                     var metadataFilesForConsumer = GetMetadataFilesForConsumer(consumer, metadataFiles)
-                        .Where(m => m.BookId == filePath.BookId)
+                        .Where(m => m.BookId == filePath.EditionId)
                         .Where(m => m.Type == MetadataType.BookImage || m.Type == MetadataType.BookMetadata)
                         .ToList();
 
@@ -287,7 +287,7 @@ namespace NzbDrone.Core.Extras.Metadata
                            new MetadataFile
                            {
                                AuthorId = author.Id,
-                               BookId = bookFile.BookId,
+                               BookId = bookFile.EditionId,
                                BookFileId = bookFile.Id,
                                Consumer = consumer.GetType().Name,
                                Type = MetadataType.BookMetadata,

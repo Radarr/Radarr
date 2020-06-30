@@ -43,7 +43,6 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Returns<int>(x => Builder<Book>
                               .CreateListOfSize(1)
                               .TheFirst(1)
-                              .With(b => b.GoodreadsId = x)
                               .With(b => b.ForeignBookId = x.ToString())
                               .BuildList());
 

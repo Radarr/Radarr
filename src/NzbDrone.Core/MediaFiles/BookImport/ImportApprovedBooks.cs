@@ -33,7 +33,9 @@ namespace NzbDrone.Core.MediaFiles.BookImport
         private readonly IAudioTagService _audioTagService;
         private readonly IAuthorService _authorService;
         private readonly IAddAuthorService _addAuthorService;
+        private readonly IRefreshAuthorService _refreshAuthorService;
         private readonly IBookService _bookService;
+        private readonly IEditionService _editionService;
         private readonly IRootFolderService _rootFolderService;
         private readonly IRecycleBinProvider _recycleBinProvider;
         private readonly IExtraService _extraService;
@@ -43,25 +45,29 @@ namespace NzbDrone.Core.MediaFiles.BookImport
         private readonly Logger _logger;
 
         public ImportApprovedBooks(IUpgradeMediaFiles bookFileUpgrader,
-                                    IMediaFileService mediaFileService,
-                                    IAudioTagService audioTagService,
-                                    IAuthorService authorService,
-                                    IAddAuthorService addAuthorService,
-                                    IBookService bookService,
-                                    IRootFolderService rootFolderService,
-                                    IRecycleBinProvider recycleBinProvider,
-                                    IExtraService extraService,
-                                    IDiskProvider diskProvider,
-                                    IEventAggregator eventAggregator,
-                                    IManageCommandQueue commandQueueManager,
-                                    Logger logger)
+                                   IMediaFileService mediaFileService,
+                                   IAudioTagService audioTagService,
+                                   IAuthorService authorService,
+                                   IAddAuthorService addAuthorService,
+                                   IRefreshAuthorService refreshAuthorService,
+                                   IBookService bookService,
+                                   IEditionService editionService,
+                                   IRootFolderService rootFolderService,
+                                   IRecycleBinProvider recycleBinProvider,
+                                   IExtraService extraService,
+                                   IDiskProvider diskProvider,
+                                   IEventAggregator eventAggregator,
+                                   IManageCommandQueue commandQueueManager,
+                                   Logger logger)
         {
             _bookFileUpgrader = bookFileUpgrader;
             _mediaFileService = mediaFileService;
             _audioTagService = audioTagService;
             _authorService = authorService;
             _addAuthorService = addAuthorService;
+            _refreshAuthorService = refreshAuthorService;
             _bookService = bookService;
+            _editionService = editionService;
             _rootFolderService = rootFolderService;
             _recycleBinProvider = recycleBinProvider;
             _extraService = extraService;
@@ -81,7 +87,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
             var bookDecisions = decisions.Where(e => e.Item.Book != null && e.Approved)
                 .GroupBy(e => e.Item.Book.ForeignBookId).ToList();
 
-            int iDecision = 1;
+            var iDecision = 1;
             foreach (var albumDecision in bookDecisions)
             {
                 _logger.ProgressInfo($"Importing book {iDecision++}/{bookDecisions.Count} {albumDecision.First().Item.Book}");
@@ -108,6 +114,11 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                 {
                     RemoveExistingTrackFiles(author, book);
                 }
+
+                // set the correct release to be monitored before importing the new files
+                var newRelease = albumDecision.First().Item.Edition;
+                _logger.Debug("Updating release to {0}", newRelease);
+                book.Editions = _editionService.SetMonitored(newRelease);
 
                 // Publish book edited event.
                 // Deliberatly don't put in the old book since we don't want to trigger an ArtistScan.
@@ -152,9 +163,9 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                         ReleaseGroup = localTrack.ReleaseGroup,
                         Quality = localTrack.Quality,
                         MediaInfo = localTrack.FileTrackInfo.MediaInfo,
-                        BookId = localTrack.Book.Id,
+                        EditionId = localTrack.Edition.Id,
                         Author = localTrack.Author,
-                        Book = localTrack.Book
+                        Edition = localTrack.Edition
                     };
 
                     bool copyOnly;
@@ -232,10 +243,9 @@ namespace NzbDrone.Core.MediaFiles.BookImport
 
                     importResults.Add(new ImportResult(importDecision, "Failed to import book, Permissions error"));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    _logger.Warn(e, "Couldn't import book " + localTrack);
-                    importResults.Add(new ImportResult(importDecision, "Failed to import book"));
+                    throw;
                 }
             }
 
@@ -263,8 +273,8 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                     _eventAggregator.PublishEvent(new BookImportedEvent(
                         author,
                         book,
-                        allImportedTrackFiles.Where(s => s.BookId == book.Id).ToList(),
-                        allOldTrackFiles.Where(s => s.BookId == book.Id).ToList(),
+                        allImportedTrackFiles.Where(s => s.EditionId == book.Id).ToList(),
+                        allOldTrackFiles.Where(s => s.EditionId == book.Id).ToList(),
                         replaceExisting,
                         downloadClientItem));
                 }
@@ -352,16 +362,20 @@ namespace NzbDrone.Core.MediaFiles.BookImport
 
             if (book.Id == 0)
             {
-                var dbAlbum = _bookService.FindById(book.ForeignBookId);
+                var dbBook = _bookService.FindById(book.ForeignBookId);
 
-                if (dbAlbum == null)
+                if (dbBook == null)
                 {
                     _logger.Debug($"Adding remote book {book}");
                     try
                     {
                         book.Added = DateTime.UtcNow;
                         _bookService.InsertMany(new List<Book> { book });
-                        dbAlbum = _bookService.FindById(book.ForeignBookId);
+
+                        book.Editions.Value.ForEach(x => x.BookId = book.Id);
+                        _editionService.InsertMany(book.Editions.Value);
+
+                        dbBook = _bookService.FindById(book.ForeignBookId);
                     }
                     catch (Exception e)
                     {
@@ -372,10 +386,18 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                     }
                 }
 
+                var edition = dbBook.Editions.Value.ExclusiveOrDefault(x => x.ForeignEditionId == decisions.First().Item.Edition.ForeignEditionId);
+                if (edition == null)
+                {
+                    RejectAlbum(decisions);
+                    return null;
+                }
+
                 // Populate the new DB book
                 foreach (var decision in decisions)
                 {
-                    decision.Item.Book = dbAlbum;
+                    decision.Item.Book = dbBook;
+                    decision.Item.Edition = edition;
                 }
             }
 

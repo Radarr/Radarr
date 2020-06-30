@@ -54,7 +54,7 @@ namespace Readarr.Api.V1.BookFiles
 
         private BookFileResource MapToResource(BookFile bookFile)
         {
-            if (bookFile.BookId > 0 && bookFile.Author != null && bookFile.Author.Value != null)
+            if (bookFile.EditionId > 0 && bookFile.Author != null && bookFile.Author.Value != null)
             {
                 return bookFile.ToResource(bookFile.Author.Value, _upgradableSpecification);
             }
@@ -164,7 +164,7 @@ namespace Readarr.Api.V1.BookFiles
                 throw new NzbDroneClientException(HttpStatusCode.NotFound, "Book file not found");
             }
 
-            if (bookFile.BookId > 0 && bookFile.Author != null && bookFile.Author.Value != null)
+            if (bookFile.EditionId > 0 && bookFile.Author != null && bookFile.Author.Value != null)
             {
                 _mediaFileDeletionService.DeleteTrackFile(bookFile.Author.Value, bookFile);
             }

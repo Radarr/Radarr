@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Aggregation.Aggregators
     [TestFixture]
     public class AggregateFilenameInfoFixture : CoreTest<AggregateFilenameInfo>
     {
-        private LocalAlbumRelease GivenTracks(List<string> files, string root)
+        private LocalEdition GivenTracks(List<string> files, string root)
         {
             var tracks = files.Select(x => new LocalBook
             {
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Aggregation.Aggregators
                     TrackNumbers = new[] { 0 },
                 }
             }).ToList();
-            return new LocalAlbumRelease(tracks);
+            return new LocalEdition(tracks);
         }
 
         private void VerifyData(LocalBook track, string artist, string title, int trackNum, int disc)

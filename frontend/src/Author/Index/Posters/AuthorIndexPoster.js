@@ -110,9 +110,9 @@ class AuthorIndexPoster extends Component {
 
     const elementStyle = {
       width: `${posterWidth}px`,
-      height: `${posterHeight}px`
+      height: `${posterHeight}px`,
+      objectFit: 'contain'
     };
-    elementStyle.objectFit = 'contain';
 
     return (
       <div className={styles.container}>

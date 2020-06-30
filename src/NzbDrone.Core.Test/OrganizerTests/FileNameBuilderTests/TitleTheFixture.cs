@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
     {
         private Author _artist;
         private Book _album;
+        private Edition _edition;
         private BookFile _trackFile;
         private NamingConfig _namingConfig;
 
@@ -31,6 +32,12 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                     .CreateNew()
                     .With(s => s.Title = "Anthology")
                     .Build();
+
+            _edition = Builder<Edition>
+                .CreateNew()
+                .With(s => s.Title = _album.Title)
+                .With(s => s.Book = _album)
+                .Build();
 
             _trackFile = new BookFile { Quality = new QualityModel(Quality.MP3_320), ReleaseGroup = "ReadarrTest" };
 
@@ -62,7 +69,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _artist.Name = name;
             _namingConfig.StandardBookFormat = "{Author NameThe}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(expected);
         }
 
@@ -75,7 +82,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _artist.Name = name;
             _namingConfig.StandardBookFormat = "{Author NameThe}";
 
-            Subject.BuildBookFileName(_artist, _album, _trackFile)
+            Subject.BuildBookFileName(_artist, _edition, _trackFile)
                    .Should().Be(name);
         }
     }

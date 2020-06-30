@@ -30,21 +30,24 @@ namespace Readarr.Api.V1.Books
         IHandle<BookFileDeletedEvent>
     {
         protected readonly IAuthorService _authorService;
+        protected readonly IEditionService _editionService;
         protected readonly IAddBookService _addBookService;
 
         public BookModule(IAuthorService authorService,
-                           IBookService bookService,
-                           IAddBookService addBookService,
-                           IAuthorStatisticsService authorStatisticsService,
-                           IMapCoversToLocal coverMapper,
-                           IUpgradableSpecification upgradableSpecification,
-                           IBroadcastSignalRMessage signalRBroadcaster,
-                           QualityProfileExistsValidator qualityProfileExistsValidator,
-                           MetadataProfileExistsValidator metadataProfileExistsValidator)
+                          IBookService bookService,
+                          IAddBookService addBookService,
+                          IEditionService editionService,
+                          IAuthorStatisticsService authorStatisticsService,
+                          IMapCoversToLocal coverMapper,
+                          IUpgradableSpecification upgradableSpecification,
+                          IBroadcastSignalRMessage signalRBroadcaster,
+                          QualityProfileExistsValidator qualityProfileExistsValidator,
+                          MetadataProfileExistsValidator metadataProfileExistsValidator)
 
         : base(bookService, authorStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster)
         {
             _authorService = authorService;
+            _editionService = editionService;
             _addBookService = addBookService;
 
             GetResourceAll = GetBooks;
@@ -72,10 +75,19 @@ namespace Readarr.Api.V1.Books
                 var books = _bookService.GetAllBooks();
 
                 var authors = _authorService.GetAllAuthors().ToDictionary(x => x.AuthorMetadataId);
+                var editions = _editionService.GetAllEditions().GroupBy(x => x.BookId).ToDictionary(x => x.Key, y => y.ToList());
 
                 foreach (var book in books)
                 {
                     book.Author = authors[book.AuthorMetadataId];
+                    if (editions.TryGetValue(book.Id, out var bookEditions))
+                    {
+                        book.Editions = bookEditions;
+                    }
+                    else
+                    {
+                        book.Editions = new List<Edition>();
+                    }
                 }
 
                 return MapToResource(books, false);
@@ -84,8 +96,27 @@ namespace Readarr.Api.V1.Books
             if (authorIdQuery.HasValue)
             {
                 int authorId = Convert.ToInt32(authorIdQuery.Value);
+                var books = _bookService.GetBooksByAuthor(authorId);
 
-                return MapToResource(_bookService.GetBooksByAuthor(authorId), false);
+                var author = _authorService.GetAuthor(authorId);
+                var editions = _editionService.GetEditionsByAuthor(authorId)
+                    .GroupBy(x => x.BookId)
+                    .ToDictionary(x => x.Key, y => y.ToList());
+
+                foreach (var book in books)
+                {
+                    book.Author = author;
+                    if (editions.TryGetValue(book.Id, out var bookEditions))
+                    {
+                        book.Editions = bookEditions;
+                    }
+                    else
+                    {
+                        book.Editions = new List<Edition>();
+                    }
+                }
+
+                return MapToResource(books, false);
             }
 
             if (slugQuery.HasValue)
@@ -132,6 +163,7 @@ namespace Readarr.Api.V1.Books
             var model = bookResource.ToModel(book);
 
             _bookService.UpdateBook(model);
+            _editionService.UpdateMany(model.Editions.Value);
 
             BroadcastResourceChange(ModelAction.Updated, model.Id);
         }
@@ -196,7 +228,7 @@ namespace Readarr.Api.V1.Books
                 return;
             }
 
-            BroadcastResourceChange(ModelAction.Updated, MapToResource(message.BookFile.Book.Value, true));
+            BroadcastResourceChange(ModelAction.Updated, MapToResource(message.BookFile.Edition.Value.Book.Value, true));
         }
     }
 }

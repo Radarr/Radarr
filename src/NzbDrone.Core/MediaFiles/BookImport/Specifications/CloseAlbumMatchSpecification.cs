@@ -6,7 +6,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 {
-    public class CloseAlbumMatchSpecification : IImportDecisionEngineSpecification<LocalAlbumRelease>
+    public class CloseAlbumMatchSpecification : IImportDecisionEngineSpecification<LocalEdition>
     {
         private const double _albumThreshold = 0.20;
         private readonly Logger _logger;
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalAlbumRelease item, DownloadClientItem downloadClientItem)
+        public Decision IsSatisfiedBy(LocalEdition item, DownloadClientItem downloadClientItem)
         {
             double dist;
             string reasons;

@@ -53,7 +53,7 @@ namespace Readarr.Api.V1.Search
                     resource.Book = book.ToResource();
                     resource.ForeignId = book.ForeignBookId;
 
-                    var cover = book.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Cover);
+                    var cover = book.Editions.Value.Single(x => x.Monitored).Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Cover);
                     if (cover != null)
                     {
                         resource.Book.RemoteCover = cover.Url;

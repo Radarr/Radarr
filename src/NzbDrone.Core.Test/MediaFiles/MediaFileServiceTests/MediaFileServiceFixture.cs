@@ -24,9 +24,9 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
 
             _trackFiles = Builder<BookFile>.CreateListOfSize(3)
                                                .TheFirst(2)
-                                               .With(f => f.BookId = _album.Id)
+                                               .With(f => f.EditionId = _album.Id)
                                                .TheNext(1)
-                                               .With(f => f.BookId = 0)
+                                               .With(f => f.EditionId = 0)
                                                .Build().ToList();
         }
 

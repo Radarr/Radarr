@@ -294,7 +294,7 @@ namespace NzbDrone.Core.History
                 Quality = message.BookFile.Quality,
                 SourceTitle = message.BookFile.Path,
                 AuthorId = message.BookFile.Author.Value.Id,
-                BookId = message.BookFile.BookId
+                BookId = message.BookFile.EditionId
             };
 
             history.Data.Add("Reason", message.Reason.ToString());
@@ -314,7 +314,7 @@ namespace NzbDrone.Core.History
                 Quality = message.BookFile.Quality,
                 SourceTitle = message.OriginalPath,
                 AuthorId = message.BookFile.Author.Value.Id,
-                BookId = message.BookFile.BookId
+                BookId = message.BookFile.EditionId
             };
 
             history.Data.Add("SourcePath", sourcePath);
@@ -334,7 +334,7 @@ namespace NzbDrone.Core.History
                 Quality = message.BookFile.Quality,
                 SourceTitle = path,
                 AuthorId = message.BookFile.Author.Value.Id,
-                BookId = message.BookFile.BookId
+                BookId = message.BookFile.EditionId
             };
 
             history.Data.Add("TagsScrubbed", message.Scrubbed.ToString());

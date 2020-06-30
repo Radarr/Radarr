@@ -36,6 +36,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
         private readonly IMakeImportDecision _importDecisionMaker;
         private readonly IAuthorService _authorService;
         private readonly IBookService _bookService;
+        private readonly IEditionService _editionService;
         private readonly IAudioTagService _audioTagService;
         private readonly IImportApprovedBooks _importApprovedBooks;
         private readonly ITrackedDownloadService _trackedDownloadService;
@@ -50,6 +51,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
                                    IMakeImportDecision importDecisionMaker,
                                    IAuthorService authorService,
                                    IBookService bookService,
+                                   IEditionService editionService,
                                    IAudioTagService audioTagService,
                                    IImportApprovedBooks importApprovedBooks,
                                    ITrackedDownloadService trackedDownloadService,
@@ -64,6 +66,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
             _importDecisionMaker = importDecisionMaker;
             _authorService = authorService;
             _bookService = bookService;
+            _editionService = editionService;
             _audioTagService = audioTagService;
             _importApprovedBooks = importApprovedBooks;
             _trackedDownloadService = trackedDownloadService;
@@ -105,7 +108,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
                 };
 
                 var decision = _importDecisionMaker.GetImportDecisions(files, null, null, config);
-                var result = MapItem(decision.First(), downloadId, replaceExistingFiles);
+                var result = MapItem(decision.First(), downloadId, replaceExistingFiles, false);
 
                 return new List<ManualImportItem> { result };
             }
@@ -158,9 +161,9 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
                                             (f, d) => new { File = f, Decision = d },
                                             PathEqualityComparer.Instance);
 
-            var newItems = newFiles.Select(x => MapItem(x.Decision, downloadId, replaceExistingFiles));
+            var newItems = newFiles.Select(x => MapItem(x.Decision, downloadId, replaceExistingFiles, false));
             var existingDecisions = decisions.Except(newFiles.Select(x => x.Decision));
-            var existingItems = existingDecisions.Select(x => MapItem(x, null, replaceExistingFiles));
+            var existingItems = existingDecisions.Select(x => MapItem(x, null, replaceExistingFiles, false));
 
             return newItems.Concat(existingItems).ToList();
         }
@@ -177,11 +180,14 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
             {
                 _logger.Debug("UpdateItems, group key: {0}", group.Key);
 
+                var disableReleaseSwitching = group.First().DisableReleaseSwitching;
+
                 var files = group.Select(x => _diskProvider.GetFileInfo(x.Path)).ToList();
                 var idOverride = new IdentificationOverrides
                 {
                     Author = group.First().Author,
                     Book = group.First().Book,
+                    Edition = group.First().Edition
                 };
                 var config = new ImportDecisionMakerConfig
                 {
@@ -212,6 +218,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
                     if (decision.Item.Book != null)
                     {
                         item.Book = decision.Item.Book;
+                        item.Edition = decision.Item.Edition;
                     }
 
                     item.Rejections = decision.Rejections;
@@ -220,13 +227,13 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
                 }
 
                 var newDecisions = decisions.Except(existingItems.Select(x => x.Decision));
-                result.AddRange(newDecisions.Select(x => MapItem(x, null, replaceExistingFiles)));
+                result.AddRange(newDecisions.Select(x => MapItem(x, null, replaceExistingFiles, disableReleaseSwitching)));
             }
 
             return result;
         }
 
-        private ManualImportItem MapItem(ImportDecision<LocalBook> decision, string downloadId, bool replaceExistingFiles)
+        private ManualImportItem MapItem(ImportDecision<LocalBook> decision, string downloadId, bool replaceExistingFiles, bool disableReleaseSwitching)
         {
             var item = new ManualImportItem();
 
@@ -243,6 +250,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
             if (decision.Item.Book != null)
             {
                 item.Book = decision.Item.Book;
+                item.Edition = decision.Item.Edition;
             }
 
             item.Quality = decision.Item.Quality;
@@ -251,6 +259,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
             item.Tags = decision.Item.FileTrackInfo;
             item.AdditionalFile = decision.Item.AdditionalFile;
             item.ReplaceExistingFiles = replaceExistingFiles;
+            item.DisableReleaseSwitching = disableReleaseSwitching;
 
             return item;
         }
@@ -268,12 +277,21 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
             {
                 var albumImportDecisions = new List<ImportDecision<LocalBook>>();
 
+                // turn off anyReleaseOk if specified
+                if (importBookId.First().DisableReleaseSwitching)
+                {
+                    var book = _bookService.GetBook(importBookId.First().BookId);
+                    book.AnyEditionOk = false;
+                    _bookService.UpdateBook(book);
+                }
+
                 foreach (var file in importBookId)
                 {
                     _logger.ProgressTrace("Processing file {0} of {1}", fileCount + 1, message.Files.Count);
 
                     var author = _authorService.GetAuthor(file.AuthorId);
                     var book = _bookService.GetBook(file.BookId);
+                    var edition = _editionService.GetEdition(file.EditionId);
                     var fileTrackInfo = _audioTagService.ReadTags(file.Path) ?? new ParsedTrackInfo();
                     var fileInfo = _diskProvider.GetFileInfo(file.Path);
 
@@ -286,7 +304,8 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
                         Modified = fileInfo.LastWriteTimeUtc,
                         Quality = file.Quality,
                         Author = author,
-                        Book = book
+                        Book = book,
+                        Edition = edition
                     };
 
                     var importDecision = new ImportDecision<LocalBook>(localTrack);

@@ -11,7 +11,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 {
     public interface IIdentificationService
     {
-        List<LocalAlbumRelease> Identify(List<LocalBook> localTracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config);
+        List<LocalEdition> Identify(List<LocalBook> localTracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config);
     }
 
     public class IdentificationService : IIdentificationService
@@ -35,13 +35,13 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             _logger = logger;
         }
 
-        public List<LocalAlbumRelease> GetLocalAlbumReleases(List<LocalBook> localTracks, bool singleRelease)
+        public List<LocalEdition> GetLocalAlbumReleases(List<LocalBook> localTracks, bool singleRelease)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            List<LocalAlbumRelease> releases;
+            List<LocalEdition> releases;
             if (singleRelease)
             {
-                releases = new List<LocalAlbumRelease> { new LocalAlbumRelease(localTracks) };
+                releases = new List<LocalEdition> { new LocalEdition(localTracks) };
             }
             else
             {
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             return releases;
         }
 
-        public List<LocalAlbumRelease> Identify(List<LocalBook> localTracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config)
+        public List<LocalEdition> Identify(List<LocalBook> localTracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config)
         {
             // 1 group localTracks so that we think they represent a single release
             // 2 get candidates given specified author, album and release.  Candidates can include extra files already on disk.
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             return releases;
         }
 
-        private List<LocalBook> ToLocalTrack(IEnumerable<BookFile> trackfiles, LocalAlbumRelease localRelease)
+        private List<LocalBook> ToLocalTrack(IEnumerable<BookFile> trackfiles, LocalEdition localRelease)
         {
             var scanned = trackfiles.Join(localRelease.LocalBooks, t => t.Path, l => l.Path, (track, localTrack) => localTrack);
             var toScan = trackfiles.ExceptBy(t => t.Path, scanned, s => s.Path, StringComparer.InvariantCulture);
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             return localTracks;
         }
 
-        private void IdentifyRelease(LocalAlbumRelease localAlbumRelease, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config)
+        private void IdentifyRelease(LocalEdition localAlbumRelease, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
@@ -129,6 +129,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 // populate the overrides and return
                 foreach (var localTrack in localAlbumRelease.LocalBooks)
                 {
+                    localTrack.Edition = idOverrides.Edition;
                     localTrack.Book = idOverrides.Book;
                     localTrack.Author = idOverrides.Author;
                 }
@@ -140,7 +141,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 
             // convert all the TrackFiles that represent extra files to List<LocalTrack>
             var allLocalTracks = ToLocalTrack(candidateReleases
-                                              .SelectMany(x => x.ExistingTracks)
+                                              .SelectMany(x => x.ExistingFiles)
                                               .DistinctBy(x => x.Path), localAlbumRelease);
 
             _logger.Debug($"Retrieved {allLocalTracks.Count} possible tracks in {watch.ElapsedMilliseconds}ms");
@@ -154,7 +155,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             _logger.Debug($"IdentifyRelease done in {watch.ElapsedMilliseconds}ms");
         }
 
-        private void GetBestRelease(LocalAlbumRelease localAlbumRelease, List<CandidateAlbumRelease> candidateReleases, List<LocalBook> extraTracksOnDisk)
+        private void GetBestRelease(LocalEdition localAlbumRelease, List<CandidateEdition> candidateReleases, List<LocalBook> extraTracksOnDisk)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
@@ -165,11 +166,11 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 
             foreach (var candidateRelease in candidateReleases)
             {
-                var release = candidateRelease.Book;
+                var release = candidateRelease.Edition;
                 _logger.Debug($"Trying Release {release}");
                 var rwatch = System.Diagnostics.Stopwatch.StartNew();
 
-                var extraTrackPaths = candidateRelease.ExistingTracks.Select(x => x.Path).ToList();
+                var extraTrackPaths = candidateRelease.ExistingFiles.Select(x => x.Path).ToList();
                 var extraTracks = extraTracksOnDisk.Where(x => extraTrackPaths.Contains(x.Path)).ToList();
                 var allLocalTracks = localAlbumRelease.LocalBooks.Concat(extraTracks).DistinctBy(x => x.Path).ToList();
 
@@ -186,7 +187,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 {
                     bestDistance = currDistance;
                     localAlbumRelease.Distance = distance;
-                    localAlbumRelease.Book = release;
+                    localAlbumRelease.Edition = release;
                     localAlbumRelease.ExistingTracks = extraTracks;
                     if (currDistance == 0.0)
                     {
@@ -196,7 +197,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             }
 
             watch.Stop();
-            _logger.Debug($"Best release: {localAlbumRelease.Book} Distance {localAlbumRelease.Distance.NormalizedDistance()} found in {watch.ElapsedMilliseconds}ms");
+            _logger.Debug($"Best release: {localAlbumRelease.Edition} Distance {localAlbumRelease.Distance.NormalizedDistance()} found in {watch.ElapsedMilliseconds}ms");
         }
     }
 }

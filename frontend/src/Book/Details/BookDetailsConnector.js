@@ -98,6 +98,10 @@ const mapDispatchToProps = {
   toggleBooksMonitored
 };
 
+function getMonitoredEditions(props) {
+  return _.map(_.filter(props.editions, { monitored: true }), 'id').sort();
+}
+
 class BookDetailsConnector extends Component {
 
   componentDidMount() {
@@ -106,10 +110,8 @@ class BookDetailsConnector extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // If the id has changed we need to clear the books
-    // files and fetch from the server.
-
-    if (prevProps.id !== this.props.id) {
+    if (!_.isEqual(getMonitoredEditions(prevProps), getMonitoredEditions(this.props)) ||
+        (prevProps.anyReleaseOk === false && this.props.anyReleaseOk === true)) {
       this.unpopulate();
       this.populate();
     }

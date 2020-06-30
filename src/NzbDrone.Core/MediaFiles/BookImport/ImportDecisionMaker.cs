@@ -25,6 +25,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
     {
         public Author Author { get; set; }
         public Book Book { get; set; }
+        public Edition Edition { get; set; }
     }
 
     public class ImportDecisionMakerInfo
@@ -45,7 +46,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
     public class ImportDecisionMaker : IMakeImportDecision
     {
         private readonly IEnumerable<IImportDecisionEngineSpecification<LocalBook>> _trackSpecifications;
-        private readonly IEnumerable<IImportDecisionEngineSpecification<LocalAlbumRelease>> _bookSpecifications;
+        private readonly IEnumerable<IImportDecisionEngineSpecification<LocalEdition>> _bookSpecifications;
         private readonly IMediaFileService _mediaFileService;
         private readonly IEBookTagService _eBookTagService;
         private readonly IAudioTagService _audioTagService;
@@ -56,7 +57,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
         private readonly Logger _logger;
 
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification<LocalBook>> trackSpecifications,
-                                   IEnumerable<IImportDecisionEngineSpecification<LocalAlbumRelease>> albumSpecifications,
+                                   IEnumerable<IImportDecisionEngineSpecification<LocalEdition>> albumSpecifications,
                                    IMediaFileService mediaFileService,
                                    IEBookTagService eBookTagService,
                                    IAudioTagService audioTagService,
@@ -102,7 +103,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                 downloadClientItemInfo = Parser.Parser.ParseBookTitle(downloadClientItem.Title);
             }
 
-            int i = 1;
+            var i = 1;
             foreach (var file in files)
             {
                 _logger.ProgressInfo($"Reading file {i++}/{files.Count}");
@@ -179,38 +180,38 @@ namespace NzbDrone.Core.MediaFiles.BookImport
             return decisions;
         }
 
-        private void EnsureData(LocalAlbumRelease release)
+        private void EnsureData(LocalEdition edition)
         {
-            if (release.Book != null && release.Book.Author.Value.QualityProfileId == 0)
+            if (edition.Edition != null && edition.Edition.Book.Value.Author.Value.QualityProfileId == 0)
             {
-                var rootFolder = _rootFolderService.GetBestRootFolder(release.LocalBooks.First().Path);
+                var rootFolder = _rootFolderService.GetBestRootFolder(edition.LocalBooks.First().Path);
                 var qualityProfile = _qualityProfileService.Get(rootFolder.DefaultQualityProfileId);
 
-                var author = release.Book.Author.Value;
+                var author = edition.Edition.Book.Value.Author.Value;
                 author.QualityProfileId = qualityProfile.Id;
                 author.QualityProfile = qualityProfile;
             }
         }
 
-        private ImportDecision<LocalAlbumRelease> GetDecision(LocalAlbumRelease localAlbumRelease, DownloadClientItem downloadClientItem)
+        private ImportDecision<LocalEdition> GetDecision(LocalEdition localEdition, DownloadClientItem downloadClientItem)
         {
-            ImportDecision<LocalAlbumRelease> decision = null;
+            ImportDecision<LocalEdition> decision = null;
 
-            if (localAlbumRelease.Book == null)
+            if (localEdition.Edition == null)
             {
-                decision = new ImportDecision<LocalAlbumRelease>(localAlbumRelease, new Rejection($"Couldn't find similar book for {localAlbumRelease}"));
+                decision = new ImportDecision<LocalEdition>(localEdition, new Rejection($"Couldn't find similar book for {localEdition}"));
             }
             else
             {
-                var reasons = _bookSpecifications.Select(c => EvaluateSpec(c, localAlbumRelease, downloadClientItem))
+                var reasons = _bookSpecifications.Select(c => EvaluateSpec(c, localEdition, downloadClientItem))
                     .Where(c => c != null);
 
-                decision = new ImportDecision<LocalAlbumRelease>(localAlbumRelease, reasons.ToArray());
+                decision = new ImportDecision<LocalEdition>(localEdition, reasons.ToArray());
             }
 
             if (decision == null)
             {
-                _logger.Error("Unable to make a decision on {0}", localAlbumRelease);
+                _logger.Error("Unable to make a decision on {0}", localEdition);
             }
             else if (decision.Rejections.Any())
             {

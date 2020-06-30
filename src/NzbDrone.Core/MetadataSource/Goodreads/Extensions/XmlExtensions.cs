@@ -142,7 +142,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
 
             try
             {
-                return new DateTime(publicationYear.Value, publicationMonth.Value, publicationDay.Value);
+                return new DateTime(publicationYear.Value, publicationMonth.Value, publicationDay.Value, 0, 0, 0, DateTimeKind.Utc);
             }
             catch
             {

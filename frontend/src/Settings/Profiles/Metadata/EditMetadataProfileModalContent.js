@@ -32,8 +32,7 @@ function EditMetadataProfileModalContent(props) {
   const {
     id,
     name,
-    minRating,
-    minRatingCount,
+    minPopularity,
     skipMissingDate,
     skipMissingIsbn,
     skipPartsAndSets,
@@ -73,26 +72,14 @@ function EditMetadataProfileModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Minimum Rating</FormLabel>
+                <FormLabel>Minimum Popularity</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.NUMBER}
-                  name="minRating"
-                  {...minRating}
+                  name="minPopularity"
+                  {...minPopularity}
+                  helpText="Popularity is average rating * number of votes"
                   isFloat={true}
-                  min={0}
-                  max={5}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <FormLabel>Minimum Number of Ratings</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.NUMBER}
-                  name="minRatingCount"
-                  {...minRatingCount}
                   min={0}
                   onChange={onInputChange}
                 />

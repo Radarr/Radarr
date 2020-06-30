@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,9 +7,9 @@ using NzbDrone.Core.MediaFiles.BookImport.Identification;
 
 namespace NzbDrone.Core.Parser.Model
 {
-    public class LocalAlbumRelease
+    public class LocalEdition
     {
-        public LocalAlbumRelease()
+        public LocalEdition()
         {
             LocalBooks = new List<LocalBook>();
 
@@ -19,7 +18,7 @@ namespace NzbDrone.Core.Parser.Model
             Distance.Add("album_id", 1.0);
         }
 
-        public LocalAlbumRelease(List<LocalBook> tracks)
+        public LocalEdition(List<LocalBook> tracks)
         {
             LocalBooks = tracks;
 
@@ -32,19 +31,20 @@ namespace NzbDrone.Core.Parser.Model
         public int TrackCount => LocalBooks.Count;
 
         public Distance Distance { get; set; }
-        public Book Book { get; set; }
+        public Edition Edition { get; set; }
         public List<LocalBook> ExistingTracks { get; set; }
         public bool NewDownload { get; set; }
 
         public void PopulateMatch()
         {
-            if (Book != null)
+            if (Edition != null)
             {
                 LocalBooks = LocalBooks.Concat(ExistingTracks).DistinctBy(x => x.Path).ToList();
                 foreach (var localTrack in LocalBooks)
                 {
-                    localTrack.Book = Book;
-                    localTrack.Author = Book.Author.Value;
+                    localTrack.Edition = Edition;
+                    localTrack.Book = Edition.Book.Value;
+                    localTrack.Author = Edition.Book.Value.Author.Value;
                 }
             }
         }

@@ -21,7 +21,12 @@ using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.Books
 {
+    public interface IRefreshAuthorService
+    {
+    }
+
     public class RefreshAuthorService : RefreshEntityServiceBase<Author, Book>,
+        IRefreshAuthorService,
         IExecute<RefreshAuthorCommand>,
         IExecute<BulkRefreshAuthorCommand>
     {
@@ -76,11 +81,11 @@ namespace NzbDrone.Core.Books
             _logger = logger;
         }
 
-        private Author GetSkyhookData(string foreignId)
+        private Author GetSkyhookData(string foreignId, double minPopularity)
         {
             try
             {
-                return _authorInfo.GetAuthorInfo(foreignId);
+                return _authorInfo.GetAuthorAndBooks(foreignId, minPopularity);
             }
             catch (AuthorNotFoundException)
             {
@@ -278,7 +283,6 @@ namespace NzbDrone.Core.Books
         {
             // little hack - trigger the series update here
             _refreshSeriesService.RefreshSeriesInfo(entity.AuthorMetadataId, entity.Series, entity, false, false, null);
-
             _eventAggregator.PublishEvent(new AuthorRefreshCompleteEvent(entity));
         }
 
@@ -332,7 +336,7 @@ namespace NzbDrone.Core.Books
             {
                 try
                 {
-                    var data = GetSkyhookData(author.ForeignAuthorId);
+                    var data = GetSkyhookData(author.ForeignAuthorId, author.MetadataProfile.Value.MinPopularity);
                     updated |= RefreshEntityInfo(author, null, data, true, false, null);
                 }
                 catch (Exception e)
@@ -381,7 +385,7 @@ namespace NzbDrone.Core.Books
                     {
                         try
                         {
-                            var data = GetSkyhookData(author.ForeignAuthorId);
+                            var data = GetSkyhookData(author.ForeignAuthorId, author.MetadataProfile.Value.MinPopularity);
                             updated |= RefreshEntityInfo(author, null, data, manualTrigger, false, message.LastStartTime);
                         }
                         catch (Exception e)

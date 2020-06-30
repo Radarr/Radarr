@@ -15,6 +15,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -43,6 +44,14 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .With(e => e.Author = artist)
                 .Build();
 
+            var edition = Builder<Edition>.CreateNew()
+                .With(e => e.Book = album)
+                .Build();
+
+            var rootFolder = Builder<RootFolder>.CreateNew()
+                .With(r => r.IsCalibreLibrary = false)
+                .Build();
+
             _rejectedDecisions.Add(new ImportDecision<LocalBook>(new LocalBook(), new Rejection("Rejected!")));
             _rejectedDecisions.Add(new ImportDecision<LocalBook>(new LocalBook(), new Rejection("Rejected!")));
             _rejectedDecisions.Add(new ImportDecision<LocalBook>(new LocalBook(), new Rejection("Rejected!")));
@@ -52,6 +61,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                                        {
                                            Author = artist,
                                            Book = album,
+                                           Edition = edition,
                                            Path = Path.Combine(artist.Path, "Alien Ant Farm - 01 - Pilot.mp3"),
                                            Quality = new QualityModel(Quality.MP3_320),
                                            FileTrackInfo = new ParsedTrackInfo
@@ -69,6 +79,10 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IMediaFileService>()
                 .Setup(s => s.GetFilesByBook(It.IsAny<int>()))
                 .Returns(new List<BookFile>());
+
+            Mocker.GetMock<IRootFolderService>()
+                .Setup(s => s.GetBestRootFolder(It.IsAny<string>()))
+                .Returns(rootFolder);
         }
 
         [Test]
@@ -152,6 +166,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                 {
                     Author = fileDecision.Item.Author,
                     Book = fileDecision.Item.Book,
+                    Edition = fileDecision.Item.Edition,
                     Path = @"C:\Test\Music\Alien Ant Farm\Alien Ant Farm - 01 - Pilot.mp3".AsOsAgnostic(),
                     Quality = new QualityModel(Quality.MP3_320),
                     Size = 80.Megabytes()

@@ -35,7 +35,8 @@ namespace Readarr.Http
             : base(BaseUrl() + resource.Trim('/').ToLower())
         {
             Resource = resource;
-            PostValidator.RuleFor(r => r.Id).IsZero();
+
+            // PostValidator.RuleFor(r => r.Id).IsZero();
             PutValidator.RuleFor(r => r.Id).ValidId();
         }
 

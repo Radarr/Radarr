@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
+import stripHtml from 'Utilities/String/stripHtml';
 import { icons, sizes } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
@@ -70,7 +71,6 @@ class AddNewBookSearchResult extends Component {
   render() {
     const {
       foreignBookId,
-      goodreadsId,
       titleSlug,
       title,
       releaseDate,
@@ -79,6 +79,7 @@ class AddNewBookSearchResult extends Component {
       ratings,
       images,
       author,
+      editions,
       isExistingBook,
       isExistingAuthor,
       isSmallScreen
@@ -132,7 +133,7 @@ class AddNewBookSearchResult extends Component {
 
               <Link
                 className={styles.mbLink}
-                to={`https://goodreads.com/book/show/${goodreadsId}`}
+                to={`https://goodreads.com/book/show/${editions[0].foreignEditionId}`}
                 onPress={this.onMBLinkPress}
               >
                 <Icon
@@ -185,7 +186,7 @@ class AddNewBookSearchResult extends Component {
               <TextTruncate
                 truncateText="…"
                 line={Math.floor(height / (defaultFontSize * lineHeight))}
-                text={overview}
+                text={stripHtml(overview)}
               />
             </div>
           </div>
@@ -209,7 +210,6 @@ class AddNewBookSearchResult extends Component {
 
 AddNewBookSearchResult.propTypes = {
   foreignBookId: PropTypes.string.isRequired,
-  goodreadsId: PropTypes.number.isRequired,
   titleSlug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   releaseDate: PropTypes.string,
@@ -217,6 +217,7 @@ AddNewBookSearchResult.propTypes = {
   overview: PropTypes.string,
   ratings: PropTypes.object.isRequired,
   author: PropTypes.object,
+  editions: PropTypes.arrayOf(PropTypes.object).isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExistingBook: PropTypes.bool.isRequired,
   isExistingAuthor: PropTypes.bool.isRequired,
