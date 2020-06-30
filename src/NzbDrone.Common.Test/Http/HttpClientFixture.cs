@@ -288,7 +288,7 @@ namespace NzbDrone.Common.Test.Http
         {
             var file = GetTempFilePath();
 
-            Assert.Throws<WebException>(() => Subject.DownloadFile("http://download.sonarr.tv/wrongpath", file));
+            Assert.Throws<WebException>(() => Subject.DownloadFile("https://download.sonarr.tv/wrongpath", file));
 
             File.Exists(file).Should().BeFalse();
 
@@ -398,7 +398,7 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_delete_request_cookie()
         {
-            var requestDelete = new HttpRequest($"http://{_httpBinHost}/cookies/delete?my");
+            var requestDelete = new HttpRequest($"https://{_httpBinHost}/cookies/delete?my");
             requestDelete.Cookies.Add("my", "cookie");
             requestDelete.AllowAutoRedirect = true;
             requestDelete.StoreRequestCookie = false;
@@ -473,7 +473,7 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_temp_store_response_cookie()
         {
-            var requestSet = new HttpRequest($"http://{_httpBinHost}/cookies/set?my=cookie");
+            var requestSet = new HttpRequest($"https://{_httpBinHost}/cookies/set?my=cookie");
             requestSet.AllowAutoRedirect = true;
             requestSet.StoreRequestCookie = false;
             requestSet.StoreResponseCookie.Should().BeFalse();
@@ -607,7 +607,7 @@ namespace NzbDrone.Common.Test.Http
 
             responseDelete.Resource.Cookies.Should().BeEmpty();
 
-            requestCookies = new HttpRequest($"http://{_httpBinHost}/cookies");
+            requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
             requestCookies.StoreRequestCookie = false;
             requestCookies.StoreResponseCookie = false;
 
