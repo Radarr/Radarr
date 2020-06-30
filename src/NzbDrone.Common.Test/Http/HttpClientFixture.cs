@@ -279,6 +279,18 @@ namespace NzbDrone.Common.Test.Http
         }
 
         [Test]
+        public void should_download_file()
+        {
+            var file = GetTempFilePath();
+
+            var url = "https://sonarr.tv/img/slider/seriesdetails.png";
+
+            Subject.DownloadFile(url, file);
+
+            File.Exists(file).Should().BeTrue();
+        }
+
+        [Test]
         public void should_not_download_file_with_error()
         {
             var file = GetTempFilePath();

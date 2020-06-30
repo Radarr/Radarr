@@ -32,7 +32,7 @@ namespace NzbDrone.Common.Http.Dispatchers
         {
             var webRequest = (HttpWebRequest)WebRequest.Create((Uri)request.Url);
 
-            if (PlatformInfo.IsMono)
+            if (PlatformInfo.IsMono && request.ResponseStream == null)
             {
                 // On Mono GZipStream/DeflateStream leaks memory if an exception is thrown, use an intermediate buffer in that case.
                 webRequest.AutomaticDecompression = DecompressionMethods.None;
@@ -120,12 +120,20 @@ namespace NzbDrone.Common.Http.Dispatchers
                 {
                     try
                     {
-                        data = responseStream.ToBytes();
-
-                        if (PlatformInfo.IsMono && httpWebResponse.ContentEncoding == "gzip")
+                        if (request.ResponseStream != null)
                         {
-                            data = data.Decompress();
-                            httpWebResponse.Headers.Remove("Content-Encoding");
+                            // A target ResponseStream was specified, write to that instead.
+                            responseStream.CopyTo(request.ResponseStream);
+                        }
+                        else
+                        {
+                            data = responseStream.ToBytes();
+
+                            if (PlatformInfo.IsMono && httpWebResponse.ContentEncoding == "gzip")
+                            {
+                                data = data.Decompress();
+                                httpWebResponse.Headers.Remove("Content-Encoding");
+                            }
                         }
                     }
                     catch (Exception ex)
