@@ -34,9 +34,14 @@ namespace NzbDrone.Common.Test.Http
         [OneTimeSetUp]
         public void FixtureSetUp()
         {
-            var candidates = new[] { "httpbin.servarr.com", "eu.httpbin.org", /*"httpbin.org",*/ "www.httpbin.org" };
+            // Always use our server for main tests
+            var mainHost = "httpbin.servarr.com";
+
+            // Use mirrors for tests that use two hosts
+            var candidates = new[] { "eu.httpbin.org", /* "httpbin.org", */ "www.httpbin.org" };
 
             // httpbin.org is broken right now, occassionally redirecting to https if it's unavailable.
+            _httpBinHost = mainHost;
             _httpBinHosts = candidates.Where(IsTestSiteAvailable).ToArray();
 
             TestLogger.Info($"{candidates.Length} TestSites available.");
@@ -48,7 +53,7 @@ namespace NzbDrone.Common.Test.Http
         {
             try
             {
-                var req = WebRequest.Create($"http://{site}/get") as HttpWebRequest;
+                var req = WebRequest.Create($"https://{site}/get") as HttpWebRequest;
                 var res = req.GetResponse() as HttpWebResponse;
                 if (res.StatusCode != HttpStatusCode.OK)
                 {
@@ -57,7 +62,7 @@ namespace NzbDrone.Common.Test.Http
 
                 try
                 {
-                    req = WebRequest.Create($"http://{site}/status/429") as HttpWebRequest;
+                    req = WebRequest.Create($"https://{site}/status/429") as HttpWebRequest;
                     res = req.GetResponse() as HttpWebResponse;
                 }
                 catch (WebException ex)
@@ -99,7 +104,13 @@ namespace NzbDrone.Common.Test.Http
             //      .Returns(new HttpProxySettings(ProxyType.Socks5, "127.0.0.1", 5476, "", false));
 
             // Roundrobin over the two servers, to reduce the chance of hitting the ratelimiter.
-            _httpBinHost = _httpBinHosts[_httpBinRandom++ % _httpBinHosts.Length];
+            _httpBinHost2 = _httpBinHosts[_httpBinRandom++ % _httpBinHosts.Length];
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            Thread.Sleep(_httpBinSleep);
         }
 
         [Test]
@@ -219,14 +230,14 @@ namespace NzbDrone.Common.Test.Http
             }
 
             var request = new HttpRequestBuilder($"https://{_httpBinHost}/redirect-to")
-                .AddQueryParam("url", $"https://lidarr.audio/")
+                .AddQueryParam("url", $"https://readarr.com/")
                 .Build();
             request.AllowAutoRedirect = true;
 
             var response = Subject.Get(request);
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            response.Content.Should().Contain("Lidarr");
+            response.Content.Should().Contain("Readarr");
 
             ExceptionVerification.ExpectedErrors(0);
         }
@@ -234,7 +245,7 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_throw_on_too_many_redirects()
         {
-            var request = new HttpRequest($"https://{_httpBinHost}/redirect/4");
+            var request = new HttpRequest($"https://{_httpBinHost}/redirect/6");
             request.AllowAutoRedirect = true;
 
             Assert.Throws<WebException>(() => Subject.Get(request));
@@ -296,7 +307,12 @@ namespace NzbDrone.Common.Test.Http
 
         public void GivenOldCookie()
         {
-            var oldRequest = new HttpRequest("https://eu.httpbin.org/get");
+            if (_httpBinHost == _httpBinHost2)
+            {
+                Assert.Inconclusive("Need both httpbin.org and eu.httpbin.org to run this test.");
+            }
+
+            var oldRequest = new HttpRequest($"https://{_httpBinHost2}/get");
             oldRequest.Cookies["my"] = "cookie";
 
             var oldClient = new HttpClient(new IHttpRequestInterceptor[0], Mocker.Resolve<ICacheManager>(), Mocker.Resolve<IRateLimitService>(), Mocker.Resolve<IHttpDispatcher>(), Mocker.GetMock<IUserAgentBuilder>().Object, Mocker.Resolve<Logger>());
@@ -313,7 +329,7 @@ namespace NzbDrone.Common.Test.Http
         {
             GivenOldCookie();
 
-            var request = new HttpRequest("https://eu.httpbin.org/get");
+            var request = new HttpRequest($"https://{_httpBinHost2}/get");
 
             var response = Subject.Get<HttpBinResource>(request);
 
@@ -329,7 +345,7 @@ namespace NzbDrone.Common.Test.Http
         {
             GivenOldCookie();
 
-            var request = new HttpRequest("https://httpbin.org/get");
+            var request = new HttpRequest($"https://{_httpBinHost}/get");
 
             var response = Subject.Get<HttpBinResource>(request);
 
