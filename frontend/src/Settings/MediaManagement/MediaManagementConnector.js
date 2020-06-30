@@ -46,7 +46,7 @@ class MediaManagementConnector extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: 'settings.mediaManagement' });
+    this.props.clearPendingChanges({ section: `settings.${SECTION}` });
   }
 
   //

@@ -137,7 +137,6 @@ DelayProfileDragSource.propTypes = {
   onDelayProfileDragEnd: PropTypes.func.isRequired
 };
 
-/* eslint-disable new-cap */
 export default DropTarget(
   DELAY_PROFILE,
   delayProfileDropTarget,
@@ -147,4 +146,3 @@ export default DropTarget(
   delayProfileDragSource,
   collectDragSource
 )(DelayProfileDragSource));
-/* eslint-enable new-cap */
