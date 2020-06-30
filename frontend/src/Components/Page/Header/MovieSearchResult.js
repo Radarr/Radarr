@@ -9,6 +9,7 @@ function MovieSearchResult(props) {
   const {
     match,
     title,
+    year,
     images,
     alternateTitles,
     tags
@@ -35,7 +36,7 @@ function MovieSearchResult(props) {
 
       <div className={styles.titles}>
         <div className={styles.title}>
-          {title}
+          {title} { year > 0 ? `(${year})` : ''}
         </div>
 
         {
@@ -65,6 +66,7 @@ function MovieSearchResult(props) {
 
 MovieSearchResult.propTypes = {
   title: PropTypes.string.isRequired,
+  year: PropTypes.number.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
   tags: PropTypes.arrayOf(PropTypes.object).isRequired,

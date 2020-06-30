@@ -16,6 +16,7 @@ function createCleanMovieSelector() {
           title,
           titleSlug,
           sortTitle,
+          year,
           images,
           alternateTitles = [],
           tags = []
@@ -25,6 +26,7 @@ function createCleanMovieSelector() {
           title,
           titleSlug,
           sortTitle,
+          year,
           images,
           alternateTitles,
           firstCharacter: title.charAt(0).toLowerCase(),
