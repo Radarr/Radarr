@@ -7,6 +7,7 @@ import styles from './PageMenuButton.css';
 function PageMenuButton(props) {
   const {
     iconName,
+    indicator,
     text,
     ...otherProps
   } = props;
@@ -30,7 +31,12 @@ function PageMenuButton(props) {
 
 PageMenuButton.propTypes = {
   iconName: PropTypes.object.isRequired,
-  text: PropTypes.string
+  text: PropTypes.string,
+  indicator: PropTypes.bool.isRequired
+};
+
+PageMenuButton.defaultProps = {
+  indicator: false
 };
 
 export default PageMenuButton;
