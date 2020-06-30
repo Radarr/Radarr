@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using FluentAssertions;
@@ -25,8 +26,57 @@ namespace NzbDrone.Common.Test.Http
         where TDispatcher : IHttpDispatcher
     {
         private static string[] _httpBinHosts = new[] { "eu.httpbin.org", "httpbin.org" };
+        private int _httpBinSleep;
         private static int _httpBinRandom;
         private string _httpBinHost;
+        private string _httpBinHost2;
+
+        [OneTimeSetUp]
+        public void FixtureSetUp()
+        {
+            var candidates = new[] { "httpbin.servarr.com", "eu.httpbin.org", /*"httpbin.org",*/ "www.httpbin.org" };
+
+            // httpbin.org is broken right now, occassionally redirecting to https if it's unavailable.
+            _httpBinHosts = candidates.Where(IsTestSiteAvailable).ToArray();
+
+            TestLogger.Info($"{candidates.Length} TestSites available.");
+
+            _httpBinSleep = _httpBinHosts.Count() < 2 ? 100 : 10;
+        }
+
+        private bool IsTestSiteAvailable(string site)
+        {
+            try
+            {
+                var req = WebRequest.Create($"http://{site}/get") as HttpWebRequest;
+                var res = req.GetResponse() as HttpWebResponse;
+                if (res.StatusCode != HttpStatusCode.OK)
+                {
+                    return false;
+                }
+
+                try
+                {
+                    req = WebRequest.Create($"http://{site}/status/429") as HttpWebRequest;
+                    res = req.GetResponse() as HttpWebResponse;
+                }
+                catch (WebException ex)
+                {
+                    res = ex.Response as HttpWebResponse;
+                }
+
+                if (res == null || res.StatusCode != (HttpStatusCode)429)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         [SetUp]
         public void SetUp()
