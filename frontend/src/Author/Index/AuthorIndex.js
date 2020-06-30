@@ -282,11 +282,7 @@ class AuthorIndex extends Component {
                 null
             }
 
-            {
-              (view === 'posters' || view === 'banners' || view === 'overview') &&
-
-                <PageToolbarSeparator />
-            }
+            <PageToolbarSeparator />
 
             <AuthorIndexViewMenu
               view={view}
