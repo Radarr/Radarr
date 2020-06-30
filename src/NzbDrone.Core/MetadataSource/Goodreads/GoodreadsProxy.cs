@@ -10,6 +10,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.Http;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Parser;
 
@@ -27,6 +28,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
                                                                RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private readonly IHttpClient _httpClient;
+        private readonly ICachedHttpResponseService _cachedHttpClient;
         private readonly Logger _logger;
         private readonly IAuthorService _authorService;
         private readonly IBookService _bookService;
@@ -36,6 +38,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
         private readonly ICached<HashSet<string>> _cache;
 
         public GoodreadsProxy(IHttpClient httpClient,
+                              ICachedHttpResponseService cachedHttpClient,
                               IAuthorService authorService,
                               IBookService bookService,
                               IEditionService editionService,
@@ -43,6 +46,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
                               ICacheManager cacheManager)
         {
             _httpClient = httpClient;
+            _cachedHttpClient = cachedHttpClient;
             _authorService = authorService;
             _bookService = bookService;
             _editionService = editionService;
@@ -80,7 +84,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _httpClient.Get(httpRequest);
+            var httpResponse = _cachedHttpClient.Get(httpRequest, TimeSpan.FromDays(30));
 
             if (httpResponse.HasHttpError)
             {
@@ -208,7 +212,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _httpClient.Get(httpRequest);
+            var httpResponse = _cachedHttpClient.Get(httpRequest, TimeSpan.FromDays(7));
 
             if (httpResponse.HasHttpError)
             {
@@ -240,7 +244,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _httpClient.Get(httpRequest);
+            var httpResponse = _cachedHttpClient.Get(httpRequest, TimeSpan.FromDays(90));
 
             if (httpResponse.HasHttpError)
             {
@@ -314,7 +318,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _httpClient.Get(httpRequest);
+            var httpResponse = _cachedHttpClient.Get(httpRequest, TimeSpan.FromDays(90));
 
             if (httpResponse.HasHttpError)
             {

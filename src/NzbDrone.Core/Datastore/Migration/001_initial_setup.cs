@@ -364,5 +364,15 @@ namespace NzbDrone.Core.Datastore.Migration
                   .WithColumn("ExceptionType").AsString().Nullable()
                   .WithColumn("Level").AsString();
         }
+
+        protected override void CacheDbUpgrade()
+        {
+            Create.TableForModel("HttpResponse")
+                .WithColumn("Url").AsString().Indexed()
+                .WithColumn("LastRefresh").AsDateTime()
+                .WithColumn("Expiry").AsDateTime().Indexed()
+                .WithColumn("Value").AsString()
+                .WithColumn("StatusCode").AsInt32();
+        }
     }
 }

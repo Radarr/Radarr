@@ -48,6 +48,10 @@ namespace NzbDrone.Core.Datastore
             var logDb = new LogDatabase(container.Resolve<IDbFactory>().Create(MigrationType.Log));
 
             container.Register<ILogDatabase>(logDb);
+
+            var cacheDb = new CacheDatabase(container.Resolve<IDbFactory>().Create(MigrationType.Cache));
+
+            container.Register<ICacheDatabase>(cacheDb);
         }
 
         public DbFactory(IMigrationController migrationController,
@@ -83,6 +87,14 @@ namespace NzbDrone.Core.Datastore
                 case MigrationType.Log:
                     {
                         connectionString = _connectionStringFactory.LogDbConnectionString;
+                        CreateLog(connectionString, migrationContext);
+
+                        break;
+                    }
+
+                case MigrationType.Cache:
+                    {
+                        connectionString = _connectionStringFactory.CacheDbConnectionString;
                         CreateLog(connectionString, migrationContext);
 
                         break;

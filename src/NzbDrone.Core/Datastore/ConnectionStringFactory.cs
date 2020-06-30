@@ -9,6 +9,7 @@ namespace NzbDrone.Core.Datastore
     {
         string MainDbConnectionString { get; }
         string LogDbConnectionString { get; }
+        string CacheDbConnectionString { get; }
         string GetDatabasePath(string connectionString);
     }
 
@@ -18,10 +19,12 @@ namespace NzbDrone.Core.Datastore
         {
             MainDbConnectionString = GetConnectionString(appFolderInfo.GetDatabase());
             LogDbConnectionString = GetConnectionString(appFolderInfo.GetLogDatabase());
+            CacheDbConnectionString = GetConnectionString(appFolderInfo.GetCacheDatabase());
         }
 
         public string MainDbConnectionString { get; private set; }
         public string LogDbConnectionString { get; private set; }
+        public string CacheDbConnectionString { get; private set; }
 
         public string GetDatabasePath(string connectionString)
         {

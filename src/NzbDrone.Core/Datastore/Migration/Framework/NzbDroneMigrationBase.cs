@@ -22,6 +22,10 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
         {
         }
 
+        protected virtual void CacheDbUpgrade()
+        {
+        }
+
         public int Version
         {
             get
@@ -48,6 +52,11 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                     _logger.Info("Starting migration to " + Version);
                     LogDbUpgrade();
                     return;
+                case MigrationType.Cache:
+                    _logger.Info("Starting migration to " + Version);
+                    CacheDbUpgrade();
+                    return;
+
                 default:
                     LogDbUpgrade();
                     MainDbUpgrade();

@@ -3,6 +3,7 @@
     public enum MigrationType
     {
         Main,
-        Log
+        Log,
+        Cache
     }
 }

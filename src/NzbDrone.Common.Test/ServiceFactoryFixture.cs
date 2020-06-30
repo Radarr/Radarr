@@ -18,6 +18,7 @@ namespace NzbDrone.Common.Test
         {
             var container = MainAppContainerBuilder.BuildContainer(new StartupContext());
             container.Register<IMainDatabase>(new MainDatabase(null));
+            container.Register<ICacheDatabase>(new CacheDatabase(null));
             container.Resolve<IAppFolderFactory>().Register();
 
             Mocker.SetConstant(container);

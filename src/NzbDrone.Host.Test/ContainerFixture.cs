@@ -31,6 +31,7 @@ namespace NzbDrone.App.Test
             _container = MainAppContainerBuilder.BuildContainer(args);
 
             _container.Register<IMainDatabase>(new MainDatabase(null));
+            _container.Register<ICacheDatabase>(new CacheDatabase(null));
 
             // set up a dummy broadcaster to allow tests to resolve
             var mockBroadcaster = new Mock<IBroadcastSignalRMessage>();

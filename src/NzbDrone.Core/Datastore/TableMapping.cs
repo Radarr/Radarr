@@ -14,6 +14,7 @@ using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Extras.Metadata;
 using NzbDrone.Core.Extras.Metadata.Files;
 using NzbDrone.Core.Extras.Others;
+using NzbDrone.Core.Http;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.ImportLists.Exclusions;
 using NzbDrone.Core.Indexers;
@@ -186,6 +187,8 @@ namespace NzbDrone.Core.Datastore
 
             Mapper.Entity<CustomFilter>("CustomFilters").RegisterModel();
             Mapper.Entity<ImportListExclusion>("ImportListExclusions").RegisterModel();
+
+            Mapper.Entity<CachedHttpResponse>("HttpResponse").RegisterModel();
         }
 
         private static void RegisterMappers()

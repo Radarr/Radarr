@@ -1,4 +1,5 @@
 ﻿using System;
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Cloud;
@@ -28,6 +29,11 @@ namespace NzbDrone.Core.Test.Framework
             Mocker.SetConstant<IHttpClient>(new HttpClient(new IHttpRequestInterceptor[0], Mocker.Resolve<CacheManager>(), Mocker.Resolve<RateLimitService>(), Mocker.Resolve<IHttpDispatcher>(), Mocker.Resolve<UserAgentBuilder>(), TestLogger));
             Mocker.SetConstant<IReadarrCloudRequestBuilder>(new ReadarrCloudRequestBuilder());
             Mocker.SetConstant<IMetadataRequestBuilder>(Mocker.Resolve<MetadataRequestBuilder>());
+
+            var httpClient = Mocker.Resolve<IHttpClient>();
+            Mocker.GetMock<ICachedHttpResponseService>()
+                .Setup(x => x.Get(It.IsAny<HttpRequest>(), It.IsAny<TimeSpan>()))
+                .Returns((HttpRequest request, TimeSpan ttl) => httpClient.Get(request));
         }
     }
 
