@@ -5,10 +5,10 @@
   <ItemGroup>
     <PackageReference Include="DotNet4.SocksProxy" Version="1.4.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NLog" Version="4.6.8" />
-    <PackageReference Include="Sentry" Version="1.2.0" />
+    <PackageReference Include="NLog" Version="4.7.2" />
+    <PackageReference Include="Sentry" Version="2.1.4" />
     <PackageReference Include="SharpZipLib" Version="1.2.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="7.0.15" />
+    <PackageReference Include="System.IO.Abstractions" Version="12.0.4" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Data.SQLite.Core.Lidarr" Version="1.0.111.0-5" />
   </ItemGroup>
@@ -16,7 +16,7 @@
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.1.5" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">

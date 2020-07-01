@@ -13,7 +13,7 @@ variables:
   buildName: '$(Build.SourceBranchName).$(readarrVersion)'
   sentryOrg: 'servarr'
   sentryUrl: 'https://sentry.servarr.com'
-  dotnetVersion: '3.1.202'
+  dotnetVersion: '3.1.301'
 
 trigger:
   branches:

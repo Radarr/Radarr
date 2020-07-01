@@ -3,25 +3,25 @@
     <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.30" />
-    <PackageReference Include="System.Text.Json" Version="4.7.0" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.0" />
-    <PackageReference Include="System.Memory" Version="4.5.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.0" />
+    <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.5" />
     <PackageReference Include="FluentMigrator.Runner" Version="4.0.0-alpha.268" />
     <PackageReference Include="FluentMigrator.Runner.SQLite" Version="4.0.0-alpha.268" />
-    <PackageReference Include="FluentValidation" Version="8.6.0" />
+    <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NLog" Version="4.6.8" />
-    <PackageReference Include="RestSharp" Version="106.6.10" />
-    <PackageReference Include="System.IO.Abstractions" Version="7.0.15" />
+    <PackageReference Include="NLog" Version="4.7.2" />
+    <PackageReference Include="RestSharp" Version="106.11.4" />
+    <PackageReference Include="System.IO.Abstractions" Version="12.0.4" />
     <PackageReference Include="TagLibSharp-Lidarr" Version="2.2.0.19" />
     <PackageReference Include="Kveer.XmlRPC" Version="1.1.1" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-rc0003" />
     <PackageReference Include="Equ" Version="2.2.0" />
-    <PackageReference Include="MonoTorrent" Version="1.0.11" />
-    <PackageReference Include="PdfSharpCore" Version="1.1.25" />
+    <PackageReference Include="MonoTorrent" Version="1.0.22" />
+    <PackageReference Include="PdfSharpCore" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Common\Readarr.Common.csproj" />
@@ -31,7 +31,7 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
-    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*"/>
+    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\Logo\64.png">
