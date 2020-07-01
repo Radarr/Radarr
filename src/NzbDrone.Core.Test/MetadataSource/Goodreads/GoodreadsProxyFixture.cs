@@ -44,6 +44,7 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         }
 
         [TestCase("64216", "Guards! Guards!")]
+        [TestCase("1371", "Ιλιάς")]
         public void should_be_able_to_get_book_detail(string mbId, string name)
         {
             var details = Subject.GetBookInfo(mbId);

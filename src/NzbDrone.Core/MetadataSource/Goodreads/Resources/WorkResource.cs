@@ -119,15 +119,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
 
             TextReviewsCount = element.ElementAsInt("text_reviews_count");
 
-            // Merge the Goodreads publication fields into one date property
-            var originalPublicationYear = element.ElementAsInt("original_publication_year");
-            var originalPublicationMonth = element.ElementAsInt("original_publication_month");
-            var originalPublicationDay = element.ElementAsInt("original_publication_day");
-            if (originalPublicationYear != 0)
-            {
-                OriginalPublicationDate = new DateTime(originalPublicationYear, Math.Max(originalPublicationMonth, 1), Math.Max(originalPublicationDay, 1), 0, 0, 0, DateTimeKind.Utc);
-            }
-
+            OriginalPublicationDate = element.ElementAsMultiDateField("original_publication");
             OriginalTitle = element.ElementAsString("original_title");
             OriginalLanguageId = element.ElementAsNullableInt("original_language_id");
             MediaType = element.ElementAsString("media_type");

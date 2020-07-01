@@ -125,7 +125,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
                 return null;
             }
 
-            if (!publicationYear.HasValue)
+            if (!publicationYear.HasValue || publicationYear <= 0)
             {
                 return null;
             }
