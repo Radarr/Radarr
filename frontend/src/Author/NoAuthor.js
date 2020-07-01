@@ -11,7 +11,7 @@ function NoAuthor(props) {
     return (
       <div>
         <div className={styles.message}>
-        All authors are hidden due to the applied filter.
+          All authors are hidden due to the applied filter.
         </div>
       </div>
     );

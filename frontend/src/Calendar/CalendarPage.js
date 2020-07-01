@@ -135,9 +135,9 @@ class CalendarPage extends Component {
         >
           {
             authorError &&
-            <div className={styles.errorMessage}>
-              {getErrorMessage(authorError, 'Failed to load author from API')}
-            </div>
+              <div className={styles.errorMessage}>
+                {getErrorMessage(authorError, 'Failed to load author from API')}
+              </div>
           }
 
           {

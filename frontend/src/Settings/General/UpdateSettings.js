@@ -72,58 +72,58 @@ function UpdateSettings(props) {
 
       {
         !isWindows &&
-        <div>
-          <FormGroup
-            advancedSettings={advancedSettings}
-            isAdvanced={true}
-            size={sizes.MEDIUM}
-          >
-            <FormLabel>Automatic</FormLabel>
+          <div>
+            <FormGroup
+              advancedSettings={advancedSettings}
+              isAdvanced={true}
+              size={sizes.MEDIUM}
+            >
+              <FormLabel>Automatic</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.CHECK}
-              name="updateAutomatically"
-              helpText="Automatically download and install updates. You will still be able to install from System: Updates"
-              onChange={onInputChange}
-              {...updateAutomatically}
-            />
-          </FormGroup>
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="updateAutomatically"
+                helpText="Automatically download and install updates. You will still be able to install from System: Updates"
+                onChange={onInputChange}
+                {...updateAutomatically}
+              />
+            </FormGroup>
 
-          <FormGroup
-            advancedSettings={advancedSettings}
-            isAdvanced={true}
-          >
-            <FormLabel>Mechanism</FormLabel>
-
-            <FormInputGroup
-              type={inputTypes.SELECT}
-              name="updateMechanism"
-              values={updateOptions}
-              helpText="Use Readarr's built-in updater or a script"
-              helpLink="https://github.com/Readarr/Readarr/wiki/Updating"
-              onChange={onInputChange}
-              {...updateMechanism}
-            />
-          </FormGroup>
-
-          {
-            updateMechanism.value === 'script' &&
             <FormGroup
               advancedSettings={advancedSettings}
               isAdvanced={true}
             >
-              <FormLabel>Script Path</FormLabel>
+              <FormLabel>Mechanism</FormLabel>
 
               <FormInputGroup
-                type={inputTypes.TEXT}
-                name="updateScriptPath"
-                helpText="Path to a custom script that takes an extracted update package and handle the remainder of the update process"
+                type={inputTypes.SELECT}
+                name="updateMechanism"
+                values={updateOptions}
+                helpText="Use Readarr's built-in updater or a script"
+                helpLink="https://github.com/Readarr/Readarr/wiki/Updating"
                 onChange={onInputChange}
-                {...updateScriptPath}
+                {...updateMechanism}
               />
             </FormGroup>
-          }
-        </div>
+
+            {
+              updateMechanism.value === 'script' &&
+                <FormGroup
+                  advancedSettings={advancedSettings}
+                  isAdvanced={true}
+                >
+                  <FormLabel>Script Path</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.TEXT}
+                    name="updateScriptPath"
+                    helpText="Path to a custom script that takes an extracted update package and handle the remainder of the update process"
+                    onChange={onInputChange}
+                    {...updateScriptPath}
+                  />
+                </FormGroup>
+            }
+          </div>
       }
     </FieldSet>
   );

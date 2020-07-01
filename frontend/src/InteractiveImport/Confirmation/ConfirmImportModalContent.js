@@ -72,9 +72,9 @@ class ConfirmImportModalContent extends Component {
 
         {
           !isFetching && isPopulated &&
-          <ModalHeader>
-            Are you sure?
-          </ModalHeader>
+            <ModalHeader>
+              Are you sure?
+            </ModalHeader>
         }
 
         <ModalBody>

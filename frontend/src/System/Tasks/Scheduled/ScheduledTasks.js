@@ -49,27 +49,27 @@ function ScheduledTasks(props) {
     <FieldSet legend="Scheduled">
       {
         isFetching && !isPopulated &&
-        <LoadingIndicator />
+          <LoadingIndicator />
       }
 
       {
         isPopulated &&
-        <Table
-          columns={columns}
-        >
-          <TableBody>
-            {
-              items.map((item) => {
-                return (
-                  <ScheduledTaskRowConnector
-                    key={item.id}
-                    {...item}
-                  />
-                );
-              })
-            }
-          </TableBody>
-        </Table>
+          <Table
+            columns={columns}
+          >
+            <TableBody>
+              {
+                items.map((item) => {
+                  return (
+                    <ScheduledTaskRowConnector
+                      key={item.id}
+                      {...item}
+                    />
+                  );
+                })
+              }
+            </TableBody>
+          </Table>
       }
     </FieldSet>
   );

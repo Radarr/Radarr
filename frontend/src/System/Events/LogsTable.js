@@ -76,45 +76,45 @@ function LogsTable(props) {
       <PageContentBodyConnector>
         {
           isFetching && !isPopulated &&
-          <LoadingIndicator />
+            <LoadingIndicator />
         }
 
         {
           isPopulated && !error && !items.length &&
-          <div>
-                No logs found
-          </div>
+            <div>
+              No logs found
+            </div>
         }
 
         {
           isPopulated && !error && !!items.length &&
-          <div>
-            <Table
-              columns={columns}
-              canModifyColumns={false}
-              {...otherProps}
-            >
-              <TableBody>
-                {
-                  items.map((item) => {
-                    return (
-                      <LogsTableRow
-                        key={item.id}
-                        columns={columns}
-                        {...item}
-                      />
-                    );
-                  })
-                }
-              </TableBody>
-            </Table>
+            <div>
+              <Table
+                columns={columns}
+                canModifyColumns={false}
+                {...otherProps}
+              >
+                <TableBody>
+                  {
+                    items.map((item) => {
+                      return (
+                        <LogsTableRow
+                          key={item.id}
+                          columns={columns}
+                          {...item}
+                        />
+                      );
+                    })
+                  }
+                </TableBody>
+              </Table>
 
-            <TablePager
-              totalRecords={totalRecords}
-              isFetching={isFetching}
-              {...otherProps}
-            />
-          </div>
+              <TablePager
+                totalRecords={totalRecords}
+                isFetching={isFetching}
+                {...otherProps}
+              />
+            </div>
         }
       </PageContentBodyConnector>
     </PageContent>

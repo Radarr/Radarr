@@ -126,7 +126,7 @@ class AddNewAuthorSearchResult extends Component {
 
               {
                 !!disambiguation &&
-                <span className={styles.year}>({disambiguation})</span>
+                  <span className={styles.year}>({disambiguation})</span>
               }
 
               {

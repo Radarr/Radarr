@@ -74,7 +74,11 @@ class AuthorSearchInput extends Component {
 
     if (item.type === LOADING_TYPE) {
       return (
-        <LoadingIndicator />
+        <LoadingIndicator
+          className={styles.loading}
+          rippleClassName={styles.ripple}
+          size={30}
+        />
       );
     }
 

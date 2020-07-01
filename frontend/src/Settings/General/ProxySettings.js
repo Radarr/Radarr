@@ -44,90 +44,90 @@ function ProxySettings(props) {
 
       {
         proxyEnabled.value &&
-        <div>
-          <FormGroup>
-            <FormLabel>Proxy Type</FormLabel>
+          <div>
+            <FormGroup>
+              <FormLabel>Proxy Type</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.SELECT}
-              name="proxyType"
-              values={proxyTypeOptions}
-              onChange={onInputChange}
-              {...proxyType}
-            />
-          </FormGroup>
+              <FormInputGroup
+                type={inputTypes.SELECT}
+                name="proxyType"
+                values={proxyTypeOptions}
+                onChange={onInputChange}
+                {...proxyType}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <FormLabel>Hostname</FormLabel>
+            <FormGroup>
+              <FormLabel>Hostname</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.TEXT}
-              name="proxyHostname"
-              onChange={onInputChange}
-              {...proxyHostname}
-            />
-          </FormGroup>
+              <FormInputGroup
+                type={inputTypes.TEXT}
+                name="proxyHostname"
+                onChange={onInputChange}
+                {...proxyHostname}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <FormLabel>Port</FormLabel>
+            <FormGroup>
+              <FormLabel>Port</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.NUMBER}
-              name="proxyPort"
-              min={1}
-              max={65535}
-              onChange={onInputChange}
-              {...proxyPort}
-            />
-          </FormGroup>
+              <FormInputGroup
+                type={inputTypes.NUMBER}
+                name="proxyPort"
+                min={1}
+                max={65535}
+                onChange={onInputChange}
+                {...proxyPort}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <FormLabel>Username</FormLabel>
+            <FormGroup>
+              <FormLabel>Username</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.TEXT}
-              name="proxyUsername"
-              helpText="You only need to enter a username and password if one is required. Leave them blank otherwise."
-              onChange={onInputChange}
-              {...proxyUsername}
-            />
-          </FormGroup>
+              <FormInputGroup
+                type={inputTypes.TEXT}
+                name="proxyUsername"
+                helpText="You only need to enter a username and password if one is required. Leave them blank otherwise."
+                onChange={onInputChange}
+                {...proxyUsername}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <FormLabel>Password</FormLabel>
+            <FormGroup>
+              <FormLabel>Password</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.PASSWORD}
-              name="proxyPassword"
-              helpText="You only need to enter a username and password if one is required. Leave them blank otherwise."
-              onChange={onInputChange}
-              {...proxyPassword}
-            />
-          </FormGroup>
+              <FormInputGroup
+                type={inputTypes.PASSWORD}
+                name="proxyPassword"
+                helpText="You only need to enter a username and password if one is required. Leave them blank otherwise."
+                onChange={onInputChange}
+                {...proxyPassword}
+              />
+            </FormGroup>
 
-          <FormGroup>
-            <FormLabel>Ignored Addresses</FormLabel>
+            <FormGroup>
+              <FormLabel>Ignored Addresses</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.TEXT}
-              name="proxyBypassFilter"
-              helpText="Use ',' as a separator, and '*.' as a wildcard for subdomains"
-              onChange={onInputChange}
-              {...proxyBypassFilter}
-            />
-          </FormGroup>
+              <FormInputGroup
+                type={inputTypes.TEXT}
+                name="proxyBypassFilter"
+                helpText="Use ',' as a separator, and '*.' as a wildcard for subdomains"
+                onChange={onInputChange}
+                {...proxyBypassFilter}
+              />
+            </FormGroup>
 
-          <FormGroup size={sizes.MEDIUM}>
-            <FormLabel>Bypass Proxy for Local Addresses</FormLabel>
+            <FormGroup size={sizes.MEDIUM}>
+              <FormLabel>Bypass Proxy for Local Addresses</FormLabel>
 
-            <FormInputGroup
-              type={inputTypes.CHECK}
-              name="proxyBypassLocalAddresses"
-              onChange={onInputChange}
-              {...proxyBypassLocalAddresses}
-            />
-          </FormGroup>
-        </div>
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="proxyBypassLocalAddresses"
+                onChange={onInputChange}
+                {...proxyBypassLocalAddresses}
+              />
+            </FormGroup>
+          </div>
       }
     </FieldSet>
   );

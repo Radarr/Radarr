@@ -43,23 +43,23 @@ function MetadataProvider(props) {
           <Form>
             {
               advancedSettings &&
-              <FieldSet legend="Metadata Provider Source">
-                <FormGroup
-                  advancedSettings={advancedSettings}
-                  isAdvanced={true}
-                >
-                  <FormLabel>Metadata Source</FormLabel>
+                <FieldSet legend="Metadata Provider Source">
+                  <FormGroup
+                    advancedSettings={advancedSettings}
+                    isAdvanced={true}
+                  >
+                    <FormLabel>Metadata Source</FormLabel>
 
-                  <FormInputGroup
-                    type={inputTypes.TEXT}
-                    name="metadataSource"
-                    helpText="Alternative Metadata Source (Leave blank for default)"
-                    helpLink="https://github.com/Readarr/Readarr/wiki/Metadata-Source"
-                    onChange={onInputChange}
-                    {...settings.metadataSource}
-                  />
-                </FormGroup>
-              </FieldSet>
+                    <FormInputGroup
+                      type={inputTypes.TEXT}
+                      name="metadataSource"
+                      helpText="Alternative Metadata Source (Leave blank for default)"
+                      helpLink="https://github.com/Readarr/Readarr/wiki/Metadata-Source"
+                      onChange={onInputChange}
+                      {...settings.metadataSource}
+                    />
+                  </FormGroup>
+                </FieldSet>
             }
 
             <FieldSet legend="Write Metadata to Audio Files">

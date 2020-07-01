@@ -103,12 +103,12 @@ class AddNewBookSearchResult extends Component {
         <div className={styles.overlay}>
           {
             !isSmallScreen &&
-            <BookCover
-              className={styles.poster}
-              images={images}
-              size={250}
-              lazy={false}
-            />
+              <BookCover
+                className={styles.poster}
+                images={images}
+                size={250}
+                lazy={false}
+              />
           }
 
           <div className={styles.content}>
@@ -117,7 +117,7 @@ class AddNewBookSearchResult extends Component {
 
               {
                 !!disambiguation &&
-                <span className={styles.year}>({disambiguation})</span>
+                  <span className={styles.year}>({disambiguation})</span>
               }
 
               {

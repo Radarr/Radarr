@@ -199,23 +199,23 @@ function EditImportListModalContent(props) {
 
               {
                 !!fields && !!fields.length &&
-                <div>
-                  {
-                    fields.map((field) => {
-                      return (
-                        <ProviderFieldFormGroup
-                          key={field.name}
-                          advancedSettings={advancedSettings}
-                          provider="importList"
-                          providerData={item}
-                          section="settings.importLists"
-                          {...field}
-                          onChange={onFieldChange}
-                        />
-                      );
-                    })
-                  }
-                </div>
+                  <div>
+                    {
+                      fields.map((field) => {
+                        return (
+                          <ProviderFieldFormGroup
+                            key={field.name}
+                            advancedSettings={advancedSettings}
+                            provider="importList"
+                            providerData={item}
+                            section="settings.importLists"
+                            {...field}
+                            onChange={onFieldChange}
+                          />
+                        );
+                      })
+                    }
+                  </div>
               }
 
             </Form>

@@ -141,12 +141,12 @@ class Notification extends Component {
         {
           !onGrab && !onReleaseImport && !onRename && !onTrackRetag &&
             !onHealthIssue && !onDownloadFailure && !onImportFailure &&
-            <Label
-              kind={kinds.DISABLED}
-              outline={true}
-            >
-              Disabled
-            </Label>
+              <Label
+                kind={kinds.DISABLED}
+                outline={true}
+              >
+                Disabled
+              </Label>
         }
 
         <EditNotificationModalConnector

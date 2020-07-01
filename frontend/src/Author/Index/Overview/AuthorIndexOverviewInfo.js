@@ -183,19 +183,19 @@ function AuthorIndexOverviewInfo(props) {
     <div className={styles.infos}>
       {
         !!nextAiring &&
-        <AuthorIndexOverviewInfoRow
-          title={formatDateTime(nextAiring, longDateFormat, timeFormat)}
-          iconName={icons.SCHEDULED}
-          label={getRelativeDate(
-            nextAiring,
-            shortDateFormat,
-            showRelativeDates,
-            {
-              timeFormat,
-              timeForToday: true
-            }
-          )}
-        />
+          <AuthorIndexOverviewInfoRow
+            title={formatDateTime(nextAiring, longDateFormat, timeFormat)}
+            iconName={icons.SCHEDULED}
+            label={getRelativeDate(
+              nextAiring,
+              shortDateFormat,
+              showRelativeDates,
+              {
+                timeFormat,
+                timeForToday: true
+              }
+            )}
+          />
       }
 
       {
