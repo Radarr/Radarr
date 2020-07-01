@@ -117,13 +117,13 @@ namespace NzbDrone.Core.Books.Calibre
 
         public void SetFields(BookFile file, CalibreSettings settings)
         {
-            var book = file.Edition.Value;
+            var edition = file.Edition.Value;
 
-            var cover = book.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Cover);
+            var cover = edition.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Cover);
             string image = null;
             if (cover != null)
             {
-                var imageFile = _mediaCoverService.GetCoverPath(book.Id, MediaCoverEntity.Book, cover.CoverType, cover.Extension, null);
+                var imageFile = _mediaCoverService.GetCoverPath(edition.BookId, MediaCoverEntity.Book, cover.CoverType, cover.Extension, null);
 
                 if (File.Exists(imageFile))
                 {
@@ -136,16 +136,17 @@ namespace NzbDrone.Core.Books.Calibre
             {
                 changes = new
                 {
-                    title = book.Title,
+                    title = edition.Title,
                     authors = new[] { file.Author.Value.Name },
                     cover = image,
-                    pubdate = book.ReleaseDate,
-                    comments = book.Overview,
-                    rating = book.Ratings.Value * 2,
+                    pubdate = edition.Book.Value.ReleaseDate,
+                    comments = edition.Overview,
+                    rating = edition.Ratings.Value * 2,
                     identifiers = new Dictionary<string, string>
                     {
-                        { "isbn", book.Isbn13 },
-                        { "asin", book.Asin }
+                        { "isbn", edition.Isbn13 },
+                        { "asin", edition.Asin },
+                        { "goodreads", edition.ForeignEditionId }
                     }
                 },
                 loaded_book_ids = new[] { file.CalibreId }
