@@ -8,6 +8,7 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Http;
@@ -127,7 +128,11 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             var author = GetAuthorInfo(foreignAuthorId);
 
             var bookList = GetAuthorBooks(foreignAuthorId, minPopularity);
-            var books = bookList.Select(x => GetBookInfo(x.Editions.Value.First().ForeignEditionId).Item2).ToList();
+            var books = bookList.Select((x, i) =>
+            {
+                _logger.ProgressDebug($"{author}: Fetching book {i}/{bookList.Count}");
+                return GetBookInfo(x.Editions.Value.First().ForeignEditionId).Item2;
+            }).ToList();
 
             var existingAuthor = _authorService.FindById(foreignAuthorId);
             if (existingAuthor != null)
