@@ -126,7 +126,7 @@ export const actionHandlers = handleThunks({
       url: '/bookshelf',
       method: 'POST',
       data: JSON.stringify({
-        author: authors,
+        authors,
         monitoringOptions: { monitor }
       }),
       dataType: 'json'
