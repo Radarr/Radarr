@@ -24,7 +24,7 @@ namespace NzbDrone.Core.MediaFiles
         void Scan(Movie movie);
         string[] GetVideoFiles(string path, bool allDirectories = true);
         string[] GetNonVideoFiles(string path, bool allDirectories = true);
-        List<string> FilterFiles(string basePath, IEnumerable<string> files);
+        List<string> FilterFiles(string basePath, IEnumerable<string> files, bool filterExtras = true);
     }
 
     public class DiskScanService :
@@ -39,8 +39,6 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMediaFileTableCleanupService _mediaFileTableCleanupService;
         private readonly IRootFolderService _rootFolderService;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IMediaFileService _movieFileRepository;
-        private readonly IRenameMovieFileService _renameMovieFiles;
         private readonly Logger _logger;
 
         public DiskScanService(IDiskProvider diskProvider,
@@ -51,8 +49,6 @@ namespace NzbDrone.Core.MediaFiles
                                IMediaFileTableCleanupService mediaFileTableCleanupService,
                                IRootFolderService rootFolderService,
                                IEventAggregator eventAggregator,
-                               IMediaFileService movieFileRepository,
-                               IRenameMovieFileService renameMovieFiles,
                                Logger logger)
         {
             _diskProvider = diskProvider;
@@ -63,12 +59,11 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileTableCleanupService = mediaFileTableCleanupService;
             _rootFolderService = rootFolderService;
             _eventAggregator = eventAggregator;
-            _movieFileRepository = movieFileRepository;
-            _renameMovieFiles = renameMovieFiles;
             _logger = logger;
         }
 
-        private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(?:extras|@eadir|\.@__thumb|extrafanart|plex versions|\.[^\\/]+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ExcludedExtrasSubFolderRegex = new Regex(@"(?:\\|\/|^)(?:extras|extrafanart|behind the scenes|deleted scenes|featurettes|interviews|scenes|samples|shorts|trailers)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(?:@eadir|\.@__thumb|plex versions|\.[^\\/]+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|^Thumbs\.db$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public void Scan(Movie movie)
@@ -176,11 +171,18 @@ namespace NzbDrone.Core.MediaFiles
             return mediaFileList.ToArray();
         }
 
-        public List<string> FilterFiles(string basePath, IEnumerable<string> files)
+        public List<string> FilterFiles(string basePath, IEnumerable<string> files, bool filterExtras = true)
         {
-            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file)))
+            var filteredFiles =  files.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file)))
                         .Where(file => !ExcludedFilesRegex.IsMatch(Path.GetFileName(file)))
                         .ToList();
+
+            if (filterExtras)
+            {
+                filteredFiles = filteredFiles.Where(file => !ExcludedExtrasSubFolderRegex.IsMatch(basePath.GetRelativePath(file))).ToList();
+            }
+
+            return filteredFiles;
         }
 
         private void SetPermissions(string path)

@@ -156,6 +156,50 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
+        public void should_not_scan_various_extras_subfolders()
+        {
+            GivenMovieFolder();
+
+            GivenFiles(new List<string>
+                       {
+                           Path.Combine(_movie.Path, "Behind the Scenes", "file1.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Deleted Scenes", "file2.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Featurettes", "file3.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Interviews", "file4.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Samples", "file5.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Scenes", "file6.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Shorts", "file7.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Trailers", "file8.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "The Count of Monte Cristo (2002) (1080p BluRay x265 10bit Tigole).mkv").AsOsAgnostic(),
+                       });
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IMakeImportDecision>()
+                  .Verify(v => v.GetImportDecisions(It.Is<List<string>>(l => l.Count == 1), _movie), Times.Once());
+        }
+
+        [Test]
+        public void should_not_scan_featurettes_subfolders()
+        {
+            GivenMovieFolder();
+
+            GivenFiles(new List<string>
+                       {
+                           Path.Combine(_movie.Path, "Featurettes", "An Epic Reborn.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Featurettes", "Deleted & Alternate Scenes.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Featurettes", "En Garde - Multi-Angle Dailies.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Featurettes", "Layer-By-Layer - Sound Design - Multiple Audio.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "The Count of Monte Cristo (2002) (1080p BluRay x265 10bit Tigole).mkv").AsOsAgnostic(),
+                       });
+
+            Subject.Scan(_movie);
+
+            Mocker.GetMock<IMakeImportDecision>()
+                  .Verify(v => v.GetImportDecisions(It.Is<List<string>>(l => l.Count == 1), _movie), Times.Once());
+        }
+
+        [Test]
         public void should_not_create_if_movie_folder_does_not_exist_and_create_folder_disabled()
         {
             GivenRootFolder(_otherMovieFolder);
