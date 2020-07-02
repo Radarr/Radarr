@@ -240,29 +240,40 @@ namespace NzbDrone.Core.Books
             // hack - add the chilren in refresh children so we can control monitored status
         }
 
-        private void MonitorSingleEdition(List<Edition> releases)
+        private void MonitorSingleEdition(SortedChildren children)
         {
-            var monitored = releases.Where(x => x.Monitored).ToList();
-            if (!monitored.Any())
+            children.Old.ForEach(x => x.Monitored = false);
+            var monitored = children.Future.Where(x => x.Monitored).ToList();
+
+            if (monitored.Count == 1)
             {
-                monitored = releases;
+                return;
+            }
+
+            if (monitored.Count == 0)
+            {
+                monitored = children.Future;
             }
 
             var toMonitor = monitored.OrderByDescending(x => _mediaFileService.GetFilesByEdition(x.Id).Count)
-                .ThenByDescending(x => x.Ratings.Votes)
+                .ThenByDescending(x => x.Ratings.Popularity)
                 .First();
 
-            releases.ForEach(x => x.Monitored = false);
+            monitored.ForEach(x => x.Monitored = false);
             toMonitor.Monitored = true;
 
-            Debug.Assert(!releases.Any() || releases.Count(x => x.Monitored) == 1, "one edition monitored");
+            // force update of anything we've messed with
+            var extraToUpdate = children.UpToDate.Where(x => monitored.Contains(x));
+            children.UpToDate = children.UpToDate.Except(extraToUpdate).ToList();
+            children.Updated.AddRange(extraToUpdate);
+
+            Debug.Assert(!children.Future.Any() || children.Future.Count(x => x.Monitored) == 1, "one edition monitored");
         }
 
         protected override bool RefreshChildren(SortedChildren localChildren, List<Edition> remoteChildren, Author remoteData, bool forceChildRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
         {
             // make sure only one of the releases ends up monitored
-            localChildren.Old.ForEach(x => x.Monitored = false);
-            MonitorSingleEdition(localChildren.Future);
+            MonitorSingleEdition(localChildren);
 
             localChildren.All.ForEach(x => _logger.Trace($"release: {x} monitored: {x.Monitored}"));
 
