@@ -110,6 +110,12 @@ namespace Radarr.Api.V3.CustomFormats
 
             yield return new ReleaseTitleSpecification
             {
+                Name = "Surround Sound (N)",
+                Value = @"DTS-HDChina"
+            };
+
+            yield return new ReleaseTitleSpecification
+            {
                 Name = "Preferred Words",
                 Value = @"\b(SPARKS|Framestor)\b"
             };
