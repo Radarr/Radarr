@@ -16,7 +16,7 @@ import styles from './PlaylistInput.css';
 const columns = [
   {
     name: 'name',
-    label: 'Playlist',
+    label: 'Bookshelf',
     isSortable: false,
     isVisible: true
   }
@@ -125,7 +125,7 @@ class PlaylistInput extends Component {
         {
           isPopulated && !isFetching && user && !!items.length &&
             <div className={className}>
-              Select playlists to import from Goodreads user {user}.
+              Select bookshelves to import from Goodreads user {user}.
               <Table
                 columns={columns}
                 selectAll={true}

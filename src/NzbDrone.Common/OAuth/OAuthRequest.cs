@@ -31,6 +31,7 @@ namespace NzbDrone.Common.OAuth
 
         /// <seealso cref="http://oauth.net/core/1.0#request_urls"/>
         public virtual string RequestUrl { get; set; }
+        public virtual Dictionary<string, string> Parameters { get; set; }
 
 #if !WINRT
         public string GetAuthorizationHeader(NameValueCollection parameters)

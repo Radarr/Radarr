@@ -23,10 +23,6 @@ namespace NzbDrone.Core.Test.MusicTests
         [SetUp]
         public void Setup()
         {
-            _fakeAlbum = Builder<Book>
-                .CreateNew()
-                .Build();
-
             _fakeArtist = Builder<Author>
                 .CreateNew()
                 .With(s => s.Path = null)
@@ -36,6 +32,16 @@ namespace NzbDrone.Core.Test.MusicTests
 
         private void GivenValidAlbum(string readarrId)
         {
+            _fakeAlbum = Builder<Book>
+                .CreateNew()
+                .With(x => x.Editions = Builder<Edition>
+                      .CreateListOfSize(1)
+                      .TheFirst(1)
+                      .With(e => e.ForeignEditionId = readarrId)
+                      .With(e => e.Monitored = true)
+                      .BuildList())
+                .Build();
+
             Mocker.GetMock<IProvideBookInfo>()
                 .Setup(s => s.GetBookInfo(readarrId))
                 .Returns(Tuple.Create(_fakeArtist.Metadata.Value.ForeignAuthorId,

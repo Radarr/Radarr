@@ -62,6 +62,7 @@ namespace NzbDrone.Core.Books
 
             // Note it's a manual addition so it's not deleted on next refresh
             book.AddOptions.AddType = BookAddType.Manual;
+            book.Editions.Value.Single(x => x.Monitored).ManualAdd = true;
 
             // Add the author if necessary
             var dbAuthor = _authorService.FindById(book.AuthorMetadata.Value.ForeignAuthorId);
@@ -105,10 +106,11 @@ namespace NzbDrone.Core.Books
 
         private Book AddSkyhookData(Book newBook)
         {
+            var editionId = newBook.Editions.Value.Single(x => x.Monitored).ForeignEditionId;
             Tuple<string, Book, List<AuthorMetadata>> tuple = null;
             try
             {
-                tuple = _bookInfo.GetBookInfo(newBook.Editions.Value.Single(x => x.Monitored).ForeignEditionId);
+                tuple = _bookInfo.GetBookInfo(editionId);
             }
             catch (BookNotFoundException)
             {
@@ -122,6 +124,10 @@ namespace NzbDrone.Core.Books
 
             newBook.UseMetadataFrom(tuple.Item2);
             newBook.Added = DateTime.UtcNow;
+
+            newBook.Editions = tuple.Item2.Editions.Value;
+            newBook.Editions.Value.ForEach(x => x.Monitored = false);
+            newBook.Editions.Value.Single(x => x.ForeignEditionId == editionId).Monitored = true;
 
             var metadata = tuple.Item3.Single(x => x.ForeignAuthorId == tuple.Item1);
             newBook.AuthorMetadata = metadata;

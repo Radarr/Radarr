@@ -43,7 +43,12 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Returns<int>(x => Builder<Book>
                               .CreateListOfSize(1)
                               .TheFirst(1)
-                              .With(b => b.ForeignBookId = x.ToString())
+                              .With(b => b.Editions = Builder<Edition>
+                                    .CreateListOfSize(1)
+                                    .TheFirst(1)
+                                    .With(e => e.ForeignEditionId = x.ToString())
+                                    .With(e => e.Monitored = true)
+                                    .BuildList())
                               .BuildList());
 
             Mocker.GetMock<IImportListFactory>()
@@ -74,26 +79,26 @@ namespace NzbDrone.Core.Test.ImportListTests
 
         private void WithAuthorId()
         {
-            _importListReports.First().ArtistMusicBrainzId = "f59c5520-5f46-4d2c-b2c4-822eabf53419";
+            _importListReports.First().AuthorGoodreadsId = "f59c5520-5f46-4d2c-b2c4-822eabf53419";
         }
 
         private void WithBookId()
         {
-            _importListReports.First().AlbumMusicBrainzId = "101";
+            _importListReports.First().EditionGoodreadsId = "101";
         }
 
         private void WithExistingArtist()
         {
             Mocker.GetMock<IAuthorService>()
-                .Setup(v => v.FindById(_importListReports.First().ArtistMusicBrainzId))
-                .Returns(new Author { ForeignAuthorId = _importListReports.First().ArtistMusicBrainzId });
+                .Setup(v => v.FindById(_importListReports.First().AuthorGoodreadsId))
+                .Returns(new Author { ForeignAuthorId = _importListReports.First().AuthorGoodreadsId });
         }
 
         private void WithExistingAlbum()
         {
             Mocker.GetMock<IBookService>()
-                .Setup(v => v.FindById(_importListReports.First().AlbumMusicBrainzId))
-                .Returns(new Book { ForeignBookId = _importListReports.First().AlbumMusicBrainzId });
+                .Setup(v => v.FindById(_importListReports.First().EditionGoodreadsId))
+                .Returns(new Book { ForeignBookId = _importListReports.First().EditionGoodreadsId });
         }
 
         private void WithExcludedArtist()

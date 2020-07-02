@@ -255,6 +255,12 @@ namespace NzbDrone.Core.Books
                 monitored = children.Future;
             }
 
+            if (monitored.Count == 0)
+            {
+                // there are no future children so nothing to do
+                return;
+            }
+
             var toMonitor = monitored.OrderByDescending(x => _mediaFileService.GetFilesByEdition(x.Id).Count)
                 .ThenByDescending(x => x.Ratings.Popularity)
                 .First();

@@ -51,7 +51,7 @@ namespace NzbDrone.Core.ImportLists.Goodreads
             {
                 Author = x.Book.Authors.First().Name.CleanSpaces(),
                 Book = x.Book.TitleWithoutSeries.CleanSpaces(),
-                AlbumMusicBrainzId = x.Book.Uri.Replace("kca://book/", string.Empty)
+                EditionGoodreadsId = x.Book.Id.ToString()
             }).ToList();
         }
 

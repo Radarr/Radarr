@@ -10,6 +10,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.OAuth;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource.Goodreads;
@@ -37,7 +38,6 @@ namespace NzbDrone.Core.ImportLists.Goodreads
         public string AccessToken => Settings.AccessToken;
 
         protected HttpRequestBuilder RequestBuilder() => new HttpRequestBuilder("https://www.goodreads.com/{route}")
-            .AddQueryParam("key", "xQh8LhdTztb9u3cL26RqVg", true)
             .AddQueryParam("_nc", "1")
             .KeepAlive();
 
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.ImportLists.Goodreads
                     throw new BadRequestException("QueryParam callbackUrl invalid.");
                 }
 
-                var oAuthRequest = OAuthRequest.ForRequestToken(Settings.ConsumerKey, Settings.ConsumerSecret, query["callbackUrl"]);
+                var oAuthRequest = OAuthRequest.ForRequestToken(null, null, query["callbackUrl"]);
                 oAuthRequest.RequestUrl = Settings.OAuthRequestTokenUrl;
                 var qscoll = OAuthQuery(oAuthRequest);
 
@@ -99,7 +99,7 @@ namespace NzbDrone.Core.ImportLists.Goodreads
                     throw new BadRequestException("Missing requestTokenSecret.");
                 }
 
-                var oAuthRequest = OAuthRequest.ForAccessToken(Settings.ConsumerKey, Settings.ConsumerSecret, query["oauth_token"], query["requestTokenSecret"], "");
+                var oAuthRequest = OAuthRequest.ForAccessToken(null, null, query["oauth_token"], query["requestTokenSecret"], "");
                 oAuthRequest.RequestUrl = Settings.OAuthAccessTokenUrl;
                 var qscoll = OAuthQuery(oAuthRequest);
 
@@ -123,22 +123,41 @@ namespace NzbDrone.Core.ImportLists.Goodreads
 
         protected Common.Http.HttpResponse OAuthGet(HttpRequestBuilder builder)
         {
-            var auth = OAuthRequest.ForProtectedResource(builder.Method.ToString(), Settings.ConsumerKey, Settings.ConsumerSecret, Settings.AccessToken, Settings.AccessTokenSecret);
+            var auth = OAuthRequest.ForProtectedResource(builder.Method.ToString(), null, null, Settings.AccessToken, Settings.AccessTokenSecret);
 
             var request = builder.Build();
             request.LogResponseContent = true;
 
             // we need the url without the query to sign
             auth.RequestUrl = request.Url.SetQuery(null).FullUri;
+            auth.Parameters = builder.QueryParams.ToDictionary(x => x.Key, x => x.Value);
 
-            var header = auth.GetAuthorizationHeader(builder.QueryParams.ToDictionary(x => x.Key, x => x.Value));
+            var header = GetAuthorizationHeader(auth);
             request.Headers.Add("Authorization", header);
+
             return _httpClient.Get(request);
+        }
+
+        private string GetAuthorizationHeader(OAuthRequest oAuthRequest)
+        {
+            var request = new Common.Http.HttpRequest(Settings.SigningUrl)
+            {
+                Method = HttpMethod.POST,
+            };
+            request.Headers.Set("Content-Type", "application/json");
+
+            var payload = oAuthRequest.ToJson();
+            _logger.Trace(payload);
+            request.SetContent(payload);
+
+            var response = _httpClient.Post<AuthorizationHeader>(request).Resource;
+
+            return response.Authorization;
         }
 
         private NameValueCollection OAuthQuery(OAuthRequest oAuthRequest)
         {
-            var auth = oAuthRequest.GetAuthorizationHeader();
+            var auth = GetAuthorizationHeader(oAuthRequest);
             var request = new Common.Http.HttpRequest(oAuthRequest.RequestUrl);
             request.Headers.Add("Authorization", auth);
             var response = _httpClient.Get(request);
@@ -148,9 +167,7 @@ namespace NzbDrone.Core.ImportLists.Goodreads
 
         private Tuple<string, string> GetUser()
         {
-            var builder = RequestBuilder()
-                .SetSegment("route", $"api/auth_user")
-                .AddQueryParam("key", Settings.ConsumerKey, true);
+            var builder = RequestBuilder().SetSegment("route", $"api/auth_user");
 
             var httpResponse = OAuthGet(builder);
 
@@ -168,5 +185,10 @@ namespace NzbDrone.Core.ImportLists.Goodreads
 
             return Tuple.Create(userId, userName);
         }
+    }
+
+    public class AuthorizationHeader
+    {
+        public string Authorization { get; set; }
     }
 }
