@@ -124,6 +124,19 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Swedish);
         }
 
+        [TestCase("Sune.Best.Man.2019.NORDiC.1080p.BluRay.x264-RAPiDCOWS")]
+        public void should_parse_language_region(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+            result.Languages.Should().BeEquivalentTo(new List<NzbDrone.Core.Languages.Language>
+            {
+                Language.Norwegian,
+                Language.Swedish,
+                Language.Danish,
+                Language.Finnish
+            });
+        }
+
         [TestCase("Pulp.Fiction.1994.Norwegian.1080p.XviD-LOL")]
         public void should_parse_language_norwegian(string postTitle)
         {
