@@ -210,6 +210,11 @@ export const defaultState = {
       valueType: filterBuilderValueTypes.BOOL
     },
     {
+      name: 'title',
+      label: 'Title',
+      type: filterBuilderTypes.STRING
+    },
+    {
       name: 'status',
       label: 'Status',
       type: filterBuilderTypes.EXACT,
@@ -264,6 +269,11 @@ export const defaultState = {
       label: 'Added',
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
+    },
+    {
+      name: 'year',
+      label: 'Year',
+      type: filterBuilderTypes.NUMBER
     },
     {
       name: 'inCinemas',
