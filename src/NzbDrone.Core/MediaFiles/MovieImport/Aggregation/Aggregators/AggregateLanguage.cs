@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 
@@ -22,15 +23,26 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
             // between parsed languages the more preferred item will be used.
             var languages = new List<Language>();
 
-            languages.AddRange(GetLanguage(localMovie.DownloadClientMovieInfo));
-            languages.AddRange(GetLanguage(localMovie.FolderMovieInfo));
-            languages.AddRange(GetLanguage(localMovie.FileMovieInfo));
+            languages.AddRange(localMovie.DownloadClientMovieInfo?.Languages ?? new List<Language>());
 
-            var language = new List<Language> { languages.FirstOrDefault(l => l != Language.English) ?? Language.English };
+            if (!languages.Any(l => l != Language.English))
+            {
+                languages.AddRange(localMovie.FolderMovieInfo?.Languages ?? new List<Language>());
+            }
 
-            _logger.Debug("Using language: {0}", language.First());
+            if (!languages.Any(l => l != Language.English))
+            {
+                languages.AddRange(localMovie.FileMovieInfo?.Languages ?? new List<Language>());
+            }
 
-            localMovie.Languages = language;
+            if (!languages.Any())
+            {
+                languages.Add(Language.English);
+            }
+
+            _logger.Debug("Using languages: {0}", languages.Select(l => l.Name).ToList().Join(","));
+
+            localMovie.Languages = languages;
 
             return localMovie;
         }
