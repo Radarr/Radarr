@@ -66,7 +66,7 @@
 .title {
   font-weight: 300;
   font-size: 50px;
-  line-height: 50px;
+  line-height: 60px;
 }
 
 .toggleMonitoredContainer {
@@ -112,6 +112,7 @@
 
 .details {
   margin-bottom: 8px;
+  padding-left: 7px;
   font-weight: 300;
   font-size: 20px;
 }
@@ -121,7 +122,7 @@
 .rating,
 .year,
 .runtime {
-  margin-right: 15px;
+  margin-right: 14px;
 }
 
 .certification {
@@ -156,6 +157,7 @@
 .overview {
   flex: 1 0 auto;
   margin-top: 8px;
+  padding-left: 7px;
   min-height: 0;
   font-size: $intermediateFontSize;
 }

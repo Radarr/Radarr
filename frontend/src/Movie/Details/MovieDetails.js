@@ -12,6 +12,7 @@ import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import InfoLabel from 'Components/InfoLabel';
+import Marquee from 'Components/Marquee';
 import MovieStatusLabel from './MovieStatusLabel';
 import Measure from 'Components/Measure';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
@@ -35,7 +36,6 @@ import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
 import MovieTitlesTable from './Titles/MovieTitlesTable';
 import MovieCastPostersConnector from './Credits/Cast/MovieCastPostersConnector';
 import MovieCrewPostersConnector from './Credits/Crew/MovieCrewPostersConnector';
-import MovieAlternateTitles from './MovieAlternateTitles';
 import MovieDetailsLinks from './MovieDetailsLinks';
 import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
 import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
@@ -78,7 +78,8 @@ class MovieDetails extends Component {
       allCollapsed: false,
       expandedState: {},
       selectedTabIndex: 0,
-      overviewHeight: 0
+      overviewHeight: 0,
+      titleWidth: 0
     };
   }
 
@@ -151,6 +152,10 @@ class MovieDetails extends Component {
     this.setState({ overviewHeight: height });
   }
 
+  onTitleMeasure = ({ width }) => {
+    this.setState({ titleWidth: width });
+  }
+
   //
   // Render
 
@@ -174,7 +179,6 @@ class MovieDetails extends Component {
       youTubeTrailerId,
       inCinemas,
       images,
-      alternateTitles,
       tags,
       isSaving,
       isRefreshing,
@@ -199,6 +203,7 @@ class MovieDetails extends Component {
       isDeleteMovieModalOpen,
       isInteractiveImportModalOpen,
       overviewHeight,
+      titleWidth,
       selectedTabIndex
     } = this.state;
 
@@ -275,41 +280,43 @@ class MovieDetails extends Component {
               />
 
               <div className={styles.info}>
-                <div className={styles.titleRow}>
-                  <div className={styles.titleContainer}>
-                    <div className={styles.toggleMonitoredContainer}>
-                      <MonitorToggleButton
-                        className={styles.monitorToggleButton}
-                        monitored={monitored}
-                        isSaving={isSaving}
-                        size={40}
-                        onPress={onMonitorTogglePress}
+                <Measure onMeasure={this.onTitleMeasure}>
+                  <div className={styles.titleRow}>
+                    <div className={styles.titleContainer}>
+                      <div className={styles.toggleMonitoredContainer}>
+                        <MonitorToggleButton
+                          className={styles.monitorToggleButton}
+                          monitored={monitored}
+                          isSaving={isSaving}
+                          size={40}
+                          onPress={onMonitorTogglePress}
+                        />
+                      </div>
+
+                      <div className={styles.title} style={{ width: (titleWidth - 150) }}>
+                        <Marquee text={title} />
+                      </div>
+                    </div>
+
+                    <div className={styles.movieNavigationButtons}>
+                      <IconButton
+                        className={styles.movieNavigationButton}
+                        name={icons.ARROW_LEFT}
+                        size={30}
+                        title={`Go to ${previousMovie.title}`}
+                        to={`/movie/${previousMovie.titleSlug}`}
+                      />
+
+                      <IconButton
+                        className={styles.movieNavigationButton}
+                        name={icons.ARROW_RIGHT}
+                        size={30}
+                        title={`Go to ${nextMovie.title}`}
+                        to={`/movie/${nextMovie.titleSlug}`}
                       />
                     </div>
-
-                    <div className={styles.title}>
-                      {title}
-                    </div>
                   </div>
-
-                  <div className={styles.movieNavigationButtons}>
-                    <IconButton
-                      className={styles.movieNavigationButton}
-                      name={icons.ARROW_LEFT}
-                      size={30}
-                      title={`Go to ${previousMovie.title}`}
-                      to={`/movie/${previousMovie.titleSlug}`}
-                    />
-
-                    <IconButton
-                      className={styles.movieNavigationButton}
-                      name={icons.ARROW_RIGHT}
-                      size={30}
-                      title={`Go to ${nextMovie.title}`}
-                      to={`/movie/${nextMovie.titleSlug}`}
-                    />
-                  </div>
-                </div>
+                </Measure>
 
                 <div className={styles.details}>
                   <div>
@@ -453,7 +460,7 @@ class MovieDetails extends Component {
                   }
 
                   {
-                    !!studio &&
+                    !!studio && !isSmallScreen &&
                       <InfoLabel
                         className={styles.detailsInfoLabel}
                         title="Studio"
