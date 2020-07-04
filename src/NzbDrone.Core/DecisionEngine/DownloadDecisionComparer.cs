@@ -31,8 +31,8 @@ namespace NzbDrone.Core.DecisionEngine
             {
                 CompareQuality,
                 ComparePreferredWords,
-                CompareIndexerFlags,
                 CompareProtocol,
+                CompareIndexerFlags,
                 ComparePeersIfTorrent,
                 CompareAgeIfUsenet,
                 CompareSize
