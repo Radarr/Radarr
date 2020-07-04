@@ -116,6 +116,9 @@
   font-size: 20px;
 }
 
+.links,
+.tags,
+.rating,
 .year,
 .runtime {
   margin-right: 15px;
@@ -145,9 +148,7 @@
 .qualityProfileName,
 .statusName,
 .studio,
-.collection,
-.links,
-.tags {
+.collection {
   font-weight: 300;
   font-size: 17px;
 }

@@ -39,7 +39,7 @@ import MovieAlternateTitles from './MovieAlternateTitles';
 import MovieDetailsLinks from './MovieDetailsLinks';
 import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
 import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
-// import MovieTagsConnector from './MovieTagsConnector';
+import MovieTagsConnector from './MovieTagsConnector';
 import styles from './MovieDetails.css';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
@@ -175,7 +175,7 @@ class MovieDetails extends Component {
       inCinemas,
       images,
       alternateTitles,
-      // tags,
+      tags,
       isSaving,
       isRefreshing,
       isSearching,
@@ -290,23 +290,6 @@ class MovieDetails extends Component {
                     <div className={styles.title}>
                       {title}
                     </div>
-
-                    {
-                      !!alternateTitles.length &&
-                        <div className={styles.alternateTitlesIconContainer}>
-                          <Popover
-                            anchor={
-                              <Icon
-                                name={icons.ALTERNATE_TITLES}
-                                size={20}
-                              />
-                            }
-                            title="Alternate Titles"
-                            body={<MovieAlternateTitles alternateTitles={alternateTitles} />}
-                            position={tooltipPositions.BOTTOM}
-                          />
-                        </div>
-                    }
                   </div>
 
                   <div className={styles.movieNavigationButtons}>
@@ -353,10 +336,53 @@ class MovieDetails extends Component {
 
                     {
                       !!ratings &&
-                        <HeartRating
-                          rating={ratings.value}
-                          iconSize={20}
+                        <span className={styles.rating}>
+                          <HeartRating
+                            rating={ratings.value}
+                            iconSize={20}
+                          />
+                        </span>
+                    }
+
+                    {
+                      <span className={styles.links}>
+                        <Popover
+                          anchor={
+                            <Icon
+                              name={icons.EXTERNAL_LINK}
+                              size={20}
+                            />
+                          }
+                          title="Links"
+                          body={
+                            <MovieDetailsLinks
+                              tmdbId={tmdbId}
+                              imdbId={imdbId}
+                              youTubeTrailerId={youTubeTrailerId}
+                            />
+                          }
+                          position={tooltipPositions.BOTTOM}
                         />
+                      </span>
+                    }
+
+                    {
+                      !!tags.length &&
+                        <span className={styles.tags}>
+                          <Popover
+                            anchor={
+                              <Icon
+                                name={icons.TAGS}
+                                size={20}
+                              />
+                            }
+                            title="Tags"
+                            body={
+                              <MovieTagsConnector movieId={id} />
+                            }
+                            position={tooltipPositions.BOTTOM}
+                          />
+                        </span>
                     }
                   </div>
                 </div>
@@ -448,22 +474,6 @@ class MovieDetails extends Component {
                     />
                   </div>
                 </Measure>
-
-                <InfoLabel
-                  className={styles.detailsInfoLabel}
-                  title="Links"
-                  size={sizes.LARGE}
-                >
-                  <span className={styles.links}>
-                    {
-                      <MovieDetailsLinks
-                        tmdbId={tmdbId}
-                        imdbId={imdbId}
-                        youTubeTrailerId={youTubeTrailerId}
-                      />
-                    }
-                  </span>
-                </InfoLabel>
               </div>
             </div>
           </div>
