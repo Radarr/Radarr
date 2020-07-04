@@ -83,6 +83,20 @@ class MovieDetails extends Component {
     };
   }
 
+  componentDidMount() {
+    window.addEventListener('touchstart', this.onTouchStart);
+    window.addEventListener('touchend', this.onTouchEnd);
+    window.addEventListener('touchcancel', this.onTouchCancel);
+    window.addEventListener('touchmove', this.onTouchMove);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('touchstart', this.onTouchStart);
+    window.removeEventListener('touchend', this.onTouchEnd);
+    window.removeEventListener('touchcancel', this.onTouchCancel);
+    window.removeEventListener('touchmove', this.onTouchMove);
+  }
+
   //
   // Listeners
 
@@ -156,6 +170,58 @@ class MovieDetails extends Component {
     this.setState({ titleWidth: width });
   }
 
+  onTouchStart = (event) => {
+    const touches = event.touches;
+    const touchStart = touches[0].pageX;
+    const touchY = touches[0].pageY;
+
+    // Only change when swipe is on header, we need horizontal scroll on tables
+    if (touchY > 470) {
+      return;
+    }
+
+    if (touches.length !== 1) {
+      return;
+    }
+
+    if (
+      touchStart < 50 ||
+      this.props.isSidebarVisible ||
+      this.state.isEventModalOpen
+    ) {
+      return;
+    }
+
+    this._touchStart = touchStart;
+  }
+
+  onTouchEnd = (event) => {
+    const touches = event.changedTouches;
+    const currentTouch = touches[0].pageX;
+
+    if (!this._touchStart) {
+      return;
+    }
+
+    if (currentTouch > this._touchStart && currentTouch - this._touchStart > 100) {
+      this.props.onGoToMovie(this.props.previousMovie.titleSlug);
+    } else if (currentTouch < this._touchStart && this._touchStart - currentTouch > 100) {
+      this.props.onGoToMovie(this.props.nextMovie.titleSlug);
+    }
+
+    this._touchStart = null;
+  }
+
+  onTouchCancel = (event) => {
+    this._touchStart = null;
+  }
+
+  onTouchMove = (event) => {
+    if (!this._touchStart) {
+      return;
+    }
+  }
+
   //
   // Render
 
@@ -206,6 +272,8 @@ class MovieDetails extends Component {
       titleWidth,
       selectedTabIndex
     } = this.state;
+
+    const marqueeWidth = isSmallScreen ? titleWidth : (titleWidth - 150);
 
     return (
       <PageContent title={title}>
@@ -293,7 +361,7 @@ class MovieDetails extends Component {
                         />
                       </div>
 
-                      <div className={styles.title} style={{ width: (titleWidth - 150) }}>
+                      <div className={styles.title} style={{ width: marqueeWidth }}>
                         <Marquee text={title} />
                       </div>
                     </div>
@@ -665,6 +733,7 @@ MovieDetails.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
+  isSidebarVisible: PropTypes.bool.isRequired,
   movieFilesError: PropTypes.object,
   movieCreditsError: PropTypes.object,
   extraFilesError: PropTypes.object,
@@ -673,7 +742,8 @@ MovieDetails.propTypes = {
   nextMovie: PropTypes.object.isRequired,
   onMonitorTogglePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
-  onSearchPress: PropTypes.func.isRequired
+  onSearchPress: PropTypes.func.isRequired,
+  onGoToMovie: PropTypes.func.isRequired
 };
 
 MovieDetails.defaultProps = {

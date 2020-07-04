@@ -2,6 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import { createSelector } from 'reselect';
 import { findCommand, isCommandExecuting } from 'Utilities/Command';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
@@ -86,7 +87,8 @@ function createMapStateToProps() {
     createAllMoviesSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (titleSlug, movieFiles, movieCredits, extraFiles, allMovies, commands, dimensions) => {
+    (state) => state.app.isSidebarVisible,
+    (titleSlug, movieFiles, movieCredits, extraFiles, allMovies, commands, dimensions, isSidebarVisible) => {
       const sortedMovies = _.orderBy(allMovies, 'sortTitle');
       const movieIndex = _.findIndex(sortedMovies, { titleSlug });
       const movie = sortedMovies[movieIndex];
@@ -157,27 +159,59 @@ function createMapStateToProps() {
         sizeOnDisk,
         previousMovie,
         nextMovie,
-        isSmallScreen: dimensions.isSmallScreen
+        isSmallScreen: dimensions.isSmallScreen,
+        isSidebarVisible
       };
     }
   );
 }
 
-const mapDispatchToProps = {
-  fetchMovieFiles,
-  clearMovieFiles,
-  fetchMovieCredits,
-  clearMovieCredits,
-  fetchExtraFiles,
-  clearExtraFiles,
-  clearReleases,
-  cancelFetchReleases,
-  fetchNetImportSchema,
-  toggleMovieMonitored,
-  fetchQueueDetails,
-  clearQueueDetails,
-  executeCommand
-};
+function createMapDispatchToProps(dispatch, props) {
+  return {
+    dispatchFetchMovieFiles({ movieId }) {
+      dispatch(fetchMovieFiles({ movieId }));
+    },
+    dispatchClearMovieFiles() {
+      dispatch(clearMovieFiles());
+    },
+    dispatchFetchMovieCredits({ movieId }) {
+      dispatch(fetchMovieCredits({ movieId }));
+    },
+    dispatchClearMovieCredits() {
+      dispatch(clearMovieCredits());
+    },
+    dispatchFetchExtraFiles({ movieId }) {
+      dispatch(fetchExtraFiles({ movieId }));
+    },
+    dispatchClearExtraFiles() {
+      dispatch(clearExtraFiles());
+    },
+    dispatchClearReleases() {
+      dispatch(clearReleases());
+    },
+    dispatchCancelFetchReleases() {
+      dispatch(cancelFetchReleases());
+    },
+    dispatchFetchQueueDetails({ movieId }) {
+      dispatch(fetchQueueDetails({ movieId }));
+    },
+    dispatchClearQueueDetails() {
+      dispatch(clearQueueDetails());
+    },
+    dispatchFetchNetImportSchema() {
+      dispatch(fetchNetImportSchema());
+    },
+    dispatchToggleMovieMonitored(payload) {
+      dispatch(toggleMovieMonitored(payload));
+    },
+    dispatchExecuteCommand(payload) {
+      dispatch(executeCommand(payload));
+    },
+    onGoToMovie(titleSlug) {
+      dispatch(push(`${window.Radarr.urlBase}/movie/${titleSlug}`));
+    }
+  };
+}
 
 class MovieDetailsConnector extends Component {
 
@@ -227,41 +261,41 @@ class MovieDetailsConnector extends Component {
   populate = () => {
     const movieId = this.props.id;
 
-    this.props.fetchMovieFiles({ movieId });
-    this.props.fetchExtraFiles({ movieId });
-    this.props.fetchMovieCredits({ movieId });
-    this.props.fetchQueueDetails({ movieId });
-    this.props.fetchNetImportSchema();
+    this.props.dispatchFetchMovieFiles({ movieId });
+    this.props.dispatchFetchExtraFiles({ movieId });
+    this.props.dispatchFetchMovieCredits({ movieId });
+    this.props.dispatchFetchQueueDetails({ movieId });
+    this.props.dispatchFetchNetImportSchema();
   }
 
   unpopulate = () => {
-    this.props.cancelFetchReleases();
-    this.props.clearMovieFiles();
-    this.props.clearExtraFiles();
-    this.props.clearMovieCredits();
-    this.props.clearQueueDetails();
-    this.props.clearReleases();
+    this.props.dispatchCancelFetchReleases();
+    this.props.dispatchClearMovieFiles();
+    this.props.dispatchClearExtraFiles();
+    this.props.dispatchClearMovieCredits();
+    this.props.dispatchClearQueueDetails();
+    this.props.dispatchClearReleases();
   }
 
   //
   // Listeners
 
   onMonitorTogglePress = (monitored) => {
-    this.props.toggleMovieMonitored({
+    this.props.dispatchToggleMovieMonitored({
       movieId: this.props.id,
       monitored
     });
   }
 
   onRefreshPress = () => {
-    this.props.executeCommand({
+    this.props.dispatchExecuteCommand({
       name: commandNames.REFRESH_MOVIE,
       movieId: this.props.id
     });
   }
 
   onSearchPress = () => {
-    this.props.executeCommand({
+    this.props.dispatchExecuteCommand({
       name: commandNames.MOVIE_SEARCH,
       movieIds: [this.props.id]
     });
@@ -291,19 +325,20 @@ MovieDetailsConnector.propTypes = {
   isRenamingFiles: PropTypes.bool.isRequired,
   isRenamingMovie: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
-  fetchMovieFiles: PropTypes.func.isRequired,
-  clearMovieFiles: PropTypes.func.isRequired,
-  fetchExtraFiles: PropTypes.func.isRequired,
-  clearExtraFiles: PropTypes.func.isRequired,
-  fetchMovieCredits: PropTypes.func.isRequired,
-  clearMovieCredits: PropTypes.func.isRequired,
-  clearReleases: PropTypes.func.isRequired,
-  cancelFetchReleases: PropTypes.func.isRequired,
-  toggleMovieMonitored: PropTypes.func.isRequired,
-  fetchQueueDetails: PropTypes.func.isRequired,
-  clearQueueDetails: PropTypes.func.isRequired,
-  fetchNetImportSchema: PropTypes.func.isRequired,
-  executeCommand: PropTypes.func.isRequired
+  dispatchFetchMovieFiles: PropTypes.func.isRequired,
+  dispatchClearMovieFiles: PropTypes.func.isRequired,
+  dispatchFetchExtraFiles: PropTypes.func.isRequired,
+  dispatchClearExtraFiles: PropTypes.func.isRequired,
+  dispatchFetchMovieCredits: PropTypes.func.isRequired,
+  dispatchClearMovieCredits: PropTypes.func.isRequired,
+  dispatchClearReleases: PropTypes.func.isRequired,
+  dispatchCancelFetchReleases: PropTypes.func.isRequired,
+  dispatchToggleMovieMonitored: PropTypes.func.isRequired,
+  dispatchFetchQueueDetails: PropTypes.func.isRequired,
+  dispatchClearQueueDetails: PropTypes.func.isRequired,
+  dispatchFetchNetImportSchema: PropTypes.func.isRequired,
+  dispatchExecuteCommand: PropTypes.func.isRequired,
+  onGoToMovie: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(MovieDetailsConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(MovieDetailsConnector);
