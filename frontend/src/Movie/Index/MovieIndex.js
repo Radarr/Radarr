@@ -278,7 +278,10 @@ class MovieIndex extends Component {
   }
 
   onSearchConfirmed = () => {
-    this.props.onSearchPress(this.state.searchType, this.props.items.map((m) => m.id));
+    const selectedMovieIds = this.getSelectedIds();
+    const searchIds = this.state.isMovieEditorActive && selectedMovieIds.length > 0 ? selectedMovieIds : this.props.items.map((m) => m.id);
+
+    this.props.onSearchPress(this.state.searchType, searchIds);
     this.setState({ isConfirmSearchModalOpen: false });
   }
 
@@ -341,6 +344,9 @@ class MovieIndex extends Component {
     const isLoaded = !!(!error && isPopulated && items.length && scroller);
     const hasNoMovie = !totalItems;
 
+    const searchIndexLabel = selectedFilterKey === 'all' ? 'Search All' : 'Search Filtered';
+    const searchEditorLabel = selectedMovieIds.length > 0 ? 'Search Selected' : 'Search All';
+
     return (
       <PageContent>
         <PageToolbar>
@@ -365,7 +371,7 @@ class MovieIndex extends Component {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label={selectedFilterKey === 'all' ? 'Search All' : 'Search Filtered'}
+              label={isMovieEditorActive ? searchEditorLabel : searchIndexLabel}
               iconName={icons.SEARCH}
               isDisabled={isSearchingMovies || !items.length}
               onPress={this.onSearchPress}
@@ -578,7 +584,7 @@ class MovieIndex extends Component {
           message={
             <div>
               <div>
-                Are you sure you want to perform mass movie search for {this.props.items.length} movies?
+                Are you sure you want to perform mass movie search for {isMovieEditorActive && selectedMovieIds.length > 0 ? selectedMovieIds.length : this.props.items.length} movies?
               </div>
               <div>
                 This cannot be cancelled once started without restarting Radarr.
