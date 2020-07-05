@@ -53,6 +53,12 @@
   flex: 0 0 100px;
 }
 
+.year {
+  composes: cell;
+
+  flex: 0 0 80px;
+}
+
 .path {
   composes: cell;
 

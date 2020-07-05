@@ -69,6 +69,7 @@ class MovieIndexRow extends Component {
       studio,
       qualityProfile,
       added,
+      year,
       inCinemas,
       physicalRelease,
       runtime,
@@ -188,6 +189,17 @@ class MovieIndexRow extends Component {
                   date={added}
                   component={VirtualTableRowCell}
                 />
+              );
+            }
+
+            if (name === 'year') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {year}
+                </VirtualTableRowCell>
               );
             }
 
@@ -386,6 +398,7 @@ MovieIndexRow.propTypes = {
   collection: PropTypes.object,
   qualityProfile: PropTypes.object.isRequired,
   added: PropTypes.string,
+  year: PropTypes.number,
   inCinemas: PropTypes.string,
   physicalRelease: PropTypes.string,
   runtime: PropTypes.number,

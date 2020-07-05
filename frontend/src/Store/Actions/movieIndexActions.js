@@ -102,6 +102,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'year',
+      label: 'Year',
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'inCinemas',
       label: 'In Cinemas',
       isSortable: true,
