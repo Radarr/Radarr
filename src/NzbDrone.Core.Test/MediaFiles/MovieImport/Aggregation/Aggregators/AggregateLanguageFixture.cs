@@ -1,9 +1,14 @@
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
+using FluentAssertions.Common;
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators;
+using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Language;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 
@@ -13,15 +18,45 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
     public class AggregateLanguageFixture : CoreTest<AggregateLanguage>
     {
         private LocalMovie _localMovie;
+        private Movie _movie;
 
         [SetUp]
         public void Setup()
         {
+            _movie = Builder<Movie>.CreateNew()
+                                   .With(m => m.OriginalLanguage = Language.English)
+                                   .Build();
+
             _localMovie = Builder<LocalMovie>.CreateNew()
                                                  .With(l => l.DownloadClientMovieInfo = null)
                                                  .With(l => l.FolderMovieInfo = null)
                                                  .With(l => l.FileMovieInfo = null)
+                                                 .With(l => l.Movie = _movie)
                                                  .Build();
+        }
+
+        private void GivenAugmenters(List<Language> fileNameLanguages, List<Language> folderNameLanguages, List<Language> clientLanguages, List<Language> mediaInfoLanguages)
+        {
+            var fileNameAugmenter = new Mock<IAugmentLanguage>();
+            var folderNameAugmenter = new Mock<IAugmentLanguage>();
+            var clientInfoAugmenter = new Mock<IAugmentLanguage>();
+            var mediaInfoAugmenter = new Mock<IAugmentLanguage>();
+
+            fileNameAugmenter.Setup(s => s.AugmentLanguage(It.IsAny<LocalMovie>()))
+                   .Returns(new AugmentLanguageResult(fileNameLanguages, Confidence.Filename));
+
+            folderNameAugmenter.Setup(s => s.AugmentLanguage(It.IsAny<LocalMovie>()))
+                   .Returns(new AugmentLanguageResult(folderNameLanguages, Confidence.Foldername));
+
+            clientInfoAugmenter.Setup(s => s.AugmentLanguage(It.IsAny<LocalMovie>()))
+                   .Returns(new AugmentLanguageResult(clientLanguages, Confidence.DownloadClientItem));
+
+            mediaInfoAugmenter.Setup(s => s.AugmentLanguage(It.IsAny<LocalMovie>()))
+                   .Returns(new AugmentLanguageResult(mediaInfoLanguages, Confidence.MediaInfo));
+
+            var mocks = new List<Mock<IAugmentLanguage>> { fileNameAugmenter, folderNameAugmenter, clientInfoAugmenter, mediaInfoAugmenter };
+
+            Mocker.SetConstant<IEnumerable<IAugmentLanguage>>(mocks.Select(c => c.Object));
         }
 
         private ParsedMovieInfo GetParsedMovieInfo(List<Language> languages)
@@ -35,56 +70,77 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
         [Test]
         public void should_return_default_if_no_info_is_known()
         {
-            Subject.Aggregate(_localMovie, false).Languages.Should().Contain(Language.Unknown);
+            var result = Subject.Aggregate(_localMovie, false);
+
+            result.Languages.Should().Contain(_movie.OriginalLanguage);
         }
 
         [Test]
         public void should_return_file_language_when_only_file_info_is_known()
         {
-            _localMovie.FileMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
+            GivenAugmenters(new List<Language> { Language.French },
+                            null,
+                            null,
+                            null);
 
-            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(_localMovie.FileMovieInfo.Languages);
+            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(new List<Language> { Language.French });
         }
 
         [Test]
         public void should_return_folder_language_when_folder_info_is_known()
         {
-            _localMovie.FolderMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
-            _localMovie.FileMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
+            GivenAugmenters(new List<Language> { Language.French },
+                            new List<Language> { Language.German },
+                            null,
+                            null);
 
             var aggregation = Subject.Aggregate(_localMovie, false);
 
-            aggregation.Languages.Should().Equal(_localMovie.FolderMovieInfo.Languages);
+            aggregation.Languages.Should().Equal(new List<Language> { Language.German });
         }
 
         [Test]
         public void should_return_download_client_item_language_when_download_client_item_info_is_known()
         {
-            _localMovie.DownloadClientMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
-            _localMovie.FolderMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
-            _localMovie.FileMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
+            GivenAugmenters(new List<Language> { Language.French },
+                            new List<Language> { Language.German },
+                            new List<Language> { Language.Spanish },
+                            null);
 
-            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(_localMovie.DownloadClientMovieInfo.Languages);
-        }
-
-        [Test]
-        public void should_return_file_language_when_file_language_is_higher_than_others()
-        {
-            _localMovie.DownloadClientMovieInfo = GetParsedMovieInfo(new List<Language> { Language.Unknown });
-            _localMovie.FolderMovieInfo = GetParsedMovieInfo(new List<Language> { Language.Unknown });
-            _localMovie.FileMovieInfo = GetParsedMovieInfo(new List<Language> { Language.French });
-
-            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(_localMovie.FileMovieInfo.Languages);
+            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(new List<Language> { Language.Spanish });
         }
 
         [Test]
         public void should_return_multi_language()
         {
-            _localMovie.DownloadClientMovieInfo = GetParsedMovieInfo(new List<Language> { Language.Unknown });
-            _localMovie.FolderMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English, Language.German });
-            _localMovie.FileMovieInfo = GetParsedMovieInfo(new List<Language> { Language.Unknown });
+            GivenAugmenters(new List<Language> { Language.Unknown },
+                            new List<Language> { Language.French, Language.German },
+                            new List<Language> { Language.Unknown },
+                            null);
 
-            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(_localMovie.FolderMovieInfo.Languages);
+            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(new List<Language> { Language.French, Language.German });
+        }
+
+        [Test]
+        public void should_use_mediainfo_over_others()
+        {
+            GivenAugmenters(new List<Language> { Language.Unknown },
+                            new List<Language> { Language.French, Language.German },
+                            new List<Language> { Language.Unknown },
+                            new List<Language> { Language.Japanese, Language.English });
+
+            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(new List<Language> { Language.Japanese, Language.English });
+        }
+
+        [Test]
+        public void should_not_use_mediainfo_if_unknown()
+        {
+            GivenAugmenters(new List<Language> { Language.Unknown },
+                            new List<Language> { Language.French, Language.German },
+                            new List<Language> { Language.Unknown },
+                            new List<Language> { Language.Unknown });
+
+            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(new List<Language> { Language.French, Language.German });
         }
     }
 }
