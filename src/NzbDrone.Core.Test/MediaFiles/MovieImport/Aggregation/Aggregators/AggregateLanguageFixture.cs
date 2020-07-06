@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
         {
             _localMovie.FileMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
 
-            Subject.Aggregate(_localMovie, false).Languages.Should().Contain(_localMovie.FileMovieInfo.Languages);
+            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(_localMovie.FileMovieInfo.Languages);
         }
 
         [Test]
@@ -52,7 +52,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
             _localMovie.FolderMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
             _localMovie.FileMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
 
-            Subject.Aggregate(_localMovie, false).Languages.Should().Contain(_localMovie.FolderMovieInfo.Languages);
+            var aggregation = Subject.Aggregate(_localMovie, false);
+
+            aggregation.Languages.Should().Equal(_localMovie.FolderMovieInfo.Languages);
         }
 
         [Test]
@@ -62,7 +64,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
             _localMovie.FolderMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
             _localMovie.FileMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
 
-            Subject.Aggregate(_localMovie, false).Languages.Should().Contain(_localMovie.DownloadClientMovieInfo.Languages);
+            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(_localMovie.DownloadClientMovieInfo.Languages);
         }
 
         [Test]
@@ -72,7 +74,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
             _localMovie.FolderMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
             _localMovie.FileMovieInfo = GetParsedMovieInfo(new List<Language> { Language.French });
 
-            Subject.Aggregate(_localMovie, false).Languages.Should().Contain(_localMovie.FileMovieInfo.Languages);
+            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(_localMovie.FileMovieInfo.Languages);
         }
 
         [Test]
@@ -82,7 +84,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
             _localMovie.FolderMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English, Language.German });
             _localMovie.FileMovieInfo = GetParsedMovieInfo(new List<Language> { Language.English });
 
-            Subject.Aggregate(_localMovie, false).Languages.Should().Contain(_localMovie.FolderMovieInfo.Languages);
+            Subject.Aggregate(_localMovie, false).Languages.Should().Equal(_localMovie.FolderMovieInfo.Languages);
         }
     }
 }

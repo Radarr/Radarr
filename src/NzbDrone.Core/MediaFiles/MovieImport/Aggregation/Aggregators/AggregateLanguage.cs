@@ -27,12 +27,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 
             if (!languages.Any(l => l != Language.English))
             {
-                languages.AddRange(localMovie.FolderMovieInfo?.Languages ?? new List<Language>());
+                languages = localMovie.FolderMovieInfo?.Languages ?? new List<Language>();
             }
 
             if (!languages.Any(l => l != Language.English))
             {
-                languages.AddRange(localMovie.FileMovieInfo?.Languages ?? new List<Language>());
+                languages = localMovie.FileMovieInfo?.Languages ?? new List<Language>();
             }
 
             if (!languages.Any())
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 
             _logger.Debug("Using languages: {0}", languages.Select(l => l.Name).ToList().Join(","));
 
-            localMovie.Languages = languages;
+            localMovie.Languages = languages.Distinct().ToList();
 
             return localMovie;
         }
