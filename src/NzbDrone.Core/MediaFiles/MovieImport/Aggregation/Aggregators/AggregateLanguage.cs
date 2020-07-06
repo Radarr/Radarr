@@ -1,53 +1,43 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Language;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 {
     public class AggregateLanguage : IAggregateLocalMovie
     {
+        private readonly IEnumerable<IAugmentLanguage> _augmentQualities;
         private readonly Logger _logger;
 
-        public AggregateLanguage(Logger logger)
+        public AggregateLanguage(IEnumerable<IAugmentLanguage> augmentQualities,
+                                Logger logger)
         {
+            _augmentQualities = augmentQualities;
             _logger = logger;
         }
 
         public LocalMovie Aggregate(LocalMovie localMovie, bool otherFiles)
         {
-            // Get languages in preferred order, download client item, folder and finally file.
-            // Non-English languages will be preferred later, in the event there is a conflict
-            // between parsed languages the more preferred item will be used.
-            var languages = new List<Language>();
+            var augmentedLanguages = _augmentQualities.Select(a => a.AugmentLanguage(localMovie))
+                                                      .Where(a => a != null)
+                                                      .OrderBy(a => a.Confidence);
 
-            languages.AddRange(localMovie.DownloadClientMovieInfo?.Languages ?? new List<Language>());
+            var languages = new List<Language> { localMovie.Movie.OriginalLanguage ?? Language.Unknown };
+            var languagesConfidence = Confidence.Default;
 
-            if (!languages.Any(l => l != Language.Unknown))
+            foreach (var augmentedLanguage in augmentedLanguages)
             {
-                languages = localMovie.FolderMovieInfo?.Languages ?? new List<Language>();
+                if (augmentedLanguage?.Languages != null && augmentedLanguage.Languages.Count > 0 && !(augmentedLanguage.Languages.Count == 1 && augmentedLanguage.Languages.Contains(Language.Unknown)))
+                {
+                    languages = augmentedLanguage.Languages;
+                    languagesConfidence = augmentedLanguage.Confidence;
+                }
             }
 
-            if (!languages.Any(l => l != Language.Unknown))
-            {
-                languages = localMovie.FileMovieInfo?.Languages ?? new List<Language>();
-            }
-
-            if (!languages.Any())
-            {
-                languages.Add(Language.Unknown);
-            }
-
-            languages = languages.Distinct().ToList();
-
-            if (languages.Count == 1 && languages.Contains(Language.Unknown))
-            {
-                languages = new List<Language> { localMovie.Movie.OriginalLanguage };
-            }
-
-            _logger.Debug("Using languages: {0}", languages.Select(l => l.Name).ToList().Join(","));
+            _logger.Debug("Using languages: {0}", languages);
 
             localMovie.Languages = languages;
 
