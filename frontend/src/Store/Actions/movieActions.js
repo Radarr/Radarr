@@ -126,6 +126,10 @@ export const filterPredicates = {
     return dateFilterPredicate(item.physicalRelease, filterValue, type);
   },
 
+  digitalRelease: function(item, filterValue, type) {
+    return dateFilterPredicate(item.digitalRelease, filterValue, type);
+  },
+
   ratings: function(item, filterValue, type) {
     const predicate = filterTypePredicates[type];
 

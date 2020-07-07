@@ -39,6 +39,7 @@
 .added,
 .inCinemas,
 .physicalRelease,
+.digitalRelease,
 .runtime,
 .genres {
   composes: cell;

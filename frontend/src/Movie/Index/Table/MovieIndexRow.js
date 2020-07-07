@@ -72,6 +72,7 @@ class MovieIndexRow extends Component {
       year,
       inCinemas,
       physicalRelease,
+      digitalRelease,
       runtime,
       minimumAvailability,
       path,
@@ -220,6 +221,17 @@ class MovieIndexRow extends Component {
                   key={name}
                   className={styles[name]}
                   date={physicalRelease}
+                  component={VirtualTableRowCell}
+                />
+              );
+            }
+
+            if (name === 'digitalRelease') {
+              return (
+                <RelativeDateCellConnector
+                  key={name}
+                  className={styles[name]}
+                  date={digitalRelease}
                   component={VirtualTableRowCell}
                 />
               );
@@ -401,6 +413,7 @@ MovieIndexRow.propTypes = {
   year: PropTypes.number,
   inCinemas: PropTypes.string,
   physicalRelease: PropTypes.string,
+  digitalRelease: PropTypes.string,
   runtime: PropTypes.number,
   minimumAvailability: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,

@@ -45,6 +45,7 @@ import {
   faCloud as fasCloud,
   faCog as fasCog,
   faCogs as fasCogs,
+  faCompactDisc as fasCompactDisc,
   faCopy as fasCopy,
   faDesktop as fasDesktop,
   faDownload as fasDownload,
@@ -133,6 +134,7 @@ export const COLLAPSE = fasChevronCircleUp;
 export const COMPUTER = fasDesktop;
 export const DANGER = fasExclamationCircle;
 export const DELETE = fasTrashAlt;
+export const DISC = fasCompactDisc;
 export const DOWNLOAD = fasDownload;
 export const DOWNLOADED = fasDownload;
 export const DOWNLOADING = fasCloudDownloadAlt;

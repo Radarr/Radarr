@@ -32,6 +32,7 @@
 .added,
 .inCinemas,
 .physicalRelease,
+.digitalRelease,
 .runtime,
 .genres {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
