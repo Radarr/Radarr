@@ -40,6 +40,7 @@ import MovieDetailsLinks from './MovieDetailsLinks';
 import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
 import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
 import MovieTagsConnector from './MovieTagsConnector';
+import MovieReleaseDatesConnector from './MovieReleaseDatesConnector';
 import styles from './MovieDetails.css';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
@@ -232,6 +233,9 @@ class MovieDetails extends Component {
       imdbId,
       title,
       year,
+      inCinemas,
+      physicalRelease,
+      digitalRelease,
       runtime,
       certification,
       ratings,
@@ -398,7 +402,20 @@ class MovieDetails extends Component {
                     {
                       year > 0 &&
                         <span className={styles.year}>
-                          {year}
+                          <Popover
+                            anchor={
+                              year
+                            }
+                            title="Release Dates"
+                            body={
+                              <MovieReleaseDatesConnector
+                                inCinemas={inCinemas}
+                                physicalRelease={physicalRelease}
+                                digitalRelease={digitalRelease}
+                              />
+                            }
+                            position={tooltipPositions.BOTTOM}
+                          />
                         </span>
                     }
 
@@ -724,6 +741,8 @@ MovieDetails.propTypes = {
   youTubeTrailerId: PropTypes.string,
   isAvailable: PropTypes.bool.isRequired,
   inCinemas: PropTypes.string,
+  physicalRelease: PropTypes.string,
+  digitalRelease: PropTypes.string,
   overview: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.string).isRequired,

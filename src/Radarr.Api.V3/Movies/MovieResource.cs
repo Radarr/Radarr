@@ -35,6 +35,7 @@ namespace Radarr.Api.V3.Movies
         public string Overview { get; set; }
         public DateTime? InCinemas { get; set; }
         public DateTime? PhysicalRelease { get; set; }
+        public DateTime? DigitalRelease { get; set; }
         public string PhysicalReleaseNote { get; set; }
         public List<MediaCover> Images { get; set; }
         public string Website { get; set; }
@@ -94,6 +95,7 @@ namespace Radarr.Api.V3.Movies
                 SortTitle = model.SortTitle,
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
+                DigitalRelease = model.DigitalRelease,
                 HasFile = model.HasFile,
 
                 SizeOnDisk = size,
@@ -156,6 +158,7 @@ namespace Radarr.Api.V3.Movies
                 SortTitle = translatedTitle.NormalizeTitle(),
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
+                DigitalRelease = model.DigitalRelease,
                 HasFile = model.HasFile,
 
                 SizeOnDisk = size,
@@ -217,6 +220,7 @@ namespace Radarr.Api.V3.Movies
                 SortTitle = translatedTitle.NormalizeTitle(),
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
+                DigitalRelease = model.DigitalRelease,
                 HasFile = model.HasFile,
 
                 SizeOnDisk = size,

@@ -65,6 +65,15 @@ function MovieIndexSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
+          name="year"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          Year
+        </SortMenuItem>
+
+        <SortMenuItem
           name="inCinemas"
           sortKey={sortKey}
           sortDirection={sortDirection}
@@ -80,6 +89,15 @@ function MovieIndexSortMenu(props) {
           onPress={onSortSelect}
         >
           Physical Release
+        </SortMenuItem>
+
+        <SortMenuItem
+          name="digitalRelease"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          Digital Release
         </SortMenuItem>
 
         <SortMenuItem

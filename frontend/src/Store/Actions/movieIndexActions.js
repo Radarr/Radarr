@@ -120,6 +120,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'digitalRelease',
+      label: 'Digital Release',
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'runtime',
       label: 'Runtime',
       isSortable: true,
@@ -290,6 +296,12 @@ export const defaultState = {
     {
       name: 'physicalRelease',
       label: 'Physical Release',
+      type: filterBuilderTypes.DATE,
+      valueType: filterBuilderValueTypes.DATE
+    },
+    {
+      name: 'digitalRelease',
+      label: 'Digital Release',
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
