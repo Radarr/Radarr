@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using FluentAssertions.Common;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Languages;

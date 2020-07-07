@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace NzbDrone.Core.NetImport.Trakt
 {
     public class TraktMovieIdsResource

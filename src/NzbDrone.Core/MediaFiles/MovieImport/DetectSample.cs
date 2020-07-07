@@ -4,7 +4,6 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport
 {
