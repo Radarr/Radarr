@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.NetImport.TMDb.Person

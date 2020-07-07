@@ -10,7 +10,6 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Security;
 
 namespace NzbDrone.Core.Configuration

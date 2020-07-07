@@ -11,7 +11,6 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
