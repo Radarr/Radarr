@@ -114,14 +114,14 @@ export const defaultState = {
       isVisible: false
     },
     {
-      name: 'physicalRelease',
-      label: 'Physical Release',
+      name: 'digitalRelease',
+      label: 'Digital Release',
       isSortable: true,
       isVisible: false
     },
     {
-      name: 'digitalRelease',
-      label: 'Digital Release',
+      name: 'physicalRelease',
+      label: 'Physical Release',
       isSortable: true,
       isVisible: false
     },

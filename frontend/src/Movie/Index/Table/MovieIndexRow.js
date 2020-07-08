@@ -215,23 +215,23 @@ class MovieIndexRow extends Component {
               );
             }
 
-            if (name === 'physicalRelease') {
-              return (
-                <RelativeDateCellConnector
-                  key={name}
-                  className={styles[name]}
-                  date={physicalRelease}
-                  component={VirtualTableRowCell}
-                />
-              );
-            }
-
             if (name === 'digitalRelease') {
               return (
                 <RelativeDateCellConnector
                   key={name}
                   className={styles[name]}
                   date={digitalRelease}
+                  component={VirtualTableRowCell}
+                />
+              );
+            }
+
+            if (name === 'physicalRelease') {
+              return (
+                <RelativeDateCellConnector
+                  key={name}
+                  className={styles[name]}
+                  date={physicalRelease}
                   component={VirtualTableRowCell}
                 />
               );
