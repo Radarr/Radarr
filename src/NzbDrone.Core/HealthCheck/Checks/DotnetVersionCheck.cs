@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Localization;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
@@ -10,7 +11,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
         private readonly IOsInfo _osInfo;
         private readonly Logger _logger;
 
-        public DotnetVersionCheck(IPlatformInfo platformInfo, IOsInfo osInfo, Logger logger)
+        public DotnetVersionCheck(IPlatformInfo platformInfo, IOsInfo osInfo, ILocalizationService localizationService, Logger logger)
+            : base(localizationService)
         {
             _platformInfo = platformInfo;
             _osInfo = osInfo;
@@ -47,13 +49,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 _logger.Debug("Dotnet version is {0} or better: {1}", stableVersion, dotnetVersion);
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Notice,
-                    $"Currently installed .Net Framework {dotnetVersion} is supported but we recommend upgrading to at least {targetVersion}.",
+                    string.Format(_localizationService.GetLocalizedString("DotNetVersionCheckNotRecommendedMessage"), dotnetVersion, targetVersion),
                     "#currently-installed-net-framework-is-supported-but-upgrading-is-recommended");
             }
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Error,
-                $"Currently installed .Net Framework {dotnetVersion} is old and unsupported. Please upgrade the .Net Framework to at least {targetVersion}.",
+                string.Format(_localizationService.GetLocalizedString("DotNetVersionCheckOldUnsupportedMessage"), dotnetVersion, targetVersion),
                 "#currently-installed-net-framework-is-old-and-unsupported");
         }
 

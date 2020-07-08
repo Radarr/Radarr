@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Net;
 using NLog;
@@ -6,6 +6,7 @@ using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Configuration.Events;
+using NzbDrone.Core.Localization;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
@@ -18,7 +19,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         private readonly IHttpRequestBuilderFactory _cloudRequestBuilder;
 
-        public ProxyCheck(IRadarrCloudRequestBuilder cloudRequestBuilder, IConfigService configService, IHttpClient client, Logger logger)
+        public ProxyCheck(IRadarrCloudRequestBuilder cloudRequestBuilder, IConfigService configService, IHttpClient client, ILocalizationService localizationService, Logger logger)
+            : base(localizationService)
         {
             _configService = configService;
             _client = client;
@@ -34,7 +36,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 var addresses = Dns.GetHostAddresses(_configService.ProxyHostname);
                 if (!addresses.Any())
                 {
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format("Failed to resolve the IP Address for the Configured Proxy Host {0}", _configService.ProxyHostname));
+                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckResolveIpMessage"), _configService.ProxyHostname));
                 }
 
                 var request = _cloudRequestBuilder.Create()
@@ -49,13 +51,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     if (response.StatusCode == HttpStatusCode.BadRequest)
                     {
                         _logger.Error("Proxy Health Check failed: {0}", response.StatusCode);
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Failed to test proxy. StatusCode: {response.StatusCode}");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckBadRequestMessage"), response.StatusCode));
                     }
                 }
                 catch (Exception ex)
                 {
                     _logger.Error(ex, "Proxy Health Check failed");
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Failed to test proxy: {request.Url}");
+                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckFailedToTestMessage"), request.Url));
                 }
             }
 

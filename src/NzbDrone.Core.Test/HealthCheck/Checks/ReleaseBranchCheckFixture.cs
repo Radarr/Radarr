@@ -1,6 +1,8 @@
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.HealthCheck.Checks;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
@@ -8,6 +10,14 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
     [TestFixture]
     public class ReleaseBranchCheckFixture : CoreTest<ReleaseBranchCheck>
     {
+        [SetUp]
+        public void Setup()
+        {
+            Mocker.GetMock<ILocalizationService>()
+                  .Setup(s => s.GetLocalizedString(It.IsAny<string>()))
+                  .Returns("Some Warning Message");
+        }
+
         private void GivenValidBranch(string branch)
         {
             Mocker.GetMock<IConfigFileProvider>()
