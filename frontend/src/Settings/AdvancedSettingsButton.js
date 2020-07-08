@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
+import translate from 'Utilities/String/translate';
 import styles from './AdvancedSettingsButton.css';
 
 function AdvancedSettingsButton(props) {
@@ -44,7 +45,7 @@ function AdvancedSettingsButton(props) {
 
       <div className={styles.labelContainer}>
         <div className={styles.label}>
-          {advancedSettings ? 'Hide Advanced' : 'Show Advanced'}
+          {advancedSettings ? translate('HideAdvanced') : translate('ShowAdvanced')}
         </div>
       </div>
     </Link>

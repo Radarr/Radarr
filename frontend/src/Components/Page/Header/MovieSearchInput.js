@@ -7,6 +7,7 @@ import Icon from 'Components/Icon';
 import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
 import MovieSearchResult from './MovieSearchResult';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import translate from 'Utilities/String/translate';
 import FuseWorker from './fuse.worker';
 import styles from './MovieSearchInput.css';
 
@@ -227,7 +228,7 @@ class MovieSearchInput extends Component {
       className: styles.input,
       name: 'movieSearch',
       value,
-      placeholder: 'Search',
+      placeholder: translate('Search'),
       autoComplete: 'off',
       spellCheck: false,
       onChange: this.onChange,

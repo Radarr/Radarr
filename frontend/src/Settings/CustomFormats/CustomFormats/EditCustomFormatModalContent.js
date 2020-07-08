@@ -18,6 +18,7 @@ import FormInputGroup from 'Components/Form/FormInputGroup';
 import Specification from './Specifications/Specification';
 import AddSpecificationModal from './Specifications/AddSpecificationModal';
 import EditSpecificationModalConnector from './Specifications/EditSpecificationModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './EditCustomFormatModalContent.css';
 
 class EditCustomFormatModalContent extends Component {
@@ -185,7 +186,7 @@ class EditCustomFormatModalContent extends Component {
                 kind={kinds.DANGER}
                 onPress={onDeleteCustomFormatPress}
               >
-                Delete
+                {translate('Delete')}
               </Button>
           }
 

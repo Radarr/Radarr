@@ -7,6 +7,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import translate from 'Utilities/String/translate';
 
 function NetImportOptions(props) {
   const {
@@ -26,7 +27,7 @@ function NetImportOptions(props) {
   ];
 
   return (
-    <FieldSet legend="Options">
+    <FieldSet legend={translate('Options')}>
       {
         isFetching &&
           <LoadingIndicator />

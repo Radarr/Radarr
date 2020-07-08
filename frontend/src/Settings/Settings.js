@@ -3,6 +3,7 @@ import Link from 'Components/Link/Link';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import SettingsToolbarConnector from './SettingsToolbarConnector';
+import translate from 'Utilities/String/translate';
 import styles from './Settings.css';
 
 function Settings() {
@@ -50,7 +51,7 @@ function Settings() {
           className={styles.link}
           to="/settings/customformats"
         >
-          Custom Formats
+          {translate('CustomFormats')}
         </Link>
 
         <div className={styles.summary}>
@@ -94,7 +95,7 @@ function Settings() {
           className={styles.link}
           to="/settings/connect"
         >
-          Connect
+          {translate('Connect')}
         </Link>
 
         <div className={styles.summary}>

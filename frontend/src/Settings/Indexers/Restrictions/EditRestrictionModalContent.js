@@ -11,6 +11,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import translate from 'Utilities/String/translate';
 import styles from './EditRestrictionModalContent.css';
 
 function EditRestrictionModalContent(props) {
@@ -91,7 +92,7 @@ function EditRestrictionModalContent(props) {
               kind={kinds.DANGER}
               onPress={onDeleteRestrictionPress}
             >
-              Delete
+              {translate('Delete')}
             </Button>
         }
 

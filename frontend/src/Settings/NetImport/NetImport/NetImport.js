@@ -5,6 +5,7 @@ import Card from 'Components/Card';
 import Label from 'Components/Label';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditNetImportModalConnector from './EditNetImportModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './NetImport.css';
 
 class NetImport extends Component {
@@ -107,7 +108,7 @@ class NetImport extends Component {
           kind={kinds.DANGER}
           title="Delete List"
           message={`Are you sure you want to delete the list '${name}'?`}
-          confirmLabel="Delete"
+          confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteNetImport}
           onCancel={this.onDeleteNetImportModalClose}
         />

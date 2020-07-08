@@ -14,6 +14,7 @@ import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import TableBody from 'Components/Table/TableBody';
 import LogsNavMenu from '../LogsNavMenu';
 import LogFilesTableRow from './LogFilesTableRow';
+import translate from 'Utilities/String/translate';
 
 const columns = [
   {
@@ -58,7 +59,7 @@ class LogFiles extends Component {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label="Refresh"
+              label={translate('Refresh')}
               iconName={icons.REFRESH}
               spinningName={icons.REFRESH}
               isSpinning={isFetching}
@@ -66,7 +67,7 @@ class LogFiles extends Component {
             />
 
             <PageToolbarButton
-              label="Clear"
+              label={translate('Clear')}
               iconName={icons.CLEAR}
               isSpinning={deleteFilesExecuting}
               onPress={onDeleteFilesPress}

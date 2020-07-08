@@ -11,6 +11,7 @@ import MenuContent from 'Components/Menu/MenuContent';
 import ViewMenuItem from 'Components/Menu/ViewMenuItem';
 import * as calendarViews from 'Calendar/calendarViews';
 import CalendarHeaderViewButton from './CalendarHeaderViewButton';
+import translate from 'Utilities/String/translate';
 import styles from './CalendarHeader.css';
 
 function getTitle(time, start, end, view, longDateFormat) {
@@ -192,7 +193,7 @@ class CalendarHeader extends Component {
                       selectedView={view}
                       onPress={this.onViewChange}
                     >
-                      Day
+                      {translate('Day')}
                     </ViewMenuItem>
 
                     <ViewMenuItem
@@ -200,7 +201,7 @@ class CalendarHeader extends Component {
                       selectedView={view}
                       onPress={this.onViewChange}
                     >
-                      Agenda
+                      {translate('Agenda')}
                     </ViewMenuItem>
                   </MenuContent>
                 </Menu> :

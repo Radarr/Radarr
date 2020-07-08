@@ -16,6 +16,7 @@ import CalendarLinkModal from './iCal/CalendarLinkModal';
 import CalendarOptionsModal from './Options/CalendarOptionsModal';
 import LegendConnector from './Legend/LegendConnector';
 import CalendarConnector from './CalendarConnector';
+import translate from 'Utilities/String/translate';
 import styles from './CalendarPage.css';
 
 const MINIMUM_DAY_WIDTH = 120;
@@ -109,7 +110,7 @@ class CalendarPage extends Component {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label="RSS Sync"
+              label={translate('RSSSync')}
               iconName={icons.RSS}
               isSpinning={isRssSyncExecuting}
               onPress={onRssSyncPress}
@@ -126,7 +127,7 @@ class CalendarPage extends Component {
 
           <PageToolbarSection alignContent={align.RIGHT}>
             <PageToolbarButton
-              label="Options"
+              label={translate('Options')}
               iconName={icons.POSTER}
               onPress={this.onOptionsPress}
             />

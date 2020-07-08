@@ -12,6 +12,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import translate from 'Utilities/String/translate';
 import styles from './EditNetImportExclusionModalContent.css';
 
 function EditNetImportExclusionModalContent(props) {
@@ -105,7 +106,7 @@ function EditNetImportExclusionModalContent(props) {
               kind={kinds.DANGER}
               onPress={onDeleteNetImportExclusionPress}
             >
-              Delete
+              {translate('Delete')}
             </Button>
         }
 

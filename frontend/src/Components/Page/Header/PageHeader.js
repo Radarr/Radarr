@@ -77,6 +77,13 @@ class PageHeader extends Component {
             to="https://radarr.video/donate.html"
             size={14}
           />
+          <IconButton
+            className={styles.translate}
+            title="Suggest translation change"
+            name={icons.TRANSLATE}
+            to="https://translate.servarr.com/projects/radarr/radarr/"
+            size={24}
+          />
           <PageHeaderActionsMenuConnector
             onKeyboardShortcutsPress={this.onOpenKeyboardShortcutsModal}
           />

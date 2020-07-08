@@ -7,6 +7,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import translate from 'Utilities/String/translate';
 
 export const certificationCountryOptions = [
   { key: 'us', value: 'United States' },
@@ -23,7 +24,7 @@ function MetadataOptions(props) {
   } = props;
 
   return (
-    <FieldSet legend="Options">
+    <FieldSet legend={translate('Options')}>
       {
         isFetching &&
           <LoadingIndicator />

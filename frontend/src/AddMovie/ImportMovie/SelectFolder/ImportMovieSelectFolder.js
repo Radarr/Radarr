@@ -11,6 +11,7 @@ import PageContentBody from 'Components/Page/PageContentBody';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import ImportMovieRootFolderRowConnector from './ImportMovieRootFolderRowConnector';
+import translate from 'Utilities/String/translate';
 import styles from './ImportMovieSelectFolder.css';
 
 const rootFolderColumns = [
@@ -92,11 +93,11 @@ class ImportMovieSelectFolder extends Component {
             !error && isPopulated &&
               <div>
                 <div className={styles.header}>
-                  Import movies you already have
+                  {translate('ImportHeader')}
                 </div>
 
                 <div className={styles.tips}>
-                  Some tips to ensure the import goes smoothly:
+                  {translate('ImportTipsMessage')}
                   <ul>
                     <li className={styles.tip}>
                       Make sure that your files include the quality in their filenames. eg. <span className={styles.code}>movie.2008.bluray.mkv</span>
@@ -141,7 +142,7 @@ class ImportMovieSelectFolder extends Component {
                           className={styles.importButtonIcon}
                           name={icons.DRIVE}
                         />
-                        Choose another folder
+                        {translate('ChooseAnotherFolder')}
                       </Button>
                     </div> :
 

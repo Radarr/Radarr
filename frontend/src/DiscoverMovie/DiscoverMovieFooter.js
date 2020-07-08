@@ -10,6 +10,7 @@ import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
 import ExcludeMovieModal from './Exclusion/ExcludeMovieModal';
 import DiscoverMovieFooterLabel from './DiscoverMovieFooterLabel';
+import translate from 'Utilities/String/translate';
 import styles from './DiscoverMovieFooter.css';
 
 class DiscoverMovieFooter extends Component {
@@ -208,7 +209,7 @@ class DiscoverMovieFooter extends Component {
                   isDisabled={!selectedCount || isAdding}
                   onPress={this.onAddMoviesPress}
                 >
-                  Add Movies
+                  {translate('AddMovies')}
                 </SpinnerButton>
               </div>
 
@@ -219,7 +220,7 @@ class DiscoverMovieFooter extends Component {
                 isDisabled={!selectedCount || isExcluding}
                 onPress={this.props.onExcludeMoviesPress}
               >
-                Add Exclusion
+                {translate('AddExclusion')}
               </SpinnerButton>
             </div>
           </div>

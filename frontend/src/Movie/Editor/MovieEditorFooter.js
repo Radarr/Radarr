@@ -11,6 +11,7 @@ import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
 import TagsModal from './Tags/TagsModal';
 import DeleteMovieModal from './Delete/DeleteMovieModal';
 import MovieEditorFooterLabel from './MovieEditorFooterLabel';
+import translate from 'Utilities/String/translate';
 import styles from './MovieEditorFooter.css';
 
 const NO_CHANGE = 'noChange';
@@ -257,7 +258,7 @@ class MovieEditorFooter extends Component {
                 isDisabled={!selectedCount || isDeleting}
                 onPress={this.onDeleteSelectedPress}
               >
-                Delete
+                {translate('Delete')}
               </SpinnerButton>
             </div>
           </div>

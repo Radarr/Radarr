@@ -7,6 +7,7 @@ import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import CustomFormat from './CustomFormat';
 import EditCustomFormatModalConnector from './EditCustomFormatModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './CustomFormats.css';
 
 class CustomFormats extends Component {
@@ -58,7 +59,7 @@ class CustomFormats extends Component {
     } = this.props;
 
     return (
-      <FieldSet legend="Custom Formats">
+      <FieldSet legend={translate('CustomFormats')}>
         <PageSectionContent
           errorMessage="Unable to load Custom Formats"
           {...otherProps}c={true}

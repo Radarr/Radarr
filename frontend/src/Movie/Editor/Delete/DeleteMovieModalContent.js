@@ -9,6 +9,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import translate from 'Utilities/String/translate';
 import styles from './DeleteMovieModalContent.css';
 
 class DeleteMovieModalContent extends Component {
@@ -127,7 +128,7 @@ class DeleteMovieModalContent extends Component {
             kind={kinds.DANGER}
             onPress={this.onDeleteMovieConfirmed}
           >
-            Delete
+            {translate('Delete')}
           </Button>
         </ModalFooter>
       </ModalContent>

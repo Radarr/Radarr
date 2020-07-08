@@ -8,6 +8,7 @@ import PageSectionContent from 'Components/Page/PageSectionContent';
 import NetImport from './NetImport';
 import AddNetImportModal from './AddNetImportModal';
 import EditNetImportModalConnector from './EditNetImportModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './NetImports.css';
 
 class NetImports extends Component {
@@ -58,7 +59,7 @@ class NetImports extends Component {
     } = this.state;
 
     return (
-      <FieldSet legend="Lists">
+      <FieldSet legend={translate('Lists')}>
         <PageSectionContent
           errorMessage="Unable to load Lists"
           {...otherProps}

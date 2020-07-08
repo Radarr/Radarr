@@ -14,6 +14,7 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
+import translate from 'Utilities/String/translate';
 import styles from './EditSpecificationModalContent.css';
 
 function EditSpecificationModalContent(props) {
@@ -120,7 +121,7 @@ function EditSpecificationModalContent(props) {
               kind={kinds.DANGER}
               onPress={onDeleteSpecificationPress}
             >
-              Delete
+              {translate('Delete')}
             </Button>
         }
 

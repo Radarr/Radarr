@@ -7,6 +7,7 @@ import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptio
 import createHandleActions from './Creators/createHandleActions';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
+import translate from 'Utilities/String/translate';
 
 //
 // Variables
@@ -58,7 +59,7 @@ export const defaultState = {
     },
     {
       name: 'date',
-      label: 'Date',
+      label: translate('Date'),
       isSortable: true,
       isVisible: true
     },

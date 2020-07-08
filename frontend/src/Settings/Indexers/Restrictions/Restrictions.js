@@ -7,6 +7,7 @@ import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import Restriction from './Restriction';
 import EditRestrictionModalConnector from './EditRestrictionModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './Restrictions.css';
 
 class Restrictions extends Component {
@@ -45,7 +46,7 @@ class Restrictions extends Component {
     } = this.props;
 
     return (
-      <FieldSet legend="Restrictions">
+      <FieldSet legend={translate('Restrictions')}>
         <PageSectionContent
           errorMessage="Unable to load Restrictions"
           {...otherProps}

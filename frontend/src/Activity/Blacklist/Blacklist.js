@@ -12,6 +12,7 @@ import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import BlacklistRowConnector from './BlacklistRowConnector';
+import translate from 'Utilities/String/translate';
 
 class Blacklist extends Component {
 
@@ -36,7 +37,7 @@ class Blacklist extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label="Clear"
+              label={translate('Clear')}
               iconName={icons.CLEAR}
               isSpinning={isClearingBlacklistExecuting}
               onPress={onClearBlacklistPress}
@@ -49,7 +50,7 @@ class Blacklist extends Component {
               columns={columns}
             >
               <PageToolbarButton
-                label="Options"
+                label={translate('Options')}
                 iconName={icons.TABLE}
               />
             </TableOptionsModalWrapper>

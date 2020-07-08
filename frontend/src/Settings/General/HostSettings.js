@@ -5,6 +5,7 @@ import FieldSet from 'Components/FieldSet';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import translate from 'Utilities/String/translate';
 
 function HostSettings(props) {
   const {
@@ -27,7 +28,7 @@ function HostSettings(props) {
   } = settings;
 
   return (
-    <FieldSet legend="Host">
+    <FieldSet legend={translate('Host')}>
       <FormGroup
         advancedSettings={advancedSettings}
         isAdvanced={true}

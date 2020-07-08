@@ -13,6 +13,7 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
+import translate from 'Utilities/String/translate';
 import styles from './EditIndexerModalContent.css';
 
 function EditIndexerModalContent(props) {
@@ -143,7 +144,7 @@ function EditIndexerModalContent(props) {
               kind={kinds.DANGER}
               onPress={onDeleteIndexerPress}
             >
-              Delete
+              {translate('Delete')}
             </Button>
         }
 

@@ -9,6 +9,7 @@ import TableBody from 'Components/Table/TableBody';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import ProgressBar from 'Components/ProgressBar';
+import translate from 'Utilities/String/translate';
 import styles from './DiskSpace.css';
 
 const columns = [
@@ -45,7 +46,7 @@ class DiskSpace extends Component {
     } = this.props;
 
     return (
-      <FieldSet legend="Disk Space">
+      <FieldSet legend={translate('DiskSpace')}>
         {
           isFetching &&
             <LoadingIndicator />

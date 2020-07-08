@@ -16,6 +16,7 @@ import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptio
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
 import createClearReducer from './Creators/Reducers/createClearReducer';
+import translate from 'Utilities/String/translate';
 
 //
 // Variables
@@ -162,7 +163,7 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: 'All',
+      label: translate('All'),
       filters: []
     },
     {

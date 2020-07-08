@@ -11,6 +11,7 @@ import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import translate from 'Utilities/String/translate';
 import styles from './Health.css';
 
 function getInternalLink(source) {
@@ -119,7 +120,7 @@ class Health extends Component {
       <FieldSet
         legend={
           <div className={styles.legend}>
-            Health
+            {translate('Health')}
 
             {
               isFetching && isPopulated &&

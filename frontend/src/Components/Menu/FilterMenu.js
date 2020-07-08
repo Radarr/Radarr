@@ -4,6 +4,7 @@ import { icons } from 'Helpers/Props';
 import FilterMenuContent from './FilterMenuContent';
 import Menu from './Menu';
 import ToolbarMenuButton from './ToolbarMenuButton';
+import translate from 'Utilities/String/translate';
 import styles from './FilterMenu.css';
 
 class FilterMenu extends Component {
@@ -57,7 +58,7 @@ class FilterMenu extends Component {
         >
           <ButtonComponent
             iconName={icons.FILTER}
-            text="Filter"
+            text={translate('Filter')}
             isDisabled={isDisabled}
             indicator={selectedFilterKey !== 'all'}
           />

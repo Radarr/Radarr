@@ -5,6 +5,7 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import QueuedTaskRowConnector from './QueuedTaskRowConnector';
+import translate from 'Utilities/String/translate';
 
 const columns = [
   {
@@ -51,7 +52,7 @@ function QueuedTasks(props) {
   } = props;
 
   return (
-    <FieldSet legend="Queue">
+    <FieldSet legend={translate('Queue')}>
       {
         isFetching && !isPopulated &&
           <LoadingIndicator />

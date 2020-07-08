@@ -13,6 +13,7 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import HistoryRowConnector from './HistoryRowConnector';
+import translate from 'Utilities/String/translate';
 
 class History extends Component {
 
@@ -46,7 +47,7 @@ class History extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label="Refresh"
+              label={translate('Refresh')}
               iconName={icons.REFRESH}
               isSpinning={isFetching}
               onPress={onFirstPagePress}
@@ -59,7 +60,7 @@ class History extends Component {
               columns={columns}
             >
               <PageToolbarButton
-                label="Options"
+                label={translate('Options')}
                 iconName={icons.TABLE}
               />
             </TableOptionsModalWrapper>

@@ -11,6 +11,7 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import BackupRow from './BackupRow';
 import RestoreBackupModalConnector from './RestoreBackupModalConnector';
+import translate from 'Utilities/String/translate';
 
 const columns = [
   {
@@ -79,14 +80,14 @@ class Backups extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label="Backup Now"
+              label={translate('BackupNow')}
               iconName={icons.BACKUP}
               isSpinning={backupExecuting}
               onPress={onBackupPress}
             />
 
             <PageToolbarButton
-              label="Restore Backup"
+              label={translate('RestoreBackup')}
               iconName={icons.RESTORE}
               onPress={this.onRestorePress}
             />

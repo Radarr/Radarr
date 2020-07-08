@@ -5,6 +5,7 @@ import FieldSet from 'Components/FieldSet';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import translate from 'Utilities/String/translate';
 
 const logLevelOptions = [
   { key: 'info', value: 'Info' },
@@ -23,7 +24,7 @@ function LoggingSettings(props) {
   } = settings;
 
   return (
-    <FieldSet legend="Logging">
+    <FieldSet legend={translate('Logging')}>
       <FormGroup>
         <FormLabel>Log Level</FormLabel>
 

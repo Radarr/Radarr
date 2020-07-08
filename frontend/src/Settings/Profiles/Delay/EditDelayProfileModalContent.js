@@ -14,6 +14,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import translate from 'Utilities/String/translate';
 import styles from './EditDelayProfileModalContent.css';
 
 function EditDelayProfileModalContent(props) {
@@ -136,7 +137,7 @@ function EditDelayProfileModalContent(props) {
               kind={kinds.DANGER}
               onPress={onDeleteDelayProfilePress}
             >
-              Delete
+              {translate('Delete')}
             </Button>
         }
 

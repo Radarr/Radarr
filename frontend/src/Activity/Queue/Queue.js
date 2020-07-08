@@ -22,6 +22,7 @@ import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptions
 import RemoveQueueItemsModal from './RemoveQueueItemsModal';
 import QueueOptionsConnector from './QueueOptionsConnector';
 import QueueRowConnector from './QueueRowConnector';
+import translate from 'Utilities/String/translate';
 
 class Queue extends Component {
 
@@ -152,7 +153,7 @@ class Queue extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label="Refresh"
+              label={translate('Refresh')}
               iconName={icons.REFRESH}
               isSpinning={isRefreshing}
               onPress={onRefreshPress}
@@ -186,7 +187,7 @@ class Queue extends Component {
               optionsComponent={QueueOptionsConnector}
             >
               <PageToolbarButton
-                label="Options"
+                label={translate('Options')}
                 iconName={icons.TABLE}
               />
             </TableOptionsModalWrapper>

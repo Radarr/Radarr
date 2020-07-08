@@ -11,6 +11,7 @@ import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import NamingOption from './NamingOption';
+import translate from 'Utilities/String/translate';
 import styles from './NamingModal.css';
 
 class NamingModal extends Component {
@@ -354,7 +355,7 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Custom Formats">
+                  <FieldSet legend={translate('CustomFormats')}>
                     <div className={styles.groups}>
                       {
                         customFormatTokens.map(({ token, example }) => {
