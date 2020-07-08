@@ -2,6 +2,7 @@ using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.PassThePopcorn;
+using NzbDrone.Core.Localization;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
@@ -9,7 +10,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
     {
         private readonly IIndexerFactory _indexerFactory;
 
-        public PTPOldSettingsCheck(IIndexerFactory indexerFactory)
+        public PTPOldSettingsCheck(IIndexerFactory indexerFactory, ILocalizationService localizationService)
+            : base(localizationService)
         {
             _indexerFactory = indexerFactory;
         }
@@ -23,7 +25,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (ptpIndexerOldSettings.Count() > 0)
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, $"The following PassThePopcorn indexers have deprecated settings and should be updated: {string.Join(",", ptpIndexerOldSettings)}");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("PtpOldSettingsCheckMessage"), string.Join(", ", ptpIndexerOldSettings)));
             }
 
             return new HealthCheck(GetType());

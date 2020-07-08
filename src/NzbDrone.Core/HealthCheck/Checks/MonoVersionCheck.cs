@@ -1,6 +1,7 @@
 using System;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Localization;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
@@ -9,7 +10,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
         private readonly IPlatformInfo _platformInfo;
         private readonly Logger _logger;
 
-        public MonoVersionCheck(IPlatformInfo platformInfo, Logger logger)
+        public MonoVersionCheck(IPlatformInfo platformInfo, ILocalizationService localizationService, Logger logger)
+            : base(localizationService)
         {
             _platformInfo = platformInfo;
             _logger = logger;
