@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.TPL;
 using NzbDrone.Core.DecisionEngine;
@@ -84,7 +85,7 @@ namespace NzbDrone.Core.IndexerSearch
                 queryTranlations.Add(translation.Title);
             }
 
-            spec.SceneTitles = queryTranlations.Distinct().ToList();
+            spec.SceneTitles = queryTranlations.Distinct().Where(t => t.IsNotNullOrWhiteSpace()).ToList();
 
             return spec;
         }
