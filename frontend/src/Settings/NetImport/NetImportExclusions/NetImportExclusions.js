@@ -7,6 +7,7 @@ import Link from 'Components/Link/Link';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import NetImportExclusion from './NetImportExclusion';
 import EditNetImportExclusionModalConnector from './EditNetImportExclusionModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './NetImportExclusions.css';
 
 class NetImportExclusions extends Component {
@@ -44,7 +45,7 @@ class NetImportExclusions extends Component {
     } = this.props;
 
     return (
-      <FieldSet legend="List Exclusions">
+      <FieldSet legend={translate('ListExclusions')}>
         <PageSectionContent
           errorMessage="Unable to load List Exclusions"
           {...otherProps}

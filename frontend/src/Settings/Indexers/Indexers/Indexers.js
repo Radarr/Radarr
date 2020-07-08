@@ -8,6 +8,7 @@ import PageSectionContent from 'Components/Page/PageSectionContent';
 import Indexer from './Indexer';
 import AddIndexerModal from './AddIndexerModal';
 import EditIndexerModalConnector from './EditIndexerModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './Indexers.css';
 
 class Indexers extends Component {
@@ -64,7 +65,7 @@ class Indexers extends Component {
     } = this.state;
 
     return (
-      <FieldSet legend="Indexers">
+      <FieldSet legend={translate('Indexers')}>
         <PageSectionContent
           errorMessage="Unable to load Indexers"
           {...otherProps}

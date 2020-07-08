@@ -6,6 +6,7 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import MovieHistoryRowConnector from './MovieHistoryRowConnector';
+import translate from 'Utilities/String/translate';
 import styles from './MovieHistoryTableContent.css';
 
 const columns = [
@@ -30,13 +31,13 @@ const columns = [
   },
   {
     name: 'customFormats',
-    label: 'Custom Formats',
+    label: translate('CustomFormats'),
     isSortable: false,
     isVisible: true
   },
   {
     name: 'date',
-    label: 'Date',
+    label: translate('Date'),
     isVisible: true
   },
   {

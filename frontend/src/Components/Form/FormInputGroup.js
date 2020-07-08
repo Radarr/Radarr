@@ -21,6 +21,7 @@ import TagSelectInputConnector from './TagSelectInputConnector';
 import TextTagInputConnector from './TextTagInputConnector';
 import TextInput from './TextInput';
 import FormInputHelpText from './FormInputHelpText';
+import translate from 'Utilities/String/translate';
 import styles from './FormInputGroup.css';
 
 function getComponent(type) {
@@ -195,7 +196,7 @@ function FormInputGroup(props) {
           <Link
             to={helpLink}
           >
-            More Info
+            {translate('MoreInfo')}
           </Link>
       }
 

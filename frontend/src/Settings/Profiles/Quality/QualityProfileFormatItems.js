@@ -7,6 +7,7 @@ import FormLabel from 'Components/Form/FormLabel';
 import FormInputHelpText from 'Components/Form/FormInputHelpText';
 import Link from 'Components/Link/Link';
 import QualityProfileFormatItem from './QualityProfileFormatItem';
+import translate from 'Utilities/String/translate';
 import styles from './QualityProfileFormatItems.css';
 
 function calcOrder(profileFormatItems) {
@@ -76,7 +77,7 @@ class QualityProfileFormatItems extends Component {
     return (
       <FormGroup size={sizes.EXTRA_SMALL}>
         <FormLabel size={sizes.SMALL}>
-          Custom Formats
+          {translate('CustomFormats')}
         </FormLabel>
 
         <div>

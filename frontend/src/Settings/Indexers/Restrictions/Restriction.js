@@ -7,6 +7,7 @@ import Label from 'Components/Label';
 import TagList from 'Components/TagList';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditRestrictionModalConnector from './EditRestrictionModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './Restriction.css';
 
 class Restriction extends Component {
@@ -122,7 +123,7 @@ class Restriction extends Component {
           kind={kinds.DANGER}
           title="Delete Restriction"
           message={'Are you sure you want to delete this restriction?'}
-          confirmLabel="Delete"
+          confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteRestriction}
           onCancel={this.onDeleteRestrictionModalClose}
         />

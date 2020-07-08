@@ -42,6 +42,7 @@ import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
 import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
 import MovieTagsConnector from './MovieTagsConnector';
 import MovieReleaseDatesConnector from './MovieReleaseDatesConnector';
+import translate from 'Utilities/String/translate';
 import styles from './MovieDetails.css';
 
 const defaultFontSize = parseInt(fonts.defaultFontSize);
@@ -326,7 +327,7 @@ class MovieDetails extends Component {
             />
 
             <PageToolbarButton
-              label="Delete"
+              label={translate('Delete')}
               iconName={icons.DELETE}
               onPress={this.onDeleteMoviePress}
             />
@@ -604,42 +605,42 @@ class MovieDetails extends Component {
                   className={styles.tab}
                   selectedClassName={styles.selectedTab}
                 >
-                  History
+                  {translate('History')}
                 </Tab>
 
                 <Tab
                   className={styles.tab}
                   selectedClassName={styles.selectedTab}
                 >
-                  Search
+                  {translate('Search')}
                 </Tab>
 
                 <Tab
                   className={styles.tab}
                   selectedClassName={styles.selectedTab}
                 >
-                  Files
+                  {translate('Files')}
                 </Tab>
 
                 <Tab
                   className={styles.tab}
                   selectedClassName={styles.selectedTab}
                 >
-                  Titles
+                  {translate('Titles')}
                 </Tab>
 
                 <Tab
                   className={styles.tab}
                   selectedClassName={styles.selectedTab}
                 >
-                  Cast
+                  {translate('Cast')}
                 </Tab>
 
                 <Tab
                   className={styles.tab}
                   selectedClassName={styles.selectedTab}
                 >
-                  Crew
+                  {translate('Crew')}
                 </Tab>
 
                 {

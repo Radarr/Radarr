@@ -4,6 +4,7 @@ import MenuContent from './MenuContent';
 import FilterMenuItem from './FilterMenuItem';
 import MenuItem from './MenuItem';
 import MenuItemSeparator from './MenuItemSeparator';
+import translate from 'Utilities/String/translate';
 
 class FilterMenuContent extends Component {
 
@@ -61,7 +62,7 @@ class FilterMenuContent extends Component {
         {
           showCustomFilters &&
             <MenuItem onPress={onCustomFiltersPress}>
-              Custom Filters
+              {translate('CustomFilters')}
             </MenuItem>
         }
       </MenuContent>

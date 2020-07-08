@@ -6,6 +6,7 @@ import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditIndexerModalConnector from './EditIndexerModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './Indexer.css';
 
 class Indexer extends Component {
@@ -136,7 +137,7 @@ class Indexer extends Component {
           kind={kinds.DANGER}
           title="Delete Indexer"
           message={`Are you sure you want to delete the indexer '${name}'?`}
-          confirmLabel="Delete"
+          confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteIndexer}
           onCancel={this.onDeleteIndexerModalClose}
         />

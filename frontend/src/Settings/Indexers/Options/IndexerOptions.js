@@ -7,6 +7,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import translate from 'Utilities/String/translate';
 
 function IndexerOptions(props) {
   const {
@@ -19,7 +20,7 @@ function IndexerOptions(props) {
   } = props;
 
   return (
-    <FieldSet legend="Options">
+    <FieldSet legend={translate('Options')}>
       {
         isFetching &&
           <LoadingIndicator />

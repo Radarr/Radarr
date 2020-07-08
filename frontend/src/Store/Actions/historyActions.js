@@ -8,6 +8,7 @@ import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptio
 import createHandleActions from './Creators/createHandleActions';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
 import { updateItem } from './baseActions';
+import translate from 'Utilities/String/translate';
 
 //
 // Variables
@@ -59,7 +60,7 @@ export const defaultState = {
     },
     {
       name: 'date',
-      label: 'Date',
+      label: translate('Date'),
       isSortable: true,
       isVisible: true
     },
@@ -91,7 +92,7 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: 'All',
+      label: translate('All'),
       filters: []
     },
     {

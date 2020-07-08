@@ -6,6 +6,7 @@ import createSetClientSideCollectionSortReducer from './Creators/Reducers/create
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
+import translate from 'Utilities/String/translate';
 
 //
 // Variables
@@ -61,7 +62,7 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: 'All',
+      label: translate('All'),
       filters: []
     }
   ],

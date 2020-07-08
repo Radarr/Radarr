@@ -16,6 +16,7 @@ import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import QualityProfileItems from './QualityProfileItems';
 import QualityProfileFormatItems from './QualityProfileFormatItems';
+import translate from 'Utilities/String/translate';
 import styles from './EditQualityProfileModalContent.css';
 
 const MODAL_BODY_PADDING = parseInt(dimensions.modalBodyPadding);
@@ -297,7 +298,7 @@ class EditQualityProfileModalContent extends Component {
                     isDisabled={isInUse}
                     onPress={onDeleteQualityProfilePress}
                   >
-                    Delete
+                    {translate('Delete')}
                   </Button>
                 </div> :
                 null

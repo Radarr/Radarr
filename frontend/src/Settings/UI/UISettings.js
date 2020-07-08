@@ -10,6 +10,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import translate from 'Utilities/String/translate';
 
 export const firstDayOfWeekOptions = [
   { key: 0, value: 'Sunday' },
@@ -83,7 +84,7 @@ class UISettings extends Component {
                 id="uiSettings"
                 {...otherProps}
               >
-                <FieldSet legend="Calendar">
+                <FieldSet legend={translate('Calendar')}>
                   <FormGroup>
                     <FormLabel>First Day of Week</FormLabel>
 
@@ -111,7 +112,7 @@ class UISettings extends Component {
                 </FieldSet>
 
                 <FieldSet
-                  legend="Dates"
+                  legend={translate('Dates')}
                 >
                   <FormGroup>
                     <FormLabel>Short Date Format</FormLabel>
@@ -162,7 +163,7 @@ class UISettings extends Component {
                 </FieldSet>
 
                 <FieldSet
-                  legend="Style"
+                  legend={translate('Style')}
                 >
                   <FormGroup>
                     <FormLabel>Enable Color-Impaired Mode</FormLabel>
@@ -177,15 +178,16 @@ class UISettings extends Component {
                 </FieldSet>
 
                 <FieldSet
-                  legend="Language"
+                  legend={translate('Language')}
                 >
                   <FormGroup>
-                    <FormLabel>Movie Info Language</FormLabel>
+                    <FormLabel>UI Language</FormLabel>
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="movieInfoLanguage"
                       values={languages}
-                      helpText="Language that Radarr will use to display Movie Title in UI"
+                      helpText="Language that Radarr will use for UI"
+                      helpTextWarning="Browser Reload Required"
                       onChange={onInputChange}
                       {...settings.movieInfoLanguage}
                     />

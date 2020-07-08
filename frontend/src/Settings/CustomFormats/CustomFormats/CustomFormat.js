@@ -6,6 +6,7 @@ import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditCustomFormatModalConnector from './EditCustomFormatModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './CustomFormat.css';
 
 class CustomFormat extends Component {
@@ -132,7 +133,7 @@ class CustomFormat extends Component {
               </div>
             </div>
           }
-          confirmLabel="Delete"
+          confirmLabel={translate('Delete')}
           isSpinning={isDeleting}
           onConfirm={this.onConfirmDeleteCustomFormat}
           onCancel={this.onDeleteCustomFormatModalClose}

@@ -6,6 +6,7 @@ import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 import StartTime from './StartTime';
+import translate from 'Utilities/String/translate';
 import styles from './About.css';
 
 class About extends Component {
@@ -32,7 +33,7 @@ class About extends Component {
     } = this.props;
 
     return (
-      <FieldSet legend="About">
+      <FieldSet legend={translate('About')}>
         <DescriptionList className={styles.descriptionList}>
           <DescriptionListItem
             title="Version"

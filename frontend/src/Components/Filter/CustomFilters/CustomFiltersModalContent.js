@@ -6,6 +6,7 @@ import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import CustomFilter from './CustomFilter';
+import translate from 'Utilities/String/translate';
 import styles from './CustomFiltersModalContent.css';
 
 function CustomFiltersModalContent(props) {
@@ -24,7 +25,7 @@ function CustomFiltersModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        Custom Filters
+        {translate('CustomFilters')}
       </ModalHeader>
 
       <ModalBody>

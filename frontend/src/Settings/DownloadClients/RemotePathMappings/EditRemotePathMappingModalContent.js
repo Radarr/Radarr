@@ -13,6 +13,7 @@ import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import translate from 'Utilities/String/translate';
 import styles from './EditRemotePathMappingModalContent.css';
 
 function EditRemotePathMappingModalContent(props) {
@@ -105,7 +106,7 @@ function EditRemotePathMappingModalContent(props) {
               kind={kinds.DANGER}
               onPress={onDeleteRemotePathMappingPress}
             >
-              Delete
+              {translate('Delete')}
             </Button>
         }
 

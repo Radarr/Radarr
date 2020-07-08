@@ -9,6 +9,7 @@ import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormInputButton from 'Components/Form/FormInputButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
+import translate from 'Utilities/String/translate';
 
 const authenticationMethodOptions = [
   { key: 'none', value: 'None' },
@@ -76,7 +77,7 @@ class SecuritySettings extends Component {
     const authenticationEnabled = authenticationMethod && authenticationMethod.value !== 'none';
 
     return (
-      <FieldSet legend="Security">
+      <FieldSet legend={translate('Security')}>
         <FormGroup>
           <FormLabel>Authentication</FormLabel>
 

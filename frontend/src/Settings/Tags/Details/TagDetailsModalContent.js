@@ -10,6 +10,7 @@ import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import TagDetailsDelayProfile from './TagDetailsDelayProfile';
+import translate from 'Utilities/String/translate';
 import styles from './TagDetailsModalContent.css';
 
 function TagDetailsModalContent(props) {
@@ -83,7 +84,7 @@ function TagDetailsModalContent(props) {
 
         {
           !!notifications.length &&
-            <FieldSet legend="Connections">
+            <FieldSet legend={translate('Connections')}>
               {
                 notifications.map((item) => {
                   return (
@@ -144,7 +145,7 @@ function TagDetailsModalContent(props) {
 
         {
           !!netImports.length &&
-            <FieldSet legend="Lists">
+            <FieldSet legend={translate('Lists')}>
               {
                 netImports.map((item) => {
                   return (
@@ -167,7 +168,7 @@ function TagDetailsModalContent(props) {
             isDisabled={isTagUsed}
             onPress={onDeleteTagPress}
           >
-            Delete
+            {translate('Delete')}
           </Button>
         }
 

@@ -9,6 +9,7 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import NamingModal from './NamingModal';
+import translate from 'Utilities/String/translate';
 import styles from './Naming.css';
 
 const colonReplacementOptions = [
@@ -101,7 +102,7 @@ class Naming extends Component {
     }
 
     return (
-      <FieldSet legend="Movie Naming">
+      <FieldSet legend={translate('MovieNaming')}>
         {
           isFetching &&
             <LoadingIndicator />

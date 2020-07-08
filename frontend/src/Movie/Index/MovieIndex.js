@@ -31,6 +31,7 @@ import MovieIndexFooterConnector from './MovieIndexFooterConnector';
 import MovieEditorFooter from 'Movie/Editor/MovieEditorFooter.js';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import OrganizeMovieModal from 'Movie/Editor/Organize/OrganizeMovieModal';
+import translate from 'Utilities/String/translate';
 import styles from './MovieIndex.css';
 
 function getViewComponent(view) {
@@ -351,15 +352,15 @@ class MovieIndex extends Component {
     const isLoaded = !!(!error && isPopulated && items.length && scroller);
     const hasNoMovie = !totalItems;
 
-    const searchIndexLabel = selectedFilterKey === 'all' ? 'Search All' : 'Search Filtered';
-    const searchEditorLabel = selectedMovieIds.length > 0 ? 'Search Selected' : 'Search All';
+    const searchIndexLabel = selectedFilterKey === 'all' ? translate('SearchAll') : 'Search Filtered';
+    const searchEditorLabel = selectedMovieIds.length > 0 ? 'Search Selected' : translate('SearchAll');
 
     return (
       <PageContent>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label={isMovieEditorActive && selectedMovieIds.length > 0 ? 'Update Selected' : 'Update All'}
+              label={isMovieEditorActive && selectedMovieIds.length > 0 ? 'Update Selected' : translate('UpdateAll')}
               iconName={icons.REFRESH}
               spinningName={icons.REFRESH}
               isSpinning={isRefreshingMovie}
@@ -368,7 +369,7 @@ class MovieIndex extends Component {
             />
 
             <PageToolbarButton
-              label="RSS Sync"
+              label={translate('RssSync')}
               iconName={icons.RSS}
               isSpinning={isRssSyncExecuting}
               isDisabled={hasNoMovie}
@@ -385,7 +386,7 @@ class MovieIndex extends Component {
             />
 
             <PageToolbarButton
-              label="Manual Import"
+              label={translate('ManualImport')}
               iconName={icons.INTERACTIVE}
               isDisabled={hasNoMovie}
               onPress={this.onInteractiveImportPress}
@@ -396,13 +397,13 @@ class MovieIndex extends Component {
             {
               isMovieEditorActive ?
                 <PageToolbarButton
-                  label="Movie Index"
+                  label={translate('MovieIndex')}
                   iconName={icons.MOVIE_CONTINUING}
                   isDisabled={hasNoMovie}
                   onPress={this.onMovieEditorTogglePress}
                 /> :
                 <PageToolbarButton
-                  label="Movie Editor"
+                  label={translate('MovieEditor')}
                   iconName={icons.EDIT}
                   isDisabled={hasNoMovie}
                   onPress={this.onMovieEditorTogglePress}
@@ -412,7 +413,7 @@ class MovieIndex extends Component {
             {
               isMovieEditorActive ?
                 <PageToolbarButton
-                  label={allSelected ? 'Unselect All' : 'Select All'}
+                  label={allSelected ? translate('UnselectAll') : translate('SelectAll')}
                   iconName={icons.CHECK_SQUARE}
                   isDisabled={hasNoMovie}
                   onPress={this.onSelectAllPress}
@@ -434,7 +435,7 @@ class MovieIndex extends Component {
                   optionsComponent={MovieIndexTableOptionsConnector}
                 >
                   <PageToolbarButton
-                    label="Options"
+                    label={translate('Options')}
                     iconName={icons.TABLE}
                   />
                 </TableOptionsModalWrapper> :
@@ -444,7 +445,7 @@ class MovieIndex extends Component {
             {
               view === 'posters' ?
                 <PageToolbarButton
-                  label="Options"
+                  label={translate('Options')}
                   iconName={icons.POSTER}
                   isDisabled={hasNoMovie}
                   onPress={this.onPosterOptionsPress}
@@ -455,7 +456,7 @@ class MovieIndex extends Component {
             {
               view === 'overview' ?
                 <PageToolbarButton
-                  label="Options"
+                  label={translate('Options')}
                   iconName={icons.OVERVIEW}
                   isDisabled={hasNoMovie}
                   onPress={this.onOverviewOptionsPress}

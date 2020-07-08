@@ -12,6 +12,7 @@ import createSaveProviderHandler from './Creators/createSaveProviderHandler';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createHandleActions from './Creators/createHandleActions';
 import { updateItem } from './baseActions';
+import translate from 'Utilities/String/translate';
 
 //
 // Variables
@@ -21,7 +22,7 @@ export const section = 'movies';
 export const filters = [
   {
     key: 'all',
-    label: 'All',
+    label: translate('All'),
     filters: []
   },
   {

@@ -11,6 +11,7 @@ import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createHandleActions from './Creators/createHandleActions';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
 import { set } from './baseActions';
+import translate from 'Utilities/String/translate';
 
 //
 // Variables
@@ -119,7 +120,7 @@ export const defaultState = {
     filters: [
       {
         key: 'all',
-        label: 'All',
+        label: translate('All'),
         filters: []
       },
       {

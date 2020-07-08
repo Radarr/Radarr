@@ -10,6 +10,7 @@ import TextInput from 'Components/Form/TextInput';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import AddNewMovieSearchResultConnector from './AddNewMovieSearchResultConnector';
+import translate from 'Utilities/String/translate';
 import styles from './AddNewMovie.css';
 
 class AddNewMovie extends Component {
@@ -166,9 +167,9 @@ class AddNewMovie extends Component {
               null :
               <div className={styles.message}>
                 <div className={styles.helpText}>
-                  It's easy to add a new movie, just start typing the name the movie you want to add.
+                  {translate('AddNewMessage')}
                 </div>
-                <div>You can also search using TMDB ID of a movie. eg. tmdb:71663</div>
+                <div>{translate('AddNewTmdbIdMessage')}</div>
               </div>
           }
 

@@ -15,8 +15,9 @@ import SelectLanguageModal from 'MovieFile/Language/SelectLanguageModal';
 import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
 import MediaInfoConnector from 'MovieFile/MediaInfoConnector';
 import MovieFileRowCellPlaceholder from './MovieFileRowCellPlaceholder';
-import styles from './MovieFileEditorRow.css';
 import FileDetailsModal from '../FileDetailsModal';
+import translate from 'Utilities/String/translate';
+import styles from './MovieFileEditorRow.css';
 
 class MovieFileEditorRow extends Component {
 
@@ -203,7 +204,7 @@ class MovieFileEditorRow extends Component {
           kind={kinds.DANGER}
           title="Delete Selected Movie Files"
           message={'Are you sure you want to delete the selected movie files?'}
-          confirmLabel="Delete"
+          confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDelete}
           onCancel={this.onConfirmDeleteModalClose}
         />

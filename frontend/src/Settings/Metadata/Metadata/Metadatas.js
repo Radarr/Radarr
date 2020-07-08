@@ -3,6 +3,7 @@ import React from 'react';
 import FieldSet from 'Components/FieldSet';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import Metadata from './Metadata';
+import translate from 'Utilities/String/translate';
 import styles from './Metadatas.css';
 
 function Metadatas(props) {
@@ -12,7 +13,7 @@ function Metadatas(props) {
   } = props;
 
   return (
-    <FieldSet legend="Metadata">
+    <FieldSet legend={translate('Metadata')}>
       <PageSectionContent
         errorMessage="Unable to load Metadata"
         {...otherProps}

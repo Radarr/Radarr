@@ -13,6 +13,7 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import LogsTableRow from './LogsTableRow';
+import translate from 'Utilities/String/translate';
 
 function LogsTable(props) {
   const {
@@ -36,7 +37,7 @@ function LogsTable(props) {
       <PageToolbar>
         <PageToolbarSection>
           <PageToolbarButton
-            label="Refresh"
+            label={translate('Refresh')}
             iconName={icons.REFRESH}
             spinningName={icons.REFRESH}
             isSpinning={isFetching}
@@ -44,7 +45,7 @@ function LogsTable(props) {
           />
 
           <PageToolbarButton
-            label="Clear"
+            label={translate('Clear')}
             iconName={icons.CLEAR}
             isSpinning={clearLogExecuting}
             onPress={onClearLogsPress}
@@ -58,7 +59,7 @@ function LogsTable(props) {
             canModifyColumns={false}
           >
             <PageToolbarButton
-              label="Options"
+              label={translate('Options')}
               iconName={icons.TABLE}
             />
           </TableOptionsModalWrapper>

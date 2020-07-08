@@ -25,6 +25,7 @@ import AddListMovieSortMenu from './Menus/AddListMovieSortMenu';
 import AddListMovieViewMenu from './Menus/AddListMovieViewMenu';
 import NoDiscoverMovie from './NoDiscoverMovie';
 import DiscoverMovieFooterConnector from './DiscoverMovieFooterConnector';
+import translate from 'Utilities/String/translate';
 import styles from 'Movie/Index/MovieIndex.css';
 
 function getViewComponent(view) {
@@ -290,7 +291,7 @@ class DiscoverMovie extends Component {
                   columns={columns}
                 >
                   <PageToolbarButton
-                    label="Options"
+                    label={translate('Options')}
                     iconName={icons.TABLE}
                   />
                 </TableOptionsModalWrapper> :
@@ -300,7 +301,7 @@ class DiscoverMovie extends Component {
             {
               view === 'posters' ?
                 <PageToolbarButton
-                  label="Options"
+                  label={translate('Options')}
                   iconName={icons.POSTER}
                   isDisabled={hasNoMovie}
                   onPress={this.onPosterOptionsPress}
@@ -311,7 +312,7 @@ class DiscoverMovie extends Component {
             {
               view === 'overview' ?
                 <PageToolbarButton
-                  label="Options"
+                  label={translate('Options')}
                   iconName={icons.OVERVIEW}
                   isDisabled={hasNoMovie}
                   onPress={this.onOverviewOptionsPress}

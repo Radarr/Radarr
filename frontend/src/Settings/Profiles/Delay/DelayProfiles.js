@@ -10,6 +10,7 @@ import DelayProfileDragSource from './DelayProfileDragSource';
 import DelayProfileDragPreview from './DelayProfileDragPreview';
 import DelayProfile from './DelayProfile';
 import EditDelayProfileModalConnector from './EditDelayProfileModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from './DelayProfiles.css';
 
 class DelayProfiles extends Component {
@@ -66,7 +67,7 @@ class DelayProfiles extends Component {
 
     return (
       <Measure onMeasure={this.onMeasure}>
-        <FieldSet legend="Delay Profiles">
+        <FieldSet legend={translate('DelayProfiles')}>
           <PageSectionContent
             errorMessage="Unable to load Delay Profiles"
             {...otherProps}

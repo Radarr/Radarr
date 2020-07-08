@@ -13,6 +13,7 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
+import translate from 'Utilities/String/translate';
 import styles from './EditNetImportModalContent.css';
 
 function EditNetImportModalContent(props) {
@@ -186,7 +187,7 @@ function EditNetImportModalContent(props) {
               kind={kinds.DANGER}
               onPress={onDeleteNetImportPress}
             >
-              Delete
+              {translate('Delete')}
             </Button>
         }
 

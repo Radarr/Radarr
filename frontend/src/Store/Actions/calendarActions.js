@@ -11,6 +11,7 @@ import createClearReducer from './Creators/Reducers/createClearReducer';
 import createHandleActions from './Creators/createHandleActions';
 import { set, update } from './baseActions';
 import { executeCommandHelper } from './commandActions';
+import translate from 'Utilities/String/translate';
 
 //
 // Variables
@@ -49,7 +50,7 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: 'All',
+      label: translate('All'),
       filters: [
         {
           key: 'monitored',

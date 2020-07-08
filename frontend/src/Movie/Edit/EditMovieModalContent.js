@@ -12,6 +12,7 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
+import translate from 'Utilities/String/translate';
 import styles from './EditMovieModalContent.css';
 
 class EditMovieModalContent extends Component {
@@ -149,7 +150,7 @@ class EditMovieModalContent extends Component {
             kind={kinds.DANGER}
             onPress={onDeleteMoviePress}
           >
-            Delete
+            {translate('Delete')}
           </Button>
 
           <Button

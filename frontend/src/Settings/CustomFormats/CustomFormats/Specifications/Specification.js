@@ -6,6 +6,7 @@ import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import EditSpecificationModalConnector from './EditSpecificationModal';
+import translate from 'Utilities/String/translate';
 import styles from './Specification.css';
 
 class Specification extends Component {
@@ -121,7 +122,7 @@ class Specification extends Component {
               </div>
             </div>
           }
-          confirmLabel="Delete"
+          confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteSpecification}
           onCancel={this.onDeleteSpecificationModalClose}
         />

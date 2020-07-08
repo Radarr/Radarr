@@ -14,6 +14,7 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
+import translate from 'Utilities/String/translate';
 import styles from './EditNotificationModalContent.css';
 
 function EditNotificationModalContent(props) {
@@ -218,7 +219,7 @@ function EditNotificationModalContent(props) {
               kind={kinds.DANGER}
               onPress={onDeleteNotificationPress}
             >
-              Delete
+              {translate('Delete')}
             </Button>
         }
 
