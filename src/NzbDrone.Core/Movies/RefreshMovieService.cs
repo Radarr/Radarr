@@ -178,24 +178,27 @@ namespace NzbDrone.Core.Movies
             var isNew = message.IsNewMovie;
             _eventAggregator.PublishEvent(new MovieRefreshStartingEvent(message.Trigger == CommandTrigger.Manual));
 
-            if (message.MovieId.HasValue)
+            if (message.MovieIds.Any())
             {
-                var movie = _movieService.GetMovie(message.MovieId.Value);
+                foreach (var movieId in message.MovieIds)
+                {
+                    var movie = _movieService.GetMovie(movieId);
 
-                try
-                {
-                    RefreshMovieInfo(movie);
-                    RescanMovie(movie, isNew, trigger);
-                }
-                catch (MovieNotFoundException)
-                {
-                    _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from The Movie Database.", movie.Title, movie.ImdbId);
-                }
-                catch (Exception e)
-                {
-                    _logger.Error(e, "Couldn't refresh info for {0}", movie);
-                    RescanMovie(movie, isNew, trigger);
-                    throw;
+                    try
+                    {
+                        RefreshMovieInfo(movie);
+                        RescanMovie(movie, isNew, trigger);
+                    }
+                    catch (MovieNotFoundException)
+                    {
+                        _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from The Movie Database.", movie.Title, movie.ImdbId);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(e, "Couldn't refresh info for {0}", movie);
+                        RescanMovie(movie, isNew, trigger);
+                        throw;
+                    }
                 }
             }
             else

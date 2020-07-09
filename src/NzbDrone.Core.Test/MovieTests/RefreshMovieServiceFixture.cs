@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.MovieTests
 
             GivenNewMovieInfo(newMovieInfo);
 
-            Subject.Execute(new RefreshMovieCommand(_movie.Id));
+            Subject.Execute(new RefreshMovieCommand(new List<int> { _movie.Id }));
 
             Mocker.GetMock<IMovieService>()
                 .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.First().ImdbId == newMovieInfo.ImdbId), true));
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.MovieTests
         [Test]
         public void should_log_error_if_tmdb_id_not_found()
         {
-            Subject.Execute(new RefreshMovieCommand(_movie.Id));
+            Subject.Execute(new RefreshMovieCommand(new List<int> { _movie.Id }));
 
             Mocker.GetMock<IMovieService>()
                 .Verify(v => v.UpdateMovie(It.Is<Movie>(s => s.Status == MovieStatusType.Deleted)), Times.Once());
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Test.MovieTests
 
             GivenNewMovieInfo(newMovieInfo);
 
-            Subject.Execute(new RefreshMovieCommand(_movie.Id));
+            Subject.Execute(new RefreshMovieCommand(new List<int> { _movie.Id }));
 
             Mocker.GetMock<IMovieService>()
                 .Verify(v => v.UpdateMovie(It.Is<List<Movie>>(s => s.First().TmdbId == newMovieInfo.TmdbId), true));
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.MovieTests
         [Test]
         public void should_mark_as_deleted_if_tmdb_id_not_found()
         {
-            Subject.Execute(new RefreshMovieCommand(_movie.Id));
+            Subject.Execute(new RefreshMovieCommand(new List<int> { _movie.Id }));
 
             Mocker.GetMock<IMovieService>()
                 .Verify(v => v.UpdateMovie(It.Is<Movie>(s => s.Status == MovieStatusType.Deleted)), Times.Once());
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.MovieTests
         {
             _movie.Status = MovieStatusType.Deleted;
 
-            Subject.Execute(new RefreshMovieCommand(_movie.Id));
+            Subject.Execute(new RefreshMovieCommand(new List<int> { _movie.Id }));
 
             Mocker.GetMock<IMovieService>()
                 .Verify(v => v.UpdateMovie(It.IsAny<Movie>()), Times.Never());

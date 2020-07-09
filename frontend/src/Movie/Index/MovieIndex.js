@@ -281,6 +281,13 @@ class MovieIndex extends Component {
     this.setState({ isConfirmSearchModalOpen: true, searchType: 'moviesSearch' });
   }
 
+  onRefreshMoviePress = () => {
+    const selectedMovieIds = this.getSelectedIds();
+    const refreshIds = this.state.isMovieEditorActive && selectedMovieIds.length > 0 ? selectedMovieIds : [];
+
+    this.props.onRefreshMoviePress(refreshIds);
+  }
+
   onSearchConfirmed = () => {
     const selectedMovieIds = this.getSelectedIds();
     const searchIds = this.state.isMovieEditorActive && selectedMovieIds.length > 0 ? selectedMovieIds : this.props.items.map((m) => m.id);
@@ -356,12 +363,12 @@ class MovieIndex extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label="Update all"
+              label={isMovieEditorActive && selectedMovieIds.length > 0 ? 'Update Selected' : 'Update All'}
               iconName={icons.REFRESH}
               spinningName={icons.REFRESH}
               isSpinning={isRefreshingMovie}
               isDisabled={hasNoMovie}
-              onPress={onRefreshMoviePress}
+              onPress={this.onRefreshMoviePress}
             />
 
             <PageToolbarButton
