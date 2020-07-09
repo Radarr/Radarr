@@ -23,7 +23,7 @@ function MovieIndexProgressBar(props) {
       progress={progress}
       kind={getProgressBarKind(status, monitored, hasFile)}
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
-      showText={detailedProgressBar}
+      showText={false} // Hide until we have multi version support
       width={posterWidth}
     />
   );
