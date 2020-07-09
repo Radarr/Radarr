@@ -69,9 +69,10 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(saveMovieEditor(payload));
     },
 
-    onRefreshMoviePress() {
+    onRefreshMoviePress(items) {
       dispatch(executeCommand({
-        name: commandNames.REFRESH_MOVIE
+        name: commandNames.REFRESH_MOVIE,
+        movieIds: items
       }));
     },
 

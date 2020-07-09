@@ -305,7 +305,7 @@ namespace NzbDrone.Integration.Test
                 //File.Copy(sourcePath, path);
                 File.WriteAllText(path, "Fake Movie");
 
-                Commands.PostAndWait(new RefreshMovieCommand(movie.Id));
+                Commands.PostAndWait(new RefreshMovieCommand(new List<int> { movie.Id }));
                 Commands.WaitAll();
 
                 result = Movies.Get(movie.Id);

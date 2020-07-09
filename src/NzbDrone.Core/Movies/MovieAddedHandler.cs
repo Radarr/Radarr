@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -17,12 +18,12 @@ namespace NzbDrone.Core.Movies
 
         public void Handle(MovieAddedEvent message)
         {
-            _commandQueueManager.Push(new RefreshMovieCommand(message.Movie.Id, true));
+            _commandQueueManager.Push(new RefreshMovieCommand(new List<int> { message.Movie.Id }, true));
         }
 
         public void Handle(MoviesImportedEvent message)
         {
-            _commandQueueManager.PushMany(message.MovieIds.Select(s => new RefreshMovieCommand(s, true)).ToList());
+            _commandQueueManager.PushMany(message.MovieIds.Select(s => new RefreshMovieCommand(new List<int> { s }, true)).ToList());
         }
     }
 }
