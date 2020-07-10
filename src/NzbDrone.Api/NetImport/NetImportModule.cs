@@ -1,17 +1,19 @@
 using FluentValidation;
 using NzbDrone.Core.NetImport;
+using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 
 namespace NzbDrone.Api.NetImport
 {
     public class NetImportModule : ProviderModuleBase<NetImportResource, INetImport, NetImportDefinition>
     {
-        public NetImportModule(NetImportFactory netImportFactory)
+        public NetImportModule(NetImportFactory netImportFactory, ProfileExistsValidator profileExistsValidator)
             : base(netImportFactory, "netimport")
         {
             PostValidator.RuleFor(c => c.RootFolderPath).IsValidPath();
             PostValidator.RuleFor(c => c.MinimumAvailability).NotNull();
-            PostValidator.RuleFor(c => c.ProfileId).NotNull();
+            SharedValidator.RuleFor(c => c.ProfileId).ValidId();
+            SharedValidator.RuleFor(c => c.ProfileId).SetValidator(profileExistsValidator);
         }
 
         protected override void MapToResource(NetImportResource resource, NetImportDefinition definition)
