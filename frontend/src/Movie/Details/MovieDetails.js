@@ -36,6 +36,7 @@ import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
 import MovieTitlesTable from './Titles/MovieTitlesTable';
 import MovieCastPostersConnector from './Credits/Cast/MovieCastPostersConnector';
 import MovieCrewPostersConnector from './Credits/Crew/MovieCrewPostersConnector';
+import MovieCollectionConnector from './../MovieCollectionConnector';
 import MovieDetailsLinks from './MovieDetailsLinks';
 import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
 import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
@@ -538,9 +539,11 @@ class MovieDetails extends Component {
                         title="Collection"
                         size={sizes.LARGE}
                       >
-                        <span className={styles.collection}>
-                          {collection.name}
-                        </span>
+                        <MovieCollectionConnector
+                          tmdbId={collection.tmdbId}
+                          name={collection.name}
+                          movieId={id}
+                        />
                       </InfoLabel>
                   }
 

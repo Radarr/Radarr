@@ -1,0 +1,9 @@
+.monitorToggleButton {
+  composes: toggleButton from '~Components/MonitorToggleButton.css';
+
+  width: 15px;
+
+  &:hover {
+    color: $iconButtonHoverLightColor;
+  }
+}
