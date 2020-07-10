@@ -51,14 +51,14 @@ function createMapStateToProps() {
       const isRefreshingMovie = executingCommands.some((command) => {
         return (
           command.name === commandNames.REFRESH_MOVIE &&
-          command.body.movieId === movie.id
+          command.body.movieIds.includes(movie.id)
         );
       });
 
       const isSearchingMovie = executingCommands.some((command) => {
         return (
           command.name === commandNames.MOVIE_SEARCH &&
-          command.body.movieId === movie.id
+          command.body.movieIds.includes(movie.id)
         );
       });
 
@@ -85,7 +85,7 @@ class MovieIndexItemConnector extends Component {
   onRefreshMoviePress = () => {
     this.props.dispatchExecuteCommand({
       name: commandNames.REFRESH_MOVIE,
-      movieId: this.props.id
+      movieIds: [this.props.id]
     });
   }
 
