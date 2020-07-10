@@ -119,7 +119,7 @@ function createMapStateToProps() {
 
       const previousMovie = sortedMovies[movieIndex - 1] || _.last(sortedMovies);
       const nextMovie = sortedMovies[movieIndex + 1] || _.first(sortedMovies);
-      const isMovieRefreshing = isCommandExecuting(findCommand(commands, { name: commandNames.REFRESH_MOVIE, movieId: movie.id }));
+      const isMovieRefreshing = isCommandExecuting(findCommand(commands, { name: commandNames.REFRESH_MOVIE, movieIds: [movie.id] }));
       const movieRefreshingCommand = findCommand(commands, { name: commandNames.REFRESH_MOVIE });
       const allMoviesRefreshing = (
         isCommandExecuting(movieRefreshingCommand) &&
