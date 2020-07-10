@@ -1,3 +1,6 @@
 .dateIcon {
-  padding-right: 15px;
+  display: inline-block;
+  padding-right: 10px;
+  width: 30px;
+  text-align: center;
 }

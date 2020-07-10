@@ -20,33 +20,33 @@ function MovieReleaseDates(props) {
       {
         !!inCinemas &&
           <div >
-            <span className={styles.dateIcon}>
+            <div className={styles.dateIcon}>
               <Icon
                 name={icons.IN_CINEMAS}
               />
-            </span>
+            </div>
             {getRelativeDate(inCinemas, shortDateFormat, showRelativeDates, { timeFormat, timeForToday: false })}
           </div>
       }
       {
         !!digitalRelease &&
           <div >
-            <span className={styles.dateIcon}>
+            <div className={styles.dateIcon}>
               <Icon
                 name={icons.MOVIE_FILE}
               />
-            </span>
+            </div>
             {getRelativeDate(digitalRelease, shortDateFormat, showRelativeDates, { timeFormat, timeForToday: false })}
           </div>
       }
       {
         !!physicalRelease &&
           <div >
-            <span className={styles.dateIcon}>
+            <div className={styles.dateIcon}>
               <Icon
                 name={icons.DISC}
               />
-            </span>
+            </div>
             {getRelativeDate(physicalRelease, shortDateFormat, showRelativeDates, { timeFormat, timeForToday: false })}
           </div>
       }
