@@ -290,7 +290,7 @@ class MovieDetailsConnector extends Component {
   onRefreshPress = () => {
     this.props.dispatchExecuteCommand({
       name: commandNames.REFRESH_MOVIE,
-      movieId: this.props.id
+      movieIds: [this.props.id]
     });
   }
 
