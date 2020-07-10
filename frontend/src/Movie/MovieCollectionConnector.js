@@ -16,7 +16,6 @@ function createMapStateToProps() {
       const {
         monitored,
         qualityProfileId,
-        path,
         minimumAvailability
       } = movie;
 
@@ -24,7 +23,6 @@ function createMapStateToProps() {
         collectionList,
         monitored,
         qualityProfileId,
-        path,
         minimumAvailability,
         isSaving: netImports.isSaving
       };
@@ -55,11 +53,9 @@ class MovieCollectionConnector extends Component {
       this.props.setNetImportValue({ name: 'enabled', value: true });
       this.props.setNetImportValue({ name: 'enableAuto', value: true });
       this.props.setNetImportValue({ name: 'name', value: `${this.props.name} - ${this.props.tmdbId}` });
-      this.props.setNetImportValue({ name: 'rootFolderPath', value: this.props.path });
       this.props.setNetImportValue({ name: 'qualityProfileId', value: this.props.qualityProfileId });
       this.props.setNetImportValue({ name: 'monitored', value: this.props.monitored });
       this.props.setNetImportValue({ name: 'minimumAvailability', value: this.props.minimumAvailability });
-      this.props.saveNetImport();
     }
   }
 
@@ -83,7 +79,6 @@ MovieCollectionConnector.propTypes = {
   collectionList: PropTypes.object,
   monitored: PropTypes.bool.isRequired,
   qualityProfileId: PropTypes.number.isRequired,
-  path: PropTypes.string.isRequired,
   minimumAvailability: PropTypes.string.isRequired,
   isSaving: PropTypes.bool.isRequired,
   selectNetImportSchema: PropTypes.func.isRequired,
