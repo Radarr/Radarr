@@ -1,8 +1,5 @@
-/* eslint max-params: 0 */
-import moment from 'moment';
 
-function getStatusStyle(hasFile, downloading, startTime, isMonitored) {
-  const currentTime = moment();
+function getStatusStyle(hasFile, downloading, isAvailable, isMonitored) {
 
   if (hasFile) {
     return 'downloaded';
@@ -16,7 +13,7 @@ function getStatusStyle(hasFile, downloading, startTime, isMonitored) {
     return 'unmonitored';
   }
 
-  if (startTime.isBefore(currentTime) && !hasFile) {
+  if (isAvailable && !hasFile) {
     return 'missing';
   }
 
