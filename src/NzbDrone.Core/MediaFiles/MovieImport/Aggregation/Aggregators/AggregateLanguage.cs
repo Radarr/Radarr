@@ -37,7 +37,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
                 }
             }
 
-            _logger.Debug("Using languages: {0}", languages);
+            _logger.Debug("Using languages: {0}", string.Join(", ", languages.ToList()));
 
             localMovie.Languages = languages;
 
