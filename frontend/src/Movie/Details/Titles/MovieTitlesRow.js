@@ -46,7 +46,7 @@ MovieTitlesRow.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   language: PropTypes.object.isRequired,
-  sourceType: PropTypes.object.isRequired
+  sourceType: PropTypes.string.isRequired
 };
 
 export default MovieTitlesRow;
