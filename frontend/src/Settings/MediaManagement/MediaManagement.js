@@ -87,6 +87,7 @@ class MediaManagement extends Component {
 
                         <FormInputGroup
                           type={inputTypes.CHECK}
+                          isDisabled={settings.deleteEmptyFolders.value}
                           name="createEmptyMovieFolders"
                           helpText="Create missing movie folders during disk scan"
                           onChange={onInputChange}
@@ -103,6 +104,7 @@ class MediaManagement extends Component {
 
                         <FormInputGroup
                           type={inputTypes.CHECK}
+                          isDisabled={settings.createEmptyMovieFolders.value}
                           name="deleteEmptyFolders"
                           helpText="Delete empty movie folders during disk scan and when movie files are deleted"
                           onChange={onInputChange}
