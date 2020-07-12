@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data;
 using FluentMigrator.Model;
 using FluentMigrator.Runner.Processors.SQLite;
@@ -228,6 +228,8 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                 case "BLOB":
                     return DbType.Binary;
                 case "INTEGER":
+                    return DbType.Int32;
+                case "BIGINT":
                     return DbType.Int64;
                 case "NUMERIC":
                     return DbType.Double;
@@ -237,6 +239,10 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                     return DbType.DateTime;
                 case "UNIQUEIDENTIFIER":
                     return DbType.Guid;
+                case "SMALLINT":
+                    return DbType.Int16;
+                case "TINYINT":
+                    return DbType.Boolean;
                 default:
                     return null;
             }

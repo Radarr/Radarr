@@ -162,7 +162,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Name").AsString().Unique()
                 .WithColumn("Cutoff").AsInt32()
                 .WithColumn("Items").AsString().NotNullable()
-                .WithColumn("UpgradeAllowed").AsInt32().Nullable();
+                .WithColumn("UpgradeAllowed").AsBoolean().Nullable();
 
             Create.TableForModel("MetadataProfiles")
                 .WithColumn("Name").AsString().Unique()

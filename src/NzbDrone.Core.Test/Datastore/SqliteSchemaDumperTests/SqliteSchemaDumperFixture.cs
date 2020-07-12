@@ -73,9 +73,9 @@ namespace NzbDrone.Core.Test.Datastore.SqliteSchemaDumperTests
             result.Name.Should().Be("TestTable");
             result.Columns.Count.Should().Be(2);
             result.Columns.First().Name.Should().Be("MyId");
-            result.Columns.First().Type.Should().Be(DbType.Int64);
+            result.Columns.First().Type.Should().Be(DbType.Int32);
             result.Columns.Last().Name.Should().Be("MyCol");
-            result.Columns.Last().Type.Should().Be(DbType.Int64);
+            result.Columns.Last().Type.Should().Be(DbType.Int32);
         }
     }
 }
