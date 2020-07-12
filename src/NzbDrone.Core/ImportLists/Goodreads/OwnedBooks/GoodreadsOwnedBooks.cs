@@ -5,18 +5,17 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.MetadataSource.Goodreads;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.ImportLists.Goodreads
 {
-    public class GoodreadsOwnedBooksSettings : GoodreadsSettingsBase<GoodreadsOwnedBooksSettings>
+    public class GoodreadsOwnedBooksImportListSettings : GoodreadsSettingsBase<GoodreadsOwnedBooksImportListSettings>
     {
     }
 
-    public class GoodreadsOwnedBooks : GoodreadsImportListBase<GoodreadsOwnedBooksSettings>
+    public class GoodreadsOwnedBooks : GoodreadsImportListBase<GoodreadsOwnedBooksImportListSettings>
     {
         public GoodreadsOwnedBooks(IImportListStatusService importListStatusService,
                                    IConfigService configService,

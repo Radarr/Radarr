@@ -11,7 +11,7 @@ import TableBody from 'Components/Table/TableBody';
 import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
-import styles from './PlaylistInput.css';
+import styles from './BookshelfInput.css';
 
 const columns = [
   {
@@ -22,7 +22,7 @@ const columns = [
   }
 ];
 
-class PlaylistInput extends Component {
+class BookshelfInput extends Component {
 
   //
   // Lifecycle
@@ -82,6 +82,7 @@ class PlaylistInput extends Component {
   render() {
     const {
       className,
+      helptext,
       items,
       user,
       isFetching,
@@ -104,7 +105,7 @@ class PlaylistInput extends Component {
         {
           !isPopulated && !isFetching &&
             <div>
-              Authenticate with Goodreads to retrieve bookshelves to import.
+              Authenticate with Goodreads to retrieve bookshelves.
             </div>
         }
 
@@ -125,7 +126,7 @@ class PlaylistInput extends Component {
         {
           isPopulated && !isFetching && user && !!items.length &&
             <div className={className}>
-              Select bookshelves to import from Goodreads user {user}.
+              {helptext}
               <Table
                 columns={columns}
                 selectAll={true}
@@ -165,10 +166,11 @@ class PlaylistInput extends Component {
   }
 }
 
-PlaylistInput.propTypes = {
+BookshelfInput.propTypes = {
   className: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
+  helptext: PropTypes.string.isRequired,
   user: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.shape(tagShape)).isRequired,
   hasError: PropTypes.bool,
@@ -178,9 +180,9 @@ PlaylistInput.propTypes = {
   onChange: PropTypes.func.isRequired
 };
 
-PlaylistInput.defaultProps = {
-  className: styles.playlistInputWrapper,
+BookshelfInput.defaultProps = {
+  className: styles.bookshelfInputWrapper,
   inputClassName: styles.input
 };
 
-export default PlaylistInput;
+export default BookshelfInput;

@@ -14,8 +14,8 @@ function getType(type) {
       return inputTypes.CHECK;
     case 'device':
       return inputTypes.DEVICE;
-    case 'playlist':
-      return inputTypes.PLAYLIST;
+    case 'bookshelf':
+      return inputTypes.BOOKSHELF;
     case 'password':
       return inputTypes.PASSWORD;
     case 'number':

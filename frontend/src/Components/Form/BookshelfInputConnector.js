@@ -4,19 +4,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { fetchOptions, clearOptions } from 'Store/Actions/providerOptionActions';
-import PlaylistInput from './PlaylistInput';
+import BookshelfInput from './BookshelfInput';
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.providerOptions,
-    (state) => {
+    (state, props) => props.name,
+    (state, name) => {
       const {
         items,
         ...otherState
       } = state;
       return ({
+        helptext: items.helptext && items.helptext[name] ? items.helptext[name] : '',
         user: items.user ? items.user : '',
-        items: items.playlists ? items.playlists : [],
+        items: items.shelves ? items.shelves : [],
         ...otherState
       });
     }
@@ -28,7 +30,7 @@ const mapDispatchToProps = {
   dispatchClearOptions: clearOptions
 };
 
-class PlaylistInputConnector extends Component {
+class BookshelfInputConnector extends Component {
 
   //
   // Lifecycle
@@ -58,11 +60,13 @@ class PlaylistInputConnector extends Component {
     const {
       provider,
       providerData,
-      dispatchFetchOptions
+      dispatchFetchOptions,
+      name
     } = this.props;
 
     dispatchFetchOptions({
-      action: 'getPlaylists',
+      action: 'getBookshelves',
+      queryParams: { name },
       provider,
       providerData
     });
@@ -77,7 +81,7 @@ class PlaylistInputConnector extends Component {
 
   render() {
     return (
-      <PlaylistInput
+      <BookshelfInput
         {...this.props}
         onRefreshPress={this.onRefreshPress}
       />
@@ -85,7 +89,7 @@ class PlaylistInputConnector extends Component {
   }
 }
 
-PlaylistInputConnector.propTypes = {
+BookshelfInputConnector.propTypes = {
   provider: PropTypes.string.isRequired,
   providerData: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
@@ -94,4 +98,4 @@ PlaylistInputConnector.propTypes = {
   dispatchClearOptions: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(PlaylistInputConnector);
+export default connect(createMapStateToProps, mapDispatchToProps)(BookshelfInputConnector);

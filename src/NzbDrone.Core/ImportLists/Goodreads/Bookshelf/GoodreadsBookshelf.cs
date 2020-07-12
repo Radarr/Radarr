@@ -12,7 +12,7 @@ using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists.Goodreads
 {
-    public class GoodreadsBookshelf : GoodreadsImportListBase<GoodreadsBookshelfSettings>
+    public class GoodreadsBookshelf : GoodreadsImportListBase<GoodreadsBookshelfImportListSettings>
     {
         public GoodreadsBookshelf(IImportListStatusService importListStatusService,
                                   IConfigService configService,
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.ImportLists.Goodreads
 
         public override IList<ImportListItemInfo> Fetch()
         {
-            return CleanupListItems(Settings.PlaylistIds.SelectMany(x => Fetch(x)).ToList());
+            return CleanupListItems(Settings.BookshelfIds.SelectMany(x => Fetch(x)).ToList());
         }
 
         public IList<ImportListItemInfo> Fetch(string shelf)
@@ -57,13 +57,13 @@ namespace NzbDrone.Core.ImportLists.Goodreads
 
         public override object RequestAction(string action, IDictionary<string, string> query)
         {
-            if (action == "getPlaylists")
+            if (action == "getBookshelves")
             {
                 if (Settings.AccessToken.IsNullOrWhiteSpace())
                 {
                     return new
                     {
-                        playlists = new List<object>()
+                        shelves = new List<object>()
                     };
                 }
 
@@ -83,12 +83,18 @@ namespace NzbDrone.Core.ImportLists.Goodreads
                     shelves.AddRange(curr);
                 }
 
+                var helptext = new
+                {
+                    shelfIds = $"Import books from {Settings.UserName}'s shelves:"
+                };
+
                 return new
                 {
                     options = new
                     {
+                        helptext,
                         user = Settings.UserName,
-                        playlists = shelves.OrderBy(p => p.Name)
+                        shelves = shelves.OrderBy(p => p.Name)
                         .Select(p => new
                         {
                             id = p.Name,
