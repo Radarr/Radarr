@@ -74,7 +74,7 @@ class PageHeader extends Component {
           <IconButton
             className={styles.donate}
             name={icons.HEART}
-            to="https://radarr.video/donate.html"
+            to="https://opencollective.com/radarr"
             size={14}
           />
           <IconButton
