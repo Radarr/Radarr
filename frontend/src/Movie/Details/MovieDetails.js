@@ -539,11 +539,13 @@ class MovieDetails extends Component {
                         title="Collection"
                         size={sizes.LARGE}
                       >
-                        <MovieCollectionConnector
-                          tmdbId={collection.tmdbId}
-                          name={collection.name}
-                          movieId={id}
-                        />
+                        <div className={styles.collection}>
+                          <MovieCollectionConnector
+                            tmdbId={collection.tmdbId}
+                            name={collection.name}
+                            movieId={id}
+                          />
+                        </div>
                       </InfoLabel>
                   }
 

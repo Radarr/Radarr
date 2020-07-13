@@ -15,7 +15,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
                 return null;
             }
 
-            var audioLanguages = localMovie.MediaInfo.AudioLanguages.Split('/').Distinct().ToList();
+            var audioLanguages = localMovie.MediaInfo.AudioLanguages.Split('/').Select(l => l.Trim()).Distinct().ToList();
 
             var languages = new List<Languages.Language>();
 

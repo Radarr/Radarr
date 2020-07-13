@@ -18,7 +18,7 @@ function createMapStateToProps() {
         items
       } = languages;
 
-      const filterItems = ['Any', 'Unknown'];
+      const filterItems = ['Any'];
       const filteredLanguages = items.filter((lang) => !filterItems.includes(lang.name));
 
       return {

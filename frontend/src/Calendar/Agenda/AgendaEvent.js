@@ -41,6 +41,7 @@ class AgendaEvent extends Component {
       movieFile,
       title,
       titleSlug,
+      isAvailable,
       inCinemas,
       monitored,
       hasFile,
@@ -55,7 +56,7 @@ class AgendaEvent extends Component {
     const startTime = moment(inCinemas);
     const downloading = !!(queueItem || grabbed);
     const isMonitored = monitored;
-    const statusStyle = getStatusStyle(hasFile, downloading, startTime, isMonitored);
+    const statusStyle = getStatusStyle(hasFile, downloading, isAvailable, isMonitored);
 
     return (
       <div>
@@ -126,7 +127,8 @@ AgendaEvent.propTypes = {
   movieFile: PropTypes.object,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
-  inCinemas: PropTypes.string.isRequired,
+  isAvailable: PropTypes.bool.isRequired,
+  inCinemas: PropTypes.string,
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,

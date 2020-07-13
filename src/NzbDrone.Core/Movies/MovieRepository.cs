@@ -147,7 +147,8 @@ namespace NzbDrone.Core.Movies
             var builder = Builder()
                 .Where<Movie>(m =>
                               (m.InCinemas >= start && m.InCinemas <= end) ||
-                              (m.PhysicalRelease >= start && m.PhysicalRelease <= end));
+                              (m.PhysicalRelease >= start && m.PhysicalRelease <= end) ||
+                              (m.DigitalRelease >= start && m.DigitalRelease <= end));
 
             if (!includeUnmonitored)
             {
