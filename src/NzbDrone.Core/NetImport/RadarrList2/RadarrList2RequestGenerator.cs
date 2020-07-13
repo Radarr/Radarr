@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NLog;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 
-namespace NzbDrone.Core.NetImport.RadarrList
+namespace NzbDrone.Core.NetImport.RadarrList2
 {
-    public class RadarrListRequestGenerator : INetImportRequestGenerator
+    public abstract class RadarrList2RequestGeneratorBase : INetImportRequestGenerator
     {
-        public RadarrListSettings Settings { get; set; }
+        public IHttpRequestBuilderFactory RequestBuilder { get; set; }
         public IHttpClient HttpClient { get; set; }
         public Logger Logger { get; set; }
+
+        protected abstract HttpRequest GetHttpRequest();
 
         public virtual NetImportPageableRequestChain GetMovies()
         {
             var pageableRequests = new NetImportPageableRequestChain();
 
-            var request = new NetImportRequest(Settings.Url, HttpAccept.Json);
+            var httpRequest = GetHttpRequest();
+
+            var request = new NetImportRequest(httpRequest.Url.ToString(), HttpAccept.Json);
 
             request.HttpRequest.SuppressHttpError = true;
 

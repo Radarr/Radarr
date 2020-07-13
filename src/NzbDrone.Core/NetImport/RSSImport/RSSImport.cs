@@ -9,9 +9,9 @@ namespace NzbDrone.Core.NetImport.RSSImport
 {
     public class RSSImport : HttpNetImportBase<RSSImportSettings>
     {
-        public override string Name => "RSSList";
+        public override string Name => "RSS List";
 
-        public override NetImportType ListType => NetImportType.Other;
+        public override NetImportType ListType => NetImportType.Advanced;
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
