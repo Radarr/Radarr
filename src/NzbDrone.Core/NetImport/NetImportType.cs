@@ -5,6 +5,7 @@ namespace NzbDrone.Core.NetImport
         Program,
         TMDB,
         Trakt,
-        Other
+        Other,
+        Advanced
     }
 }

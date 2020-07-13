@@ -9,9 +9,9 @@ namespace NzbDrone.Core.NetImport.RadarrList
 {
     public class RadarrListImport : HttpNetImportBase<RadarrListSettings>
     {
-        public override string Name => "Radarr Lists";
+        public override string Name => "Custom Lists";
 
-        public override NetImportType ListType => NetImportType.Other;
+        public override NetImportType ListType => NetImportType.Advanced;
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 
@@ -32,34 +32,6 @@ namespace NzbDrone.Core.NetImport.RadarrList
                 {
                     yield return def;
                 }
-
-                yield return new NetImportDefinition
-                {
-                    Name = "IMDb Top 250",
-                    Enabled = Enabled,
-                    EnableAuto = true,
-                    ProfileId = 1,
-                    Implementation = GetType().Name,
-                    Settings = new RadarrListSettings { Path = "/imdb/top250" },
-                };
-                yield return new NetImportDefinition
-                {
-                    Name = "IMDb Popular Movies",
-                    Enabled = Enabled,
-                    EnableAuto = true,
-                    ProfileId = 1,
-                    Implementation = GetType().Name,
-                    Settings = new RadarrListSettings { Path = "/imdb/popular" },
-                };
-                yield return new NetImportDefinition
-                {
-                    Name = "IMDb List",
-                    Enabled = Enabled,
-                    EnableAuto = true,
-                    ProfileId = 1,
-                    Implementation = GetType().Name,
-                    Settings = new RadarrListSettings { Path = "/imdb/list?listId=LISTID" },
-                };
             }
         }
 
