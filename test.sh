@@ -20,12 +20,21 @@ NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.10.0/tools/nunit3-console.exe"
 NUNIT_COMMAND="$NUNIT"
 NUNIT_PARAMS="--workers=1"
 
+if [ "$PLATFORM" = "Mac" ]; then
+
+  export DYLD_FALLBACK_LIBRARY_PATH="$TEST_DIR:$MONOPREFIX/lib:/usr/local/lib:/lib:/usr/lib"
+  echo $DYLD_FALLBACK_LIBRARY_PATH
+  mono --version
+
+  # To debug which libraries are being loaded:
+  export DYLD_PRINT_LIBRARIES=YES
+fi
+
 if [ "$PLATFORM" = "Windows" ]; then
+  mkdir -p "$ProgramData/Radarr"
   WHERE="$WHERE && cat != LINUX"
-elif [ "$PLATFORM" = "Linux" ]; then
-  WHERE="$WHERE && cat != WINDOWS"
-  NUNIT_COMMAND="mono --debug --runtime=v4.0 $NUNIT"
-elif [ "$PLATFORM" = "Mac" ]; then
+elif [ "$PLATFORM" = "Linux" ] || [ "$PLATFORM" = "Mac" ] ; then
+  mkdir -p ~/.config/Radarr
   WHERE="$WHERE && cat != WINDOWS"
   NUNIT_COMMAND="mono --debug --runtime=v4.0 $NUNIT"
 else
