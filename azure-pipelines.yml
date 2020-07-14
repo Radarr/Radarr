@@ -236,6 +236,13 @@ stages:
           buildType: 'current'
           artifactName: WindowsTests
           targetPath: $(testsFolder)
+      - bash: |
+          wget https://mediaarea.net/repo/deb/repo-mediaarea_1.0-11_all.deb
+          sudo dpkg -i repo-mediaarea_1.0-11_all.deb
+          sudo apt-get update
+          sudo apt-get install -y --allow-unauthenticated libmediainfo-dev libmediainfo0v5 mediainfo
+        displayName: Install mediainfo
+        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
