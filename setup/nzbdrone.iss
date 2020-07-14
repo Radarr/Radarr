@@ -4,18 +4,12 @@
 #define AppName "Radarr"
 #define AppPublisher "Team Radarr"
 #define AppURL "https://radarr.video/"
-#define ForumsURL "https://github.com/Radarr/Radarr/issues"
+#define ForumsURL "https://forums.radarr.video/"
 #define AppExeName "Radarr.exe"
-#define BuildNumber "2.0"
-#define BuildVersion GetEnv('APPVEYOR_BUILD_VERSION')
-#define BranchName StringChange(GetEnv('APPVEYOR_REPO_BRANCH'), "/", "-")
-
-#if BuildVersion == ""
-
-#define BuildVersion GetEnv('BUILD_VERSION') + GetEnv('$CIRCLE_BUILD_NUM')
-#define BranchName StringChange(GetEnv('CIRCLE_BRANCH'), "/", "-")
-
-#endif
+#define BaseVersion "0.2.0"
+#define BuildNumber GetEnv('MINORVERSION')
+#define BuildVersion GetEnv('RADARRVERSION')
+#define BranchName GetEnv('BUILD_SOURCEBRANCHNAME')
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -23,7 +17,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{56C1065D-3523-4025-B76D-6F73F67F7F82}
 AppName={#AppName}
-AppVersion=0.2
+AppVersion={#BaseVersion}
 AppPublisher={#AppPublisher}
 AppPublisherURL={#AppURL}
 AppSupportURL={#ForumsURL}
@@ -32,7 +26,7 @@ DefaultDirName={commonappdata}\Radarr\bin
 DisableDirPage=yes
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=Radarr.{#BranchName}.{#BuildVersion}.installer
+OutputBaseFilename=Radarr.{#BranchName}.{#BuildVersion}.windows
 SolidCompression=yes
 AppCopyright=Creative Commons 3.0 License
 AllowUNCPath=False
@@ -41,14 +35,16 @@ DisableReadyPage=True
 CompressionThreads=2
 Compression=lzma2/normal
 AppContact={#ForumsURL}
-VersionInfoVersion={#BuildNumber}
+VersionInfoVersion={#BaseVersion}.{#BuildNumber}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-;Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "windowsService"; Description: "Install as a Windows Service"
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"
+Name: "windowsService"; Description: "Install Windows Service (Starts when the computer starts)"; GroupDescription: "Start automatically"; Flags: exclusive
+Name: "startupShortcut"; Description: "Create shortcut in Startup folder (Starts when you log into Windows)"; GroupDescription: "Start automatically"; Flags: exclusive unchecked
+Name: "none"; Description: "Do not start automatically"; GroupDescription: "Start automatically"; Flags: exclusive unchecked
 
 [Files]
 Source: "..\_output\Radarr.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -58,10 +54,22 @@ Source: "..\_output\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs cr
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Parameters: "/icon"
 Name: "{commondesktop}\{#AppName}"; Filename: "{app}\{#AppExeName}"; Parameters: "/icon"
+Name: "{userstartup}\{#AppName}"; Filename: "{app}\Radarr.exe"; WorkingDir: "{app}"; Tasks: startupShortcut
 
 [Run]
-Filename: "{app}\radarr.console.exe"; Parameters: "/u"; Flags: waituntilterminated;
-Filename: "{app}\radarr.console.exe"; Parameters: "/i"; Flags: waituntilterminated; Tasks: windowsService
+Filename: "{app}\Radarr.Console.exe"; StatusMsg: "Removing previous Windows Service"; Parameters: "/u"; Flags: runhidden waituntilterminated;
+Filename: "{app}\Radarr.Console.exe"; Description: "Enable Access from Other Devices"; StatusMsg: "Enabling Remote access"; Parameters: "/registerurl"; Flags: postinstall runascurrentuser runhidden waituntilterminated; Tasks: startupShortcut none;
+Filename: "{app}\Radarr.Console.exe"; StatusMsg: "Installing Windows Service"; Parameters: "/i"; Flags: runhidden waituntilterminated; Tasks: windowsService
+Filename: "{app}\Radarr.exe"; Description: "Open Radarr Web UI"; Flags: postinstall skipifsilent nowait; Tasks: windowsService;
+Filename: "{app}\Radarr.exe"; Description: "Start Radarr"; Flags: postinstall skipifsilent nowait; Tasks: startupShortcut none;
 
 [UninstallRun]
 Filename: "{app}\radarr.console.exe"; Parameters: "/u"; Flags: waituntilterminated skipifdoesntexist
+
+[Code]
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  ResultCode: Integer;
+begin
+  Exec(ExpandConstant('{commonappdata}\Radarr\bin\Radarr.Console.exe'), '/u', '', 0, ewWaitUntilTerminated, ResultCode)
+end;
