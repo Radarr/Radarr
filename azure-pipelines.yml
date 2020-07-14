@@ -255,7 +255,7 @@ stages:
         inputs:
           targetType: 'filePath'
           filePath: '$(testsFolder)/test.sh'
-          arguments: '$(osName) Unit Test'
+          arguments: '$(osName) Unit'
       - publish: TestResult.xml
         artifact: 'TestResult'
         displayName: Publish Test Result
@@ -337,7 +337,7 @@ stages:
         inputs:
           targetType: 'filePath'
           filePath: '$(testsFolder)/test.sh'
-          arguments: $(osName) Integration Test
+          arguments: $(osName) Integration
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'NUnit'
@@ -394,9 +394,9 @@ stages:
         displayName: Move Package Contents
       - bash: |
           if [[ $OSNAME == "Mac" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-macos.tar.gz
+          url=https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-macos.tar.gz
           elif [[ $OSNAME == "Linux" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz
+          url=https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
           else
           echo "Unhandled OS"
           exit 1
@@ -412,7 +412,7 @@ stages:
         inputs:
           targetType: 'filePath'
           filePath: '$(testsFolder)/test.sh'
-          arguments: $(osName) Automation Test
+          arguments: $(osName) Automation
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'NUnit'

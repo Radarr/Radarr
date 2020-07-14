@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NLog;
@@ -34,7 +34,9 @@ namespace NzbDrone.Automation.Test
         [TestFixtureSetUp]
         public void SmokeTestSetup()
         {
-            driver = new FirefoxDriver();
+            var options = new FirefoxOptions();
+            options.AddArguments("--headless");
+            driver = new FirefoxDriver(options);
 
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger());
             _runner.KillAll();
