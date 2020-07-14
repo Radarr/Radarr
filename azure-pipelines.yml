@@ -240,22 +240,9 @@ stages:
         displayName: Enable Windows Test Service
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - bash: |
-          sudo apt install dos2unix
-          dos2unix ${TESTSFOLDER}/test.sh
-        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
-      - bash: |
-          brew install dos2unix
-          dos2unix ${TESTSFOLDER}/test.sh
-        condition: and(succeeded(), eq(variables['osName'], 'Mac'))
-      - task: Bash@3
-        displayName: Run Tests
-        env:
-          DYLD_FALLBACK_LIBRARY_PATH: $(Build.SourcesDirectory)/_tests
-          TEST_DIR: $(Build.SourcesDirectory)/_tests
-        inputs:
-          targetType: 'filePath'
-          filePath: '$(testsFolder)/test.sh'
-          arguments: '$(osName) Unit'
+          chmod a+x ${TESTSFOLDER}/test.sh
+          ${TESTSFOLDER}/test.sh ${OSNAME} Unit Test
+        displayName: Run Unit Tests
       - publish: TestResult.xml
         artifact: 'TestResult'
         displayName: Publish Test Result
@@ -325,19 +312,10 @@ stages:
           cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Radarr/. ./bin/
         displayName: Move Package Contents
       - bash: |
-          sudo apt install dos2unix
-          dos2unix ${TESTSFOLDER}/test.sh
-        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
-      - bash: |
-          brew install dos2unix
-          dos2unix ${TESTSFOLDER}/test.sh
-        condition: and(succeeded(), eq(variables['osName'], 'Mac'))
-      - task: Bash@3
+          ls -lR
+          chmod a+x ${TESTSFOLDER}/test.sh
+          ${TESTSFOLDER}/test.sh ${OSNAME} Integration Test
         displayName: Run Integration Tests
-        inputs:
-          targetType: 'filePath'
-          filePath: '$(testsFolder)/test.sh'
-          arguments: $(osName) Integration
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'NUnit'
@@ -440,4 +418,3 @@ stages:
             SYSTEM_ACCESSTOKEN: $(System.AccessToken)
             DISCORDCHANNELID: $(discordChannelId)
             DISCORDWEBHOOKKEY: $(discordWebhookKey)
-        

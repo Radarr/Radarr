@@ -45,7 +45,7 @@ namespace NzbDrone.Test.Common
             }
             else
             {
-                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "bin", nzbdroneConsoleExe));
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "bin", nzbdroneConsoleExe));
             }
 
             while (true)
