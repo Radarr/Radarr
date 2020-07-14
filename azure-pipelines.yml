@@ -420,4 +420,24 @@ stages:
           testRunTitle: '$(osName) Automation Tests'
           failTaskOnFailedTests: $(failBuild)
         displayName: Publish Test Results
+
+  - stage: Report_Out
+    dependsOn:
+    - Unit_Test
+    - Integration_Automation
+    condition: eq(variables['system.pullrequest.isfork'], false)
+    displayName: Build Status Report
+    jobs:
+    - job:
+      displayName: Discord Notification
+      pool:
+        vmImage: 'ubuntu-18.04'
+      steps:
+        - checkout: none
+        - powershell: |
+            iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Servarr/AzureDiscordNotify/master/DiscordNotify.ps1'))
+          env:
+            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+            DISCORDCHANNELID: $(discordChannelId)
+            DISCORDWEBHOOKKEY: $(discordWebhookKey)
         

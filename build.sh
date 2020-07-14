@@ -4,6 +4,7 @@ outputFolderLinux='./_output_linux'
 outputFolderMacOS='./_output_macos'
 outputFolderMacOSApp='./_output_macos_app'
 testPackageFolder='./_tests/'
+testSearchPattern='*.Test/bin/x86/Release/*'
 sourceFolder='./src'
 slnFile=$sourceFolder/NzbDrone.sln
 updateFolder=$outputFolder/Radarr.Update
@@ -215,20 +216,29 @@ PackageTests()
 {
     ProgressStart 'Creating Test Package'
 
+    rm -rf $testPackageFolder
+    mkdir $testPackageFolder
+
+    find . -maxdepth 6 -path $testSearchPattern -exec cp -r "{}" $testPackageFolder \;
+
     if [ $runtime = "dotnet" ] ; then
         $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder
     else
         mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder
     fi
 
+    cp $outputFolder/*.dll $testPackageFolder
+    cp $outputFolder/*.exe $testPackageFolder
+    cp $outputFolder/fpcalc $testPackageFolder
     cp ./test.sh $testPackageFolder
 
     rm -f $testPackageFolder/*.log.config
 
     CleanFolder $testPackageFolder true
 
-    echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $testPackageFolder
+    echo "Adding CurlSharp.dll.config (for dllmap)"
+    cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $testPackageFolder
+
     echo "Copying CurlSharp libraries"
     cp $sourceFolder/ExternalModules/CurlSharp/libs/i386/* $testPackageFolder
 

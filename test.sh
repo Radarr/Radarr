@@ -28,7 +28,29 @@ NUNIT_PARAMS="--workers=1"
 
 if [ "$PLATFORM" = "Mac" ]; then
 
-  export DYLD_FALLBACK_LIBRARY_PATH="$TEST_DIR:/usr/local/lib:/lib:/usr/lib"
+  #set up environment
+  if [[ -x '/opt/local/bin/mono' ]]; then
+      # Macports and mono-supplied installer path
+      export PATH="/opt/local/bin:$PATH"
+  elif [[ -x '/usr/local/bin/mono' ]]; then
+      # Homebrew-supplied path to mono
+      export PATH="/usr/local/bin:$PATH"
+  fi
+
+  echo $TEST_DIR
+  export DYLD_FALLBACK_LIBRARY_PATH="$TEST_DIR"
+
+  if [ -e /Library/Frameworks/Mono.framework ]; then
+      MONO_FRAMEWORK_PATH=/Library/Frameworks/Mono.framework/Versions/Current
+      export PATH="$MONO_FRAMEWORK_PATH/bin:$PATH"
+      export DYLD_FALLBACK_LIBRARY_PATH="$DYLD_FALLBACK_LIBRARY_PATH:$MONO_FRAMEWORK_PATH/lib"
+  fi
+
+  if [[ -f '/opt/local/lib/libsqlite3.0.dylib' ]]; then
+      export DYLD_FALLBACK_LIBRARY_PATH="/opt/local/lib:$DYLD_FALLBACK_LIBRARY_PATH"
+  fi
+
+  export DYLD_FALLBACK_LIBRARY_PATH="$DYLD_FALLBACK_LIBRARY_PATH:$HOME/lib:/usr/local/lib:/lib:/usr/lib"
   echo $LD_LIBRARY_PATH
   echo $DYLD_LIBRARY_PATH
   echo $DYLD_FALLBACK_LIBRARY_PATH
@@ -63,6 +85,9 @@ fi
 for i in `find $TEST_DIR -name "$TEST_PATTERN"`;
   do ASSEMBLIES="$ASSEMBLIES $i"
 done
+
+$NUNIT_COMMAND --where "$WHERE" $NUNIT_PARAMS $ASSEMBLIES;
+EXIT_CODE=$?
 
 if [ "$EXIT_CODE" -ge 0 ]; then
   echo "Failed tests: $EXIT_CODE"
