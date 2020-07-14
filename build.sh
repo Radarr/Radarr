@@ -241,7 +241,8 @@ PackageTests()
     echo "Copying CurlSharp libraries"
     cp $sourceFolder/ExternalModules/CurlSharp/libs/i386/* $testPackageFolder
 
-    echo "Adding sqlite dylibs"
+    echo "Adding sqlite and mediainfo dylibs"
+    cp $sourceFolder/Libraries/MediaInfo/*.dylib $testPackageFolder
     cp $sourceFolder/Libraries/Sqlite/*.dylib $testPackageFolder
 
     ProgressEnd 'Creating Test Package'
