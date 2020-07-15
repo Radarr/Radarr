@@ -262,9 +262,10 @@ stages:
           testRunTitle: '$(osName) Unit Tests'
           failTaskOnFailedTests: true
 
-  - stage: Integration_Automation
-    displayName: Integration / Automation
+  - stage: Integration
+    displayName: Integration
     dependsOn: Package
+
     jobs:
 
     - job: Integration
@@ -290,7 +291,7 @@ stages:
       - bash: |
           SYMLINK=5_18_1
           MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
-          echo "##vso[task.setvariable variable=DYLD_FALLBACK_LIBRARY_PATH;].:$MONOPREFIX/lib:/lib:/usr/lib:$DYLD_LIBRARY_FALLBACK_PATH"
+          echo "##vso[task.setvariable variable=MONOPREFIX;]$MONOPREFIX"
           echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
           echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
         displayName: Set Mono Version
@@ -331,6 +332,11 @@ stages:
           failTaskOnFailedTests: true
         displayName: Publish Test Results
 
+  - stage: Automation
+    displayName: Automation
+    dependsOn: Package
+    
+    jobs:
     - job: Automation
       strategy:
         matrix:
@@ -338,17 +344,17 @@ stages:
             osName: 'Linux'
             imageName: 'ubuntu-18.04'
             pattern: 'Radarr.**.linux.tar.gz'
-            failBuild: false
+            failBuild: true
           Mac:
             osName: 'Mac'
             imageName: 'macos-10.14' # Fails due to firefox not being installed on image
             pattern: 'Radarr.**.osx.tar.gz'
-            failBuild: false
+            failBuild: true
           Windows:
             osName: 'Windows'
             imageName: 'windows-2019'
             pattern: 'Radarr.**.windows.zip'
-            failBuild: false
+            failBuild: true
 
       pool:
         vmImage: $(imageName)
@@ -392,12 +398,10 @@ stages:
         displayName: Install Gecko Driver
         condition: and(succeeded(), ne(variables['osName'], 'Windows'))
       - bash: ls -lR
-      - task: Bash@3
+      - bash: |
+          chmod a+x ${TESTSFOLDER}/test.sh
+          ${TESTSFOLDER}/test.sh ${OSNAME} Automation
         displayName: Run Automation Tests
-        inputs:
-          targetType: 'filePath'
-          filePath: '$(testsFolder)/test.sh'
-          arguments: $(osName) Automation
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'NUnit'
@@ -409,7 +413,8 @@ stages:
   - stage: Report_Out
     dependsOn:
     - Unit_Test
-    - Integration_Automation
+    - Integration
+    - Automation
     condition: eq(variables['system.pullrequest.isfork'], false)
     displayName: Build Status Report
     jobs:

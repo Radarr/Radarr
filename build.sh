@@ -229,7 +229,6 @@ PackageTests()
 
     cp $outputFolder/*.dll $testPackageFolder
     cp $outputFolder/*.exe $testPackageFolder
-    cp $outputFolder/fpcalc $testPackageFolder
     cp ./test.sh $testPackageFolder
 
     rm -f $testPackageFolder/*.log.config

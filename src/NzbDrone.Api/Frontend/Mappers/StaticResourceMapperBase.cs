@@ -21,10 +21,7 @@ namespace NzbDrone.Api.Frontend.Mappers
             _diskProvider = diskProvider;
             _logger = logger;
 
-            if (!RuntimeInfo.IsProduction)
-            {
-                _caseSensitive = StringComparison.OrdinalIgnoreCase;
-            }
+            _caseSensitive = RuntimeInfo.IsProduction ? DiskProviderBase.PathStringComparison : StringComparison.OrdinalIgnoreCase;
         }
 
         public abstract string Map(string resourceUrl);
@@ -38,7 +35,7 @@ namespace NzbDrone.Api.Frontend.Mappers
             if (_diskProvider.FileExists(filePath, _caseSensitive))
             {
                 var response = new StreamResponse(() => GetContentStream(filePath), MimeTypes.GetMimeType(filePath));
-                return response;
+                return new MaterialisingResponse(response);
             }
 
             _logger.Warn("File {0} not found", filePath);

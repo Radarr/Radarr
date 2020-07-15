@@ -31,7 +31,7 @@ namespace NzbDrone.Automation.Test
             LogManager.Configuration.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Trace, consoleTarget));
         }
 
-                [OneTimeSetUp]
+        [OneTimeSetUp]
         public void SmokeTestSetup()
         {
             var options = new FirefoxOptions();
@@ -61,7 +61,7 @@ namespace NzbDrone.Automation.Test
                 .Select(e => e.Text);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void SmokeTestTearDown()
         {
             _runner.KillAll();

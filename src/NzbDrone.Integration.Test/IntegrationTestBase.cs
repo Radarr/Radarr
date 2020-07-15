@@ -29,6 +29,7 @@ using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common.Categories;
 using RestSharp;
+using System.Diagnostics;
 
 namespace NzbDrone.Integration.Test
 {
@@ -124,7 +125,10 @@ namespace NzbDrone.Integration.Test
         [SetUp]
         public void IntegrationSetUp()
         {
-            TempDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "_test_" + DateTime.UtcNow.Ticks);
+            TempDirectory = Path.Combine(TestContext.CurrentContext.TestDirectory, "_test_" + Process.GetCurrentProcess().Id + "_" + DateTime.UtcNow.Ticks);
+
+            // Wait for things to get quiet, otherwise the previous test might influence the current one.
+            Commands.WaitAll();
         }
 
         [TearDown]
