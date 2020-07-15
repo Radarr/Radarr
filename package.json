@@ -73,7 +73,7 @@
     "jdu": "1.0.0",
     "jquery": "3.5.1",
     "loader-utils": "^2.0.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "mini-css-extract-plugin": "0.9.0",
     "mobile-detect": "1.4.4",
     "moment": "2.24.0",
