@@ -191,6 +191,7 @@ namespace NzbDrone.Common.Test.Http
         }
 
         [Test]
+        [Platform(Exclude="MacOsX")]
         public void should_not_follow_redirects_when_not_in_production()
         {
             var request = new HttpRequest($"https://{_httpBinHost}/redirect/1");
@@ -214,6 +215,7 @@ namespace NzbDrone.Common.Test.Http
         }
 
         [Test]
+        [Platform(Exclude="MacOsX")]
         public void should_not_follow_redirects()
         {
             var request = new HttpRequest($"https://{_httpBinHost}/redirect/1");
