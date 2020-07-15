@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
@@ -47,7 +47,7 @@ namespace NzbDrone.Automation.Test.PageModel
             });
         }
 
-        public IWebElement SeriesNavIcon => FindByClass("x-series-nav");
+        public IWebElement MoviesNavIcon => FindByClass("x-movies-nav");
 
         public IWebElement CalendarNavIcon => FindByClass("x-calendar-nav");
 

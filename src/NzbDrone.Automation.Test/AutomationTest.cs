@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NLog;
@@ -31,10 +31,15 @@ namespace NzbDrone.Automation.Test
             LogManager.Configuration.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Trace, consoleTarget));
         }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SmokeTestSetup()
         {
-            driver = new FirefoxDriver();
+            var options = new FirefoxOptions();
+            options.AddArguments("--headless");
+            FirefoxDriverService service = FirefoxDriverService.CreateDefaultService();
+
+            // service.Host = "::1"; // Workaround netcore/selenium bug https://github.com/SeleniumHQ/selenium/issues/7840
+            driver = new FirefoxDriver(service, options, new System.TimeSpan(0, 3, 0));
 
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger());
             _runner.KillAll();
@@ -56,7 +61,7 @@ namespace NzbDrone.Automation.Test
                 .Select(e => e.Text);
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void SmokeTestTearDown()
         {
             _runner.KillAll();

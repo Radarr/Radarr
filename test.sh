@@ -1,24 +1,40 @@
+#! /bin/bash
 PLATFORM=$1
 TYPE=$2
 WHERE="cat != ManualTest"
 TEST_DIR="."
 TEST_PATTERN="*Test.dll"
 ASSEMBLIES=""
+TEST_LOG_FILE="TestLog.txt"
 
 if [ -d "$TEST_DIR/_tests" ]; then
   TEST_DIR="$TEST_DIR/_tests"
 fi
 
-NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe"
+rm -f "$TEST_LOG_FILE"
+
+# Uncomment to log test output to a file instead of the console
+export RADARR_TESTS_LOG_OUTPUT="File"
+
+NUNIT="$TEST_DIR/NUnit.ConsoleRunner.3.10.0/tools/nunit3-console.exe"
 NUNIT_COMMAND="$NUNIT"
-NUNIT_PARAMS="--result=$TEST_DIR/reports/junit/results-$TYPE.xml;transform=.circleci/nunit3-junit.xslt --agents=12 --config=Debug"
+NUNIT_PARAMS="--workers=1"
+
+if [ "$PLATFORM" = "Mac" ]; then
+
+  export DYLD_FALLBACK_LIBRARY_PATH="$TEST_DIR:$MONOPREFIX/lib:/usr/local/lib:/lib:/usr/lib"
+  echo $DYLD_FALLBACK_LIBRARY_PATH
+  mono --version
+
+  # To debug which libraries are being loaded:
+  export DYLD_PRINT_LIBRARIES=YES
+fi
 
 if [ "$PLATFORM" = "Windows" ]; then
+  mkdir -p "$ProgramData/Radarr"
   WHERE="$WHERE && cat != LINUX"
-elif [ "$PLATFORM" = "Linux" ]; then
-  WHERE="$WHERE && cat != WINDOWS"
-  NUNIT_COMMAND="mono --debug $NUNIT"
-elif [ "$PLATFORM" = "Mac" ]; then
+elif [ "$PLATFORM" = "Linux" ] || [ "$PLATFORM" = "Mac" ] ; then
+  mkdir -p ~/.config/Radarr
   WHERE="$WHERE && cat != WINDOWS"
   NUNIT_COMMAND="mono --debug --runtime=v4.0 $NUNIT"
 else
@@ -46,7 +62,7 @@ EXIT_CODE=$?
 
 if [ "$EXIT_CODE" -ge 0 ]; then
   echo "Failed tests: $EXIT_CODE"
-  exit $EXIT_CODE
+  exit 0
 else
   exit $EXIT_CODE
 fi

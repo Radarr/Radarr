@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Automation.Test.PageModel;
 using OpenQA.Selenium;
@@ -17,11 +17,11 @@ namespace NzbDrone.Automation.Test
         }
 
         [Test]
-        public void series_page()
+        public void movies_page()
         {
-            page.SeriesNavIcon.Click();
+            page.MoviesNavIcon.Click();
             page.WaitForNoSpinner();
-            page.FindByClass("iv-series-index-seriesindexlayout").Should().NotBeNull();
+            page.FindByClass("iv-movies-index-moviesindexlayout").Should().NotBeNull();
         }
 
         [Test]
@@ -61,16 +61,16 @@ namespace NzbDrone.Automation.Test
         }
 
         [Test]
-        public void add_series_page()
+        public void add_movies_page()
         {
-            page.SeriesNavIcon.Click();
+            page.MoviesNavIcon.Click();
             page.WaitForNoSpinner();
 
-            page.Find(By.LinkText("Add Series")).Click();
+            page.Find(By.LinkText("Add Movies")).Click();
 
             page.WaitForNoSpinner();
 
-            page.FindByClass("iv-addseries-addserieslayout").Should().NotBeNull();
+            page.FindByClass("iv-addmovies-addmovieslayout").Should().NotBeNull();
         }
     }
 }

@@ -1,17 +1,25 @@
-#! /bin/bash
-msBuild='/MSBuild/15.0/Bin'
+msBuildVersion='15.0'
 outputFolder='./_output'
-outputFolderMono='./_output_mono'
-outputFolderOsx='./_output_osx'
-outputFolderOsxApp='./_output_osx_app'
+outputFolderLinux='./_output_linux'
+outputFolderMacOS='./_output_macos'
+outputFolderMacOSApp='./_output_macos_app'
 testPackageFolder='./_tests/'
-testSearchPattern='*.Test/bin/x86/Release'
+testSearchPattern='*.Test/bin/x86/Release/*'
 sourceFolder='./src'
 slnFile=$sourceFolder/NzbDrone.sln
-updateFolder=$outputFolder/NzbDrone.Update
-updateFolderMono=$outputFolderMono/NzbDrone.Update
+updateFolder=$outputFolder/Radarr.Update
+updateFolderMono=$outputFolderLinux/Radarr.Update
+
+#Artifact variables
+artifactsFolder="./_artifacts";
+artifactsFolderWindows=$artifactsFolder/windows
+artifactsFolderLinux=$artifactsFolder/linux
+artifactsFolderMacOS=$artifactsFolder/macos
+artifactsFolderMacOSApp=$artifactsFolder/macos-app
 
 nuget='tools/nuget/nuget.exe';
+vswhere='tools/vswhere/vswhere.exe';
+
 CheckExitCode()
 {
     "$@"
@@ -23,11 +31,20 @@ CheckExitCode()
     return $status
 }
 
+ProgressStart()
+{
+    echo "Start '$1'"
+}
+
+ProgressEnd()
+{
+    echo "Finish '$1'"
+}
+
 CleanFolder()
 {
     local path=$1
     local keepConfigFiles=$2
-
 
     find $path -name "*.transform" -exec rm "{}" \;
 
@@ -39,9 +56,6 @@ CleanFolder()
     find $path -name "FluentValidation.resources.dll" -exec rm "{}" \;
     find $path -name "App.config" -exec rm "{}" \;
 
-    echo "Removing .less files"
-    find $path -name "*.less" -exec rm "{}" \;
-
     echo "Removing vshost files"
     find $path -name "*.vshost.exe" -exec rm "{}" \;
 
@@ -52,192 +66,174 @@ CleanFolder()
     find $path -depth -empty -type d -exec rm -r "{}" \;
 }
 
-
-
-AddJsonNet()
-{
-    rm $outputFolder/Newtonsoft.Json.*
-    cp $sourceFolder/packages/Newtonsoft.Json.*/lib/net35/*.dll $outputFolder
-    cp $sourceFolder/packages/Newtonsoft.Json.*/lib/net35/*.dll $outputFolder/NzbDrone.Update
-}
-
 BuildWithMSBuild()
 {
-    export PATH=$msBuild:$PATH
-	echo $PATH
-    CheckExitCode MSBuild.exe $slnFile //t:Clean //m
+    msBuildPath=`$vswhere -latest -products \* -requires Microsoft.Component.MSBuild -find MSBuild\\\\\*\*\\\\Bin\\\\MSBuild.exe`
+    msBuildPath=${msBuildPath/C:\\/\/c\/}
+    msBuildPath=${msBuildPath//\\/\/}
+    msBuildDir=$(dirname "$msBuildPath")
+    echo $msBuildPath
+
+    export PATH=$msBuildDir:$PATH
+    CheckExitCode MSBuild.exe $slnFile //p:Configuration=Release //p:Platform=x86 //t:Clean //m
     $nuget restore $slnFile
     CheckExitCode MSBuild.exe $slnFile //p:Configuration=Release //p:Platform=x86 //t:Build //m //p:AllowedReferenceRelatedFileExtensions=.pdb
-}
-
-RestoreNuget()
-{
-    export MONO_IOMAP=case
-    mono $nuget restore $slnFile
-}
-
-CleanWithXbuild()
-{
-    export MONO_IOMAP=case
-    CheckExitCode msbuild /t:Clean $slnFile
 }
 
 BuildWithXbuild()
 {
     export MONO_IOMAP=case
-    CheckExitCode msbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb /maxcpucount:3 $slnFile
+    CheckExitCode msbuild /p:Configuration=Debug /t:Clean $slnFile
+    CheckExitCode msbuild /p:Configuration=Release /t:Clean $slnFile
+    mono $nuget locals all -clear
+    mono $nuget restore $slnFile
+    CheckExitCode msbuild /p:Configuration=Release /p:Platform=x86 /t:Build /p:AllowedReferenceRelatedFileExtensions=.pdb $slnFile
 }
 
 Build()
 {
-    echo "##teamcity[progressStart 'Build']"
+    ProgressStart 'Build'
 
     rm -rf $outputFolder
+    rm -rf $testPackageFolder
 
     if [ $runtime = "dotnet" ] ; then
         BuildWithMSBuild
     else
-        CleanWithXbuild
-        RestoreNuget
         BuildWithXbuild
     fi
 
     CleanFolder $outputFolder false
 
-    AddJsonNet
-
     echo "Removing Mono.Posix.dll"
     rm $outputFolder/Mono.Posix.dll
 
-    echo "##teamcity[progressFinish 'Build']"
+    echo "Adding LICENSE.md"
+    cp LICENSE.md $outputFolder
+
+    ProgressEnd 'Build'
 }
 
 RunGulp()
 {
-    echo "##teamcity[progressStart 'npm install']"
+    ProgressStart 'npm install'
     npm-cache install npm || CheckExitCode npm install
-    echo "##teamcity[progressFinish 'npm install']"
+    ProgressEnd 'npm install'
 
-    echo "##teamcity[progressStart 'Running gulp']"
+    ProgressStart 'Running gulp'
     CheckExitCode npm run build
-    echo "##teamcity[progressFinish 'Running gulp']"
-}
-
-CreateMdbs()
-{
-    local path=$1
-    if [ $runtime = "dotnet" ] ; then
-        local pdbFiles=( $(find $path -name "*.pdb") )
-        for filename in "${pdbFiles[@]}"
-        do
-          if [ -e ${filename%.pdb}.dll ]  ; then
-            tools/pdb2mdb/pdb2mdb.exe ${filename%.pdb}.dll
-          fi
-          if [ -e ${filename%.pdb}.exe ]  ; then
-            tools/pdb2mdb/pdb2mdb.exe ${filename%.pdb}.exe
-          fi
-        done
-    fi
+    ProgressEnd 'Running gulp'
 }
 
 PackageMono()
 {
-    echo "##teamcity[progressStart 'Creating Mono Package']"
-    rm -rf $outputFolderMono
-    cp -r $outputFolder $outputFolderMono
+    ProgressStart 'Creating Mono Package'
 
-    echo "Creating MDBs"
-    CreateMdbs $outputFolderMono
+    rm -rf $outputFolderLinux
 
-    echo "Removing PDBs"
-    find $outputFolderMono -name "*.pdb" -exec rm "{}" \;
+    echo "Copying Binaries"
+    cp -r $outputFolder $outputFolderLinux
 
     echo "Removing Service helpers"
-    rm -f $outputFolderMono/ServiceUninstall.*
-    rm -f $outputFolderMono/ServiceInstall.*
+    rm -f $outputFolderLinux/ServiceUninstall.*
+    rm -f $outputFolderLinux/ServiceInstall.*
 
     echo "Removing native windows binaries Sqlite, MediaInfo"
-    rm -f $outputFolderMono/sqlite3.*
-    rm -f $outputFolderMono/MediaInfo.*
+    rm -f $outputFolderLinux/sqlite3.*
+    rm -f $outputFolderLinux/MediaInfo.*
 
     echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $outputFolderMono
+    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $outputFolderLinux
 
-    echo "Adding CurlSharp.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $outputFolderMono
 
-    echo "Renaming NzbDrone.Console.exe to NzbDrone.exe"
-    rm $outputFolderMono/Radarr.exe*
-    for file in $outputFolderMono/Radarr.Console.exe*; do
+    echo "Renaming Radarr.Console.exe to Radarr.exe"
+    rm $outputFolderLinux/Radarr.exe*
+    for file in $outputFolderLinux/Radarr.Console.exe*; do
         mv "$file" "${file//.Console/}"
     done
 
     echo "Removing NzbDrone.Windows"
-    rm $outputFolderMono/NzbDrone.Windows.*
+    rm $outputFolderLinux/NzbDrone.Windows.*
 
     echo "Adding NzbDrone.Mono to UpdatePackage"
-    cp $outputFolderMono/NzbDrone.Mono.* $updateFolderMono
+    cp $outputFolderLinux/NzbDrone.Mono.* $updateFolderMono
 
-    echo "##teamcity[progressFinish 'Creating Mono Package']"
+    ProgressEnd 'Creating Mono Package'
 }
 
-PackageOsx()
+PackageMacOS()
 {
-    echo "##teamcity[progressStart 'Creating OS X Package']"
-    rm -rf $outputFolderOsx
-    cp -r $outputFolderMono $outputFolderOsx
+    ProgressStart 'Creating MacOS Package'
 
-    echo "Adding sqlite dylibs"
-    cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderOsx
-
-    echo "Adding MediaInfo dylib"
-    cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderOsx
+    rm -rf $outputFolderMacOS
+    mkdir $outputFolderMacOS
 
     echo "Adding Startup script"
-    cp  ./osx/Radarr $outputFolderOsx
+    cp ./macOS/Radarr $outputFolderMacOS
+    dos2unix $outputFolderMacOS/Radarr
 
-    echo "##teamcity[progressFinish 'Creating OS X Package']"
+    echo "Copying Binaries"
+    cp -r $outputFolderLinux/* $outputFolderMacOS
+
+    echo "Adding sqlite dylibs"
+    cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderMacOS
+
+    echo "Adding MediaInfo dylib"
+    cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderMacOS
+
+    ProgressEnd 'Creating MacOS Package'
 }
 
-PackageOsxApp()
+PackageMacOSApp()
 {
-    echo "##teamcity[progressStart 'Creating OS X App Package']"
-    rm -rf $outputFolderOsxApp
-    mkdir $outputFolderOsxApp
+    ProgressStart 'Creating macOS App Package'
 
-    cp -r ./osx/Radarr.app $outputFolderOsxApp
-    cp -r $outputFolderOsx $outputFolderOsxApp/Radarr.app/Contents/MacOS
+    rm -rf $outputFolderMacOSApp
+    mkdir $outputFolderMacOSApp
+    cp -r ./macOS/Radarr.app $outputFolderMacOSApp
+    mkdir -p $outputFolderMacOSApp/Radarr.app/Contents/MacOS
 
-    echo "##teamcity[progressFinish 'Creating OS X App Package']"
+    echo "Adding Startup script"
+    cp ./macOS/Radarr $outputFolderMacOSApp/Radarr.app/Contents/MacOS
+    dos2unix $outputFolderMacOSApp/Radarr.app/Contents/MacOS/Radarr
+
+    echo "Copying Binaries"
+    cp -r $outputFolderLinux/* $outputFolderMacOSApp/Radarr.app/Contents/MacOS
+
+    echo "Adding sqlite dylibs"
+    cp $sourceFolder/Libraries/Sqlite/*.dylib $outputFolderMacOSApp/Radarr.app/Contents/MacOS
+
+    echo "Adding MediaInfo dylib"
+    cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderMacOSApp/Radarr.app/Contents/MacOS
+
+    echo "Removing Update Folder"
+    rm -r $outputFolderMacOSApp/Radarr.app/Contents/MacOS/Radarr.Update
+
+    ProgressEnd 'Creating macOS App Package'
 }
 
 PackageTests()
 {
-    echo "Packaging Tests"
-    echo "##teamcity[progressStart 'Creating Test Package']"
+    ProgressStart 'Creating Test Package'
+
     rm -rf $testPackageFolder
     mkdir $testPackageFolder
 
-    find $sourceFolder -path $testSearchPattern -exec cp -r -u -T "{}" $testPackageFolder \;
+    find . -maxdepth 6 -path $testSearchPattern -exec cp -r "{}" $testPackageFolder \;
 
     if [ $runtime = "dotnet" ] ; then
-        $nuget install NUnit.Runners -Version 3.9.0 -Output $testPackageFolder
+        $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder
     else
-        mono $nuget install NUnit.Runners -Version 3.9.0 -Output $testPackageFolder
+        mono $nuget install NUnit.ConsoleRunner -Version 3.10.0 -Output $testPackageFolder
     fi
 
     cp $outputFolder/*.dll $testPackageFolder
-    cp ./*.sh $testPackageFolder
-
-    echo "Creating MDBs for tests"
-    CreateMdbs $testPackageFolder
+    cp $outputFolder/*.exe $testPackageFolder
+    cp ./test.sh $testPackageFolder
 
     rm -f $testPackageFolder/*.log.config
 
     CleanFolder $testPackageFolder true
-
-    echo "Adding NzbDrone.Core.dll.config (for dllmap)"
-    cp $sourceFolder/NzbDrone.Core/NzbDrone.Core.dll.config $testPackageFolder
 
     echo "Adding CurlSharp.dll.config (for dllmap)"
     cp $sourceFolder/NzbDrone.Common/CurlSharp.dll.config $testPackageFolder
@@ -245,16 +241,45 @@ PackageTests()
     echo "Copying CurlSharp libraries"
     cp $sourceFolder/ExternalModules/CurlSharp/libs/i386/* $testPackageFolder
 
-    echo "##teamcity[progressFinish 'Creating Test Package']"
+    echo "Adding sqlite and mediainfo dylibs"
+    cp $sourceFolder/Libraries/MediaInfo/*.dylib $testPackageFolder
+    cp $sourceFolder/Libraries/Sqlite/*.dylib $testPackageFolder
+
+    ProgressEnd 'Creating Test Package'
 }
 
 CleanupWindowsPackage()
 {
+    ProgressStart 'Cleaning Windows Package'
+
     echo "Removing NzbDrone.Mono"
     rm -f $outputFolder/NzbDrone.Mono.*
 
     echo "Adding NzbDrone.Windows to UpdatePackage"
     cp $outputFolder/NzbDrone.Windows.* $updateFolder
+
+    ProgressEnd 'Cleaning Windows Package'
+}
+
+PackageArtifacts()
+{
+    echo "Creating Artifact Directories"
+    
+    rm -rf $artifactsFolder
+    mkdir $artifactsFolder
+    
+    mkdir $artifactsFolderWindows
+    mkdir $artifactsFolderMacOS
+    mkdir $artifactsFolderLinux
+    mkdir $artifactsFolderWindows/Radarr
+    mkdir $artifactsFolderMacOS/Radarr
+    mkdir $artifactsFolderLinux/Radarr
+    mkdir $artifactsFolderMacOSApp
+    
+    cp -r $outputFolder/* $artifactsFolderWindows/Radarr
+    cp -r $outputFolderMacOSApp/* $artifactsFolderMacOSApp
+    cp -r $outputFolderMacOS/* $artifactsFolderMacOS/Radarr
+    cp -r $outputFolderLinux/* $artifactsFolderLinux/Radarr
 }
 
 # Use mono or .net depending on OS
@@ -262,9 +287,6 @@ case "$(uname -s)" in
     CYGWIN*|MINGW32*|MINGW64*|MSYS*)
         # on windows, use dotnet
         runtime="dotnet"
-		vsLoc=$(./vswhere.exe -property installationPath)
-		vsLoc=$(echo "/$vsLoc" | sed -e 's/\\/\//g' -e 's/://')
-		msBuild="$vsLoc$msBuild"
         ;;
     *)
         # otherwise use mono
@@ -272,42 +294,51 @@ case "$(uname -s)" in
         ;;
 esac
 
-if [ $# -eq 0 ]
-  then
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    --only-backend)
+        ONLY_BACKEND=YES
+        shift # past argument
+        ;;
+    --only-frontend)
+        ONLY_FRONTEND=YES
+        shift # past argument
+        ;;
+    --only-packages)
+        ONLY_PACKAGES=YES
+        shift # past argument
+        ;;
+    *)    # unknown option
+        POSITIONAL+=("$1") # save it in an array for later
+        shift # past argument
+        ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+# Only build backend if we haven't set only-frontend or only-packages
+if [ -z "$ONLY_FRONTEND" ] && [ -z "$ONLY_PACKAGES" ];
+then
     Build
-    RunGulp
-    PackageMono
-    PackageOsx
-    PackageOsxApp
     PackageTests
+fi
+
+# Only build frontend if we haven't set only-backend or only-packages
+if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_PACKAGES" ];
+then
+   RunGulp
+fi
+
+# Only package if we haven't set only-backend or only-frontend
+if [ -z "$ONLY_BACKEND" ] && [ -z "$ONLY_FRONTEND" ];
+then
+    PackageMono
+    PackageMacOS
+    PackageMacOSApp
     CleanupWindowsPackage
-fi
-
-if [ "$1" = "CleanXbuild" ]
-then rm -rf $outputFolder
-    CleanWithXbuild
-fi
-
-if [ "$1" = "NugetMono" ]
-then rm -rf $outputFolder
-    RestoreNuget
-fi
-
-if [ "$1" = "Build" ]
-then BuildWithXbuild
-  CleanFolder $outputFolder false
-  AddJsonNet
-  rm $outputFolder/Mono.Posix.dll
-fi
-
-if [ "$1" = "Gulp" ]
-then RunGulp
-fi
-
-if [ "$1" = "Package" ]
-then PackageMono
-  PackageOsx
-  PackageOsxApp
-  PackageTests
-  CleanupWindowsPackage
+    PackageArtifacts
 fi

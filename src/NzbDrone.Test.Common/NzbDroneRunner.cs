@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -9,6 +9,7 @@ using NLog;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Processes;
+using NzbDrone.Core.Configuration;
 using RestSharp;
 
 namespace NzbDrone.Test.Common
@@ -28,24 +29,60 @@ namespace NzbDrone.Test.Common
             _restClient = new RestClient("http://localhost:7878/api");
         }
 
+        private void CopyDirectory(string source, string target)
+        {
+            foreach (var dirPath in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(source, target));
+            }
+
+            foreach (var newPath in Directory.GetFiles(source, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(source, target), true);
+            }
+        }
+
         public void Start()
         {
-            AppData = Path.Combine(TestContext.CurrentContext.TestDirectory, "_intg_" + DateTime.Now.Ticks);
+            AppData = Path.Combine(TestContext.CurrentContext.TestDirectory, "_intg_" + TestBase.GetUID());
 
-            var nzbdroneConsoleExe = "Radarr.Console.exe";
-
-            if (OsInfo.IsNotWindows)
+            if (!Directory.Exists(Path.Combine(TestContext.CurrentContext.TestDirectory, "CachedAppData")))
             {
-                nzbdroneConsoleExe = "Radarr.exe";
+                Directory.CreateDirectory(AppData);
+                GenerateConfigFile();
+                StartInternal();
+                KillAll(false);
+
+                CopyDirectory(AppData, Path.Combine(TestContext.CurrentContext.TestDirectory, "CachedAppData"));
+            }
+            else
+            {
+                CopyDirectory(Path.Combine(TestContext.CurrentContext.TestDirectory, "CachedAppData"), AppData);
+                GenerateConfigFile();
+            }
+
+            StartInternal();
+        }
+
+        private void StartInternal()
+        {
+            string consoleExe;
+            if (OsInfo.IsWindows)
+            {
+                consoleExe = "Radarr.Console.exe";
+            }
+            else
+            {
+                consoleExe = "Radarr.exe";
             }
 
             if (BuildInfo.IsDebug)
             {
-                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..\\..\\..\\..\\..\\_output\\Radarr.Console.exe"));
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", "..", "..", "_output", consoleExe));
             }
             else
             {
-                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "bin", nzbdroneConsoleExe));
+                Start(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "bin", consoleExe));
             }
 
             while (true)
@@ -57,8 +94,6 @@ namespace NzbDrone.Test.Common
                     Assert.Fail("Process has exited");
                 }
 
-                SetApiKey();
-
                 var request = new RestRequest("system/status");
                 request.AddHeader("Authorization", ApiKey);
                 request.AddHeader("X-Api-Key", ApiKey);
@@ -67,37 +102,48 @@ namespace NzbDrone.Test.Common
 
                 if (statusCall.ResponseStatus == ResponseStatus.Completed)
                 {
-                    Console.WriteLine("NzbDrone is started. Running Tests");
+                    TestContext.Progress.WriteLine("Radarr is started. Running Tests");
                     return;
                 }
 
-                Console.WriteLine("Waiting for NzbDrone to start. Response Status : {0}  [{1}] {2}", statusCall.ResponseStatus, statusCall.StatusDescription, statusCall.ErrorException);
+                TestContext.Progress.WriteLine("Waiting for Radarr to start. Response Status : {0}  [{1}] {2}", statusCall.ResponseStatus, statusCall.StatusDescription, statusCall.ErrorException.Message);
 
                 Thread.Sleep(500);
             }
         }
 
-        public void KillAll()
+        public void KillAll(bool delete = true)
         {
-            if (_nzbDroneProcess != null)
+            try
             {
-                _processProvider.Kill(_nzbDroneProcess.Id);
+                if (_nzbDroneProcess != null)
+                {
+                    _processProvider.Kill(_nzbDroneProcess.Id);
+                }
+
+                _processProvider.KillAll(ProcessProvider.NZB_DRONE_CONSOLE_PROCESS_NAME);
+                _processProvider.KillAll(ProcessProvider.NZB_DRONE_PROCESS_NAME);
+            }
+            catch (InvalidOperationException)
+            {
+                // May happen if the process closes while being closed
             }
 
-            _processProvider.KillAll(ProcessProvider.NZB_DRONE_CONSOLE_PROCESS_NAME);
-            _processProvider.KillAll(ProcessProvider.NZB_DRONE_PROCESS_NAME);
+            if (delete)
+            {
+                TestBase.DeleteTempFolder(AppData);
+            }
         }
 
-        private void Start(string outputNzbdroneConsoleExe)
+        private void Start(string outputRadarrConsoleExe)
         {
             var args = "-nobrowser -data=\"" + AppData + "\"";
-            _nzbDroneProcess = _processProvider.Start(outputNzbdroneConsoleExe, args, null, OnOutputDataReceived, OnOutputDataReceived);
-
+            _nzbDroneProcess = _processProvider.Start(outputRadarrConsoleExe, args, null, OnOutputDataReceived, OnOutputDataReceived);
         }
 
         private void OnOutputDataReceived(string data)
         {
-            Console.WriteLine(data);
+            TestContext.Progress.WriteLine(data);
 
             if (data.Contains("Press enter to exit"))
             {
@@ -105,33 +151,24 @@ namespace NzbDrone.Test.Common
             }
         }
 
-        private void SetApiKey()
+        private void GenerateConfigFile()
         {
             var configFile = Path.Combine(AppData, "config.xml");
-            var attempts = 0;
 
-            while (ApiKey == null && attempts < 50)
-            {
-                try
-                {
-                    if (File.Exists(configFile))
-                    {
-                        var apiKeyElement = XDocument.Load(configFile)
-                            .XPathSelectElement("Config/ApiKey");
-                        if (apiKeyElement != null)
-                        {
-                            ApiKey = apiKeyElement.Value;
-                        }
-                    }
-                }
-                catch (XmlException ex)
-                {
-                    Console.WriteLine("Error getting API Key from XML file: " + ex.Message, ex);
-                }
+            // Generate and set the api key so we don't have to poll the config file
+            var apiKey = Guid.NewGuid().ToString().Replace("-", "");
 
-                attempts++;
-                Thread.Sleep(1000);
-            }
+            var xDoc = new XDocument(
+                new XDeclaration("1.0", "utf-8", "yes"),
+                new XElement(ConfigFileProvider.CONFIG_ELEMENT_NAME,
+                             new XElement(nameof(ConfigFileProvider.ApiKey), apiKey),
+                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false)));
+
+            var data = xDoc.ToString();
+
+            File.WriteAllText(configFile, data);
+
+            ApiKey = apiKey;
         }
     }
 }

@@ -128,10 +128,11 @@ namespace NzbDrone.Core.Test.UpdateTests
             Mocker.GetMock<IArchiveService>().Verify(c => c.Extract(updateArchive, _sandboxFolder));
         }
 
-        [Test]
-        public void Should_copy_update_client_to_root_of_sandbox()
+        [TestCase("0.2.0.1480")]
+        public void Should_copy_update_client_to_root_of_sandbox(string v)
         {
-            var updateClientFolder = Mocker.GetMock<IAppFolderInfo>().Object.GetUpdateClientFolder(It.IsAny<Version>());
+            var version = new Version(v);
+            var updateClientFolder = Mocker.GetMock<IAppFolderInfo>().Object.GetUpdateClientFolder(version);
 
             Subject.Execute(new ApplicationUpdateCommand());
 

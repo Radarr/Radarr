@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.InstrumentationTests
         {
             _logger.Info(_uniqueMessage);
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
             StoredModel.Message.Should().Be(_uniqueMessage);
             VerifyLog(StoredModel, LogLevel.Info);
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.InstrumentationTests
 
             _logger.Info(message);
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
             StoredModel.Message.Should().HaveLength(message.Length);
             StoredModel.Message.Should().Be(message);
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.InstrumentationTests
 
             _logger.Error(ex, _uniqueMessage);
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
             VerifyLog(StoredModel, LogLevel.Error);
             StoredModel.Message.Should().Be(_uniqueMessage + ": " + ex.Message);
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Test.InstrumentationTests
 
             _logger.Error(ex, _uniqueMessage);
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
             StoredModel.Message.Should().Be(ex.Message);
 
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.Test.InstrumentationTests
             var epFile = new MovieFile();
             _logger.Debug("File {0} no longer exists on disk. removing from database.", epFile.RelativePath);
 
-            Thread.Sleep(600);
+            Thread.Sleep(1000);
 
             epFile.RelativePath.Should().BeNull();
         }
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Test.InstrumentationTests
         private void VerifyLog(Log logItem, LogLevel level)
         {
             logItem.Time.Should().BeWithin(TimeSpan.FromSeconds(2));
-            logItem.Logger.Should().Be(this.GetType().Name);
+            logItem.Logger.Should().Be(GetType().Name);
             logItem.Level.Should().Be(level.Name);
             _logger.Name.Should().EndWith(logItem.Logger);
         }
