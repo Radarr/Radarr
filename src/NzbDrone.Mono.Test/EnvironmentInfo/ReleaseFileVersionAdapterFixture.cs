@@ -8,7 +8,7 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Mono.Test.EnvironmentInfo
 {
     [TestFixture]
-    [Platform("Mono")]
+    [Platform("Linux")]
     public class ReleaseFileVersionAdapterFixture : TestBase<ReleaseFileVersionAdapter>
     {
         [SetUp]
