@@ -16,6 +16,9 @@ import MovieStatusCell from './MovieStatusCell';
 import MovieFileStatusConnector from 'Movie/MovieFileStatusConnector';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import styles from './MovieIndexRow.css';
+import Icon from 'Components/Icon';
+import Popover from 'Components/Tooltip/Popover';
+import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 
 class MovieIndexRow extends Component {
 
@@ -61,6 +64,9 @@ class MovieIndexRow extends Component {
   render() {
     const {
       id,
+      tmdbId,
+      imdbId,
+      youTubeTrailerId,
       monitored,
       status,
       title,
@@ -141,10 +147,12 @@ class MovieIndexRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
+
                   <MovieTitleLink
                     titleSlug={titleSlug}
                     title={title}
                   />
+
                 </VirtualTableRowCell>
               );
             }
@@ -352,6 +360,25 @@ class MovieIndexRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
+                  <span className={styles.externalLinks}>
+                    <Popover
+                      anchor={
+                        <Icon
+                          name={icons.EXTERNAL_LINK}
+                          size={12}
+                        />
+                      }
+                      title="Links"
+                      body={
+                        <MovieDetailsLinks
+                          tmdbId={tmdbId}
+                          imdbId={imdbId}
+                          youTubeTrailerId={youTubeTrailerId}
+                        />
+                      }
+                    />
+                  </span>
+
                   <SpinnerIconButton
                     name={icons.REFRESH}
                     title="Refresh movie"
@@ -430,7 +457,10 @@ MovieIndexRow.propTypes = {
   onSearchPress: PropTypes.func.isRequired,
   isMovieEditorActive: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
-  onSelectedChange: PropTypes.func.isRequired
+  onSelectedChange: PropTypes.func.isRequired,
+  tmdbId: PropTypes.number.isRequired,
+  imdbId: PropTypes.string,
+  youTubeTrailerId: PropTypes.string
 };
 
 MovieIndexRow.defaultProps = {
