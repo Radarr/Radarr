@@ -39,7 +39,7 @@ class AddNewMovieSearchResult extends Component {
     this.setState({ isNewAddMovieModalOpen: false });
   }
 
-  onTMDBLinkPress = (event) => {
+  onExternalLinkPress = (event) => {
     event.stopPropagation();
   }
 
@@ -49,6 +49,7 @@ class AddNewMovieSearchResult extends Component {
   render() {
     const {
       tmdbId,
+      imdbId,
       title,
       titleSlug,
       year,
@@ -117,17 +118,41 @@ class AddNewMovieSearchResult extends Component {
                   />
               }
 
-              <Link
-                className={styles.tmdbLink}
-                to={`https://www.themoviedb.org/movie/${tmdbId}`}
-                onPress={this.onTMDBLinkPress}
-              >
-                <Icon
-                  className={styles.tmdbLinkIcon}
-                  name={icons.EXTERNAL_LINK}
-                  size={28}
-                />
-              </Link>
+              {
+                isSmallScreen ?
+                  null :
+                  <div className={styles.externalLink}>
+                    <Link
+                      to={`https://www.themoviedb.org/movie/${tmdbId}`}
+                      onPress={this.onExternalLinkPress}
+                    >
+                      <Label size={sizes.LARGE}>
+                        TMDb
+                      </Label>
+                    </Link>
+
+                    {
+                      imdbId &&
+                        <Link
+                          to={`https://www.imdb.com/title/${imdbId}`}
+                          onPress={this.onExternalLinkPress}
+                        >
+                          <Label size={sizes.LARGE}>
+                            IMDb
+                          </Label>
+                        </Link>
+                    }
+
+                    <Link
+                      to={`https://trakt.tv/search/tmdb/${tmdbId}?id_type=movie`}
+                      onPress={this.onExternalLinkPress}
+                    >
+                      <Label size={sizes.LARGE}>
+                        Trakt
+                      </Label>
+                    </Link>
+                  </div>
+              }
             </div>
 
             <div>
@@ -156,6 +181,42 @@ class AddNewMovieSearchResult extends Component {
               }
             </div>
 
+            {
+              isSmallScreen ?
+                <div className={styles.externalLink}>
+                  <Link
+                    to={`https://www.themoviedb.org/movie/${tmdbId}`}
+                    onPress={this.onExternalLinkPress}
+                  >
+                    <Label size={sizes.LARGE}>
+                      TMDb
+                    </Label>
+                  </Link>
+
+                  {
+                    imdbId &&
+                      <Link
+                        to={`https://www.imdb.com/title/${imdbId}`}
+                        onPress={this.onExternalLinkPress}
+                      >
+                        <Label size={sizes.LARGE}>
+                          IMDb
+                        </Label>
+                      </Link>
+                  }
+
+                  <Link
+                    to={`https://trakt.tv/search/tmdb/${tmdbId}?id_type=movie`}
+                    onPress={this.onExternalLinkPress}
+                  >
+                    <Label size={sizes.LARGE}>
+                      Trakt
+                    </Label>
+                  </Link>
+                </div> :
+                null
+            }
+
             <div className={styles.overview}>
               {overview}
             </div>
@@ -179,6 +240,7 @@ class AddNewMovieSearchResult extends Component {
 
 AddNewMovieSearchResult.propTypes = {
   tmdbId: PropTypes.number.isRequired,
+  imdbId: PropTypes.string,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,

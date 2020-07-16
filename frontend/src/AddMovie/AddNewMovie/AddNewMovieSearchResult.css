@@ -47,16 +47,10 @@
   color: $disabledColor;
 }
 
-.tmdbLink {
-  composes: link from '~Components/Link/Link.css';
-
-  margin-top: -4px;
+.externalLink {
+  margin-top: 5px;
   margin-left: auto;
   color: $textColor;
-}
-
-.tmdbLinkIcon {
-  margin-left: 10px;
 }
 
 .alreadyExistsIcon {
