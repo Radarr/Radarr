@@ -23,7 +23,7 @@ function MovieDetailsLinks(props) {
           kind={kinds.INFO}
           size={sizes.LARGE}
         >
-          The Movie DB
+          TMDb
         </Label>
       </Link>
 
@@ -51,7 +51,7 @@ function MovieDetailsLinks(props) {
               kind={kinds.INFO}
               size={sizes.LARGE}
             >
-              IMDB
+              IMDb
             </Label>
           </Link>
       }

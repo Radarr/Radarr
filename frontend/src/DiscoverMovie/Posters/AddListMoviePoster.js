@@ -9,6 +9,9 @@ import MoviePoster from 'Movie/MoviePoster';
 import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
 import styles from './AddListMoviePoster.css';
+import Icon from 'Components/Icon';
+import Popover from 'Components/Tooltip/Popover';
+import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 
 class AddListMoviePoster extends Component {
 
@@ -71,6 +74,8 @@ class AddListMoviePoster extends Component {
   render() {
     const {
       tmdbId,
+      imdbId,
+      youTubeTrailerId,
       title,
       year,
       overview,
@@ -120,6 +125,24 @@ class AddListMoviePoster extends Component {
               onPress={this.onExcludeMoviePress}
               isDisabled={isExcluded}
             />
+            <span className={styles.externalLinks}>
+              <Popover
+                anchor={
+                  <Icon
+                    name={icons.EXTERNAL_LINK}
+                    size={12}
+                  />
+                }
+                title="Links"
+                body={
+                  <MovieDetailsLinks
+                    tmdbId={tmdbId}
+                    imdbId={imdbId}
+                    youTubeTrailerId={youTubeTrailerId}
+                  />
+                }
+              />
+            </span>
           </Label>
 
           {
@@ -187,6 +210,8 @@ class AddListMoviePoster extends Component {
 
 AddListMoviePoster.propTypes = {
   tmdbId: PropTypes.number.isRequired,
+  imdbId: PropTypes.string,
+  youTubeTrailerId: PropTypes.string,
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
   overview: PropTypes.string.isRequired,
