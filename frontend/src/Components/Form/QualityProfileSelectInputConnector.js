@@ -55,7 +55,7 @@ class QualityProfileSelectInputConnector extends Component {
       values
     } = this.props;
 
-    if (!value || !_.some(values, (option) => parseInt(option.key) === value)) {
+    if (!value || !values.some((v) => v.key === value) ) {
       const firstValue = _.find(values, (option) => !isNaN(parseInt(option.key)));
 
       if (firstValue) {

@@ -255,14 +255,10 @@ class MovieIndex extends Component {
   }
 
   onSaveSelected = (changes) => {
-    const selectedMovieIds = this.getSelectedIds();
-
-    if (selectedMovieIds.length > 0) {
-      this.props.onSaveSelected({
-        movieIds: this.getSelectedIds(),
-        ...changes
-      });
-    }
+    this.props.onSaveSelected({
+      movieIds: this.getSelectedIds(),
+      ...changes
+    });
   }
 
   onOrganizeMoviePress = () => {
