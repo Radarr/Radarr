@@ -205,9 +205,11 @@ namespace NzbDrone.Core.DecisionEngine
                         case IndexerFlags.PTP_Approved:
                         case IndexerFlags.PTP_Golden:
                         case IndexerFlags.HDB_Internal:
+                        case IndexerFlags.AHD_Internal:
                             score += 2;
                             break;
                         case IndexerFlags.G_Halfleech:
+                        case IndexerFlags.AHD_UserRelease:
                             score += 1;
                             break;
                     }
