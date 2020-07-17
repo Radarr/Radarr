@@ -25,6 +25,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 WriteIndented = true
             };
+
+            _serializerSettings.Converters.Add(new StringConverter());
         }
 
         protected override void MainDbUpgrade()
