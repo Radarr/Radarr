@@ -97,11 +97,6 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Norwegian);
             }
 
-            if (lowerTitle.Contains("nordic"))
-            {
-                languages.Add(Language.Norwegian);
-            }
-
             if (lowerTitle.Contains("finnish"))
             {
                 languages.Add(Language.Finnish);
