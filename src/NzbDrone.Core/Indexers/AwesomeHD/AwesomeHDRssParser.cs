@@ -106,6 +106,11 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                         flags |= IndexerFlags.AHD_Internal;
                     }
 
+                    if (torrent.UserRelease)
+                    {
+                        flags |= IndexerFlags.AHD_UserRelease;
+                    }
+
                     var imdbId = 0;
                     if (torrent.ImdbId.Length > 2)
                     {
