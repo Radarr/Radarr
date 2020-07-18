@@ -1,12 +1,13 @@
 # Radarr
 
-**New UI Development:** For an overview of the new UI development see [DEVELOPMENT.md](https://github.com/Radarr/Radarr/blob/aphrodite/DEVELOPMENT.md).
+[![Build Status](https://dev.azure.com/Radarr/Radarr/_apis/build/status/Radarr.Radarr?branchName=develop)](https://dev.azure.com/Radarr/Radarr/_build/latest?definitionId=1&branchName=develop)
+[![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/radarr.svg)](https://github.com/Radarr/Radarr/wiki/Docker)
+![Github Downloads](https://img.shields.io/github/downloads/Radarr/Radarr/total.svg)
+[![Backers on Open Collective](https://opencollective.com/Radarr/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/Radarr/sponsors/badge.svg)](#sponsors)
 
 Radarr is an __independent__ fork of [Sonarr](https://github.com/Sonarr/Sonarr) reworked for automatically downloading movies via Usenet and BitTorrent.
 
 The project was inspired by other Usenet/BitTorrent movie downloaders such as CouchPotato.
-
-See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/11/roadmap-update.html) for an overview of planned features.
 
 ## Getting Started
 
@@ -30,10 +31,6 @@ See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/
 
 ## Support
 
-[![OpenCollective](https://opencollective.com/radarr/tiers/backer/badge.svg)](#backers)
-[![OpenCollective](https://opencollective.com/radarr/tiers/flexible-sponsor/badge.svg)](#flexible-sponsors)
-[![OpenCollective](https://opencollective.com/radarr/tiers/sponsor/badge.svg)](#sponsors)
-
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/AD3UP37)
 [![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60&style=flat-square)](https://www.reddit.com/r/radarr)
 [![Feathub](https://img.shields.io/badge/feathub-requests-lightgrey.svg?maxAge=60&style=flat-square)](http://feathub.com/Radarr/Radarr)
@@ -45,22 +42,12 @@ See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/
 [![GitHub issues](https://img.shields.io/github/issues/radarr/radarr.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/radarr/radarr.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/pulls)
 [![GNU GPL v3](https://img.shields.io/badge/license-GNU%20GPL%20v3-blue.svg?maxAge=60&style=flat-square)](http://www.gnu.org/licenses/gpl.html)
-[![Copyright 2010-2017](https://img.shields.io/badge/copyright-2017-blue.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr)
+[![Copyright 2010-2020](https://img.shields.io/badge/copyright-2020-blue.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr)
 [![Github Releases](https://img.shields.io/github/downloads/Radarr/Radarr/total.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases/)
 [![Docker Pulls](https://img.shields.io/docker/pulls/linuxserver/radarr.svg?maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr/)
 [![Changelog](https://img.shields.io/github/commit-activity/w/radarr/radarr.svg?style=flat-square)](/CHANGELOG.md#unreleased)
 
-| Service  | Master                      | Develop                      |
-|----------|:---------------------------:|:----------------------------:|
-| AppVeyor | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr/master.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr) | [![AppVeyor](https://img.shields.io/appveyor/ci/galli-leo/Radarr-usby1/develop.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/Radarr-usby1) |
-| Travis   | [![Travis](https://img.shields.io/travis/Radarr/Radarr/master.svg?maxAge=60&style=flat-square)](https://travis-ci.org/Radarr/Radarr) | [![Travis](https://img.shields.io/travis/Radarr/Radarr/develop.svg?maxAge=60&style=flat-square)](https://travis-ci.org/Radarr/Radarr) |
-
 ### [Site and API Status](https://status.radarr.video)
-
-| API | Updates | Sites  |
-|-------|:----:|:----:|
-| [![API V2 (develop)](http://status.radarr.video/component/1/shield?style=flat-square)](https://api.radarr.video/v2/) | [![Update Server](http://status.radarr.video/component/4/shield?style=flat-square)](https://radarr.aeonlucid.com) | [![Radarr Mappings](http://status.radarr.video/component/6/shield?style=flat-square)](https://mappings.radarr.video/)
-| [![API Staging (nightly)](http://status.radarr.video/component/2/shield?style=flat-square)](https://staging.api.radarr.video/) | [![Github Updates](http://status.radarr.video/component/5/shield?style=flat-square)](https://api.github.com/v3/) | [![Main Site](http://status.radarr.video/component/7/shield?style=flat-square)](https://radarr.video/)
 
 Radarr is currently undergoing rapid development and pull requests are actively added into the repository.
 
@@ -110,7 +97,6 @@ See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/
 
 * Make sure all the required software mentioned above are installed
 * Clone the repository into your development machine ([*info*](https://help.github.com/desktop/guides/contributing/working-with-your-remote-repository-on-github-or-github-enterprise))
-* Grab the submodules `git submodule init && git submodule update`
 * Install the required Node Packages `yarn install`
 * Start gulp to monitor your dev environment for any changes that need post processing using `yarn start` command.
 
@@ -125,9 +111,9 @@ See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/
 
 ### Development
 
-* Open `Radarr.sln` in Visual Studio 2017 or run the build.sh script, if Mono is installed. Alternatively you can use Jetbrains Rider, since it works on all Platforms.
+* Open `Radarr.sln` in Visual Studio 2019 or run the build.sh script, if Mono is installed. Alternatively you can use Jetbrains Rider, since it works on all Platforms.
 * Make sure `NzbDrone.Console` is set as the startup project
-* Run `build.sh` before running
+* Run `build.sh` before running, or build in VS
 
 ## Supporters
 
@@ -157,4 +143,4 @@ Thank you to [<img src="/Logo/jetbrains.svg" alt="JetBrains" width="32"> JetBrai
 ## License
 
 * [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
-* Copyright 2010-2019
+* Copyright 2010-2020
