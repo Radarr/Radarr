@@ -2,7 +2,43 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './MovieStatusLabel.css';
 
-function getMovieStatus(hasFile, isMonitored, isAvailable) {
+function getMovieStatus(hasFile, isMonitored, isAvailable, queueDetails = false) {
+
+  if (queueDetails.items[0]) {
+    const queueStatus = queueDetails.items[0].status;
+    const trackedDownloadStatus = queueDetails.items[0].trackedDownloadStatus;
+
+    switch (true) {
+      case queueStatus !== 'completed':
+        switch (queueStatus) {
+          case 'queue':
+          case 'paused':
+          case 'failed':
+            return `Downloading: ${queueStatus[0].toUpperCase()}${queueStatus.substr(1).toLowerCase()}`;
+          case 'delay':
+            return 'Downloading: Pending';
+          case 'DownloadClientUnavailable':
+          case 'warning':
+            return 'Downloading: Error';
+          case 'downloading':
+            return queueStatus[0].toUpperCase() + queueStatus.substr(1).toLowerCase();
+          default:
+        }
+        break;
+      case queueStatus === 'completed':
+        switch (trackedDownloadStatus) {
+          case 'importPending':
+            return 'Downloaded: Pending';
+          case 'importing':
+            return 'Downloaded: Importing';
+          case 'failedPending':
+            return 'Downloaded: Waiting';
+          default:
+        }
+        break;
+      default:
+    }
+  }
 
   if (hasFile) {
     return 'Downloaded';
@@ -23,14 +59,16 @@ function MovieStatusLabel(props) {
   const {
     hasMovieFiles,
     monitored,
-    isAvailable
+    isAvailable,
+    queueDetails
   } = props;
 
-  const status = getMovieStatus(hasMovieFiles, monitored, isAvailable);
+  const status = getMovieStatus(hasMovieFiles, monitored, isAvailable, queueDetails);
+  const statusClass = status.replace('Downloading: ', '').replace('Downloaded: ', '').toLowerCase();
 
   return (
     <span
-      className={styles[status.toLowerCase()]}
+      className={styles[statusClass]}
     >
       {status}
     </span>
@@ -40,7 +78,8 @@ function MovieStatusLabel(props) {
 MovieStatusLabel.propTypes = {
   hasMovieFiles: PropTypes.bool.isRequired,
   monitored: PropTypes.bool.isRequired,
-  isAvailable: PropTypes.bool.isRequired
+  isAvailable: PropTypes.bool.isRequired,
+  queueDetails: PropTypes.object
 };
 
 MovieStatusLabel.defaultProps = {

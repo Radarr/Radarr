@@ -53,30 +53,30 @@ function QueueStatusCell(props) {
 
   if (status === 'paused') {
     iconName = icons.PAUSED;
-    title = 'Paused';
+    title = 'Downloading: Paused';
   }
 
   if (status === 'queued') {
     iconName = icons.QUEUED;
-    title = 'Queued';
+    title = 'Downloading: Queued';
   }
 
   if (status === 'completed') {
     iconName = icons.DOWNLOADED;
-    title = 'Downloaded';
+    title = 'Downloaded: ';
 
     if (trackedDownloadState === 'importPending') {
-      title += ' - Waiting to Import';
+      title += ' Waiting to Import';
       iconKind = kinds.PURPLE;
     }
 
     if (trackedDownloadState === 'importing') {
-      title += ' - Importing';
+      title += ' Importing';
       iconKind = kinds.PURPLE;
     }
 
     if (trackedDownloadState === 'failedPending') {
-      title += ' - Waiting to Process';
+      title += ' Waiting to Process';
       iconKind = kinds.DANGER;
     }
   }
@@ -87,19 +87,19 @@ function QueueStatusCell(props) {
 
   if (status === 'delay') {
     iconName = icons.PENDING;
-    title = 'Pending';
+    title = 'Downloading: Pending';
   }
 
   if (status === 'DownloadClientUnavailable') {
     iconName = icons.PENDING;
     iconKind = kinds.WARNING;
-    title = 'Pending - Download client is unavailable';
+    title = 'Downloading: Client is unavailable';
   }
 
   if (status === 'failed') {
     iconName = icons.DOWNLOADING;
     iconKind = kinds.DANGER;
-    title = 'Download failed';
+    title = 'Downloading: Failed';
   }
 
   if (status === 'warning') {

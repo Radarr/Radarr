@@ -17,3 +17,38 @@
   padding-left: 2px;
   border-left: 4px solid $warningColor;
 }
+
+.downloading {
+  padding-left: 2px;
+  border-left: 4px solid $queueDownloadingColor;
+}
+
+.paused {
+  padding-left: 2px;
+  border-left: 4px solid $queuePausedColor;
+}
+
+.queued {
+  padding-left: 2px;
+  border-left: 4px solid $queueQueuedColor;
+}
+
+.error {
+  padding-left: 2px;
+  border-left: 4px solid $queueErrorColor;
+}
+
+.pending {
+  padding-left: 2px;
+  border-left: 4px solid $queuePendingColor;
+}
+
+.importing {
+  padding-left: 2px;
+  border-left: 4px solid $queueImportingColor;
+}
+
+.waiting {
+  padding-left: 2px;
+  border-left: 4px solid $queueWaitingColor;
+}

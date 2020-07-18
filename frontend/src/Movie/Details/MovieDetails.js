@@ -265,7 +265,8 @@ class MovieDetails extends Component {
       nextMovie,
       onMonitorTogglePress,
       onRefreshPress,
-      onSearchPress
+      onSearchPress,
+      queueDetails
     } = this.props;
 
     const {
@@ -502,6 +503,7 @@ class MovieDetails extends Component {
                         hasMovieFiles={hasMovieFiles}
                         monitored={monitored}
                         isAvailable={isAvailable}
+                        queueDetails={queueDetails}
                       />
                     </span>
                   </InfoLabel>
@@ -768,7 +770,8 @@ MovieDetails.propTypes = {
   onMonitorTogglePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired,
-  onGoToMovie: PropTypes.func.isRequired
+  onGoToMovie: PropTypes.func.isRequired,
+  queueDetails: PropTypes.object
 };
 
 MovieDetails.defaultProps = {
