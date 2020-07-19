@@ -170,7 +170,6 @@ PackageMacOS()
 
     echo "Adding Startup script"
     cp ./macOS/Radarr $outputFolderMacOS
-    dos2unix $outputFolderMacOS/Radarr
 
     echo "Copying Binaries"
     cp -r $outputFolderLinux/* $outputFolderMacOS
@@ -195,7 +194,6 @@ PackageMacOSApp()
 
     echo "Adding Startup script"
     cp ./macOS/Radarr $outputFolderMacOSApp/Radarr.app/Contents/MacOS
-    dos2unix $outputFolderMacOSApp/Radarr.app/Contents/MacOS/Radarr
 
     echo "Copying Binaries"
     cp -r $outputFolderLinux/* $outputFolderMacOSApp/Radarr.app/Contents/MacOS
