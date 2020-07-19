@@ -102,7 +102,7 @@ class CalendarPage extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label="iCal Link"
+              label={translate('iCalLink')}
               iconName={icons.CALENDAR}
               onPress={this.onGetCalendarLinkPress}
             />
@@ -110,14 +110,14 @@ class CalendarPage extends Component {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label={translate('RSSSync')}
+              label={translate('RssSync')}
               iconName={icons.RSS}
               isSpinning={isRssSyncExecuting}
               onPress={onRssSyncPress}
             />
 
             <PageToolbarButton
-              label="Search for Missing"
+              label={translate('SearchForMissing')}
               iconName={icons.SEARCH}
               isDisabled={!missingMovieIds.length}
               isSpinning={isSearchingForMissing}
@@ -155,7 +155,7 @@ class CalendarPage extends Component {
           {
             movieError &&
               <div className={styles.errorMessage}>
-                {getErrorMessage(movieError, 'Failed to load movie from API')}
+                {getErrorMessage(movieError, 'Failed to load movies from API')}
               </div>
           }
 

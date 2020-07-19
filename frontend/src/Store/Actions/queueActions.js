@@ -11,6 +11,7 @@ import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
 import { set, updateItem } from './baseActions';
+import translate from 'Utilities/String/translate';
 
 //
 // Variables
@@ -57,86 +58,86 @@ export const defaultState = {
     columns: [
       {
         name: 'status',
-        columnLabel: 'Status',
+        columnLabel: translate('Status'),
         isSortable: true,
         isVisible: true,
         isModifiable: false
       },
       {
         name: 'movies.sortTitle',
-        label: 'Movie',
+        label: translate('Movie'),
         isSortable: true,
         isVisible: true
       },
       {
         name: 'languages',
-        label: 'Languages',
+        label: translate('Languages'),
         isSortable: true,
         isVisible: true
       },
       {
         name: 'quality',
-        label: 'Quality',
+        label: translate('Quality'),
         isSortable: true,
         isVisible: true
       },
       {
         name: 'customFormats',
-        label: 'Formats',
+        label: translate('Formats'),
         isSortable: false,
         isVisible: true
       },
       {
         name: 'protocol',
-        label: 'Protocol',
+        label: translate('Protocol'),
         isSortable: true,
         isVisible: false
       },
       {
         name: 'indexer',
-        label: 'Indexer',
+        label: translate('Indexer'),
         isSortable: true,
         isVisible: false
       },
       {
         name: 'downloadClient',
-        label: 'Download Client',
+        label: translate('DownloadClient'),
         isSortable: true,
         isVisible: false
       },
       {
         name: 'size',
-        label: 'Size',
+        label: translate('Size'),
         isSortable: true,
         isVisible: false
       },
       {
         name: 'title',
-        label: 'Release Title',
+        label: translate('ReleaseTitle'),
         isSortable: true,
         isVisible: false
       },
       {
         name: 'outputPath',
-        label: 'Output Path',
+        label: translate('OutputPath'),
         isSortable: false,
         isVisible: false
       },
       {
         name: 'estimatedCompletionTime',
-        label: 'Timeleft',
+        label: translate('Timeleft'),
         isSortable: true,
         isVisible: true
       },
       {
         name: 'progress',
-        label: 'Progress',
+        label: translate('Progress'),
         isSortable: true,
         isVisible: true
       },
       {
         name: 'actions',
-        columnLabel: 'Actions',
+        columnLabel: translate('Actions'),
         isVisible: true,
         isModifiable: false
       }

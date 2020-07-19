@@ -19,12 +19,12 @@ import translate from 'Utilities/String/translate';
 const columns = [
   {
     name: 'filename',
-    label: 'Filename',
+    label: translate('Filename'),
     isVisible: true
   },
   {
     name: 'lastWriteTime',
-    label: 'Last Write Time',
+    label: translate('LastWriteTime'),
     isVisible: true
   },
   {
@@ -67,7 +67,7 @@ class LogFiles extends Component {
             />
 
             <PageToolbarButton
-              label={translate('Clear')}
+              label={translate('Delete')}
               iconName={icons.CLEAR}
               isSpinning={deleteFilesExecuting}
               onPress={onDeleteFilesPress}

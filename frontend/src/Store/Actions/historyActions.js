@@ -30,31 +30,31 @@ export const defaultState = {
   columns: [
     {
       name: 'eventType',
-      columnLabel: 'Event Type',
+      columnLabel: translate('EventType'),
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'movies.sortTitle',
-      label: 'Movie',
+      label: translate('Movie'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'languages',
-      label: 'Language',
+      label: translate('Languages'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'quality',
-      label: 'Quality',
+      label: translate('Quality'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'customFormats',
-      label: 'Formats',
+      label: translate('Formats'),
       isSortable: false,
       isVisible: true
     },
@@ -66,22 +66,22 @@ export const defaultState = {
     },
     {
       name: 'downloadClient',
-      label: 'Download Client',
+      label: translate('DownloadClient'),
       isVisible: false
     },
     {
       name: 'indexer',
-      label: 'Indexer',
+      label: translate('Indexer'),
       isVisible: false
     },
     {
       name: 'releaseGroup',
-      label: 'Release Group',
+      label: translate('ReleaseGroup'),
       isVisible: false
     },
     {
       name: 'details',
-      columnLabel: 'Details',
+      columnLabel: translate('Details'),
       isVisible: true,
       isModifiable: false
     }
@@ -97,7 +97,7 @@ export const defaultState = {
     },
     {
       key: 'grabbed',
-      label: 'Grabbed',
+      label: translate('Grabbed'),
       filters: [
         {
           key: 'eventType',
@@ -108,7 +108,7 @@ export const defaultState = {
     },
     {
       key: 'imported',
-      label: 'Imported',
+      label: translate('Imported'),
       filters: [
         {
           key: 'eventType',
@@ -119,7 +119,7 @@ export const defaultState = {
     },
     {
       key: 'failed',
-      label: 'Failed',
+      label: translate('Failed'),
       filters: [
         {
           key: 'eventType',
@@ -130,7 +130,7 @@ export const defaultState = {
     },
     {
       key: 'deleted',
-      label: 'Deleted',
+      label: translate('Deleted'),
       filters: [
         {
           key: 'eventType',
@@ -141,7 +141,7 @@ export const defaultState = {
     },
     {
       key: 'renamed',
-      label: 'Renamed',
+      label: translate('Renamed'),
       filters: [
         {
           key: 'eventType',
@@ -152,7 +152,7 @@ export const defaultState = {
     },
     {
       key: 'ignored',
-      label: 'Ignored',
+      label: translate('Ignored'),
       filters: [
         {
           key: 'eventType',

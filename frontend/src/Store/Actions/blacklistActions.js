@@ -29,31 +29,31 @@ export const defaultState = {
   columns: [
     {
       name: 'movies.sortTitle',
-      label: 'Movie Title',
+      label: translate('MovieTitle'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'sourceTitle',
-      label: 'Source Title',
+      label: translate('SourceTitle'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'languages',
-      label: 'Language',
+      label: translate('Languages'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'quality',
-      label: 'Quality',
+      label: translate('Quality'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'customFormats',
-      label: 'Formats',
+      label: translate('Formats'),
       isSortable: false,
       isVisible: true
     },
@@ -65,13 +65,13 @@ export const defaultState = {
     },
     {
       name: 'indexer',
-      label: 'Indexer',
+      label: translate('Indexer'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'actions',
-      columnLabel: 'Actions',
+      columnLabel: translate('Actions'),
       isVisible: true,
       isModifiable: false
     }

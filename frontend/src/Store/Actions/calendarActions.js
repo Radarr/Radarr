@@ -61,7 +61,7 @@ export const defaultState = {
     },
     {
       key: 'monitored',
-      label: 'Monitored Only',
+      label: translate('MonitoredOnly'),
       filters: [
         {
           key: 'monitored',

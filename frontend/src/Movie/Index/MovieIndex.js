@@ -352,15 +352,15 @@ class MovieIndex extends Component {
     const isLoaded = !!(!error && isPopulated && items.length && scroller);
     const hasNoMovie = !totalItems;
 
-    const searchIndexLabel = selectedFilterKey === 'all' ? translate('SearchAll') : 'Search Filtered';
-    const searchEditorLabel = selectedMovieIds.length > 0 ? 'Search Selected' : translate('SearchAll');
+    const searchIndexLabel = selectedFilterKey === 'all' ? translate('SearchAll') : translate('SearchFiltered');
+    const searchEditorLabel = selectedMovieIds.length > 0 ? translate('SearchSelected') : translate('SearchAll');
 
     return (
       <PageContent>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label={isMovieEditorActive && selectedMovieIds.length > 0 ? 'Update Selected' : translate('UpdateAll')}
+              label={isMovieEditorActive && selectedMovieIds.length > 0 ? translate('UpdateSelected') : translate('UpdateAll')}
               iconName={icons.REFRESH}
               spinningName={icons.REFRESH}
               isSpinning={isRefreshingMovie}
@@ -588,7 +588,7 @@ class MovieIndex extends Component {
         <ConfirmModal
           isOpen={isConfirmSearchModalOpen}
           kind={kinds.DANGER}
-          title="Mass Movie Search"
+          title={translate('MassMovieSearch')}
           message={
             <div>
               <div>
@@ -599,7 +599,7 @@ class MovieIndex extends Component {
               </div>
             </div>
           }
-          confirmLabel="Search"
+          confirmLabel={translate('Search')}
           onConfirm={this.onSearchConfirmed}
           onCancel={this.onConfirmSearchModalClose}
         />

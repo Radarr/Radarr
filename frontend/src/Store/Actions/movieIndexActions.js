@@ -10,6 +10,7 @@ import { createThunk, handleThunks } from 'Store/thunks';
 import createHandleActions from './Creators/createHandleActions';
 import { set, updateItem } from './baseActions';
 import { filters, filterPredicates, sortPredicates } from './movieActions';
+import translate from 'Utilities/String/translate';
 //
 // Variables
 
@@ -65,123 +66,123 @@ export const defaultState = {
     },
     {
       name: 'status',
-      columnLabel: 'Release Status',
+      columnLabel: translate('ReleaseStatus'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'sortTitle',
-      label: 'Movie Title',
+      label: translate('MovieTitle'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'collection',
-      label: 'Collection',
+      label: translate('Collection'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'studio',
-      label: 'Studio',
+      label: translate('Studio'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'qualityProfileId',
-      label: 'Quality Profile',
+      label: translate('QualityProfile'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'added',
-      label: 'Added',
+      label: translate('Added'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'year',
-      label: 'Year',
+      label: translate('Year'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'inCinemas',
-      label: 'In Cinemas',
+      label: translate('InCinemas'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'digitalRelease',
-      label: 'Digital Release',
+      label: translate('DigitalRelease'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'physicalRelease',
-      label: 'Physical Release',
+      label: translate('PhysicalRelease'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'runtime',
-      label: 'Runtime',
+      label: translate('Runtime'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'minimumAvailability',
-      label: 'Min Availability',
+      label: translate('MinAvailability'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'path',
-      label: 'Path',
+      label: translate('Path'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'sizeOnDisk',
-      label: 'Size on Disk',
+      label: translate('SizeOnDisk'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'genres',
-      label: 'Genres',
+      label: translate('Genres'),
       isSortable: false,
       isVisible: false
     },
     {
       name: 'movieStatus',
-      label: 'Status',
+      label: translate('Status'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'ratings',
-      label: 'Rating',
+      label: translate('Ratings'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'certification',
-      label: 'Certification',
+      label: translate('Certification'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'tags',
-      label: 'Tags',
+      label: translate('Tags'),
       isSortable: false,
       isVisible: false
     },
     {
       name: 'actions',
-      columnLabel: 'Actions',
+      columnLabel: translate('Actions'),
       isVisible: true,
       isModifiable: false
     }

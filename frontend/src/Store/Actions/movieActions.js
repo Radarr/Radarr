@@ -27,7 +27,7 @@ export const filters = [
   },
   {
     key: 'monitored',
-    label: 'Monitored Only',
+    label: translate('MonitoredOnly'),
     filters: [
       {
         key: 'monitored',
@@ -38,7 +38,7 @@ export const filters = [
   },
   {
     key: 'unmonitored',
-    label: 'Unmonitored Only',
+    label: translate('Unmonitored'),
     filters: [
       {
         key: 'monitored',
@@ -49,7 +49,7 @@ export const filters = [
   },
   {
     key: 'missing',
-    label: 'Missing',
+    label: translate('Missing'),
     filters: [
       {
         key: 'monitored',
@@ -65,7 +65,7 @@ export const filters = [
   },
   {
     key: 'wanted',
-    label: 'Wanted',
+    label: translate('Wanted'),
     filters: [
       {
         key: 'monitored',
@@ -86,7 +86,7 @@ export const filters = [
   },
   {
     key: 'cutoffunmet',
-    label: 'Cut-off Unmet',
+    label: translate('CutoffUnmet'),
     filters: [
       {
         key: 'monitored',

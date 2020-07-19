@@ -66,57 +66,57 @@ export const defaultState = {
   columns: [
     {
       name: 'status',
-      columnLabel: 'Status',
+      columnLabel: translate('Status'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'sortTitle',
-      label: 'Movie Title',
+      label: translate('MovieTitle'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'studio',
-      label: 'Studio',
+      label: translate('Studio'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'inCinemas',
-      label: 'In Cinemas',
+      label: translate('InCinemas'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'physicalRelease',
-      label: 'Physical Release',
+      label: translate('PhysicalRelease'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'genres',
-      label: 'Genres',
+      label: translate('Genres'),
       isSortable: false,
       isVisible: false
     },
     {
       name: 'ratings',
-      label: 'Rating',
+      label: translate('Ratings'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'certification',
-      label: 'Certification',
+      label: translate('Certification'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'actions',
-      columnLabel: 'Actions',
+      columnLabel: translate('Actions'),
       isVisible: true,
       isModifiable: false
     }
