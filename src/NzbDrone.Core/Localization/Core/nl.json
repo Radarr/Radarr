@@ -34,7 +34,7 @@
     "DownloadClientStatusCheckAllClientMessage": "Alle downloaders zijn onbeschikbaar wegens fouten",
     "DownloadClients": "Downloaders",
     "DownloadClientCheckUnableToCommunicateMessage": "Niet in staat om te communiceren met {0}.",
-    "DownloadClientCheckNoneAvailableMessage": "Er is geen download applicatie beschikbaar",
+    "DownloadClientCheckNoneAvailableMessage": "Er is geen downloader beschikbaar",
     "DotNetVersionCheckOldUnsupportedMessage": "Het huidige geïnstalleerde .NET Framework {0} is verouderd en wordt niet langer ondersteund. Gelieve het .NET Framework te opwaarderen naar minstens {1}.",
     "DotNetVersionCheckNotRecommendedMessage": "Het momenteel geïnstalleerde .NET Framework {0} wordt ondersteund, maar we raden aan om te opwaarderen naar minstens {1}.",
     "DiskSpace": "Schijfruimte",
