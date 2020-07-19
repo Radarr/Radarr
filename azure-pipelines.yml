@@ -152,7 +152,6 @@ stages:
       pool:
         vmImage: 'ubuntu-18.04'
       steps:
-      - bash: sudo apt install dos2unix
       - checkout: self
         fetchDepth: 1
       - task: DownloadPipelineArtifact@2
