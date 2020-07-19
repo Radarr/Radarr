@@ -7,8 +7,8 @@ testPackageFolder='./_tests/'
 testSearchPattern='*.Test/bin/x86/Release/*'
 sourceFolder='./src'
 slnFile=$sourceFolder/NzbDrone.sln
-updateFolder=$outputFolder/Radarr.Update
-updateFolderMono=$outputFolderLinux/Radarr.Update
+updateFolder=$outputFolder/NzbDrone.Update
+updateFolderMono=$outputFolderLinux/NzbDrone.Update
 
 #Artifact variables
 artifactsFolder="./_artifacts";
@@ -207,7 +207,7 @@ PackageMacOSApp()
     cp $sourceFolder/Libraries/MediaInfo/*.dylib $outputFolderMacOSApp/Radarr.app/Contents/MacOS
 
     echo "Removing Update Folder"
-    rm -r $outputFolderMacOSApp/Radarr.app/Contents/MacOS/Radarr.Update
+    rm -r $outputFolderMacOSApp/Radarr.app/Contents/MacOS/NzbDrone.Update
 
     ProgressEnd 'Creating macOS App Package'
 }
