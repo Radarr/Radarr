@@ -97,8 +97,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             GivenRuntime(120);
 
             Subject.IsSample(_localMovie.Movie,
-                             _localMovie.Path,
-                             false);
+                             _localMovie.Path);
 
             Mocker.GetMock<IVideoFileInfoReader>().Verify(v => v.GetRunTime(It.IsAny<string>()), Times.Once());
         }
@@ -154,8 +153,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
                   .Returns((TimeSpan?)null);
 
             Subject.IsSample(_localMovie.Movie,
-                             _localMovie.Path,
-                             false).Should().Be(DetectSampleResult.Indeterminate);
+                             _localMovie.Path).Should().Be(DetectSampleResult.Indeterminate);
 
             ExceptionVerification.ExpectedErrors(1);
         }
@@ -163,15 +161,13 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         private void ShouldBeSample()
         {
             Subject.IsSample(_localMovie.Movie,
-                             _localMovie.Path,
-                             false).Should().Be(DetectSampleResult.Sample);
+                             _localMovie.Path).Should().Be(DetectSampleResult.Sample);
         }
 
         private void ShouldBeNotSample()
         {
             Subject.IsSample(_localMovie.Movie,
-                             _localMovie.Path,
-                             false).Should().Be(DetectSampleResult.NotSample);
+                             _localMovie.Path).Should().Be(DetectSampleResult.NotSample);
         }
     }
 }

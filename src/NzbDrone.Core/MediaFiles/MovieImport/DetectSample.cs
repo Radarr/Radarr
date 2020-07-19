@@ -9,7 +9,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 {
     public interface IDetectSample
     {
-        DetectSampleResult IsSample(Movie movie, string path, bool isSpecial);
+        DetectSampleResult IsSample(Movie movie, string path);
     }
 
     public class DetectSample : IDetectSample
@@ -23,14 +23,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _logger = logger;
         }
 
-        public DetectSampleResult IsSample(Movie movie, string path, bool isSpecial)
+        public DetectSampleResult IsSample(Movie movie, string path)
         {
-            if (isSpecial)
-            {
-                _logger.Debug("Special, skipping sample check");
-                return DetectSampleResult.NotSample;
-            }
-
             var extension = Path.GetExtension(path);
 
             if (extension != null)
@@ -73,11 +67,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             if (runTime.Value.TotalSeconds < minimumRuntime)
             {
-                _logger.Debug("[{0}] appears to be a sample. Runtime: {1} seconds. Expected at least: {2} seconds", path, runTime, minimumRuntime);
+                _logger.Debug("[{0}] appears to be a sample. Runtime: {1} seconds. Expected at least: {2} seconds", path, runTime.Value.TotalSeconds, minimumRuntime);
                 return DetectSampleResult.Sample;
             }
 
-            _logger.Debug("Runtime is over 90 seconds");
+            _logger.Debug("Runtime of {0} is more than {1} seconds, Not Sample", runTime.Value.TotalSeconds, minimumRuntime);
             return DetectSampleResult.NotSample;
         }
 

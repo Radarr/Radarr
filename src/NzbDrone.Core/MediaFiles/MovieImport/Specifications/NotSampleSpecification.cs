@@ -19,13 +19,21 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
         public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
-            var sample = _detectSample.IsSample(localMovie.Movie,
-                                                localMovie.Path,
-                                                false);
+            if (localMovie.ExistingFile)
+            {
+                _logger.Debug("Existing file, skipping sample check");
+                return Decision.Accept();
+            }
+
+            var sample = _detectSample.IsSample(localMovie.Movie, localMovie.Path);
 
             if (sample == DetectSampleResult.Sample)
             {
                 return Decision.Reject("Sample");
+            }
+            else if (sample == DetectSampleResult.Indeterminate)
+            {
+                return Decision.Reject("Unable to determine if file is a sample");
             }
 
             return Decision.Accept();
