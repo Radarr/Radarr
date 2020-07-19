@@ -4,12 +4,14 @@ import formatBytes from 'Utilities/Number/formatBytes';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 import styles from './MovieIndexFooter.css';
+import classNames from 'classnames';
 
 class MovieIndexFooter extends PureComponent {
 
   render() {
     const {
-      movies
+      movies,
+      colorImpairedMode
     } = this.props;
 
     const count = movies.length;
@@ -50,12 +52,20 @@ class MovieIndexFooter extends PureComponent {
           </div>
 
           <div className={styles.legendItem}>
-            <div className={styles.missingMonitored} />
+            <div className={classNames(
+              styles.missingMonitored,
+              colorImpairedMode && 'colorImpaired'
+            )}
+            />
             <div>Missing, Monitored and considered Available</div>
           </div>
 
           <div className={styles.legendItem}>
-            <div className={styles.missingUnmonitored} />
+            <div className={classNames(
+              styles.missingUnmonitored,
+              colorImpairedMode && 'colorImpaired'
+            )}
+            />
             <div>Missing, not Monitored</div>
           </div>
 
@@ -103,7 +113,8 @@ class MovieIndexFooter extends PureComponent {
 }
 
 MovieIndexFooter.propTypes = {
-  movies: PropTypes.arrayOf(PropTypes.object).isRequired
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  colorImpairedMode: PropTypes.bool.isRequired
 };
 
 export default MovieIndexFooter;
