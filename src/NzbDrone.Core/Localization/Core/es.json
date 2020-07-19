@@ -155,5 +155,7 @@
     "ListExclusions": "Exclusiones en la lista",
     "Languages": "Lenguajes",
     "Language": "Lenguaje",
-    "IndexerStatusCheckAllClientMessage": "Los indexers no están disponibles debido a errores"
+    "IndexerStatusCheckAllClientMessage": "Los indexers no están disponibles debido a errores",
+    "Added": "An̄adido",
+    "Actions": "Acciones"
 }
