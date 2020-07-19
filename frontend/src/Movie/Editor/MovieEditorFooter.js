@@ -178,7 +178,7 @@ class MovieEditorFooter extends Component {
 
         <div className={styles.inputContainer}>
           <MovieEditorFooterLabel
-            label="Quality Profile"
+            label={translate('QualityProfile')}
             isSaving={isSaving && qualityProfileId !== NO_CHANGE}
           />
 
@@ -193,7 +193,7 @@ class MovieEditorFooter extends Component {
 
         <div className={styles.inputContainer}>
           <MovieEditorFooterLabel
-            label="Minimum Availability"
+            label={translate('MinimumAvailability')}
             isSaving={isSaving && minimumAvailability !== NO_CHANGE}
           />
 
@@ -208,7 +208,7 @@ class MovieEditorFooter extends Component {
 
         <div className={styles.inputContainer}>
           <MovieEditorFooterLabel
-            label="Root Folder"
+            label={translate('RootFolder')}
             isSaving={isSaving && rootFolderPath !== NO_CHANGE}
           />
 
