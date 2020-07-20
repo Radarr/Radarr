@@ -25,6 +25,12 @@ namespace NzbDrone.Core.Test.Datastore.SqliteSchemaDumperTests
         [TestCase(@"CREATE TABLE ""Test """"Table"" (""My""""Id"" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT)", "Test \"Table", "My\"Id")]
         [TestCase(@"CREATE TABLE [Test Table] ([My Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT)", "Test Table", "My Id")]
         [TestCase(@" CREATE  TABLE  `Test ``Table`  ( `My``  Id`  INTEGER  NOT  NULL  PRIMARY  KEY  AUTOINCREMENT ) ", "Test `Table", "My`  Id")]
+        [TestCase(@"CREATE TABLE IF NOT EXISTS ""Test Table"" (
+        ""MyId""    INTEGER NOT NULL,
+        PRIMARY KEY(""MyId"" AUTOINCREMENT)
+);",
+                  "Test Table",
+                  "MyId")]
         public void should_parse_table_language_flavors(string sql, string tableName, string columnName)
         {
             var result = Subject.ReadTableSchema(sql);
