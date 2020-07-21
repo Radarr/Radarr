@@ -16,7 +16,6 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.Movies.Translations;
-using NzbDrone.Core.NetImport.TMDb;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
@@ -51,22 +50,20 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public HashSet<int> GetChangedMovies(DateTime startTime)
         {
-            var startDate = startTime.ToString("o");
+            // Round down to the hour to ensure we cover gap and don't kill cache every call
+            var startDate = startTime.Date.AddHours(startTime.Hour).ToString("s");
 
-            var request = _movieBuilder.Create()
-                .SetSegment("api", "3")
-                .SetSegment("route", "movie")
-                .SetSegment("id", "")
-                .SetSegment("secondaryRoute", "changes")
-                .AddQueryParam("start_date", startDate)
+            var request = _radarrMetadata.Create()
+                .SetSegment("route", "movie/changed")
+                .AddQueryParam("since", startDate)
                 .Build();
 
             request.AllowAutoRedirect = true;
             request.SuppressHttpError = true;
 
-            var response = _httpClient.Get<MovieSearchResource>(request);
+            var response = _httpClient.Get<List<int>>(request);
 
-            return new HashSet<int>(response.Resource.Results.Select(c => c.Id));
+            return new HashSet<int>(response.Resource);
         }
 
         public Tuple<Movie, List<Credit>> GetMovieInfo(int tmdbId)
