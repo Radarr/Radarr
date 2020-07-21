@@ -12,6 +12,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes } from 'Helpers/Props';
 import { firstDayOfWeekOptions, timeFormatOptions, weekColumnOptions } from 'Settings/UI/UISettings';
+import translate from 'Utilities/String/translate';
 
 class CalendarOptionsModalContent extends Component {
 
@@ -193,7 +194,7 @@ class CalendarOptionsModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Close
+            {translate('Close')}
           </Button>
         </ModalFooter>
       </ModalContent>

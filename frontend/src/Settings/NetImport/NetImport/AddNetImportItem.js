@@ -5,6 +5,7 @@ import Link from 'Components/Link/Link';
 import Menu from 'Components/Menu/Menu';
 import MenuContent from 'Components/Menu/MenuContent';
 import { sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import AddNetImportPresetMenuItem from './AddNetImportPresetMenuItem';
 import styles from './AddNetImportItem.css';
 
@@ -90,7 +91,7 @@ class AddNetImportItem extends Component {
               to={infoLink}
               size={sizes.SMALL}
             >
-              More info
+              {translate('MoreInfo')}
             </Button>
           </div>
         </div>

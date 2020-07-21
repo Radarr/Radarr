@@ -8,6 +8,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import Scroller from 'Components/Scroller/Scroller';
 import { scrollDirections } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './LogsTableDetailsModal.css';
 
 function LogsTableDetailsModal(props) {
@@ -56,7 +57,7 @@ function LogsTableDetailsModal(props) {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Close
+            {translate('Close')}
           </Button>
         </ModalFooter>
       </ModalContent>

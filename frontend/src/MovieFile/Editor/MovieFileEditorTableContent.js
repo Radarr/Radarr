@@ -4,6 +4,7 @@ import IconButton from 'Components/Link/IconButton';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import MovieFileEditorRow from './MovieFileEditorRow';
 import styles from './MovieFileEditorTableContent.css';
 
@@ -15,32 +16,32 @@ const columns = [
   },
   {
     name: 'videoCodec',
-    label: 'Video Codec',
+    label: translate('VideoCodec'),
     isVisible: true
   },
   {
     name: 'audioInfo',
-    label: 'Audio Info',
+    label: translate('AudioInfo'),
     isVisible: true
   },
   {
     name: 'size',
-    label: 'Size',
+    label: translate('Size'),
     isVisible: true
   },
   {
     name: 'languages',
-    label: 'Languages',
+    label: translate('Languages'),
     isVisible: true
   },
   {
     name: 'quality',
-    label: 'Quality',
+    label: translate('Quality'),
     isVisible: true
   },
   {
     name: 'quality.customFormats',
-    label: 'Formats',
+    label: translate('Formats'),
     isVisible: true
   },
   {

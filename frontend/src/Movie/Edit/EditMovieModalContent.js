@@ -79,7 +79,7 @@ class EditMovieModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Edit - {title}
+          {translate('Edit')} - {title}
         </ModalHeader>
 
         <ModalBody>
@@ -87,7 +87,7 @@ class EditMovieModalContent extends Component {
             {...otherProps}
           >
             <FormGroup>
-              <FormLabel>Monitored</FormLabel>
+              <FormLabel>{translate('Monitored')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -99,7 +99,7 @@ class EditMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Minimum Availability</FormLabel>
+              <FormLabel>{translate('MinimumAvailability')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.AVAILABILITY_SELECT}
@@ -110,7 +110,7 @@ class EditMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Quality Profile</FormLabel>
+              <FormLabel>{translate('QualityProfile')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.QUALITY_PROFILE_SELECT}
@@ -121,7 +121,7 @@ class EditMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Path</FormLabel>
+              <FormLabel>{translate('Path')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.PATH}
@@ -132,7 +132,7 @@ class EditMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Tags</FormLabel>
+              <FormLabel>{translate('Tags')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.TAG}
@@ -156,14 +156,14 @@ class EditMovieModalContent extends Component {
           <Button
             onPress={onModalClose}
           >
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <SpinnerButton
             isSpinning={isSaving}
             onPress={this.onSavePress}
           >
-            Save
+            {translate('Save')}
           </SpinnerButton>
         </ModalFooter>
 

@@ -13,6 +13,7 @@ import Scroller from 'Components/Scroller/Scroller';
 import VirtualTable from 'Components/Table/VirtualTable';
 import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import { scrollDirections } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import SelectMovieRow from './SelectMovieRow';
 import styles from './SelectMovieModalContent.css';
 
@@ -172,7 +173,7 @@ class SelectMovieModalContent extends Component {
           <div className={styles.path}>{relativePath}</div>
           <div className={styles.buttons}>
             <Button onPress={onModalClose}>
-              Cancel
+              {translate('Cancel')}
             </Button>
           </div>
         </ModalFooter>

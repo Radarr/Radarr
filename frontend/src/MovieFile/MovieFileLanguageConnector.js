@@ -6,9 +6,9 @@ import createMovieFileSelector from 'Store/Selectors/createMovieFileSelector';
 function createMapStateToProps() {
   return createSelector(
     createMovieFileSelector(),
-    (episodeFile) => {
+    (movieFile) => {
       return {
-        language: episodeFile ? episodeFile.language : undefined
+        language: movieFile ? movieFile.language : undefined
       };
     }
   );

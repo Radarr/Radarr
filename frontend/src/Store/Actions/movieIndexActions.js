@@ -219,24 +219,24 @@ export const defaultState = {
   filterBuilderProps: [
     {
       name: 'monitored',
-      label: 'Monitored',
+      label: translate('Monitored'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
     },
     {
       name: 'title',
-      label: 'Title',
+      label: translate('Title'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'status',
-      label: 'Status',
+      label: translate('Status'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.MOVIE_STATUS
     },
     {
       name: 'studio',
-      label: 'Studio',
+      label: translate('Studio'),
       type: filterBuilderTypes.EXACT,
       optionsSelector: function(items) {
         const tagList = items.reduce((acc, movie) => {
@@ -255,7 +255,7 @@ export const defaultState = {
     },
     {
       name: 'collection',
-      label: 'Collection',
+      label: translate('Collection'),
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const collectionList = items.reduce((acc, movie) => {
@@ -274,58 +274,58 @@ export const defaultState = {
     },
     {
       name: 'qualityProfileId',
-      label: 'Quality Profile',
+      label: translate('QualityProfile'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.QUALITY_PROFILE
     },
     {
       name: 'added',
-      label: 'Added',
+      label: translate('Added'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'year',
-      label: 'Year',
+      label: translate('Year'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'inCinemas',
-      label: 'In Cinemas',
+      label: translate('InCinemas'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'physicalRelease',
-      label: 'Physical Release',
+      label: translate('PhysicalRelease'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'digitalRelease',
-      label: 'Digital Release',
+      label: translate('DigitalRelease'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'runtime',
-      label: 'Runtime',
+      label: translate('Runtime'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'path',
-      label: 'Path',
+      label: translate('Path'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'sizeOnDisk',
-      label: 'Size on Disk',
+      label: translate('SizeOnDisk'),
       type: filterBuilderTypes.NUMBER,
       valueType: filterBuilderValueTypes.BYTES
     },
     {
       name: 'genres',
-      label: 'Genres',
+      label: translate('Genres'),
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const genreList = items.reduce((acc, movie) => {
@@ -344,12 +344,12 @@ export const defaultState = {
     },
     {
       name: 'ratings',
-      label: 'Rating',
+      label: translate('Ratings'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'certification',
-      label: 'Certification',
+      label: translate('Certification'),
       type: filterBuilderTypes.EXACT,
       optionsSelector: function(items) {
         const certificationList = items.reduce((acc, movie) => {
@@ -368,7 +368,7 @@ export const defaultState = {
     },
     {
       name: 'tags',
-      label: 'Tags',
+      label: translate('Tags'),
       type: filterBuilderTypes.ARRAY,
       valueType: filterBuilderValueTypes.TAG
     }

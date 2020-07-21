@@ -20,12 +20,12 @@ const columns = [
   },
   {
     name: 'name',
-    label: 'Name',
+    label: translate('Name'),
     isVisible: true
   },
   {
     name: 'time',
-    label: 'Time',
+    label: translate('Time'),
     isVisible: true
   },
   {

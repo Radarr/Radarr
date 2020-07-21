@@ -193,7 +193,7 @@ class EditCustomFormatModalContent extends Component {
           <Button
             onPress={onModalClose}
           >
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <SpinnerErrorButton
@@ -201,7 +201,7 @@ class EditCustomFormatModalContent extends Component {
             error={saveError}
             onPress={onSavePress}
           >
-            Save
+            {translate('Save')}
           </SpinnerErrorButton>
         </ModalFooter>
       </ModalContent>

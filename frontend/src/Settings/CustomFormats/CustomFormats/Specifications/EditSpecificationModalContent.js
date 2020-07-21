@@ -128,14 +128,14 @@ function EditSpecificationModalContent(props) {
         <Button
           onPress={onCancelPress}
         >
-          Cancel
+          {translate('Cancel')}
         </Button>
 
         <SpinnerErrorButton
           isSpinning={false}
           onPress={onSavePress}
         >
-          Save
+          {translate('Save')}
         </SpinnerErrorButton>
       </ModalFooter>
     </ModalContent>

@@ -5,61 +5,62 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import { icons, sortDirections } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import InteractiveSearchRow from './InteractiveSearchRow';
 import styles from './InteractiveSearchContent.css';
 
 const columns = [
   {
     name: 'protocol',
-    label: 'Source',
+    label: translate('Source'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'age',
-    label: 'Age',
+    label: translate('Age'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'title',
-    label: 'Title',
+    label: translate('Title'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'indexer',
-    label: 'Indexer',
+    label: translate('Indexer'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'size',
-    label: 'Size',
+    label: translate('Size'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'peers',
-    label: 'Peers',
+    label: translate('Peers'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'languageWeight',
-    label: 'Language',
+    label: translate('Language'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'qualityWeight',
-    label: 'Quality',
+    label: translate('Quality'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'customFormat',
-    label: 'Formats',
+    label: translate('Formats'),
     isSortable: true,
     isVisible: true
   },
@@ -67,7 +68,7 @@ const columns = [
     name: 'customFormatScore',
     label: React.createElement(Icon, {
       name: icons.SCORE,
-      title: 'Custom Format score'
+      title: translate('CustomFormatScore')
     }),
     isSortable: true,
     isVisible: true

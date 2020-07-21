@@ -134,7 +134,7 @@ class DeleteMovieModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Close
+            {translate('Close')}
           </Button>
 
           <Button

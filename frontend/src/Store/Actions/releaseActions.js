@@ -114,50 +114,50 @@ export const defaultState = {
   filterBuilderProps: [
     {
       name: 'title',
-      label: 'Title',
+      label: translate('Title'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'age',
-      label: 'Age',
+      label: translate('Age'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'protocol',
-      label: 'Protocol',
+      label: translate('Protocol'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.PROTOCOL
     },
     {
       name: 'indexerId',
-      label: 'Indexer',
+      label: translate('Indexer'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.INDEXER
     },
     {
       name: 'size',
-      label: 'Size',
+      label: translate('Size'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'seeders',
-      label: 'Seeders',
+      label: translate('Seeders'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'peers',
-      label: 'Peers',
+      label: translate('Peers'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'quality',
-      label: 'Quality',
+      label: translate('Quality'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.QUALITY
     },
     {
       name: 'rejectionCount',
-      label: 'Rejection Count',
+      label: translate('RejectionCount'),
       type: filterBuilderTypes.NUMBER
     }
   ],

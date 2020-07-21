@@ -4,23 +4,24 @@ import IconButton from 'Components/Link/IconButton';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import ExtraFileRow from './ExtraFileRow';
 import styles from './ExtraFileTableContent.css';
 
 const columns = [
   {
     name: 'relativePath',
-    label: 'Extra File',
+    label: translate('RelativePath'),
     isVisible: true
   },
   {
     name: 'extension',
-    label: 'Extension',
+    label: translate('Extension'),
     isVisible: true
   },
   {
     name: 'type',
-    label: 'Type',
+    label: translate('Type'),
     isVisible: true
   },
   {

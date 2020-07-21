@@ -15,17 +15,17 @@ import styles from './DiskSpace.css';
 const columns = [
   {
     name: 'path',
-    label: 'Location',
+    label: translate('Location'),
     isVisible: true
   },
   {
     name: 'freeSpace',
-    label: 'Free Space',
+    label: translate('FreeSpace'),
     isVisible: true
   },
   {
     name: 'totalSpace',
-    label: 'Total Space',
+    label: translate('TotalSpace'),
     isVisible: true
   },
   {

@@ -16,17 +16,17 @@ const columns = [
   },
   {
     name: 'sourceTitle',
-    label: 'Source Title',
+    label: translate('SourceTitle'),
     isVisible: true
   },
   {
     name: 'languages',
-    label: 'Languages',
+    label: translate('Languages'),
     isVisible: true
   },
   {
     name: 'quality',
-    label: 'Quality',
+    label: translate('Quality'),
     isVisible: true
   },
   {

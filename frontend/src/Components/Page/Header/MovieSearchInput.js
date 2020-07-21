@@ -214,7 +214,7 @@ class MovieSearchInput extends Component {
     }
 
     suggestionGroups.push({
-      title: 'Add New Movie',
+      title: translate('AddNewMovie'),
       suggestions: [
         {
           type: ADD_NEW_TYPE,

@@ -175,7 +175,7 @@ function TagDetailsModalContent(props) {
         <Button
           onPress={onModalClose}
         >
-          Close
+          {translate('Close')}
         </Button>
       </ModalFooter>
     </ModalContent>

@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   flex: 0 0 $sidebarWidth;
-  padding-left: 20px;
+  padding-left: 35px;
 }
 
 .logoFull,
@@ -21,8 +21,8 @@
 }
 
 .logoFull {
-  width: 144px;
-  height: 48px;
+  width: 120px;
+  height: 40px;
 }
 
 .logo {

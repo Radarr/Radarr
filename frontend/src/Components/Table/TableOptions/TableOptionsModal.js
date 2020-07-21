@@ -15,6 +15,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import TableOptionsColumn from './TableOptionsColumn';
 import TableOptionsColumnDragPreview from './TableOptionsColumnDragPreview';
 import TableOptionsColumnDragSource from './TableOptionsColumnDragSource';
@@ -136,7 +137,7 @@ class TableOptionsModal extends Component {
             isOpen ?
               <ModalContent onModalClose={onModalClose}>
                 <ModalHeader>
-                  Table Options
+                  {translate('TableOptions')}
                 </ModalHeader>
 
                 <ModalBody>
@@ -144,7 +145,7 @@ class TableOptionsModal extends Component {
                     {
                       hasPageSize ?
                         <FormGroup>
-                          <FormLabel>Page Size</FormLabel>
+                          <FormLabel>{translate('PageSize')}</FormLabel>
 
                           <FormInputGroup
                             type={inputTypes.NUMBER}
@@ -168,11 +169,11 @@ class TableOptionsModal extends Component {
                     {
                       canModifyColumns ?
                         <FormGroup>
-                          <FormLabel>Columns</FormLabel>
+                          <FormLabel>{translate('Columns')}</FormLabel>
 
                           <div>
                             <FormInputHelpText
-                              text="Choose which columns are visible and which order they appear in"
+                              text={translate('TableOptionsColumnsMessage')}
                             />
 
                             <div className={styles.columns}>
@@ -231,7 +232,7 @@ class TableOptionsModal extends Component {
                   <Button
                     onPress={onModalClose}
                   >
-                    Close
+                    {translate('Close')}
                   </Button>
                 </ModalFooter>
               </ModalContent> :

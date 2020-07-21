@@ -10,6 +10,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { kinds } from 'Helpers/Props';
 import titleCase from 'Utilities/String/titleCase';
+import translate from 'Utilities/String/translate';
 import AddNetImportItem from './AddNetImportItem';
 import styles from './AddNetImportModalContent.css';
 
@@ -31,7 +32,7 @@ class AddNetImportModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Add List
+          {translate('AddList')}
         </ModalHeader>
 
         <ModalBody>
@@ -83,7 +84,7 @@ class AddNetImportModalContent extends Component {
           <Button
             onPress={onModalClose}
           >
-            Close
+            {translate('Close')}
           </Button>
         </ModalFooter>
       </ModalContent>

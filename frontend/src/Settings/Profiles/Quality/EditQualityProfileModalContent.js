@@ -307,7 +307,7 @@ class EditQualityProfileModalContent extends Component {
             <Button
               onPress={onModalClose}
             >
-              Cancel
+              {translate('Cancel')}
             </Button>
 
             <SpinnerErrorButton
@@ -315,7 +315,7 @@ class EditQualityProfileModalContent extends Component {
               error={saveError}
               onPress={onSavePress}
             >
-              Save
+              {translate('Save')}
             </SpinnerErrorButton>
           </ModalFooter>
         </Measure>

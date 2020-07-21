@@ -8,6 +8,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import HistoryDetails from './HistoryDetails';
 import styles from './HistoryDetailsModal.css';
 
@@ -79,7 +80,7 @@ function HistoryDetailsModal(props) {
           <Button
             onPress={onModalClose}
           >
-            Close
+            {translate('Close')}
           </Button>
         </ModalFooter>
       </ModalContent>

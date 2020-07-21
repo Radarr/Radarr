@@ -3,22 +3,23 @@ import React from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import translate from 'Utilities/String/translate';
 import RootFolderRowConnector from './RootFolderRowConnector';
 
 const rootFolderColumns = [
   {
     name: 'path',
-    label: 'Path',
+    label: translate('Path'),
     isVisible: true
   },
   {
     name: 'freeSpace',
-    label: 'Free Space',
+    label: translate('FreeSpace'),
     isVisible: true
   },
   {
     name: 'unmappedFolders',
-    label: 'Unmapped Folders',
+    label: translate('UnmappedFolders'),
     isVisible: true
   },
   {

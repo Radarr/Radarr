@@ -11,6 +11,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds, sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './SelectLanguageModalContent.css';
 
 class SelectLanguageModalContent extends Component {
@@ -118,7 +119,7 @@ class SelectLanguageModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <Button

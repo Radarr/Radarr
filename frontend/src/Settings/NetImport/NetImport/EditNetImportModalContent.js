@@ -196,13 +196,13 @@ function EditNetImportModalContent(props) {
           error={saveError}
           onPress={onTestPress}
         >
-          Test
+          {translate('Test')}
         </SpinnerErrorButton>
 
         <Button
           onPress={onModalClose}
         >
-          Cancel
+          {translate('Cancel')}
         </Button>
 
         <SpinnerErrorButton
@@ -210,7 +210,7 @@ function EditNetImportModalContent(props) {
           error={saveError}
           onPress={onSavePress}
         >
-          Save
+          {translate('Save')}
         </SpinnerErrorButton>
       </ModalFooter>
     </ModalContent>

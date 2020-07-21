@@ -9,6 +9,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
@@ -91,7 +92,7 @@ class OrganizePreviewModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Organize & Rename
+          {translate('OrganizeAndRename')}
         </ModalHeader>
 
         <ModalBody>
@@ -110,8 +111,8 @@ class OrganizePreviewModalContent extends Component {
               <div>
                 {
                   renameMovies ?
-                    <div>Success! My work is done, no files to rename.</div> :
-                    <div>Renaming is disabled, nothing to rename</div>
+                    <div>{translate('OrganizeModalSuccess')}</div> :
+                    <div>{translate('OrganizeModalDisabled')}</div>
                 }
               </div>
           }
@@ -121,14 +122,14 @@ class OrganizePreviewModalContent extends Component {
               <div>
                 <Alert>
                   <div>
-                    All paths are relative to:
+                    {translate('OrganizeModalAllPathsRelative')}
                     <span className={styles.path}>
                       {path}
                     </span>
                   </div>
 
                   <div>
-                    Naming pattern:
+                    {translate('OrganizeModalNamingPattern')}
                     <span className={styles.standardMovieFormat}>
                       {standardMovieFormat}
                     </span>
@@ -170,14 +171,14 @@ class OrganizePreviewModalContent extends Component {
           <Button
             onPress={onModalClose}
           >
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <Button
             kind={kinds.PRIMARY}
             onPress={this.onOrganizePress}
           >
-            Organize
+            {translate('Organize')}
           </Button>
         </ModalFooter>
       </ModalContent>

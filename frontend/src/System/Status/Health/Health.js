@@ -63,7 +63,7 @@ function getTestLink(source, props) {
       return (
         <SpinnerIconButton
           name={icons.TEST}
-          title="Test All"
+          title={translate('TestAll')}
           isSpinning={props.isTestingAllIndexers}
           onPress={props.dispatchTestAllIndexers}
         />
@@ -73,7 +73,7 @@ function getTestLink(source, props) {
       return (
         <SpinnerIconButton
           name={icons.TEST}
-          title="Test All"
+          title={translate('TestAll')}
           isSpinning={props.isTestingAllDownloadClients}
           onPress={props.dispatchTestAllDownloadClients}
         />
@@ -92,12 +92,12 @@ const columns = [
   },
   {
     name: 'message',
-    label: 'Message',
+    label: translate('Message'),
     isVisible: true
   },
   {
     name: 'actions',
-    label: 'Actions',
+    label: translate('Actions'),
     isVisible: true
   }
 ];
@@ -140,7 +140,7 @@ class Health extends Component {
         {
           !healthIssues &&
             <div className={styles.healthOk}>
-              No issues with your configuration
+              {translate('HealthNoIssues')}
             </div>
         }
 

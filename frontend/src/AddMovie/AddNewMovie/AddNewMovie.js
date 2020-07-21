@@ -184,7 +184,7 @@ class AddNewMovie extends Component {
                     to="/add/import"
                     kind={kinds.PRIMARY}
                   >
-                    Import Existing Movies
+                    {translate('ImportExistingMovies')}
                   </Button>
                 </div>
               </div> :

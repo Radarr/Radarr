@@ -17,17 +17,17 @@ import styles from './ImportMovieSelectFolder.css';
 const rootFolderColumns = [
   {
     name: 'path',
-    label: 'Path',
+    label: translate('Path'),
     isVisible: true
   },
   {
     name: 'freeSpace',
-    label: 'Free Space',
+    label: translate('FreeSpace'),
     isVisible: true
   },
   {
     name: 'unmappedFolders',
-    label: 'Unmapped Folders',
+    label: translate('UnmappedFolders'),
     isVisible: true
   },
   {

@@ -10,6 +10,7 @@ import ModalHeader from 'Components/Modal/ModalHeader';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import { icons, kinds, sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import RecentFolderRow from './RecentFolderRow';
 import styles from './InteractiveImportSelectFolderModalContent.css';
 
@@ -149,7 +150,7 @@ class InteractiveImportSelectFolderModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Cancel
+            {translate('Cancel')}
           </Button>
         </ModalFooter>
       </ModalContent>

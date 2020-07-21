@@ -12,6 +12,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds, sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './TagsModalContent.css';
 
 class TagsModalContent extends Component {
@@ -162,14 +163,14 @@ class TagsModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <Button
             kind={kinds.PRIMARY}
             onPress={this.onApplyTagsPress}
           >
-            Apply
+            {translate('Apply')}
           </Button>
         </ModalFooter>
       </ModalContent>

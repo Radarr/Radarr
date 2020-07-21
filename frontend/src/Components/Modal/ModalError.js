@@ -6,6 +6,7 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
+import translate from 'Utilities/String/translate';
 import styles from './ModalError.css';
 
 function ModalError(props) {
@@ -33,7 +34,7 @@ function ModalError(props) {
         <Button
           onPress={onModalClose}
         >
-          Close
+          {translate('Close')}
         </Button>
       </ModalFooter>
     </ModalContent>);

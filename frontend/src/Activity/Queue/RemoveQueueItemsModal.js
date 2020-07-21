@@ -10,6 +10,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds, sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './RemoveQueueItemsModal.css';
 
 class RemoveQueueItemsModal extends Component {
@@ -120,7 +121,7 @@ class RemoveQueueItemsModal extends Component {
 
           <ModalFooter>
             <Button onPress={this.onModalClose}>
-              Close
+              {translate('Close')}
             </Button>
 
             <Button

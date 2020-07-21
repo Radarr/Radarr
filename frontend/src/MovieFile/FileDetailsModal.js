@@ -7,6 +7,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import MediaInfoPopover from './Editor/MediaInfoPopover';
 
 function FileDetailsModal(props) {
@@ -26,7 +27,7 @@ function FileDetailsModal(props) {
         onModalClose={onModalClose}
       >
         <ModalHeader>
-          Details
+          {translate('Details')}
         </ModalHeader>
 
         <ModalBody>
@@ -35,7 +36,7 @@ function FileDetailsModal(props) {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Close
+            {translate('Close')}
           </Button>
         </ModalFooter>
       </ModalContent>
