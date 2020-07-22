@@ -27,7 +27,6 @@ namespace NzbDrone.Core.Movies
         List<Movie> FindByTmdbId(List<int> tmdbids);
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
-        Movie FindByTitleInexact(string title, int? year);
         Movie FindByTitleSlug(string slug);
         Movie FindByPath(string path);
         List<string> AllMoviePaths();
@@ -58,10 +57,10 @@ namespace NzbDrone.Core.Movies
         private readonly Logger _logger;
 
         public MovieService(IMovieRepository movieRepository,
-                             IEventAggregator eventAggregator,
-                             IConfigService configService,
-                             IBuildMoviePaths moviePathBuilder,
-                             Logger logger)
+                            IEventAggregator eventAggregator,
+                            IConfigService configService,
+                            IBuildMoviePaths moviePathBuilder,
+                            Logger logger)
         {
             _movieRepository = movieRepository;
             _eventAggregator = eventAggregator;
@@ -134,15 +133,24 @@ namespace NzbDrone.Core.Movies
                 result =
                     candidates.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers).FirstWithYear(year) ??
                     candidates.Where(movie => movie.CleanTitle == cleanTitleWithRomanNumbers).FirstWithYear(year);
+            }
 
-                if (result == null)
-                {
-                    result = candidates
-                        .Where(m => m.AlternativeTitles.Any(t => t.CleanTitle == cleanTitle ||
-                                                            t.CleanTitle == cleanTitleWithArabicNumbers ||
-                                                            t.CleanTitle == cleanTitleWithRomanNumbers))
-                        .FirstWithYear(year);
-                }
+            if (result == null)
+            {
+                result = candidates
+                    .Where(m => m.AlternativeTitles.Any(t => t.CleanTitle == cleanTitle ||
+                                                        t.CleanTitle == cleanTitleWithArabicNumbers ||
+                                                        t.CleanTitle == cleanTitleWithRomanNumbers))
+                    .FirstWithYear(year);
+            }
+
+            if (result == null)
+            {
+                result = candidates
+                    .Where(m => m.Translations.Any(t => t.CleanTitle == cleanTitle ||
+                                                        t.CleanTitle == cleanTitleWithArabicNumbers ||
+                                                        t.CleanTitle == cleanTitleWithRomanNumbers))
+                    .FirstWithYear(year);
             }
 
             return result;
@@ -161,57 +169,6 @@ namespace NzbDrone.Core.Movies
         public List<Movie> FindByTmdbId(List<int> tmdbids)
         {
             return _movieRepository.FindByTmdbId(tmdbids);
-        }
-
-        private List<Movie> FindByTitleInexactAll(string title)
-        {
-            // find any movie clean title within the provided release title
-            string cleanTitle = title.CleanMovieTitle();
-            var list = _movieRepository.FindByTitleInexact(cleanTitle);
-            if (!list.Any())
-            {
-                // no movie matched
-                return list;
-            }
-
-            // build ordered list of movie by position in the search string
-            var query =
-                list.Select(movie => new
-                {
-                    position = cleanTitle.IndexOf(movie.CleanTitle),
-                    length = movie.CleanTitle.Length,
-                    movie
-                })
-                    .Where(s => (s.position >= 0))
-                    .ToList()
-                    .OrderBy(s => s.position)
-                    .ThenByDescending(s => s.length)
-                    .Select(s => s.movie)
-                    .ToList();
-
-            return query;
-        }
-
-        public Movie FindByTitleInexact(string title)
-        {
-            var query = FindByTitleInexactAll(title);
-
-            // get the leftmost movie that is the longest
-            // movie are usually the first thing in release title, so we select the leftmost and longest match
-            var match = query.First();
-
-            _logger.Debug("Multiple movie matched {0} from title {1}", match.Title, title);
-            foreach (var entry in query)
-            {
-                _logger.Debug("Multiple movie match candidate: {0} cleantitle: {1}", entry.Title, entry.CleanTitle);
-            }
-
-            return match;
-        }
-
-        public Movie FindByTitleInexact(string title, int? year)
-        {
-            return FindByTitleInexactAll(title).FirstWithYear(year);
         }
 
         public Movie FindByPath(string path)
