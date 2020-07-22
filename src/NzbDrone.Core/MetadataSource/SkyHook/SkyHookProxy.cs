@@ -166,7 +166,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Title = resource.Title;
             movie.OriginalTitle = resource.OriginalTitle;
             movie.TitleSlug = resource.TitleSlug;
-            movie.CleanTitle = resource.Title.CleanSeriesTitle();
+            movie.CleanTitle = resource.Title.CleanMovieTitle();
             movie.SortTitle = Parser.Parser.NormalizeTitle(resource.Title);
             movie.Overview = resource.Overview;
 
@@ -461,7 +461,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 Title = arg.Title,
                 SourceType = SourceType.TMDB,
-                CleanTitle = arg.Title.CleanSeriesTitle(),
+                CleanTitle = arg.Title.CleanMovieTitle(),
                 Language = IsoLanguages.Find(arg.Language.ToLower())?.Language ?? Language.English
             };
 
@@ -474,7 +474,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 Title = arg.Title,
                 Overview = arg.Overview,
-                CleanTitle = arg.Title.CleanSeriesTitle(),
+                CleanTitle = arg.Title.CleanMovieTitle(),
                 Language = IsoLanguages.Find(arg.Language.ToLower())?.Language
             };
 

@@ -374,7 +374,7 @@ namespace NzbDrone.Core.Parser
             return value;
         }
 
-        public static string CleanSeriesTitle(this string title)
+        public static string CleanMovieTitle(this string title)
         {
             long number = 0;
 

@@ -68,20 +68,13 @@ namespace NzbDrone.Core.Parser
         {
             if (helpers != null)
             {
-                minimalInfo = AugmentMovieInfo(minimalInfo, helpers);
-            }
+                var augmenters = _augmenters.Where(a => helpers.Any(t => a.HelperType.IsInstanceOfType(t)) || a.HelperType == null);
 
-            return minimalInfo;
-        }
-
-        private ParsedMovieInfo AugmentMovieInfo(ParsedMovieInfo minimalInfo, List<object> helpers)
-        {
-            var augmenters = _augmenters.Where(a => helpers.Any(t => a.HelperType.IsInstanceOfType(t)) || a.HelperType == null);
-
-            foreach (var augmenter in augmenters)
-            {
-                minimalInfo = augmenter.AugmentMovieInfo(minimalInfo,
-                    helpers.FirstOrDefault(h => augmenter.HelperType.IsInstanceOfType(h)));
+                foreach (var augmenter in augmenters)
+                {
+                    minimalInfo = augmenter.AugmentMovieInfo(minimalInfo,
+                        helpers.FirstOrDefault(h => augmenter.HelperType.IsInstanceOfType(h)));
+                }
             }
 
             return minimalInfo;
@@ -255,11 +248,11 @@ namespace NzbDrone.Core.Parser
                 possibleTitles.Add(altTitle.CleanTitle);
             }
 
-            string cleanTitle = parsedMovieInfo.MovieTitle.CleanSeriesTitle();
+            string cleanTitle = parsedMovieInfo.MovieTitle.CleanMovieTitle();
 
             foreach (string title in possibleTitles)
             {
-                if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                if (title == parsedMovieInfo.MovieTitle.CleanMovieTitle())
                 {
                     possibleMovie = searchCriteria.Movie;
                 }
@@ -270,12 +263,12 @@ namespace NzbDrone.Core.Parser
                     string romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
                     //_logger.Debug(cleanTitle);
-                    if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                    if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanMovieTitle())
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
 
-                    if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle().Replace(arabicNumeral, romanNumeral))
+                    if (title == parsedMovieInfo.MovieTitle.CleanMovieTitle().Replace(arabicNumeral, romanNumeral))
                     {
                         possibleMovie = searchCriteria.Movie;
                     }

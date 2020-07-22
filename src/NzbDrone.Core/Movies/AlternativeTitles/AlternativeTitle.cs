@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
         public AlternativeTitle(string title, SourceType sourceType = SourceType.TMDB, int sourceId = 0, Language language = null)
         {
             Title = title;
-            CleanTitle = title.CleanSeriesTitle();
+            CleanTitle = title.CleanMovieTitle();
             SourceType = sourceType;
             SourceId = sourceId;
             Language = language ?? Language.English;

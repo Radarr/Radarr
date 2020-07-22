@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Movies
                 newMovie.Path = Path.Combine(newMovie.RootFolderPath, folderName);
             }
 
-            newMovie.CleanTitle = newMovie.Title.CleanSeriesTitle();
+            newMovie.CleanTitle = newMovie.Title.CleanMovieTitle();
             newMovie.SortTitle = MovieTitleNormalizer.Normalize(newMovie.Title, newMovie.TmdbId);
             newMovie.Added = DateTime.UtcNow;
 
