@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             const string title = "Carniv\u00E0le";
 
-            title.CleanSeriesTitle().Should().Be("carnivale");
+            title.CleanMovieTitle().Should().Be("carnivale");
         }
 
         [TestCase("The.Man.from.U.N.C.L.E.2015.1080p.BluRay.x264-SPARKS", "The Man from U.N.C.L.E.")]

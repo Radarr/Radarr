@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         {
             movie.Should().NotBeNull();
             movie.Title.Should().NotBeNullOrWhiteSpace();
-            movie.CleanTitle.Should().Be(Parser.Parser.CleanSeriesTitle(movie.Title));
+            movie.CleanTitle.Should().Be(Parser.Parser.CleanMovieTitle(movie.Title));
             movie.SortTitle.Should().Be(MovieTitleNormalizer.Normalize(movie.Title, movie.TmdbId));
             movie.Overview.Should().NotBeNullOrWhiteSpace();
             movie.InCinemas.Should().HaveValue();

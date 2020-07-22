@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Law_and_Order_SVU", "lawordersvu")]
         public void should_normalize_series_title(string parsedSeriesName, string seriesName)
         {
-            var result = parsedSeriesName.CleanSeriesTitle();
+            var result = parsedSeriesName.CleanMovieTitle();
             result.Should().Be(seriesName);
         }
 
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Im a cyborg, but thats ok", "imcyborgbutthatsok")]
         public void should_remove_special_characters_and_casing(string dirty, string clean)
         {
-            var result = dirty.CleanSeriesTitle();
+            var result = dirty.CleanMovieTitle();
             result.Should().Be(clean);
         }
 
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, word);
-                dirty.CleanSeriesTitle().Should().Be("wordword");
+                dirty.CleanMovieTitle().Should().Be("wordword");
             }
         }
 
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, "a");
-                dirty.CleanSeriesTitle().Should().Be("wordword");
+                dirty.CleanMovieTitle().Should().Be("wordword");
             }
         }
 
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, "a");
-                dirty.CleanSeriesTitle().Should().Be("wordankleword");
+                dirty.CleanMovieTitle().Should().Be("wordankleword");
             }
         }
 
@@ -103,7 +103,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, "a");
-                dirty.CleanSeriesTitle().Should().Be("wordnkleaword");
+                dirty.CleanMovieTitle().Should().Be("wordnkleaword");
             }
         }
 
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, word);
-                dirty.CleanSeriesTitle().Should().Be("word" + word.ToLower() + "word");
+                dirty.CleanMovieTitle().Should().Be("word" + word.ToLower() + "word");
             }
         }
 
@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Daily.Show", "thedailyshow")]
         public void should_not_remove_from_the_beginning_of_the_title(string parsedSeriesName, string seriesName)
         {
-            var result = parsedSeriesName.CleanSeriesTitle();
+            var result = parsedSeriesName.CleanMovieTitle();
             result.Should().Be(seriesName);
         }
 
@@ -159,14 +159,14 @@ namespace NzbDrone.Core.Test.ParserTests
             foreach (var s in dirtyFormat)
             {
                 var dirty = string.Format(s, word);
-                dirty.CleanSeriesTitle().Should().Be(word + "wordword");
+                dirty.CleanMovieTitle().Should().Be(word + "wordword");
             }
         }
 
         [Test]
         public void should_not_clean_trailing_a()
         {
-            "Tokyo Ghoul A".CleanSeriesTitle().Should().Be("tokyoghoula");
+            "Tokyo Ghoul A".CleanMovieTitle().Should().Be("tokyoghoula");
         }
     }
 }

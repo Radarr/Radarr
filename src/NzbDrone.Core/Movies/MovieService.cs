@@ -103,12 +103,12 @@ namespace NzbDrone.Core.Movies
 
         public Movie FindByTitle(string title)
         {
-            return FindByTitle(title.CleanSeriesTitle(), null);
+            return FindByTitle(title.CleanMovieTitle(), null);
         }
 
         public Movie FindByTitle(string title, int year)
         {
-            return FindByTitle(title.CleanSeriesTitle(), year as int?);
+            return FindByTitle(title.CleanMovieTitle(), year as int?);
         }
 
         private Movie FindByTitle(string cleanTitle, int? year)
@@ -166,7 +166,7 @@ namespace NzbDrone.Core.Movies
         private List<Movie> FindByTitleInexactAll(string title)
         {
             // find any movie clean title within the provided release title
-            string cleanTitle = title.CleanSeriesTitle();
+            string cleanTitle = title.CleanMovieTitle();
             var list = _movieRepository.FindByTitleInexact(cleanTitle);
             if (!list.Any())
             {
@@ -180,7 +180,7 @@ namespace NzbDrone.Core.Movies
                 {
                     position = cleanTitle.IndexOf(movie.CleanTitle),
                     length = movie.CleanTitle.Length,
-                    movie = movie
+                    movie
                 })
                     .Where(s => (s.position >= 0))
                     .ToList()
@@ -359,7 +359,7 @@ namespace NzbDrone.Core.Movies
             {
                 if (movie.Year > 1850)
                 {
-                    result = FindByTitle(movie.Title.CleanSeriesTitle(), movie.Year);
+                    result = FindByTitle(movie.Title.CleanMovieTitle(), movie.Year);
                     if (result != null)
                     {
                         return true;
@@ -367,7 +367,7 @@ namespace NzbDrone.Core.Movies
                 }
                 else
                 {
-                    result = FindByTitle(movie.Title.CleanSeriesTitle());
+                    result = FindByTitle(movie.Title.CleanMovieTitle());
                     if (result != null)
                     {
                         return true;
@@ -389,7 +389,7 @@ namespace NzbDrone.Core.Movies
 
             var ret = withTmdbid.ExceptBy(m => m.TmdbId, allMovies, m => m.TmdbId, EqualityComparer<int>.Default)
                 .Union(withImdbid.ExceptBy(m => m.ImdbId, allMovies, m => m.ImdbId, EqualityComparer<string>.Default))
-                .Union(rest.ExceptBy(m => m.Title.CleanSeriesTitle(), allMovies, m => m.CleanTitle, EqualityComparer<string>.Default)).ToList();
+                .Union(rest.ExceptBy(m => m.Title.CleanMovieTitle(), allMovies, m => m.CleanTitle, EqualityComparer<string>.Default)).ToList();
 
             return ret;
         }
