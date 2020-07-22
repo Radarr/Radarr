@@ -166,10 +166,11 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
                            Path.Combine(_movie.Path, "Deleted Scenes", "file2.mkv").AsOsAgnostic(),
                            Path.Combine(_movie.Path, "Featurettes", "file3.mkv").AsOsAgnostic(),
                            Path.Combine(_movie.Path, "Interviews", "file4.mkv").AsOsAgnostic(),
-                           Path.Combine(_movie.Path, "Samples", "file5.mkv").AsOsAgnostic(),
-                           Path.Combine(_movie.Path, "Scenes", "file6.mkv").AsOsAgnostic(),
-                           Path.Combine(_movie.Path, "Shorts", "file7.mkv").AsOsAgnostic(),
-                           Path.Combine(_movie.Path, "Trailers", "file8.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Sample", "file5.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Samples", "file6.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Scenes", "file7.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Shorts", "file8.mkv").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "Trailers", "file9.mkv").AsOsAgnostic(),
                            Path.Combine(_movie.Path, "The Count of Monte Cristo (2002) (1080p BluRay x265 10bit Tigole).mkv").AsOsAgnostic(),
                        });
 
