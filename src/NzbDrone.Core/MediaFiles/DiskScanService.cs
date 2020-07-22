@@ -64,6 +64,7 @@ namespace NzbDrone.Core.MediaFiles
 
         private static readonly Regex ExcludedExtrasSubFolderRegex = new Regex(@"(?:\\|\/|^)(?:extras|extrafanart|behind the scenes|deleted scenes|featurettes|interviews|scenes|sample[s]?|shorts|trailers)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex ExcludedSubFoldersRegex = new Regex(@"(?:\\|\/|^)(?:@eadir|\.@__thumb|plex versions|\.[^\\/]+)(?:\\|\/)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex ExcludedExtraFilesRegex = new Regex(@"(-(trailer|other|behindthescenes|deleted|featurette|interview|scene|short)\.[^.]+$)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex ExcludedFilesRegex = new Regex(@"^\._|^Thumbs\.db$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public void Scan(Movie movie)
@@ -179,7 +180,9 @@ namespace NzbDrone.Core.MediaFiles
 
             if (filterExtras)
             {
-                filteredFiles = filteredFiles.Where(file => !ExcludedExtrasSubFolderRegex.IsMatch(basePath.GetRelativePath(file))).ToList();
+                filteredFiles = filteredFiles.Where(file => !ExcludedExtrasSubFolderRegex.IsMatch(basePath.GetRelativePath(file)))
+                                             .Where(file => !ExcludedExtraFilesRegex.IsMatch(Path.GetFileName(file)))
+                                             .ToList();
             }
 
             return filteredFiles;
