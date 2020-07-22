@@ -167,7 +167,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
                 if (relativeParseInfo != null)
                 {
-                    movie = _movieService.FindByTitle(relativeParseInfo.MovieTitle);
+                    movie = _movieService.FindByTitle(relativeParseInfo.MovieTitle, relativeParseInfo.Year);
                 }
             }
 
