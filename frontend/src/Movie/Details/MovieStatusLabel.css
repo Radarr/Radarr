@@ -17,3 +17,8 @@
   padding-left: 2px;
   border-left: 4px solid $warningColor;
 }
+
+.queue {
+  padding-left: 2px;
+  border-left: 4px solid $queueColor;
+}

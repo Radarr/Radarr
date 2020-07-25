@@ -26,12 +26,6 @@ class MovieIndexFooter extends PureComponent {
         movieFiles += 1;
       }
 
-      // if (s.status === 'ended') {
-      //   ended++;
-      // } else {
-      //   continuing++;
-      // }
-
       if (s.monitored) {
         monitored++;
       }
@@ -75,6 +69,13 @@ class MovieIndexFooter extends PureComponent {
             />
             <div>
               {translate('MissingNotMonitored')}
+            </div>
+          </div>
+
+          <div className={styles.legendItem}>
+            <div className={styles.queue} />
+            <div>
+              {translate('Queued')}
             </div>
           </div>
 

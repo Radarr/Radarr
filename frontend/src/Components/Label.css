@@ -87,6 +87,15 @@
   }
 }
 
+.queue {
+  border-color: $queueColor;
+  background-color: $queueColor;
+
+  &.outline {
+    color: $queueColor;
+  }
+}
+
 /** Sizes **/
 
 .small {

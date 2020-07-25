@@ -4,14 +4,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
-import createQueueItemSelector from 'Store/Selectors/createQueueItemSelector';
 import MovieFileStatus from './MovieFileStatus';
 
 function createMapStateToProps() {
   return createSelector(
     createMovieSelector(),
-    createQueueItemSelector(),
-    (movie, queueItem) => {
+    (movie) => {
       const result = _.pick(movie, [
         'inCinemas',
         'isAvailable',
@@ -19,7 +17,6 @@ function createMapStateToProps() {
         'grabbed'
       ]);
 
-      result.queueItem = queueItem;
       result.movieFile = movie.movieFile;
 
       return result;
@@ -45,7 +42,9 @@ class MovieFileStatusConnector extends Component {
 }
 
 MovieFileStatusConnector.propTypes = {
-  movieId: PropTypes.number.isRequired
+  movieId: PropTypes.number.isRequired,
+  queueStatus: PropTypes.string,
+  queueState: PropTypes.string
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(MovieFileStatusConnector);

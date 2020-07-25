@@ -32,11 +32,13 @@ function createMapStateToProps() {
     createMovieQualityProfileSelector(),
     selectShowSearchAction(),
     createExecutingCommandsSelector(),
+    (state) => state.queue.details.items,
     (
       movie,
       qualityProfile,
       showSearchAction,
-      executingCommands
+      executingCommands,
+      queueItems
     ) => {
 
       // If a movie is deleted this selector may fire before the parent
@@ -62,12 +64,25 @@ function createMapStateToProps() {
         );
       });
 
+      let queueStatus = null;
+      let queueState = null;
+
+      for (const q in queueItems) {
+        if (queueItems[q].movieId === movie.id) {
+          queueStatus = queueItems[q].status;
+          queueState = queueItems[q].trackedDownloadState;
+          break;
+        }
+      }
+
       return {
         ...movie,
         qualityProfile,
         showSearchAction,
         isRefreshingMovie,
-        isSearchingMovie
+        isSearchingMovie,
+        queueStatus,
+        queueState
       };
     }
   );

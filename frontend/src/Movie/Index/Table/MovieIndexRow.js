@@ -98,6 +98,8 @@ class MovieIndexRow extends Component {
       onRefreshMoviePress,
       onSearchPress,
       onSelectedChange,
+      queueStatus,
+      queueState,
       movieRuntimeFormat
     } = this.props;
 
@@ -315,6 +317,8 @@ class MovieIndexRow extends Component {
                 >
                   <MovieFileStatusConnector
                     movieId={id}
+                    queueStatus={queueStatus}
+                    queueState={queueState}
                   />
                 </VirtualTableRowCell>
               );
@@ -464,6 +468,8 @@ MovieIndexRow.propTypes = {
   tmdbId: PropTypes.number.isRequired,
   imdbId: PropTypes.string,
   youTubeTrailerId: PropTypes.string,
+  queueStatus: PropTypes.string,
+  queueState: PropTypes.string,
   movieRuntimeFormat: PropTypes.string.isRequired
 };
 

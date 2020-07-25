@@ -231,12 +231,7 @@ export const actionHandlers = handleThunks({
       params = getState().queue.details.params;
     }
 
-    // Ensure there are params before trying to fetch the queue
-    // so we don't make a bad request to the server.
-
-    if (params && !_.isEmpty(params)) {
-      fetchQueueDetailsHelper(getState, params, dispatch);
-    }
+    fetchQueueDetailsHelper(getState, params, dispatch);
   },
 
   ...createServerSideCollectionHandlers(

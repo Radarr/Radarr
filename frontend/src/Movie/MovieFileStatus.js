@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import QueueDetails from 'Activity/Queue/QueueDetails';
-import Icon from 'Components/Icon';
 import Label from 'Components/Label';
-import ProgressBar from 'Components/ProgressBar';
-import { icons, kinds, sizes } from 'Helpers/Props';
+import { kinds } from 'Helpers/Props';
 import MovieQuality from 'Movie/MovieQuality';
+import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
 import translate from 'Utilities/String/translate';
 import styles from './MovieFileStatus.css';
 
@@ -13,47 +11,25 @@ function MovieFileStatus(props) {
   const {
     isAvailable,
     monitored,
-    grabbed,
-    queueItem,
-    movieFile
+    movieFile,
+    queueStatus,
+    queueState
   } = props;
 
   const hasMovieFile = !!movieFile;
-  const isQueued = !!queueItem;
   const hasReleased = isAvailable;
 
-  if (isQueued) {
-    const {
-      sizeleft,
-      size
-    } = queueItem;
-
-    const progress = (100 - sizeleft / size * 100);
+  if (queueStatus) {
+    const queueStatusText = getQueueStatusText(queueStatus, queueState);
 
     return (
       <div className={styles.center}>
-        <QueueDetails
-          {...queueItem}
-          progressBar={
-            <ProgressBar
-              title={translate('MovieIsDownloadingInterp', [progress.toFixed(1), queueItem.title])}
-              progress={progress}
-              kind={kinds.PURPLE}
-              size={sizes.MEDIUM}
-            />
-          }
-        />
-      </div>
-    );
-  }
-
-  if (grabbed) {
-    return (
-      <div className={styles.center}>
-        <Icon
-          name={icons.DOWNLOADING}
-          title={translate('MovieIsDownloading')}
-        />
+        <Label
+          title={queueStatusText.longText}
+          kind={kinds.QUEUE}
+        >
+          {queueStatusText.shortText}
+        </Label>
       </div>
     );
   }
@@ -115,9 +91,9 @@ function MovieFileStatus(props) {
 MovieFileStatus.propTypes = {
   isAvailable: PropTypes.bool,
   monitored: PropTypes.bool.isRequired,
-  grabbed: PropTypes.bool,
-  queueItem: PropTypes.object,
-  movieFile: PropTypes.object
+  movieFile: PropTypes.object,
+  queueStatus: PropTypes.string,
+  queueState: PropTypes.string
 };
 
 export default MovieFileStatus;

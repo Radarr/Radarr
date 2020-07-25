@@ -1,36 +1,50 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
+import translate from 'Utilities/String/translate';
 import styles from './MovieStatusLabel.css';
 
-function getMovieStatus(hasFile, isMonitored, isAvailable) {
+function getMovieStatus(hasFile, isMonitored, isAvailable, queueDetails = false) {
+
+  if (queueDetails.items[0]) {
+    const queueStatus = queueDetails.items[0].status;
+    const queueState = queueDetails.items[0].trackedDownloadStatus;
+    const queueStatusText = getQueueStatusText(queueStatus, queueState);
+    return queueStatusText.longText;
+  }
 
   if (hasFile) {
-    return 'Downloaded';
+    return translate('Downloaded');
   }
 
   if (!isMonitored) {
-    return 'Unmonitored';
+    return translate('Unmonitored');
   }
 
   if (isAvailable && !hasFile) {
-    return 'Missing';
+    return translate('Missing');
   }
 
-  return 'Unreleased';
+  return translate('Unreleased');
 }
 
 function MovieStatusLabel(props) {
   const {
     hasMovieFiles,
     monitored,
-    isAvailable
+    isAvailable,
+    queueDetails
   } = props;
 
-  const status = getMovieStatus(hasMovieFiles, monitored, isAvailable);
+  const status = getMovieStatus(hasMovieFiles, monitored, isAvailable, queueDetails);
+  let statusClass = status;
+  if (queueDetails.items.length) {
+    statusClass = 'queue';
+  }
 
   return (
     <span
-      className={styles[status.toLowerCase()]}
+      className={styles[statusClass]}
     >
       {status}
     </span>
@@ -40,7 +54,8 @@ function MovieStatusLabel(props) {
 MovieStatusLabel.propTypes = {
   hasMovieFiles: PropTypes.bool.isRequired,
   monitored: PropTypes.bool.isRequired,
-  isAvailable: PropTypes.bool.isRequired
+  isAvailable: PropTypes.bool.isRequired,
+  queueDetails: PropTypes.object
 };
 
 MovieStatusLabel.defaultProps = {

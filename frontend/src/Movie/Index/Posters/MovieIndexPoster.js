@@ -108,6 +108,8 @@ class MovieIndexPoster extends Component {
       isMovieEditorActive,
       isSelected,
       onSelectedChange,
+      queueStatus,
+      queueState,
       ...otherProps
     } = this.props;
 
@@ -224,6 +226,8 @@ class MovieIndexPoster extends Component {
           status={status}
           posterWidth={posterWidth}
           detailedProgressBar={detailedProgressBar}
+          queueStatus={queueStatus}
+          queueState={queueState}
         />
 
         {
@@ -301,7 +305,9 @@ MovieIndexPoster.propTypes = {
   onSelectedChange: PropTypes.func.isRequired,
   tmdbId: PropTypes.number.isRequired,
   imdbId: PropTypes.string,
-  youTubeTrailerId: PropTypes.string
+  youTubeTrailerId: PropTypes.string,
+  queueStatus: PropTypes.string,
+  queueState: PropTypes.string
 };
 
 MovieIndexPoster.defaultProps = {
