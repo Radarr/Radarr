@@ -87,9 +87,10 @@ function createMapStateToProps() {
     createAllMoviesSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
+    (state) => state.queue.details,
     (state) => state.app.isSidebarVisible,
     (state) => state.settings.ui.item.movieRuntimeFormat,
-    (titleSlug, movieFiles, movieCredits, extraFiles, allMovies, commands, dimensions, isSidebarVisible, movieRuntimeFormat) => {
+    (titleSlug, movieFiles, movieCredits, extraFiles, allMovies, commands, dimensions, queueDetails, isSidebarVisible, movieRuntimeFormat) => {
       const sortedMovies = _.orderBy(allMovies, 'sortTitle');
       const movieIndex = _.findIndex(sortedMovies, { titleSlug });
       const movie = sortedMovies[movieIndex];
@@ -162,6 +163,7 @@ function createMapStateToProps() {
         nextMovie,
         isSmallScreen: dimensions.isSmallScreen,
         isSidebarVisible,
+        queueDetails,
         movieRuntimeFormat
       };
     }

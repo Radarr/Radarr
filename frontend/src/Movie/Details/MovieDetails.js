@@ -267,6 +267,7 @@ class MovieDetails extends Component {
       onMonitorTogglePress,
       onRefreshPress,
       onSearchPress,
+      queueDetails,
       movieRuntimeFormat
     } = this.props;
 
@@ -505,6 +506,7 @@ class MovieDetails extends Component {
                         hasMovieFiles={hasMovieFiles}
                         monitored={monitored}
                         isAvailable={isAvailable}
+                        queueDetails={queueDetails}
                       />
                     </span>
                   </InfoLabel>
@@ -774,6 +776,7 @@ MovieDetails.propTypes = {
   onRefreshPress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired,
   onGoToMovie: PropTypes.func.isRequired,
+  queueDetails: PropTypes.object,
   movieRuntimeFormat: PropTypes.string.isRequired
 };
 

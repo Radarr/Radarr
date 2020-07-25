@@ -1,6 +1,10 @@
 import { kinds } from 'Helpers/Props';
 
-function getProgressBarKind(status, monitored, hasFile) {
+function getProgressBarKind(status, monitored, hasFile, queue = false) {
+  if (queue) {
+    return kinds.QUEUE;
+  }
+
   if (status === 'announced') {
     return kinds.PRIMARY;
   }

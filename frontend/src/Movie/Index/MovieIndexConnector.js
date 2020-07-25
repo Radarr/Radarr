@@ -6,6 +6,7 @@ import * as commandNames from 'Commands/commandNames';
 import withScrollPosition from 'Components/withScrollPosition';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { saveMovieEditor, setMovieFilter, setMovieSort, setMovieTableOption, setMovieView } from 'Store/Actions/movieIndexActions';
+import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import scrollPositions from 'Store/scrollPositions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
@@ -45,6 +46,14 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
+    fetchQueueDetails() {
+      dispatch(fetchQueueDetails());
+    },
+
+    clearQueueDetails() {
+      dispatch(clearQueueDetails());
+    },
+
     dispatchFetchRootFolders() {
       dispatch(fetchRootFolders());
     },
@@ -96,6 +105,11 @@ class MovieIndexConnector extends Component {
   componentDidMount() {
     // TODO: Fetch root folders here for now, but should eventually fetch on editor toggle and check loaded before showing controls
     this.props.dispatchFetchRootFolders();
+    this.props.fetchQueueDetails();
+  }
+
+  componentWillUnmount() {
+    this.props.clearQueueDetails();
   }
 
   //
@@ -134,7 +148,10 @@ MovieIndexConnector.propTypes = {
   view: PropTypes.string.isRequired,
   dispatchFetchRootFolders: PropTypes.func.isRequired,
   dispatchSetMovieView: PropTypes.func.isRequired,
-  dispatchSaveMovieEditor: PropTypes.func.isRequired
+  dispatchSaveMovieEditor: PropTypes.func.isRequired,
+  fetchQueueDetails: PropTypes.func.isRequired,
+  clearQueueDetails: PropTypes.func.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default withScrollPosition(

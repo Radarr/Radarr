@@ -18,6 +18,12 @@
   border-radius: 4px;
 }
 
+.queue {
+  composes: legendItemColor;
+
+  background-color: $queueColor;
+}
+
 .continuing {
   composes: legendItemColor;
 

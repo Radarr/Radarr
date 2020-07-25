@@ -8,6 +8,7 @@ export const PRIMARY = 'primary';
 export const PURPLE = 'purple';
 export const SUCCESS = 'success';
 export const WARNING = 'warning';
+export const QUEUE = 'queue';
 
 export const all = [
   DANGER,
@@ -19,5 +20,6 @@ export const all = [
   PRIMARY,
   PURPLE,
   SUCCESS,
-  WARNING
+  WARNING,
+  QUEUE
 ];
