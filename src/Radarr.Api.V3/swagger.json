@@ -35,14 +35,15 @@
         "summary": "Get all movies",
         "description": "Returns all movies",
         "operationId": "getMovie",
-        "produces": [
-          "application/json"
-        ],
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Movie"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
             }
           },
           "400": {
@@ -63,28 +64,26 @@
           "Movie"
         ],
         "summary": "Add new movie",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Movie object that needs to be added",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Movie"
+        "requestBody": {
+          "description": "Movie object that needs to be added",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Movie"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-              "type": "integer"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer"
+                }
+              }
             }
           },
           "405": {
@@ -102,28 +101,26 @@
           "Movie"
         ],
         "summary": "Edit existing movie",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Movie object that needs to be edited",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Movie"
+        "requestBody": {
+          "description": "Movie object that needs to be edited",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Movie"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Movie"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
             }
           },
           "404": {
@@ -148,24 +145,26 @@
         "summary": "Get movie by ID",
         "description": "Returns a single movie",
         "operationId": "getMovieById",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "movieId",
             "in": "path",
             "description": "ID of movie to return",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Movie"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
             }
           },
           "400": {
@@ -188,27 +187,29 @@
         "summary": "Deletes a Movie",
         "description": "",
         "operationId": "deleteMovie",
-        "produces": [
-          "application/json"
-        ],
         "parameters": [
           {
             "name": "movieId",
             "in": "path",
             "description": "Movie id to delete",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "schema": {
+              "type": "integer"
+            }
           },
           {
             "name": "addNetImportExclusion",
             "in": "query",
-            "type": "boolean"
+            "schema": {
+              "type": "boolean"
+            }
           },
           {
             "name": "deleteFiles",
             "in": "query",
-            "type": "boolean"
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -228,6 +229,190 @@
     }
   },
   "components": {
+    "schemas": {
+      "Movie": {
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string",
+            "example": "Dark Phoenix"
+          },
+          "sortTitle": {
+            "type": "string",
+            "example": "dark phoenix"
+          },
+          "sizeOnDisk": {
+            "type": "number"
+          },
+          "overview": {
+            "type": "string"
+          },
+          "inCinemas": {
+            "type": "string"
+          },
+          "physicalRelease": {
+            "type": "string"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          },
+          "website": {
+            "type": "string",
+            "example": "http://darkphoenix.com"
+          },
+          "year": {
+            "type": "integer"
+          },
+          "hasFile": {
+            "type": "boolean"
+          },
+          "youTubeTrailerId": {
+            "type": "string"
+          },
+          "studio": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "qualityProfileId": {
+            "type": "integer"
+          },
+          "monitored": {
+            "type": "boolean"
+          },
+          "minimumAcailability": {
+            "type": "string",
+            "enum": [
+              "announced",
+              "inCinema",
+              "released"
+            ]
+          },
+          "isAvailable": {
+            "type": "boolean"
+          },
+          "folderName": {
+            "type": "string"
+          },
+          "runtime": {
+            "type": "integer"
+          },
+          "cleanTitle": {
+            "type": "string"
+          },
+          "imdbId": {
+            "type": "string"
+          },
+          "tmdbId": {
+            "type": "integer"
+          },
+          "titleSlug": {
+            "type": "integer"
+          },
+          "certification": {
+            "type": "string"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "added": {
+            "type": "string"
+          },
+          "ratings": {
+            "$ref": "#/components/schemas/Rating"
+          },
+          "collection": {
+            "$ref": "#/components/schemas/Collection"
+          },
+          "status": {
+            "type": "string",
+            "description": "movie status",
+            "enum": [
+              "deleted",
+              "tba",
+              "announced",
+              "inCinema",
+              "released"
+            ]
+          }
+        },
+        "xml": {
+          "name": "Movie"
+        }
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "coverType": {
+            "type": "string",
+            "enum": [
+              "poster",
+              "fanart"
+            ]
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "Image"
+        }
+      },
+      "Collection": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "tmdbId": {
+            "type": "integer"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          }
+        },
+        "xml": {
+          "name": "Collection"
+        }
+      },
+      "Rating": {
+        "type": "object",
+        "properties": {
+          "votes": {
+            "type": "integer"
+          },
+          "value": {
+            "type": "integer"
+          }
+        },
+        "xml": {
+          "name": "Rating"
+        }
+      }
+    },
     "securitySchemes": {
       "api_key": {
         "type": "apiKey",
@@ -239,189 +424,5 @@
   "externalDocs": {
     "description": "GitHub",
     "url": "https://github.com/Radarr/Radarr"
-  },
-  "definitions": {
-    "Movie": {
-      "type": "object",
-      "required": [
-        "title"
-      ],
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "title": {
-          "type": "string",
-          "example": "Dark Phoenix"
-        },
-        "sortTitle": {
-          "type": "string",
-          "example": "dark phoenix"
-        },
-        "sizeOnDisk": {
-          "type": "number"
-        },
-        "overview": {
-          "type": "string"
-        },
-        "inCinemas": {
-          "type": "string"
-        },
-        "physicalRelease": {
-          "type": "string"
-        },
-        "images": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Image"
-          }
-        },
-        "website": {
-          "type": "string",
-          "example": "http://darkphoenix.com"
-        },
-        "year": {
-          "type": "integer"
-        },
-        "hasFile": {
-          "type": "boolean"
-        },
-        "youTubeTrailerId": {
-          "type": "string"
-        },
-        "studio": {
-          "type": "string"
-        },
-        "path": {
-          "type": "string"
-        },
-        "qualityProfileId": {
-          "type": "integer"
-        },
-        "monitored": {
-          "type": "boolean"
-        },
-        "minimumAcailability": {
-          "type": "string",
-          "enum": [
-            "announced",
-            "inCinema",
-            "released"
-          ]
-        },
-        "isAvailable": {
-          "type": "boolean"
-        },
-        "folderName": {
-          "type": "string"
-        },
-        "runtime": {
-          "type": "integer"
-        },
-        "cleanTitle": {
-          "type": "string"
-        },
-        "imdbId": {
-          "type": "string"
-        },
-        "tmdbId": {
-          "type": "integer"
-        },
-        "titleSlug": {
-          "type": "integer"
-        },
-        "certification": {
-          "type": "string"
-        },
-        "genres": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "integer"
-          }
-        },
-        "added": {
-          "type": "string"
-        },
-        "ratings": {
-          "$ref": "#/definitions/Rating"
-        },
-        "collection": {
-          "$ref": "#/definitions/Collection"
-        },
-        "status": {
-          "type": "string",
-          "description": "movie status",
-          "enum": [
-            "deleted",
-            "tba",
-            "announced",
-            "inCinema",
-            "released"
-          ]
-        }
-      },
-      "xml": {
-        "name": "Movie"
-      }
-    },
-    "Image": {
-      "type": "object",
-      "properties": {
-        "coverType": {
-          "type": "string",
-          "enum": [
-            "poster",
-            "fanart"
-          ]
-        },
-        "url": {
-          "type": "string"
-        }
-      },
-      "xml": {
-        "name": "Image"
-      }
-    },
-    "Collection": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "tmdbId": {
-          "type": "integer"
-        },
-        "images": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Image"
-          }
-        }
-      },
-      "xml": {
-        "name": "Collection"
-      }
-    },
-    "Rating": {
-      "type": "object",
-      "properties": {
-        "votes": {
-          "type": "integer"
-        },
-        "value": {
-          "type": "integer"
-        }
-      },
-      "xml": {
-        "name": "Rating"
-      }
-    }
   }
 }
