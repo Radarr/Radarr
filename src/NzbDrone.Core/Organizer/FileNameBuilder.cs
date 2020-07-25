@@ -236,10 +236,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie Title The}"] = m => TitleThe(movie.Title);
             tokenHandlers["{Movie TitleFirstCharacter}"] = m => TitleThe(movie.Title).Substring(0, 1).FirstCharToUpper();
 
-            if (movie.Certification.IsNotNullOrWhiteSpace())
-            {
-                tokenHandlers["{Movie Certification}"] = mbox => movie.Certification;
-            };
+            tokenHandlers["{Movie Certification}"] = m => movie.Certification ?? string.Empty;
         }
 
         private string GetLanguageTitle(Movie movie, string isoCodes)
@@ -299,7 +296,6 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Original Title}"] = m => GetOriginalTitle(movieFile);
             tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(movieFile);
 
-            //tokenHandlers["{IMDb Id}"] = m =>
             tokenHandlers["{Release Group}"] = m => movieFile.ReleaseGroup ?? m.DefaultValue("Radarr");
         }
 
