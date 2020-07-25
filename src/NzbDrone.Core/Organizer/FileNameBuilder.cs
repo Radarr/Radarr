@@ -234,8 +234,12 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie Title}"] = m => GetLanguageTitle(movie, m.CustomFormat);
             tokenHandlers["{Movie CleanTitle}"] = m => CleanTitle(GetLanguageTitle(movie, m.CustomFormat));
             tokenHandlers["{Movie Title The}"] = m => TitleThe(movie.Title);
-            tokenHandlers["{Movie Certification}"] = mbox => movie.Certification;
             tokenHandlers["{Movie TitleFirstCharacter}"] = m => TitleThe(movie.Title).Substring(0, 1).FirstCharToUpper();
+
+            if (movie.Certification.IsNotNullOrWhiteSpace())
+            {
+                tokenHandlers["{Movie Certification}"] = mbox => movie.Certification;
+            };
         }
 
         private string GetLanguageTitle(Movie movie, string isoCodes)
