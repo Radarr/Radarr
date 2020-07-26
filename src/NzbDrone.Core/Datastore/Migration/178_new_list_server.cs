@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Datastore.Migration
     [Migration(178)]
     public class new_list_server : NzbDroneMigrationBase
     {
-        private static readonly Regex ImdbIdRegex = new Regex(@"^/?imdb/list\?listId=(?<id>(ls|ur)\d+)$",
+        private static readonly Regex ImdbIdRegex = new Regex(@"^/*?imdb/list\?listId=(?<id>(ls|ur)\d+)/*?$",
                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private readonly JsonSerializerOptions _serializerSettings;
 
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 var settings = JsonSerializer.Deserialize<RadarrListSettings177>(row.Settings, _serializerSettings);
                 object newSettings;
 
-                if (!radarrUrls.Contains(settings.APIURL))
+                if (!radarrUrls.Contains(settings.APIURL.TrimEnd('/')))
                 {
                     // Combine root and path in new settings
                     newSettings = new RadarrListSettings178
