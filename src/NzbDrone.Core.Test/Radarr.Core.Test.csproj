@@ -19,9 +19,6 @@
     <ProjectReference Include="..\NzbDrone.Core\Radarr.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\Logo\1024.png">
       <Link>Files\1024.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -30,10 +27,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild">
-    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish">
-    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(PublishDir)" />
-  </Target>
 </Project>
