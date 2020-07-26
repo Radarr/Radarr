@@ -382,9 +382,9 @@ stages:
       condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
-          mono510:
-            testName: 'Mono 5.10'
-            containerImage: servarr/testimages:mono-5.10
+          mono508:
+            testName: 'Mono 5.8'
+            containerImage: servarr/testimages:mono-5.8
           mono520:
             testName: 'Mono 5.20'
             containerImage: servarr/testimages:mono-5.20
@@ -525,9 +525,9 @@ stages:
       condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
-          mono510:
-            testName: 'Mono 5.10'
-            containerImage: servarr/testimages:mono-5.10
+          mono508:
+            testName: 'Mono 5.8'
+            containerImage: servarr/testimages:mono-5.8
           mono520:
             testName: 'Mono 5.20'
             containerImage: servarr/testimages:mono-5.20
