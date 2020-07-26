@@ -80,6 +80,10 @@ stages:
         artifact: LinuxCoreTests
         displayName: Publish Linux Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - publish: '$(testsFolder)/netcoreapp3.1/linux-musl-x64/publish'
+        artifact: LinuxMuslCoreTests
+        displayName: Publish Linux Musl Test Package
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - publish: '$(testsFolder)/netcoreapp3.1/osx-x64/publish'
         artifact: MacCoreTests
         displayName: Publish MacOS Test Package
@@ -225,7 +229,15 @@ stages:
           includeRootFolder: false
           rootFolderOrFile: $(artifactsFolder)/linux-x64/netcoreapp3.1
       - task: ArchiveFiles@2
-        displayName: Create ARM32 Core tar
+        displayName: Create Linux Musl Core tar
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).linux-musl-core-x64.tar.gz'
+          archiveType: 'tar'
+          tarCompression: 'gz'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-x64/netcoreapp3.1
+      - task: ArchiveFiles@2
+        displayName: Create ARM32 Linux Core tar
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).linux-core-arm.tar.gz'
           archiveType: 'tar'
@@ -240,6 +252,14 @@ stages:
           tarCompression: 'gz'
           includeRootFolder: false
           rootFolderOrFile: $(artifactsFolder)/linux-arm64/netcoreapp3.1
+      - task: ArchiveFiles@2
+        displayName: Create ARM64 Linux Musl Core tar
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).linux-musl-core-arm64.tar.gz'
+          archiveType: 'tar'
+          tarCompression: 'gz'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm64/netcoreapp3.1
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'Packages'
         displayName: Publish Packages
@@ -346,13 +366,20 @@ stages:
         matrix:
           mono520:
             testName: 'Mono 5.20'
-            containerImage: lidarr/testimages:mono-5.20
-          mono608:
-            testName: 'Mono 6.8'
-            containerImage: lidarr/testimages:mono-6.8
+            artifactName: LinuxTests
+            containerImage: servarr/testimages:mono-5.20
           mono610:
             testName: 'Mono 6.10'
-            containerImage: lidarr/testimages:mono-6.10
+            artifactName: LinuxTests
+            containerImage: servarr/testimages:mono-6.10
+          mono612:
+            testName: 'Mono 6.12'
+            artifactName: LinuxTests
+            containerImage: servarr/testimages:mono-6.12
+          alpine:
+            testName: 'Musl Net Core'
+            artifactName: LinuxMuslCoreTests
+            containerImage: servarr/testimages:alpine
 
       pool:
         vmImage: 'ubuntu-18.04'
@@ -362,8 +389,6 @@ stages:
       timeoutInMinutes: 10
         
       steps:
-      - bash: mono --version
-        displayName: Check Mono version
       - task: UseDotNet@2
         displayName: 'Install .net core'
         inputs:
@@ -373,10 +398,14 @@ stages:
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: LinuxTests
+          artifactName: $(artifactName)
           targetPath: $(testsFolder)
+      - bash: find ${TESTSFOLDER} -name "Readarr.Test.Dummy" -exec chmod a+x {} \;
+        displayName: Make Test Dummy Executable
+        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
       - bash: |
           chmod a+x ${TESTSFOLDER}/test.sh
+          ls -lR ${TESTSFOLDER}
           ${TESTSFOLDER}/test.sh Linux Unit Test
         displayName: Run Tests
       - task: PublishTestResults@2
@@ -469,16 +498,24 @@ stages:
         matrix:
           mono520:
             testName: 'Mono 5.20'
-            containerImage: lidarr/testimages:mono-5.20
-          mono608:
-            testName: 'Mono 6.8'
-            containerImage: lidarr/testimages:mono-6.8
+            artifactName: LinuxTests
+            containerImage: servarr/testimages:mono-5.20
+            pattern: 'Readarr.**.linux.tar.gz'
           mono610:
             testName: 'Mono 6.10'
-            containerImage: lidarr/testimages:mono-6.10
-
-      variables:
-        pattern: 'Readarr.**.linux.tar.gz'
+            artifactName: LinuxTests
+            containerImage: servarr/testimages:mono-6.10
+            pattern: 'Readarr.**.linux.tar.gz'
+          mono612:
+            testName: 'Mono 6.12'
+            artifactName: LinuxTests
+            containerImage: servarr/testimages:mono-6.12
+            pattern: 'Readarr.**.linux.tar.gz'
+          alpine:
+            testName: 'Musl Net Core'
+            artifactName: LinuxCoreTests
+            containerImage: servarr/testimages:alpine
+            pattern: 'Readarr.**.linux-musl-core-x64.tar.gz'
 
       pool:
         vmImage: 'ubuntu-18.04'
@@ -488,8 +525,6 @@ stages:
       timeoutInMinutes: 15
         
       steps:
-      - bash: mono --version
-        displayName: Check Mono version
       - task: UseDotNet@2
         displayName: 'Install .net core'
         inputs:
@@ -499,7 +534,7 @@ stages:
         displayName: Download Test Artifact
         inputs:
           buildType: 'current'
-          artifactName: LinuxTests
+          artifactName: $(artifactName)
           targetPath: $(testsFolder)
       - task: DownloadPipelineArtifact@2
         displayName: Download Build Artifact
