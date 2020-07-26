@@ -62,10 +62,13 @@ namespace NzbDrone.Core.NetImport.Radarr
                         });
                     }
                 }
+
+                _netImportStatusService.RecordSuccess(Definition.Id);
             }
             catch
             {
                 anyFailure = true;
+                _netImportStatusService.RecordFailure(Definition.Id);
             }
 
             return new NetImportFetchResult { Movies = movies, AnyFailure = anyFailure };
