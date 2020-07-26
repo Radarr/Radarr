@@ -35,12 +35,13 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         }
 
         [TestCase("https://api.radarr.video/v2")]
+        [TestCase("https://api.radarr.video/v2/")]
         [TestCase("https://staging.api.radarr.video")]
         public void should_switch_some_radarr_to_imdb(string url)
         {
             var db = WithMigrationTestDb(c =>
             {
-                var rows = Builder<new_list_server.NetImportDefinition178>.CreateListOfSize(6)
+                var rows = Builder<new_list_server.NetImportDefinition178>.CreateListOfSize(7)
                     .All()
                     .With(x => x.Implementation = typeof(RadarrListImport).Name)
                     .With(x => x.ConfigContract = typeof(RadarrListSettings).Name)
@@ -80,6 +81,12 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                         APIURL = url,
                         Path = "/imdb/list?listId=ur002"
                     }, _serializerSettings))
+                    .TheNext(1)
+                    .With(x => x.Settings = JsonSerializer.Serialize(new new_list_server.RadarrListSettings177
+                    {
+                        APIURL = url,
+                        Path = "/imdb/list?listId=ur002/"
+                    }, _serializerSettings))
                     .BuildListOfNew();
 
                 var i = 1;
@@ -92,14 +99,15 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             var items = db.Query<new_list_server.NetImportDefinition178>("SELECT * FROM NetImport");
 
-            items.Should().HaveCount(6);
+            items.Should().HaveCount(7);
 
             VerifyRow(items[0], typeof(IMDbListImport).Name, typeof(IMDbListSettings).Name, new IMDbListSettings { ListId = "top250" });
             VerifyRow(items[1], typeof(IMDbListImport).Name, typeof(IMDbListSettings).Name, new IMDbListSettings { ListId = "popular" });
-            VerifyRow(items[2], typeof(RadarrListImport).Name, typeof(RadarrListSettings).Name, new RadarrListSettings { Url = url + "/imdb/missing" });
+            VerifyRow(items[2], typeof(RadarrListImport).Name, typeof(RadarrListSettings).Name, new RadarrListSettings { Url = url.TrimEnd('/') + "/imdb/missing" });
             VerifyRow(items[3], typeof(IMDbListImport).Name, typeof(IMDbListSettings).Name, new IMDbListSettings { ListId = "ls001" });
-            VerifyRow(items[4], typeof(RadarrListImport).Name, typeof(RadarrListSettings).Name, new RadarrListSettings { Url = url + "/imdb/list?listId=ls00ad" });
+            VerifyRow(items[4], typeof(RadarrListImport).Name, typeof(RadarrListSettings).Name, new RadarrListSettings { Url = url.TrimEnd('/') + "/imdb/list?listId=ls00ad" });
             VerifyRow(items[5], typeof(IMDbListImport).Name, typeof(IMDbListSettings).Name, new IMDbListSettings { ListId = "ur002" });
+            VerifyRow(items[6], typeof(IMDbListImport).Name, typeof(IMDbListSettings).Name, new IMDbListSettings { ListId = "ur002" });
         }
 
         public void should_switch_some_stevenlu_stevenlu2()
