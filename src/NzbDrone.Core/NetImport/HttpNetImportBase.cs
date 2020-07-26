@@ -49,7 +49,7 @@ namespace NzbDrone.Core.NetImport
 
             var parser = GetParser();
 
-            var anyFailure = false;
+            var anyFailure = true;
 
             try
             {
@@ -76,6 +76,7 @@ namespace NzbDrone.Core.NetImport
                 }
 
                 _netImportStatusService.RecordSuccess(Definition.Id);
+                anyFailure = false;
             }
             catch (WebException webException)
             {
