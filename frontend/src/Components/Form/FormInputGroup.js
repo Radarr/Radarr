@@ -218,7 +218,7 @@ function FormInputGroup(props) {
               key={index}
               text={error.message}
               link={error.link}
-              linkTooltip={error.detailedMessage}
+              tooltip={error.detailedMessage}
               isError={true}
               isCheckInput={checkInput}
             />
@@ -233,7 +233,7 @@ function FormInputGroup(props) {
               key={index}
               text={warning.message}
               link={warning.link}
-              linkTooltip={warning.detailedMessage}
+              tooltip={warning.detailedMessage}
               isWarning={true}
               isCheckInput={checkInput}
             />
