@@ -149,6 +149,13 @@ namespace NzbDrone.Common.Disk
             }
         }
 
+        public bool FolderEmpty(string path)
+        {
+            Ensure.That(path, () => path).IsValidPath();
+
+            return _fileSystem.Directory.EnumerateFileSystemEntries(path).Empty();
+        }
+
         public string[] GetDirectories(string path)
         {
             Ensure.That(path, () => path).IsValidPath();
