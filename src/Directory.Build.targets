@@ -7,4 +7,5 @@
   <Import Project="Targets/PublishAllRids.targets" />
   <Import Project="Targets/FixBindingRedirects.targets" />
   <Import Project="Targets/MonoFacades.targets" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' and !$(RuntimeIdentifier.StartsWith('win'))" />
+  <Import Project="Targets/CopyRuntimes.targets" />
 </Project>
