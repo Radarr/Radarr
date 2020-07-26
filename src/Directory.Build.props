@@ -6,8 +6,8 @@
 
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <RuntimeIdentifiers>win-x64;osx-x64;linux-x64;linux-arm;linux-arm64</RuntimeIdentifiers>
-    <ExcludedRuntimeFrameworkPairs>win-x64:net462;osx-x64:net462;linux-arm:net462;linux-arm64:net462</ExcludedRuntimeFrameworkPairs>
+    <RuntimeIdentifiers>win-x64;osx-x64;linux-x64;linux-musl-x64;linux-arm;linux-arm64;linux-musl-arm64</RuntimeIdentifiers>
+    <ExcludedRuntimeFrameworkPairs>win-x64:net462;osx-x64:net462;linux-arm:net462;linux-arm64:net462;linux-musl-x64:net462;linux-musl-arm64:net462</ExcludedRuntimeFrameworkPairs>
 
     <RadarrRootDir>$(MSBuildThisFileDirectory)..\</RadarrRootDir>
 

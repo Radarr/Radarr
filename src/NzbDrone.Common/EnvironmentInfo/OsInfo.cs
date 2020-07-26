@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using NLog;
@@ -11,7 +12,7 @@ namespace NzbDrone.Common.EnvironmentInfo
         public static Os Os { get; }
 
         public static bool IsNotWindows => !IsWindows;
-        public static bool IsLinux => Os == Os.Linux;
+        public static bool IsLinux => Os == Os.Linux || Os == Os.LinuxMusl || Os == Os.Bsd;
         public static bool IsOsx => Os == Os.Osx;
         public static bool IsWindows => Os == Os.Windows;
 
@@ -37,18 +38,7 @@ namespace NzbDrone.Common.EnvironmentInfo
                 case PlatformID.MacOSX:
                 case PlatformID.Unix:
                     {
-                        // Sometimes Mac OS reports itself as Unix
-                        if (Directory.Exists("/System/Library/CoreServices/") &&
-                            (File.Exists("/System/Library/CoreServices/SystemVersion.plist") ||
-                            File.Exists("/System/Library/CoreServices/ServerVersion.plist")))
-                        {
-                            Os = Os.Osx;
-                        }
-                        else
-                        {
-                            Os = Os.Linux;
-                        }
-
+                        Os = GetPosixFlavour();
                         break;
                     }
             }
@@ -92,6 +82,48 @@ namespace NzbDrone.Common.EnvironmentInfo
                 IsDocker = true;
             }
         }
+
+        private static Os GetPosixFlavour()
+        {
+            var output = RunAndCapture("uname", "-s");
+
+            if (output.StartsWith("Darwin"))
+            {
+                return Os.Osx;
+            }
+            else if (output.Contains("BSD"))
+            {
+                return Os.Bsd;
+            }
+            else
+            {
+                return IsMusl() ? Os.LinuxMusl : Os.Linux;
+            }
+        }
+
+        private static bool IsMusl()
+        {
+            var output = RunAndCapture("ldd", "/bin/ls");
+            return output.Contains("libc.musl");
+        }
+
+        private static string RunAndCapture(string filename, string args)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = filename;
+            p.StartInfo.Arguments = args;
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.RedirectStandardOutput = true;
+
+            p.Start();
+
+            // To avoid deadlocks, always read the output stream first and then wait.
+            string output = p.StandardOutput.ReadToEnd();
+            p.WaitForExit(1000);
+
+            return output;
+        }
     }
 
     public interface IOsInfo
@@ -106,6 +138,8 @@ namespace NzbDrone.Common.EnvironmentInfo
     {
         Windows,
         Linux,
-        Osx
+        Osx,
+        LinuxMusl,
+        Bsd
     }
 }
