@@ -13,7 +13,7 @@
   -->
 
   <PropertyGroup>
-    <MonoFacadesPath>$(MSBuildThisFileDirectory)Libraries\Mono\</MonoFacadesPath>
+    <MonoFacadesPath>$(MSBuildThisFileDirectory)..\Libraries\Mono\</MonoFacadesPath>
     <ResolveReferencesDependsOn>
       $(ResolveReferencesDependsOn);
       SubstituteMonoFacadesBuild

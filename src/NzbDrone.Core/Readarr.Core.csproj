@@ -31,17 +31,8 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
-    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="..\..\Logo\64.png">
       <Link>Resources\Logo\64.png</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild" Condition="!$(RuntimeIdentifier.StartsWith('linux')) or '$(TargetFramework)' == 'netcoreapp3.1'">
-    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish" Condition="!$(RuntimeIdentifier.StartsWith('linux')) or '$(TargetFramework)' == 'netcoreapp3.1'">
-    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(PublishDir)" />
-  </Target>
 </Project>
