@@ -15,8 +15,6 @@ namespace NzbDrone.Core.Test.NetImport
     [TestFixture]
     public class NetImportSearchServiceFixture : CoreTest<NetImportSearchService>
     {
-        private NetImportFetchResult _netImport1Fetch;
-        private NetImportFetchResult _netImport2Fetch;
         private List<Movie> _moviesList1;
         private List<Movie> _moviesList2;
         private List<INetImport> _netImports;
@@ -42,25 +40,13 @@ namespace NzbDrone.Core.Test.NetImport
                 .With(s => s.ImdbId = "8")
                 .Build().ToList();
 
-            _netImport1Fetch = new NetImportFetchResult
-            {
-                Movies = _moviesList1,
-                AnyFailure = false
-            };
-
-            _netImport2Fetch = new NetImportFetchResult
-            {
-                Movies = _moviesList2,
-                AnyFailure = false
-            };
-
             _command = new NetImportSyncCommand
             {
                 ListId = 0
             };
 
             Mocker.GetMock<INetImportFactory>()
-                  .Setup(v => v.GetAvailableProviders())
+                  .Setup(v => v.Enabled())
                   .Returns(_netImports);
 
             Mocker.GetMock<IImportExclusionsService>()
@@ -74,11 +60,17 @@ namespace NzbDrone.Core.Test.NetImport
             Mocker.GetMock<IMovieService>()
                   .Setup(v => v.MovieExists(It.IsAny<Movie>()))
                   .Returns(false);
+
+            Mocker.GetMock<INetImportStatusService>()
+                  .Setup(v => v.GetBlockedProviders())
+                  .Returns(new List<NetImportStatus> { });
         }
 
         private void GivenListFailure()
         {
-            _netImport1Fetch.AnyFailure = true;
+            Mocker.GetMock<INetImportStatusService>()
+                  .Setup(v => v.GetBlockedProviders())
+                  .Returns(new List<NetImportStatus> { new NetImportStatus { Id = 0, ProviderId = 0 } });
         }
 
         private void GivenCleanLevel(string cleanLevel)
@@ -88,7 +80,7 @@ namespace NzbDrone.Core.Test.NetImport
                   .Returns(cleanLevel);
         }
 
-        private Mock<INetImport> GivenList(int i, bool enabledAuto, NetImportFetchResult fetchResult)
+        private Mock<INetImport> GivenList(int i, bool enabledAuto, List<Movie> fetchResult)
         {
             var id = i;
 
@@ -106,7 +98,7 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_not_clean_library_if_config_value_disable()
         {
-            GivenList(1, true, _netImport1Fetch);
+            GivenList(1, true, _moviesList1);
 
             GivenCleanLevel("disabled");
 
@@ -116,13 +108,13 @@ namespace NzbDrone.Core.Test.NetImport
                   .Verify(v => v.GetAllMovies(), Times.Never());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Once());
+                  .Verify(v => v.UpdateMovie(It.IsAny<List<Movie>>(), It.IsAny<bool>()), Times.Never());
         }
 
         [Test]
         public void should_log_only_on_clean_library_if_config_value_logonly()
         {
-            GivenList(1, true, _netImport1Fetch);
+            GivenList(1, true, _moviesList1);
 
             GivenCleanLevel("logOnly");
 
@@ -145,7 +137,7 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_unmonitor_on_clean_library_if_config_value_keepAndUnmonitor()
         {
-            GivenList(1, true, _netImport1Fetch);
+            GivenList(1, true, _moviesList1);
 
             GivenCleanLevel("keepAndUnmonitor");
 
@@ -168,9 +160,9 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_not_clean_on_clean_library_if_tmdb_match()
         {
-            _netImport1Fetch.Movies[0].TmdbId = 6;
+            _moviesList1[0].TmdbId = 6;
 
-            GivenList(1, true, _netImport1Fetch);
+            GivenList(1, true, _moviesList1);
 
             GivenCleanLevel("keepAndUnmonitor");
 
@@ -187,10 +179,10 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_fallback_to_imdbid_on_clean_library_if_tmdb_not_found()
         {
-            _netImport1Fetch.Movies[0].TmdbId = 0;
-            _netImport1Fetch.Movies[0].ImdbId = "6";
+            _moviesList1[0].TmdbId = 0;
+            _moviesList1[0].ImdbId = "6";
 
-            GivenList(1, true, _netImport1Fetch);
+            GivenList(1, true, _moviesList1);
 
             GivenCleanLevel("keepAndUnmonitor");
 
@@ -207,7 +199,7 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_delete_movies_not_files_on_clean_library_if_config_value_logonly()
         {
-            GivenList(1, true, _netImport1Fetch);
+            GivenList(1, true, _moviesList1);
 
             GivenCleanLevel("removeAndKeep");
 
@@ -233,7 +225,7 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_delete_movies_and_files_on_clean_library_if_config_value_logonly()
         {
-            GivenList(1, true, _netImport1Fetch);
+            GivenList(1, true, _moviesList1);
 
             GivenCleanLevel("removeAndDelete");
 
@@ -260,7 +252,7 @@ namespace NzbDrone.Core.Test.NetImport
         public void should_not_clean_if_list_failures()
         {
             GivenListFailure();
-            GivenList(1, true, _netImport1Fetch);
+            GivenList(1, true, _moviesList1);
 
             GivenCleanLevel("disabled");
 
@@ -273,7 +265,7 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_add_new_movies_from_single_list_to_library()
         {
-            GivenList(1, true, _netImport1Fetch);
+            GivenList(1, true, _moviesList1);
 
             GivenCleanLevel("disabled");
 
@@ -286,8 +278,8 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_add_new_movies_from_multiple_list_to_library()
         {
-            GivenList(1, true, _netImport1Fetch);
-            GivenList(2, true, _netImport2Fetch);
+            GivenList(1, true, _moviesList1);
+            GivenList(2, true, _moviesList2);
 
             GivenCleanLevel("disabled");
 
@@ -300,8 +292,8 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_add_new_movies_from_enabled_lists_to_library()
         {
-            GivenList(1, true, _netImport1Fetch);
-            GivenList(2, false, _netImport2Fetch);
+            GivenList(1, true, _moviesList1);
+            GivenList(2, false, _moviesList2);
 
             GivenCleanLevel("disabled");
 
@@ -314,10 +306,10 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_not_add_duplicate_movies_from_seperate_lists()
         {
-            _netImport2Fetch.Movies[0].TmdbId = 4;
+            _moviesList2[0].TmdbId = 4;
 
-            GivenList(1, true, _netImport1Fetch);
-            GivenList(2, true, _netImport2Fetch);
+            GivenList(1, true, _moviesList1);
+            GivenList(2, true, _moviesList2);
 
             GivenCleanLevel("disabled");
 
@@ -330,8 +322,8 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_not_add_movie_from_on_exclusion_list()
         {
-            GivenList(1, true, _netImport1Fetch);
-            GivenList(2, true, _netImport2Fetch);
+            GivenList(1, true, _moviesList1);
+            GivenList(2, true, _moviesList2);
 
             GivenCleanLevel("disabled");
 
@@ -348,8 +340,8 @@ namespace NzbDrone.Core.Test.NetImport
         [Test]
         public void should_not_add_movie_that_exists_in_library()
         {
-            GivenList(1, true, _netImport1Fetch);
-            GivenList(2, true, _netImport2Fetch);
+            GivenList(1, true, _moviesList1);
+            GivenList(2, true, _moviesList2);
 
             GivenCleanLevel("disabled");
 
@@ -362,45 +354,5 @@ namespace NzbDrone.Core.Test.NetImport
             Mocker.GetMock<IAddMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && !s.Any(m => m.TmdbId == _moviesList2[0].TmdbId))), Times.Once());
         }
-
-        /*
-        [Test]
-        public void should_not_tmdb_map_movie_that_has_tmdbid_from_list()
-        {
-            GivenList(1, true, _netImport1Fetch);
-            GivenList(2, true, _netImport2Fetch);
-
-            GivenCleanLevel("disabled");
-
-            Subject.Execute(_command);
-
-            Mocker.GetMock<ISearchForNewMovie>()
-                  .Verify(v => v.MapMovieToTmdbMovie(It.IsAny<Movie>()), Times.Never());
-
-            Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 8)), Times.Once());
-        }
-
-        [Test]
-        public void should_tmdb_map_movie_that_has_no_tmdbid_from_list()
-        {
-            _netImport1Fetch.Movies[0].TmdbId = 0;
-
-            GivenList(1, true, _netImport1Fetch);
-
-            GivenCleanLevel("disabled");
-
-            Mocker.GetMock<ISearchForNewMovie>()
-                  .Setup(v => v.MapMovieToTmdbMovie(It.IsAny<Movie>()))
-                  .Returns(Builder<Movie>.CreateNew().Build());
-
-            Subject.Execute(_command);
-
-            Mocker.GetMock<ISearchForNewMovie>()
-                  .Verify(v => v.MapMovieToTmdbMovie(It.IsAny<Movie>()), Times.Once());
-
-            Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 5)), Times.Once());
-        }*/
     }
 }

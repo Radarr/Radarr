@@ -12,7 +12,7 @@ namespace NzbDrone.Core.NetImport
 {
     public interface IFetchNetImport
     {
-        NetImportFetchResult Fetch(int listId, bool onlyEnableAuto);
+        List<Movie> Fetch(int listId, bool onlyEnableAuto);
         List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto);
     }
 
@@ -20,6 +20,7 @@ namespace NzbDrone.Core.NetImport
     {
         private readonly Logger _logger;
         private readonly INetImportFactory _netImportFactory;
+        private readonly INetImportStatusService _netImportStatusService;
         private readonly IMovieService _movieService;
         private readonly IAddMovieService _addMovieService;
         private readonly ISearchForNewMovie _movieSearch;
@@ -27,6 +28,7 @@ namespace NzbDrone.Core.NetImport
         private readonly IImportExclusionsService _exclusionService;
 
         public NetImportSearchService(INetImportFactory netImportFactory,
+                                      INetImportStatusService netImportStatusService,
                                       IMovieService movieService,
                                       IAddMovieService addMovieService,
                                       ISearchForNewMovie movieSearch,
@@ -35,6 +37,7 @@ namespace NzbDrone.Core.NetImport
                                       Logger logger)
         {
             _netImportFactory = netImportFactory;
+            _netImportStatusService = netImportStatusService;
             _movieService = movieService;
             _addMovieService = addMovieService;
             _movieSearch = movieSearch;
@@ -43,44 +46,47 @@ namespace NzbDrone.Core.NetImport
             _configService = configService;
         }
 
-        public NetImportFetchResult Fetch(int listId, bool onlyEnableAuto = false)
+        public List<Movie> Fetch(int listId, bool onlyEnableAuto = false)
         {
             return MovieListSearch(listId, onlyEnableAuto);
         }
 
         public List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto)
         {
-            var movies = MovieListSearch(listId, onlyEnableAuto).Movies;
+            var movies = MovieListSearch(listId, onlyEnableAuto);
 
             return _movieService.FilterExistingMovies(movies.ToList());
         }
 
-        public NetImportFetchResult MovieListSearch(int listId, bool onlyEnableAuto = false)
+        public List<Movie> MovieListSearch(int listId, bool onlyEnableAuto = false)
         {
             var movies = new List<Movie>();
-            var anyFailure = false;
 
-            var importLists = _netImportFactory.GetAvailableProviders();
+            //Enabled Will filter lists that are in failure status
+            var importLists = _netImportFactory.Enabled();
 
             var lists = listId == 0 ? importLists : importLists.Where(n => ((NetImportDefinition)n.Definition).Id == listId);
 
             if (onlyEnableAuto)
             {
                 lists = importLists.Where(a => ((NetImportDefinition)a.Definition).EnableAuto);
+
+                if (!lists.Any())
+                {
+                    _logger.Warn("No available auto-enabled lists. check your configuration.");
+                    return movies;
+                }
             }
 
             foreach (var list in lists)
             {
                 var result = list.Fetch();
-                movies.AddRange(result.Movies);
-                anyFailure |= result.AnyFailure;
+                movies.AddRange(result);
             }
 
             _logger.Debug("Found {0} movies from list(s) {1}", movies.Count, string.Join(", ", lists.Select(l => l.Definition.Name)));
 
-            return new NetImportFetchResult
-            {
-                Movies = movies.DistinctBy(x =>
+            return movies.DistinctBy(x =>
                 {
                     if (x.TmdbId != 0)
                     {
@@ -93,29 +99,17 @@ namespace NzbDrone.Core.NetImport
                     }
 
                     return x.Title;
-                }).ToList(),
-                AnyFailure = anyFailure
-            };
+                }).ToList();
         }
 
         public void Execute(NetImportSyncCommand message)
         {
-            //if there are no lists that are enabled for automatic import then dont do anything
-            if (_netImportFactory.GetAvailableProviders().Where(a => ((NetImportDefinition)a.Definition).EnableAuto).Empty())
-            {
-                _logger.Info("No lists are enabled for auto-import.");
-                return;
-            }
+            var listedMovies = Fetch(0, true);
 
-            var result = Fetch(0, true);
-            var listedMovies = result.Movies.ToList();
-
-            if (!result.AnyFailure)
-            {
-                CleanLibrary(listedMovies);
-            }
+            CleanLibrary(listedMovies);
 
             listedMovies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
+
             if (listedMovies.Any())
             {
                 _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
@@ -161,38 +155,47 @@ namespace NzbDrone.Core.NetImport
         {
             var moviesToUpdate = new List<Movie>();
 
-            if (_configService.ListSyncLevel != "disabled")
+            if (_configService.ListSyncLevel == "disabled")
             {
-                var moviesInLibrary = _movieService.GetAllMovies();
-                foreach (var movie in moviesInLibrary)
+                return;
+            }
+
+            if (_netImportStatusService.GetBlockedProviders().Any())
+            {
+                _logger.Info("Skipping library cleaning due to list failures");
+                return;
+            }
+
+            var moviesInLibrary = _movieService.GetAllMovies();
+
+            foreach (var movie in moviesInLibrary)
+            {
+                var movieExists = movies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
+
+                if (!movieExists)
                 {
-                    var movieExists = movies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
-
-                    if (!movieExists)
+                    switch (_configService.ListSyncLevel)
                     {
-                        switch (_configService.ListSyncLevel)
-                        {
-                            case "logOnly":
-                                _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
-                                break;
-                            case "keepAndUnmonitor":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
-                                movie.Monitored = false;
-                                moviesToUpdate.Add(movie);
-                                break;
-                            case "removeAndKeep":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
-                                _movieService.DeleteMovie(movie.Id, false);
-                                break;
-                            case "removeAndDelete":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
-                                _movieService.DeleteMovie(movie.Id, true);
+                        case "logOnly":
+                            _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
+                            break;
+                        case "keepAndUnmonitor":
+                            _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
+                            movie.Monitored = false;
+                            moviesToUpdate.Add(movie);
+                            break;
+                        case "removeAndKeep":
+                            _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
+                            _movieService.DeleteMovie(movie.Id, false);
+                            break;
+                        case "removeAndDelete":
+                            _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
+                            _movieService.DeleteMovie(movie.Id, true);
 
-                                //TODO: for some reason the files are not deleted in this case... any idea why?
-                                break;
-                            default:
-                                break;
-                        }
+                            //TODO: for some reason the files are not deleted in this case... any idea why?
+                            break;
+                        default:
+                            break;
                     }
                 }
             }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.NetImport
@@ -8,6 +10,6 @@ namespace NzbDrone.Core.NetImport
         bool EnableAuto { get; }
 
         NetImportType ListType { get; }
-        NetImportFetchResult Fetch();
+        List<Movie> Fetch();
     }
 }

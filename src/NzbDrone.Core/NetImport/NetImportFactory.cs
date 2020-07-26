@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Composition;
@@ -16,17 +16,18 @@ namespace NzbDrone.Core.NetImport
 
     public class NetImportFactory : ProviderFactory<INetImport, NetImportDefinition>, INetImportFactory
     {
-        private readonly INetImportRepository _providerRepository;
+        private readonly INetImportStatusService _netImportStatusService;
         private readonly Logger _logger;
 
         public NetImportFactory(INetImportRepository providerRepository,
-                              IEnumerable<INetImport> providers,
-                              IContainer container,
-                              IEventAggregator eventAggregator,
-                              Logger logger)
+                                INetImportStatusService netImportStatusService,
+                                IEnumerable<INetImport> providers,
+                                IContainer container,
+                                IEventAggregator eventAggregator,
+                                Logger logger)
             : base(providerRepository, providers, container, eventAggregator, logger)
         {
-            _providerRepository = providerRepository;
+            _netImportStatusService = netImportStatusService;
             _logger = logger;
         }
 
@@ -45,21 +46,30 @@ namespace NzbDrone.Core.NetImport
         public List<INetImport> Enabled()
         {
             var enabledImporters = GetAvailableProviders().Where(n => ((NetImportDefinition)n.Definition).Enabled);
-            var indexers = FilterBlockedIndexers(enabledImporters);
+            var indexers = FilterBlockedNetImport(enabledImporters);
             return indexers.ToList();
         }
 
         public List<INetImport> Discoverable()
         {
             var enabledImporters = GetAvailableProviders().Where(n => (n.GetType() == typeof(RadarrList.RadarrListImport) || n.GetType() == typeof(TMDb.Popular.TMDbPopularImport)));
-            var indexers = FilterBlockedIndexers(enabledImporters);
+            var indexers = FilterBlockedNetImport(enabledImporters);
             return indexers.ToList();
         }
 
-        private IEnumerable<INetImport> FilterBlockedIndexers(IEnumerable<INetImport> importers)
+        private IEnumerable<INetImport> FilterBlockedNetImport(IEnumerable<INetImport> importers)
         {
+            var blockedLists = _netImportStatusService.GetBlockedProviders().ToDictionary(v => v.ProviderId, v => v);
+
             foreach (var importer in importers)
             {
+                NetImportStatus netImportStatus;
+                if (blockedLists.TryGetValue(importer.Definition.Id, out netImportStatus))
+                {
+                    _logger.Debug("Temporarily ignoring list {0} till {1} due to recent failures.", importer.Definition.Name, netImportStatus.DisabledTill.Value.ToLocalTime());
+                    continue;
+                }
+
                 yield return importer;
             }
         }

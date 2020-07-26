@@ -30,10 +30,9 @@ namespace NzbDrone.Core.NetImport.Radarr
             _radarrV3Proxy = radarrV3Proxy;
         }
 
-        public override NetImportFetchResult Fetch()
+        public override List<Movie> Fetch()
         {
             var movies = new List<Movie>();
-            var anyFailure = false;
 
             try
             {
@@ -62,13 +61,15 @@ namespace NzbDrone.Core.NetImport.Radarr
                         });
                     }
                 }
+
+                _netImportStatusService.RecordSuccess(Definition.Id);
             }
             catch
             {
-                anyFailure = true;
+                _netImportStatusService.RecordFailure(Definition.Id);
             }
 
-            return new NetImportFetchResult { Movies = movies, AnyFailure = anyFailure };
+            return movies;
         }
 
         public override object RequestAction(string action, IDictionary<string, string> query)

@@ -36,20 +36,18 @@ namespace NzbDrone.Core.NetImport
             _httpClient = httpClient;
         }
 
-        public override NetImportFetchResult Fetch()
+        public override List<Movie> Fetch()
         {
             var generator = GetRequestGenerator();
             return FetchMovies(generator.GetMovies());
         }
 
-        protected virtual NetImportFetchResult FetchMovies(NetImportPageableRequestChain pageableRequestChain, bool isRecent = false)
+        protected virtual List<Movie> FetchMovies(NetImportPageableRequestChain pageableRequestChain, bool isRecent = false)
         {
             var movies = new List<Movie>();
             var url = string.Empty;
 
             var parser = GetParser();
-
-            var anyFailure = false;
 
             try
             {
@@ -147,7 +145,7 @@ namespace NzbDrone.Core.NetImport
                 _logger.Error(ex, "An error occurred while processing feed. {0}", url);
             }
 
-            return new NetImportFetchResult { Movies = movies, AnyFailure = anyFailure };
+            return movies;
         }
 
         protected virtual IList<Movie> FetchPage(NetImportRequest request, IParseNetImportResponse parser)

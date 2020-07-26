@@ -4,6 +4,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Validation;
 
@@ -27,7 +28,7 @@ namespace NzbDrone.Core.NetImport.Trakt
             _netImportRepository = netImportRepository;
         }
 
-        public override NetImportFetchResult Fetch()
+        public override List<Movie> Fetch()
         {
             Settings.Validate().Filter("AccessToken", "RefreshToken").ThrowOnError();
             _logger.Trace($"Access token expires at {Settings.Expires}");
