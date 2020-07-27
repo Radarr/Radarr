@@ -12,6 +12,8 @@ import Link from 'Components/Link/Link';
 import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
 import styles from './AddListMovieOverview.css';
+import Popover from 'Components/Tooltip/Popover';
+import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 
 const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
 const columnPaddingSmallScreen = parseInt(dimensions.movieIndexColumnPaddingSmallScreen);
@@ -76,6 +78,8 @@ class AddListMovieOverview extends Component {
   render() {
     const {
       tmdbId,
+      imdbId,
+      youTubeTrailerId,
       title,
       titleSlug,
       folder,
@@ -138,6 +142,7 @@ class AddListMovieOverview extends Component {
                 {...linkProps}
               >
                 {title}({year})
+
                 {
                   isExcluded &&
                     <Icon
@@ -150,6 +155,25 @@ class AddListMovieOverview extends Component {
               </Link>
 
               <div className={styles.actions}>
+                <span className={styles.externalLinks}>
+                  <Popover
+                    anchor={
+                      <Icon
+                        name={icons.EXTERNAL_LINK}
+                        size={12}
+                      />
+                    }
+                    title="Links"
+                    body={
+                      <MovieDetailsLinks
+                        tmdbId={tmdbId}
+                        imdbId={imdbId}
+                        youTubeTrailerId={youTubeTrailerId}
+                      />
+                    }
+                  />
+                </span>
+
                 <IconButton
                   name={icons.REMOVE}
                   title={isExcluded ? 'Movie already Excluded' : 'Exclude Movie'}
@@ -194,6 +218,8 @@ class AddListMovieOverview extends Component {
 
 AddListMovieOverview.propTypes = {
   tmdbId: PropTypes.number.isRequired,
+  imdbId: PropTypes.string,
+  youTubeTrailerId: PropTypes.string,
   title: PropTypes.string.isRequired,
   folder: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,

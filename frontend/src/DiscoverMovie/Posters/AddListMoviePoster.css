@@ -27,6 +27,11 @@ $hoverScale: 1.05;
   background-color: $defaultColor;
 }
 
+.externalLinks {
+  margin-right: 0.5em;
+  margin-left: 0.5em;
+}
+
 .overlayTitle {
   position: absolute;
   top: 0;

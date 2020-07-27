@@ -11,6 +11,9 @@ import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import styles from './AddListMovieRow.css';
+import Icon from 'Components/Icon';
+import Popover from 'Components/Tooltip/Popover';
+import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 
 class AddListMovieRow extends Component {
 
@@ -52,6 +55,8 @@ class AddListMovieRow extends Component {
     const {
       status,
       tmdbId,
+      imdbId,
+      youTubeTrailerId,
       title,
       titleSlug,
       studio,
@@ -205,6 +210,25 @@ class AddListMovieRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
+                  <span className={styles.externalLinks}>
+                    <Popover
+                      anchor={
+                        <Icon
+                          name={icons.EXTERNAL_LINK}
+                          size={12}
+                        />
+                      }
+                      title="Links"
+                      body={
+                        <MovieDetailsLinks
+                          tmdbId={tmdbId}
+                          imdbId={imdbId}
+                          youTubeTrailerId={youTubeTrailerId}
+                        />
+                      }
+                    />
+                  </span>
+
                   <IconButton
                     name={icons.REMOVE}
                     title={isExcluded ? 'Movie already Excluded' : 'Exclude Movie'}
@@ -244,6 +268,8 @@ class AddListMovieRow extends Component {
 
 AddListMovieRow.propTypes = {
   tmdbId: PropTypes.number.isRequired,
+  imdbId: PropTypes.string,
+  youTubeTrailerId: PropTypes.string,
   status: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
