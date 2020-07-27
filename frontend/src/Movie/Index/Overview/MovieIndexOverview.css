@@ -93,3 +93,7 @@ $hoverScale: 1.05;
     display: none;
   }
 }
+
+.externalLinks {
+  margin-right: 0.5em;
+}
