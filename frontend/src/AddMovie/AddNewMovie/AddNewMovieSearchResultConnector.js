@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createExistingMovieSelector from 'Store/Selectors/createExistingMovieSelector';
-import createExclusionMovieSelector from 'Store/Selectors/createExclusionMovieSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
+import createExclusionMovieSelector from 'Store/Selectors/createExclusionMovieSelector';
+import createExistingMovieSelector from 'Store/Selectors/createExistingMovieSelector';
 import AddNewMovieSearchResult from './AddNewMovieSearchResult';
 
 function createMapStateToProps() {

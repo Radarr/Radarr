@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
 import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import NetImportExclusion from './NetImportExclusion';
-import EditNetImportExclusionModalConnector from './EditNetImportExclusionModalConnector';
+import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import EditNetImportExclusionModalConnector from './EditNetImportExclusionModalConnector';
+import NetImportExclusion from './NetImportExclusion';
 import styles from './NetImportExclusions.css';
 
 class NetImportExclusions extends Component {

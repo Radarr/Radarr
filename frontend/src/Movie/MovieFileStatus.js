@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons, kinds, sizes } from 'Helpers/Props';
-import Icon from 'Components/Icon';
-import ProgressBar from 'Components/ProgressBar';
 import QueueDetails from 'Activity/Queue/QueueDetails';
-import MovieQuality from 'Movie/MovieQuality';
+import Icon from 'Components/Icon';
 import Label from 'Components/Label';
+import ProgressBar from 'Components/ProgressBar';
+import { icons, kinds, sizes } from 'Helpers/Props';
+import MovieQuality from 'Movie/MovieQuality';
 import styles from './MovieFileStatus.css';
 
 function MovieFileStatus(props) {

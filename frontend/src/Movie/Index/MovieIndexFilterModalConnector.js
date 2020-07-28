@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { setMovieFilter } from 'Store/Actions/movieIndexActions';
 import FilterModal from 'Components/Filter/FilterModal';
+import { setMovieFilter } from 'Store/Actions/movieIndexActions';
 
 function createMapStateToProps() {
   return createSelector(

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
-import createMovieSelector from 'Store/Selectors/createMovieSelector';
+import { createSelector } from 'reselect';
+import { saveNetImport, selectNetImportSchema, setNetImportFieldValue, setNetImportValue } from 'Store/Actions/settingsActions';
 import createMovieCollectionListSelector from 'Store/Selectors/createMovieCollectionListSelector';
-import { selectNetImportSchema, setNetImportValue, setNetImportFieldValue, saveNetImport } from 'Store/Actions/settingsActions';
+import createMovieSelector from 'Store/Selectors/createMovieSelector';
 import MovieCollection from './MovieCollection';
 
 function createMapStateToProps() {

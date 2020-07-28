@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { sizes } from 'Helpers/Props';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputHelpText from 'Components/Form/FormInputHelpText';
+import FormLabel from 'Components/Form/FormLabel';
 import Link from 'Components/Link/Link';
-import QualityProfileFormatItem from './QualityProfileFormatItem';
+import { sizes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import QualityProfileFormatItem from './QualityProfileFormatItem';
 import styles from './QualityProfileFormatItems.css';
 
 function calcOrder(profileFormatItems) {

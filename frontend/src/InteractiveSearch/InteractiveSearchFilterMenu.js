@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { align } from 'Helpers/Props';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import PageMenuButton from 'Components/Menu/PageMenuButton';
+import { align } from 'Helpers/Props';
 import InteractiveSearchFilterModalConnector from './InteractiveSearchFilterModalConnector';
 import styles from './InteractiveSearchContent.css';
 

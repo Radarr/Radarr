@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import QualityProfile from './QualityProfile';
-import EditQualityProfileModalConnector from './EditQualityProfileModalConnector';
+import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import EditQualityProfileModalConnector from './EditQualityProfileModalConnector';
+import QualityProfile from './QualityProfile';
 import styles from './QualityProfiles.css';
 
 class QualityProfiles extends Component {

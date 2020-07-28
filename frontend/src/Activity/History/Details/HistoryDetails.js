@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import formatDateTime from 'Utilities/Date/formatDateTime';
-import formatAge from 'Utilities/Number/formatAge';
-import Link from 'Components/Link/Link';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
-import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
 import DescriptionListItemDescription from 'Components/DescriptionList/DescriptionListItemDescription';
+import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
+import Link from 'Components/Link/Link';
+import formatDateTime from 'Utilities/Date/formatDateTime';
+import formatAge from 'Utilities/Number/formatAge';
 import styles from './HistoryDetails.css';
 
 function HistoryDetails(props) {

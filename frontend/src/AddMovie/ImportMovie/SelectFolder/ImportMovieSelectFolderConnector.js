@@ -1,11 +1,11 @@
+import { push } from 'connected-react-router';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { push } from 'connected-react-router';
+import { addRootFolder, deleteRootFolder, fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
-import { fetchRootFolders, addRootFolder, deleteRootFolder } from 'Store/Actions/rootFolderActions';
 import ImportMovieSelectFolder from './ImportMovieSelectFolder';
 
 function createMapStateToProps() {

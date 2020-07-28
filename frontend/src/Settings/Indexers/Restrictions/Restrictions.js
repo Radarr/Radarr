@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import Restriction from './Restriction';
-import EditRestrictionModalConnector from './EditRestrictionModalConnector';
+import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import EditRestrictionModalConnector from './EditRestrictionModalConnector';
+import Restriction from './Restriction';
 import styles from './Restrictions.css';
 
 class Restrictions extends Component {

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
-import { sortDirections } from 'Helpers/Props';
 import VirtualTable from 'Components/Table/VirtualTable';
 import VirtualTableRow from 'Components/Table/VirtualTableRow';
 import AddListMovieItemConnector from 'DiscoverMovie/AddListMovieItemConnector';
+import { sortDirections } from 'Helpers/Props';
+import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import AddListMovieHeaderConnector from './AddListMovieHeaderConnector';
 import AddListMovieRowConnector from './AddListMovieRowConnector';
 import styles from './AddListMovieTable.css';

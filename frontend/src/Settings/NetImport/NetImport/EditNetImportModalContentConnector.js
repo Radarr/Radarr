@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { saveNetImport, setNetImportFieldValue, setNetImportValue, testNetImport } from 'Store/Actions/settingsActions';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
-import { setNetImportValue, setNetImportFieldValue, saveNetImport, testNetImport } from 'Store/Actions/settingsActions';
 import EditNetImportModalContent from './EditNetImportModalContent';
 
 function createMapStateToProps() {

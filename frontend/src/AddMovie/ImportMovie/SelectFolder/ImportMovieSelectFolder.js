@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds, sizes } from 'Helpers/Props';
-import Button from 'Components/Link/Button';
 import FieldSet from 'Components/FieldSet';
-import Icon from 'Components/Icon';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FileBrowserModal from 'Components/FileBrowser/FileBrowserModal';
+import Icon from 'Components/Icon';
+import Button from 'Components/Link/Button';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import ImportMovieRootFolderRowConnector from './ImportMovieRootFolderRowConnector';
+import { icons, kinds, sizes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import ImportMovieRootFolderRowConnector from './ImportMovieRootFolderRowConnector';
 import styles from './ImportMovieSelectFolder.css';
 
 const rootFolderColumns = [

@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds } from 'Helpers/Props';
+import HistoryDetailsModal from 'Activity/History/Details/HistoryDetailsModal';
+import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import MovieQuality from 'Movie/MovieQuality';
+import TableRow from 'Components/Table/TableRow';
+import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
-import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
-import HistoryDetailsModal from 'Activity/History/Details/HistoryDetailsModal';
+import MovieQuality from 'Movie/MovieQuality';
 import styles from './MovieHistoryRow.css';
 
 class MovieHistoryRow extends Component {

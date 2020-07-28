@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
-import { cancelTestNetImport, cancelSaveNetImport } from 'Store/Actions/settingsActions';
+import { cancelSaveNetImport, cancelTestNetImport } from 'Store/Actions/settingsActions';
 import EditNetImportModal from './EditNetImportModal';
 
 function createMapDispatchToProps(dispatch, props) {

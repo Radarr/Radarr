@@ -1,8 +1,8 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 import { Manager, Popper, Reference } from 'react-popper';
-import classNames from 'classnames';
 import Portal from 'Components/Portal';
 import styles from './AutoSuggestInput.css';
 

@@ -1,16 +1,16 @@
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import { createThunk } from 'Store/thunks';
-import getSectionState from 'Utilities/State/getSectionState';
-import updateSectionState from 'Utilities/State/updateSectionState';
-import getNextId from 'Utilities/State/getNextId';
-import selectProviderSchema from 'Utilities/State/selectProviderSchema';
-import getProviderState from 'Utilities/State/getProviderState';
-import createSetSettingValueReducer from 'Store/Actions/Creators/Reducers/createSetSettingValueReducer';
-import createSetProviderFieldValueReducer from 'Store/Actions/Creators/Reducers/createSetProviderFieldValueReducer';
-import createClearReducer from 'Store/Actions/Creators/Reducers/createClearReducer';
 import createFetchSchemaHandler from 'Store/Actions/Creators/createFetchSchemaHandler';
-import { set, update, updateItem, removeItem } from '../baseActions';
+import createClearReducer from 'Store/Actions/Creators/Reducers/createClearReducer';
+import createSetProviderFieldValueReducer from 'Store/Actions/Creators/Reducers/createSetProviderFieldValueReducer';
+import createSetSettingValueReducer from 'Store/Actions/Creators/Reducers/createSetSettingValueReducer';
+import { createThunk } from 'Store/thunks';
+import getNextId from 'Utilities/State/getNextId';
+import getProviderState from 'Utilities/State/getProviderState';
+import getSectionState from 'Utilities/State/getSectionState';
+import selectProviderSchema from 'Utilities/State/selectProviderSchema';
+import updateSectionState from 'Utilities/State/updateSectionState';
+import { removeItem, set, update, updateItem } from '../baseActions';
 
 //
 // Variables

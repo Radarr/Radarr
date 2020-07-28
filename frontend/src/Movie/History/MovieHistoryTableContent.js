@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import MovieHistoryRowConnector from './MovieHistoryRowConnector';
+import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import MovieHistoryRowConnector from './MovieHistoryRowConnector';
 import styles from './MovieHistoryTableContent.css';
 
 const columns = [

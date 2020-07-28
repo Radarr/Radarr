@@ -1,12 +1,12 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import { icons, kinds } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import EditNetImportExclusionModalConnector from './EditNetImportExclusionModalConnector';
+import { icons, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import EditNetImportExclusionModalConnector from './EditNetImportExclusionModalConnector';
 import styles from './NetImportExclusion.css';
 
 class NetImportExclusion extends Component {

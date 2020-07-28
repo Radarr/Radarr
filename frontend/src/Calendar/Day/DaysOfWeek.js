@@ -1,8 +1,8 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import DayOfWeek from './DayOfWeek';
 import * as calendarViews from 'Calendar/calendarViews';
+import DayOfWeek from './DayOfWeek';
 import styles from './DaysOfWeek.css';
 
 class DaysOfWeek extends Component {

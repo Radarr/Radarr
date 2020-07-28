@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactSlider from 'react-slider';
-import formatBytes from 'Utilities/Number/formatBytes';
-import roundNumber from 'Utilities/Number/roundNumber';
-import { kinds, tooltipPositions } from 'Helpers/Props';
-import Label from 'Components/Label';
 import NumberInput from 'Components/Form/NumberInput';
 import TextInput from 'Components/Form/TextInput';
+import Label from 'Components/Label';
 import Popover from 'Components/Tooltip/Popover';
+import { kinds, tooltipPositions } from 'Helpers/Props';
+import formatBytes from 'Utilities/Number/formatBytes';
+import roundNumber from 'Utilities/Number/roundNumber';
 import QualityDefinitionLimits from './QualityDefinitionLimits';
 import styles from './QualityDefinition.css';
 

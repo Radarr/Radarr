@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { align } from 'Helpers/Props';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import AddListMovieFilterModalConnector from 'DiscoverMovie/AddListMovieFilterModalConnector';
+import { align } from 'Helpers/Props';
 
 function AddListMovieFilterMenu(props) {
   const {

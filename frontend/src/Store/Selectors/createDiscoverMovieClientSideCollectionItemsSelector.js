@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
-import createDeepEqualSelector from './createDeepEqualSelector';
 import createClientSideCollectionSelector from './createClientSideCollectionSelector';
+import createDeepEqualSelector from './createDeepEqualSelector';
 
 function createUnoptimizedSelector(uiSection) {
   return createSelector(

@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createDiscoverMovieClientSideCollectionItemsSelector from 'Store/Selectors/createDiscoverMovieClientSideCollectionItemsSelector';
-import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
+import withScrollPosition from 'Components/withScrollPosition';
+import { addMovies, addNetImportExclusions, clearAddMovie, fetchDiscoverMovies, setListMovieFilter, setListMovieSort, setListMovieTableOption, setListMovieView } from 'Store/Actions/discoverMovieActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
-import { fetchDiscoverMovies, addMovies, clearAddMovie, addNetImportExclusions, setListMovieSort, setListMovieFilter, setListMovieView, setListMovieTableOption } from 'Store/Actions/discoverMovieActions';
 import { fetchNetImportExclusions } from 'Store/Actions/Settings/netImportExclusions';
 import scrollPositions from 'Store/scrollPositions';
+import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
+import createDiscoverMovieClientSideCollectionItemsSelector from 'Store/Selectors/createDiscoverMovieClientSideCollectionItemsSelector';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
-import withScrollPosition from 'Components/withScrollPosition';
 import DiscoverMovie from './DiscoverMovie';
 
 function createMapStateToProps() {

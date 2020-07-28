@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
+import TableOptionsModal from 'Components/Table/TableOptions/TableOptionsModal';
 import VirtualTableHeader from 'Components/Table/VirtualTableHeader';
 import VirtualTableHeaderCell from 'Components/Table/VirtualTableHeaderCell';
 import VirtualTableSelectAllHeaderCell from 'Components/Table/VirtualTableSelectAllHeaderCell';
-import TableOptionsModal from 'Components/Table/TableOptions/TableOptionsModal';
+import { icons } from 'Helpers/Props';
 import MovieIndexTableOptionsConnector from './MovieIndexTableOptionsConnector';
 import styles from './MovieIndexHeader.css';
 

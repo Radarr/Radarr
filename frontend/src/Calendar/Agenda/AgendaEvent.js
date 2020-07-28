@@ -1,12 +1,12 @@
+import classNames from 'classnames';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import { icons, kinds } from 'Helpers/Props';
+import CalendarEventQueueDetails from 'Calendar/Events/CalendarEventQueueDetails';
 import getStatusStyle from 'Calendar/getStatusStyle';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
-import CalendarEventQueueDetails from 'Calendar/Events/CalendarEventQueueDetails';
+import { icons, kinds } from 'Helpers/Props';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import styles from './AgendaEvent.css';
 

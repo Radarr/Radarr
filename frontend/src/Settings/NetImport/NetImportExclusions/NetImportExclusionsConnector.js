@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchNetImportExclusions, deleteNetImportExclusion } from 'Store/Actions/settingsActions';
+import { deleteNetImportExclusion, fetchNetImportExclusions } from 'Store/Actions/settingsActions';
 import NetImportExclusions from './NetImportExclusions';
 
 function createMapStateToProps() {

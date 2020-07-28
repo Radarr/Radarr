@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
+import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
-import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
-import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import ListMovieStatusCell from './ListMovieStatusCell';
 import Link from 'Components/Link/Link';
+import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
+import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
+import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
+import Popover from 'Components/Tooltip/Popover';
 import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
-import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
-import styles from './AddListMovieRow.css';
-import Icon from 'Components/Icon';
-import Popover from 'Components/Tooltip/Popover';
+import { icons } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import ListMovieStatusCell from './ListMovieStatusCell';
+import styles from './AddListMovieRow.css';
 
 class AddListMovieRow extends Component {
 

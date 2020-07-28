@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import EditIndexerModalConnector from './EditIndexerModalConnector';
+import { icons, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import EditIndexerModalConnector from './EditIndexerModalConnector';
 import styles from './Indexer.css';
 
 class Indexer extends Component {

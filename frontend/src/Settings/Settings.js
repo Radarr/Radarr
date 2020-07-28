@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'Components/Link/Link';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
-import SettingsToolbarConnector from './SettingsToolbarConnector';
 import translate from 'Utilities/String/translate';
+import SettingsToolbarConnector from './SettingsToolbarConnector';
 import styles from './Settings.css';
 
 function Settings() {

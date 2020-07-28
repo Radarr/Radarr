@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import IconButton from 'Components/Link/IconButton';
 import CheckInput from 'Components/Form/CheckInput';
+import Icon from 'Components/Icon';
 import Label from 'Components/Label';
+import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
-import MoviePoster from 'Movie/MoviePoster';
+import Popover from 'Components/Tooltip/Popover';
 import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
-import styles from './AddListMoviePoster.css';
-import Icon from 'Components/Icon';
-import Popover from 'Components/Tooltip/Popover';
+import { icons } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import MoviePoster from 'Movie/MoviePoster';
+import styles from './AddListMoviePoster.css';
 
 class AddListMoviePoster extends Component {
 

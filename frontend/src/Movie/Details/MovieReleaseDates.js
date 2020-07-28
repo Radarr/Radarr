@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
+import { icons } from 'Helpers/Props';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import styles from './MovieReleaseDates.css';
 

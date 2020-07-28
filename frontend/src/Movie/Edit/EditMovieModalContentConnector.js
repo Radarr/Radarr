@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import selectSettings from 'Store/Selectors/selectSettings';
+import { saveMovie, setMovieValue } from 'Store/Actions/movieActions';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
-import { setMovieValue, saveMovie } from 'Store/Actions/movieActions';
+import selectSettings from 'Store/Selectors/selectSettings';
 import EditMovieModalContent from './EditMovieModalContent';
 
 function createIsPathChangingSelector() {

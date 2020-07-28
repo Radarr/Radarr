@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import titleCase from 'Utilities/String/titleCase';
-import FieldSet from 'Components/FieldSet';
-import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
-import StartTime from './StartTime';
+import FieldSet from 'Components/FieldSet';
+import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
+import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
+import StartTime from './StartTime';
 import styles from './About.css';
 
 class About extends Component {

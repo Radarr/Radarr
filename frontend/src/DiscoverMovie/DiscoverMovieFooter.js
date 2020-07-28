@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
-import SelectInput from 'Components/Form/SelectInput';
 import AvailabilitySelectInput from 'Components/Form/AvailabilitySelectInput';
 import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
+import SelectInput from 'Components/Form/SelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
-import ExcludeMovieModal from './Exclusion/ExcludeMovieModal';
-import DiscoverMovieFooterLabel from './DiscoverMovieFooterLabel';
+import { kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import DiscoverMovieFooterLabel from './DiscoverMovieFooterLabel';
+import ExcludeMovieModal from './Exclusion/ExcludeMovieModal';
 import styles from './DiscoverMovieFooter.css';
 
 class DiscoverMovieFooter extends Component {

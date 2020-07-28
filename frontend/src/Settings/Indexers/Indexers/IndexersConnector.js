@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import sortByName from 'Utilities/Array/sortByName';
+import { cloneIndexer, deleteIndexer, fetchIndexers } from 'Store/Actions/settingsActions';
 import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
-import { fetchIndexers, deleteIndexer, cloneIndexer } from 'Store/Actions/settingsActions';
+import sortByName from 'Utilities/Array/sortByName';
 import Indexers from './Indexers';
 
 function createMapStateToProps() {

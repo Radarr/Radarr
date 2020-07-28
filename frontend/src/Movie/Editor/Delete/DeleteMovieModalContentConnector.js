@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import { bulkDeleteMovie } from 'Store/Actions/movieIndexActions';
+import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import DeleteMovieModalContent from './DeleteMovieModalContent';
 
 function createMapStateToProps() {

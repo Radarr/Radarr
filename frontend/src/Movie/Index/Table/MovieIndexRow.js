@@ -1,24 +1,24 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import titleCase from 'Utilities/String/titleCase';
-import formatBytes from 'Utilities/Number/formatBytes';
-import { icons } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
+import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-import TagListConnector from 'Components/TagListConnector';
-import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import MovieTitleLink from 'Movie/MovieTitleLink';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
-import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
-import MovieStatusCell from './MovieStatusCell';
-import MovieFileStatusConnector from 'Movie/MovieFileStatusConnector';
+import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
-import styles from './MovieIndexRow.css';
-import Icon from 'Components/Icon';
+import TagListConnector from 'Components/TagListConnector';
 import Popover from 'Components/Tooltip/Popover';
+import { icons } from 'Helpers/Props';
+import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import MovieFileStatusConnector from 'Movie/MovieFileStatusConnector';
+import MovieTitleLink from 'Movie/MovieTitleLink';
+import formatBytes from 'Utilities/Number/formatBytes';
+import titleCase from 'Utilities/String/titleCase';
+import MovieStatusCell from './MovieStatusCell';
+import styles from './MovieIndexRow.css';
 
 class MovieIndexRow extends Component {
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import Switch from 'Components/Router/Switch';
-import ImportMovieSelectFolderConnector from 'AddMovie/ImportMovie/SelectFolder/ImportMovieSelectFolderConnector';
 import ImportMovieConnector from 'AddMovie/ImportMovie/Import/ImportMovieConnector';
+import ImportMovieSelectFolderConnector from 'AddMovie/ImportMovie/SelectFolder/ImportMovieSelectFolderConnector';
+import Switch from 'Components/Router/Switch';
 
 class ImportMovies extends Component {
 

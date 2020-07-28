@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import IconButton from 'Components/Link/IconButton';
 import Label from 'Components/Label';
+import IconButton from 'Components/Link/IconButton';
+import { icons } from 'Helpers/Props';
 import MovieHeadshot from 'Movie/MovieHeadshot';
 import EditNetImportModalConnector from 'Settings/NetImport/NetImport/EditNetImportModalConnector';
 import styles from '../MovieCreditPoster.css';

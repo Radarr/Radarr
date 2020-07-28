@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchMovieHistory, clearMovieHistory, movieHistoryMarkAsFailed } from 'Store/Actions/movieHistoryActions';
+import { clearMovieHistory, fetchMovieHistory, movieHistoryMarkAsFailed } from 'Store/Actions/movieHistoryActions';
 import MovieHistoryTableContent from './MovieHistoryTableContent';
 
 function createMapStateToProps() {

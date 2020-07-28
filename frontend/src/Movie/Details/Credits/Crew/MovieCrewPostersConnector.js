@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import MovieCreditPosters from '../MovieCreditPosters';
 import MovieCrewPoster from './MovieCrewPoster';
-import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 
 function createMapStateToProps() {
   return createSelector(

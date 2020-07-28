@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import parseUrl from 'Utilities/String/parseUrl';
-import { lookupMovie, clearAddMovie } from 'Store/Actions/addMovieActions';
+import { clearAddMovie, lookupMovie } from 'Store/Actions/addMovieActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import { fetchNetImportExclusions } from 'Store/Actions/Settings/netImportExclusions';
+import parseUrl from 'Utilities/String/parseUrl';
 import AddNewMovie from './AddNewMovie';
 
 function createMapStateToProps() {

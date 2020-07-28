@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import IconButton from 'Components/Link/IconButton';
 import CheckInput from 'Components/Form/CheckInput';
-import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import Icon from 'Components/Icon';
 import Label from 'Components/Label';
+import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
-import MoviePoster from 'Movie/MoviePoster';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import Popover from 'Components/Tooltip/Popover';
+import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
+import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
+import MoviePoster from 'Movie/MoviePoster';
 import MovieIndexPosterInfo from './MovieIndexPosterInfo';
 import styles from './MovieIndexPoster.css';
-import Icon from 'Components/Icon';
-import Popover from 'Components/Tooltip/Popover';
-import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 
 class MovieIndexPoster extends Component {
 

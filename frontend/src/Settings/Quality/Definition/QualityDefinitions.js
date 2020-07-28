@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import FieldSet from 'Components/FieldSet';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import QualityDefinitionConnector from './QualityDefinitionConnector';
 import translate from 'Utilities/String/translate';
+import QualityDefinitionConnector from './QualityDefinitionConnector';
 import styles from './QualityDefinitions.css';
 
 class QualityDefinitions extends Component {
