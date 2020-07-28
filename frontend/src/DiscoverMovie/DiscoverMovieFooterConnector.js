@@ -15,7 +15,8 @@ function createMapStateToProps() {
         monitor: defaultMonitor,
         qualityProfileId: defaultQualityProfileId,
         minimumAvailability: defaultMinimumAvailability,
-        rootFolderPath: defaultRootFolderPath
+        rootFolderPath: defaultRootFolderPath,
+        searchForMovie: defaultSearchForMovie
       } = discoverMovie.defaults;
 
       const {
@@ -33,7 +34,8 @@ function createMapStateToProps() {
         defaultMonitor,
         defaultQualityProfileId,
         defaultMinimumAvailability,
-        defaultRootFolderPath
+        defaultRootFolderPath,
+        defaultSearchForMovie
       };
     }
   );
