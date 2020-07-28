@@ -71,8 +71,15 @@ class MovieCastPoster extends Component {
       height: `${posterHeight}px`
     };
 
+    const contentStyle = {
+      width: `${posterWidth}px`
+    };
+
     return (
-      <div className={styles.content}>
+      <div
+        className={styles.content}
+        style={contentStyle}
+      >
         <div className={styles.posterContainer}>
           <Label className={styles.controls}>
             {
@@ -93,7 +100,6 @@ class MovieCastPoster extends Component {
           </Label>
 
           <div
-            className={styles.poster}
             style={elementStyle}
           >
             <MovieHeadshot
