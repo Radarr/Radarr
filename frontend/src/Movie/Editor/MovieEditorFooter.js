@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
-import SelectInput from 'Components/Form/SelectInput';
 import AvailabilitySelectInput from 'Components/Form/AvailabilitySelectInput';
 import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
+import SelectInput from 'Components/Form/SelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
+import { kinds } from 'Helpers/Props';
 import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
-import TagsModal from './Tags/TagsModal';
+import translate from 'Utilities/String/translate';
 import DeleteMovieModal from './Delete/DeleteMovieModal';
 import MovieEditorFooterLabel from './MovieEditorFooterLabel';
-import translate from 'Utilities/String/translate';
+import TagsModal from './Tags/TagsModal';
 import styles from './MovieEditorFooter.css';
 
 const NO_CHANGE = 'noChange';

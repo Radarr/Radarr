@@ -1,27 +1,27 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { inputTypes } from 'Helpers/Props';
 import Link from 'Components/Link/Link';
+import { inputTypes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import AutoCompleteInput from './AutoCompleteInput';
 import AvailabilitySelectInput from './AvailabilitySelectInput';
 import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
 import DeviceInputConnector from './DeviceInputConnector';
+import EnhancedSelectInput from './EnhancedSelectInput';
+import FormInputHelpText from './FormInputHelpText';
 import KeyValueListInput from './KeyValueListInput';
+import MovieMonitoredSelectInput from './MovieMonitoredSelectInput';
 import NumberInput from './NumberInput';
 import OAuthInputConnector from './OAuthInputConnector';
 import PasswordInput from './PasswordInput';
 import PathInputConnector from './PathInputConnector';
 import QualityProfileSelectInputConnector from './QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
-import MovieMonitoredSelectInput from './MovieMonitoredSelectInput';
-import EnhancedSelectInput from './EnhancedSelectInput';
 import TagInputConnector from './TagInputConnector';
 import TagSelectInputConnector from './TagSelectInputConnector';
-import TextTagInputConnector from './TextTagInputConnector';
 import TextInput from './TextInput';
-import FormInputHelpText from './FormInputHelpText';
-import translate from 'Utilities/String/translate';
+import TextTagInputConnector from './TextTagInputConnector';
 import styles from './FormInputGroup.css';
 
 function getComponent(type) {

@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import NetImport from './NetImport';
+import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import AddNetImportModal from './AddNetImportModal';
 import EditNetImportModalConnector from './EditNetImportModalConnector';
-import translate from 'Utilities/String/translate';
+import NetImport from './NetImport';
 import styles from './NetImports.css';
 
 class NetImports extends Component {

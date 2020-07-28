@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import { icons } from 'Helpers/Props';
 import ExtraFileRow from './ExtraFileRow';
 import styles from './ExtraFileTableContent.css';
 

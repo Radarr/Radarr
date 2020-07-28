@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import MenuContent from './MenuContent';
+import translate from 'Utilities/String/translate';
 import FilterMenuItem from './FilterMenuItem';
+import MenuContent from './MenuContent';
 import MenuItem from './MenuItem';
 import MenuItemSeparator from './MenuItemSeparator';
-import translate from 'Utilities/String/translate';
 
 class FilterMenuContent extends Component {
 

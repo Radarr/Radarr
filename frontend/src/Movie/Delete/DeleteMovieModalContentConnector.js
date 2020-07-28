@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createMovieSelector from 'Store/Selectors/createMovieSelector';
 import { deleteMovie } from 'Store/Actions/movieActions';
+import createMovieSelector from 'Store/Selectors/createMovieSelector';
 import DeleteMovieModalContent from './DeleteMovieModalContent';
 
 function createMapStateToProps() {

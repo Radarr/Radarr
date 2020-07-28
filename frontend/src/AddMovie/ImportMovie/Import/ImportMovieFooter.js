@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes, kinds } from 'Helpers/Props';
+// import CheckInput from 'Components/Form/CheckInput';
+import FormInputGroup from 'Components/Form/FormInputGroup';
 import Button from 'Components/Link/Button';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-// import CheckInput from 'Components/Form/CheckInput';
-import FormInputGroup from 'Components/Form/FormInputGroup';
 import PageContentFooter from 'Components/Page/PageContentFooter';
+import { inputTypes, kinds } from 'Helpers/Props';
 import styles from './ImportMovieFooter.css';
 
 const MIXED = 'mixed';

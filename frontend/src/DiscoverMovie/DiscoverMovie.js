@@ -1,32 +1,32 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
-import getSelectedIds from 'Utilities/Table/getSelectedIds';
-import selectAll from 'Utilities/Table/selectAll';
-import toggleSelected from 'Utilities/Table/toggleSelected';
-import { align, icons, sortDirections } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import PageJumpBar from 'Components/Page/PageJumpBar';
-import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
-import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
-import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
-import AddListMovieTableConnector from './Table/AddListMovieTableConnector';
-import AddListMoviePosterOptionsModal from './Posters/Options/AddListMoviePosterOptionsModal';
-import AddListMoviePostersConnector from './Posters/AddListMoviePostersConnector';
-import AddListMovieOverviewOptionsModal from './Overview/Options/AddListMovieOverviewOptionsModal';
-import AddListMovieOverviewsConnector from './Overview/AddListMovieOverviewsConnector';
+import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
+import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
+import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
+import { align, icons, sortDirections } from 'Helpers/Props';
+import styles from 'Movie/Index/MovieIndex.css';
+import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
+import translate from 'Utilities/String/translate';
+import getSelectedIds from 'Utilities/Table/getSelectedIds';
+import selectAll from 'Utilities/Table/selectAll';
+import toggleSelected from 'Utilities/Table/toggleSelected';
+import DiscoverMovieFooterConnector from './DiscoverMovieFooterConnector';
 import AddListMovieFilterMenu from './Menus/AddListMovieFilterMenu';
 import AddListMovieSortMenu from './Menus/AddListMovieSortMenu';
 import AddListMovieViewMenu from './Menus/AddListMovieViewMenu';
 import NoDiscoverMovie from './NoDiscoverMovie';
-import DiscoverMovieFooterConnector from './DiscoverMovieFooterConnector';
-import translate from 'Utilities/String/translate';
-import styles from 'Movie/Index/MovieIndex.css';
+import AddListMovieOverviewsConnector from './Overview/AddListMovieOverviewsConnector';
+import AddListMovieOverviewOptionsModal from './Overview/Options/AddListMovieOverviewOptionsModal';
+import AddListMoviePostersConnector from './Posters/AddListMoviePostersConnector';
+import AddListMoviePosterOptionsModal from './Posters/Options/AddListMoviePosterOptionsModal';
+import AddListMovieTableConnector from './Table/AddListMovieTableConnector';
 
 function getViewComponent(view) {
   if (view === 'posters') {

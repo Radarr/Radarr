@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { selectNetImportSchema, setNetImportFieldValue, setNetImportValue } from 'Store/Actions/settingsActions';
 import createMovieCreditListSelector from 'Store/Selectors/createMovieCreditListSelector';
-import { selectNetImportSchema, setNetImportValue, setNetImportFieldValue } from 'Store/Actions/settingsActions';
 
 function createMapStateToProps() {
   return createMovieCreditListSelector();

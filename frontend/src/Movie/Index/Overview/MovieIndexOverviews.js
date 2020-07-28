@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Grid, WindowScroller } from 'react-virtualized';
-import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
-import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
-import dimensions from 'Styles/Variables/dimensions';
 import Measure from 'Components/Measure';
 import MovieIndexItemConnector from 'Movie/Index/MovieIndexItemConnector';
+import dimensions from 'Styles/Variables/dimensions';
+import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
+import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import MovieIndexOverview from './MovieIndexOverview';
 import styles from './MovieIndexOverviews.css';
 

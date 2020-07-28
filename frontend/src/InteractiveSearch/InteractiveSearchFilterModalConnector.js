@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { setReleasesFilter } from 'Store/Actions/releaseActions';
 import FilterModal from 'Components/Filter/FilterModal';
+import { setReleasesFilter } from 'Store/Actions/releaseActions';
 
 function createMapStateToProps() {
   return createSelector(

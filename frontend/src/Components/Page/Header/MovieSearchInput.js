@@ -2,13 +2,13 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
-import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
-import MovieSearchResult from './MovieSearchResult';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import FuseWorker from './fuse.worker';
+import MovieSearchResult from './MovieSearchResult';
 import styles from './MovieSearchInput.css';
 
 const LOADING_TYPE = 'suggestionsLoading';

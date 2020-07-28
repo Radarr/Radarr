@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import sortByName from 'Utilities/Array/sortByName';
-import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
-import { fetchNetImports, deleteNetImport } from 'Store/Actions/settingsActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
+import { deleteNetImport, fetchNetImports } from 'Store/Actions/settingsActions';
+import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
+import sortByName from 'Utilities/Array/sortByName';
 import NetImports from './NetImports';
 
 function createMapStateToProps() {

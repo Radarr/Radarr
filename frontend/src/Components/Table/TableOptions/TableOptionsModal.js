@@ -3,21 +3,21 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { inputTypes } from 'Helpers/Props';
-import Button from 'Components/Link/Button';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
-import FormInputHelpText from 'Components/Form/FormInputHelpText';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormInputHelpText from 'Components/Form/FormInputHelpText';
+import FormLabel from 'Components/Form/FormLabel';
+import Button from 'Components/Link/Button';
 import Modal from 'Components/Modal/Modal';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes } from 'Helpers/Props';
 import TableOptionsColumn from './TableOptionsColumn';
-import TableOptionsColumnDragSource from './TableOptionsColumnDragSource';
 import TableOptionsColumnDragPreview from './TableOptionsColumnDragPreview';
+import TableOptionsColumnDragSource from './TableOptionsColumnDragSource';
 import styles from './TableOptionsModal.css';
 
 class TableOptionsModal extends Component {

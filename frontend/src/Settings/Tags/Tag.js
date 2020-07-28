@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import TagDetailsModal from './Details/TagDetailsModal';
+import { kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import TagDetailsModal from './Details/TagDetailsModal';
 import styles from './Tag.css';
 
 class Tag extends Component {

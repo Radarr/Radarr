@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
-import { fetchMetadataOptions, setMetadataOptionsValue, saveMetadataOptions } from 'Store/Actions/settingsActions';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
+import { fetchMetadataOptions, saveMetadataOptions, setMetadataOptionsValue } from 'Store/Actions/settingsActions';
+import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import MetadataOptions from './MetadataOptions';
 
 const SECTION = 'metadataOptions';

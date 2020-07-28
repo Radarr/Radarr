@@ -4,8 +4,8 @@ import FieldSet from 'Components/FieldSet';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import ScheduledTaskRowConnector from './ScheduledTaskRowConnector';
 import translate from 'Utilities/String/translate';
+import ScheduledTaskRowConnector from './ScheduledTaskRowConnector';
 
 const columns = [
   {

@@ -1,23 +1,23 @@
+import { push } from 'connected-react-router';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
 import { createSelector } from 'reselect';
-import { findCommand, isCommandExecuting } from 'Utilities/Command';
-import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
+import * as commandNames from 'Commands/commandNames';
+import { executeCommand } from 'Store/Actions/commandActions';
+import { clearExtraFiles, fetchExtraFiles } from 'Store/Actions/extraFileActions';
+import { toggleMovieMonitored } from 'Store/Actions/movieActions';
+import { clearMovieCredits, fetchMovieCredits } from 'Store/Actions/movieCreditsActions';
+import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
+import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
+import { cancelFetchReleases, clearReleases } from 'Store/Actions/releaseActions';
+import { fetchNetImportSchema } from 'Store/Actions/settingsActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import { fetchMovieFiles, clearMovieFiles } from 'Store/Actions/movieFileActions';
-import { fetchExtraFiles, clearExtraFiles } from 'Store/Actions/extraFileActions';
-import { fetchMovieCredits, clearMovieCredits } from 'Store/Actions/movieCreditsActions';
-import { toggleMovieMonitored } from 'Store/Actions/movieActions';
-import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
-import { clearReleases, cancelFetchReleases } from 'Store/Actions/releaseActions';
-import { fetchNetImportSchema } from 'Store/Actions/settingsActions';
-import { executeCommand } from 'Store/Actions/commandActions';
-import * as commandNames from 'Commands/commandNames';
+import { findCommand, isCommandExecuting } from 'Utilities/Command';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import MovieDetails from './MovieDetails';
 
 const selectMovieFiles = createSelector(

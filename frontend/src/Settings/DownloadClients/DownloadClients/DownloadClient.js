@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import EditDownloadClientModalConnector from './EditDownloadClientModalConnector';
+import { kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import EditDownloadClientModalConnector from './EditDownloadClientModalConnector';
 import styles from './DownloadClient.css';
 
 class DownloadClient extends Component {

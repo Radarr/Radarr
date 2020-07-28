@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import styles from './MovieTitlesTableContent.css';
 import MovieTitlesRow from './MovieTitlesRow';
+import styles from './MovieTitlesTableContent.css';
 
 const columns = [
   {

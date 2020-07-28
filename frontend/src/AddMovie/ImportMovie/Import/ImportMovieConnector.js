@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { setImportMovieValue, importMovie, clearImportMovie } from 'Store/Actions/importMovieActions';
-import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
-import { setAddMovieDefault } from 'Store/Actions/addMovieActions';
 import createRouteMatchShape from 'Helpers/Props/Shapes/createRouteMatchShape';
+import { setAddMovieDefault } from 'Store/Actions/addMovieActions';
+import { clearImportMovie, importMovie, setImportMovieValue } from 'Store/Actions/importMovieActions';
+import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import ImportMovie from './ImportMovie';
 
 function createMapStateToProps() {

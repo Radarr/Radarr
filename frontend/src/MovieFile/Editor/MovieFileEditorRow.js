@@ -1,22 +1,22 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import formatBytes from 'Utilities/Number/formatBytes';
 import IconButton from 'Components/Link/IconButton';
-import { icons, kinds } from 'Helpers/Props';
-import TableRow from 'Components/Table/TableRow';
+import ConfirmModal from 'Components/Modal/ConfirmModal';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
-import MovieQuality from 'Movie/MovieQuality';
+import TableRow from 'Components/Table/TableRow';
+import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
-import ConfirmModal from 'Components/Modal/ConfirmModal';
-import SelectQualityModal from 'MovieFile/Quality/SelectQualityModal';
+import MovieQuality from 'Movie/MovieQuality';
 import SelectLanguageModal from 'MovieFile/Language/SelectLanguageModal';
-import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
 import MediaInfoConnector from 'MovieFile/MediaInfoConnector';
-import MovieFileRowCellPlaceholder from './MovieFileRowCellPlaceholder';
-import FileDetailsModal from '../FileDetailsModal';
+import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
+import SelectQualityModal from 'MovieFile/Quality/SelectQualityModal';
+import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
+import FileDetailsModal from '../FileDetailsModal';
+import MovieFileRowCellPlaceholder from './MovieFileRowCellPlaceholder';
 import styles from './MovieFileEditorRow.css';
 
 class MovieFileEditorRow extends Component {

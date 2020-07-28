@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { fetchDelayProfiles, fetchNetImports, fetchNotifications, fetchRestrictions } from 'Store/Actions/settingsActions';
 import { fetchTagDetails } from 'Store/Actions/tagActions';
-import { fetchDelayProfiles, fetchNotifications, fetchRestrictions, fetchNetImports } from 'Store/Actions/settingsActions';
 import Tags from './Tags';
 
 function createMapStateToProps() {

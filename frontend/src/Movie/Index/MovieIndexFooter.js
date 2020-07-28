@@ -1,10 +1,10 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import formatBytes from 'Utilities/Number/formatBytes';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
+import formatBytes from 'Utilities/Number/formatBytes';
 import styles from './MovieIndexFooter.css';
-import classNames from 'classnames';
 
 class MovieIndexFooter extends PureComponent {
 

@@ -1,14 +1,14 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import titleCase from 'Utilities/String/titleCase';
-import { icons, kinds } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
-import TagList from 'Components/TagList';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import EditDelayProfileModalConnector from './EditDelayProfileModalConnector';
+import TagList from 'Components/TagList';
+import { icons, kinds } from 'Helpers/Props';
+import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
+import EditDelayProfileModalConnector from './EditDelayProfileModalConnector';
 import styles from './DelayProfile.css';
 
 function getDelay(enabled, delay) {

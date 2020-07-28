@@ -2,15 +2,15 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createMovieClientSideCollectionItemsSelector from 'Store/Selectors/createMovieClientSideCollectionItemsSelector';
-import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
-import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
-import scrollPositions from 'Store/scrollPositions';
-import { setMovieSort, setMovieFilter, setMovieView, setMovieTableOption, saveMovieEditor } from 'Store/Actions/movieIndexActions';
-import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
 import withScrollPosition from 'Components/withScrollPosition';
+import { executeCommand } from 'Store/Actions/commandActions';
+import { saveMovieEditor, setMovieFilter, setMovieSort, setMovieTableOption, setMovieView } from 'Store/Actions/movieIndexActions';
+import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
+import scrollPositions from 'Store/scrollPositions';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
+import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
+import createMovieClientSideCollectionItemsSelector from 'Store/Selectors/createMovieClientSideCollectionItemsSelector';
 import MovieIndex from './MovieIndex';
 
 function createMapStateToProps() {

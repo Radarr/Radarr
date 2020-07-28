@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import FieldSet from 'Components/FieldSet';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import Metadata from './Metadata';
 import translate from 'Utilities/String/translate';
+import Metadata from './Metadata';
 import styles from './Metadatas.css';
 
 function Metadatas(props) {

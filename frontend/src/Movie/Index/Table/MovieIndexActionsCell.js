@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
+import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 
 class MovieIndexActionsCell extends Component {
 

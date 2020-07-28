@@ -1,10 +1,10 @@
+import Clipboard from 'clipboard';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Clipboard from 'clipboard';
+import FormInputButton from 'Components/Form/FormInputButton';
+import Icon from 'Components/Icon';
 import { icons, kinds } from 'Helpers/Props';
 import getUniqueElememtId from 'Utilities/getUniqueElementId';
-import Icon from 'Components/Icon';
-import FormInputButton from 'Components/Form/FormInputButton';
 import styles from './ClipboardButton.css';
 
 class ClipboardButton extends Component {

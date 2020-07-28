@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import EditNotificationModalConnector from './EditNotificationModalConnector';
+import { kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import EditNotificationModalConnector from './EditNotificationModalConnector';
 import styles from './Notification.css';
 
 class Notification extends Component {
