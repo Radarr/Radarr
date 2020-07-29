@@ -1,4 +1,4 @@
-.title {
+.relativePath {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
   word-break: break-all;
@@ -26,4 +26,10 @@
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 
   white-space: nowrap;
+}
+
+.actions {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 100px;
 }
