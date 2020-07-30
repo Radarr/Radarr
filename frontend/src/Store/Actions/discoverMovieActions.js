@@ -45,7 +45,8 @@ export const defaultState = {
     monitor: 'true',
     qualityProfileId: 0,
     minimumAvailability: 'announced',
-    tags: []
+    tags: [],
+    searchForMovie: false
   },
 
   posterOptions: {

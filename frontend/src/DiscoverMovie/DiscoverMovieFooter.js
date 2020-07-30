@@ -2,6 +2,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import AvailabilitySelectInput from 'Components/Form/AvailabilitySelectInput';
+import CheckInput from 'Components/Form/CheckInput';
 import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
 import SelectInput from 'Components/Form/SelectInput';
@@ -25,7 +26,8 @@ class DiscoverMovieFooter extends Component {
       defaultMonitor,
       defaultQualityProfileId,
       defaultMinimumAvailability,
-      defaultRootFolderPath
+      defaultRootFolderPath,
+      defaultSearchForMovie
     } = props;
 
     this.state = {
@@ -33,6 +35,7 @@ class DiscoverMovieFooter extends Component {
       qualityProfileId: defaultQualityProfileId,
       minimumAvailability: defaultMinimumAvailability,
       rootFolderPath: defaultRootFolderPath,
+      searchForMovie: defaultSearchForMovie,
       isExcludeMovieModalOpen: false,
       destinationRootFolder: null
     };
@@ -43,14 +46,16 @@ class DiscoverMovieFooter extends Component {
       defaultMonitor,
       defaultQualityProfileId,
       defaultMinimumAvailability,
-      defaultRootFolderPath
+      defaultRootFolderPath,
+      defaultSearchForMovie
     } = this.props;
 
     const {
       monitor,
       qualityProfileId,
       minimumAvailability,
-      rootFolderPath
+      rootFolderPath,
+      searchForMovie
     } = this.state;
 
     const newState = {};
@@ -71,13 +76,14 @@ class DiscoverMovieFooter extends Component {
       newState.rootFolderPath = defaultRootFolderPath;
     }
 
+    if (searchForMovie !== defaultSearchForMovie) {
+      newState.searchForMovie = defaultSearchForMovie;
+    }
+
     if (!_.isEmpty(newState)) {
       this.setState(newState);
     }
   }
-
-  //
-  // Listeners
 
   //
   // Listeners
@@ -95,14 +101,16 @@ class DiscoverMovieFooter extends Component {
       monitor,
       qualityProfileId,
       minimumAvailability,
-      rootFolderPath
+      rootFolderPath,
+      searchForMovie
     } = this.state;
 
     const addOptions = {
       monitor,
       qualityProfileId,
       minimumAvailability,
-      rootFolderPath
+      rootFolderPath,
+      searchForMovie
     };
 
     this.props.onAddMoviesPress({ addOptions });
@@ -125,6 +133,7 @@ class DiscoverMovieFooter extends Component {
       qualityProfileId,
       minimumAvailability,
       rootFolderPath,
+      searchForMovie,
       isExcludeMovieModalOpen
     } = this.state;
 
@@ -193,6 +202,20 @@ class DiscoverMovieFooter extends Component {
           />
         </div>
 
+        <div className={styles.inputContainer}>
+          <DiscoverMovieFooterLabel
+            label="Search on Add"
+            isSaving={isAdding}
+          />
+
+          <CheckInput
+            name="searchForMovie"
+            isDisabled={!selectedCount}
+            value={searchForMovie}
+            onChange={onInputChange}
+          />
+        </div>
+
         <div className={styles.buttonContainer}>
           <div className={styles.buttonContainerContent}>
             <DiscoverMovieFooterLabel
@@ -211,17 +234,17 @@ class DiscoverMovieFooter extends Component {
                 >
                   {translate('AddMovies')}
                 </SpinnerButton>
-              </div>
 
-              <SpinnerButton
-                className={styles.excludeSelectedButton}
-                kind={kinds.DANGER}
-                isSpinning={isExcluding}
-                isDisabled={!selectedCount || isExcluding}
-                onPress={this.props.onExcludeMoviesPress}
-              >
-                {translate('AddExclusion')}
-              </SpinnerButton>
+                <SpinnerButton
+                  className={styles.excludeSelectedButton}
+                  kind={kinds.DANGER}
+                  isSpinning={isExcluding}
+                  isDisabled={!selectedCount || isExcluding}
+                  onPress={this.props.onExcludeMoviesPress}
+                >
+                  {translate('AddExclusion')}
+                </SpinnerButton>
+              </div>
             </div>
           </div>
         </div>
@@ -245,6 +268,7 @@ DiscoverMovieFooter.propTypes = {
   defaultQualityProfileId: PropTypes.number,
   defaultMinimumAvailability: PropTypes.string,
   defaultRootFolderPath: PropTypes.string,
+  defaultSearchForMovie: PropTypes.bool,
   onInputChange: PropTypes.func.isRequired,
   onAddMoviesPress: PropTypes.func.isRequired,
   onExcludeMoviesPress: PropTypes.func.isRequired
