@@ -46,7 +46,7 @@ function FileDetailsModal(props) {
 FileDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  mediaInfo: PropTypes.object.isRequired
+  mediaInfo: PropTypes.object
 };
 
 export default FileDetailsModal;

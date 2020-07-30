@@ -238,7 +238,7 @@ MovieFileEditorRow.propTypes = {
   customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
-  mediaInfo: PropTypes.object.isRequired,
+  mediaInfo: PropTypes.object,
   onDeletePress: PropTypes.func.isRequired
 };
 
