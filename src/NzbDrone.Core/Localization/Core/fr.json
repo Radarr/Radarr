@@ -211,5 +211,19 @@
     "Collection": "Collection",
     "Certification": "Certification",
     "Added": "Ajoutée",
-    "Actions": "Actions"
+    "Actions": "Actions",
+    "Info": "Info",
+    "Error": "Erreur",
+    "ConnectionLost": "Connexion perdue",
+    "Component": "Composant",
+    "Columns": "Colonnes",
+    "Close": "Fermer",
+    "Cancel": "Annuler",
+    "AudioInfo": "Info audio",
+    "Apply": "Appliquer",
+    "AlternativeTitle": "Titre alternatif",
+    "AllMoviesHiddenDueToFilter": "Tous les films sont masqués en raison du filtre appliqué.",
+    "Age": "Âge",
+    "AddNewMovie": "Ajouter un nouveau film",
+    "AddList": "Ajouter la liste"
 }
