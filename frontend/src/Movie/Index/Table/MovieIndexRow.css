@@ -87,8 +87,8 @@
 .actions {
   composes: cell;
 
-  flex: 0 1 90px;
-  min-width: 60px;
+  flex: 0 1 120px;
+  min-width: 90px;
 }
 
 .checkInput {
@@ -98,5 +98,5 @@
 }
 
 .externalLinks {
-  margin-right: 0.5em;
+  margin-right: 2px;
 }
