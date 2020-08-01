@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Indexers.Torznab
 
         public override IEnumerable<ProviderDefinition> GetDefaultDefinitions()
         {
-            yield return GetDefinition("Jackett", GetSettings("http://localhost:9117/torznab/YOURINDEXER"));
+            yield return GetDefinition("Jackett", GetSettings("http://localhost:9117/api/v2.0/indexers/YOURINDEXER/results/torznab/"));
             yield return GetDefinition("HD4Free.xyz", GetSettings("http://hd4free.xyz"));
         }
 
