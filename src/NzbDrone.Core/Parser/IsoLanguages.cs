@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Parser
         private static readonly HashSet<IsoLanguage> All = new HashSet<IsoLanguage>
                                                            {
                                                                new IsoLanguage("en", "", "eng", "English", Language.English),
-                                                               new IsoLanguage("fr", "", "fra", "French", Language.French),
+                                                               new IsoLanguage("fr", "fr", "fra", "French", Language.French),
                                                                new IsoLanguage("es", "", "spa", "Spanish", Language.Spanish),
                                                                new IsoLanguage("de", "", "deu", "German", Language.German),
                                                                new IsoLanguage("it", "", "ita", "Italian", Language.Italian),
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("nb", "", "nob", "Norwegian Bokmal", Language.Norwegian),
                                                                new IsoLanguage("fi", "", "fin", "Finnish", Language.Finnish),
                                                                new IsoLanguage("tr", "", "tur", "Turkish", Language.Turkish),
-                                                               new IsoLanguage("pt", "", "por", "Portuguese", Language.Portuguese),
+                                                               new IsoLanguage("pt", "pt", "por", "Portuguese", Language.Portuguese),
                                                                new IsoLanguage("el", "", "ell", "Greek", Language.Greek),
                                                                new IsoLanguage("ko", "", "kor", "Korean", Language.Korean),
                                                                new IsoLanguage("hu", "", "hun", "Hungarian", Language.Hungarian),
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Parser
                 if (isoArray.Length > 1)
                 {
                     isoLanguages = isoLanguages.Any(l => l.CountryCode == isoArray[1].ToLower()) ?
-                        isoLanguages.Where(l => l.CountryCode == isoArray[1].ToLower()).ToList() : isoLanguages;
+                        isoLanguages.Where(l => l.CountryCode == isoArray[1].ToLower()).ToList() : isoLanguages.Where(l => l.CountryCode == "").ToList();
                 }
 
                 return isoLanguages.FirstOrDefault();

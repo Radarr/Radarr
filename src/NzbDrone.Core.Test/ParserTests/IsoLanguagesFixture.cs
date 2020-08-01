@@ -12,6 +12,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("en")]
         [TestCase("eng")]
         [TestCase("en-US")]
+        [TestCase("en-GB")]
         public void should_return_iso_language_for_English(string isoCode)
         {
             var result = IsoLanguages.Find(isoCode);
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("enusa")]
         [TestCase("wo")]
         [TestCase("ca-IT")]
+        [TestCase("fr-CA")]
         public void unknown_or_invalid_code_should_return_null(string isoCode)
         {
             var result = IsoLanguages.Find(isoCode);
@@ -30,10 +32,18 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("pt")]
         [TestCase("por")]
+        [TestCase("pt-PT")]
         public void should_return_portuguese(string isoCode)
         {
             var result = IsoLanguages.Find(isoCode);
             result.Language.Should().Be(Language.Portuguese);
+        }
+
+        [TestCase("pt-BR")]
+        public void should_not_return_portuguese(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Should().Be(null);
         }
     }
 }
