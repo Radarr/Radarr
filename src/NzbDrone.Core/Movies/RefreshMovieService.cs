@@ -143,17 +143,17 @@ namespace NzbDrone.Core.Movies
 
             if (isNew)
             {
-                _logger.Trace("Forcing refresh of {0}. Reason: New movie", movie);
+                _logger.Trace("Forcing rescan  of {0}. Reason: New movie", movie);
                 shouldRescan = true;
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.Never)
             {
-                _logger.Trace("Skipping refresh of {0}. Reason: never rescan after refresh", movie);
+                _logger.Trace("Skipping rescan  of {0}. Reason: never rescan after refresh", movie);
                 shouldRescan = false;
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.AfterManual && trigger != CommandTrigger.Manual)
             {
-                _logger.Trace("Skipping refresh of {0}. Reason: not after automatic scans", movie);
+                _logger.Trace("Skipping rescan  of {0}. Reason: not after automatic scans", movie);
                 shouldRescan = false;
             }
 
