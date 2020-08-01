@@ -19,7 +19,6 @@ namespace NzbDrone.Core.Movies
     {
         Movie GetMovie(int movieId);
         List<Movie> GetMovies(IEnumerable<int> movieIds);
-        PagingSpec<Movie> Paged(PagingSpec<Movie> pagingSpec);
         Movie AddMovie(Movie newMovie);
         List<Movie> AddMovies(List<Movie> newMovies);
         Movie FindByImdbId(string imdbid);
@@ -77,11 +76,6 @@ namespace NzbDrone.Core.Movies
         public List<Movie> GetMovies(IEnumerable<int> movieIds)
         {
             return _movieRepository.Get(movieIds).ToList();
-        }
-
-        public PagingSpec<Movie> Paged(PagingSpec<Movie> pagingSpec)
-        {
-            return _movieRepository.GetPaged(pagingSpec);
         }
 
         public Movie AddMovie(Movie newMovie)

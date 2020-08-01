@@ -203,7 +203,7 @@ namespace NzbDrone.Core.Movies
             }
             else
             {
-                var allMovie = _movieService.GetAllMovies().OrderBy(c => c.SortTitle).ToList();
+                var scanMovies = new List<Movie>();
 
                 var updatedTMDBMovies = new HashSet<int>();
 
@@ -212,7 +212,16 @@ namespace NzbDrone.Core.Movies
                     updatedTMDBMovies = _movieInfo.GetChangedMovies(message.LastStartTime.Value);
                 }
 
-                foreach (var movie in allMovie)
+                if (_configService.RescanAfterRefresh == RescanAfterRefreshType.Never || (_configService.RescanAfterRefresh == RescanAfterRefreshType.AfterManual && message.Trigger == CommandTrigger.Scheduled))
+                {
+                    scanMovies = _movieService.FindByTmdbId(updatedTMDBMovies.ToList()).OrderBy(c => c.SortTitle).ToList();
+                }
+                else
+                {
+                    scanMovies = _movieService.GetAllMovies().OrderBy(c => c.SortTitle).ToList();
+                }
+
+                foreach (var movie in scanMovies)
                 {
                     if ((updatedTMDBMovies.Count == 0 && _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie)) || updatedTMDBMovies.Contains(movie.TmdbId) || message.Trigger == CommandTrigger.Manual)
                     {
