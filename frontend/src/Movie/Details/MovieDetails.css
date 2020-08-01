@@ -206,4 +206,13 @@
   .movieNavigationButtons {
     display: none;
   }
+
+  .certification,
+  .links,
+  .tags,
+  .rating,
+  .year,
+  .runtime {
+    margin-right: 10px;
+  }
 }

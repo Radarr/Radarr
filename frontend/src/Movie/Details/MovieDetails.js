@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
@@ -280,6 +281,7 @@ class MovieDetails extends Component {
     } = this.state;
 
     const marqueeWidth = isSmallScreen ? titleWidth : (titleWidth - 150);
+    const friendlyRuntime = moment.utc((runtime * 60) * 1000).format('h[h] m[m]');
 
     return (
       <PageContent title={title}>
@@ -424,7 +426,7 @@ class MovieDetails extends Component {
                     {
                       !!runtime &&
                         <span className={styles.runtime}>
-                          {runtime} Minutes
+                          {friendlyRuntime}
                         </span>
                     }
 
@@ -434,6 +436,7 @@ class MovieDetails extends Component {
                           <HeartRating
                             rating={ratings.value}
                             iconSize={20}
+                            hideHeart={isSmallScreen}
                           />
                         </span>
                     }
