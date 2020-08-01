@@ -8,6 +8,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 {
     [CheckOn(typeof(MovieUpdatedEvent))]
     [CheckOn(typeof(MoviesDeletedEvent), CheckOnCondition.FailedOnly)]
+    [CheckOn(typeof(MovieRefreshCompleteEvent))]
     public class RemovedMovieCheck : HealthCheckBase, ICheckOnCondition<MovieUpdatedEvent>, ICheckOnCondition<MoviesDeletedEvent>
     {
         private readonly IMovieService _movieService;

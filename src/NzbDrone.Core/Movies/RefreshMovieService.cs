@@ -239,6 +239,8 @@ namespace NzbDrone.Core.Movies
                     }
                 }
             }
+
+            _eventAggregator.PublishEvent(new MovieRefreshCompleteEvent());
         }
     }
 }
