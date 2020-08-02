@@ -154,7 +154,7 @@ namespace NzbDrone.Core.NetImport
                 _logger.Info($"Adding {moviesToAdd.Count()} movies from your auto enabled lists to library");
             }
 
-            _addMovieService.AddMovies(moviesToAdd);
+            _addMovieService.AddMovies(moviesToAdd, true);
         }
 
         private void CleanLibrary(List<Movie> movies)
