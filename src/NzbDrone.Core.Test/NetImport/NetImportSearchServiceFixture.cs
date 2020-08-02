@@ -280,7 +280,7 @@ namespace NzbDrone.Core.Test.NetImport
             Subject.Execute(_command);
 
             Mocker.GetMock<IAddMovieService>()
-                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 5)), Times.Once());
+                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 5), true), Times.Once());
         }
 
         [Test]
@@ -294,7 +294,7 @@ namespace NzbDrone.Core.Test.NetImport
             Subject.Execute(_command);
 
             Mocker.GetMock<IAddMovieService>()
-                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 8)), Times.Once());
+                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 8), true), Times.Once());
         }
 
         [Test]
@@ -308,7 +308,7 @@ namespace NzbDrone.Core.Test.NetImport
             Subject.Execute(_command);
 
             Mocker.GetMock<IAddMovieService>()
-                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 5)), Times.Once());
+                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 5), true), Times.Once());
         }
 
         [Test]
@@ -324,7 +324,7 @@ namespace NzbDrone.Core.Test.NetImport
             Subject.Execute(_command);
 
             Mocker.GetMock<IAddMovieService>()
-                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7)), Times.Once());
+                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7), true), Times.Once());
         }
 
         [Test]
@@ -342,7 +342,7 @@ namespace NzbDrone.Core.Test.NetImport
             Subject.Execute(_command);
 
             Mocker.GetMock<IAddMovieService>()
-                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && !s.Any(m => m.TmdbId == _moviesList2[0].TmdbId))), Times.Once());
+                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && !s.Any(m => m.TmdbId == _moviesList2[0].TmdbId)), true), Times.Once());
         }
 
         [Test]
@@ -360,7 +360,7 @@ namespace NzbDrone.Core.Test.NetImport
             Subject.Execute(_command);
 
             Mocker.GetMock<IAddMovieService>()
-                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && !s.Any(m => m.TmdbId == _moviesList2[0].TmdbId))), Times.Once());
+                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && !s.Any(m => m.TmdbId == _moviesList2[0].TmdbId)), true), Times.Once());
         }
 
         /*
