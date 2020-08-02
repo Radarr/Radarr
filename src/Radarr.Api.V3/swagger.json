@@ -29,7 +29,7 @@
           "Movie"
         ],
         "summary": "Get all movies",
-        "description": "Returns all movies",
+        "description": "Returns all movies stored in the database",
         "operationId": "getMovie",
         "parameters": [
           {
@@ -163,7 +163,7 @@
         "tags": [
           "Movie"
         ],
-        "summary": "Get movie by ID",
+        "summary": "Get movie by database id",
         "description": "Returns a single movie",
         "operationId": "getMovieById",
         "parameters": [
@@ -205,7 +205,7 @@
         "tags": [
           "Movie"
         ],
-        "summary": "Deletes a Movie",
+        "summary": "Delete movie",
         "description": "",
         "operationId": "deleteMovie",
         "parameters": [
@@ -249,6 +249,220 @@
           }
         ]
       }
+    },
+    "/tag/detail/{id}": {
+      "get": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Return usage details for a given tag id",
+        "description": "Returns the id of all items in the database which use the specified tag",
+        "operationId": "",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagDetail"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "Database id of tag",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/tag/detail": {
+      "get": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Return usage details for all tags in database",
+        "description": "Returns a list of tag detail objects for all tags in the database.",
+        "operationId": "",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TagDetail"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/tag/{id}": {
+      "get": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Get tag by database id",
+        "description": "Return a given tag and its label by the database id.",
+        "operationId": "",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tag"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Delete tag by database id",
+        "description": "Delete a tag.",
+        "operationId": "",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "description": "ID of tag",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ]
+    },
+    "/tag": {
+      "get": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Get all tags",
+        "description": "Get all tags in the database.",
+        "operationId": "",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Update tag",
+        "description": "Update a tags label.",
+        "operationId": "",
+        "requestBody": {
+          "description": "Tag object that needs to be updated",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tag"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Create a new tag",
+        "description": "Create a new tag that can be assigned to a movie, list, delay profile, notification, or restriction",
+        "operationId": "",
+        "requestBody": {
+          "description": "Tag object that needs to be added",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tag"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "parameters": []
     }
   },
   "components": {
@@ -433,6 +647,58 @@
         },
         "xml": {
           "name": "Rating"
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      },
+      "TagDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "label": {
+            "type": "string"
+          },
+          "delayProfileIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "notificationIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "restrictionIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "netImportIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "movieIds": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
         }
       }
     },
