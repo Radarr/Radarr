@@ -81,7 +81,7 @@ class MovieHistoryRow extends Component {
           data={data}
         />
 
-        <TableRowCell>
+        <TableRowCell className={styles.sourceTitle}>
           {sourceTitle}
         </TableRowCell>
 
