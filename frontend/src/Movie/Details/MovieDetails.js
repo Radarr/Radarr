@@ -235,6 +235,7 @@ class MovieDetails extends Component {
       tmdbId,
       imdbId,
       title,
+      originalTitle,
       year,
       inCinemas,
       physicalRelease,
@@ -370,7 +371,7 @@ class MovieDetails extends Component {
                       </div>
 
                       <div className={styles.title} style={{ width: marqueeWidth }}>
-                        <Marquee text={title} />
+                        <Marquee text={title} title={originalTitle} />
                       </div>
                     </div>
 
@@ -736,6 +737,7 @@ MovieDetails.propTypes = {
   tmdbId: PropTypes.number.isRequired,
   imdbId: PropTypes.string,
   title: PropTypes.string.isRequired,
+  originalTitle: PropTypes.string,
   year: PropTypes.number.isRequired,
   runtime: PropTypes.number.isRequired,
   certification: PropTypes.string,
