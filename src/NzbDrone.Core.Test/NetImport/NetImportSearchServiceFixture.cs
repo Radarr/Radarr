@@ -116,7 +116,7 @@ namespace NzbDrone.Core.Test.NetImport
                   .Verify(v => v.GetAllMovies(), Times.Never());
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Once());
+                  .Verify(v => v.UpdateMovie(new List<Movie>(), true), Times.Never());
         }
 
         [Test]

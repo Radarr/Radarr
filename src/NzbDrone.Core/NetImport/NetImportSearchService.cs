@@ -161,38 +161,40 @@ namespace NzbDrone.Core.NetImport
         {
             var moviesToUpdate = new List<Movie>();
 
-            if (_configService.ListSyncLevel != "disabled")
+            if (_configService.ListSyncLevel == "disabled")
             {
-                var moviesInLibrary = _movieService.GetAllMovies();
-                foreach (var movie in moviesInLibrary)
+                return;
+            }
+
+            var moviesInLibrary = _movieService.GetAllMovies();
+            foreach (var movie in moviesInLibrary)
+            {
+                var movieExists = movies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
+
+                if (!movieExists)
                 {
-                    var movieExists = movies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
-
-                    if (!movieExists)
+                    switch (_configService.ListSyncLevel)
                     {
-                        switch (_configService.ListSyncLevel)
-                        {
-                            case "logOnly":
-                                _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
-                                break;
-                            case "keepAndUnmonitor":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
-                                movie.Monitored = false;
-                                moviesToUpdate.Add(movie);
-                                break;
-                            case "removeAndKeep":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
-                                _movieService.DeleteMovie(movie.Id, false);
-                                break;
-                            case "removeAndDelete":
-                                _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
-                                _movieService.DeleteMovie(movie.Id, true);
+                        case "logOnly":
+                            _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
+                            break;
+                        case "keepAndUnmonitor":
+                            _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
+                            movie.Monitored = false;
+                            moviesToUpdate.Add(movie);
+                            break;
+                        case "removeAndKeep":
+                            _logger.Info("{0} was in your library, but not found in your lists --> Removing from library (keeping files)", movie);
+                            _movieService.DeleteMovie(movie.Id, false);
+                            break;
+                        case "removeAndDelete":
+                            _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
+                            _movieService.DeleteMovie(movie.Id, true);
 
-                                //TODO: for some reason the files are not deleted in this case... any idea why?
-                                break;
-                            default:
-                                break;
-                        }
+                            //TODO: for some reason the files are not deleted in this case... any idea why?
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
