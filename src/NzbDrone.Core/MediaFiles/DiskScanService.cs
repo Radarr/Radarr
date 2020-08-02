@@ -96,9 +96,17 @@ namespace NzbDrone.Core.MediaFiles
             {
                 if (_configService.CreateEmptyMovieFolders)
                 {
-                    _logger.Debug("Creating missing movie folder: {0}", movie.Path);
-                    _diskProvider.CreateFolder(movie.Path);
-                    SetPermissions(movie.Path);
+                    if (_configService.DeleteEmptyFolders)
+                    {
+                        _logger.Debug("Not creating missing movie folder: {0} because delete empty series folders is enabled", movie.Path);
+                    }
+                    else
+                    {
+                        _logger.Debug("Creating missing series folder: {0}", movie.Path);
+
+                        _diskProvider.CreateFolder(movie.Path);
+                        SetPermissions(movie.Path);
+                    }
                 }
                 else
                 {
