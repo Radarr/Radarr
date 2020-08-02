@@ -80,6 +80,7 @@ class ImportMovie extends Component {
       path,
       rootFoldersFetching,
       rootFoldersError,
+      rootFoldersPopulated,
       unmappedFolders
     } = this.props;
 
@@ -109,6 +110,7 @@ class ImportMovie extends Component {
           {
             !rootFoldersError &&
             !rootFoldersFetching &&
+            rootFoldersPopulated &&
             !unmappedFolders.length ?
               <div>
                 All movies in {path} have been imported
@@ -119,6 +121,7 @@ class ImportMovie extends Component {
           {
             !rootFoldersError &&
             !rootFoldersFetching &&
+            rootFoldersPopulated &&
             !!unmappedFolders.length &&
             scroller ?
               <ImportMovieTableConnector
