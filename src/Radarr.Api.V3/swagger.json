@@ -2,10 +2,6 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Radarr",
-    "description": "Movie Automation",
-    "contact": {
-      "url": "https://radarr.video"
-    },
     "version": "3.0.0"
   },
   "servers": [
@@ -35,13 +31,27 @@
         "summary": "Get all movies",
         "description": "Returns all movies",
         "operationId": "getMovie",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "tmdbId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "TmdbId of the Movie to get"
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Movie"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movie"
+                  }
                 }
               }
             }
@@ -112,6 +122,17 @@
             }
           }
         },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "movieFiles",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false,
+            "description": "Have radarr movie files when updating"
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -137,7 +158,7 @@
         ]
       }
     },
-    "/movie/{movieId}": {
+    "/movie/{id}": {
       "get": {
         "tags": [
           "Movie"
@@ -147,9 +168,9 @@
         "operationId": "getMovieById",
         "parameters": [
           {
-            "name": "movieId",
+            "name": "id",
             "in": "path",
-            "description": "ID of movie to return",
+            "description": "Database Id of movie to return",
             "required": true,
             "schema": {
               "type": "integer"
@@ -189,9 +210,9 @@
         "operationId": "deleteMovie",
         "parameters": [
           {
-            "name": "movieId",
+            "name": "id",
             "in": "path",
-            "description": "Movie id to delete",
+            "description": "Database Id of movie to delete",
             "required": true,
             "schema": {
               "type": "integer"
@@ -200,6 +221,7 @@
           {
             "name": "addImportExclusion",
             "in": "query",
+            "description": "Add deleted movies to List Exclusions",
             "schema": {
               "type": "boolean"
             }
@@ -207,6 +229,7 @@
           {
             "name": "deleteFiles",
             "in": "query",
+            "description": "Delete movie files when deleting movies",
             "schema": {
               "type": "boolean"
             }
@@ -420,9 +443,5 @@
         "name": "apiKey"
       }
     }
-  },
-  "externalDocs": {
-    "description": "GitHub",
-    "url": "https://github.com/Radarr/Radarr"
   }
 }
