@@ -14,11 +14,7 @@ class ExcludeMovieModalContentConnector extends Component {
   // Listeners
 
   onExcludePress = () => {
-    this.props.addNetImportExclusions([{
-      tmdbId: this.props.tmdbId,
-      movieTitle: this.props.title,
-      movieYear: this.props.year
-    }]);
+    this.props.addNetImportExclusions({ ids: [this.props.tmdbId] });
 
     this.props.onModalClose(true);
   }
