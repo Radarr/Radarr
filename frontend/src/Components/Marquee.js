@@ -9,6 +9,7 @@ class Marquee extends Component {
 
   static propTypes = {
     text: PropTypes.string,
+    title: PropTypes.string,
     hoverToStop: PropTypes.bool,
     loop: PropTypes.bool,
     className: PropTypes.string
@@ -16,6 +17,7 @@ class Marquee extends Component {
 
   static defaultProps = {
     text: '',
+    title: '',
     hoverToStop: true,
     loop: false
   };
@@ -144,7 +146,7 @@ class Marquee extends Component {
               this.text = el;
             }}
             style={style}
-            title={this.props.text}
+            title={(this.props.title && (this.props.text !== this.props.title)) ? `Original Title: ${this.props.title}` : this.props.text}
           >
             {this.props.text}
           </span>
@@ -167,7 +169,7 @@ class Marquee extends Component {
             this.text = el;
           }}
           style={style}
-          title={this.props.text}
+          title={(this.props.title && (this.props.text !== this.props.title)) ? `Original Title: ${this.props.title}` : this.props.text}
         >
           {this.props.text}
         </span>
