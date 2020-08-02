@@ -342,6 +342,12 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     return ""; // Intel(R) IPP
                 }
 
+                if (videoCodecLibrary.Contains("ZJMedia") ||
+                    videoCodecLibrary.Contains("DigiArty"))
+                {
+                    return ""; // Other
+                }
+
                 if (videoCodecLibrary == "")
                 {
                     return ""; // Unknown mp4v
