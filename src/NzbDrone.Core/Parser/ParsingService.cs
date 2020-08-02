@@ -314,7 +314,7 @@ namespace NzbDrone.Core.Parser
                         return
                             $"Failed to map movie, found title {RemoteMovie.ParsedMovieInfo.MovieTitle}, expected one of: {RemoteMovie.Movie.Title}{comma}{string.Join(", ", RemoteMovie.Movie.AlternativeTitles)}";
                     default:
-                        return $"Failed to map movie for unkown reasons";
+                        return $"Failed to map movie for unknown reasons";
                 }
             }
         }
