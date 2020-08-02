@@ -3,3 +3,9 @@
 
   min-width: 70px;
 }
+
+.sourceTitle {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  word-break: break-word;
+}
