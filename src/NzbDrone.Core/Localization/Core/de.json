@@ -269,5 +269,6 @@
     "AllMoviesHiddenDueToFilter": "Alle Filme sind wegen dem Filter ausgeblendet.",
     "Age": "Alter",
     "AddNewMovie": "Neuer Film...",
-    "AddList": "Liste hinzufügen"
+    "AddList": "Liste hinzufügen",
+    "SystemTimeCheckMessage": "Die Systemzeit ist um einen Tag versetzt. Bis die Zeit korrigiert wurde, könnten die geplanten Aufgaben nicht korrekt ausgeführt werden"
 }
