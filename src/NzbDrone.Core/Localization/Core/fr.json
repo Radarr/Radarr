@@ -269,5 +269,6 @@
     "HardlinkCopyFiles": "Lier/copier les fichiers",
     "Extension": "Extension",
     "CustomFormatScore": "Score du format personnalisé",
-    "ConnectionLostAutomaticMessage": "Radarr essaiera de se connecter automatiquement, ou bien vous pouvez cliquer sur \"Recharger\" en bas."
+    "ConnectionLostAutomaticMessage": "Radarr essaiera de se connecter automatiquement, ou bien vous pouvez cliquer sur \"Recharger\" en bas.",
+    "SystemTimeCheckMessage": "L'heure du système est décalée de plus d'un jour. Les tâches planifiées peuvent ne pas s'exécuter correctement tant que l'heure ne sera pas corrigée"
 }
