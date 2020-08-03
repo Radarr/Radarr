@@ -12,7 +12,6 @@ namespace NzbDrone.Core.Extras.Files
         void DeleteForMovieFile(int movieFileId);
         List<TExtraFile> GetFilesByMovie(int movieId);
         List<TExtraFile> GetFilesByMovieFile(int movieFileId);
-        TExtraFile FindByPath(string path);
     }
 
     public class ExtraFileRepository<TExtraFile> : BasicRepository<TExtraFile>, IExtraFileRepository<TExtraFile>
@@ -41,11 +40,6 @@ namespace NzbDrone.Core.Extras.Files
         public List<TExtraFile> GetFilesByMovieFile(int movieFileId)
         {
             return Query(x => x.MovieFileId == movieFileId);
-        }
-
-        public TExtraFile FindByPath(string path)
-        {
-            return Query(x => x.RelativePath == path).SingleOrDefault();
         }
     }
 }

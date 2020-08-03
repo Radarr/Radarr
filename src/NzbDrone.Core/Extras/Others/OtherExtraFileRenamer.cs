@@ -1,3 +1,4 @@
+using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
@@ -16,11 +17,9 @@ namespace NzbDrone.Core.Extras.Others
         private readonly Logger _logger;
         private readonly IDiskProvider _diskProvider;
         private readonly IRecycleBinProvider _recycleBinProvider;
-        private readonly IMovieService _movieService;
         private readonly IOtherExtraFileService _otherExtraFileService;
 
         public OtherExtraFileRenamer(IOtherExtraFileService otherExtraFileService,
-                                     IMovieService movieService,
                                      IRecycleBinProvider recycleBinProvider,
                                      IDiskProvider diskProvider,
                                      Logger logger)
@@ -28,7 +27,6 @@ namespace NzbDrone.Core.Extras.Others
             _logger = logger;
             _diskProvider = diskProvider;
             _recycleBinProvider = recycleBinProvider;
-            _movieService = movieService;
             _otherExtraFileService = otherExtraFileService;
         }
 
@@ -41,7 +39,7 @@ namespace NzbDrone.Core.Extras.Others
 
             var relativePath = movie.Path.GetRelativePath(path);
 
-            var otherExtraFile = _otherExtraFileService.FindByPath(relativePath);
+            var otherExtraFile = _otherExtraFileService.GetFilesByMovie(movie.Id).Where(e => e.RelativePath == relativePath).SingleOrDefault();
             if (otherExtraFile != null)
             {
                 var newPath = path + "-orig";
@@ -66,7 +64,7 @@ namespace NzbDrone.Core.Extras.Others
 
             var relativePath = movie.Path.GetRelativePath(path);
 
-            var otherExtraFile = _otherExtraFileService.FindByPath(relativePath);
+            var otherExtraFile = _otherExtraFileService.GetFilesByMovie(movie.Id).Where(e => e.RelativePath == relativePath).SingleOrDefault();
             if (otherExtraFile != null)
             {
                 _recycleBinProvider.DeleteFile(path);
