@@ -9,6 +9,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Tags;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
@@ -20,11 +21,15 @@ namespace NzbDrone.Core.Notifications.CustomScript
         private readonly IProcessProvider _processProvider;
         private readonly Logger _logger;
 
-        public CustomScript(IDiskProvider diskProvider, IProcessProvider processProvider, Logger logger)
+        // Have to use _tagRepo instead of _tagService because the service creates a crashing loop :|
+        private readonly ITagRepository _tagRepo;
+
+        public CustomScript(IDiskProvider diskProvider, IProcessProvider processProvider, Logger logger, ITagRepository tagRepo)
         {
             _diskProvider = diskProvider;
             _processProvider = processProvider;
             _logger = logger;
+            _tagRepo = tagRepo;
         }
 
         public override string Name => "Custom Script";
@@ -48,6 +53,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
             environmentVariables.Add("Radarr_Movie_In_Cinemas_Date", movie.InCinemas.ToString() ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_Physical_Release_Date", movie.PhysicalRelease.ToString() ?? string.Empty);
+            environmentVariables.Add("Radarr_Movie_Tag_Names", _tagRepo.Get(movie.Tags).Select(t => t.Label).ToList().Join("|"));
+            environmentVariables.Add("Radarr_Movie_Tag_Ids", string.Join("|", movie.Tags.Select(t => t.ToString())));
             environmentVariables.Add("Radarr_Release_Title", remoteMovie.Release.Title);
             environmentVariables.Add("Radarr_Release_Indexer", remoteMovie.Release.Indexer ?? string.Empty);
             environmentVariables.Add("Radarr_Release_Size", remoteMovie.Release.Size.ToString());
@@ -78,6 +85,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
             environmentVariables.Add("Radarr_Movie_In_Cinemas_Date", movie.InCinemas.ToString() ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_Physical_Release_Date", movie.PhysicalRelease.ToString() ?? string.Empty);
+            environmentVariables.Add("Radarr_Movie_Tag_Names", _tagRepo.Get(movie.Tags).Select(t => t.Label).ToList().Join("|"));
+            environmentVariables.Add("Radarr_Movie_Tag_Ids", string.Join("|", movie.Tags.Select(t => t.ToString())));
             environmentVariables.Add("Radarr_MovieFile_Id", movieFile.Id.ToString());
             environmentVariables.Add("Radarr_MovieFile_RelativePath", movieFile.RelativePath);
             environmentVariables.Add("Radarr_MovieFile_Path", Path.Combine(movie.Path, movieFile.RelativePath));
@@ -112,6 +121,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
             environmentVariables.Add("Radarr_Movie_In_Cinemas_Date", movie.InCinemas.ToString() ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_Physical_Release_Date", movie.PhysicalRelease.ToString() ?? string.Empty);
+            environmentVariables.Add("Radarr_Movie_Tag_Names", _tagRepo.Get(movie.Tags).Select(t => t.Label).ToList().Join("|"));
+            environmentVariables.Add("Radarr_Movie_Tag_Ids", string.Join("|", movie.Tags.Select(t => t.ToString())));
 
             ExecuteScript(environmentVariables);
         }
