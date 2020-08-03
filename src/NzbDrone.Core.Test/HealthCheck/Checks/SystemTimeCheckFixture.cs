@@ -6,6 +6,7 @@ using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.HealthCheck.Checks;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -23,6 +24,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         private void GivenServerTime(DateTime dateTime)
         {
             var json = new ServiceTimeResponse { DateTimeUtc = dateTime }.ToJson();
+
+            Mocker.GetMock<ILocalizationService>()
+                  .Setup(s => s.GetLocalizedString(It.IsAny<string>()))
+                  .Returns("System time is off by more than 1 day. Scheduled tasks may not run correctly until the time is corrected");
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Execute(It.IsAny<HttpRequest>()))
