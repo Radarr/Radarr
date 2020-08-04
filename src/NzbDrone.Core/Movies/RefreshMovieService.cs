@@ -56,9 +56,13 @@ namespace NzbDrone.Core.Movies
             _logger = logger;
         }
 
-        private void RefreshMovieInfo(Movie movie)
+        private Movie RefreshMovieInfo(int movieId)
         {
-            _logger.ProgressInfo("Updating Info for {0}", movie.Title);
+            // Get the movie before updating, that way any changes made to the movie after the refresh started,
+            // but before this movie was refreshed won't be lost.
+            var movie = _movieService.GetMovie(movieId);
+
+            _logger.ProgressInfo("Updating info for {0}", movie.Title);
 
             Movie movieInfo;
             List<Credit> credits;
@@ -75,7 +79,7 @@ namespace NzbDrone.Core.Movies
                 {
                     movie.Status = MovieStatusType.Deleted;
                     _movieService.UpdateMovie(movie);
-                    _logger.Debug("Movie marked as deleted on tmdb for {0}", movie.Title);
+                    _logger.Debug("Movie marked as deleted on TMDb for {0}", movie.Title);
                     _eventAggregator.PublishEvent(new MovieUpdatedEvent(movie));
                 }
 
@@ -84,7 +88,7 @@ namespace NzbDrone.Core.Movies
 
             if (movie.TmdbId != movieInfo.TmdbId)
             {
-                _logger.Warn("Movie '{0}' (Tmdbid {1}) was replaced with '{2}' (Tmdbid {3}), because the original was a duplicate.", movie.Title, movie.TmdbId, movieInfo.Title, movieInfo.TmdbId);
+                _logger.Warn("Movie '{0}' (TMDb: {1}) was replaced with '{2}' (TMDb: {3}), because the original was a duplicate.", movie.Title, movie.TmdbId, movieInfo.Title, movieInfo.TmdbId);
                 movie.TmdbId = movieInfo.TmdbId;
             }
 
@@ -134,6 +138,8 @@ namespace NzbDrone.Core.Movies
 
             _logger.Debug("Finished movie refresh for {0}", movie.Title);
             _eventAggregator.PublishEvent(new MovieUpdatedEvent(movie));
+
+            return movie;
         }
 
         private void RescanMovie(Movie movie, bool isNew, CommandTrigger trigger)
@@ -143,17 +149,17 @@ namespace NzbDrone.Core.Movies
 
             if (isNew)
             {
-                _logger.Trace("Forcing rescan  of {0}. Reason: New movie", movie);
+                _logger.Trace("Forcing rescan of {0}. Reason: New movie", movie);
                 shouldRescan = true;
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.Never)
             {
-                _logger.Trace("Skipping rescan  of {0}. Reason: never rescan after refresh", movie);
+                _logger.Trace("Skipping rescan of {0}. Reason: Never rescan after refresh", movie);
                 shouldRescan = false;
             }
             else if (rescanAfterRefresh == RescanAfterRefreshType.AfterManual && trigger != CommandTrigger.Manual)
             {
-                _logger.Trace("Skipping rescan  of {0}. Reason: not after automatic scans", movie);
+                _logger.Trace("Skipping rescan of {0}. Reason: Not after automatic scans", movie);
                 shouldRescan = false;
             }
 
@@ -186,12 +192,12 @@ namespace NzbDrone.Core.Movies
 
                     try
                     {
-                        RefreshMovieInfo(movie);
+                        movie = RefreshMovieInfo(movieId);
                         RescanMovie(movie, isNew, trigger);
                     }
                     catch (MovieNotFoundException)
                     {
-                        _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from The Movie Database.", movie.Title, movie.ImdbId);
+                        _logger.Error("Movie '{0}' (TMDb {1}) was not found, it may have been removed from The Movie Database.", movie.Title, movie.TmdbId);
                     }
                     catch (Exception e)
                     {
@@ -214,28 +220,29 @@ namespace NzbDrone.Core.Movies
 
                 foreach (var movie in allMovie)
                 {
+                    var movieLocal = movie;
                     if ((updatedTMDBMovies.Count == 0 && _checkIfMovieShouldBeRefreshed.ShouldRefresh(movie)) || updatedTMDBMovies.Contains(movie.TmdbId) || message.Trigger == CommandTrigger.Manual)
                     {
                         try
                         {
-                            RefreshMovieInfo(movie);
+                            movieLocal = RefreshMovieInfo(movieLocal.Id);
                         }
                         catch (MovieNotFoundException)
                         {
-                            _logger.Error("Movie '{0}' (imdbid {1}) was not found, it may have been removed from The Movie Database.", movie.Title, movie.ImdbId);
+                            _logger.Error("Movie '{0}' (TMDb {1}) was not found, it may have been removed from The Movie Database.", movieLocal.Title, movieLocal.TmdbId);
                             continue;
                         }
                         catch (Exception e)
                         {
-                            _logger.Error(e, "Couldn't refresh info for {0}", movie);
+                            _logger.Error(e, "Couldn't refresh info for {0}", movieLocal);
                         }
 
-                        RescanMovie(movie, false, trigger);
+                        RescanMovie(movieLocal, false, trigger);
                     }
                     else
                     {
-                        _logger.Info("Skipping refresh of movie: {0}", movie.Title);
-                        RescanMovie(movie, false, trigger);
+                        _logger.Info("Skipping refresh of movie: {0}", movieLocal.Title);
+                        RescanMovie(movieLocal, false, trigger);
                     }
                 }
             }
