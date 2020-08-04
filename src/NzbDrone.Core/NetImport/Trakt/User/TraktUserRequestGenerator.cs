@@ -8,6 +8,8 @@ namespace NzbDrone.Core.NetImport.Trakt.User
     {
         public TraktUserSettings Settings { get; set; }
 
+        public string ClientId { get; set; }
+
         public TraktUserRequestGenerator()
         {
         }
@@ -41,7 +43,7 @@ namespace NzbDrone.Core.NetImport.Trakt.User
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
 
             request.HttpRequest.Headers.Add("trakt-api-version", "2");
-            request.HttpRequest.Headers.Add("trakt-api-key", Settings.ClientId);
+            request.HttpRequest.Headers.Add("trakt-api-key", ClientId);
 
             if (Settings.AccessToken.IsNotNullOrWhiteSpace())
             {

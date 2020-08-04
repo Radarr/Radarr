@@ -57,27 +57,6 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void FixTraktConfig(IDbConnection conn, IDbTransaction tran)
         {
-            var config = new Dictionary<string, string>();
-
-            using (IDbCommand configCmd = conn.CreateCommand())
-            {
-                configCmd.Transaction = tran;
-                configCmd.CommandText = @"SELECT * FROM Config";
-                using (IDataReader configReader = configCmd.ExecuteReader())
-                {
-                    var keyIndex = configReader.GetOrdinal("Key");
-                    var valueIndex = configReader.GetOrdinal("Value");
-
-                    while (configReader.Read())
-                    {
-                        var key = configReader.GetString(keyIndex);
-                        var value = configReader.GetString(valueIndex);
-
-                        config.Add(key.ToLowerInvariant(), value);
-                    }
-                }
-            }
-
             var rows = conn.Query<ProviderDefinition169>($"SELECT Id, Implementation, ConfigContract, Settings FROM NetImport WHERE Implementation = 'TraktImport'");
 
             var corrected = new List<ProviderDefinition169>();
@@ -94,12 +73,9 @@ namespace NzbDrone.Core.Datastore.Migration
                         Username = settings.Username,
                         AuthUser = settings.Username,
 
-                        OAuthUrl = "http://radarr.aeonlucid.com/v1/trakt/redirect",
-                        RenewUri = "http://radarr.aeonlucid.com/v1/trakt/refresh",
-                        ClientId = "964f67b126ade0112c4ae1f0aea3a8fb03190f71117bd83af6a0560a99bc52e6",
                         Scope = settings.Scope,
-                        AccessToken = settings.AccessToken.IsNotNullOrWhiteSpace() ? settings.AccessToken : GetConfigValue(config, "TraktAuthToken", "localhost") ?? "",
-                        RefreshToken = settings.RefreshToken.IsNotNullOrWhiteSpace() ? settings.RefreshToken : GetConfigValue(config, "TraktRefreshToken", "localhost") ?? "",
+                        AccessToken = settings.AccessToken.IsNotNullOrWhiteSpace() ? settings.AccessToken : "",
+                        RefreshToken = settings.RefreshToken.IsNotNullOrWhiteSpace() ? settings.RefreshToken : "",
                         Expires = settings.Expires > DateTime.UtcNow ? settings.Expires : DateTime.UtcNow,
                         Link = settings.Link,
                         Rating = settings.Rating,
@@ -126,12 +102,9 @@ namespace NzbDrone.Core.Datastore.Migration
                         TraktListType = settings.TraktListType,
                         AuthUser = settings.Username,
 
-                        OAuthUrl = "http://radarr.aeonlucid.com/v1/trakt/redirect",
-                        RenewUri = "http://radarr.aeonlucid.com/v1/trakt/refresh",
-                        ClientId = "964f67b126ade0112c4ae1f0aea3a8fb03190f71117bd83af6a0560a99bc52e6",
                         Scope = settings.Scope,
-                        AccessToken = settings.AccessToken.IsNotNullOrWhiteSpace() ? settings.AccessToken : GetConfigValue(config, "TraktAuthToken", "localhost") ?? "",
-                        RefreshToken = settings.RefreshToken.IsNotNullOrWhiteSpace() ? settings.RefreshToken : GetConfigValue(config, "TraktRefreshToken", "localhost") ?? "",
+                        AccessToken = settings.AccessToken.IsNotNullOrWhiteSpace() ? settings.AccessToken : "",
+                        RefreshToken = settings.RefreshToken.IsNotNullOrWhiteSpace() ? settings.RefreshToken : "",
                         Expires = settings.Expires > DateTime.UtcNow ? settings.Expires : DateTime.UtcNow,
                         Link = settings.Link,
                         Rating = settings.Rating,
@@ -158,12 +131,9 @@ namespace NzbDrone.Core.Datastore.Migration
                         TraktListType = (int)Enum.Parse(typeof(TraktPopularListType170), Enum.GetName(typeof(TraktListType169), settings.TraktListType)),
                         AuthUser = settings.Username,
 
-                        OAuthUrl = "http://radarr.aeonlucid.com/v1/trakt/redirect",
-                        RenewUri = "http://radarr.aeonlucid.com/v1/trakt/refresh",
-                        ClientId = "964f67b126ade0112c4ae1f0aea3a8fb03190f71117bd83af6a0560a99bc52e6",
                         Scope = settings.Scope,
-                        AccessToken = settings.AccessToken.IsNotNullOrWhiteSpace() ? settings.AccessToken : GetConfigValue(config, "TraktAuthToken", "localhost") ?? "",
-                        RefreshToken = settings.RefreshToken.IsNotNullOrWhiteSpace() ? settings.RefreshToken : GetConfigValue(config, "TraktRefreshToken", "localhost") ?? "",
+                        AccessToken = settings.AccessToken.IsNotNullOrWhiteSpace() ? settings.AccessToken : "",
+                        RefreshToken = settings.RefreshToken.IsNotNullOrWhiteSpace() ? settings.RefreshToken : "",
                         Expires = settings.Expires > DateTime.UtcNow ? settings.Expires : DateTime.UtcNow,
                         Link = settings.Link,
                         Rating = settings.Rating,
@@ -190,18 +160,6 @@ namespace NzbDrone.Core.Datastore.Migration
             var updateSql = "UPDATE NetImport SET Implementation = @Implementation, ConfigContract = @ConfigContract, Settings = @Settings WHERE Id = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);
         }
-
-        private T GetConfigValue<T>(Dictionary<string, string> config, string key, T defaultValue)
-        {
-            key = key.ToLowerInvariant();
-
-            if (config.ContainsKey(key))
-            {
-                return (T)Convert.ChangeType(config[key], typeof(T));
-            }
-
-            return defaultValue;
-        }
     }
 
     public class ProviderDefinition169 : ModelBase
@@ -213,9 +171,6 @@ namespace NzbDrone.Core.Datastore.Migration
 
     public class TraktBaseSettings170
     {
-        public string OAuthUrl { get; set; }
-        public string RenewUri { get; set; }
-        public string ClientId { get; set; }
         public string Scope { get; set; }
         public string AuthUser { get; set; }
         public string AccessToken { get; set; }

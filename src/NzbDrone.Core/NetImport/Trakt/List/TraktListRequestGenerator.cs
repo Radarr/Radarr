@@ -7,6 +7,7 @@ namespace NzbDrone.Core.NetImport.Trakt.List
     public class TraktListRequestGenerator : INetImportRequestGenerator
     {
         public TraktListSettings Settings { get; set; }
+        public string ClientId { get; set; }
 
         public TraktListRequestGenerator()
         {
@@ -31,7 +32,7 @@ namespace NzbDrone.Core.NetImport.Trakt.List
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
 
             request.HttpRequest.Headers.Add("trakt-api-version", "2");
-            request.HttpRequest.Headers.Add("trakt-api-key", Settings.ClientId); //aeon
+            request.HttpRequest.Headers.Add("trakt-api-key", ClientId); //aeon
 
             if (Settings.AccessToken.IsNotNullOrWhiteSpace())
             {

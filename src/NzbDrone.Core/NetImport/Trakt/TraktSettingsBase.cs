@@ -59,10 +59,6 @@ namespace NzbDrone.Core.NetImport.Trakt
         }
 
         public string Link => "https://api.trakt.tv";
-        public string OAuthUrl => "https://api.trakt.tv/oauth/authorize";
-        public string RedirectUri => "https://auth.servarr.com/v1/trakt/auth";
-        public string RenewUri => "https://auth.servarr.com/v1/trakt/renew";
-        public string ClientId => "64508a8bf370cee550dde4806469922fd7cd70afb2d5690e3ee7f75ae784b70e";
         public virtual string Scope => "";
 
         [FieldDefinition(0, Label = "Access Token", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]

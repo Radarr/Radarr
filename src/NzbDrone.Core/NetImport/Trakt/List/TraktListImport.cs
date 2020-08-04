@@ -25,7 +25,8 @@ namespace NzbDrone.Core.NetImport.Trakt.List
         {
             return new TraktListRequestGenerator()
             {
-                Settings = Settings
+                Settings = Settings,
+                ClientId = ClientId
             };
         }
     }
