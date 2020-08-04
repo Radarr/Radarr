@@ -174,5 +174,16 @@
     "AllMoviesHiddenDueToFilter": "Toate filmele sunt ascunse datorită filtrelor aplicate.",
     "Age": "Vechime",
     "AddNewMovie": "Adaugă un film nou",
-    "AddList": "Adaugă listă"
+    "AddList": "Adaugă listă",
+    "QualityProfiles": "Profile de Calitate",
+    "QualityProfile": "Profil de Calitate",
+    "QualityDefinitions": "Definiții de calitate",
+    "Quality": "Calitate",
+    "PtpOldSettingsCheckMessage": "Următorul indexer PassThePopcorn are setări depreciate și ar trebui actualizate: {0}",
+    "ProxyCheckResolveIpMessage": "Nu am putut găsi adresa IP pentru Hostul Proxy Configurat {0}",
+    "ProxyCheckFailedToTestMessage": "Nu am putut testa proxy: {0}",
+    "ProxyCheckBadRequestMessage": "Testul proxy a eșuat. StatusCode: {0}",
+    "Proxy": "Proxy",
+    "Protocol": "Protocol",
+    "Progress": "Progres"
 }
