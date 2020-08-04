@@ -8,6 +8,8 @@ namespace NzbDrone.Core.NetImport.Trakt.Popular
     {
         public TraktPopularSettings Settings { get; set; }
 
+        public string ClientId { get; set; }
+
         public TraktPopularRequestGenerator()
         {
         }
@@ -58,7 +60,7 @@ namespace NzbDrone.Core.NetImport.Trakt.Popular
             var request = new NetImportRequest($"{link}", HttpAccept.Json);
 
             request.HttpRequest.Headers.Add("trakt-api-version", "2");
-            request.HttpRequest.Headers.Add("trakt-api-key", Settings.ClientId); //aeon
+            request.HttpRequest.Headers.Add("trakt-api-key", ClientId); //aeon
 
             if (Settings.AccessToken.IsNotNullOrWhiteSpace())
             {

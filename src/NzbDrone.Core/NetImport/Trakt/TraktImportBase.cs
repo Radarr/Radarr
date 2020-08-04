@@ -14,6 +14,11 @@ namespace NzbDrone.Core.NetImport.Trakt
     {
         public override NetImportType ListType => NetImportType.Trakt;
 
+        public const string OAuthUrl = "https://api.trakt.tv/oauth/authorize";
+        public const string RedirectUri = "https://auth.servarr.com/v1/trakt/auth";
+        public const string RenewUri = "https://auth.servarr.com/v1/trakt/renew";
+        public const string ClientId = "64508a8bf370cee550dde4806469922fd7cd70afb2d5690e3ee7f75ae784b70e";
+
         private INetImportRepository _netImportRepository;
 
         protected TraktImportBase(INetImportRepository netImportRepository,
@@ -50,10 +55,10 @@ namespace NzbDrone.Core.NetImport.Trakt
         {
             if (action == "startOAuth")
             {
-                var request = new HttpRequestBuilder(Settings.OAuthUrl)
-                    .AddQueryParam("client_id", Settings.ClientId)
+                var request = new HttpRequestBuilder(OAuthUrl)
+                    .AddQueryParam("client_id", ClientId)
                     .AddQueryParam("response_type", "code")
-                    .AddQueryParam("redirect_uri", Settings.RedirectUri)
+                    .AddQueryParam("redirect_uri", RedirectUri)
                     .AddQueryParam("state", query["callbackUrl"])
                     .Build();
 
@@ -82,7 +87,7 @@ namespace NzbDrone.Core.NetImport.Trakt
                 .Build();
 
             request.Headers.Add("trakt-api-version", "2");
-            request.Headers.Add("trakt-api-key", Settings.ClientId); //aeon
+            request.Headers.Add("trakt-api-key", ClientId);
 
             if (accessToken.IsNotNullOrWhiteSpace())
             {
@@ -112,7 +117,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 
             Settings.Validate().Filter("RefreshToken").ThrowOnError();
 
-            var request = new HttpRequestBuilder(Settings.RenewUri)
+            var request = new HttpRequestBuilder(RenewUri)
                 .AddQueryParam("refresh_token", Settings.RefreshToken)
                 .Build();
 

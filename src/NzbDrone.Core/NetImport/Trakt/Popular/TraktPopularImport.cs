@@ -30,7 +30,8 @@ namespace NzbDrone.Core.NetImport.Trakt.Popular
         {
             return new TraktPopularRequestGenerator()
             {
-                Settings = Settings
+                Settings = Settings,
+                ClientId = ClientId
             };
         }
     }
