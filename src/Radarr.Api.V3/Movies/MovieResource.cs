@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.DecisionEngine.Specifications;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
