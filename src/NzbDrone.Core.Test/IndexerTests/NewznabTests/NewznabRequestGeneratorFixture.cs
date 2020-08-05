@@ -49,6 +49,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
         }
 
         [Test]
+        [Ignore("Disabled since no usenet indexers seem to support it")]
         public void should_search_by_artist_and_album_if_supported()
         {
             _capabilities.SupportedBookSearchParameters = new[] { "q", "author", "title" };
