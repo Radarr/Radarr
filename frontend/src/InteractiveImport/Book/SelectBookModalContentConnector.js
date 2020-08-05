@@ -65,7 +65,7 @@ class SelectBookModalContentConnector extends Component {
       this.props.updateInteractiveImportItem({
         id,
         book,
-        bookReleaseId: undefined,
+        editionId: undefined,
         rejections: []
       });
     });
