@@ -8,8 +8,7 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
 {
     public abstract class SearchCriteriaBase
     {
-        private static readonly Regex SpecialCharacter = new Regex(@"[`'’]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly Regex NonWord = new Regex(@"[\W]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex NonWord = new Regex(@"[^\w`'’]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex BeginningThe = new Regex(@"^the\s", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public virtual bool MonitoredBooksOnly { get; set; }
@@ -36,7 +35,6 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
 
             cleanTitle = cleanTitle.Replace(" & ", " ");
             cleanTitle = cleanTitle.Replace(".", " ");
-            cleanTitle = SpecialCharacter.Replace(cleanTitle, "");
             cleanTitle = NonWord.Replace(cleanTitle, "+");
 
             //remove any repeating +s
