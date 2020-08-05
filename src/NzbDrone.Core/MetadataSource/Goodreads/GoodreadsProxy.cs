@@ -583,7 +583,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             var book = new Book
             {
                 ForeignBookId = resource.Work.Id.ToString(),
-                Title = (resource.Work.OriginalTitle ?? resource.Title).CleanSpaces(),
+                Title = (resource.Work.OriginalTitle ?? resource.TitleWithoutSeries).CleanSpaces(),
                 TitleSlug = resource.Id.ToString(),
                 ReleaseDate = resource.Work.OriginalPublicationDate ?? resource.PublicationDate,
                 Ratings = new Ratings { Votes = resource.Work.RatingsCount, Value = resource.Work.AverageRating },
