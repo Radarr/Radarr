@@ -78,13 +78,18 @@ namespace NzbDrone.Core.Indexers.Newznab
             };
         }
 
-        private NewznabSettings GetSettings(string url, params int[] categories)
+        private NewznabSettings GetSettings(string url, string apiPath = null, int[] categories = null)
         {
             var settings = new NewznabSettings { BaseUrl = url };
 
             if (categories.Any())
             {
                 settings.Categories = categories;
+            }
+
+            if (apiPath.IsNotNullOrWhiteSpace())
+            {
+                settings.ApiPath = apiPath;
             }
 
             return settings;
