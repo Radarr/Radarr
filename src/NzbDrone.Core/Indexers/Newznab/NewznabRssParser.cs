@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         protected virtual string GetAlbum(XElement item)
         {
-            var albumString = TryGetNewznabAttribute(item, "book");
+            var albumString = TryGetNewznabAttribute(item, "booktitle");
 
             if (!albumString.IsNullOrWhiteSpace())
             {
