@@ -68,8 +68,11 @@ namespace NzbDrone.Core.Extras.Others
         {
             var extraFile = ImportFile(movie, movieFile, path, readOnly, extension, null);
 
-            _mediaFileAttributeService.SetFilePermissions(path);
-            _otherExtraFileService.Upsert(extraFile);
+            if (extraFile != null)
+            {
+                _mediaFileAttributeService.SetFilePermissions(path);
+                _otherExtraFileService.Upsert(extraFile);
+            }
 
             return extraFile;
         }
