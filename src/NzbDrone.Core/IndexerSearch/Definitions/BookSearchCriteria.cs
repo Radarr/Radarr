@@ -9,11 +9,11 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         public string BookIsbn { get; set; }
         public string Disambiguation { get; set; }
 
-        public string BookQuery => GetQueryTitle($"{BookTitle}{(Disambiguation.IsNullOrWhiteSpace() ? string.Empty : $"+{Disambiguation}")}");
+        public string BookQuery => GetQueryTitle($"{BookTitle}");
 
         public override string ToString()
         {
-            return $"[{Author.Name} - {BookTitle}{(Disambiguation.IsNullOrWhiteSpace() ? string.Empty : $" ({Disambiguation})")} ({BookYear})]";
+            return $"[{Author.Name} - {BookTitle} ({BookYear})]";
         }
     }
 }
