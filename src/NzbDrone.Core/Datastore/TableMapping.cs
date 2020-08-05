@@ -124,8 +124,8 @@ namespace NzbDrone.Core.Datastore
                 .HasOne(r => r.AuthorMetadata, r => r.AuthorMetadataId)
                 .LazyLoad(x => x.BookFiles,
                           (db, book) => db.Query<BookFile>(new SqlBuilder()
-                                                           .Join<BookFile, Book>((l, r) => l.EditionId == r.Id)
-                                                           .Where<Book>(b => b.Id == book.Id)).ToList(),
+                                                           .Join<BookFile, Edition>((l, r) => l.EditionId == r.Id)
+                                                           .Where<Edition>(b => b.BookId == book.Id)).ToList(),
                           b => b.Id > 0)
                 .LazyLoad(x => x.Editions,
                           (db, book) => db.Query<Edition>(new SqlBuilder().Where<Edition>(e => e.BookId == book.Id)).ToList(),
@@ -140,9 +140,7 @@ namespace NzbDrone.Core.Datastore
             Mapper.Entity<Edition>("Editions").RegisterModel()
                 .HasOne(r => r.Book, r => r.BookId)
                 .LazyLoad(x => x.BookFiles,
-                          (db, book) => db.Query<BookFile>(new SqlBuilder()
-                                                           .Join<BookFile, Book>((l, r) => l.EditionId == r.Id)
-                                                           .Where<Book>(b => b.Id == book.Id)).ToList(),
+                          (db, edition) => db.Query<BookFile>(new SqlBuilder().Where<BookFile>(f => f.EditionId == edition.Id)).ToList(),
                           b => b.Id > 0);
 
             Mapper.Entity<BookFile>("BookFiles").RegisterModel()
