@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             var settings = new NewznabSettings { BaseUrl = url };
 
-            if (categories.Any())
+            if (categories != null)
             {
                 settings.Categories = categories;
             }
