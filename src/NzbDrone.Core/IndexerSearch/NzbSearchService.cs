@@ -49,6 +49,7 @@ namespace NzbDrone.Core.IndexerSearch
         public List<DownloadDecision> MovieSearch(int movieId, bool userInvokedSearch, bool interactiveSearch)
         {
             var movie = _movieService.GetMovie(movieId);
+            movie.Translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
 
             return MovieSearch(movie, userInvokedSearch, interactiveSearch);
         }

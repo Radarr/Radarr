@@ -8,7 +8,6 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.Augmenters;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
@@ -148,8 +147,8 @@ namespace NzbDrone.Core.Parser
 
         private MappingResult GetMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)
         {
-            // TODO: Answer me this: Wouldn't it be smarter to start out looking for a movie if we have an ImDb Id?
             MappingResult result = null;
+
             if (!string.IsNullOrWhiteSpace(imdbId) && imdbId != "0")
             {
                 if (TryGetMovieByImDbId(parsedMovieInfo, imdbId, out result))
@@ -167,8 +166,10 @@ namespace NzbDrone.Core.Parser
             }
             else
             {
-                TryGetMovieByTitleAndOrYear(parsedMovieInfo, out result);
-                return result;
+                if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out result))
+                {
+                    return result;
+                }
             }
 
             // nothing found up to here => logging that and returning null
@@ -202,7 +203,7 @@ namespace NzbDrone.Core.Parser
         private bool TryGetMovieByTitleAndOrYear(ParsedMovieInfo parsedMovieInfo, out MappingResult result)
         {
             Func<Movie, bool> isNotNull = movie => movie != null;
-            Movie movieByTitleAndOrYear = null;
+            Movie movieByTitleAndOrYear;
 
             if (parsedMovieInfo.Year > 1800)
             {
@@ -239,36 +240,33 @@ namespace NzbDrone.Core.Parser
         {
             Movie possibleMovie = null;
 
-            List<string> possibleTitles = new List<string>();
+            var possibleTitles = new List<string>();
 
             possibleTitles.Add(searchCriteria.Movie.CleanTitle);
+            possibleTitles.AddRange(searchCriteria.Movie.AlternativeTitles.Select(t => t.CleanTitle));
+            possibleTitles.AddRange(searchCriteria.Movie.Translations.Select(t => t.CleanTitle));
 
-            foreach (AlternativeTitle altTitle in searchCriteria.Movie.AlternativeTitles)
+            var cleanTitle = parsedMovieInfo.MovieTitle.CleanMovieTitle();
+
+            foreach (var title in possibleTitles)
             {
-                possibleTitles.Add(altTitle.CleanTitle);
-            }
-
-            string cleanTitle = parsedMovieInfo.MovieTitle.CleanMovieTitle();
-
-            foreach (string title in possibleTitles)
-            {
-                if (title == parsedMovieInfo.MovieTitle.CleanMovieTitle())
+                if (title == cleanTitle)
                 {
                     possibleMovie = searchCriteria.Movie;
                 }
 
-                foreach (ArabicRomanNumeral numeralMapping in _arabicRomanNumeralMappings)
+                foreach (var numeralMapping in _arabicRomanNumeralMappings)
                 {
-                    string arabicNumeral = numeralMapping.ArabicNumeralAsString;
-                    string romanNumeral = numeralMapping.RomanNumeralLowerCase;
+                    var arabicNumeral = numeralMapping.ArabicNumeralAsString;
+                    var romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
                     //_logger.Debug(cleanTitle);
-                    if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanMovieTitle())
+                    if (title.Replace(arabicNumeral, romanNumeral) == cleanTitle)
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
 
-                    if (title == parsedMovieInfo.MovieTitle.CleanMovieTitle().Replace(arabicNumeral, romanNumeral))
+                    if (title == cleanTitle.Replace(arabicNumeral, romanNumeral))
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
