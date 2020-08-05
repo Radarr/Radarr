@@ -114,14 +114,12 @@ namespace NzbDrone.Core.Parser
                 return _movieService.FindByTitle(title);
             }
 
-            var movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
-
-            if (movie == null)
+            if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out var result) && result.MappingResultType == MappingResultType.Success)
             {
-                movie = _movieService.FindByTitle(parsedMovieInfo.MovieTitle.Replace("DC", "").Trim());
+                return result.Movie;
             }
 
-            return movie;
+            return null;
         }
 
         public MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null)
