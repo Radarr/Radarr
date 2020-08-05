@@ -49,7 +49,8 @@ namespace NzbDrone.Core.Extras.Files
 
         protected TExtraFile ImportFile(Movie movie, MovieFile movieFile, string path, bool readOnly, string extension, string fileNameSuffix = null)
         {
-            var newFolder = Path.GetDirectoryName(Path.Combine(movie.Path, movieFile.RelativePath));
+            var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
+            var newFolder = Path.GetDirectoryName(movieFilePath);
             var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(movieFile.RelativePath));
 
             if (fileNameSuffix.IsNotNullOrWhiteSpace())
@@ -60,6 +61,13 @@ namespace NzbDrone.Core.Extras.Files
             filenameBuilder.Append(extension);
 
             var newFileName = Path.Combine(newFolder, filenameBuilder.ToString());
+
+            if (newFileName == movieFilePath)
+            {
+                _logger.Debug("Extra file {0} not imported, due to naming interference with movie file", path);
+                return null;
+            }
+
             var transferMode = TransferMode.Move;
 
             if (readOnly)
