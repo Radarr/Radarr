@@ -116,6 +116,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'lists',
+      label: 'Lists',
+      isSortable: false,
+      isVisible: false
+    },
+    {
       name: 'actions',
       columnLabel: translate('Actions'),
       isVisible: true,
@@ -251,6 +257,12 @@ export const defaultState = {
       name: 'certification',
       label: 'Certification',
       type: filterBuilderTypes.EXACT
+    },
+    {
+      name: 'lists',
+      label: 'Lists',
+      type: filterBuilderTypes.ARRAY,
+      valueType: filterBuilderValueTypes.NETIMPORT
     },
     {
       name: 'isExcluded',
@@ -496,7 +508,7 @@ export const actionHandlers = handleThunks({
     }, []);
 
     const promise = createAjaxRequest({
-      url: '/exclusions',
+      url: '/exclusions/bulk',
       method: 'POST',
       data: JSON.stringify(exclusions)
     }).request;

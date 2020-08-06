@@ -8,3 +8,4 @@ export const QUALITY = 'quality';
 export const QUALITY_PROFILE = 'qualityProfile';
 export const MOVIE_STATUS = 'movieStatus';
 export const TAG = 'tag';
+export const NETIMPORT = 'netImport';

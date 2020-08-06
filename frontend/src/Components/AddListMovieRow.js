@@ -212,7 +212,7 @@ class AddListMovieRow extends Component {
                   className={styles[name]}
                 >
                   <NetImportListConnector
-                    lists={lists}
+                    tags={lists}
                   />
                 </VirtualTableRowCell>
               );
