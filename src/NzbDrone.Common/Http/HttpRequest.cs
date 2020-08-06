@@ -38,6 +38,7 @@ namespace NzbDrone.Common.Http
         public HttpHeader Headers { get; set; }
         public byte[] ContentData { get; set; }
         public string ContentSummary { get; set; }
+        public ICredentials Credentials { get; set; }
         public bool SuppressHttpError { get; set; }
         public IEnumerable<HttpStatusCode> SuppressHttpErrorStatusCodes { get; set; }
         public bool UseSimplifiedUserAgent { get; set; }
@@ -88,13 +89,6 @@ namespace NzbDrone.Common.Http
         {
             var encoding = HttpHeader.GetEncodingFromContentType(Headers.ContentType);
             ContentData = encoding.GetBytes(data);
-        }
-
-        public void AddBasicAuthentication(string username, string password)
-        {
-            var authInfo = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes($"{username}:{password}"));
-
-            Headers.Set("Authorization", "Basic " + authInfo);
         }
     }
 }

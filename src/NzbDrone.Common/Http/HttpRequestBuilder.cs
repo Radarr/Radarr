@@ -26,10 +26,9 @@ namespace NzbDrone.Common.Http
         public bool ConnectionKeepAlive { get; set; }
         public TimeSpan RateLimit { get; set; }
         public bool LogResponseContent { get; set; }
-        public NetworkCredential NetworkCredential { get; set; }
+        public ICredentials NetworkCredential { get; set; }
         public Dictionary<string, string> Cookies { get; private set; }
         public List<HttpFormData> FormData { get; private set; }
-
         public Action<HttpRequest> PostProcess { get; set; }
 
         public HttpRequestBuilder(string baseUrl)
@@ -109,13 +108,7 @@ namespace NzbDrone.Common.Http
             request.ConnectionKeepAlive = ConnectionKeepAlive;
             request.RateLimit = RateLimit;
             request.LogResponseContent = LogResponseContent;
-
-            if (NetworkCredential != null)
-            {
-                var authInfo = NetworkCredential.UserName + ":" + NetworkCredential.Password;
-                authInfo = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(authInfo));
-                request.Headers.Set("Authorization", "Basic " + authInfo);
-            }
+            request.Credentials = NetworkCredential;
 
             foreach (var header in Headers)
             {

@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Notifications.Webhook
 
                 if (settings.Username.IsNotNullOrWhiteSpace() || settings.Password.IsNotNullOrWhiteSpace())
                 {
-                    request.AddBasicAuthentication(settings.Username, settings.Password);
+                    request.Credentials = new BasicNetworkCredential(settings.Username, settings.Password);
                 }
 
                 _httpClient.Execute(request);
