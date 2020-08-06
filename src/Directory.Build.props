@@ -92,7 +92,7 @@
   </ItemGroup>
 
   <!-- Set up stylecop -->
-  <ItemGroup Condition="'$(ReadarrProject)'=='true'">
+  <ItemGroup Condition="'$(ReadarrProject)'=='true' and '$(EnableStylecop)'!='false'">
     <!-- StyleCop analysis -->
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
