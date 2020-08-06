@@ -13,7 +13,6 @@ using NzbDrone.Common.Serializer;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.RemotePathMappings;
-using NzbDrone.Core.Rest;
 
 namespace NzbDrone.Core.Books.Calibre
 {
@@ -70,7 +69,7 @@ namespace NzbDrone.Core.Books.Calibre
 
                 return _httpClient.Post<CalibreImportJob>(request).Resource;
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 throw new CalibreException("Unable to add file to calibre library: {0}", ex, ex.Message);
             }
@@ -177,7 +176,7 @@ namespace NzbDrone.Core.Books.Calibre
 
                 return _httpClient.Get<CalibreBookData>(request).Resource;
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 throw new CalibreException("Unable to add file to calibre library: {0}", ex, ex.Message);
             }
@@ -199,7 +198,7 @@ namespace NzbDrone.Core.Books.Calibre
 
                 return jobId;
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 throw new CalibreException("Unable to start calibre conversion: {0}", ex, ex.Message);
             }
@@ -221,7 +220,7 @@ namespace NzbDrone.Core.Books.Calibre
 
                 return book;
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 throw new CalibreException("Unable to connect to calibre library: {0}", ex, ex.Message);
             }
@@ -256,7 +255,7 @@ namespace NzbDrone.Core.Books.Calibre
 
                 return result;
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 throw new CalibreException("Unable to connect to calibre library: {0}", ex, ex.Message);
             }
@@ -270,7 +269,7 @@ namespace NzbDrone.Core.Books.Calibre
                 var request = builder.Build();
                 var response = _httpClient.Execute(request);
             }
-            catch (RestException ex)
+            catch (HttpException ex)
             {
                 throw new CalibreException("Unable to connect to calibre library: {0}", ex, ex.Message);
             }
