@@ -220,7 +220,7 @@ namespace NzbDrone.Core.Profiles.Metadata
                     MinPopularity = 350,
                     SkipMissingDate = true,
                     SkipPartsAndSets = true,
-                    AllowedLanguages = "eng, en-US, en-GB"
+                    AllowedLanguages = "eng, en-US, en-GB, null"
                 });
             }
 
