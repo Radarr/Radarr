@@ -4,6 +4,7 @@ using System.Net;
 using CookComputing.XmlRpc;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.Download.Clients.RTorrent
 {
@@ -246,7 +247,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
 
             if (!settings.Username.IsNullOrWhiteSpace())
             {
-                client.Credentials = new NetworkCredential(settings.Username, settings.Password);
+                client.Credentials = new BasicNetworkCredential(settings.Username, settings.Password);
             }
 
             return client;

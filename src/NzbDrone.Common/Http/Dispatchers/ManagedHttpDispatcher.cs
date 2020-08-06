@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using NLog;
 using NLog.Fluent;
 using NzbDrone.Common.EnvironmentInfo;
@@ -51,6 +52,22 @@ namespace NzbDrone.Common.Http.Dispatchers
             webRequest.KeepAlive = request.ConnectionKeepAlive;
             webRequest.AllowAutoRedirect = false;
             webRequest.CookieContainer = cookies;
+
+            if (request.Credentials != null)
+            {
+                if (request.Credentials is BasicNetworkCredential nc)
+                {
+                    // Manually set header to avoid initial challenge response
+                    var authInfo = nc.UserName + ":" + nc.Password;
+                    authInfo = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(authInfo));
+                    webRequest.Headers.Add("Authorization", "Basic " + authInfo);
+                }
+                else
+                {
+                    webRequest.PreAuthenticate = true;
+                    webRequest.Credentials = request.Credentials;
+                }
+            }
 
             if (request.RequestTimeout != TimeSpan.Zero)
             {

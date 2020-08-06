@@ -39,7 +39,7 @@ namespace NzbDrone.Common.Http.Proxy
                 case ProxyType.Http:
                     if (proxySettings.Username.IsNotNullOrWhiteSpace() && proxySettings.Password.IsNotNullOrWhiteSpace())
                     {
-                        return new WebProxy(proxySettings.Host + ":" + proxySettings.Port, proxySettings.BypassLocalAddress, proxySettings.BypassListAsArray, new NetworkCredential(proxySettings.Username, proxySettings.Password));
+                        return new WebProxy(proxySettings.Host + ":" + proxySettings.Port, proxySettings.BypassLocalAddress, proxySettings.BypassListAsArray, new BasicNetworkCredential(proxySettings.Username, proxySettings.Password));
                     }
                     else
                     {

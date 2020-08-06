@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Mail;
 using FluentValidation.Results;
 using NLog;
+using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.Notifications.Email
 {
@@ -44,11 +44,11 @@ namespace NzbDrone.Core.Notifications.Email
                 }
             }
 
-            NetworkCredential credentials = null;
+            BasicNetworkCredential credentials = null;
 
             if (!string.IsNullOrWhiteSpace(settings.Username))
             {
-                credentials = new NetworkCredential(settings.Username, settings.Password);
+                credentials = new BasicNetworkCredential(settings.Username, settings.Password);
             }
 
             try
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Notifications.Email
             }
         }
 
-        private void Send(MailMessage email, string server, int port, bool ssl, NetworkCredential credentials)
+        private void Send(MailMessage email, string server, int port, bool ssl, BasicNetworkCredential credentials)
         {
             var smtp = new SmtpClient(server, port);
             smtp.EnableSsl = ssl;
