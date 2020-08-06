@@ -4,9 +4,9 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http.Proxy;
@@ -26,6 +26,7 @@ namespace NzbDrone.Common.Http.Dispatchers
         private readonly ICertificateValidationService _certificateValidationService;
         private readonly IUserAgentBuilder _userAgentBuilder;
         private readonly ICached<System.Net.Http.HttpClient> _httpClientCache;
+        private readonly ICached<CredentialCache> _credentialCache;
 
         public ManagedHttpDispatcher(IHttpProxySettingsProvider proxySettingsProvider,
             ICreateManagedWebProxy createManagedWebProxy,
@@ -39,6 +40,7 @@ namespace NzbDrone.Common.Http.Dispatchers
             _userAgentBuilder = userAgentBuilder;
 
             _httpClientCache = cacheManager.GetCache<System.Net.Http.HttpClient>(typeof(ManagedHttpDispatcher));
+            _credentialCache = cacheManager.GetCache<CredentialCache>(typeof(ManagedHttpDispatcher), "credentialcache");
         }
 
         public HttpResponse GetResponse(HttpRequest request, CookieContainer cookies)
@@ -62,6 +64,26 @@ namespace NzbDrone.Common.Http.Dispatchers
             {
                 // The default for System.Net.Http.HttpClient
                 cts.CancelAfter(TimeSpan.FromSeconds(100));
+            }
+
+            if (request.Credentials != null)
+            {
+                if (request.Credentials is BasicNetworkCredential bc)
+                {
+                    // Manually set header to avoid initial challenge response
+                    var authInfo = bc.UserName + ":" + bc.Password;
+                    authInfo = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(authInfo));
+                    requestMessage.Headers.Add("Authorization", "Basic " + authInfo);
+                }
+                else if (request.Credentials is NetworkCredential nc)
+                {
+                    var creds = GetCredentialCache();
+                    foreach (var authtype in new[] { "Basic", "Digest" })
+                    {
+                        creds.Remove((Uri)request.Url, authtype);
+                        creds.Add((Uri)request.Url, authtype, nc);
+                    }
+                }
             }
 
             if (request.ContentData != null)
@@ -120,6 +142,8 @@ namespace NzbDrone.Common.Http.Dispatchers
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Brotli,
                 UseCookies = false, // sic - we don't want to use a shared cookie container
                 AllowAutoRedirect = false,
+                Credentials = GetCredentialCache(),
+                PreAuthenticate = true,
                 MaxConnectionsPerServer = 12,
                 ConnectCallback = onConnect,
                 SslOptions = new SslClientAuthenticationOptions
@@ -202,6 +226,11 @@ namespace NzbDrone.Common.Http.Dispatchers
 
             headers.Remove(header);
             headers.Add(header, value);
+        }
+
+        private CredentialCache GetCredentialCache()
+        {
+            return _credentialCache.Get("credentialCache", () => new CredentialCache());
         }
 
         private static async ValueTask<Stream> onConnect(SocketsHttpConnectionContext context, CancellationToken cancellationToken)

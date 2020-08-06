@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Notifications.PushBullet
                 var request = requestBuilder.Build();
 
                 request.Method = HttpMethod.Get;
-                request.AddBasicAuthentication(settings.ApiKey, string.Empty);
+                request.Credentials = new BasicNetworkCredential(settings.ApiKey, string.Empty);
 
                 var response = _httpClient.Execute(request);
 
@@ -198,7 +198,7 @@ namespace NzbDrone.Core.Notifications.PushBullet
 
                 var request = requestBuilder.Build();
 
-                request.AddBasicAuthentication(settings.ApiKey, string.Empty);
+                request.Credentials = new BasicNetworkCredential(settings.ApiKey, string.Empty);
 
                 _httpClient.Execute(request);
             }
