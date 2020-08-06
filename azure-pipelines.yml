@@ -561,7 +561,7 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Integration Tests'
-          failTaskOnFailedTests: false
+          failTaskOnFailedTests: true
         displayName: Publish Test Results
 
   - stage: Automation
