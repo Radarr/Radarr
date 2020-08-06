@@ -4,9 +4,9 @@ import { createSelector } from 'reselect';
 function createMovieCreditListSelector() {
   return createSelector(
     (state, { tmdbId }) => tmdbId,
-    (state) => state.settings.netImports.items,
-    (tmdbId, netImports) => {
-      const netImportIds = _.reduce(netImports, (acc, list) => {
+    (state) => state.settings.importLists.items,
+    (tmdbId, importLists) => {
+      const importListIds = _.reduce(importLists, (acc, list) => {
         if (list.implementation === 'TMDbPersonImport') {
           const personIdField = list.fields.find((field) => {
             return field.name === 'personId';
@@ -21,14 +21,14 @@ function createMovieCreditListSelector() {
         return acc;
       }, []);
 
-      let netImportId = 0;
+      let importListId = 0;
 
-      if (netImportIds.length > 0) {
-        netImportId = netImportIds[0].id;
+      if (importListIds.length > 0) {
+        importListId = importListIds[0].id;
       }
 
       return {
-        netImportId
+        importListId
       };
     }
   );

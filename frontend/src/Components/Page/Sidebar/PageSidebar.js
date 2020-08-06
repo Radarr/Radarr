@@ -98,7 +98,7 @@ const links = [
       },
       {
         title: translate('Lists'),
-        to: '/settings/netimports'
+        to: '/settings/importlists'
       },
       {
         title: translate('Connect'),

@@ -5,10 +5,10 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.CustomFormats;
 using NzbDrone.Core.Test.Framework;
@@ -56,13 +56,13 @@ namespace NzbDrone.Core.Test.Profiles
                                             .With(c => c.ProfileId = 2)
                                             .Build().ToList();
 
-            var netImportList = Builder<NetImportDefinition>.CreateListOfSize(3)
+            var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                                                             .All()
                                                             .With(c => c.ProfileId = 1)
                                                             .Build().ToList();
 
             Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);
-            Mocker.GetMock<INetImportFactory>().Setup(c => c.All()).Returns(netImportList);
+            Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importList);
 
             Assert.Throws<ProfileInUseException>(() => Subject.Delete(2));
 
@@ -77,13 +77,13 @@ namespace NzbDrone.Core.Test.Profiles
                 .With(c => c.ProfileId = 1)
                 .Build().ToList();
 
-            var netImportList = Builder<NetImportDefinition>.CreateListOfSize(3)
+            var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                 .Random(1)
                 .With(c => c.ProfileId = 2)
                 .Build().ToList();
 
             Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);
-            Mocker.GetMock<INetImportFactory>().Setup(c => c.All()).Returns(netImportList);
+            Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importList);
 
             Assert.Throws<ProfileInUseException>(() => Subject.Delete(2));
 
@@ -98,13 +98,13 @@ namespace NzbDrone.Core.Test.Profiles
                                             .With(c => c.ProfileId = 2)
                                             .Build().ToList();
 
-            var netImportList = Builder<NetImportDefinition>.CreateListOfSize(3)
+            var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                                                             .All()
                                                             .With(c => c.ProfileId = 2)
                                                             .Build().ToList();
 
             Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);
-            Mocker.GetMock<INetImportFactory>().Setup(c => c.All()).Returns(netImportList);
+            Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importList);
 
             Subject.Delete(1);
 

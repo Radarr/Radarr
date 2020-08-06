@@ -3,20 +3,20 @@ using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Config
 {
-    public class NetImportConfigResource : RestResource
+    public class ImportListConfigResource : RestResource
     {
-        public int NetImportSyncInterval { get; set; }
+        public int ImportListSyncInterval { get; set; }
         public string ListSyncLevel { get; set; }
         public string ImportExclusions { get; set; }
     }
 
-    public static class NetImportConfigResourceMapper
+    public static class ImportListConfigResourceMapper
     {
-        public static NetImportConfigResource ToResource(IConfigService model)
+        public static ImportListConfigResource ToResource(IConfigService model)
         {
-            return new NetImportConfigResource
+            return new ImportListConfigResource
             {
-                NetImportSyncInterval = model.NetImportSyncInterval,
+                ImportListSyncInterval = model.ImportListSyncInterval,
                 ListSyncLevel = model.ListSyncLevel,
                 ImportExclusions = model.ImportExclusions
             };

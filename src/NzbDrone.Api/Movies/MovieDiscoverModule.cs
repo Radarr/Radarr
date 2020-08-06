@@ -1,21 +1,21 @@
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Api.NetImport;
+using NzbDrone.Api.ImportList;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.NetImport;
 using Radarr.Http;
 
 namespace NzbDrone.Api.Movies
 {
     public class MovieDiscoverModule : RadarrRestModule<MovieResource>
     {
-        private readonly INetImportFactory _netImportFactory;
+        private readonly IImportListFactory _importListFactory;
 
-        public MovieDiscoverModule(INetImportFactory netImportFactory)
+        public MovieDiscoverModule(IImportListFactory importListFactory)
             : base("/movies/discover")
         {
-            _netImportFactory = netImportFactory;
+            _importListFactory = importListFactory;
             Get("/lists", x => GetLists());
             Get("/{action?recommendations}", x => Search(x.action));
         }
@@ -29,11 +29,11 @@ namespace NzbDrone.Api.Movies
 
         private object GetLists()
         {
-            var lists = _netImportFactory.Discoverable();
+            var lists = _importListFactory.Discoverable();
 
             return lists.Select(definition =>
             {
-                var resource = new NetImportResource();
+                var resource = new ImportListResource();
                 resource.Id = definition.Definition.Id;
 
                 resource.Name = definition.Definition.Name;

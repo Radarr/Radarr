@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { saveNetImport, selectNetImportSchema, setNetImportFieldValue, setNetImportValue } from 'Store/Actions/settingsActions';
+import { saveImportList, selectImportListSchema, setImportListFieldValue, setImportListValue } from 'Store/Actions/settingsActions';
 import createMovieCollectionListSelector from 'Store/Selectors/createMovieCollectionListSelector';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
 import MovieCollection from './MovieCollection';
@@ -11,8 +11,8 @@ function createMapStateToProps() {
   return createSelector(
     createMovieSelector(),
     createMovieCollectionListSelector(),
-    (state) => state.settings.netImports,
-    (movie, collectionList, netImports) => {
+    (state) => state.settings.importLists,
+    (movie, collectionList, importLists) => {
       const {
         monitored,
         qualityProfileId,
@@ -24,17 +24,17 @@ function createMapStateToProps() {
         monitored,
         qualityProfileId,
         minimumAvailability,
-        isSaving: netImports.isSaving
+        isSaving: importLists.isSaving
       };
     }
   );
 }
 
 const mapDispatchToProps = {
-  selectNetImportSchema,
-  setNetImportFieldValue,
-  setNetImportValue,
-  saveNetImport
+  selectImportListSchema,
+  setImportListFieldValue,
+  setImportListValue,
+  saveImportList
 };
 
 class MovieCollectionConnector extends Component {
@@ -44,18 +44,18 @@ class MovieCollectionConnector extends Component {
 
   onMonitorTogglePress = (monitored) => {
     if (this.props.collectionList) {
-      this.props.setNetImportValue({ name: 'enabled', value: monitored });
-      this.props.setNetImportValue({ name: 'enableAuto', value: monitored });
-      this.props.saveNetImport({ id: this.props.collectionList.id });
+      this.props.setImportListValue({ name: 'enabled', value: monitored });
+      this.props.setImportListValue({ name: 'enableAuto', value: monitored });
+      this.props.saveImportList({ id: this.props.collectionList.id });
     } else {
-      this.props.selectNetImportSchema({ implementation: 'TMDbCollectionImport', presetName: undefined });
-      this.props.setNetImportFieldValue({ name: 'collectionId', value: this.props.tmdbId.toString() });
-      this.props.setNetImportValue({ name: 'enabled', value: true });
-      this.props.setNetImportValue({ name: 'enableAuto', value: true });
-      this.props.setNetImportValue({ name: 'name', value: `${this.props.name} - ${this.props.tmdbId}` });
-      this.props.setNetImportValue({ name: 'qualityProfileId', value: this.props.qualityProfileId });
-      this.props.setNetImportValue({ name: 'monitored', value: this.props.monitored });
-      this.props.setNetImportValue({ name: 'minimumAvailability', value: this.props.minimumAvailability });
+      this.props.selectImportListSchema({ implementation: 'TMDbCollectionImport', presetName: undefined });
+      this.props.setImportListFieldValue({ name: 'collectionId', value: this.props.tmdbId.toString() });
+      this.props.setImportListValue({ name: 'enabled', value: true });
+      this.props.setImportListValue({ name: 'enableAuto', value: true });
+      this.props.setImportListValue({ name: 'name', value: `${this.props.name} - ${this.props.tmdbId}` });
+      this.props.setImportListValue({ name: 'qualityProfileId', value: this.props.qualityProfileId });
+      this.props.setImportListValue({ name: 'monitored', value: this.props.monitored });
+      this.props.setImportListValue({ name: 'minimumAvailability', value: this.props.minimumAvailability });
     }
   }
 
@@ -81,10 +81,10 @@ MovieCollectionConnector.propTypes = {
   qualityProfileId: PropTypes.number.isRequired,
   minimumAvailability: PropTypes.string.isRequired,
   isSaving: PropTypes.bool.isRequired,
-  selectNetImportSchema: PropTypes.func.isRequired,
-  setNetImportFieldValue: PropTypes.func.isRequired,
-  setNetImportValue: PropTypes.func.isRequired,
-  saveNetImport: PropTypes.func.isRequired
+  selectImportListSchema: PropTypes.func.isRequired,
+  setImportListFieldValue: PropTypes.func.isRequired,
+  setImportListValue: PropTypes.func.isRequired,
+  saveImportList: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(MovieCollectionConnector);

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using NzbDrone.Core.Movies;
 
-namespace NzbDrone.Api.NetImport
+namespace NzbDrone.Api.ImportList
 {
-    public class NetImportResource : ProviderResource
+    public class ImportListResource : ProviderResource
     {
         public bool Enabled { get; set; }
         public bool EnableAuto { get; set; }

@@ -15,10 +15,10 @@ import MovieIndexConnector from 'Movie/Index/MovieIndexConnector';
 import CustomFormatSettingsConnector from 'Settings/CustomFormats/CustomFormatSettingsConnector';
 import DownloadClientSettingsConnector from 'Settings/DownloadClients/DownloadClientSettingsConnector';
 import GeneralSettingsConnector from 'Settings/General/GeneralSettingsConnector';
+import ImportListSettingsConnector from 'Settings/ImportLists/ImportListSettingsConnector';
 import IndexerSettingsConnector from 'Settings/Indexers/IndexerSettingsConnector';
 import MediaManagementConnector from 'Settings/MediaManagement/MediaManagementConnector';
 import MetadataSettings from 'Settings/Metadata/MetadataSettings';
-import NetImportSettingsConnector from 'Settings/NetImport/NetImportSettingsConnector';
 import NotificationSettings from 'Settings/Notifications/NotificationSettings';
 import Profiles from 'Settings/Profiles/Profiles';
 import Quality from 'Settings/Quality/Quality';
@@ -156,8 +156,8 @@ function AppRoutes(props) {
       />
 
       <Route
-        path="/settings/netimports"
-        component={NetImportSettingsConnector}
+        path="/settings/importlists"
+        component={ImportListSettingsConnector}
       />
 
       <Route

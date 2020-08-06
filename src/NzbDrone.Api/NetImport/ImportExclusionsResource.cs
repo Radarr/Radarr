@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NzbDrone.Api.NetImport
+namespace NzbDrone.Api.ImportList
 {
     public class ImportExclusionsResource : ProviderResource
     {
@@ -13,7 +13,7 @@ namespace NzbDrone.Api.NetImport
 
     public static class ImportExclusionsResourceMapper
     {
-        public static ImportExclusionsResource ToResource(this Core.NetImport.ImportExclusions.ImportExclusion model)
+        public static ImportExclusionsResource ToResource(this Core.ImportLists.ImportExclusions.ImportExclusion model)
         {
             if (model == null)
             {
@@ -29,14 +29,14 @@ namespace NzbDrone.Api.NetImport
             };
         }
 
-        public static List<ImportExclusionsResource> ToResource(this IEnumerable<Core.NetImport.ImportExclusions.ImportExclusion> exclusions)
+        public static List<ImportExclusionsResource> ToResource(this IEnumerable<Core.ImportLists.ImportExclusions.ImportExclusion> exclusions)
         {
             return exclusions.Select(ToResource).ToList();
         }
 
-        public static Core.NetImport.ImportExclusions.ImportExclusion ToModel(this ImportExclusionsResource resource)
+        public static Core.ImportLists.ImportExclusions.ImportExclusion ToModel(this ImportExclusionsResource resource)
         {
-            return new Core.NetImport.ImportExclusions.ImportExclusion
+            return new Core.ImportLists.ImportExclusions.ImportExclusion
             {
                 TmdbId = resource.TmdbId,
                 MovieTitle = resource.MovieTitle,

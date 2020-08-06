@@ -2,9 +2,9 @@ using FluentValidation.Validators;
 
 namespace Radarr.Http.Validation
 {
-    public class NetImportSyncIntervalValidator : PropertyValidator
+    public class ImportListSyncIntervalValidator : PropertyValidator
     {
-        public NetImportSyncIntervalValidator()
+        public ImportListSyncIntervalValidator()
             : base("Must be between 10 and 1440 or 0 to disable")
         {
         }

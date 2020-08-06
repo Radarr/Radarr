@@ -4,7 +4,7 @@ import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import { icons } from 'Helpers/Props';
 import MovieHeadshot from 'Movie/MovieHeadshot';
-import EditNetImportModalConnector from 'Settings/NetImport/NetImport/EditNetImportModalConnector';
+import EditImportListModalConnector from 'Settings/ImportLists/ImportLists/EditImportListModalConnector';
 import translate from 'Utilities/String/translate';
 import styles from '../MovieCreditPoster.css';
 
@@ -18,24 +18,24 @@ class MovieCastPoster extends Component {
 
     this.state = {
       hasPosterError: false,
-      isEditNetImportModalOpen: false
+      isEditImportListModalOpen: false
     };
   }
 
   //
   // Listeners
 
-  onEditNetImportPress = () => {
-    this.setState({ isEditNetImportModalOpen: true });
+  onEditImportListPress = () => {
+    this.setState({ isEditImportListModalOpen: true });
   }
 
-  onAddNetImportPress = () => {
-    this.props.onNetImportSelect();
-    this.setState({ isEditNetImportModalOpen: true });
+  onAddImportListPress = () => {
+    this.props.onImportListSelect();
+    this.setState({ isEditImportListModalOpen: true });
   }
 
-  onEditNetImportModalClose = () => {
-    this.setState({ isEditNetImportModalOpen: false });
+  onEditImportListModalClose = () => {
+    this.setState({ isEditImportListModalOpen: false });
   }
 
   onPosterLoad = () => {
@@ -60,7 +60,7 @@ class MovieCastPoster extends Component {
       images,
       posterWidth,
       posterHeight,
-      netImportId
+      importListId
     } = this.props;
 
     const {
@@ -84,18 +84,18 @@ class MovieCastPoster extends Component {
         <div className={styles.posterContainer}>
           <Label className={styles.controls}>
             {
-              netImportId > 0 ?
+              importListId > 0 ?
                 <IconButton
                   className={styles.action}
                   name={icons.EDIT}
                   title={translate('EditPerson')}
-                  onPress={this.onEditNetImportPress}
+                  onPress={this.onEditImportListPress}
                 /> :
                 <IconButton
                   className={styles.action}
                   name={icons.ADD}
                   title={translate('FollowPerson')}
-                  onPress={this.onAddNetImportPress}
+                  onPress={this.onAddImportListPress}
                 />
             }
           </Label>
@@ -130,11 +130,11 @@ class MovieCastPoster extends Component {
           {character}
         </div>
 
-        <EditNetImportModalConnector
-          id={netImportId}
-          isOpen={this.state.isEditNetImportModalOpen}
-          onModalClose={this.onEditNetImportModalClose}
-          onDeleteNetImportPress={this.onDeleteNetImportPress}
+        <EditImportListModalConnector
+          id={importListId}
+          isOpen={this.state.isEditImportListModalOpen}
+          onModalClose={this.onEditImportListModalClose}
+          onDeleteImportListPress={this.onDeleteImportListPress}
         />
       </div>
     );
@@ -148,12 +148,12 @@ MovieCastPoster.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   posterWidth: PropTypes.number.isRequired,
   posterHeight: PropTypes.number.isRequired,
-  netImportId: PropTypes.number.isRequired,
-  onNetImportSelect: PropTypes.func.isRequired
+  importListId: PropTypes.number.isRequired,
+  onImportListSelect: PropTypes.func.isRequired
 };
 
 MovieCastPoster.defaultProps = {
-  netImportId: 0
+  importListId: 0
 };
 
 export default MovieCastPoster;

@@ -31,11 +31,11 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onDeleteSelectedPress(deleteFiles, addNetImportExclusion) {
+    onDeleteSelectedPress(deleteFiles, addImportExclusion) {
       dispatch(bulkDeleteMovie({
         movieIds: props.movieIds,
         deleteFiles,
-        addNetImportExclusion
+        addImportExclusion
       }));
 
       props.onModalClose();

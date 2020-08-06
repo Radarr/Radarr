@@ -29,7 +29,7 @@
 .excludeSelectedButton {
   composes: button from '~Components/Link/SpinnerButton.css';
 
-  margin-left: 50px;
+  margin-left: 25px;
   height: 35px;
 }
 

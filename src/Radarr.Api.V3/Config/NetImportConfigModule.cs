@@ -3,18 +3,18 @@ using Radarr.Http.Validation;
 
 namespace Radarr.Api.V3.Config
 {
-    public class NetImportConfigModule : RadarrConfigModule<NetImportConfigResource>
+    public class ImportListConfigModule : RadarrConfigModule<ImportListConfigResource>
     {
-        public NetImportConfigModule(IConfigService configService)
+        public ImportListConfigModule(IConfigService configService)
             : base(configService)
         {
-            SharedValidator.RuleFor(c => c.NetImportSyncInterval)
-               .IsValidNetImportSyncInterval();
+            SharedValidator.RuleFor(c => c.ImportListSyncInterval)
+               .IsValidImportListSyncInterval();
         }
 
-        protected override NetImportConfigResource ToResource(IConfigService model)
+        protected override ImportListConfigResource ToResource(IConfigService model)
         {
-            return NetImportConfigResourceMapper.ToResource(model);
+            return ImportListConfigResourceMapper.ToResource(model);
         }
     }
 }

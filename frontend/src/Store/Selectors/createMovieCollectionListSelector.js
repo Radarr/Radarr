@@ -4,9 +4,9 @@ import { createSelector } from 'reselect';
 function createMovieCollectionListSelector() {
   return createSelector(
     (state, { tmdbId }) => tmdbId,
-    (state) => state.settings.netImports.items,
-    (tmdbId, netImports) => {
-      const netImportIds = _.reduce(netImports, (acc, list) => {
+    (state) => state.settings.importLists.items,
+    (tmdbId, importLists) => {
+      const importListIds = _.reduce(importLists, (acc, list) => {
         if (list.implementation === 'TMDbCollectionImport') {
           const collectionIdField = list.fields.find((field) => {
             return field.name === 'collectionId';
@@ -21,11 +21,11 @@ function createMovieCollectionListSelector() {
         return acc;
       }, []);
 
-      if (netImportIds.length === 0) {
+      if (importListIds.length === 0) {
         return undefined;
       }
 
-      return netImportIds[0];
+      return importListIds[0];
     }
   );
 }

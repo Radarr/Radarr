@@ -3,11 +3,11 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.CustomFormats.Events;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Profiles
@@ -32,19 +32,19 @@ namespace NzbDrone.Core.Profiles
         private readonly IProfileRepository _profileRepository;
         private readonly ICustomFormatService _formatService;
         private readonly IMovieService _movieService;
-        private readonly INetImportFactory _netImportFactory;
+        private readonly IImportListFactory _importListFactory;
         private readonly Logger _logger;
 
         public ProfileService(IProfileRepository profileRepository,
                               ICustomFormatService formatService,
                               IMovieService movieService,
-                              INetImportFactory netImportFactory,
+                              IImportListFactory importListFactory,
                               Logger logger)
         {
             _profileRepository = profileRepository;
             _formatService = formatService;
             _movieService = movieService;
-            _netImportFactory = netImportFactory;
+            _importListFactory = importListFactory;
             _logger = logger;
         }
 
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Profiles
 
         public void Delete(int id)
         {
-            if (_movieService.GetAllMovies().Any(c => c.ProfileId == id) || _netImportFactory.All().Any(c => c.ProfileId == id))
+            if (_movieService.GetAllMovies().Any(c => c.ProfileId == id) || _importListFactory.All().Any(c => c.ProfileId == id))
             {
                 throw new ProfileInUseException(id);
             }

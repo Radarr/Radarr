@@ -1,0 +1,24 @@
+.importExclusionsHeader {
+  display: flex;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.title {
+  flex: 0 0 400px;
+}
+
+.tmdbId,
+.movieYear {
+  flex: 0 0 200px;
+}
+
+.addImportExclusion {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 10px;
+}
+
+.addButton {
+  text-align: center;
+}

@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.HealthCheck.Checks;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Localization;
-using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
 {
     [TestFixture]
-    public class NetImportStatusCheckFixture : CoreTest<NetImportStatusCheck>
+    public class ImportListStatusCheckFixture : CoreTest<ImportListStatusCheck>
     {
-        private List<INetImport> _lists = new List<INetImport>();
-        private List<NetImportStatus> _blockedLists = new List<NetImportStatus>();
+        private List<IImportList> _lists = new List<IImportList>();
+        private List<ImportListStatus> _blockedLists = new List<ImportListStatus>();
 
         [SetUp]
         public void SetUp()
         {
-            Mocker.GetMock<INetImportFactory>()
+            Mocker.GetMock<IImportListFactory>()
                   .Setup(v => v.GetAvailableProviders())
                   .Returns(_lists);
 
-            Mocker.GetMock<INetImportStatusService>()
+            Mocker.GetMock<IImportListStatusService>()
                    .Setup(v => v.GetBlockedProviders())
                    .Returns(_blockedLists);
 
@@ -31,19 +31,19 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                   .Returns("Some Warning Message");
         }
 
-        private Mock<INetImport> GivenList(int i, double backoffHours, double failureHours)
+        private Mock<IImportList> GivenList(int i, double backoffHours, double failureHours)
         {
             var id = i;
 
-            var mockList = new Mock<INetImport>();
-            mockList.SetupGet(s => s.Definition).Returns(new NetImportDefinition { Id = id });
+            var mockList = new Mock<IImportList>();
+            mockList.SetupGet(s => s.Definition).Returns(new ImportListDefinition { Id = id });
             mockList.SetupGet(s => s.EnableAuto).Returns(true);
 
             _lists.Add(mockList.Object);
 
             if (backoffHours != 0.0)
             {
-                _blockedLists.Add(new NetImportStatus
+                _blockedLists.Add(new ImportListStatus
                 {
                     ProviderId = id,
                     InitialFailure = DateTime.UtcNow.AddHours(-failureHours),

@@ -4,10 +4,10 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore.Migration;
-using NzbDrone.Core.NetImport.RadarrList;
-using NzbDrone.Core.NetImport.RadarrList2.IMDbList;
-using NzbDrone.Core.NetImport.RadarrList2.StevenLu;
-using NzbDrone.Core.NetImport.StevenLu;
+using NzbDrone.Core.ImportLists.RadarrList;
+using NzbDrone.Core.ImportLists.RadarrList2.IMDbList;
+using NzbDrone.Core.ImportLists.RadarrList2.StevenLu;
+using NzbDrone.Core.ImportLists.StevenLu;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.Datastore.Migration

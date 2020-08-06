@@ -8,9 +8,9 @@ import DiscoverMovieFooter from './DiscoverMovieFooter';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.discoverMovie,
-    (state) => state.settings.netImportExclusions,
+    (state) => state.settings.importExclusions,
     (state, { selectedIds }) => selectedIds,
-    (discoverMovie, netImportExclusions, selectedIds) => {
+    (discoverMovie, importExclusions, selectedIds) => {
       const {
         monitor: defaultMonitor,
         qualityProfileId: defaultQualityProfileId,
@@ -25,7 +25,7 @@ function createMapStateToProps() {
 
       const {
         isSaving
-      } = netImportExclusions;
+      } = importExclusions;
 
       return {
         selectedCount: selectedIds.length,

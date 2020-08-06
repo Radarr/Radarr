@@ -8,13 +8,13 @@ using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Housekeeping;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Commands;
-using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Update.Commands;
 
 namespace NzbDrone.Core.Jobs
@@ -93,8 +93,8 @@ namespace NzbDrone.Core.Jobs
 
                     new ScheduledTask
                     {
-                        Interval = GetNetImportSyncInterval(),
-                        TypeName = typeof(NetImportSyncCommand).FullName
+                        Interval = GetImportListSyncInterval(),
+                        TypeName = typeof(ImportListSyncCommand).FullName
                     },
 
                     new ScheduledTask
@@ -156,9 +156,9 @@ namespace NzbDrone.Core.Jobs
             return interval;
         }
 
-        private int GetNetImportSyncInterval()
+        private int GetImportListSyncInterval()
         {
-            var interval = _configService.NetImportSyncInterval;
+            var interval = _configService.ImportListSyncInterval;
 
             if (interval > 0 && interval < 10)
             {
@@ -189,13 +189,13 @@ namespace NzbDrone.Core.Jobs
             var rss = _scheduledTaskRepository.GetDefinition(typeof(RssSyncCommand));
             rss.Interval = _configService.RssSyncInterval;
 
-            var netImport = _scheduledTaskRepository.GetDefinition(typeof(NetImportSyncCommand));
-            netImport.Interval = _configService.NetImportSyncInterval;
+            var importList = _scheduledTaskRepository.GetDefinition(typeof(ImportListSyncCommand));
+            importList.Interval = _configService.ImportListSyncInterval;
 
             var refreshMonitoredDownloads = _scheduledTaskRepository.GetDefinition(typeof(RefreshMonitoredDownloadsCommand));
             refreshMonitoredDownloads.Interval = _configService.CheckForFinishedDownloadInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, netImport, refreshMonitoredDownloads });
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, importList, refreshMonitoredDownloads });
         }
     }
 }

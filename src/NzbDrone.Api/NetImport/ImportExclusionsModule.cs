@@ -1,15 +1,15 @@
 using System.Collections.Generic;
-using NzbDrone.Core.NetImport;
-using NzbDrone.Core.NetImport.ImportExclusions;
+using NzbDrone.Core.ImportLists;
+using NzbDrone.Core.ImportLists.ImportExclusions;
 using Radarr.Http;
 
-namespace NzbDrone.Api.NetImport
+namespace NzbDrone.Api.ImportList
 {
     public class ImportExclusionsModule : RadarrRestModule<ImportExclusionsResource>
     {
         private readonly IImportExclusionsService _exclusionService;
 
-        public ImportExclusionsModule(NetImportFactory netImportFactory, IImportExclusionsService exclusionService)
+        public ImportExclusionsModule(ImportListFactory importListFactory, IImportExclusionsService exclusionService)
             : base("exclusions")
         {
             _exclusionService = exclusionService;
