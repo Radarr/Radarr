@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Dapper;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.ThingiProvider
@@ -12,9 +14,26 @@ namespace NzbDrone.Core.ThingiProvider
         where TProviderDefinition : ProviderDefinition,
             new()
     {
+        protected readonly JsonSerializerOptions _serializerSettings;
+
         protected ProviderRepository(IMainDatabase database, IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
+            var serializerSettings = new JsonSerializerOptions
+            {
+                AllowTrailingCommas = true,
+                IgnoreNullValues = true,
+                PropertyNameCaseInsensitive = true,
+                DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = true
+            };
+
+            serializerSettings.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, true));
+            serializerSettings.Converters.Add(new TimeSpanConverter());
+            serializerSettings.Converters.Add(new UtcConverter());
+
+            _serializerSettings = serializerSettings;
         }
 
         protected override List<TProviderDefinition> Query(SqlBuilder builder)
@@ -29,7 +48,6 @@ namespace NzbDrone.Core.ThingiProvider
             {
                 var parser = reader.GetRowParser<TProviderDefinition>(typeof(TProviderDefinition));
                 var settingsIndex = reader.GetOrdinal(nameof(ProviderDefinition.Settings));
-                var serializerSettings = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
                 while (reader.Read())
                 {
@@ -43,7 +61,7 @@ namespace NzbDrone.Core.ThingiProvider
                     }
                     else
                     {
-                        item.Settings = (IProviderConfig)JsonSerializer.Deserialize(body, impType, serializerSettings);
+                        item.Settings = (IProviderConfig)JsonSerializer.Deserialize(body, impType, _serializerSettings);
                     }
 
                     results.Add(item);
