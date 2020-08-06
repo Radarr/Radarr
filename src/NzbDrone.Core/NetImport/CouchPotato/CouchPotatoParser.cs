@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.NetImport.Exceptions;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport.CouchPotato
 {
@@ -17,11 +18,11 @@ namespace NzbDrone.Core.NetImport.CouchPotato
             _settings = settings;
         }
 
-        public IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
+        public IList<ListMovie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movies = new List<Movies.Movie>();
+            var movies = new List<ListMovie>();
 
             if (!PreProcess(_importResponse))
             {
@@ -48,7 +49,7 @@ namespace NzbDrone.Core.NetImport.CouchPotato
                     // if there are no releases at all the movie wasn't found on CP, so return movies
                     if (!item.releases.Any() && item.type == "movie")
                     {
-                        movies.AddIfNotNull(new Movies.Movie()
+                        movies.AddIfNotNull(new ListMovie()
                         {
                             Title = item.title,
                             ImdbId = item.info.imdb,
@@ -62,12 +63,11 @@ namespace NzbDrone.Core.NetImport.CouchPotato
                         bool isCompleted = item.releases.Any(rel => (rel.status == "done" || rel.status == "seeding"));
                         if (!isCompleted)
                         {
-                            movies.AddIfNotNull(new Movies.Movie()
+                            movies.AddIfNotNull(new ListMovie()
                             {
                                 Title = item.title,
                                 ImdbId = item.info.imdb,
-                                TmdbId = tmdbid,
-                                Monitored = false
+                                TmdbId = tmdbid
                             });
                         }
                     }

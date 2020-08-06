@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport.ListMovies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Validation;
 
@@ -32,7 +33,7 @@ namespace NzbDrone.Core.NetImport.Radarr
 
         public override NetImportFetchResult Fetch()
         {
-            var movies = new List<Movie>();
+            var movies = new List<ListMovie>();
             var anyFailure = false;
 
             try
@@ -43,22 +44,16 @@ namespace NzbDrone.Core.NetImport.Radarr
                 {
                     if (!Settings.ProfileIds.Any() || Settings.ProfileIds.Contains(remoteMovie.QualityProfileId))
                     {
-                        movies.Add(new Movie
+                        movies.Add(new ListMovie
                         {
                             TmdbId = remoteMovie.TmdbId,
                             Title = remoteMovie.Title,
                             SortTitle = remoteMovie.SortTitle,
-                            TitleSlug = remoteMovie.TitleSlug,
                             Overview = remoteMovie.Overview,
                             Images = remoteMovie.Images.Select(x => MapImage(x, Settings.BaseUrl)).ToList(),
                             PhysicalRelease = remoteMovie.PhysicalRelease,
                             InCinemas = remoteMovie.InCinemas,
-                            Year = remoteMovie.Year,
-                            RootFolderPath = ((NetImportDefinition)Definition).RootFolderPath,
-                            ProfileId = ((NetImportDefinition)Definition).ProfileId,
-                            Monitored = ((NetImportDefinition)Definition).ShouldMonitor,
-                            MinimumAvailability = ((NetImportDefinition)Definition).MinimumAvailability,
-                            Tags = ((NetImportDefinition)Definition).Tags
+                            Year = remoteMovie.Year
                         });
                     }
                 }
@@ -71,7 +66,7 @@ namespace NzbDrone.Core.NetImport.Radarr
                 _netImportStatusService.RecordFailure(Definition.Id);
             }
 
-            return new NetImportFetchResult { Movies = movies, AnyFailure = anyFailure };
+            return new NetImportFetchResult { Movies = CleanupListItems(movies), AnyFailure = anyFailure };
         }
 
         public override object RequestAction(string action, IDictionary<string, string> query)

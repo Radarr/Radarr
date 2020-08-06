@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
-using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport.ListMovies;
 using NzbDrone.Core.NetImport.TMDb;
 
 namespace NzbDrone.Core.NetImport.RadarrList
@@ -13,11 +13,11 @@ namespace NzbDrone.Core.NetImport.RadarrList
         {
         }
 
-        public IList<Movie> ParseResponse(NetImportResponse netMovieImporterResponse)
+        public IList<ListMovie> ParseResponse(NetImportResponse netMovieImporterResponse)
         {
             var importResponse = netMovieImporterResponse;
 
-            var movies = new List<Movie>();
+            var movies = new List<ListMovie>();
 
             if (!PreProcess(importResponse))
             {
@@ -32,7 +32,7 @@ namespace NzbDrone.Core.NetImport.RadarrList
                 return movies;
             }
 
-            return jsonResponse.SelectList(m => new Movie { TmdbId = m.Id });
+            return jsonResponse.SelectList(m => new ListMovie { TmdbId = m.Id });
         }
 
         protected virtual bool PreProcess(NetImportResponse netImportResponse)

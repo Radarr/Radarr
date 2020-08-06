@@ -17,8 +17,10 @@ namespace Radarr.Api.V3.NetImport
             _exclusionService = exclusionService;
             GetResourceAll = GetAll;
             DeleteResource = RemoveExclusion;
+            CreateResource = AddExclusion;
             GetResourceById = GetById;
-            Post("/", x => AddExclusions());
+            UpdateResource = UpdateExclusion;
+            Post("/bulk", x => AddExclusions());
 
             SharedValidator.RuleFor(c => c.TmdbId).GreaterThan(0);
             SharedValidator.RuleFor(c => c.MovieTitle).NotEmpty();
@@ -33,6 +35,20 @@ namespace Radarr.Api.V3.NetImport
         public ImportExclusionsResource GetById(int id)
         {
             return _exclusionService.GetById(id).ToResource();
+        }
+
+        private void UpdateExclusion(ImportExclusionsResource exclusionResource)
+        {
+            var model = exclusionResource.ToModel();
+            _exclusionService.Update(model);
+        }
+
+        public int AddExclusion(ImportExclusionsResource exclusionResource)
+        {
+            var model = exclusionResource.ToModel();
+
+            // TODO: Add some more validation here and auto pull the title if not provided
+            return _exclusionService.AddExclusion(model).Id;
         }
 
         public object AddExclusions()

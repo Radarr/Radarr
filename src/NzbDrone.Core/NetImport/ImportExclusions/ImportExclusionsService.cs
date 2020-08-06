@@ -14,6 +14,7 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
         List<ImportExclusion> AddExclusions(List<ImportExclusion> exclusions);
         void RemoveExclusion(ImportExclusion exclusion);
         ImportExclusion GetById(int id);
+        ImportExclusion Update(ImportExclusion exclusion);
     }
 
     public class ImportExclusionsService : IImportExclusionsService, IHandleAsync<MoviesDeletedEvent>
@@ -63,6 +64,11 @@ namespace NzbDrone.Core.NetImport.ImportExclusions
         public ImportExclusion GetById(int id)
         {
             return _exclusionRepository.Get(id);
+        }
+
+        public ImportExclusion Update(ImportExclusion exclusion)
+        {
+            return _exclusionRepository.Update(exclusion);
         }
 
         public void HandleAsync(MoviesDeletedEvent message)

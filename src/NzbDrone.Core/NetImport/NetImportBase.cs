@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation.Results;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport.ListMovies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
 
@@ -11,7 +13,7 @@ namespace NzbDrone.Core.NetImport
 {
     public class NetImportFetchResult
     {
-        public IList<Movie> Movies { get; set; }
+        public IList<ListMovie> Movies { get; set; }
         public bool AnyFailure { get; set; }
     }
 
@@ -65,6 +67,18 @@ namespace NzbDrone.Core.NetImport
         public virtual object RequestAction(string action, IDictionary<string, string> query)
         {
             return null;
+        }
+
+        protected virtual IList<ListMovie> CleanupListItems(IEnumerable<ListMovie> listMovies)
+        {
+            var result = listMovies.ToList();
+
+            result.ForEach(c =>
+            {
+                c.ListId = Definition.Id;
+            });
+
+            return result;
         }
 
         protected TSettings Settings => (TSettings)Definition.Settings;

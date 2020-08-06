@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport.Trakt.Popular
 {
@@ -15,11 +15,11 @@ namespace NzbDrone.Core.NetImport.Trakt.Popular
             _settings = settings;
         }
 
-        public override IList<Movie> ParseResponse(NetImportResponse importResponse)
+        public override IList<ListMovie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movies = new List<Movie>();
+            var movies = new List<ListMovie>();
 
             if (!PreProcess(_importResponse))
             {
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.NetImport.Trakt.Popular
 
             foreach (var movie in jsonResponse)
             {
-                movies.AddIfNotNull(new Movies.Movie()
+                movies.AddIfNotNull(new ListMovie()
                 {
                     Title = movie.Title,
                     ImdbId = movie.Ids.Imdb,

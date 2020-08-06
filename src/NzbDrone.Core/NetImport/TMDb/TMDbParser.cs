@@ -4,16 +4,16 @@ using System.Net;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaCover;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.Exceptions;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport.TMDb
 {
     public class TMDbParser : IParseNetImportResponse
     {
-        public virtual IList<Movie> ParseResponse(NetImportResponse importResponse)
+        public virtual IList<ListMovie> ParseResponse(NetImportResponse importResponse)
         {
-            var movies = new List<Movie>();
+            var movies = new List<ListMovie>();
 
             if (!PreProcess(importResponse))
             {
@@ -31,15 +31,15 @@ namespace NzbDrone.Core.NetImport.TMDb
             return jsonResponse.Results.SelectList(MapListMovie);
         }
 
-        protected Movie MapListMovie(MovieResultResource movieResult)
+        protected ListMovie MapListMovie(MovieResultResource movieResult)
         {
-            var movie =  new Movie
+            var movie =  new ListMovie
             {
                 TmdbId = movieResult.Id,
                 Overview = movieResult.Overview,
-                Title = movieResult.OriginalTitle,
-                SortTitle = Parser.Parser.NormalizeTitle(movieResult.OriginalTitle),
-                Images = new List<MediaCover.MediaCover>()
+                Title = movieResult.Title,
+                SortTitle = Parser.Parser.NormalizeTitle(movieResult.Title),
+                Images = new List<MediaCover.MediaCover>(),
             };
 
             if (movieResult.ReleaseDate.IsNotNullOrWhiteSpace())

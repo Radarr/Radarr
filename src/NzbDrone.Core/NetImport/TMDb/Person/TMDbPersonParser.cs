@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport.TMDb.Person
 {
@@ -14,9 +14,9 @@ namespace NzbDrone.Core.NetImport.TMDb.Person
             _settings = settings;
         }
 
-        public override IList<Movie> ParseResponse(NetImportResponse importResponse)
+        public override IList<ListMovie> ParseResponse(NetImportResponse importResponse)
         {
-            var movies = new List<Movie>();
+            var movies = new List<ListMovie>();
 
             if (!PreProcess(importResponse))
             {
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.NetImport.TMDb.Person
                         continue;
                     }
 
-                    movies.AddIfNotNull(new Movie { TmdbId = movie.Id });
+                    movies.AddIfNotNull(new ListMovie { TmdbId = movie.Id });
                 }
             }
 
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.NetImport.TMDb.Person
 
                     if (crewTypes.Contains(movie.Department))
                     {
-                        movies.AddIfNotNull(new Movie { TmdbId = movie.Id });
+                        movies.AddIfNotNull(new ListMovie { TmdbId = movie.Id });
                     }
                 }
             }

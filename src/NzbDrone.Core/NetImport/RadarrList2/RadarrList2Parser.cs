@@ -3,18 +3,18 @@ using System.Net;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.Exceptions;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport.RadarrList2
 {
     public class RadarrList2Parser : IParseNetImportResponse
     {
-        public IList<Movie> ParseResponse(NetImportResponse netMovieImporterResponse)
+        public IList<ListMovie> ParseResponse(NetImportResponse netMovieImporterResponse)
         {
             var importResponse = netMovieImporterResponse;
 
-            var movies = new List<Movie>();
+            var movies = new List<ListMovie>();
 
             if (!PreProcess(importResponse))
             {
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.NetImport.RadarrList2
                 return movies;
             }
 
-            return jsonResponse.SelectList(m => new Movie { TmdbId = m.TmdbId });
+            return jsonResponse.SelectList(m => new ListMovie { TmdbId = m.TmdbId });
         }
 
         protected virtual bool PreProcess(NetImportResponse listResponse)

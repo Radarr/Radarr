@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport
 {
     public interface IParseNetImportResponse
     {
-        IList<Movie> ParseResponse(NetImportResponse netMovieImporterResponse);
+        IList<ListMovie> ParseResponse(NetImportResponse netMovieImporterResponse);
     }
 }

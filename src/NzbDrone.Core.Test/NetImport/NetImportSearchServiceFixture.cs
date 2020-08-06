@@ -8,6 +8,8 @@ using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
+using NzbDrone.Core.NetImport.ListMovies;
+using NzbDrone.Core.NetImport.Radarr;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.NetImport
@@ -17,8 +19,9 @@ namespace NzbDrone.Core.Test.NetImport
     {
         private NetImportFetchResult _netImport1Fetch;
         private NetImportFetchResult _netImport2Fetch;
-        private List<Movie> _moviesList1;
+        private List<ListMovie> _moviesList1;
         private List<Movie> _moviesList2;
+        private List<ListMovie> _moviesList3;
         private List<INetImport> _netImports;
         private NetImportSyncCommand _command;
 
@@ -27,10 +30,22 @@ namespace NzbDrone.Core.Test.NetImport
         {
             _netImports = new List<INetImport>();
 
-            _moviesList1 = Builder<Movie>.CreateListOfSize(5)
+            _moviesList1 = Builder<ListMovie>.CreateListOfSize(5)
                 .Build().ToList();
 
             _moviesList2 = Builder<Movie>.CreateListOfSize(3)
+                .TheFirst(1)
+                .With(s => s.TmdbId = 6)
+                .With(s => s.ImdbId = "6")
+                .TheNext(1)
+                .With(s => s.TmdbId = 7)
+                .With(s => s.ImdbId = "7")
+                .TheNext(1)
+                .With(s => s.TmdbId = 8)
+                .With(s => s.ImdbId = "8")
+                .Build().ToList();
+
+            _moviesList3 = Builder<ListMovie>.CreateListOfSize(3)
                 .TheFirst(1)
                 .With(s => s.TmdbId = 6)
                 .With(s => s.ImdbId = "6")
@@ -50,7 +65,7 @@ namespace NzbDrone.Core.Test.NetImport
 
             _netImport2Fetch = new NetImportFetchResult
             {
-                Movies = _moviesList2,
+                Movies = _moviesList3,
                 AnyFailure = false
             };
 
@@ -64,8 +79,8 @@ namespace NzbDrone.Core.Test.NetImport
                   .Returns(_netImports);
 
             Mocker.GetMock<IImportExclusionsService>()
-                  .Setup(v => v.IsMovieExcluded(It.IsAny<int>()))
-                  .Returns(false);
+                  .Setup(v => v.GetAllExclusions())
+                  .Returns(new List<ImportExclusion>());
 
             Mocker.GetMock<ISearchForNewMovie>()
                   .Setup(v => v.MapMovieToTmdbMovie(It.IsAny<Movie>()))
@@ -88,12 +103,27 @@ namespace NzbDrone.Core.Test.NetImport
                   .Returns(cleanLevel);
         }
 
-        private Mock<INetImport> GivenList(int i, bool enabledAuto, NetImportFetchResult fetchResult)
+        private void GivenList(int id, bool enabledAuto, NetImportFetchResult fetchResult)
+        {
+            var netImportDefinition = new NetImportDefinition { Id = id, EnableAuto = enabledAuto };
+
+            Mocker.GetMock<INetImportFactory>()
+                  .Setup(v => v.Get(id))
+                  .Returns(netImportDefinition);
+
+            CreateListResult(id, enabledAuto, fetchResult);
+        }
+
+        private Mock<INetImport> CreateListResult(int i, bool enabledAuto, NetImportFetchResult fetchResult)
         {
             var id = i;
 
+            fetchResult.Movies.ToList().ForEach(m => m.ListId = id);
+
+            var netImportDefinition = new NetImportDefinition { Id = id, EnableAuto = enabledAuto };
+
             var mockNetImport = new Mock<INetImport>();
-            mockNetImport.SetupGet(s => s.Definition).Returns(new NetImportDefinition { Id = id, EnableAuto = enabledAuto });
+            mockNetImport.SetupGet(s => s.Definition).Returns(netImportDefinition);
             mockNetImport.SetupGet(s => s.Enabled).Returns(true);
             mockNetImport.SetupGet(s => s.EnableAuto).Returns(enabledAuto);
             mockNetImport.Setup(s => s.Fetch()).Returns(fetchResult);
@@ -336,8 +366,8 @@ namespace NzbDrone.Core.Test.NetImport
             GivenCleanLevel("disabled");
 
             Mocker.GetMock<IImportExclusionsService>()
-                  .Setup(v => v.IsMovieExcluded(_moviesList2[0].TmdbId))
-                  .Returns(true);
+                  .Setup(v => v.GetAllExclusions())
+                  .Returns(new List<ImportExclusion> { new ImportExclusion { TmdbId = _moviesList2[0].TmdbId } });
 
             Subject.Execute(_command);
 
@@ -354,53 +384,13 @@ namespace NzbDrone.Core.Test.NetImport
             GivenCleanLevel("disabled");
 
             Mocker.GetMock<IMovieService>()
-                 .Setup(v => v.MovieExists(_moviesList2[0]))
-                 .Returns(true);
+                 .Setup(v => v.FindByTmdbId(_moviesList2[0].TmdbId))
+                 .Returns(new Movie { TmdbId = _moviesList2[0].TmdbId });
 
             Subject.Execute(_command);
 
             Mocker.GetMock<IAddMovieService>()
                   .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 7 && !s.Any(m => m.TmdbId == _moviesList2[0].TmdbId)), true), Times.Once());
         }
-
-        /*
-        [Test]
-        public void should_not_tmdb_map_movie_that_has_tmdbid_from_list()
-        {
-            GivenList(1, true, _netImport1Fetch);
-            GivenList(2, true, _netImport2Fetch);
-
-            GivenCleanLevel("disabled");
-
-            Subject.Execute(_command);
-
-            Mocker.GetMock<ISearchForNewMovie>()
-                  .Verify(v => v.MapMovieToTmdbMovie(It.IsAny<Movie>()), Times.Never());
-
-            Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 8)), Times.Once());
-        }
-
-        [Test]
-        public void should_tmdb_map_movie_that_has_no_tmdbid_from_list()
-        {
-            _netImport1Fetch.Movies[0].TmdbId = 0;
-
-            GivenList(1, true, _netImport1Fetch);
-
-            GivenCleanLevel("disabled");
-
-            Mocker.GetMock<ISearchForNewMovie>()
-                  .Setup(v => v.MapMovieToTmdbMovie(It.IsAny<Movie>()))
-                  .Returns(Builder<Movie>.CreateNew().Build());
-
-            Subject.Execute(_command);
-
-            Mocker.GetMock<ISearchForNewMovie>()
-                  .Verify(v => v.MapMovieToTmdbMovie(It.IsAny<Movie>()), Times.Once());
-
-            Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.AddMovies(It.Is<List<Movie>>(s => s.Count == 5)), Times.Once());
-        }*/
     }
 }

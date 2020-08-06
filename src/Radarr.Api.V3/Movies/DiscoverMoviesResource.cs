@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport;
 using NzbDrone.Core.NetImport.ImportExclusions;
+using NzbDrone.Core.NetImport.ListMovies;
 using Radarr.Http.REST;
 
 namespace NzbDrone.Api.V3.Movies
@@ -12,7 +14,6 @@ namespace NzbDrone.Api.V3.Movies
         //View Only
         public string Title { get; set; }
         public string SortTitle { get; set; }
-        public string TitleSlug { get; set; }
         public MovieStatusType Status { get; set; }
         public string Overview { get; set; }
         public DateTime? InCinemas { get; set; }
@@ -34,6 +35,9 @@ namespace NzbDrone.Api.V3.Movies
         public MovieCollection Collection { get; set; }
         public bool IsExcluded { get; set; }
         public bool IsExisting { get; set; }
+
+        public List<int> RecommendedBy { get; set; }
+        public HashSet<int> Lists { get; set; }
     }
 
     public static class DiscoverMoviesResourceMapper
@@ -50,7 +54,6 @@ namespace NzbDrone.Api.V3.Movies
                 TmdbId = model.TmdbId,
                 Title = model.Title,
                 SortTitle = model.SortTitle,
-                TitleSlug = model.TitleSlug,
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
 
@@ -72,6 +75,43 @@ namespace NzbDrone.Api.V3.Movies
                 Collection = model.Collection,
                 IsExcluded = importExclusionService.IsMovieExcluded(model.TmdbId),
                 IsExisting = movieService.FindByTmdbId(model.TmdbId) != null,
+            };
+        }
+
+        public static DiscoverMoviesResource ToResource(this ListMovie model, IMovieService movieService, IImportExclusionsService importExclusionService)
+        {
+            if (model == null)
+            {
+                return null;
+            }
+
+            return new DiscoverMoviesResource
+            {
+                TmdbId = model.TmdbId,
+                Title = model.Title,
+                SortTitle = model.SortTitle,
+                InCinemas = model.InCinemas,
+                PhysicalRelease = model.PhysicalRelease,
+
+                Status = model.Status,
+                Overview = model.Overview,
+
+                Images = model.Images,
+
+                Year = model.Year,
+
+                Runtime = model.Runtime,
+                ImdbId = model.ImdbId,
+                Certification = model.Certification,
+                Website = model.Website,
+                Genres = model.Genres,
+                Ratings = model.Ratings,
+                YouTubeTrailerId = model.YouTubeTrailerId,
+                Studio = model.Studio,
+                Collection = model.Collection,
+                IsExcluded = importExclusionService.IsMovieExcluded(model.TmdbId),
+                IsExisting = movieService.FindByTmdbId(model.TmdbId) != null,
+                Lists = new HashSet<int> { model.ListId }
             };
         }
     }

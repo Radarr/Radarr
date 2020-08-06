@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,8 +11,8 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Indexers.Exceptions;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.Exceptions;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport.RSSImport
 {
@@ -31,11 +31,11 @@ namespace NzbDrone.Core.NetImport.RSSImport
             _logger = logger;
         }
 
-        public virtual IList<Movie> ParseResponse(NetImportResponse importResponse)
+        public virtual IList<ListMovie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movies = new List<Movie>();
+            var movies = new List<ListMovie>();
 
             if (!PreProcess(importResponse))
             {
@@ -100,9 +100,9 @@ namespace NzbDrone.Core.NetImport.RSSImport
             }
         }
 
-        protected virtual Movie CreateNewMovie()
+        protected virtual ListMovie CreateNewMovie()
         {
-            return new Movie();
+            return new ListMovie();
         }
 
         protected virtual bool PreProcess(NetImportResponse netImportResponse)
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
             return true;
         }
 
-        protected Movie ProcessItem(XElement item)
+        protected ListMovie ProcessItem(XElement item)
         {
             var releaseInfo = CreateNewMovie();
 
@@ -131,7 +131,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
             return PostProcess(item, releaseInfo);
         }
 
-        protected virtual Movie ProcessItem(XElement item, Movie releaseInfo)
+        protected virtual ListMovie ProcessItem(XElement item, ListMovie releaseInfo)
         {
             var title = GetTitle(item);
 
@@ -166,7 +166,7 @@ namespace NzbDrone.Core.NetImport.RSSImport
             return releaseInfo;
         }
 
-        protected virtual Movie PostProcess(XElement item, Movie releaseInfo)
+        protected virtual ListMovie PostProcess(XElement item, ListMovie releaseInfo)
         {
             return releaseInfo;
         }

@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Movies;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport.TMDb.Collection
 {
     public class TMDbCollectionParser : TMDbParser
     {
-        public override IList<Movie> ParseResponse(NetImportResponse importResponse)
+        public override IList<ListMovie> ParseResponse(NetImportResponse importResponse)
         {
-            var movies = new List<Movie>();
+            var movies = new List<ListMovie>();
 
             if (!PreProcess(importResponse))
             {

@@ -11,6 +11,7 @@ using NzbDrone.Core.Http.CloudFlare;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.Exceptions;
+using NzbDrone.Core.NetImport.ListMovies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
 
@@ -44,7 +45,7 @@ namespace NzbDrone.Core.NetImport
 
         protected virtual NetImportFetchResult FetchMovies(NetImportPageableRequestChain pageableRequestChain, bool isRecent = false)
         {
-            var movies = new List<Movie>();
+            var movies = new List<ListMovie>();
             var url = string.Empty;
 
             var parser = GetParser();
@@ -58,7 +59,7 @@ namespace NzbDrone.Core.NetImport
                     var pageableRequests = pageableRequestChain.GetTier(i);
                     foreach (var pageableRequest in pageableRequests)
                     {
-                        var pagedReleases = new List<Movie>();
+                        var pagedReleases = new List<ListMovie>();
                         foreach (var request in pageableRequest)
                         {
                             url = request.Url.FullUri;
@@ -148,22 +149,14 @@ namespace NzbDrone.Core.NetImport
                 _logger.Error(ex, "An error occurred while processing feed. {0}", url);
             }
 
-            return new NetImportFetchResult { Movies = movies, AnyFailure = anyFailure };
+            return new NetImportFetchResult { Movies = CleanupListItems(movies), AnyFailure = anyFailure };
         }
 
-        protected virtual IList<Movie> FetchPage(NetImportRequest request, IParseNetImportResponse parser)
+        protected virtual IList<ListMovie> FetchPage(NetImportRequest request, IParseNetImportResponse parser)
         {
             var response = FetchNetImportResponse(request);
 
-            return parser.ParseResponse(response).ToList().Select(m =>
-            {
-                m.RootFolderPath = ((NetImportDefinition)Definition).RootFolderPath;
-                m.ProfileId = ((NetImportDefinition)Definition).ProfileId;
-                m.Monitored = ((NetImportDefinition)Definition).ShouldMonitor;
-                m.MinimumAvailability = ((NetImportDefinition)Definition).MinimumAvailability;
-                m.Tags = ((NetImportDefinition)Definition).Tags;
-                return m;
-            }).ToList();
+            return parser.ParseResponse(response).ToList();
         }
 
         protected virtual NetImportResponse FetchNetImportResponse(NetImportRequest request)

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.NetImport.Exceptions;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport.StevenLu
 {
@@ -14,11 +15,11 @@ namespace NzbDrone.Core.NetImport.StevenLu
         {
         }
 
-        public IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
+        public IList<ListMovie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movies = new List<Movies.Movie>();
+            var movies = new List<ListMovie>();
 
             if (!PreProcess(_importResponse))
             {
@@ -35,7 +36,7 @@ namespace NzbDrone.Core.NetImport.StevenLu
 
             foreach (var item in jsonResponse)
             {
-                movies.AddIfNotNull(new Movies.Movie()
+                movies.AddIfNotNull(new ListMovie()
                 {
                     Title = item.title,
                     ImdbId = item.imdb_id,

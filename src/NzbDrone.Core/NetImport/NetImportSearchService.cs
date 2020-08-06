@@ -7,13 +7,12 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.ImportExclusions;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport
 {
     public interface IFetchNetImport
     {
-        NetImportFetchResult Fetch(int listId, bool onlyEnableAuto);
-        List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto);
     }
 
     public class NetImportSearchService : IFetchNetImport, IExecute<NetImportSyncCommand>
@@ -22,6 +21,7 @@ namespace NzbDrone.Core.NetImport
         private readonly INetImportFactory _netImportFactory;
         private readonly IMovieService _movieService;
         private readonly IAddMovieService _addMovieService;
+        private readonly IListMovieService _listMovieService;
         private readonly ISearchForNewMovie _movieSearch;
         private readonly IConfigService _configService;
         private readonly IImportExclusionsService _exclusionService;
@@ -29,6 +29,7 @@ namespace NzbDrone.Core.NetImport
         public NetImportSearchService(INetImportFactory netImportFactory,
                                       IMovieService movieService,
                                       IAddMovieService addMovieService,
+                                      IListMovieService listMovieService,
                                       ISearchForNewMovie movieSearch,
                                       IConfigService configService,
                                       IImportExclusionsService exclusionService,
@@ -37,46 +38,41 @@ namespace NzbDrone.Core.NetImport
             _netImportFactory = netImportFactory;
             _movieService = movieService;
             _addMovieService = addMovieService;
+            _listMovieService = listMovieService;
             _movieSearch = movieSearch;
             _exclusionService = exclusionService;
             _logger = logger;
             _configService = configService;
         }
 
-        public NetImportFetchResult Fetch(int listId, bool onlyEnableAuto = false)
+        private NetImportFetchResult GetListMovies()
         {
-            return MovieListSearch(listId, onlyEnableAuto);
-        }
-
-        public List<Movie> FetchAndFilter(int listId, bool onlyEnableAuto)
-        {
-            var movies = MovieListSearch(listId, onlyEnableAuto).Movies;
-
-            return _movieService.FilterExistingMovies(movies.ToList());
-        }
-
-        public NetImportFetchResult MovieListSearch(int listId, bool onlyEnableAuto = false)
-        {
-            var movies = new List<Movie>();
+            var movies = new List<ListMovie>();
             var anyFailure = false;
 
             var importLists = _netImportFactory.GetAvailableProviders();
 
-            var lists = listId == 0 ? importLists : importLists.Where(n => ((NetImportDefinition)n.Definition).Id == listId);
-
-            if (onlyEnableAuto)
-            {
-                lists = importLists.Where(a => ((NetImportDefinition)a.Definition).EnableAuto);
-            }
-
-            foreach (var list in lists)
+            foreach (var list in importLists)
             {
                 var result = list.Fetch();
-                movies.AddRange(result.Movies);
+
+                if (!result.AnyFailure)
+                {
+                    // TODO some opportunity to bulk map here if we had the tmdbIds
+                    result.Movies.ToList().ForEach(x =>
+                    {
+                        // TODO some logic to avoid mapping everything (if its a tmdb in the db use the existing movie, etc..)
+                        MapMovieReport(x);
+                    });
+
+                    movies.AddRange(result.Movies);
+                    _listMovieService.SyncMoviesForList(result.Movies.ToList(), list.Definition.Id);
+                }
+
                 anyFailure |= result.AnyFailure;
             }
 
-            _logger.Debug("Found {0} movies from list(s) {1}", movies.Count, string.Join(", ", lists.Select(l => l.Definition.Name)));
+            _logger.Debug("Found {0} movies from list(s) {1}", movies.Count, string.Join(", ", importLists.Select(l => l.Definition.Name)));
 
             return new NetImportFetchResult
             {
@@ -98,8 +94,55 @@ namespace NzbDrone.Core.NetImport
             };
         }
 
-        public void Execute(NetImportSyncCommand message)
+        private void ProcessMovieReport(NetImportDefinition importList, ListMovie report, List<ImportExclusion> listExclusions, List<Movie> moviesToAdd)
         {
+            if (report.TmdbId == 0 || !importList.EnableAuto)
+            {
+                return;
+            }
+
+            // Check to see if movie in DB
+            var existingMovie = _movieService.FindByTmdbId(report.TmdbId);
+
+            if (existingMovie != null)
+            {
+                _logger.Debug("{0} [{1}] Rejected, Movie Exists in DB", report.TmdbId, report.Title);
+                return;
+            }
+
+            // Check to see if movie excluded
+            var excludedMovie = listExclusions.Where(s => s.TmdbId == report.TmdbId).SingleOrDefault();
+
+            if (excludedMovie != null)
+            {
+                _logger.Debug("{0} [{1}] Rejected due to list exlcusion", report.TmdbId, report.Title);
+                return;
+            }
+
+            // Append Artist if not already in DB or already on add list
+            if (moviesToAdd.All(s => s.TmdbId != report.TmdbId))
+            {
+                var monitored = importList.ShouldMonitor;
+
+                moviesToAdd.Add(new Movie
+                {
+                    Monitored = monitored,
+                    RootFolderPath = importList.RootFolderPath,
+                    ProfileId = importList.ProfileId,
+                    MinimumAvailability = importList.MinimumAvailability,
+                    Tags = importList.Tags,
+                    AddOptions = new AddMovieOptions
+                    {
+                        SearchForMovie = monitored,
+                    }
+                });
+            }
+        }
+
+        private void SyncAll()
+        {
+            var result = GetListMovies();
+
             //if there are no lists that are enabled for automatic import then dont do anything
             if (_netImportFactory.GetAvailableProviders().Where(a => ((NetImportDefinition)a.Definition).EnableAuto).Empty())
             {
@@ -107,7 +150,6 @@ namespace NzbDrone.Core.NetImport
                 return;
             }
 
-            var result = Fetch(0, true);
             var listedMovies = result.Movies.ToList();
 
             if (!result.AnyFailure)
@@ -115,37 +157,16 @@ namespace NzbDrone.Core.NetImport
                 CleanLibrary(listedMovies);
             }
 
-            listedMovies = listedMovies.Where(x => !_movieService.MovieExists(x)).ToList();
-            if (listedMovies.Any())
-            {
-                _logger.Info($"Found {listedMovies.Count()} movies on your auto enabled lists not in your library");
-            }
-
-            var importExclusions = new List<string>();
+            var importExclusions = _exclusionService.GetAllExclusions();
             var moviesToAdd = new List<Movie>();
 
             foreach (var movie in listedMovies)
             {
-                var mapped = _movieSearch.MapMovieToTmdbMovie(movie);
+                var importList = _netImportFactory.Get(movie.ListId);
 
-                if (mapped != null && mapped.TmdbId > 0)
+                if (movie.TmdbId != 0)
                 {
-                    if (_exclusionService.IsMovieExcluded(mapped.TmdbId))
-                    {
-                        _logger.Debug($"{mapped.Title} ({mapped.TmdbId}) will not be added since it was found on the exclusions list");
-                    }
-                    else if (_movieService.MovieExists(mapped))
-                    {
-                        _logger.Trace($"{mapped.Title} ({mapped.TmdbId}) will not be added since it exists in Library");
-                    }
-                    else
-                    {
-                        if (!moviesToAdd.Any(c => c.TmdbId == mapped.TmdbId))
-                        {
-                            mapped.AddOptions = new AddMovieOptions { SearchForMovie = true };
-                            moviesToAdd.Add(mapped);
-                        }
-                    }
+                    ProcessMovieReport(importList, movie, importExclusions, moviesToAdd);
                 }
             }
 
@@ -157,7 +178,37 @@ namespace NzbDrone.Core.NetImport
             _addMovieService.AddMovies(moviesToAdd, true);
         }
 
-        private void CleanLibrary(List<Movie> movies)
+        private void MapMovieReport(ListMovie report)
+        {
+            var mappedMovie = _movieSearch.MapMovieToTmdbMovie(new Movie { Title = report.Title, TmdbId = report.TmdbId, ImdbId = report.ImdbId, Year = report.Year });
+
+            report.TmdbId = mappedMovie?.TmdbId ?? 0;
+            report.ImdbId = mappedMovie?.ImdbId;
+            report.Title = mappedMovie?.Title;
+            report.SortTitle = mappedMovie?.SortTitle;
+            report.Year = mappedMovie?.Year ?? 0;
+            report.Overview = mappedMovie?.Overview;
+            report.Ratings = mappedMovie?.Ratings;
+            report.Studio = mappedMovie?.Studio;
+            report.Certification = mappedMovie.Certification;
+            report.Collection = mappedMovie.Collection;
+            report.Status = mappedMovie.Status;
+            report.Images = mappedMovie?.Images;
+            report.Website = mappedMovie?.Website;
+            report.YouTubeTrailerId = mappedMovie?.YouTubeTrailerId;
+            report.Translations = mappedMovie?.Translations;
+            report.InCinemas = mappedMovie?.InCinemas;
+            report.PhysicalRelease = mappedMovie?.PhysicalRelease;
+            report.DigitalRelease = mappedMovie?.DigitalRelease;
+            report.Genres = mappedMovie?.Genres;
+        }
+
+        public void Execute(NetImportSyncCommand message)
+        {
+            SyncAll();
+        }
+
+        private void CleanLibrary(List<ListMovie> listMovies)
         {
             var moviesToUpdate = new List<Movie>();
 
@@ -169,7 +220,7 @@ namespace NzbDrone.Core.NetImport
             var moviesInLibrary = _movieService.GetAllMovies();
             foreach (var movie in moviesInLibrary)
             {
-                var movieExists = movies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
+                var movieExists = listMovies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
 
                 if (!movieExists)
                 {

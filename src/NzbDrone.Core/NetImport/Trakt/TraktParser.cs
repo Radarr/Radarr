@@ -3,6 +3,7 @@ using System.Net;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.NetImport.Exceptions;
+using NzbDrone.Core.NetImport.ListMovies;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
@@ -14,11 +15,11 @@ namespace NzbDrone.Core.NetImport.Trakt
         {
         }
 
-        public virtual IList<Movies.Movie> ParseResponse(NetImportResponse importResponse)
+        public virtual IList<ListMovie> ParseResponse(NetImportResponse importResponse)
         {
             _importResponse = importResponse;
 
-            var movies = new List<Movies.Movie>();
+            var movies = new List<ListMovie>();
 
             if (!PreProcess(_importResponse))
             {
@@ -35,7 +36,7 @@ namespace NzbDrone.Core.NetImport.Trakt
 
             foreach (var movie in jsonResponse)
             {
-                movies.AddIfNotNull(new Movies.Movie()
+                movies.AddIfNotNull(new ListMovie()
                 {
                     Title = movie.Movie.Title,
                     ImdbId = movie.Movie.Ids.Imdb,

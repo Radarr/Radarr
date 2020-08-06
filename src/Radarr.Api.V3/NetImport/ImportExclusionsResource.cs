@@ -39,6 +39,7 @@ namespace Radarr.Api.V3.NetImport
         {
             return new ImportExclusion
             {
+                Id = resource.Id,
                 TmdbId = resource.TmdbId,
                 MovieTitle = resource.MovieTitle,
                 MovieYear = resource.MovieYear
