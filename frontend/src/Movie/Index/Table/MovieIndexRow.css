@@ -87,7 +87,7 @@
 .actions {
   composes: cell;
 
-  flex: 0 1 120px;
+  flex: 0 1 90px;
   min-width: 90px;
 }
 
@@ -98,5 +98,7 @@
 }
 
 .externalLinks {
-  margin-right: 2px;
+  margin: 0 2px;
+  width: 22px;
+  text-align: center;
 }
