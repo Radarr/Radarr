@@ -1,11 +1,15 @@
-.protocol {
+.cell {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
+}
+
+.protocol {
+  composes: cell;
 
   width: 80px;
 }
 
 .indexer {
-  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+  composes: cell;
 
   width: 85px;
 }
@@ -13,7 +17,7 @@
 .quality,
 .customFormat,
 .language {
-  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+  composes: cell;
 }
 
 .language {
@@ -21,7 +25,7 @@
 }
 
 .customFormatScore {
-  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+  composes: cell;
 
   width: 55px;
   font-weight: bold;
@@ -31,20 +35,30 @@
 .rejected,
 .indexerFlags,
 .download {
-  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+  composes: cell;
 
   width: 50px;
 }
 
 .age,
 .size {
-  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+  composes: cell;
 
   white-space: nowrap;
 }
 
 .peers {
-  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+  composes: cell;
 
   width: 75px;
+}
+
+.title {
+  composes: cell;
+
+  max-width: 30vw;
+}
+
+.title div {
+  @add-mixin truncate;
 }

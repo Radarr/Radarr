@@ -142,8 +142,13 @@ class InteractiveSearchRow extends Component {
         </TableRowCell>
 
         <TableRowCell className={styles.title}>
-          <Link to={infoUrl}>
-            {title}
+          <Link
+            to={infoUrl}
+            title={title}
+          >
+            <div>
+              {title}
+            </div>
           </Link>
         </TableRowCell>
 
