@@ -176,7 +176,7 @@
     "LogFilesLocationMessage": "Les fichiers journaux se trouvent dans  :",
     "LogFiles": "Fichiers Log",
     "Lists": "Listes",
-    "IndexerRssHealthCheckNoIndexers": "Aucun indexeur disponible avec la synchronisation RSS activée, Radarr n'attrapera pas automatiquement les nouvelles versions",
+    "IndexerRssHealthCheckNoIndexers": "Aucun indexeur disponible avec la synchronisation RSS activée, Radarr ne récupérera pas automatiquement les nouvelles versions",
     "IndexerRssHealthCheckNoAvailableIndexers": "Tous les indexeurs compatibles rss sont temporairement indisponibles en raison d'erreurs d'indexation récentes",
     "ImportSecondTip": "Pointer Radarr vers le dossier contenant tous vos films, pas un en particulier. par exemple.",
     "Week": "Semaine",
