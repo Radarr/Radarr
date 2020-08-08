@@ -141,7 +141,7 @@ class AddListMovieOverview extends Component {
                 className={styles.title}
                 {...linkProps}
               >
-                {title}({year})
+                {title} { year > 0 ? `(${year})` : ''}
 
                 {
                   isExcluded &&
