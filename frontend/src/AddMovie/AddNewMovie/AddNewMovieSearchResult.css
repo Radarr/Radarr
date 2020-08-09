@@ -47,12 +47,6 @@
   color: $disabledColor;
 }
 
-.externalLink {
-  margin-top: 5px;
-  margin-left: auto;
-  color: $textColor;
-}
-
 .alreadyExistsIcon {
   margin-left: 10px;
   color: #37bc9b;
@@ -67,4 +61,9 @@
 
 .overview {
   margin-top: 20px;
+}
+
+.links {
+  margin-left: 8px;
+  pointer-events: all;
 }

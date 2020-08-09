@@ -4,7 +4,9 @@ import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
 import Link from 'Components/Link/Link';
-import { icons, kinds, sizes } from 'Helpers/Props';
+import Tooltip from 'Components/Tooltip/Tooltip';
+import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
+import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import MoviePoster from 'Movie/MoviePoster';
 import AddNewMovieModal from './AddNewMovieModal';
 import styles from './AddNewMovieSearchResult.css';
@@ -50,6 +52,7 @@ class AddNewMovieSearchResult extends Component {
     const {
       tmdbId,
       imdbId,
+      youTubeTrailerId,
       title,
       titleSlug,
       year,
@@ -117,42 +120,6 @@ class AddNewMovieSearchResult extends Component {
                     title="Movie is on Net Import Exclusion List"
                   />
               }
-
-              {
-                isSmallScreen ?
-                  null :
-                  <div className={styles.externalLink}>
-                    <Link
-                      to={`https://www.themoviedb.org/movie/${tmdbId}`}
-                      onPress={this.onExternalLinkPress}
-                    >
-                      <Label size={sizes.LARGE}>
-                        TMDb
-                      </Label>
-                    </Link>
-
-                    {
-                      imdbId &&
-                        <Link
-                          to={`https://www.imdb.com/title/${imdbId}`}
-                          onPress={this.onExternalLinkPress}
-                        >
-                          <Label size={sizes.LARGE}>
-                            IMDb
-                          </Label>
-                        </Link>
-                    }
-
-                    <Link
-                      to={`https://trakt.tv/search/tmdb/${tmdbId}?id_type=movie`}
-                      onPress={this.onExternalLinkPress}
-                    >
-                      <Label size={sizes.LARGE}>
-                        Trakt
-                      </Label>
-                    </Link>
-                  </div>
-              }
             </div>
 
             <div>
@@ -170,6 +137,32 @@ class AddNewMovieSearchResult extends Component {
                   </Label>
               }
 
+              <Tooltip
+                anchor={
+                  <Label
+                    size={sizes.LARGE}
+                  >
+                    <Icon
+                      name={icons.EXTERNAL_LINK}
+                      size={13}
+                    />
+
+                    <span className={styles.links}>
+                      Links
+                    </span>
+                  </Label>
+                }
+                tooltip={
+                  <MovieDetailsLinks
+                    tmdbId={tmdbId}
+                    youTubeTrailerId={youTubeTrailerId}
+                    imdbId={imdbId}
+                  />
+                }
+                kind={kinds.INVERSE}
+                position={tooltipPositions.BOTTOM}
+              />
+
               {
                 status === 'ended' &&
                   <Label
@@ -180,42 +173,6 @@ class AddNewMovieSearchResult extends Component {
                   </Label>
               }
             </div>
-
-            {
-              isSmallScreen ?
-                <div className={styles.externalLink}>
-                  <Link
-                    to={`https://www.themoviedb.org/movie/${tmdbId}`}
-                    onPress={this.onExternalLinkPress}
-                  >
-                    <Label size={sizes.LARGE}>
-                      TMDb
-                    </Label>
-                  </Link>
-
-                  {
-                    imdbId &&
-                      <Link
-                        to={`https://www.imdb.com/title/${imdbId}`}
-                        onPress={this.onExternalLinkPress}
-                      >
-                        <Label size={sizes.LARGE}>
-                          IMDb
-                        </Label>
-                      </Link>
-                  }
-
-                  <Link
-                    to={`https://trakt.tv/search/tmdb/${tmdbId}?id_type=movie`}
-                    onPress={this.onExternalLinkPress}
-                  >
-                    <Label size={sizes.LARGE}>
-                      Trakt
-                    </Label>
-                  </Link>
-                </div> :
-                null
-            }
 
             <div className={styles.overview}>
               {overview}
@@ -241,6 +198,7 @@ class AddNewMovieSearchResult extends Component {
 AddNewMovieSearchResult.propTypes = {
   tmdbId: PropTypes.number.isRequired,
   imdbId: PropTypes.string,
+  youTubeTrailerId: PropTypes.string,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
