@@ -10,6 +10,10 @@
   }
 }
 
+.link {
+  composes: link from '~Calendar/Events/CalendarEvent.css';
+}
+
 .eventWrapper {
   display: flex;
   flex: 1 0 1px;
@@ -30,7 +34,8 @@
   border: none !important;
 }
 
-.movieTitle {
+.movieTitle,
+.genres {
   @add-mixin truncate;
 
   flex: 0 1 300px;
