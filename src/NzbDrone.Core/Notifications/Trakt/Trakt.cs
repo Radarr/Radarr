@@ -10,13 +10,13 @@ namespace NzbDrone.Core.Notifications.Trakt
 {
     public class Trakt : NotificationBase<TraktSettings>
     {
-        private readonly ITraktProxy _proxy;
+        private readonly ITraktService _traktService;
         private readonly INotificationRepository _notificationRepository;
         private readonly Logger _logger;
 
-        public Trakt(ITraktProxy proxy, INotificationRepository notificationRepository, Logger logger)
+        public Trakt(ITraktService traktService, INotificationRepository notificationRepository, Logger logger)
         {
-            _proxy = proxy;
+            _traktService = traktService;
             _notificationRepository = notificationRepository;
             _logger = logger;
         }
@@ -26,60 +26,14 @@ namespace NzbDrone.Core.Notifications.Trakt
 
         public override void OnDownload(DownloadMessage message)
         {
-            var payload = new TraktAddMoviePayload
-            {
-                Movies = new List<TraktAddMovie>()
-            };
-
-            var width = message.MovieFile.MediaInfo?.Width ?? 0;
-            var mediaInfo = "";
-
-            if (width >= 3200)
-            {
-                mediaInfo = "uhd_4k";
-            }
-
-            if (width >= 1800)
-            {
-                mediaInfo = "hd_1080p";
-            }
-
-            if (width >= 1200)
-            {
-                mediaInfo = "hd_720p";
-            }
-
-            if (width >= 700)
-            {
-                mediaInfo = "sd_576p";
-            }
-
-            if (width > 0)
-            {
-                mediaInfo = "sd_480p";
-            }
-
-            payload.Movies.Add(new TraktAddMovie
-            {
-                Title = message.Movie.Title,
-                Year = message.Movie.Year,
-                CollectedAt = DateTime.Now,
-                Resolution = mediaInfo,
-                Ids = new TraktMovieIdsResource
-                {
-                    Tmdb = message.Movie.TmdbId,
-                    Imdb = message.Movie.ImdbId ?? "",
-                }
-            });
-
-            _proxy.AddToCollection(payload, Settings.AccessToken);
+            _traktService.AddMovieToCollection(Settings, message.Movie, message.MovieFile);
         }
 
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();
 
-            failures.AddIfNotNull(_proxy.Test(Settings));
+            failures.AddIfNotNull(_traktService.Test(Settings));
 
             return new ValidationResult(failures);
         }
@@ -88,7 +42,7 @@ namespace NzbDrone.Core.Notifications.Trakt
         {
             if (action == "startOAuth")
             {
-                var request = _proxy.GetOAuthRequest(query["callbackUrl"]);
+                var request = _traktService.GetOAuthRequest(query["callbackUrl"]);
 
                 return new
                 {
@@ -102,7 +56,7 @@ namespace NzbDrone.Core.Notifications.Trakt
                     accessToken = query["access_token"],
                     expires = DateTime.UtcNow.AddSeconds(int.Parse(query["expires_in"])),
                     refreshToken = query["refresh_token"],
-                    authUser = _proxy.GetUserName(query["access_token"])
+                    authUser = _traktService.GetUserName(query["access_token"])
                 };
             }
 
@@ -117,14 +71,14 @@ namespace NzbDrone.Core.Notifications.Trakt
 
             try
             {
-                var response = _proxy.RefreshAuthToken(Settings.RefreshToken);
+                var response = _traktService.RefreshAuthToken(Settings.RefreshToken);
 
                 if (response != null)
                 {
                     var token = response;
-                    Settings.AccessToken = token.Access_token;
-                    Settings.Expires = DateTime.UtcNow.AddSeconds(token.Expires_in);
-                    Settings.RefreshToken = token.Refresh_token != null ? token.Refresh_token : Settings.RefreshToken;
+                    Settings.AccessToken = token.AccessToken;
+                    Settings.Expires = DateTime.UtcNow.AddSeconds(token.ExpiresIn);
+                    Settings.RefreshToken = token.RefreshToken ?? Settings.RefreshToken;
 
                     if (Definition.Id > 0)
                     {

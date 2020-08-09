@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Notifications.Trakt.Resource;
 
 namespace NzbDrone.Core.NetImport.Trakt.Popular
 {
@@ -34,7 +35,7 @@ namespace NzbDrone.Core.NetImport.Trakt.Popular
             }
             else
             {
-                jsonResponse = JsonConvert.DeserializeObject<List<TraktResponse>>(_importResponse.Content).SelectList(c => c.Movie);
+                jsonResponse = JsonConvert.DeserializeObject<List<TraktListResource>>(_importResponse.Content).SelectList(c => c.Movie);
             }
 
             // no movies were return

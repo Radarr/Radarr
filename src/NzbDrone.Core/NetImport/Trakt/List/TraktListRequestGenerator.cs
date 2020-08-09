@@ -1,16 +1,17 @@
 using System.Collections.Generic;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Notifications.Trakt;
 
 namespace NzbDrone.Core.NetImport.Trakt.List
 {
     public class TraktListRequestGenerator : INetImportRequestGenerator
     {
+        private readonly ITraktProxy _traktProxy;
         public TraktListSettings Settings { get; set; }
-        public string ClientId { get; set; }
 
-        public TraktListRequestGenerator()
+        public TraktListRequestGenerator(ITraktProxy traktProxy)
         {
+            _traktProxy = traktProxy;
         }
 
         public virtual NetImportPageableRequestChain GetMovies()
@@ -24,20 +25,12 @@ namespace NzbDrone.Core.NetImport.Trakt.List
 
         private IEnumerable<NetImportRequest> GetMoviesRequest()
         {
-            var link = Settings.Link.Trim();
+            var link = string.Empty;
 
             var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim());
-            link += $"/users/{Settings.Username.Trim()}/lists/{listName}/items/movies?limit={Settings.Limit}";
+            link += $"users/{Settings.Username.Trim()}/lists/{listName}/items/movies?limit={Settings.Limit}";
 
-            var request = new NetImportRequest($"{link}", HttpAccept.Json);
-
-            request.HttpRequest.Headers.Add("trakt-api-version", "2");
-            request.HttpRequest.Headers.Add("trakt-api-key", ClientId); //aeon
-
-            if (Settings.AccessToken.IsNotNullOrWhiteSpace())
-            {
-                request.HttpRequest.Headers.Add("Authorization", "Bearer " + Settings.AccessToken);
-            }
+            var request = new NetImportRequest(_traktProxy.BuildTraktRequest(link, HttpMethod.GET, Settings.AccessToken));
 
             yield return request;
         }

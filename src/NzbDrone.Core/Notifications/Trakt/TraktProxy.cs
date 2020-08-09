@@ -5,6 +5,7 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
+using NzbDrone.Core.Notifications.Trakt.Resource;
 
 namespace NzbDrone.Core.Notifications.Trakt
 {
@@ -12,9 +13,9 @@ namespace NzbDrone.Core.Notifications.Trakt
     {
         string GetUserName(string accessToken);
         HttpRequest GetOAuthRequest(string callbackUrl);
-        RefreshRequestResponse RefreshAuthToken(string refreshToken);
-        void AddToCollection(TraktAddMoviePayload payload, string accessToken);
-        ValidationFailure Test(TraktSettings settings);
+        TraktAuthRefreshResource RefreshAuthToken(string refreshToken);
+        void AddToCollection(TraktCollectMoviesResource payload, string accessToken);
+        HttpRequest BuildTraktRequest(string resource, HttpMethod method, string accessToken);
     }
 
     public class TraktProxy : ITraktProxy
@@ -34,7 +35,7 @@ namespace NzbDrone.Core.Notifications.Trakt
             _logger = logger;
         }
 
-        public void AddToCollection(TraktAddMoviePayload payload, string accessToken)
+        public void AddToCollection(TraktCollectMoviesResource payload, string accessToken)
         {
             var request = BuildTraktRequest("sync/collection", HttpMethod.POST, accessToken);
 
@@ -58,7 +59,7 @@ namespace NzbDrone.Core.Notifications.Trakt
 
             try
             {
-                var response = _httpClient.Get<UserSettingsResponse>(request);
+                var response = _httpClient.Get<TraktUserSettingsResource>(request);
 
                 if (response != null && response.Resource != null)
                 {
@@ -83,41 +84,16 @@ namespace NzbDrone.Core.Notifications.Trakt
                             .Build();
         }
 
-        public RefreshRequestResponse RefreshAuthToken(string refreshToken)
+        public TraktAuthRefreshResource RefreshAuthToken(string refreshToken)
         {
             var request = new HttpRequestBuilder(RenewUri)
                     .AddQueryParam("refresh_token", refreshToken)
                     .Build();
 
-            return _httpClient.Get<RefreshRequestResponse>(request)?.Resource ?? null;
+            return _httpClient.Get<TraktAuthRefreshResource>(request)?.Resource ?? null;
         }
 
-        public ValidationFailure Test(TraktSettings settings)
-        {
-            try
-            {
-                GetUserName(settings.AccessToken);
-                return null;
-            }
-            catch (HttpException ex)
-            {
-                if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    _logger.Error(ex, "Access Token is invalid: " + ex.Message);
-                    return new ValidationFailure("Token", "Access Token is invalid");
-                }
-
-                _logger.Error(ex, "Unable to send test message: " + ex.Message);
-                return new ValidationFailure("Token", "Unable to send test message");
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Unable to send test message: " + ex.Message);
-                return new ValidationFailure("", "Unable to send test message");
-            }
-        }
-
-        private HttpRequest BuildTraktRequest(string resource, HttpMethod method, string accessToken)
+        public HttpRequest BuildTraktRequest(string resource, HttpMethod method, string accessToken)
         {
             var request = new HttpRequestBuilder(URL).Resource(resource).Build();
 

@@ -1,6 +1,7 @@
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Notifications.Trakt;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.NetImport.Trakt.Popular
@@ -8,12 +9,13 @@ namespace NzbDrone.Core.NetImport.Trakt.Popular
     public class TraktPopularImport : TraktImportBase<TraktPopularSettings>
     {
         public TraktPopularImport(INetImportRepository netImportRepository,
-                   IHttpClient httpClient,
-                   INetImportStatusService netImportStatusService,
-                   IConfigService configService,
-                   IParsingService parsingService,
-                   Logger logger)
-        : base(netImportRepository, httpClient, netImportStatusService, configService, parsingService, logger)
+                                  ITraktProxy traktProxy,
+                                  IHttpClient httpClient,
+                                  INetImportStatusService netImportStatusService,
+                                  IConfigService configService,
+                                  IParsingService parsingService,
+                                  Logger logger)
+        : base(netImportRepository, traktProxy, httpClient, netImportStatusService, configService, parsingService, logger)
         {
         }
 
@@ -28,10 +30,9 @@ namespace NzbDrone.Core.NetImport.Trakt.Popular
 
         public override INetImportRequestGenerator GetRequestGenerator()
         {
-            return new TraktPopularRequestGenerator()
+            return new TraktPopularRequestGenerator(_traktProxy)
             {
-                Settings = Settings,
-                ClientId = ClientId
+                Settings = Settings
             };
         }
     }

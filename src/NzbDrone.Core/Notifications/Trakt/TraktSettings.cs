@@ -25,9 +25,6 @@ namespace NzbDrone.Core.Notifications.Trakt
             SignIn = "startOAuth";
         }
 
-        public string Link => "https://api.trakt.tv";
-        public virtual string Scope => "";
-
         [FieldDefinition(0, Label = "Access Token", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
         public string AccessToken { get; set; }
 
