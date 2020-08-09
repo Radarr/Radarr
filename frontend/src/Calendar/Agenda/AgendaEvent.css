@@ -61,6 +61,10 @@
   composes: missing from '~Calendar/Events/CalendarEvent.css';
 }
 
+.unreleased {
+  composes: unreleased from '~Calendar/Events/CalendarEvent.css';
+}
+
 @media only screen and (max-width: $breakpointSmall) {
   .event {
     flex-direction: column;
