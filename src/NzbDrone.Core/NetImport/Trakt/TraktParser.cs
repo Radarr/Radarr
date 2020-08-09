@@ -3,6 +3,7 @@ using System.Net;
 using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.NetImport.Exceptions;
+using NzbDrone.Core.Notifications.Trakt.Resource;
 
 namespace NzbDrone.Core.NetImport.Trakt
 {
@@ -25,7 +26,7 @@ namespace NzbDrone.Core.NetImport.Trakt
                 return movies;
             }
 
-            var jsonResponse = JsonConvert.DeserializeObject<List<TraktResponse>>(_importResponse.Content);
+            var jsonResponse = JsonConvert.DeserializeObject<List<TraktListResource>>(_importResponse.Content);
 
             // no movies were return
             if (jsonResponse == null)

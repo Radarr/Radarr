@@ -1,17 +1,17 @@
 using System.Collections.Generic;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Notifications.Trakt;
 
 namespace NzbDrone.Core.NetImport.Trakt.User
 {
     public class TraktUserRequestGenerator : INetImportRequestGenerator
     {
+        private readonly ITraktProxy _traktProxy;
         public TraktUserSettings Settings { get; set; }
 
-        public string ClientId { get; set; }
-
-        public TraktUserRequestGenerator()
+        public TraktUserRequestGenerator(ITraktProxy traktProxy)
         {
+            _traktProxy = traktProxy;
         }
 
         public virtual NetImportPageableRequestChain GetMovies()
@@ -25,30 +25,22 @@ namespace NzbDrone.Core.NetImport.Trakt.User
 
         private IEnumerable<NetImportRequest> GetMoviesRequest()
         {
-            var link = Settings.Link.Trim();
+            var link = string.Empty;
 
             switch (Settings.TraktListType)
             {
                 case (int)TraktUserListType.UserWatchList:
-                    link += $"/users/{Settings.AuthUser.Trim()}/watchlist/movies?limit={Settings.Limit}";
+                    link += $"users/{Settings.AuthUser.Trim()}/watchlist/movies?limit={Settings.Limit}";
                     break;
                 case (int)TraktUserListType.UserWatchedList:
-                    link += $"/users/{Settings.AuthUser.Trim()}/watched/movies?limit={Settings.Limit}";
+                    link += $"users/{Settings.AuthUser.Trim()}/watched/movies?limit={Settings.Limit}";
                     break;
                 case (int)TraktUserListType.UserCollectionList:
-                    link += $"/users/{Settings.AuthUser.Trim()}/collection/movies?limit={Settings.Limit}";
+                    link += $"users/{Settings.AuthUser.Trim()}/collection/movies?limit={Settings.Limit}";
                     break;
             }
 
-            var request = new NetImportRequest($"{link}", HttpAccept.Json);
-
-            request.HttpRequest.Headers.Add("trakt-api-version", "2");
-            request.HttpRequest.Headers.Add("trakt-api-key", ClientId);
-
-            if (Settings.AccessToken.IsNotNullOrWhiteSpace())
-            {
-                request.HttpRequest.Headers.Add("Authorization", "Bearer " + Settings.AccessToken);
-            }
+            var request = new NetImportRequest(_traktProxy.BuildTraktRequest(link, HttpMethod.GET, Settings.AccessToken));
 
             yield return request;
         }

@@ -1,17 +1,17 @@
 using System.Collections.Generic;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
+using NzbDrone.Core.Notifications.Trakt;
 
 namespace NzbDrone.Core.NetImport.Trakt.Popular
 {
     public class TraktPopularRequestGenerator : INetImportRequestGenerator
     {
+        private readonly ITraktProxy _traktProxy;
         public TraktPopularSettings Settings { get; set; }
 
-        public string ClientId { get; set; }
-
-        public TraktPopularRequestGenerator()
+        public TraktPopularRequestGenerator(ITraktProxy traktProxy)
         {
+            _traktProxy = traktProxy;
         }
 
         public virtual NetImportPageableRequestChain GetMovies()
@@ -25,47 +25,39 @@ namespace NzbDrone.Core.NetImport.Trakt.Popular
 
         private IEnumerable<NetImportRequest> GetMoviesRequest()
         {
-            var link = Settings.Link.Trim();
+            var link = string.Empty;
 
             var filtersAndLimit = $"?years={Settings.Years}&genres={Settings.Genres.ToLower()}&ratings={Settings.Rating}&certifications={Settings.Certification.ToLower()}&limit={Settings.Limit}{Settings.TraktAdditionalParameters}";
 
             switch (Settings.TraktListType)
             {
                 case (int)TraktPopularListType.Trending:
-                    link += "/movies/trending" + filtersAndLimit;
+                    link += "movies/trending" + filtersAndLimit;
                     break;
                 case (int)TraktPopularListType.Popular:
-                    link += "/movies/popular" + filtersAndLimit;
+                    link += "movies/popular" + filtersAndLimit;
                     break;
                 case (int)TraktPopularListType.Anticipated:
-                    link += "/movies/anticipated" + filtersAndLimit;
+                    link += "movies/anticipated" + filtersAndLimit;
                     break;
                 case (int)TraktPopularListType.BoxOffice:
-                    link += "/movies/boxoffice" + filtersAndLimit;
+                    link += "movies/boxoffice" + filtersAndLimit;
                     break;
                 case (int)TraktPopularListType.TopWatchedByWeek:
-                    link += "/movies/watched/weekly" + filtersAndLimit;
+                    link += "movies/watched/weekly" + filtersAndLimit;
                     break;
                 case (int)TraktPopularListType.TopWatchedByMonth:
-                    link += "/movies/watched/monthly" + filtersAndLimit;
+                    link += "movies/watched/monthly" + filtersAndLimit;
                     break;
                 case (int)TraktPopularListType.TopWatchedByYear:
-                    link += "/movies/watched/yearly" + filtersAndLimit;
+                    link += "movies/watched/yearly" + filtersAndLimit;
                     break;
                 case (int)TraktPopularListType.TopWatchedByAllTime:
-                    link += "/movies/watched/all" + filtersAndLimit;
+                    link += "movies/watched/all" + filtersAndLimit;
                     break;
             }
 
-            var request = new NetImportRequest($"{link}", HttpAccept.Json);
-
-            request.HttpRequest.Headers.Add("trakt-api-version", "2");
-            request.HttpRequest.Headers.Add("trakt-api-key", ClientId); //aeon
-
-            if (Settings.AccessToken.IsNotNullOrWhiteSpace())
-            {
-                request.HttpRequest.Headers.Add("Authorization", "Bearer " + Settings.AccessToken);
-            }
+            var request = new NetImportRequest(_traktProxy.BuildTraktRequest(link, HttpMethod.GET, Settings.AccessToken));
 
             yield return request;
         }
