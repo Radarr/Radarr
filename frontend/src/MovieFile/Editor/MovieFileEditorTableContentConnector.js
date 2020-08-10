@@ -11,20 +11,25 @@ import MovieFileEditorTableContent from './MovieFileEditorTableContent';
 
 function createMapStateToProps() {
   return createSelector(
+    (state, { movieId }) => movieId,
     (state) => state.movieFiles,
     (state) => state.settings.languages,
     (state) => state.settings.qualityProfiles,
     createMovieSelector(),
     (
+      movieId,
       movieFiles,
       languageProfiles,
       qualityProfiles
     ) => {
       const languages = languageProfiles.items;
       const qualities = getQualities(qualityProfiles.schema.items);
+      const filesForMovie = movieFiles.items.filter((obj) => {
+        return obj.movieId === movieId;
+      });
 
       return {
-        items: movieFiles.items,
+        items: filesForMovie,
         isDeleting: movieFiles.isDeleting,
         isSaving: movieFiles.isSaving,
         error: null,
