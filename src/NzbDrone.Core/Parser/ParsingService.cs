@@ -136,6 +136,7 @@ namespace NzbDrone.Core.Parser
             if (parsedMovieInfo.Languages.Count <= 1 && parsedMovieInfo.Languages.First() == Language.Unknown && result.Movie != null)
             {
                 parsedMovieInfo.Languages = new List<Language> { result.Movie.OriginalLanguage };
+                _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", result.Movie.OriginalLanguage.Name);
             }
 
             result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
