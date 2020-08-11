@@ -94,32 +94,7 @@ namespace NzbDrone.Mono.Disk
 
         public string GetRealPath(string path)
         {
-            do
-            {
-                var link = UnixPath.TryReadLink(path);
-
-                if (link == null)
-                {
-                    var errno = Stdlib.GetLastError();
-                    if (errno != Errno.EINVAL)
-                    {
-                        _logger.Trace("Checking path {0} for symlink returned error {1}, assuming it's not a symlink.", path, errno);
-                    }
-
-                    return path;
-                }
-
-                if (UnixPath.IsPathRooted(link))
-                {
-                    path = link;
-                }
-                else
-                {
-                    path = UnixPath.GetDirectoryName(path) + UnixPath.DirectorySeparatorChar + link;
-                    path = UnixPath.GetCanonicalPath(path);
-                }
-            }
-            while (true);
+            return path;
         }
     }
 }
