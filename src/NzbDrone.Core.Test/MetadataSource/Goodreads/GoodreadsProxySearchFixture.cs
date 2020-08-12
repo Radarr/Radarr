@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         }
 
         [TestCase("Robert Harris", 0, typeof(Author), "Robert Harris")]
-        [TestCase("Robert Harris", 1, typeof(Book), "Fatherland")]
+        [TestCase("Robert Harris", 1, typeof(Book), "An Officer and a Spy")]
         public void successful_combined_search(string query, int position, Type resultType, string expected)
         {
             var result = Subject.SearchForNewEntity(query);
