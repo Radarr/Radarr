@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         }
 
         [Test]
-        public void should_add_collection_movie_if_2_audio()
+        public void should_format_audio_channels_to_one_decimal_when_adding_collection_movie()
         {
             GiventValidMediaInfo(Quality.Bluray1080p, "2/0/0", "DTS", "Interlaced");
 
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             Mocker.GetMock<ITraktProxy>()
                   .Verify(v => v.AddToCollection(It.Is<TraktCollectMoviesResource>(t =>
                     t.Movies.First().Audio == "dts" &&
-                    t.Movies.First().AudioChannels == "5.1" &&
+                    t.Movies.First().AudioChannels == "2.0" &&
                     t.Movies.First().Resolution == "hd_1080i" &&
                     t.Movies.First().MediaType == "bluray"),
                   It.IsAny<string>()), Times.Once());
