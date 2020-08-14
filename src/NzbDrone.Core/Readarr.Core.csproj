@@ -7,8 +7,8 @@
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.5" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.7" />
     <PackageReference Include="FluentMigrator.Runner" Version="4.0.0-alpha.289" />
     <PackageReference Include="FluentMigrator.Runner.SQLite" Version="4.0.0-alpha.289" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
