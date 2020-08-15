@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -17,7 +17,7 @@ namespace NzbDrone.Common.Reflection
 
         public static List<Type> ImplementationsOf<T>(this Assembly assembly)
         {
-            return assembly.GetTypes().Where(c => typeof(T).IsAssignableFrom(c)).ToList();
+            return assembly.GetExportedTypes().Where(c => typeof(T).IsAssignableFrom(c)).ToList();
         }
 
         public static bool IsSimpleType(this Type type)
@@ -68,7 +68,7 @@ namespace NzbDrone.Common.Reflection
 
         public static Type FindTypeByName(this Assembly assembly, string name)
         {
-            return assembly.GetTypes().SingleOrDefault(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            return assembly.GetExportedTypes().SingleOrDefault(c => c.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public static bool HasAttribute<TAttribute>(this Type type)
