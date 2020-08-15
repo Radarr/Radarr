@@ -49,7 +49,6 @@ if [ "$TYPE" = "Unit" ]; then
   WHERE="$WHERE&Category!=IntegrationTest&Category!=AutomationTest"
 elif [ "$TYPE" = "Integration" ] || [ "$TYPE" = "int" ] ; then
   WHERE="$WHERE&Category=IntegrationTest"
-  VSTEST_PARAMS="$VSTEST_PARAMS --settings:$TEST_DIR/integration.runsettings"
 elif [ "$TYPE" = "Automation" ] ; then
   WHERE="$WHERE&Category=AutomationTest"
 else

@@ -484,9 +484,8 @@ stages:
           cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Readarr/. ./bin/
         displayName: Move Package Contents
       - bash: |
-          cd ${TESTSFOLDER}
-          chmod a+x test.sh
-          ./test.sh ${OSNAME} Integration Test
+          chmod a+x ${TESTSFOLDER}/test.sh
+          ${TESTSFOLDER}/test.sh ${OSNAME} Integration Test
         displayName: Run Integration Tests
       - task: PublishTestResults@2
         inputs:
@@ -557,9 +556,8 @@ stages:
           cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Readarr/. ./bin/
         displayName: Move Package Contents
       - bash: |
-          cd ${TESTSFOLDER}
-          chmod a+x test.sh
-          ./test.sh Linux Integration Test
+          chmod a+x ${TESTSFOLDER}/test.sh
+          ${TESTSFOLDER}/test.sh Linux Integration Test
         displayName: Run Integration Tests
       - task: PublishTestResults@2
         inputs:

@@ -22,9 +22,4 @@
     <ProjectReference Include="..\Readarr.Api.V1\Readarr.Api.V1.csproj" />
     <ProjectReference Include="..\NzbDrone.Test.Common\Readarr.Test.Common.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="integration.runsettings">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>

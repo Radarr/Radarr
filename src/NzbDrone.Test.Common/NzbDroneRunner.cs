@@ -23,11 +23,14 @@ namespace NzbDrone.Test.Common
 
         public string AppData { get; private set; }
         public string ApiKey { get; private set; }
+        public int Port { get; private set; }
 
         public NzbDroneRunner(Logger logger, int port = 8787)
         {
             _processProvider = new ProcessProvider(logger);
-            _restClient = new RestClient("http://localhost:8787/api/v1");
+            _restClient = new RestClient($"http://localhost:{port}/api/v1");
+
+            Port = port;
         }
 
         public void Start()
@@ -83,7 +86,7 @@ namespace NzbDrone.Test.Common
                 if (statusCall.ResponseStatus == ResponseStatus.Completed)
                 {
                     _startupLog = null;
-                    TestContext.Progress.WriteLine("Readarr is started. Running Tests");
+                    TestContext.Progress.WriteLine($"Readarr {Port} is started. Running Tests");
                     return;
                 }
 
@@ -91,6 +94,23 @@ namespace NzbDrone.Test.Common
 
                 Thread.Sleep(500);
             }
+        }
+
+        public void Kill()
+        {
+            try
+            {
+                if (_nzbDroneProcess != null)
+                {
+                    _processProvider.Kill(_nzbDroneProcess.Id);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // May happen if the process closes while being closed
+            }
+
+            TestBase.DeleteTempFolder(AppData);
         }
 
         public void KillAll()
@@ -115,7 +135,7 @@ namespace NzbDrone.Test.Common
 
         private void Start(string outputNzbdroneConsoleExe)
         {
-            TestContext.Progress.WriteLine("Starting instance from {0}", outputNzbdroneConsoleExe);
+            TestContext.Progress.WriteLine("Starting instance from {0} on port {1}", outputNzbdroneConsoleExe, Port);
 
             var args = "-nobrowser -data=\"" + AppData + "\"";
             _nzbDroneProcess = _processProvider.Start(outputNzbdroneConsoleExe, args, null, OnOutputDataReceived, OnOutputDataReceived);
@@ -123,7 +143,7 @@ namespace NzbDrone.Test.Common
 
         private void OnOutputDataReceived(string data)
         {
-            TestContext.Progress.WriteLine(" > " + data);
+            TestContext.Progress.WriteLine($" [{Port}] > " + data);
 
             if (_startupLog != null)
             {
@@ -147,7 +167,8 @@ namespace NzbDrone.Test.Common
                 new XDeclaration("1.0", "utf-8", "yes"),
                 new XElement(ConfigFileProvider.CONFIG_ELEMENT_NAME,
                              new XElement(nameof(ConfigFileProvider.ApiKey), apiKey),
-                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false)));
+                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false),
+                             new XElement(nameof(ConfigFileProvider.Port), Port)));
 
             var data = xDoc.ToString();
 
