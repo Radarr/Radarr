@@ -26,6 +26,7 @@ namespace NzbDrone.Core.MediaCover
         IHandleAsync<MoviesDeletedEvent>,
         IMapCoversToLocal
     {
+        private readonly IMediaCoverProxy _mediaCoverProxy;
         private readonly IImageResizer _resizer;
         private readonly IHttpClient _httpClient;
         private readonly IDiskProvider _diskProvider;
@@ -40,7 +41,8 @@ namespace NzbDrone.Core.MediaCover
         // So limit the number of concurrent resizing tasks
         private static SemaphoreSlim _semaphore = new SemaphoreSlim((int)Math.Ceiling(Environment.ProcessorCount / 2.0));
 
-        public MediaCoverService(IImageResizer resizer,
+        public MediaCoverService(IMediaCoverProxy mediaCoverProxy,
+                                 IImageResizer resizer,
                                  IHttpClient httpClient,
                                  IDiskProvider diskProvider,
                                  IAppFolderInfo appFolderInfo,
@@ -49,6 +51,7 @@ namespace NzbDrone.Core.MediaCover
                                  IEventAggregator eventAggregator,
                                  Logger logger)
         {
+            _mediaCoverProxy = mediaCoverProxy;
             _resizer = resizer;
             _httpClient = httpClient;
             _diskProvider = diskProvider;
@@ -69,16 +72,29 @@ namespace NzbDrone.Core.MediaCover
 
         public void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers)
         {
-            foreach (var mediaCover in covers)
+            if (movieId == 0)
             {
-                var filePath = GetCoverPath(movieId, mediaCover.CoverType);
-
-                mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + ".jpg";
-
-                if (_diskProvider.FileExists(filePath))
+                // Movie isn't in Radarr yet, map via a proxy to circument referrer issues
+                foreach (var mediaCover in covers)
                 {
-                    var lastWrite = _diskProvider.FileGetLastWrite(filePath);
-                    mediaCover.Url += "?lastWrite=" + lastWrite.Ticks;
+                    mediaCover.RemoteUrl = mediaCover.Url;
+                    mediaCover.Url = _mediaCoverProxy.RegisterUrl(mediaCover.RemoteUrl);
+                }
+            }
+            else
+            {
+                foreach (var mediaCover in covers)
+                {
+                    var filePath = GetCoverPath(movieId, mediaCover.CoverType);
+
+                    mediaCover.RemoteUrl = mediaCover.Url;
+                    mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + ".jpg";
+
+                    if (_diskProvider.FileExists(filePath))
+                    {
+                        var lastWrite = _diskProvider.FileGetLastWrite(filePath);
+                        mediaCover.Url += "?lastWrite=" + lastWrite.Ticks;
+                    }
                 }
             }
         }
@@ -105,6 +121,10 @@ namespace NzbDrone.Core.MediaCover
                         DownloadCover(movie, cover);
                         updated = true;
                     }
+                }
+                catch (HttpException e)
+                {
+                    _logger.Warn("Couldn't download media cover for {0}. {1}", movie, e.Message);
                 }
                 catch (WebException e)
                 {
