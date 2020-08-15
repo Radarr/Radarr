@@ -11,9 +11,7 @@ import FuseWorker from './fuse.worker';
 import MovieSearchResult from './MovieSearchResult';
 import styles from './MovieSearchInput.css';
 
-const LOADING_TYPE = 'suggestionsLoading';
 const ADD_NEW_TYPE = 'addNew';
-const workerInstance = new FuseWorker();
 
 class MovieSearchInput extends Component {
 
@@ -24,6 +22,7 @@ class MovieSearchInput extends Component {
     super(props, context);
 
     this._autosuggest = null;
+    this._worker = null;
 
     this.state = {
       value: '',
@@ -33,7 +32,23 @@ class MovieSearchInput extends Component {
 
   componentDidMount() {
     this.props.bindShortcut(shortcuts.MOVIE_SEARCH_INPUT.key, this.focusInput);
-    workerInstance.addEventListener('message', this.onSuggestionsReceived, false);
+  }
+
+  componentWillUnmount() {
+    if (this._worker) {
+      this._worker.removeEventListener('message', this.onSuggestionsReceived, false);
+      this._worker.terminate();
+      this._worker = null;
+    }
+  }
+
+  getWorker() {
+    if (!this._worker) {
+      this._worker = new FuseWorker();
+      this._worker.addEventListener('message', this.onSuggestionsReceived, false);
+    }
+
+    return this._worker;
   }
 
   //
@@ -56,6 +71,15 @@ class MovieSearchInput extends Component {
     return (
       <div className={styles.sectionTitle}>
         {section.title}
+
+        {
+          section.loading &&
+            <LoadingIndicator
+              className={styles.loading}
+              rippleClassName={styles.ripple}
+              size={20}
+            />
+        }
       </div>
     );
   }
@@ -70,16 +94,6 @@ class MovieSearchInput extends Component {
         <div className={styles.addNewMovieSuggestion}>
           Search for {query}
         </div>
-      );
-    }
-
-    if (item.type === LOADING_TYPE) {
-      return (
-        <LoadingIndicator
-          className={styles.loading}
-          rippleClassName={styles.ripple}
-          size={30}
-        />
       );
     }
 
@@ -99,7 +113,8 @@ class MovieSearchInput extends Component {
   reset() {
     this.setState({
       value: '',
-      suggestions: []
+      suggestions: [],
+      loading: false
     });
   }
 
@@ -115,6 +130,15 @@ class MovieSearchInput extends Component {
   }
 
   onKeyDown = (event) => {
+    if (event.shiftKey || event.altKey || event.ctrlKey) {
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      this.reset();
+      return;
+    }
+
     if (event.key !== 'Tab' && event.key !== 'Enter') {
       return;
     }
@@ -155,35 +179,74 @@ class MovieSearchInput extends Component {
   }
 
   onSuggestionsFetchRequested = ({ value }) => {
-    this.setState({
-      suggestions: [
-        {
-          type: LOADING_TYPE,
-          title: value
-        }
-      ]
-    });
+    if (!this.state.loading) {
+      this.setState({
+        loading: true
+      });
+    }
+
     this.requestSuggestions(value);
   };
 
   requestSuggestions = _.debounce((value) => {
-    const payload = {
-      value,
-      movies: this.props.movies
-    };
+    if (!this.state.loading) {
+      return;
+    }
 
-    workerInstance.postMessage(payload);
+    const requestLoading = this.state.requestLoading;
+
+    this.setState({
+      requestValue: value,
+      requestLoading: true
+    });
+
+    if (!requestLoading) {
+      const payload = {
+        value,
+        movies: this.props.movies
+      };
+
+      this.getWorker().postMessage(payload);
+    }
   }, 250);
 
   onSuggestionsReceived = (message) => {
-    this.setState({
-      suggestions: message.data
-    });
+    const {
+      value,
+      suggestions
+    } = message.data;
+
+    if (!this.state.loading) {
+      this.setState({
+        requestValue: null,
+        requestLoading: false
+      });
+    } else if (value === this.state.requestValue) {
+      this.setState({
+        suggestions,
+        requestValue: null,
+        requestLoading: false,
+        loading: false
+      });
+    } else {
+      this.setState({
+        suggestions,
+        requestLoading: true
+      });
+
+      const payload = {
+        value: this.state.requestValue,
+        movies: this.props.movies
+      };
+
+      this.getWorker().postMessage(payload);
+    }
   }
 
   onSuggestionsClearRequested = () => {
     this.setState({
-      suggestions: []
+      suggestions: [],
+      loading: false
     });
   }
 
@@ -201,14 +264,16 @@ class MovieSearchInput extends Component {
   render() {
     const {
       value,
+      loading,
       suggestions
     } = this.state;
 
     const suggestionGroups = [];
 
-    if (suggestions.length) {
+    if (suggestions.length || loading) {
       suggestionGroups.push({
-        title: 'Existing Movie',
+        title: 'Existing Movie(s)',
+        loading,
         suggestions
       });
     }

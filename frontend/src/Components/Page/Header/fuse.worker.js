@@ -47,7 +47,7 @@ function getSuggestions(movies, value) {
   return suggestions;
 }
 
-self.addEventListener('message', (e) => {
+onmessage = function(e) {
   if (!e) {
     return;
   }
@@ -57,5 +57,12 @@ self.addEventListener('message', (e) => {
     value
   } = e.data;
 
-  self.postMessage(getSuggestions(movies, value));
-});
+  const suggestions = getSuggestions(movies, value);
+
+  const results = {
+    value,
+    suggestions
+  };
+
+  self.postMessage(results);
+};
