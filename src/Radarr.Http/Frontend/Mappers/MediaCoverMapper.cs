@@ -43,7 +43,7 @@ namespace Radarr.Http.Frontend.Mappers
 
         public override bool CanHandle(string resourceUrl)
         {
-            return resourceUrl.StartsWith("/MediaCover", StringComparison.InvariantCultureIgnoreCase);
+            return resourceUrl.StartsWith("/MediaCover/", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
