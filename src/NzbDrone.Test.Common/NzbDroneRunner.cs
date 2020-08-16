@@ -102,6 +102,14 @@ namespace NzbDrone.Test.Common
             {
                 if (_nzbDroneProcess != null)
                 {
+                    _nzbDroneProcess.Refresh();
+                    if (_nzbDroneProcess.HasExited)
+                    {
+                        var log = File.ReadAllLines(Path.Combine(AppData, "logs", "Readarr.trace.txt"));
+                        var output = log.Join(Environment.NewLine);
+                        TestContext.Progress.WriteLine("Process has exited prematurely: ExitCode={0} Output:\n{1}", _nzbDroneProcess.ExitCode, output);
+                    }
+
                     _processProvider.Kill(_nzbDroneProcess.Id);
                 }
             }
@@ -167,6 +175,7 @@ namespace NzbDrone.Test.Common
                 new XDeclaration("1.0", "utf-8", "yes"),
                 new XElement(ConfigFileProvider.CONFIG_ELEMENT_NAME,
                              new XElement(nameof(ConfigFileProvider.ApiKey), apiKey),
+                             new XElement(nameof(ConfigFileProvider.LogLevel), "trace"),
                              new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false),
                              new XElement(nameof(ConfigFileProvider.Port), Port)));
 
