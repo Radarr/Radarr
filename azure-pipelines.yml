@@ -504,25 +504,21 @@ stages:
             artifactName: LinuxTests
             containerImage: servarr/testimages:mono-5.20
             pattern: 'Readarr.**.linux.tar.gz'
-            failTask: true
           mono610:
             testName: 'Mono 6.10'
             artifactName: LinuxTests
             containerImage: servarr/testimages:mono-6.10
             pattern: 'Readarr.**.linux.tar.gz'
-            failTask: true
           mono612:
             testName: 'Mono 6.12'
             artifactName: LinuxTests
             containerImage: servarr/testimages:mono-6.12
             pattern: 'Readarr.**.linux.tar.gz'
-            failTask: true
           alpine:
             testName: 'Musl Net Core'
             artifactName: LinuxCoreTests
             containerImage: servarr/testimages:alpine
             pattern: 'Readarr.**.linux-musl-core-x64.tar.gz'
-            failTask: false
 
       pool:
         vmImage: 'ubuntu-18.04'
@@ -568,7 +564,7 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(testName) Integration Tests'
-          failTaskOnFailedTests: $(failTask)
+          failTaskOnFailedTests: true
         displayName: Publish Test Results
 
   - stage: Automation
