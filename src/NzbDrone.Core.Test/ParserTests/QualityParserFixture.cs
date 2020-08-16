@@ -326,23 +326,66 @@ namespace NzbDrone.Core.Test.ParserTests
             }
         }
 
+        [TestCase("Movie - 2018 [HDTV-1080p]")]
         [TestCase("Saturday.Night.Live.Vintage.S10E09.Eddie.Murphy.The.Honeydrippers.1080i.UPSCALE.HDTV.DD5.1.MPEG2-zebra")]
-        [TestCase("Dexter - S01E01 - Title [HDTV-1080p]")]
-        [TestCase("[CR] Sailor Moon - 004 [480p][48CE2D0F]")]
-        [TestCase("White.Van.Man.2011.S02E01.WS.PDTV.x264-REPACK-TLA")]
-        public void should_parse_quality_from_name(string title)
+        [TestCase("Movie.Title.2018.Bluray720p")]
+        [TestCase("Movie.Title.2018.Bluray1080p")]
+        [TestCase("Movie.Title.2018.Bluray2160p")]
+        [TestCase("Movie.Title.2018.848x480.dvd")]
+        [TestCase("Movie.Title.2018.848x480.Bluray")]
+        [TestCase("Movie.Title.2018.1280x720.Bluray")]
+        [TestCase("Movie.Title.2018.1920x1080.Bluray")]
+        public void should_parse_full_quality_from_name(string title)
         {
-            QualityParser.ParseQuality(title).QualityDetectionSource.Should().Be(QualityDetectionSource.Name);
+            var result = QualityParser.ParseQuality(title);
+
+            result.SourceDetectionSource.Should().Be(QualityDetectionSource.Name);
+            result.ResolutionDetectionSource.Should().Be(QualityDetectionSource.Name);
+        }
+
+        [TestCase("Movie.Title.2018.848x480")]
+        [TestCase("Movie.Title.2018.1280x720")]
+        [TestCase("Movie.Title.2018.1920x1080")]
+        public void should_parse_resolution_from_name(string title)
+        {
+            var result = QualityParser.ParseQuality(title);
+
+            result.SourceDetectionSource.Should().Be(QualityDetectionSource.Unknown);
+            result.ResolutionDetectionSource.Should().Be(QualityDetectionSource.Name);
+        }
+
+        [TestCase("White.Van.Man.2011.S02E01.WS.PDTV.x264-REPACK-TLA")]
+        [TestCase("Series.Title.S01E01.Bluray")]
+        [TestCase("Series.Title.S01E01.HD.TV")]
+        [TestCase("Series.Title.S01E01.SD.TV")]
+        public void should_parse_source_from_name(string title)
+        {
+            var result = QualityParser.ParseQuality(title);
+
+            result.SourceDetectionSource.Should().Be(QualityDetectionSource.Name);
+            result.ResolutionDetectionSource.Should().Be(QualityDetectionSource.Unknown);
         }
 
         [TestCase("Revolution.S01E02.Chained.Heat.mkv")]
-        [TestCase("Star.Wars.Episode.VII.The.Force.Awakens.mk3d")]
         [TestCase("Dexter - S01E01 - Title.avi")]
         [TestCase("the_x-files.9x18.sunshine_days.avi")]
         [TestCase("[CR] Sailor Moon - 004 [48CE2D0F].avi")]
         public void should_parse_quality_from_extension(string title)
         {
-            QualityParser.ParseQuality(title).QualityDetectionSource.Should().Be(QualityDetectionSource.Extension);
+            var result = QualityParser.ParseQuality(title);
+
+            result.SourceDetectionSource.Should().Be(QualityDetectionSource.Extension);
+            result.ResolutionDetectionSource.Should().Be(QualityDetectionSource.Extension);
+        }
+
+        [TestCase("Revolution.S01E02.Chained.Heat.1080p.mkv")]
+        [TestCase("Dexter - S01E01 - Title.720p.avi")]
+        public void should_parse_resolution_from_name_and_source_from_extension(string title)
+        {
+            var result = QualityParser.ParseQuality(title);
+
+            result.SourceDetectionSource.Should().Be(QualityDetectionSource.Extension);
+            result.ResolutionDetectionSource.Should().Be(QualityDetectionSource.Name);
         }
 
         [TestCase("Movie.Title.2016.1080p.KORSUB.WEBRip.x264.AAC2.0-RADARR", "KORSUB")]

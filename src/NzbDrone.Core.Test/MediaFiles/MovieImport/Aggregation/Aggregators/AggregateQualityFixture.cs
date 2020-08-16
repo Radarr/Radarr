@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality;
 using NzbDrone.Core.Parser;
@@ -13,11 +14,12 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
 {
     [TestFixture]
-    public class AugmentQualityFixture : CoreTest<AggregateQuality>
+    public class AggregateQualityFixture : CoreTest<AggregateQuality>
     {
         private Mock<IAugmentQuality> _mediaInfoAugmenter;
         private Mock<IAugmentQuality> _fileExtensionAugmenter;
         private Mock<IAugmentQuality> _nameAugmenter;
+        private Mock<IAugmentQuality> _releaseNameAugmenter;
 
         [SetUp]
         public void Setup()
@@ -25,15 +27,23 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
             _mediaInfoAugmenter = new Mock<IAugmentQuality>();
             _fileExtensionAugmenter = new Mock<IAugmentQuality>();
             _nameAugmenter = new Mock<IAugmentQuality>();
+            _releaseNameAugmenter = new Mock<IAugmentQuality>();
 
-            _mediaInfoAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>()))
-                               .Returns(AugmentQualityResult.ResolutionOnly((int)Resolution.R1080p, Confidence.MediaInfo));
+            _fileExtensionAugmenter.SetupGet(s => s.Order).Returns(1);
+            _nameAugmenter.SetupGet(s => s.Order).Returns(2);
+            _mediaInfoAugmenter.SetupGet(s => s.Order).Returns(4);
+            _releaseNameAugmenter.SetupGet(s => s.Order).Returns(5);
 
-            _fileExtensionAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>()))
+            _mediaInfoAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>())).Returns(AugmentQualityResult.ResolutionOnly((int)Resolution.R1080p, Confidence.MediaInfo));
+
+            _fileExtensionAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
                                    .Returns(new AugmentQualityResult(Source.TV, Confidence.Fallback, (int)Resolution.R720p, Confidence.Fallback, Modifier.NONE, Confidence.Fallback, new Revision()));
 
-            _nameAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>()))
-                          .Returns(new AugmentQualityResult(Source.TV, Confidence.Default, (int)Resolution.R480p, Confidence.Default, Modifier.NONE, Confidence.Default, new Revision()));
+            _nameAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
+                          .Returns(new AugmentQualityResult(Source.TV, Confidence.Default, 480, Confidence.Default, Modifier.NONE, Confidence.Fallback, new Revision()));
+
+            _releaseNameAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
+                                 .Returns(AugmentQualityResult.SourceOnly(Source.WEBDL, Confidence.MediaInfo));
         }
 
         private void GivenAugmenters(params Mock<IAugmentQuality>[] mocks)
@@ -45,14 +55,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
         public void should_return_HDTV720_from_extension_when_other_augments_are_null()
         {
             var nullMock = new Mock<IAugmentQuality>();
-            nullMock.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>()))
-                    .Returns<LocalMovie>(l => null);
+            nullMock.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
+                    .Returns<LocalMovie, DownloadClientItem>((l, d) => null);
 
             GivenAugmenters(_fileExtensionAugmenter, nullMock);
 
-            var result = Subject.Aggregate(new LocalMovie(), false);
+            var result = Subject.Aggregate(new LocalMovie(), null, false);
 
-            result.Quality.QualityDetectionSource.Should().Be(QualityDetectionSource.Extension);
+            result.Quality.SourceDetectionSource.Should().Be(QualityDetectionSource.Extension);
+            result.Quality.ResolutionDetectionSource.Should().Be(QualityDetectionSource.Extension);
             result.Quality.Quality.Should().Be(Quality.HDTV720p);
         }
 
@@ -61,9 +72,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
         {
             GivenAugmenters(_fileExtensionAugmenter, _nameAugmenter);
 
-            var result = Subject.Aggregate(new LocalMovie(), false);
+            var result = Subject.Aggregate(new LocalMovie(), null, false);
 
-            result.Quality.QualityDetectionSource.Should().Be(QualityDetectionSource.Name);
+            result.Quality.SourceDetectionSource.Should().Be(QualityDetectionSource.Name);
+            result.Quality.ResolutionDetectionSource.Should().Be(QualityDetectionSource.Name);
             result.Quality.Quality.Should().Be(Quality.SDTV);
         }
 
@@ -72,9 +84,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
         {
             GivenAugmenters(_fileExtensionAugmenter, _mediaInfoAugmenter);
 
-            var result = Subject.Aggregate(new LocalMovie(), false);
+            var result = Subject.Aggregate(new LocalMovie(), null, false);
 
-            result.Quality.QualityDetectionSource.Should().Be(QualityDetectionSource.MediaInfo);
+            result.Quality.SourceDetectionSource.Should().Be(QualityDetectionSource.Extension);
+            result.Quality.ResolutionDetectionSource.Should().Be(QualityDetectionSource.MediaInfo);
             result.Quality.Quality.Should().Be(Quality.HDTV1080p);
         }
 
@@ -83,10 +96,23 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
         {
             GivenAugmenters(_nameAugmenter, _mediaInfoAugmenter);
 
-            var result = Subject.Aggregate(new LocalMovie(), false);
+            var result = Subject.Aggregate(new LocalMovie(), null, false);
 
-            result.Quality.QualityDetectionSource.Should().Be(QualityDetectionSource.MediaInfo);
+            result.Quality.SourceDetectionSource.Should().Be(QualityDetectionSource.Name);
+            result.Quality.ResolutionDetectionSource.Should().Be(QualityDetectionSource.MediaInfo);
             result.Quality.Quality.Should().Be(Quality.HDTV1080p);
+        }
+
+        [Test]
+        public void should_return_WEBDL480p_when_file_name_has_HDTV480p_but_release_name_indicates_webdl_source()
+        {
+            GivenAugmenters(_nameAugmenter, _releaseNameAugmenter);
+
+            var result = Subject.Aggregate(new LocalMovie(), new DownloadClientItem(), false);
+
+            result.Quality.SourceDetectionSource.Should().Be(QualityDetectionSource.Name);
+            result.Quality.ResolutionDetectionSource.Should().Be(QualityDetectionSource.Name);
+            result.Quality.Quality.Should().Be(Quality.WEBDL480p);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Parser.Augmenters
                     if (existing != quality.Quality.Resolution)
                     {
                         //_logger.Debug("Overwriting resolution info {0} with info from media info {1}", existing, quality.Resolution);
-                        quality.QualityDetectionSource = QualityDetectionSource.MediaInfo;
+                        quality.ResolutionDetectionSource = QualityDetectionSource.MediaInfo;
                         movieInfo.Quality = quality;
                     }
                 }
