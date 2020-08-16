@@ -19,11 +19,13 @@ function NotificationEventItems(props) {
     onDownload,
     onUpgrade,
     onRename,
+    onDelete,
     onHealthIssue,
     supportsOnGrab,
     supportsOnDownload,
     supportsOnUpgrade,
     supportsOnRename,
+    supportsOnDelete,
     supportsOnHealthIssue,
     includeHealthWarnings
   } = item;
@@ -80,6 +82,17 @@ function NotificationEventItems(props) {
               helpText={translate('OnRenameHelpText')}
               isDisabled={!supportsOnRename.value}
               {...onRename}
+              onChange={onInputChange}
+            />
+          </div>
+
+          <div>
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="onDelete"
+              helpText="On Delete"
+              isDisabled={!supportsOnDelete.value}
+              {...onDelete}
               onChange={onInputChange}
             />
           </div>

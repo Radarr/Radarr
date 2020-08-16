@@ -16,7 +16,8 @@ namespace NzbDrone.Core.Notifications
         : IHandle<MovieRenamedEvent>,
           IHandle<MovieGrabbedEvent>,
           IHandle<MovieDownloadedEvent>,
-          IHandle<HealthCheckFailedEvent>
+          IHandle<HealthCheckFailedEvent>,
+          IHandle<MovieFileDeletedEvent>
     {
         private readonly INotificationFactory _notificationFactory;
         private readonly Logger _logger;
@@ -171,6 +172,30 @@ namespace NzbDrone.Core.Notifications
                     _logger.Warn(ex, "Unable to send OnHealthIssue notification to: " + notification.Definition.Name);
                 }
             }
+        }
+
+        public void Handle(MovieFileDeletedEvent message)
+        {
+                var deleteMessage = new DeleteMessage();
+                deleteMessage.Message = GetMessage(message.MovieFile.Movie, message.MovieFile.Quality);
+                deleteMessage.MovieFile = message.MovieFile;
+                deleteMessage.Movie = message.MovieFile.Movie;
+                deleteMessage.Reason = message.Reason;
+
+                foreach (var notification in _notificationFactory.OnDeleteEnabled())
+                {
+                    try
+                    {
+                        if (ShouldHandleMovie(notification.Definition, message.MovieFile.Movie))
+                        {
+                            notification.OnDelete(deleteMessage);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warn(ex, "Unable to send OnDelete notification to: " + notification.Definition.Name);
+                    }
+                }
         }
     }
 }

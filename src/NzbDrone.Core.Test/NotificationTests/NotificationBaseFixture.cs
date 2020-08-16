@@ -62,6 +62,11 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnRename was called");
             }
 
+            public override void OnDelete(DeleteMessage message)
+            {
+                TestLogger.Info("OnDelete was called");
+            }
+
             public override void OnHealthIssue(NzbDrone.Core.HealthCheck.HealthCheck artist)
             {
                 TestLogger.Info("OnHealthIssue was called");
@@ -100,6 +105,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             notification.SupportsOnDownload.Should().BeTrue();
             notification.SupportsOnUpgrade.Should().BeTrue();
             notification.SupportsOnRename.Should().BeTrue();
+            notification.SupportsOnDelete.Should().BeTrue();
             notification.SupportsOnHealthIssue.Should().BeTrue();
         }
 
@@ -112,6 +118,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             notification.SupportsOnDownload.Should().BeFalse();
             notification.SupportsOnUpgrade.Should().BeFalse();
             notification.SupportsOnRename.Should().BeFalse();
+            notification.SupportsOnDelete.Should().BeFalse();
             notification.SupportsOnHealthIssue.Should().BeFalse();
         }
     }

@@ -17,10 +17,12 @@ namespace NzbDrone.Api.Notifications
             resource.OnDownload = definition.OnDownload;
             resource.OnUpgrade = definition.OnUpgrade;
             resource.OnRename = definition.OnRename;
+            resource.OnDelete = definition.OnDelete;
             resource.SupportsOnGrab = definition.SupportsOnGrab;
             resource.SupportsOnDownload = definition.SupportsOnDownload;
             resource.SupportsOnUpgrade = definition.SupportsOnUpgrade;
             resource.SupportsOnRename = definition.SupportsOnRename;
+            resource.SupportsOnDelete = definition.SupportsOnDelete;
             resource.Tags = definition.Tags;
         }
 
@@ -32,10 +34,12 @@ namespace NzbDrone.Api.Notifications
             definition.OnDownload = resource.OnDownload;
             definition.OnUpgrade = resource.OnUpgrade;
             definition.OnRename = resource.OnRename;
+            definition.OnDelete = resource.OnDelete;
             definition.SupportsOnGrab = resource.SupportsOnGrab;
             definition.SupportsOnDownload = resource.SupportsOnDownload;
             definition.SupportsOnUpgrade = resource.SupportsOnUpgrade;
             definition.SupportsOnRename = resource.SupportsOnRename;
+            definition.SupportsOnDelete = resource.SupportsOnDelete;
             definition.Tags = resource.Tags;
         }
 
