@@ -97,6 +97,34 @@ namespace NzbDrone.Core.History
             _historyRepository.UpdateMany(toUpdate);
         }
 
+        public string FindDownloadId(MovieImportedEvent trackedDownload)
+        {
+            _logger.Debug("Trying to find downloadId for {0} from history", trackedDownload.ImportedMovie.Path);
+
+            var movieId = trackedDownload.MovieInfo.Movie.Id;
+            var movieHistory = _historyRepository.FindDownloadHistory(movieId, trackedDownload.ImportedMovie.Quality);
+
+            var processedDownloadId = movieHistory
+                .Where(c => c.EventType != MovieHistoryEventType.Grabbed && c.DownloadId != null)
+                .Select(c => c.DownloadId);
+
+            var stillDownloading = movieHistory.Where(c => c.EventType == MovieHistoryEventType.Grabbed && !processedDownloadId.Contains(c.DownloadId)).ToList();
+
+            string downloadId = null;
+
+            if (stillDownloading.Any())
+            {
+                if (stillDownloading.Count != 1)
+                {
+                    return null;
+                }
+
+                downloadId = stillDownloading.Single().DownloadId;
+            }
+
+            return downloadId;
+        }
+
         public void Handle(MovieGrabbedEvent message)
         {
             var history = new MovieHistory
@@ -250,48 +278,6 @@ namespace NzbDrone.Core.History
         public void Handle(MoviesDeletedEvent message)
         {
             _historyRepository.DeleteForMovies(message.Movies.Select(m => m.Id).ToList());
-        }
-
-        public string FindDownloadId(MovieImportedEvent trackedDownload)
-        {
-            _logger.Debug("Trying to find downloadId for {0} from history", trackedDownload.ImportedMovie.Path);
-
-            var movieId = trackedDownload.MovieInfo.Movie.Id;
-            var movieHistory = _historyRepository.FindDownloadHistory(movieId, trackedDownload.ImportedMovie.Quality);
-
-            var processedDownloadId = movieHistory
-                .Where(c => c.EventType != MovieHistoryEventType.Grabbed && c.DownloadId != null)
-                .Select(c => c.DownloadId);
-
-            var stillDownloading = movieHistory.Where(c => c.EventType == MovieHistoryEventType.Grabbed && !processedDownloadId.Contains(c.DownloadId)).ToList();
-
-            string downloadId = null;
-
-            if (stillDownloading.Any())
-            {
-                //foreach (var matchingHistory in trackedDownload.EpisodeInfo.Episodes.Select(e => stillDownloading.Where(c => c.MovieId == e.Id).ToList()))
-                //foreach (var matchingHistory in stillDownloading.Where(c => c.MovieId == e.Id).ToList())
-                //{
-                if (stillDownloading.Count != 1)
-                {
-                    return null;
-                }
-
-                var newDownloadId = stillDownloading.Single().DownloadId;
-
-                if (downloadId == null || downloadId == newDownloadId)
-                {
-                    downloadId = newDownloadId;
-                }
-                else
-                {
-                    return null;
-                }
-
-                //}
-            }
-
-            return downloadId;
         }
 
         public void Handle(DownloadFailedEvent message)
