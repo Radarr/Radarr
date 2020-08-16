@@ -5,6 +5,7 @@ using System.Text.Json;
 using Dapper;
 using FluentMigrator;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore.Converters;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
 namespace NzbDrone.Core.Datastore.Migration

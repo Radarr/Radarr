@@ -2,25 +2,28 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-public class StringConverter : JsonConverter<string>
+namespace NzbDrone.Core.Datastore.Converters
 {
-    public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public class StringConverter : JsonConverter<string>
     {
-        if (reader.TokenType == JsonTokenType.Number)
+        public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var stringValue = reader.GetInt32();
-            return stringValue.ToString();
-        }
-        else if (reader.TokenType == JsonTokenType.String)
-        {
-            return reader.GetString();
+            if (reader.TokenType == JsonTokenType.Number)
+            {
+                var stringValue = reader.GetInt32();
+                return stringValue.ToString();
+            }
+            else if (reader.TokenType == JsonTokenType.String)
+            {
+                return reader.GetString();
+            }
+
+            throw new System.Text.Json.JsonException();
         }
 
-        throw new System.Text.Json.JsonException();
-    }
-
-    public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
-    {
-        writer.WriteStringValue(value);
+        public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value);
+        }
     }
 }
