@@ -42,19 +42,12 @@ namespace NzbDrone.Api.Movies
         protected MovieResource GetMovie(int id)
         {
             var movie = _movieService.GetMovie(id);
-            var resource = MapToResource(movie, true);
-            return resource;
+            return MapToResource(movie);
         }
 
-        protected MovieResource MapToResource(Core.Movies.Movie episode, bool includeSeries)
+        protected MovieResource MapToResource(Movie movie)
         {
-            var resource = episode.ToResource();
-
-            if (includeSeries)
-            {
-                var series = episode ?? _movieService.GetMovie(episode.Id);
-                resource = series.ToResource();
-            }
+            var resource = movie.ToResource();
 
             return resource;
         }

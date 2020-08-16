@@ -37,7 +37,7 @@ namespace NzbDrone.Api.Wanted
                 pagingSpec.FilterExpressions.Add(v => v.Monitored == true);
             }
 
-            var resource = ApplyToPage(_movieCutoffService.MoviesWhereCutoffUnmet, pagingSpec, v => MapToResource(v, true));
+            var resource = ApplyToPage(_movieCutoffService.MoviesWhereCutoffUnmet, pagingSpec, v => MapToResource(v));
 
             return resource;
         }
