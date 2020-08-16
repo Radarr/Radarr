@@ -516,7 +516,7 @@ stages:
             pattern: 'Readarr.**.linux.tar.gz'
           alpine:
             testName: 'Musl Net Core'
-            artifactName: LinuxCoreTests
+            artifactName: LinuxMuslCoreTests
             containerImage: servarr/testimages:alpine
             pattern: 'Readarr.**.linux-musl-core-x64.tar.gz'
 
