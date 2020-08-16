@@ -93,6 +93,11 @@ namespace NzbDrone.Host
 
         private static void EnsureSingleInstance(bool isService, IStartupContext startupContext)
         {
+            if (startupContext.Flags.Contains(StartupContext.NO_SINGLE_INSTANCE_CHECK))
+            {
+                return;
+            }
+
             var instancePolicy = _container.Resolve<ISingleInstancePolicy>();
 
             if (startupContext.Flags.Contains(StartupContext.TERMINATE))

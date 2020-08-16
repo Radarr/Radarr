@@ -145,7 +145,7 @@ namespace NzbDrone.Test.Common
         {
             TestContext.Progress.WriteLine("Starting instance from {0} on port {1}", outputNzbdroneConsoleExe, Port);
 
-            var args = "-nobrowser -data=\"" + AppData + "\"";
+            var args = "-nobrowser -nosingleinstancecheck -data=\"" + AppData + "\"";
             _nzbDroneProcess = _processProvider.Start(outputNzbdroneConsoleExe, args, null, OnOutputDataReceived, OnOutputDataReceived);
         }
 
