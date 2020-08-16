@@ -109,7 +109,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             try
             {
-                _aggregationService.Augment(localMovie, otherFiles);
+                _aggregationService.Augment(localMovie, downloadClientItem, otherFiles);
 
                 if (localMovie.Movie == null)
                 {

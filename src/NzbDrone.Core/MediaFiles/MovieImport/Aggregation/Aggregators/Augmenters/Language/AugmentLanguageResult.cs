@@ -4,6 +4,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
 {
     public class AugmentLanguageResult
     {
+        public string Name { get; set; }
         public List<Languages.Language> Languages { get; set; }
         public Confidence Confidence { get; set; }
 

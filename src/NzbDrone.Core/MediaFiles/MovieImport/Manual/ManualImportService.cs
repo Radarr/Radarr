@@ -266,7 +266,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                     localMovie.FolderMovieInfo = Parser.Parser.ParseMovieTitle(file.FolderName);
                 }
 
-                localMovie = _aggregationService.Augment(localMovie, false);
+                localMovie = _aggregationService.Augment(localMovie, trackedDownload?.DownloadItem, false);
 
                 // Apply the user-chosen values.
                 localMovie.Movie = movie;

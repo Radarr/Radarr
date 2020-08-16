@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
                                                     .With(l => l.MediaInfo = null)
                                                     .Build();
 
-            Subject.AugmentLanguage(localMovie).Should().Be(null);
+            Subject.AugmentLanguage(localMovie, null).Should().Be(null);
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
                                                     .With(l => l.MediaInfo = mediaInfo)
                                                     .Build();
 
-            var result = Subject.AugmentLanguage(localMovie);
+            var result = Subject.AugmentLanguage(localMovie, null);
 
             result.Languages.Count.Should().Be(1);
             result.Languages.Should().Contain(Core.Languages.Language.English);
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
                                                     .With(l => l.MediaInfo = mediaInfo)
                                                     .Build();
 
-            var result = Subject.AugmentLanguage(localMovie);
+            var result = Subject.AugmentLanguage(localMovie, null);
 
             result.Languages.Count.Should().Be(1);
             result.Languages.Should().Contain(Core.Languages.Language.English);
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
                                                     .With(l => l.MediaInfo = mediaInfo)
                                                     .Build();
 
-            var result = Subject.AugmentLanguage(localMovie);
+            var result = Subject.AugmentLanguage(localMovie, null);
 
             result.Should().BeNull();
         }
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
                                                     .With(l => l.MediaInfo = mediaInfo)
                                                     .Build();
 
-            var result = Subject.AugmentLanguage(localMovie);
+            var result = Subject.AugmentLanguage(localMovie, null);
 
             result.Languages.Count.Should().Be(1);
             result.Languages.Should().Contain(Core.Languages.Language.English);
@@ -101,7 +101,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
                                                     .With(l => l.MediaInfo = mediaInfo)
                                                     .Build();
 
-            var result = Subject.AugmentLanguage(localMovie);
+            var result = Subject.AugmentLanguage(localMovie, null);
 
             result.Languages.Count.Should().Be(2);
             result.Languages.Should().Contain(Core.Languages.Language.English);

@@ -1,10 +1,14 @@
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Language
 {
     public class AugmentLanguageFromDownloadClientItem : IAugmentLanguage
     {
-        public AugmentLanguageResult AugmentLanguage(LocalMovie localMovie)
+        public int Order => 3;
+        public string Name => "DownloadClientItem";
+
+        public AugmentLanguageResult AugmentLanguage(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             var languages = localMovie.DownloadClientMovieInfo?.Languages;
 
