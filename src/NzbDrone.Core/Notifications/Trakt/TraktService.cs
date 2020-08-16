@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Notifications.Trakt
         HttpRequest GetOAuthRequest(string callbackUrl);
         TraktAuthRefreshResource RefreshAuthToken(string refreshToken);
         void AddMovieToCollection(TraktSettings settings, Movie movie, MovieFile movieFile);
+        void RemoveMovieFromCollection(TraktSettings settings, Movie movie, MovieFile movieFile);
         string GetUserName(string accessToken);
         ValidationFailure Test(TraktSettings settings);
     }
@@ -73,6 +74,27 @@ namespace NzbDrone.Core.Notifications.Trakt
                 _logger.Error(ex, "Unable to send test message: " + ex.Message);
                 return new ValidationFailure("", "Unable to send test message");
             }
+        }
+
+        public void RemoveMovieFromCollection(TraktSettings settings, Movie movie, MovieFile movieFile)
+        {
+            var payload = new TraktCollectMoviesResource
+            {
+                Movies = new List<TraktCollectMovie>()
+            };
+
+            payload.Movies.Add(new TraktCollectMovie
+            {
+                Title = movie.Title,
+                Year = movie.Year,
+                Ids = new TraktMovieIdsResource
+                {
+                    Tmdb = movie.TmdbId,
+                    Imdb = movie.ImdbId ?? "",
+                }
+            });
+
+            _proxy.RemoveFromCollection(payload, settings.AccessToken);
         }
 
         public void AddMovieToCollection(TraktSettings settings, Movie movie, MovieFile movieFile)

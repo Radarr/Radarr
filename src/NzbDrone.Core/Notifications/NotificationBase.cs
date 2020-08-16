@@ -46,11 +46,16 @@ namespace NzbDrone.Core.Notifications
         {
         }
 
+        public virtual void OnDelete(DeleteMessage deleteMessage)
+        {
+        }
+
         public bool SupportsOnGrab => HasConcreteImplementation("OnGrab");
         public bool SupportsOnRename => HasConcreteImplementation("OnMovieRename");
         public bool SupportsOnDownload => HasConcreteImplementation("OnDownload");
         public bool SupportsOnUpgrade => SupportsOnDownload;
         public bool SupportsOnHealthIssue => HasConcreteImplementation("OnHealthIssue");
+        public bool SupportsOnDelete => HasConcreteImplementation("OnDelete");
 
         protected TSettings Settings => (TSettings)Definition.Settings;
 
