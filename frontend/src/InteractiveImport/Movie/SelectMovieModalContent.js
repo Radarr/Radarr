@@ -17,8 +17,6 @@ import translate from 'Utilities/String/translate';
 import SelectMovieRow from './SelectMovieRow';
 import styles from './SelectMovieModalContent.css';
 
-const workerInstance = new FuseWorker();
-
 class SelectMovieModalContent extends Component {
 
   //
@@ -27,16 +25,31 @@ class SelectMovieModalContent extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this._worker = null;
+
     this.state = {
       scroller: null,
       filter: '',
-      showLoading: false,
+      loading: false,
       suggestions: props.items
     };
   }
 
-  componentDidMount() {
-    workerInstance.addEventListener('message', this.onSuggestionsReceived, false);
+  componentWillUnmount() {
+    if (this._worker) {
+      this._worker.removeEventListener('message', this.onSuggestionsReceived, false);
+      this._worker.terminate();
+      this._worker = null;
+    }
+  }
+
+  getWorker() {
+    if (!this._worker) {
+      this._worker = new FuseWorker();
+      this._worker.addEventListener('message', this.onSuggestionsReceived, false);
+    }
+
+    return this._worker;
   }
 
   //
@@ -71,13 +84,13 @@ class SelectMovieModalContent extends Component {
   onFilterChange = ({ value }) => {
     if (value) {
       this.setState({
-        showLoading: true,
+        loading: true,
         filter: value.toLowerCase()
       });
       this.requestSuggestions(value);
     } else {
       this.setState({
-        showLoading: false,
+        loading: false,
         filter: '',
         suggestions: this.props.items
       });
@@ -86,26 +99,58 @@ class SelectMovieModalContent extends Component {
   }
 
   requestSuggestions = _.debounce((value) => {
-    const payload = {
-      value,
-      movies: this.props.items
-    };
+    if (!this.state.loading) {
+      return;
+    }
 
-    workerInstance.postMessage(payload);
+    const requestLoading = this.state.requestLoading;
+
+    this.setState({
+      requestValue: value,
+      requestLoading: true
+    });
+
+    if (!requestLoading) {
+      const payload = {
+        value,
+        movies: this.props.items
+      };
+
+      this.getWorker().postMessage(payload);
+    }
   }, 250);
 
   onSuggestionsReceived = (message) => {
-    this.setState((state, props) => {
-      // this guards against setting a stale set of suggestions returned
-      // after the filter has been cleared
-      if (state.filter !== '') {
-        return {
-          showLoading: false,
-          suggestions: message.data.map((suggestion) => suggestion.item)
-        };
-      }
-      return {};
-    });
+    const {
+      value,
+      suggestions
+    } = message.data;
+
+    if (!this.state.loading) {
+      this.setState({
+        requestValue: null,
+        requestLoading: false
+      });
+    } else if (value === this.state.requestValue) {
+      this.setState({
+        suggestions: suggestions.map((suggestion) => suggestion.item),
+        requestValue: null,
+        requestLoading: false,
+        loading: false
+      });
+    } else {
+      this.setState({
+        suggestions: suggestions.map((suggestion) => suggestion.item),
+        requestLoading: true
+      });
+
+      const payload = {
+        value: this.state.requestValue,
+        movies: this.props.items
+      };
+
+      this.getWorker().postMessage(payload);
+    }
   }
 
   //
@@ -120,7 +165,7 @@ class SelectMovieModalContent extends Component {
     const {
       scroller,
       filter,
-      showLoading,
+      loading,
       suggestions
     } = this.state;
 
@@ -152,7 +197,7 @@ class SelectMovieModalContent extends Component {
           >
             <div>
               {
-                showLoading || !scroller ?
+                loading || !scroller ?
                   <LoadingIndicator /> :
                   <VirtualTable
                     header={
