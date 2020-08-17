@@ -340,8 +340,6 @@ namespace NzbDrone.Common.Processes
             //TODO: move this to an OS specific class
             var monoProcesses = Process.GetProcessesByName("mono")
                                        .Union(Process.GetProcessesByName("mono-sgen"))
-                                       .Union(Process.GetProcessesByName("mono-sgen32"))
-                                       .Union(Process.GetProcessesByName("mono-sgen64"))
                                        .Where(process =>
                                               process.Modules.Cast<ProcessModule>()
                                                      .Any(module =>
