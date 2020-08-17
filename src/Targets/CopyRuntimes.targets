@@ -2,10 +2,10 @@
   <ItemGroup>
     <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*" />
   </ItemGroup>
-  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild">
+  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild" Condition="!$(RuntimeIdentifier.StartsWith('linux')) or '$(TargetFramework)' == 'netcoreapp3.1'">
     <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(OutDir)" />
   </Target>
-  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish">
+  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish" Condition="!$(RuntimeIdentifier.StartsWith('linux')) or '$(TargetFramework)' == 'netcoreapp3.1'">
     <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(PublishDir)" />
   </Target>
 </Project>
