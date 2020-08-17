@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -36,7 +37,10 @@ namespace NzbDrone.Automation.Test
         {
             var options = new FirefoxOptions();
             options.AddArguments("--headless");
-            driver = new FirefoxDriver(options);
+            var service = FirefoxDriverService.CreateDefaultService();
+
+            // Timeout as windows automation tests seem to take alot longer to get going
+            driver = new FirefoxDriver(service, options, new TimeSpan(0, 4, 0));
 
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger());
             _runner.KillAll();
