@@ -27,43 +27,13 @@ namespace NzbDrone.Test.Common
             _restClient = new RestClient("http://localhost:7878/api/v3");
         }
 
-        private void CopyDirectory(string source, string target)
-        {
-            foreach (var dirPath in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
-            {
-                Directory.CreateDirectory(dirPath.Replace(source, target));
-            }
-
-            foreach (var newPath in Directory.GetFiles(source, "*.*", SearchOption.AllDirectories))
-            {
-                File.Copy(newPath, newPath.Replace(source, target), true);
-            }
-        }
-
         public void Start()
         {
             AppData = Path.Combine(TestContext.CurrentContext.TestDirectory, "_intg_" + TestBase.GetUID());
+            Directory.CreateDirectory(AppData);
 
-            if (!Directory.Exists(Path.Combine(TestContext.CurrentContext.TestDirectory, "CachedAppData")))
-            {
-                Directory.CreateDirectory(AppData);
-                GenerateConfigFile();
-                StartInternal();
-                KillAll(false);
+            GenerateConfigFile();
 
-                CopyDirectory(AppData, Path.Combine(TestContext.CurrentContext.TestDirectory, "CachedAppData"));
-            }
-            else
-            {
-                CopyDirectory(Path.Combine(TestContext.CurrentContext.TestDirectory, "CachedAppData"), AppData);
-                GenerateConfigFile();
-            }
-
-            StartInternal();
-        }
-
-        private void StartInternal()
-        {
             string consoleExe;
             if (OsInfo.IsWindows)
             {
@@ -115,7 +85,7 @@ namespace NzbDrone.Test.Common
             }
         }
 
-        public void KillAll(bool delete = true)
+        public void KillAll()
         {
             try
             {
@@ -132,10 +102,7 @@ namespace NzbDrone.Test.Common
                 // May happen if the process closes while being closed
             }
 
-            if (delete)
-            {
-                TestBase.DeleteTempFolder(AppData);
-            }
+            TestBase.DeleteTempFolder(AppData);
         }
 
         private void Start(string outputRadarrConsoleExe)
