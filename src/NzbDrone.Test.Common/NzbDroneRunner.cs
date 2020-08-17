@@ -20,11 +20,14 @@ namespace NzbDrone.Test.Common
 
         public string AppData { get; private set; }
         public string ApiKey { get; private set; }
+        public int Port { get; private set; }
 
         public NzbDroneRunner(Logger logger, int port = 7878)
         {
             _processProvider = new ProcessProvider(logger);
-            _restClient = new RestClient("http://localhost:7878/api/v3");
+            _restClient = new RestClient($"http://localhost:{port}/api/v3");
+
+            Port = port;
         }
 
         public void Start()
@@ -75,7 +78,7 @@ namespace NzbDrone.Test.Common
 
                 if (statusCall.ResponseStatus == ResponseStatus.Completed)
                 {
-                    TestContext.Progress.WriteLine("Radarr is started. Running Tests");
+                    TestContext.Progress.WriteLine($"Radarr {Port} is started. Running Tests");
                     return;
                 }
 
@@ -83,6 +86,23 @@ namespace NzbDrone.Test.Common
 
                 Thread.Sleep(500);
             }
+        }
+
+        public void Kill()
+        {
+            try
+            {
+                if (_nzbDroneProcess != null)
+                {
+                    _processProvider.Kill(_nzbDroneProcess.Id);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // May happen if the process closes while being closed
+            }
+
+            TestBase.DeleteTempFolder(AppData);
         }
 
         public void KillAll()
@@ -107,13 +127,14 @@ namespace NzbDrone.Test.Common
 
         private void Start(string outputRadarrConsoleExe)
         {
+            TestContext.Progress.WriteLine("Starting instance from {0} on port {1}", outputRadarrConsoleExe, Port);
             var args = "-nobrowser -data=\"" + AppData + "\"";
             _nzbDroneProcess = _processProvider.Start(outputRadarrConsoleExe, args, null, OnOutputDataReceived, OnOutputDataReceived);
         }
 
         private void OnOutputDataReceived(string data)
         {
-            TestContext.Progress.WriteLine(data);
+            TestContext.Progress.WriteLine($" [{Port}] > " + data);
 
             if (data.Contains("Press enter to exit"))
             {
@@ -132,7 +153,8 @@ namespace NzbDrone.Test.Common
                 new XDeclaration("1.0", "utf-8", "yes"),
                 new XElement(ConfigFileProvider.CONFIG_ELEMENT_NAME,
                              new XElement(nameof(ConfigFileProvider.ApiKey), apiKey),
-                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false)));
+                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false),
+                             new XElement(nameof(ConfigFileProvider.Port), Port)));
 
             var data = xDoc.ToString();
 
