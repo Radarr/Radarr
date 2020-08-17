@@ -699,7 +699,7 @@ stages:
       - bash: |
           chmod a+x ${TESTSFOLDER}/test.sh
           ${TESTSFOLDER}/test.sh ${OSNAME} Automation Test
-        displayName: Run Integration Tests
+        displayName: Run Automation Tests
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'NUnit'
