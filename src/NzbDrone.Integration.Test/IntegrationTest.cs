@@ -1,24 +1,33 @@
+using System.Threading;
 using NLog;
+using NUnit.Framework;
 using NzbDrone.Core.Indexers.Newznab;
 using NzbDrone.Test.Common;
 using Radarr.Http.ClientSchema;
 
 namespace NzbDrone.Integration.Test
 {
+    [Parallelizable(ParallelScope.Fixtures)]
     public abstract class IntegrationTest : IntegrationTestBase
     {
+        protected static int StaticPort = 7878;
+
         protected NzbDroneRunner _runner;
 
         public override string MovieRootFolder => GetTempDirectory("MovieRootFolder");
 
-        protected override string RootUrl => "http://localhost:7878/";
+        protected int Port { get; private set; }
+
+        protected override string RootUrl => $"http://localhost:{Port}/";
 
         protected override string ApiKey => _runner.ApiKey;
 
         protected override void StartTestTarget()
         {
-            _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger());
-            _runner.KillAll();
+            Port = Interlocked.Increment(ref StaticPort);
+
+            _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger(), Port);
+            _runner.Kill();
 
             _runner.Start();
         }
@@ -45,7 +54,7 @@ namespace NzbDrone.Integration.Test
 
         protected override void StopTestTarget()
         {
-            _runner.KillAll();
+            _runner.Kill();
         }
     }
 }
