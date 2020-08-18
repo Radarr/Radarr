@@ -67,6 +67,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("the.shield.1x13.circles.ws.xvidvd-tns", false)]
         [TestCase("the_x-files.9x18.sunshine_days.ac3.ws_dvdrip_xvid-fov.avi", false)]
         [TestCase("The.Third.Jihad.2008.DVDRip.360p.H264 iPod -20-40", false)]
+        [TestCase("SomeMovie.2018.DVDRip.ts", false)]
         public void should_parse_dvd_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.DVD, proper, Resolution.R480p);
