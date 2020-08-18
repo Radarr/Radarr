@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NLog;
@@ -36,10 +36,7 @@ namespace NzbDrone.Automation.Test
         {
             var options = new FirefoxOptions();
             options.AddArguments("--headless");
-            FirefoxDriverService service = FirefoxDriverService.CreateDefaultService();
-
-            // service.Host = "::1"; // Workaround netcore/selenium bug https://github.com/SeleniumHQ/selenium/issues/7840
-            driver = new FirefoxDriver(service, options, new System.TimeSpan(0, 3, 0));
+            driver = new FirefoxDriver(options);
 
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger());
             _runner.KillAll();
