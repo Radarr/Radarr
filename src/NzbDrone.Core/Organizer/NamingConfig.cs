@@ -10,8 +10,8 @@ namespace NzbDrone.Core.Organizer
             ReplaceIllegalCharacters = true,
             ColonReplacementFormat = 0,
             MultiEpisodeStyle = 0,
-            MovieFolderFormat = "{Movie Title:EN} ({Release Year})",
-            StandardMovieFormat = "{Movie Title:EN} ({Release Year}) {Quality Full}",
+            MovieFolderFormat = "{Movie Title} ({Release Year})",
+            StandardMovieFormat = "{Movie Title} ({Release Year}) {Quality Full}",
         };
 
         public bool RenameMovies { get; set; }
