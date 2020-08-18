@@ -22,6 +22,8 @@ class Blacklist extends Component {
     const {
       isFetching,
       isPopulated,
+      isAuthorFetching,
+      isAuthorPopulated,
       error,
       items,
       columns,
@@ -30,6 +32,9 @@ class Blacklist extends Component {
       onClearBlacklistPress,
       ...otherProps
     } = this.props;
+
+    const isAllPopulated = isPopulated && isAuthorPopulated;
+    const isAnyFetching = isFetching || isAuthorFetching;
 
     return (
       <PageContent title="Blacklist">
@@ -58,24 +63,24 @@ class Blacklist extends Component {
 
         <PageContentBodyConnector>
           {
-            isFetching && !isPopulated &&
+            isAnyFetching && !isAllPopulated &&
               <LoadingIndicator />
           }
 
           {
-            !isFetching && !!error &&
+            !isAnyFetching && !!error &&
               <div>Unable to load blacklist</div>
           }
 
           {
-            isPopulated && !error && !items.length &&
+            isAllPopulated && !error && !items.length &&
               <div>
                 No history blacklist
               </div>
           }
 
           {
-            isPopulated && !error && !!items.length &&
+            isAllPopulated && !error && !!items.length &&
               <div>
                 <Table
                   columns={columns}
@@ -110,6 +115,8 @@ class Blacklist extends Component {
 }
 
 Blacklist.propTypes = {
+  isAuthorFetching: PropTypes.bool.isRequired,
+  isAuthorPopulated: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,

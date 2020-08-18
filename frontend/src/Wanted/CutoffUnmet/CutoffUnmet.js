@@ -113,6 +113,8 @@ class CutoffUnmet extends Component {
       isPopulated,
       error,
       items,
+      isAuthorFetching,
+      isAuthorPopulated,
       selectedFilterKey,
       filters,
       columns,
@@ -129,6 +131,9 @@ class CutoffUnmet extends Component {
       selectedState,
       isConfirmSearchAllCutoffUnmetModalOpen
     } = this.state;
+
+    const isAllPopulated = isPopulated && isAuthorPopulated;
+    const isAnyFetching = isFetching || isAuthorFetching;
 
     const itemsSelected = !!this.getSelectedIds().length;
     const isShowingMonitored = getMonitoredValue(this.props);
@@ -178,26 +183,26 @@ class CutoffUnmet extends Component {
 
         <PageContentBodyConnector>
           {
-            isFetching && !isPopulated &&
+            isAnyFetching && !isAllPopulated &&
               <LoadingIndicator />
           }
 
           {
-            !isFetching && error &&
+            !isAnyFetching && error &&
               <div>
                 Error fetching cutoff unmet
               </div>
           }
 
           {
-            isPopulated && !error && !items.length &&
+            isAllPopulated && !error && !items.length &&
               <div>
                 No cutoff unmet items
               </div>
           }
 
           {
-            isPopulated && !error && !!items.length &&
+            isAllPopulated && !error && !!items.length &&
               <div>
                 <Table
                   columns={columns}
@@ -261,6 +266,8 @@ CutoffUnmet.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isAuthorFetching: PropTypes.bool.isRequired,
+  isAuthorPopulated: PropTypes.bool.isRequired,
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,

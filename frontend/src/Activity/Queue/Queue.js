@@ -125,6 +125,8 @@ class Queue extends Component {
       isPopulated,
       error,
       items,
+      isAuthorFetching,
+      isAuthorPopulated,
       isBooksFetching,
       isBooksPopulated,
       booksError,
@@ -145,8 +147,8 @@ class Queue extends Component {
       isPendingSelected
     } = this.state;
 
-    const isRefreshing = isFetching || isBooksFetching || isRefreshMonitoredDownloadsExecuting;
-    const isAllPopulated = isPopulated && (isBooksPopulated || !items.length || items.every((e) => !e.bookId));
+    const isRefreshing = isFetching || isAuthorFetching || isBooksFetching || isRefreshMonitoredDownloadsExecuting;
+    const isAllPopulated = isPopulated && ((isAuthorPopulated && isBooksPopulated) || !items.length || items.every((e) => !e.bookId));
     const hasError = error || booksError;
     const selectedIds = this.getSelectedIds();
     const selectedCount = selectedIds.length;
@@ -280,6 +282,8 @@ Queue.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isAuthorFetching: PropTypes.bool.isRequired,
+  isAuthorPopulated: PropTypes.bool.isRequired,
   isBooksFetching: PropTypes.bool.isRequired,
   isBooksPopulated: PropTypes.bool.isRequired,
   booksError: PropTypes.object,

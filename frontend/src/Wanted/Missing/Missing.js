@@ -122,6 +122,8 @@ class Missing extends Component {
       isPopulated,
       error,
       items,
+      isAuthorFetching,
+      isAuthorPopulated,
       selectedFilterKey,
       filters,
       columns,
@@ -139,6 +141,9 @@ class Missing extends Component {
       isConfirmSearchAllMissingModalOpen,
       isInteractiveImportModalOpen
     } = this.state;
+
+    const isAllPopulated = isPopulated && isAuthorPopulated;
+    const isAnyFetching = isFetching || isAuthorFetching;
 
     const itemsSelected = !!this.getSelectedIds().length;
     const isShowingMonitored = getMonitoredValue(this.props);
@@ -195,26 +200,26 @@ class Missing extends Component {
 
         <PageContentBodyConnector>
           {
-            isFetching && !isPopulated &&
+            isAnyFetching && !isAllPopulated &&
               <LoadingIndicator />
           }
 
           {
-            !isFetching && error &&
+            !isAnyFetching && error &&
               <div>
                 Error fetching missing items
               </div>
           }
 
           {
-            isPopulated && !error && !items.length &&
+            isAllPopulated && !error && !items.length &&
               <div>
                 No missing items
               </div>
           }
 
           {
-            isPopulated && !error && !!items.length &&
+            isAllPopulated && !error && !!items.length &&
               <div>
                 <Table
                   columns={columns}
@@ -284,6 +289,8 @@ Missing.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isAuthorFetching: PropTypes.bool.isRequired,
+  isAuthorPopulated: PropTypes.bool.isRequired,
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,

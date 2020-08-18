@@ -16,10 +16,13 @@ import Missing from './Missing';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.wanted.missing,
+    (state) => state.authors,
     createCommandExecutingSelector(commandNames.MISSING_BOOK_SEARCH),
-    (missing, isSearchingForMissingBooks) => {
+    (missing, authors, isSearchingForMissingBooks) => {
 
       return {
+        isAuthorFetching: authors.isFetching,
+        isAuthorPopulated: authors.isPopulated,
         isSearchingForMissingBooks,
         isSaving: missing.items.filter((m) => m.isSaving).length > 1,
         ...missing

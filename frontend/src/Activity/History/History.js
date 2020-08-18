@@ -51,6 +51,8 @@ class History extends Component {
       selectedFilterKey,
       filters,
       totalRecords,
+      isAuthorFetching,
+      isAuthorPopulated,
       isBooksFetching,
       isBooksPopulated,
       booksError,
@@ -59,8 +61,8 @@ class History extends Component {
       ...otherProps
     } = this.props;
 
-    const isFetchingAny = isFetching || isBooksFetching;
-    const isAllPopulated = isPopulated && (isBooksPopulated || !items.length);
+    const isFetchingAny = isFetching || isAuthorFetching || isBooksFetching;
+    const isAllPopulated = isPopulated && ((isAuthorPopulated && isBooksPopulated) || !items.length);
     const hasError = error || booksError;
 
     return (
@@ -162,6 +164,8 @@ History.propTypes = {
   selectedFilterKey: PropTypes.string.isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
+  isAuthorFetching: PropTypes.bool.isRequired,
+  isAuthorPopulated: PropTypes.bool.isRequired,
   isBooksFetching: PropTypes.bool.isRequired,
   isBooksPopulated: PropTypes.bool.isRequired,
   booksError: PropTypes.object,

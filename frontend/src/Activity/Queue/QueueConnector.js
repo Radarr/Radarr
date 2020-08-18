@@ -15,12 +15,15 @@ import Queue from './Queue';
 
 function createMapStateToProps() {
   return createSelector(
+    (state) => state.authors,
     (state) => state.books,
     (state) => state.queue.options,
     (state) => state.queue.paged,
     createCommandExecutingSelector(commandNames.REFRESH_MONITORED_DOWNLOADS),
-    (books, options, queue, isRefreshMonitoredDownloadsExecuting) => {
+    (authors, books, options, queue, isRefreshMonitoredDownloadsExecuting) => {
       return {
+        isAuthorFetching: authors.isFetching,
+        isAuthorPopulated: authors.isPopulated,
         isBooksFetching: books.isFetching,
         isBooksPopulated: books.isPopulated,
         booksError: books.error,

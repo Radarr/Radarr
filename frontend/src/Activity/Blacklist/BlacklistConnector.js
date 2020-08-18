@@ -13,9 +13,12 @@ import Blacklist from './Blacklist';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.blacklist,
+    (state) => state.authors,
     createCommandExecutingSelector(commandNames.CLEAR_BLACKLIST),
-    (blacklist, isClearingBlacklistExecuting) => {
+    (blacklist, authors, isClearingBlacklistExecuting) => {
       return {
+        isAuthorFetching: authors.isFetching,
+        isAuthorPopulated: authors.isPopulated,
         isClearingBlacklistExecuting,
         ...blacklist
       };
