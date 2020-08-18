@@ -110,30 +110,38 @@ namespace NzbDrone.Core.MediaFiles
 
         public bool ShouldDeleteFolder(IDirectoryInfo directoryInfo, Author author)
         {
-            var bookFiles = _diskScanService.GetBookFiles(directoryInfo.FullName);
-            var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f).Equals(".rar", StringComparison.OrdinalIgnoreCase));
-
-            foreach (var bookFile in bookFiles)
+            try
             {
-                var bookParseResult = Parser.Parser.ParseTitle(bookFile.Name);
+                var bookFiles = _diskScanService.GetBookFiles(directoryInfo.FullName);
+                var rarFiles = _diskProvider.GetFiles(directoryInfo.FullName, SearchOption.AllDirectories).Where(f => Path.GetExtension(f).Equals(".rar", StringComparison.OrdinalIgnoreCase));
 
-                if (bookParseResult == null)
+                foreach (var bookFile in bookFiles)
                 {
-                    _logger.Warn("Unable to parse file on import: [{0}]", bookFile);
+                    var bookParseResult = Parser.Parser.ParseTitle(bookFile.Name);
+
+                    if (bookParseResult == null)
+                    {
+                        _logger.Warn("Unable to parse file on import: [{0}]", bookFile);
+                        return false;
+                    }
+
+                    _logger.Warn("Book file detected: [{0}]", bookFile);
                     return false;
                 }
 
-                _logger.Warn("Book file detected: [{0}]", bookFile);
-                return false;
-            }
+                if (rarFiles.Any(f => _diskProvider.GetFileSize(f) > 10.Megabytes()))
+                {
+                    _logger.Warn("RAR file detected, will require manual cleanup");
+                    return false;
+                }
 
-            if (rarFiles.Any(f => _diskProvider.GetFileSize(f) > 10.Megabytes()))
+                return true;
+            }
+            catch (DirectoryNotFoundException e)
             {
-                _logger.Warn("RAR file detected, will require manual cleanup");
+                _logger.Debug(e, "Folder {0} has already been removed", directoryInfo.FullName);
                 return false;
             }
-
-            return true;
         }
 
         private List<ImportResult> ProcessFolder(IDirectoryInfo directoryInfo, ImportMode importMode, DownloadClientItem downloadClientItem)
