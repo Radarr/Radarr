@@ -579,17 +579,14 @@ stages:
             osName: 'Linux'
             imageName: 'ubuntu-18.04'
             pattern: 'Readarr.**.linux-core-x64.tar.gz'
-            failBuild: true
           Mac:
             osName: 'Mac'
-            imageName: 'macos-10.14' # Fails due to firefox not being installed on image
+            imageName: 'macos-10.14'
             pattern: 'Readarr.**.osx-core-x64.tar.gz'
-            failBuild: false
           Windows:
             osName: 'Windows'
             imageName: 'windows-2019'
             pattern: 'Readarr.**.windows-core-x64.zip'
-            failBuild: $(failOnAutomationFailure)
 
       pool:
         vmImage: $(imageName)
@@ -624,9 +621,9 @@ stages:
         displayName: Move Package Contents
       - bash: |
           if [[ $OSNAME == "Mac" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-macos.tar.gz
+          url=https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-macos.tar.gz
           elif [[ $OSNAME == "Linux" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
+          url=https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
           else
           echo "Unhandled OS"
           exit 1
@@ -645,7 +642,7 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: '$(osName) Automation Tests'
-          failTaskOnFailedTests: $(failBuild)
+          failTaskOnFailedTests: true
         displayName: Publish Test Results
 
   - stage: Analyze

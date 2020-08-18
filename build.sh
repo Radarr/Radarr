@@ -237,7 +237,7 @@ PackageTests()
     # geckodriver.exe isn't copied by dotnet publish
     if [ "$runtime" = "win-x64" ];
     then
-        curl -Lso gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip"
+        curl -Lso gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-win64.zip"
         unzip -o gecko.zip
         cp geckodriver.exe "$testPackageFolder/$framework/win-x64/publish"
     fi
