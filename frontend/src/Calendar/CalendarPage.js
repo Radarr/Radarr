@@ -9,6 +9,7 @@ import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import FilterMenu from 'Components/Menu/FilterMenu';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import NoAuthor from 'Author/NoAuthor';
 import CalendarLinkModal from './iCal/CalendarLinkModal';
 import CalendarOptionsModal from './Options/CalendarOptionsModal';
@@ -77,6 +78,8 @@ class CalendarPage extends Component {
       filters,
       hasAuthor,
       authorError,
+      authorIsFetching,
+      authorIsPopulated,
       missingBookIds,
       isSearchingForMissing,
       useCurrentPage,
@@ -89,8 +92,6 @@ class CalendarPage extends Component {
     } = this.state;
 
     const isMeasured = this.state.width > 0;
-
-    const PageComponent = hasAuthor ? CalendarConnector : NoAuthor;
 
     return (
       <PageContent title="Calendar">
@@ -134,6 +135,11 @@ class CalendarPage extends Component {
           innerClassName={styles.calendarInnerPageBody}
         >
           {
+            authorIsFetching && !authorIsPopulated &&
+              <LoadingIndicator />
+          }
+
+          {
             authorError &&
               <div className={styles.errorMessage}>
                 {getErrorMessage(authorError, 'Failed to load author from API')}
@@ -141,19 +147,24 @@ class CalendarPage extends Component {
           }
 
           {
-            !authorError &&
+            !authorError && authorIsPopulated && hasAuthor &&
               <Measure
                 whitelist={['width']}
                 onMeasure={this.onMeasure}
               >
                 {
                   isMeasured ?
-                    <PageComponent
+                    <CalendarConnector
                       useCurrentPage={useCurrentPage}
                     /> :
                     <div />
                 }
               </Measure>
+          }
+
+          {
+            !authorError && authorIsPopulated && !hasAuthor &&
+              <NoAuthor />
           }
 
           {
@@ -182,6 +193,8 @@ CalendarPage.propTypes = {
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasAuthor: PropTypes.bool.isRequired,
   authorError: PropTypes.object,
+  authorIsFetching: PropTypes.bool.isRequired,
+  authorIsPopulated: PropTypes.bool.isRequired,
   missingBookIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   isSearchingForMissing: PropTypes.bool.isRequired,
   useCurrentPage: PropTypes.bool.isRequired,

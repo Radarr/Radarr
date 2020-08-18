@@ -74,6 +74,8 @@ function createMapStateToProps() {
         colorImpairedMode: uiSettings.enableColorImpairedMode,
         hasAuthor: !!authorCount.count,
         authorError: authorCount.error,
+        authorIsFetching: authorCount.isFetching,
+        authorIsPopulated: authorCount.isPopulated,
         missingBookIds,
         isSearchingForMissing
       };

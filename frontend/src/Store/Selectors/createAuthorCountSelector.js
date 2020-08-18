@@ -5,10 +5,14 @@ function createAuthorCountSelector() {
   return createSelector(
     createAllAuthorsSelector(),
     (state) => state.authors.error,
-    (authors, error) => {
+    (state) => state.authors.isFetching,
+    (state) => state.authors.isPopulated,
+    (authors, error, isFetching, isPopulated) => {
       return {
         count: authors.length,
-        error
+        error,
+        isFetching,
+        isPopulated
       };
     }
   );
