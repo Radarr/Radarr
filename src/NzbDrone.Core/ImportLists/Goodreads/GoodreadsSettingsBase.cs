@@ -38,7 +38,7 @@ namespace NzbDrone.Core.ImportLists.Goodreads
         [FieldDefinition(0, Label = "Request Token Secret", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
         public string RequestTokenSecret { get; set; }
 
-        [FieldDefinition(0, Label = "User Id", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
+        [FieldDefinition(0, Label = "User Id", HelpText = "User Id to import from. Leave blank to use the authenticated Goodreads user.", Type = FieldType.Textbox, Advanced = true)]
         public string UserId { get; set; }
 
         [FieldDefinition(0, Label = "User Name", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]

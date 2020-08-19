@@ -50,7 +50,7 @@ namespace NzbDrone.Core.ImportLists.Goodreads
         {
             try
             {
-                GetUser();
+                GetUser(Settings.UserId);
                 return null;
             }
             catch (Common.Http.HttpException ex)
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.ImportLists.Goodreads
                 Settings.AccessToken = qscoll["oauth_token"];
                 Settings.AccessTokenSecret = qscoll["oauth_token_secret"];
 
-                var user = GetUser();
+                var user = GetUser(Settings.UserId);
 
                 return new
                 {
@@ -165,9 +165,18 @@ namespace NzbDrone.Core.ImportLists.Goodreads
             return HttpUtility.ParseQueryString(response.Content);
         }
 
-        private Tuple<string, string> GetUser()
+        private Tuple<string, string> GetUser(string id)
         {
-            var builder = RequestBuilder().SetSegment("route", $"api/auth_user");
+            var builder = RequestBuilder();
+
+            if (id == null)
+            {
+                builder.SetSegment("route", "api/auth_user");
+            }
+            else
+            {
+                builder.SetSegment("route", $"user/show/{id}.xml");
+            }
 
             var httpResponse = OAuthGet(builder);
 
