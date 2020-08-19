@@ -651,7 +651,6 @@ stages:
   - stage: Analyze
     dependsOn: []
     displayName: Analyze
-    condition: eq(variables['system.pullrequest.isfork'], false)
       
     jobs:
     - job: Lint_Frontend
@@ -681,6 +680,7 @@ stages:
 
     - job: Analyze_Frontend
       displayName: Frontend
+      condition: eq(variables['system.pullrequest.isfork'], false)
       pool:
         vmImage: windows-2019
       steps:
@@ -715,6 +715,7 @@ stages:
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
       - task: SonarCloudPrepare@1
+        condition: eq(variables['system.pullrequest.isfork'], false)
         inputs:
           SonarCloud: 'SonarCloud'
           organization: 'readarr'
@@ -733,6 +734,7 @@ stages:
         displayName: Coverage Unit Tests
       - task: SonarCloudAnalyze@1
         displayName: Publish SonarCloud Results
+        condition: eq(variables['system.pullrequest.isfork'], false)
       - task: reportgenerator@4
         displayName: Generate Coverage Report
         inputs:
