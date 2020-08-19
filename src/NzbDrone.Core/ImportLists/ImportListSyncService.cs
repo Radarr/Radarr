@@ -172,7 +172,7 @@ namespace NzbDrone.Core.ImportLists
             }
 
             // Check to see if book in DB
-            var existingAlbum = _bookService.FindById(report.EditionGoodreadsId);
+            var existingAlbum = _bookService.FindById(report.BookGoodreadsId);
 
             if (existingAlbum != null)
             {
@@ -181,7 +181,7 @@ namespace NzbDrone.Core.ImportLists
             }
 
             // Check to see if book excluded
-            var excludedAlbum = listExclusions.SingleOrDefault(s => s.ForeignId == report.EditionGoodreadsId);
+            var excludedAlbum = listExclusions.SingleOrDefault(s => s.ForeignId == report.BookGoodreadsId);
 
             if (excludedAlbum != null)
             {
@@ -199,7 +199,7 @@ namespace NzbDrone.Core.ImportLists
             }
 
             // Append Album if not already in DB or already on add list
-            if (albumsToAdd.All(s => s.ForeignBookId != report.EditionGoodreadsId))
+            if (albumsToAdd.All(s => s.ForeignBookId != report.BookGoodreadsId))
             {
                 var monitored = importList.ShouldMonitor != ImportListMonitorType.None;
 

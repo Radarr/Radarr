@@ -43,6 +43,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Returns<int>(x => Builder<Book>
                               .CreateListOfSize(1)
                               .TheFirst(1)
+                              .With(b => b.ForeignBookId = "4321")
                               .With(b => b.Editions = Builder<Edition>
                                     .CreateListOfSize(1)
                                     .TheFirst(1)
@@ -84,7 +85,7 @@ namespace NzbDrone.Core.Test.ImportListTests
 
         private void WithBookId()
         {
-            _importListReports.First().EditionGoodreadsId = "101";
+            _importListReports.First().EditionGoodreadsId = "1234";
         }
 
         private void WithExistingArtist()
@@ -122,7 +123,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                 {
                     new ImportListExclusion
                     {
-                        ForeignId = "101"
+                        ForeignId = "4321"
                     }
                 });
         }
