@@ -80,20 +80,20 @@ namespace NzbDrone.Core.Books.Calibre
             var format = Path.GetExtension(file.Path);
             var bookData = Convert.ToBase64String(File.ReadAllBytes(file.Path));
 
-            var payload = new
+            var payload = new CalibreChangesPayload
             {
-                changes = new
+                LoadedBookIds = new List<int> { file.CalibreId },
+                Changes = new CalibreChanges
                 {
-                    added_formats = new[]
+                    AddedFormats = new List<CalibreAddFormat>
                     {
-                        new
+                        new CalibreAddFormat
                         {
-                            ext = format,
-                            data_url = bookData
+                            Ext = format,
+                            Data = bookData
                         }
                     }
-                },
-                loaded_book_ids = new[] { file.CalibreId }
+                }
             };
 
             ExecuteSetFields(file.CalibreId, payload, settings);
@@ -101,14 +101,13 @@ namespace NzbDrone.Core.Books.Calibre
 
         public void RemoveFormats(int calibreId, IEnumerable<string> formats, CalibreSettings settings)
         {
-            var payload = new
+            var payload = new CalibreChangesPayload
             {
-                changes = new
+                LoadedBookIds = new List<int> { calibreId },
+                Changes = new CalibreChanges
                 {
-                    removed_formats = formats
-                },
-
-                loaded_book_ids = new[] { calibreId }
+                    RemovedFormats = formats.ToList()
+                }
             };
 
             ExecuteSetFields(calibreId, payload, settings);
@@ -117,6 +116,18 @@ namespace NzbDrone.Core.Books.Calibre
         public void SetFields(BookFile file, CalibreSettings settings)
         {
             var edition = file.Edition.Value;
+            var book = edition.Book.Value;
+            var serieslink = book.SeriesLinks.Value.FirstOrDefault();
+
+            var series = serieslink?.Series.Value;
+            double? seriesIndex = null;
+            if (double.TryParse(serieslink?.Position, out var index))
+            {
+                _logger.Trace($"Parsed {serieslink?.Position} as {index}");
+                seriesIndex = index;
+            }
+
+            _logger.Trace($"Book: {book} Series: {series?.Title}, Position: {seriesIndex}");
 
             var cover = edition.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Cover);
             string image = null;
@@ -131,30 +142,32 @@ namespace NzbDrone.Core.Books.Calibre
                 }
             }
 
-            var payload = new
+            var payload = new CalibreChangesPayload
             {
-                changes = new
+                LoadedBookIds = new List<int> { file.CalibreId },
+                Changes = new CalibreChanges
                 {
-                    title = edition.Title,
-                    authors = new[] { file.Author.Value.Name },
-                    cover = image,
-                    pubdate = edition.Book.Value.ReleaseDate,
-                    comments = edition.Overview,
-                    rating = edition.Ratings.Value * 2,
-                    identifiers = new Dictionary<string, string>
+                    Title = edition.Title,
+                    Authors = new List<string> { file.Author.Value.Name },
+                    Cover = image,
+                    PubDate = book.ReleaseDate,
+                    Comments = edition.Overview,
+                    Rating = edition.Ratings.Value * 2,
+                    Identifiers = new Dictionary<string, string>
                     {
                         { "isbn", edition.Isbn13 },
                         { "asin", edition.Asin },
                         { "goodreads", edition.ForeignEditionId }
-                    }
-                },
-                loaded_book_ids = new[] { file.CalibreId }
+                    },
+                    Series = series?.Title,
+                    SeriesIndex = seriesIndex
+                }
             };
 
             ExecuteSetFields(file.CalibreId, payload, settings);
         }
 
-        private void ExecuteSetFields(int id, object payload, CalibreSettings settings)
+        private void ExecuteSetFields(int id, CalibreChangesPayload payload, CalibreSettings settings)
         {
             var builder = GetBuilder($"cdb/set-fields/{id}", settings)
                 .Post()
