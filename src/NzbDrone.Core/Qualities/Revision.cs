@@ -7,6 +7,7 @@ namespace NzbDrone.Core.Qualities
     {
         public Revision()
         {
+            Version = 1;
         }
 
         public Revision(int version = 1, int real = 0, bool isRepack = false)
