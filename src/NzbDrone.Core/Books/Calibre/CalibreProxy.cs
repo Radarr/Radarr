@@ -233,6 +233,7 @@ namespace NzbDrone.Core.Books.Calibre
             try
             {
                 var builder = GetBuilder($"ajax/books", settings);
+                builder.LogResponseContent = false;
 
                 var request = builder.Build();
                 var response = _httpClient.Get<Dictionary<int, CalibreBook>>(request);
