@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.ParserTests
             QualityParser.ParseQuality(title).Revision.Real.Should().Be(reality);
         }
 
-        [TestCase("Chuck.S04E05.HDTV.XviD-LOL", 0)]
+        [TestCase("Chuck.S04E05.HDTV.XviD-LOL", 1)]
         [TestCase("Gold.Rush.S04E05.Garnets.or.Gold.REAL.REAL.PROPER.HDTV.x264-W4F", 2)]
         [TestCase("Chuck.S03E17.REAL.PROPER.720p.HDTV.x264-ORENJI-RP", 2)]
         [TestCase("Covert.Affairs.S05E09.REAL.PROPER.HDTV.x264-KILLERS", 2)]
