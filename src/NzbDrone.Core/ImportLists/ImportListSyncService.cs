@@ -224,7 +224,7 @@ namespace NzbDrone.Core.ImportLists
                         Tags = importList.Tags,
                         AddOptions = new AddAuthorOptions
                         {
-                            SearchForMissingBooks = monitored,
+                            SearchForMissingBooks = importList.ShouldSearch,
                             Monitored = monitored,
                             Monitor = monitored ? MonitorTypes.All : MonitorTypes.None
                         }
@@ -292,7 +292,7 @@ namespace NzbDrone.Core.ImportLists
                     Tags = importList.Tags,
                     AddOptions = new AddAuthorOptions
                     {
-                        SearchForMissingBooks = monitored,
+                        SearchForMissingBooks = importList.ShouldSearch,
                         Monitored = monitored,
                         Monitor = monitored ? MonitorTypes.All : MonitorTypes.None
                     }

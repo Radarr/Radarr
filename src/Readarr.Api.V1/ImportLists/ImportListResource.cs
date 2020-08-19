@@ -6,6 +6,7 @@ namespace Readarr.Api.V1.ImportLists
     {
         public bool EnableAutomaticAdd { get; set; }
         public ImportListMonitorType ShouldMonitor { get; set; }
+        public bool ShouldSearch { get; set; }
         public string RootFolderPath { get; set; }
         public int QualityProfileId { get; set; }
         public int MetadataProfileId { get; set; }
@@ -26,6 +27,7 @@ namespace Readarr.Api.V1.ImportLists
 
             resource.EnableAutomaticAdd = definition.EnableAutomaticAdd;
             resource.ShouldMonitor = definition.ShouldMonitor;
+            resource.ShouldSearch = definition.ShouldSearch;
             resource.RootFolderPath = definition.RootFolderPath;
             resource.QualityProfileId = definition.ProfileId;
             resource.MetadataProfileId = definition.MetadataProfileId;
@@ -46,6 +48,7 @@ namespace Readarr.Api.V1.ImportLists
 
             definition.EnableAutomaticAdd = resource.EnableAutomaticAdd;
             definition.ShouldMonitor = resource.ShouldMonitor;
+            definition.ShouldSearch = resource.ShouldSearch;
             definition.RootFolderPath = resource.RootFolderPath;
             definition.ProfileId = resource.QualityProfileId;
             definition.MetadataProfileId = resource.MetadataProfileId;

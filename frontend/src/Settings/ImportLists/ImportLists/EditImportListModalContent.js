@@ -71,6 +71,7 @@ function EditImportListModalContent(props) {
     name,
     enableAutomaticAdd,
     shouldMonitor,
+    shouldSearch,
     rootFolderPath,
     qualityProfileId,
     metadataProfileId,
@@ -144,6 +145,18 @@ function EditImportListModalContent(props) {
                   values={monitorOptions}
                   helpText={'Monitor authors and books added from this list'}
                   {...shouldMonitor}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>Search for New Items</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="shouldSearch"
+                  helpText={'Search indexers for newly added items.  Use with caution for large lists.'}
+                  {...shouldSearch}
                   onChange={onInputChange}
                 />
               </FormGroup>
