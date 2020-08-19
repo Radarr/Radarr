@@ -113,11 +113,11 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
 
             // we can only get a rating from the author list page...
             var listResource = GetAuthorBooksPageResource(foreignAuthorId, 10, 1);
-            var authorResource = listResource.List.First().Authors.First(a => a.Id.ToString() == foreignAuthorId);
+            var authorResource = listResource.List.SelectMany(x => x.Authors).FirstOrDefault(a => a.Id.ToString() == foreignAuthorId);
             author.Metadata.Value.Ratings = new Ratings
             {
-                Votes = authorResource.RatingsCount ?? 0,
-                Value = authorResource.AverageRating ?? 0
+                Votes = authorResource?.RatingsCount ?? 0,
+                Value = authorResource?.AverageRating ?? 0
             };
 
             return author;
