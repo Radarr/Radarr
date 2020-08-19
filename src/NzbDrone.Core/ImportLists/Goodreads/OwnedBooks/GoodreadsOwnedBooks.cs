@@ -62,14 +62,13 @@ namespace NzbDrone.Core.ImportLists.Goodreads
             {
                 var builder = RequestBuilder()
                     .SetSegment("route", $"owned_books/user")
+                    .AddQueryParam("format", "xml")
                     .AddQueryParam("id", Settings.UserId)
                     .AddQueryParam("page", page);
 
                 var httpResponse = OAuthGet(builder);
 
-                _logger.Trace("Got:\n{0}", httpResponse.Content);
-
-                return httpResponse.Deserialize<PaginatedList<OwnedBookResource>>("reviews").List;
+                return httpResponse.Deserialize<PaginatedList<OwnedBookResource>>("owned_books").List;
             }
             catch (Exception ex)
             {
