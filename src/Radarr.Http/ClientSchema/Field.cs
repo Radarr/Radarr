@@ -17,6 +17,7 @@ namespace Radarr.Http.ClientSchema
         public List<SelectOption> SelectOptions { get; set; }
         public string Section { get; set; }
         public string Hidden { get; set; }
+        public string RequestAction { get; set; }
 
         public Field Clone()
         {

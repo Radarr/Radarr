@@ -100,7 +100,8 @@ namespace Radarr.Http.ClientSchema
                         Order = fieldAttribute.Order,
                         Advanced = fieldAttribute.Advanced,
                         Type = fieldAttribute.Type.ToString().FirstCharToLower(),
-                        Section = fieldAttribute.Section
+                        Section = fieldAttribute.Section,
+                        RequestAction = fieldAttribute.RequestAction
                     };
 
                     if (fieldAttribute.Type == FieldType.Select || fieldAttribute.Type == FieldType.TagSelect)

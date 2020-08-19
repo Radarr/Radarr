@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Annotations
         public Type SelectOptions { get; set; }
         public string Section { get; set; }
         public HiddenType Hidden { get; set; }
+        public string RequestAction { get; set; }
     }
 
     public enum FieldType
