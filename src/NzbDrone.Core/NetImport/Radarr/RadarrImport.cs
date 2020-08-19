@@ -41,7 +41,8 @@ namespace NzbDrone.Core.NetImport.Radarr
 
                 foreach (var remoteMovie in remoteMovies)
                 {
-                    if (!Settings.ProfileIds.Any() || Settings.ProfileIds.Contains(remoteMovie.QualityProfileId))
+                    if ((!Settings.ProfileIds.Any() || Settings.ProfileIds.Contains(remoteMovie.QualityProfileId)) &&
+                        (!Settings.TagIds.Any() || Settings.TagIds.Any(x => remoteMovie.Tags.Any(y => y == x))))
                     {
                         movies.Add(new Movie
                         {
@@ -76,19 +77,19 @@ namespace NzbDrone.Core.NetImport.Radarr
 
         public override object RequestAction(string action, IDictionary<string, string> query)
         {
-            if (action == "getDevices")
+            // Return early if there is not an API key
+            if (Settings.ApiKey.IsNullOrWhiteSpace())
             {
-                // Return early if there is not an API key
-                if (Settings.ApiKey.IsNullOrWhiteSpace())
+                return new
                 {
-                    return new
-                    {
-                        devices = new List<object>()
-                    };
-                }
+                    devices = new List<object>()
+                };
+            }
 
-                Settings.Validate().Filter("ApiKey").ThrowOnError();
+            Settings.Validate().Filter("ApiKey").ThrowOnError();
 
+            if (action == "getProfiles")
+            {
                 var devices = _radarrV3Proxy.GetProfiles(Settings);
 
                 return new
@@ -98,6 +99,21 @@ namespace NzbDrone.Core.NetImport.Radarr
                                             {
                                                 id = d.Id,
                                                 name = d.Name
+                                            })
+                };
+            }
+
+            if (action == "getTags")
+            {
+                var devices = _radarrV3Proxy.GetTags(Settings);
+
+                return new
+                {
+                    options = devices.OrderBy(d => d.Label, StringComparer.InvariantCultureIgnoreCase)
+                                            .Select(d => new
+                                            {
+                                                id = d.Id,
+                                                name = d.Label
                                             })
                 };
             }

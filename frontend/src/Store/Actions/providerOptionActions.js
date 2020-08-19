@@ -14,7 +14,7 @@ export const section = 'providerOptions';
 // State
 
 export const defaultState = {
-  items: [],
+  items: {},
   isFetching: false,
   isPopulated: false,
   error: false
@@ -43,15 +43,20 @@ export const actionHandlers = handleThunks({
       isFetching: true
     }));
 
+    const oldItems = getState().providerOptions.items;
+    const itemSection = payload.itemSection;
+
     const promise = requestAction(payload);
 
     promise.done((data) => {
+      oldItems[itemSection] = data.options || [];
+
       dispatch(set({
         section,
         isFetching: false,
         isPopulated: true,
         error: null,
-        items: data.options || []
+        items: oldItems
       }));
     });
 

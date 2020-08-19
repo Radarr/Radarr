@@ -13,6 +13,7 @@ namespace NzbDrone.Core.NetImport.Radarr
     {
         List<RadarrMovie> GetMovies(RadarrSettings settings);
         List<RadarrProfile> GetProfiles(RadarrSettings settings);
+        List<RadarrTag> GetTags(RadarrSettings settings);
         ValidationFailure Test(RadarrSettings settings);
     }
 
@@ -35,6 +36,11 @@ namespace NzbDrone.Core.NetImport.Radarr
         public List<RadarrProfile> GetProfiles(RadarrSettings settings)
         {
             return Execute<RadarrProfile>("/api/v3/qualityprofile", settings);
+        }
+
+        public List<RadarrTag> GetTags(RadarrSettings settings)
+        {
+            return Execute<RadarrTag>("/api/v3/tag", settings);
         }
 
         public ValidationFailure Test(RadarrSettings settings)
