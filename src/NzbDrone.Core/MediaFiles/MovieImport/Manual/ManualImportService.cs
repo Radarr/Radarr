@@ -5,11 +5,9 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
-using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -22,6 +20,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
     public interface IManualImportService
     {
         List<ManualImportItem> GetMediaFiles(string path, string downloadId, int? movieId, bool filterExistingFiles);
+        ManualImportItem ReprocessItem(string path, string downloadId, int movieId);
     }
 
     public class ManualImportService : IExecute<ManualImportCommand>, IManualImportService
@@ -36,8 +35,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IDownloadedMovieImportService _downloadedMovieImportService;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IConfigService _config;
-        private readonly IHistoryService _historyService;
         private readonly Logger _logger;
 
         public ManualImportService(IDiskProvider diskProvider,
@@ -50,8 +47,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                                    ITrackedDownloadService trackedDownloadService,
                                    IDownloadedMovieImportService downloadedMovieImportService,
                                    IEventAggregator eventAggregator,
-                                   IConfigService config,
-                                   IHistoryService historyService,
                                    Logger logger)
         {
             _diskProvider = diskProvider;
@@ -64,8 +59,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             _trackedDownloadService = trackedDownloadService;
             _downloadedMovieImportService = downloadedMovieImportService;
             _eventAggregator = eventAggregator;
-            _config = config;
-            _historyService = historyService;
             _logger = logger;
         }
 
@@ -95,6 +88,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             }
 
             return ProcessFolder(path, path, downloadId, movieId, filterExistingFiles);
+        }
+
+        public ManualImportItem ReprocessItem(string path, string downloadId, int movieId)
+        {
+            var rootFolder = Path.GetDirectoryName(path);
+            var movie = _movieService.GetMovie(movieId);
+
+            return ProcessFile(rootFolder, rootFolder, path, downloadId, movie);
         }
 
         private List<ManualImportItem> ProcessFolder(string rootFolder, string baseFolder, string downloadId, int? movieId, bool filterExistingFiles)

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Icon from 'Components/Icon';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
@@ -137,6 +138,7 @@ class InteractiveImportRow extends Component {
       languages,
       size,
       rejections,
+      isReprocessing,
       isSelected,
       onSelectedChange
     } = this.props;
@@ -151,7 +153,7 @@ class InteractiveImportRow extends Component {
 
     const showMoviePlaceholder = isSelected && !movie;
     const showQualityPlaceholder = isSelected && !quality;
-    const showLanguagePlaceholder = isSelected && !languages;
+    const showLanguagePlaceholder = isSelected && !languages && !isReprocessing;
 
     return (
       <TableRow>
@@ -208,11 +210,20 @@ class InteractiveImportRow extends Component {
           }
 
           {
-            !showLanguagePlaceholder && !!languages &&
+            !showLanguagePlaceholder && !!languages && !isReprocessing ?
               <MovieLanguage
                 className={styles.label}
                 languages={languages}
-              />
+              /> :
+              null
+          }
+
+          {
+            isReprocessing ?
+              <LoadingIndicator className={styles.reprocessing}
+                size={20}
+
+              /> : null
           }
         </TableRowCellButton>
 
@@ -286,6 +297,7 @@ InteractiveImportRow.propTypes = {
   languages: PropTypes.arrayOf(PropTypes.object),
   size: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isReprocessing: PropTypes.bool,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired,
   onValidRowChange: PropTypes.func.isRequired

@@ -5,7 +5,7 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.NetImport.ImportExclusions;
 using Radarr.Http.REST;
 
-namespace NzbDrone.Api.V3.Movies
+namespace Radarr.Api.V3.Movies
 {
     public class DiscoverMoviesResource : RestResource
     {

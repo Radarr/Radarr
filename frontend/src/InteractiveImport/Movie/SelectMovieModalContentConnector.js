@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
+import { reprocessInteractiveImportItems, updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createDeepEqualSelector from 'Store/Selectors/createDeepEqualSelector';
 import SelectMovieModalContent from './SelectMovieModalContent';
@@ -59,6 +59,7 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
+  dispatchReprocessInteractiveImportItems: reprocessInteractiveImportItems,
   dispatchUpdateInteractiveImportItem: updateInteractiveImportItem
 };
 
@@ -72,6 +73,7 @@ class SelectMovieModalContentConnector extends Component {
       ids,
       items,
       dispatchUpdateInteractiveImportItem,
+      dispatchReprocessInteractiveImportItems,
       onModalClose
     } = this.props;
 
@@ -83,6 +85,8 @@ class SelectMovieModalContentConnector extends Component {
         movie
       });
     });
+
+    dispatchReprocessInteractiveImportItems({ ids });
 
     onModalClose(true);
   }
@@ -103,6 +107,7 @@ class SelectMovieModalContentConnector extends Component {
 SelectMovieModalContentConnector.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.number).isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dispatchReprocessInteractiveImportItems: PropTypes.func.isRequired,
   dispatchUpdateInteractiveImportItem: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
