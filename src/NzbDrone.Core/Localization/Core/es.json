@@ -270,5 +270,12 @@
     "Age": "Edad",
     "AddNewMovie": "Añadir película nueva",
     "AddList": "Añadir lista",
-    "SystemTimeCheckMessage": "El reloj del sistema está retrasado más de un día. Las tareas de mantenimiento no se ejecutarán correctamente hasta que se haya corregido"
+    "SystemTimeCheckMessage": "El reloj del sistema está retrasado más de un día. Las tareas de mantenimiento no se ejecutarán correctamente hasta que se haya corregido",
+    "MonitorMovie": "MonitorearPelícula",
+    "ExistingMovies": "Película(s) Existente",
+    "EditRemotePathMapping": "Editar Mapping de Ruta Remota",
+    "DetailedProgressBarHelpText": "Mostrar texto en barra de progreso",
+    "InteractiveImport": "Importación Interactiva",
+    "DetailedProgressBar": "Barra de Progreso Detallada",
+    "AddRemotePathMapping": "Añadir Mapping de Ruta Remota"
 }
