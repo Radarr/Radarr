@@ -99,7 +99,7 @@ function TagDetailsModalContent(props) {
 
         {
           !!restrictions.length &&
-            <FieldSet legend="Restrictions">
+            <FieldSet legend={translate('Restrictions')}>
               {
                 restrictions.map((item) => {
                   return (

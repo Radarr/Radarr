@@ -111,7 +111,7 @@ class ImportMovieSelectFolder extends Component {
                 {
                   items.length > 0 ?
                     <div className={styles.recentFolders}>
-                      <FieldSet legend="Recent Folders">
+                      <FieldSet legend={translate('RecentFolders')}>
                         <Table
                           columns={rootFolderColumns}
                         >

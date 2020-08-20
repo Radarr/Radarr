@@ -86,7 +86,7 @@ class UISettings extends Component {
               >
                 <FieldSet legend={translate('Calendar')}>
                   <FormGroup>
-                    <FormLabel>First Day of Week</FormLabel>
+                    <FormLabel>{translate('SettingsFirstDayOfWeek')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -98,14 +98,14 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>Week Column Header</FormLabel>
+                    <FormLabel>{translate('SettingsWeekColumnHeader')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="calendarWeekColumnHeader"
                       values={weekColumnOptions}
                       onChange={onInputChange}
-                      helpText="Shown above each column when week is the active view"
+                      helpText={translate('SettingsWeekColumnHeaderHelpText')}
                       {...settings.calendarWeekColumnHeader}
                     />
                   </FormGroup>
@@ -115,7 +115,7 @@ class UISettings extends Component {
                   legend={translate('Dates')}
                 >
                   <FormGroup>
-                    <FormLabel>Short Date Format</FormLabel>
+                    <FormLabel>{translate('SettingsShortDateFormat')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -127,7 +127,7 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>Long Date Format</FormLabel>
+                    <FormLabel>{translate('SettingsLongDateFormat')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -139,7 +139,7 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>Time Format</FormLabel>
+                    <FormLabel>{translate('SettingsTimeFormat')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -151,11 +151,11 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>Show Relative Dates</FormLabel>
+                    <FormLabel>{translate('SettingsShowRelativeDates')}</FormLabel>
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="showRelativeDates"
-                      helpText="Show relative (Today/Yesterday/etc) or absolute dates"
+                      helpText={translate('SettingsShowRelativeDatesHelpText')}
                       onChange={onInputChange}
                       {...settings.showRelativeDates}
                     />
@@ -166,11 +166,11 @@ class UISettings extends Component {
                   legend={translate('Style')}
                 >
                   <FormGroup>
-                    <FormLabel>Enable Color-Impaired Mode</FormLabel>
+                    <FormLabel>{translate('SettingsEnableColorImpairedMode')}</FormLabel>
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="enableColorImpairedMode"
-                      helpText="Altered style to allow color-impaired users to better distinguish color coded information"
+                      helpText={translate('SettingsEnableColorImpairedModeHelpText')}
                       onChange={onInputChange}
                       {...settings.enableColorImpairedMode}
                     />
@@ -181,12 +181,12 @@ class UISettings extends Component {
                   legend={translate('Language')}
                 >
                   <FormGroup>
-                    <FormLabel>UI Language</FormLabel>
+                    <FormLabel>{translate('SettingsUiLanguage')}</FormLabel>
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="movieInfoLanguage"
                       values={languages}
-                      helpText="Language that Radarr will use for UI"
+                      helpText={translate('SettingsUiLanguageHelpText')}
                       helpTextWarning="Browser Reload Required"
                       onChange={onInputChange}
                       {...settings.movieInfoLanguage}

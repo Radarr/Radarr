@@ -163,7 +163,7 @@ class MovieEditorFooter extends Component {
       <PageContentFooter>
         <div className={styles.inputContainer}>
           <MovieEditorFooterLabel
-            label="Monitor Movie"
+            label={translate('MonitorMovie')}
             isSaving={isSaving && monitored !== NO_CHANGE}
           />
 
@@ -238,7 +238,7 @@ class MovieEditorFooter extends Component {
                   isDisabled={!selectedCount || isOrganizingMovie}
                   onPress={onOrganizeMoviePress}
                 >
-                  Rename Files
+                  {translate('RenameFiles')}
                 </SpinnerButton>
 
                 <SpinnerButton
@@ -247,7 +247,7 @@ class MovieEditorFooter extends Component {
                   isDisabled={!selectedCount || isOrganizingMovie}
                   onPress={this.onTagsPress}
                 >
-                  Set Tags
+                  {translate('SetTags')}
                 </SpinnerButton>
               </div>
 

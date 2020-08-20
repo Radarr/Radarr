@@ -289,7 +289,7 @@ class MovieDetails extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label="Refresh & Scan"
+              label={translate('RefreshAndScan')}
               iconName={icons.REFRESH}
               spinningName={icons.REFRESH}
               title="Refresh information and scan disk"
@@ -298,7 +298,7 @@ class MovieDetails extends Component {
             />
 
             <PageToolbarButton
-              label="Search Movie"
+              label={translate('SearchMovie')}
               iconName={icons.SEARCH}
               isDisabled={!monitored}
               isSpinning={isSearching}
@@ -309,14 +309,14 @@ class MovieDetails extends Component {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label="Preview Rename"
+              label={translate('PreviewRename')}
               iconName={icons.ORGANIZE}
               isDisabled={!hasMovieFiles}
               onPress={this.onOrganizePress}
             />
 
             <PageToolbarButton
-              label="Manual Import"
+              label={translate('ManualImport')}
               iconName={icons.INTERACTIVE}
               onPress={this.onInteractiveImportPress}
             />
@@ -324,7 +324,7 @@ class MovieDetails extends Component {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label="Edit"
+              label={translate('Edit')}
               iconName={icons.EDIT}
               onPress={this.onEditMoviePress}
             />
@@ -488,7 +488,7 @@ class MovieDetails extends Component {
                 <div className={styles.detailsLabels}>
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title="Path"
+                    title={translate('Path')}
                     size={sizes.LARGE}
                   >
                     <span className={styles.path}>
@@ -498,7 +498,7 @@ class MovieDetails extends Component {
 
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title="Status"
+                    title={translate('Status')}
                     kind={kinds.DELETE}
                     size={sizes.LARGE}
                   >
@@ -513,7 +513,7 @@ class MovieDetails extends Component {
 
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title="Quality Profile"
+                    title={translate('QualityProfile')}
                     size={sizes.LARGE}
                   >
                     <span className={styles.qualityProfileName}>
@@ -527,7 +527,7 @@ class MovieDetails extends Component {
 
                   <InfoLabel
                     className={styles.detailsInfoLabel}
-                    title="Filesize"
+                    title={translate('Size')}
                     size={sizes.LARGE}
                   >
                     <span className={styles.sizeOnDisk}>
@@ -541,7 +541,7 @@ class MovieDetails extends Component {
                     !!collection &&
                       <InfoLabel
                         className={styles.detailsInfoLabel}
-                        title="Collection"
+                        title={translate('Collection')}
                         size={sizes.LARGE}
                       >
                         <div className={styles.collection}>
@@ -558,7 +558,7 @@ class MovieDetails extends Component {
                     !!studio && !isSmallScreen &&
                       <InfoLabel
                         className={styles.detailsInfoLabel}
-                        title="Studio"
+                        title={translate('Studio')}
                         size={sizes.LARGE}
                       >
                         <span className={styles.studio}>

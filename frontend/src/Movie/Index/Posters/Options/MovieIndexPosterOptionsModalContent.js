@@ -109,13 +109,13 @@ class MovieIndexPosterOptionsModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Poster Options
+          {translate('PosterOptions')}
         </ModalHeader>
 
         <ModalBody>
           <Form>
             <FormGroup>
-              <FormLabel>Poster Size</FormLabel>
+              <FormLabel>{translate('PosterSize')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.SELECT}
@@ -127,19 +127,19 @@ class MovieIndexPosterOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Detailed Progress Bar</FormLabel>
+              <FormLabel>{translate('DetailedProgressBar')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="detailedProgressBar"
                 value={detailedProgressBar}
-                helpText="Show text on progess bar"
+                helpText={translate('DetailedProgressBarHelpText')}
                 onChange={this.onChangePosterOption}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Title</FormLabel>
+              <FormLabel>{translate('ShowTitle')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -151,7 +151,7 @@ class MovieIndexPosterOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Monitored</FormLabel>
+              <FormLabel>{translate('ShowMonitored')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -163,7 +163,7 @@ class MovieIndexPosterOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Quality Profile</FormLabel>
+              <FormLabel>{translate('ShowQualityProfile')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -175,13 +175,13 @@ class MovieIndexPosterOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Search</FormLabel>
+              <FormLabel>{translate('ShowSearch')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="showSearchAction"
                 value={showSearchAction}
-                helpText="Show search button on hover"
+                helpText={translate('ShowSearchHelpText')}
                 onChange={this.onChangePosterOption}
               />
             </FormGroup>

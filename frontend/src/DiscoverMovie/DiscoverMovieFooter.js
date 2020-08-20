@@ -146,7 +146,7 @@ class DiscoverMovieFooter extends Component {
       <PageContentFooter>
         <div className={styles.inputContainer}>
           <DiscoverMovieFooterLabel
-            label="Monitor Movie"
+            label={translate('MonitorMovie')}
             isSaving={isAdding}
           />
 
@@ -161,7 +161,7 @@ class DiscoverMovieFooter extends Component {
 
         <div className={styles.inputContainer}>
           <DiscoverMovieFooterLabel
-            label="Quality Profile"
+            label={translate('QualityProfile')}
             isSaving={isAdding}
           />
 
@@ -175,7 +175,7 @@ class DiscoverMovieFooter extends Component {
 
         <div className={styles.inputContainer}>
           <DiscoverMovieFooterLabel
-            label="Minimum Availability"
+            label={translate('MinimumAvailability')}
             isSaving={isAdding}
           />
 
@@ -189,7 +189,7 @@ class DiscoverMovieFooter extends Component {
 
         <div className={styles.inputContainer}>
           <DiscoverMovieFooterLabel
-            label="Root Folder"
+            label={translate('RootFolder')}
             isSaving={isAdding}
           />
 
@@ -204,7 +204,7 @@ class DiscoverMovieFooter extends Component {
 
         <div className={styles.inputContainer}>
           <DiscoverMovieFooterLabel
-            label="Search on Add"
+            label={translate('SearchOnAdd')}
             isSaving={isAdding}
           />
 

@@ -272,7 +272,7 @@ class MovieSearchInput extends Component {
 
     if (suggestions.length || loading) {
       suggestionGroups.push({
-        title: 'Existing Movie(s)',
+        title: translate('ExistingMovies'),
         loading,
         suggestions
       });

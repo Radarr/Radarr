@@ -76,7 +76,7 @@ class InteractiveImportSelectFolderModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manual Import - Select Folder
+          {translate('ManualImport')} - {translate('SelectFolder')}
         </ModalHeader>
 
         <ModalBody>
@@ -125,7 +125,7 @@ class InteractiveImportSelectFolderModalContent extends Component {
                   name={icons.QUICK}
                 />
 
-                Quick Import
+                {translate('QuickImport')}
               </Button>
             </div>
 
@@ -142,7 +142,7 @@ class InteractiveImportSelectFolderModalContent extends Component {
                   name={icons.INTERACTIVE}
                 />
 
-                Interactive Import
+                {translate('InteractiveImport')}
               </Button>
             </div>
           </div>

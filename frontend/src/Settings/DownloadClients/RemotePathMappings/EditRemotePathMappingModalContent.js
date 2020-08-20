@@ -41,7 +41,7 @@ function EditRemotePathMappingModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {id ? 'Edit Remote Path Mapping' : 'Add Remote Path Mapping'}
+        {id ? translate('EditRemotePathMapping') : translate('AddRemotePathMapping')}
       </ModalHeader>
 
       <ModalBody className={styles.body}>
@@ -59,12 +59,12 @@ function EditRemotePathMappingModalContent(props) {
           !isFetching && !error &&
             <Form {...otherProps}>
               <FormGroup>
-                <FormLabel>Host</FormLabel>
+                <FormLabel>{translate('Host')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.SELECT}
                   name="host"
-                  helpText="The same host you specified for the remote Download Client"
+                  helpText={translate('SettingsRemotePathMappingHostHelpText')}
                   {...host}
                   values={downloadClientHosts}
                   onChange={onInputChange}
@@ -72,24 +72,24 @@ function EditRemotePathMappingModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Remote Path</FormLabel>
+                <FormLabel>{translate('SettingsRemotePathMappingRemotePath')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TEXT}
                   name="remotePath"
-                  helpText="Root path to the directory that the Download Client accesses"
+                  helpText={translate('SettingsRemotePathMappingRemotePathHelpText')}
                   {...remotePath}
                   onChange={onInputChange}
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Local Path</FormLabel>
+                <FormLabel>{translate('SettingsRemotePathMappingLocalPath')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.PATH}
                   name="localPath"
-                  helpText="Path that Radarr should use to access the remote path locally"
+                  helpText={translate('SettingsRemotePathMappingLocalPathHelpText')}
                   {...localPath}
                   onChange={onInputChange}
                 />

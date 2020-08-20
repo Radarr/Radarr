@@ -130,13 +130,13 @@ class MovieIndexOverviewOptionsModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Overview Options
+          {translate('OverviewOptions')}
         </ModalHeader>
 
         <ModalBody>
           <Form>
             <FormGroup>
-              <FormLabel>Poster Size</FormLabel>
+              <FormLabel>{translate('PosterSize')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.SELECT}
@@ -148,19 +148,19 @@ class MovieIndexOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Detailed Progress Bar</FormLabel>
+              <FormLabel>{translate('DetailedProgressBar')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="detailedProgressBar"
                 value={detailedProgressBar}
-                helpText="Show text on progess bar"
+                helpText={translate('DetailedProgressBarHelpText')}
                 onChange={this.onChangeOverviewOption}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Monitored</FormLabel>
+              <FormLabel>{translate('ShowMonitored')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -171,7 +171,7 @@ class MovieIndexOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Studio</FormLabel>
+              <FormLabel>{translate('ShowStudio')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -182,7 +182,7 @@ class MovieIndexOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Quality Profile</FormLabel>
+              <FormLabel>{translate('ShowQualityProfile')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -193,7 +193,7 @@ class MovieIndexOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Date Added</FormLabel>
+              <FormLabel>{translate('ShowDateAdded')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -204,7 +204,7 @@ class MovieIndexOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Path</FormLabel>
+              <FormLabel>{translate('ShowPath')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -215,7 +215,7 @@ class MovieIndexOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Size on Disk</FormLabel>
+              <FormLabel>{translate('ShowSizeOnDisk')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -226,13 +226,13 @@ class MovieIndexOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Search</FormLabel>
+              <FormLabel>{translate('ShowSearch')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="showSearchAction"
                 value={showSearchAction}
-                helpText="Show search button on hover"
+                helpText={translate('ShowSearchHelpText')}
                 onChange={this.onChangeOverviewOption}
               />
             </FormGroup>
