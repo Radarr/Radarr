@@ -11,7 +11,17 @@ namespace NzbDrone.Core.Datastore
         {
             using (var conn = db.OpenConnection())
             {
-                var items = SqlMapper.Query<T>(conn, sql, param);
+                IEnumerable<T> items;
+                try
+                {
+                    items = SqlMapper.Query<T>(conn, sql, param);
+                }
+                catch (Exception e)
+                {
+                    e.Data.Add("SQL", SqlBuilderExtensions.GetSqlLogString(sql, param));
+                    throw;
+                }
+
                 if (TableMapping.Mapper.LazyLoadList.TryGetValue(typeof(T), out var lazyProperties))
                 {
                     foreach (var item in items)
@@ -33,13 +43,18 @@ namespace NzbDrone.Core.Datastore
                 return map(first, second);
             }
 
-            IEnumerable<TReturn> result = null;
             using (var conn = db.OpenConnection())
             {
-                result = SqlMapper.Query<TFirst, TSecond, TReturn>(conn, sql, MapWithLazy, param, transaction, buffered, splitOn, commandTimeout, commandType);
+                try
+                {
+                    return SqlMapper.Query<TFirst, TSecond, TReturn>(conn, sql, MapWithLazy, param, transaction, buffered, splitOn, commandTimeout, commandType);
+                }
+                catch (Exception e)
+                {
+                    e.Data.Add("SQL", SqlBuilderExtensions.GetSqlLogString(sql, param));
+                    throw;
+                }
             }
-
-            return result;
         }
 
         public static IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TReturn>(this IDatabase db, string sql, Func<TFirst, TSecond, TThird, TReturn> map, object param = null, IDbTransaction transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
@@ -52,13 +67,18 @@ namespace NzbDrone.Core.Datastore
                 return map(first, second, third);
             }
 
-            IEnumerable<TReturn> result = null;
             using (var conn = db.OpenConnection())
             {
-                result = SqlMapper.Query<TFirst, TSecond, TThird, TReturn>(conn, sql, MapWithLazy, param, transaction, buffered, splitOn, commandTimeout, commandType);
+                try
+                {
+                    return SqlMapper.Query<TFirst, TSecond, TThird, TReturn>(conn, sql, MapWithLazy, param, transaction, buffered, splitOn, commandTimeout, commandType);
+                }
+                catch (Exception e)
+                {
+                    e.Data.Add("SQL", SqlBuilderExtensions.GetSqlLogString(sql, param));
+                    throw;
+                }
             }
-
-            return result;
         }
 
         public static IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TReturn>(this IDatabase db, string sql, Func<TFirst, TSecond, TThird, TFourth, TReturn> map, object param = null, IDbTransaction transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
@@ -72,13 +92,18 @@ namespace NzbDrone.Core.Datastore
                 return map(first, second, third, fourth);
             }
 
-            IEnumerable<TReturn> result = null;
             using (var conn = db.OpenConnection())
             {
-                result = SqlMapper.Query<TFirst, TSecond, TThird, TFourth, TReturn>(conn, sql, MapWithLazy, param, transaction, buffered, splitOn, commandTimeout, commandType);
+                try
+                {
+                    return SqlMapper.Query<TFirst, TSecond, TThird, TFourth, TReturn>(conn, sql, MapWithLazy, param, transaction, buffered, splitOn, commandTimeout, commandType);
+                }
+                catch (Exception e)
+                {
+                    e.Data.Add("SQL", SqlBuilderExtensions.GetSqlLogString(sql, param));
+                    throw;
+                }
             }
-
-            return result;
         }
 
         public static IEnumerable<TReturn> Query<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(this IDatabase db, string sql, Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn> map, object param = null, IDbTransaction transaction = null, bool buffered = true, string splitOn = "Id", int? commandTimeout = null, CommandType? commandType = null)
@@ -93,13 +118,18 @@ namespace NzbDrone.Core.Datastore
                 return map(first, second, third, fourth, fifth);
             }
 
-            IEnumerable<TReturn> result = null;
             using (var conn = db.OpenConnection())
             {
-                result = SqlMapper.Query<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(conn, sql, MapWithLazy, param, transaction, buffered, splitOn, commandTimeout, commandType);
+                try
+                {
+                    return SqlMapper.Query<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>(conn, sql, MapWithLazy, param, transaction, buffered, splitOn, commandTimeout, commandType);
+                }
+                catch (Exception e)
+                {
+                    e.Data.Add("SQL", SqlBuilderExtensions.GetSqlLogString(sql, param));
+                    throw;
+                }
             }
-
-            return result;
         }
 
         public static IEnumerable<T> Query<T>(this IDatabase db, SqlBuilder builder)

@@ -12,7 +12,7 @@ namespace NzbDrone.Common.Instrumentation
 {
     public static class NzbDroneLogger
     {
-        private const string FILE_LOG_LAYOUT = @"${date:format=yyyy-M-d HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}}";
+        private const string FILE_LOG_LAYOUT = @"${date:format=yyyy-M-d HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}${exception:format=Data}${newline}}";
 
         private static bool _isConfigured;
 
@@ -94,7 +94,7 @@ namespace NzbDrone.Common.Instrumentation
         {
             DebuggerTarget target = new DebuggerTarget();
             target.Name = "debuggerLogger";
-            target.Layout = "[${level}] [${threadid}] ${logger}: ${message} ${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}}";
+            target.Layout = "[${level}] [${threadid}] ${logger}: ${message} ${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}${exception:format=Data}${newline}}";
 
             var loggingRule = new LoggingRule("*", LogLevel.Trace, target);
             LogManager.Configuration.AddTarget("debugger", target);
@@ -108,7 +108,7 @@ namespace NzbDrone.Common.Instrumentation
             var coloredConsoleTarget = new ColoredConsoleTarget();
 
             coloredConsoleTarget.Name = "consoleLogger";
-            coloredConsoleTarget.Layout = "[${level}] ${logger}: ${message} ${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}}";
+            coloredConsoleTarget.Layout = "[${level}] ${logger}: ${message} ${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}${exception:format=Data}${newline}}";
 
             var loggingRule = new LoggingRule("*", level, coloredConsoleTarget);
 
