@@ -91,7 +91,7 @@
   </ItemGroup>
 
   <!-- Set up stylecop -->
-  <ItemGroup Condition="'$(RadarrProject)'=='true'">
+  <ItemGroup Condition="'$(RadarrProject)'=='true' and '$(EnableAnalyzers)'!='false'">
     <!-- StyleCop analysis -->
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0-beta2.final">
       <PrivateAssets>all</PrivateAssets>
