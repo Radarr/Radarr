@@ -14,6 +14,7 @@ variables:
   sentryOrg: 'servarr'
   sentryUrl: 'https://sentry.servarr.com'
   dotnetVersion: '3.1.401'
+  yarnCacheFolder: $(Pipeline.Workspace)/.yarn
 
 trigger:
   branches:
@@ -139,10 +140,19 @@ stages:
       - checkout: self
         submodules: true
         fetchDepth: 1
+      - task: Cache@2
+        inputs:
+          key: 'yarn | "$(osName)" | yarn.lock'
+          restoreKeys: |
+             yarn | "$(osName)"
+             yarn
+          path: $(yarnCacheFolder)
+        displayName: Cache Yarn packages
       - bash: ./build.sh --frontend
         displayName: Build Radarr Frontend
         env:
           FORCE_COLOR: 0
+          YARN_CACHE_FOLDER: $(yarnCacheFolder)
       - publish: $(outputFolder)
         artifact: '$(osName)Frontend'
         displayName: Publish Frontend
@@ -750,10 +760,19 @@ stages:
       - checkout: self
         submodules: true
         fetchDepth: 1
+      - task: Cache@2
+        inputs:
+          key: 'yarn | "$(osName)" | yarn.lock'
+          restoreKeys: |
+             yarn | "$(osName)"
+             yarn
+          path: $(yarnCacheFolder)
+        displayName: Cache Yarn packages
       - bash: ./build.sh --lint
         displayName: Lint Radarr Frontend
         env:
           FORCE_COLOR: 0
+          YARN_CACHE_FOLDER: $(yarnCacheFolder)
 
     - job: Analyze_Frontend
       displayName: Frontend
