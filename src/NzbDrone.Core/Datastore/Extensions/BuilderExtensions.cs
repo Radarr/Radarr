@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Datastore
         {
             if (LogSql)
             {
-                LogQuery(template.RawSql, (DynamicParameters)template.Parameters);
+                Logger.Trace(GetSqlLogString(template.RawSql, template.Parameters));
             }
 
             return template;
@@ -108,12 +108,14 @@ namespace NzbDrone.Core.Datastore
         {
             if (LogSql)
             {
-                LogQuery(sql, new DynamicParameters(parameters));
+                Logger.Trace(GetSqlLogString(sql, parameters));
             }
         }
 
-        private static void LogQuery(string sql, DynamicParameters parameters)
+        public static string GetSqlLogString(string sql, object paramsObject)
         {
+            var parameters = new DynamicParameters(paramsObject);
+
             var sb = new StringBuilder();
             sb.AppendLine();
             sb.AppendLine("==== Begin Query Trace ====");
@@ -122,6 +124,7 @@ namespace NzbDrone.Core.Datastore
             sb.AppendLine(sql);
             sb.AppendLine();
             sb.AppendLine("PARAMETERS:");
+
             foreach (var p in parameters.ToDictionary())
             {
                 var val = (p.Value is string) ? string.Format("\"{0}\"", p.Value) : p.Value;
@@ -132,7 +135,7 @@ namespace NzbDrone.Core.Datastore
             sb.AppendLine("==== End Query Trace ====");
             sb.AppendLine();
 
-            Logger.Trace(sb.ToString());
+            return sb.ToString();
         }
 
         private static Dictionary<string, object> ToDictionary(this DynamicParameters dynamicParams)
