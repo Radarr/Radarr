@@ -68,6 +68,9 @@ stages:
 
       pool:
         vmImage: $(imageName)
+      variables:
+        # Disable stylecop here - linting errors get caught by the analyze task
+        EnableAnalyzers: 'false'
       steps:
       - checkout: self
         submodules: true
