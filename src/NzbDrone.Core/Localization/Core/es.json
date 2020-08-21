@@ -319,5 +319,7 @@
     "Overview": "Resumen",
     "MonoVersionCheckUpgradeRecommendedMessage": "Le versión de Mono {0} instalada actualmente es compatible pero se recomienda actualizar a {1}.",
     "MonoVersionCheckOldNotSupportedMessage": "Le versión de Mono {0} instalada actualmente es antigua y no compatible. Por favor actualiza Mono a la versión {1}.",
-    "MonoVersionCheckNotSupportedMessage": "La versión de Mono {0} instalada actualmente no es compatible. Por favor actualiza Mono a la versión {1}."
+    "MonoVersionCheckNotSupportedMessage": "La versión de Mono {0} instalada actualmente no es compatible. Por favor actualiza Mono a la versión {1}.",
+    "SettingsEnableColorImpairedModeHelpText": "Estilo modificado para permitir que usuarios con problemas de color distingan mejor la información codificada por colores",
+    "SettingsEnableColorImpairedMode": "Activar Modo De Color-Impaired"
 }
