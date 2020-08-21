@@ -297,15 +297,15 @@
     "SettingsShowRelativeDatesHelpText": "Mostrar fechas relativas (Hoy/Ayer/etc) o absolutas",
     "SettingsShowRelativeDates": "Mostrar Fechas Relativas",
     "SettingsShortDateFormat": "Formato Corto de Fecha",
-    "SettingsRemotePathMappingRemotePathHelpText": "Ruta de origen al directorio que accede el Manipulador de Descargas",
+    "SettingsRemotePathMappingRemotePathHelpText": "Ruta de origen al directorio al que accede el Gestor de Descargas",
     "SettingsRemotePathMappingRemotePath": "Ruta Remota",
     "SettingsRemotePathMappingLocalPathHelpText": "La ruta que Radarr tiene que usar para acceder a la ruta remota localmente",
     "SettingsRemotePathMappingLocalPath": "Ruta Local",
-    "SettingsRemotePathMappingHostHelpText": "El mismo host especificado para el Manipulador de Descargas remoto",
+    "SettingsRemotePathMappingHostHelpText": "El mismo host especificado para el Gestor de Descargas remoto",
     "SettingsLongDateFormat": "Formato Largo de Fecha",
     "SettingsFirstDayOfWeek": "Primer Día de la Semana",
     "SelectFolder": "Seleccionar Carpeta",
-    "SearchOnAdd": "Búsqueda al añadir",
+    "SearchOnAdd": "Buscar al añadir",
     "SearchMovie": "Buscar Película",
     "RecentFolders": "Carpetas Recientes",
     "QuickImport": "Importación Rápida",
@@ -321,5 +321,5 @@
     "MonoVersionCheckOldNotSupportedMessage": "Le versión de Mono {0} instalada actualmente es antigua y no compatible. Por favor actualiza Mono a la versión {1}.",
     "MonoVersionCheckNotSupportedMessage": "La versión de Mono {0} instalada actualmente no es compatible. Por favor actualiza Mono a la versión {1}.",
     "SettingsEnableColorImpairedModeHelpText": "Estilo modificado para permitir que usuarios con problemas de color distingan mejor la información codificada por colores",
-    "SettingsEnableColorImpairedMode": "Activar Modo De Color-Impaired"
+    "SettingsEnableColorImpairedMode": "Activar Modo De Color Degradado"
 }
