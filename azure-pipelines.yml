@@ -415,10 +415,6 @@ stages:
       condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
-          mono508:
-            testName: 'Mono 5.8'
-            artifactName: LinuxTests
-            containerImage: servarr/testimages:mono-5.8
           mono520:
             testName: 'Mono 5.20'
             artifactName: LinuxTests
@@ -568,11 +564,6 @@ stages:
       condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
-          mono508:
-            testName: 'Mono 5.8'
-            artifactName: LinuxTests
-            containerImage: servarr/testimages:mono-5.8
-            pattern: 'Radarr.**.linux.tar.gz'
           mono520:
             testName: 'Mono 5.20'
             artifactName: LinuxTests
