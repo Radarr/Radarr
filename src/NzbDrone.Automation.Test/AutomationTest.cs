@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -9,7 +10,7 @@ using NzbDrone.Automation.Test.PageModel;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Test.Common;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 
 namespace NzbDrone.Automation.Test
@@ -34,9 +35,12 @@ namespace NzbDrone.Automation.Test
         [OneTimeSetUp]
         public void SmokeTestSetup()
         {
-            var options = new FirefoxOptions();
+            var options = new ChromeOptions();
             options.AddArguments("--headless");
-            driver = new FirefoxDriver(options);
+            var service = ChromeDriverService.CreateDefaultService();
+
+            // Timeout as windows automation tests seem to take alot longer to get going
+            driver = new ChromeDriver(service, options, new TimeSpan(0, 3, 0));
 
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger());
             _runner.KillAll();
