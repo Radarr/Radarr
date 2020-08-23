@@ -32,7 +32,7 @@ class MoreInfo extends Component {
 
           <DescriptionListItemTitle>Donations</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://radarr.video/donate">radarr.video/donate</Link>
+            <Link to="https://opencollective.com/radarr">opencollective.com/radarr</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Source</DescriptionListItemTitle>
