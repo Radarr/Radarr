@@ -106,9 +106,12 @@ namespace Radarr.Api.V3.Movies
             if (tmdbId > 0)
             {
                 var movie = _moviesService.FindByTmdbId(tmdbId);
-                var translation = _movieTranslationService.GetAllTranslationsForMovie(movie.Id).Where(t => t.Language == (Language)_configService.MovieInfoLanguage).FirstOrDefault();
 
-                moviesResources.AddIfNotNull(movie.ToResource(_qualityUpgradableSpecification, translation));
+                if (movie != null)
+                {
+                    var translation = _movieTranslationService.GetAllTranslationsForMovie(movie.Id).Where(t => t.Language == (Language)_configService.MovieInfoLanguage).FirstOrDefault();
+                    moviesResources.AddIfNotNull(movie.ToResource(_qualityUpgradableSpecification, translation));
+                }
             }
             else
             {
