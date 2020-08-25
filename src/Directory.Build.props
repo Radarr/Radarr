@@ -24,6 +24,10 @@
     <RadarrProject Condition="$(MSBuildProjectName.StartsWith('Radarr'))">true</RadarrProject>
     <RadarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceInstall'))">true</RadarrProject>
     <RadarrProject Condition="$(MSBuildProjectName.StartsWith('ServiceUninstall'))">true</RadarrProject>
+
+    <!-- A test project gets the test sdk packages automatically added -->
+    <TestProject>false</TestProject>
+    <TestProject Condition="$(MSBuildProjectName.EndsWith('.Test'))">true</TestProject>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -81,6 +85,18 @@
     <!-- For now keep the NzbDrone namespace -->
     <RootNamespace Condition="'$(RadarrProject)'=='true'">$(MSBuildProjectName.Replace('Radarr','NzbDrone'))</RootNamespace>
   </PropertyGroup>
+
+  <!-- Standard testing packages -->
+  <ItemGroup Condition="'$(TestProject)'=='true'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="NunitXml.TestLogger" Version="2.1.62" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TestProject)'=='true' and '$(TargetFramework)'=='net5.0'">
+    <PackageReference Include="coverlet.collector" Version="1.2.1" PrivateAssets="all" />
+  </ItemGroup>
 
   <!-- Allow building net framework using mono -->
   <ItemGroup>
