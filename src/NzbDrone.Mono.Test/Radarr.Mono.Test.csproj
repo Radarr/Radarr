@@ -2,12 +2,6 @@
   <PropertyGroup>
     <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0" />
-    <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
-    <PackageReference Include="NunitXml.TestLogger" Version="2.1.41" />
-  </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <PackageReference Include="Mono.Posix-4.5" Version="4.5.0" PrivateAssets="all" />
   </ItemGroup>
@@ -16,7 +10,6 @@
        See https://github.com/xamarin/XamarinComponents/issues/282
   -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <PackageReference Include="coverlet.collector" Version="1.2.1" PrivateAssets="all" />
     <PackageReference Include="Mono.Posix.NETStandard" Version="5.20.1-preview" />
   </ItemGroup>
   <ItemGroup>
