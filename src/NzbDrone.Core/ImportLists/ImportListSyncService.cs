@@ -229,6 +229,10 @@ namespace NzbDrone.Core.ImportLists
                             Monitor = monitored ? MonitorTypes.All : MonitorTypes.None
                         }
                     },
+                    AddOptions = new AddBookOptions
+                    {
+                        SearchForNewBook = monitored
+                    }
                 };
 
                 if (importList.ShouldMonitor == ImportListMonitorType.SpecificBook)
