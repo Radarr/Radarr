@@ -199,6 +199,35 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [Test]
+        public void should_replace_movie_certification()
+        {
+            _namingConfig.StandardMovieFormat = "{Movie Certification}";
+            _movie.Certification = "R";
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("R");
+        }
+
+        [Test]
+        public void should_replace_movie_collection()
+        {
+            _namingConfig.StandardMovieFormat = "{Movie Collection}";
+            _movie.Collection = new MovieCollection { Name = "South Part Collection" };
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("South Part Collection");
+        }
+
+        [Test]
+        public void should_be_empty_for_null_collection()
+        {
+            _namingConfig.StandardMovieFormat = "{Movie Collection}";
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().BeEmpty();
+        }
+
+        [Test]
         public void should_replace_quality_title()
         {
             _namingConfig.StandardMovieFormat = "{Quality Title}";

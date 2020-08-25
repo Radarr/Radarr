@@ -234,6 +234,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie TitleFirstCharacter}"] = m => TitleThe(movie.Title).Substring(0, 1).FirstCharToUpper();
 
             tokenHandlers["{Movie Certification}"] = m => movie.Certification ?? string.Empty;
+            tokenHandlers["{Movie Collection}"] = m => movie.Collection?.Name ?? string.Empty;
         }
 
         private string GetLanguageTitle(Movie movie, string isoCodes)
