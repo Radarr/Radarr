@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
-    <NeutralLanguage>en</NeutralLanguage>
+    <TargetFrameworks>net462;net5.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DotNet4.SocksProxy" Version="1.4.0.1" />
@@ -12,13 +11,12 @@
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="System.Data.SQLite.Core.Servarr" Version="1.0.113.0-0" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-    <PackageReference Include="System.IO.FileSystem.AccessControl" Version="4.7.0" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.7.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.1.10" />
-    <PackageReference Include="Microsoft.Win32.Registry" Version="4.7.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
     <Reference Include="System.ServiceProcess" />

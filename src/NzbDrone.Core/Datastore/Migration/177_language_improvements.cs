@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Dapper;
 using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
@@ -19,7 +20,7 @@ namespace NzbDrone.Core.Datastore.Migration
             _serializerSettings = new JsonSerializerOptions
             {
                 AllowTrailingCommas = true,
-                IgnoreNullValues = false,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
                 PropertyNameCaseInsensitive = true,
                 DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,

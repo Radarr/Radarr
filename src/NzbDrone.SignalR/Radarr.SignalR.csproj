@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net462;net5.0</TargetFrameworks>
     <OutputType>Library</OutputType>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net462'">

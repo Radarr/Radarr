@@ -13,7 +13,7 @@ variables:
   buildName: '$(Build.SourceBranchName).$(radarrVersion)'
   sentryOrg: 'servarr'
   sentryUrl: 'https://sentry.servarr.com'
-  dotnetVersion: '3.1.404'
+  dotnetVersion: '5.0.102'
   yarnCacheFolder: $(Pipeline.Workspace)/.yarn
 
 trigger:
@@ -92,7 +92,7 @@ stages:
         artifact: '$(osName)Backend'
         displayName: Publish Backend
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/netcoreapp3.1/win-x64/publish'
+      - publish: '$(testsFolder)/net5.0/win-x64/publish'
         artifact: WindowsCoreTests
         displayName: Publish Windows Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
@@ -100,15 +100,15 @@ stages:
         artifact: LinuxTests
         displayName: Publish Linux Mono Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/netcoreapp3.1/linux-x64/publish'
+      - publish: '$(testsFolder)/net5.0/linux-x64/publish'
         artifact: LinuxCoreTests
         displayName: Publish Linux Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/netcoreapp3.1/linux-musl-x64/publish'
+      - publish: '$(testsFolder)/net5.0/linux-musl-x64/publish'
         artifact: LinuxMuslCoreTests
         displayName: Publish Linux Musl Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/netcoreapp3.1/osx-x64/publish'
+      - publish: '$(testsFolder)/net5.0/osx-x64/publish'
         artifact: MacCoreTests
         displayName: Publish MacOS Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
@@ -135,7 +135,7 @@ stages:
       - task: NodeTool@0
         displayName: Set Node.js version
         inputs:
-          versionSpec: '10.x'
+          versionSpec: '12.x'
       - checkout: self
         submodules: true
         fetchDepth: 1
@@ -184,12 +184,12 @@ stages:
       - bash: ./build.sh --packages
         displayName: Create Packages
       - bash: |
-          setup/inno/ISCC.exe setup/radarr.iss //DFramework=netcoreapp3.1 //DRuntime=win-x86
-          cp setup/output/Radarr.*windows.netcoreapp3.1.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x86-installer.exe
+          setup/inno/ISCC.exe setup/radarr.iss //DFramework=net5.0 //DRuntime=win-x86
+          cp setup/output/Radarr.*windows.net5.0.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x86-installer.exe
         displayName: Create .NET Core Windows installer
       - bash: |
-          setup/inno/ISCC.exe setup/radarr.iss //DFramework=netcoreapp3.1 //DRuntime=win-x64
-          cp setup/output/Radarr.*windows.netcoreapp3.1.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x64-installer.exe
+          setup/inno/ISCC.exe setup/radarr.iss //DFramework=net5.0 //DRuntime=win-x64
+          cp setup/output/Radarr.*windows.net5.0.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x64-installer.exe
         displayName: Create .NET Core Windows installer
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'WindowsInstaller'
@@ -231,21 +231,21 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).windows-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/win-x64/netcoreapp3.1
+          rootFolderOrFile: $(artifactsFolder)/win-x64/net5.0
       - task: ArchiveFiles@2
         displayName: Create Windows x86 Core zip
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).windows-core-x86.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/win-x86/netcoreapp3.1
+          rootFolderOrFile: $(artifactsFolder)/win-x86/net5.0
       - task: ArchiveFiles@2
         displayName: Create MacOS Core app
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-app-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos-app/netcoreapp3.1
+          rootFolderOrFile: $(artifactsFolder)/macos-app/net5.0
       - task: ArchiveFiles@2
         displayName: Create MacOS Core tar
         inputs:
@@ -253,7 +253,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos/netcoreapp3.1
+          rootFolderOrFile: $(artifactsFolder)/macos/net5.0
       - task: ArchiveFiles@2
         displayName: Create Linux Mono tar
         inputs:
@@ -269,7 +269,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-x64/netcoreapp3.1
+          rootFolderOrFile: $(artifactsFolder)/linux-x64/net5.0
       - task: ArchiveFiles@2
         displayName: Create Linux Musl Core tar
         inputs:
@@ -277,7 +277,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-musl-x64/netcoreapp3.1
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-x64/net5.0
       - task: ArchiveFiles@2
         displayName: Create ARM32 Linux Core tar
         inputs:
@@ -285,7 +285,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-arm/netcoreapp3.1
+          rootFolderOrFile: $(artifactsFolder)/linux-arm/net5.0
       - task: ArchiveFiles@2
         displayName: Create ARM64 Linux Core tar
         inputs:
@@ -293,7 +293,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-arm64/netcoreapp3.1
+          rootFolderOrFile: $(artifactsFolder)/linux-arm64/net5.0
       - task: ArchiveFiles@2
         displayName: Create ARM64 Linux Musl Core tar
         inputs:
@@ -301,7 +301,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm64/netcoreapp3.1
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm64/net5.0
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'Packages'
         displayName: Publish Packages
@@ -757,7 +757,7 @@ stages:
       - task: NodeTool@0
         displayName: Set Node.js version
         inputs:
-          versionSpec: '10.x'
+          versionSpec: '12.x'
       - checkout: self
         submodules: true
         fetchDepth: 1
@@ -831,8 +831,8 @@ stages:
             sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/CoverageResults/**/coverage.opencover.xml
             sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/TestResult.xml
       - bash: |
-          ./build.sh --backend -f netcoreapp3.1 -r win-x64
-          TEST_DIR=_tests/netcoreapp3.1/win-x64/publish/ ./test.sh Windows Unit Coverage
+          ./build.sh --backend -f net5.0 -r win-x64
+          TEST_DIR=_tests/net5.0/win-x64/publish/ ./test.sh Windows Unit Coverage
         displayName: Coverage Unit Tests
       - task: SonarCloudAnalyze@1
         condition: eq(variables['System.PullRequest.IsFork'], 'False')

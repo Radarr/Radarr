@@ -7,10 +7,6 @@ using System.ServiceProcess;
 using NLog;
 using NzbDrone.Common.Processes;
 
-#if NETCOREAPP
-using Microsoft.Extensions.Hosting.WindowsServices;
-#endif
-
 namespace NzbDrone.Common.EnvironmentInfo
 {
     public class RuntimeInfo : IRuntimeInfo
@@ -28,12 +24,12 @@ namespace NzbDrone.Common.EnvironmentInfo
                                serviceProvider.GetStatus(ServiceProvider.SERVICE_NAME) == ServiceControllerStatus.StartPending;
 
             //Guarded to avoid issues when running in a non-managed process
-            var entry = Assembly.GetEntryAssembly();
+            var entry = Process.GetCurrentProcess().MainModule;
 
             if (entry != null)
             {
-                ExecutingApplication = entry.Location;
-                IsWindowsTray = OsInfo.IsWindows && entry.ManifestModule.Name == $"{ProcessProvider.RADARR_PROCESS_NAME}.exe";
+                ExecutingApplication = entry.FileName;
+                IsWindowsTray = OsInfo.IsWindows && entry.ModuleName == $"{ProcessProvider.RADARR_PROCESS_NAME}.exe";
             }
         }
 
@@ -59,12 +55,7 @@ namespace NzbDrone.Common.EnvironmentInfo
             }
         }
 
-#if !NETCOREAPP
         public static bool IsUserInteractive => Environment.UserInteractive;
-#else
-        // Note that Environment.UserInteractive is always true on net core: https://stackoverflow.com/a/57325783
-        public static bool IsUserInteractive => OsInfo.IsWindows && !WindowsServiceHelpers.IsWindowsService();
-#endif
 
         bool IRuntimeInfo.IsUserInteractive => IsUserInteractive;
 

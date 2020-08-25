@@ -21,7 +21,7 @@ namespace NzbDrone.Core.ThingiProvider
             var serializerSettings = new JsonSerializerOptions
             {
                 AllowTrailingCommas = true,
-                IgnoreNullValues = true,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
                 PropertyNameCaseInsensitive = true,
                 DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,

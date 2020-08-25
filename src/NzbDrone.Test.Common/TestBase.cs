@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using FluentAssertions;
@@ -9,6 +8,7 @@ using NUnit.Framework;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Messaging;
+using NzbDrone.Common.Processes;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Test.Common.AutoMoq;
 
@@ -120,7 +120,7 @@ namespace NzbDrone.Test.Common
 
         public static string GetUID()
         {
-            return Process.GetCurrentProcess().Id + "_" + DateTime.Now.Ticks + "_" + Interlocked.Increment(ref _nextUid);
+            return ProcessProvider.GetCurrentProcessId() + "_" + DateTime.Now.Ticks + "_" + Interlocked.Increment(ref _nextUid);
         }
 
         public static void DeleteTempFolder(string folder)

@@ -66,6 +66,7 @@
     <!-- Should be replaced by CI -->
     <AssemblyVersion>10.0.0.*</AssemblyVersion>
     <AssemblyConfiguration>$(Configuration)-dev</AssemblyConfiguration>
+    <NeutralLanguage>en</NeutralLanguage>
 
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
@@ -88,8 +89,8 @@
 
   <!-- Standard testing packages -->
   <ItemGroup Condition="'$(TestProject)'=='true'">
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0" />
-    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
+    <PackageReference Include="NUnit" Version="3.13.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="NunitXml.TestLogger" Version="2.1.62" />
   </ItemGroup>
@@ -106,13 +107,14 @@
     </PackageReference>
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(RadarrProject)'=='true' and '$(EnableAnalyzers)'=='false'">
+    <!-- FXCop Built into Net5 SDK now as NETAnalyzers, Enabled by default on net5 projects -->
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+  </PropertyGroup>
+
   <!-- Set up stylecop -->
   <ItemGroup Condition="'$(RadarrProject)'=='true' and '$(EnableAnalyzers)'!='false'">
     <!-- StyleCop analysis -->
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

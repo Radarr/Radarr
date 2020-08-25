@@ -292,7 +292,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         video.Add(new XElement("scantype", movieFile.MediaInfo.ScanType));
                         video.Add(new XElement("width", movieFile.MediaInfo.Width));
 
-                        if (movieFile.MediaInfo.RunTime != null)
+                        if (movieFile.MediaInfo.RunTime != default)
                         {
                             video.Add(new XElement("duration", movieFile.MediaInfo.RunTime.TotalMinutes));
                             video.Add(new XElement("durationinseconds", movieFile.MediaInfo.RunTime.TotalSeconds));
