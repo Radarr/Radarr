@@ -110,8 +110,16 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         private void ValidateFormatTag(string json, string type, bool required, bool negated)
         {
             json.Should().Contain($"\"type\": \"{type}\"");
-            json.Should().Contain($"\"required\": {required.ToString().ToLower()}");
-            json.Should().Contain($"\"negate\": {negated.ToString().ToLower()}");
+
+            if (required)
+            {
+                json.Should().Contain($"\"required\": true");
+            }
+
+            if (negated)
+            {
+                json.Should().Contain($"\"negate\": true");
+            }
         }
     }
 }

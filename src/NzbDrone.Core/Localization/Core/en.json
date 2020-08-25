@@ -581,7 +581,7 @@
   "Negate": "Negate",
   "Negated": "Negated",
   "NegateHelpText": "If checked, the custom format will not apply if this {0} condition matches.",
-  "NetCore": ".NET Core",
+  "NetCore": ".NET",
   "New": "New",
   "NextExecution": "Next Execution",
   "No": "No",

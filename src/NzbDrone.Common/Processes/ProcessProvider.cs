@@ -14,7 +14,6 @@ namespace NzbDrone.Common.Processes
 {
     public interface IProcessProvider
     {
-        int GetCurrentProcessId();
         ProcessInfo GetCurrentProcess();
         ProcessInfo GetProcessById(int id);
         List<ProcessInfo> FindProcessByName(string name);
@@ -43,9 +42,13 @@ namespace NzbDrone.Common.Processes
             _logger = logger;
         }
 
-        public int GetCurrentProcessId()
+        public static int GetCurrentProcessId()
         {
+#if NETCOREAPP
+            return Environment.ProcessId;
+#else
             return Process.GetCurrentProcess().Id;
+#endif
         }
 
         public ProcessInfo GetCurrentProcess()
@@ -257,7 +260,7 @@ namespace NzbDrone.Common.Processes
 
             process.Refresh();
 
-            if (process.Id != Process.GetCurrentProcess().Id && process.HasExited)
+            if (process.Id != GetCurrentProcessId() && process.HasExited)
             {
                 _logger.Debug("Process has already exited");
                 return;
@@ -278,7 +281,7 @@ namespace NzbDrone.Common.Processes
 
             foreach (var processInfo in processes)
             {
-                if (processInfo.Id == Process.GetCurrentProcess().Id)
+                if (processInfo.Id == GetCurrentProcessId())
                 {
                     _logger.Debug("Tried killing own process, skipping: {0} [{1}]", processInfo.Id, processInfo.ProcessName);
                     continue;
@@ -312,7 +315,7 @@ namespace NzbDrone.Common.Processes
                 processInfo.Name = process.ProcessName;
                 processInfo.StartPath = GetExeFileName(process);
 
-                if (process.Id != Process.GetCurrentProcess().Id && process.HasExited)
+                if (process.Id != GetCurrentProcessId() && process.HasExited)
                 {
                     processInfo = null;
                 }
