@@ -15,6 +15,7 @@ import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieFileStatusConnector from 'Movie/MovieFileStatusConnector';
 import MovieTitleLink from 'Movie/MovieTitleLink';
+import formatRuntime from 'Utilities/Date/formatRuntime';
 import formatBytes from 'Utilities/Number/formatBytes';
 import titleCase from 'Utilities/String/titleCase';
 import MovieStatusCell from './MovieStatusCell';
@@ -251,7 +252,7 @@ class MovieIndexRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
-                  {runtime} Minutes
+                  {formatRuntime(runtime)}
                 </VirtualTableRowCell>
               );
             }

@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
@@ -32,6 +31,7 @@ import ExtraFileTable from 'MovieFile/Extras/ExtraFileTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import fonts from 'Styles/Variables/fonts';
+import formatRuntime from 'Utilities/Date/formatRuntime';
 import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
 import selectAll from 'Utilities/Table/selectAll';
@@ -282,7 +282,6 @@ class MovieDetails extends Component {
     } = this.state;
 
     const marqueeWidth = isSmallScreen ? titleWidth : (titleWidth - 150);
-    const friendlyRuntime = moment.utc((runtime * 60) * 1000).format('h[h] m[m]');
 
     return (
       <PageContent title={title}>
@@ -427,7 +426,7 @@ class MovieDetails extends Component {
                     {
                       !!runtime &&
                         <span className={styles.runtime}>
-                          {friendlyRuntime}
+                          {formatRuntime(runtime)}
                         </span>
                     }
 
