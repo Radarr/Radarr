@@ -87,6 +87,7 @@ class MovieIndexTable extends Component {
       isSmallScreen,
       onSortPress,
       scroller,
+      scrollTop,
       allSelected,
       allUnselected,
       onSelectAllChange,
@@ -100,6 +101,7 @@ class MovieIndexTable extends Component {
         items={items}
         scrollIndex={this.state.scrollIndex}
         isSmallScreen={isSmallScreen}
+        scrollTop={scrollTop}
         scroller={scroller}
         rowHeight={38}
         overscanRowCount={2}
@@ -130,6 +132,7 @@ MovieIndexTable.propTypes = {
   sortDirection: PropTypes.oneOf(sortDirections.all),
   jumpToCharacter: PropTypes.string,
   isSmallScreen: PropTypes.bool.isRequired,
+  scrollTop: PropTypes.number,
   scroller: PropTypes.instanceOf(Element).isRequired,
   onSortPress: PropTypes.func.isRequired,
   allSelected: PropTypes.bool.isRequired,

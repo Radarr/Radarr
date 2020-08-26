@@ -60,7 +60,8 @@ class MovieIndexOverviews extends Component {
       columnCount: 1,
       posterWidth: 162,
       posterHeight: 238,
-      rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {})
+      rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {}),
+      scrollRestored: false
     };
 
     this._grid = null;
@@ -72,13 +73,15 @@ class MovieIndexOverviews extends Component {
       sortKey,
       overviewOptions,
       jumpToCharacter,
+      scrollTop,
       isMovieEditorActive,
       isSmallScreen
     } = this.props;
 
     const {
       width,
-      rowHeight
+      rowHeight,
+      scrollRestored
     } = this.state;
 
     if (prevProps.sortKey !== sortKey ||
@@ -95,6 +98,11 @@ class MovieIndexOverviews extends Component {
             prevProps.isMovieEditorActive !== isMovieEditorActive)) {
       // recomputeGridSize also forces Grid to discard its cache of rendered cells
       this._grid.recomputeGridSize();
+    }
+
+    if (this._grid && scrollTop !== 0 && !scrollRestored) {
+      this.setState({ scrollRestored: true });
+      this._grid.scrollToPosition({ scrollTop });
     }
 
     if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
@@ -262,6 +270,7 @@ MovieIndexOverviews.propTypes = {
   sortKey: PropTypes.string,
   overviewOptions: PropTypes.object.isRequired,
   jumpToCharacter: PropTypes.string,
+  scrollTop: PropTypes.number.isRequired,
   scroller: PropTypes.instanceOf(Element).isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
