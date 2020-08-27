@@ -107,45 +107,33 @@ namespace NzbDrone.Core.Movies
 
             //This more complex sequence handles the delay
             DateTime minimumAvailabilityDate;
-            switch (MinimumAvailability)
+
+            if ((MinimumAvailability == MovieStatusType.TBA) || (MinimumAvailability == MovieStatusType.Announced))
             {
-                case MovieStatusType.TBA:
-                case MovieStatusType.Announced:
-                    minimumAvailabilityDate = DateTime.MinValue;
-                    break;
-                case MovieStatusType.InCinemas:
-                    if (InCinemas.HasValue)
-                    {
-                        minimumAvailabilityDate = InCinemas.Value;
-                    }
-                    else
-                    {
-                        minimumAvailabilityDate = DateTime.MaxValue;
-                    }
-
-                    break;
-
-                case MovieStatusType.Released:
-                case MovieStatusType.PreDB:
-                default:
-                    if (PhysicalRelease.HasValue && DigitalRelease.HasValue)
-                    {
-                        minimumAvailabilityDate = new DateTime(Math.Min(PhysicalRelease.Value.Ticks, DigitalRelease.Value.Ticks));
-                    }
-                    else if (PhysicalRelease.HasValue)
-                    {
-                        minimumAvailabilityDate = PhysicalRelease.Value;
-                    }
-                    else if (DigitalRelease.HasValue)
-                    {
-                        minimumAvailabilityDate = DigitalRelease.Value;
-                    }
-                    else
-                    {
-                        minimumAvailabilityDate = InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue;
-                    }
-
-                    break;
+                minimumAvailabilityDate = DateTime.MinValue;
+            }
+            else if (MinimumAvailability == MovieStatusType.InCinemas && InCinemas.HasValue)
+            {
+                minimumAvailabilityDate = InCinemas.Value;
+            }
+            else
+            {
+                if (PhysicalRelease.HasValue && DigitalRelease.HasValue)
+                {
+                    minimumAvailabilityDate = new DateTime(Math.Min(PhysicalRelease.Value.Ticks, DigitalRelease.Value.Ticks));
+                }
+                else if (PhysicalRelease.HasValue)
+                {
+                    minimumAvailabilityDate = PhysicalRelease.Value;
+                }
+                else if (DigitalRelease.HasValue)
+                {
+                    minimumAvailabilityDate = DigitalRelease.Value;
+                }
+                else
+                {
+                    minimumAvailabilityDate = InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue;
+                }
             }
 
             if (HasPreDBEntry && MinimumAvailability == MovieStatusType.PreDB)
