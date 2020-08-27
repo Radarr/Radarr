@@ -1,6 +1,3 @@
-using System;
-using System.Net;
-using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
