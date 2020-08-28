@@ -2,14 +2,12 @@ import React from 'react';
 import FilterBuilderRowValue from './FilterBuilderRowValue';
 
 const protocols = [
-  { id: 'tba', name: 'TBA' },
   { id: 'announced', name: 'Announced' },
   { id: 'inCinemas', name: 'In Cinemas' },
-  { id: 'released', name: 'Released' },
-  { id: 'deleted', name: 'Deleted' }
+  { id: 'released', name: 'Released' }
 ];
 
-function MovieStatusFilterBuilderRowValue(props) {
+function MinimumAvailabilityFilterBuilderRowValue(props) {
   return (
     <FilterBuilderRowValue
       tagList={protocols}
@@ -18,4 +16,4 @@ function MovieStatusFilterBuilderRowValue(props) {
   );
 }
 
-export default MovieStatusFilterBuilderRowValue;
+export default MinimumAvailabilityFilterBuilderRowValue;
