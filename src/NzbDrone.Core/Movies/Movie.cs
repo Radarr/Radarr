@@ -7,6 +7,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Profiles;
+using NzbDrone.Core.Profiles.Delay;
 
 namespace NzbDrone.Core.Movies
 {
@@ -100,12 +101,13 @@ namespace NzbDrone.Core.Movies
             return Path;
         }
 
-        public bool IsAvailable(int delay = 0)
+        public DateTime MinimumAvailabilityDate()
         {
-            //the below line is what was used before delay was implemented, could still be used for cases when delay==0
-            //return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
+            return IsAvailableDate();
+        }
 
-            //This more complex sequence handles the delay
+        public DateTime IsAvailableDate(int delay = 0)
+        {
             DateTime minimumAvailabilityDate;
 
             if ((MinimumAvailability == MovieStatusType.TBA) || (MinimumAvailability == MovieStatusType.Announced))
@@ -137,11 +139,19 @@ namespace NzbDrone.Core.Movies
             }
 
             if (minimumAvailabilityDate == DateTime.MinValue || minimumAvailabilityDate == DateTime.MaxValue)
-            {
-                return DateTime.Now >= minimumAvailabilityDate;
-            }
+                {
+                    return minimumAvailabilityDate;
+                }
 
-            return DateTime.Now >= minimumAvailabilityDate.AddDays((double)delay);
+            return minimumAvailabilityDate.AddDays((double)delay);
+        }
+
+        public bool IsAvailable(int delay = 0)
+        {
+            //the below line is what was used before delay was implemented, could still be used for cases when delay==0
+            //return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
+
+            return DateTime.Now >= IsAvailableDate(delay);
         }
 
         public DateTime PhysicalReleaseDate()
