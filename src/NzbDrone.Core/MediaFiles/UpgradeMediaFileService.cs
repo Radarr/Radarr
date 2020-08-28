@@ -1,6 +1,7 @@
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Parser.Model;
 
@@ -40,7 +41,7 @@ namespace NzbDrone.Core.MediaFiles
             _logger.Trace("Upgrading existing movie file.");
             var moveFileResult = new MovieFileMoveResult();
 
-            var existingFile = localMovie.Movie.MovieFile;
+            var existingFile = localMovie.Movie.MovieFileId > 0 ? localMovie.Movie.MovieFile : null;
 
             var rootFolder = _diskProvider.GetParentFolder(localMovie.Movie.Path);
 
@@ -53,20 +54,17 @@ namespace NzbDrone.Core.MediaFiles
             if (existingFile != null)
             {
                 var movieFilePath = Path.Combine(localMovie.Movie.Path, existingFile.RelativePath);
+                var subfolder = rootFolder.GetRelativePath(_diskProvider.GetParentFolder(movieFilePath));
 
                 if (_diskProvider.FileExists(movieFilePath))
                 {
                     _logger.Debug("Removing existing movie file: {0}", existingFile);
-                    _recycleBinProvider.DeleteFile(movieFilePath);
+                    _recycleBinProvider.DeleteFile(movieFilePath, subfolder);
                 }
 
                 moveFileResult.OldFiles.Add(existingFile);
                 _mediaFileService.Delete(existingFile, DeleteMediaFileReason.Upgrade);
             }
-
-            //Temporary for correctly getting path
-            localMovie.Movie.MovieFileId = 1;
-            localMovie.Movie.MovieFile = movieFile;
 
             if (copyOnly)
             {
@@ -77,10 +75,6 @@ namespace NzbDrone.Core.MediaFiles
                 moveFileResult.MovieFile = _movieFileMover.MoveMovieFile(movieFile, localMovie);
             }
 
-            localMovie.Movie.MovieFileId = existingFile?.Id ?? 0;
-            localMovie.Movie.MovieFile = existingFile;
-
-            //_movieFileRenamer.RenameMoviePath(localMovie.Movie, false);
             return moveFileResult;
         }
     }
