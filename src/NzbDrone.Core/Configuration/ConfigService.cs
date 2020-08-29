@@ -353,41 +353,6 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("EnableColorImpairedMode", value); }
         }
 
-        public bool ExpandAlbumByDefault
-        {
-            get { return GetValueBoolean("ExpandAlbumByDefault", false); }
-
-            set { SetValue("ExpandAlbumByDefault", value); }
-        }
-
-        public bool ExpandEPByDefault
-        {
-            get { return GetValueBoolean("ExpandEPByDefault", false); }
-
-            set { SetValue("ExpandEPByDefault", value); }
-        }
-
-        public bool ExpandSingleByDefault
-        {
-            get { return GetValueBoolean("ExpandSingleByDefault", false); }
-
-            set { SetValue("ExpandSingleByDefault", value); }
-        }
-
-        public bool ExpandBroadcastByDefault
-        {
-            get { return GetValueBoolean("ExpandBroadcastByDefault", false); }
-
-            set { SetValue("ExpandBroadcastByDefault", value); }
-        }
-
-        public bool ExpandOtherByDefault
-        {
-            get { return GetValueBoolean("ExpandOtherByDefault", false); }
-
-            set { SetValue("ExpandOtherByDefault", value); }
-        }
-
         public bool CleanupMetadataImages
         {
             get { return GetValueBoolean("CleanupMetadataImages", true); }
