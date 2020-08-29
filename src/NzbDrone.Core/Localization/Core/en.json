@@ -523,6 +523,7 @@
   "SettingsRemotePathMappingLocalPathHelpText": "Path that Radarr should use to access the remote path locally",
   "SettingsRemotePathMappingRemotePath": "Remote Path",
   "SettingsRemotePathMappingRemotePathHelpText": "Root path to the directory that the Download Client accesses",
+  "SettingsRuntimeFormat": "Runtime Format",
   "SettingsShortDateFormat": "Short Date Format",
   "SettingsShowRelativeDates": "Show Relative Dates",
   "SettingsShowRelativeDatesHelpText": "Show relative (Today/Yesterday/etc) or absolute dates",

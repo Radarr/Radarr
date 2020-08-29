@@ -268,7 +268,8 @@ class MovieDetails extends Component {
       nextMovie,
       onMonitorTogglePress,
       onRefreshPress,
-      onSearchPress
+      onSearchPress,
+      movieRuntimeFormat
     } = this.props;
 
     const {
@@ -426,7 +427,7 @@ class MovieDetails extends Component {
                     {
                       !!runtime &&
                         <span className={styles.runtime}>
-                          {formatRuntime(runtime)}
+                          {formatRuntime(runtime, movieRuntimeFormat)}
                         </span>
                     }
 
@@ -465,7 +466,7 @@ class MovieDetails extends Component {
 
                     {
                       !!tags.length &&
-                        <span className={styles.tags}>
+                        <span>
                           <Popover
                             anchor={
                               <Icon
@@ -773,7 +774,8 @@ MovieDetails.propTypes = {
   onMonitorTogglePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired,
-  onGoToMovie: PropTypes.func.isRequired
+  onGoToMovie: PropTypes.func.isRequired,
+  movieRuntimeFormat: PropTypes.string.isRequired
 };
 
 MovieDetails.defaultProps = {

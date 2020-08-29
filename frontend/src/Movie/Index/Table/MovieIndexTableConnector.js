@@ -8,11 +8,13 @@ function createMapStateToProps() {
     (state) => state.app.dimensions,
     (state) => state.movieIndex.tableOptions,
     (state) => state.movieIndex.columns,
-    (dimensions, tableOptions, columns) => {
+    (state) => state.settings.ui.item.movieRuntimeFormat,
+    (dimensions, tableOptions, columns, movieRuntimeFormat) => {
       return {
         isSmallScreen: dimensions.isSmallScreen,
         showBanners: tableOptions.showBanners,
-        columns
+        columns,
+        movieRuntimeFormat
       };
     }
   );

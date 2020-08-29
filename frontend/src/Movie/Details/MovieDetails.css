@@ -118,7 +118,6 @@
 }
 
 .links,
-.tags,
 .rating,
 .year,
 .runtime {
@@ -209,10 +208,13 @@
 
   .certification,
   .links,
-  .tags,
   .rating,
   .year,
   .runtime {
-    margin-right: 10px;
+    margin-right: 9px;
+  }
+
+  .details {
+    font-size: 19px;
   }
 }

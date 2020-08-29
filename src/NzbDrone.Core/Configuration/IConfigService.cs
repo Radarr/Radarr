@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NzbDrone.Common.Http.Proxy;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Security;
@@ -68,6 +69,7 @@ namespace NzbDrone.Core.Configuration
         //UI
         int FirstDayOfWeek { get; set; }
         string CalendarWeekColumnHeader { get; set; }
+        MovieRuntimeFormatType MovieRuntimeFormat { get; set; }
 
         string ShortDateFormat { get; set; }
         string LongDateFormat { get; set; }

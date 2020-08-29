@@ -97,7 +97,8 @@ class MovieIndexRow extends Component {
       isSelected,
       onRefreshMoviePress,
       onSearchPress,
-      onSelectedChange
+      onSelectedChange,
+      movieRuntimeFormat
     } = this.props;
 
     const {
@@ -253,7 +254,7 @@ class MovieIndexRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
-                  {formatRuntime(runtime)}
+                  {formatRuntime(runtime, movieRuntimeFormat)}
                 </VirtualTableRowCell>
               );
             }
@@ -462,7 +463,8 @@ MovieIndexRow.propTypes = {
   onSelectedChange: PropTypes.func.isRequired,
   tmdbId: PropTypes.number.isRequired,
   imdbId: PropTypes.string,
-  youTubeTrailerId: PropTypes.string
+  youTubeTrailerId: PropTypes.string,
+  movieRuntimeFormat: PropTypes.string.isRequired
 };
 
 MovieIndexRow.defaultProps = {

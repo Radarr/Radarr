@@ -9,6 +9,9 @@ namespace Radarr.Api.V3.Config
         public int FirstDayOfWeek { get; set; }
         public string CalendarWeekColumnHeader { get; set; }
 
+        // Movies
+        public MovieRuntimeFormatType MovieRuntimeFormat { get; set; }
+
         //Dates
         public string ShortDateFormat { get; set; }
         public string LongDateFormat { get; set; }
@@ -27,6 +30,8 @@ namespace Radarr.Api.V3.Config
             {
                 FirstDayOfWeek = model.FirstDayOfWeek,
                 CalendarWeekColumnHeader = model.CalendarWeekColumnHeader,
+
+                MovieRuntimeFormat = model.MovieRuntimeFormat,
 
                 ShortDateFormat = model.ShortDateFormat,
                 LongDateFormat = model.LongDateFormat,
