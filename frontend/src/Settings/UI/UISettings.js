@@ -43,6 +43,11 @@ export const timeFormatOptions = [
   { key: 'HH:mm', value: '17:00/17:30' }
 ];
 
+export const movieRuntimeFormatOptions = [
+  { key: 'hoursMinutes', value: '1h 15m' },
+  { key: 'minutes', value: '75 mins' }
+];
+
 class UISettings extends Component {
 
   //
@@ -111,9 +116,21 @@ class UISettings extends Component {
                   </FormGroup>
                 </FieldSet>
 
-                <FieldSet
-                  legend={translate('Dates')}
-                >
+                <FieldSet legend={translate('Movies')}>
+                  <FormGroup>
+                    <FormLabel>{translate('SettingsRuntimeFormat')}</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="movieRuntimeFormat"
+                      values={movieRuntimeFormatOptions}
+                      onChange={onInputChange}
+                      {...settings.movieRuntimeFormat}
+                    />
+                  </FormGroup>
+                </FieldSet>
+
+                <FieldSet legend={translate('Dates')}>
                   <FormGroup>
                     <FormLabel>{translate('SettingsShortDateFormat')}</FormLabel>
 
@@ -162,9 +179,7 @@ class UISettings extends Component {
                   </FormGroup>
                 </FieldSet>
 
-                <FieldSet
-                  legend={translate('Style')}
-                >
+                <FieldSet legend={translate('Style')}>
                   <FormGroup>
                     <FormLabel>{translate('SettingsEnableColorImpairedMode')}</FormLabel>
                     <FormInputGroup
@@ -177,9 +192,7 @@ class UISettings extends Component {
                   </FormGroup>
                 </FieldSet>
 
-                <FieldSet
-                  legend={translate('Language')}
-                >
+                <FieldSet legend={translate('Language')}>
                   <FormGroup>
                     <FormLabel>{translate('SettingsUiLanguage')}</FormLabel>
                     <FormInputGroup

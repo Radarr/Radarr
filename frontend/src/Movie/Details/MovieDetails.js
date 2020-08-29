@@ -268,7 +268,8 @@ class MovieDetails extends Component {
       nextMovie,
       onMonitorTogglePress,
       onRefreshPress,
-      onSearchPress
+      onSearchPress,
+      movieRuntimeFormat
     } = this.props;
 
     const {
@@ -410,7 +411,7 @@ class MovieDetails extends Component {
                             anchor={
                               year
                             }
-                            title="Release Dates"
+                            title={translate('ReleaseDates')}
                             body={
                               <MovieReleaseDatesConnector
                                 inCinemas={inCinemas}
@@ -426,7 +427,7 @@ class MovieDetails extends Component {
                     {
                       !!runtime &&
                         <span className={styles.runtime}>
-                          {formatRuntime(runtime)}
+                          {formatRuntime(runtime, movieRuntimeFormat)}
                         </span>
                     }
 
@@ -450,7 +451,7 @@ class MovieDetails extends Component {
                               size={20}
                             />
                           }
-                          title="Links"
+                          title={translate('Links')}
                           body={
                             <MovieDetailsLinks
                               tmdbId={tmdbId}
@@ -465,7 +466,7 @@ class MovieDetails extends Component {
 
                     {
                       !!tags.length &&
-                        <span className={styles.tags}>
+                        <span>
                           <Popover
                             anchor={
                               <Icon
@@ -473,7 +474,7 @@ class MovieDetails extends Component {
                                 size={20}
                               />
                             }
-                            title="Tags"
+                            title={translate('Tags')}
                             body={
                               <MovieTagsConnector movieId={id} />
                             }
@@ -773,7 +774,8 @@ MovieDetails.propTypes = {
   onMonitorTogglePress: PropTypes.func.isRequired,
   onRefreshPress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired,
-  onGoToMovie: PropTypes.func.isRequired
+  onGoToMovie: PropTypes.func.isRequired,
+  movieRuntimeFormat: PropTypes.string.isRequired
 };
 
 MovieDetails.defaultProps = {
