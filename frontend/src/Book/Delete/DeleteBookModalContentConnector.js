@@ -35,7 +35,7 @@ class DeleteBookModalContentConnector extends Component {
 
     this.props.onModalClose(true);
 
-    this.props.push(`${window.Readarr.urlBase}/author/${this.props.titleSlug}`);
+    this.props.push(`${window.Readarr.urlBase}/author/${this.props.authorSlug}`);
   }
 
   //
@@ -53,7 +53,7 @@ class DeleteBookModalContentConnector extends Component {
 
 DeleteBookModalContentConnector.propTypes = {
   bookId: PropTypes.number.isRequired,
-  titleSlug: PropTypes.string.isRequired,
+  authorSlug: PropTypes.string.isRequired,
   push: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired,
   deleteBook: PropTypes.func.isRequired

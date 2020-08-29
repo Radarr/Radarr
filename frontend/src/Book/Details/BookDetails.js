@@ -496,7 +496,7 @@ class BookDetails extends Component {
           <DeleteBookModal
             isOpen={isDeleteBookModalOpen}
             bookId={id}
-            titleSlug={author.titleSlug}
+            authorSlug={author.titleSlug}
             onModalClose={this.onDeleteBookModalClose}
           />
 
