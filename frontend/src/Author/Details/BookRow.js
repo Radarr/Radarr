@@ -72,6 +72,7 @@ class BookRow extends Component {
       releaseDate,
       title,
       position,
+      pageCount,
       ratings,
       isSaving,
       authorMonitored,
@@ -161,6 +162,16 @@ class BookRow extends Component {
               );
             }
 
+            if (name === 'pageCount') {
+              return (
+                <TableRowCell
+                  key={name}
+                >
+                  {pageCount || ''}
+                </TableRowCell>
+              );
+            }
+
             if (name === 'status') {
               return (
                 <TableRowCell
@@ -205,6 +216,7 @@ BookRow.propTypes = {
   releaseDate: PropTypes.string,
   title: PropTypes.string.isRequired,
   position: PropTypes.string,
+  pageCount: PropTypes.number,
   ratings: PropTypes.object.isRequired,
   titleSlug: PropTypes.string.isRequired,
   isSaving: PropTypes.bool,

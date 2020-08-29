@@ -52,15 +52,22 @@ export const defaultState = {
       isVisible: true
     },
     {
+      name: 'series',
+      label: 'Series',
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'releaseDate',
       label: 'Release Date',
       isSortable: true,
       isVisible: true
     },
     {
-      name: 'bookCount',
-      label: 'Book Count',
-      isVisible: false
+      name: 'pageCount',
+      label: 'Pages',
+      isSortable: true,
+      isVisible: true
     },
     {
       name: 'rating',
