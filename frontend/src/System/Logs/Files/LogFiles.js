@@ -51,7 +51,7 @@ class LogFiles extends Component {
     } = this.props;
 
     return (
-      <PageContent title="Log Files">
+      <PageContent title={translate('LogFiles')}>
         <PageToolbar>
           <PageToolbarSection>
             <LogsNavMenu current={currentLogView} />

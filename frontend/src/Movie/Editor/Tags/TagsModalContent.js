@@ -75,7 +75,7 @@ class TagsModalContent extends Component {
         <ModalBody>
           <Form>
             <FormGroup>
-              <FormLabel>Tags</FormLabel>
+              <FormLabel>{translate('Tags')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.TAG}
@@ -86,7 +86,7 @@ class TagsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Apply Tags</FormLabel>
+              <FormLabel>{translate('ApplyTags')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.SELECT}
@@ -104,7 +104,7 @@ class TagsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Result</FormLabel>
+              <FormLabel>{translate('Result')}</FormLabel>
 
               <div className={styles.result}>
                 {

@@ -145,7 +145,7 @@ class MovieIndexPosterOptionsModalContent extends Component {
                 type={inputTypes.CHECK}
                 name="showTitle"
                 value={showTitle}
-                helpText="Show movie title under poster"
+                helpText={translate('ShowTitleHelpText')}
                 onChange={this.onChangePosterOption}
               />
             </FormGroup>
@@ -157,7 +157,7 @@ class MovieIndexPosterOptionsModalContent extends Component {
                 type={inputTypes.CHECK}
                 name="showMonitored"
                 value={showMonitored}
-                helpText="Show monitored status under poster"
+                helpText={translate('ShowMonitoredHelpText')}
                 onChange={this.onChangePosterOption}
               />
             </FormGroup>
@@ -169,7 +169,7 @@ class MovieIndexPosterOptionsModalContent extends Component {
                 type={inputTypes.CHECK}
                 name="showQualityProfile"
                 value={showQualityProfile}
-                helpText="Show quality profile under poster"
+                helpText={translate('ShowQualityProfileHelpText')}
                 onChange={this.onChangePosterOption}
               />
             </FormGroup>

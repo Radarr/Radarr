@@ -5,6 +5,7 @@ import IconButton from 'Components/Link/IconButton';
 import { icons } from 'Helpers/Props';
 import MovieHeadshot from 'Movie/MovieHeadshot';
 import EditNetImportModalConnector from 'Settings/NetImport/NetImport/EditNetImportModalConnector';
+import translate from 'Utilities/String/translate';
 import styles from '../MovieCreditPoster.css';
 
 class MovieCastPoster extends Component {
@@ -87,13 +88,13 @@ class MovieCastPoster extends Component {
                 <IconButton
                   className={styles.action}
                   name={icons.EDIT}
-                  title="Edit Person"
+                  title={translate('EditPerson')}
                   onPress={this.onEditNetImportPress}
                 /> :
                 <IconButton
                   className={styles.action}
                   name={icons.ADD}
-                  title="Follow Person"
+                  title={translate('FollowPerson')}
                   onPress={this.onAddNetImportPress}
                 />
             }

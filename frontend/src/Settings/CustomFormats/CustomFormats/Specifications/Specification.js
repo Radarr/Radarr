@@ -78,7 +78,7 @@ class Specification extends Component {
 
           <IconButton
             className={styles.cloneButton}
-            title="Clone Format Tag"
+            title={translate('CloneFormatTag')}
             name={icons.CLONE}
             onPress={this.onCloneSpecificationPress}
           />
@@ -114,7 +114,7 @@ class Specification extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteSpecificationModalOpen}
           kind={kinds.DANGER}
-          title="Delete Custom Format"
+          title={translate('DeleteCustomFormat')}
           message={
             <div>
               <div>

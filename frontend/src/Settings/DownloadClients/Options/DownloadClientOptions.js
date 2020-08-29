@@ -37,12 +37,12 @@ function DownloadClientOptions(props) {
             <FieldSet legend={translate('CompletedDownloadHandling')}>
               <Form>
                 <FormGroup size={sizes.MEDIUM}>
-                  <FormLabel>Enable</FormLabel>
+                  <FormLabel>{translate('Enable')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.CHECK}
                     name="enableCompletedDownloadHandling"
-                    helpText="Automatically import completed downloads from download client"
+                    helpText={translate('EnableCompletedDownloadHandlingHelpText')}
                     onChange={onInputChange}
                     {...settings.enableCompletedDownloadHandling}
                   />
@@ -53,12 +53,12 @@ function DownloadClientOptions(props) {
                   isAdvanced={true}
                   size={sizes.MEDIUM}
                 >
-                  <FormLabel>Remove</FormLabel>
+                  <FormLabel>{translate('Remove')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.CHECK}
                     name="removeCompletedDownloads"
-                    helpText="Remove imported downloads from download client history"
+                    helpText={translate('RemoveCompletedDownloadsHelpText')}
                     onChange={onInputChange}
                     {...settings.removeCompletedDownloads}
                   />
@@ -69,7 +69,7 @@ function DownloadClientOptions(props) {
                   isAdvanced={true}
                   size={sizes.MEDIUM}
                 >
-                  <FormLabel>Check For Finished Downloads Interval</FormLabel>
+                  <FormLabel>{translate('CheckForFinishedDownloadsInterval')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.NUMBER}
@@ -77,7 +77,7 @@ function DownloadClientOptions(props) {
                     min={0}
                     max={120}
                     unit="minutes"
-                    helpText="Interval in minutes to query the download clients for finished downloads"
+                    helpText={translate('HelpText')}
                     onChange={onInputChange}
                     {...settings.checkForFinishedDownloadInterval}
                   />
@@ -90,12 +90,12 @@ function DownloadClientOptions(props) {
             >
               <Form>
                 <FormGroup size={sizes.MEDIUM}>
-                  <FormLabel>Redownload</FormLabel>
+                  <FormLabel>{translate('Redownload')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.CHECK}
                     name="autoRedownloadFailed"
-                    helpText="Automatically search for and attempt to download a different release"
+                    helpText={translate('AutoRedownloadFailedHelpText')}
                     onChange={onInputChange}
                     {...settings.autoRedownloadFailed}
                   />
@@ -106,12 +106,12 @@ function DownloadClientOptions(props) {
                   isAdvanced={true}
                   size={sizes.MEDIUM}
                 >
-                  <FormLabel>Remove</FormLabel>
+                  <FormLabel>{translate('Remove')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.CHECK}
                     name="removeFailedDownloads"
-                    helpText="Remove failed downloads from download client history"
+                    helpText={translate('RemoveFailedDownloadsHelpText')}
                     onChange={onInputChange}
                     {...settings.removeFailedDownloads}
                   />

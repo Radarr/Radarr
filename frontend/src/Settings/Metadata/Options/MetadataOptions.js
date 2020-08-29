@@ -39,14 +39,14 @@ function MetadataOptions(props) {
         hasSettings && !isFetching && !error &&
           <Form>
             <FormGroup>
-              <FormLabel>Certification Country</FormLabel>
+              <FormLabel>{translate('CertificationCountry')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.SELECT}
                 name="certificationCountry"
                 values={certificationCountryOptions}
                 onChange={onInputChange}
-                helpText="Select Country for Movie Certifications"
+                helpText={translate('CertificationCountryHelpText')}
                 {...settings.certificationCountry}
               />
             </FormGroup>

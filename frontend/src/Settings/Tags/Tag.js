@@ -146,7 +146,7 @@ class Tag extends Component {
         <ConfirmModal
           isOpen={isDeleteTagModalOpen}
           kind={kinds.DANGER}
-          title="Delete Tag"
+          title={translate('DeleteTag')}
           message={`Are you sure you want to delete the tag '${label}'?`}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteTag}

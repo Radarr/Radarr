@@ -59,36 +59,36 @@ function EditNetImportExclusionModalContent(props) {
               {...otherProps}
             >
               <FormGroup>
-                <FormLabel>TMDB Id</FormLabel>
+                <FormLabel>{translate('TMDBId')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.NUMBER}
                   name="tmdbId"
-                  helpText="The TMDB Id of the movie to exclude"
+                  helpText={translate('TmdbIdHelpText')}
                   {...tmdbId}
                   onChange={onInputChange}
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Movie Title</FormLabel>
+                <FormLabel>{translate('MovieTitle')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TEXT}
                   name="movieTitle"
-                  helpText="The title of the movie to exclude (can be anything meaningful)"
+                  helpText={translate('MovieTitleHelpText')}
                   {...movieTitle}
                   onChange={onInputChange}
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Movie Year</FormLabel>
+                <FormLabel>{translate('MovieYear')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.NUMBER}
                   name="movieYear"
-                  helpText="The year of the movie to exclude"
+                  helpText={translate('MovieYearHelpText')}
                   {...movieYear}
                   onChange={onInputChange}
                 />

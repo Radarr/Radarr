@@ -5,6 +5,7 @@ import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormInputHelpText from 'Components/Form/FormInputHelpText';
 import FormLabel from 'Components/Form/FormLabel';
 import { inputTypes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './NotificationEventItems.css';
 
 function NotificationEventItems(props) {
@@ -29,7 +30,7 @@ function NotificationEventItems(props) {
 
   return (
     <FormGroup>
-      <FormLabel>Notification Triggers</FormLabel>
+      <FormLabel>{translate('NotificationTriggers')}</FormLabel>
       <div>
         <FormInputHelpText
           text="Select which events should trigger this notification"
@@ -40,7 +41,7 @@ function NotificationEventItems(props) {
             <FormInputGroup
               type={inputTypes.CHECK}
               name="onGrab"
-              helpText="On Grab"
+              helpText={translate('OnGrabHelpText')}
               isDisabled={!supportsOnGrab.value}
               {...onGrab}
               onChange={onInputChange}
@@ -51,7 +52,7 @@ function NotificationEventItems(props) {
             <FormInputGroup
               type={inputTypes.CHECK}
               name="onDownload"
-              helpText="Be notified when movies are successfully imported"
+              helpText={translate('OnDownloadHelpText')}
               isDisabled={!supportsOnDownload.value}
               {...onDownload}
               onChange={onInputChange}
@@ -64,7 +65,7 @@ function NotificationEventItems(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="onUpgrade"
-                  helpText="Be notified when movies are upgraded to a better quality"
+                  helpText={translate('OnUpgradeHelpText')}
                   isDisabled={!supportsOnUpgrade.value}
                   {...onUpgrade}
                   onChange={onInputChange}
@@ -76,7 +77,7 @@ function NotificationEventItems(props) {
             <FormInputGroup
               type={inputTypes.CHECK}
               name="onRename"
-              helpText="On Rename"
+              helpText={translate('OnRenameHelpText')}
               isDisabled={!supportsOnRename.value}
               {...onRename}
               onChange={onInputChange}
@@ -87,7 +88,7 @@ function NotificationEventItems(props) {
             <FormInputGroup
               type={inputTypes.CHECK}
               name="onHealthIssue"
-              helpText="On Health Issue"
+              helpText={translate('OnHealthIssueHelpText')}
               isDisabled={!supportsOnHealthIssue.value}
               {...onHealthIssue}
               onChange={onInputChange}
@@ -100,7 +101,7 @@ function NotificationEventItems(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="includeHealthWarnings"
-                  helpText="Include Health Warnings"
+                  helpText={translate('IncludeHealthWarningsHelpText')}
                   isDisabled={!supportsOnHealthIssue.value}
                   {...includeHealthWarnings}
                   onChange={onInputChange}

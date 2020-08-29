@@ -99,7 +99,7 @@ class SelectQualityModalContent extends Component {
             isPopulated && !error &&
               <Form>
                 <FormGroup>
-                  <FormLabel>Quality</FormLabel>
+                  <FormLabel>{translate('Quality')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.SELECT}
@@ -111,7 +111,7 @@ class SelectQualityModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Proper</FormLabel>
+                  <FormLabel>{translate('Proper')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.CHECK}
@@ -122,7 +122,7 @@ class SelectQualityModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Real</FormLabel>
+                  <FormLabel>{translate('Real')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.CHECK}

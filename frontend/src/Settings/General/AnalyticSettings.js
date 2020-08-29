@@ -20,13 +20,13 @@ function AnalyticSettings(props) {
   return (
     <FieldSet legend={translate('Analytics')}>
       <FormGroup size={sizes.MEDIUM}>
-        <FormLabel>Send Anonymous Usage Data</FormLabel>
+        <FormLabel>{translate('SendAnonymousUsageData')}</FormLabel>
 
         <FormInputGroup
           type={inputTypes.CHECK}
           name="analyticsEnabled"
-          helpText="Send anonymous usage and error information to Radarr's servers. This includes information on your browser, which Radarr WebUI pages you use, error reporting as well as OS and runtime version. We will use this information to prioritize features and bug fixes."
-          helpTextWarning="Requires restart to take effect"
+          helpText={translate('AnalyticsEnabledHelpText')}
+          helpTextWarning={translate('RestartRequiredHelpTextWarning')}
           onChange={onInputChange}
           {...analyticsEnabled}
         />

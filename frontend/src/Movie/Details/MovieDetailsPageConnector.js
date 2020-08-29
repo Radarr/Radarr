@@ -9,6 +9,7 @@ import NotFound from 'Components/NotFound';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
+import translate from 'Utilities/String/translate';
 import MovieDetailsConnector from './MovieDetailsConnector';
 import styles from './MovieDetails.css';
 
@@ -92,7 +93,7 @@ class MovieDetailsPageConnector extends Component {
     if (!titleSlug) {
       return (
         <NotFound
-          message="Sorry, that movie cannot be found."
+          message={translate('SorryThatMovieCannotBeFound')}
         />
       );
     }

@@ -88,8 +88,8 @@ class RemotePathMapping extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteRemotePathMappingModalOpen}
           kind={kinds.DANGER}
-          title="Delete Delay Profile"
-          message="Are you sure you want to delete this remote path mapping?"
+          title={translate('DeleteDelayProfile')}
+          message={translate('AreYouSureYouWantToDeleteThisRemotePathMapping')}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteRemotePathMapping}
           onCancel={this.onDeleteRemotePathMappingModalClose}

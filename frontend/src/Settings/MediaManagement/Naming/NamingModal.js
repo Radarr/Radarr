@@ -196,7 +196,7 @@ class NamingModal extends Component {
 
             {
               !advancedSettings &&
-                <FieldSet legend="File Names">
+                <FieldSet legend={translate('FileNames')}>
                   <div className={styles.groups}>
                     {
                       fileNameTokens.map(({ token, example }) => {
@@ -221,7 +221,7 @@ class NamingModal extends Component {
                 </FieldSet>
             }
 
-            <FieldSet legend="Movie">
+            <FieldSet legend={translate('Movie')}>
               <div className={styles.groups}>
                 {
                   movieTokens.map(({ token, example }) => {
@@ -243,7 +243,7 @@ class NamingModal extends Component {
               </div>
             </FieldSet>
 
-            <FieldSet legend="Movie ID">
+            <FieldSet legend={translate('MovieID')}>
               <div className={styles.groups}>
                 {
                   movieIdTokens.map(({ token, example }) => {
@@ -268,7 +268,7 @@ class NamingModal extends Component {
             {
               additional &&
                 <div>
-                  <FieldSet legend="Quality">
+                  <FieldSet legend={translate('Quality')}>
                     <div className={styles.groups}>
                       {
                         qualityTokens.map(({ token, example }) => {
@@ -290,7 +290,7 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Media Info">
+                  <FieldSet legend={translate('MediaInfo')}>
                     <div className={styles.groups}>
                       {
                         mediaInfoTokens.map(({ token, example }) => {
@@ -312,7 +312,7 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Release Group">
+                  <FieldSet legend={translate('ReleaseGroup')}>
                     <div className={styles.groups}>
                       {
                         releaseGroupTokens.map(({ token, example }) => {
@@ -334,7 +334,7 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Edition">
+                  <FieldSet legend={translate('Edition')}>
                     <div className={styles.groups}>
                       {
                         editionTokens.map(({ token, example }) => {
@@ -378,7 +378,7 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Original">
+                  <FieldSet legend={translate('Original')}>
                     <div className={styles.groups}>
                       {
                         originalTokens.map(({ token, example }) => {

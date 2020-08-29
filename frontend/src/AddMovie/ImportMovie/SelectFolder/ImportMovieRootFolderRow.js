@@ -6,6 +6,7 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
 import { icons } from 'Helpers/Props';
 import formatBytes from 'Utilities/Number/formatBytes';
+import translate from 'Utilities/String/translate';
 import styles from './ImportMovieRootFolderRow.css';
 
 function ImportMovieRootFolderRow(props) {
@@ -40,7 +41,7 @@ function ImportMovieRootFolderRow(props) {
 
       <TableRowCell className={styles.actions}>
         <IconButton
-          title="Remove root folder"
+          title={translate('RemoveRootFolder')}
           name={icons.REMOVE}
           onPress={onDeletePress}
         />

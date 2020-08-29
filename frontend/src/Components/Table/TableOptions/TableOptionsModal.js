@@ -151,7 +151,7 @@ class TableOptionsModal extends Component {
                             type={inputTypes.NUMBER}
                             name="pageSize"
                             value={pageSize || 0}
-                            helpText="Number of items to show on each page"
+                            helpText={translate('PageSizeHelpText')}
                             errors={pageSizeError ? [{ message: pageSizeError }] : undefined}
                             onChange={this.onPageSizeChange}
                           />

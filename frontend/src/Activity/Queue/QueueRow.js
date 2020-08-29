@@ -15,6 +15,7 @@ import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import formatBytes from 'Utilities/Number/formatBytes';
+import translate from 'Utilities/String/translate';
 import QueueStatusCell from './QueueStatusCell';
 import RemoveQueueItemModal from './RemoveQueueItemModal';
 import TimeleftCell from './TimeleftCell';
@@ -294,7 +295,7 @@ class QueueRow extends Component {
                   }
 
                   <SpinnerIconButton
-                    title="Remove from queue"
+                    title={translate('RemoveFromQueue')}
                     name={icons.REMOVE}
                     isSpinning={isRemoving}
                     onPress={this.onRemoveQueueItemPress}

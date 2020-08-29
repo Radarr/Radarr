@@ -43,7 +43,7 @@ class History extends Component {
     const hasError = error || moviesError;
 
     return (
-      <PageContent title="History">
+      <PageContent title={translate('History')}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton

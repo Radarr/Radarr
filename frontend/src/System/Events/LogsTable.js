@@ -33,7 +33,7 @@ function LogsTable(props) {
   } = props;
 
   return (
-    <PageContent title="Logs">
+    <PageContent title={translate('Logs')}>
       <PageToolbar>
         <PageToolbarSection>
           <PageToolbarButton

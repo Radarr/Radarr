@@ -149,7 +149,7 @@ class Queue extends Component {
     const disableSelectedActions = selectedCount === 0;
 
     return (
-      <PageContent title="Queue">
+      <PageContent title={translate('Queue')}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
@@ -162,7 +162,7 @@ class Queue extends Component {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label="Grab Selected"
+              label={translate('GrabSelected')}
               iconName={icons.DOWNLOAD}
               isDisabled={disableSelectedActions || !isPendingSelected}
               isSpinning={isGrabbing}
@@ -170,7 +170,7 @@ class Queue extends Component {
             />
 
             <PageToolbarButton
-              label="Remove Selected"
+              label={translate('RemoveSelected')}
               iconName={icons.REMOVE}
               isDisabled={disableSelectedActions}
               isSpinning={isRemoving}

@@ -67,7 +67,7 @@ class Indexers extends Component {
     return (
       <FieldSet legend={translate('Indexers')}>
         <PageSectionContent
-          errorMessage="Unable to load Indexers"
+          errorMessage={translate('UnableToLoadIndexers')}
           {...otherProps}
         >
           <div className={styles.indexers}>

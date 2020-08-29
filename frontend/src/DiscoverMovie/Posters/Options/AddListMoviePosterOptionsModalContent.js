@@ -87,7 +87,7 @@ class AddListMoviePosterOptionsModalContent extends Component {
         <ModalBody>
           <Form>
             <FormGroup>
-              <FormLabel>Poster Size</FormLabel>
+              <FormLabel>{translate('PosterSize')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.SELECT}
@@ -99,13 +99,13 @@ class AddListMoviePosterOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Title</FormLabel>
+              <FormLabel>{translate('ShowTitle')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="showTitle"
                 value={showTitle}
-                helpText="Show movie title under poster"
+                helpText={translate('ShowTitleHelpText')}
                 onChange={this.onChangePosterOption}
               />
             </FormGroup>

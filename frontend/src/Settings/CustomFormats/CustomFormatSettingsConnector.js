@@ -4,6 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
+import translate from 'Utilities/String/translate';
 import CustomFormatsConnector from './CustomFormats/CustomFormatsConnector';
 
 class CustomFormatSettingsConnector extends Component {
@@ -13,7 +14,7 @@ class CustomFormatSettingsConnector extends Component {
 
   render() {
     return (
-      <PageContent title="Custom Formats Settings">
+      <PageContent title={translate('CustomFormatsSettings')}>
         <SettingsToolbarConnector
           showSave={false}
         />

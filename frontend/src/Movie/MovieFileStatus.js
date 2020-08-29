@@ -6,6 +6,7 @@ import Label from 'Components/Label';
 import ProgressBar from 'Components/ProgressBar';
 import { icons, kinds, sizes } from 'Helpers/Props';
 import MovieQuality from 'Movie/MovieQuality';
+import translate from 'Utilities/String/translate';
 import styles from './MovieFileStatus.css';
 
 function MovieFileStatus(props) {
@@ -51,7 +52,7 @@ function MovieFileStatus(props) {
       <div className={styles.center}>
         <Icon
           name={icons.DOWNLOADING}
-          title="Movie is downloading"
+          title={translate('MovieIsDownloading')}
         />
       </div>
     );
@@ -77,7 +78,7 @@ function MovieFileStatus(props) {
     return (
       <div className={styles.center}>
         <Label
-          title="Not Monitored"
+          title={translate('NotMonitored')}
           kind={kinds.WARNING}
         >
           Not Monitored
@@ -90,7 +91,7 @@ function MovieFileStatus(props) {
     return (
       <div className={styles.center}>
         <Label
-          title="Movie Available, but Missing"
+          title={translate('MovieAvailableButMissing')}
           kind={kinds.DANGER}
         >
           Missing
@@ -102,7 +103,7 @@ function MovieFileStatus(props) {
   return (
     <div className={styles.center}>
       <Label
-        title="Not Available"
+        title={translate('NotAvailable')}
         kind={kinds.INFO}
       >
         Not Available

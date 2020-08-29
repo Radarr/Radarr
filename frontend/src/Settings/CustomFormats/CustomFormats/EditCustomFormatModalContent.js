@@ -124,19 +124,19 @@ class EditCustomFormatModalContent extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                      <FormLabel>Include Custom Format when Renaming</FormLabel>
+                      <FormLabel>{translate('IncludeCustomFormatWhenRenaming')}</FormLabel>
 
                       <FormInputGroup
                         type={inputTypes.CHECK}
                         name="includeCustomFormatWhenRenaming"
-                        helpText="Include in {Custom Formats} renaming format"
+                        helpText={translate('IncludeCustomFormatWhenRenamingHelpText')}
                         {...includeCustomFormatWhenRenaming}
                         onChange={onInputChange}
                       />
                     </FormGroup>
                   </Form>
 
-                  <FieldSet legend="Conditions">
+                  <FieldSet legend={translate('Conditions')}>
                     <div className={styles.customFormats}>
                       {
                         specifications.map((tag) => {

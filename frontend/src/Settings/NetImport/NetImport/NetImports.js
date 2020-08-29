@@ -61,7 +61,7 @@ class NetImports extends Component {
     return (
       <FieldSet legend={translate('Lists')}>
         <PageSectionContent
-          errorMessage="Unable to load Lists"
+          errorMessage={translate('UnableToLoadLists')}
           {...otherProps}
         >
           <div className={styles.netImports}>

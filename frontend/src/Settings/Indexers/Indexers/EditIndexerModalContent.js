@@ -67,7 +67,7 @@ function EditIndexerModalContent(props) {
           !isFetching && !error &&
             <Form {...otherProps}>
               <FormGroup>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{translate('Name')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TEXT}
@@ -78,7 +78,7 @@ function EditIndexerModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Enable RSS</FormLabel>
+                <FormLabel>{translate('EnableRSS')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
@@ -91,7 +91,7 @@ function EditIndexerModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Enable Automatic Search</FormLabel>
+                <FormLabel>{translate('EnableAutomaticSearch')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
@@ -105,7 +105,7 @@ function EditIndexerModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Enable Interactive Search</FormLabel>
+                <FormLabel>{translate('EnableInteractiveSearch')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}

@@ -6,6 +6,7 @@ import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import translate from 'Utilities/String/translate';
 
 class MovieIndexActionsCell extends Component {
 
@@ -65,14 +66,14 @@ class MovieIndexActionsCell extends Component {
       >
         <SpinnerIconButton
           name={icons.REFRESH}
-          title="Refresh Movie"
+          title={translate('RefreshMovie')}
           isSpinning={isRefreshingMovie}
           onPress={onRefreshMoviePress}
         />
 
         <IconButton
           name={icons.EDIT}
-          title="Edit Movie"
+          title={translate('EditMovie')}
           onPress={this.onEditMoviePress}
         />
 

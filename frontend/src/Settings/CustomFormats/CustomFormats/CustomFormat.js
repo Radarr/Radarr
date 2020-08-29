@@ -82,7 +82,7 @@ class CustomFormat extends Component {
 
           <IconButton
             className={styles.cloneButton}
-            title="Clone Profile"
+            title={translate('CloneProfile')}
             name={icons.CLONE}
             onPress={this.onCloneCustomFormatPress}
           />
@@ -125,7 +125,7 @@ class CustomFormat extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteCustomFormatModalOpen}
           kind={kinds.DANGER}
-          title="Delete Custom Format"
+          title={translate('DeleteCustomFormat')}
           message={
             <div>
               <div>

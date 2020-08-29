@@ -15,6 +15,7 @@ import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar
 import MoviePoster from 'Movie/MoviePoster';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
+import translate from 'Utilities/String/translate';
 import MovieIndexOverviewInfo from './MovieIndexOverviewInfo';
 import styles from './MovieIndexOverview.css';
 
@@ -190,7 +191,7 @@ class MovieIndexOverview extends Component {
                         size={12}
                       />
                     }
-                    title="Links"
+                    title={translate('Links')}
                     body={
                       <MovieDetailsLinks
                         tmdbId={tmdbId}
@@ -203,7 +204,7 @@ class MovieIndexOverview extends Component {
 
                 <SpinnerIconButton
                   name={icons.REFRESH}
-                  title="Refresh Movie"
+                  title={translate('RefreshMovie')}
                   isSpinning={isRefreshingMovie}
                   onPress={onRefreshMoviePress}
                 />
@@ -213,7 +214,7 @@ class MovieIndexOverview extends Component {
                     <SpinnerIconButton
                       className={styles.action}
                       name={icons.SEARCH}
-                      title="Search for movie"
+                      title={translate('SearchForMovie')}
                       isSpinning={isSearchingMovie}
                       onPress={onSearchPress}
                     />
@@ -221,7 +222,7 @@ class MovieIndexOverview extends Component {
 
                 <IconButton
                   name={icons.EDIT}
-                  title="Edit Movie"
+                  title={translate('EditMovie')}
                   onPress={this.onEditMoviePress}
                 />
               </div>

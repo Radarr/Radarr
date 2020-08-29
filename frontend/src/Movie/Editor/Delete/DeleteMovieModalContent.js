@@ -79,13 +79,13 @@ class DeleteMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Add List Exclusion</FormLabel>
+              <FormLabel>{translate('AddListExclusion')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="addNetImportExclusion"
                 value={addNetImportExclusion}
-                helpText="Prevent movie from being added to Radarr by lists"
+                helpText={translate('AddNetImportExclusionHelpText')}
                 kind={kinds.DANGER}
                 onChange={this.onAddNetImportExclusionChange}
               />

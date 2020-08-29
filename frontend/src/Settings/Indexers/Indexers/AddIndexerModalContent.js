@@ -55,7 +55,7 @@ class AddIndexerModalContent extends Component {
                   <div>For more information on the individual indexers, click on the info buttons.</div>
                 </Alert>
 
-                <FieldSet legend="Usenet">
+                <FieldSet legend={translate('Usenet')}>
                   <div className={styles.indexers}>
                     {
                       usenetIndexers.map((indexer) => {
@@ -72,7 +72,7 @@ class AddIndexerModalContent extends Component {
                   </div>
                 </FieldSet>
 
-                <FieldSet legend="Torrents">
+                <FieldSet legend={translate('Torrents')}>
                   <div className={styles.indexers}>
                     {
                       torrentIndexers.map((indexer) => {

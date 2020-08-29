@@ -4,6 +4,7 @@ import React, { PureComponent } from 'react';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 import formatBytes from 'Utilities/Number/formatBytes';
+import translate from 'Utilities/String/translate';
 import styles from './MovieIndexFooter.css';
 
 class MovieIndexFooter extends PureComponent {
@@ -78,31 +79,31 @@ class MovieIndexFooter extends PureComponent {
         <div className={styles.statistics}>
           <DescriptionList>
             <DescriptionListItem
-              title="Movies"
+              title={translate('Movies')}
               data={count}
             />
 
             <DescriptionListItem
-              title="Movie Files"
+              title={translate('MovieFiles')}
               data={movieFiles}
             />
           </DescriptionList>
 
           <DescriptionList>
             <DescriptionListItem
-              title="Monitored"
+              title={translate('Monitored')}
               data={monitored}
             />
 
             <DescriptionListItem
-              title="Unmonitored"
+              title={translate('Unmonitored')}
               data={count - monitored}
             />
           </DescriptionList>
 
           <DescriptionList>
             <DescriptionListItem
-              title="Total File Size"
+              title={translate('TotalFileSize')}
               data={formatBytes(totalFileSize)}
             />
           </DescriptionList>

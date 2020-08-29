@@ -48,7 +48,7 @@ class Restrictions extends Component {
     return (
       <FieldSet legend={translate('Restrictions')}>
         <PageSectionContent
-          errorMessage="Unable to load Restrictions"
+          errorMessage={translate('UnableToLoadRestrictions')}
           {...otherProps}
         >
           <div className={styles.restrictions}>

@@ -71,7 +71,7 @@ function EditNetImportModalContent(props) {
               {...otherProps}
             >
               <FormGroup>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{translate('Name')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TEXT}
@@ -82,43 +82,43 @@ function EditNetImportModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Enable</FormLabel>
+                <FormLabel>{translate('Enable')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enabled"
-                  helpText="Enable this list for use in Radarr"
+                  helpText={translate('EnabledHelpText')}
                   {...enabled}
                   onChange={onInputChange}
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Enable Automatic Add</FormLabel>
+                <FormLabel>{translate('EnableAutomaticAdd')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enableAuto"
-                  helpText="If enabled, Movies will be automatically added to Radarr from this list"
+                  helpText={translate('EnableAutoHelpText')}
                   {...enableAuto}
                   onChange={onInputChange}
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Add Movies Monitored</FormLabel>
+                <FormLabel>{translate('AddMoviesMonitored')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="shouldMonitor"
-                  helpText="If enabled, movies added by this list are added and monitored"
+                  helpText={translate('ShouldMonitorHelpText')}
                   {...shouldMonitor}
                   onChange={onInputChange}
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Minimum Availability</FormLabel>
+                <FormLabel>{translate('MinimumAvailability')}</FormLabel>
                 <FormInputGroup
                   type={inputTypes.AVAILABILITY_SELECT}
                   name="minimumAvailability"
@@ -128,7 +128,7 @@ function EditNetImportModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Quality Profile</FormLabel>
+                <FormLabel>{translate('QualityProfile')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.QUALITY_PROFILE_SELECT}
@@ -139,7 +139,7 @@ function EditNetImportModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Folder</FormLabel>
+                <FormLabel>{translate('Folder')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.ROOT_FOLDER_SELECT}
@@ -150,12 +150,12 @@ function EditNetImportModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Radarr Tags</FormLabel>
+                <FormLabel>{translate('RadarrTags')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TAG}
                   name="tags"
-                  helpText="Add movie from this list with these tags"
+                  helpText={translate('TagsHelpText')}
                   {...tags}
                   onChange={onInputChange}
                 />

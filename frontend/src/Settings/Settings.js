@@ -8,7 +8,7 @@ import styles from './Settings.css';
 
 function Settings() {
   return (
-    <PageContent title="Settings">
+    <PageContent title={translate('Settings')}>
       <SettingsToolbarConnector
         hasPendingChanges={false}
       />

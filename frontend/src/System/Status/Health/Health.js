@@ -22,7 +22,7 @@ function getInternalLink(source) {
       return (
         <IconButton
           name={icons.SETTINGS}
-          title="Settings"
+          title={translate('Settings')}
           to="/settings/indexers"
         />
       );
@@ -32,7 +32,7 @@ function getInternalLink(source) {
       return (
         <IconButton
           name={icons.SETTINGS}
-          title="Settings"
+          title={translate('Settings')}
           to="/settings/downloadclients"
         />
       );
@@ -40,7 +40,7 @@ function getInternalLink(source) {
       return (
         <IconButton
           name={icons.PLAY}
-          title="Movie Editor"
+          title={translate('MovieEditor')}
           to="/movieeditor"
         />
       );
@@ -48,7 +48,7 @@ function getInternalLink(source) {
       return (
         <IconButton
           name={icons.UPDATE}
-          title="Updates"
+          title={translate('Updates')}
           to="/system/updates"
         />
       );
@@ -185,7 +185,7 @@ class Health extends Component {
                           <IconButton
                             name={icons.WIKI}
                             to={item.wikiUrl}
-                            title="Read the Wiki for more information"
+                            title={translate('ReadTheWikiForMoreInformation')}
                           />
 
                           {

@@ -85,7 +85,7 @@ class QualityProfile extends Component {
 
           <IconButton
             className={styles.cloneButton}
-            title="Clone Profile"
+            title={translate('CloneProfile')}
             name={icons.CLONE}
             onPress={this.onCloneQualityProfilePress}
           />
@@ -161,7 +161,7 @@ class QualityProfile extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteQualityProfileModalOpen}
           kind={kinds.DANGER}
-          title="Delete Quality Profile"
+          title={translate('DeleteQualityProfile')}
           message={`Are you sure you want to delete the quality profile '${name}'?`}
           confirmLabel={translate('Delete')}
           isSpinning={isDeleting}

@@ -14,6 +14,7 @@ import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
 import formatBytes from 'Utilities/Number/formatBytes';
+import translate from 'Utilities/String/translate';
 import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
 import styles from './InteractiveImportRow.css';
 
@@ -182,7 +183,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           className={styles.quality}
-          title="Click to change quality"
+          title={translate('ClickToChangeQuality')}
           onPress={this.onSelectQualityPress}
         >
           {
@@ -201,7 +202,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           className={styles.language}
-          title="Click to change language"
+          title={translate('ClickToChangeLanguage')}
           onPress={this.onSelectLanguagePress}
         >
           {
@@ -241,7 +242,7 @@ class InteractiveImportRow extends Component {
                     kind={kinds.DANGER}
                   />
                 }
-                title="Release Rejected"
+                title={translate('ReleaseRejected')}
                 body={
                   <ul>
                     {

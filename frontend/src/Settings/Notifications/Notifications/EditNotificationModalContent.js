@@ -76,7 +76,7 @@ function EditNotificationModalContent(props) {
               }
 
               <FormGroup>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{translate('Name')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TEXT}
@@ -92,12 +92,12 @@ function EditNotificationModalContent(props) {
               />
 
               <FormGroup>
-                <FormLabel>Tags</FormLabel>
+                <FormLabel>{translate('Tags')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TAG}
                   name="tags"
-                  helpText="Only send notifications for movies with at least one matching tag"
+                  helpText={translate('TagsHelpText')}
                   {...tags}
                   onChange={onInputChange}
                 />

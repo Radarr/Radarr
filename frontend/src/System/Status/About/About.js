@@ -36,14 +36,14 @@ class About extends Component {
       <FieldSet legend={translate('About')}>
         <DescriptionList className={styles.descriptionList}>
           <DescriptionListItem
-            title="Version"
+            title={translate('Version')}
             data={version}
           />
 
           {
             packageVersion &&
               <DescriptionListItem
-                title="Package Version"
+                title={translate('PackageVersion')}
                 data={(packageAuthor ? <span> {packageVersion} {' by '} <InlineMarkdown data={packageAuthor} /> </span> : packageVersion)}
               />
           }
@@ -51,7 +51,7 @@ class About extends Component {
           {
             isMono &&
               <DescriptionListItem
-                title="Mono Version"
+                title={translate('MonoVersion')}
                 data={runtimeVersion}
               />
           }
@@ -59,7 +59,7 @@ class About extends Component {
           {
             isNetCore &&
               <DescriptionListItem
-                title=".NET Core"
+                title={translate('NetCore')}
                 data={'Yes'}
               />
           }
@@ -67,33 +67,33 @@ class About extends Component {
           {
             isDocker &&
               <DescriptionListItem
-                title="Docker"
+                title={translate('Docker')}
                 data={'Yes'}
               />
           }
 
           <DescriptionListItem
-            title="DB Migration"
+            title={translate('DBMigration')}
             data={migrationVersion}
           />
 
           <DescriptionListItem
-            title="AppData directory"
+            title={translate('AppDataDirectory')}
             data={appData}
           />
 
           <DescriptionListItem
-            title="Startup directory"
+            title={translate('StartupDirectory')}
             data={startupPath}
           />
 
           <DescriptionListItem
-            title="Mode"
+            title={translate('Mode')}
             data={titleCase(mode)}
           />
 
           <DescriptionListItem
-            title="Uptime"
+            title={translate('Uptime')}
             data={
               <StartTime
                 startTime={startTime}

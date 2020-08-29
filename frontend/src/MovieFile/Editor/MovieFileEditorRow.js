@@ -134,7 +134,7 @@ class MovieFileEditorRow extends Component {
 
         <TableRowCellButton
           className={styles.language}
-          title="Click to change language"
+          title={translate('ClickToChangeLanguage')}
           onPress={this.onSelectLanguagePress}
         >
           {
@@ -153,7 +153,7 @@ class MovieFileEditorRow extends Component {
 
         <TableRowCellButton
           className={styles.quality}
-          title="Click to change quality"
+          title={translate('ClickToChangeQuality')}
           onPress={this.onSelectQualityPress}
         >
           {
@@ -186,7 +186,7 @@ class MovieFileEditorRow extends Component {
           />
 
           <IconButton
-            title="Delete file"
+            title={translate('DeleteFile')}
             name={icons.REMOVE}
             onPress={this.onDeletePress}
           />
@@ -202,7 +202,7 @@ class MovieFileEditorRow extends Component {
           isOpen={isConfirmDeleteModalOpen}
           ids={[id]}
           kind={kinds.DANGER}
-          title="Delete Selected Movie Files"
+          title={translate('DeleteSelectedMovieFiles')}
           message={'Are you sure you want to delete the selected movie files?'}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDelete}

@@ -61,7 +61,7 @@ class UISettings extends Component {
     } = this.props;
 
     return (
-      <PageContent title="UI Settings">
+      <PageContent title={translate('UISettings')}>
         <SettingsToolbarConnector
           {...otherProps}
           onSavePress={onSavePress}
@@ -187,7 +187,7 @@ class UISettings extends Component {
                       name="movieInfoLanguage"
                       values={languages}
                       helpText={translate('SettingsUiLanguageHelpText')}
-                      helpTextWarning="Browser Reload Required"
+                      helpTextWarning={translate('MovieInfoLanguageHelpTextWarning')}
                       onChange={onInputChange}
                       {...settings.movieInfoLanguage}
                     />

@@ -6,6 +6,7 @@ import getStatusStyle from 'Calendar/getStatusStyle';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import { icons, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import CalendarEventQueueDetails from './CalendarEventQueueDetails';
 import styles from './CalendarEvent.css';
 
@@ -85,7 +86,7 @@ class CalendarEvent extends Component {
                 <Icon
                   className={styles.statusIcon}
                   name={icons.DOWNLOADING}
-                  title="movie is downloading"
+                  title={translate('MovieIsDownloading')}
                 />
             }
 
@@ -97,7 +98,7 @@ class CalendarEvent extends Component {
                   className={styles.statusIcon}
                   name={icons.MOVIE_FILE}
                   kind={kinds.WARNING}
-                  title="Quality cutoff has not been met"
+                  title={translate('QualityCutoffHasNotBeenMet')}
                 />
             }
           </div>
