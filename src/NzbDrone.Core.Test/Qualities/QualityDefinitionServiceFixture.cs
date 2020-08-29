@@ -52,7 +52,6 @@ namespace NzbDrone.Core.Test.Qualities
         }
 
         [Test]
-        [Ignore("Doesn't work")]
         public void init_should_remove_old_definitions()
         {
             Mocker.GetMock<IQualityDefinitionRepository>()

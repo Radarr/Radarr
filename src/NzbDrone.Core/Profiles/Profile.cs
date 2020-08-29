@@ -38,12 +38,12 @@ namespace NzbDrone.Core.Profiles
             return lastAllowed.Items.Last().Quality;
         }
 
-        public QualityIndex GetIndex(Quality quality)
+        public QualityIndex GetIndex(Quality quality, bool respectGroupOrder = false)
         {
-            return GetIndex(quality.Id);
+            return GetIndex(quality.Id, respectGroupOrder);
         }
 
-        public QualityIndex GetIndex(int id)
+        public QualityIndex GetIndex(int id, bool respectGroupOrder = false)
         {
             for (var i = 0; i < Items.Count; i++)
             {
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Profiles
 
                     if (groupItem.Quality.Id == id)
                     {
-                        return new QualityIndex(i, g);
+                        return respectGroupOrder ? new QualityIndex(i, g) : new QualityIndex(i);
                     }
                 }
             }
