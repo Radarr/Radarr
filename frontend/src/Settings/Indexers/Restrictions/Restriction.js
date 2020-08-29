@@ -121,7 +121,7 @@ class Restriction extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteRestrictionModalOpen}
           kind={kinds.DANGER}
-          title="Delete Restriction"
+          title={translate('DeleteRestriction')}
           message={'Are you sure you want to delete this restriction?'}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteRestriction}

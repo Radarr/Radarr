@@ -132,7 +132,7 @@ class Notification extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteNotificationModalOpen}
           kind={kinds.DANGER}
-          title="Delete Notification"
+          title={translate('DeleteNotification')}
           message={`Are you sure you want to delete the notification '${name}'?`}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteNotification}

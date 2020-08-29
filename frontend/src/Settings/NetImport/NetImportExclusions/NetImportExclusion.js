@@ -88,8 +88,8 @@ class NetImportExclusion extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteNetImportExclusionModalOpen}
           kind={kinds.DANGER}
-          title="Delete Import List Exclusion"
-          message="Are you sure you want to delete this import list exclusion?"
+          title={translate('DeleteImportListExclusion')}
+          message={translate('AreYouSureYouWantToDeleteThisImportListExclusion')}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteNetImportExclusion}
           onCancel={this.onDeleteNetImportExclusionModalClose}

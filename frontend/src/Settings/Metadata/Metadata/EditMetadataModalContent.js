@@ -42,12 +42,12 @@ function EditMetadataModalContent(props) {
       <ModalBody>
         <Form {...otherProps}>
           <FormGroup>
-            <FormLabel>Enable</FormLabel>
+            <FormLabel>{translate('Enable')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.CHECK}
               name="enable"
-              helpText="Enable metadata file creation for this metadata type"
+              helpText={translate('EnableHelpText')}
               {...enable}
               onChange={onInputChange}
             />

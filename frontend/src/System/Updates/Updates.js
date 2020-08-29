@@ -10,6 +10,7 @@ import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import { icons, kinds } from 'Helpers/Props';
 import formatDate from 'Utilities/Date/formatDate';
+import translate from 'Utilities/String/translate';
 import UpdateChanges from './UpdateChanges';
 import styles from './Updates.css';
 
@@ -48,7 +49,7 @@ class Updates extends Component {
     };
 
     return (
-      <PageContent title="Updates">
+      <PageContent title={translate('Updates')}>
         <PageContentBody>
           {
             !isPopulated && !hasError &&
@@ -168,12 +169,12 @@ class Updates extends Component {
                           hasChanges &&
                             <div className={styles.changes}>
                               <UpdateChanges
-                                title="New"
+                                title={translate('New')}
                                 changes={update.changes.new}
                               />
 
                               <UpdateChanges
-                                title="Fixed"
+                                title={translate('Fixed')}
                                 changes={update.changes.fixed}
                               />
                             </div>

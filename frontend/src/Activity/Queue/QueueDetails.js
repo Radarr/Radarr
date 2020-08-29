@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from 'Components/Icon';
 import { icons, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 function QueueDetails(props) {
   const {
@@ -57,7 +58,7 @@ function QueueDetails(props) {
       <Icon
         name={icons.DOWNLOADING}
         kind={kinds.DANGER}
-        title="Download failed: check download client for more details"
+        title={translate('DownloadFailedCheckDownloadClientForMoreDetails')}
       />
     );
   }
@@ -67,7 +68,7 @@ function QueueDetails(props) {
       <Icon
         name={icons.DOWNLOADING}
         kind={kinds.WARNING}
-        title="Download warning: check download client for more details"
+        title={translate('DownloadWarningCheckDownloadClientForMoreDetails')}
       />
     );
   }

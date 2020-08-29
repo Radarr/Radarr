@@ -91,13 +91,13 @@ class RemoveQueueItemsModal extends Component {
             </div>
 
             <FormGroup>
-              <FormLabel>Remove From Download Client</FormLabel>
+              <FormLabel>{translate('RemoveFromDownloadClient')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="remove"
                 value={remove}
-                helpTextWarning="Removing will remove the download and the file(s) from the download client."
+                helpTextWarning={translate('RemoveHelpTextWarning')}
                 isDisabled={!canIgnore}
                 onChange={this.onRemoveChange}
               />
@@ -112,7 +112,7 @@ class RemoveQueueItemsModal extends Component {
                 type={inputTypes.CHECK}
                 name="blacklist"
                 value={blacklist}
-                helpText="Prevents Radarr from automatically grabbing this movie again"
+                helpText={translate('BlacklistHelpText')}
                 onChange={this.onBlacklistChange}
               />
             </FormGroup>

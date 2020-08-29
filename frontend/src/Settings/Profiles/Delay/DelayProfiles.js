@@ -69,7 +69,7 @@ class DelayProfiles extends Component {
       <Measure onMeasure={this.onMeasure}>
         <FieldSet legend={translate('DelayProfiles')}>
           <PageSectionContent
-            errorMessage="Unable to load Delay Profiles"
+            errorMessage={translate('UnableToLoadDelayProfiles')}
             {...otherProps}
           >
             <div className={styles.delayProfilesHeader}>

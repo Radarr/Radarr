@@ -61,7 +61,7 @@ class CustomFormats extends Component {
     return (
       <FieldSet legend={translate('CustomFormats')}>
         <PageSectionContent
-          errorMessage="Unable to load Custom Formats"
+          errorMessage={translate('UnableToLoadCustomFormats')}
           {...otherProps}c={true}
         >
           <div className={styles.customFormats}>

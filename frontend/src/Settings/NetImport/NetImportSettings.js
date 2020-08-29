@@ -6,6 +6,7 @@ import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import { icons } from 'Helpers/Props';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
+import translate from 'Utilities/String/translate';
 import NetImportsConnector from './NetImport/NetImportsConnector';
 import NetImportExclusionsConnector from './NetImportExclusions/NetImportExclusionsConnector';
 import NetImportOptionsConnector from './Options/NetImportOptionsConnector';
@@ -58,7 +59,7 @@ class NetImportSettings extends Component {
     } = this.state;
 
     return (
-      <PageContent title="List Settings">
+      <PageContent title={translate('ListSettings')}>
         <SettingsToolbarConnector
           isSaving={isSaving}
           hasPendingChanges={hasPendingChanges}
@@ -67,7 +68,7 @@ class NetImportSettings extends Component {
               <PageToolbarSeparator />
 
               <PageToolbarButton
-                label="Test All Lists"
+                label={translate('TestAllLists')}
                 iconName={icons.TEST}
                 isSpinning={isTestingAll}
                 onPress={dispatchTestAllNetImport}

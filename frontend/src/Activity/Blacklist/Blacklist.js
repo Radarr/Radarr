@@ -33,7 +33,7 @@ class Blacklist extends Component {
     } = this.props;
 
     return (
-      <PageContent title="Blacklist">
+      <PageContent title={translate('Blacklist')}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton

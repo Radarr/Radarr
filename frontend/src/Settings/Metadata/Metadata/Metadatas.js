@@ -15,7 +15,7 @@ function Metadatas(props) {
   return (
     <FieldSet legend={translate('Metadata')}>
       <PageSectionContent
-        errorMessage="Unable to load Metadata"
+        errorMessage={translate('UnableToLoadMetadata')}
         {...otherProps}
       >
         <div className={styles.metadatas}>

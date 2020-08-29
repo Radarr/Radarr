@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
+import translate from 'Utilities/String/translate';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
@@ -92,7 +93,7 @@ class ImportMovie extends Component {
     } = this.state;
 
     return (
-      <PageContent title="Import Movies">
+      <PageContent title={translate('ImportMovies')}>
         <PageContentBody
           registerScroller={this.setScrollerRef}
           onScroll={this.onScroll}

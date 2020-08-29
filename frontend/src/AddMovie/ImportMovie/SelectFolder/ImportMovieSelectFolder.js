@@ -77,7 +77,7 @@ class ImportMovieSelectFolder extends Component {
     } = this.props;
 
     return (
-      <PageContent title="Import Movies">
+      <PageContent title={translate('ImportMovies')}>
         <PageContentBody>
           {
             isFetching && !isPopulated &&

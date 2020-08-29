@@ -26,7 +26,7 @@ function LoggingSettings(props) {
   return (
     <FieldSet legend={translate('Logging')}>
       <FormGroup>
-        <FormLabel>Log Level</FormLabel>
+        <FormLabel>{translate('LogLevel')}</FormLabel>
 
         <FormInputGroup
           type={inputTypes.SELECT}

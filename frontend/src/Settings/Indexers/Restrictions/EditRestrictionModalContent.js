@@ -44,12 +44,12 @@ function EditRestrictionModalContent(props) {
           {...otherProps}
         >
           <FormGroup>
-            <FormLabel>Must Contain</FormLabel>
+            <FormLabel>{translate('MustContain')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.TEXT_TAG}
               name="required"
-              helpText="The release must contain at least one of these terms (case insensitive)"
+              helpText={translate('RequiredHelpText')}
               kind={kinds.SUCCESS}
               placeholder="Add new restriction"
               {...required}
@@ -58,12 +58,12 @@ function EditRestrictionModalContent(props) {
           </FormGroup>
 
           <FormGroup>
-            <FormLabel>Must Not Contain</FormLabel>
+            <FormLabel>{translate('MustNotContain')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.TEXT_TAG}
               name="ignored"
-              helpText="The release will be rejected if it contains one or more of terms (case insensitive)"
+              helpText={translate('IgnoredHelpText')}
               kind={kinds.DANGER}
               placeholder="Add new restriction"
               {...ignored}
@@ -72,12 +72,12 @@ function EditRestrictionModalContent(props) {
           </FormGroup>
 
           <FormGroup>
-            <FormLabel>Tags</FormLabel>
+            <FormLabel>{translate('Tags')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.TAG}
               name="tags"
-              helpText="Restrictions will apply to movies at least one matching tag. Leave blank to apply to all movies"
+              helpText={translate('TagsHelpText')}
               {...tags}
               onChange={onInputChange}
             />

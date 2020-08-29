@@ -117,24 +117,24 @@ class Naming extends Component {
           hasSettings && !isFetching && !error &&
             <Form>
               <FormGroup size={sizes.MEDIUM}>
-                <FormLabel>Rename Movies</FormLabel>
+                <FormLabel>{translate('RenameMovies')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="renameMovies"
-                  helpText="Radarr will use the existing file name if renaming is disabled"
+                  helpText={translate('RenameMoviesHelpText')}
                   onChange={onInputChange}
                   {...settings.renameMovies}
                 />
               </FormGroup>
 
               <FormGroup size={sizes.MEDIUM}>
-                <FormLabel>Replace Illegal Characters</FormLabel>
+                <FormLabel>{translate('ReplaceIllegalCharacters')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="replaceIllegalCharacters"
-                  helpText="Replace illegal characters. If unchecked, Radarr will remove them instead"
+                  helpText={translate('ReplaceIllegalCharactersHelpText')}
                   onChange={onInputChange}
                   {...settings.replaceIllegalCharacters}
                 />
@@ -143,13 +143,13 @@ class Naming extends Component {
               {
                 replaceIllegalCharacters &&
                   <FormGroup>
-                    <FormLabel>Colon Replacement</FormLabel>
+                    <FormLabel>{translate('ColonReplacement')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="colonReplacementFormat"
                       values={colonReplacementOptions}
-                      helpText="Change how Radarr handles colon replacement"
+                      helpText={translate('ColonReplacementFormatHelpText')}
                       onChange={onInputChange}
                       {...settings.colonReplacementFormat}
                     />
@@ -159,7 +159,7 @@ class Naming extends Component {
               {
                 renameMovies &&
                   <FormGroup size={sizes.LARGE}>
-                    <FormLabel>Standard Movie Format</FormLabel>
+                    <FormLabel>{translate('StandardMovieFormat')}</FormLabel>
 
                     <FormInputGroup
                       inputClassName={styles.namingInput}
@@ -178,7 +178,7 @@ class Naming extends Component {
                 advancedSettings={advancedSettings}
                 isAdvanced={true}
               >
-                <FormLabel>Movie Folder Format</FormLabel>
+                <FormLabel>{translate('MovieFolderFormat')}</FormLabel>
 
                 <FormInputGroup
                   inputClassName={styles.namingInput}

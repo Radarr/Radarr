@@ -90,25 +90,25 @@ class RemoveQueueItemModal extends Component {
             </div>
 
             <FormGroup>
-              <FormLabel>Remove From Download Client</FormLabel>
+              <FormLabel>{translate('RemoveFromDownloadClient')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="remove"
                 value={remove}
-                helpTextWarning="Removing will remove the download and the file(s) from the download client."
+                helpTextWarning={translate('RemoveHelpTextWarning')}
                 isDisabled={!canIgnore}
                 onChange={this.onRemoveChange}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Blacklist Release</FormLabel>
+              <FormLabel>{translate('BlacklistRelease')}</FormLabel>
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="blacklist"
                 value={blacklist}
-                helpText="Starts a search for this movie again and prevents this release from being grabbed again"
+                helpText={translate('BlacklistHelpText')}
                 onChange={this.onBlacklistChange}
               />
             </FormGroup>

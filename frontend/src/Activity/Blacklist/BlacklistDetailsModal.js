@@ -40,19 +40,19 @@ class BlacklistDetailsModal extends Component {
           <ModalBody>
             <DescriptionList>
               <DescriptionListItem
-                title="Name"
+                title={translate('Name')}
                 data={sourceTitle}
               />
 
               <DescriptionListItem
-                title="Protocol"
+                title={translate('Protocol')}
                 data={protocol}
               />
 
               {
                 !!message &&
                   <DescriptionListItem
-                    title="Indexer"
+                    title={translate('Indexer')}
                     data={indexer}
                   />
               }
@@ -60,7 +60,7 @@ class BlacklistDetailsModal extends Component {
               {
                 !!message &&
                   <DescriptionListItem
-                    title="Message"
+                    title={translate('Message')}
                     data={message}
                   />
               }

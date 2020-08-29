@@ -61,7 +61,7 @@ class Notifications extends Component {
     return (
       <FieldSet legend={translate('Connections')}>
         <PageSectionContent
-          errorMessage="Unable to load Notifications"
+          errorMessage={translate('UnableToLoadNotifications')}
           {...otherProps}
         >
           <div className={styles.notifications}>

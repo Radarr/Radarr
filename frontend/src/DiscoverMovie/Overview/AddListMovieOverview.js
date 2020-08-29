@@ -13,6 +13,7 @@ import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import MoviePoster from 'Movie/MoviePoster';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
+import translate from 'Utilities/String/translate';
 import styles from './AddListMovieOverview.css';
 
 const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
@@ -163,7 +164,7 @@ class AddListMovieOverview extends Component {
                         size={12}
                       />
                     }
-                    title="Links"
+                    title={translate('Links')}
                     body={
                       <MovieDetailsLinks
                         tmdbId={tmdbId}

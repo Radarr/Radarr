@@ -42,27 +42,27 @@ function NetImportOptions(props) {
         hasSettings && !isFetching && !error &&
           <Form>
             <FormGroup>
-              <FormLabel>List Update Interval</FormLabel>
+              <FormLabel>{translate('ListUpdateInterval')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.NUMBER}
                 name="netImportSyncInterval"
                 min={0}
                 unit="minutes"
-                helpText="How often Radarr syncs with your lists."
+                helpText={translate('NetImportSyncIntervalHelpText')}
                 onChange={onInputChange}
                 {...settings.netImportSyncInterval}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Clean Library Level</FormLabel>
+              <FormLabel>{translate('CleanLibraryLevel')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.SELECT}
                 name="listSyncLevel"
                 values={cleanLibraryLevelOptions}
-                helpText="Movies in library will be removed or unmonitored if not in your list"
+                helpText={translate('ListSyncLevelHelpText')}
                 onChange={onInputChange}
                 {...settings.listSyncLevel}
               />

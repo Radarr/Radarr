@@ -35,54 +35,54 @@ function IndexerOptions(props) {
         hasSettings && !isFetching && !error &&
           <Form>
             <FormGroup>
-              <FormLabel>Minimum Age</FormLabel>
+              <FormLabel>{translate('MinimumAge')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.NUMBER}
                 name="minimumAge"
                 min={0}
                 unit="minutes"
-                helpText="Usenet only: Minimum age in minutes of NZBs before they are grabbed. Use this to give new releases time to propagate to your usenet provider."
+                helpText={translate('MinimumAgeHelpText')}
                 onChange={onInputChange}
                 {...settings.minimumAge}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Retention</FormLabel>
+              <FormLabel>{translate('Retention')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.NUMBER}
                 name="retention"
                 min={0}
                 unit="days"
-                helpText="Usenet only: Set to zero to set for unlimited retention"
+                helpText={translate('RetentionHelpText')}
                 onChange={onInputChange}
                 {...settings.retention}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Maximum Size</FormLabel>
+              <FormLabel>{translate('MaximumSize')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.NUMBER}
                 name="maximumSize"
                 min={0}
                 unit="MB"
-                helpText="Maximum size for a release to be grabbed in MB. Set to zero to set to unlimited"
+                helpText={translate('MaximumSizeHelpText')}
                 onChange={onInputChange}
                 {...settings.maximumSize}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Prefer Indexer Flags</FormLabel>
+              <FormLabel>{translate('PreferIndexerFlags')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="preferIndexerFlags"
-                helpText="Prioritize releases with special flags"
+                helpText={translate('PreferIndexerFlagsHelpText')}
                 helpLink="https://github.com/Radarr/Radarr/wiki/Indexer-Flags"
                 onChange={onInputChange}
                 {...settings.preferIndexerFlags}
@@ -90,13 +90,13 @@ function IndexerOptions(props) {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Availability Delay</FormLabel>
+              <FormLabel>{translate('AvailabilityDelay')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.NUMBER}
                 name="availabilityDelay"
                 unit="Days"
-                helpText="Amount of time before or after available date to search for Movie"
+                helpText={translate('AvailabilityDelayHelpText')}
                 onChange={onInputChange}
                 {...settings.availabilityDelay}
               />
@@ -106,7 +106,7 @@ function IndexerOptions(props) {
               advancedSettings={advancedSettings}
               isAdvanced={true}
             >
-              <FormLabel>RSS Sync Interval</FormLabel>
+              <FormLabel>{translate('RSSSyncInterval')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.NUMBER}
@@ -114,8 +114,8 @@ function IndexerOptions(props) {
                 min={0}
                 max={120}
                 unit="minutes"
-                helpText="Interval in minutes. Set to zero to disable (this will stop all automatic release grabbing)"
-                helpTextWarning="This will apply to all indexers, please follow the rules set forth by them"
+                helpText={translate('HelpText')}
+                helpTextWarning={translate('RssSyncIntervalHelpTextWarning')}
                 helpLink="https://github.com/Radarr/Radarr/wiki/RSS-Sync"
                 onChange={onInputChange}
                 {...settings.rssSyncInterval}
@@ -126,12 +126,12 @@ function IndexerOptions(props) {
               advancedSettings={advancedSettings}
               isAdvanced={true}
             >
-              <FormLabel>Whitelisted Subtitle Tags</FormLabel>
+              <FormLabel>{translate('WhitelistedSubtitleTags')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.TEXT_TAG}
                 name="whitelistedHardcodedSubs"
-                helpText="Subtitle tags set here will not be considered hardcoded"
+                helpText={translate('WhitelistedHardcodedSubsHelpText')}
                 onChange={onInputChange}
                 {...settings.whitelistedHardcodedSubs}
               />
@@ -141,12 +141,12 @@ function IndexerOptions(props) {
               advancedSettings={advancedSettings}
               isAdvanced={true}
             >
-              <FormLabel>Allow Hardcoded Subs</FormLabel>
+              <FormLabel>{translate('AllowHardcodedSubs')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="allowHardcodedSubs"
-                helpText="Detected hardcoded subs will be automatically downloaded"
+                helpText={translate('AllowHardcodedSubsHelpText')}
                 onChange={onInputChange}
                 {...settings.allowHardcodedSubs}
               />

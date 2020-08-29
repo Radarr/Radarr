@@ -13,6 +13,7 @@ import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MoviePoster from 'Movie/MoviePoster';
+import translate from 'Utilities/String/translate';
 import MovieIndexPosterInfo from './MovieIndexPosterInfo';
 import styles from './MovieIndexPoster.css';
 
@@ -141,7 +142,7 @@ class MovieIndexPoster extends Component {
             <SpinnerIconButton
               className={styles.action}
               name={icons.REFRESH}
-              title="Refresh movie"
+              title={translate('RefreshMovie')}
               isSpinning={isRefreshingMovie}
               onPress={onRefreshMoviePress}
             />
@@ -151,7 +152,7 @@ class MovieIndexPoster extends Component {
                 <SpinnerIconButton
                   className={styles.action}
                   name={icons.SEARCH}
-                  title="Search for movie"
+                  title={translate('SearchForMovie')}
                   isSpinning={isSearchingMovie}
                   onPress={onSearchPress}
                 />
@@ -160,7 +161,7 @@ class MovieIndexPoster extends Component {
             <IconButton
               className={styles.action}
               name={icons.EDIT}
-              title="Edit movie"
+              title={translate('EditMovie')}
               onPress={this.onEditMoviePress}
             />
 
@@ -172,7 +173,7 @@ class MovieIndexPoster extends Component {
                     size={12}
                   />
                 }
-                title="Links"
+                title={translate('Links')}
                 body={
                   <MovieDetailsLinks
                     tmdbId={tmdbId}
@@ -188,7 +189,7 @@ class MovieIndexPoster extends Component {
             status === 'ended' &&
               <div
                 className={styles.ended}
-                title="Ended"
+                title={translate('Ended')}
               />
           }
 

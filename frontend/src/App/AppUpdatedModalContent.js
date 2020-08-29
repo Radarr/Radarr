@@ -8,6 +8,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { kinds } from 'Helpers/Props';
 import UpdateChanges from 'System/Updates/UpdateChanges';
+import translate from 'Utilities/String/translate';
 import styles from './AppUpdatedModalContent.css';
 
 function AppUpdatedModalContent(props) {
@@ -49,12 +50,12 @@ function AppUpdatedModalContent(props) {
                     </div>
 
                     <UpdateChanges
-                      title="New"
+                      title={translate('New')}
                       changes={update.changes.new}
                     />
 
                     <UpdateChanges
-                      title="Fixed"
+                      title={translate('Fixed')}
                       changes={update.changes.fixed}
                     />
                   </div>

@@ -47,7 +47,7 @@ class RemotePathMappings extends Component {
     return (
       <FieldSet legend={translate('RemotePathMappings')}>
         <PageSectionContent
-          errorMessage="Unable to load Remote Path Mappings"
+          errorMessage={translate('UnableToLoadRemotePathMappings')}
           {...otherProps}
         >
           <div className={styles.remotePathMappingsHeader}>

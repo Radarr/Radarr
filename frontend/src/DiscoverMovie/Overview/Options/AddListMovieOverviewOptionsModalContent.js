@@ -87,7 +87,7 @@ class AddListMovieOverviewOptionsModalContent extends Component {
         <ModalBody>
           <Form>
             <FormGroup>
-              <FormLabel>Poster Size</FormLabel>
+              <FormLabel>{translate('PosterSize')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.SELECT}
@@ -99,7 +99,7 @@ class AddListMovieOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Studio</FormLabel>
+              <FormLabel>{translate('ShowStudio')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}

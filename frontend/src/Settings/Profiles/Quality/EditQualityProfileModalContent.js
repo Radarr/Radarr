@@ -178,7 +178,7 @@ class EditQualityProfileModalContent extends Component {
                             type={inputTypes.CHECK}
                             name="upgradeAllowed"
                             {...upgradeAllowed}
-                            helpText="If disabled qualities will not be upgraded"
+                            helpText={translate('UpgradeAllowedHelpText')}
                             onChange={onInputChange}
                           />
                         </FormGroup>
@@ -195,7 +195,7 @@ class EditQualityProfileModalContent extends Component {
                                 name="cutoff"
                                 {...cutoff}
                                 values={qualities}
-                                helpText="Once this quality is reached Radarr will no longer download movies"
+                                helpText={translate('CutoffHelpText')}
                                 onChange={onCutoffChange}
                               />
                             </FormGroup>
@@ -212,7 +212,7 @@ class EditQualityProfileModalContent extends Component {
                                 type={inputTypes.NUMBER}
                                 name="minFormatScore"
                                 {...minFormatScore}
-                                helpText="Minimum custom format score allowed to download"
+                                helpText={translate('MinFormatScoreHelpText')}
                                 onChange={onInputChange}
                               />
                             </FormGroup>
@@ -229,7 +229,7 @@ class EditQualityProfileModalContent extends Component {
                                 type={inputTypes.NUMBER}
                                 name="cutoffFormatScore"
                                 {...cutoffFormatScore}
-                                helpText="Once this custom format score is reached Radarr will no longer download movies"
+                                helpText={translate('CutoffFormatScoreHelpText')}
                                 onChange={onInputChange}
                               />
                             </FormGroup>
@@ -245,7 +245,7 @@ class EditQualityProfileModalContent extends Component {
                             name="language"
                             values={languages}
                             value={languageId}
-                            helpText="Language for Releases"
+                            helpText={translate('LanguageHelpText')}
                             onChange={onLanguageChange}
                           />
                         </FormGroup>

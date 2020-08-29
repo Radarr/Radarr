@@ -106,7 +106,7 @@ class NetImport extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteNetImportModalOpen}
           kind={kinds.DANGER}
-          title="Delete List"
+          title={translate('DeleteList')}
           message={`Are you sure you want to delete the list '${name}'?`}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteNetImport}

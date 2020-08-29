@@ -76,7 +76,7 @@ class Backups extends Component {
     const noBackups = isPopulated && !items.length;
 
     return (
-      <PageContent title="Backups">
+      <PageContent title={translate('Backups')}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton

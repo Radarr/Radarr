@@ -153,7 +153,7 @@ function FormInputGroup(props) {
           <Icon
           name={icons.UNSAVED_SETTING}
           className={styles.pendingChangesIcon}
-          title="Change has not been saved yet"
+          title={translate('ChangeHasNotBeenSavedYet')}
           />
           }
         </div> */}

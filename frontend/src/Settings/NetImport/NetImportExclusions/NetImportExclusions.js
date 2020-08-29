@@ -47,7 +47,7 @@ class NetImportExclusions extends Component {
     return (
       <FieldSet legend={translate('ListExclusions')}>
         <PageSectionContent
-          errorMessage="Unable to load List Exclusions"
+          errorMessage={translate('UnableToLoadListExclusions')}
           {...otherProps}
         >
           <div className={styles.netImportExclusionsHeader}>

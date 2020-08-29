@@ -85,7 +85,7 @@ class Indexer extends Component {
 
           <IconButton
             className={styles.cloneButton}
-            title="Clone Indexer"
+            title={translate('CloneIndexer')}
             name={icons.CLONE}
             onPress={this.onCloneIndexerPress}
           />
@@ -135,7 +135,7 @@ class Indexer extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteIndexerModalOpen}
           kind={kinds.DANGER}
-          title="Delete Indexer"
+          title={translate('DeleteIndexer')}
           message={`Are you sure you want to delete the indexer '${name}'?`}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteIndexer}

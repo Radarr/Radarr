@@ -9,6 +9,7 @@ import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
 import MovieTitleLink from 'Movie/MovieTitleLink';
+import translate from 'Utilities/String/translate';
 import BlacklistDetailsModal from './BlacklistDetailsModal';
 import styles from './BlacklistRow.css';
 
@@ -155,7 +156,7 @@ class BlacklistRow extends Component {
                   />
 
                   <IconButton
-                    title="Remove from blacklist"
+                    title={translate('RemoveFromBlacklist')}
                     name={icons.REMOVE}
                     kind={kinds.DANGER}
                     onPress={onRemovePress}

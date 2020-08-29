@@ -5,6 +5,7 @@ import Link from 'Components/Link/Link';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
+import translate from 'Utilities/String/translate';
 import DelayProfilesConnector from './Delay/DelayProfilesConnector';
 import QualityProfilesConnector from './Quality/QualityProfilesConnector';
 import styles from './Profiles.css';
@@ -18,7 +19,7 @@ class Profiles extends Component {
 
   render() {
     return (
-      <PageContent title="Profiles">
+      <PageContent title={translate('Profiles')}>
         <SettingsToolbarConnector
           showSave={false}
         />

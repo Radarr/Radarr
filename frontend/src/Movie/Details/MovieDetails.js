@@ -291,7 +291,7 @@ class MovieDetails extends Component {
               label={translate('RefreshAndScan')}
               iconName={icons.REFRESH}
               spinningName={icons.REFRESH}
-              title="Refresh information and scan disk"
+              title={translate('RefreshInformationAndScanDisk')}
               isSpinning={isRefreshing}
               onPress={onRefreshPress}
             />
@@ -410,7 +410,7 @@ class MovieDetails extends Component {
                             anchor={
                               year
                             }
-                            title="Release Dates"
+                            title={translate('ReleaseDates')}
                             body={
                               <MovieReleaseDatesConnector
                                 inCinemas={inCinemas}
@@ -450,7 +450,7 @@ class MovieDetails extends Component {
                               size={20}
                             />
                           }
-                          title="Links"
+                          title={translate('Links')}
                           body={
                             <MovieDetailsLinks
                               tmdbId={tmdbId}
@@ -473,7 +473,7 @@ class MovieDetails extends Component {
                                 size={20}
                               />
                             }
-                            title="Tags"
+                            title={translate('Tags')}
                             body={
                               <MovieTagsConnector movieId={id} />
                             }

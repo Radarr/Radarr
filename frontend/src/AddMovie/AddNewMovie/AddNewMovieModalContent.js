@@ -12,6 +12,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds } from 'Helpers/Props';
 import MoviePoster from 'Movie/MoviePoster';
+import translate from 'Utilities/String/translate';
 import styles from './AddNewMovieModalContent.css';
 
 class AddNewMovieModalContent extends Component {
@@ -95,7 +96,7 @@ class AddNewMovieModalContent extends Component {
 
               <Form>
                 <FormGroup>
-                  <FormLabel>Root Folder</FormLabel>
+                  <FormLabel>{translate('RootFolder')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.ROOT_FOLDER_SELECT}
@@ -128,7 +129,7 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Minimum Availability</FormLabel>
+                  <FormLabel>{translate('MinimumAvailability')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.AVAILABILITY_SELECT}
@@ -139,7 +140,7 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Quality Profile</FormLabel>
+                  <FormLabel>{translate('QualityProfile')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.QUALITY_PROFILE_SELECT}
@@ -150,7 +151,7 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Tags</FormLabel>
+                  <FormLabel>{translate('Tags')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.TAG}

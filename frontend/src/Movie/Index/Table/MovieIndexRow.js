@@ -18,6 +18,7 @@ import MovieTitleLink from 'Movie/MovieTitleLink';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import formatBytes from 'Utilities/Number/formatBytes';
 import titleCase from 'Utilities/String/titleCase';
+import translate from 'Utilities/String/translate';
 import MovieStatusCell from './MovieStatusCell';
 import styles from './MovieIndexRow.css';
 
@@ -369,7 +370,7 @@ class MovieIndexRow extends Component {
                           size={12}
                         />
                       }
-                      title="Links"
+                      title={translate('Links')}
                       body={
                         <MovieDetailsLinks
                           tmdbId={tmdbId}
@@ -382,7 +383,7 @@ class MovieIndexRow extends Component {
 
                   <SpinnerIconButton
                     name={icons.REFRESH}
-                    title="Refresh movie"
+                    title={translate('RefreshMovie')}
                     isSpinning={isRefreshingMovie}
                     onPress={onRefreshMoviePress}
                   />
@@ -392,7 +393,7 @@ class MovieIndexRow extends Component {
                       <SpinnerIconButton
                         className={styles.action}
                         name={icons.SEARCH}
-                        title="Search for movie"
+                        title={translate('SearchForMovie')}
                         isSpinning={isSearchingMovie}
                         onPress={onSearchPress}
                       />
@@ -400,7 +401,7 @@ class MovieIndexRow extends Component {
 
                   <IconButton
                     name={icons.EDIT}
-                    title="Edit Movie"
+                    title={translate('EditMovie')}
                     onPress={this.onEditMoviePress}
                   />
                 </VirtualTableRowCell>

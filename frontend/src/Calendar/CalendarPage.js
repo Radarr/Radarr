@@ -98,7 +98,7 @@ class CalendarPage extends Component {
     const isMeasured = this.state.width > 0;
 
     return (
-      <PageContent title="Calendar">
+      <PageContent title={translate('Calendar')}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton

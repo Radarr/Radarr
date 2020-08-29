@@ -8,6 +8,7 @@ import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import { kinds } from 'Helpers/Props';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
+import translate from 'Utilities/String/translate';
 import AnalyticSettings from './AnalyticSettings';
 import BackupSettings from './BackupSettings';
 import HostSettings from './HostSettings';
@@ -112,7 +113,7 @@ class GeneralSettings extends Component {
     } = this.props;
 
     return (
-      <PageContent title="General Settings">
+      <PageContent title={translate('GeneralSettings')}>
         <SettingsToolbarConnector
           {...otherProps}
         />
@@ -184,12 +185,12 @@ class GeneralSettings extends Component {
         <ConfirmModal
           isOpen={this.state.isRestartRequiredModalOpen}
           kind={kinds.DANGER}
-          title="Restart Radarr"
+          title={translate('RestartRadarr')}
           message={
             `Radarr requires a restart to apply changes, do you want to restart now? ${isWindowsService ? 'Depending which user is running the Radarr service you may need to restart Radarr as admin once before the service will start automatically.' : ''}`
           }
-          cancelLabel="I'll restart later"
-          confirmLabel="Restart Now"
+          cancelLabel={translate('IllRestartLater')}
+          confirmLabel={translate('RestartNow')}
           onConfirm={this.onConfirmRestart}
           onCancel={this.onCloseRestartRequiredModalOpen}
         />

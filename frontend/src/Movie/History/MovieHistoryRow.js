@@ -11,6 +11,7 @@ import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
+import translate from 'Utilities/String/translate';
 import styles from './MovieHistoryRow.css';
 
 class MovieHistoryRow extends Component {
@@ -117,7 +118,7 @@ class MovieHistoryRow extends Component {
           {
             eventType === 'grabbed' &&
               <IconButton
-                title="Mark as failed"
+                title={translate('MarkAsFailed')}
                 name={icons.REMOVE}
                 onPress={this.onMarkAsFailedPress}
               />
@@ -127,9 +128,9 @@ class MovieHistoryRow extends Component {
         <ConfirmModal
           isOpen={isMarkAsFailedModalOpen}
           kind={kinds.DANGER}
-          title="Mark as Failed"
+          title={translate('MarkAsFailed')}
           message={`Are you sure you want to mark '${sourceTitle}' as failed?`}
-          confirmLabel="Mark as Failed"
+          confirmLabel={translate('MarkAsFailed')}
           onConfirm={this.onConfirmMarkAsFailed}
           onCancel={this.onMarkAsFailedModalClose}
         />

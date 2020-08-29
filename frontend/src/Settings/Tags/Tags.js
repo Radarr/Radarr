@@ -23,7 +23,7 @@ function Tags(props) {
       legend={translate('Tags')}
     >
       <PageSectionContent
-        errorMessage="Unable to load Tags"
+        errorMessage={translate('UnableToLoadTags')}
         {...otherProps}
       >
         <div className={styles.tags}>

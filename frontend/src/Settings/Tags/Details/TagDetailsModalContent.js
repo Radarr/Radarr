@@ -40,7 +40,7 @@ function TagDetailsModalContent(props) {
 
         {
           !!movies.length &&
-            <FieldSet legend="Movies">
+            <FieldSet legend={translate('Movies')}>
               {
                 movies.map((item) => {
                   return (
@@ -55,7 +55,7 @@ function TagDetailsModalContent(props) {
 
         {
           !!delayProfiles.length &&
-            <FieldSet legend="Delay Profile">
+            <FieldSet legend={translate('DelayProfile')}>
               {
                 delayProfiles.map((item) => {
                   const {

@@ -88,7 +88,7 @@ class AddNewMovie extends Component {
     const isFetching = this.state.isFetching;
 
     return (
-      <PageContent title="Add New Movie">
+      <PageContent title={translate('AddNewMovie')}>
         <PageContentBody>
           <div className={styles.searchContainer}>
             <div className={styles.searchIconContainer}>

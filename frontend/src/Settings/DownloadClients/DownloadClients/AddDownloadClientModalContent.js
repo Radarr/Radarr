@@ -55,7 +55,7 @@ class AddDownloadClientModalContent extends Component {
                   <div>For more information on the individual downloadClients, clink on the info buttons.</div>
                 </Alert>
 
-                <FieldSet legend="Usenet">
+                <FieldSet legend={translate('Usenet')}>
                   <div className={styles.downloadClients}>
                     {
                       usenetDownloadClients.map((downloadClient) => {
@@ -72,7 +72,7 @@ class AddDownloadClientModalContent extends Component {
                   </div>
                 </FieldSet>
 
-                <FieldSet legend="Torrents">
+                <FieldSet legend={translate('Torrents')}>
                   <div className={styles.downloadClients}>
                     {
                       torrentDownloadClients.map((downloadClient) => {

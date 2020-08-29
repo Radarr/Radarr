@@ -12,6 +12,7 @@ import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
 import { icons } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import translate from 'Utilities/String/translate';
 import ListMovieStatusCell from './ListMovieStatusCell';
 import styles from './AddListMovieRow.css';
 
@@ -218,7 +219,7 @@ class AddListMovieRow extends Component {
                           size={12}
                         />
                       }
-                      title="Links"
+                      title={translate('Links')}
                       body={
                         <MovieDetailsLinks
                           tmdbId={tmdbId}

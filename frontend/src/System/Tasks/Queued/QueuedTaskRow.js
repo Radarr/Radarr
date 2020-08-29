@@ -225,7 +225,7 @@ class QueuedTaskRow extends Component {
           {
             status === 'queued' &&
               <IconButton
-                title="Removed from task queue"
+                title={translate('RemovedFromTaskQueue')}
                 name={icons.REMOVE}
                 onPress={this.onCancelPress}
               />
@@ -237,8 +237,8 @@ class QueuedTaskRow extends Component {
           kind={kinds.DANGER}
           title={translate('Cancel')}
           message={'Are you sure you want to cancel this pending task?'}
-          confirmLabel="Yes, Cancel"
-          cancelLabel="No, Leave It"
+          confirmLabel={translate('YesCancel')}
+          cancelLabel={translate('NoLeaveIt')}
           onConfirm={onCancelPress}
           onCancel={this.onAbortCancel}
         />

@@ -8,6 +8,7 @@ import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import MoviePoster from 'Movie/MoviePoster';
+import translate from 'Utilities/String/translate';
 import AddNewMovieModal from './AddNewMovieModal';
 import styles from './AddNewMovieSearchResult.css';
 
@@ -107,7 +108,7 @@ class AddNewMovieSearchResult extends Component {
                     className={styles.alreadyExistsIcon}
                     name={icons.CHECK_CIRCLE}
                     size={36}
-                    title="Already in your library"
+                    title={translate('AlreadyInYourLibrary')}
                   />
               }
 
@@ -117,7 +118,7 @@ class AddNewMovieSearchResult extends Component {
                     className={styles.exclusionIcon}
                     name={icons.DANGER}
                     size={36}
-                    title="Movie is on Net Import Exclusion List"
+                    title={translate('MovieIsOnNetImportExclusionList')}
                   />
               }
             </div>
