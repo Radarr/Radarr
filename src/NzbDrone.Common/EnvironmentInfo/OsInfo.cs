@@ -109,18 +109,31 @@ namespace NzbDrone.Common.EnvironmentInfo
 
         private static string RunAndCapture(string filename, string args)
         {
-            Process p = new Process();
-            p.StartInfo.FileName = filename;
-            p.StartInfo.Arguments = args;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.StartInfo.RedirectStandardOutput = true;
+            var processStartInfo = new ProcessStartInfo
+            {
+                FileName = filename,
+                Arguments = args,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true
+            };
 
-            p.Start();
+            var output = string.Empty;
 
-            // To avoid deadlocks, always read the output stream first and then wait.
-            string output = p.StandardOutput.ReadToEnd();
-            p.WaitForExit(1000);
+            try
+            {
+                using (var p = Process.Start(processStartInfo))
+                {
+                    // To avoid deadlocks, always read the output stream first and then wait.
+                    output = p.StandardOutput.ReadToEnd();
+
+                    p.WaitForExit(1000);
+                }
+            }
+            catch (Exception)
+            {
+                output = string.Empty;
+            }
 
             return output;
         }
