@@ -37,14 +37,16 @@ namespace Readarr.Api.V1.Books
         }
 
         protected BookModuleWithSignalR(IBookService bookService,
-                                           IAuthorStatisticsService authorStatisticsService,
-                                           IMapCoversToLocal coverMapper,
-                                           IUpgradableSpecification qualityUpgradableSpecification,
-                                           IBroadcastSignalRMessage signalRBroadcaster,
-                                           string resource)
+                                        ISeriesBookLinkService seriesBookLinkService,
+                                        IAuthorStatisticsService authorStatisticsService,
+                                        IMapCoversToLocal coverMapper,
+                                        IUpgradableSpecification qualityUpgradableSpecification,
+                                        IBroadcastSignalRMessage signalRBroadcaster,
+                                        string resource)
             : base(signalRBroadcaster, resource)
         {
             _bookService = bookService;
+            _seriesBookLinkService = seriesBookLinkService;
             _authorStatisticsService = authorStatisticsService;
             _coverMapper = coverMapper;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;

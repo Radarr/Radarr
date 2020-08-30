@@ -17,11 +17,12 @@ namespace Readarr.Api.V1.Wanted
 
         public CutoffModule(IBookCutoffService bookCutoffService,
                             IBookService bookService,
+                            ISeriesBookLinkService seriesBookLinkService,
                             IAuthorStatisticsService authorStatisticsService,
                             IMapCoversToLocal coverMapper,
                             IUpgradableSpecification upgradableSpecification,
                             IBroadcastSignalRMessage signalRBroadcaster)
-            : base(bookService, authorStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "wanted/cutoff")
+        : base(bookService, seriesBookLinkService, authorStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "wanted/cutoff")
         {
             _bookCutoffService = bookCutoffService;
             GetResourcePaged = GetCutoffUnmetBooks;

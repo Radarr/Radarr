@@ -14,11 +14,12 @@ namespace Readarr.Api.V1.Calendar
     public class CalendarModule : BookModuleWithSignalR
     {
         public CalendarModule(IBookService bookService,
+                              ISeriesBookLinkService seriesBookLinkService,
                               IAuthorStatisticsService authorStatisticsService,
                               IMapCoversToLocal coverMapper,
                               IUpgradableSpecification upgradableSpecification,
                               IBroadcastSignalRMessage signalRBroadcaster)
-            : base(bookService, authorStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "calendar")
+        : base(bookService, seriesBookLinkService, authorStatisticsService, coverMapper, upgradableSpecification, signalRBroadcaster, "calendar")
         {
             GetResourceAll = GetCalendar;
         }
