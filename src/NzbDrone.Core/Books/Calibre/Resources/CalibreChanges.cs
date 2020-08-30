@@ -18,6 +18,8 @@ namespace NzbDrone.Core.Books.Calibre
         public string Cover { get; set; }
         [JsonProperty("pubdate")]
         public DateTime? PubDate { get; set; }
+        public string Publisher { get; set; }
+        public string Languages { get; set; }
         public string Comments { get; set; }
         public decimal Rating { get; set; }
         public Dictionary<string, string> Identifiers { get; set; }

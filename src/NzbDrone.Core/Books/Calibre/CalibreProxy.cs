@@ -151,6 +151,8 @@ namespace NzbDrone.Core.Books.Calibre
                     Authors = new List<string> { file.Author.Value.Name },
                     Cover = image,
                     PubDate = book.ReleaseDate,
+                    Publisher = edition.Publisher,
+                    Languages = edition.Language,
                     Comments = edition.Overview,
                     Rating = edition.Ratings.Value * 2,
                     Identifiers = new Dictionary<string, string>
