@@ -143,6 +143,7 @@ class BookDetails extends Component {
       id,
       titleSlug,
       title,
+      seriesTitle,
       pageCount,
       overview,
       statistics = {},
@@ -301,6 +302,10 @@ class BookDetails extends Component {
                 </div>
 
                 <div className={styles.details}>
+                  <div>
+                    {seriesTitle}
+                  </div>
+
                   <div>
                     {
                       !!pageCount &&
@@ -510,6 +515,7 @@ BookDetails.propTypes = {
   id: PropTypes.number.isRequired,
   titleSlug: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  seriesTitle: PropTypes.string.isRequired,
   pageCount: PropTypes.number,
   overview: PropTypes.string,
   statistics: PropTypes.object.isRequired,

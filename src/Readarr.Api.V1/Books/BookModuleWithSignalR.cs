@@ -14,18 +14,21 @@ namespace Readarr.Api.V1.Books
     public abstract class BookModuleWithSignalR : ReadarrRestModuleWithSignalR<BookResource, Book>
     {
         protected readonly IBookService _bookService;
+        protected readonly ISeriesBookLinkService _seriesBookLinkService;
         protected readonly IAuthorStatisticsService _authorStatisticsService;
         protected readonly IUpgradableSpecification _qualityUpgradableSpecification;
         protected readonly IMapCoversToLocal _coverMapper;
 
         protected BookModuleWithSignalR(IBookService bookService,
-                                           IAuthorStatisticsService authorStatisticsService,
-                                           IMapCoversToLocal coverMapper,
-                                           IUpgradableSpecification qualityUpgradableSpecification,
-                                           IBroadcastSignalRMessage signalRBroadcaster)
+                                        ISeriesBookLinkService seriesBookLinkService,
+                                        IAuthorStatisticsService authorStatisticsService,
+                                        IMapCoversToLocal coverMapper,
+                                        IUpgradableSpecification qualityUpgradableSpecification,
+                                        IBroadcastSignalRMessage signalRBroadcaster)
             : base(signalRBroadcaster)
         {
             _bookService = bookService;
+            _seriesBookLinkService = seriesBookLinkService;
             _authorStatisticsService = authorStatisticsService;
             _coverMapper = coverMapper;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
@@ -75,6 +78,22 @@ namespace Readarr.Api.V1.Books
 
         protected List<BookResource> MapToResource(List<Book> books, bool includeAuthor)
         {
+            var seriesLinks = _seriesBookLinkService.GetLinksByBook(books.Select(x => x.Id).ToList())
+                .GroupBy(x => x.BookId)
+                .ToDictionary(x => x.Key, y => y.ToList());
+
+            foreach (var book in books)
+            {
+                if (seriesLinks.TryGetValue(book.Id, out var links))
+                {
+                    book.SeriesLinks = links;
+                }
+                else
+                {
+                    book.SeriesLinks = new List<SeriesBookLink>();
+                }
+            }
+
             var result = books.ToResource();
 
             if (includeAuthor)

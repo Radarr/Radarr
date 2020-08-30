@@ -5,6 +5,7 @@ namespace NzbDrone.Core.Books
     public interface ISeriesBookLinkService
     {
         List<SeriesBookLink> GetLinksBySeries(int seriesId);
+        List<SeriesBookLink> GetLinksByBook(List<int> bookIds);
         void InsertMany(List<SeriesBookLink> model);
         void UpdateMany(List<SeriesBookLink> model);
         void DeleteMany(List<SeriesBookLink> model);
@@ -22,6 +23,11 @@ namespace NzbDrone.Core.Books
         public List<SeriesBookLink> GetLinksBySeries(int seriesId)
         {
             return _repo.GetLinksBySeries(seriesId);
+        }
+
+        public List<SeriesBookLink> GetLinksByBook(List<int> bookIds)
+        {
+            return _repo.GetLinksByBook(bookIds);
         }
 
         public void InsertMany(List<SeriesBookLink> model)
