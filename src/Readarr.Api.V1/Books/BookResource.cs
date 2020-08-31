@@ -62,7 +62,7 @@ namespace Readarr.Api.V1.Books
                 PageCount = selectedEdition?.PageCount ?? 0,
                 Genres = model.Genres,
                 Title = selectedEdition?.Title ?? model.Title,
-                SeriesTitle = model.SeriesLinks.Value.Select(x => x.Series.Value.Title + (x.Position.IsNotNullOrWhiteSpace() ? $" #{x.Position}" : string.Empty)).ConcatToString("; "),
+                SeriesTitle = model.SeriesLinks?.Value?.Select(x => x.Series.Value.Title + (x.Position.IsNotNullOrWhiteSpace() ? $" #{x.Position}" : string.Empty)).ConcatToString("; "),
                 Disambiguation = selectedEdition?.Disambiguation,
                 Overview = selectedEdition?.Overview,
                 Images = selectedEdition?.Images ?? new List<MediaCover>(),
