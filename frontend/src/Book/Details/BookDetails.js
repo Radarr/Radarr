@@ -5,10 +5,8 @@ import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TextTruncate from 'react-text-truncate';
 import formatBytes from 'Utilities/Number/formatBytes';
-import selectAll from 'Utilities/Table/selectAll';
-import toggleSelected from 'Utilities/Table/toggleSelected';
 import stripHtml from 'Utilities/String/stripHtml';
-import { align, icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
+import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import fonts from 'Styles/Variables/fonts';
 import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
@@ -46,14 +44,6 @@ function getFanartUrl(images) {
   }
 }
 
-function getExpandedState(newState) {
-  return {
-    allExpanded: newState.allSelected,
-    allCollapsed: newState.allUnselected,
-    expandedState: newState.selectedState
-  };
-}
-
 class BookDetails extends Component {
 
   //
@@ -67,9 +57,6 @@ class BookDetails extends Component {
       isRetagModalOpen: false,
       isEditBookModalOpen: false,
       isDeleteBookModalOpen: false,
-      allExpanded: false,
-      allCollapsed: false,
-      expandedState: {},
       selectedTabIndex: 0
     };
   }
@@ -112,29 +99,6 @@ class BookDetails extends Component {
     this.setState({ isDeleteBookModalOpen: false });
   }
 
-  onExpandAllPress = () => {
-    const {
-      allExpanded,
-      expandedState
-    } = this.state;
-
-    this.setState(getExpandedState(selectAll(expandedState, !allExpanded)));
-  }
-
-  onExpandPress = (bookId, isExpanded) => {
-    this.setState((state) => {
-      const convertedState = {
-        allSelected: state.allExpanded,
-        allUnselected: state.allCollapsed,
-        selectedState: state.expandedState
-      };
-
-      const newState = toggleSelected(convertedState, [], bookId, isExpanded, false);
-
-      return getExpandedState(newState);
-    });
-  }
-
   //
   // Render
 
@@ -171,18 +135,8 @@ class BookDetails extends Component {
       // isRetagModalOpen,
       isEditBookModalOpen,
       isDeleteBookModalOpen,
-      allExpanded,
-      allCollapsed,
       selectedTabIndex
     } = this.state;
-
-    let expandIcon = icons.EXPAND_INDETERMINATE;
-
-    if (allExpanded) {
-      expandIcon = icons.COLLAPSE;
-    } else if (allCollapsed) {
-      expandIcon = icons.EXPAND;
-    }
 
     return (
       <PageContent title={title}>
@@ -225,13 +179,6 @@ class BookDetails extends Component {
               onPress={this.onDeleteBookPress}
             />
 
-          </PageToolbarSection>
-          <PageToolbarSection alignContent={align.RIGHT}>
-            <PageToolbarButton
-              label={allExpanded ? 'Collapse All' : 'Expand All'}
-              iconName={expandIcon}
-              onPress={this.onExpandAllPress}
-            />
           </PageToolbarSection>
         </PageToolbar>
 
