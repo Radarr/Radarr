@@ -105,7 +105,7 @@ class QualityProfile extends Component {
                   <Label
                     key={item.quality.id}
                     kind={isCutoff ? kinds.INFO : kinds.default}
-                    title={isCutoff ? 'Upgrade until this quality is met or exceeded' : null}
+                    title={isCutoff ? translate('UpgradeUntilThisQualityIsMetOrExceeded') : null}
                   >
                     {item.quality.name}
                   </Label>
@@ -121,7 +121,7 @@ class QualityProfile extends Component {
                   anchor={
                     <Label
                       kind={isCutoff ? kinds.INFO : kinds.default}
-                      title={isCutoff ? 'Cutoff' : null}
+                      title={isCutoff ? translate('Cutoff') : null}
                     >
                       {item.name}
                     </Label>
@@ -134,7 +134,7 @@ class QualityProfile extends Component {
                             <Label
                               key={groupItem.quality.id}
                               kind={isCutoff ? kinds.INFO : kinds.default}
-                              title={isCutoff ? 'Cutoff' : null}
+                              title={isCutoff ? translate('Cutoff') : null}
                             >
                               {groupItem.quality.name}
                             </Label>
@@ -162,7 +162,7 @@ class QualityProfile extends Component {
           isOpen={this.state.isDeleteQualityProfileModalOpen}
           kind={kinds.DANGER}
           title={translate('DeleteQualityProfile')}
-          message={`Are you sure you want to delete the quality profile '${name}'?`}
+          message={translate('QualityProfileDeleteConfirm', [name])}
           confirmLabel={translate('Delete')}
           isSpinning={isDeleting}
           onConfirm={this.onConfirmDeleteQualityProfile}

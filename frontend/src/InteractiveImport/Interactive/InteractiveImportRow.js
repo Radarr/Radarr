@@ -173,7 +173,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           isDisabled={!allowMovieChange}
-          title={allowMovieChange ? 'Click to change movie' : undefined}
+          title={allowMovieChange ? translate('ClickToChangeMovie') : undefined}
           onPress={this.onSelectMoviePress}
         >
           {

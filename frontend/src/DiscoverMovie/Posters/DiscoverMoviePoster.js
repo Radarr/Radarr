@@ -126,7 +126,7 @@ class DiscoverMoviePoster extends Component {
             <IconButton
               className={styles.action}
               name={icons.REMOVE}
-              title={isExcluded ? 'Movie already Excluded' : 'Exclude Movie'}
+              title={isExcluded ? translate('MovieAlreadyExcluded') : translate('ExcludeMovie')}
               onPress={this.onExcludeMoviePress}
               isDisabled={isExcluded}
             />

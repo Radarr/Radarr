@@ -54,7 +54,7 @@ function UpdateSettings(props) {
         <FormInputGroup
           type={inputTypes.TEXT}
           name="branch"
-          helpText={usingExternalUpdateMechanism ? 'Branch used by external update mechanism' : 'Branch to use to update Radarr'}
+          helpText={usingExternalUpdateMechanism ? translate('BranchUpdateMechanism') : translate('BranchUpdate')}
           helpLink="https://github.com/Radarr/Radarr/wiki/Release-Branches"
           {...branch}
           onChange={onInputChange}

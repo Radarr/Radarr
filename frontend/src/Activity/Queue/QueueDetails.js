@@ -24,7 +24,7 @@ function QueueDetails(props) {
     return (
       <Icon
         name={icons.PENDING}
-        title={`Release will be processed ${moment(estimatedCompletionTime).fromNow()}`}
+        title={translate('ReleaseWillBeProcessedInterp', [moment(estimatedCompletionTime).fromNow()])}
       />
     );
   }
@@ -35,7 +35,7 @@ function QueueDetails(props) {
         <Icon
           name={icons.DOWNLOAD}
           kind={kinds.DANGER}
-          title={`Import failed: ${errorMessage}`}
+          title={translate('ImportFailedInterp', [errorMessage])}
         />
       );
     }
@@ -48,7 +48,7 @@ function QueueDetails(props) {
       <Icon
         name={icons.DOWNLOADING}
         kind={kinds.DANGER}
-        title={`Download failed: ${errorMessage}`}
+        title={translate('DownloadFailedInterp', [errorMessage])}
       />
     );
   }
@@ -77,7 +77,7 @@ function QueueDetails(props) {
     return (
       <Icon
         name={icons.DOWNLOADING}
-        title={`Movie is downloading - ${progress.toFixed(1)}% ${title}`}
+        title={translate('MovieIsDownloadingInterp', [progress.toFixed(1), title])}
       />
     );
   }

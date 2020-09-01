@@ -129,7 +129,7 @@ class MovieHistoryRow extends Component {
           isOpen={isMarkAsFailedModalOpen}
           kind={kinds.DANGER}
           title={translate('MarkAsFailed')}
-          message={`Are you sure you want to mark '${sourceTitle}' as failed?`}
+          message={translate('MarkAsFailedMessageText', [sourceTitle])}
           confirmLabel={translate('MarkAsFailed')}
           onConfirm={this.onConfirmMarkAsFailed}
           onCancel={this.onMarkAsFailedModalClose}

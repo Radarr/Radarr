@@ -36,7 +36,7 @@ function MovieFileStatus(props) {
           {...queueItem}
           progressBar={
             <ProgressBar
-              title={`Movie is downloading - ${progress.toFixed(1)}% ${queueItem.title}`}
+              title={translate('MovieIsDownloadingInterp', [progress.toFixed(1), queueItem.title])}
               progress={progress}
               kind={kinds.PURPLE}
               size={sizes.MEDIUM}

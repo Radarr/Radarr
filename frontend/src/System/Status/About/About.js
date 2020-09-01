@@ -73,7 +73,7 @@ class About extends Component {
           }
 
           <DescriptionListItem
-            title={translate('DBMigration')}
+            title={translate('DbMigration')}
             data={migrationVersion}
           />
 

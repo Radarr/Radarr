@@ -219,7 +219,7 @@ class DiscoverMovieFooter extends Component {
         <div className={styles.buttonContainer}>
           <div className={styles.buttonContainerContent}>
             <DiscoverMovieFooterLabel
-              label={`${selectedCount} Movie(s) Selected`}
+              label={translate('MoviesSelectedInterp', [selectedCount])}
               isSaving={false}
             />
 

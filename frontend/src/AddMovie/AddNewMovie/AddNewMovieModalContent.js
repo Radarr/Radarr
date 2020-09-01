@@ -109,7 +109,7 @@ class AddNewMovieModalContent extends Component {
                       movieFolder: folder,
                       isWindows
                     }}
-                    helpText={`'${folder}' subfolder will be created automatically`}
+                    helpText={translate('SubfolderWillBeCreatedAutomaticallyInterp', [folder])}
                     onChange={onInputChange}
                     {...rootFolderPath}
                   />

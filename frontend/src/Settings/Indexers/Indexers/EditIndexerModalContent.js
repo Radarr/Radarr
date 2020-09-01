@@ -83,7 +83,7 @@ function EditIndexerModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enableRss"
-                  helpTextWarning={supportsRss.value ? undefined : 'RSS is not supported with this indexer'}
+                  helpTextWarning={supportsRss.value ? undefined : translate('RSSIsNotSupportedWithThisIndexer')}
                   isDisabled={!supportsRss.value}
                   {...enableRss}
                   onChange={onInputChange}
@@ -96,8 +96,8 @@ function EditIndexerModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enableAutomaticSearch"
-                  helpText={supportsSearch.value ? 'Will be used when automatic searches are performed via the UI or by Radarr' : undefined}
-                  helpTextWarning={supportsSearch.value ? undefined : 'Search is not supported with this indexer'}
+                  helpText={supportsSearch.value ? translate('EnableAutomaticSearchHelpText') : undefined}
+                  helpTextWarning={supportsSearch.value ? undefined : translate('EnableAutomaticSearchHelpTextWarning')}
                   isDisabled={!supportsSearch.value}
                   {...enableAutomaticSearch}
                   onChange={onInputChange}
@@ -110,8 +110,8 @@ function EditIndexerModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enableInteractiveSearch"
-                  helpText={supportsSearch.value ? 'Will be used when interactive search is used' : undefined}
-                  helpTextWarning={supportsSearch.value ? undefined : 'Search is not supported with this indexer'}
+                  helpText={supportsSearch.value ? translate('EnableInteractiveSearchHelpText') : undefined}
+                  helpTextWarning={supportsSearch.value ? undefined : translate('EnableInteractiveSearchHelpTextWarning')}
                   isDisabled={!supportsSearch.value}
                   {...enableInteractiveSearch}
                   onChange={onInputChange}

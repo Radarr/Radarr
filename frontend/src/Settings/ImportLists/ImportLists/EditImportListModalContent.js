@@ -121,12 +121,12 @@ function EditImportListModalContent(props) {
               {
                 shouldMonitor &&
                   <FormGroup>
-                    <FormLabel>Search on Add</FormLabel>
+                    <FormLabel>{translate('SearchOnAdd')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="searchOnAdd"
-                      helpText="Search for movies on this list when added to Radarr"
+                      helpText={translate('SearchOnAddHelpText')}
                       {...searchOnAdd}
                       onChange={onInputChange}
                     />

@@ -105,7 +105,7 @@ class DownloadClient extends Component {
           isOpen={this.state.isDeleteDownloadClientModalOpen}
           kind={kinds.DANGER}
           title={translate('DeleteDownloadClient')}
-          message={`Are you sure you want to delete the download client '${name}'?`}
+          message={translate('DeleteDownloadClientMessageText', [name])}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteDownloadClient}
           onCancel={this.onDeleteDownloadClientModalClose}

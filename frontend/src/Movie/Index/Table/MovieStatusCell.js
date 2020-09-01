@@ -4,6 +4,7 @@ import Icon from 'Components/Icon';
 import VirtualTableRowCell from 'Components/Table/Cells/TableRowCell';
 import { icons } from 'Helpers/Props';
 import { getMovieStatusDetails } from 'Movie/MovieStatus';
+import translate from 'Utilities/String/translate';
 import styles from './MovieStatusCell.css';
 
 function MovieStatusCell(props) {
@@ -25,7 +26,7 @@ function MovieStatusCell(props) {
       <Icon
         className={styles.statusIcon}
         name={monitored ? icons.MONITORED : icons.UNMONITORED}
-        title={monitored ? 'Movie is monitored' : 'Movie is unmonitored'}
+        title={monitored ? translate('MovieIsMonitored') : translate('MovieIsUnmonitored')}
       />
 
       <Icon

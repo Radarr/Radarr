@@ -22,7 +22,18 @@ function getTranslations() {
 
 const translations = getTranslations();
 
-export default function translate(key) {
+export default function translate(key, args = '') {
+  if (args) {
+    const translatedKey = translate(key);
+    return translatedKey.replace(/(\{\{\d\}\}|\{\d\})/g, (translatedKeyDbl) => {
+      if (translatedKeyDbl.substring(0, 2) === '{{') {
+        return translatedKeyDbl;
+      }
+      const match = parseInt(translatedKey.match(/\d/)[0]);
+      return args[match];
+    });
+  }
+
   const formatedKey = key.charAt(0).toLowerCase() + key.slice(1);
   return translations[formatedKey] || key;
 }
