@@ -132,12 +132,12 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
         <ModalBody>
           <Form>
             <FormGroup>
-              <FormLabel>Include Radarr Recommendations</FormLabel>
+              <FormLabel>{translate('IncludeRadarrRecommendations')}</FormLabel>
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="includeRecommendations"
                 value={includeRecommendations}
-                helpText="Include Radarr recommended movies in discovery view"
+                helpText={translate('IncludeRecommendationsHelpText')}
                 onChange={this.onChangeOption}
               />
             </FormGroup>
@@ -155,7 +155,7 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Genres</FormLabel>
+              <FormLabel>{translate('ShowGenres')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -177,7 +177,7 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Year</FormLabel>
+              <FormLabel>{translate('ShowYear')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -188,7 +188,7 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Ratings</FormLabel>
+              <FormLabel>{translate('ShowRatings')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
@@ -199,7 +199,7 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show Certification</FormLabel>
+              <FormLabel>{translate('ShowCertification')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}

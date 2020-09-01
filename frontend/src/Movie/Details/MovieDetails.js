@@ -380,7 +380,7 @@ class MovieDetails extends Component {
                         className={styles.movieNavigationButton}
                         name={icons.ARROW_LEFT}
                         size={30}
-                        title={`Go to ${previousMovie.title}`}
+                        title={translate('GoToInterp', [previousMovie.title])}
                         to={`/movie/${previousMovie.titleSlug}`}
                       />
 
@@ -388,7 +388,7 @@ class MovieDetails extends Component {
                         className={styles.movieNavigationButton}
                         name={icons.ARROW_RIGHT}
                         size={30}
-                        title={`Go to ${nextMovie.title}`}
+                        title={translate('GoToInterp', [nextMovie.title])}
                         to={`/movie/${nextMovie.titleSlug}`}
                       />
                     </div>

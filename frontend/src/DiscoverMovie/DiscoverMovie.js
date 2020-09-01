@@ -286,7 +286,7 @@ class DiscoverMovie extends Component {
               onPress={this.onImportListSyncPress}
             />
             <PageToolbarButton
-              label={allSelected ? 'Unselect All' : 'Select All'}
+              label={allSelected ? translate('UnselectAll') : translate('SelectAll')}
               iconName={icons.CHECK_SQUARE}
               isDisabled={hasNoMovie}
               onPress={this.onSelectAllPress}

@@ -32,7 +32,7 @@ function LoggingSettings(props) {
           type={inputTypes.SELECT}
           name="logLevel"
           values={logLevelOptions}
-          helpTextWarning={logLevel.value === 'trace' ? 'Trace logging should only be enabled temporarily' : undefined}
+          helpTextWarning={logLevel.value === 'trace' ? translate('LogLevelTraceHelpTextWarning') : undefined}
           onChange={onInputChange}
           {...logLevel}
         />

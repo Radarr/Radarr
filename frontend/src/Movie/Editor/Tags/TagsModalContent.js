@@ -121,7 +121,7 @@ class TagsModalContent extends Component {
                     return (
                       <Label
                         key={tag.id}
-                        title={removeTag ? 'Removing tag' : 'Existing tag'}
+                        title={removeTag ? translate('RemovingTag') : translate('ExistingTag')}
                         kind={removeTag ? kinds.INVERSE : kinds.INFO}
                         size={sizes.LARGE}
                       >
@@ -147,7 +147,7 @@ class TagsModalContent extends Component {
                         return (
                           <Label
                             key={tag.id}
-                            title={'Adding tag'}
+                            title={translate('AddingTag')}
                             kind={kinds.SUCCESS}
                             size={sizes.LARGE}
                           >

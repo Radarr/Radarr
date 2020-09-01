@@ -16,7 +16,7 @@ function AdvancedSettingsButton(props) {
   return (
     <Link
       className={styles.button}
-      title={advancedSettings ? 'Shown, click to hide' : 'Hidden, click to show'}
+      title={advancedSettings ? translate('ShownClickToHide') : translate('HiddenClickToShow')}
       onPress={onAdvancedSettingsPress}
     >
       <Icon

@@ -4,6 +4,7 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import { inputTypes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 class DiscoverMovieTableOptions extends Component {
 
@@ -51,13 +52,13 @@ class DiscoverMovieTableOptions extends Component {
 
     return (
       <FormGroup>
-        <FormLabel>Include Radarr Recommendations</FormLabel>
+        <FormLabel>{translate('IncludeRadarrRecommendations')}</FormLabel>
 
         <FormInputGroup
           type={inputTypes.CHECK}
           name="includeRecommendations"
           value={includeRecommendations}
-          helpText="Include Radarr recommended movies in discovery view"
+          helpText={translate('IncludeRecommendationsHelpText')}
           onChange={this.onChangeOption}
         />
       </FormGroup>

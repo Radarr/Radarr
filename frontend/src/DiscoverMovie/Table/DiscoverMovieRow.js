@@ -142,7 +142,7 @@ class DiscoverMovieRow extends Component {
                       <Icon
                         className={styles.alreadyExistsIcon}
                         name={icons.CHECK_CIRCLE}
-                        title={'Already in your Library'}
+                        title={translate('AlreadyInYourLibrary')}
                       /> : null
                   }
 
@@ -151,7 +151,7 @@ class DiscoverMovieRow extends Component {
                       <Icon
                         className={styles.exclusionIcon}
                         name={icons.DANGER}
-                        title={'Movie Excluded From Automatic Add'}
+                        title={translate('MovieExcludedFromAutomaticAdd')}
                       /> : null
                   }
                 </VirtualTableRowCell>
@@ -322,7 +322,7 @@ class DiscoverMovieRow extends Component {
 
                   <IconButton
                     name={icons.REMOVE}
-                    title={isExcluded ? 'Movie already Excluded' : 'Exclude Movie'}
+                    title={isExcluded ? translate('MovieAlreadyExcluded') : translate('ExcludeMovie')}
                     onPress={this.onExcludeMoviePress}
                     isDisabled={isExcluded}
                   />

@@ -115,7 +115,7 @@ function HostSettings(props) {
             advancedSettings={advancedSettings}
             isAdvanced={true}
           >
-            <FormLabel>{translate('SSLCertPath')}</FormLabel>
+            <FormLabel>{translate('SslCertPath')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.TEXT}

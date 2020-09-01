@@ -93,7 +93,7 @@ function EditSpecificationModalContent(props) {
               type={inputTypes.CHECK}
               name="negate"
               {...negate}
-              helpText={`If checked, the custom format will not apply if this ${implementationName} condition matches.`}
+              helpText={translate('NegateHelpText', [implementationName])}
               onChange={onInputChange}
             />
           </FormGroup>
@@ -107,7 +107,7 @@ function EditSpecificationModalContent(props) {
               type={inputTypes.CHECK}
               name="required"
               {...required}
-              helpText={`This ${implementationName} condition must match for the custom format to apply.  Otherwise a single ${implementationName} match is sufficient.`}
+              helpText={translate('RequiredHelpText', [implementationName, implementationName])}
               onChange={onInputChange}
             />
           </FormGroup>

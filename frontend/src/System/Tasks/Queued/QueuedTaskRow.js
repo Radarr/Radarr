@@ -236,7 +236,7 @@ class QueuedTaskRow extends Component {
           isOpen={isCancelConfirmModalOpen}
           kind={kinds.DANGER}
           title={translate('Cancel')}
-          message={'Are you sure you want to cancel this pending task?'}
+          message={translate('CancelPendingTask')}
           confirmLabel={translate('YesCancel')}
           cancelLabel={translate('NoLeaveIt')}
           onConfirm={onCancelPress}

@@ -104,13 +104,13 @@ class DiscoverMoviePosterOptionsModalContent extends Component {
         <ModalBody>
           <Form>
             <FormGroup>
-              <FormLabel>Include Radarr Recommendations</FormLabel>
+              <FormLabel>{translate('IncludeRadarrRecommendations')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="includeRecommendations"
                 value={includeRecommendations}
-                helpText="Include Radarr recommended movies in discovery view"
+                helpText={translate('IncludeRecommendationsHelpText')}
                 onChange={this.onChangeOption}
               />
             </FormGroup>

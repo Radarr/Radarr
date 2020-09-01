@@ -267,7 +267,7 @@ class InteractiveSearchRow extends Component {
           isOpen={this.state.isConfirmGrabModalOpen}
           kind={kinds.WARNING}
           title={translate('GrabRelease')}
-          message={`Radarr was unable to determine which movie this release was for. Radarr may be unable to automatically import this release. Do you want to grab '${title}'?`}
+          message={translate('GrabReleaseMessageText', [title])}
           confirmLabel={translate('Grab')}
           onConfirm={this.onGrabConfirm}
           onCancel={this.onGrabCancel}

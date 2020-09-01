@@ -136,7 +136,7 @@ class Indexer extends Component {
           isOpen={this.state.isDeleteIndexerModalOpen}
           kind={kinds.DANGER}
           title={translate('DeleteIndexer')}
-          message={`Are you sure you want to delete the indexer '${name}'?`}
+          message={translate('DeleteIndexerMessageText', [name])}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteIndexer}
           onCancel={this.onDeleteIndexerModalClose}

@@ -156,7 +156,7 @@ class DiscoverMovieOverview extends Component {
                       className={styles.alreadyExistsIcon}
                       name={icons.CHECK_CIRCLE}
                       size={30}
-                      title={'Already in your Library'}
+                      title={translate('AlreadyInYourLibrary')}
                     /> : null
                 }
                 {
@@ -192,7 +192,7 @@ class DiscoverMovieOverview extends Component {
 
                 <IconButton
                   name={icons.REMOVE}
-                  title={isExcluded ? 'Movie already Excluded' : 'Exclude Movie'}
+                  title={isExcluded ? translate('MovieAlreadyExcluded') : translate('ExcludeMovie')}
                   onPress={this.onExcludeMoviePress}
                   isDisabled={isExcluded}
                 />
