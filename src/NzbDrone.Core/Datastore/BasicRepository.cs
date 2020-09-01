@@ -407,6 +407,11 @@ namespace NzbDrone.Core.Datastore
         {
             AddFilters(builder, pagingSpec);
 
+            if (pagingSpec.SortKey == null)
+            {
+                pagingSpec.SortKey = $"{_table}.{_keyProperty.Name}";
+            }
+
             var sortDirection = pagingSpec.SortDirection == SortDirection.Descending ? "DESC" : "ASC";
             var pagingOffset = (pagingSpec.Page - 1) * pagingSpec.PageSize;
             builder.OrderBy($"{pagingSpec.SortKey} {sortDirection} LIMIT {pagingSpec.PageSize} OFFSET {pagingOffset}");
