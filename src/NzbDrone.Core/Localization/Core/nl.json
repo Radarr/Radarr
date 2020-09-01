@@ -502,5 +502,7 @@
     "MinimumAgeHelpText": "Enkel Usenet: Minimale leeftijd in minuten voor NZB bestanden alvorens ze worden opgehaald. Gebruik dit om nieuwe uitgaves de tijd te geven om tot bij uw Usenet provider toe te komen.",
     "LanguageHelpText": "Taal voor Uitgaves",
     "IndexerSettings": "Indexeerder Instellingen",
-    "IndexerFlags": "Indexeerder Flags"
+    "IndexerFlags": "Indexeerder Flags",
+    "IncludeCustomFormatWhenRenamingHelpText": "Voeg toe in het {Custom Formats} hernoem formaat",
+    "EnableSslHelpText": " Vereist herstart als administrator om in gang te treden"
 }
