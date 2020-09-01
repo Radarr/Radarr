@@ -504,5 +504,5 @@
     "IndexerSettings": "Indexeerder Instellingen",
     "IndexerFlags": "Indexeerder Flags",
     "IncludeCustomFormatWhenRenamingHelpText": "Voeg toe in het {Custom Formats} hernoem formaat",
-    "EnableSslHelpText": " Vereist herstart als administrator om in gang te treden"
+    "EnableSslHelpText": " Vereist herstart als administrator om in werking te treden"
 }
