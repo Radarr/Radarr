@@ -202,8 +202,6 @@ namespace NzbDrone.Common.Http.Dispatchers
                     case "If-Modified-Since":
                         webRequest.IfModifiedSince = HttpHeader.ParseDateTime(header.Value);
                         break;
-                    case "Range":
-                        throw new NotImplementedException();
                     case "Referer":
                         webRequest.Referer = header.Value;
                         break;

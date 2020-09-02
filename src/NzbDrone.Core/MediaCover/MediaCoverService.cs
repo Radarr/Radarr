@@ -29,8 +29,7 @@ namespace NzbDrone.Core.MediaCover
         IHandleAsync<BookDeletedEvent>,
         IMapCoversToLocal
     {
-        private const double HTTP_RATE_LIMIT = 0;
-        private const string USER_AGENT = "Dalvik/2.1.0 (Linux; U; Android 10; Mi A2 Build/QKQ1.190910.002)";
+        private const string USER_AGENT = "Dalvik/2.1.0 (Linux; U; Android 10; SM-G975U Build/QP1A.190711.020)";
 
         private readonly IImageResizer _resizer;
         private readonly IBookService _bookService;
@@ -127,11 +126,13 @@ namespace NzbDrone.Core.MediaCover
 
                 try
                 {
-                    alreadyExists = _coverExistsSpecification.AlreadyExists(null, null, fileName);
+                    var serverFileHeaders = GetServerHeaders(cover.Url);
+
+                    alreadyExists = _coverExistsSpecification.AlreadyExists(serverFileHeaders.LastModified, GetContentLength(serverFileHeaders), fileName);
 
                     if (!alreadyExists)
                     {
-                        DownloadCover(author, cover, DateTime.Now);
+                        DownloadCover(author, cover, serverFileHeaders.LastModified ?? DateTime.Now);
                     }
                 }
                 catch (WebException e)
@@ -169,11 +170,13 @@ namespace NzbDrone.Core.MediaCover
                 var alreadyExists = false;
                 try
                 {
-                    alreadyExists = _coverExistsSpecification.AlreadyExists(null, null, fileName);
+                    var serverFileHeaders = GetServerHeaders(cover.Url);
+
+                    alreadyExists = _coverExistsSpecification.AlreadyExists(serverFileHeaders.LastModified, GetContentLength(serverFileHeaders), fileName);
 
                     if (!alreadyExists)
                     {
-                        DownloadAlbumCover(book, cover, DateTime.Now);
+                        DownloadAlbumCover(book, cover, serverFileHeaders.LastModified ?? DateTime.Now);
                     }
                 }
                 catch (WebException e)
@@ -267,6 +270,38 @@ namespace NzbDrone.Core.MediaCover
                 case MediaCoverTypes.Screenshot:
                     return new[] { 360, 180 };
             }
+        }
+
+        private HttpHeader GetServerHeaders(string url)
+        {
+            // Goodreads doesn't allow a HEAD, so request a zero byte range instead
+            var request = new HttpRequest(url)
+            {
+                AllowAutoRedirect = true,
+            };
+
+            request.Headers.Add("Range", "bytes=0-0");
+            request.Headers.Add("User-Agent", USER_AGENT);
+
+            return _httpClient.Get(request).Headers;
+        }
+
+        private long? GetContentLength(HttpHeader headers)
+        {
+            var range = headers.Get("content-range");
+
+            if (range == null)
+            {
+                return null;
+            }
+
+            var split = range.Split('/');
+            if (split.Length == 2 && long.TryParse(split[1], out long length))
+            {
+                return length;
+            }
+
+            return null;
         }
 
         public void HandleAsync(AuthorRefreshCompleteEvent message)

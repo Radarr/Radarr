@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                 .Build();
 
             _httpResponse = new HttpResponse(null, new HttpHeader(), "");
-            Mocker.GetMock<IHttpClient>().Setup(c => c.Head(It.IsAny<HttpRequest>())).Returns(_httpResponse);
+            Mocker.GetMock<IHttpClient>().Setup(c => c.Get(It.IsAny<HttpRequest>())).Returns(_httpResponse);
         }
 
         [TestCase(".png")]
