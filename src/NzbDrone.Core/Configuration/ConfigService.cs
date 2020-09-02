@@ -160,9 +160,9 @@ namespace NzbDrone.Core.Configuration
 
         public bool CreateEmptyAuthorFolders
         {
-            get { return GetValueBoolean("CreateEmptyArtistFolders", false); }
+            get { return GetValueBoolean("CreateEmptyAuthorFolders", false); }
 
-            set { SetValue("CreateEmptyArtistFolders", value); }
+            set { SetValue("CreateEmptyAuthorFolders", value); }
         }
 
         public bool DeleteEmptyFolders
