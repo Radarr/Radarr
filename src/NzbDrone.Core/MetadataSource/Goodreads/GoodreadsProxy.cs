@@ -73,7 +73,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             return null;
         }
 
-        public Author GetAuthorInfo(string foreignAuthorId)
+        public Author GetAuthorInfo(string foreignAuthorId, bool useCache = true)
         {
             _logger.Debug("Getting Author details GoodreadsId of {0}", foreignAuthorId);
 
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _cachedHttpClient.Get(httpRequest, TimeSpan.FromDays(30));
+            var httpResponse = _cachedHttpClient.Get(httpRequest, useCache, TimeSpan.FromDays(30));
 
             if (httpResponse.HasHttpError)
             {
@@ -217,7 +217,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _cachedHttpClient.Get(httpRequest, TimeSpan.FromDays(7));
+            var httpResponse = _cachedHttpClient.Get(httpRequest, true, TimeSpan.FromDays(7));
 
             if (httpResponse.HasHttpError)
             {
@@ -249,7 +249,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _cachedHttpClient.Get(httpRequest, TimeSpan.FromDays(90));
+            var httpResponse = _cachedHttpClient.Get(httpRequest, true, TimeSpan.FromDays(90));
 
             if (httpResponse.HasHttpError)
             {
@@ -311,7 +311,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             return null;
         }
 
-        public Tuple<string, Book, List<AuthorMetadata>> GetBookInfo(string foreignEditionId)
+        public Tuple<string, Book, List<AuthorMetadata>> GetBookInfo(string foreignEditionId, bool useCache = true)
         {
             _logger.Debug("Getting Book with GoodreadsId of {0}", foreignEditionId);
 
@@ -323,7 +323,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             httpRequest.AllowAutoRedirect = true;
             httpRequest.SuppressHttpError = true;
 
-            var httpResponse = _cachedHttpClient.Get(httpRequest, TimeSpan.FromDays(90));
+            var httpResponse = _cachedHttpClient.Get(httpRequest, useCache, TimeSpan.FromDays(90));
 
             if (httpResponse.HasHttpError)
             {

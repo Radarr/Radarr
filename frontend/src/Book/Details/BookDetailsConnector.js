@@ -70,6 +70,12 @@ function createMapStateToProps() {
         isSearchingCommand.body.bookIds.indexOf(book.id) > -1
       );
 
+      const isRefreshingCommand = findCommand(commands, { name: commandNames.REFRESH_BOOK });
+      const isRefreshing = (
+        isCommandExecuting(isRefreshingCommand) &&
+        isRefreshingCommand.body.bookId === book.id
+      );
+
       const isFetching = isBookFilesFetching;
       const isPopulated = isBookFilesPopulated;
 
@@ -77,6 +83,7 @@ function createMapStateToProps() {
         ...book,
         shortDateFormat: uiSettings.shortDateFormat,
         author,
+        isRefreshing,
         isSearching,
         isFetching,
         isPopulated,
@@ -147,6 +154,13 @@ class BookDetailsConnector extends Component {
     });
   }
 
+  onRefreshPress = () => {
+    this.props.executeCommand({
+      name: commandNames.REFRESH_BOOK,
+      bookId: this.props.id
+    });
+  }
+
   onSearchPress = () => {
     this.props.executeCommand({
       name: commandNames.BOOK_SEARCH,
@@ -162,6 +176,7 @@ class BookDetailsConnector extends Component {
       <BookDetails
         {...this.props}
         onMonitorTogglePress={this.onMonitorTogglePress}
+        onRefreshPress={this.onRefreshPress}
         onSearchPress={this.onSearchPress}
       />
     );

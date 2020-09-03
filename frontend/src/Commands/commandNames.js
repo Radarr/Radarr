@@ -12,6 +12,7 @@ export const INTERACTIVE_IMPORT = 'ManualImport';
 export const MISSING_BOOK_SEARCH = 'MissingBookSearch';
 export const MOVE_AUTHOR = 'MoveAuthor';
 export const REFRESH_AUTHOR = 'RefreshAuthor';
+export const REFRESH_BOOK = 'RefreshBook';
 export const RENAME_FILES = 'RenameFiles';
 export const RENAME_AUTHOR = 'RenameAuthor';
 export const RESCAN_FOLDERS = 'RescanFolders';

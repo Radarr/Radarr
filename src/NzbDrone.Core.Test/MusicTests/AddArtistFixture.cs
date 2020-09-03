@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.MusicTests
         private void GivenValidArtist(string readarrId)
         {
             Mocker.GetMock<IProvideAuthorInfo>()
-                .Setup(s => s.GetAuthorInfo(readarrId))
+                .Setup(s => s.GetAuthorInfo(readarrId, true))
                 .Returns(_fakeArtist);
         }
 
@@ -113,7 +113,7 @@ namespace NzbDrone.Core.Test.MusicTests
             };
 
             Mocker.GetMock<IProvideAuthorInfo>()
-                  .Setup(s => s.GetAuthorInfo(newArtist.ForeignAuthorId))
+                  .Setup(s => s.GetAuthorInfo(newArtist.ForeignAuthorId, true))
                   .Throws(new AuthorNotFoundException(newArtist.ForeignAuthorId));
 
             Mocker.GetMock<IAddAuthorValidator>()

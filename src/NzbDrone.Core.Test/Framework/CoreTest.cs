@@ -32,8 +32,8 @@ namespace NzbDrone.Core.Test.Framework
 
             var httpClient = Mocker.Resolve<IHttpClient>();
             Mocker.GetMock<ICachedHttpResponseService>()
-                .Setup(x => x.Get(It.IsAny<HttpRequest>(), It.IsAny<TimeSpan>()))
-                .Returns((HttpRequest request, TimeSpan ttl) => httpClient.Get(request));
+                .Setup(x => x.Get(It.IsAny<HttpRequest>(), It.IsAny<bool>(), It.IsAny<TimeSpan>()))
+                .Returns((HttpRequest request, bool useCavhe, TimeSpan ttl) => httpClient.Get(request));
         }
     }
 

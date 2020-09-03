@@ -117,6 +117,7 @@ class BookDetails extends Component {
       images,
       links,
       isSaving,
+      isRefreshing,
       isFetching,
       isPopulated,
       bookFilesError,
@@ -127,6 +128,7 @@ class BookDetails extends Component {
       nextBook,
       isSearching,
       onMonitorTogglePress,
+      onRefreshPress,
       onSearchPress
     } = this.props;
 
@@ -142,6 +144,15 @@ class BookDetails extends Component {
       <PageContent title={title}>
         <PageToolbar>
           <PageToolbarSection>
+            <PageToolbarButton
+              label="Refresh"
+              iconName={icons.REFRESH}
+              spinningName={icons.REFRESH}
+              title="Refresh information"
+              isSpinning={isRefreshing}
+              onPress={onRefreshPress}
+            />
+
             <PageToolbarButton
               label="Search Book"
               iconName={icons.SEARCH}
@@ -473,6 +484,7 @@ BookDetails.propTypes = {
   monitored: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   isSaving: PropTypes.bool.isRequired,
+  isRefreshing: PropTypes.bool,
   isSearching: PropTypes.bool,
   isFetching: PropTypes.bool,
   isPopulated: PropTypes.bool,

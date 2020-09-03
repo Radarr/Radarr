@@ -5,10 +5,13 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Books.Commands;
 using NzbDrone.Core.Books.Events;
+using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
 
@@ -20,12 +23,15 @@ namespace NzbDrone.Core.Books
         bool RefreshBookInfo(List<Book> books, List<Book> remoteBooks, Author remoteData, bool forceBookRefresh, bool forceUpdateFileTags, DateTime? lastUpdate);
     }
 
-    public class RefreshBookService : RefreshEntityServiceBase<Book, Edition>, IRefreshBookService
+    public class RefreshBookService : RefreshEntityServiceBase<Book, Edition>,
+        IRefreshBookService,
+        IExecute<RefreshBookCommand>
     {
         private readonly IBookService _bookService;
         private readonly IAuthorService _authorService;
         private readonly IAddAuthorService _addAuthorService;
         private readonly IEditionService _editionService;
+        private readonly IProvideAuthorInfo _authorInfo;
         private readonly IProvideBookInfo _bookInfo;
         private readonly IRefreshEditionService _refreshEditionService;
         private readonly IMediaFileService _mediaFileService;
@@ -40,6 +46,7 @@ namespace NzbDrone.Core.Books
                                   IAddAuthorService addAuthorService,
                                   IEditionService editionService,
                                   IAuthorMetadataService authorMetadataService,
+                                  IProvideAuthorInfo authorInfo,
                                   IProvideBookInfo bookInfo,
                                   IRefreshEditionService refreshEditionService,
                                   IMediaFileService mediaFileService,
@@ -54,6 +61,7 @@ namespace NzbDrone.Core.Books
             _authorService = authorService;
             _addAuthorService = addAuthorService;
             _editionService = editionService;
+            _authorInfo = authorInfo;
             _bookInfo = bookInfo;
             _refreshEditionService = refreshEditionService;
             _mediaFileService = mediaFileService;
@@ -62,6 +70,32 @@ namespace NzbDrone.Core.Books
             _checkIfBookShouldBeRefreshed = checkIfBookShouldBeRefreshed;
             _mediaCoverService = mediaCoverService;
             _logger = logger;
+        }
+
+        private Author GetSkyhookData(Book book)
+        {
+            var foreignId = book.Editions.Value.First().ForeignEditionId;
+
+            try
+            {
+                var tuple = _bookInfo.GetBookInfo(foreignId, false);
+                var author = _authorInfo.GetAuthorInfo(tuple.Item1, false);
+                var newbook = tuple.Item2;
+
+                newbook.Author = author;
+                newbook.AuthorMetadata = author.Metadata.Value;
+                newbook.AuthorMetadataId = book.AuthorMetadataId;
+                newbook.AuthorMetadata.Value.Id = book.AuthorMetadataId;
+
+                author.Books = new List<Book> { newbook };
+                return author;
+            }
+            catch (BookNotFoundException)
+            {
+                _logger.Error($"Could not find book with id {foreignId}");
+            }
+
+            return null;
         }
 
         protected override RemoteData GetRemoteData(Book local, List<Book> remote, Author data)
@@ -325,6 +359,23 @@ namespace NzbDrone.Core.Books
         public bool RefreshBookInfo(Book book, List<Book> remoteBooks, Author remoteData, bool forceUpdateFileTags)
         {
             return RefreshEntityInfo(book, remoteBooks, remoteData, true, forceUpdateFileTags, null);
+        }
+
+        public bool RefreshBookInfo(Book book)
+        {
+            var data = GetSkyhookData(book);
+
+            return RefreshBookInfo(book, data.Books, data, false);
+        }
+
+        public void Execute(RefreshBookCommand message)
+        {
+            if (message.BookId.HasValue)
+            {
+                var book = _bookService.GetBook(message.BookId.Value);
+
+                RefreshBookInfo(book);
+            }
         }
     }
 }

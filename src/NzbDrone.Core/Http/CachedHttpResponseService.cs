@@ -6,7 +6,7 @@ namespace NzbDrone.Core.Http
 {
     public interface ICachedHttpResponseService
     {
-        HttpResponse Get(HttpRequest request, TimeSpan ttl);
+        HttpResponse Get(HttpRequest request, bool useCache, TimeSpan ttl);
     }
 
     public class CachedHttpResponseService : ICachedHttpResponseService
@@ -21,11 +21,11 @@ namespace NzbDrone.Core.Http
             _httpClient = httpClient;
         }
 
-        public HttpResponse Get(HttpRequest request, TimeSpan ttl)
+        public HttpResponse Get(HttpRequest request, bool useCache, TimeSpan ttl)
         {
             var cached = _repo.FindByUrl(request.Url.ToString());
 
-            if (cached != null && cached.Expiry > DateTime.UtcNow)
+            if (useCache && cached != null && cached.Expiry > DateTime.UtcNow)
             {
                 return new HttpResponse(request, new HttpHeader(), cached.Value, (HttpStatusCode)cached.StatusCode);
             }
