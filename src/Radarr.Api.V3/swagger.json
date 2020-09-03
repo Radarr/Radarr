@@ -2,7 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Radarr",
-    "version": "3.0.0"
+    "version": "3.0.0",
+    "description": "The way users should interact with Radarr programatically. To utilize any of these endpoints you will need a few pieces of information:\n\nex: localhost:7878/api/v3/movies?apiKey={key_here}\n\n* url: localhost, 10.1.0.1, 192.168.1.1, etc\n* port: 7878 (unless you modify it)\n* apiKey: Located in Settings > General > Security"
   },
   "servers": [
     {
@@ -39,12 +40,12 @@
               "type": "integer"
             },
             "required": false,
-            "description": "TmdbId of the Movie to get"
+            "description": "TMDb id of the movie to get"
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful request",
             "content": {
               "application/json": {
                 "schema": {
@@ -59,13 +60,16 @@
           "400": {
             "description": "Invalid ID supplied"
           },
+          "401": {
+            "description": "Invalid API Key"
+          },
           "404": {
             "description": "Movie not found"
           }
         },
         "security": [
           {
-            "api_key": []
+            "api key": []
           }
         ]
       },
@@ -87,7 +91,7 @@
         },
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful request",
             "content": {
               "application/json": {
                 "schema": {
@@ -96,15 +100,19 @@
               }
             }
           },
+          "401": {
+            "description": "Invalid API Key"
+          },
           "405": {
             "description": "Validation exception"
           }
         },
         "security": [
           {
-            "api_key": []
+            "X-API-Key": []
           }
-        ]
+        ],
+        "description": "Adds a movie to the database"
       },
       "put": {
         "tags": [
@@ -130,7 +138,7 @@
               "type": "boolean"
             },
             "required": false,
-            "description": "Have radarr movie files when updating"
+            "description": "Have radarr move files when updating"
           }
         ],
         "responses": {
@@ -153,9 +161,10 @@
         },
         "security": [
           {
-            "api_key": []
+            "X-API-Key": []
           }
-        ]
+        ],
+        "description": "Updates a movie in the database"
       }
     },
     "/movie/{id}": {
@@ -179,7 +188,7 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful request",
             "content": {
               "application/json": {
                 "schema": {
@@ -191,13 +200,16 @@
           "400": {
             "description": "Invalid ID supplied"
           },
+          "401": {
+            "description": "Invalid API Key"
+          },
           "404": {
             "description": "Movie not found"
           }
         },
         "security": [
           {
-            "api_key": []
+            "api key": []
           }
         ]
       },
@@ -239,13 +251,16 @@
           "400": {
             "description": "Invalid ID supplied"
           },
+          "401": {
+            "description": "Invalid API Key"
+          },
           "404": {
             "description": "Movie not found"
           }
         },
         "security": [
           {
-            "api_key": []
+            "X-API-Key": []
           }
         ]
       }
@@ -260,7 +275,7 @@
         "operationId": "",
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful request",
             "content": {
               "application/json": {
                 "schema": {
@@ -268,11 +283,14 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid API Key"
           }
         },
         "security": [
           {
-            "api_key": []
+            "api key": []
           }
         ]
       },
@@ -298,7 +316,7 @@
         "operationId": "",
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful request",
             "content": {
               "application/json": {
                 "schema": {
@@ -309,11 +327,14 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid API Key"
           }
         },
         "security": [
           {
-            "api_key": []
+            "api key": []
           }
         ]
       },
@@ -329,7 +350,7 @@
         "operationId": "",
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful request",
             "content": {
               "application/json": {
                 "schema": {
@@ -337,11 +358,14 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid API Key"
           }
         },
         "security": [
           {
-            "api_key": []
+            "api key": []
           }
         ]
       },
@@ -350,16 +374,19 @@
           "Tag"
         ],
         "summary": "Delete tag by database id",
-        "description": "Delete a tag.",
+        "description": "Delete a tag",
         "operationId": "",
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "Successful request"
+          },
+          "401": {
+            "description": "Invalid API Key"
           }
         },
         "security": [
           {
-            "api_key": []
+            "X-API-Key": []
           }
         ]
       },
@@ -381,11 +408,11 @@
           "Tag"
         ],
         "summary": "Get all tags",
-        "description": "Get all tags in the database.",
+        "description": "Get all tags in the database",
         "operationId": "",
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "Successful request",
             "content": {
               "application/json": {
                 "schema": {
@@ -396,11 +423,14 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid API Key"
           }
         },
         "security": [
           {
-            "api_key": []
+            "api key": []
           }
         ]
       },
@@ -424,12 +454,15 @@
         },
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "Successful request"
+          },
+          "401": {
+            "description": "Invalid API Key"
           }
         },
         "security": [
           {
-            "api_key": []
+            "X-API-Key": []
           }
         ]
       },
@@ -453,16 +486,866 @@
         },
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "Successful request"
+          },
+          "401": {
+            "description": "Invalid API Key"
           }
         },
         "security": [
           {
-            "api_key": []
+            "X-API-Key": []
           }
         ]
       },
       "parameters": []
+    },
+    "/diskspace": {
+      "get": {
+        "summary": "Get diskspace information",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "freeSpace": {
+                      "type": "number",
+                      "description": "bytes"
+                    },
+                    "totalSpace": {
+                      "type": "number",
+                      "description": "bytes"
+                    }
+                  }
+                },
+                "examples": {
+                  "Response": {
+                    "value": [
+                      {
+                        "path": "D:\\",
+                        "label": "DrivePool",
+                        "freeSpace": 16187217043456,
+                        "totalSpace": 56009755148288
+                      },
+                      {
+                        "path": "C:\\",
+                        "label": "Windows",
+                        "freeSpace": 78659211264,
+                        "totalSpace": 239409819648
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-diskspace",
+        "description": "Query Radarr for disk usage information\n\nLocation: System > Status",
+        "security": [
+          {
+            "api key": []
+          }
+        ]
+      }
+    },
+    "/status": {
+      "get": {
+        "summary": "Get internal information",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string"
+                    },
+                    "buildTime": {
+                      "type": "string"
+                    },
+                    "isDebug": {
+                      "type": "boolean"
+                    },
+                    "isProduction": {
+                      "type": "boolean"
+                    },
+                    "isAdmin": {
+                      "type": "boolean"
+                    },
+                    "isUserInteractive": {
+                      "type": "boolean"
+                    },
+                    "startupPath": {
+                      "type": "string"
+                    },
+                    "appData": {
+                      "type": "string"
+                    },
+                    "osName": {
+                      "type": "string"
+                    },
+                    "osVersion": {
+                      "type": "string"
+                    },
+                    "isNetCore": {
+                      "type": "boolean"
+                    },
+                    "isMono": {
+                      "type": "boolean"
+                    },
+                    "isLinux": {
+                      "type": "boolean"
+                    },
+                    "isOsx": {
+                      "type": "boolean"
+                    },
+                    "isWindows": {
+                      "type": "boolean"
+                    },
+                    "isDocker": {
+                      "type": "boolean"
+                    },
+                    "mode": {
+                      "type": "string"
+                    },
+                    "branch": {
+                      "type": "string"
+                    },
+                    "authentication": {
+                      "type": "string"
+                    },
+                    "sqliteVersion": {
+                      "type": "string"
+                    },
+                    "migrationVersion": {
+                      "type": "integer"
+                    },
+                    "urlBase": {
+                      "type": "string"
+                    },
+                    "runtimeVersion": {
+                      "type": "string"
+                    },
+                    "runtimeName": {
+                      "type": "string"
+                    },
+                    "startTime": {
+                      "type": "string"
+                    },
+                    "packageUpdateMechanism": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Response": {
+                    "value": {
+                      "version": "10.0.0.34882",
+                      "buildTime": "2020-09-01T23:23:23.9621974Z",
+                      "isDebug": true,
+                      "isProduction": false,
+                      "isAdmin": false,
+                      "isUserInteractive": true,
+                      "startupPath": "C:\\ProgramData\\Radarr",
+                      "appData": "C:\\ProgramData\\Radarr",
+                      "osName": "Windows",
+                      "osVersion": "10.0.18363.0",
+                      "isNetCore": true,
+                      "isMono": false,
+                      "isLinux": false,
+                      "isOsx": false,
+                      "isWindows": true,
+                      "isDocker": false,
+                      "mode": "console",
+                      "branch": "aphrodite",
+                      "authentication": "none",
+                      "sqliteVersion": "3.32.1",
+                      "migrationVersion": 180,
+                      "urlBase": "",
+                      "runtimeVersion": "3.1.7",
+                      "runtimeName": "netCore",
+                      "startTime": "2020-09-01T23:50:20.2415965Z",
+                      "packageUpdateMechanism": "builtIn"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-status",
+        "security": [
+          {
+            "api key": []
+          }
+        ],
+        "description": "Find out information such as OS, version, paths used, etc",
+        "parameters": []
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Get Radarr health information",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "wikiUrl": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Response": {
+                    "value": [
+                      {
+                        "source": "ImportMechanismCheck",
+                        "type": "warning",
+                        "message": "Enable Completed Download Handling",
+                        "wikiUrl": "https://github.com/Radarr/Radarr/wiki/Health-checks#enable-completed-download-handling"
+                      },
+                      {
+                        "source": "DownloadClientCheck",
+                        "type": "error",
+                        "message": "Unable to communicate with qBittorrent. Failed to connect to qBittorrent, check your settings.",
+                        "wikiUrl": "https://github.com/Radarr/Radarr/wiki/Health-checks#unable-to-communicate-with-download-client"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-health",
+        "security": [
+          {
+            "api key": []
+          }
+        ],
+        "description": "Query radarr for health information\n\nLocation: System > Status"
+      }
+    },
+    "/command": {
+      "post": {
+        "summary": "command",
+        "operationId": "post-command",
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "201": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": {
+                      "name": "Backup"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "description": "Pushes commands to Radarr",
+        "security": [
+          {
+            "X-API-Key": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "array"
+            },
+            "in": "query",
+            "name": "name:Backup",
+            "description": "Trigger a backup to be created"
+          }
+        ]
+      }
+    },
+    "/update": {
+      "get": {
+        "summary": "List of recent updates",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "string"
+                    },
+                    "branch": {
+                      "type": "string"
+                    },
+                    "releaseDate": {
+                      "type": "string"
+                    },
+                    "fileName": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    },
+                    "installed": {
+                      "type": "boolean"
+                    },
+                    "installable": {
+                      "type": "boolean"
+                    },
+                    "latest": {
+                      "type": "boolean"
+                    },
+                    "changes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "new": {
+                            "type": "object"
+                          },
+                          "fixed": {
+                            "type": "object"
+                          }
+                        }
+                      }
+                    },
+                    "hash": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": {
+                      "version": "3.0.0.3553",
+                      "branch": "aphrodite",
+                      "releaseDate": "2020-09-02T05:36:13.047313Z",
+                      "fileName": "Radarr.aphrodite.3.0.0.3553.windows-core-x64.zip",
+                      "url": "https://dev.azure.com/Radarr/Radarr/_apis/build/builds/1896/artifacts?artifactName=Packages&fileId=A710686A9CB6848E73C3DDCA5F2B0D83C6189546E66DD3EF2D0D30B20735F6E802&fileName=Radarr.aphrodite.3.0.0.3553.windows-core-x64.zip&api-version=5.1",
+                      "installed": false,
+                      "installable": false,
+                      "latest": false,
+                      "changes": {
+                        "new": [],
+                        "fixed": [
+                          "Importing completed downloads from NZBGet with post processing script failing",
+                          "Importing of completed download when not a child of the download client output path",
+                          "Getting parent of UNC paths"
+                        ]
+                      },
+                      "hash": "a95c855cbc3ee253fd0b74181e866106daffc7b71b4a9e2d57cfbeede4333aee"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-update",
+        "description": "Will return a list of recent updates to Radarr\n\nLocation: System > Updates",
+        "security": [
+          {
+            "api key": []
+          }
+        ]
+      }
+    },
+    "/qualityProfile": {
+      "get": {
+        "summary": "Get quality profiles",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "upgradeAllowed": {
+                      "type": "boolean"
+                    },
+                    "cutoff": {
+                      "type": "integer"
+                    },
+                    "preferredTags": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "quality": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "source": {
+                              "type": "string"
+                            },
+                            "resolution": {
+                              "type": "integer"
+                            },
+                            "modifier": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "items": {
+                          "type": "object"
+                        },
+                        "allowed": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "minFormatScore": {
+                      "type": "integer"
+                    },
+                    "cutoffFormatScore": {
+                      "type": "integer"
+                    },
+                    "formatItems": {
+                      "type": "object",
+                      "properties": {
+                        "format": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "score": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "language": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": [
+                      {
+                        "name": "Any",
+                        "upgradeAllowed": true,
+                        "cutoff": 20,
+                        "preferredTags": "freeleach",
+                        "items": [
+                          {
+                            "quality": {
+                              "id": 0,
+                              "name": "Unknown",
+                              "source": "unknown",
+                              "resolution": 0,
+                              "modifier": "none"
+                            },
+                            "items": [],
+                            "allowed": true
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-add-discover",
+        "description": "Query Radarr for quality profiles ",
+        "security": [
+          {
+            "api key": []
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/customFilter": {
+      "get": {
+        "summary": "Get custom filters",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "time": {
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        },
+                        "type": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "id": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": [
+                      {
+                        "type": "movieIndex",
+                        "label": "not in last",
+                        "filters": [
+                          {
+                            "key": "inCinemas",
+                            "value": {
+                              "time": "months",
+                              "value": 12
+                            },
+                            "type": "notInLast"
+                          }
+                        ],
+                        "id": 2
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-customFilter",
+        "description": "Query Radarr for custom filters",
+        "security": [
+          {
+            "api key": []
+          }
+        ]
+      }
+    },
+    "/importList": {
+      "get": {
+        "summary": "Get import list information",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "Succesful response ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "enableAuto": {
+                      "type": "boolean"
+                    },
+                    "shouldMonitor": {
+                      "type": "boolean"
+                    },
+                    "rootFolderPath": {
+                      "type": "string"
+                    },
+                    "qualityProfile": {
+                      "type": "integer"
+                    },
+                    "searchOnAdd": {
+                      "type": "boolean"
+                    },
+                    "minimumAvailability": {
+                      "type": "string"
+                    },
+                    "listType": {
+                      "type": "string"
+                    },
+                    "listOrder": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "fields": {
+                      "type": "object",
+                      "properties": {
+                        "order": {
+                          "type": "integer"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "helpText": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "advanced": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "implementationName": {
+                      "type": "string"
+                    },
+                    "implementation": {
+                      "type": "string"
+                    },
+                    "configContract": {
+                      "type": "string"
+                    },
+                    "infoLink": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "object"
+                    },
+                    "id": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": [
+                      {
+                        "enabled": true,
+                        "enableAuto": true,
+                        "shouldMonitor": true,
+                        "rootFolderPath": "D:\\Plex\\Movies\\",
+                        "qualityProfileId": 4,
+                        "searchOnAdd": false,
+                        "minimumAvailability": "announced",
+                        "listType": "other",
+                        "listOrder": 3,
+                        "name": "IMDb List",
+                        "fields": [
+                          {
+                            "order": 0,
+                            "name": "listId",
+                            "label": "List/User ID",
+                            "helpText": "IMDb list ID (e.g ls12345678), IMDb user ID (e.g. ur12345678), 'top250' or 'popular'",
+                            "value": "ur109135197",
+                            "type": "textbox",
+                            "advanced": false
+                          }
+                        ],
+                        "implementationName": "IMDb Lists",
+                        "implementation": "IMDbListImport",
+                        "configContract": "IMDbListSettings",
+                        "infoLink": "https://github.com/Radarr/Radarr/wiki/Supported-ImportLists#imdblistimport",
+                        "tags": [
+                          2
+                        ],
+                        "id": 1
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-importList",
+        "description": "Query Radarr for all lists",
+        "security": [
+          {
+            "api key": []
+          }
+        ]
+      }
+    },
+    "/ui": {
+      "get": {
+        "summary": "Get UI settings",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "firstDayOfWeek": {
+                      "type": "integer"
+                    },
+                    "calendarWeekColumnHeader": {
+                      "type": "string"
+                    },
+                    "movieRuntimeFormat": {
+                      "type": "string"
+                    },
+                    "shortDateFormat": {
+                      "type": "string"
+                    },
+                    "longDateFormat": {
+                      "type": "string"
+                    },
+                    "timeFormat": {
+                      "type": "string"
+                    },
+                    "showRelativeDates": {
+                      "type": "boolean"
+                    },
+                    "enableColorImpairedMode": {
+                      "type": "boolean"
+                    },
+                    "movieInfoLanguage": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example": {
+                    "value": {
+                      "firstDayOfWeek": 0,
+                      "calendarWeekColumnHeader": "ddd M/D",
+                      "movieRuntimeFormat": "hoursMinutes",
+                      "shortDateFormat": "MMM D YYYY",
+                      "longDateFormat": "dddd, MMMM D YYYY",
+                      "timeFormat": "h(:mm)a",
+                      "showRelativeDates": true,
+                      "enableColorImpairedMode": false,
+                      "movieInfoLanguage": 1,
+                      "id": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-ui",
+        "description": "Query Radarr for UI settings",
+        "security": [
+          {
+            "api key": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -703,10 +1586,16 @@
       }
     },
     "securitySchemes": {
-      "api_key": {
+      "api key": {
+        "name": "apiKey",
         "type": "apiKey",
         "in": "query",
-        "name": "apiKey"
+        "description": "Used when not providing key via header"
+      },
+      "X-API-Key": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Used when not providing key via URL"
       }
     }
   }
