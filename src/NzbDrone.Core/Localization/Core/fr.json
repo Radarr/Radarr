@@ -443,5 +443,10 @@
     "CertificationCountry": "Pays de classification",
     "BackupFolderHelpText": "Les chemins relatifs pointeront sous le dossier AppData de Radarr",
     "AvailabilityDelayHelpText": "Temps à laisser s’écouler (avant ou après la date de disponibilité) avant de chercher le film",
-    "AddImportExclusionHelpText": "Empêcher le film d’être ajouté automatiquement à Radarr par des listes"
+    "AddImportExclusionHelpText": "Empêcher le film d’être ajouté automatiquement à Radarr par des listes",
+    "ImportExtraFilesHelpText": "Importer les fichiers extra correspondants (sous-titres, .nfo etc.) après avoir importé un fichier film",
+    "ImportExtraFiles": "Importer les fichiers extra",
+    "ImportedTo": "Importé vers",
+    "IllRestartLater": "Je redémarrerai plus tard",
+    "IgnoredHelpText": "La version sera rejetée si elle contient au moins l'un de ces termes (insensible à la casse)"
 }
