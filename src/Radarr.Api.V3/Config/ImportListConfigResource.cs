@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Tags;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Config
@@ -8,6 +10,7 @@ namespace Radarr.Api.V3.Config
         public int ImportListSyncInterval { get; set; }
         public string ListSyncLevel { get; set; }
         public string ImportExclusions { get; set; }
+        public HashSet<int> CleanLibraryTags { get; set; }
     }
 
     public static class ImportListConfigResourceMapper
@@ -18,7 +21,8 @@ namespace Radarr.Api.V3.Config
             {
                 ImportListSyncInterval = model.ImportListSyncInterval,
                 ListSyncLevel = model.ListSyncLevel,
-                ImportExclusions = model.ImportExclusions
+                ImportExclusions = model.ImportExclusions,
+                CleanLibraryTags = model.CleanLibraryTags
             };
         }
     }

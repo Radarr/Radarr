@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -88,6 +88,10 @@ namespace NzbDrone.Core.Test.Configuration
                 else if (propertyInfo.PropertyType == typeof(bool))
                 {
                     value = true;
+                }
+                else if (propertyInfo.Name.Equals("CleanLibraryTags"))
+                {
+                    continue;
                 }
                 else if (propertyInfo.PropertyType.BaseType == typeof(Enum))
                 {

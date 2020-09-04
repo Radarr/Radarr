@@ -181,6 +181,8 @@ namespace NzbDrone.Core.ImportLists
 
             // TODO use AllMovieTmdbIds here?
             var moviesInLibrary = _movieService.GetAllMovies();
+
+            var cleanLibraryTagIds = _configService.CleanLibraryTags.ToArray();
             foreach (var movie in moviesInLibrary)
             {
                 var movieExists = listMovies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
@@ -191,9 +193,20 @@ namespace NzbDrone.Core.ImportLists
                     {
                         case "logOnly":
                             _logger.Info("{0} was in your library, but not found in your lists --> You might want to unmonitor or remove it", movie);
+                            foreach (var tagId in cleanLibraryTagIds)
+                            {
+                                movie.Tags.Add(tagId);
+                            }
+
+                            moviesToUpdate.Add(movie);
                             break;
                         case "keepAndUnmonitor":
                             _logger.Info("{0} was in your library, but not found in your lists --> Keeping in library but Unmonitoring it", movie);
+                            foreach (var tagId in cleanLibraryTagIds)
+                            {
+                                movie.Tags.Add(tagId);
+                            }
+
                             movie.Monitored = false;
                             moviesToUpdate.Add(movie);
                             break;
@@ -207,6 +220,17 @@ namespace NzbDrone.Core.ImportLists
                             break;
                         default:
                             break;
+                    }
+                }
+                else
+                {
+                    foreach (var tagId in cleanLibraryTagIds)
+                    {
+                        if (movie.Tags.Contains(tagId))
+                        {
+                            movie.Tags.Remove(tagId);
+                            moviesToUpdate.Add(movie);
+                        }
                     }
                 }
             }

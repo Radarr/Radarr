@@ -65,11 +65,22 @@ namespace NzbDrone.Core.Configuration
                     continue;
                 }
 
-                var equal = configValue.Value.ToString().Equals(currentValue.ToString());
-
-                if (!equal)
+                if (configValue.Key.Equals("CleanLibraryTags"))
                 {
-                    SetValue(configValue.Key, configValue.Value.ToString());
+                    var equal = ConvertToString((HashSet<int>)configValue.Value).Equals(ConvertToString((HashSet<int>)currentValue));
+                    if (!equal)
+                    {
+                        SetValue(configValue.Key, ConvertToString((HashSet<int>)configValue.Value));
+                    }
+                }
+                else
+                {
+                    var equal = configValue.Value.ToString().Equals(currentValue.ToString());
+
+                    if (!equal)
+                    {
+                        SetValue(configValue.Key, configValue.Value.ToString());
+                    }
                 }
             }
 
@@ -135,6 +146,12 @@ namespace NzbDrone.Core.Configuration
         {
             get { return GetValue("ImportExclusions", string.Empty); }
             set { SetValue("ImportExclusions", value); }
+        }
+
+        public HashSet<int> CleanLibraryTags
+        {
+            get { return GetValueHashSet("CleanLibraryTags"); }
+            set { SetValue("CleanLibraryTags", value); }
         }
 
         public TMDbCountryCode CertificationCountry
@@ -456,6 +473,27 @@ namespace NzbDrone.Core.Configuration
         private int GetValueInt(string key, int defaultValue = 0)
         {
             return Convert.ToInt32(GetValue(key, defaultValue));
+        }
+
+        private HashSet<int> GetValueHashSet(string key)
+        {
+            string t1 = GetValue(key, string.Empty);
+            if (string.IsNullOrEmpty(t1) || t1.Equals("[]"))
+            {
+                return new HashSet<int>();
+            }
+
+            return new HashSet<int>(Array.ConvertAll(t1.Replace("[", "").Replace("]", "").Split(' '), s => int.Parse(s)));
+        }
+
+        private string ConvertToString(HashSet<int> value)
+        {
+            return "[" + string.Join(" ", value.ToArray()) + "]";
+        }
+
+        private void SetValue(string key, HashSet<int> value)
+        {
+            SetValue(key, ConvertToString(value));
         }
 
         private T GetValueEnum<T>(string key, T defaultValue)

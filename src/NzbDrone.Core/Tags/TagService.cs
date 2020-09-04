@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Indexers;
@@ -34,6 +35,7 @@ namespace NzbDrone.Core.Tags
         private readonly IRestrictionService _restrictionService;
         private readonly IMovieService _movieService;
         private readonly IIndexerFactory _indexerService;
+        private readonly IConfigService _configService;
 
         public TagService(ITagRepository repo,
                           IEventAggregator eventAggregator,
@@ -41,6 +43,7 @@ namespace NzbDrone.Core.Tags
                           IImportListFactory importListFactory,
                           INotificationFactory notificationFactory,
                           IRestrictionService restrictionService,
+                          IConfigService configService,
                           IMovieService movieService,
                           IIndexerFactory indexerService)
         {
@@ -52,6 +55,7 @@ namespace NzbDrone.Core.Tags
             _restrictionService = restrictionService;
             _movieService = movieService;
             _indexerService = indexerService;
+            _configService = configService;
         }
 
         public Tag GetTag(int tagId)
@@ -94,6 +98,7 @@ namespace NzbDrone.Core.Tags
                 ImportListIds = importLists.Select(c => c.Id).ToList(),
                 NotificationIds = notifications.Select(c => c.Id).ToList(),
                 RestrictionIds = restrictions.Select(c => c.Id).ToList(),
+                IsCleanLibraryTag = _configService.CleanLibraryTags.Contains(tag.Id),
                 MovieIds = movies,
                 IndexerIds = indexers.Select(c => c.Id).ToList()
             };
@@ -121,6 +126,7 @@ namespace NzbDrone.Core.Tags
                     ImportListIds = importLists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     NotificationIds = notifications.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                    IsCleanLibraryTag = _configService.CleanLibraryTags.Contains(tag.Id),
                     MovieIds = movies.Where(c => c.Value.Contains(tag.Id)).Select(c => c.Key).ToList(),
                     IndexerIds = indexers.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList()
                 });

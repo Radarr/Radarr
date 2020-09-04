@@ -13,12 +13,13 @@ namespace NzbDrone.Core.Tags
         public List<int> ImportListIds { get; set; }
         public List<int> DelayProfileIds { get; set; }
         public List<int> IndexerIds { get; set; }
+        public bool IsCleanLibraryTag { get; set; }
 
         public bool InUse
         {
             get
             {
-                return MovieIds.Any() || NotificationIds.Any() || RestrictionIds.Any() || DelayProfileIds.Any() || ImportListIds.Any() || IndexerIds.Any();
+                return MovieIds.Any() || NotificationIds.Any() || RestrictionIds.Any() || DelayProfileIds.Any() || ImportListIds.Any() || IndexerIds.Any() || IsCleanLibraryTag;
             }
         }
     }
