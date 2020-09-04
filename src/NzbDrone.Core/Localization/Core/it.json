@@ -211,5 +211,13 @@
     "AddNewTmdbIdMessage": "Puoi anche cercare un film a partire dall'id TMDB. Ad esempio: tmdb:71663",
     "AddNewMessage": "È facile aggiungere un nuovo film, inizia a scrivere il titolo del film che vuoi aggiungere",
     "AddMovies": "Aggiungi Film",
-    "Activity": "Attività"
+    "Activity": "Attività",
+    "AllMoviesHiddenDueToFilter": "Tutti i film sono nascosti a causa del filtro applicato.",
+    "AgeWhenGrabbed": "Età (quando trovato)",
+    "Age": "Età",
+    "AddRemotePathMapping": "Aggiungi un percorso remoto",
+    "AddNewMovie": "Aggiungi Nuovo Film",
+    "AddMoviesMonitored": "Aggiungi Film Monitorato",
+    "AddListExclusion": "Aggiungi Lista Esclusioni",
+    "AddList": "Aggiungi Lista"
 }
