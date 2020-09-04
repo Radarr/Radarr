@@ -57,6 +57,8 @@ class Tag extends Component {
       importListIds,
       notificationIds,
       releaseProfileIds,
+      restrictionIds,
+      isCleanLibraryTag,
       indexerIds,
       downloadClientIds,
       autoTagIds,
@@ -70,6 +72,8 @@ class Tag extends Component {
       importListIds.length ||
       notificationIds.length ||
       releaseProfileIds.length ||
+      restrictionIds.length ||
+      isCleanLibraryTag ||
       indexerIds.length ||
       downloadClientIds.length ||
       autoTagIds.length ||
@@ -120,7 +124,11 @@ class Tag extends Component {
               <TagInUse
                 label={translate('DownloadClient')}
                 labelPlural={translate('DownloadClients')}
-                count={downloadClientIds.length}
+              />
+   
+              <TagInUse
+                label="CleanLibraryTag"
+                count={isCleanLibraryTag}
               />
 
               <TagInUse
@@ -149,6 +157,7 @@ class Tag extends Component {
           indexerIds={indexerIds}
           downloadClientIds={downloadClientIds}
           autoTagIds={autoTagIds}
+          isCleanLibraryTag={isCleanLibraryTag}
           isOpen={isDetailsModalOpen}
           onModalClose={this.onDetailsModalClose}
           onDeleteTagPress={this.onDeleteTagPress}
@@ -179,14 +188,17 @@ Tag.propTypes = {
   downloadClientIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   autoTagIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   movieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  isCleanLibraryTag: PropTypes.bool.isRequired,
   onConfirmDeleteTag: PropTypes.func.isRequired
 };
 
 Tag.defaultProps = {
   delayProfileIds: [],
-  importListIds: [],
   notificationIds: [],
   releaseProfileIds: [],
+  restrictionIds: [],
+  importListIds: [],
+  isCleanLibraryTag: false,
   indexerIds: [],
   downloadClientIds: [],
   autoTagIds: [],

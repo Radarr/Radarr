@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.AutoTagging.Specifications;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.ImportLists;
@@ -39,6 +40,7 @@ namespace NzbDrone.Core.Tags
         private readonly IIndexerFactory _indexerService;
         private readonly IAutoTaggingService _autoTaggingService;
         private readonly IDownloadClientFactory _downloadClientFactory;
+        private readonly IConfigService _configService;
 
         public TagService(ITagRepository repo,
                           IEventAggregator eventAggregator,
@@ -46,6 +48,8 @@ namespace NzbDrone.Core.Tags
                           IImportListFactory importListFactory,
                           INotificationFactory notificationFactory,
                           IReleaseProfileService releaseProfileService,
+                          IRestrictionService restrictionService,
+                          IConfigService configService,
                           IMovieService movieService,
                           IIndexerFactory indexerService,
                           IAutoTaggingService autoTaggingService,
@@ -61,6 +65,7 @@ namespace NzbDrone.Core.Tags
             _indexerService = indexerService;
             _autoTaggingService = autoTaggingService;
             _downloadClientFactory = downloadClientFactory;
+            _configService = configService;
         }
 
         public Tag GetTag(int tagId)
@@ -105,6 +110,8 @@ namespace NzbDrone.Core.Tags
                 ImportListIds = importLists.Select(c => c.Id).ToList(),
                 NotificationIds = notifications.Select(c => c.Id).ToList(),
                 ReleaseProfileIds = releaseProfiles.Select(c => c.Id).ToList(),
+                RestrictionIds = restrictions.Select(c => c.Id).ToList(),
+                IsCleanLibraryTag = _configService.CleanLibraryTags.Contains(tag.Id),
                 MovieIds = movies,
                 IndexerIds = indexers.Select(c => c.Id).ToList(),
                 AutoTagIds = autoTags.Select(c => c.Id).ToList(),
@@ -136,6 +143,8 @@ namespace NzbDrone.Core.Tags
                     ImportListIds = importLists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     NotificationIds = notifications.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     ReleaseProfileIds = releaseProfiles.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                    RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                    IsCleanLibraryTag = _configService.CleanLibraryTags.Contains(tag.Id),
                     MovieIds = movies.Where(c => c.Value.Contains(tag.Id)).Select(c => c.Key).ToList(),
                     IndexerIds = indexers.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     AutoTagIds = GetAutoTagIds(tag, autoTags),

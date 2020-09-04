@@ -25,6 +25,7 @@ function TagDetailsModalContent(props) {
     downloadClients,
     autoTags,
     onModalClose,
+    isCleanLibraryTag,
     onDeleteTagPress
   } = props;
 
@@ -214,6 +215,11 @@ function TagDetailsModalContent(props) {
             </FieldSet> :
             null
         }
+        
+        {
+          !!isCleanLibraryTag &&
+            <FieldSet legend={translate('CleanLibraryTag')} />
+        }
       </ModalBody>
 
       <ModalFooter>
@@ -250,6 +256,7 @@ TagDetailsModalContent.propTypes = {
   indexers: PropTypes.arrayOf(PropTypes.object).isRequired,
   downloadClients: PropTypes.arrayOf(PropTypes.object).isRequired,
   autoTags: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isCleanLibraryTag: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
   onDeleteTagPress: PropTypes.func.isRequired
 };

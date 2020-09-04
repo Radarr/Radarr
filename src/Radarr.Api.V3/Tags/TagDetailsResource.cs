@@ -16,6 +16,7 @@ namespace Radarr.Api.V3.Tags
         public List<int> DownloadClientIds { get; set; }
         public List<int> AutoTagIds { get; set; }
         public List<int> MovieIds { get; set; }
+        public bool IsCleanLibraryTag { get; set; }
     }
 
     public static class TagDetailsResourceMapper
@@ -35,6 +36,8 @@ namespace Radarr.Api.V3.Tags
                 ImportListIds = model.ImportListIds,
                 NotificationIds = model.NotificationIds,
                 ReleaseProfileIds = model.ReleaseProfileIds,
+                RestrictionIds = model.RestrictionIds,
+                IsCleanLibraryTag = model.IsCleanLibraryTag,
                 IndexerIds = model.IndexerIds,
                 DownloadClientIds = model.DownloadClientIds,
                 AutoTagIds = model.AutoTagIds,
