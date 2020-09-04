@@ -155,5 +155,10 @@ namespace NzbDrone.Common.Extensions
         {
             return string.Join(separator, source.Select(predicate));
         }
+
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer = null)
+        {
+            return new HashSet<T>(source, comparer);
+        }
     }
 }

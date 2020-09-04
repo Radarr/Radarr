@@ -12,7 +12,7 @@ import { clearMovieCredits, fetchMovieCredits } from 'Store/Actions/movieCredits
 import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
 import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
 import { cancelFetchReleases, clearReleases } from 'Store/Actions/releaseActions';
-import { fetchNetImportSchema } from 'Store/Actions/settingsActions';
+import { fetchImportListSchema } from 'Store/Actions/settingsActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
@@ -198,8 +198,8 @@ function createMapDispatchToProps(dispatch, props) {
     dispatchClearQueueDetails() {
       dispatch(clearQueueDetails());
     },
-    dispatchFetchNetImportSchema() {
-      dispatch(fetchNetImportSchema());
+    dispatchFetchImportListSchema() {
+      dispatch(fetchImportListSchema());
     },
     dispatchToggleMovieMonitored(payload) {
       dispatch(toggleMovieMonitored(payload));
@@ -265,7 +265,7 @@ class MovieDetailsConnector extends Component {
     this.props.dispatchFetchExtraFiles({ movieId });
     this.props.dispatchFetchMovieCredits({ movieId });
     this.props.dispatchFetchQueueDetails({ movieId });
-    this.props.dispatchFetchNetImportSchema();
+    this.props.dispatchFetchImportListSchema();
   }
 
   unpopulate = () => {
@@ -336,7 +336,7 @@ MovieDetailsConnector.propTypes = {
   dispatchToggleMovieMonitored: PropTypes.func.isRequired,
   dispatchFetchQueueDetails: PropTypes.func.isRequired,
   dispatchClearQueueDetails: PropTypes.func.isRequired,
-  dispatchFetchNetImportSchema: PropTypes.func.isRequired,
+  dispatchFetchImportListSchema: PropTypes.func.isRequired,
   dispatchExecuteCommand: PropTypes.func.isRequired,
   onGoToMovie: PropTypes.func.isRequired
 };

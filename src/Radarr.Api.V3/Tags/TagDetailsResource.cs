@@ -11,7 +11,7 @@ namespace Radarr.Api.V3.Tags
         public List<int> DelayProfileIds { get; set; }
         public List<int> NotificationIds { get; set; }
         public List<int> RestrictionIds { get; set; }
-        public List<int> NetImportIds { get; set; }
+        public List<int> ImportListIds { get; set; }
         public List<int> MovieIds { get; set; }
     }
 
@@ -31,7 +31,7 @@ namespace Radarr.Api.V3.Tags
                 DelayProfileIds = model.DelayProfileIds,
                 NotificationIds = model.NotificationIds,
                 RestrictionIds = model.RestrictionIds,
-                NetImportIds = model.NetImportIds,
+                ImportListIds = model.ImportListIds,
                 MovieIds = model.MovieIds
             };
         }

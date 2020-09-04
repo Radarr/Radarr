@@ -7,6 +7,9 @@ import delayProfiles from './Settings/delayProfiles';
 import downloadClientOptions from './Settings/downloadClientOptions';
 import downloadClients from './Settings/downloadClients';
 import general from './Settings/general';
+import importExclusions from './Settings/importExclusions';
+import importListOptions from './Settings/importListOptions';
+import importLists from './Settings/importLists';
 import indexerOptions from './Settings/indexerOptions';
 import indexers from './Settings/indexers';
 import languages from './Settings/languages';
@@ -15,9 +18,6 @@ import metadata from './Settings/metadata';
 import metadataOptions from './Settings/metadataOptions';
 import naming from './Settings/naming';
 import namingExamples from './Settings/namingExamples';
-import netImportExclusions from './Settings/netImportExclusions';
-import netImportOptions from './Settings/netImportOptions';
-import netImports from './Settings/netImports';
 import notifications from './Settings/notifications';
 import qualityDefinitions from './Settings/qualityDefinitions';
 import qualityProfiles from './Settings/qualityProfiles';
@@ -34,9 +34,9 @@ export * from './Settings/general';
 export * from './Settings/indexerOptions';
 export * from './Settings/indexers';
 export * from './Settings/languages';
-export * from './Settings/netImportExclusions';
-export * from './Settings/netImportOptions';
-export * from './Settings/netImports';
+export * from './Settings/importExclusions';
+export * from './Settings/importListOptions';
+export * from './Settings/importLists';
 export * from './Settings/mediaManagement';
 export * from './Settings/metadata';
 export * from './Settings/metadataOptions';
@@ -69,9 +69,9 @@ export const defaultState = {
   indexerOptions: indexerOptions.defaultState,
   indexers: indexers.defaultState,
   languages: languages.defaultState,
-  netImportExclusions: netImportExclusions.defaultState,
-  netImportOptions: netImportOptions.defaultState,
-  netImports: netImports.defaultState,
+  importExclusions: importExclusions.defaultState,
+  importListOptions: importListOptions.defaultState,
+  importLists: importLists.defaultState,
   mediaManagement: mediaManagement.defaultState,
   metadata: metadata.defaultState,
   metadataOptions: metadataOptions.defaultState,
@@ -112,9 +112,9 @@ export const actionHandlers = handleThunks({
   ...indexerOptions.actionHandlers,
   ...indexers.actionHandlers,
   ...languages.actionHandlers,
-  ...netImportExclusions.actionHandlers,
-  ...netImportOptions.actionHandlers,
-  ...netImports.actionHandlers,
+  ...importExclusions.actionHandlers,
+  ...importListOptions.actionHandlers,
+  ...importLists.actionHandlers,
   ...mediaManagement.actionHandlers,
   ...metadata.actionHandlers,
   ...metadataOptions.actionHandlers,
@@ -146,9 +146,9 @@ export const reducers = createHandleActions({
   ...indexerOptions.reducers,
   ...indexers.reducers,
   ...languages.reducers,
-  ...netImportExclusions.reducers,
-  ...netImportOptions.reducers,
-  ...netImports.reducers,
+  ...importExclusions.reducers,
+  ...importListOptions.reducers,
+  ...importLists.reducers,
   ...mediaManagement.reducers,
   ...metadata.reducers,
   ...metadataOptions.reducers,

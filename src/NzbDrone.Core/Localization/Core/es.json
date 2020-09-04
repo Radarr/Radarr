@@ -130,8 +130,8 @@
     "Options": "Opciones",
     "NoChange": "Sin Cambio",
     "NoChanges": "Sin Cambios",
-    "NetImportStatusCheckSingleClientMessage": "Listas no disponibles debido a errores: {0}",
-    "NetImportStatusCheckAllClientMessage": "Las listas no están disponibles debido a errores",
+    "ImportListStatusCheckSingleClientMessage": "Listas no disponibles debido a errores: {0}",
+    "ImportListStatusCheckAllClientMessage": "Las listas no están disponibles debido a errores",
     "Movies": "Películas",
     "MovieNaming": "Renombrar Películas",
     "MonoNotNetCoreCheckMessage": "Por favor actualiza a la versión .NET Core de Radarr",
@@ -417,7 +417,7 @@
     "AllowHardcodedSubsHelpText": "Hardcoded subs que sean detectados serán automáticamente descargados",
     "AllowHardcodedSubs": "Permitir Hardcoded Subs",
     "AgeWhenGrabbed": "Edad (cuando capturada)",
-    "AddNetImportExclusionHelpText": "Prevenir que la película sea añadida a Radarr mediante listas",
+    "AddImportExclusionHelpText": "Prevenir que la película sea añadida a Radarr mediante listas",
     "AddMoviesMonitored": "Añadir Películas Monitoreadas",
     "AddListExclusion": "Añadir Exclusión De Lista"
 }

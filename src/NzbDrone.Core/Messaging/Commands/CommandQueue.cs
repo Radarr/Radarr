@@ -128,22 +128,26 @@ namespace NzbDrone.Core.Messaging.Commands
                 {
                     var startedCommands = _items.Where(c => c.Status == CommandStatus.Started)
                                                 .ToList();
-                    var localItem = _items.Where(c =>
-                    {
-                        // If an executing command requires disk access don't return a command that
-                        // requires disk access. A lower priority or later queued task could be returned
-                        // instead, but that will allow other tasks to execute whiule waiting for disk access.
-                        if (startedCommands.Any(x => x.Body.RequiresDiskAccess))
-                        {
-                            return c.Status == CommandStatus.Queued &&
-                                   !c.Body.RequiresDiskAccess;
-                        }
 
-                        return c.Status == CommandStatus.Queued;
-                    })
-                                         .OrderByDescending(c => c.Priority)
-                                         .ThenBy(c => c.QueuedAt)
-                                         .FirstOrDefault();
+                    var exclusiveTypes = startedCommands.Where(x => x.Body.IsTypeExclusive)
+                        .Select(x => x.Body.Name)
+                        .ToList();
+
+                    var queuedCommands = _items.Where(c => c.Status == CommandStatus.Queued);
+
+                    if (startedCommands.Any(x => x.Body.RequiresDiskAccess))
+                    {
+                        queuedCommands = queuedCommands.Where(c => !c.Body.RequiresDiskAccess);
+                    }
+
+                    if (startedCommands.Any(x => x.Body.IsTypeExclusive))
+                    {
+                        queuedCommands = queuedCommands.Where(c => !exclusiveTypes.Any(x => x == c.Body.Name));
+                    }
+
+                    var localItem = queuedCommands.OrderByDescending(c => c.Priority)
+                        .ThenBy(c => c.QueuedAt)
+                        .FirstOrDefault();
 
                     // Nothing queued that meets the requirements
                     if (localItem == null)
@@ -169,6 +173,7 @@ namespace NzbDrone.Core.Messaging.Commands
                     {
                         localItem.StartedAt = DateTime.UtcNow;
                         localItem.Status = CommandStatus.Started;
+
                         item = localItem;
                     }
                 }

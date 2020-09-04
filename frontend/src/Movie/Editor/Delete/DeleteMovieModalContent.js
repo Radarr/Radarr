@@ -22,7 +22,7 @@ class DeleteMovieModalContent extends Component {
 
     this.state = {
       deleteFiles: false,
-      addNetImportExclusion: false
+      addImportExclusion: false
     };
   }
 
@@ -33,16 +33,16 @@ class DeleteMovieModalContent extends Component {
     this.setState({ deleteFiles: value });
   }
 
-  onAddNetImportExclusionChange = ({ value }) => {
-    this.setState({ addNetImportExclusion: value });
+  onAddImportExclusionChange = ({ value }) => {
+    this.setState({ addImportExclusion: value });
   }
 
   onDeleteMovieConfirmed = () => {
     const deleteFiles = this.state.deleteFiles;
-    const addNetImportExclusion = this.state.addNetImportExclusion;
+    const addImportExclusion = this.state.addImportExclusion;
 
-    this.setState({ deleteFiles: false, addNetImportExclusion: false });
-    this.props.onDeleteSelectedPress(deleteFiles, addNetImportExclusion);
+    this.setState({ deleteFiles: false, addImportExclusion: false });
+    this.props.onDeleteSelectedPress(deleteFiles, addImportExclusion);
   }
 
   //
@@ -55,7 +55,7 @@ class DeleteMovieModalContent extends Component {
     } = this.props;
 
     const deleteFiles = this.state.deleteFiles;
-    const addNetImportExclusion = this.state.addNetImportExclusion;
+    const addImportExclusion = this.state.addImportExclusion;
 
     return (
       <ModalContent onModalClose={onModalClose}>
@@ -83,11 +83,11 @@ class DeleteMovieModalContent extends Component {
 
               <FormInputGroup
                 type={inputTypes.CHECK}
-                name="addNetImportExclusion"
-                value={addNetImportExclusion}
-                helpText={translate('AddNetImportExclusionHelpText')}
+                name="addImportExclusion"
+                value={addImportExclusion}
+                helpText={translate('AddImportExclusionHelpText')}
                 kind={kinds.DANGER}
-                onChange={this.onAddNetImportExclusionChange}
+                onChange={this.onAddImportExclusionChange}
               />
             </FormGroup>
           </div>

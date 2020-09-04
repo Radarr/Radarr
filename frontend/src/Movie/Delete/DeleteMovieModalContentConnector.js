@@ -24,11 +24,11 @@ class DeleteMovieModalContentConnector extends Component {
   //
   // Listeners
 
-  onDeletePress = (deleteFiles, addNetImportExclusion) => {
+  onDeletePress = (deleteFiles, addImportExclusion) => {
     this.props.deleteMovie({
       id: this.props.movieId,
       deleteFiles,
-      addNetImportExclusion
+      addImportExclusion
     });
 
     this.props.onModalClose(true);

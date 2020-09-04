@@ -82,7 +82,7 @@ function Settings() {
 
         <Link
           className={styles.link}
-          to="/settings/netimports"
+          to="/settings/importlists"
         >
           {translate('Lists')}
         </Link>

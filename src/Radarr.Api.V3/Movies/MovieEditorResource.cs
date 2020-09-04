@@ -14,7 +14,7 @@ namespace Radarr.Api.V3.Movies
         public ApplyTags ApplyTags { get; set; }
         public bool MoveFiles { get; set; }
         public bool DeleteFiles { get; set; }
-        public bool AddNetImportExclusion { get; set; }
+        public bool AddImportExclusion { get; set; }
     }
 
     public enum ApplyTags

@@ -44,7 +44,7 @@ function NoDiscoverMovie(props) {
 
       <div className={styles.buttonContainer}>
         <Button
-          to="/settings/netimports"
+          to="/settings/importlists"
           kind={kinds.PRIMARY}
         >
           {translate('AddList')}

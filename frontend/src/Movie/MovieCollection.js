@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
-import EditNetImportModalConnector from 'Settings/NetImport/NetImport/EditNetImportModalConnector';
+import EditImportListModalConnector from 'Settings/ImportLists/ImportLists/EditImportListModalConnector';
 import styles from './MovieCollection.css';
 
 class MovieCollection extends Component {
@@ -14,21 +14,21 @@ class MovieCollection extends Component {
 
     this.state = {
       hasPosterError: false,
-      isEditNetImportModalOpen: false
+      isEditImportListModalOpen: false
     };
   }
 
-  onAddNetImportPress = (monitored) => {
+  onAddImportListPress = (monitored) => {
     if (this.props.collectionList) {
       this.props.onMonitorTogglePress(monitored);
     } else {
       this.props.onMonitorTogglePress(monitored);
-      this.setState({ isEditNetImportModalOpen: true });
+      this.setState({ isEditImportListModalOpen: true });
     }
   }
 
-  onEditNetImportModalClose = () => {
-    this.setState({ isEditNetImportModalOpen: false });
+  onEditImportListModalClose = () => {
+    this.setState({ isEditImportListModalOpen: false });
   }
 
   render() {
@@ -39,7 +39,7 @@ class MovieCollection extends Component {
     } = this.props;
 
     const monitored = collectionList !== undefined && collectionList.enabled && collectionList.enableAuto;
-    const netImportId = collectionList ? collectionList.id : 0;
+    const importListId = collectionList ? collectionList.id : 0;
 
     return (
       <div>
@@ -48,14 +48,14 @@ class MovieCollection extends Component {
           monitored={monitored}
           isSaving={isSaving}
           size={15}
-          onPress={this.onAddNetImportPress}
+          onPress={this.onAddImportListPress}
         />
         {name}
-        <EditNetImportModalConnector
-          id={netImportId}
-          isOpen={this.state.isEditNetImportModalOpen}
-          onModalClose={this.onEditNetImportModalClose}
-          onDeleteNetImportPress={this.onDeleteNetImportPress}
+        <EditImportListModalConnector
+          id={importListId}
+          isOpen={this.state.isEditImportListModalOpen}
+          onModalClose={this.onEditImportListModalClose}
+          onDeleteImportListPress={this.onDeleteImportListPress}
         />
       </div>
     );

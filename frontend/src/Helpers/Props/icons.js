@@ -29,6 +29,7 @@ import {
   faBookReader as fasBookReader,
   faBroadcastTower as fasBroadcastTower,
   faBug as fasBug,
+  faBuilding as fasBuilding,
   faBullhorn as fasBullhorn,
   faCalendarAlt as fasCalendarAlt,
   faCaretDown as fasCaretDown,
@@ -92,7 +93,9 @@ import {
   faTable as fasTable,
   faTags as fasTags,
   faTh as fasTh,
+  faTheaterMasks as fasTheaterMasks,
   faThList as fasThList,
+  faThumbsUp as fasThumbsUp,
   faTicketAlt as fasTicketAlt,
   faTimes as fasTimes,
   faTimesCircle as fasTimesCircle,
@@ -145,10 +148,12 @@ export const EXPAND_INDETERMINATE = fasChevronCircleRight;
 export const EXTERNAL_LINK = fasExternalLinkAlt;
 export const FATAL = fasTimesCircle;
 export const FILE = farFile;
+export const FILM = fasFilm;
 export const FILTER = fasFilter;
 export const FLAG = fasFlag;
 export const FOLDER = farFolder;
 export const FOLDER_OPEN = fasFolderOpen;
+export const GENRE = fasTheaterMasks;
 export const GROUP = farObjectGroup;
 export const HEALTH = fasMedkit;
 export const HEART = fasHeart;
@@ -180,6 +185,7 @@ export const PROFILE = fasUser;
 export const POSTER = fasTh;
 export const QUEUED = fasCloud;
 export const QUICK = fasRocket;
+export const RECOMMENDED = fasThumbsUp;
 export const REFRESH = fasSync;
 export const REMOVE = fasTimes;
 export const RESTART = fasRedoAlt;
@@ -199,7 +205,7 @@ export const SORT = fasSort;
 export const SORT_ASCENDING = fasSortUp;
 export const SORT_DESCENDING = fasSortDown;
 export const SPINNER = fasSpinner;
-export const STUDIO = fasFilm;
+export const STUDIO = fasBuilding;
 export const SUBTRACT = fasMinus;
 export const SYSTEM = fasLaptop;
 export const TABLE = fasTable;
