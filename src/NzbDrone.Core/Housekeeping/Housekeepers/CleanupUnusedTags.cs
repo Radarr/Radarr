@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -26,6 +27,18 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 .ToList();
 
             var usedTagsList = usedTags.Select(d => d.ToString()).Join(",");
+
+            var cleanLibraryTags = mapper.Query<string>($"SELECT Value FROM Config WHERE Config.Key='cleanlibrarytags'");
+            foreach (var t1 in cleanLibraryTags)
+            {
+                var cleanLibraryTagsList = string.Empty;
+                if (!(string.IsNullOrEmpty(t1) || t1.Equals("[]")))
+                {
+                    cleanLibraryTagsList = string.Join(",", Array.ConvertAll(t1.Replace("[", "").Replace("]", "").Split(' '), s => int.Parse(s)));
+                }
+
+                usedTagsList = usedTagsList + cleanLibraryTagsList;
+            }
 
             mapper.Execute($"DELETE FROM Tags WHERE NOT Id IN ({usedTagsList})");
         }
