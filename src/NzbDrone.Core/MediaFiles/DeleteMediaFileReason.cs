@@ -6,6 +6,7 @@
         Manual,
         Upgrade,
         NoLinkedEpisodes,
-        ManualOverride
+        ManualOverride,
+        MovieDeletion
     }
 }

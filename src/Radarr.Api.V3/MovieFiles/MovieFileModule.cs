@@ -196,6 +196,11 @@ namespace Radarr.Api.V3.MovieFiles
 
         public void Handle(MovieFileDeletedEvent message)
         {
+            if (message.Reason == DeleteMediaFileReason.MovieDeletion)
+            {
+                return;
+            }
+
             BroadcastResourceChange(ModelAction.Deleted, message.MovieFile.Id);
         }
     }

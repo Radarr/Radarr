@@ -219,7 +219,6 @@ namespace NzbDrone.Core.Movies
             var moviesToDelete = _movieRepository.Get(movieIds).ToList();
 
             _movieRepository.DeleteMany(movieIds);
-
             _eventAggregator.PublishEvent(new MoviesDeletedEvent(moviesToDelete, deleteFiles, addExclusion));
 
             foreach (var movie in moviesToDelete)
@@ -391,6 +390,11 @@ namespace NzbDrone.Core.Movies
 
         public void Handle(MovieFileDeletedEvent message)
         {
+            if (message.Reason == DeleteMediaFileReason.MovieDeletion)
+            {
+                return;
+            }
+
             foreach (var movie in GetMoviesByFileId(message.MovieFile.Id))
             {
                 _logger.Debug("Detaching movie {0} from file.", movie.Id);

@@ -96,6 +96,11 @@ namespace NzbDrone.Core.Extras.Files
 
         public void HandleAsync(MovieFileDeletedEvent message)
         {
+            if (message.Reason == DeleteMediaFileReason.MovieDeletion)
+            {
+                return;
+            }
+
             var movieFile = message.MovieFile;
 
             if (message.Reason == DeleteMediaFileReason.NoLinkedEpisodes)

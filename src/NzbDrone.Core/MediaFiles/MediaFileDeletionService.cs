@@ -29,12 +29,14 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMovieService _movieService;
         private readonly IConfigService _configService;
         private readonly Logger _logger;
+        private readonly IEventAggregator _eventAggregator;
 
         public MediaFileDeletionService(IDiskProvider diskProvider,
                                         IRecycleBinProvider recycleBinProvider,
                                         IMediaFileService mediaFileService,
                                         IMovieService movieService,
                                         IConfigService configService,
+                                        IEventAggregator eventAggregator,
                                         Logger logger)
         {
             _diskProvider = diskProvider;
@@ -43,6 +45,7 @@ namespace NzbDrone.Core.MediaFiles
             _movieService = movieService;
             _configService = configService;
             _logger = logger;
+            _eventAggregator = eventAggregator;
         }
 
         public void DeleteMovieFile(Movie movie, MovieFile movieFile)
@@ -114,6 +117,12 @@ namespace NzbDrone.Core.MediaFiles
                     if (_diskProvider.FolderExists(movie.Path))
                     {
                         _recycleBinProvider.DeleteFolder(movie.Path);
+                        if (movie.MovieFile.Movie == null)
+                        {
+                            movie.MovieFile.Movie = movie;
+                        }
+
+                        _eventAggregator.PublishEvent(new MovieFileDeletedEvent(movie.MovieFile, DeleteMediaFileReason.MovieDeletion));
                     }
                 }
             }
@@ -122,6 +131,11 @@ namespace NzbDrone.Core.MediaFiles
         [EventHandleOrder(EventHandleOrder.Last)]
         public void Handle(MovieFileDeletedEvent message)
         {
+            if (message.Reason == DeleteMediaFileReason.MovieDeletion)
+            {
+                return;
+            }
+
             if (_configService.DeleteEmptyFolders)
             {
                 var movie = message.MovieFile.Movie;

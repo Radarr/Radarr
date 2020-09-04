@@ -209,6 +209,11 @@ namespace NzbDrone.Core.History
 
         public void Handle(MovieFileDeletedEvent message)
         {
+            if (message.Reason == DeleteMediaFileReason.MovieDeletion)
+            {
+                return;
+            }
+
             if (message.Reason == DeleteMediaFileReason.NoLinkedEpisodes)
             {
                 _logger.Debug("Removing movie file from DB as part of cleanup routine, not creating history event.");
