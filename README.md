@@ -13,9 +13,12 @@ The project was inspired by other Usenet/BitTorrent movie downloaders such as Co
 ## Getting Started
 
 [![Installation](https://img.shields.io/badge/wiki-installation-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Installation)
-[![Docker](https://img.shields.io/badge/wiki-docker-1488C6.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Docker)
+[![Docker](https://img.shields.io/badge/wiki-docker-1488C6.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Docker) 
 [![Setup Guide](https://img.shields.io/badge/wiki-setup_guide-orange.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/Setup-Guide)
 [![FAQ](https://img.shields.io/badge/wiki-FAQ-BF55EC.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki/FAQ)
+
+
+If you are using Docker please ensure your Docker paths are setup correctly using [this guide to facilitate](https://old.reddit.com/r/usenet/wiki/docker) hardlinks and minimize permissions issues. 
 
 * [Install Radarr for your desired OS](https://github.com/Radarr/Radarr/wiki/Installation) *or* use [Docker](https://github.com/Radarr/Radarr/wiki/Docker)
 * *For Linux users*, run `radarr` and *optionally* have [Radarr start automatically](https://github.com/Radarr/Radarr/wiki/Autostart-on-Linux)
@@ -23,18 +26,18 @@ The project was inspired by other Usenet/BitTorrent movie downloaders such as Co
 * See the [Setup Guide](https://github.com/Radarr/Radarr/wiki/Setup-Guide) for further configuration
 
 ## Downloads
+Please note that v0.2 will only have critical bugs resolved as of August 2020. Any additional development or features will be soley in V3.
 
 | Release Type    | Branch: develop (stable)                                                                                                                                                     | Branch: nightly (semi-unstable)                                                                                                                                                                | Branch: aphrodite (very-unstable)                                                                                                                                              |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Binary Releases | [![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases)                 | [![AppVeyor Builds](https://img.shields.io/badge/downloads-nightly-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/branch/develop/artifacts)    |                                                                                                                                                                                |
-| Docker          | [![Docker release](https://img.shields.io/badge/linuxserver-radarr:latest-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr)  | [![Docker nightly](https://img.shields.io/badge/linuxserver-radarr:nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr)                   | [![Docker aphrodite](https://img.shields.io/badge/linuxserver-radarr:preview-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr) |
-| Docker          | [![Docker release](https://img.shields.io/badge/hotio-radarr:latest-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)              | [![Docker nightly](https://img.shields.io/badge/hotio-radarr:unstable-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)                              | [![Docker aphrodite](https://img.shields.io/badge/hotio-radarr:aphrodite-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)           |
+| Docker - LISO   | [![Docker release](https://img.shields.io/badge/linuxserver-radarr:latest-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr)  | [![Docker nightly](https://img.shields.io/badge/linuxserver-radarr:nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr)                   | [![Docker aphrodite](https://img.shields.io/badge/linuxserver-radarr:preview-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr) |
+| Docker - Hotio  | [![Docker release](https://img.shields.io/badge/hotio-radarr:latest-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)              | [![Docker nightly](https://img.shields.io/badge/hotio-radarr:unstable-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)                              | [![Docker aphrodite](https://img.shields.io/badge/hotio-radarr:aphrodite-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)           |
 
 ## Support
 
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/AD3UP37)
 [![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60&style=flat-square)](https://www.reddit.com/r/radarr)
-[![Feathub](https://img.shields.io/badge/feathub-requests-lightgrey.svg?maxAge=60&style=flat-square)](http://feathub.com/Radarr/Radarr)
 [![GitHub](https://img.shields.io/badge/github-issues-red.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
 [![GitHub Wiki](https://img.shields.io/badge/github-wiki-181717.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki)
 
@@ -72,18 +75,14 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 * New TorrentPotato Indexer
 * Torznab Indexer now supports Movies (Works well with [Jackett](https://github.com/Jackett/Jackett))
 * Scanning PreDB to know when a new release is available
-* Importing movies from various online sources, such as IMDb Watchlists (A complete list can be found [here](https://github.com/Radarr/Radarr/issues/114))
+* Importing movies from various online sources, such as IMDb Watchlists or Trakt (v3) (A complete list can be found [here](https://github.com/Radarr/Radarr/issues/114))
 * Full integration with Kodi, Plex (notification, library update)
-* And a beautiful UI
+* And a new beautiful UI (v3)
 * Importing Metadata such as trailers or subtitles
 * Adding metadata such as posters and information for Kodi and others to use
 * Advanced customization for profiles, such that Radarr will always download the copy you want
 
-### Planned Features
-
-See the [Roadmap blogpost](https://blog.radarr.video/development/update/2018/11/11/roadmap-update.html) for an overview of planned features.
-
-#### [Feature Requests](http://feathub.com/Radarr/Radarr)
+#### [Feature Requests](https://github.com/Radarr/Radarr/issues/new?assignees=&labels=feature+request&template=feature_request.md&title=)
 
 ## Configuring the Development Environment
 
