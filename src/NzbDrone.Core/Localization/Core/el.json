@@ -69,5 +69,17 @@
     "ConnectSettingsSummary": "Ειδοποιήσεις, συνδέσεις σε media servers/players και custom scripts",
     "AppDataLocationHealthCheckMessage": "Η αναβάθμιση δεν είναι πιθανό να αποτρέψει την διαγραφή των AppData κατά την αναβάθμιση",
     "AddNewTmdbIdMessage": "Μπορείτε επίσης να ψάξετε μέσω του TMDB Id της ταινίας. π.χ. tmdb:71663",
-    "AddNewMessage": "Είναι εύκολο να προσθέσετε μια καινούρια ταινία, απλά πληκτρολογήστε το όνομα της ταινίας"
+    "AddNewMessage": "Είναι εύκολο να προσθέσετε μια καινούρια ταινία, απλά πληκτρολογήστε το όνομα της ταινίας",
+    "ConnectionLostAutomaticMessage": "Το Radarr θα προσπαθήσει να συνδεθεί αυτόματα, αλλιώς μπορείτε να κάνετε reload απο κάτω.",
+    "Component": "Στοιχείο",
+    "Columns": "Στήλες",
+    "Close": "Κλείσιμο",
+    "Cancel": "Ακύρωση",
+    "AudioInfo": "Στοιχεία ήχου",
+    "Apply": "Εφαρμογή",
+    "AlternativeTitle": "Εναλακτικός Τίτλος",
+    "AllMoviesHiddenDueToFilter": "Όλες οι ταινίες έχουν κρυφτεί λόγω εφαρμογής φίλτρου",
+    "Age": "Ηλικία",
+    "AddNewMovie": "Προσθήκη Νέας Ταινίας",
+    "AddList": "Προσθήκη Λίστας"
 }
