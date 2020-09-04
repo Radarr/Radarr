@@ -649,5 +649,8 @@
     "OnUpgradeHelpText": "Notificar cuando las películas se hayan actualizado a mejor calidad",
     "OnRenameHelpText": "En Renombrado",
     "OnHealthIssueHelpText": "En Problema de Salud",
-    "OnGrabHelpText": "Al Capturar"
+    "OnGrabHelpText": "Al Capturar",
+    "SettingsRuntimeFormat": "Formato de Tiempo de ejecución",
+    "ImportListSyncIntervalHelpText": "Cómo de frecuéntemente Radarr sincroniza con tus listas.",
+    "MovieIsOnImportExclusionList": "La película está en la Lista de Exclusión"
 }
