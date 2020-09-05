@@ -9,7 +9,7 @@ function getTranslations() {
     dataType: 'json',
     url: `${window.Radarr.apiRoot}/localization`,
     success: function(data) {
-      localization = data.strings;
+      localization = data.Strings;
     }
   };
 
@@ -34,6 +34,5 @@ export default function translate(key, args = '') {
     });
   }
 
-  const formatedKey = key.charAt(0).toLowerCase() + key.slice(1);
-  return translations[formatedKey] || key;
+  return translations[key] || key;
 }
