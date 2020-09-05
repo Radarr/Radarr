@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
                 .Setup(c => c.GetHashFromTorrentFile(It.IsAny<byte[]>()))
                 .Returns("myhash");
 
-            Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<string>>(), It.IsAny<bool>()))
+            Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterPaths(It.IsAny<string>(), It.IsAny<IEnumerable<string>>(), It.IsAny<bool>()))
                   .Returns<string, IEnumerable<string>, bool>((b, s, e) => s.ToList());
         }
 
