@@ -6,6 +6,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
@@ -61,7 +62,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie.Movie = Builder<Movie>.CreateNew().With(m => m.Profile = new Profile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
-                PreferredTags = new List<string> { "DTS-HD", "SPARKS" },
                 FormatItems = CustomFormatsFixture.GetSampleFormatItems(_customFormat1.Name, _customFormat2.Name),
                 MinFormatScore = 0
             })
@@ -88,6 +88,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   {
                       PreferredProtocol = downloadProtocol
                   });
+        }
+
+        [Test]
+        public void should_put_reals_before_non_reals()
+        {
+            var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p, new Revision(version: 1, real: 0)));
+            var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p, new Revision(version: 1, real: 1)));
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteMovie1));
+            decisions.Add(new DownloadDecision(remoteMovie2));
+
+            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Revision.Real.Should().Be(1);
         }
 
         [Test]
@@ -393,23 +407,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_prefer_more_prioritized_words()
-        {
-            var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
-            var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
-
-            remoteMovie1.Release.Title += " DTS-HD";
-            remoteMovie2.Release.Title += " DTS-HD SPARKS";
-
-            var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
-
-            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
-            qualifiedReports.First().RemoteMovie.Release.Should().Be(remoteMovie2.Release);
-        }
-
-        [Test]
         public void should_prefer_better_custom_format()
         {
             var quality1 = new QualityModel(Quality.Bluray720p);
@@ -468,6 +465,95 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Release.Should().Be(remoteMovie2.Release);
+        }
+
+        [Test]
+        public void should_prefer_proper_over_score_when_download_propers_is_prefer_and_upgrade()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.PreferAndUpgrade);
+
+            var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.WEBDL1080p, new Revision(1)));
+            var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.WEBDL1080p, new Revision(2)));
+
+            remoteMovie1.CustomFormatScore = 10;
+            remoteMovie2.CustomFormatScore = 0;
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteMovie1));
+            decisions.Add(new DownloadDecision(remoteMovie2));
+
+            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Revision.Version.Should().Be(2);
+        }
+
+        [Test]
+        public void should_prefer_proper_over_score_when_download_propers_is_do_not_upgrade()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotUpgrade);
+
+            var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.WEBDL1080p, new Revision(1)));
+            var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.WEBDL1080p, new Revision(2)));
+
+            remoteMovie1.CustomFormatScore = 10;
+            remoteMovie2.CustomFormatScore = 0;
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteMovie1));
+            decisions.Add(new DownloadDecision(remoteMovie2));
+
+            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Revision.Version.Should().Be(2);
+        }
+
+        [Test]
+        public void should_prefer_score_over_proper_when_download_propers_is_do_not_prefer()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotPrefer);
+
+            var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.WEBDL1080p, new Revision(1)));
+            var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.WEBDL1080p, new Revision(2)));
+
+            remoteMovie1.CustomFormatScore = 10;
+            remoteMovie2.CustomFormatScore = 0;
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteMovie1));
+            decisions.Add(new DownloadDecision(remoteMovie2));
+
+            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Quality.Should().Be(Quality.WEBDL1080p);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Revision.Version.Should().Be(1);
+            qualifiedReports.First().RemoteMovie.CustomFormatScore.Should().Be(10);
+        }
+
+        [Test]
+        public void should_prefer_score_over_real_when_download_propers_is_do_not_prefer()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotPrefer);
+
+            var remoteMovie1 = GivenRemoteMovie(new QualityModel(Quality.WEBDL1080p, new Revision(1, 0)));
+            var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.WEBDL1080p, new Revision(1, 1)));
+
+            remoteMovie1.CustomFormatScore = 10;
+            remoteMovie2.CustomFormatScore = 0;
+
+            var decisions = new List<DownloadDecision>();
+            decisions.Add(new DownloadDecision(remoteMovie1));
+            decisions.Add(new DownloadDecision(remoteMovie2));
+
+            var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Quality.Should().Be(Quality.WEBDL1080p);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Revision.Version.Should().Be(1);
+            qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Revision.Real.Should().Be(0);
+            qualifiedReports.First().RemoteMovie.CustomFormatScore.Should().Be(10);
         }
     }
 }

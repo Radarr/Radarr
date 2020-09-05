@@ -20,7 +20,6 @@ namespace NzbDrone.Core.Profiles
         public int MinFormatScore { get; set; }
         public int CutoffFormatScore { get; set; }
         public List<ProfileFormatItem> FormatItems { get; set; }
-        public List<string> PreferredTags { get; set; }
         public Language Language { get; set; }
         public bool UpgradeAllowed { get; set; }
 

@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
                 movie = GetMovie(1);
             }
 
-            movie.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities(), PreferredTags = new List<string>() };
+            movie.Profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 
             var remoteMovie = new RemoteMovie()
             {

@@ -30,7 +30,7 @@ namespace NzbDrone.Core.DecisionEngine
             var comparers = new List<CompareDelegate>
             {
                 CompareQuality,
-                ComparePreferredWords,
+                CompareCustomFormatScore,
                 CompareProtocol,
                 CompareIndexerFlags,
                 ComparePeersIfTorrent,
@@ -57,28 +57,18 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareQuality(DownloadDecision x, DownloadDecision y)
         {
+            if (_configService.DownloadPropersAndRepacks == ProperDownloadTypes.DoNotPrefer)
+            {
+                return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.GetIndex(remoteMovie.ParsedMovieInfo.Quality.Quality));
+            }
+
             return CompareAll(CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.GetIndex(remoteMovie.ParsedMovieInfo.Quality.Quality)),
-                              CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.CustomFormatScore),
-                              CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Real),
-                              CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision.Version));
+                              CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision));
         }
 
-        private int ComparePreferredWords(DownloadDecision x, DownloadDecision y)
+        private int CompareCustomFormatScore(DownloadDecision x, DownloadDecision y)
         {
-            return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie =>
-            {
-                var title = remoteMovie.Release.Title;
-                var preferredWords = remoteMovie.Movie.Profile.PreferredTags;
-
-                if (preferredWords == null)
-                {
-                    return 0;
-                }
-
-                var num = preferredWords.AsEnumerable().Count(w => title.ToLower().Contains(w.ToLower()));
-
-                return num;
-            });
+            return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.CustomFormatScore);
         }
 
         private int CompareIndexerFlags(DownloadDecision x, DownloadDecision y)

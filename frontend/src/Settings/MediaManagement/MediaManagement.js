@@ -21,6 +21,12 @@ const rescanAfterRefreshOptions = [
   { key: 'never', value: 'Never' }
 ];
 
+const downloadPropersAndRepacksOptions = [
+  { key: 'preferAndUpgrade', value: 'Prefer and Upgrade' },
+  { key: 'doNotUpgrade', value: 'Do not Upgrade Automatically' },
+  { key: 'doNotPrefer', value: 'Do not Prefer' }
+];
+
 const fileDateOptions = [
   { key: 'none', value: 'None' },
   { key: 'cinemas', value: 'In Cinemas Date' },
@@ -230,14 +236,23 @@ class MediaManagement extends Component {
                     isAdvanced={true}
                     size={sizes.MEDIUM}
                   >
-                    <FormLabel>{translate('DownloadPropers')}</FormLabel>
+                    <FormLabel>{translate('DownloadPropersAndRepacks')}</FormLabel>
 
                     <FormInputGroup
-                      type={inputTypes.CHECK}
-                      name="autoDownloadPropers"
-                      helpText={translate('AutoDownloadPropersHelpText')}
+                      type={inputTypes.SELECT}
+                      name="downloadPropersAndRepacks"
+                      helpTexts={[
+                        translate('DownloadPropersAndRepacksHelpText1'),
+                        translate('DownloadPropersAndRepacksHelpText2')
+                      ]}
+                      helpTextWarning={
+                        settings.downloadPropersAndRepacks.value === 'doNotPrefer' ?
+                          translate('DownloadPropersAndRepacksHelpTextWarning') :
+                          undefined
+                      }
+                      values={downloadPropersAndRepacksOptions}
                       onChange={onInputChange}
-                      {...settings.autoDownloadPropers}
+                      {...settings.downloadPropersAndRepacks}
                     />
                   </FormGroup>
 

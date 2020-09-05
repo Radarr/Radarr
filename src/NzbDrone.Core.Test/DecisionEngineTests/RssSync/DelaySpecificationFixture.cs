@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
     {
         private Profile _profile;
         private DelayProfile _delayProfile;
-        private RemoteMovie _remoteEpisode;
+        private RemoteMovie _remoteMovie;
 
         [SetUp]
         public void Setup()
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                         .With(s => s.Profile = _profile)
                                         .Build();
 
-            _remoteEpisode = Builder<RemoteMovie>.CreateNew()
+            _remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                    .With(r => r.Movie = series)
                                                    .Build();
 
@@ -52,12 +52,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _profile.Cutoff = Quality.WEBDL720p.Id;
 
-            _remoteEpisode.ParsedMovieInfo = new ParsedMovieInfo();
-            _remoteEpisode.Release = new ReleaseInfo();
-            _remoteEpisode.Release.DownloadProtocol = DownloadProtocol.Usenet;
+            _remoteMovie.ParsedMovieInfo = new ParsedMovieInfo();
+            _remoteMovie.Release = new ReleaseInfo();
+            _remoteMovie.Release.DownloadProtocol = DownloadProtocol.Usenet;
 
-            //_remoteEpisode.Episodes = Builder<Episode>.CreateListOfSize(1).Build().ToList();
-            //_remoteEpisode.Episodes.First().EpisodeFileId = 0;
             Mocker.GetMock<IDelayProfileService>()
                   .Setup(s => s.BestForTags(It.IsAny<HashSet<int>>()))
                   .Returns(_delayProfile);
@@ -70,7 +68,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         private void GivenExistingFile(QualityModel quality)
         {
             //_remoteEpisode.Episodes.First().EpisodeFileId = 1;
-            _remoteEpisode.Movie.MovieFile = new MovieFile { Quality = quality };
+            _remoteMovie.Movie.MovieFile = new MovieFile { Quality = quality };
         }
 
         private void GivenUpgradeForExistingFile()
@@ -89,12 +87,12 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_system_invoked_search_and_release_is_younger_than_delay()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.SDTV);
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.SDTV);
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, new MovieSearchCriteria()).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, new MovieSearchCriteria()).Accepted.Should().BeFalse();
         }
 
         [Test]
@@ -102,44 +100,44 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         {
             _delayProfile.UsenetDelay = 0;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_be_true_when_quality_is_last_allowed_in_profile()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray720p);
+            _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray720p);
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_be_true_when_release_is_older_than_delay()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p);
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow.AddHours(-10);
+            _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p);
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow.AddHours(-10);
 
             _delayProfile.UsenetDelay = 60;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
         public void should_be_false_when_release_is_younger_than_delay()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.SDTV);
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.SDTV);
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_be_true_when_release_is_a_proper_for_existing_episode()
+        public void should_be_true_when_release_is_a_proper_for_existing_movie()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 2));
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 2));
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
 
             GivenExistingFile(new QualityModel(Quality.HDTV720p));
             GivenUpgradeForExistingFile();
@@ -150,14 +148,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void should_be_true_when_release_is_a_real_for_existing_episode()
+        public void should_be_true_when_release_is_a_real_for_existing_movie()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p, new Revision(real: 1));
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p, new Revision(real: 1));
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
 
             GivenExistingFile(new QualityModel(Quality.HDTV720p));
             GivenUpgradeForExistingFile();
@@ -168,20 +166,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void should_be_false_when_release_is_proper_for_existing_episode_of_different_quality()
+        public void should_be_false_when_release_is_proper_for_existing_movie_of_different_quality()
         {
-            _remoteEpisode.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 2));
-            _remoteEpisode.Release.PublishDate = DateTime.UtcNow;
+            _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 2));
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
 
             GivenExistingFile(new QualityModel(Quality.SDTV));
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteEpisode, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
     }
 }

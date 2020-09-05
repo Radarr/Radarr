@@ -12,7 +12,6 @@ namespace Radarr.Api.V3.Profiles.Quality
         public string Name { get; set; }
         public bool UpgradeAllowed { get; set; }
         public int Cutoff { get; set; }
-        public string PreferredTags { get; set; }
         public List<QualityProfileQualityItemResource> Items { get; set; }
         public int MinFormatScore { get; set; }
         public int CutoffFormatScore { get; set; }
@@ -55,7 +54,6 @@ namespace Radarr.Api.V3.Profiles.Quality
                 Name = model.Name,
                 UpgradeAllowed = model.UpgradeAllowed,
                 Cutoff = model.Cutoff,
-                PreferredTags = model.PreferredTags != null ? string.Join(",", model.PreferredTags) : "",
                 Items = model.Items.ConvertAll(ToResource),
                 MinFormatScore = model.MinFormatScore,
                 CutoffFormatScore = model.CutoffFormatScore,
@@ -104,7 +102,6 @@ namespace Radarr.Api.V3.Profiles.Quality
                 Name = resource.Name,
                 UpgradeAllowed = resource.UpgradeAllowed,
                 Cutoff = resource.Cutoff,
-                PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
                 MinFormatScore = resource.MinFormatScore,
                 CutoffFormatScore = resource.CutoffFormatScore,

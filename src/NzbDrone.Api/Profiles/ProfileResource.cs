@@ -13,7 +13,6 @@ namespace NzbDrone.Api.Profiles
     {
         public string Name { get; set; }
         public Quality Cutoff { get; set; }
-        public string PreferredTags { get; set; }
         public List<ProfileQualityItemResource> Items { get; set; }
         public int MinFormatScore { get; set; }
         public int CutoffFormatScore { get; set; }
@@ -66,7 +65,6 @@ namespace NzbDrone.Api.Profiles
                 Id = model.Id,
 
                 Name = model.Name,
-                PreferredTags = model.PreferredTags != null ? string.Join(",", model.PreferredTags) : "",
                 Cutoff = cutoff,
 
                 // Flatten groups so things don't explode
@@ -127,7 +125,6 @@ namespace NzbDrone.Api.Profiles
 
                 Name = resource.Name,
                 Cutoff = resource.Cutoff.Id,
-                PreferredTags = resource.PreferredTags.Split(',').ToList(),
                 Items = resource.Items.ConvertAll(ToModel),
                 MinFormatScore = resource.MinFormatScore,
                 CutoffFormatScore = resource.CutoffFormatScore,
