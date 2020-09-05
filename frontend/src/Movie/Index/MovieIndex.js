@@ -369,7 +369,7 @@ class MovieIndex extends Component {
             />
 
             <PageToolbarButton
-              label={translate('RssSync')}
+              label={translate('RSSSync')}
               iconName={icons.RSS}
               isSpinning={isRssSyncExecuting}
               isDisabled={hasNoMovie}

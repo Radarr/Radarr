@@ -115,12 +115,12 @@ function HostSettings(props) {
             advancedSettings={advancedSettings}
             isAdvanced={true}
           >
-            <FormLabel>{translate('SslCertPath')}</FormLabel>
+            <FormLabel>{translate('SSLCertPath')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.TEXT}
               name="sslCertPath"
-              helpText={translate('SslCertPathHelpText')}
+              helpText={translate('SSLCertPathHelpText')}
               helpTextWarning={translate('RestartRequiredHelpTextWarning')}
               onChange={onInputChange}
               {...sslCertPath}
@@ -140,7 +140,7 @@ function HostSettings(props) {
             <FormInputGroup
               type={inputTypes.PASSWORD}
               name="sslCertPassword"
-              helpText={translate('SslCertPasswordHelpText')}
+              helpText={translate('SSLCertPasswordHelpText')}
               helpTextWarning={translate('RestartRequiredHelpTextWarning')}
               onChange={onInputChange}
               {...sslCertPassword}

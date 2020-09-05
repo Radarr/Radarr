@@ -106,7 +106,7 @@ function IndexerOptions(props) {
               advancedSettings={advancedSettings}
               isAdvanced={true}
             >
-              <FormLabel>{translate('RssSyncInterval')}</FormLabel>
+              <FormLabel>{translate('RSSSyncInterval')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.NUMBER}
@@ -115,7 +115,7 @@ function IndexerOptions(props) {
                 max={120}
                 unit="minutes"
                 helpText={translate('HelpText')}
-                helpTextWarning={translate('RssSyncIntervalHelpTextWarning')}
+                helpTextWarning={translate('RSSSyncIntervalHelpTextWarning')}
                 helpLink="https://github.com/Radarr/Radarr/wiki/RSS-Sync"
                 onChange={onInputChange}
                 {...settings.rssSyncInterval}

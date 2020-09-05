@@ -110,7 +110,7 @@ class CalendarPage extends Component {
             <PageToolbarSeparator />
 
             <PageToolbarButton
-              label={translate('RssSync')}
+              label={translate('RSSSync')}
               iconName={icons.RSS}
               isSpinning={isRssSyncExecuting}
               onPress={onRssSyncPress}
