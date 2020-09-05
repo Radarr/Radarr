@@ -24,7 +24,7 @@ namespace NzbDrone.Core.MediaFiles
         void Scan(Movie movie);
         string[] GetVideoFiles(string path, bool allDirectories = true);
         string[] GetNonVideoFiles(string path, bool allDirectories = true);
-        List<string> FilterFiles(string basePath, IEnumerable<string> files, bool filterExtras = true);
+        List<string> FilterPaths(string basePath, IEnumerable<string> paths, bool filterExtras = true);
     }
 
     public class DiskScanService :
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.MediaFiles
             }
 
             var videoFilesStopwatch = Stopwatch.StartNew();
-            var mediaFileList = FilterFiles(movie.Path, GetVideoFiles(movie.Path)).ToList();
+            var mediaFileList = FilterPaths(movie.Path, GetVideoFiles(movie.Path)).ToList();
             videoFilesStopwatch.Stop();
             _logger.Trace("Finished getting movie files for: {0} [{1}]", movie, videoFilesStopwatch.Elapsed);
 
@@ -180,20 +180,20 @@ namespace NzbDrone.Core.MediaFiles
             return mediaFileList.ToArray();
         }
 
-        public List<string> FilterFiles(string basePath, IEnumerable<string> files, bool filterExtras = true)
+        public List<string> FilterPaths(string basePath, IEnumerable<string> paths, bool filterExtras = true)
         {
-            var filteredFiles =  files.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file)))
-                        .Where(file => !ExcludedFilesRegex.IsMatch(Path.GetFileName(file)))
-                        .ToList();
+            var filteredPaths =  paths.Where(path => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(path)))
+                                      .Where(path => !ExcludedFilesRegex.IsMatch(Path.GetFileName(path)))
+                                      .ToList();
 
             if (filterExtras)
             {
-                filteredFiles = filteredFiles.Where(file => !ExcludedExtrasSubFolderRegex.IsMatch(basePath.GetRelativePath(file)))
-                                             .Where(file => !ExcludedExtraFilesRegex.IsMatch(Path.GetFileName(file)))
+                filteredPaths = filteredPaths.Where(path => !ExcludedExtrasSubFolderRegex.IsMatch(basePath.GetRelativePath(path)))
+                                             .Where(path => !ExcludedExtraFilesRegex.IsMatch(Path.GetFileName(path)))
                                              .ToList();
             }
 
-            return filteredFiles;
+            return filteredPaths;
         }
 
         private void SetPermissions(string path)
