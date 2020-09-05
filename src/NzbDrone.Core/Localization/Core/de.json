@@ -637,7 +637,7 @@
     "MaximumLimits": "Maximale Grenzen",
     "RecycleBinCleanupDaysHelpTextWarning": "Datien im Papierkorb die älter sind als der gewählte Wert, werden endgültig gelöscht",
     "UnableToLoadRemotePathMappings": "Entfernte Pfadzuordnungen konnten nicht geladen werden",
-    "BlacklistHelpText": "Hindert Radarr daran, diesen Film automatisch erneut zu erfassen",
+    "BlacklistHelpText": "Hindert Radarr daran, dieses Release automatisch erneut zu erfassen",
     "DeleteEmptyFoldersHelpText": "Lösche leere Filmeordner während des Scans oder wenn Filmdateien gelöscht werden",
     "MaximumSizeHelpText": "Maximale Größe für ein zu erfassendes Release in MB. 0 bedeutet unbegrenzt",
     "ReleaseDates": "VÖ Termine",
