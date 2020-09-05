@@ -521,11 +521,13 @@ export const actionHandlers = handleThunks({
       // Make sure we have a selected movie and
       // the same movie hasn't been added yet.
       if (selectedMovie && !acc.some((a) => a.tmdbId === selectedMovie.tmdbId)) {
-        const newMovie = getNewMovie(_.cloneDeep(selectedMovie), addOptions);
-        newMovie.id = 0;
+        if (!selectedMovie.isExisting) {
+          const newMovie = getNewMovie(_.cloneDeep(selectedMovie), addOptions);
+          newMovie.id = 0;
 
-        addedIds.push(id);
-        acc.push(newMovie);
+          addedIds.push(id);
+          acc.push(newMovie);
+        }
       }
 
       return acc;
@@ -548,24 +550,19 @@ export const actionHandlers = handleThunks({
 
         ...data.map((movie) => updateItem({ section: 'movies', ...movie })),
 
-        ...addedIds.map((id) => removeItem({ section, id }))
+        ...addedIds.map((id) => (items.find((i) => i.id === id).lists.length === 0 ? removeItem({ section, id }) : updateItem({ section, id, isExisting: true })))
+
       ]));
     });
 
     promise.fail((xhr) => {
-      dispatch(batchActions(
+      dispatch(
         set({
           section,
-          isImporting: false,
-          isImported: true
-        }),
-
-        addedIds.map((id) => updateItem({
-          section,
-          id,
-          importError: xhr
-        }))
-      ));
+          isAdding: false,
+          isAdded: true
+        })
+      );
     });
   },
 
