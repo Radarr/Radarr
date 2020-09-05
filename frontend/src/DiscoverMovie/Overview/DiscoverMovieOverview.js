@@ -219,10 +219,12 @@ class DiscoverMovieOverview extends Component {
             </div>
 
             <div className={styles.details}>
-              <TextTruncate
-                line={Math.floor(overviewHeight / (defaultFontSize * lineHeight))}
-                text={overview}
-              />
+              <div className={styles.overview}>
+                <TextTruncate
+                  line={Math.floor(overviewHeight / (defaultFontSize * lineHeight))}
+                  text={overview}
+                />
+              </div>
 
               <DiscoverMovieOverviewInfo
                 height={overviewHeight}
