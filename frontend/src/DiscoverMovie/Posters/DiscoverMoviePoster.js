@@ -154,7 +154,7 @@ class DiscoverMoviePoster extends Component {
             isExcluded &&
               <div
                 className={styles.excluded}
-                title={translate('Exluded')}
+                title={translate('Excluded')}
               />
           }
 

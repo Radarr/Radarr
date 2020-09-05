@@ -44,7 +44,9 @@ function RootFolders(props) {
 
   if (!isFetching && !!error) {
     return (
-      <div>Unable to load root folders</div>
+      <div>
+        {translate('UnableToLoadRootFolders')}
+      </div>
     );
   }
 

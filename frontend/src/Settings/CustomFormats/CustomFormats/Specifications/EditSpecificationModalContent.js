@@ -51,8 +51,14 @@ function EditSpecificationModalContent(props) {
           {
             fields && fields.some((x) => x.label === 'Regular Expression') &&
               <Alert kind={kinds.INFO}>
-                <div>This condition matches using Regular Expressions.  See <Link to="https://www.regular-expressions.info/tutorial.html">here</Link> for details.  Note that the characters <code>{'\\^$.|?*+()[{'}</code> have special meanings and need escaping with a <code>\</code></div>
-                <div>Regular expressions can be tested <Link to="http://regexstorm.net/tester">here</Link>.</div>
+                <div>
+                  <div dangerouslySetInnerHTML={{ __html: translate('ThisConditionMatchesUsingRegularExpressions', ['<code>\\^$.|?*+()[{</code>', '<code>\\</code>']) }} />
+                  {translate('MoreDetails')} <Link to="https://www.regular-expressions.info/tutorial.html">{translate('LinkHere')}</Link>
+                </div>
+                <div>
+                  {translate('RegularExpressionsCanBeTested')}
+                  <Link to="http://regexstorm.net/tester">{translate('LinkHere')}</Link>
+                </div>
               </Alert>
           }
 

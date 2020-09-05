@@ -86,7 +86,9 @@ class ImportMovieSelectFolder extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to load root folders</div>
+              <div>
+                {translate('UnableToLoadRootFolders')}
+              </div>
           }
 
           {

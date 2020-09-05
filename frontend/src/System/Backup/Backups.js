@@ -102,12 +102,16 @@ class Backups extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to load backups</div>
+              <div>
+                {translate('UnableToLoadBackups')}
+              </div>
           }
 
           {
             noBackups &&
-              <div>No backups are available</div>
+              <div>
+                {translate('NoBackupsAreAvailable')}
+              </div>
           }
 
           {

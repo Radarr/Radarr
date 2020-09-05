@@ -83,7 +83,9 @@ class History extends Component {
 
           {
             !isFetchingAny && hasError &&
-              <div>Unable to load history</div>
+              <div>
+                {translate('UnableToLoadHistory')}
+              </div>
           }
 
           {

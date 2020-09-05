@@ -43,7 +43,9 @@ class AddIndexerModalContent extends Component {
 
           {
             !isSchemaFetching && !!schemaError &&
-              <div>Unable to add a new indexer, please try again.</div>
+              <div>
+                {translate('UnableToAddANewIndexerPleaseTryAgain')}
+              </div>
           }
 
           {
@@ -51,8 +53,12 @@ class AddIndexerModalContent extends Component {
               <div>
 
                 <Alert kind={kinds.INFO}>
-                  <div>Radarr supports any indexer that uses the Newznab standard, as well as other indexers listed below.</div>
-                  <div>For more information on the individual indexers, click on the info buttons.</div>
+                  <div>
+                    {translate('RadarrSupportsAnyIndexer')}
+                  </div>
+                  <div>
+                    {translate('ForMoreInformationOnTheIndividualIndexers')}
+                  </div>
                 </Alert>
 
                 <FieldSet legend={translate('Usenet')}>

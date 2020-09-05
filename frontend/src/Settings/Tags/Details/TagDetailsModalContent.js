@@ -35,7 +35,9 @@ function TagDetailsModalContent(props) {
       <ModalBody>
         {
           !isTagUsed &&
-            <div>Tag is not used and can be deleted</div>
+            <div>
+              {translate('TagIsNotUsedAndCanBeDeleted')}
+            </div>
         }
 
         {

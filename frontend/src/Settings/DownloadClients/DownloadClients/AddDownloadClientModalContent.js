@@ -43,7 +43,9 @@ class AddDownloadClientModalContent extends Component {
 
           {
             !isSchemaFetching && !!schemaError &&
-              <div>Unable to add a new downloadClient, please try again.</div>
+              <div>
+                {translate('UnableToAddANewDownloadClientPleaseTryAgain')}
+              </div>
           }
 
           {
@@ -51,8 +53,12 @@ class AddDownloadClientModalContent extends Component {
               <div>
 
                 <Alert kind={kinds.INFO}>
-                  <div>Radarr supports any downloadClient that uses the Newznab standard, as well as other downloadClients listed below.</div>
-                  <div>For more information on the individual downloadClients, clink on the info buttons.</div>
+                  <div>
+                    {translate('RadarrSupportsAnyDownloadClient')}
+                  </div>
+                  <div>
+                    {translate('ForMoreInformationOnTheIndividualDownloadClients')}
+                  </div>
                 </Alert>
 
                 <FieldSet legend={translate('Usenet')}>

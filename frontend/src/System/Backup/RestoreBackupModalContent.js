@@ -168,7 +168,9 @@ class RestoreBackupModalContent extends Component {
                 />
               </div>
 
-              <div>Restore</div>
+              <div>
+                {translate('Restore')}
+              </div>
             </div>
 
             <div className={styles.step}>
@@ -179,7 +181,9 @@ class RestoreBackupModalContent extends Component {
                 />
               </div>
 
-              <div>Restart</div>
+              <div>
+                {translate('Restart')}
+              </div>
             </div>
 
             <div className={styles.step}>
@@ -190,7 +194,9 @@ class RestoreBackupModalContent extends Component {
                 />
               </div>
 
-              <div>Reload</div>
+              <div>
+                {translate('Reload')}
+              </div>
             </div>
           </div>
         </ModalBody>

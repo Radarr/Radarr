@@ -32,7 +32,9 @@ function MetadataOptions(props) {
 
       {
         !isFetching && error &&
-          <div>Unable to load indexer options</div>
+          <div>
+            {translate('UnableToLoadIndexerOptions')}
+          </div>
       }
 
       {

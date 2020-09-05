@@ -58,7 +58,9 @@ class Updates extends Component {
 
           {
             noUpdates &&
-              <div>No updates are available</div>
+              <div>
+                {translate('NoUpdatesAreAvailable')}
+              </div>
           }
 
           {
@@ -162,7 +164,9 @@ class Updates extends Component {
 
                         {
                           !hasChanges &&
-                            <div>Maintenance release</div>
+                            <div>
+                              {translate('MaintenanceRelease')}
+                            </div>
                         }
 
                         {

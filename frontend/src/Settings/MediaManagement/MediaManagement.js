@@ -66,7 +66,9 @@ class MediaManagement extends Component {
           {
             !isFetching && error &&
               <FieldSet legend={translate('NamingSettings')}>
-                <div>Unable to load Media Management settings</div>
+                <div>
+                  {translate('UnableToLoadMediaManagementSettings')}
+                </div>
               </FieldSet>
           }
 
@@ -197,8 +199,8 @@ class MediaManagement extends Component {
                               type={inputTypes.TEXT}
                               name="extraFileExtensions"
                               helpTexts={[
-                                'Comma separated list of extra files to import (.nfo will be imported as .nfo-orig)',
-                                'Examples: ".sub, .nfo" or "sub,nfo"'
+                                translate('ExtraFileExtensionsHelpTexts1'),
+                                translate('ExtraFileExtensionsHelpTexts2')
                               ]}
                               onChange={onInputChange}
                               {...settings.extraFileExtensions}
@@ -353,8 +355,8 @@ class MediaManagement extends Component {
                           type={inputTypes.TEXT}
                           name="fileChmod"
                           helpTexts={[
-                            'Octal, applied to media files when imported/renamed by Radarr',
-                            'The same mode is applied to movie/sub folders with the execute bit added, e.g., 0644 becomes 0755'
+                            translate('FileChmodHelpTexts1'),
+                            translate('FileChmodHelpTexts2')
                           ]}
                           onChange={onInputChange}
                           {...settings.fileChmod}

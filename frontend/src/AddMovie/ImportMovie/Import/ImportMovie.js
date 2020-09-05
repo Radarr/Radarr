@@ -104,7 +104,9 @@ class ImportMovie extends Component {
 
           {
             !rootFoldersFetching && !!rootFoldersError ?
-              <div>Unable to load root folders</div> :
+              <div>
+                {translate('UnableToLoadRootFolders')}
+              </div> :
               null
           }
 

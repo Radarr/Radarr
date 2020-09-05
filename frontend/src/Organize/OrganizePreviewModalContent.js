@@ -103,7 +103,9 @@ class OrganizePreviewModalContent extends Component {
 
           {
             !isFetching && error &&
-              <div>Error loading previews</div>
+              <div>
+                {translate('ErrorLoadingPreviews')}
+              </div>
           }
 
           {

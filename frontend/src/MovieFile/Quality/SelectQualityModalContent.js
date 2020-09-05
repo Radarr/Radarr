@@ -92,7 +92,9 @@ class SelectQualityModalContent extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to load qualities</div>
+              <div>
+                {translate('UnableToLoadQualities')}
+              </div>
           }
 
           {

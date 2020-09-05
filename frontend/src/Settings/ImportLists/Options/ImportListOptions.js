@@ -35,7 +35,9 @@ function ImportListOptions(props) {
 
       {
         !isFetching && error &&
-          <div>Unable to load list options</div>
+          <div>
+            {translate('UnableToLoadListOptions')}
+          </div>
       }
 
       {

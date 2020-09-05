@@ -32,7 +32,9 @@ function LogsTableDetailsModal(props) {
         </ModalHeader>
 
         <ModalBody>
-          <div>Message</div>
+          <div>
+            {translate('Message')}
+          </div>
 
           <Scroller
             className={styles.detailsText}
@@ -44,7 +46,9 @@ function LogsTableDetailsModal(props) {
           {
             !!exception &&
               <div>
-                <div>Exception</div>
+                <div>
+                  {translate('Exception')}
+                </div>
                 <Scroller
                   className={styles.detailsText}
                   scrollDirection={scrollDirections.HORIZONTAL}

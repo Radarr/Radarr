@@ -42,7 +42,9 @@ class AddSpecificationModalContent extends Component {
 
           {
             !isSchemaFetching && !!schemaError &&
-              <div>Unable to add a new condition, please try again.</div>
+              <div>
+                {translate('UnableToAddANewConditionPleaseTryAgain')}
+              </div>
           }
 
           {
@@ -50,8 +52,13 @@ class AddSpecificationModalContent extends Component {
               <div>
 
                 <Alert kind={kinds.INFO}>
-                  <div>Radarr supports custom conditions against the release properties below.</div>
-                  <div>Visit <Link to='https://github.com/Radarr/Radarr/wiki/Custom-Formats-Aphrodite'>GitHub</Link> for more details.</div>
+                  <div>
+                    {translate('RadarrSupportsCustomConditionsAgainstTheReleasePropertiesBelow')}
+                  </div>
+                  <div>
+                    {translate('VisitGithubCustomFormatsAphrodite')}
+                    <Link to="https://github.com/Radarr/Radarr/wiki/Custom-Formats-Aphrodite">GitHub</Link>
+                  </div>
                 </Alert>
 
                 <div className={styles.specifications}>

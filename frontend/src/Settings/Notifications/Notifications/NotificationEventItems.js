@@ -90,7 +90,7 @@ function NotificationEventItems(props) {
             <FormInputGroup
               type={inputTypes.CHECK}
               name="onDelete"
-              helpText="On Delete"
+              helpText={translate('OnDeleteHelpText')}
               isDisabled={!supportsOnDelete.value}
               {...onDelete}
               onChange={onInputChange}

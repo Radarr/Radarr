@@ -135,7 +135,7 @@ class FileBrowserModalContent extends Component {
 
           <PathInput
             className={styles.pathInput}
-            placeholder="Start typing or select a path below"
+            placeholder={translate('StartTypingOrSelectAPathBelow')}
             hasFileBrowser={false}
             {...otherProps}
             value={this.state.currentPath}
@@ -149,7 +149,9 @@ class FileBrowserModalContent extends Component {
           >
             {
               !!error &&
-                <div>Error loading contents</div>
+                <div>
+                  {translate('ErrorLoadingContents')}
+                </div>
             }
 
             {

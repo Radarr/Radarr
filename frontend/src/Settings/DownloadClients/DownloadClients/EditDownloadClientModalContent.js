@@ -64,7 +64,9 @@ class EditDownloadClientModalContent extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to add a new download client, please try again.</div>
+              <div>
+                {translate('UnableToAddANewDownloadClientPleaseTryAgain')}
+              </div>
           }
 
           {

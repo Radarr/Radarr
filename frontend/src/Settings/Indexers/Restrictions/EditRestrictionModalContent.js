@@ -51,7 +51,7 @@ function EditRestrictionModalContent(props) {
               name="required"
               helpText={translate('RequiredHelpText')}
               kind={kinds.SUCCESS}
-              placeholder="Add new restriction"
+              placeholder={translate('RequiredPlaceHolder')}
               {...required}
               onChange={onInputChange}
             />
@@ -65,7 +65,7 @@ function EditRestrictionModalContent(props) {
               name="ignored"
               helpText={translate('IgnoredHelpText')}
               kind={kinds.DANGER}
-              placeholder="Add new restriction"
+              placeholder={translate('IgnoredPlaceHolder')}
               {...ignored}
               onChange={onInputChange}
             />

@@ -52,7 +52,9 @@ function EditRemotePathMappingModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>Unable to add a new remote path mapping, please try again.</div>
+            <div>
+              {translate('UnableToAddANewRemotePathMappingPleaseTryAgain')}
+            </div>
         }
 
         {

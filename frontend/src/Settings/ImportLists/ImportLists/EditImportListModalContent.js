@@ -63,7 +63,9 @@ function EditImportListModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>Unable to add a new list, please try again.</div>
+            <div>
+              {translate('UnableToAddANewListPleaseTryAgain')}
+            </div>
         }
 
         {

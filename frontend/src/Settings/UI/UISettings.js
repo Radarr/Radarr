@@ -80,7 +80,9 @@ class UISettings extends Component {
 
           {
             !isFetching && error &&
-              <div>Unable to load UI settings</div>
+              <div>
+                {translate('UnableToLoadUISettings')}
+              </div>
           }
 
           {
