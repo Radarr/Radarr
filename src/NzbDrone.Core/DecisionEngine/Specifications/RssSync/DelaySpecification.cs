@@ -46,21 +46,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             var delay = delayProfile.GetProtocolDelay(subject.Release.DownloadProtocol);
             var isPreferredProtocol = subject.Release.DownloadProtocol == delayProfile.PreferredProtocol;
 
-            // Preferred word count
-            var title = subject.Release.Title;
-            var preferredWords = subject.Movie.Profile?.PreferredTags;
-            var preferredCount = 0;
-
-            if (preferredWords == null)
-            {
-                preferredCount = 1;
-                _logger.Debug("Preferred words is null, setting preffered count to 1.");
-            }
-            else
-            {
-                preferredCount = preferredWords.AsEnumerable().Count(w => title.ToLower().Contains(w.ToLower()));
-            }
-
             if (delay == 0)
             {
                 _logger.Debug("Profile does not require a waiting period before download for {0}.", subject.Release.DownloadProtocol);
@@ -71,7 +56,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             var file = subject.Movie.MovieFile;
 
-            if (isPreferredProtocol && (subject.Movie.MovieFileId != 0 && file != null) && (preferredCount > 0 || preferredWords == null))
+            if (isPreferredProtocol && (subject.Movie.MovieFileId != 0 && file != null))
             {
                 var customFormats = _formatService.ParseCustomFormat(file);
                 var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile,
@@ -86,7 +71,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
                     if (revisionUpgrade)
                     {
-                        _logger.Debug("New quality is a better revision for existing quality and preferred word count is {0}, skipping delay", preferredCount);
+                        _logger.Debug("New quality is a better revision for existing quality, skipping delay");
                         return Decision.Accept();
                     }
                 }
@@ -96,9 +81,9 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             var bestQualityInProfile = profile.LastAllowedQuality();
             var isBestInProfile = comparer.Compare(subject.ParsedMovieInfo.Quality.Quality, bestQualityInProfile) >= 0;
 
-            if (isBestInProfile && isPreferredProtocol && (preferredCount > 0 || preferredWords == null))
+            if (isBestInProfile && isPreferredProtocol)
             {
-                _logger.Debug("Quality is highest in profile for preferred protocol and preferred word count is {0}, will not delay.", preferredCount);
+                _logger.Debug("Quality is highest in profile for preferred protocol, will not delay.");
                 return Decision.Accept();
             }
 

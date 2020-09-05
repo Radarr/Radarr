@@ -1,5 +1,6 @@
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
+using NzbDrone.Core.Qualities;
 using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Config
@@ -8,7 +9,7 @@ namespace NzbDrone.Api.Config
     {
         public bool AutoUnmonitorPreviouslyDownloadedEpisodes { get; set; }
         public string RecycleBin { get; set; }
-        public bool AutoDownloadPropers { get; set; }
+        public ProperDownloadTypes DownloadPropersAndRepacks { get; set; }
         public bool CreateEmptySeriesFolders { get; set; }
         public FileDateType FileDate { get; set; }
         public bool AutoRenameFolders { get; set; }
@@ -32,7 +33,7 @@ namespace NzbDrone.Api.Config
             {
                 AutoUnmonitorPreviouslyDownloadedEpisodes = model.AutoUnmonitorPreviouslyDownloadedMovies,
                 RecycleBin = model.RecycleBin,
-                AutoDownloadPropers = model.AutoDownloadPropers,
+                DownloadPropersAndRepacks = model.DownloadPropersAndRepacks,
                 CreateEmptySeriesFolders = model.CreateEmptyMovieFolders,
                 FileDate = model.FileDate,
                 AutoRenameFolders = model.AutoRenameFolders,
