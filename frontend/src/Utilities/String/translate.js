@@ -25,12 +25,8 @@ const translations = getTranslations();
 export default function translate(key, args = '') {
   if (args) {
     const translatedKey = translate(key);
-    return translatedKey.replace(/(\{\{\d\}\}|\{\d\})/g, (translatedKeyDbl) => {
-      if (translatedKeyDbl.substring(0, 2) === '{{') {
-        return translatedKeyDbl;
-      }
-      const match = parseInt(translatedKey.match(/\d/)[0]);
-      return args[match];
+    return translatedKey.replace(/\{(\d+)\}/g, (match, index) => {
+      return args[index];
     });
   }
 

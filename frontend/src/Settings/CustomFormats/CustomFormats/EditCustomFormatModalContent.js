@@ -101,7 +101,9 @@ class EditCustomFormatModalContent extends Component {
 
             {
               !isFetching && !!error &&
-                <div>Unable to add a new custom format, please try again.</div>
+                <div>
+                  {translate('UnableToAddANewCustomFormatPleaseTryAgain')}
+                </div>
             }
 
             {

@@ -94,10 +94,10 @@ class TagsModalContent extends Component {
                 value={applyTags}
                 values={applyTagsOptions}
                 helpTexts={[
-                  'How to apply tags to the selected movies',
-                  'Add: Add the tags the existing list of tags',
-                  'Remove: Remove the entered tags',
-                  'Replace: Replace the tags with the entered tags (enter no tags to clear all tags)'
+                  translate('ApplyTagsHelpTexts1'),
+                  translate('ApplyTagsHelpTexts2'),
+                  translate('ApplyTagsHelpTexts3'),
+                  translate('ApplyTagsHelpTexts4')
                 ]}
                 onChange={this.onInputChange}
               />

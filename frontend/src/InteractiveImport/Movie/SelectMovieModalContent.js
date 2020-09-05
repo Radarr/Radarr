@@ -183,7 +183,7 @@ class SelectMovieModalContent extends Component {
         >
           <TextInput
             className={styles.filterInput}
-            placeholder="Search movies"
+            placeholder={translate('FilterPlaceHolder')}
             name="filter"
             value={filter}
             autoFocus={true}

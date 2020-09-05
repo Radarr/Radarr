@@ -14,7 +14,9 @@ function Tags(props) {
 
   if (!items.length) {
     return (
-      <div>No tags have been added yet</div>
+      <div>
+        {translate('NoTagsHaveBeenAddedYet')}
+      </div>
     );
   }
 

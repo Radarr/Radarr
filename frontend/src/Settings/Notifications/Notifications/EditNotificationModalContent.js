@@ -59,7 +59,9 @@ function EditNotificationModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>Unable to add a new notification, please try again.</div>
+            <div>
+              {translate('UnableToAddANewNotificationPleaseTryAgain')}
+            </div>
         }
 
         {

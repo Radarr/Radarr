@@ -43,7 +43,9 @@ class AddImportListModalContent extends Component {
 
           {
             !isSchemaFetching && !!schemaError &&
-              <div>Unable to add a new list, please try again.</div>
+              <div>
+                {translate('UnableToAddANewListPleaseTryAgain')}
+              </div>
           }
 
           {
@@ -51,8 +53,12 @@ class AddImportListModalContent extends Component {
               <div>
 
                 <Alert kind={kinds.INFO}>
-                  <div>Radarr supports any RSS movie lists as well as the one stated below.</div>
-                  <div>For more information on the individual importLists, clink on the info buttons.</div>
+                  <div>
+                    {translate('RadarrSupportsAnyRSSMovieListsAsWellAsTheOneStatedBelow')}
+                  </div>
+                  <div>
+                    {translate('ForMoreInformationOnTheIndividualImportListsClinkOnTheInfoButtons')}
+                  </div>
                 </Alert>
 
                 {

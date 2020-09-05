@@ -376,7 +376,9 @@ class DiscoverMovie extends Component {
 
             {
               !isFetching && !!error &&
-                <div>Unable to load movies</div>
+                <div>
+                  {translate('UnableToLoadMovies')}
+                </div>
             }
 
             {

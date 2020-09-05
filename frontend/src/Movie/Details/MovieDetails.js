@@ -581,17 +581,23 @@ class MovieDetails extends Component {
           <div className={styles.contentContainer}>
             {
               !isFetching && movieFilesError &&
-                <div>Loading movie files failed</div>
+                <div>
+                  {translate('LoadingMovieFilesFailed')}
+                </div>
             }
 
             {
               !isFetching && movieCreditsError &&
-                <div>Loading movie credits failed</div>
+                <div>
+                  {translate('LoadingMovieCreditsFailed')}
+                </div>
             }
 
             {
               !isFetching && extraFilesError &&
-                <div>Loading movie extra files failed</div>
+                <div>
+                  {translate('LoadingMovieExtraFilesFailed')}
+                </div>
             }
 
             <Tabs selectedIndex={this.state.tabIndex} onSelect={(tabIndex) => this.setState({ selectedTabIndex: tabIndex })}>

@@ -127,7 +127,7 @@ class AddNewMovie extends Component {
             !isFetching && !!error ?
               <div className={styles.message}>
                 <div className={styles.helpText}>
-                  Failed to load search results, please try again.
+                  {translate('FailedLoadingSearchResults')}
                 </div>
                 <div>{getErrorMessage(error)}</div>
               </div> : null
@@ -152,11 +152,15 @@ class AddNewMovie extends Component {
           {
             !isFetching && !error && !items.length && !!term &&
               <div className={styles.message}>
-                <div className={styles.noResults}>Couldn't find any results for '{term}'</div>
-                <div>You can also search using TMDB ID or IMDB ID of a movie. eg. tmdb:71663</div>
+                <div className={styles.noResults}>
+                  (translate('CouldNotFindResults', [term]))
+                </div>
+                <div>
+                  {translate('YouCanAlsoSearch')}
+                </div>
                 <div>
                   <Link to="https://github.com/Radarr/Radarr/wiki/FAQ#why-cant-i-add-a-new-movie-when-i-know-the-tmdb-id">
-                    Why can't I find my movie?
+                    {translate('CantFindMovie')}
                   </Link>
                 </div>
               </div>
@@ -169,7 +173,9 @@ class AddNewMovie extends Component {
                 <div className={styles.helpText}>
                   {translate('AddNewMessage')}
                 </div>
-                <div>{translate('AddNewTmdbIdMessage')}</div>
+                <div>
+                  {translate('AddNewTmdbIdMessage')}
+                </div>
               </div>
           }
 
@@ -177,7 +183,7 @@ class AddNewMovie extends Component {
             !term && !hasExistingMovies ?
               <div className={styles.message}>
                 <div className={styles.noMoviesText}>
-                  You haven't added any movies yet, do you want to import some or all of your movies first?
+                  {translate('HaveNotAddedMovies')}
                 </div>
                 <div>
                   <Button

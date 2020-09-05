@@ -88,7 +88,9 @@ class SelectLanguageModalContent extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to load languages</div>
+              <div>
+                {translate('UnableToLoadLanguages')}
+              </div>
           }
 
           {

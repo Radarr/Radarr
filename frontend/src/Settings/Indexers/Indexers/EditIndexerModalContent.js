@@ -60,7 +60,9 @@ function EditIndexerModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>Unable to add a new indexer, please try again.</div>
+            <div>
+              {translate('UnableToAddANewIndexerPleaseTryAgain')}
+            </div>
         }
 
         {

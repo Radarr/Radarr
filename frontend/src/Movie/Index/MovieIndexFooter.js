@@ -44,12 +44,16 @@ class MovieIndexFooter extends PureComponent {
         <div>
           <div className={styles.legendItem}>
             <div className={styles.ended} />
-            <div>Downloaded and Monitored</div>
+            <div>
+              {translate('DownloadedAndMonitored')}
+            </div>
           </div>
 
           <div className={styles.legendItem}>
             <div className={styles.availNotMonitored} />
-            <div>Downloaded, but not Monitored</div>
+            <div>
+              {translate('DownloadedButNotMonitored')}
+            </div>
           </div>
 
           <div className={styles.legendItem}>
@@ -58,7 +62,9 @@ class MovieIndexFooter extends PureComponent {
               colorImpairedMode && 'colorImpaired'
             )}
             />
-            <div>Missing, Monitored and considered Available</div>
+            <div>
+              {translate('MissingMonitoredAndConsideredAvailable')}
+            </div>
           </div>
 
           <div className={styles.legendItem}>
@@ -67,12 +73,16 @@ class MovieIndexFooter extends PureComponent {
               colorImpairedMode && 'colorImpaired'
             )}
             />
-            <div>Missing, not Monitored</div>
+            <div>
+              {translate('MissingNotMonitored')}
+            </div>
           </div>
 
           <div className={styles.legendItem}>
             <div className={styles.continuing} />
-            <div>Unreleased</div>
+            <div>
+              {translate('Unreleased')}
+            </div>
           </div>
         </div>
 

@@ -118,7 +118,9 @@ class LogFiles extends Component {
 
           {
             !isFetching && !items.length &&
-              <div>No log files</div>
+              <div>
+                {translate('NoLogFiles')}
+              </div>
           }
         </PageContentBody>
       </PageContent>

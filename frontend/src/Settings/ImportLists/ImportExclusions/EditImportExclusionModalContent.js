@@ -50,7 +50,9 @@ function EditImportExclusionModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>Unable to add a new list exclusion, please try again.</div>
+            <div>
+              {translate('UnableToAddANewListExclusionPleaseTryAgain')}
+            </div>
         }
 
         {

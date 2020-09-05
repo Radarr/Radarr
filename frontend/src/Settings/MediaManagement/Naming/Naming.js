@@ -110,7 +110,9 @@ class Naming extends Component {
 
         {
           !isFetching && error &&
-            <div>Unable to load Naming settings</div>
+            <div>
+              {translate('UnableToLoadNamingSettings')}
+            </div>
         }
 
         {

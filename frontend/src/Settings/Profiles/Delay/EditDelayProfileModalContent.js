@@ -57,7 +57,9 @@ function EditDelayProfileModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>Unable to add a new quality profile, please try again.</div>
+            <div>
+              {translate('UnableToAddANewQualityProfilePleaseTryAgain')}
+            </div>
         }
 
         {

@@ -126,7 +126,9 @@ class GeneralSettings extends Component {
 
           {
             !isFetching && error &&
-              <div>Unable to load General settings</div>
+              <div>
+                {translate('UnableToLoadGeneralSettings')}
+              </div>
           }
 
           {

@@ -65,13 +65,15 @@ class Blacklist extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to load blacklist</div>
+              <div>
+                {translate('UnableToLoadBlacklist')}
+              </div>
           }
 
           {
             isPopulated && !error && !items.length &&
               <div>
-                No history blacklist
+                {translate('NoHistory')}
               </div>
           }
 

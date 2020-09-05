@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import translate from 'Utilities/String/translate';
 import AgendaConnector from './Agenda/AgendaConnector';
 import * as calendarViews from './calendarViews';
 import CalendarDaysConnector from './Day/CalendarDaysConnector';
@@ -30,7 +31,9 @@ class Calendar extends Component {
 
         {
           !isFetching && !!error &&
-            <div>Unable to load the calendar</div>
+            <div>
+              {translate('UnableToLoadTheCalendar')}
+            </div>
         }
 
         {
