@@ -35,6 +35,11 @@ namespace NzbDrone.Core.Extras.Subtitles
 
         public override int Order => 1;
 
+        public override IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie)
+        {
+            return Enumerable.Empty<SubtitleFile>();
+        }
+
         public override IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles)
         {
             return Enumerable.Empty<SubtitleFile>();
@@ -45,7 +50,7 @@ namespace NzbDrone.Core.Extras.Subtitles
             return Enumerable.Empty<SubtitleFile>();
         }
 
-        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        public override IEnumerable<ExtraFile> CreateAfterMovieFolder(Movie movie, string movieFolder)
         {
             return Enumerable.Empty<SubtitleFile>();
         }

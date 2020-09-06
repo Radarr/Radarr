@@ -14,9 +14,10 @@ namespace NzbDrone.Core.Extras.Files
     public interface IManageExtraFiles
     {
         int Order { get; }
+        IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie);
         IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles);
         IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile);
-        IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder);
+        IEnumerable<ExtraFile> CreateAfterMovieFolder(Movie movie, string movieFolder);
         IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles);
         ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly);
     }
@@ -41,9 +42,10 @@ namespace NzbDrone.Core.Extras.Files
         }
 
         public abstract int Order { get; }
+        public abstract IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie);
         public abstract IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles);
         public abstract IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile);
-        public abstract IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder);
+        public abstract IEnumerable<ExtraFile> CreateAfterMovieFolder(Movie movie, string movieFolder);
         public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles);
         public abstract ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly);
 
