@@ -53,6 +53,7 @@
 }
 
 .titleRow {
+  position: relative;
   display: flex;
   justify-content: space-between;
   flex: 0 0 auto;
@@ -94,6 +95,8 @@
 }
 
 .movieNavigationButtons {
+  position: absolute;
+  right: 0;
   white-space: nowrap;
 }
 
