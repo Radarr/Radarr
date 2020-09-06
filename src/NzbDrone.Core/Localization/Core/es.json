@@ -721,5 +721,7 @@
     "BranchUpdate": "Qué rama usar para actualizar Radarr",
     "BeforeUpdate": "Antes de actualizar",
     "AllowMovieChangeClickToChangeMovie": "Clic para cambiar la película",
-    "AddingTag": "Añadiendo etiqueta"
+    "AddingTag": "Añadiendo etiqueta",
+    "RadarrSupportsCustomConditionsAgainstTheReleasePropertiesBelow": "Radarr soporta condiciones personalizadas contra las propiedades de estrenos abajo",
+    "ThisConditionMatchesUsingRegularExpressions": "Esta condición coincide con el uso de Expresiones Regulares. Tenga en cuenta que los caracteres {0} tienen significados especiales y necesitan escapar con un {1}."
 }
