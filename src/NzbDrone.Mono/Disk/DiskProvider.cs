@@ -53,21 +53,10 @@ namespace NzbDrone.Mono.Disk
 
         public override void InheritFolderPermissions(string filename)
         {
-            Ensure.That(filename, () => filename).IsValidPath();
+        }
 
-            try
-            {
-                var file = new FileInfo(filename);
-                var fs = file.GetAccessControl();
-                fs.SetAccessRuleProtection(false, false);
-                file.SetAccessControl(fs);
-            }
-            catch (NotImplementedException)
-            {
-            }
-            catch (PlatformNotSupportedException)
-            {
-            }
+        public override void SetEveryonePermissions(string filename)
+        {
         }
 
         public override void SetPermissions(string path, string mask)

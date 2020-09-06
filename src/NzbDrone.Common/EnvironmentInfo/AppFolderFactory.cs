@@ -65,7 +65,7 @@ namespace NzbDrone.Common.EnvironmentInfo
         {
             try
             {
-                _diskProvider.SetPermissions(_appFolderInfo.AppDataFolder, WellKnownSidType.WorldSid, FileSystemRights.Modify, AccessControlType.Allow);
+                _diskProvider.SetEveryonePermissions(_appFolderInfo.AppDataFolder);
             }
             catch (Exception ex)
             {
