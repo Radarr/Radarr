@@ -64,7 +64,7 @@ class DiskSpace extends Component {
                       totalSpace
                     } = item;
 
-                    const diskUsage = (100 - freeSpace / totalSpace * 100);
+                    const diskUsage = Math.round(100 - freeSpace / totalSpace * 100);
                     let diskUsageKind = kinds.PRIMARY;
 
                     if (diskUsage > 90) {
@@ -97,8 +97,8 @@ class DiskSpace extends Component {
                             progress={diskUsage}
                             kind={diskUsageKind}
                             size={sizes.MEDIUM}
-                            progressText={diskUsage}
-                            showText={true}
+                            showText={diskUsage >= 12}
+                            text={`${diskUsage}%`}
                           />
                         </TableRowCell>
                       </TableRow>
