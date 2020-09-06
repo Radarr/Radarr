@@ -94,33 +94,43 @@ class AddNewMovieSearchResult extends Component {
           }
 
           <div className={styles.content}>
-            <div className={styles.title}>
-              {title}
+            <div className={styles.titleRow}>
+              <div className={styles.titleContainer}>
+                <div className={styles.title}>
+                  {title}
 
-              {
-                !title.contains(year) && !!year &&
-                  <span className={styles.year}>({year})</span>
-              }
+                  {
+                    !title.contains(year) && !!year ?
+                      <span className={styles.year}>
+                        ({year})
+                      </span> :
+                      null
+                  }
+                </div>
+              </div>
 
-              {
-                isExistingMovie &&
-                  <Icon
-                    className={styles.alreadyExistsIcon}
-                    name={icons.CHECK_CIRCLE}
-                    size={36}
-                    title={translate('AlreadyInYourLibrary')}
-                  />
-              }
+              <div className={styles.icons}>
 
-              {
-                isExclusionMovie &&
-                  <Icon
-                    className={styles.exclusionIcon}
-                    name={icons.DANGER}
-                    size={36}
-                    title={translate('MovieIsOnImportExclusionList')}
-                  />
-              }
+                {
+                  isExistingMovie &&
+                    <Icon
+                      className={styles.alreadyExistsIcon}
+                      name={icons.CHECK_CIRCLE}
+                      size={36}
+                      title={translate('AlreadyInYourLibrary')}
+                    />
+                }
+
+                {
+                  isExclusionMovie &&
+                    <Icon
+                      className={styles.exclusionIcon}
+                      name={icons.DANGER}
+                      size={36}
+                      title={translate('MovieIsOnImportExclusionList')}
+                    />
+                }
+              </div>
             </div>
 
             <div>
