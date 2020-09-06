@@ -7,7 +7,6 @@ import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import InfoLabel from 'Components/InfoLabel';
 import IconButton from 'Components/Link/IconButton';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Marquee from 'Components/Marquee';
 import Measure from 'Components/Measure';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
@@ -258,7 +257,6 @@ class MovieDetails extends Component {
       isRefreshing,
       isSearching,
       isFetching,
-      isPopulated,
       isSmallScreen,
       movieFilesError,
       movieCreditsError,
@@ -581,11 +579,6 @@ class MovieDetails extends Component {
           </div>
 
           <div className={styles.contentContainer}>
-            {
-              !isPopulated && !movieFilesError && !movieCreditsError && !extraFilesError &&
-                <LoadingIndicator />
-            }
-
             {
               !isFetching && movieFilesError &&
                 <div>Loading movie files failed</div>
