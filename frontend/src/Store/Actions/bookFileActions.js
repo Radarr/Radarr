@@ -200,25 +200,29 @@ export const actionHandlers = handleThunks({
 
     dispatch(set({ section, isSaving: true }));
 
-    const data = {
+    const requestData = {
       bookFileIds
     };
 
     if (quality) {
-      data.quality = quality;
+      requestData.quality = quality;
     }
 
     const promise = createAjaxRequest({
       url: '/bookFile/editor',
       method: 'PUT',
       dataType: 'json',
-      data: JSON.stringify(data)
+      data: JSON.stringify(requestData)
     }).request;
 
-    promise.done(() => {
+    promise.done((data) => {
       dispatch(batchActions([
         ...bookFileIds.map((id) => {
           const props = {};
+
+          const trackFile = data.find((file) => file.id === id);
+
+          props.qualityCutoffNotMet = trackFile.qualityCutoffNotMet;
 
           if (quality) {
             props.quality = quality;

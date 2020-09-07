@@ -10,6 +10,7 @@ function BookFileEditorRow(props) {
     id,
     path,
     quality,
+    qualityCutoffNotMet,
     isSelected,
     onSelectedChange
   } = props;
@@ -28,6 +29,7 @@ function BookFileEditorRow(props) {
       <TableRowCell>
         <BookQuality
           quality={quality}
+          isCutoffNotMet={qualityCutoffNotMet}
         />
       </TableRowCell>
     </TableRow>
@@ -38,6 +40,7 @@ BookFileEditorRow.propTypes = {
   id: PropTypes.number.isRequired,
   path: PropTypes.string.isRequired,
   quality: PropTypes.object.isRequired,
+  qualityCutoffNotMet: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired
 };
