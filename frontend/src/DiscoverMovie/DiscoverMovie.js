@@ -317,7 +317,6 @@ class DiscoverMovie extends Component {
                 <PageToolbarButton
                   label={translate('Options')}
                   iconName={icons.POSTER}
-                  isDisabled={hasNoMovie}
                   onPress={this.onPosterOptionsPress}
                 /> :
                 null
@@ -328,7 +327,6 @@ class DiscoverMovie extends Component {
                 <PageToolbarButton
                   label={translate('Options')}
                   iconName={icons.OVERVIEW}
-                  isDisabled={hasNoMovie}
                   onPress={this.onOverviewOptionsPress}
                 /> :
                 null
