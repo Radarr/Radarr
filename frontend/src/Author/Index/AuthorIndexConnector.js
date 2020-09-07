@@ -8,8 +8,7 @@ import withScrollPosition from 'Components/withScrollPosition';
 import { setAuthorFilter, setAuthorSort, setAuthorTableOption, setAuthorView } from 'Store/Actions/authorIndexActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import scrollPositions from 'Store/scrollPositions';
-import createAuthorClientSideCollectionItemsSelector
-  from 'Store/Selectors/createAuthorClientSideCollectionItemsSelector';
+import createAuthorClientSideCollectionItemsSelector from 'Store/Selectors/createAuthorClientSideCollectionItemsSelector';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import AuthorIndex from './AuthorIndex';
