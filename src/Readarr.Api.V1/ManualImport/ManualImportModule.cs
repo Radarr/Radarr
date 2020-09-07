@@ -47,15 +47,11 @@ namespace Readarr.Api.V1.ManualImport
             var downloadId = (string)Request.Query.downloadId;
             NzbDrone.Core.Books.Author author = null;
 
-            var authorIdQuery = Request.Query.authorId;
-            if (authorIdQuery.HasValue)
-            {
-                var authorId = Convert.ToInt32(authorIdQuery.Value);
+            var authorIdQuery = Request.GetNullableIntegerQueryParameter("authorId", null);
 
-                if (authorId > 0)
-                {
-                    author = _authorService.GetAuthor(authorId);
-                }
+            if (authorIdQuery.HasValue && authorIdQuery.Value > 0)
+            {
+                author = _authorService.GetAuthor(Convert.ToInt32(authorIdQuery.Value));
             }
 
             var filter = Request.GetBooleanQueryParameter("filterExistingFiles", true) ? FilterFilesType.Matched : FilterFilesType.None;
