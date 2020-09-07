@@ -14,6 +14,7 @@ variables:
   sentryOrg: 'servarr'
   sentryUrl: 'https://sentry.servarr.com'
   dotnetVersion: '3.1.401'
+  yarnCacheFolder: $(Pipeline.Workspace)/.yarn
 
 trigger:
   branches:
@@ -25,9 +26,32 @@ pr:
 - develop
 
 stages:
+  - stage: Setup
+    displayName: Setup
+    jobs:
+    - job:
+      displayName: Build Variables
+      pool:
+        vmImage: 'ubuntu-18.04'
+      steps:
+      # Set the build name properly.  The 'name' property won't recursively expand so hack here:
+      - bash: echo "##vso[build.updatebuildnumber]$READARRVERSION"
+        displayName: Set Build Name
+      - bash: |
+          if [[ $BUILD_REASON == "PullRequest" ]]; then
+          git diff origin/develop...HEAD  --name-only | grep -E "^(src/|azure-pipelines.yml)"
+          echo $? > not_backend_update
+          else
+          echo 0 > not_backend_update
+          fi
+          cat not_backend_update
+        displayName: Check for Backend File Changes
+      - publish: not_backend_update
+        artifact: not_backend_update
+        displayName: Publish update type
   - stage: Build_Backend
     displayName: Build Backend
-          
+    dependsOn: Setup
     jobs:
     - job: Backend
       strategy:
@@ -48,9 +72,6 @@ stages:
         # Disable stylecop here - linting errors get caught by the analyze task
         EnableAnalyzers: 'false'
       steps:
-      # Set the build name properly.  The 'name' property won't recursively expand so hack here:
-      - powershell: Write-Host "##vso[build.updatebuildnumber]$($env:READARRVERSION)"
-        displayName: Set Build Name
       - checkout: self
         submodules: true
         fetchDepth: 1
@@ -77,7 +98,7 @@ stages:
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - publish: '$(testsFolder)/net462/linux-x64/publish'
         artifact: LinuxTests
-        displayName: Publish Linux Test Package
+        displayName: Publish Linux Mono Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - publish: '$(testsFolder)/netcoreapp3.1/linux-x64/publish'
         artifact: LinuxCoreTests
@@ -94,8 +115,7 @@ stages:
 
   - stage: Build_Frontend
     displayName: Frontend
-    dependsOn: []
-    
+    dependsOn: Setup
     jobs:
     - job: Build
       strategy:
@@ -119,10 +139,19 @@ stages:
       - checkout: self
         submodules: true
         fetchDepth: 1
+      - task: Cache@2
+        inputs:
+          key: 'yarn | "$(osName)" | yarn.lock'
+          restoreKeys: |
+             yarn | "$(osName)"
+             yarn
+          path: $(yarnCacheFolder)
+        displayName: Cache Yarn packages
       - bash: ./build.sh --frontend
         displayName: Build Readarr Frontend
         env:
           FORCE_COLOR: 0
+          YARN_CACHE_FOLDER: $(yarnCacheFolder)
       - publish: $(outputFolder)
         artifact: '$(osName)Frontend'
         displayName: Publish Frontend
@@ -295,8 +324,24 @@ stages:
     dependsOn: Build_Backend
     condition: succeeded()
     jobs:
+    - job: Prepare
+      pool:
+        vmImage: 'ubuntu-18.04'
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'not_backend_update'
+          targetPath: '.'
+      - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
+        name: setVar
+
     - job: Unit
       displayName: Unit Native
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
+
       strategy:
         matrix:
           MacCore:
@@ -365,6 +410,8 @@ stages:
 
     - job: Unit_Docker
       displayName: Unit Docker
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
           mono520:
@@ -423,9 +470,23 @@ stages:
     displayName: Integration
     dependsOn: Packages
     jobs:
-    
+    - job: Prepare
+      pool:
+        vmImage: 'ubuntu-18.04'
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'not_backend_update'
+          targetPath: '.'
+      - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
+        name: setVar
+
     - job: Integration_Native
       displayName: Integration Native
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
           MacCore:
@@ -497,6 +558,8 @@ stages:
 
     - job: Integration_Docker
       displayName: Integration Docker
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
           mono520:
@@ -636,7 +699,7 @@ stages:
       - bash: |
           chmod a+x ${TESTSFOLDER}/test.sh
           ${TESTSFOLDER}/test.sh ${OSNAME} Automation Test
-        displayName: Run Integration Tests
+        displayName: Run Automation Tests
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'NUnit'
@@ -646,9 +709,23 @@ stages:
         displayName: Publish Test Results
 
   - stage: Analyze
-    dependsOn: []
+    dependsOn:
+    - Setup
     displayName: Analyze
     jobs:
+    - job: Prepare
+      pool:
+        vmImage: 'ubuntu-18.04'
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          buildType: 'current'
+          artifactName: 'not_backend_update'
+          targetPath: '.'
+      - bash: echo "##vso[task.setvariable variable=backendNotUpdated;isOutput=true]$(cat not_backend_update)"
+        name: setVar
+
     - job: Lint_Frontend
       displayName: Lint Frontend
       strategy:
@@ -669,10 +746,19 @@ stages:
       - checkout: self
         submodules: true
         fetchDepth: 1
+      - task: Cache@2
+        inputs:
+          key: 'yarn | "$(osName)" | yarn.lock'
+          restoreKeys: |
+             yarn | "$(osName)"
+             yarn
+          path: $(yarnCacheFolder)
+        displayName: Cache Yarn packages
       - bash: ./build.sh --lint
         displayName: Lint Readarr Frontend
         env:
           FORCE_COLOR: 0
+          YARN_CACHE_FOLDER: $(yarnCacheFolder)
 
     - job: Analyze_Frontend
       displayName: Frontend
@@ -697,6 +783,9 @@ stages:
 
     - job: Analyze_Backend
       displayName: Backend
+      dependsOn: Prepare
+      condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
+
       variables:
         disable.coverage.autogenerate: 'true'
       pool:
