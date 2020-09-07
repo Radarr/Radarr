@@ -1,7 +1,6 @@
 using System.Linq;
 using Nancy;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles;
 using Readarr.Http.Extensions;
 

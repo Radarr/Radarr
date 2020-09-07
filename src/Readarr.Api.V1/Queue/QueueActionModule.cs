@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Nancy;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;

@@ -4,7 +4,6 @@ using System.Linq;
 using NLog;
 using NLog.Fluent;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Configuration;

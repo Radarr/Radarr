@@ -1,4 +1,3 @@
-using System;
 using Nancy;
 using Nancy.Bootstrapper;
 using Readarr.Http.Frontend;

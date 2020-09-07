@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-using Dapper;
-using NzbDrone.Core.Books;
+﻿using System.Collections.Generic;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 
