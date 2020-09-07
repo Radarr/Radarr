@@ -33,7 +33,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             if (subject.Release.Size == 0)
             {
-                _logger.Debug("Release has unknown size, skipping size check.");
+                _logger.Debug("Release has unknown size, skipping size check");
                 return Decision.Accept();
             }
 
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             if (!qualityDefinition.MaxSize.HasValue || qualityDefinition.MaxSize.Value == 0)
             {
-                _logger.Debug("Max size is unlimited - skipping check.");
+                _logger.Debug("Max size is unlimited, skipping size check");
             }
             else
             {
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 }
             }
 
-            _logger.Debug("Item: {0}, meets size constraints.", subject);
+            _logger.Debug("Item: {0}, meets size constraints", subject);
             return Decision.Accept();
             */
         }
