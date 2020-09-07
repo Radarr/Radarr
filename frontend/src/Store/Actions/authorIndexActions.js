@@ -180,7 +180,7 @@ export const defaultState = {
     bookCount: function(item) {
       const { statistics = {} } = item;
 
-      return statistics.bookCount;
+      return statistics.bookCount || 0;
     },
 
     sizeOnDisk: function(item) {
