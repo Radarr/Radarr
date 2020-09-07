@@ -91,5 +91,18 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
 
             Subject.IsSatisfiedBy(_localTrack, null).Accepted.Should().BeFalse();
         }
+
+        [Test]
+        public void should_be_accepted_if_file_cannot_be_fetched()
+        {
+            _localTrack.Tracks = Builder<Track>.CreateListOfSize(1)
+                .TheFirst(1)
+                .With(e => e.TrackFileId = 1)
+                .With(e => e.TrackFile = new LazyLoaded<TrackFile>((TrackFile)null))
+                .Build()
+                .ToList();
+
+            Subject.IsSatisfiedBy(_localTrack, null).Accepted.Should().BeTrue();
+        }
     }
 }
