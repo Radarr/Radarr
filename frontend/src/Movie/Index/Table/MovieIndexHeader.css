@@ -29,15 +29,20 @@
   flex: 1 0 125px;
 }
 
-.added,
 .inCinemas,
 .physicalRelease,
 .digitalRelease,
-.runtime,
 .genres {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 0 0 180px;
+}
+
+.added,
+.runtime {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 100px;
 }
 
 .movieStatus,
