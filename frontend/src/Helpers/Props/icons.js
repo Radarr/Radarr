@@ -55,6 +55,7 @@ import {
   faEye as fasEye,
   faFastBackward as fasFastBackward,
   faFastForward as fasFastForward,
+  faFileExport as fasFileExport,
   faFileInvoice as farFileInvoice,
   faFilm as fasFilm,
   faFilter as fasFilter,
@@ -145,6 +146,7 @@ export const EDIT = fasWrench;
 export const MOVIE_FILE = farFileVideo;
 export const EXPAND = fasChevronCircleDown;
 export const EXPAND_INDETERMINATE = fasChevronCircleRight;
+export const EXPORT = fasFileExport;
 export const EXTERNAL_LINK = fasExternalLinkAlt;
 export const FATAL = fasTimesCircle;
 export const FILE = farFile;

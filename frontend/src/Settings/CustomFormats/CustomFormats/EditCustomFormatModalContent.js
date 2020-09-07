@@ -16,6 +16,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { icons, inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import ImportCustomFormatModal from './ImportCustomFormatModal';
 import AddSpecificationModal from './Specifications/AddSpecificationModal';
 import EditSpecificationModalConnector from './Specifications/EditSpecificationModalConnector';
 import Specification from './Specifications/Specification';
@@ -31,7 +32,8 @@ class EditCustomFormatModalContent extends Component {
 
     this.state = {
       isAddSpecificationModalOpen: false,
-      isEditSpecificationModalOpen: false
+      isEditSpecificationModalOpen: false,
+      isImportCustomFormatModalOpen: false
     };
   }
 
@@ -51,6 +53,14 @@ class EditCustomFormatModalContent extends Component {
 
   onEditSpecificationModalClose = () => {
     this.setState({ isEditSpecificationModalOpen: false });
+  }
+
+  onImportPress = () => {
+    this.setState({ isImportCustomFormatModalOpen: true });
+  }
+
+  onImportCustomFormatModalClose = () => {
+    this.setState({ isImportCustomFormatModalOpen: false });
   }
 
   //
@@ -76,7 +86,8 @@ class EditCustomFormatModalContent extends Component {
 
     const {
       isAddSpecificationModalOpen,
-      isEditSpecificationModalOpen
+      isEditSpecificationModalOpen,
+      isImportCustomFormatModalOpen
     } = this.state;
 
     const {
@@ -176,6 +187,12 @@ class EditCustomFormatModalContent extends Component {
                     isOpen={isEditSpecificationModalOpen}
                     onModalClose={this.onEditSpecificationModalClose}
                   />
+
+                  <ImportCustomFormatModal
+                    isOpen={isImportCustomFormatModalOpen}
+                    onModalClose={this.onImportCustomFormatModalClose}
+                  />
+
                 </div>
             }
           </div>
@@ -189,6 +206,16 @@ class EditCustomFormatModalContent extends Component {
                 onPress={onDeleteCustomFormatPress}
               >
                 {translate('Delete')}
+              </Button>
+          }
+
+          {
+            !id &&
+              <Button
+                className={styles.deleteButton}
+                onPress={this.onImportPress}
+              >
+                {translate('Import')}
               </Button>
           }
 

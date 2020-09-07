@@ -27,6 +27,7 @@ export const SET_CUSTOM_FORMAT_SPECIFICATION_VALUE = 'settings/customFormatSpeci
 export const SET_CUSTOM_FORMAT_SPECIFICATION_FIELD_VALUE = 'settings/customFormatSpecifications/setCustomFormatSpecificationFieldValue';
 export const SAVE_CUSTOM_FORMAT_SPECIFICATION = 'settings/customFormatSpecifications/saveCustomFormatSpecification';
 export const DELETE_CUSTOM_FORMAT_SPECIFICATION = 'settings/customFormatSpecifications/deleteCustomFormatSpecification';
+export const DELETE_ALL_CUSTOM_FORMAT_SPECIFICATION = 'settings/customFormatSpecifications/deleteCustomFormatSpecification';
 export const CLONE_CUSTOM_FORMAT_SPECIFICATION = 'settings/customFormatSpecifications/cloneCustomFormatSpecification';
 export const CLEAR_CUSTOM_FORMAT_SPECIFICATIONS = 'settings/customFormatSpecifications/clearCustomFormatSpecifications';
 export const CLEAR_CUSTOM_FORMAT_SPECIFICATION_PENDING = 'settings/customFormatSpecifications/clearCustomFormatSpecificationPending';
@@ -39,6 +40,7 @@ export const selectCustomFormatSpecificationSchema = createAction(SELECT_CUSTOM_
 
 export const saveCustomFormatSpecification = createThunk(SAVE_CUSTOM_FORMAT_SPECIFICATION);
 export const deleteCustomFormatSpecification = createThunk(DELETE_CUSTOM_FORMAT_SPECIFICATION);
+export const deleteAllCustomFormatSpecification = createThunk(DELETE_ALL_CUSTOM_FORMAT_SPECIFICATION);
 
 export const setCustomFormatSpecificationValue = createAction(SET_CUSTOM_FORMAT_SPECIFICATION_VALUE, (payload) => {
   return {
@@ -135,6 +137,13 @@ export default {
     [DELETE_CUSTOM_FORMAT_SPECIFICATION]: (getState, payload, dispatch) => {
       const id = payload.id;
       return dispatch(removeItem({ section, id }));
+    },
+
+    [DELETE_ALL_CUSTOM_FORMAT_SPECIFICATION]: (getState, payload, dispatch) => {
+      return dispatch(set({
+        section,
+        items: []
+      }));
     },
 
     [CLEAR_CUSTOM_FORMAT_SPECIFICATION_PENDING]: (getState, payload, dispatch) => {

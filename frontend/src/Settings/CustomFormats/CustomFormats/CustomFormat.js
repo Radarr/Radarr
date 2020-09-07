@@ -7,6 +7,7 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import { icons, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import EditCustomFormatModalConnector from './EditCustomFormatModalConnector';
+import ExportCustomFormatModal from './ExportCustomFormatModal';
 import styles from './CustomFormat.css';
 
 class CustomFormat extends Component {
@@ -19,6 +20,7 @@ class CustomFormat extends Component {
 
     this.state = {
       isEditCustomFormatModalOpen: false,
+      isExportCustomFormatModalOpen: false,
       isDeleteCustomFormatModalOpen: false
     };
   }
@@ -32,6 +34,14 @@ class CustomFormat extends Component {
 
   onEditCustomFormatModalClose = () => {
     this.setState({ isEditCustomFormatModalOpen: false });
+  }
+
+  onExportCustomFormatPress = () => {
+    this.setState({ isExportCustomFormatModalOpen: true });
+  }
+
+  onExportCustomFormatModalClose = () => {
+    this.setState({ isExportCustomFormatModalOpen: false });
   }
 
   onDeleteCustomFormatPress = () => {
@@ -80,12 +90,21 @@ class CustomFormat extends Component {
             {name}
           </div>
 
-          <IconButton
-            className={styles.cloneButton}
-            title={translate('CloneProfile')}
-            name={icons.CLONE}
-            onPress={this.onCloneCustomFormatPress}
-          />
+          <div>
+            <IconButton
+              className={styles.cloneButton}
+              title={translate('CloneProfile')}
+              name={icons.CLONE}
+              onPress={this.onCloneCustomFormatPress}
+            />
+
+            <IconButton
+              className={styles.cloneButton}
+              title={translate('CloneProfile')}
+              name={icons.EXPORT}
+              onPress={this.onExportCustomFormatPress}
+            />
+          </div>
         </div>
 
         <div>
@@ -120,6 +139,12 @@ class CustomFormat extends Component {
           isOpen={this.state.isEditCustomFormatModalOpen}
           onModalClose={this.onEditCustomFormatModalClose}
           onDeleteCustomFormatPress={this.onDeleteCustomFormatPress}
+        />
+
+        <ExportCustomFormatModal
+          id={id}
+          isOpen={this.state.isExportCustomFormatModalOpen}
+          onModalClose={this.onExportCustomFormatModalClose}
         />
 
         <ConfirmModal
