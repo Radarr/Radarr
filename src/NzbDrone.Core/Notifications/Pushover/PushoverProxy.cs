@@ -16,16 +16,18 @@ namespace NzbDrone.Core.Notifications.Pushover
     public class PushoverProxy : IPushoverProxy
     {
         private const string URL = "https://api.pushover.net/1/messages.json";
+        private readonly IRestClientFactory _restClientFactory;
         private readonly Logger _logger;
 
-        public PushoverProxy(Logger logger)
+        public PushoverProxy(IRestClientFactory restClientFactory, Logger logger)
         {
+            _restClientFactory = restClientFactory;
             _logger = logger;
         }
 
         public void SendNotification(string title, string message, PushoverSettings settings)
         {
-            var client = RestClientFactory.BuildClient(URL);
+            var client = _restClientFactory.BuildClient(URL);
             var request = new RestRequest(Method.POST);
             request.AddParameter("token", settings.ApiKey);
             request.AddParameter("user", settings.UserKey);

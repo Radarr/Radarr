@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
@@ -17,10 +17,12 @@ namespace NzbDrone.Core.Notifications.Boxcar
     public class BoxcarProxy : IBoxcarProxy
     {
         private const string URL = "https://new.boxcar.io/api/notifications";
+        private readonly IRestClientFactory _restClientFactory;
         private readonly Logger _logger;
 
-        public BoxcarProxy(Logger logger)
+        public BoxcarProxy(IRestClientFactory restClientFactory, Logger logger)
         {
+            _restClientFactory = restClientFactory;
             _logger = logger;
         }
 
@@ -71,7 +73,7 @@ namespace NzbDrone.Core.Notifications.Boxcar
         {
             try
             {
-                var client = RestClientFactory.BuildClient(URL);
+                var client = _restClientFactory.BuildClient(URL);
 
                 request.AddParameter("user_credentials", settings.Token);
                 request.AddParameter("notification[title]", title);

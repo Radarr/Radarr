@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Http.Proxy;
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Http
 
         public bool ShouldProxyBeBypassed(HttpProxySettings proxySettings, HttpUri url)
         {
-            //We are utilising the WebProxy implementation here to save us having to reimplement it. This way we use Microsofts implementation
+            //We are utilizing the WebProxy implementation here to save us having to re-implement it. This way we use Microsofts implementation
             var proxy = new WebProxy(proxySettings.Host + ":" + proxySettings.Port, proxySettings.BypassLocalAddress, proxySettings.BypassListAsArray);
 
             return proxy.IsBypassed((Uri)url);

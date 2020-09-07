@@ -17,10 +17,12 @@ namespace NzbDrone.Core.Notifications.Join
     public class JoinProxy : IJoinProxy
     {
         private const string URL = "https://joinjoaomgcd.appspot.com/_ah/api/messaging/v1/sendPush?";
+        private readonly IRestClientFactory _restClientFactory;
         private readonly Logger _logger;
 
-        public JoinProxy(Logger logger)
+        public JoinProxy(IRestClientFactory restClientFactory, Logger logger)
         {
+            _restClientFactory = restClientFactory;
             _logger = logger;
         }
 
@@ -73,7 +75,7 @@ namespace NzbDrone.Core.Notifications.Join
 
         private void SendNotification(string title, string message, RestRequest request, JoinSettings settings)
         {
-            var client = RestClientFactory.BuildClient(URL);
+            var client = _restClientFactory.BuildClient(URL);
 
             if (settings.DeviceNames.IsNotNullOrWhiteSpace())
             {

@@ -18,10 +18,12 @@ namespace NzbDrone.Core.Notifications.Subsonic
 
     public class SubsonicServerProxy : ISubsonicServerProxy
     {
+        private readonly IRestClientFactory _restClientFactory;
         private readonly Logger _logger;
 
-        public SubsonicServerProxy(Logger logger)
+        public SubsonicServerProxy(IRestClientFactory restClientFactory, Logger logger)
         {
+            _restClientFactory = restClientFactory;
             _logger = logger;
         }
 
@@ -78,7 +80,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
 
         private RestClient GetSubsonicServerClient(SubsonicSettings settings)
         {
-            return RestClientFactory.BuildClient(GetBaseUrl(settings, "rest"));
+            return _restClientFactory.BuildClient(GetBaseUrl(settings, "rest"));
         }
 
         private RestRequest GetSubsonicServerRequest(string resource, Method method, SubsonicSettings settings)
