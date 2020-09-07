@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -74,7 +76,7 @@ namespace NzbDrone.Common.Http.Dispatchers
                 webRequest.Timeout = (int)Math.Ceiling(request.RequestTimeout.TotalMilliseconds);
             }
 
-            AddProxy(webRequest, request);
+            webRequest.Proxy = GetProxy(request.Url);
 
             if (request.Headers != null)
             {
@@ -163,13 +165,54 @@ namespace NzbDrone.Common.Http.Dispatchers
             return new HttpResponse(request, new HttpHeader(httpWebResponse.Headers), data, httpWebResponse.StatusCode);
         }
 
-        protected virtual void AddProxy(HttpWebRequest webRequest, HttpRequest request)
+        public void DownloadFile(string url, string fileName)
         {
-            var proxySettings = _proxySettingsProvider.GetProxySettings(request);
+            try
+            {
+                var fileInfo = new FileInfo(fileName);
+                if (fileInfo.Directory != null && !fileInfo.Directory.Exists)
+                {
+                    fileInfo.Directory.Create();
+                }
+
+                _logger.Debug("Downloading [{0}] to [{1}]", url, fileName);
+
+                var stopWatch = Stopwatch.StartNew();
+                var uri = new HttpUri(url);
+
+                using (var webClient = new GZipWebClient())
+                {
+                    webClient.Headers.Add(HttpRequestHeader.UserAgent, _userAgentBuilder.GetUserAgent());
+                    webClient.Proxy = GetProxy(uri);
+                    webClient.DownloadFile(uri.FullUri, fileName);
+                    stopWatch.Stop();
+                    _logger.Debug("Downloading Completed. took {0:0}s", stopWatch.Elapsed.Seconds);
+                }
+            }
+            catch (WebException e)
+            {
+                _logger.Warn("Failed to get response from: {0} {1}", url, e.Message);
+                throw;
+            }
+            catch (Exception e)
+            {
+                _logger.Warn(e, "Failed to get response from: " + url);
+                throw;
+            }
+        }
+
+        protected virtual IWebProxy GetProxy(HttpUri uri)
+        {
+            IWebProxy proxy = null;
+
+            var proxySettings = _proxySettingsProvider.GetProxySettings(uri);
+
             if (proxySettings != null)
             {
-                webRequest.Proxy = _createManagedWebProxy.GetWebProxy(proxySettings);
+                proxy = _createManagedWebProxy.GetWebProxy(proxySettings);
             }
+
+            return proxy;
         }
 
         protected virtual void AddRequestHeaders(HttpWebRequest webRequest, HttpHeader headers)

@@ -15,27 +15,36 @@ namespace NzbDrone.Core.Http
             _configService = configService;
         }
 
-        public HttpProxySettings GetProxySettings(HttpRequest request)
+        public HttpProxySettings GetProxySettings(HttpUri uri)
+        {
+            var proxySettings = GetProxySettings();
+            if (proxySettings == null)
+            {
+                return null;
+            }
+
+            if (ShouldProxyBeBypassed(proxySettings, uri))
+            {
+                return null;
+            }
+
+            return proxySettings;
+        }
+
+        public HttpProxySettings GetProxySettings()
         {
             if (!_configService.ProxyEnabled)
             {
                 return null;
             }
 
-            var proxySettings = new HttpProxySettings(_configService.ProxyType,
+            return new HttpProxySettings(_configService.ProxyType,
                                 _configService.ProxyHostname,
                                 _configService.ProxyPort,
                                 _configService.ProxyBypassFilter,
                                 _configService.ProxyBypassLocalAddresses,
                                 _configService.ProxyUsername,
                                 _configService.ProxyPassword);
-
-            if (ShouldProxyBeBypassed(proxySettings, request.Url))
-            {
-                return null;
-            }
-
-            return proxySettings;
         }
 
         public bool ShouldProxyBeBypassed(HttpProxySettings proxySettings, HttpUri url)

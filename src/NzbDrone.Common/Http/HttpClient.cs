@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using NLog;
@@ -33,19 +32,16 @@ namespace NzbDrone.Common.Http
         private readonly ICached<CookieContainer> _cookieContainerCache;
         private readonly List<IHttpRequestInterceptor> _requestInterceptors;
         private readonly IHttpDispatcher _httpDispatcher;
-        private readonly IUserAgentBuilder _userAgentBuilder;
 
         public HttpClient(IEnumerable<IHttpRequestInterceptor> requestInterceptors,
             ICacheManager cacheManager,
             IRateLimitService rateLimitService,
             IHttpDispatcher httpDispatcher,
-            IUserAgentBuilder userAgentBuilder,
             Logger logger)
         {
             _requestInterceptors = requestInterceptors.ToList();
             _rateLimitService = rateLimitService;
             _httpDispatcher = httpDispatcher;
-            _userAgentBuilder = userAgentBuilder;
             _logger = logger;
 
             ServicePointManager.DefaultConnectionLimit = 12;
@@ -231,48 +227,7 @@ namespace NzbDrone.Common.Http
 
         public void DownloadFile(string url, string fileName, string userAgent = null)
         {
-            var fileNamePart = fileName + ".part";
-
-            try
-            {
-                var fileInfo = new FileInfo(fileName);
-                if (fileInfo.Directory != null && !fileInfo.Directory.Exists)
-                {
-                    fileInfo.Directory.Create();
-                }
-
-                _logger.Debug("Downloading [{0}] to [{1}]", url, fileName);
-
-                var stopWatch = Stopwatch.StartNew();
-                using (var fileStream = new FileStream(fileNamePart, FileMode.Create, FileAccess.ReadWrite))
-                {
-                    var request = new HttpRequest(url);
-
-                    if (userAgent.IsNotNullOrWhiteSpace())
-                    {
-                        request.Headers.Set("User-Agent", userAgent);
-                    }
-
-                    request.ResponseStream = fileStream;
-                    var response = Get(request);
-                }
-
-                stopWatch.Stop();
-                if (File.Exists(fileName))
-                {
-                    File.Delete(fileName);
-                }
-
-                File.Move(fileNamePart, fileName);
-                _logger.Debug("Downloading Completed. took {0:0}s", stopWatch.Elapsed.Seconds);
-            }
-            finally
-            {
-                if (File.Exists(fileNamePart))
-                {
-                    File.Delete(fileNamePart);
-                }
-            }
+            _httpDispatcher.DownloadFile(url, fileName);
         }
 
         public HttpResponse Get(HttpRequest request)
