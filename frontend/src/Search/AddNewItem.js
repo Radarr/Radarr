@@ -8,6 +8,7 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import { icons } from 'Helpers/Props';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import AddNewAuthorSearchResultConnector from './Author/AddNewAuthorSearchResultConnector';
 import AddNewBookSearchResultConnector from './Book/AddNewBookSearchResultConnector';
 import styles from './AddNewItem.css';
@@ -122,8 +123,13 @@ class AddNewItem extends Component {
           }
 
           {
-            !isFetching && !!error &&
-              <div>Failed to load search results, please try again.</div>
+            !isFetching && !!error ?
+              <div className={styles.message}>
+                <div className={styles.helpText}>
+                  Failed to load search results, please try again.
+                </div>
+                <div>{getErrorMessage(error)}</div>
+              </div> : null
           }
 
           {
