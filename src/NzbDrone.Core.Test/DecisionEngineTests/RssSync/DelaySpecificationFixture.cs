@@ -185,10 +185,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_release_is_proper_for_existing_album_of_different_quality()
         {
+<<<<<<< HEAD
             _remoteBook.ParsedBookInfo.Quality = new QualityModel(Quality.AZW3, new Revision(version: 2));
             _remoteBook.Release.PublishDate = DateTime.UtcNow;
 
             GivenExistingFile(new QualityModel(Quality.PDF));
+=======
+            _remoteAlbum.ParsedAlbumInfo.Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2));
+            _remoteAlbum.Release.PublishDate = DateTime.UtcNow;
+
+            GivenExistingFile(new QualityModel(Quality.MP3_256));
+>>>>>>> Fixed: Delay profile being ignored for non-revision upgrades
 
             _delayProfile.UsenetDelay = 720;
 
