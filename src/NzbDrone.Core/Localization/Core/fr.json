@@ -448,5 +448,19 @@
     "ImportExtraFiles": "Importer les fichiers extra",
     "ImportedTo": "Importé vers",
     "IllRestartLater": "Je redémarrerai plus tard",
-    "IgnoredHelpText": "La version sera rejetée si elle contient au moins l'un de ces termes (insensible à la casse)"
+    "IgnoredHelpText": "La version sera rejetée si elle contient au moins l'un de ces termes (insensible à la casse)",
+    "Cutoff": "Limite",
+    "CouldNotFindResults": "Pas de résultats pour '{0}'",
+    "ClickToChangeMovie": "Cliquer pour changer le film",
+    "CheckDownloadClientForDetails": "Vérifier le client de téléchargement pour plus de détails",
+    "CantFindMovie": "Pourquoi ne puis-je pas trouver mon film ?",
+    "CancelPendingTask": "Êtes-vous sur de vouloir annuler cette tâche en attente ?",
+    "BranchUpdateMechanism": "Branche utilisée par le mécanisme de mise à jour extérieur",
+    "BranchUpdate": "Branche à utiliser pour mettre Radarr à jour",
+    "BeforeUpdate": "Avant mise à jour",
+    "ApplyTagsHelpTexts4": "Remplacer : Remplace les tags par les tags renseignés (ne pas renseigner de tags pour effacer tous les tags)",
+    "ApplyTagsHelpTexts3": "Retirer : Retire les tags renseignés",
+    "ApplyTagsHelpTexts2": "Ajouter: Ajouter les tags à la liste de tags existants",
+    "ApplyTagsHelpTexts1": "Comment appliquer des tags au film sélectionné",
+    "AllowMovieChangeClickToChangeMovie": "Cliquer pour changer le film"
 }
