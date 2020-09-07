@@ -139,7 +139,7 @@ function Settings() {
           className={styles.link}
           to="/settings/ui"
         >
-          {translate('Ui')}
+          {translate('UI')}
         </Link>
 
         <div className={styles.summary}>
