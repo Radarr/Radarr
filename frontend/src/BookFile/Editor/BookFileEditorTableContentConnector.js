@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import getQualities from 'Utilities/Quality/getQualities';
-import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import { deleteBookFiles, updateBookFiles } from 'Store/Actions/bookFileActions';
 import { fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
+import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
+import getQualities from 'Utilities/Quality/getQualities';
 import BookFileEditorTableContent from './BookFileEditorTableContent';
 
 function createSchemaSelector() {

@@ -1,24 +1,24 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import getProgressBarKind from 'Utilities/Author/getProgressBarKind';
-import formatBytes from 'Utilities/Number/formatBytes';
-import { icons } from 'Helpers/Props';
+import AuthorBanner from 'Author/AuthorBanner';
+import AuthorNameLink from 'Author/AuthorNameLink';
+import DeleteAuthorModal from 'Author/Delete/DeleteAuthorModal';
+import EditAuthorModalConnector from 'Author/Edit/EditAuthorModalConnector';
+import BookTitleLink from 'Book/BookTitleLink';
 import HeartRating from 'Components/HeartRating';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import ProgressBar from 'Components/ProgressBar';
-import TagListConnector from 'Components/TagListConnector';
-import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import AuthorNameLink from 'Author/AuthorNameLink';
-import BookTitleLink from 'Book/BookTitleLink';
-import EditAuthorModalConnector from 'Author/Edit/EditAuthorModalConnector';
-import DeleteAuthorModal from 'Author/Delete/DeleteAuthorModal';
-import AuthorBanner from 'Author/AuthorBanner';
-import hasGrowableColumns from './hasGrowableColumns';
+import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
+import TagListConnector from 'Components/TagListConnector';
+import { icons } from 'Helpers/Props';
+import getProgressBarKind from 'Utilities/Author/getProgressBarKind';
+import formatBytes from 'Utilities/Number/formatBytes';
 import AuthorStatusCell from './AuthorStatusCell';
+import hasGrowableColumns from './hasGrowableColumns';
 import styles from './AuthorIndexRow.css';
 
 class AuthorIndexRow extends Component {

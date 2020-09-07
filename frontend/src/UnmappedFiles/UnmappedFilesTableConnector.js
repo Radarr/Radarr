@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
+import * as commandNames from 'Commands/commandNames';
+import withCurrentPage from 'Components/withCurrentPage';
+import { deleteBookFile, fetchBookFiles, setBookFilesSort, setBookFilesTableOption } from 'Store/Actions/bookFileActions';
+import { executeCommand } from 'Store/Actions/commandActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import { fetchBookFiles, deleteBookFile, setBookFilesSort, setBookFilesTableOption } from 'Store/Actions/bookFileActions';
-import { executeCommand } from 'Store/Actions/commandActions';
-import * as commandNames from 'Commands/commandNames';
-import withCurrentPage from 'Components/withCurrentPage';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import UnmappedFilesTable from './UnmappedFilesTable';
 
 function createMapStateToProps() {

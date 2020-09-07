@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchReleaseProfiles, deleteReleaseProfile } from 'Store/Actions/settingsActions';
+import { deleteReleaseProfile, fetchReleaseProfiles } from 'Store/Actions/settingsActions';
 import createTagsSelector from 'Store/Selectors/createTagsSelector';
 import ReleaseProfiles from './ReleaseProfiles';
 

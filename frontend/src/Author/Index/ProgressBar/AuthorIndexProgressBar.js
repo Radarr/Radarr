@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import getProgressBarKind from 'Utilities/Author/getProgressBarKind';
-import { sizes } from 'Helpers/Props';
 import ProgressBar from 'Components/ProgressBar';
+import { sizes } from 'Helpers/Props';
+import getProgressBarKind from 'Utilities/Author/getProgressBarKind';
 import styles from './AuthorIndexProgressBar.css';
 
 function AuthorIndexProgressBar(props) {

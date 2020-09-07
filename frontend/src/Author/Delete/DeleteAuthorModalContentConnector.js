@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import { deleteAuthor } from 'Store/Actions/authorActions';
+import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import DeleteAuthorModalContent from './DeleteAuthorModalContent';
 
 function createMapStateToProps() {

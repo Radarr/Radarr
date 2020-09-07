@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import TextInput from 'Components/Form/TextInput';
 import Button from 'Components/Link/Button';
-import { scrollDirections } from 'Helpers/Props';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import Scroller from 'Components/Scroller/Scroller';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import Scroller from 'Components/Scroller/Scroller';
-import TextInput from 'Components/Form/TextInput';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import { scrollDirections } from 'Helpers/Props';
 import SelectBookRow from './SelectBookRow';
 import styles from './SelectBookModalContent.css';
 

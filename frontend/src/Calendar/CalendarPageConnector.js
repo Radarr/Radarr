@@ -1,13 +1,13 @@
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import moment from 'moment';
-import { isCommandExecuting } from 'Utilities/Command';
-import isBefore from 'Utilities/Date/isBefore';
 import withCurrentPage from 'Components/withCurrentPage';
 import { searchMissing, setCalendarDaysCount, setCalendarFilter } from 'Store/Actions/calendarActions';
 import createAuthorCountSelector from 'Store/Selectors/createAuthorCountSelector';
-import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
+import { isCommandExecuting } from 'Utilities/Command';
+import isBefore from 'Utilities/Date/isBefore';
 import CalendarPage from './CalendarPage';
 
 function createMissingBookIdsSelector() {

@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { repopulatePage } from 'Utilities/pagePopulator';
-import titleCase from 'Utilities/String/titleCase';
-import { fetchCommands, updateCommand, finishCommand } from 'Store/Actions/commandActions';
 import { setAppValue, setVersion } from 'Store/Actions/appActions';
-import { update, updateItem, removeItem } from 'Store/Actions/baseActions';
 import { fetchAuthor } from 'Store/Actions/authorActions';
-import { fetchHealth } from 'Store/Actions/systemActions';
+import { removeItem, update, updateItem } from 'Store/Actions/baseActions';
+import { fetchCommands, finishCommand, updateCommand } from 'Store/Actions/commandActions';
 import { fetchQueue, fetchQueueDetails } from 'Store/Actions/queueActions';
 import { fetchRootFolders } from 'Store/Actions/settingsActions';
-import { fetchTags, fetchTagDetails } from 'Store/Actions/tagActions';
+import { fetchHealth } from 'Store/Actions/systemActions';
+import { fetchTagDetails, fetchTags } from 'Store/Actions/tagActions';
+import { repopulatePage } from 'Utilities/pagePopulator';
+import titleCase from 'Utilities/String/titleCase';
 
 function getHandlerName(name) {
   name = titleCase(name);

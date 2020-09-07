@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes } from 'Helpers/Props';
-import TableRow from 'Components/Table/TableRow';
-import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import TableRow from 'Components/Table/TableRow';
+import { inputTypes } from 'Helpers/Props';
 import titleCase from 'Utilities/String/titleCase';
 
 class SelectEditionRow extends Component {

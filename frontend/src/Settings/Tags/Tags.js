@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import FieldSet from 'Components/FieldSet';
+import Link from 'Components/Link/Link';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import TagConnector from './TagConnector';
-import Link from 'Components/Link/Link';
 import styles from './Tags.css';
 
 function Tags(props) {

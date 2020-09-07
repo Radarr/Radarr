@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import createBookFileSelector from 'Store/Selectors/createBookFileSelector';
 import createBookSelector from 'Store/Selectors/createBookSelector';
 import createQueueItemSelector from 'Store/Selectors/createQueueItemSelector';
-import createBookFileSelector from 'Store/Selectors/createBookFileSelector';
 import EpisodeStatus from './EpisodeStatus';
 
 function createMapStateToProps() {

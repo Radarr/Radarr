@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import * as commandNames from 'Commands/commandNames';
+import { toggleBooksMonitored } from 'Store/Actions/bookActions';
+import { clearBookFiles, fetchBookFiles } from 'Store/Actions/bookFileActions';
+import { executeCommand } from 'Store/Actions/commandActions';
+import { cancelFetchReleases, clearReleases } from 'Store/Actions/releaseActions';
+import createAllAuthorSelector from 'Store/Selectors/createAllAuthorsSelector';
+import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import { findCommand, isCommandExecuting } from 'Utilities/Command';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import { toggleBooksMonitored } from 'Store/Actions/bookActions';
-import { fetchBookFiles, clearBookFiles } from 'Store/Actions/bookFileActions';
-import { clearReleases, cancelFetchReleases } from 'Store/Actions/releaseActions';
-import { executeCommand } from 'Store/Actions/commandActions';
-import * as commandNames from 'Commands/commandNames';
 import BookDetails from './BookDetails';
-import createAllAuthorSelector from 'Store/Selectors/createAllAuthorsSelector';
-import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 
 const selectBookFiles = createSelector(
   (state) => state.bookFiles,

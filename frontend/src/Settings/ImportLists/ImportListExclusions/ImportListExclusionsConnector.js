@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchImportListExclusions, deleteImportListExclusion } from 'Store/Actions/settingsActions';
+import { deleteImportListExclusion, fetchImportListExclusions } from 'Store/Actions/settingsActions';
 import ImportListExclusions from './ImportListExclusions';
 
 function createMapStateToProps() {

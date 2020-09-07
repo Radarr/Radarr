@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { align, icons, sortDirections } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import VirtualTable from 'Components/Table/VirtualTable';
-import VirtualTableRow from 'Components/Table/VirtualTableRow';
-import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
-import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
-import UnmappedFilesTableRow from './UnmappedFilesTableRow';
+import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
+import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
+import VirtualTable from 'Components/Table/VirtualTable';
+import VirtualTableRow from 'Components/Table/VirtualTableRow';
+import { align, icons, sortDirections } from 'Helpers/Props';
 import UnmappedFilesTableHeader from './UnmappedFilesTableHeader';
+import UnmappedFilesTableRow from './UnmappedFilesTableRow';
 
 class UnmappedFilesTable extends Component {
 

@@ -1,17 +1,17 @@
 import _ from 'lodash';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import createAjaxRequest from 'Utilities/createAjaxRequest';
+import bookEntities from 'Book/bookEntities';
 import { sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
-import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
-import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
-import createClearReducer from './Creators/Reducers/createClearReducer';
-import bookEntities from 'Book/bookEntities';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
+import { removeItem, set, updateItem } from './baseActions';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
-import { set, removeItem, updateItem } from './baseActions';
+import createClearReducer from './Creators/Reducers/createClearReducer';
+import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
+import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 
 //
 // Variables

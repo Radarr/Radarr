@@ -46,7 +46,7 @@ stages:
         vmImage: $(imageName)
       variables:
         # Disable stylecop here - linting errors get caught by the analyze task
-        EnableStylecop: 'false'
+        EnableAnalyzers: 'false'
       steps:
       # Set the build name properly.  The 'name' property won't recursively expand so hack here:
       - powershell: Write-Host "##vso[build.updatebuildnumber]$($env:READARRVERSION)"
@@ -648,7 +648,6 @@ stages:
   - stage: Analyze
     dependsOn: []
     displayName: Analyze
-      
     jobs:
     - job: Lint_Frontend
       displayName: Lint Frontend
@@ -677,7 +676,7 @@ stages:
 
     - job: Analyze_Frontend
       displayName: Frontend
-      condition: eq(variables['system.pullrequest.isfork'], false)
+      condition: eq(variables['System.PullRequest.IsFork'], 'False')
       pool:
         vmImage: windows-2019
       steps:
@@ -698,10 +697,11 @@ stages:
 
     - job: Analyze_Backend
       displayName: Backend
-      pool:
-        vmImage: windows-2019
       variables:
         disable.coverage.autogenerate: 'true'
+      pool:
+        vmImage: windows-2019
+
       steps:
       - task: UseDotNet@2
         displayName: 'Install .net core'
@@ -712,7 +712,7 @@ stages:
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
       - task: SonarCloudPrepare@1
-        condition: eq(variables['system.pullrequest.isfork'], false)
+        condition: eq(variables['System.PullRequest.IsFork'], 'False')
         inputs:
           SonarCloud: 'SonarCloud'
           organization: 'readarr'
@@ -730,8 +730,8 @@ stages:
           TEST_DIR=_tests/netcoreapp3.1/win-x64/publish/ ./test.sh Windows Unit Coverage
         displayName: Coverage Unit Tests
       - task: SonarCloudAnalyze@1
+        condition: eq(variables['System.PullRequest.IsFork'], 'False')
         displayName: Publish SonarCloud Results
-        condition: eq(variables['system.pullrequest.isfork'], false)
       - task: reportgenerator@4
         displayName: Generate Coverage Report
         inputs:

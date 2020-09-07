@@ -1,10 +1,10 @@
+import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { push } from 'connected-react-router';
-import createBookSelector from 'Store/Selectors/createBookSelector';
 import { deleteBook } from 'Store/Actions/bookActions';
+import createBookSelector from 'Store/Selectors/createBookSelector';
 import DeleteBookModalContent from './DeleteBookModalContent';
 
 function createMapStateToProps() {

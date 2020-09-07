@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import formatBytes from 'Utilities/Number/formatBytes';
-import { icons, inputTypes, kinds } from 'Helpers/Props';
-import Button from 'Components/Link/Button';
-import Icon from 'Components/Icon';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
+import FormLabel from 'Components/Form/FormLabel';
+import Icon from 'Components/Icon';
+import Button from 'Components/Link/Button';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { icons, inputTypes, kinds } from 'Helpers/Props';
+import formatBytes from 'Utilities/Number/formatBytes';
 import styles from './DeleteAuthorModalContent.css';
 
 class DeleteAuthorModalContent extends Component {

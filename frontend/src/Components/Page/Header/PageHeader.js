@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
 import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
+import { icons } from 'Helpers/Props';
 import AuthorSearchInputConnector from './AuthorSearchInputConnector';
-import PageHeaderActionsMenuConnector from './PageHeaderActionsMenuConnector';
 import KeyboardShortcutsModal from './KeyboardShortcutsModal';
+import PageHeaderActionsMenuConnector from './PageHeaderActionsMenuConnector';
 import styles from './PageHeader.css';
 
 class PageHeader extends Component {

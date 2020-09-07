@@ -1,11 +1,11 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import { icons } from 'Helpers/Props';
+import SelectInput from 'Components/Form/SelectInput';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import SelectInput from 'Components/Form/SelectInput';
+import { icons } from 'Helpers/Props';
 import styles from './TablePager.css';
 
 class TablePager extends Component {

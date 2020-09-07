@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import formatBytes from 'Utilities/Number/formatBytes';
-import { icons, kinds, tooltipPositions } from 'Helpers/Props';
+import BookQuality from 'Book/BookQuality';
 import Icon from 'Components/Icon';
-import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
+import TableRow from 'Components/Table/TableRow';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
-import BookQuality from 'Book/BookQuality';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import SelectAuthorModal from 'InteractiveImport/Author/SelectAuthorModal';
 import SelectBookModal from 'InteractiveImport/Book/SelectBookModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
+import formatBytes from 'Utilities/Number/formatBytes';
 import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
 import styles from './InteractiveImportRow.css';
 

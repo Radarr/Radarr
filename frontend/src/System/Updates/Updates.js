@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { icons, kinds } from 'Helpers/Props';
-import formatDate from 'Utilities/Date/formatDate';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import SpinnerButton from 'Components/Link/SpinnerButton';
-import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
+import SpinnerButton from 'Components/Link/SpinnerButton';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import { icons, kinds } from 'Helpers/Props';
+import formatDate from 'Utilities/Date/formatDate';
 import UpdateChanges from './UpdateChanges';
 import styles from './Updates.css';
 

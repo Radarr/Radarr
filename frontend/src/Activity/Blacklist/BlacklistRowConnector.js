@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import { removeFromBlacklist } from 'Store/Actions/blacklistActions';
+import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import BlacklistRow from './BlacklistRow';
 
 function createMapStateToProps() {

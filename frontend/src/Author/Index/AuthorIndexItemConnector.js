@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import * as commandNames from 'Commands/commandNames';
+import { executeCommand } from 'Store/Actions/commandActions';
+import createAuthorMetadataProfileSelector from 'Store/Selectors/createAuthorMetadataProfileSelector';
+import createAuthorQualityProfileSelector from 'Store/Selectors/createAuthorQualityProfileSelector';
 import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import createExecutingCommandsSelector from 'Store/Selectors/createExecutingCommandsSelector';
-import createAuthorQualityProfileSelector from 'Store/Selectors/createAuthorQualityProfileSelector';
-import createAuthorMetadataProfileSelector from 'Store/Selectors/createAuthorMetadataProfileSelector';
-import { executeCommand } from 'Store/Actions/commandActions';
-import * as commandNames from 'Commands/commandNames';
 
 function selectShowSearchAction() {
   return createSelector(

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
+import { icons } from 'Helpers/Props';
 import FileDetails from './FileDetails';
 import styles from './ExpandingFileDetails.css';
 

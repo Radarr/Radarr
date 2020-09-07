@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import AuthorNameLink from 'Author/AuthorNameLink';
 import bookEntities from 'Book/bookEntities';
+import BookSearchCellConnector from 'Book/BookSearchCellConnector';
 import BookTitleLink from 'Book/BookTitleLink';
 import EpisodeStatusConnector from 'Book/EpisodeStatusConnector';
-import BookSearchCellConnector from 'Book/BookSearchCellConnector';
-import AuthorNameLink from 'Author/AuthorNameLink';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
+import TableRow from 'Components/Table/TableRow';
 import styles from './CutoffUnmetRow.css';
 
 function CutoffUnmetRow(props) {

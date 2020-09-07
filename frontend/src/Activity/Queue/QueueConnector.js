@@ -2,15 +2,15 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
-import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
-import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
+import * as commandNames from 'Commands/commandNames';
 import withCurrentPage from 'Components/withCurrentPage';
-import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
+import { clearBooks, fetchBooks } from 'Store/Actions/bookActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as queueActions from 'Store/Actions/queueActions';
-import { fetchBooks, clearBooks } from 'Store/Actions/bookActions';
-import * as commandNames from 'Commands/commandNames';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
+import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
+import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import Queue from './Queue';
 
 function createMapStateToProps() {

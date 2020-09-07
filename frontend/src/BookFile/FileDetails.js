@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
-import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
-import Link from 'Components/Link/Link';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
-import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
 import DescriptionListItemDescription from 'Components/DescriptionList/DescriptionListItemDescription';
+import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
+import Link from 'Components/Link/Link';
+import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
 import styles from './FileDetails.css';
 
 function renderRejections(rejections) {

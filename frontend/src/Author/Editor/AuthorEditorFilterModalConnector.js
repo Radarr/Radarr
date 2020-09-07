@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { setAuthorEditorFilter } from 'Store/Actions/authorEditorActions';
 import FilterModal from 'Components/Filter/FilterModal';
+import { setAuthorEditorFilter } from 'Store/Actions/authorEditorActions';
 
 function createMapStateToProps() {
   return createSelector(

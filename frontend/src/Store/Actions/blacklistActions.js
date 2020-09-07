@@ -1,12 +1,12 @@
 import { createAction } from 'redux-actions';
-import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
-import { createThunk, handleThunks } from 'Store/thunks';
 import { sortDirections } from 'Helpers/Props';
-import createClearReducer from './Creators/Reducers/createClearReducer';
-import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
+import { createThunk, handleThunks } from 'Store/thunks';
+import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
 import createHandleActions from './Creators/createHandleActions';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
+import createClearReducer from './Creators/Reducers/createClearReducer';
+import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 
 //
 // Variables

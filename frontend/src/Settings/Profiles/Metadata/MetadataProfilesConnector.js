@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchMetadataProfiles, deleteMetadataProfile, cloneMetadataProfile } from 'Store/Actions/settingsActions';
+import { cloneMetadataProfile, deleteMetadataProfile, fetchMetadataProfiles } from 'Store/Actions/settingsActions';
 import MetadataProfiles from './MetadataProfiles';
 
 function createMapStateToProps() {

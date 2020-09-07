@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
-import dimensions from 'Styles/Variables/dimensions';
-import fonts from 'Styles/Variables/fonts';
-import stripHtml from 'Utilities/String/stripHtml';
-import { icons, kinds, sizes } from 'Helpers/Props';
+import AuthorPoster from 'Author/AuthorPoster';
 import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
 import Link from 'Components/Link/Link';
-import AuthorPoster from 'Author/AuthorPoster';
+import { icons, kinds, sizes } from 'Helpers/Props';
+import dimensions from 'Styles/Variables/dimensions';
+import fonts from 'Styles/Variables/fonts';
+import stripHtml from 'Utilities/String/stripHtml';
 import AddNewAuthorModal from './AddNewAuthorModal';
 import styles from './AddNewAuthorSearchResult.css';
 

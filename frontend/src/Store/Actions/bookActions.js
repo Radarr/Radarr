@@ -1,18 +1,18 @@
 import _ from 'lodash';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import createAjaxRequest from 'Utilities/createAjaxRequest';
+import bookEntities from 'Book/bookEntities';
 import { sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
+import { updateItem } from './baseActions';
+import createFetchHandler from './Creators/createFetchHandler';
+import createHandleActions from './Creators/createHandleActions';
+import createRemoveItemHandler from './Creators/createRemoveItemHandler';
+import createSaveProviderHandler from './Creators/createSaveProviderHandler';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 import createSetSettingValueReducer from './Creators/Reducers/createSetSettingValueReducer';
 import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
-import createSaveProviderHandler from './Creators/createSaveProviderHandler';
-import bookEntities from 'Book/bookEntities';
-import createFetchHandler from './Creators/createFetchHandler';
-import createRemoveItemHandler from './Creators/createRemoveItemHandler';
-import createHandleActions from './Creators/createHandleActions';
-import { updateItem } from './baseActions';
 
 //
 // Variables

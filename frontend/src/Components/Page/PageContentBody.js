@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { isLocked } from 'Utilities/scrollLock';
-import { scrollDirections } from 'Helpers/Props';
 import OverlayScroller from 'Components/Scroller/OverlayScroller';
 import Scroller from 'Components/Scroller/Scroller';
+import { scrollDirections } from 'Helpers/Props';
+import { isLocked } from 'Utilities/scrollLock';
 import styles from './PageContentBody.css';
 
 class PageContentBody extends Component {

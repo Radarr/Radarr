@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import isBefore from 'Utilities/Date/isBefore';
-import { icons, kinds, sizes } from 'Helpers/Props';
+import QueueDetails from 'Activity/Queue/QueueDetails';
 import Icon from 'Components/Icon';
 import ProgressBar from 'Components/ProgressBar';
-import QueueDetails from 'Activity/Queue/QueueDetails';
+import { icons, kinds, sizes } from 'Helpers/Props';
+import isBefore from 'Utilities/Date/isBefore';
 import BookQuality from './BookQuality';
 import styles from './EpisodeStatus.css';
 

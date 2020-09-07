@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { align } from 'Helpers/Props';
-import FilterMenu from 'Components/Menu/FilterMenu';
 import AuthorIndexFilterModalConnector from 'Author/Index/AuthorIndexFilterModalConnector';
+import FilterMenu from 'Components/Menu/FilterMenu';
+import { align } from 'Helpers/Props';
 
 function AuthorIndexFilterMenu(props) {
   const {

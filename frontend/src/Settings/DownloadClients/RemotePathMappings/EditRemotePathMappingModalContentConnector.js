@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { saveRemotePathMapping, setRemotePathMappingValue } from 'Store/Actions/settingsActions';
 import selectSettings from 'Store/Selectors/selectSettings';
-import { setRemotePathMappingValue, saveRemotePathMapping } from 'Store/Actions/settingsActions';
 import EditRemotePathMappingModalContent from './EditRemotePathMappingModalContent';
 
 const newRemotePathMapping = {

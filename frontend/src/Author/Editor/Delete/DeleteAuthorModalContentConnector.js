@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createAllAuthorSelector from 'Store/Selectors/createAllAuthorsSelector';
 import { bulkDeleteAuthor } from 'Store/Actions/authorEditorActions';
+import createAllAuthorSelector from 'Store/Selectors/createAllAuthorsSelector';
 import DeleteAuthorModalContent from './DeleteAuthorModalContent';
 
 function createMapStateToProps() {

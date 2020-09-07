@@ -1,22 +1,22 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
+import DescriptionList from 'Components/DescriptionList/DescriptionList';
+import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
+import Form from 'Components/Form/Form';
+import FormGroup from 'Components/Form/FormGroup';
+import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
+import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
 import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import Form from 'Components/Form/Form';
-import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
-import FormInputGroup from 'Components/Form/FormInputGroup';
+import ModalHeader from 'Components/Modal/ModalHeader';
 import Popover from 'Components/Tooltip/Popover';
-import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
-import DescriptionList from 'Components/DescriptionList/DescriptionList';
-import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
+import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
 import styles from './EditImportListModalContent.css';
 
 function ImportListMonitoringOptionsPopoverContent() {

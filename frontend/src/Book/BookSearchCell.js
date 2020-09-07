@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import { icons } from 'Helpers/Props';
 import BookInteractiveSearchModalConnector from './Search/BookInteractiveSearchModalConnector';
 import styles from './BookSearchCell.css';
 

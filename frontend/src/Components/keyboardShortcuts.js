@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import Mousetrap from 'mousetrap';
+import React, { Component } from 'react';
 import getDisplayName from 'Helpers/getDisplayName';
 
 export const shortcuts = {

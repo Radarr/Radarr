@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import formatBytes from 'Utilities/Number/formatBytes';
-import { icons } from 'Helpers/Props';
-import Icon from 'Components/Icon';
-import CheckInput from 'Components/Form/CheckInput';
-import styles from './RetagPreviewRow.css';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
+import CheckInput from 'Components/Form/CheckInput';
+import Icon from 'Components/Icon';
+import { icons } from 'Helpers/Props';
+import formatBytes from 'Utilities/Number/formatBytes';
+import styles from './RetagPreviewRow.css';
 
 function formatValue(field, value) {
   if (value === undefined || value === 0 || value === '0' || value === '') {

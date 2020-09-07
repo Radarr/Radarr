@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
+import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import VirtualTableHeader from 'Components/Table/VirtualTableHeader';
 import VirtualTableHeaderCell from 'Components/Table/VirtualTableHeaderCell';
-import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
+import { icons } from 'Helpers/Props';
 // import hasGrowableColumns from './hasGrowableColumns';
 import styles from './UnmappedFilesTableHeader.css';
 

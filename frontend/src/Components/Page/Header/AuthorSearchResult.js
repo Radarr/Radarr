@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { kinds } from 'Helpers/Props';
-import Label from 'Components/Label';
 import AuthorPoster from 'Author/AuthorPoster';
+import Label from 'Components/Label';
+import { kinds } from 'Helpers/Props';
 import styles from './AuthorSearchResult.css';
 
 function AuthorSearchResult(props) {

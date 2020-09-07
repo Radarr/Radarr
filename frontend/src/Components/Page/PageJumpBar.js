@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import dimensions from 'Styles/Variables/dimensions';
 import Measure from 'Components/Measure';
+import dimensions from 'Styles/Variables/dimensions';
 import PageJumpBarItem from './PageJumpBarItem';
 import styles from './PageJumpBar.css';
 

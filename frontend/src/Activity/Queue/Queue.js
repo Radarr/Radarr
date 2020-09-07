@@ -1,26 +1,26 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import PageContent from 'Components/Page/PageContent';
+import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
+import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
+import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
+import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
+import Table from 'Components/Table/Table';
+import TableBody from 'Components/Table/TableBody';
+import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
+import TablePager from 'Components/Table/TablePager';
+import { align, icons } from 'Helpers/Props';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import removeOldSelectedState from 'Utilities/Table/removeOldSelectedState';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
-import { align, icons } from 'Helpers/Props';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import Table from 'Components/Table/Table';
-import TableBody from 'Components/Table/TableBody';
-import TablePager from 'Components/Table/TablePager';
-import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
-import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
-import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
-import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
-import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
-import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
-import RemoveQueueItemsModal from './RemoveQueueItemsModal';
 import QueueOptionsConnector from './QueueOptionsConnector';
 import QueueRowConnector from './QueueRowConnector';
+import RemoveQueueItemsModal from './RemoveQueueItemsModal';
 
 class Queue extends Component {
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { updateInteractiveImportItem, saveInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
+import { saveInteractiveImportItem, updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
 import createAllAuthorSelector from 'Store/Selectors/createAllAuthorsSelector';
 import SelectAuthorModalContent from './SelectAuthorModalContent';
 

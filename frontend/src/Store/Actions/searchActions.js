@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
+import { createThunk, handleThunks } from 'Store/thunks';
+import getNewAuthor from 'Utilities/Author/getNewAuthor';
 import monitorOptions from 'Utilities/Author/monitorOptions';
+import getNewBook from 'Utilities/Book/getNewBook';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getSectionState from 'Utilities/State/getSectionState';
 import updateSectionState from 'Utilities/State/updateSectionState';
-import createAjaxRequest from 'Utilities/createAjaxRequest';
-import getNewAuthor from 'Utilities/Author/getNewAuthor';
-import getNewBook from 'Utilities/Book/getNewBook';
-import { createThunk, handleThunks } from 'Store/thunks';
-import createHandleActions from './Creators/createHandleActions';
 import { set, update, updateItem } from './baseActions';
+import createHandleActions from './Creators/createHandleActions';
 
 //
 // Variables

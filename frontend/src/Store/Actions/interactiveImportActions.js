@@ -1,15 +1,15 @@
 import moment from 'moment';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
+import { sortDirections } from 'Helpers/Props';
+import { createThunk, handleThunks } from 'Store/thunks';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import updateSectionState from 'Utilities/State/updateSectionState';
-import { createThunk, handleThunks } from 'Store/thunks';
-import { sortDirections } from 'Helpers/Props';
-import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
+import { set, update } from './baseActions';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
 import createSaveProviderHandler from './Creators/createSaveProviderHandler';
-import { set, update } from './baseActions';
+import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 
 //
 // Variables

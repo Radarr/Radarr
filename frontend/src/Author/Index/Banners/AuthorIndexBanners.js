@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Grid, WindowScroller } from 'react-virtualized';
+import AuthorIndexItemConnector from 'Author/Index/AuthorIndexItemConnector';
+import Measure from 'Components/Measure';
+import dimensions from 'Styles/Variables/dimensions';
 import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
-import dimensions from 'Styles/Variables/dimensions';
-import Measure from 'Components/Measure';
-import AuthorIndexItemConnector from 'Author/Index/AuthorIndexItemConnector';
 import AuthorIndexBanner from './AuthorIndexBanner';
 import styles from './AuthorIndexBanners.css';
 

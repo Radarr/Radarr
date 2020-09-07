@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import sortByName from 'Utilities/Array/sortByName';
-import { icons, metadataProfileNames } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import MetadataProfile from './MetadataProfile';
+import { icons, metadataProfileNames } from 'Helpers/Props';
+import sortByName from 'Utilities/Array/sortByName';
 import EditMetadataProfileModalConnector from './EditMetadataProfileModalConnector';
+import MetadataProfile from './MetadataProfile';
 import styles from './MetadataProfiles.css';
 
 class MetadataProfiles extends Component {

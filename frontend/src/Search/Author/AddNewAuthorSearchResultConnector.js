@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createExistingAuthorSelector from 'Store/Selectors/createExistingAuthorSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
+import createExistingAuthorSelector from 'Store/Selectors/createExistingAuthorSelector';
 import AddNewAuthorSearchResult from './AddNewAuthorSearchResult';
 
 function createMapStateToProps() {

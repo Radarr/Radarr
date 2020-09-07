@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { filterBuilderTypes, filterBuilderValueTypes, icons } from 'Helpers/Props';
 import SelectInput from 'Components/Form/SelectInput';
 import IconButton from 'Components/Link/IconButton';
+import { filterBuilderTypes, filterBuilderValueTypes, icons } from 'Helpers/Props';
+import AuthorStatusFilterBuilderRowValue from './AuthorStatusFilterBuilderRowValue';
 import BoolFilterBuilderRowValue from './BoolFilterBuilderRowValue';
 import DateFilterBuilderRowValue from './DateFilterBuilderRowValue';
 import FilterBuilderRowValueConnector from './FilterBuilderRowValueConnector';
@@ -11,7 +12,6 @@ import MetadataProfileFilterBuilderRowValueConnector from './MetadataProfileFilt
 import ProtocolFilterBuilderRowValue from './ProtocolFilterBuilderRowValue';
 import QualityFilterBuilderRowValueConnector from './QualityFilterBuilderRowValueConnector';
 import QualityProfileFilterBuilderRowValueConnector from './QualityProfileFilterBuilderRowValueConnector';
-import AuthorStatusFilterBuilderRowValue from './AuthorStatusFilterBuilderRowValue';
 import TagFilterBuilderRowValueConnector from './TagFilterBuilderRowValueConnector';
 import styles from './FilterBuilderRow.css';
 

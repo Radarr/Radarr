@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
+import AuthorNameLink from 'Author/AuthorNameLink';
 import Icon from 'Components/Icon';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
-import AuthorNameLink from 'Author/AuthorNameLink';
+import { icons } from 'Helpers/Props';
 import BookshelfBook from './BookshelfBook';
 import styles from './BookshelfRow.css';
 

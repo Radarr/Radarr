@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import formatDateTime from 'Utilities/Date/formatDateTime';
-import formatAge from 'Utilities/Number/formatAge';
-import Link from 'Components/Link/Link';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
-import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
 import DescriptionListItemDescription from 'Components/DescriptionList/DescriptionListItemDescription';
-import { icons } from 'Helpers/Props';
+import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
 import Icon from 'Components/Icon';
+import Link from 'Components/Link/Link';
+import { icons } from 'Helpers/Props';
+import formatDateTime from 'Utilities/Date/formatDateTime';
+import formatAge from 'Utilities/Number/formatAge';
 import styles from './HistoryDetails.css';
 
 function getDetailedList(statusMessages) {

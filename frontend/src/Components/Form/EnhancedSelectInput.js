@@ -1,21 +1,21 @@
+import classNames from 'classnames';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
-import classNames from 'classnames';
-import getUniqueElememtId from 'Utilities/getUniqueElementId';
-import { isMobile as isMobileUtil } from 'Utilities/mobile';
-import * as keyCodes from 'Utilities/Constants/keyCodes';
-import { icons, sizes, scrollDirections } from 'Helpers/Props';
 import Icon from 'Components/Icon';
-import Portal from 'Components/Portal';
 import Link from 'Components/Link/Link';
 import Measure from 'Components/Measure';
 import Modal from 'Components/Modal/Modal';
 import ModalBody from 'Components/Modal/ModalBody';
+import Portal from 'Components/Portal';
 import Scroller from 'Components/Scroller/Scroller';
-import HintedSelectInputSelectedValue from './HintedSelectInputSelectedValue';
+import { icons, scrollDirections, sizes } from 'Helpers/Props';
+import * as keyCodes from 'Utilities/Constants/keyCodes';
+import getUniqueElememtId from 'Utilities/getUniqueElementId';
+import { isMobile as isMobileUtil } from 'Utilities/mobile';
 import HintedSelectInputOption from './HintedSelectInputOption';
+import HintedSelectInputSelectedValue from './HintedSelectInputSelectedValue';
 import styles from './EnhancedSelectInput.css';
 
 function isArrowKey(keyCode) {

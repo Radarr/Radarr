@@ -1,28 +1,28 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { inputTypes } from 'Helpers/Props';
 import Link from 'Components/Link/Link';
+import { inputTypes } from 'Helpers/Props';
 import AutoCompleteInput from './AutoCompleteInput';
+import BookEditionSelectInputConnector from './BookEditionSelectInputConnector';
+import BookshelfInputConnector from './BookshelfInputConnector';
 import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
 import DeviceInputConnector from './DeviceInputConnector';
-import BookshelfInputConnector from './BookshelfInputConnector';
+import EnhancedSelectInput from './EnhancedSelectInput';
+import FormInputHelpText from './FormInputHelpText';
 import KeyValueListInput from './KeyValueListInput';
+import MetadataProfileSelectInputConnector from './MetadataProfileSelectInputConnector';
 import MonitorBooksSelectInput from './MonitorBooksSelectInput';
 import NumberInput from './NumberInput';
 import OAuthInputConnector from './OAuthInputConnector';
 import PasswordInput from './PasswordInput';
 import PathInputConnector from './PathInputConnector';
 import QualityProfileSelectInputConnector from './QualityProfileSelectInputConnector';
-import MetadataProfileSelectInputConnector from './MetadataProfileSelectInputConnector';
-import BookEditionSelectInputConnector from './BookEditionSelectInputConnector';
 import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
 import SeriesTypeSelectInput from './SeriesTypeSelectInput';
-import EnhancedSelectInput from './EnhancedSelectInput';
 import TagInputConnector from './TagInputConnector';
-import TextTagInputConnector from './TextTagInputConnector';
 import TextInput from './TextInput';
-import FormInputHelpText from './FormInputHelpText';
+import TextTagInputConnector from './TextTagInputConnector';
 import styles from './FormInputGroup.css';
 
 function getComponent(type) {

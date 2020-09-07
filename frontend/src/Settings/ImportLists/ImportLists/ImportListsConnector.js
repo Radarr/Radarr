@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import sortByName from 'Utilities/Array/sortByName';
+import { deleteImportList, fetchImportLists, fetchRootFolders } from 'Store/Actions/settingsActions';
 import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
-import { fetchImportLists, deleteImportList, fetchRootFolders } from 'Store/Actions/settingsActions';
+import sortByName from 'Utilities/Array/sortByName';
 import ImportLists from './ImportLists';
 
 function createMapStateToProps() {

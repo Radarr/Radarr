@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { fetchMetadataProfileSchema, saveMetadataProfile, setMetadataProfileValue } from 'Store/Actions/settingsActions';
 import createProfileInUseSelector from 'Store/Selectors/createProfileInUseSelector';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
-import { fetchMetadataProfileSchema, setMetadataProfileValue, saveMetadataProfile } from 'Store/Actions/settingsActions';
 import EditMetadataProfileModalContent from './EditMetadataProfileModalContent';
 
 function createMapStateToProps() {

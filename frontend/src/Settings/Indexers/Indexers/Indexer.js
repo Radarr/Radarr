@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
+import { kinds } from 'Helpers/Props';
 import EditIndexerModalConnector from './EditIndexerModalConnector';
 import styles from './Indexer.css';
 

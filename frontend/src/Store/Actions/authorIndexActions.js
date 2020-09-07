@@ -1,11 +1,11 @@
 import { createAction } from 'redux-actions';
-import sortByName from 'Utilities/Array/sortByName';
 import { filterBuilderTypes, filterBuilderValueTypes, filterTypePredicates, sortDirections } from 'Helpers/Props';
-import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
-import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
-import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
+import sortByName from 'Utilities/Array/sortByName';
+import { filterPredicates, filters, sortPredicates } from './authorActions';
 import createHandleActions from './Creators/createHandleActions';
-import { filters, filterPredicates, sortPredicates } from './authorActions';
+import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
+import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
+import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 
 //
 // Variables

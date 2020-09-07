@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import bookEntities from 'Book/bookEntities';
-import BookTitleLink from 'Book/BookTitleLink';
-import BookSearchCellConnector from 'Book/BookSearchCellConnector';
 import AuthorNameLink from 'Author/AuthorNameLink';
+import bookEntities from 'Book/bookEntities';
+import BookSearchCellConnector from 'Book/BookSearchCellConnector';
+import BookTitleLink from 'Book/BookTitleLink';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
+import TableRow from 'Components/Table/TableRow';
 
 function MissingRow(props) {
   const {

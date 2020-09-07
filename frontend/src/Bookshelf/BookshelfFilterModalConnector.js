@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { setBookshelfFilter } from 'Store/Actions/bookshelfActions';
 import FilterModal from 'Components/Filter/FilterModal';
+import { setBookshelfFilter } from 'Store/Actions/bookshelfActions';
 
 function createMapStateToProps() {
   return createSelector(

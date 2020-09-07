@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds, tooltipPositions } from 'Helpers/Props';
+import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
+import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
+import BookQuality from 'Book/BookQuality';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import TableRow from 'Components/Table/TableRow';
 import Popover from 'Components/Tooltip/Popover';
-import BookQuality from 'Book/BookQuality';
-import HistoryDetailsConnector from 'Activity/History/Details/HistoryDetailsConnector';
-import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import styles from './AuthorHistoryRow.css';
 
 function getTitle(eventType) {

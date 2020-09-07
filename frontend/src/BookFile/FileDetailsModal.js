@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import FileDetailsConnector from './FileDetailsConnector';
 import Button from 'Components/Link/Button';
 import Modal from 'Components/Modal/Modal';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import FileDetailsConnector from './FileDetailsConnector';
 
 function FileDetailsModal(props) {
   const {

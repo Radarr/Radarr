@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
-import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import { setBooksSort, setBooksTableOption, toggleBooksMonitored } from 'Store/Actions/bookActions';
 import { executeCommand } from 'Store/Actions/commandActions';
+import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
+import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
+import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
+import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
+import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import AuthorDetailsSeason from './AuthorDetailsSeason';
 
 function createMapStateToProps() {

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import { toggleAuthorMonitored } from 'Store/Actions/authorActions';
 import { toggleBooksMonitored } from 'Store/Actions/bookActions';
+import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import BookshelfRow from './BookshelfRow';
 
 // Use a const to share the reselect cache between instances

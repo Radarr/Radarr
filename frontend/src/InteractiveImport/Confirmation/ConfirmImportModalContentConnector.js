@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchInteractiveImportBookFiles, clearInteractiveImportBookFiles } from 'Store/Actions/interactiveImportActions';
+import { clearInteractiveImportBookFiles, fetchInteractiveImportBookFiles } from 'Store/Actions/interactiveImportActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import ConfirmImportModalContent from './ConfirmImportModalContent';
 

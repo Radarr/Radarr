@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons } from 'Helpers/Props';
 import SpinnerIcon from 'Components/SpinnerIcon';
+import { icons } from 'Helpers/Props';
 import styles from './AuthorEditorFooterLabel.css';
 
 function AuthorEditorFooterLabel(props) {

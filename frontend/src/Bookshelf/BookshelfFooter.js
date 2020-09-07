@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
-import SpinnerButton from 'Components/Link/SpinnerButton';
 import MonitorBooksSelectInput from 'Components/Form/MonitorBooksSelectInput';
 import SelectInput from 'Components/Form/SelectInput';
+import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
+import { kinds } from 'Helpers/Props';
 import styles from './BookshelfFooter.css';
 
 const NO_CHANGE = 'noChange';

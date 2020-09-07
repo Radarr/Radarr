@@ -1,5 +1,5 @@
-import createAjaxRequest from 'Utilities/createAjaxRequest';
 import updateBooks from 'Utilities/Book/updateBooks';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getSectionState from 'Utilities/State/getSectionState';
 
 function createBatchToggleBookMonitoredHandler(section, fetchHandler) {

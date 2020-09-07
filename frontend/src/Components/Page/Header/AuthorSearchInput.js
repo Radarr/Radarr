@@ -2,11 +2,11 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
-import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
-import AuthorSearchResult from './AuthorSearchResult';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import { icons } from 'Helpers/Props';
+import AuthorSearchResult from './AuthorSearchResult';
 import FuseWorker from './fuse.worker';
 import styles from './AuthorSearchInput.css';
 

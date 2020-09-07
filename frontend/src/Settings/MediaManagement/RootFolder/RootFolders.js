@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import sortByName from 'Utilities/Array/sortByName';
-import { icons } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import RootFolder from './RootFolder';
+import { icons } from 'Helpers/Props';
+import sortByName from 'Utilities/Array/sortByName';
 import EditRootFolderModalConnector from './EditRootFolderModalConnector';
+import RootFolder from './RootFolder';
 import styles from './RootFolders.css';
 
 class RootFolders extends Component {

@@ -1,6 +1,6 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import styles from './BookshelfBook.css';
 

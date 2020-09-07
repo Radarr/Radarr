@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { saveRootFolder, setRootFolderValue } from 'Store/Actions/settingsActions';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
-import { setRootFolderValue, saveRootFolder } from 'Store/Actions/settingsActions';
 import EditRootFolderModalContent from './EditRootFolderModalContent';
 
 function createMapStateToProps() {

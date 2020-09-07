@@ -1,5 +1,5 @@
-import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createAllAuthorSelector from 'Store/Selectors/createAllAuthorsSelector';
 import createDeepEqualSelector from 'Store/Selectors/createDeepEqualSelector';

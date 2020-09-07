@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import ImportList from './ImportList';
+import { icons } from 'Helpers/Props';
 import AddImportListModal from './AddImportListModal';
 import EditImportListModalConnector from './EditImportListModalConnector';
+import ImportList from './ImportList';
 import styles from './ImportLists.css';
 
 class ImportLists extends Component {

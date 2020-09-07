@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import titleCase from 'Utilities/String/titleCase';
-import { inputTypes, sizes } from 'Helpers/Props';
 import FieldSet from 'Components/FieldSet';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
+import { inputTypes, sizes } from 'Helpers/Props';
+import titleCase from 'Utilities/String/titleCase';
 
 function UpdateSettings(props) {
   const {

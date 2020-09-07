@@ -1,18 +1,18 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import SelectInput from 'Components/Form/SelectInput';
+import SpinnerButton from 'Components/Link/SpinnerButton';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import ConfirmModal from 'Components/Modal/ConfirmModal';
+import Table from 'Components/Table/Table';
+import TableBody from 'Components/Table/TableBody';
+import { kinds } from 'Helpers/Props';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import removeOldSelectedState from 'Utilities/Table/removeOldSelectedState';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
-import { kinds } from 'Helpers/Props';
-import ConfirmModal from 'Components/Modal/ConfirmModal';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import SpinnerButton from 'Components/Link/SpinnerButton';
-import SelectInput from 'Components/Form/SelectInput';
-import Table from 'Components/Table/Table';
-import TableBody from 'Components/Table/TableBody';
 import BookFileEditorRow from './BookFileEditorRow';
 import styles from './BookFileEditorTableContent.css';
 

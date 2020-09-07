@@ -1,14 +1,14 @@
+import { push } from 'connected-react-router';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { push } from 'connected-react-router';
-import getErrorMessage from 'Utilities/Object/getErrorMessage';
-import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import NotFound from 'Components/NotFound';
+import PageContent from 'Components/Page/PageContent';
+import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import AuthorDetailsConnector from './AuthorDetailsConnector';
 import styles from './AuthorDetails.css';
 

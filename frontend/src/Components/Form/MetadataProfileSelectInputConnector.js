@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import sortByName from 'Utilities/Array/sortByName';
-import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
 import { metadataProfileNames } from 'Helpers/Props';
+import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
+import sortByName from 'Utilities/Array/sortByName';
 import SelectInput from './SelectInput';
 
 function createMapStateToProps() {

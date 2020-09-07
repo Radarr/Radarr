@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
-import { kinds } from 'Helpers/Props';
-import SpinnerButton from 'Components/Link/SpinnerButton';
-import CheckInput from 'Components/Form/CheckInput';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
-import ModalBody from 'Components/Modal/ModalBody';
-import ModalFooter from 'Components/Modal/ModalFooter';
 import AuthorPoster from 'Author/AuthorPoster';
+import CheckInput from 'Components/Form/CheckInput';
+import SpinnerButton from 'Components/Link/SpinnerButton';
+import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
+import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { kinds } from 'Helpers/Props';
 import AddAuthorOptionsForm from '../Common/AddAuthorOptionsForm.js';
 import styles from './AddNewAuthorModalContent.css';
 

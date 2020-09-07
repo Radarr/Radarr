@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import MonitorToggleButton from 'Components/MonitorToggleButton';
-import getToggledRange from 'Utilities/Table/getToggledRange';
-import { icons, sortDirections } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
+import MonitorToggleButton from 'Components/MonitorToggleButton';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import { icons, sortDirections } from 'Helpers/Props';
+import getToggledRange from 'Utilities/Table/getToggledRange';
 import BookRowConnector from './BookRowConnector';
 import styles from './AuthorDetailsSeries.css';
 

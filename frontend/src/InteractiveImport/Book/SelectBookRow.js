@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds, sizes } from 'Helpers/Props';
-import TableRow from 'Components/Table/TableRow';
-import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import Label from 'Components/Label';
+import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
+import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import TableRow from 'Components/Table/TableRow';
+import { kinds, sizes } from 'Helpers/Props';
 import styles from './SelectBookRow.css';
 
 function getBookCountKind(monitored, bookFileCount, bookCount) {

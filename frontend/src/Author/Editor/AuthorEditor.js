@@ -1,24 +1,24 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import getErrorMessage from 'Utilities/Object/getErrorMessage';
-import getSelectedIds from 'Utilities/Table/getSelectedIds';
-import selectAll from 'Utilities/Table/selectAll';
-import toggleSelected from 'Utilities/Table/toggleSelected';
-import { align, sortDirections } from 'Helpers/Props';
+import NoAuthor from 'Author/NoAuthor';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import FilterMenu from 'Components/Menu/FilterMenu';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
-import FilterMenu from 'Components/Menu/FilterMenu';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import NoAuthor from 'Author/NoAuthor';
-import OrganizeAuthorModal from './Organize/OrganizeAuthorModal';
+import { align, sortDirections } from 'Helpers/Props';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
+import getSelectedIds from 'Utilities/Table/getSelectedIds';
+import selectAll from 'Utilities/Table/selectAll';
+import toggleSelected from 'Utilities/Table/toggleSelected';
 import RetagAuthorModal from './AudioTags/RetagAuthorModal';
-import AuthorEditorRowConnector from './AuthorEditorRowConnector';
-import AuthorEditorFooter from './AuthorEditorFooter';
 import AuthorEditorFilterModalConnector from './AuthorEditorFilterModalConnector';
+import AuthorEditorFooter from './AuthorEditorFooter';
+import AuthorEditorRowConnector from './AuthorEditorRowConnector';
+import OrganizeAuthorModal from './Organize/OrganizeAuthorModal';
 
 function getColumns(showMetadataProfile) {
   return [

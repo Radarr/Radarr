@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import parseUrl from 'Utilities/String/parseUrl';
-import { getSearchResults, clearSearchResults } from 'Store/Actions/searchActions';
+import { clearSearchResults, getSearchResults } from 'Store/Actions/searchActions';
 import { fetchRootFolders } from 'Store/Actions/settingsActions';
+import parseUrl from 'Utilities/String/parseUrl';
 import AddNewItem from './AddNewItem';
 
 function createMapStateToProps() {

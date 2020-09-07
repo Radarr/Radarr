@@ -4,9 +4,9 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
-import QualityProfilesConnector from './Quality/QualityProfilesConnector';
-import MetadataProfilesConnector from './Metadata/MetadataProfilesConnector';
 import DelayProfilesConnector from './Delay/DelayProfilesConnector';
+import MetadataProfilesConnector from './Metadata/MetadataProfilesConnector';
+import QualityProfilesConnector from './Quality/QualityProfilesConnector';
 import ReleaseProfilesConnector from './Release/ReleaseProfilesConnector';
 
 // Only a single DragDrop Context can exist so it's done here to allow editing

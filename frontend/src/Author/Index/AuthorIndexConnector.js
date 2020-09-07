@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import * as commandNames from 'Commands/commandNames';
+import withScrollPosition from 'Components/withScrollPosition';
+import { setAuthorFilter, setAuthorSort, setAuthorTableOption, setAuthorView } from 'Store/Actions/authorIndexActions';
+import { executeCommand } from 'Store/Actions/commandActions';
+import scrollPositions from 'Store/scrollPositions';
 import createAuthorClientSideCollectionItemsSelector
   from 'Store/Selectors/createAuthorClientSideCollectionItemsSelector';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import scrollPositions from 'Store/scrollPositions';
-import { setAuthorFilter, setAuthorSort, setAuthorTableOption, setAuthorView } from 'Store/Actions/authorIndexActions';
-import { executeCommand } from 'Store/Actions/commandActions';
-import * as commandNames from 'Commands/commandNames';
-import withScrollPosition from 'Components/withScrollPosition';
 import AuthorIndex from './AuthorIndex';
 
 function createMapStateToProps() {

@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
+import AuthorNameLink from 'Author/AuthorNameLink';
+import BookQuality from 'Book/BookQuality';
+import BookTitleLink from 'Book/BookTitleLink';
 import IconButton from 'Components/Link/IconButton';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import BookTitleLink from 'Book/BookTitleLink';
-import BookQuality from 'Book/BookQuality';
-import AuthorNameLink from 'Author/AuthorNameLink';
-import HistoryEventTypeCell from './HistoryEventTypeCell';
+import TableRow from 'Components/Table/TableRow';
+import { icons } from 'Helpers/Props';
 import HistoryDetailsModal from './Details/HistoryDetailsModal';
+import HistoryEventTypeCell from './HistoryEventTypeCell';
 import styles from './HistoryRow.css';
 
 class HistoryRow extends Component {

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import TableRow from 'Components/Table/TableRow';
+import BookQuality from 'Book/BookQuality';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
-import BookQuality from 'Book/BookQuality';
+import TableRow from 'Components/Table/TableRow';
 
 function BookFileEditorRow(props) {
   const {

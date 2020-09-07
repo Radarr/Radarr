@@ -3,17 +3,16 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import {
-  fetchInteractiveImportItems,
-  setInteractiveImportSort,
-  clearInteractiveImport,
-  setInteractiveImportMode,
-  updateInteractiveImportItem,
-  saveInteractiveImportItem
-} from 'Store/Actions/interactiveImportActions';
-import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
-import { executeCommand } from 'Store/Actions/commandActions';
 import * as commandNames from 'Commands/commandNames';
+import { executeCommand } from 'Store/Actions/commandActions';
+import {
+  clearInteractiveImport,
+  fetchInteractiveImportItems,
+  saveInteractiveImportItem,
+  setInteractiveImportMode,
+  setInteractiveImportSort,
+  updateInteractiveImportItem } from 'Store/Actions/interactiveImportActions';
+import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import InteractiveImportModalContent from './InteractiveImportModalContent';
 
 function createMapStateToProps() {

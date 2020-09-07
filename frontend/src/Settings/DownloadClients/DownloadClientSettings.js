@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { icons } from 'Helpers/Props';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
+import { icons } from 'Helpers/Props';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import DownloadClientsConnector from './DownloadClients/DownloadClientsConnector';
 import DownloadClientOptionsConnector from './Options/DownloadClientOptionsConnector';

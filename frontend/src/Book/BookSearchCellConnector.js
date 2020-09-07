@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { isCommandExecuting } from 'Utilities/Command';
+import * as commandNames from 'Commands/commandNames';
+import { executeCommand } from 'Store/Actions/commandActions';
 import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import { executeCommand } from 'Store/Actions/commandActions';
-import * as commandNames from 'Commands/commandNames';
+import { isCommandExecuting } from 'Utilities/Command';
 import BookSearchCell from './BookSearchCell';
 
 function createMapStateToProps() {

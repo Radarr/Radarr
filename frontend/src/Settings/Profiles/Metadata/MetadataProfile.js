@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
+import { icons, kinds } from 'Helpers/Props';
 import EditMetadataProfileModalConnector from './EditMetadataProfileModalConnector';
 import styles from './MetadataProfile.css';
 

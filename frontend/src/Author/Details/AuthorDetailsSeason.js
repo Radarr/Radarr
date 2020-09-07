@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import getToggledRange from 'Utilities/Table/getToggledRange';
-import { sortDirections } from 'Helpers/Props';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import { sortDirections } from 'Helpers/Props';
+import getToggledRange from 'Utilities/Table/getToggledRange';
 import BookRowConnector from './BookRowConnector';
 import styles from './AuthorDetailsSeason.css';
 

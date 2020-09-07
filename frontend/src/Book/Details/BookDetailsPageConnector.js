@@ -1,14 +1,14 @@
+import { push } from 'connected-react-router';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { push } from 'connected-react-router';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import NotFound from 'Components/NotFound';
-import { fetchBooks, clearBooks } from 'Store/Actions/bookActions';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import { clearBooks, fetchBooks } from 'Store/Actions/bookActions';
 import BookDetailsConnector from './BookDetailsConnector';
 
 function createMapStateToProps() {

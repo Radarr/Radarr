@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import Icon from 'Components/Icon';
 import FileBrowserModal from 'Components/FileBrowser/FileBrowserModal';
+import Icon from 'Components/Icon';
+import { icons } from 'Helpers/Props';
 import AutoSuggestInput from './AutoSuggestInput';
 import FormInputButton from './FormInputButton';
 import styles from './PathInput.css';

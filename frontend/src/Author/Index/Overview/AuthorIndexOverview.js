@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
+import AuthorPoster from 'Author/AuthorPoster';
+import DeleteAuthorModal from 'Author/Delete/DeleteAuthorModal';
+import EditAuthorModalConnector from 'Author/Edit/EditAuthorModalConnector';
+import AuthorIndexProgressBar from 'Author/Index/ProgressBar/AuthorIndexProgressBar';
+import IconButton from 'Components/Link/IconButton';
+import Link from 'Components/Link/Link';
+import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import { icons } from 'Helpers/Props';
 import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
 import stripHtml from 'Utilities/String/stripHtml';
-import IconButton from 'Components/Link/IconButton';
-import Link from 'Components/Link/Link';
-import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-import AuthorPoster from 'Author/AuthorPoster';
-import EditAuthorModalConnector from 'Author/Edit/EditAuthorModalConnector';
-import DeleteAuthorModal from 'Author/Delete/DeleteAuthorModal';
-import AuthorIndexProgressBar from 'Author/Index/ProgressBar/AuthorIndexProgressBar';
 import AuthorIndexOverviewInfo from './AuthorIndexOverviewInfo';
 import styles from './AuthorIndexOverview.css';
 

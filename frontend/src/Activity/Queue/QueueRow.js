@@ -1,23 +1,23 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds, tooltipPositions } from 'Helpers/Props';
+import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
+import AuthorNameLink from 'Author/AuthorNameLink';
+import BookQuality from 'Book/BookQuality';
+import BookTitleLink from 'Book/BookTitleLink';
+import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import ProgressBar from 'Components/ProgressBar';
-import TableRow from 'Components/Table/TableRow';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
-import Icon from 'Components/Icon';
+import TableRow from 'Components/Table/TableRow';
 import Popover from 'Components/Tooltip/Popover';
-import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
-import BookTitleLink from 'Book/BookTitleLink';
-import BookQuality from 'Book/BookQuality';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
-import AuthorNameLink from 'Author/AuthorNameLink';
 import QueueStatusCell from './QueueStatusCell';
-import TimeleftCell from './TimeleftCell';
 import RemoveQueueItemModal from './RemoveQueueItemModal';
+import TimeleftCell from './TimeleftCell';
 import styles from './QueueRow.css';
 
 class QueueRow extends Component {

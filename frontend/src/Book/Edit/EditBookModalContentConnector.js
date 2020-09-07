@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import selectSettings from 'Store/Selectors/selectSettings';
-import createBookSelector from 'Store/Selectors/createBookSelector';
+import { saveBook, setBookValue } from 'Store/Actions/bookActions';
 import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
-import { setBookValue, saveBook } from 'Store/Actions/bookActions';
+import createBookSelector from 'Store/Selectors/createBookSelector';
+import selectSettings from 'Store/Selectors/selectSettings';
 import EditBookModalContent from './EditBookModalContent';
 
 function createMapStateToProps() {

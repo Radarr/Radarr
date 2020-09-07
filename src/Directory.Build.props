@@ -1,7 +1,6 @@
 <Project>
   <!-- Common to all Readarr Projects -->
   <PropertyGroup>
-    <CodeAnalysisRuleSet>$(SolutionDir)Stylecop.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -92,8 +91,12 @@
   </ItemGroup>
 
   <!-- Set up stylecop -->
-  <ItemGroup Condition="'$(ReadarrProject)'=='true' and '$(EnableStylecop)'!='false'">
+  <ItemGroup Condition="'$(ReadarrProject)'=='true' and '$(EnableAnalyzers)'!='false'">
     <!-- StyleCop analysis -->
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

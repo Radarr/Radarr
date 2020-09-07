@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
-import { sortDirections } from 'Helpers/Props';
+import AuthorIndexItemConnector from 'Author/Index/AuthorIndexItemConnector';
 import VirtualTable from 'Components/Table/VirtualTable';
 import VirtualTableRow from 'Components/Table/VirtualTableRow';
-import AuthorIndexItemConnector from 'Author/Index/AuthorIndexItemConnector';
+import { sortDirections } from 'Helpers/Props';
+import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import AuthorIndexHeaderConnector from './AuthorIndexHeaderConnector';
 import AuthorIndexRow from './AuthorIndexRow';
 import styles from './AuthorIndexTable.css';

@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
+import * as commandNames from 'Commands/commandNames';
+import withCurrentPage from 'Components/withCurrentPage';
+import { clearBookFiles, fetchBookFiles } from 'Store/Actions/bookFileActions';
+import { executeCommand } from 'Store/Actions/commandActions';
+import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
+import * as wantedActions from 'Store/Actions/wantedActions';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
-import withCurrentPage from 'Components/withCurrentPage';
-import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
-import * as wantedActions from 'Store/Actions/wantedActions';
-import { executeCommand } from 'Store/Actions/commandActions';
-import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
-import { fetchBookFiles, clearBookFiles } from 'Store/Actions/bookFileActions';
-import * as commandNames from 'Commands/commandNames';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import CutoffUnmet from './CutoffUnmet';
 
 function createMapStateToProps() {

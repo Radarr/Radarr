@@ -1,13 +1,12 @@
 import PropTypes from 'prop-types';
-
 import React, { Component } from 'react';
-import { icons, kinds } from 'Helpers/Props';
+import AuthorNameLink from 'Author/AuthorNameLink';
+import BookQuality from 'Book/BookQuality';
 import IconButton from 'Components/Link/IconButton';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import BookQuality from 'Book/BookQuality';
-import AuthorNameLink from 'Author/AuthorNameLink';
+import TableRow from 'Components/Table/TableRow';
+import { icons, kinds } from 'Helpers/Props';
 import BlacklistDetailsModal from './BlacklistDetailsModal';
 import styles from './BlacklistRow.css';
 

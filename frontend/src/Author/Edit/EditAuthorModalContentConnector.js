@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import selectSettings from 'Store/Selectors/selectSettings';
-import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
 import { saveAuthor, setAuthorValue } from 'Store/Actions/authorActions';
+import createAuthorSelector from 'Store/Selectors/createAuthorSelector';
+import selectSettings from 'Store/Selectors/selectSettings';
 import EditAuthorModalContent from './EditAuthorModalContent';
 
 function createIsPathChangingSelector() {

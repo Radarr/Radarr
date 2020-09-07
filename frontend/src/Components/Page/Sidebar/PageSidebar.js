@@ -1,14 +1,14 @@
+import classNames from 'classnames';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
+import QueueStatusConnector from 'Activity/Queue/Status/QueueStatusConnector';
+import OverlayScroller from 'Components/Scroller/OverlayScroller';
+import Scroller from 'Components/Scroller/Scroller';
 import { icons } from 'Helpers/Props';
 import locationShape from 'Helpers/Props/Shapes/locationShape';
 import dimensions from 'Styles/Variables/dimensions';
-import OverlayScroller from 'Components/Scroller/OverlayScroller';
-import Scroller from 'Components/Scroller/Scroller';
-import QueueStatusConnector from 'Activity/Queue/Status/QueueStatusConnector';
 import HealthStatusConnector from 'System/Status/Health/HealthStatusConnector';
 import MessagesConnector from './Messages/MessagesConnector';
 import PageSidebarItem from './PageSidebarItem';

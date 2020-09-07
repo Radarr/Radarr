@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { icons } from 'Helpers/Props';
+import dimensions from 'Styles/Variables/dimensions';
 import formatDateTime from 'Utilities/Date/formatDateTime';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import formatBytes from 'Utilities/Number/formatBytes';
-import { icons } from 'Helpers/Props';
-import dimensions from 'Styles/Variables/dimensions';
 import AuthorIndexOverviewInfoRow from './AuthorIndexOverviewInfoRow';
 import styles from './AuthorIndexOverviewInfo.css';
 

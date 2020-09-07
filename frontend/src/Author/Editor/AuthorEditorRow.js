@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import TagListConnector from 'Components/TagListConnector';
-import TableRow from 'Components/Table/TableRow';
-import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import AuthorNameLink from 'Author/AuthorNameLink';
 import AuthorStatusCell from 'Author/Index/Table/AuthorStatusCell';
+import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
+import TableRow from 'Components/Table/TableRow';
+import TagListConnector from 'Components/TagListConnector';
 
 class AuthorEditorRow extends Component {
 
