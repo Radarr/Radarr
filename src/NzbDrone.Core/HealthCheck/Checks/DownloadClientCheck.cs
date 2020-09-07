@@ -9,6 +9,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
     [CheckOn(typeof(ProviderAddedEvent<IDownloadClient>))]
     [CheckOn(typeof(ProviderUpdatedEvent<IDownloadClient>))]
     [CheckOn(typeof(ProviderDeletedEvent<IDownloadClient>))]
+    [CheckOn(typeof(ProviderStatusChangedEvent<IDownloadClient>))]
     public class DownloadClientCheck : HealthCheckBase
     {
         private readonly IProvideDownloadClient _downloadClientProvider;
