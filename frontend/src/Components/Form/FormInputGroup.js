@@ -20,6 +20,7 @@ import QualityProfileSelectInputConnector from './QualityProfileSelectInputConne
 import RootFolderSelectInputConnector from './RootFolderSelectInputConnector';
 import TagInputConnector from './TagInputConnector';
 import TagSelectInputConnector from './TagSelectInputConnector';
+import TextArea from './TextArea';
 import TextInput from './TextInput';
 import TextTagInputConnector from './TextTagInputConnector';
 import styles from './FormInputGroup.css';
@@ -70,6 +71,9 @@ function getComponent(type) {
 
     case inputTypes.TAG:
       return TagInputConnector;
+
+    case inputTypes.TEXT_AREA:
+      return TextArea;
 
     case inputTypes.TEXT_TAG:
       return TextTagInputConnector;
