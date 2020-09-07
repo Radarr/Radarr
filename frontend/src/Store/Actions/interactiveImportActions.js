@@ -49,7 +49,7 @@ export const defaultState = {
     },
 
     quality: function(item, direction) {
-      return item.quality ? item.qualityWeight : 0;
+      return item.qualityWeight || 0;
     }
   },
 
