@@ -42,7 +42,7 @@ namespace Radarr.Api.V3.RootFolders
 
         private RootFolderResource GetRootFolder(int id)
         {
-            var timeout = Request.GetBooleanQueryParameter("timeout", true);
+            var timeout = Context?.Request?.GetBooleanQueryParameter("timeout", true) ?? true;
 
             return _rootFolderService.Get(id, timeout).ToResource();
         }
