@@ -20,18 +20,26 @@ function getShortcuts() {
 }
 
 function getShortcutKey(combo, isOsx) {
-  const comboMatch = combo.match(/(.+?)\+(.)/);
+  const comboMatch = combo.match(/(.+?)\+(.*)/);
 
   if (!comboMatch) {
     return combo;
   }
 
   const modifier = comboMatch[1];
-  const key = comboMatch[2];
+  let key = comboMatch[2];
   let osModifier = modifier;
 
   if (modifier === 'mod') {
-    osModifier = isOsx ? 'cmd' : 'ctrl';
+    osModifier = isOsx ? 'cmd' : 'Ctrl';
+  }
+
+  if (key === 'home') {
+    key = isOsx ? '↑' : 'Home';
+  }
+
+  if (key === 'end') {
+    key = isOsx ? '↓' : 'End';
   }
 
   return `${osModifier} + ${key}`;

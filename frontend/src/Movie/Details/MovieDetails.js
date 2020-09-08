@@ -30,6 +30,7 @@ import ExtraFileTable from 'MovieFile/Extras/ExtraFileTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
 import QualityProfileNameConnector from 'Settings/Profiles/Quality/QualityProfileNameConnector';
 import fonts from 'Styles/Variables/fonts';
+import * as keyCodes from 'Utilities/Constants/keyCodes';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
@@ -91,6 +92,7 @@ class MovieDetails extends Component {
     window.addEventListener('touchend', this.onTouchEnd);
     window.addEventListener('touchcancel', this.onTouchCancel);
     window.addEventListener('touchmove', this.onTouchMove);
+    window.addEventListener('keyup', this.onKeyUp);
   }
 
   componentWillUnmount() {
@@ -171,6 +173,15 @@ class MovieDetails extends Component {
 
   onTitleMeasure = ({ width }) => {
     this.setState({ titleWidth: width });
+  }
+
+  onKeyUp = (event) => {
+    if (event.keyCode === keyCodes.LEFT_ARROW) {
+      this.props.onGoToMovie(this.props.previousMovie.titleSlug);
+    }
+    if (event.keyCode === keyCodes.RIGHT_ARROW) {
+      this.props.onGoToMovie(this.props.nextMovie.titleSlug);
+    }
   }
 
   onTouchStart = (event) => {
@@ -714,6 +725,7 @@ class MovieDetails extends Component {
             isOpen={isDeleteMovieModalOpen}
             movieId={id}
             onModalClose={this.onDeleteMovieModalClose}
+            previousMovie={`/movie/${previousMovie.titleSlug}`}
           />
 
           <InteractiveImportModal
