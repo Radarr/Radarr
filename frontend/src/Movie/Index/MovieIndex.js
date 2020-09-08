@@ -16,6 +16,7 @@ import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import MovieEditorFooter from 'Movie/Editor/MovieEditorFooter.js';
 import OrganizeMovieModal from 'Movie/Editor/Organize/OrganizeMovieModal';
 import NoMovie from 'Movie/NoMovie';
+import * as keyCodes from 'Utilities/Constants/keyCodes';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import translate from 'Utilities/String/translate';
@@ -75,6 +76,8 @@ class MovieIndex extends Component {
   componentDidMount() {
     this.setJumpBarItems();
     this.setSelectedState();
+
+    window.addEventListener('keyup', this.onKeyUp);
   }
 
   componentDidUpdate(prevProps) {
@@ -239,6 +242,18 @@ class MovieIndex extends Component {
 
   onJumpBarItemPress = (jumpToCharacter) => {
     this.setState({ jumpToCharacter });
+  }
+
+  onKeyUp = (event) => {
+    const jumpBarItems = this.state.jumpBarItems.order;
+    if (event.path.length === 4) {
+      if (event.keyCode === keyCodes.HOME && event.ctrlKey) {
+        this.setState({ jumpToCharacter: jumpBarItems[0] });
+      }
+      if (event.keyCode === keyCodes.END && event.ctrlKey) {
+        this.setState({ jumpToCharacter: jumpBarItems[jumpBarItems.length - 1] });
+      }
+    }
   }
 
   onSelectAllChange = ({ value }) => {
