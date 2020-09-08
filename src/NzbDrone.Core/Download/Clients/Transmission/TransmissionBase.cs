@@ -234,7 +234,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         protected virtual OsPath GetOutputPath(OsPath outputPath, TransmissionTorrent torrent)
         {
-            return outputPath + torrent.Name;
+            return outputPath + torrent.Name.Replace(":", "_");
         }
 
         protected string GetDownloadDirectory()
