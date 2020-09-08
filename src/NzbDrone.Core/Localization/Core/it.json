@@ -364,5 +364,20 @@
     "Component": "Componente",
     "Columns": "Colonne",
     "ColonReplacementFormatHelpText": "Cambia il modo in cui Radarr gestisce la sostituzione dei due punti",
-    "ColonReplacement": "Sostituzione due punti"
+    "ColonReplacement": "Sostituzione due punti",
+    "DestinationRelativePath": "",
+    "CouldNotFindResults": "Non ho trovato risultati per '{0}'",
+    "DelayingDownloadUntilInterp": "Ritardare il download fino al {0} a {1}",
+    "DeleteBackupMessageText": "Sei sicuro di voler cancellare il backup '{0}'?",
+    "ClickToChangeMovie": "Clicca per cambiare film",
+    "CheckDownloadClientForDetails": "controlla il client di download per maggiori dettagli",
+    "CantFindMovie": "Perché non riesco a trovare il film?",
+    "CancelPendingTask": "Sei sicuro di voler cancellare questa operazione in sospeso?",
+    "BranchUpdateMechanism": "Branch utilizzato dal sistema di aggiornamento esterno",
+    "BranchUpdate": "Branch da utilizzare per aggiornare Radarr",
+    "ApplyTagsHelpTexts2": "Aggiungi: Aggiungere i tag la lista esistente di tag",
+    "ApplyTagsHelpTexts1": "Come applicare i tag ai film selezionati",
+    "AllowMovieChangeClickToChangeMovie": "Clicca per cambiare film",
+    "AddingTag": "Aggiungi tag",
+    "AddImportExclusionHelpText": "Impedire che il film venga aggiunto a Radarr da liste"
 }
