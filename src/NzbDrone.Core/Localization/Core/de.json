@@ -798,5 +798,15 @@
     "ApplyTagsHelpTexts4": "Ersetzen: Nur eingegebene Tags übernehmen und vorhandene entfernen( keine Tags eingeben um alle zu entfernen )",
     "ApplyTagsHelpTexts3": "Entfernen: Eingegebene Tags entfernen",
     "ApplyTagsHelpTexts2": "Hinzufügen: Füge neu Tags zu den existierenden Tags hinzu",
-    "ApplyTagsHelpTexts1": "Wie werden Tags zu ausgewählten Filmen zugeteilt"
+    "ApplyTagsHelpTexts1": "Wie werden Tags zu ausgewählten Filmen zugeteilt",
+    "UILanguageHelpTextWarning": "Webseite muss neu geladen werden",
+    "UILanguageHelpText": "Sprache für die gesamte Oberfläche",
+    "UILanguage": "Oberflächen Sprache ( UI Language )",
+    "MovieInfoLanguageHelpText": "Sprache der Filminformationen",
+    "MovieInfoLanguage": "Filminfo Sprache",
+    "ImportCustomFormat": "Eigenes Format importieren",
+    "ExportCustomFormat": "Eigenes Format exportieren",
+    "CustomFormatUnknownConditionOption": "Unbekannte Option '{0}' für die Bedingung '{1}'",
+    "CustomFormatUnknownCondition": "Unbekannte eigene Format Bedingung '{0}'",
+    "CustomFormatJSON": "Eigenes Format JSON"
 }
