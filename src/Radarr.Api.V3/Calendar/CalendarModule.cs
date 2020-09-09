@@ -72,10 +72,25 @@ namespace Radarr.Api.V3.Calendar
                 return null;
             }
 
-            var translation = _movieTranslationService.GetAllTranslationsForMovie(movie.Id).FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
+            var translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
+            var translation = GetMovieTranslation(translations, movie);
             var resource = movie.ToResource(_qualityUpgradableSpecification, translation);
 
             return resource;
+        }
+
+        private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, Movie movie)
+        {
+            if ((Language)_configService.MovieInfoLanguage == Language.Original)
+            {
+                return new MovieTranslation
+                {
+                    Title = movie.OriginalTitle,
+                    Overview = movie.Overview
+                };
+            }
+
+            return translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage && t.MovieId == movie.Id);
         }
     }
 }

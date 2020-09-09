@@ -30,7 +30,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                              Profile = new Profile
                              {
                                  Language = Language.English
-                             }
+                             },
+                             OriginalLanguage = Language.French
                          }
             };
         }
@@ -43,6 +44,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private void WithGermanRelease()
         {
             _remoteMovie.ParsedMovieInfo.Languages = new List<Language> { Language.German };
+        }
+
+        private void WithFrenchRelease()
+        {
+            _remoteMovie.ParsedMovieInfo.Languages = new List<Language> { Language.French };
         }
 
         [Test]
@@ -59,6 +65,26 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             WithGermanRelease();
 
             Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_return_false_if_release_is_german_and_profile_original()
+        {
+            _remoteMovie.Movie.Profile.Language = Language.Original;
+
+            WithGermanRelease();
+
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_return_true_if_release_is_french_and_profile_original()
+        {
+            _remoteMovie.Movie.Profile.Language = Language.Original;
+
+            WithFrenchRelease();
+
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
 
         [Test]

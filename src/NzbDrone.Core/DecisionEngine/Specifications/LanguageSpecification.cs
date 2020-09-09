@@ -27,6 +27,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return Decision.Accept();
             }
 
+            var originalLanguage = subject.Movie.OriginalLanguage;
+
+            if (wantedLanguage == Language.Original)
+            {
+                if (!subject.ParsedMovieInfo.Languages.Contains(originalLanguage))
+                {
+                    _logger.Debug("Original Language({0}) is wanted, but found {1}", originalLanguage, subject.ParsedMovieInfo.Languages.ToExtendedString());
+                    return Decision.Reject("Original Language ({0}) is wanted, but found {1}", originalLanguage, subject.ParsedMovieInfo.Languages.ToExtendedString());
+                }
+
+                return Decision.Accept();
+            }
+
             _logger.Debug("Checking if report meets language requirements. {0}", subject.ParsedMovieInfo.Languages.ToExtendedString());
 
             if (!subject.ParsedMovieInfo.Languages.Contains(wantedLanguage))
