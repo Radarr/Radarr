@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.Localization
         [SetUp]
         public void Setup()
         {
-            Mocker.GetMock<IConfigService>().Setup(m => m.MovieInfoLanguage).Returns((int)Language.English);
+            Mocker.GetMock<IConfigService>().Setup(m => m.UILanguage).Returns((int)Language.English);
 
             Mocker.GetMock<IAppFolderInfo>().Setup(m => m.StartUpFolder).Returns(TestContext.CurrentContext.TestDirectory);
         }
