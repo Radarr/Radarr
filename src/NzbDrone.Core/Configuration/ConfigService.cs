@@ -386,6 +386,13 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("MovieInfoLanguage", value); }
         }
 
+        public int UILanguage
+        {
+            get { return GetValueInt("UILanguage", (int)Language.English); }
+
+            set { SetValue("UILanguage", value); }
+        }
+
         public bool CleanupMetadataImages
         {
             get { return GetValueBoolean("CleanupMetadataImages", true); }

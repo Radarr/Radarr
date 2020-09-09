@@ -45,14 +45,14 @@ namespace NzbDrone.Core.Localization
 
         public Dictionary<string, string> GetLocalizationDictionary()
         {
-            var language = IsoLanguages.Get((Language)_configService.MovieInfoLanguage).TwoLetterCode;
+            var language = IsoLanguages.Get((Language)_configService.UILanguage).TwoLetterCode;
 
             return GetLocalizationDictionary(language);
         }
 
         public string GetLocalizedString(string phrase)
         {
-            var language = IsoLanguages.Get((Language)_configService.MovieInfoLanguage).TwoLetterCode;
+            var language = IsoLanguages.Get((Language)_configService.UILanguage).TwoLetterCode;
 
             return GetLocalizedString(phrase, language);
         }
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Localization
 
             if (language.IsNullOrWhiteSpace())
             {
-                language = IsoLanguages.Get((Language)_configService.MovieInfoLanguage).TwoLetterCode;
+                language = IsoLanguages.Get((Language)_configService.UILanguage).TwoLetterCode;
             }
 
             if (language == null)

@@ -77,6 +77,7 @@ namespace NzbDrone.Core.Configuration
         bool ShowRelativeDates { get; set; }
         bool EnableColorImpairedMode { get; set; }
         int MovieInfoLanguage { get; set; }
+        int UILanguage { get; set; }
 
         //Internal
         bool CleanupMetadataImages { get; set; }

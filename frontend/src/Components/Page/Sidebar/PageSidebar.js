@@ -117,7 +117,7 @@ const links = [
         to: '/settings/general'
       },
       {
-        title: translate('Ui'),
+        title: translate('UI'),
         to: '/settings/ui'
       }
     ]

@@ -20,6 +20,7 @@ namespace Radarr.Api.V3.Config
 
         public bool EnableColorImpairedMode { get; set; }
         public int MovieInfoLanguage { get; set; }
+        public int UILanguage { get; set; }
     }
 
     public static class UiConfigResourceMapper
@@ -39,7 +40,8 @@ namespace Radarr.Api.V3.Config
                 ShowRelativeDates = model.ShowRelativeDates,
 
                 EnableColorImpairedMode = model.EnableColorImpairedMode,
-                MovieInfoLanguage = model.MovieInfoLanguage
+                MovieInfoLanguage = model.MovieInfoLanguage,
+                UILanguage = model.UILanguage
             };
         }
     }
