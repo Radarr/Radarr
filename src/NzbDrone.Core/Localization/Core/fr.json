@@ -462,5 +462,7 @@
     "ApplyTagsHelpTexts3": "Retirer : Retire les tags renseignés",
     "ApplyTagsHelpTexts2": "Ajouter: Ajouter les tags à la liste de tags existants",
     "ApplyTagsHelpTexts1": "Comment appliquer des tags au film sélectionné",
-    "AllowMovieChangeClickToChangeMovie": "Cliquer pour changer le film"
+    "AllowMovieChangeClickToChangeMovie": "Cliquer pour changer le film",
+    "DeleteDownloadClientMessageText": "Êtes-vous sûr de vouloir supprimer le client de téléchargement '{0}' ?",
+    "DeleteBackupMessageText": "Êtes-vous sûr de vouloir supprimer la sauvegarde '{0}' ?"
 }
