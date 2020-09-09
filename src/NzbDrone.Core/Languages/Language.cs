@@ -97,6 +97,7 @@ namespace NzbDrone.Core.Languages
         public static Language Lithuanian => new Language(24, "Lithuanian");
         public static Language Czech => new Language(25, "Czech");
         public static Language Any => new Language(-1, "Any");
+        public static Language Original => new Language(-2, "Original");
 
         public static List<Language> All
         {
@@ -130,7 +131,8 @@ namespace NzbDrone.Core.Languages
                     Hebrew,
                     Lithuanian,
                     Czech,
-                    Any
+                    Any,
+                    Original
                 };
             }
         }

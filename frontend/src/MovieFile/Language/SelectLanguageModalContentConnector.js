@@ -18,7 +18,7 @@ function createMapStateToProps() {
         items
       } = languages;
 
-      const filterItems = ['Any'];
+      const filterItems = ['Any', 'Original'];
       const filteredLanguages = items.filter((lang) => !filterItems.includes(lang.name));
 
       return {
@@ -57,7 +57,9 @@ class SelectLanguageModalContentConnector extends Component {
       const language = _.find(this.props.items,
         (item) => item.id === parseInt(languageId));
 
-      languages.push(language);
+      if (language !== undefined) {
+        languages.push(language);
+      }
     });
 
     this.props.dispatchupdateMovieFiles({

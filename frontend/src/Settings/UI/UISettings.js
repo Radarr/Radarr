@@ -65,6 +65,8 @@ class UISettings extends Component {
       ...otherProps
     } = this.props;
 
+    const uiLanguages = languages.filter((item) => item.value !== 'Original');
+
     return (
       <PageContent title={translate('UISettings')}>
         <SettingsToolbarConnector
@@ -213,7 +215,7 @@ class UISettings extends Component {
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="uiLanguage"
-                      values={languages}
+                      values={uiLanguages}
                       helpText={translate('UILanguageHelpText')}
                       helpTextWarning={translate('UILanguageHelpTextWarning')}
                       onChange={onInputChange}
