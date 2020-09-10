@@ -57,7 +57,7 @@ function MovieFileStatus(props) {
           title={translate('NotMonitored')}
           kind={kinds.WARNING}
         >
-          Not Monitored
+          {translate('NotMonitored')}
         </Label>
       </div>
     );
@@ -70,7 +70,7 @@ function MovieFileStatus(props) {
           title={translate('MovieAvailableButMissing')}
           kind={kinds.DANGER}
         >
-          Missing
+          {translate('Missing')}
         </Label>
       </div>
     );
@@ -82,7 +82,7 @@ function MovieFileStatus(props) {
         title={translate('NotAvailable')}
         kind={kinds.INFO}
       >
-        Not Available
+        {translate('NotAvailable')}
       </Label>
     </div>
   );
