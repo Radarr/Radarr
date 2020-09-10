@@ -182,6 +182,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                         item.Message = "The download is stalled with no connections";
                         break;
 
+                    case "missingFiles": // torrent is being downloaded, but no connection were made
+                        item.Status = DownloadItemStatus.Warning;
+                        item.Message = "The download is missing files";
+                        break;
+
                     case "metaDL": // torrent magnet is being downloaded
                         if (config.DhtEnabled)
                         {
