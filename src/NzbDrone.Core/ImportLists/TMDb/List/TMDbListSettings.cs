@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 
 namespace NzbDrone.Core.ImportLists.TMDb.List
@@ -8,7 +8,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
         public TMDbListSettingsValidator()
         : base()
         {
-            RuleFor(c => c.ListId).NotEmpty();
+            RuleFor(c => c.ListId).Matches("^[1-9][0-9]*$").NotEmpty();
         }
     }
 
