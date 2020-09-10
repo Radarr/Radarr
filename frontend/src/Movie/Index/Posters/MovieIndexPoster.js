@@ -87,6 +87,7 @@ class MovieIndexPoster extends Component {
       title,
       monitored,
       hasFile,
+      isAvailable,
       status,
       titleSlug,
       images,
@@ -228,6 +229,7 @@ class MovieIndexPoster extends Component {
           detailedProgressBar={detailedProgressBar}
           queueStatus={queueStatus}
           queueState={queueState}
+          isAvailable={isAvailable}
         />
 
         {
@@ -282,6 +284,7 @@ MovieIndexPoster.propTypes = {
   title: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
+  isAvailable: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,

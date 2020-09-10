@@ -92,6 +92,7 @@ class MovieIndexOverview extends Component {
       overview,
       monitored,
       hasFile,
+      isAvailable,
       status,
       titleSlug,
       images,
@@ -169,6 +170,7 @@ class MovieIndexOverview extends Component {
             <MovieIndexProgressBar
               monitored={monitored}
               hasFile={hasFile}
+              isAvailable={isAvailable}
               status={status}
               posterWidth={posterWidth}
               detailedProgressBar={overviewOptions.detailedProgressBar}
@@ -281,6 +283,7 @@ MovieIndexOverview.propTypes = {
   overview: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
+  isAvailable: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,

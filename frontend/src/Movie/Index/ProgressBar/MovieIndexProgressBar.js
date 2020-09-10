@@ -4,7 +4,6 @@ import ProgressBar from 'Components/ProgressBar';
 import { sizes } from 'Helpers/Props';
 import getProgressBarKind from 'Utilities/Movie/getProgressBarKind';
 import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
-import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
 import styles from './MovieIndexProgressBar.css';
 
@@ -13,6 +12,7 @@ function MovieIndexProgressBar(props) {
     monitored,
     status,
     hasFile,
+    isAvailable,
     posterWidth,
     detailedProgressBar,
     queueStatus,
@@ -24,21 +24,17 @@ function MovieIndexProgressBar(props) {
   let movieStatus = (status === 'released' && hasFile) ? 'downloaded' : status;
 
   if (movieStatus === 'deleted') {
-    movieStatus = 'announced';
+    movieStatus = 'Missing';
 
     if (hasFile) {
-      movieStatus = 'downloaded';
-    } else {
-      movieStatus = 'released';
+      movieStatus = 'Downloaded';
     }
-  }
-
-  if (movieStatus === 'announced') {
-    movieStatus = translate('NotAvailable');
-  }
-
-  if (movieStatus === 'released') {
-    movieStatus = translate('Missing');
+  } else if (hasFile) {
+    movieStatus = 'Downloaded';
+  } else if (isAvailable && !hasFile) {
+    movieStatus = 'Missing';
+  } else {
+    movieStatus = 'NotAvailable';
   }
 
   return (
@@ -46,11 +42,11 @@ function MovieIndexProgressBar(props) {
       className={styles.progressBar}
       containerClassName={styles.progress}
       progress={progress}
-      kind={getProgressBarKind(status, monitored, hasFile, queueStatusText)}
+      kind={getProgressBarKind(status, monitored, hasFile, isAvailable, queueStatusText)}
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
       showText={detailedProgressBar}
       width={posterWidth}
-      text={(queueStatusText) ? queueStatusText.shortText : titleCase(movieStatus)}
+      text={(queueStatusText) ? queueStatusText.shortText : translate(movieStatus)}
     />
   );
 }
@@ -58,6 +54,7 @@ function MovieIndexProgressBar(props) {
 MovieIndexProgressBar.propTypes = {
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
+  isAvailable: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   posterWidth: PropTypes.number.isRequired,
   detailedProgressBar: PropTypes.bool.isRequired,

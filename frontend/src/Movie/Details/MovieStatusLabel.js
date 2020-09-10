@@ -25,7 +25,7 @@ function getMovieStatus(hasFile, isMonitored, isAvailable, queueDetails = false)
     return translate('Missing');
   }
 
-  return translate('Unreleased');
+  return translate('NotAvailable');
 }
 
 function MovieStatusLabel(props) {
