@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Parser.Model
         public string Indexer { get; set; }
         public string Author { get; set; }
         public string Book { get; set; }
+        public int IndexerPriority { get; set; }
         public DownloadProtocol DownloadProtocol { get; set; }
         public DateTime PublishDate { get; set; }
 

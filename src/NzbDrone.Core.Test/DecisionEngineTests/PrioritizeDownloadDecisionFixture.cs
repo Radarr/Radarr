@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                             .Build();
         }
 
-        private RemoteBook GivenRemoteAlbum(List<Book> albums, QualityModel quality, int age = 0, long size = 0, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet)
+        private RemoteBook GivenRemoteAlbum(List<Book> albums, QualityModel quality, int age = 0, long size = 0, DownloadProtocol downloadProtocol = DownloadProtocol.Usenet, int indexerPriority = 25)
         {
             var remoteBook = new RemoteBook();
             remoteBook.ParsedBookInfo = new ParsedBookInfo();
@@ -47,6 +47,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteBook.Release.PublishDate = DateTime.Now.AddDays(-age);
             remoteBook.Release.Size = size;
             remoteBook.Release.DownloadProtocol = downloadProtocol;
+            remoteBook.Release.IndexerPriority = indexerPriority;
 
             remoteBook.Author = Builder<Author>.CreateNew()
                                                 .With(e => e.QualityProfile = new QualityProfile
@@ -475,6 +476,40 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             qualifiedReports.First().RemoteBook.ParsedBookInfo.Quality.Quality.Should().Be(Quality.FLAC);
             qualifiedReports.First().RemoteBook.ParsedBookInfo.Quality.Revision.Version.Should().Be(1);
             qualifiedReports.First().RemoteBook.PreferredWordScore.Should().Be(10);
+        }
+
+        [Test]
+        public void sort_download_decisions_based_on_indexer_priority()
+        {
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.AZW3, new Revision(1)), indexerPriority: 25);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.AZW3, new Revision(1)), indexerPriority: 50);
+            var remoteAlbum3 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.AZW3, new Revision(1)), indexerPriority: 1);
+
+            var decisions = new List<DownloadDecision>();
+            decisions.AddRange(new[] { new DownloadDecision(remoteAlbum1), new DownloadDecision(remoteAlbum2), new DownloadDecision(remoteAlbum3) });
+
+            var qualifiedReports = Subject.PrioritizeDecisions(decisions);
+            qualifiedReports.First().RemoteBook.Should().Be(remoteAlbum3);
+            qualifiedReports.Skip(1).First().RemoteBook.Should().Be(remoteAlbum1);
+            qualifiedReports.Last().RemoteBook.Should().Be(remoteAlbum2);
+        }
+
+        [Test]
+        public void ensure_download_decisions_indexer_priority_is_not_perfered_over_quality()
+        {
+            var remoteAlbum1 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.EPUB, new Revision(1)), indexerPriority: 25);
+            var remoteAlbum2 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.AZW3, new Revision(1)), indexerPriority: 50);
+            var remoteAlbum3 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.PDF, new Revision(1)), indexerPriority: 1);
+            var remoteAlbum4 = GivenRemoteAlbum(new List<Book> { GivenAlbum(1) }, new QualityModel(Quality.AZW3, new Revision(1)), indexerPriority: 25);
+
+            var decisions = new List<DownloadDecision>();
+            decisions.AddRange(new[] { new DownloadDecision(remoteAlbum1), new DownloadDecision(remoteAlbum2), new DownloadDecision(remoteAlbum3), new DownloadDecision(remoteAlbum4) });
+
+            var qualifiedReports = Subject.PrioritizeDecisions(decisions);
+            qualifiedReports.First().RemoteBook.Should().Be(remoteAlbum4);
+            qualifiedReports.Skip(1).First().RemoteBook.Should().Be(remoteAlbum2);
+            qualifiedReports.Skip(2).First().RemoteBook.Should().Be(remoteAlbum1);
+            qualifiedReports.Last().RemoteBook.Should().Be(remoteAlbum3);
         }
     }
 }

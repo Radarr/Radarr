@@ -30,6 +30,7 @@ namespace NzbDrone.Core.DecisionEngine
                 CompareQuality,
                 ComparePreferredWordScore,
                 CompareProtocol,
+                CompareIndexerPriority,
                 ComparePeersIfTorrent,
                 CompareBookCount,
                 CompareAgeIfUsenet,
@@ -57,6 +58,11 @@ namespace NzbDrone.Core.DecisionEngine
         private int CompareAll(params int[] comparers)
         {
             return comparers.Select(comparer => comparer).FirstOrDefault(result => result != 0);
+        }
+
+        private int CompareIndexerPriority(DownloadDecision x, DownloadDecision y)
+        {
+            return CompareByReverse(x.RemoteBook.Release, y.RemoteBook.Release, release => release.IndexerPriority);
         }
 
         private int CompareQuality(DownloadDecision x, DownloadDecision y)

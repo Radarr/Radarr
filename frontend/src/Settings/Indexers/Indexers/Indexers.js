@@ -56,6 +56,8 @@ class Indexers extends Component {
       isAddIndexerModalOpen,
       isEditIndexerModalOpen
     } = this.state;
+    
+    const showPriority = items.some((index) => index.priority != 25);
 
     return (
       <FieldSet legend="Indexers">
@@ -70,6 +72,7 @@ class Indexers extends Component {
                   <Indexer
                     key={item.id}
                     {...item}
+                    showPriority={showPriority}
                     onConfirmDeleteIndexer={onConfirmDeleteIndexer}
                   />
                 );
