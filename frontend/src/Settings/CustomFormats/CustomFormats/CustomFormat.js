@@ -93,14 +93,14 @@ class CustomFormat extends Component {
           <div>
             <IconButton
               className={styles.cloneButton}
-              title={translate('CloneProfile')}
+              title={translate('CloneCustomFormat')}
               name={icons.CLONE}
               onPress={this.onCloneCustomFormatPress}
             />
 
             <IconButton
               className={styles.cloneButton}
-              title={translate('CloneProfile')}
+              title={translate('ExportCustomFormat')}
               name={icons.EXPORT}
               onPress={this.onExportCustomFormatPress}
             />

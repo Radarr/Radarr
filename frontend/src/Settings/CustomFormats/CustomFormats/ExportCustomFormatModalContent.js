@@ -60,6 +60,7 @@ class ExportCustomFormatModalContent extends Component {
           <ClipboardButton
             className={styles.button}
             value={json}
+            title={translate('CopyToClipboard')}
             kind={kinds.DEFAULT}
           />
           <Button
