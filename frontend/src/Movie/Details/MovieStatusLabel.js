@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
+import firstCharToUpper from 'Utilities/String/firstCharToUpper';
 import translate from 'Utilities/String/translate';
 import styles from './MovieStatusLabel.css';
 
@@ -10,22 +11,25 @@ function getMovieStatus(hasFile, isMonitored, isAvailable, queueDetails = false)
     const queueStatus = queueDetails.items[0].status;
     const queueState = queueDetails.items[0].trackedDownloadStatus;
     const queueStatusText = getQueueStatusText(queueStatus, queueState);
-    return queueStatusText.longText;
+
+    if (queueStatusText) {
+      return queueStatusText;
+    }
   }
 
   if (hasFile) {
-    return translate('Downloaded');
+    return 'downloaded';
   }
 
   if (!isMonitored) {
-    return translate('Unmonitored');
+    return 'unmonitored';
   }
 
   if (isAvailable && !hasFile) {
-    return translate('Missing');
+    return 'missing';
   }
 
-  return translate('NotAvailable');
+  return 'notAvailable';
 }
 
 function MovieStatusLabel(props) {
@@ -38,6 +42,7 @@ function MovieStatusLabel(props) {
 
   const status = getMovieStatus(hasMovieFiles, monitored, isAvailable, queueDetails);
   let statusClass = status;
+
   if (queueDetails.items.length) {
     statusClass = 'queue';
   }
@@ -46,7 +51,7 @@ function MovieStatusLabel(props) {
     <span
       className={styles[statusClass]}
     >
-      {status}
+      {translate(firstCharToUpper(status))}
     </span>
   );
 }
