@@ -32,6 +32,8 @@
   "AnalyseVideoFiles": "Analyse video files",
   "Analytics": "Analytics",
   "AnalyticsEnabledHelpText": "Send anonymous usage and error information to Radarr's servers. This includes information on your browser, which Radarr WebUI pages you use, error reporting as well as OS and runtime version. We will use this information to prioritize features and bug fixes.",
+  "AndNot": "and not",
+  "Announced": "Announced",
   "ApiKey": "API Key",
   "AppDataDirectory": "AppData directory",
   "AppDataLocationHealthCheckMessage": "Updating will not be possible to prevent deleting AppData on Update",
