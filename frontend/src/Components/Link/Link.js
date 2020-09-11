@@ -32,7 +32,6 @@ class Link extends Component {
       isDisabled,
       noRouter,
       onPress,
-      title,
       ...otherProps
     } = this.props;
 
@@ -40,10 +39,6 @@ class Link extends Component {
     let el = component;
 
     if (to) {
-      if (title) {
-        linkProps.title = title;
-      }
-
       if ((/\w+?:\/\//).test(to)) {
         el = 'a';
         linkProps.href = to;
@@ -92,7 +87,6 @@ Link.propTypes = {
   className: PropTypes.string,
   component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   to: PropTypes.string,
-  title: PropTypes.string,
   target: PropTypes.string,
   isDisabled: PropTypes.bool,
   noRouter: PropTypes.bool,
