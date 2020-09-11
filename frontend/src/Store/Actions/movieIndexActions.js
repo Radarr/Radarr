@@ -225,13 +225,13 @@ export const defaultState = {
     },
     {
       name: 'isAvailable',
-      label: translate('Is Available'),
+      label: translate('IsAvailable'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
     },
     {
       name: 'minimumAvailability',
-      label: translate('Minimum Availability'),
+      label: translate('MinimumAvailability'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.MINIMUM_AVAILABILITY
     },
@@ -242,7 +242,7 @@ export const defaultState = {
     },
     {
       name: 'status',
-      label: translate('Release Status'),
+      label: translate('ReleaseStatus'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.RELEASE_STATUS
     },
