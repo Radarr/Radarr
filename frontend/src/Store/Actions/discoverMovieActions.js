@@ -235,7 +235,7 @@ export const defaultState = {
   filterBuilderProps: [
     {
       name: 'status',
-      label: 'ReleaseStatus',
+      label: translate('ReleaseStatus'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.RELEASE_STATUS
     },
