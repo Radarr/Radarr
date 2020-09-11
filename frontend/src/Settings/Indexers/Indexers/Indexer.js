@@ -95,7 +95,7 @@ class Indexer extends Component {
                 Interactive Search
               </Label>
           }
-          
+
           {
             showPriority &&
               <Label kind={kinds.DEFAULT}>
@@ -137,11 +137,13 @@ class Indexer extends Component {
 Indexer.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
+  priority: PropTypes.number.isRequired,
   enableRss: PropTypes.bool.isRequired,
   enableAutomaticSearch: PropTypes.bool.isRequired,
   enableInteractiveSearch: PropTypes.bool.isRequired,
   supportsRss: PropTypes.bool.isRequired,
   supportsSearch: PropTypes.bool.isRequired,
+  showPriority: PropTypes.bool.isRequired,
   onConfirmDeleteIndexer: PropTypes.func.isRequired
 };
 
