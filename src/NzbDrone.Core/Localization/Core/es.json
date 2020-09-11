@@ -724,7 +724,7 @@
     "AddingTag": "Añadiendo etiqueta",
     "RadarrSupportsCustomConditionsAgainstTheReleasePropertiesBelow": "Radarr soporta condiciones personalizadas contra las propiedades de estrenos abajo.",
     "ThisConditionMatchesUsingRegularExpressions": "Esta condición coincide con el uso de Expresiones Regulares. Tenga en cuenta que los caracteres {0} tienen significados especiales y necesitan escapar con un {1}",
-    "YouCanAlsoSearch": "También puedes buscar usando la ID de TMSb o la ID de IMDb de una película. ej. tmdb:71663",
+    "YouCanAlsoSearch": "También puedes buscar usando la ID de TMDb o la ID de IMDb de una película. ej. tmdb:71663",
     "VisitGithubCustomFormatsAphrodite": "Visita Github para más detalles: ",
     "Unreleased": "Inédita",
     "UnableToLoadUISettings": "No se han podido cargar los ajustes de UI",
