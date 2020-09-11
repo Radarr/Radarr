@@ -464,5 +464,17 @@
     "ApplyTagsHelpTexts1": "Comment appliquer des tags au film sélectionné",
     "AllowMovieChangeClickToChangeMovie": "Cliquer pour changer le film",
     "DeleteDownloadClientMessageText": "Êtes-vous sûr de vouloir supprimer le client de téléchargement '{0}' ?",
-    "DeleteBackupMessageText": "Êtes-vous sûr de vouloir supprimer la sauvegarde '{0}' ?"
+    "DeleteBackupMessageText": "Êtes-vous sûr de vouloir supprimer la sauvegarde '{0}' ?",
+    "ErrorLoadingContents": "Erreur lors du chargement du contenu",
+    "EnableInteractiveSearchHelpTextWarning": "La recherche n'est pas prise en charge avec cet indexeur",
+    "EnableInteractiveSearchHelpText": "Sera utilisé lorsque la recherche interactive est utilisée",
+    "EnableAutomaticSearchHelpTextWarning": "Sera utilisé lorsque la recherche interactive est utilisée",
+    "EnableAutomaticSearchHelpText": "Sera utilisé lorsque les recherches automatiques sont effectuées via l'interface utilisateur ou par Radarr",
+    "DownloadWarning": "Avertissement de téléchargement: {0}",
+    "Downloading": "Téléchargement",
+    "DownloadClientUnavailable": "Le client de téléchargement n'est pas disponible",
+    "DeleteRestrictionHelpText": "Voulez-vous vraiment supprimer cette restriction?",
+    "DeleteListMessageText": "Voulez-vous vraiment supprimer la liste '{0}'?",
+    "DeleteIndexerMessageText": "Voulez-vous vraiment supprimer l'indexeur '{0}'?",
+    "CopyToClipboard": "Copier dans le presse-papier"
 }
