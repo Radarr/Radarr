@@ -43,13 +43,14 @@ function EditIndexerModalContent(props) {
     enableInteractiveSearch,
     supportsRss,
     supportsSearch,
-    fields
+    fields,
+    priority
   } = item;
 
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {`${id ? 'Edit' : 'Add'} Indexer - ${implementationName}`}
+        {`${id ? translate('EditIndexer') : translate('AddIndexer')} - ${implementationName}`}
       </ModalHeader>
 
       <ModalBody>
@@ -134,7 +135,22 @@ function EditIndexerModalContent(props) {
                   );
                 })
               }
+              <FormGroup
+                advancedSettings={advancedSettings}
+                isAdvanced={true}
+              >
+                <FormLabel>{translate('IndexerPriority')}</FormLabel>
 
+                <FormInputGroup
+                  type={inputTypes.NUMBER}
+                  name="priority"
+                  helpText={translate('IndexerPriorityHelpText')}
+                  min={1}
+                  max={50}
+                  {...priority}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
             </Form>
         }
       </ModalBody>

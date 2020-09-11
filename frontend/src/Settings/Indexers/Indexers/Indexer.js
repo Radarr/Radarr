@@ -69,7 +69,9 @@ class Indexer extends Component {
       enableAutomaticSearch,
       enableInteractiveSearch,
       supportsRss,
-      supportsSearch
+      supportsSearch,
+      priority,
+      showPriority
     } = this.props;
 
     return (
@@ -103,24 +105,30 @@ class Indexer extends Component {
           {
             supportsSearch && enableAutomaticSearch &&
               <Label kind={kinds.SUCCESS}>
-                Automatic Search
+                {translate('AutomaticSearch')}
               </Label>
           }
 
           {
             supportsSearch && enableInteractiveSearch &&
               <Label kind={kinds.SUCCESS}>
-                Interactive Search
+                {translate('InteractiveSearch')}
               </Label>
           }
 
+          {
+            showPriority &&
+              <Label kind={kinds.DEFAULT}>
+                {translate('Priority')}: {priority}
+              </Label>
+          }
           {
             !enableRss && !enableAutomaticSearch && !enableInteractiveSearch &&
               <Label
                 kind={kinds.DISABLED}
                 outline={true}
               >
-                Disabled
+                {translate('Disabled')}
               </Label>
           }
         </div>
@@ -155,7 +163,9 @@ Indexer.propTypes = {
   supportsRss: PropTypes.bool.isRequired,
   supportsSearch: PropTypes.bool.isRequired,
   onCloneIndexerPress: PropTypes.func.isRequired,
-  onConfirmDeleteIndexer: PropTypes.func.isRequired
+  onConfirmDeleteIndexer: PropTypes.func.isRequired,
+  priority: PropTypes.number.isRequired,
+  showPriority: PropTypes.bool.isRequired
 };
 
 export default Indexer;
