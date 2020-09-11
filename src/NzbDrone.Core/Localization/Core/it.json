@@ -802,5 +802,11 @@
     "SettingsRemotePathMappingLocalPath": "Percorso locale",
     "SettingsRemotePathMappingHostHelpText": "Lo stesso host specificato per il client di download remoto",
     "SettingsEnableColorImpairedModeHelpText": "Stile alterato per permettere agli utenti daltonici di distinguere meglio le informazioni con colori codificati",
-    "RadarrTags": "Tag di Radarr"
+    "RadarrTags": "Tag di Radarr",
+    "DownloadPropersAndRepacksHelpTextWarning": "Usa le parole preferite per aggiornare automaticamente a proper/repack",
+    "DownloadPropersAndRepacksHelpText2": "Usa \"Preferisco di no\" per ordinare i punteggi della parola preferita più di proper/repack",
+    "DownloadPropersAndRepacksHelpText1": "Aggiornare o meno automaticamente a Proper/Repack",
+    "DownloadPropersAndRepacks": "Propers e Repack",
+    "CopyToClipboard": "Copia negli appunti",
+    "CloneCustomFormat": "Duplica i formati personalizzati"
 }
