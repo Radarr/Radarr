@@ -798,5 +798,21 @@
     "ApplyTagsHelpTexts4": "Reemplazar: Reemplazar las etiquetas con las etiquetas introducidas (no introducir etiquetas para eliminar todas las etiquetas)",
     "ApplyTagsHelpTexts3": "Eliminar: Eliminar las etiquetas introducidas",
     "ApplyTagsHelpTexts2": "Añadir: Añadir a las etiquetas la lista existente de etiquetas",
-    "ApplyTagsHelpTexts1": "Cómo añadir etiquetas a las películas seleccionadas"
+    "ApplyTagsHelpTexts1": "Cómo añadir etiquetas a las películas seleccionadas",
+    "UILanguageHelpTextWarning": "Recargar el Navegador",
+    "UILanguageHelpText": "Lenguaje que Radarr usara para el UI",
+    "UILanguage": "Lenguaje de UI",
+    "MovieInfoLanguageHelpText": "Lenguaje que Radarr usara para el UI de Información de Película",
+    "MovieInfoLanguage": "Información de Lenguaje para Película",
+    "ImportCustomFormat": "Importar Formato Personalizado",
+    "ExportCustomFormat": "Exportar Formato Personalizado",
+    "DownloadPropersAndRepacksHelpTextWarning": "Utilice palabras preferidas para actualizaciones automáticas a propers/repacks",
+    "DownloadPropersAndRepacksHelpText2": "Utilice \"No Preferir\" para ordenar por puntuación de palabras preferidas en vez de proper/repacks",
+    "DownloadPropersAndRepacksHelpText1": "Decidir si automaticamente actualizar a Propers/Repacks",
+    "DownloadPropersAndRepacks": "Propers y Repacks",
+    "CustomFormatUnknownConditionOption": "Opción Desconocida '{0}' para condición '{1}'",
+    "CustomFormatUnknownCondition": "Condición de Formato Personalizado Desconocida '{0}'",
+    "CustomFormatJSON": "Formato Personalizado de JSON",
+    "CopyToClipboard": "Copiar al portapapeles",
+    "CloneCustomFormat": "Clonar Formato Personalizado"
 }
