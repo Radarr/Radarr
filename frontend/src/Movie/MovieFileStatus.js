@@ -25,10 +25,10 @@ function MovieFileStatus(props) {
     return (
       <div className={styles.center}>
         <Label
-          title={queueStatusText.longText}
+          title={queueStatusText}
           kind={kinds.QUEUE}
         >
-          {queueStatusText.shortText}
+          {queueStatusText}
         </Label>
       </div>
     );

@@ -6,8 +6,7 @@ export default function getQueueStatusText(queueStatus, queueState) {
     return;
   }
 
-  let statusLong = translate('Downloading');
-  let statusShort = translate('Downloading');
+  let status = translate('Downloading');
 
   switch (true) {
     case queueStatus !== 'completed':
@@ -15,21 +14,15 @@ export default function getQueueStatusText(queueStatus, queueState) {
         case 'queue':
         case 'paused':
         case 'failed':
-          statusLong = `${translate('Downloading')}: ${translate(titleCase(queueStatus))}`;
-          statusShort = titleCase(queueStatus);
+        case 'downloading':
+          status = titleCase(queueStatus);
           break;
         case 'delay':
-          statusLong = `${translate('Downloading')}: ${translate('Pending')}`;
-          statusShort = translate('Pending');
+          status = translate('Pending');
           break;
         case 'DownloadClientUnavailable':
         case 'warning':
-          statusLong = `${translate('Downloading')}: ${translate('Error')}`;
-          statusShort = translate('Error');
-          break;
-        case 'downloading':
-          statusLong = titleCase(queueStatus);
-          statusShort = titleCase(queueStatus);
+          status = translate('Error');
           break;
         default:
       }
@@ -38,16 +31,13 @@ export default function getQueueStatusText(queueStatus, queueState) {
     case queueStatus === 'completed':
       switch (queueState) {
         case 'importPending':
-          statusLong = `${translate('Downloaded')}: ${translate('Pending')}`;
-          statusShort = translate('Downloaded');
+          status = translate('Pending');
           break;
         case 'importing':
-          statusLong = `${translate('Downloaded')}: ${translate('Importing')}`;
-          statusShort = translate('Downloaded');
+          status = translate('Importing');
           break;
         case 'failedPending':
-          statusLong = `${translate('Downloaded')}: ${translate('Waiting')}`;
-          statusShort = translate('Downloaded');
+          status = translate('Waiting');
           break;
         default:
       }
@@ -56,6 +46,5 @@ export default function getQueueStatusText(queueStatus, queueState) {
     default:
   }
 
-  const result = { longText: statusLong, shortText: statusShort };
-  return result;
+  return status;
 }

@@ -46,7 +46,7 @@ function MovieIndexProgressBar(props) {
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
       showText={detailedProgressBar}
       width={posterWidth}
-      text={(queueStatusText) ? queueStatusText.shortText : translate(movieStatus)}
+      text={(queueStatusText) ? queueStatusText : translate(movieStatus)}
     />
   );
 }
