@@ -13,7 +13,10 @@ class MovieTitleLink extends PureComponent {
     const link = `/movie/${titleSlug}`;
 
     return (
-      <Link to={link}>
+      <Link
+        to={link}
+        title={title}
+      >
         {title}
       </Link>
     );

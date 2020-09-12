@@ -277,6 +277,7 @@ class MovieIndexRow extends Component {
                 <VirtualTableRowCell
                   key={name}
                   className={styles[name]}
+                  title={path}
                 >
                   {path}
                 </VirtualTableRowCell>
