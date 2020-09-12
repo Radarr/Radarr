@@ -23,6 +23,7 @@ import {
   faArrowCircleLeft as fasArrowCircleLeft,
   faArrowCircleRight as fasArrowCircleRight,
   faBackward as fasBackward,
+  faBan as fasBan,
   faBars as fasBars,
   faBolt as fasBolt,
   faBookmark as fasBookmark,
@@ -223,3 +224,4 @@ export const UNSAVED_SETTING = farDotCircle;
 export const VIEW = fasEye;
 export const WARNING = fasExclamationTriangle;
 export const WIKI = fasBookReader;
+export const BLACKLIST = fasBan;

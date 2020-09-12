@@ -63,6 +63,7 @@
   "BindAddress": "Bind Address",
   "BindAddressHelpText": "Valid IP4 address or '*' for all interfaces",
   "Blacklist": "Blacklist",
+  "Blacklisted": "Blacklisted",
   "BlacklistHelpText": "Prevents Radarr from automatically grabbing this movie again",
   "BlacklistRelease": "Blacklist Release",
   "Branch": "Branch",

@@ -124,7 +124,10 @@ class InteractiveSearchRow extends Component {
       isGrabbed,
       longDateFormat,
       timeFormat,
-      grabError
+      grabError,
+      historyGrabbedData,
+      historyFailedData,
+      blacklistData
     } = this.props;
 
     return (
@@ -155,6 +158,37 @@ class InteractiveSearchRow extends Component {
 
         <TableRowCell className={styles.indexer}>
           {indexer}
+        </TableRowCell>
+
+        <TableRowCell className={styles.history}>
+          {
+            historyGrabbedData?.date && !historyFailedData?.date &&
+              <Icon
+                name={icons.DOWNLOADING}
+                kind={kinds.DEFAULT}
+                title={`${translate('Grabbed')}: ${formatDateTime(historyGrabbedData.date, longDateFormat, timeFormat, { includeSeconds: true })}`}
+              />
+          }
+
+          {
+            historyFailedData?.date &&
+              <Icon
+                className={styles.failed}
+                name={icons.DOWNLOADING}
+                kind={kinds.DANGER}
+                title={`${translate('Failed')}: ${formatDateTime(historyFailedData.date, longDateFormat, timeFormat, { includeSeconds: true })}`}
+              />
+          }
+
+          {
+            blacklistData?.date &&
+              <Icon
+                className={historyGrabbedData || historyFailedData ? styles.blacklist : ''}
+                name={icons.BLACKLIST}
+                kind={kinds.DANGER}
+                title={`${translate('Blacklisted')}: ${formatDateTime(blacklistData.date, longDateFormat, timeFormat, { includeSeconds: true })}`}
+              />
+          }
         </TableRowCell>
 
         <TableRowCell className={styles.size}>
@@ -304,7 +338,10 @@ InteractiveSearchRow.propTypes = {
   longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   searchPayload: PropTypes.object.isRequired,
-  onGrabPress: PropTypes.func.isRequired
+  onGrabPress: PropTypes.func.isRequired,
+  historyFailedData: PropTypes.object,
+  historyGrabbedData: PropTypes.object,
+  blacklistData: PropTypes.object
 };
 
 InteractiveSearchRow.defaultProps = {
