@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Download
 
             foreach (var report in prioritizedDecisions)
             {
-                var remoteEpisode = report.RemoteMovie;
+                var remoteMovie = report.RemoteMovie;
                 var downloadProtocol = report.RemoteMovie.Release.DownloadProtocol;
 
                 // Skip if already grabbed
@@ -72,19 +72,20 @@ namespace NzbDrone.Core.Download
 
                 try
                 {
-                    _downloadService.DownloadReport(remoteEpisode);
+                    _logger.Trace("Grabbing from Indexer {0} at priority {1}.", remoteMovie.Release.Indexer, remoteMovie.Release.IndexerPriority);
+                    _downloadService.DownloadReport(remoteMovie);
                     grabbed.Add(report);
                 }
                 catch (ReleaseUnavailableException)
                 {
-                    _logger.Warn("Failed to download release from indexer, no longer available. " + remoteEpisode);
+                    _logger.Warn("Failed to download release from indexer, no longer available. " + remoteMovie);
                     rejected.Add(report);
                 }
                 catch (Exception ex)
                 {
                     if (ex is DownloadClientUnavailableException || ex is DownloadClientAuthenticationException)
                     {
-                        _logger.Debug(ex, "Failed to send release to download client, storing until later. " + remoteEpisode);
+                        _logger.Debug(ex, "Failed to send release to download client, storing until later. " + remoteMovie);
                         PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.DownloadClientUnavailable);
 
                         if (downloadProtocol == DownloadProtocol.Usenet)
@@ -98,7 +99,7 @@ namespace NzbDrone.Core.Download
                     }
                     else
                     {
-                        _logger.Warn(ex, "Couldn't add report to download queue. " + remoteEpisode);
+                        _logger.Warn(ex, "Couldn't add report to download queue. " + remoteMovie);
                     }
                 }
             }
@@ -129,7 +130,7 @@ namespace NzbDrone.Core.Download
 
         private void PreparePending(List<Tuple<DownloadDecision, PendingReleaseReason>> queue, List<DownloadDecision> grabbed, List<DownloadDecision> pending, DownloadDecision report, PendingReleaseReason reason)
         {
-            // If a release was already grabbed with matching episodes we should store it as a fallback
+            // If a release was already grabbed with a matching movie we should store it as a fallback
             // and filter it out the next time it is processed.
             // If a higher quality release failed to add to the download client, but a lower quality release
             // was sent to another client we still list it normally so it apparent that it'll grab next time.

@@ -32,6 +32,7 @@ namespace NzbDrone.Core.DecisionEngine
                 CompareQuality,
                 CompareCustomFormatScore,
                 CompareProtocol,
+                CompareIndexerPriority,
                 CompareIndexerFlags,
                 ComparePeersIfTorrent,
                 CompareAgeIfUsenet,
@@ -50,9 +51,20 @@ namespace NzbDrone.Core.DecisionEngine
             return leftValue.CompareTo(rightValue);
         }
 
+        private int CompareByReverse<TSubject, TValue>(TSubject left, TSubject right, Func<TSubject, TValue> funcValue)
+            where TValue : IComparable<TValue>
+        {
+            return CompareBy(left, right, funcValue) * -1;
+        }
+
         private int CompareAll(params int[] comparers)
         {
             return comparers.Select(comparer => comparer).FirstOrDefault(result => result != 0);
+        }
+
+        private int CompareIndexerPriority(DownloadDecision x, DownloadDecision y)
+        {
+            return CompareByReverse(x.RemoteMovie.Release, y.RemoteMovie.Release, release => release.IndexerPriority);
         }
 
         private int CompareQuality(DownloadDecision x, DownloadDecision y)
