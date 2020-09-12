@@ -62,3 +62,13 @@
 .title div {
   @add-mixin truncate;
 }
+
+.history {
+  composes: cell;
+
+  width: 75px;
+}
+
+.blacklist {
+  margin-left: 5px;
+}

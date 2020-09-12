@@ -5,11 +5,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
+import { fetchBlacklist } from 'Store/Actions/blacklistActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { clearExtraFiles, fetchExtraFiles } from 'Store/Actions/extraFileActions';
 import { toggleMovieMonitored } from 'Store/Actions/movieActions';
 import { clearMovieCredits, fetchMovieCredits } from 'Store/Actions/movieCreditsActions';
 import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
+import { clearMovieHistory, fetchMovieHistory } from 'Store/Actions/movieHistoryActions';
 import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
 import { cancelFetchReleases, clearReleases } from 'Store/Actions/releaseActions';
 import { fetchImportListSchema } from 'Store/Actions/settingsActions';
@@ -178,6 +180,12 @@ function createMapDispatchToProps(dispatch, props) {
     dispatchClearMovieFiles() {
       dispatch(clearMovieFiles());
     },
+    dispatchFetchMovieHistory({ movieId }) {
+      dispatch(fetchMovieHistory({ movieId }));
+    },
+    dispatchClearMovieHistory() {
+      dispatch(clearMovieHistory());
+    },
     dispatchFetchMovieCredits({ movieId }) {
       dispatch(fetchMovieCredits({ movieId }));
     },
@@ -213,6 +221,10 @@ function createMapDispatchToProps(dispatch, props) {
     },
     onGoToMovie(titleSlug) {
       dispatch(push(`${window.Radarr.urlBase}/movie/${titleSlug}`));
+    },
+    dispatchFetchBlacklist() {
+      // TODO: Allow for passing a movie id to fetch a single movie's blacklist data
+      dispatch(fetchBlacklist());
     }
   };
 }
@@ -266,15 +278,22 @@ class MovieDetailsConnector extends Component {
     const movieId = this.props.id;
 
     this.props.dispatchFetchMovieFiles({ movieId });
+    this.props.dispatchFetchMovieHistory({ movieId });
     this.props.dispatchFetchExtraFiles({ movieId });
     this.props.dispatchFetchMovieCredits({ movieId });
     this.props.dispatchFetchQueueDetails({ movieId });
     this.props.dispatchFetchImportListSchema();
+    this.props.dispatchFetchBlacklist();
+  }
+
+  repopulate = () => {
+    this.props.dispatchFetchBlacklist();
   }
 
   unpopulate = () => {
     this.props.dispatchCancelFetchReleases();
     this.props.dispatchClearMovieFiles();
+    this.props.dispatchClearMovieHistory();
     this.props.dispatchClearExtraFiles();
     this.props.dispatchClearMovieCredits();
     this.props.dispatchClearQueueDetails();
@@ -331,6 +350,8 @@ MovieDetailsConnector.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   dispatchFetchMovieFiles: PropTypes.func.isRequired,
   dispatchClearMovieFiles: PropTypes.func.isRequired,
+  dispatchFetchMovieHistory: PropTypes.func.isRequired,
+  dispatchClearMovieHistory: PropTypes.func.isRequired,
   dispatchFetchExtraFiles: PropTypes.func.isRequired,
   dispatchClearExtraFiles: PropTypes.func.isRequired,
   dispatchFetchMovieCredits: PropTypes.func.isRequired,
@@ -342,6 +363,7 @@ MovieDetailsConnector.propTypes = {
   dispatchClearQueueDetails: PropTypes.func.isRequired,
   dispatchFetchImportListSchema: PropTypes.func.isRequired,
   dispatchExecuteCommand: PropTypes.func.isRequired,
+  dispatchFetchBlacklist: PropTypes.func.isRequired,
   onGoToMovie: PropTypes.func.isRequired
 };
 
