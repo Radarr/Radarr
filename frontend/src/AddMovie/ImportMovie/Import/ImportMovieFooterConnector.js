@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { cancelLookupMovie } from 'Store/Actions/importMovieActions';
+import { cancelLookupMovie, lookupUnsearchedMovies } from 'Store/Actions/importMovieActions';
 import ImportMovieFooter from './ImportMovieFooter';
 
 function isMixed(items, selectedIds, defaultValue, key) {
@@ -25,12 +25,14 @@ function createMapStateToProps() {
       const {
         isLookingUpMovie,
         isImporting,
-        items
+        items,
+        importError
       } = importMovie;
 
       const isMonitorMixed = isMixed(items, selectedIds, defaultMonitor, 'monitor');
       const isQualityProfileIdMixed = isMixed(items, selectedIds, defaultQualityProfileId, 'qualityProfileId');
       const isMinimumAvailabilityMixed = isMixed(items, selectedIds, defaultMinimumAvailability, 'minimumAvailability');
+      const hasUnsearchedItems = !isLookingUpMovie && items.some((item) => !item.isPopulated);
 
       return {
         selectedCount: selectedIds.length,
@@ -41,13 +43,16 @@ function createMapStateToProps() {
         defaultMinimumAvailability,
         isMonitorMixed,
         isQualityProfileIdMixed,
-        isMinimumAvailabilityMixed
+        isMinimumAvailabilityMixed,
+        importError,
+        hasUnsearchedItems
       };
     }
   );
 }
 
 const mapDispatchToProps = {
+  onLookupPress: lookupUnsearchedMovies,
   onCancelLookupPress: cancelLookupMovie
 };
 

@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 // import CheckInput from 'Components/Form/CheckInput';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContentFooter from 'Components/Page/PageContentFooter';
-import { inputTypes, kinds } from 'Helpers/Props';
+import Popover from 'Components/Tooltip/Popover';
+import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
 import styles from './ImportMovieFooter.css';
 
 const MIXED = 'mixed';
@@ -93,7 +95,10 @@ class ImportMovieFooter extends Component {
       isMonitorMixed,
       isQualityProfileIdMixed,
       isMinimumAvailabilityMixed,
+      hasUnsearchedItems,
+      importError,
       onImportPress,
+      onLookupPress,
       onCancelLookupPress
     } = this.props;
 
@@ -167,27 +172,71 @@ class ImportMovieFooter extends Component {
             </SpinnerButton>
 
             {
-              isLookingUpMovie &&
+              isLookingUpMovie ?
                 <Button
                   className={styles.loadingButton}
                   kind={kinds.WARNING}
                   onPress={onCancelLookupPress}
                 >
                   Cancel Processing
-                </Button>
+                </Button> :
+                null
             }
 
             {
-              isLookingUpMovie &&
+              hasUnsearchedItems ?
+                <Button
+                  className={styles.loadingButton}
+                  kind={kinds.SUCCESS}
+                  onPress={onLookupPress}
+                >
+                  Start Processing
+                </Button> :
+                null
+            }
+
+            {
+              isLookingUpMovie ?
                 <LoadingIndicator
                   className={styles.loading}
                   size={24}
-                />
+                /> :
+                null
             }
 
             {
-              isLookingUpMovie &&
-                'Processing Folders'
+              isLookingUpMovie ?
+                'Processing Folders' :
+                null
+            }
+
+            {
+              importError ?
+                <Popover
+                  anchor={
+                    <Icon
+                      className={styles.importError}
+                      name={icons.WARNING}
+                      kind={kinds.WARNING}
+                    />
+                  }
+                  title="Import Errors"
+                  body={
+                    <ul>
+                      {
+                        importError.responseJSON.map((error, index) => {
+                          return (
+                            <li key={index}>
+                              {error.errorMessage}
+                            </li>
+                          );
+                        })
+                      }
+                    </ul>
+                  }
+                  position={tooltipPositions.RIGHT}
+                /> :
+                null
             }
           </div>
         </div>
@@ -206,8 +255,11 @@ ImportMovieFooter.propTypes = {
   isMonitorMixed: PropTypes.bool.isRequired,
   isQualityProfileIdMixed: PropTypes.bool.isRequired,
   isMinimumAvailabilityMixed: PropTypes.bool.isRequired,
+  hasUnsearchedItems: PropTypes.bool.isRequired,
+  importError: PropTypes.object,
   onInputChange: PropTypes.func.isRequired,
   onImportPress: PropTypes.func.isRequired,
+  onLookupPress: PropTypes.func.isRequired,
   onCancelLookupPress: PropTypes.func.isRequired
 };
 

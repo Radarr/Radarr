@@ -35,6 +35,7 @@ export const defaultState = {
 export const QUEUE_LOOKUP_MOVIE = 'importMovie/queueLookupMovie';
 export const START_LOOKUP_MOVIE = 'importMovie/startLookupMovie';
 export const CANCEL_LOOKUP_MOVIE = 'importMovie/cancelLookupMovie';
+export const LOOKUP_UNSEARCHED_MOVIES = 'importMovie/lookupUnsearchedMovies';
 export const CLEAR_IMPORT_MOVIE = 'importMovie/clearImportMovie';
 export const SET_IMPORT_MOVIE_VALUE = 'importMovie/setImportMovieValue';
 export const IMPORT_MOVIE = 'importMovie/importMovie';
@@ -45,6 +46,7 @@ export const IMPORT_MOVIE = 'importMovie/importMovie';
 export const queueLookupMovie = createThunk(QUEUE_LOOKUP_MOVIE);
 export const startLookupMovie = createThunk(START_LOOKUP_MOVIE);
 export const importMovie = createThunk(IMPORT_MOVIE);
+export const lookupUnsearchedMovies = createThunk(LOOKUP_UNSEARCHED_MOVIES);
 export const clearImportMovie = createAction(CLEAR_IMPORT_MOVIE);
 export const cancelLookupMovie = createAction(CANCEL_LOOKUP_MOVIE);
 
@@ -179,6 +181,29 @@ export const actionHandlers = handleThunks({
     });
   },
 
+  [LOOKUP_UNSEARCHED_MOVIES]: function(getState, payload, dispatch) {
+    const state = getState().importMovie;
+
+    if (state.isLookingUpMovie) {
+      return;
+    }
+
+    state.items.forEach((item) => {
+      const id = item.id;
+
+      if (
+        !item.isPopulated &&
+        !queue.includes(id)
+      ) {
+        queue.push(item.id);
+      }
+    });
+
+    if (queue.length) {
+      dispatch(startLookupMovie({ start: true }));
+    }
+  },
+
   [IMPORT_MOVIE]: function(getState, payload, dispatch) {
     dispatch(set({ section, isImporting: true }));
 
@@ -215,7 +240,8 @@ export const actionHandlers = handleThunks({
         set({
           section,
           isImporting: false,
-          isImported: true
+          isImported: true,
+          importError: null
         }),
 
         ...data.map((movie) => updateItem({ section: 'movies', ...movie })),
@@ -227,19 +253,19 @@ export const actionHandlers = handleThunks({
     });
 
     promise.fail((xhr) => {
-      dispatch(batchActions(
+      dispatch(batchActions([
         set({
           section,
           isImporting: false,
-          isImported: true
+          isImported: true,
+          importError: xhr
         }),
 
-        addedIds.map((id) => updateItem({
+        ...addedIds.map((id) => updateItem({
           section,
-          id,
-          importError: xhr
+          id
         }))
-      ));
+      ]));
     });
   }
 });
