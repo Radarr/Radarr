@@ -90,3 +90,8 @@
     flex: 0 0 100%;
   }
 }
+
+.dateIcon {
+  display: inline;
+  margin-right: 10px;
+}
