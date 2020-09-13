@@ -44,6 +44,8 @@ class AgendaEvent extends Component {
       genres,
       isAvailable,
       inCinemas,
+      digitalRelease,
+      physicalRelease,
       monitored,
       hasFile,
       grabbed,
@@ -52,10 +54,29 @@ class AgendaEvent extends Component {
       showMovieInformation,
       showCutoffUnmetIcon,
       longDateFormat,
-      colorImpairedMode
+      colorImpairedMode,
+      startDate,
+      endDate
     } = this.props;
 
-    const startTime = moment(inCinemas);
+    const agendaStart = Date.parse(startDate);
+    const agendaEnd = Date.parse(endDate);
+    const cinemaDate = Date.parse(inCinemas);
+    const digitalDate = Date.parse(digitalRelease);
+    let startTime = physicalRelease;
+    let releaseIcon = icons.DISC;
+
+    if (digitalDate >= agendaStart && digitalDate <= agendaEnd) {
+      startTime = digitalRelease;
+      releaseIcon = icons.MOVIE_FILE;
+    }
+
+    if (cinemaDate >= agendaStart && cinemaDate <= agendaEnd) {
+      startTime = inCinemas;
+      releaseIcon = icons.IN_CINEMAS;
+    }
+
+    startTime = moment(startTime);
     const downloading = !!(queueItem || grabbed);
     const isMonitored = monitored;
     const statusStyle = getStatusStyle(hasFile, downloading, isAvailable, isMonitored);
@@ -71,12 +92,18 @@ class AgendaEvent extends Component {
           )}
           to={link}
         >
-          <div className={styles.date}>
-            {
-              showDate &&
-                startTime.format(longDateFormat)
-            }
-          </div>
+          {
+            showDate &&
+              <div className={styles.date}>
+                <div className={styles.dateIcon}>
+                  <Icon
+                    name={releaseIcon}
+                    kind={kinds.DEFAULT}
+                  />
+                </div>
+                {startTime.format(longDateFormat)}
+              </div>
+          }
 
           <div
             className={classNames(
@@ -140,6 +167,8 @@ AgendaEvent.propTypes = {
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   isAvailable: PropTypes.bool.isRequired,
   inCinemas: PropTypes.string,
+  digitalRelease: PropTypes.string,
+  physicalRelease: PropTypes.string,
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
@@ -149,7 +178,9 @@ AgendaEvent.propTypes = {
   showCutoffUnmetIcon: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
   longDateFormat: PropTypes.string.isRequired,
-  colorImpairedMode: PropTypes.bool.isRequired
+  colorImpairedMode: PropTypes.bool.isRequired,
+  startDate: PropTypes.date,
+  endDate: PropTypes.date
 };
 
 AgendaEvent.defaultProps = {
