@@ -814,5 +814,13 @@
     "CustomFormatUnknownCondition": "Onbekende Eigen Formaat conditie '{0}'",
     "CustomFormatJSON": "Aangepast Formaat JSON",
     "CopyToClipboard": "Kopieer naar Klembord",
-    "CloneCustomFormat": "Dupliceer Eigen Formaat"
+    "CloneCustomFormat": "Dupliceer Eigen Formaat",
+    "Priority": "Prioriteit",
+    "InteractiveSearch": "Interactief Zoeken",
+    "IndexerPriorityHelpText": "Indexeerder Prioriteit van 1 (Hoogste) tot 50 (Laagste). Standaard: 25.",
+    "IndexerPriority": "Indexeerder Prioriteit",
+    "EditIndexer": "Bewerk Indexeerder",
+    "Disabled": "Uitgeschakeld",
+    "AutomaticSearch": "Automatisch Zoeken",
+    "AddIndexer": "Voeg Indexeerder Toe"
 }
