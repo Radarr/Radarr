@@ -814,5 +814,13 @@
     "DownloadPropersAndRepacksHelpText1": "Automatisch Proper oder Repacks zum upgraden eines Filmes zulassen",
     "DownloadPropersAndRepacks": "Propers und Repacks",
     "CopyToClipboard": "In die Zwischenablage kopieren",
-    "CloneCustomFormat": "Eigenes Format kopieren"
+    "CloneCustomFormat": "Eigenes Format kopieren",
+    "Priority": "Priorität",
+    "InteractiveSearch": "Interaktive Suche",
+    "IndexerPriorityHelpText": "Indexer Priorität von 1 (höchste) bis 50 (niedrigste). Standart: 25.",
+    "IndexerPriority": "Priorität",
+    "EditIndexer": "Indexer bearbeiten",
+    "Disabled": "Deaktiviert",
+    "AutomaticSearch": "Automatische Suche",
+    "AddIndexer": "Indexer hinzufügen"
 }
