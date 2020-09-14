@@ -685,7 +685,7 @@
     "UsenetDelay": "Ritardo della Usenet",
     "UseHardlinksInsteadOfCopy": "Usa Hardlink invece che copiare",
     "UrlBaseHelpText": "Per il supporto al reverse proxy, di default è vuoto",
-    "URLBase": "URL Base",
+    "URLBase": "URL di Base",
     "UpgradeUntilThisQualityIsMetOrExceeded": "Aggiorna finchè questa qualità non è raggiunta o superata",
     "UpgradeAllowedHelpText": "Se disabilitato la qualità non verrà incrementata",
     "UpdateScriptPathHelpText": "Percorso verso uno script che prende un pacchetto di aggiornamento estratto e gestisce il resto del processo di aggiornamento",
@@ -808,5 +808,13 @@
     "DownloadPropersAndRepacksHelpText1": "Aggiornare o meno automaticamente a Proper/Repack",
     "DownloadPropersAndRepacks": "Propers e Repack",
     "CopyToClipboard": "Copia negli appunti",
-    "CloneCustomFormat": "Duplica i formati personalizzati"
+    "CloneCustomFormat": "Duplica i formati personalizzati",
+    "Priority": "Priorità",
+    "InteractiveSearch": "Ricerca interattiva",
+    "IndexerPriorityHelpText": "Priorità dell'indexer da 1 (più alto) a 50 (più basso). Default: 25.",
+    "IndexerPriority": "Priorità dell'indexer",
+    "EditIndexer": "Edita Indexer",
+    "Disabled": "Disabilitato",
+    "AutomaticSearch": "Ricerca automatica",
+    "AddIndexer": "Aggiungi Indexer"
 }
