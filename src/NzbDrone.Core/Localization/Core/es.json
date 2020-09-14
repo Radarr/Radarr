@@ -814,5 +814,13 @@
     "CustomFormatUnknownCondition": "Condición de Formato Personalizado Desconocida '{0}'",
     "CustomFormatJSON": "Formato Personalizado de JSON",
     "CopyToClipboard": "Copiar al portapapeles",
-    "CloneCustomFormat": "Clonar Formato Personalizado"
+    "CloneCustomFormat": "Clonar Formato Personalizado",
+    "Priority": "Prioridad",
+    "InteractiveSearch": "Búsqueda Interactiva",
+    "IndexerPriorityHelpText": "Prioridad del Indexer de 1 (La más alta) a 50 (La más baja). Por defecto: 25.",
+    "IndexerPriority": "Prioridad del Indexer",
+    "EditIndexer": "Editar Indexer",
+    "Disabled": "Deshabilitado",
+    "AutomaticSearch": "Búsqueda Automática",
+    "AddIndexer": "Añadir Indexer"
 }
