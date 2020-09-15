@@ -70,6 +70,18 @@ namespace Radarr.Http.Extensions
             return defaultValue;
         }
 
+        public static string GetNullableStringQueryParameter(this Request request, string parameter, string defaultValue = null)
+        {
+            var parameterValue = request.Query[parameter];
+
+            if (parameterValue.HasValue)
+            {
+                return parameterValue.Value;
+            }
+
+            return defaultValue;
+        }
+
         public static int? GetNullableIntegerQueryParameter(this Request request, string parameter, int? defaultValue = null)
         {
             var parameterValue = request.Query[parameter];

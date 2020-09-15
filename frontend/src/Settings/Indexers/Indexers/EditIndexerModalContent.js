@@ -31,6 +31,8 @@ function EditIndexerModalContent(props) {
     onSavePress,
     onTestPress,
     onDeleteIndexerPress,
+    jackettIndexerOptions,
+    onJackettIndexerChange,
     ...otherProps
   } = props;
 
@@ -69,6 +71,24 @@ function EditIndexerModalContent(props) {
         {
           !isFetching && !error &&
             <Form {...otherProps}>
+
+              {
+                jackettIndexerOptions &&
+                  <FormGroup>
+                    <FormLabel>{translate('JackettIndexers')}</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="jackettIndexer"
+                      values={jackettIndexerOptions}
+                      value={jackettIndexerOptions[0].key}
+                      helpText={translate('JackettIndexersHelptext')}
+                      onChange={onJackettIndexerChange}
+                      {...props}
+                    />
+                  </FormGroup>
+              }
+
               <FormGroup>
                 <FormLabel>{translate('Name')}</FormLabel>
 
@@ -205,7 +225,9 @@ EditIndexerModalContent.propTypes = {
   onModalClose: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onTestPress: PropTypes.func.isRequired,
-  onDeleteIndexerPress: PropTypes.func
+  onDeleteIndexerPress: PropTypes.func,
+  jackettIndexerOptions: PropTypes.array,
+  onJackettIndexerChange: PropTypes.func.isRequired
 };
 
 export default EditIndexerModalContent;

@@ -87,6 +87,7 @@ class IndexerSettings extends Component {
           />
 
           <RestrictionsConnector />
+
         </PageContentBody>
       </PageContent>
     );

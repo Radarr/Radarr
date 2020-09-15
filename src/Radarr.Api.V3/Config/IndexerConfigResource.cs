@@ -13,6 +13,8 @@ namespace Radarr.Api.V3.Config
         public int AvailabilityDelay { get; set; }
         public bool AllowHardcodedSubs { get; set; }
         public string WhitelistedHardcodedSubs { get; set; }
+        public string JackettApi { get; set; }
+        public string JackettPath { get; set; }
     }
 
     public static class IndexerConfigResourceMapper
@@ -29,6 +31,8 @@ namespace Radarr.Api.V3.Config
                 AvailabilityDelay = model.AvailabilityDelay,
                 AllowHardcodedSubs = model.AllowHardcodedSubs,
                 WhitelistedHardcodedSubs = model.WhitelistedHardcodedSubs,
+                JackettApi = model.JackettApi,
+                JackettPath = model.JackettPath
             };
         }
     }

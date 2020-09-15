@@ -48,6 +48,9 @@ namespace NzbDrone.Core.Configuration
         string FileChmod { get; set; }
 
         //Indexers
+        string JackettPath { get; set; }
+        string JackettApi { get; set; }
+
         int Retention { get; set; }
         int RssSyncInterval { get; set; }
         int MaximumSize { get; set; }

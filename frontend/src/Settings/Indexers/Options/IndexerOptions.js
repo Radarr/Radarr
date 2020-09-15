@@ -16,11 +16,13 @@ function IndexerOptions(props) {
     error,
     settings,
     hasSettings,
-    onInputChange
+    onInputChange,
+    jackettPath,
+    jackettApi
   } = props;
 
   return (
-    <FieldSet legend={translate('Options')}>
+    <>
       {
         isFetching &&
           <LoadingIndicator />
@@ -36,126 +38,156 @@ function IndexerOptions(props) {
       {
         hasSettings && !isFetching && !error &&
           <Form>
-            <FormGroup>
-              <FormLabel>{translate('MinimumAge')}</FormLabel>
+            <FieldSet legend={translate('Jackett')}>
+              <FormGroup>
+                <FormLabel>{translate('Path')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.NUMBER}
-                name="minimumAge"
-                min={0}
-                unit="minutes"
-                helpText={translate('MinimumAgeHelpText')}
-                onChange={onInputChange}
-                {...settings.minimumAge}
-              />
-            </FormGroup>
+                <FormInputGroup
+                  type={inputTypes.TEXT}
+                  name="jackettPath"
+                  helpText={translate('JackettPathHelpText', ['http://localhost:9117'])}
+                  value={jackettPath}
+                  onChange={onInputChange}
+                  {...settings.jackettPath}
+                />
+              </FormGroup>
 
-            <FormGroup>
-              <FormLabel>{translate('Retention')}</FormLabel>
+              <FormGroup>
+                <FormLabel>{translate('ApiKey')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.NUMBER}
-                name="retention"
-                min={0}
-                unit="days"
-                helpText={translate('RetentionHelpText')}
-                onChange={onInputChange}
-                {...settings.retention}
-              />
-            </FormGroup>
+                <FormInputGroup
+                  type={inputTypes.TEXT}
+                  name="jackettApi"
+                  helpText={translate('JackettApiKeyHelpText')}
+                  value={jackettApi}
+                  onChange={onInputChange}
+                  {...settings.jackettApi}
+                />
+              </FormGroup>
+            </FieldSet>
 
-            <FormGroup>
-              <FormLabel>{translate('MaximumSize')}</FormLabel>
+            <FieldSet legend={translate('Options')}>
+              <FormGroup>
+                <FormLabel>{translate('MinimumAge')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.NUMBER}
-                name="maximumSize"
-                min={0}
-                unit="MB"
-                helpText={translate('MaximumSizeHelpText')}
-                onChange={onInputChange}
-                {...settings.maximumSize}
-              />
-            </FormGroup>
+                <FormInputGroup
+                  type={inputTypes.NUMBER}
+                  name="minimumAge"
+                  min={0}
+                  unit="minutes"
+                  helpText={translate('MinimumAgeHelpText')}
+                  onChange={onInputChange}
+                  {...settings.minimumAge}
+                />
+              </FormGroup>
 
-            <FormGroup>
-              <FormLabel>{translate('PreferIndexerFlags')}</FormLabel>
+              <FormGroup>
+                <FormLabel>{translate('Retention')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.CHECK}
-                name="preferIndexerFlags"
-                helpText={translate('PreferIndexerFlagsHelpText')}
-                helpLink="https://github.com/Radarr/Radarr/wiki/Indexer-Flags"
-                onChange={onInputChange}
-                {...settings.preferIndexerFlags}
-              />
-            </FormGroup>
+                <FormInputGroup
+                  type={inputTypes.NUMBER}
+                  name="retention"
+                  min={0}
+                  unit="days"
+                  helpText={translate('RetentionHelpText')}
+                  onChange={onInputChange}
+                  {...settings.retention}
+                />
+              </FormGroup>
 
-            <FormGroup>
-              <FormLabel>{translate('AvailabilityDelay')}</FormLabel>
+              <FormGroup>
+                <FormLabel>{translate('MaximumSize')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.NUMBER}
-                name="availabilityDelay"
-                unit="Days"
-                helpText={translate('AvailabilityDelayHelpText')}
-                onChange={onInputChange}
-                {...settings.availabilityDelay}
-              />
-            </FormGroup>
+                <FormInputGroup
+                  type={inputTypes.NUMBER}
+                  name="maximumSize"
+                  min={0}
+                  unit="MB"
+                  helpText={translate('MaximumSizeHelpText')}
+                  onChange={onInputChange}
+                  {...settings.maximumSize}
+                />
+              </FormGroup>
 
-            <FormGroup
-              advancedSettings={advancedSettings}
-              isAdvanced={true}
-            >
-              <FormLabel>{translate('RSSSyncInterval')}</FormLabel>
+              <FormGroup>
+                <FormLabel>{translate('PreferIndexerFlags')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.NUMBER}
-                name="rssSyncInterval"
-                min={0}
-                max={120}
-                unit="minutes"
-                helpText={translate('HelpText')}
-                helpTextWarning={translate('RSSSyncIntervalHelpTextWarning')}
-                helpLink="https://github.com/Radarr/Radarr/wiki/RSS-Sync"
-                onChange={onInputChange}
-                {...settings.rssSyncInterval}
-              />
-            </FormGroup>
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="preferIndexerFlags"
+                  helpText={translate('PreferIndexerFlagsHelpText')}
+                  helpLink="https://github.com/Radarr/Radarr/wiki/Indexer-Flags"
+                  onChange={onInputChange}
+                  {...settings.preferIndexerFlags}
+                />
+              </FormGroup>
 
-            <FormGroup
-              advancedSettings={advancedSettings}
-              isAdvanced={true}
-            >
-              <FormLabel>{translate('WhitelistedSubtitleTags')}</FormLabel>
+              <FormGroup>
+                <FormLabel>{translate('AvailabilityDelay')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.TEXT_TAG}
-                name="whitelistedHardcodedSubs"
-                helpText={translate('WhitelistedHardcodedSubsHelpText')}
-                onChange={onInputChange}
-                {...settings.whitelistedHardcodedSubs}
-              />
-            </FormGroup>
+                <FormInputGroup
+                  type={inputTypes.NUMBER}
+                  name="availabilityDelay"
+                  unit="Days"
+                  helpText={translate('AvailabilityDelayHelpText')}
+                  onChange={onInputChange}
+                  {...settings.availabilityDelay}
+                />
+              </FormGroup>
 
-            <FormGroup
-              advancedSettings={advancedSettings}
-              isAdvanced={true}
-            >
-              <FormLabel>{translate('AllowHardcodedSubs')}</FormLabel>
+              <FormGroup
+                advancedSettings={advancedSettings}
+                isAdvanced={true}
+              >
+                <FormLabel>{translate('RSSSyncInterval')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.CHECK}
-                name="allowHardcodedSubs"
-                helpText={translate('AllowHardcodedSubsHelpText')}
-                onChange={onInputChange}
-                {...settings.allowHardcodedSubs}
-              />
-            </FormGroup>
+                <FormInputGroup
+                  type={inputTypes.NUMBER}
+                  name="rssSyncInterval"
+                  min={0}
+                  max={120}
+                  unit="minutes"
+                  helpText={translate('HelpText')}
+                  helpTextWarning={translate('RSSSyncIntervalHelpTextWarning')}
+                  helpLink="https://github.com/Radarr/Radarr/wiki/RSS-Sync"
+                  onChange={onInputChange}
+                  {...settings.rssSyncInterval}
+                />
+              </FormGroup>
+
+              <FormGroup
+                advancedSettings={advancedSettings}
+                isAdvanced={true}
+              >
+                <FormLabel>{translate('WhitelistedSubtitleTags')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.TEXT_TAG}
+                  name="whitelistedHardcodedSubs"
+                  helpText={translate('WhitelistedHardcodedSubsHelpText')}
+                  onChange={onInputChange}
+                  {...settings.whitelistedHardcodedSubs}
+                />
+              </FormGroup>
+
+              <FormGroup
+                advancedSettings={advancedSettings}
+                isAdvanced={true}
+              >
+                <FormLabel>{translate('AllowHardcodedSubs')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="allowHardcodedSubs"
+                  helpText={translate('AllowHardcodedSubsHelpText')}
+                  onChange={onInputChange}
+                  {...settings.allowHardcodedSubs}
+                />
+              </FormGroup>
+            </FieldSet>
           </Form>
       }
-    </FieldSet>
+    </>
   );
 }
 
@@ -165,7 +197,9 @@ IndexerOptions.propTypes = {
   error: PropTypes.object,
   settings: PropTypes.object.isRequired,
   hasSettings: PropTypes.bool.isRequired,
-  onInputChange: PropTypes.func.isRequired
+  onInputChange: PropTypes.func.isRequired,
+  jackettPath: PropTypes.string,
+  jackettApi: PropTypes.string
 };
 
 export default IndexerOptions;

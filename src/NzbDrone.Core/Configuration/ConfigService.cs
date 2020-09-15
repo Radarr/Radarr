@@ -144,9 +144,24 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("CertificationCountry", value); }
         }
 
+        public string JackettPath
+        {
+            get { return GetValue("JackettPath", string.Empty); }
+
+            set { SetValue("JackettPath", value); }
+        }
+
+        public string JackettApi
+        {
+            get { return GetValue("JackettApi", string.Empty); }
+
+            set { SetValue("JackettApi", value); }
+        }
+
         public int MaximumSize
         {
             get { return GetValueInt("MaximumSize", 0); }
+
             set { SetValue("MaximumSize", value); }
         }
 
