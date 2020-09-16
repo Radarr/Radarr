@@ -143,7 +143,7 @@ function Settings() {
         </Link>
 
         <div className={styles.summary}>
-          {translate('UiSettingsSummary')}
+          {translate('UISettingsSummary')}
         </div>
       </PageContentBody>
     </PageContent>
