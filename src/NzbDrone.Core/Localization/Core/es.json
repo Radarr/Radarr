@@ -785,7 +785,7 @@
     "FileChmodHelpTexts2": "El mismo modo se aplica a las carpetas de pelicula/sub con el trizo de ejecutable añadido, ej., 0644 se convierte en 0755",
     "FileChmodHelpTexts1": "Octal, aplicado a los archivos multimedia importados/renombrados por Radarr",
     "FailedLoadingSearchResults": "Error al cargar los resultados de la busqueda, prueba otra vez.",
-    "ExtraFileExtensionsHelpTexts2": "Ejemplos : '.sub, .nfo' or 'sub,nfo'",
+    "ExtraFileExtensionsHelpTexts2": "Ejemplos : '.sub, .nfo' o 'sub,nfo'",
     "ExtraFileExtensionsHelpTexts1": "Separar con cons la lista de los archivos extra a importar (.nfo será impotado como .nfo-orig)",
     "Excluded": "Excluida",
     "Exception": "Excepción",
