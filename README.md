@@ -6,6 +6,8 @@
 ![Github Downloads](https://img.shields.io/github/downloads/Radarr/Radarr/total.svg)
 [![Backers on Open Collective](https://opencollective.com/Radarr/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/Radarr/sponsors/badge.svg)](#sponsors)
 
+[![Dependency](https://img.shields.io/librariesio/github/Radarr/Radarr)](https://libraries.io/github/Radarr/Radarr)
+
 Radarr is an __independent__ fork of [Sonarr](https://github.com/Sonarr/Sonarr) reworked for automatically downloading movies via Usenet and BitTorrent.
 
 The project was inspired by other Usenet/BitTorrent movie downloaders such as CouchPotato.
