@@ -42,7 +42,8 @@ class DiskSpace extends Component {
   render() {
     const {
       isFetching,
-      items
+      items,
+      isSmallScreen
     } = this.props;
 
     return (
@@ -98,7 +99,7 @@ class DiskSpace extends Component {
                             progress={diskUsage}
                             kind={diskUsageKind}
                             size={sizes.MEDIUM}
-                            showText={diskUsage >= 12}
+                            showText={((!isSmallScreen && diskUsage >= 12) || (isSmallScreen && diskUsage >= 45))}
                             text={`${diskUsage}%`}
                           />
                         </TableRowCell>
@@ -117,7 +118,8 @@ class DiskSpace extends Component {
 
 DiskSpace.propTypes = {
   isFetching: PropTypes.bool.isRequired,
-  items: PropTypes.array.isRequired
+  items: PropTypes.array.isRequired,
+  isSmallScreen: PropTypes.bool.isRequired
 };
 
 export default DiskSpace;
