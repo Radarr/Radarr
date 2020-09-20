@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.ImportLists.ImportExclusions;
 using NzbDrone.Core.ImportLists.ImportListMovies;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
@@ -19,12 +21,14 @@ namespace Radarr.Api.V3.ImportLists
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly IImportListMovieService _listMovieService;
         private readonly IImportExclusionsService _importExclusionService;
+        private readonly IConfigService _configService;
 
         public ImportListMoviesModule(IMovieService movieService,
                                     IProvideMovieInfo movieInfo,
                                     IBuildFileNames fileNameBuilder,
                                     IImportListMovieService listMovieService,
-                                    IImportExclusionsService importExclusionsService)
+                                    IImportExclusionsService importExclusionsService,
+                                    IConfigService configService)
             : base("/importlist/movie")
         {
             _movieService = movieService;
@@ -32,12 +36,14 @@ namespace Radarr.Api.V3.ImportLists
             _fileNameBuilder = fileNameBuilder;
             _listMovieService = listMovieService;
             _importExclusionService = importExclusionsService;
+            _configService = configService;
             Get("/", x => GetDiscoverMovies());
         }
 
         private object GetDiscoverMovies()
         {
             var includeRecommendations = Request.GetBooleanQueryParameter("includeRecommendations");
+            var movieLanguge = (Language)_configService.MovieInfoLanguage;
 
             var realResults = new List<ImportListMoviesResource>();
             var listExclusions = _importExclusionService.GetAllExclusions();
@@ -54,11 +60,11 @@ namespace Radarr.Api.V3.ImportLists
                     mapped = _movieInfo.GetBulkMovieInfo(results);
                 }
 
-                realResults.AddRange(MapToResource(mapped.Where(x => x != null)));
+                realResults.AddRange(MapToResource(mapped.Where(x => x != null), movieLanguge));
                 realResults.ForEach(x => x.IsRecommendation = true);
             }
 
-            var listMovies = MapToResource(_listMovieService.GetAllListMovies()).ToList();
+            var listMovies = MapToResource(_listMovieService.GetAllListMovies(), movieLanguge).ToList();
 
             realResults.AddRange(listMovies);
 
@@ -80,7 +86,7 @@ namespace Radarr.Api.V3.ImportLists
             return realResults;
         }
 
-        private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<Movie> movies)
+        private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<Movie> movies, Language language)
         {
             foreach (var currentMovie in movies)
             {
@@ -91,13 +97,17 @@ namespace Radarr.Api.V3.ImportLists
                     resource.RemotePoster = poster.Url;
                 }
 
+                var translation = currentMovie.Translations.FirstOrDefault(t => t.Language == language);
+
+                resource.Title = translation?.Title ?? resource.Title;
+                resource.Overview = translation?.Overview ?? resource.Overview;
                 resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie);
 
                 yield return resource;
             }
         }
 
-        private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<ImportListMovie> movies)
+        private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<ImportListMovie> movies, Language language)
         {
             foreach (var currentMovie in movies)
             {
@@ -108,6 +118,10 @@ namespace Radarr.Api.V3.ImportLists
                     resource.RemotePoster = poster.Url;
                 }
 
+                var translation = currentMovie.Translations.FirstOrDefault(t => t.Language == language);
+
+                resource.Title = translation?.Title ?? resource.Title;
+                resource.Overview = translation?.Overview ?? resource.Overview;
                 resource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { Title = currentMovie.Title, Year = currentMovie.Year, ImdbId = currentMovie.ImdbId, TmdbId = currentMovie.TmdbId });
 
                 yield return resource;

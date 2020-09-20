@@ -41,28 +41,6 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
             return listMovies;
         }
 
-        //public List<ListMovie> SyncMoviesForList(List<ListMovie> listMovies)
-        //{
-        //    var existingListMovies = GetAllListMovies();
-        //    var newMovies = listMovies.GroupBy(x => x.TmdbId);
-
-        //    listMovies = newMovies.Select(x =>
-        //    {
-        //        var movie = x.First();
-
-        //        movie.ListIds = x.SelectMany(m => m.ListIds).ToList();
-
-        //        return movie;
-        //    }).ToList();
-
-        //    listMovies.ForEach(l => l.Id = existingListMovies.FirstOrDefault(e => e.TmdbId == l.TmdbId)?.Id ?? 0);
-
-        //    _listMovieRepository.InsertMany(listMovies.Where(l => l.Id == 0).ToList());
-        //    _listMovieRepository.UpdateMany(listMovies.Where(l => l.Id > 0).ToList());
-        //    _listMovieRepository.DeleteMany(existingListMovies.Where(l => !listMovies.Any(x => x.TmdbId == l.TmdbId)).ToList());
-
-        //    return listMovies;
-        //}
         public List<ImportListMovie> SyncMoviesForList(List<ImportListMovie> listMovies, int listId)
         {
             var existingListMovies = GetAllForList(listId);
