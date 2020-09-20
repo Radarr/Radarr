@@ -63,17 +63,8 @@ function createMapStateToProps() {
           command.body.movieIds.includes(movie.id)
         );
       });
-
-      let queueStatus = null;
-      let queueState = null;
-
-      for (const q in queueItems) {
-        if (queueItems[q].movieId === movie.id) {
-          queueStatus = queueItems[q].status;
-          queueState = queueItems[q].trackedDownloadState;
-          break;
-        }
-      }
+      
+      const firstQueueItem = queueItems.find((q) => q.movieId === movie.id);
 
       return {
         ...movie,
@@ -81,8 +72,8 @@ function createMapStateToProps() {
         showSearchAction,
         isRefreshingMovie,
         isSearchingMovie,
-        queueStatus,
-        queueState
+        queueStatus: firstQueueItem.status,
+        queueState: firstQueueItem.trackedDownloadState
       };
     }
   );
