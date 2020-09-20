@@ -199,6 +199,7 @@ namespace NzbDrone.Core.ImportLists
                 mappedListMovie.DigitalRelease = mappedMovie.DigitalRelease;
                 mappedListMovie.Genres = mappedMovie.Genres;
                 mappedListMovie.Runtime = mappedMovie.Runtime;
+                mappedListMovie.OriginalTitle = mappedMovie.OriginalTitle;
             }
 
             return mappedListMovie;
