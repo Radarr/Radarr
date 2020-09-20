@@ -328,7 +328,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     {
                         try
                         {
-                            return new List<Movie> { GetMovieByImdbId(parserResult.ImdbId) };
+                            var movieLookup = GetMovieByImdbId(parserResult.ImdbId);
+                            return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? movieLookup };
                         }
                         catch (Exception)
                         {
@@ -352,7 +353,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
-                        return new List<Movie> { GetMovieByImdbId(imdbid) };
+                        var movieLookup = GetMovieByImdbId(imdbid);
+                        return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? movieLookup };
                     }
                     catch (MovieNotFoundException)
                     {
@@ -373,7 +375,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
-                        return new List<Movie> { GetMovieInfo(tmdbid).Item1 };
+                        var movieLookup = GetMovieInfo(tmdbid).Item1;
+                        return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? movieLookup };
                     }
                     catch (MovieNotFoundException)
                     {
