@@ -63,7 +63,7 @@ function createMapStateToProps() {
           command.body.movieIds.includes(movie.id)
         );
       });
-      
+
       const firstQueueItem = queueItems.find((q) => q.movieId === movie.id);
 
       return {
