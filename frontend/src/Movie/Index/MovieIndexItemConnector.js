@@ -72,8 +72,8 @@ function createMapStateToProps() {
         showSearchAction,
         isRefreshingMovie,
         isSearchingMovie,
-        queueStatus: firstQueueItem.status,
-        queueState: firstQueueItem.trackedDownloadState
+        queueStatus: firstQueueItem ? firstQueueItem.status : null,
+        queueState: firstQueueItem ? firstQueueItem.trackedDownloadState : null
       };
     }
   );
