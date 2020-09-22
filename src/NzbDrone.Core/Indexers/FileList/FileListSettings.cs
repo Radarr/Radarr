@@ -32,10 +32,10 @@ namespace NzbDrone.Core.Indexers.FileList
             };
         }
 
-        [FieldDefinition(0, Label = "Username")]
+        [FieldDefinition(0, Label = "Username", Privacy = PrivacyLevel.UserName)]
         public string Username { get; set; }
 
-        [FieldDefinition(1, Label = "Passkey")]
+        [FieldDefinition(1, Label = "Passkey", Privacy = PrivacyLevel.ApiKey)]
         public string Passkey { get; set; }
 
         [FieldDefinition(3, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your API key will be sent to that host.")]

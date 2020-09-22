@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Annotations
         public Type SelectOptions { get; set; }
         public string Section { get; set; }
         public HiddenType Hidden { get; set; }
+        public PrivacyLevel Privacy { get; set; }
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
@@ -60,5 +61,13 @@ namespace NzbDrone.Core.Annotations
         Visible,
         Hidden,
         HiddenIfNotSet
+    }
+
+    public enum PrivacyLevel
+    {
+        Normal,
+        Password,
+        ApiKey,
+        UserName
     }
 }
