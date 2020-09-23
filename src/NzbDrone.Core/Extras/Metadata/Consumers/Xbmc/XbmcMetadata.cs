@@ -17,12 +17,14 @@ using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Tags;
 
 namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 {
     public class XbmcMetadata : MetadataBase<XbmcMetadataSettings>
     {
+        private readonly IBuildFileNames _buildFileNames;
         private readonly IMapCoversToLocal _mediaCoverService;
         private readonly Logger _logger;
         private readonly IDetectXbmcNfo _detectNfo;
@@ -31,7 +33,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         private readonly ITagRepository _tagRepository;
         private readonly IMovieTranslationService _movieTranslationsService;
 
-        public XbmcMetadata(IDetectXbmcNfo detectNfo,
+        public XbmcMetadata(IBuildFileNames buildFileNames,
+                            IDetectXbmcNfo detectNfo,
                             IDiskProvider diskProvider,
                             IMapCoversToLocal mediaCoverService,
                             ICreditService creditService,
@@ -39,6 +42,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                             IMovieTranslationService movieTranslationsService,
                             Logger logger)
         {
+            _buildFileNames = buildFileNames;
             _logger = logger;
             _mediaCoverService = mediaCoverService;
             _diskProvider = diskProvider;
@@ -61,6 +65,12 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             if (metadataFile.Type == MetadataType.MovieMetadata)
             {
                 return GetMovieMetadataFilename(movieFilePath);
+            }
+
+            if (metadataFile.Type == MetadataType.MovieImage)
+            {
+                var isFanart = metadataFile.RelativePath.Contains("fanart.jpg") ? MediaCoverTypes.Fanart : MediaCoverTypes.Poster;
+                return Path.Combine(movie.Path, GetMovieImageFilename(movieFilePath, isFanart));
             }
 
             _logger.Debug("Unknown movie file metadata: {0}", metadataFile.RelativePath);
@@ -398,24 +408,24 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             return string.IsNullOrEmpty(xmlResult) ? null : new MetadataFileResult(metadataFileName, xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }
 
-        public override List<ImageFileResult> MovieImages(Movie movie)
+        public override List<ImageFileResult> MovieImages(Movie movie, MovieFile movieFile)
         {
             if (!Settings.MovieImages)
             {
                 return new List<ImageFileResult>();
             }
 
-            return ProcessMovieImages(movie).ToList();
+            return ProcessMovieImages(movie, movieFile).ToList();
         }
 
-        private IEnumerable<ImageFileResult> ProcessMovieImages(Movie movie)
+        private IEnumerable<ImageFileResult> ProcessMovieImages(Movie movie, MovieFile movieFile)
         {
             foreach (var image in movie.MovieMetadata.Value.Images)
             {
                 var source = _mediaCoverService.GetCoverPath(movie.Id, image.CoverType);
-                var destination = image.CoverType.ToString().ToLowerInvariant() + Path.GetExtension(source);
+                var destination = GetMovieImageFilename(_buildFileNames.BuildFileName(movie, movieFile), image.CoverType);
 
-                yield return new ImageFileResult(destination, source);
+                yield return new ImageFileResult(destination.ToString(), source);
             }
         }
 
@@ -429,6 +439,21 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             {
                 return Path.ChangeExtension(movieFilePath, "nfo");
             }
+        }
+
+        private string GetMovieImageFilename(string movieFilePath, MediaCoverTypes imageCoverType)
+        {
+            var baseDestination = new StringBuilder();
+
+            if (!Settings.UseMovieImages)
+            {
+                baseDestination.Append(Path.GetFileNameWithoutExtension(movieFilePath));
+                baseDestination.Append('-');
+            }
+
+            baseDestination.Append($"{imageCoverType.ToString().ToLowerInvariant()}.jpg");
+
+            return baseDestination.ToString();
         }
 
         private bool GetExistingWatchedStatus(Movie movie, string movieFilePath)

@@ -59,6 +59,8 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie)
         {
+            _logger.Debug("Creating Movie Metadata after Cover Update for: {0}", Path.Combine(movie.Path, movie.MovieFile?.RelativePath ?? string.Empty));
+
             var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
             _cleanMetadataService.Clean(movie);
 
@@ -74,7 +76,8 @@ namespace NzbDrone.Core.Extras.Metadata
             {
                 var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
 
-                files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles));
+                files.AddRange(ProcessMovieImages(consumer, movie, movie.MovieFile, consumerFiles));
+                files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, movie.MovieFile, consumerFiles));
             }
 
             _metadataFileService.Upsert(files);
@@ -84,6 +87,9 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles)
         {
+            var movieRelativePaths = string.Join(", ", movieFiles.Select(movieFile => Path.Combine(movie.Path, movieFile.RelativePath)));
+            _logger.Debug("Creating Movie Metadata after Movie Scan for: {0}", movieRelativePaths);
+
             var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
             _cleanMetadataService.Clean(movie);
 
@@ -99,10 +105,9 @@ namespace NzbDrone.Core.Extras.Metadata
             {
                 var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
 
-                files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles));
-
                 foreach (var movieFile in movieFiles)
                 {
+                    files.AddRange(ProcessMovieImages(consumer, movie, movieFile, consumerFiles));
                     files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, movieFile, consumerFiles));
                 }
             }
@@ -114,11 +119,16 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile)
         {
+            _logger.Debug("Creating Movie Metadata after Movie Import for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
+
             var files = new List<MetadataFile>();
 
             foreach (var consumer in _metadataFactory.Enabled())
             {
-                files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, movieFile, new List<MetadataFile>()));
+                var consumerFiles = new List<MetadataFile>();
+
+                files.AddRange(ProcessMovieImages(consumer, movie, movieFile, consumerFiles));
+                files.AddIfNotNull(ProcessMovieMetadata(consumer, movie, movieFile, consumerFiles));
             }
 
             _metadataFileService.Upsert(files);
@@ -128,32 +138,14 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override IEnumerable<ExtraFile> CreateAfterMovieFolder(Movie movie, string movieFolder)
         {
-            var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
-
-            if (movieFolder.IsNullOrWhiteSpace())
-            {
-                return Array.Empty<MetadataFile>();
-            }
-
-            var files = new List<MetadataFile>();
-
-            foreach (var consumer in _metadataFactory.Enabled())
-            {
-                var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
-
-                if (movieFolder.IsNotNullOrWhiteSpace())
-                {
-                    files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles));
-                }
-            }
-
-            _metadataFileService.Upsert(files);
-
-            return files;
+            return Enumerable.Empty<ExtraFile>();
         }
 
         public override IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles)
         {
+            var movieRelativePaths = string.Join(", ", movieFiles.Select(movieFile => Path.Combine(movie.Path, movieFile.RelativePath)));
+            _logger.Debug("Move Movie Files after Movie Rename for: {0}", movieRelativePaths);
+
             var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
             var movedFiles = new List<MetadataFile>();
 
@@ -209,6 +201,8 @@ namespace NzbDrone.Core.Extras.Metadata
 
         private MetadataFile ProcessMovieMetadata(IMetadata consumer, Movie movie, MovieFile movieFile, List<MetadataFile> existingMetadataFiles)
         {
+            _logger.Debug("Processing Movie Metadata for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
+
             var movieFileMetadata = consumer.MovieMetadata(movie, movieFile);
 
             if (movieFileMetadata == null)
@@ -259,11 +253,13 @@ namespace NzbDrone.Core.Extras.Metadata
             return metadata;
         }
 
-        private List<MetadataFile> ProcessMovieImages(IMetadata consumer, Movie movie, List<MetadataFile> existingMetadataFiles)
+        private List<MetadataFile> ProcessMovieImages(IMetadata consumer, Movie movie, MovieFile movieFile, List<MetadataFile> existingMetadataFiles)
         {
+            _logger.Debug("Processing Movie Images for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
+
             var result = new List<MetadataFile>();
 
-            foreach (var image in consumer.MovieImages(movie))
+            foreach (var image in consumer.MovieImages(movie, movieFile))
             {
                 var fullPath = Path.Combine(movie.Path, image.RelativePath);
 
@@ -275,18 +271,40 @@ namespace NzbDrone.Core.Extras.Metadata
 
                 _otherExtraFileRenamer.RenameOtherExtraFile(movie, fullPath);
 
-                var metadata = GetMetadataFile(movie, existingMetadataFiles, c => c.Type == MetadataType.MovieImage &&
-                                                                                   c.RelativePath == image.RelativePath) ??
+                var hash = image.Url.SHA256Hash();
+
+                var existingMetadata = GetMetadataFile(movie, existingMetadataFiles, c => c.Type == MetadataType.MovieImage &&
+                                                                                  c.Hash == hash);
+
+                if (existingMetadata != null)
+                {
+                    var existingFullPath = Path.Combine(movie.Path, existingMetadata.RelativePath);
+                    if (fullPath.PathNotEquals(existingFullPath))
+                    {
+                        _diskTransferService.TransferFile(existingFullPath, fullPath, TransferMode.Move);
+                        existingMetadata.RelativePath = image.RelativePath;
+                    }
+                }
+
+                var metadata = existingMetadata ??
                                new MetadataFile
                                {
                                    MovieId = movie.Id,
+                                   MovieFileId = movieFile.Id,
                                    Consumer = consumer.GetType().Name,
                                    Type = MetadataType.MovieImage,
                                    RelativePath = image.RelativePath,
                                    Extension = Path.GetExtension(fullPath)
                                };
 
+                if (hash == metadata.Hash)
+                {
+                    return null;
+                }
+
                 DownloadImage(movie, image);
+
+                metadata.Hash = hash;
 
                 result.Add(metadata);
             }
@@ -296,6 +314,8 @@ namespace NzbDrone.Core.Extras.Metadata
 
         private void DownloadImage(Movie movie, ImageFileResult image)
         {
+            _logger.Debug("Download Movie Image for: {0}", Path.Combine(movie.Path, movie.MovieFile?.RelativePath ?? string.Empty));
+
             var fullPath = Path.Combine(movie.Path, image.RelativePath);
 
             try
