@@ -90,6 +90,12 @@ namespace NzbDrone.Update.UpdateEngine
 
             Verify(installationFolder, processId);
 
+            if (installationFolder.EndsWith(@"\bin\Radarr") || installationFolder.EndsWith(@"/bin/Radarr"))
+            {
+                installationFolder = installationFolder.GetParentPath();
+                _logger.Info("Fixed Installation Folder: {0}", installationFolder);
+            }
+
             var appType = _detectApplicationType.GetAppType();
 
             _processProvider.FindProcessByName(ProcessProvider.RADARR_CONSOLE_PROCESS_NAME);
