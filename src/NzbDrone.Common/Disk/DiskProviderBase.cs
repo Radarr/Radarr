@@ -258,17 +258,6 @@ namespace NzbDrone.Common.Disk
             Ensure.That(source, () => source).IsValidPath();
             Ensure.That(destination, () => destination).IsValidPath();
 
-            if (source.PathEquals(destination))
-            {
-                throw new IOException(string.Format("Source and destination can't be the same {0}", source));
-            }
-
-            if (FolderExists(destination) && overwrite)
-            {
-                DeleteFolder(destination, true);
-            }
-
-            RemoveReadOnlyFolder(source);
             Directory.Move(source, destination);
         }
 
