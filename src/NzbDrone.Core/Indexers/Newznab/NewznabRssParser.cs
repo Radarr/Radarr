@@ -18,14 +18,13 @@ namespace NzbDrone.Core.Indexers.Newznab
             UseEnclosureUrl = true;
         }
 
-        protected override bool PreProcess(IndexerResponse indexerResponse)
+        public static void CheckError(XDocument xdoc, IndexerResponse indexerResponse)
         {
-            var xdoc = LoadXmlDocument(indexerResponse);
             var error = xdoc.Descendants("error").FirstOrDefault();
 
             if (error == null)
             {
-                return true;
+                return;
             }
 
             var code = Convert.ToInt32(error.Attribute("code").Value);
@@ -33,8 +32,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             if (code >= 100 && code <= 199)
             {
-                _logger.Warn("Invalid API Key: {0}", errorMessage);
-                throw new ApiKeyException("Invalid API key");
+                throw new ApiKeyException(errorMessage);
             }
 
             if (!indexerResponse.Request.Url.FullUri.Contains("apikey=") && (errorMessage == "Missing parameter" || errorMessage.Contains("apikey")))
@@ -48,6 +46,15 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
 
             throw new NewznabException(indexerResponse, errorMessage);
+        }
+
+        protected override bool PreProcess(IndexerResponse indexerResponse)
+        {
+            var xdoc = LoadXmlDocument(indexerResponse);
+
+            CheckError(xdoc, indexerResponse);
+
+            return true;
         }
 
         protected override bool PostProcess(IndexerResponse indexerResponse, List<XElement> items, List<ReleaseInfo> releases)
