@@ -150,7 +150,7 @@ class InteractiveImportRow extends Component {
       isSelectLanguageModalOpen
     } = this.state;
 
-    const movieTitle = movie ? movie.title : '';
+    const movieTitle = movie ? movie.title + ( movie.year > 0 ? ` (${movie.year})` : '') : '';
 
     const showMoviePlaceholder = isSelected && !movie;
     const showQualityPlaceholder = isSelected && !quality;
