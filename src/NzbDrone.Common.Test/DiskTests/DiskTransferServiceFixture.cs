@@ -404,6 +404,58 @@ namespace NzbDrone.Common.Test.DiskTests
         }
 
         [Test]
+        public void CopyFolder_should_detect_caseinsensitive_parents()
+        {
+            WindowsOnly();
+
+            WithRealDiskProvider();
+
+            var original = GetFilledTempFolder();
+            var root = new DirectoryInfo(GetTempFilePath());
+            var source = new DirectoryInfo(root.FullName + "A/series");
+            var destination = new DirectoryInfo(root.FullName + "a/series");
+
+            Subject.TransferFolder(original.FullName, source.FullName, TransferMode.Copy);
+
+            Assert.Throws<IOException>(() => Subject.TransferFolder(source.FullName, destination.FullName, TransferMode.Copy));
+        }
+
+        [Test]
+        public void CopyFolder_should_detect_caseinsensitive_folder()
+        {
+            WindowsOnly();
+
+            WithRealDiskProvider();
+
+            var original = GetFilledTempFolder();
+            var root = new DirectoryInfo(GetTempFilePath());
+            var source = new DirectoryInfo(root.FullName + "A/series");
+            var destination = new DirectoryInfo(root.FullName + "A/Series");
+
+            Subject.TransferFolder(original.FullName, source.FullName, TransferMode.Copy);
+
+            Assert.Throws<IOException>(() => Subject.TransferFolder(source.FullName, destination.FullName, TransferMode.Copy));
+        }
+
+        [Test]
+        public void CopyFolder_should_not_copy_casesensitive_folder()
+        {
+            MonoOnly();
+
+            WithRealDiskProvider();
+
+            var original = GetFilledTempFolder();
+            var root = new DirectoryInfo(GetTempFilePath());
+            var source = new DirectoryInfo(root.FullName + "A/series");
+            var destination = new DirectoryInfo(root.FullName + "A/Series");
+
+            Subject.TransferFolder(original.FullName, source.FullName, TransferMode.Copy);
+
+            // Note: Although technically possible top copy to different case, we're not allowing it
+            Assert.Throws<IOException>(() => Subject.TransferFolder(source.FullName, destination.FullName, TransferMode.Copy));
+        }
+
+        [Test]
         public void CopyFolder_should_ignore_nfs_temp_file()
         {
             WithRealDiskProvider();
@@ -450,6 +502,62 @@ namespace NzbDrone.Common.Test.DiskTests
             Subject.TransferFolder(source.FullName, destination.FullName, TransferMode.Move);
 
             VerifyMoveFolder(original.FullName, source.FullName, destination.FullName);
+        }
+
+        [Test]
+        public void MoveFolder_should_detect_caseinsensitive_parents()
+        {
+            WindowsOnly();
+
+            WithRealDiskProvider();
+
+            var original = GetFilledTempFolder();
+            var root = new DirectoryInfo(GetTempFilePath());
+            var source = new DirectoryInfo(root.FullName + "A/series");
+            var destination = new DirectoryInfo(root.FullName + "a/series");
+
+            Subject.TransferFolder(original.FullName, source.FullName, TransferMode.Copy);
+
+            Assert.Throws<IOException>(() => Subject.TransferFolder(source.FullName, destination.FullName, TransferMode.Move));
+        }
+
+        [Test]
+        public void MoveFolder_should_rename_caseinsensitive_folder()
+        {
+            WindowsOnly();
+
+            WithRealDiskProvider();
+
+            var original = GetFilledTempFolder();
+            var root = new DirectoryInfo(GetTempFilePath());
+            var source = new DirectoryInfo(root.FullName + "A/series");
+            var destination = new DirectoryInfo(root.FullName + "A/Series");
+
+            Subject.TransferFolder(original.FullName, source.FullName, TransferMode.Copy);
+
+            Subject.TransferFolder(source.FullName, destination.FullName, TransferMode.Move);
+
+            source.FullName.GetActualCasing().Should().Be(destination.FullName);
+        }
+
+        [Test]
+        public void MoveFolder_should_rename_casesensitive_folder()
+        {
+            MonoOnly();
+
+            WithRealDiskProvider();
+
+            var original = GetFilledTempFolder();
+            var root = new DirectoryInfo(GetTempFilePath());
+            var source = new DirectoryInfo(root.FullName + "A/series");
+            var destination = new DirectoryInfo(root.FullName + "A/Series");
+
+            Subject.TransferFolder(original.FullName, source.FullName, TransferMode.Copy);
+
+            Subject.TransferFolder(source.FullName, destination.FullName, TransferMode.Move);
+
+            Directory.Exists(source.FullName).Should().Be(false);
+            Directory.Exists(destination.FullName).Should().Be(true);
         }
 
         [Test]
@@ -754,6 +862,10 @@ namespace NzbDrone.Common.Test.DiskTests
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.CreateFolder(It.IsAny<string>()))
                 .Callback<string>(v => fileSystem.Directory.CreateDirectory(v));
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(v => v.MoveFolder(It.IsAny<string>(), It.IsAny<string>()))
+                .Callback<string, string>((v, r) => fileSystem.Directory.Move(v, r));
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(v => v.DeleteFolder(It.IsAny<string>(), It.IsAny<bool>()))
