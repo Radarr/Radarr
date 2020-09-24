@@ -193,7 +193,7 @@ namespace NzbDrone.Core.Notifications.Discord
                         break;
                     case DiscordImportFieldType.Release:
                         discordField.Name = "Release";
-                        discordField.Value = message.MovieFile.SceneName;
+                        discordField.Value = string.Format("```{0}```", message.MovieFile.SceneName);
                         break;
                     case DiscordImportFieldType.Links:
                         discordField.Name = "Links";
