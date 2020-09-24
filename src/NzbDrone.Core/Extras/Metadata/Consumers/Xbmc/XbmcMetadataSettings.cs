@@ -1,5 +1,6 @@
 using FluentValidation;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 
@@ -20,6 +21,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         {
             MovieMetadata = true;
             MovieMetadataURL = false;
+            MovieMetadataLanguage = 1;
             MovieImages = true;
             UseMovieNfo = false;
         }
@@ -30,10 +32,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         [FieldDefinition(1, Label = "Movie Metadata URL", Type = FieldType.Checkbox, HelpText = "Radarr will write the tmdb/imdb url in the .nfo file", Advanced = true)]
         public bool MovieMetadataURL { get; set; }
 
-        [FieldDefinition(2, Label = "Movie Images", Type = FieldType.Checkbox)]
+        [FieldDefinition(2, Label = "Metadata Language", Type = FieldType.Select, SelectOptions = typeof(RealLanguageFieldConverter), HelpText = "Radarr will write metadata in the selected language if available")]
+        public int MovieMetadataLanguage { get; set; }
+
+        [FieldDefinition(3, Label = "Movie Images", Type = FieldType.Checkbox)]
         public bool MovieImages { get; set; }
 
-        [FieldDefinition(3, Label = "Use Movie.nfo", Type = FieldType.Checkbox, HelpText = "Radarr will write metadata to movie.nfo instead of the default <movie-filename>.nfo")]
+        [FieldDefinition(4, Label = "Use Movie.nfo", Type = FieldType.Checkbox, HelpText = "Radarr will write metadata to movie.nfo instead of the default <movie-filename>.nfo")]
         public bool UseMovieNfo { get; set; }
 
         public bool IsValid => true;

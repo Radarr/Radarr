@@ -10,11 +10,13 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Extras.Metadata.Files;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Credits;
+using NzbDrone.Core.Movies.Translations;
 
 namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 {
@@ -25,11 +27,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         private readonly IDetectXbmcNfo _detectNfo;
         private readonly IDiskProvider _diskProvider;
         private readonly ICreditService _creditService;
+        private readonly IMovieTranslationService _movieTranslationsService;
 
         public XbmcMetadata(IDetectXbmcNfo detectNfo,
                             IDiskProvider diskProvider,
                             IMapCoversToLocal mediaCoverService,
                             ICreditService creditService,
+                            IMovieTranslationService movieTranslationsService,
                             Logger logger)
         {
             _logger = logger;
@@ -37,6 +41,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             _diskProvider = diskProvider;
             _detectNfo = detectNfo;
             _creditService = creditService;
+            _movieTranslationsService = movieTranslationsService;
         }
 
         private static readonly Regex MovieImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|clearart|discart|keyart|landscape|logo|backdrop|clearlogo)\.(?:png|jpe?g)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -112,6 +117,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             if (Settings.MovieMetadata)
             {
                 _logger.Debug("Generating Movie Metadata for: {0}", Path.Combine(movie.Path, movieFile.RelativePath));
+
+                var movieTranslations = _movieTranslationsService.GetAllTranslationsForMovie(movie.Id);
+                var selectedSettingsLanguage = Language.FindById(Settings.MovieMetadataLanguage);
+                var movieTranslation = movieTranslations.FirstOrDefault(mt => mt.Language == selectedSettingsLanguage);
+
                 var watched = GetExistingWatchedStatus(movie, movieFile.RelativePath);
 
                 var sb = new StringBuilder();
@@ -128,14 +138,14 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                     var details = new XElement("movie");
 
-                    details.Add(new XElement("title", movie.Title));
+                    details.Add(new XElement("title", movieTranslation?.Title ?? movie.Title));
 
                     if (movie.Ratings != null && movie.Ratings.Votes > 0)
                     {
                         details.Add(new XElement("rating", movie.Ratings.Value));
                     }
 
-                    details.Add(new XElement("plot", movie.Overview));
+                    details.Add(new XElement("plot", movieTranslation?.Overview ?? movie.Overview));
                     details.Add(new XElement("id", movie.ImdbId));
                     details.Add(new XElement("tmdbid", movie.TmdbId));
 
