@@ -218,7 +218,7 @@
     "Type": "Tipo",
     "TotalSpace": "Espacio Total",
     "Title": "Título",
-    "Time": "Tiempo",
+    "Time": "Fecha",
     "TestAll": "Testear Todo",
     "Test": "Test",
     "TableOptionsColumnsMessage": "Escoger qué columnas son visibles y en que orden aparecerán",
@@ -822,5 +822,6 @@
     "EditIndexer": "Editar Indexer",
     "Disabled": "Deshabilitado",
     "AutomaticSearch": "Búsqueda Automática",
-    "AddIndexer": "Añadir Indexer"
+    "AddIndexer": "Añadir Indexer",
+    "Blacklisted": "Bloqueadas"
 }
