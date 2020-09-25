@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Http;
 
@@ -18,7 +18,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2
 
             var httpRequest = GetHttpRequest();
 
-            var request = new ImportListRequest(httpRequest.Url.ToString(), HttpAccept.Json);
+            var request = new ImportListRequest(httpRequest.Url.ToString(), new HttpAccept(httpRequest.Headers.Accept));
 
             request.HttpRequest.SuppressHttpError = true;
 

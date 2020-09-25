@@ -72,7 +72,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
 
         public override IParseImportListResponse GetParser()
         {
-            return new RadarrList2Parser();
+            return new IMDbListParser(Settings);
         }
     }
 }
