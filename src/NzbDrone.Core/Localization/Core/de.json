@@ -822,5 +822,6 @@
     "EditIndexer": "Indexer bearbeiten",
     "Disabled": "Deaktiviert",
     "AutomaticSearch": "Automatische Suche",
-    "AddIndexer": "Indexer hinzufügen"
+    "AddIndexer": "Indexer hinzufügen",
+    "Blacklisted": "Gesperrt"
 }
