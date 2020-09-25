@@ -10,7 +10,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2
 {
     public class RadarrList2Parser : IParseImportListResponse
     {
-        public IList<ImportListMovie> ParseResponse(ImportListResponse importListResponse)
+        public virtual IList<ImportListMovie> ParseResponse(ImportListResponse importListResponse)
         {
             var importResponse = importListResponse;
 
