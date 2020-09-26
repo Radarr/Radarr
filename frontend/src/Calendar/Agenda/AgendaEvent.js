@@ -92,18 +92,15 @@ class AgendaEvent extends Component {
           )}
           to={link}
         >
-          {
-            showDate &&
-              <div className={styles.date}>
-                <div className={styles.dateIcon}>
-                  <Icon
-                    name={releaseIcon}
-                    kind={kinds.DEFAULT}
-                  />
-                </div>
-                {startTime.format(longDateFormat)}
-              </div>
-          }
+          <div className={styles.date}>
+            <div className={styles.dateIcon}>
+              <Icon
+                name={releaseIcon}
+                kind={kinds.DEFAULT}
+              />
+            </div>
+            {(showDate) ? startTime.format(longDateFormat) : null}
+          </div>
 
           <div
             className={classNames(
