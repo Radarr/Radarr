@@ -23,9 +23,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (!Enum.GetNames(typeof(ReleaseBranches)).Any(x => x.ToLower() == currentBranch))
             {
-                if (currentBranch == "develop" || currentBranch == "nightly")
+                if (currentBranch == "develop" || currentBranch == "v0.2")
                 {
                     return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckPreviousVersionMessage"), _configFileService.Branch), "#branch-is-for-a-previous-version");
+                }
+
+                if (currentBranch == "aphrodite")
+                {
+                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format("Branch 'aphrodite' has been merged, switch to 'nightly' for further V3 development", _configFileService.Branch), "#branch-is-for-a-previous-version");
                 }
 
                 return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckOfficialBranchMessage"), _configFileService.Branch), "#branch-is-not-a-valid-release-branch");
@@ -36,7 +41,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public enum ReleaseBranches
         {
-            Aphrodite
+            Nightly
         }
     }
 }
