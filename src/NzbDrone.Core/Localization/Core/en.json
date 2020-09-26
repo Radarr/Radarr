@@ -556,7 +556,7 @@
   "RejectionCount": "Rejection Count",
   "RelativePath": "Relative Path",
   "ReleaseBranchCheckOfficialBranchMessage": "Branch {0} is not a valid Radarr release branch, you will not receive updates",
-  "ReleaseBranchCheckPreviousVersionMessage": "Branch {0} is for a previous version of Radarr, set branch to 'Aphrodite' for further updates",
+  "ReleaseBranchCheckPreviousVersionMessage": "Branch {0} is for a previous version of Radarr, set branch to 'Nightly' for further updates",
   "ReleaseDates": "Release Dates",
   "ReleaseGroup": "Release Group",
   "ReleaseRejected": "Release Rejected",
