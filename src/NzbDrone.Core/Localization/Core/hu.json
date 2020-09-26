@@ -1,1 +1,24 @@
-{}
+{
+    "ListUpdateInterval": "Lista frissítés gyakorisága",
+    "About": "Névjegy",
+    "Year": "Év",
+    "Analytics": "Analitika",
+    "AnalyseVideoFiles": "Videó fájlok analizálása",
+    "AlternativeTitle": "Alternatív cím",
+    "AlreadyInYourLibrary": "Már hozzáadtad",
+    "AllowHardcodedSubsHelpText": "Az észlelt beégetett feliratok automatikusan le lesznek töltve",
+    "AllowHardcodedSubs": "Beégetett feliratok engedélyezése",
+    "AllMoviesHiddenDueToFilter": "Minden film el van rejtve a kiválasztott filter miatt.",
+    "AddNewTmdbIdMessage": "TMDb azonosító segítségével is kereshetsz filmre. Pl. tmdb:71663",
+    "AddNewMovie": "Új film hozzáadása",
+    "AddNewMessage": "Könnyű hozzáadni egy filmet, csak kezd el gépelni a kívánt film nevét",
+    "AddNew": "Új hozzáadása",
+    "AddMoviesMonitored": "Film hozzáadása monitorozva",
+    "AddMovies": "Film hozzáadása",
+    "AddList": "Lista hozzáadása",
+    "AddIndexer": "Indexer hozzáadása",
+    "AddingTag": "Címke hozzáadása",
+    "AddImportExclusionHelpText": "Megakadályozza film hozzáadását Radarr-hoz listáról",
+    "AddExclusion": "Kivétel hozzáadása",
+    "Activity": "Aktivitás"
+}
