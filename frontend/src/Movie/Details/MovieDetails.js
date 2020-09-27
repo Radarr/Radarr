@@ -100,6 +100,7 @@ class MovieDetails extends Component {
     window.removeEventListener('touchend', this.onTouchEnd);
     window.removeEventListener('touchcancel', this.onTouchCancel);
     window.removeEventListener('touchmove', this.onTouchMove);
+    window.removeEventListener('keyup', this.onKeyUp);
   }
 
   //
