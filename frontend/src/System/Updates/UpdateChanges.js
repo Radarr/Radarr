@@ -24,9 +24,13 @@ class UpdateChanges extends Component {
         <ul>
           {
             changes.map((change, index) => {
+              const checkChange = change.replace(/#\d{4,5}\b/g, (match, contents) => {
+                return `[${match}](https://github.com/Radarr/Radarr/issues/${match.substring(1)})`;
+              });
+
               return (
                 <li key={index}>
-                  <InlineMarkdown data={change} />
+                  <InlineMarkdown data={checkChange} />
                 </li>
               );
             })
