@@ -8,12 +8,12 @@ Setup guides, FAQ, the more information we have on the wiki the better.
 ## Development ##
 
 ### Tools required ###
-- Visual Studio 2017 or higher (https://www.visualstudio.com/vs/).  The community version is free and works (https://www.visualstudio.com/downloads/).
+- Visual Studio 2019 or higher (https://www.visualstudio.com/vs/).  The community version is free and works (https://www.visualstudio.com/downloads/).
 - HTML/Javascript editor of choice (VS Code/Sublime Text/Webstorm/Atom/etc)
 - [Git](https://git-scm.com/downloads)
 - [NodeJS](https://nodejs.org/en/download/) (Node 8.X.X or higher)
 - [Yarn](https://yarnpkg.com/)
-- .NET 4.6.2 or Mono equivalent. 
+- .NET Core 3.1. 
 
 ### Getting started ###
 
@@ -22,7 +22,7 @@ Setup guides, FAQ, the more information we have on the wiki the better.
 3. Grab the submodules `git submodule init && git submodule update`
 4. Install the required Node Packages `yarn install`
 5. Start gulp to monitor your dev environment for any changes that need post processing using `yarn start` command.
-6. Build the project in Visual Studio, Setting startup project to `NZBDrone.Console`
+6. Build the project in Visual Studio, Setting startup project to `Readarr.Console` and framework to `netcoreapp31`
 7. Debug the project in Visual Studio
 8. Open http://localhost:8787
 
@@ -35,7 +35,7 @@ Setup guides, FAQ, the more information we have on the wiki the better.
 - Add tests (unit/integration)
 - Commit with *nix line endings for consistency (We checkout Windows and commit *nix)
 - One feature/bug fix per pull request to keep things clean and easy to understand
-- Use 4 spaces instead of tabs, this is the default for VS 2017 and WebStorm (to my knowledge)
+- Use 4 spaces instead of tabs, this is the default for VS 2019 and WebStorm (to my knowledge)
 
 ### Pull Requesting ###
 - Only make pull requests to develop, never master, if you make a PR to master we'll comment on it and close it
