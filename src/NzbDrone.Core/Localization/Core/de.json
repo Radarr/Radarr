@@ -116,7 +116,7 @@
     "Refresh": "Aktualisieren",
     "RefreshAndScan": "Aktualisieren",
     "ReleaseBranchCheckOfficialBranchMessage": "Zweig {0} ist kein gültiger Radarr-Release-Zweig. Sie erhalten keine Updates",
-    "ReleaseBranchCheckPreviousVersionMessage": "Zweig {0} ist für eine frühere Version von Radarr. Setzen Sie den Zweig für weitere Aktualisierungen auf 'aphrodite'",
+    "ReleaseBranchCheckPreviousVersionMessage": "Zweig {0} ist für eine frühere Version von Radarr. Setzen Sie den Zweig für weitere Aktualisierungen auf 'nightly'",
     "RemotePathMappings": "Remote-Pfadzuordnungen",
     "RemoveSelected": "Ausgw. entfernen",
     "RemovedMovieCheckMultipleMessage": "Filme {0} wurden aus TMDb entfernt",
@@ -823,5 +823,14 @@
     "Disabled": "Deaktiviert",
     "AutomaticSearch": "Automatische Suche",
     "AddIndexer": "Indexer hinzufügen",
-    "Blacklisted": "Gesperrt"
+    "Blacklisted": "Gesperrt",
+    "SaveSettings": "Einstellungen speichern",
+    "OpenThisModal": "Dieses Modal öffnen",
+    "MovieIndexScrollTop": "Filmindex: Nach oben scrollen",
+    "MovieIndexScrollBottom": "Filmindex: Nach unten scrollen",
+    "MovieDetailsPreviousMovie": "Film Details: Vorheriger Film",
+    "MovieDetailsNextMovie": "Film Details: Nächster Film",
+    "FocusSearchBox": "Suchbox fokussieren",
+    "CloseCurrentModal": "Momentanes Modal schließen",
+    "AcceptConfirmationModal": "Bestätigung akzeptieren Modal"
 }
