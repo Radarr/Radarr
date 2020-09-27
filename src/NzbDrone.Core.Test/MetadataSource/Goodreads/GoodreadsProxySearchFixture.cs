@@ -31,8 +31,8 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         }
 
         [TestCase("Robert Harris", "Robert Harris")]
-        [TestCase("Terry Pratchett", "Terry Pratchett")]
-        [TestCase("Charlotte Brontë", "Charlotte Brontë")]
+        [TestCase("James Patterson", "James Patterson")]
+        [TestCase("Antoine de Saint-Exupéry", "Antoine de Saint-Exupéry")]
         public void successful_artist_search(string title, string expected)
         {
             var result = Subject.SearchForNewAuthor(title);
