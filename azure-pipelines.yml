@@ -20,11 +20,10 @@ trigger:
   branches:
     include:
     - develop
-    - aphrodite
+    - master
 
 pr:
 - develop
-- aphrodite
 
 stages:
   - stage: Setup
@@ -40,7 +39,7 @@ stages:
         displayName: Set Build Name
       - bash: |
           if [[ $BUILD_REASON == "PullRequest" ]]; then
-          git diff origin/aphrodite...HEAD  --name-only | grep -E "^(src/|azure-pipelines.yml)"
+          git diff origin/develop...HEAD  --name-only | grep -E "^(src/|azure-pipelines.yml)"
           echo $? > not_backend_update
           else
           echo 0 > not_backend_update
@@ -302,14 +301,22 @@ stages:
           sentry-cli releases new --finalize -p radarr -p radarr-ui -p radarr-update "${RELEASENAME}"
           sentry-cli releases -p radarr-ui files "${RELEASENAME}" upload-sourcemaps _output/UI/ --rewrite
           sentry-cli releases set-commits --auto "${RELEASENAME}"
-          sentry-cli releases deploys "${RELEASENAME}" new -e aphrodite
+          if [[ ${BUILD_SOURCEBRANCH} == "refs/heads/develop" ]]; then
+          sentry-cli releases deploys "${RELEASENAME}" new -e nightly
+          else
+          sentry-cli releases deploys "${RELEASENAME}" new -e production
+          fi
           if [ $? -gt 0 ]; then
             echo "##vso[task.logissue type=warning]Error uploading source maps."
           fi
           exit 0
         displayName: Publish Sentry Source Maps
-        continueOnError: true
-        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/aphrodite'))
+        condition: |
+          or
+          (
+            and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop')),
+            and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+          )
         env:
           SENTRY_AUTH_TOKEN: $(sentryAuthTokenServarr)
           SENTRY_ORG: $(sentryOrg)

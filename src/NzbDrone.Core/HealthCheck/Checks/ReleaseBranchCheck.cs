@@ -23,7 +23,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (!Enum.GetNames(typeof(ReleaseBranches)).Any(x => x.ToLower() == currentBranch))
             {
-                if (currentBranch == "develop" || currentBranch == "nightly")
+                if (currentBranch == "develop")
                 {
                     return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckPreviousVersionMessage"), _configFileService.Branch), "#branch-is-for-a-previous-version");
                 }
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public enum ReleaseBranches
         {
-            Aphrodite
+            Nightly
         }
     }
 }

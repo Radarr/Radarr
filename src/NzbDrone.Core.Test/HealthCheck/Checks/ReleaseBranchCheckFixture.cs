@@ -34,7 +34,6 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         }
 
         [TestCase("develop")]
-        [TestCase("nightly")]
         public void should_return_error_when_branch_is_v1(string branch)
         {
             GivenValidBranch(branch);
@@ -42,8 +41,8 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Subject.Check().ShouldBeError();
         }
 
-        [TestCase("aphrodite")]
-        [TestCase("Aphrodite")]
+        [TestCase("nightly")]
+        [TestCase("Nightly")]
         public void should_return_no_warning_when_branch_valid(string branch)
         {
             GivenValidBranch(branch);
