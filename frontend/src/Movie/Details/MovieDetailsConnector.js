@@ -5,10 +5,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
-import { fetchBlacklist } from 'Store/Actions/blacklistActions';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { clearExtraFiles, fetchExtraFiles } from 'Store/Actions/extraFileActions';
 import { toggleMovieMonitored } from 'Store/Actions/movieActions';
+import { clearMovieBlacklist, fetchMovieBlacklist } from 'Store/Actions/movieBlacklistActions';
 import { clearMovieCredits, fetchMovieCredits } from 'Store/Actions/movieCreditsActions';
 import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
 import { clearMovieHistory, fetchMovieHistory } from 'Store/Actions/movieHistoryActions';
@@ -222,9 +222,11 @@ function createMapDispatchToProps(dispatch, props) {
     onGoToMovie(titleSlug) {
       dispatch(push(`${window.Radarr.urlBase}/movie/${titleSlug}`));
     },
-    dispatchFetchBlacklist() {
-      // TODO: Allow for passing a movie id to fetch a single movie's blacklist data
-      dispatch(fetchBlacklist());
+    dispatchFetchMovieBlacklist({ movieId }) {
+      dispatch(fetchMovieBlacklist({ movieId }));
+    },
+    dispatchClearMovieBlacklist() {
+      dispatch(clearMovieBlacklist());
     }
   };
 }
@@ -278,20 +280,17 @@ class MovieDetailsConnector extends Component {
     const movieId = this.props.id;
 
     this.props.dispatchFetchMovieFiles({ movieId });
+    this.props.dispatchFetchMovieBlacklist({ movieId });
     this.props.dispatchFetchMovieHistory({ movieId });
     this.props.dispatchFetchExtraFiles({ movieId });
     this.props.dispatchFetchMovieCredits({ movieId });
     this.props.dispatchFetchQueueDetails({ movieId });
     this.props.dispatchFetchImportListSchema();
-    this.props.dispatchFetchBlacklist();
-  }
-
-  repopulate = () => {
-    this.props.dispatchFetchBlacklist();
   }
 
   unpopulate = () => {
     this.props.dispatchCancelFetchReleases();
+    this.props.dispatchClearMovieBlacklist();
     this.props.dispatchClearMovieFiles();
     this.props.dispatchClearMovieHistory();
     this.props.dispatchClearExtraFiles();
@@ -363,7 +362,8 @@ MovieDetailsConnector.propTypes = {
   dispatchClearQueueDetails: PropTypes.func.isRequired,
   dispatchFetchImportListSchema: PropTypes.func.isRequired,
   dispatchExecuteCommand: PropTypes.func.isRequired,
-  dispatchFetchBlacklist: PropTypes.func.isRequired,
+  dispatchFetchMovieBlacklist: PropTypes.func.isRequired,
+  dispatchClearMovieBlacklist: PropTypes.func.isRequired,
   onGoToMovie: PropTypes.func.isRequired
 };
 

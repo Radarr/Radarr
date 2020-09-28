@@ -11,6 +11,7 @@ import * as history from './historyActions';
 import * as importMovie from './importMovieActions';
 import * as interactiveImportActions from './interactiveImportActions';
 import * as movies from './movieActions';
+import * as movieBlacklist from './movieBlacklistActions';
 import * as movieCredits from './movieCreditsActions';
 import * as movieFiles from './movieFileActions';
 import * as movieHistory from './movieHistoryActions';
@@ -48,6 +49,7 @@ export default [
   releases,
   rootFolders,
   movies,
+  movieBlacklist,
   movieHistory,
   movieIndex,
   movieCredits,

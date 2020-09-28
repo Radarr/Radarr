@@ -8,8 +8,8 @@ function createMapStateToProps() {
   return createSelector(
     (state, { guid }) => guid,
     (state) => state.movieHistory.items,
-    (state) => state.blacklist.items,
-    (guid, movieHistory, blacklist) => {
+    (state) => state.movieBlacklist.items,
+    (guid, movieHistory, movieBlacklist) => {
 
       let blacklistData = {};
       let historyFailedData = {};
@@ -17,7 +17,7 @@ function createMapStateToProps() {
       const historyGrabbedData = movieHistory.find((movie) => movie.eventType === 'grabbed' && movie.data.guid === guid);
       if (historyGrabbedData) {
         historyFailedData = movieHistory.find((movie) => movie.eventType === 'downloadFailed' && movie.sourceTitle === historyGrabbedData.sourceTitle);
-        blacklistData = blacklist.find((item) => item.sourceTitle === historyGrabbedData.sourceTitle);
+        blacklistData = movieBlacklist.find((item) => item.sourceTitle === historyGrabbedData.sourceTitle);
       }
 
       return {

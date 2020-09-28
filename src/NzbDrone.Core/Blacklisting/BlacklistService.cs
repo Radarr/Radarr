@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Blacklisting
     {
         bool Blacklisted(int movieId, ReleaseInfo release);
         PagingSpec<Blacklist> Paged(PagingSpec<Blacklist> pagingSpec);
+        List<Blacklist> GetByMovieId(int movieId);
         void Delete(int id);
     }
 
@@ -63,6 +64,11 @@ namespace NzbDrone.Core.Blacklisting
         public PagingSpec<Blacklist> Paged(PagingSpec<Blacklist> pagingSpec)
         {
             return _blacklistRepository.GetPaged(pagingSpec);
+        }
+
+        public List<Blacklist> GetByMovieId(int movieId)
+        {
+            return _blacklistRepository.BlacklistedByMovie(movieId);
         }
 
         public void Delete(int id)
