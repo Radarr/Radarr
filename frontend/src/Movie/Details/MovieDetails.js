@@ -177,11 +177,13 @@ class MovieDetails extends Component {
   }
 
   onKeyUp = (event) => {
-    if (event.keyCode === keyCodes.LEFT_ARROW) {
-      this.props.onGoToMovie(this.props.previousMovie.titleSlug);
-    }
-    if (event.keyCode === keyCodes.RIGHT_ARROW) {
-      this.props.onGoToMovie(this.props.nextMovie.titleSlug);
+    if (event.path.length === 4) {
+      if (event.keyCode === keyCodes.LEFT_ARROW) {
+        this.props.onGoToMovie(this.props.previousMovie.titleSlug);
+      }
+      if (event.keyCode === keyCodes.RIGHT_ARROW) {
+        this.props.onGoToMovie(this.props.nextMovie.titleSlug);
+      }
     }
   }
 
