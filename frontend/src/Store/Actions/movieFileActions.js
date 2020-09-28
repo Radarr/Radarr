@@ -68,7 +68,7 @@ export const actionHandlers = handleThunks({
 
     deletePromise.done(() => {
       const movies = getState().movies.items;
-      const moviesWithRemovedFiles = _.filter(movies, { movieFileId });
+      const moviesWithRemovedFiles = movies.filter({ movieFileId });
 
       dispatch(batchActions([
         ...moviesWithRemovedFiles.map((movie) => {
@@ -100,7 +100,7 @@ export const actionHandlers = handleThunks({
     promise.done(() => {
       const movies = getState().movies.items;
       const moviesWithRemovedFiles = movieFileIds.reduce((acc, movieFileId) => {
-        acc.push(..._.filter(movies, { movieFileId }));
+        acc.push(...movies.filter({ movieFileId }));
 
         return acc;
       }, []);

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -36,13 +35,13 @@ function createMapStateToProps() {
         pendingChanges
       } = moviesState;
 
-      const movieSettings = _.pick(movie, [
-        'monitored',
-        'qualityProfileId',
-        'minimumAvailability',
-        'path',
-        'tags'
-      ]);
+      const movieSettings = {
+        monitored: movie.monitored,
+        qualityProfileId: movie.qualityProfileId,
+        minimumAvailability: movie.minimumAvailability,
+        path: movie.path,
+        tags: movie.tags
+      };
 
       const settings = selectSettings(movieSettings, pendingChanges, saveError);
 

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
@@ -8,10 +7,10 @@ function createMapStateToProps() {
   return createSelector(
     createUISettingsSelector(),
     (uiSettings) => {
-      return _.pick(uiSettings, [
-        'shortDateFormat',
-        'timeFormat'
-      ]);
+      return {
+        shortDateFormat: uiSettings.shortDateFormat,
+        timeFormat: uiSettings.timeFormat
+      };
     }
   );
 }

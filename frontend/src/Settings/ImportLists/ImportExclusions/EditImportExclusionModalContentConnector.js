@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -27,7 +26,7 @@ function createImportExclusionSelector() {
         items
       } = importExclusions;
 
-      const mapping = id ? _.find(items, { id }) : newImportExclusion;
+      const mapping = id ? items.find({ id }) : newImportExclusion;
       const settings = selectSettings(mapping, pendingChanges, saveError);
 
       return {

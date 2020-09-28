@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -27,7 +26,7 @@ function createMapStateToProps() {
         items
       } = restrictions;
 
-      const profile = id ? _.find(items, { id }) : newRestriction;
+      const profile = id ? items.find({ id }) : newRestriction;
       const settings = selectSettings(profile, pendingChanges, saveError);
 
       return {

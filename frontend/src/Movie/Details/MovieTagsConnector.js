@@ -11,7 +11,7 @@ function createMapStateToProps() {
     createTagsSelector(),
     (movie, tagList) => {
       const tags = _.reduce(movie.tags, (acc, tag) => {
-        const matchingTag = _.find(tagList, { id: tag });
+        const matchingTag = tagList.find({ id: tag });
 
         if (matchingTag) {
           acc.push(matchingTag.label);

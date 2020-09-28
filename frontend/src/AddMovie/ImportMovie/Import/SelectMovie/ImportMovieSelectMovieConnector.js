@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -46,7 +45,7 @@ class ImportMovieSelectMovieConnector extends Component {
 
     this.props.setImportMovieValue({
       id,
-      selectedMovie: _.find(items, { tmdbId })
+      selectedMovie: items.find({ tmdbId })
     });
   }
 
