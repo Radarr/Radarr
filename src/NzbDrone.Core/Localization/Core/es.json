@@ -110,7 +110,7 @@
     "RemovedMovieCheckSingleMessage": "La película {0} ya no está en TMDb",
     "RemovedMovieCheckMultipleMessage": "Las películas {0} ya no están en TMDb",
     "RemotePathMappings": "Mapeados de Rutas Remotas",
-    "ReleaseBranchCheckPreviousVersionMessage": "La versión {0} es de una versión anterior de Radarr, ajusta la versión a 'Aphrodite' para recibir actualizaciones",
+    "ReleaseBranchCheckPreviousVersionMessage": "La versión {0} es de una versión anterior de Radarr, ajusta la versión a 'Nightly' para recibir actualizaciones",
     "ReleaseBranchCheckOfficialBranchMessage": "Las versión {0} no es una versión válida de Radarr, no recibirás actualizaciones",
     "RefreshAndScan": "Actualizar y Escanear",
     "Refresh": "Actualizar",
@@ -823,5 +823,14 @@
     "Disabled": "Deshabilitado",
     "AutomaticSearch": "Búsqueda Automática",
     "AddIndexer": "Añadir Indexer",
-    "Blacklisted": "Bloqueadas"
+    "Blacklisted": "Bloqueadas",
+    "FocusSearchBox": "Enfocar Cuadro de búsqueda",
+    "SaveSettings": "Grabar Ajustes",
+    "OpenThisModal": "Abrir este Modal",
+    "MovieIndexScrollTop": "Indice de Películas: Desplazar hacia arriba",
+    "MovieIndexScrollBottom": "Indice de Películas: Desplazar hacia abajo",
+    "MovieDetailsPreviousMovie": "Detalles de la Película: Película Anterior",
+    "MovieDetailsNextMovie": "Detalles de la película: Siguiente Película",
+    "CloseCurrentModal": "Cerrar Modal Actual",
+    "AcceptConfirmationModal": "Aceptar el Modal de Confirmación"
 }
