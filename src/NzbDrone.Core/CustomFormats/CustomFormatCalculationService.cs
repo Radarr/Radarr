@@ -107,18 +107,19 @@ namespace NzbDrone.Core.CustomFormats
 
         public List<CustomFormat> ParseCustomFormat(Blacklist blacklist)
         {
+            var movie = _movieService.GetMovie(blacklist.MovieId);
             var parsed = _parsingService.ParseMovieInfo(blacklist.SourceTitle, null);
 
             var info = new ParsedMovieInfo
             {
-                MovieTitle = blacklist.Movie.Title,
+                MovieTitle = movie.Title,
                 SimpleReleaseTitle = parsed?.SimpleReleaseTitle ?? blacklist.SourceTitle.SimplifyReleaseTitle(),
                 Quality = blacklist.Quality,
                 Languages = blacklist.Languages,
                 ReleaseGroup = parsed?.ReleaseGroup,
                 Edition = parsed?.Edition,
-                Year = blacklist.Movie.Year,
-                ImdbId = blacklist.Movie.ImdbId,
+                Year = movie.Year,
+                ImdbId = movie.ImdbId,
                 ExtraInfo = new Dictionary<string, object>
                 {
                     { "IndexerFlags", blacklist.IndexerFlags },

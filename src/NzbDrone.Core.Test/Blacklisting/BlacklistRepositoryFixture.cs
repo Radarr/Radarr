@@ -81,8 +81,8 @@ namespace NzbDrone.Core.Test.Blacklisting
 
             Subject.DeleteForMovies(new List<int> { _movie1.Id });
 
-            var removedMovieBlacklists = Subject.BlacklistedByMovies(new List<int> { _movie1.Id });
-            var nonRemovedMovieBlacklists = Subject.BlacklistedByMovies(new List<int> { _movie2.Id });
+            var removedMovieBlacklists = Subject.BlacklistedByMovie(_movie1.Id);
+            var nonRemovedMovieBlacklists = Subject.BlacklistedByMovie(_movie2.Id);
 
             removedMovieBlacklists.Should().HaveCount(0);
             nonRemovedMovieBlacklists.Should().HaveCount(1);

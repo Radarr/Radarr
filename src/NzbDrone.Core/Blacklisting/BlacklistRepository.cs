@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Blacklisting
     {
         List<Blacklist> BlacklistedByTitle(int movieId, string sourceTitle);
         List<Blacklist> BlacklistedByTorrentInfoHash(int movieId, string torrentInfoHash);
-        List<Blacklist> BlacklistedByMovies(List<int> movieIds);
+        List<Blacklist> BlacklistedByMovie(int movieId);
         void DeleteForMovies(List<int> movieIds);
     }
 
@@ -30,9 +30,9 @@ namespace NzbDrone.Core.Blacklisting
             return Query(x => x.MovieId == movieId && x.TorrentInfoHash.Contains(torrentInfoHash));
         }
 
-        public List<Blacklist> BlacklistedByMovies(List<int> movieIds)
+        public List<Blacklist> BlacklistedByMovie(int movieId)
         {
-            return Query(x => movieIds.Contains(x.MovieId));
+            return Query(x => x.MovieId == movieId);
         }
 
         public void DeleteForMovies(List<int> movieIds)
