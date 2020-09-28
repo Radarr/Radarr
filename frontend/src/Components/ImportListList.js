@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { kinds, sizes } from 'Helpers/Props';
@@ -9,7 +10,7 @@ function ImportListList({ lists, importListList }) {
     <div className={styles.lists}>
       {
         lists.map((t) => {
-          const list = importListList.find({ id: t });
+          const list = _.find(importListList, { id: t });
 
           if (!list) {
             return null;

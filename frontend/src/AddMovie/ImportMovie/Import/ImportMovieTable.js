@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import VirtualTable from 'Components/Table/VirtualTable';
@@ -55,7 +56,7 @@ class ImportMovieTable extends Component {
         id
       } = prevItem;
 
-      const item = items.find({ id });
+      const item = _.find(items, { id });
 
       if (!item) {
         onRemoveSelectedStateItem(id);
@@ -66,7 +67,7 @@ class ImportMovieTable extends Component {
       const isSelected = selectedState[id];
 
       const isExistingMovie = !!selectedMovie &&
-        prevProps.allMovies.some({ tmdbId: selectedMovie.tmdbId });
+        _.some(prevProps.allMovies, { tmdbId: selectedMovie.tmdbId });
 
       // Props doesn't have a selected movie or
       // the selected movie is an existing movie.

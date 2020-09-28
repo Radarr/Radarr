@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
@@ -49,7 +50,7 @@ const defaultFontSize = parseInt(fonts.defaultFontSize);
 const lineHeight = parseFloat(fonts.lineHeight);
 
 function getFanartUrl(images) {
-  const fanartImage = images.find({ coverType: 'fanart' });
+  const fanartImage = _.find(images, { coverType: 'fanart' });
   if (fanartImage) {
     // Remove protocol
     return fanartImage.url.replace(/^https?:/, '');

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { kinds } from 'Helpers/Props';
@@ -9,7 +10,7 @@ function TagList({ tags, tagList }) {
     <div className={styles.tags}>
       {
         tags.map((t) => {
-          const tag = tagList.find({ id: t });
+          const tag = _.find(tagList, { id: t });
 
           if (!tag) {
             return null;

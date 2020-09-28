@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -9,13 +10,16 @@ function createMapStateToProps() {
   return createSelector(
     createMovieSelector(),
     (movie) => {
-      return {
-        inCinemas: movie.inCinemas,
-        isAvailable: movie.isAvailable,
-        monitored: movie.monitored,
-        grabbed: movie.grabbed,
-        movieFile: movie.movieFile
-      };
+      const result = _.pick(movie, [
+        'inCinemas',
+        'isAvailable',
+        'monitored',
+        'grabbed'
+      ]);
+
+      result.movieFile = movie.movieFile;
+
+      return result;
     }
   );
 }

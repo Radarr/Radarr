@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -13,16 +14,19 @@ function createMapStateToProps() {
     createDimensionsSelector(),
     createUISettingsSelector(),
     (calendar, dimensions, uiSettings) => {
-      return {
-        isFetching: calendar.isFetching,
-        view: calendar.view,
-        time: calendar.time,
-        start: calendar.start,
-        end: calendar.end,
-        isSmallScreen: dimensions.isSmallScreen,
-        collapseViewButtons: dimensions.isLargeScreen,
-        longDateFormat: uiSettings.longDateFormat
-      };
+      const result = _.pick(calendar, [
+        'isFetching',
+        'view',
+        'time',
+        'start',
+        'end'
+      ]);
+
+      result.isSmallScreen = dimensions.isSmallScreen;
+      result.collapseViewButtons = dimensions.isLargeScreen;
+      result.longDateFormat = uiSettings.longDateFormat;
+
+      return result;
     }
   );
 }

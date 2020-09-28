@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -19,7 +20,7 @@ function createMapStateToProps() {
         items
       } = metadata;
 
-      const settings = selectSettings(items.find({ id }), pendingChanges, saveError);
+      const settings = selectSettings(_.find(items, { id }), pendingChanges, saveError);
 
       return {
         advancedSettings,

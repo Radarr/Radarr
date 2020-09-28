@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -41,7 +42,7 @@ function createMapStateToProps() {
       };
 
       if (items.length) {
-        const rootFolder = items.find({ id: rootFolderId });
+        const rootFolder = _.find(items, { id: rootFolderId });
 
         return {
           ...result,

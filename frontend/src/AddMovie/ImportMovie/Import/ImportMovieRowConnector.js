@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -11,7 +12,7 @@ function createImportMovieItemSelector() {
     (state, { id }) => id,
     (state) => state.importMovie.items,
     (id, items) => {
-      return items.find({ id }) || {};
+      return _.find(items, { id }) || {};
     }
   );
 }
@@ -22,7 +23,7 @@ function createMapStateToProps() {
     createAllMoviesSelector(),
     (item, movies) => {
       const selectedMovie = item && item.selectedMovie;
-      const isExistingMovie = !!selectedMovie && movies.some({ tmdbId: selectedMovie.tmdbId });
+      const isExistingMovie = !!selectedMovie && _.some(movies, { tmdbId: selectedMovie.tmdbId });
 
       return {
         ...item,
