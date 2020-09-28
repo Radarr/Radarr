@@ -49,7 +49,7 @@ const defaultFontSize = parseInt(fonts.defaultFontSize);
 const lineHeight = parseFloat(fonts.lineHeight);
 
 function getFanartUrl(images) {
-  const fanartImage = images.find((i) => i.coverType === 'fanart');
+  const fanartImage = images.find({ coverType: 'fanart' });
   if (fanartImage) {
     // Remove protocol
     return fanartImage.url.replace(/^https?:/, '');
