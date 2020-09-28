@@ -29,6 +29,13 @@ function ImportMovieHeader(props) {
       </VirtualTableHeaderCell>
 
       <VirtualTableHeaderCell
+        className={styles.movie}
+        name="movie"
+      >
+        {translate('Movie')}
+      </VirtualTableHeaderCell>
+
+      <VirtualTableHeaderCell
         className={styles.monitor}
         name="monitor"
       >
@@ -47,13 +54,6 @@ function ImportMovieHeader(props) {
         name="qualityProfileId"
       >
         {translate('QualityProfile')}
-      </VirtualTableHeaderCell>
-
-      <VirtualTableHeaderCell
-        className={styles.movie}
-        name="movie"
-      >
-        {translate('Movie')}
       </VirtualTableHeaderCell>
     </VirtualTableHeader>
   );
