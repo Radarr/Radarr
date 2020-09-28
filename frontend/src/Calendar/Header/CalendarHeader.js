@@ -24,7 +24,7 @@ function getTitle(time, start, end, view, longDateFormat) {
   } else if (view === 'month') {
     return timeMoment.format('MMMM YYYY');
   } else if (view === 'agenda') {
-    return 'Agenda';
+    return `Agenda: ${startMoment.format('MMM D')} - ${endMoment.format('MMM D')}`;
   }
 
   let startFormat = 'MMM D YYYY';

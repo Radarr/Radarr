@@ -13,9 +13,7 @@ function createMapStateToProps() {
     createMovieFileSelector(),
     createQueueItemSelector(),
     createUISettingsSelector(),
-    (state) => state.calendar.start,
-    (state) => state.calendar.end,
-    (calendarOptions, movie, movieFile, queueItem, uiSettings, startDate, endDate) => {
+    (calendarOptions, movie, movieFile, queueItem, uiSettings) => {
       return {
         movie,
         movieFile,
@@ -23,9 +21,7 @@ function createMapStateToProps() {
         ...calendarOptions,
         timeFormat: uiSettings.timeFormat,
         longDateFormat: uiSettings.longDateFormat,
-        colorImpairedMode: uiSettings.enableColorImpairedMode,
-        startDate,
-        endDate
+        colorImpairedMode: uiSettings.enableColorImpairedMode
       };
     }
   );

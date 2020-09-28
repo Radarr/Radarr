@@ -55,23 +55,26 @@ class AgendaEvent extends Component {
       showCutoffUnmetIcon,
       longDateFormat,
       colorImpairedMode,
-      startDate,
-      endDate
+      cinemaDateParsed,
+      digitalDateParsed,
+      physicalDateParsed,
+      sortDate
     } = this.props;
 
-    const agendaStart = Date.parse(startDate);
-    const agendaEnd = Date.parse(endDate);
-    const cinemaDate = Date.parse(inCinemas);
-    const digitalDate = Date.parse(digitalRelease);
-    let startTime = physicalRelease;
-    let releaseIcon = icons.DISC;
+    let startTime = null;
+    let releaseIcon = null;
 
-    if (digitalDate >= agendaStart && digitalDate <= agendaEnd) {
+    if (physicalDateParsed === sortDate) {
+      startTime = physicalRelease;
+      releaseIcon = icons.DISC;
+    }
+
+    if (digitalDateParsed === sortDate) {
       startTime = digitalRelease;
       releaseIcon = icons.MOVIE_FILE;
     }
 
-    if (cinemaDate >= agendaStart && cinemaDate <= agendaEnd) {
+    if (cinemaDateParsed === sortDate) {
       startTime = inCinemas;
       releaseIcon = icons.IN_CINEMAS;
     }
@@ -92,13 +95,14 @@ class AgendaEvent extends Component {
           )}
           to={link}
         >
+          <div className={styles.dateIcon}>
+            <Icon
+              name={releaseIcon}
+              kind={kinds.DEFAULT}
+            />
+          </div>
+
           <div className={styles.date}>
-            <div className={styles.dateIcon}>
-              <Icon
-                name={releaseIcon}
-                kind={kinds.DEFAULT}
-              />
-            </div>
             {(showDate) ? startTime.format(longDateFormat) : null}
           </div>
 
@@ -176,8 +180,10 @@ AgendaEvent.propTypes = {
   timeFormat: PropTypes.string.isRequired,
   longDateFormat: PropTypes.string.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired,
-  startDate: PropTypes.date,
-  endDate: PropTypes.date
+  cinemaDateParsed: PropTypes.number,
+  digitalDateParsed: PropTypes.number,
+  physicalDateParsed: PropTypes.number,
+  sortDate: PropTypes.number
 };
 
 AgendaEvent.defaultProps = {
