@@ -47,6 +47,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _movie = Builder<Movie>
                     .CreateNew()
                     .With(s => s.Title = "South Park")
+                    .With(s => s.OriginalTitle = "South of the Park")
                     .Build();
 
             _namingConfig = NamingConfig.Default;
@@ -196,6 +197,16 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("South.Park.1997");
+        }
+
+        [Test]
+        public void should_replace_movie_original_title()
+        {
+            _namingConfig.StandardMovieFormat = "{Movie OriginalTitle}";
+            _movie.OriginalTitle = "South of the Park";
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be("South of the Park");
         }
 
         [Test]

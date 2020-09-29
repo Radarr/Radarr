@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Organizer
 
         public static readonly Regex AirDateRegex = new Regex(@"\{Air(\s|\W|_)Date\}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{((?:(Movie|Original))(?<separator>[- ._])(Clean)?(Title|Filename)(The)?)(?::(?<customFormat>[a-z0-9|]+))?\})",
+        public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{((?:(Movie|Original))(?<separator>[- ._])(Clean|Original)?(Title|Filename)(The)?)(?::(?<customFormat>[a-z0-9|]+))?\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex FileNameCleanupRegex = new Regex(@"([- ._])(\1)+", RegexOptions.Compiled);
@@ -232,6 +232,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie CleanTitle}"] = m => CleanTitle(GetLanguageTitle(movie, m.CustomFormat));
             tokenHandlers["{Movie Title The}"] = m => TitleThe(movie.Title);
             tokenHandlers["{Movie TitleFirstCharacter}"] = m => TitleThe(movie.Title).Substring(0, 1).FirstCharToUpper();
+            tokenHandlers["{Movie OriginalTitle}"] = m => movie.OriginalTitle ?? string.Empty;
 
             tokenHandlers["{Movie Certification}"] = m => movie.Certification ?? string.Empty;
             tokenHandlers["{Movie Collection}"] = m => movie.Collection?.Name ?? string.Empty;
