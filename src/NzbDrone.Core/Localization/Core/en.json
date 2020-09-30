@@ -751,6 +751,8 @@
   "Titles": "Titles",
   "TMDBId": "TMDb Id",
   "TmdbIdHelpText": "The TMDb Id of the movie to exclude",
+  "Today": "Today",
+  "Tomorrow": "Tomorrow",
   "TorrentDelay": "Torrent Delay",
   "TorrentDelayHelpText": "Delay in minutes to wait before grabbing a torrent",
   "Torrents": "Torrents",
@@ -842,5 +844,6 @@
   "WhitelistedSubtitleTags": "Whitelisted Subtitle Tags",
   "Year": "Year",
   "YesCancel": "Yes, Cancel",
+  "Yesterday": "Yesterday",
   "YouCanAlsoSearch": "You can also search using TMDb ID or IMDb ID of a movie. eg. tmdb:71663"
 }
