@@ -45,6 +45,10 @@ namespace NzbDrone.Core.Test.RootFolderTests
         [TestCase("//server//folder")]
         public void should_be_able_to_add_root_dir(string path)
         {
+            Mocker.GetMock<IMovieRepository>()
+                  .Setup(s => s.AllMoviePaths())
+                  .Returns(new List<string>());
+
             var root = new RootFolder { Path = path.AsOsAgnostic() };
 
             Subject.Add(root);
@@ -134,9 +138,9 @@ namespace NzbDrone.Core.Test.RootFolderTests
                   .Setup(s => s.Get(It.IsAny<int>()))
                   .Returns(rootFolder);
 
-            Mocker.GetMock<IMovieService>()
-                  .Setup(s => s.GetAllMovies())
-                  .Returns(new List<Movie>());
+            Mocker.GetMock<IMovieRepository>()
+                  .Setup(s => s.AllMoviePaths())
+                  .Returns(new List<string>());
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetDirectories(rootFolder.Path))
