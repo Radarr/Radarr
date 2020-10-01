@@ -14,7 +14,7 @@ See the readme for information on setting up your development environment.
 - Rebase from Radarr's develop branch, don't merge
 - Make meaningful commits, or squash them
 - Feel free to make a pull request before work is complete, this will let us see where its at and make comments/suggest improvements
-- Reach out to us on the forums or on IRC if you have any questions
+- Reach out to us on the discord if you have any questions
 - Add tests (unit/integration)
 - Commit with *nix line endings for consistency (We checkout Windows and commit *nix)
 - One feature/bug fix per pull request to keep things clean and easy to understand
