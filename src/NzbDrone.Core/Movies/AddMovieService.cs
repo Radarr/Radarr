@@ -59,7 +59,8 @@ namespace NzbDrone.Core.Movies
 
             foreach (var m in newMovies)
             {
-                // TODO: Verify if adding skyhook data will be slow
+                _logger.Info("Adding Movie {0} Path: [{1}]", m, m.Path);
+
                 try
                 {
                     var movie = AddSkyhookData(m);
@@ -91,11 +92,11 @@ namespace NzbDrone.Core.Movies
             }
             catch (MovieNotFoundException)
             {
-                _logger.Error("TmdbId {0} was not found, it may have been removed from TMDb.", newMovie.TmdbId);
+                _logger.Error("TmdbId {0} was not found, it may have been removed from TMDb. Path: {1}", newMovie.TmdbId, newMovie.Path);
 
                 throw new ValidationException(new List<ValidationFailure>
                                               {
-                                                  new ValidationFailure("TmdbId", "A movie with this ID was not found", newMovie.TmdbId)
+                                                  new ValidationFailure("TmdbId", $"A movie with this ID was not found. Path: {newMovie.Path}", newMovie.TmdbId)
                                               });
             }
 
