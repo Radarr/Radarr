@@ -12,10 +12,12 @@ function CalendarEventQueueDetails(props) {
     sizeleft,
     estimatedCompletionTime,
     status,
+    trackedDownloadState,
+    trackedDownloadStatus,
     errorMessage
   } = props;
 
-  const progress = (100 - sizeleft / size * 100);
+  const progress = size ? (100 - sizeleft / size * 100) : 0;
 
   return (
     <QueueDetails
@@ -24,6 +26,8 @@ function CalendarEventQueueDetails(props) {
       sizeleft={sizeleft}
       estimatedCompletionTime={estimatedCompletionTime}
       status={status}
+      trackedDownloadState={trackedDownloadState}
+      trackedDownloadStatus={trackedDownloadStatus}
       errorMessage={errorMessage}
       progressBar={
         <div title={translate('MovieIsDownloadingInterp', [progress.toFixed(1), title])}>
@@ -45,6 +49,8 @@ CalendarEventQueueDetails.propTypes = {
   sizeleft: PropTypes.number.isRequired,
   estimatedCompletionTime: PropTypes.string,
   status: PropTypes.string.isRequired,
+  trackedDownloadState: PropTypes.string.isRequired,
+  trackedDownloadStatus: PropTypes.string.isRequired,
   errorMessage: PropTypes.string
 };
 
