@@ -79,6 +79,11 @@ namespace NzbDrone.Core.Download
                 _logger.Trace("Release {0} no longer available on indexer.", remoteMovie);
                 throw;
             }
+            catch (DownloadClientRejectedReleaseException)
+            {
+                _logger.Trace("Release {0} rejected by download client, possible duplicate.", remoteMovie);
+                throw;
+            }
             catch (ReleaseDownloadException ex)
             {
                 var http429 = ex.InnerException as TooManyRequestsException;
