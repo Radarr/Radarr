@@ -186,7 +186,7 @@ class AddNewMovieModalContent extends Component {
             isSpinning={isAdding}
             onPress={this.onAddMoviePress}
           >
-            Add {title}
+            Add Movie
           </SpinnerButton>
         </ModalFooter>
       </ModalContent>
