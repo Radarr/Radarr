@@ -15,10 +15,12 @@
 
 .value {
   display: flex;
+  max-width: 500px;
 }
 
 .movieFolder {
-  flex: 0 0 auto;
+  @add-mixin truncate;
+
   color: $disabledColor;
 }
 
