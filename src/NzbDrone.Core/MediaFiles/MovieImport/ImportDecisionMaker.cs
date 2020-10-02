@@ -61,7 +61,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         {
             var newFiles = filterExistingFiles ? _mediaFileService.FilterExistingFiles(videoFiles.ToList(), movie) : videoFiles.ToList();
 
-            _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, videoFiles.Count());
+            _logger.Debug("Analyzing {0}/{1} files.", newFiles.Count, videoFiles.Count);
 
             ParsedMovieInfo downloadClientItemInfo = null;
 

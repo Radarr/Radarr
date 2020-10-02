@@ -46,7 +46,7 @@ namespace NzbDrone.Common.Test.Http
 
             TestLogger.Info($"{candidates.Length} TestSites available.");
 
-            _httpBinSleep = _httpBinHosts.Count() < 2 ? 100 : 10;
+            _httpBinSleep = _httpBinHosts.Length < 2 ? 100 : 10;
         }
 
         private bool IsTestSiteAvailable(string site)

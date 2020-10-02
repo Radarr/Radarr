@@ -116,7 +116,7 @@ namespace Radarr.Api.V3
         {
             var defaultDefinitions = _providerFactory.GetDefaultDefinitions().OrderBy(p => p.ImplementationName).ToList();
 
-            var result = new List<TProviderResource>(defaultDefinitions.Count());
+            var result = new List<TProviderResource>(defaultDefinitions.Count);
 
             foreach (var providerDefinition in defaultDefinitions)
             {

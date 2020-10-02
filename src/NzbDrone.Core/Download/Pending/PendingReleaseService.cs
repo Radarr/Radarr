@@ -107,9 +107,9 @@ namespace NzbDrone.Core.Download.Pending
                             _logger.Debug("The release {0} is already pending with reason {1}, not adding again", decision.RemoteMovie, reason);
                         }
 
-                        if (matchingReports.Count() > 1)
+                        if (matchingReports.Count > 1)
                         {
-                            _logger.Debug("The release {0} had {1} duplicate pending, removing duplicates.", decision.RemoteMovie, matchingReports.Count() - 1);
+                            _logger.Debug("The release {0} had {1} duplicate pending, removing duplicates.", decision.RemoteMovie, matchingReports.Count - 1);
 
                             foreach (var duplicate in matchingReports.Skip(1))
                             {
