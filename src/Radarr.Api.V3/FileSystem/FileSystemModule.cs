@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using Nancy;
@@ -57,7 +58,7 @@ namespace Radarr.Api.V3.FileSystem
 
             if (!_diskProvider.FolderExists(path))
             {
-                return new string[0];
+                return Array.Empty<string>();
             }
 
             return _diskScanService.GetVideoFiles(path).Select(f => new

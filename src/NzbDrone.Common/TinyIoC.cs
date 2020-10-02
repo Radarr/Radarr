@@ -298,11 +298,11 @@ namespace TinyIoC
             }
             catch (System.IO.FileNotFoundException)
             {
-                assemblies = new Type[] { };
+                assemblies = Array.Empty<Type>();
             }
             catch (NotSupportedException)
             {
-                assemblies = new Type[] { };
+                assemblies = Array.Empty<Type>();
             }
 #if !NETFX_CORE
             catch (ReflectionTypeLoadException e)
@@ -3355,7 +3355,7 @@ namespace TinyIoC
                 //#if NETFX_CORE
                 //              MethodInfo resolveMethod = typeof(TinyIoCContainer).GetTypeInfo().GetDeclaredMethods("Resolve").First(mi => !mi.GetParameters().Any());
                 //#else
-                MethodInfo resolveMethod = typeof(TinyIoCContainer).GetMethod("Resolve", new Type[] { });
+                MethodInfo resolveMethod = typeof(TinyIoCContainer).GetMethod("Resolve", Array.Empty<Type>());
 
                 //#endif
                 resolveMethod = resolveMethod.MakeGenericMethod(returnType);
@@ -3648,7 +3648,7 @@ namespace TinyIoC
         private IEnumerable<TypeRegistration> GetParentRegistrationsForType(Type resolveType)
         {
             if (_Parent == null)
-                return new TypeRegistration[] { };
+                return Array.Empty<TypeRegistration>();
 
             var registrations = _Parent._RegisteredTypes.Keys.Where(tr => tr.Type == resolveType);
 

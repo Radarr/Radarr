@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
@@ -23,8 +24,8 @@ namespace NzbDrone.Core.ImportLists.Radarr
         {
             BaseUrl = "";
             ApiKey = "";
-            ProfileIds = new int[] { };
-            TagIds = new int[] { };
+            ProfileIds = Array.Empty<int>();
+            TagIds = Array.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "Full URL", HelpText = "URL, including port, of the Radarr V3 instance to import from")]

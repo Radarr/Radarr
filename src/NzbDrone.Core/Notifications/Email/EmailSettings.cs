@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
@@ -35,9 +36,9 @@ namespace NzbDrone.Core.Notifications.Email
             Port = 587;
             Ssl = true;
 
-            To = new string[] { };
-            CC = new string[] { };
-            Bcc = new string[] { };
+            To = Array.Empty<string>();
+            CC = Array.Empty<string>();
+            Bcc = Array.Empty<string>();
         }
 
         [FieldDefinition(0, Label = "Server", HelpText = "Hostname or IP of Email server")]
