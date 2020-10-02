@@ -3660,7 +3660,7 @@ namespace TinyIoC
             var registrations = _RegisteredTypes.Keys.Where(tr => tr.Type == resolveType).Concat(GetParentRegistrationsForType(resolveType));
 
             if (!includeUnnamed)
-                registrations = registrations.Where(tr => tr.Name != string.Empty);
+                registrations = registrations.Where(tr => !string.IsNullOrEmpty(tr.Name));
 
             return registrations.Select(registration => this.ResolveInternal(registration, NamedParameterOverloads.Default, ResolveOptions.Default));
         }
