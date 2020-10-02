@@ -205,7 +205,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         }
                     }
 
-                    if (fanarts.Count() > 0)
+                    if (fanarts.Any())
                     {
                         var fanartElement = new XElement("fanart");
                         foreach (var fanart in fanarts)

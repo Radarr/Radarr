@@ -23,7 +23,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             var ptpIndexerOldSettings = ptpIndexers
                 .Where(i => (i.Settings as PassThePopcornSettings).APIUser.IsNullOrWhiteSpace()).Select(i => i.Name);
 
-            if (ptpIndexerOldSettings.Count() > 0)
+            if (ptpIndexerOldSettings.Any())
             {
                 return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("PtpOldSettingsCheckMessage"), string.Join(", ", ptpIndexerOldSettings)));
             }
