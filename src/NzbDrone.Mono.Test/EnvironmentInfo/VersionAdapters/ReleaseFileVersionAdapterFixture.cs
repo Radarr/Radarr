@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using FluentAssertions;
 using Moq;
@@ -44,7 +45,7 @@ namespace NzbDrone.Mono.Test.EnvironmentInfo.VersionAdapters
             Subject.Read().Should().BeNull();
 
             Mocker.GetMock<IDiskProvider>()
-              .Setup(c => c.GetFiles(It.IsAny<string>(), SearchOption.TopDirectoryOnly)).Returns(new string[0]);
+              .Setup(c => c.GetFiles(It.IsAny<string>(), SearchOption.TopDirectoryOnly)).Returns(Array.Empty<string>());
 
             Subject.Read().Should().BeNull();
         }

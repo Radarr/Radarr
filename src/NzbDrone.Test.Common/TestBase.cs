@@ -53,7 +53,7 @@ namespace NzbDrone.Test.Common
                 {
                     _mocker = new AutoMoqer();
                     _mocker.SetConstant<ICacheManager>(new CacheManager());
-                    _mocker.SetConstant<IStartupContext>(new StartupContext(new string[0]));
+                    _mocker.SetConstant<IStartupContext>(new StartupContext(Array.Empty<string>()));
                     _mocker.SetConstant(TestLogger);
                 }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text.Json;
@@ -49,8 +50,8 @@ namespace NzbDrone.Core.Datastore.Migration
                     Password = settings.Password,
                     From = settings.From,
                     To = new string[] { settings.To },
-                    CC = new string[] { },
-                    Bcc = new string[] { }
+                    CC = Array.Empty<string>(),
+                    Bcc = Array.Empty<string>()
                 };
 
                 corrected.Add(new ProviderDefinition166

@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
         public TrackedDownload()
         {
-            StatusMessages = new TrackedDownloadStatusMessage[] { };
+            StatusMessages = System.Array.Empty<TrackedDownloadStatusMessage>();
         }
 
         public void Warn(string message, params object[] args)

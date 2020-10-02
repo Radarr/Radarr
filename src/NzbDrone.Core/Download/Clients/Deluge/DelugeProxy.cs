@@ -349,7 +349,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
         {
             if (result.Torrents == null)
             {
-                return new DelugeTorrent[0];
+                return Array.Empty<DelugeTorrent>();
             }
 
             return result.Torrents.Values.ToArray();

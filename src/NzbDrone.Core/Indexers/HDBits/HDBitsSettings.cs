@@ -28,8 +28,8 @@ namespace NzbDrone.Core.Indexers.HDBits
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
 
             Categories = new int[] { (int)HdBitsCategory.Movie };
-            Codecs = new int[0];
-            Mediums = new int[0];
+            Codecs = System.Array.Empty<int>();
+            Mediums = System.Array.Empty<int>();
             MultiLanguages = new List<int>();
             RequiredFlags = new List<int>();
         }

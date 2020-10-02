@@ -1,3 +1,4 @@
+using System;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -103,9 +104,9 @@ namespace NzbDrone.Core.Test.NotificationTests.EmailTests
         [Test]
         public void should_not_be_valid_if_to_bcc_cc_are_all_empty()
         {
-            _emailSettings.To = new string[] { };
-            _emailSettings.CC = new string[] { };
-            _emailSettings.Bcc = new string[] { };
+            _emailSettings.To = Array.Empty<string>();
+            _emailSettings.CC = Array.Empty<string>();
+            _emailSettings.Bcc = Array.Empty<string>();
 
             _validator.Validate(_emailSettings).IsValid.Should().BeFalse();
         }
