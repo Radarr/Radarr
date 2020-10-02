@@ -492,7 +492,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     {
                         var channelSplit = channel.Split(new string[] { "." }, StringSplitOptions.None);
 
-                        if (channelSplit.Count() == 3)
+                        if (channelSplit.Length == 3)
                         {
                             positions += decimal.Parse(string.Format("{0}.{1}", channelSplit[1], channelSplit[2]), CultureInfo.InvariantCulture);
                         }

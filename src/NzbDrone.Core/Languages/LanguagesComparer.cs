@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NzbDrone.Core.Languages
@@ -22,27 +22,27 @@ namespace NzbDrone.Core.Languages
                 return -1;
             }
 
-            if (x.Count() > 1 && y.Count() > 1 && x.Count() > y.Count())
+            if (x.Count > 1 && y.Count > 1 && x.Count > y.Count)
             {
                 return 1;
             }
 
-            if (x.Count() > 1 && y.Count() > 1 && x.Count() < y.Count())
+            if (x.Count > 1 && y.Count > 1 && x.Count < y.Count)
             {
                 return -1;
             }
 
-            if (x.Count() > 1 && y.Count() == 1)
+            if (x.Count > 1 && y.Count == 1)
             {
                 return 1;
             }
 
-            if (x.Count() == 1 && y.Count() > 1)
+            if (x.Count == 1 && y.Count > 1)
             {
                 return -1;
             }
 
-            if (x.Count() == 1 && y.Count() == 1)
+            if (x.Count == 1 && y.Count == 1)
             {
                 return x.First().Name.CompareTo(y.First().Name);
             }

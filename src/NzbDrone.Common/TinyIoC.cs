@@ -1,4 +1,4 @@
-﻿//===============================================================================
+//===============================================================================
 // TinyIoC
 //
 // An easy to use, hassle free, Inversion of Control Container for small projects
@@ -3488,7 +3488,7 @@ namespace TinyIoC
             //#if NETFX_CORE
             //          return type.GetTypeInfo().DeclaredConstructors.OrderByDescending(ctor => ctor.GetParameters().Count());
             //#else
-            return type.GetConstructors().OrderByDescending(ctor => ctor.GetParameters().Count());
+            return type.GetConstructors().OrderByDescending(ctor => ctor.GetParameters().Length);
 
             //#endif
         }
@@ -3534,9 +3534,9 @@ namespace TinyIoC
                 throw new TinyIoCResolutionException(typeToConstruct);
 
             var ctorParams = constructor.GetParameters();
-            object[] args = new object[ctorParams.Count()];
+            object[] args = new object[ctorParams.Length];
 
-            for (int parameterIndex = 0; parameterIndex < ctorParams.Count(); parameterIndex++)
+            for (int parameterIndex = 0; parameterIndex < ctorParams.Length; parameterIndex++)
             {
                 var currentParam = ctorParams[parameterIndex];
 

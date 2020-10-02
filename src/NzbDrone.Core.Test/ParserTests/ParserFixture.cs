@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_not_parse_wrong_language_in_title(string postTitle)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
-            parsed.Languages.Count().Should().Be(1);
+            parsed.Languages.Count.Should().Be(1);
             parsed.Languages.First().Should().Be(Language.Unknown);
         }
 
@@ -178,7 +178,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_not_parse_multi_language_in_releasegroup(string postTitle)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
-            parsed.Languages.Count().Should().Be(1);
+            parsed.Languages.Count.Should().Be(1);
             parsed.Languages.First().Should().Be(Language.German);
         }
 
@@ -186,7 +186,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_multi_language(string postTitle)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
-            parsed.Languages.Count().Should().Be(2);
+            parsed.Languages.Count.Should().Be(2);
             parsed.Languages.Should().Contain(Language.German);
             parsed.Languages.Should().Contain(Language.English, "Added by the multi tag in the release name");
         }
