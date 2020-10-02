@@ -33,9 +33,21 @@ Each push to the "develop" branch creates a build on "nightly" release channel, 
 
 | Release Type    | Branch: develop (stable) (v0.2)                                                                                                                                                    | Branch: nightly (semi-unstable) (v3.0)                                                                                                                                                               |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Binary Releases | [![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases)                 | [![AppVeyor Builds](https://img.shields.io/badge/downloads-nightly-green.svg?maxAge=60&style=flat-square)](https://ci.appveyor.com/project/galli-leo/radarr-usby1/branch/develop/artifacts)    |                                                                                                                                                                                |
+| Binary Releases | [![GitHub Releases](https://img.shields.io/badge/downloads-releases-brightgreen.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/releases)                 |  | [V3 Binaries](#V3 Binaries)                                                                                                                                                                     
 | Docker - lsio   | [![Docker release](https://img.shields.io/badge/linuxserver-radarr:latest-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr)  | [![Docker nightly](https://img.shields.io/badge/linuxserver-radarr:nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/linuxserver/radarr)                   |
 | Docker - hotio  | [![Docker release](https://img.shields.io/badge/hotio-radarr:latest-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)              | [![Docker nightly](https://img.shields.io/badge/hotio-radarr:nightly-blue.svg?colorB=1488C6&maxAge=60&style=flat-square)](https://hub.docker.com/r/hotio/radarr)                              | 
+
+### V3 Binaries
+[![Azure Builds](https://img.shields.io/badge/downloads-nightly_WindowsX64-green.svg?maxAge=60&style=flat-square)](https://radarr.servarr.com/v1/update/nightly/updatefile?os=windows&runtime=netcore&arch=x64)  
+
+[![Azure Builds](https://img.shields.io/badge/downloads-nightly_LinuxX64-green.svg?maxAge=60&style=flat-square](https://radarr.servarr.com/v1/update/nightly/updatefile?os=linux&runtime=netcore&arch=x64)
+ 
+[![Azure Builds](https://img.shields.io/badge/downloads-nightly_LinuxARM64-green.svg?maxAge=60&style=flat-square)](https://radarr.servarr.com/v1/update/nightly/updatefile?os=linux&runtime=netcore&arch=arm64)   
+ 
+[![Azure Builds](https://img.shields.io/badge/downloads-nightly_LinuxARM-green.svg?maxAge=60&style=flat-square)](https://radarr.servarr.com/v1/update/nightly/updatefile?os=linux&runtime=netcore&arch=arm)   
+ 
+[![Azure Builds](https://img.shields.io/badge/downloads-nightly_macOS-green.svg?maxAge=60&style=flat-square)](https://radarr.servarr.com/v1/update/nightly/updatefile?os=osx&runtime=netcore&arch=x64)  
+ 
 
 ## Support
 
