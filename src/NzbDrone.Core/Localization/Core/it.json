@@ -21,7 +21,7 @@
     "RootFolderCheckMultipleMessage": "Ci sono più cartelle radice mancanti: {0}",
     "RootFolder": "Cartella Radice",
     "RemotePathMappings": "Collegamento Percorsi Remoti",
-    "ReleaseBranchCheckPreviousVersionMessage": "Il Branch {0} corrisponde ad una versione precedente di Radarr, imposta il branch su \"Aphrodite\" per ricevere gli aggiornamenti futuri",
+    "ReleaseBranchCheckPreviousVersionMessage": "Il Branch {0} corrisponde ad una versione precedente di Radarr, imposta il branch su \"Nightly\" per ricevere gli aggiornamenti futuri",
     "ReleaseBranchCheckOfficialBranchMessage": "Il Branch {0} non è un branch valido per le release di Radarr, non riceverai aggiornamenti",
     "QualitySettingsSummary": "Dimensioni delle qualità e denominazione",
     "QualityProfiles": "Profili di Qualità",
@@ -816,5 +816,15 @@
     "EditIndexer": "Edita Indexer",
     "Disabled": "Disabilitato",
     "AutomaticSearch": "Ricerca automatica",
-    "AddIndexer": "Aggiungi Indexer"
+    "AddIndexer": "Aggiungi Indexer",
+    "SaveSettings": "Salva impostazioni",
+    "OpenThisModal": "Apri questa modalità",
+    "MovieIndexScrollTop": "Elenco film: scorri in alto",
+    "MovieIndexScrollBottom": "Elenco film: scorri in basso",
+    "MovieDetailsNextMovie": "Dettagli del film: film successivo",
+    "MovieDetailsPreviousMovie": "Dettagli del film: film precedente",
+    "FocusSearchBox": "Attiva casella di ricerca",
+    "CloseCurrentModal": "Chiudi la modalità corrente",
+    "Blacklisted": "Nella Blacklist",
+    "AcceptConfirmationModal": "Accetta modalità di conferma"
 }
