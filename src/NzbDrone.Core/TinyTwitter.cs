@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -162,8 +162,8 @@ namespace TinyTwitter
             private string GenerateSignature(IEnumerable<KeyValuePair<string, string>> parameters)
             {
                 var dataToSign = new StringBuilder()
-                    .Append(_method).Append("&")
-                    .Append(_url.EncodeRFC3986()).Append("&")
+                    .Append(_method).Append('&')
+                    .Append(_url.EncodeRFC3986()).Append('&')
                     .Append(parameters
                                 .OrderBy(x => x.Key)
                                 .Select(x => string.Format("{0}={1}", x.Key, x.Value))
