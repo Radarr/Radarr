@@ -348,7 +348,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     return ""; // Other
                 }
 
-                if (videoCodecLibrary == "")
+                if (string.IsNullOrEmpty(videoCodecLibrary))
                 {
                     return ""; // Unknown mp4v
                 }

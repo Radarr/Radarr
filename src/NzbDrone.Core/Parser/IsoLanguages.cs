@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Parser
                 if (isoArray.Length > 1)
                 {
                     isoLanguages = isoLanguages.Any(l => l.CountryCode == isoArray[1].ToLower()) ?
-                        isoLanguages.Where(l => l.CountryCode == isoArray[1].ToLower()).ToList() : isoLanguages.Where(l => l.CountryCode == "").ToList();
+                        isoLanguages.Where(l => l.CountryCode == isoArray[1].ToLower()).ToList() : isoLanguages.Where(l => string.IsNullOrEmpty(l.CountryCode)).ToList();
                 }
 
                 return isoLanguages.FirstOrDefault();

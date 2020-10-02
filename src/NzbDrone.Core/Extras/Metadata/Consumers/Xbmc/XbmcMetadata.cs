@@ -305,7 +305,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
             var metadataFileName = GetMovieMetadataFilename(movieFile.RelativePath);
 
-            return xmlResult == string.Empty ? null : new MetadataFileResult(metadataFileName, xmlResult.Trim(Environment.NewLine.ToCharArray()));
+            return string.IsNullOrEmpty(xmlResult) ? null : new MetadataFileResult(metadataFileName, xmlResult.Trim(Environment.NewLine.ToCharArray()));
         }
 
         public override List<ImageFileResult> MovieImages(Movie movie)
