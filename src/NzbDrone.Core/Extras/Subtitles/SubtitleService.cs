@@ -115,13 +115,13 @@ namespace NzbDrone.Core.Extras.Subtitles
 
             if (multipleCopies)
             {
-                suffixBuilder.Append(".");
+                suffixBuilder.Append('.');
                 suffixBuilder.Append(copy);
             }
 
             if (language != Language.Unknown)
             {
-                suffixBuilder.Append(".");
+                suffixBuilder.Append('.');
                 suffixBuilder.Append(IsoLanguages.Get(language).TwoLetterCode);
             }
 
