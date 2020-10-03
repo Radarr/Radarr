@@ -29,7 +29,7 @@ namespace NzbDrone.Core.MediaFiles
         IFileInfo[] GetBookFiles(string path, bool allDirectories = true);
         string[] GetNonBookFiles(string path, bool allDirectories = true);
         List<IFileInfo> FilterFiles(string basePath, IEnumerable<IFileInfo> files);
-        List<string> FilterFiles(string basePath, IEnumerable<string> files);
+        List<string> FilterPaths(string basePath, IEnumerable<string> paths);
     }
 
     public class DiskScanService :
@@ -287,9 +287,9 @@ namespace NzbDrone.Core.MediaFiles
             return mediaFileList.ToArray();
         }
 
-        public List<string> FilterFiles(string basePath, IEnumerable<string> files)
+        public List<string> FilterPaths(string basePath, IEnumerable<string> paths)
         {
-            return files.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file)))
+            return paths.Where(file => !ExcludedSubFoldersRegex.IsMatch(basePath.GetRelativePath(file)))
                         .Where(file => !ExcludedFilesRegex.IsMatch(Path.GetFileName(file)))
                         .ToList();
         }

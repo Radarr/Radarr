@@ -103,7 +103,7 @@ namespace NzbDrone.Core.Test.ProviderTests.DiskScanProviderTests
             var specialFiles = GetFiles(_path, subFolder).ToList();
             var allFiles = files.Concat(specialFiles);
 
-            var filteredFiles = Subject.FilterFiles(_path, allFiles);
+            var filteredFiles = Subject.FilterPaths(_path, allFiles);
             filteredFiles.Should().NotContain(specialFiles);
             filteredFiles.Count.Should().BeGreaterThan(0);
         }
