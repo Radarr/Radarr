@@ -517,15 +517,21 @@ namespace NzbDrone.Common.Disk
 
         public void RemoveEmptySubfolders(string path)
         {
-            var subfolders = GetDirectories(path, SearchOption.AllDirectories);
-            var files = GetFiles(path, SearchOption.AllDirectories);
-
-            // By sorting by length descending we ensure we always delete children before parents
-            foreach (var subfolder in subfolders.OrderByDescending(x => x.Length))
+            // Depth first search for empty subdirectories
+            foreach (var subdir in Directory.EnumerateDirectories(path))
             {
-                if (files.None(f => subfolder.IsParentPath(f)))
+                RemoveEmptySubfolders(subdir);
+
+                if (Directory.EnumerateFileSystemEntries(subdir).Empty())
                 {
-                    DeleteFolder(subfolder, false);
+                    try
+                    {
+                        Directory.Delete(subdir, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Warn(ex, "Failed to remove empty directory {0}", subdir);
+                    }
                 }
             }
         }
