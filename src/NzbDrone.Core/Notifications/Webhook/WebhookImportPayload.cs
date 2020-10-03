@@ -7,5 +7,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         public WebhookBook Book { get; set; }
         public List<WebhookBookFile> BookFiles { get; set; }
         public bool IsUpgrade { get; set; }
+        public string DownloadClient { get; set; }
+        public string DownloadId { get; set; }
     }
 }

@@ -34,7 +34,9 @@ namespace NzbDrone.Core.Notifications.Webhook
                     QualityVersion = quality.Revision.Version,
                     ReleaseGroup = remoteBook.ParsedBookInfo.ReleaseGroup
                 }),
-                Release = new WebhookRelease(quality, remoteBook)
+                Release = new WebhookRelease(quality, remoteBook),
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
             };
 
             _proxy.SendWebhook(payload, Settings);
@@ -47,10 +49,12 @@ namespace NzbDrone.Core.Notifications.Webhook
             var payload = new WebhookImportPayload
             {
                 EventType = "Download",
-                Author = new WebhookAuthor(message.Author),
+                Artist = new WebhookAuthor(message.Author),
                 Book = new WebhookBook(message.Book),
                 BookFiles = bookFiles.ConvertAll(x => new WebhookBookFile(x)),
-                IsUpgrade = message.OldFiles.Any()
+                IsUpgrade = message.OldFiles.Any(),
+                DownloadClient = message.DownloadClient,
+                DownloadId = message.DownloadId
             };
 
             _proxy.SendWebhook(payload, Settings);
