@@ -69,6 +69,9 @@
         },
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -209,6 +212,9 @@
         },
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -290,6 +296,9 @@
         },
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -334,6 +343,9 @@
         },
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -364,6 +376,9 @@
           }
         },
         "security": [
+          {
+            "X-API-Key": []
+          },
           {
             "api key": []
           }
@@ -429,6 +444,9 @@
           }
         },
         "security": [
+          {
+            "X-API-Key": []
+          },
           {
             "api key": []
           }
@@ -502,8 +520,10 @@
     },
     "/diskspace": {
       "get": {
-        "summary": "Get diskspace information",
-        "tags": [],
+        "summary": "Get system diskspace information",
+        "tags": [
+          "Disk Space"
+        ],
         "responses": {
           "200": {
             "description": "Successful request",
@@ -557,6 +577,9 @@
         "description": "Query Radarr for disk usage information\n\nLocation: System > Status",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -565,7 +588,9 @@
     "/status": {
       "get": {
         "summary": "Get internal information",
-        "tags": [],
+        "tags": [
+          "Status"
+        ],
         "responses": {
           "200": {
             "description": "Successful request",
@@ -696,6 +721,9 @@
         "operationId": "get-status",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ],
@@ -705,8 +733,10 @@
     },
     "/health": {
       "get": {
-        "summary": "Get Radarr health information",
-        "tags": [],
+        "summary": "Get Radarr's health information",
+        "tags": [
+          "Health"
+        ],
         "responses": {
           "200": {
             "description": "Successful request",
@@ -757,6 +787,9 @@
         "operationId": "get-health",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ],
@@ -766,6 +799,9 @@
     "/command": {
       "post": {
         "summary": "command",
+        "tags": [
+          "Command"
+        ],
         "operationId": "post-command",
         "responses": {
           "200": {
@@ -812,7 +848,9 @@
     "/update": {
       "get": {
         "summary": "List of recent updates",
-        "tags": [],
+        "tags": [
+          "Update"
+        ],
         "responses": {
           "200": {
             "description": "Successful request",
@@ -898,6 +936,9 @@
         "description": "Will return a list of recent updates to Radarr\n\nLocation: System > Updates",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -905,8 +946,10 @@
     },
     "/qualityProfile": {
       "get": {
-        "summary": "Get quality profiles",
-        "tags": [],
+        "summary": "Get Radarr's quality profiles",
+        "tags": [
+          "Quality"
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -1033,6 +1076,9 @@
         "description": "Query Radarr for quality profiles ",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -1041,8 +1087,10 @@
     },
     "/calendar": {
       "get": {
-        "summary": "Get calendar events",
-        "tags": [],
+        "summary": "Get Radarr's calendar events",
+        "tags": [
+          "Calendar"
+        ],
         "responses": {
           "200": {
             "description": "Successful request"
@@ -1054,6 +1102,9 @@
         "operationId": "get-calendar",
         "description": "Get a list of movies based on calendar parameters",
         "security": [
+          {
+            "X-API-Key": []
+          },
           {
             "api key": []
           }
@@ -1090,8 +1141,10 @@
     },
     "/queue": {
       "get": {
-        "summary": "Get queue items",
-        "tags": [],
+        "summary": "Get Radarr's queue items",
+        "tags": [
+          "Queue"
+        ],
         "responses": {
           "200": {
             "description": "Successful request"
@@ -1103,6 +1156,9 @@
         "operationId": "get-queue",
         "description": "Return a json object list of items in the queue",
         "security": [
+          {
+            "X-API-Key": []
+          },
           {
             "api key": []
           }
@@ -1158,8 +1214,10 @@
     },
     "/history": {
       "get": {
-        "summary": "Get history items",
-        "tags": [],
+        "summary": "Get Radarr's history items",
+        "tags": [
+          "History"
+        ],
         "responses": {
           "200": {
             "description": "Successful request",
@@ -1547,6 +1605,9 @@
         "description": "Return a json object list of items in your history",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ],
@@ -1592,8 +1653,10 @@
     },
     "/customFilter": {
       "get": {
-        "summary": "Get custom filters",
-        "tags": [],
+        "summary": "Get Radarr's custom filters",
+        "tags": [
+          "Custom Filters"
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -1608,7 +1671,7 @@
                     "label": {
                       "type": "string"
                     },
-                    "": {
+                    "Radarr's ": {
                       "type": "object",
                       "properties": {
                         "key": {
@@ -1670,6 +1733,9 @@
         "description": "Query Radarr for custom filters",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -1678,7 +1744,9 @@
     "/importList": {
       "get": {
         "summary": "Get import list information",
-        "tags": [],
+        "tags": [
+          "Import"
+        ],
         "responses": {
           "200": {
             "description": "Succesful response ",
@@ -1811,6 +1879,9 @@
         "description": "Query Radarr for all lists",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -1819,7 +1890,9 @@
     "/ui": {
       "get": {
         "summary": "Get UI settings",
-        "tags": [],
+        "tags": [
+          "UI"
+        ],
         "responses": {
           "200": {
             "description": "Successful request",
@@ -1887,6 +1960,9 @@
         "description": "Query Radarr for UI settings",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -1895,7 +1971,9 @@
     "/remotePathMapping": {
       "get": {
         "summary": "Get Radarr's remote path mappings",
-        "tags": [],
+        "tags": [
+          "Remote Path Mapping"
+        ],
         "responses": {
           "200": {
             "description": "Successful request",
@@ -1947,6 +2025,9 @@
         "description": "Get a list of remote paths being mapped and used by Radarr",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -1955,7 +2036,9 @@
     "/downloadClient": {
       "get": {
         "summary": "Get Radarr's download client list",
-        "tags": [],
+        "tags": [
+          "Download Client"
+        ],
         "responses": {
           "200": {
             "description": "Successful request"
@@ -1968,6 +2051,9 @@
         "description": "Get a list of all the download clients added in Radarr",
         "security": [
           {
+            "X-API-Key": []
+          },
+          {
             "api key": []
           }
         ]
@@ -1976,7 +2062,9 @@
     "/blackList": {
       "get": {
         "summary": "Get Radarr's blacklisted movies",
-        "tags": [],
+        "tags": [
+          "Blacklist"
+        ],
         "responses": {
           "200": {
             "description": "Invalid API Key",
@@ -2028,6 +2116,9 @@
         "operationId": "get-blackList",
         "description": "",
         "security": [
+          {
+            "X-API-Key": []
+          },
           {
             "api key": []
           }
@@ -2085,7 +2176,7 @@
         "description": "Removes a specific movie (the id provided) from the blacklist",
         "security": [
           {
-            "api key": []
+            "X-API-Key": []
           }
         ],
         "parameters": [
@@ -2340,16 +2431,16 @@
       }
     },
     "securitySchemes": {
-      "api key": {
-        "name": "apiKey",
-        "type": "apiKey",
-        "in": "query",
-        "description": "Used when not providing key via header"
-      },
       "X-API-Key": {
         "type": "http",
         "scheme": "basic",
-        "description": "Used when not providing key via URL"
+        "description": "Used when not providing the key via URL"
+      },
+      "api key": {
+        "name": "API Key",
+        "type": "apiKey",
+        "in": "query",
+        "description": "Used when not providing the key via header"
       }
     }
   }
