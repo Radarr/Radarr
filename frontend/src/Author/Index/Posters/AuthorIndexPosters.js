@@ -105,6 +105,7 @@ class AuthorIndexPosters extends Component {
 
     this._isInitialized = false;
     this._grid = null;
+    this._padding = props.isSmallScreen ? columnPaddingSmallScreen : columnPadding;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -112,7 +113,8 @@ class AuthorIndexPosters extends Component {
       items,
       sortKey,
       posterOptions,
-      jumpToCharacter
+      jumpToCharacter,
+      isSmallScreen
     } = this.props;
 
     const {
@@ -124,7 +126,7 @@ class AuthorIndexPosters extends Component {
 
     if (prevProps.sortKey !== sortKey ||
         prevProps.posterOptions !== posterOptions) {
-      this.calculateGrid();
+      this.calculateGrid(width, isSmallScreen);
     }
 
     if (this._grid &&
@@ -164,10 +166,9 @@ class AuthorIndexPosters extends Component {
       posterOptions
     } = this.props;
 
-    const padding = isSmallScreen ? columnPaddingSmallScreen : columnPadding;
     const columnWidth = calculateColumnWidth(width, posterOptions.size, isSmallScreen);
     const columnCount = Math.max(Math.floor(width / columnWidth), 1);
-    const posterWidth = columnWidth - padding;
+    const posterWidth = columnWidth - this._padding * 2;
     const posterHeight = calculatePosterHeight(posterWidth);
     const rowHeight = calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions);
 
@@ -214,7 +215,10 @@ class AuthorIndexPosters extends Component {
     return (
       <div
         key={key}
-        style={style}
+        style={{
+          ...style,
+          padding: this._padding
+        }}
       >
         <AuthorIndexItemConnector
           key={author.id}
@@ -229,6 +233,7 @@ class AuthorIndexPosters extends Component {
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
+          style={style}
           authorId={author.id}
           qualityProfileId={author.qualityProfileId}
           metadataProfileId={author.metadataProfileId}
@@ -249,9 +254,9 @@ class AuthorIndexPosters extends Component {
 
   render() {
     const {
+      scroller,
       items,
-      isSmallScreen,
-      scroller
+      isSmallScreen
     } = this.props;
 
     const {
