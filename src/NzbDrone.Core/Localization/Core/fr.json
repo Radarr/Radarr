@@ -128,7 +128,7 @@
     "Progress": "Progression",
     "ProfilesSettingsSummary": "Profils de qualité, de langue et de délai",
     "Profiles": "Profils",
-    "PreviewRename": "Aperçu Renommer",
+    "PreviewRename": "Aperçu Renommage",
     "PhysicalRelease": "Sortie Physique",
     "Path": "Chemin",
     "OutputPath": "Chemin de sortie",
@@ -823,5 +823,8 @@
     "MovieFolderFormat": "Format de dossier de film",
     "MinimumFreeSpaceWhenImportingHelpText": "Empêcher l'importation si elle laisse moins d'espace disque disponible que cette quantité",
     "MIA": "MIA",
-    "LaunchBrowserHelpText": " Ouvrer un navigateur Web et accéder à la page d'accueil de Radarr au démarrage de l'application."
+    "LaunchBrowserHelpText": " Ouvrer un navigateur Web et accéder à la page d'accueil de Radarr au démarrage de l'application.",
+    "CustomFormatJSON": "Format personnalisé JSON",
+    "CloseCurrentModal": "",
+    "AddingTag": "Ajouter un tag"
 }
