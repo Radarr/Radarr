@@ -13,6 +13,7 @@ import TableBody from 'Components/Table/TableBody';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import TablePager from 'Components/Table/TablePager';
 import { align, icons } from 'Helpers/Props';
+import getRemovedItems from 'Utilities/Object/getRemovedItems';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import removeOldSelectedState from 'Utilities/Table/removeOldSelectedState';
@@ -36,34 +37,28 @@ class Queue extends Component {
       lastToggled: null,
       selectedState: {},
       isPendingSelected: false,
-      isConfirmRemoveModalOpen: false
+      isConfirmRemoveModalOpen: false,
+      items: props.items
     };
   }
 
-  shouldComponentUpdate(nextProps) {
-    // Don't update when fetching has completed if items have changed,
-    // before books start fetching or when books start fetching.
+  componentDidUpdate(prevProps) {
+    const {
+      items,
+      isFetching,
+      isBooksFetching
+    } = this.props;
 
     if (
-      this.props.isFetching &&
-      nextProps.isPopulated &&
-      hasDifferentItems(this.props.items, nextProps.items) &&
-      nextProps.items.some((e) => e.bookId)
+      (!isBooksFetching && prevProps.isBooksFetching) ||
+      (!isFetching && prevProps.isFetching) ||
+      (hasDifferentItems(prevProps.items, items) && !items.some((e) => e.bookId))
     ) {
-      return false;
-    }
-
-    if (!this.props.isBooksFetching && nextProps.isBooksFetching) {
-      return false;
-    }
-
-    return true;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (hasDifferentItems(prevProps.items, this.props.items)) {
       this.setState((state) => {
-        return removeOldSelectedState(state, prevProps.items);
+        return {
+          ...removeOldSelectedState(state, getRemovedItems(prevProps.items, items)),
+          items
+        };
       });
 
       return;
@@ -124,7 +119,6 @@ class Queue extends Component {
       isFetching,
       isPopulated,
       error,
-      items,
       isAuthorFetching,
       isAuthorPopulated,
       isBooksFetching,
@@ -144,7 +138,8 @@ class Queue extends Component {
       allUnselected,
       selectedState,
       isConfirmRemoveModalOpen,
-      isPendingSelected
+      isPendingSelected,
+      items
     } = this.state;
 
     const isRefreshing = isFetching || isAuthorFetching || isBooksFetching || isRefreshMonitoredDownloadsExecuting;
