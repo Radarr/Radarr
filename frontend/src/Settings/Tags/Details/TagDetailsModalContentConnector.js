@@ -17,6 +17,26 @@ function createMatchingAuthorSelector() {
   );
 }
 
+function createMatchingArtistSelector() {
+  return createSelector(
+    createUnorderedMatchingArtistSelector(),
+    (artists) => {
+      return artists.sort((artistA, artistB) => {
+        const sortNameA = artistA.sortName;
+        const sortNameB = artistB.sortName;
+
+        if (sortNameA > sortNameB) {
+          return 1;
+        } else if (sortNameA < sortNameB) {
+          return -1;
+        }
+
+        return 0;
+      });
+    }
+  );
+}
+
 function createMatchingDelayProfilesSelector() {
   return createSelector(
     (state, { delayProfileIds }) => delayProfileIds,
