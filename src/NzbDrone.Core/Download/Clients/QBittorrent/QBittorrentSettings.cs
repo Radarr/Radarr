@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         [FieldDefinition(5, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Readarr avoids conflicts with unrelated downloads, but it's optional")]
         public string MusicCategory { get; set; }
 
-        [FieldDefinition(6, Label = "Post-Import Category", Type = FieldType.Textbox, Advanced = true, HelpText = "Category for Readarr to set after it has imported the download. Leave blank to disable this feature.")]
+        [FieldDefinition(6, Label = "Post-Import Category", Type = FieldType.Textbox, Advanced = true, HelpText = "Category for Readarr to set after it has imported the download. Readarr will not remove torrents in that category even if seeding finished. Leave blank to keep same category.")]
         public string MusicImportedCategory { get; set; }
 
         [FieldDefinition(7, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(QBittorrentPriority), HelpText = "Priority to use when grabbing albums released within the last 14 days")]
