@@ -30,14 +30,12 @@ namespace NzbDrone.Core.Jobs
     {
         private readonly IScheduledTaskRepository _scheduledTaskRepository;
         private readonly IConfigService _configService;
-        private readonly IConfigFileProvider _configFileProvider;
         private readonly Logger _logger;
 
-        public TaskManager(IScheduledTaskRepository scheduledTaskRepository, IConfigService configService, IConfigFileProvider configFileProvider, Logger logger)
+        public TaskManager(IScheduledTaskRepository scheduledTaskRepository, IConfigService configService, Logger logger)
         {
             _scheduledTaskRepository = scheduledTaskRepository;
             _configService = configService;
-            _configFileProvider = configFileProvider;
             _logger = logger;
         }
 
