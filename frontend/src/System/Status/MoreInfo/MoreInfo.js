@@ -22,7 +22,7 @@ class MoreInfo extends Component {
 
           <DescriptionListItemTitle>Discord</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://discord.gg/AD3UP37">discord.gg/AD3UP37</Link>
+            <Link to="https://discord.gg/r5wJPt9">discord.gg/r5wJPt9</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Wiki</DescriptionListItemTitle>

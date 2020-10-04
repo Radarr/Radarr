@@ -39,7 +39,7 @@ Each push to the "develop" branch creates a build on "nightly" release channel (
 
 ## Support
 
-[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/AD3UP37)
+[![Discord](https://img.shields.io/badge/discord-chat-r5wJPt9.svg?maxAge=60&style=flat-square)](https://discord.gg/r5wJPt9)
 [![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60&style=flat-square)](https://www.reddit.com/r/radarr)
 [![GitHub](https://img.shields.io/badge/github-issues-red.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/issues)
 [![GitHub Wiki](https://img.shields.io/badge/github-wiki-181717.svg?maxAge=60&style=flat-square)](https://github.com/Radarr/Radarr/wiki)
