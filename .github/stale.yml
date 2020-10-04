@@ -7,6 +7,9 @@ exemptLabels:
   - feature request
   - parser
   - confirmed
+  - sonarr-pull
+  - lidarr-pull
+  - readarr-pull
   - v3
 # Label to use when marking an issue as stale
 staleLabel: stale
