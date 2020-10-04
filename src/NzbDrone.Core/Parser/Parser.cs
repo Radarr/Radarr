@@ -76,6 +76,9 @@ namespace NzbDrone.Core.Parser
                 //abc - Started appearing January 2015
                 new Regex(@"^abc$", RegexOptions.Compiled | RegexOptions.IgnoreCase),
 
+                //abc - Started appearing 2020
+                new Regex(@"^abc[-_. ]xyz", RegexOptions.Compiled | RegexOptions.IgnoreCase),
+
                 //b00bs - Started appearing January 2015
                 new Regex(@"^b00bs$", RegexOptions.Compiled | RegexOptions.IgnoreCase)
             };
