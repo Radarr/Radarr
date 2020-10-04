@@ -42,8 +42,8 @@ namespace NzbDrone.Core.Test.IndexerTests.FileListTests
 
             torrentInfo.Title.Should().Be("Storming.Juno.2010.1080p.BluRay.x264-GUACAMOLE");
             torrentInfo.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
-            torrentInfo.DownloadUrl.Should().Be("https://filelist.ro/download.php?id=665873&passkey=somepass");
-            torrentInfo.InfoUrl.Should().Be("https://filelist.ro/details.php?id=665873");
+            torrentInfo.DownloadUrl.Should().Be("https://filelist.io/download.php?id=665873&passkey=somepass");
+            torrentInfo.InfoUrl.Should().Be("https://filelist.io/details.php?id=665873");
             torrentInfo.CommentUrl.Should().BeNullOrEmpty();
             torrentInfo.Indexer.Should().Be(Subject.Definition.Name);
             torrentInfo.PublishDate.Should().Be(DateTime.Parse("2020-01-25 22:20:19"));
