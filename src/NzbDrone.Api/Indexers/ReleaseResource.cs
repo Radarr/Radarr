@@ -56,9 +56,7 @@ namespace NzbDrone.Api.Indexers
         public int? Leechers { get; set; }
         public DownloadProtocol Protocol { get; set; }
 
-        // TODO: Remove in v3
-        // Used to support the original Release Push implementation
-        // JsonIgnore so we don't serialize it, but can still parse it
+        // JsonIgnore so we don't serialize it, but can still parse it, removed in v3
         [JsonIgnore]
         public DownloadProtocol DownloadProtocol
         {

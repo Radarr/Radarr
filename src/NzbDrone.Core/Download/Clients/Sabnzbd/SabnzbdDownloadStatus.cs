@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Download.Clients.Sabnzbd
+namespace NzbDrone.Core.Download.Clients.Sabnzbd
 {
     public enum SabnzbdDownloadStatus
     {
@@ -7,7 +7,6 @@
         Paused,
         Checking,
         Downloading,
-        ToPP,           // TODO: Remove in v3
         QuickCheck,
         Verifying,
         Repairing,
