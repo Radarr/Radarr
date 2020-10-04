@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
@@ -50,6 +51,15 @@ namespace NzbDrone.Core.Notifications.Webhook
                 DownloadClient = message.DownloadClient,
                 DownloadId = message.DownloadId
             };
+
+            if (message.OldMovieFiles.Any())
+            {
+                payload.DeletedFiles = message.OldMovieFiles.ConvertAll(x =>
+                    new WebhookMovieFile(x)
+                    {
+                        Path = Path.Combine(message.Movie.Path, x.RelativePath)
+                    });
+            }
 
             _proxy.SendWebhook(payload, Settings);
         }
