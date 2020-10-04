@@ -61,19 +61,10 @@ namespace NzbDrone.Core.Jobs
 
         public void Handle(ApplicationStartedEvent message)
         {
-            int updateInterval = 6 * 60;
-
-            if (_configFileProvider.Branch == "nightly")
-            {
-                updateInterval = 30;
-            }
-
             var defaultTasks = new[]
                 {
                     new ScheduledTask { Interval = 5, TypeName = typeof(MessagingCleanupCommand).FullName },
-                    new ScheduledTask { Interval = updateInterval, TypeName = typeof(ApplicationCheckUpdateCommand).FullName },
-
-                    // new ScheduledTask { Interval = 3 * 60, TypeName = typeof(UpdateSceneMappingCommand).FullName },
+                    new ScheduledTask { Interval = 6 * 60, TypeName = typeof(ApplicationCheckUpdateCommand).FullName },
                     new ScheduledTask { Interval = 6 * 60, TypeName = typeof(CheckHealthCommand).FullName },
                     new ScheduledTask { Interval = 24 * 60, TypeName = typeof(RefreshMovieCommand).FullName },
                     new ScheduledTask { Interval = 24 * 60, TypeName = typeof(HousekeepingCommand).FullName },
