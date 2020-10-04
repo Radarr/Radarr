@@ -37,6 +37,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("NCIS.S16E04.Third.Wheel.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb-GEROV", "NTb")]
         [TestCase("Will.and.Grace.S10E06.Kid.n.Play.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb-Z0iDS3N", "NTb")]
         [TestCase("Absolute.Power.S02E06.The.House.of.Lords.DVDRip.x264-MaG-Chamele0n", "MaG")]
+        [TestCase("The.Nightingale.2018.1080p.Blu-ray.Remux.AVC.DTS-HD.MA.5.1.KRaLiMaRKo", null)]
+        [TestCase("Kai.Po.Che.2013.1080p.BluRay.REMUX.AVC.DTS-X.MA.5.1", null)]
+        [TestCase("Kai.Po.Che.2013.1080p.BluRay.REMUX.AVC.DTS-MA.5.1", null)]
+        [TestCase("Kai.Po.Che.2013.1080p.BluRay.REMUX.AVC.DTS-ES.MA.5.1", null)]
 
         //[TestCase("", "")]
         public void should_parse_release_group(string title, string expected)
