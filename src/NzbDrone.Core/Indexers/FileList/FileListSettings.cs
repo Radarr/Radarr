@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Indexers.FileList
 
         public FileListSettings()
         {
-            BaseUrl = "https://filelist.ro";
+            BaseUrl = "https://filelist.io";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
 
             Categories = new int[] { (int)FileListCategories.Movie_HD, (int)FileListCategories.Movie_SD, (int)FileListCategories.Movie_4K };
