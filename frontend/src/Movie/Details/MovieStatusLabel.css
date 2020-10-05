@@ -1,24 +1,29 @@
-.missing {
+.queue {
   padding-left: 2px;
-  border-left: 4px solid $dangerColor;
+  border-left: 4px solid $queueColor;
 }
 
-.downloaded {
-  padding-left: 2px;
-  border-left: 4px solid $successColor;
-}
-
-.notAvailable {
+.continuing {
   padding-left: 2px;
   border-left: 4px solid $primaryColor;
 }
 
-.unmonitored {
+.availNotMonitored {
   padding-left: 2px;
-  border-left: 4px solid $warningColor;
+  border-left: 4px solid $darkGray;
 }
 
-.queue {
+.ended {
   padding-left: 2px;
-  border-left: 4px solid $queueColor;
+  border-left: 4px solid $successColor;
+}
+
+.missingMonitored {
+  padding-left: 2px;
+  border-left: 4px solid $dangerColor;
+}
+
+.missingUnmonitored {
+  padding-left: 2px;
+  border-left: 4px solid $warningColor;
 }
