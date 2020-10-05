@@ -11,6 +11,7 @@ function Label(props) {
     size,
     outline,
     children,
+    colorImpairedMode,
     ...otherProps
   } = props;
 
@@ -20,7 +21,8 @@ function Label(props) {
         className,
         styles[kind],
         styles[size],
-        outline && styles.outline
+        outline && styles.outline,
+        colorImpairedMode && 'colorImpaired'
       )}
       {...otherProps}
     >
@@ -34,14 +36,16 @@ Label.propTypes = {
   kind: PropTypes.oneOf(kinds.all).isRequired,
   size: PropTypes.oneOf(sizes.all).isRequired,
   outline: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  colorImpairedMode: PropTypes.bool
 };
 
 Label.defaultProps = {
   className: styles.label,
   kind: kinds.DEFAULT,
   size: sizes.SMALL,
-  outline: false
+  outline: false,
+  colorImpairedMode: false
 };
 
 export default Label;

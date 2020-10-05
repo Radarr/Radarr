@@ -7,6 +7,8 @@ import Link from 'Components/Link/Link';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import MovieStatusLabel from 'Movie/Details/MovieStatusLabel';
+import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MoviePoster from 'Movie/MoviePoster';
 import translate from 'Utilities/String/translate';
 import AddNewMovieModal from './AddNewMovieModal';
@@ -65,7 +67,14 @@ class AddNewMovieSearchResult extends Component {
       images,
       isExistingMovie,
       isExclusionMovie,
-      isSmallScreen
+      isSmallScreen,
+      colorImpairedMode,
+      id,
+      monitored,
+      hasFile,
+      isAvailable,
+      queueStatus,
+      queueState
     } = this.props;
 
     const {
@@ -85,12 +94,30 @@ class AddNewMovieSearchResult extends Component {
           {
             isSmallScreen ?
               null :
-              <MoviePoster
-                className={styles.poster}
-                images={images}
-                size={250}
-                overflow={true}
-              />
+              <div>
+                <div className={styles.posterContainer}>
+                  <MoviePoster
+                    className={styles.poster}
+                    images={images}
+                    size={250}
+                    overflow={true}
+                  />
+                </div>
+
+                {
+                  isExistingMovie &&
+                    <MovieIndexProgressBar
+                      monitored={monitored}
+                      hasFile={hasFile}
+                      status={status}
+                      posterWidth={167}
+                      detailedProgressBar={true}
+                      queueStatus={queueStatus}
+                      queueState={queueState}
+                      isAvailable={isAvailable}
+                    />
+                }
+              </div>
           }
 
           <div className={styles.content}>
@@ -176,13 +203,15 @@ class AddNewMovieSearchResult extends Component {
               />
 
               {
-                status === 'ended' &&
-                  <Label
-                    kind={kinds.DANGER}
-                    size={sizes.LARGE}
-                  >
-                    Ended
-                  </Label>
+                isExistingMovie && isSmallScreen &&
+                  <MovieStatusLabel
+                    hasMovieFiles={hasFile}
+                    monitored={monitored}
+                    isAvailable={isAvailable}
+                    id={id}
+                    useLabel={true}
+                    colorImpairedMode={colorImpairedMode}
+                  />
               }
             </div>
 
@@ -222,7 +251,15 @@ AddNewMovieSearchResult.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   isExistingMovie: PropTypes.bool.isRequired,
   isExclusionMovie: PropTypes.bool.isRequired,
-  isSmallScreen: PropTypes.bool.isRequired
+  isSmallScreen: PropTypes.bool.isRequired,
+  id: PropTypes.number,
+  queueItems: PropTypes.arrayOf(PropTypes.object),
+  monitored: PropTypes.bool.isRequired,
+  hasFile: PropTypes.bool.isRequired,
+  isAvailable: PropTypes.bool.isRequired,
+  colorImpairedMode: PropTypes.bool,
+  queueStatus: PropTypes.string,
+  queueState: PropTypes.string
 };
 
 export default AddNewMovieSearchResult;

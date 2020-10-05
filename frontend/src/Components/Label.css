@@ -19,6 +19,10 @@
   &.outline {
     color: $dangerColor;
   }
+
+  &:global(.colorImpaired) {
+    background: repeating-linear-gradient(90deg, color($dangerColor shade(5%)), color($dangerColor shade(5%)) 5px, color($dangerColor shade(15%)) 5px, color($dangerColor shade(15%)) 10px);
+  }
 }
 
 .default {
@@ -84,6 +88,10 @@
 
   &.outline {
     color: $warningColor;
+  }
+
+  &:global(.colorImpaired) {
+    background: repeating-linear-gradient(45deg, $warningColor, $warningColor 5px, color($warningColor tint(15%)) 5px, color($warningColor tint(15%)) 10px);
   }
 }
 

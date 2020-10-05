@@ -13,7 +13,7 @@ function getProgressBarKind(status, monitored, hasFile, isAvailable, queue = fal
     return kinds.DEFAULT;
   }
 
-  if (isAvailable) {
+  if (isAvailable && monitored) {
     return kinds.DANGER;
   }
 
