@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
 import { sortDirections } from 'Helpers/Props';
@@ -142,6 +143,11 @@ export const defaultState = {
         isModifiable: false
       }
     ]
+  },
+  sortPredicates: {
+    estimatedCompletionTime: function(item, direction) {
+      return moment.duration(item.timeleft).asMilliseconds();
+    }
   }
 };
 
