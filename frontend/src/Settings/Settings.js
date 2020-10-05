@@ -99,7 +99,7 @@ function Settings() {
         </Link>
 
         <div className={styles.summary}>
-          Import from another Sonarr instance or Trakt lists and manage list exclusions
+          Import from lists and manage list exclusions
         </div>
 
         <Link
