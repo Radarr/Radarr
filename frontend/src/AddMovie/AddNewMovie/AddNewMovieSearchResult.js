@@ -170,6 +170,7 @@ class AddNewMovieSearchResult extends Component {
                     imdbId={imdbId}
                   />
                 }
+                canFlip={true}
                 kind={kinds.INVERSE}
                 position={tooltipPositions.BOTTOM}
               />

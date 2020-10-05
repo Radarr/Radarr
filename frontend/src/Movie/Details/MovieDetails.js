@@ -17,6 +17,7 @@ import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import Popover from 'Components/Tooltip/Popover';
+import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
@@ -461,15 +462,14 @@ class MovieDetails extends Component {
 
                     {
                       <span className={styles.links}>
-                        <Popover
+                        <Tooltip
                           anchor={
                             <Icon
                               name={icons.EXTERNAL_LINK}
                               size={20}
                             />
                           }
-                          title={translate('Links')}
-                          body={
+                          tooltip={
                             <MovieDetailsLinks
                               tmdbId={tmdbId}
                               imdbId={imdbId}
@@ -484,15 +484,14 @@ class MovieDetails extends Component {
                     {
                       !!tags.length &&
                         <span>
-                          <Popover
+                          <Tooltip
                             anchor={
                               <Icon
                                 name={icons.TAGS}
                                 size={20}
                               />
                             }
-                            title={translate('Tags')}
-                            body={
+                            tooltip={
                               <MovieTagsConnector movieId={id} />
                             }
                             position={tooltipPositions.BOTTOM}

@@ -8,8 +8,8 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import TagListConnector from 'Components/TagListConnector';
-import Popover from 'Components/Tooltip/Popover';
-import { icons } from 'Helpers/Props';
+import Tooltip from 'Components/Tooltip/Tooltip';
+import { icons, kinds } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
@@ -369,21 +369,22 @@ class MovieIndexRow extends Component {
                   className={styles[name]}
                 >
                   <span className={styles.externalLinks}>
-                    <Popover
+                    <Tooltip
                       anchor={
                         <Icon
                           name={icons.EXTERNAL_LINK}
                           size={12}
                         />
                       }
-                      title={translate('Links')}
-                      body={
+                      tooltip={
                         <MovieDetailsLinks
                           tmdbId={tmdbId}
                           imdbId={imdbId}
                           youTubeTrailerId={youTubeTrailerId}
                         />
                       }
+                      canFlip={true}
+                      kind={kinds.INVERSE}
                     />
                   </span>
 
