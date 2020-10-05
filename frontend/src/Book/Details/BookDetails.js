@@ -99,6 +99,10 @@ class BookDetails extends Component {
     this.setState({ isDeleteBookModalOpen: false });
   }
 
+  onTabSelect = (index, lastIndex) => {
+    this.setState({ selectedTabIndex: index });
+  }
+
   //
   // Render
 
@@ -375,7 +379,7 @@ class BookDetails extends Component {
                 <div>Loading book files failed</div>
             }
 
-            <Tabs selectedIndex={this.state.tabIndex} onSelect={(tabIndex) => this.setState({ selectedTabIndex: tabIndex })}>
+            <Tabs selectedIndex={this.state.tabIndex} onSelect={this.onTabSelect}>
               <TabList
                 className={styles.tabList}
               >
