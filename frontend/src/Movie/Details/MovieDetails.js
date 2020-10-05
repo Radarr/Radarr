@@ -239,6 +239,10 @@ class MovieDetails extends Component {
     }
   }
 
+  onTabSelect = (index, lastIndex) => {
+    this.setState({ selectedTabIndex: index });
+  }
+
   //
   // Render
 
@@ -616,7 +620,7 @@ class MovieDetails extends Component {
                 </div>
             }
 
-            <Tabs selectedIndex={this.state.tabIndex} onSelect={(tabIndex) => this.setState({ selectedTabIndex: tabIndex })}>
+            <Tabs selectedIndex={this.state.tabIndex} onSelect={this.onTabSelect}>
               <TabList
                 className={styles.tabList}
               >
