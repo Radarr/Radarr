@@ -93,17 +93,6 @@ function Settings() {
 
         <Link
           className={styles.link}
-          to="/settings/importlists"
-        >
-          Import Lists
-        </Link>
-
-        <div className={styles.summary}>
-          Import from lists and manage list exclusions
-        </div>
-
-        <Link
-          className={styles.link}
           to="/settings/connect"
         >
           {translate('Connect')}
