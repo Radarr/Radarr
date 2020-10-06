@@ -115,6 +115,22 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Russian);
         }
 
+        [TestCase("Pulp.Fiction.1994.Romanian.1080p.XviD-LOL")]
+        public void should_parse_language_romanian(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.Romanian);
+        }
+
+        [TestCase("Pulp.Fiction.1994.Hindi.1080p.XviD-LOL")]
+        public void should_parse_language_hindi(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.Hindi);
+        }
+
         [TestCase("Pulp.Fiction.1994.Polish.1080p.XviD-LOL")]
         public void should_parse_language_polish(string postTitle)
         {
