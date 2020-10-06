@@ -102,6 +102,7 @@ namespace Radarr.Api.V3.Movies
         {
             var tmdbId = Request.GetIntegerQueryParameter("tmdbId");
             var moviesResources = new List<MovieResource>();
+            var configLanguage = (Language)_configService.MovieInfoLanguage;
 
             if (tmdbId > 0)
             {
@@ -110,18 +111,18 @@ namespace Radarr.Api.V3.Movies
                 if (movie != null)
                 {
                     var translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
-                    var translation = GetMovieTranslation(translations, movie);
+                    var translation = GetMovieTranslation(translations, movie, configLanguage);
                     moviesResources.AddIfNotNull(movie.ToResource(_qualityUpgradableSpecification, translation));
                 }
             }
             else
             {
-                var translations = _movieTranslationService.GetAllTranslationsForLanguage((Language)_configService.MovieInfoLanguage);
+                var translations = _movieTranslationService.GetAllTranslationsForLanguage(configLanguage);
                 var movies = _moviesService.GetAllMovies();
 
                 foreach (var movie in movies)
                 {
-                    var translation = GetMovieTranslation(translations, movie);
+                    var translation = GetMovieTranslation(translations, movie, configLanguage);
                     moviesResources.Add(movie.ToResource(_qualityUpgradableSpecification, translation));
                 }
             }
@@ -145,7 +146,7 @@ namespace Radarr.Api.V3.Movies
             }
 
             var translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
-            var translation = GetMovieTranslation(translations, movie);
+            var translation = GetMovieTranslation(translations, movie, (Language)_configService.MovieInfoLanguage);
 
             var resource = movie.ToResource(_qualityUpgradableSpecification, translation);
             MapCoversToLocal(resource);
@@ -153,9 +154,9 @@ namespace Radarr.Api.V3.Movies
             return resource;
         }
 
-        private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, Movie movie)
+        private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, Movie movie, Language configLanguage)
         {
-            if ((Language)_configService.MovieInfoLanguage == Language.Original)
+            if (configLanguage == Language.Original)
             {
                 return new MovieTranslation
                 {
@@ -164,7 +165,7 @@ namespace Radarr.Api.V3.Movies
                 };
             }
 
-            return translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage && t.MovieId == movie.Id);
+            return translations.FirstOrDefault(t => t.Language == configLanguage && t.MovieId == movie.Id);
         }
 
         private int AddMovie(MovieResource moviesResource)
@@ -197,7 +198,7 @@ namespace Radarr.Api.V3.Movies
 
             var updatedMovie = _moviesService.UpdateMovie(model);
             var translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
-            var translation = GetMovieTranslation(translations, movie);
+            var translation = GetMovieTranslation(translations, movie, (Language)_configService.MovieInfoLanguage);
 
             BroadcastResourceChange(ModelAction.Updated, updatedMovie.ToResource(_qualityUpgradableSpecification, translation));
         }
@@ -221,7 +222,7 @@ namespace Radarr.Api.V3.Movies
         public void Handle(MovieImportedEvent message)
         {
             var translations = _movieTranslationService.GetAllTranslationsForMovie(message.ImportedMovie.Movie.Id);
-            var translation = GetMovieTranslation(translations, message.ImportedMovie.Movie);
+            var translation = GetMovieTranslation(translations, message.ImportedMovie.Movie, (Language)_configService.MovieInfoLanguage);
             BroadcastResourceChange(ModelAction.Updated, message.ImportedMovie.Movie.ToResource(_qualityUpgradableSpecification, translation));
         }
 
@@ -238,14 +239,14 @@ namespace Radarr.Api.V3.Movies
         public void Handle(MovieUpdatedEvent message)
         {
             var translations = _movieTranslationService.GetAllTranslationsForMovie(message.Movie.Id);
-            var translation = GetMovieTranslation(translations, message.Movie);
+            var translation = GetMovieTranslation(translations, message.Movie, (Language)_configService.MovieInfoLanguage);
             BroadcastResourceChange(ModelAction.Updated, message.Movie.ToResource(_qualityUpgradableSpecification, translation));
         }
 
         public void Handle(MovieEditedEvent message)
         {
             var translations = _movieTranslationService.GetAllTranslationsForMovie(message.Movie.Id);
-            var translation = GetMovieTranslation(translations, message.Movie);
+            var translation = GetMovieTranslation(translations, message.Movie, (Language)_configService.MovieInfoLanguage);
             BroadcastResourceChange(ModelAction.Updated, message.Movie.ToResource(_qualityUpgradableSpecification, translation));
         }
 
@@ -260,7 +261,7 @@ namespace Radarr.Api.V3.Movies
         public void Handle(MovieRenamedEvent message)
         {
             var translations = _movieTranslationService.GetAllTranslationsForMovie(message.Movie.Id);
-            var translation = GetMovieTranslation(translations, message.Movie);
+            var translation = GetMovieTranslation(translations, message.Movie, (Language)_configService.MovieInfoLanguage);
             BroadcastResourceChange(ModelAction.Updated, message.Movie.ToResource(_qualityUpgradableSpecification, translation));
         }
 
