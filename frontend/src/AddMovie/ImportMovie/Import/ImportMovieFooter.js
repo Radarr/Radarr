@@ -10,6 +10,7 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContentFooter from 'Components/Page/PageContentFooter';
 import Popover from 'Components/Tooltip/Popover';
 import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './ImportMovieFooter.css';
 
 const MIXED = 'mixed';
@@ -112,7 +113,7 @@ class ImportMovieFooter extends Component {
       <PageContentFooter>
         <div className={styles.inputContainer}>
           <div className={styles.label}>
-            Monitor
+            {translate('Monitor')}
           </div>
 
           <FormInputGroup
@@ -127,7 +128,7 @@ class ImportMovieFooter extends Component {
 
         <div className={styles.inputContainer}>
           <div className={styles.label}>
-            Minimum Availability
+            {translate('MinimumAvailability')}
           </div>
 
           <FormInputGroup
@@ -142,7 +143,7 @@ class ImportMovieFooter extends Component {
 
         <div className={styles.inputContainer}>
           <div className={styles.label}>
-            Quality Profile
+            {translate('QualityProfile')}
           </div>
 
           <FormInputGroup
@@ -168,7 +169,7 @@ class ImportMovieFooter extends Component {
               isDisabled={!selectedCount || isLookingUpMovie}
               onPress={onImportPress}
             >
-              Import {selectedCount} {selectedCount > 1 ? 'Movies' : 'Movie'}
+              {translate('Import')} {selectedCount} {selectedCount > 1 ? translate('Movies') : translate('Movie')}
             </SpinnerButton>
 
             {
@@ -178,7 +179,7 @@ class ImportMovieFooter extends Component {
                   kind={kinds.WARNING}
                   onPress={onCancelLookupPress}
                 >
-                  Cancel Processing
+                  {translate('CancelProcessing')}
                 </Button> :
                 null
             }
@@ -190,7 +191,7 @@ class ImportMovieFooter extends Component {
                   kind={kinds.SUCCESS}
                   onPress={onLookupPress}
                 >
-                  Start Processing
+                  {translate('StartProcessing')}
                 </Button> :
                 null
             }
@@ -206,7 +207,7 @@ class ImportMovieFooter extends Component {
 
             {
               isLookingUpMovie ?
-                'Processing Folders' :
+                translate('ProcessingFolders') :
                 null
             }
 
@@ -220,7 +221,7 @@ class ImportMovieFooter extends Component {
                       kind={kinds.WARNING}
                     />
                   }
-                  title="Import Errors"
+                  title={translate('ImportErrors')}
                   body={
                     <ul>
                       {

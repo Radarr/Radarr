@@ -3,6 +3,7 @@ import React from 'react';
 import VirtualTableHeader from 'Components/Table/VirtualTableHeader';
 import VirtualTableHeaderCell from 'Components/Table/VirtualTableHeaderCell';
 import VirtualTableSelectAllHeaderCell from 'Components/Table/VirtualTableSelectAllHeaderCell';
+import translate from 'Utilities/String/translate';
 import styles from './ImportMovieHeader.css';
 
 function ImportMovieHeader(props) {
@@ -24,35 +25,35 @@ function ImportMovieHeader(props) {
         className={styles.folder}
         name="folder"
       >
-        Folder
+        {translate('Folder')}
       </VirtualTableHeaderCell>
 
       <VirtualTableHeaderCell
         className={styles.monitor}
         name="monitor"
       >
-        Monitor
+        {translate('Monitor')}
       </VirtualTableHeaderCell>
 
       <VirtualTableHeaderCell
         className={styles.minimumAvailability}
         name="minimumAvailability"
       >
-        Min Availability
+        {translate('MinAvailability')}
       </VirtualTableHeaderCell>
 
       <VirtualTableHeaderCell
         className={styles.qualityProfile}
         name="qualityProfileId"
       >
-        Quality Profile
+        {translate('QualityProfile')}
       </VirtualTableHeaderCell>
 
       <VirtualTableHeaderCell
         className={styles.movie}
         name="movie"
       >
-        Movie
+        {translate('Movie')}
       </VirtualTableHeaderCell>
     </VirtualTableHeader>
   );

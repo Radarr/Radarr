@@ -9,6 +9,7 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Portal from 'Components/Portal';
 import { icons, kinds } from 'Helpers/Props';
 import getUniqueElememtId from 'Utilities/getUniqueElementId';
+import translate from 'Utilities/String/translate';
 import ImportMovieSearchResultConnector from './ImportMovieSearchResultConnector';
 import ImportMovieTitle from './ImportMovieTitle';
 import styles from './ImportMovieSelectMovie.css';
@@ -174,7 +175,7 @@ class ImportMovieSelectMovie extends Component {
                         kind={kinds.WARNING}
                       />
 
-                      No match found!
+                      {translate('NoMatchFound')}
                     </div> :
                     null
                 }
@@ -189,7 +190,7 @@ class ImportMovieSelectMovie extends Component {
                         kind={kinds.WARNING}
                       />
 
-                      Search failed, please try again later.
+                      {translate('SearchFailedPleaseTryAgainLater')}
                     </div> :
                     null
                 }
