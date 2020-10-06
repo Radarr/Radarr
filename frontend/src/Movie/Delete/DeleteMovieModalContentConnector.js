@@ -35,8 +35,8 @@ class DeleteMovieModalContentConnector extends Component {
 
     this.props.onModalClose(true);
 
-    if (this.props.previousMovie) {
-      this.props.push(this.props.previousMovie);
+    if (this.props.nextMovieRelativePath) {
+      this.props.push(window.Radarr.urlBase + this.props.nextMovieRelativePath);
     }
   }
 
@@ -58,7 +58,7 @@ DeleteMovieModalContentConnector.propTypes = {
   onModalClose: PropTypes.func.isRequired,
   deleteMovie: PropTypes.func.isRequired,
   push: PropTypes.func.isRequired,
-  previousMovie: PropTypes.string
+  nextMovieRelativePath: PropTypes.string
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(DeleteMovieModalContentConnector);
