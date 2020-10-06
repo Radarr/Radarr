@@ -131,6 +131,14 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Hindi);
         }
 
+        [TestCase("Pulp.Fiction.1994.Thai.1080p.XviD-LOL")]
+        public void should_parse_language_thai(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.Thai);
+        }
+
         [TestCase("Pulp.Fiction.1994.Polish.1080p.XviD-LOL")]
         public void should_parse_language_polish(string postTitle)
         {
