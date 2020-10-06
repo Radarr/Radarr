@@ -117,7 +117,7 @@ class AddNewMovieModalContent extends Component {
 
                 <FormGroup>
                   <FormLabel>
-                    Monitor
+                    {translate('Monitor')}
                   </FormLabel>
 
                   <FormInputGroup
@@ -168,7 +168,7 @@ class AddNewMovieModalContent extends Component {
         <ModalFooter className={styles.modalFooter}>
           <label className={styles.searchForMissingMovieLabelContainer}>
             <span className={styles.searchForMissingMovieLabel}>
-              Start search for missing movie
+              {translate('StartSearchForMissingMovie')}
             </span>
 
             <CheckInput
@@ -186,7 +186,7 @@ class AddNewMovieModalContent extends Component {
             isSpinning={isAdding}
             onPress={this.onAddMoviePress}
           >
-            Add Movie
+            {translate('AddMovie')}
           </SpinnerButton>
         </ModalFooter>
       </ModalContent>

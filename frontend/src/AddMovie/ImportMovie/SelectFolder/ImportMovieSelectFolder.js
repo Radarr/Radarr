@@ -101,12 +101,8 @@ class ImportMovieSelectFolder extends Component {
                 <div className={styles.tips}>
                   {translate('ImportTipsMessage')}
                   <ul>
-                    <li className={styles.tip}>
-                      Make sure that your files include the quality in their filenames. eg. <span className={styles.code}>movie.2008.bluray.mkv</span>
-                    </li>
-                    <li className={styles.tip}>
-                      Point Radarr to the folder containing all of your movies, not a specific one. eg. <span className={styles.code}>"{isWindows ? 'C:\\movies' : '/movies'}"</span> and not <span className={styles.code}>"{isWindows ? 'C:\\movies\\the matrix' : '/movies/the matrix'}"</span>
-                    </li>
+                    <li className={styles.tip} dangerouslySetInnerHTML={{ __html: translate('ImportIncludeQuality', ['<code>movie.2008.bluray.mkv</code>']) }} />
+                    <li className={styles.tip} dangerouslySetInnerHTML={{ __html: translate('ImportRootPath', [`<code>${isWindows ? 'C:\\movies' : '/movies'}</code>`, `<code>${isWindows ? 'C:\\movies\\the matrix' : '/movies/the matrix'}</code>`]) }} />
                   </ul>
                 </div>
 
@@ -158,7 +154,7 @@ class ImportMovieSelectFolder extends Component {
                           className={styles.importButtonIcon}
                           name={icons.DRIVE}
                         />
-                        Start Import
+                        {translate('StartImport')}
                       </Button>
                     </div>
                 }

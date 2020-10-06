@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Label from 'Components/Label';
 import { kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './ImportMovieTitle.css';
 
 function ImportMovieTitle(props) {
@@ -33,7 +34,7 @@ function ImportMovieTitle(props) {
           <Label
             kind={kinds.WARNING}
           >
-            Existing
+            {translate('Existing')}
           </Label>
       }
     </div>

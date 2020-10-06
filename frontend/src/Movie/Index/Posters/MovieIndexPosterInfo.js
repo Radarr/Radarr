@@ -51,7 +51,7 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {`Added ${addedDate}`}
+        {`translate('Added') ${addedDate}`}
       </div>
     );
   }
@@ -69,7 +69,7 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {`In Cinemas ${inCinemasDate}`}
+        {`translate('InCinemas') ${inCinemasDate}`}
       </div>
     );
   }
@@ -87,7 +87,7 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {`Digital ${digitalReleaseDate}`}
+        {`translate('Digital') ${digitalReleaseDate}`}
       </div>
     );
   }
@@ -105,7 +105,7 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {`Released ${physicalReleaseDate}`}
+        {`translate('Released') ${physicalReleaseDate}`}
       </div>
     );
   }

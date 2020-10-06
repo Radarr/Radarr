@@ -36,7 +36,7 @@ function EditRestrictionModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {id ? 'Edit Restriction' : 'Add Restriction'}
+        {id ? translate('EditRestriction') : translate('AddRestriction')}
       </ModalHeader>
 
       <ModalBody>
@@ -51,7 +51,7 @@ function EditRestrictionModalContent(props) {
               name="required"
               helpText={translate('RequiredHelpText')}
               kind={kinds.SUCCESS}
-              placeholder={translate('RequiredPlaceHolder')}
+              placeholder={translate('RequiredRestrictionPlaceHolder')}
               {...required}
               onChange={onInputChange}
             />
