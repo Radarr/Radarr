@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import formatBytes from 'Utilities/Number/formatBytes';
+import translate from 'Utilities/String/translate';
 import styles from './MovieIndexPosterInfo.css';
 
 function MovieIndexPosterInfo(props) {
@@ -51,7 +52,7 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {`translate('Added') ${addedDate}`}
+        {translate('Added')}: {addedDate}
       </div>
     );
   }
@@ -69,7 +70,7 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {`translate('InCinemas') ${inCinemasDate}`}
+        {translate('InCinemas')}: {inCinemasDate}
       </div>
     );
   }
@@ -87,7 +88,7 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {`translate('Digital') ${digitalReleaseDate}`}
+        {translate('Digital')}: {digitalReleaseDate}
       </div>
     );
   }
@@ -105,7 +106,7 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {`translate('Released') ${physicalReleaseDate}`}
+        {translate('Released')}: {physicalReleaseDate}
       </div>
     );
   }
