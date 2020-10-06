@@ -826,5 +826,22 @@
     "FocusSearchBox": "Attiva casella di ricerca",
     "CloseCurrentModal": "Chiudi la modalità corrente",
     "Blacklisted": "Nella Blacklist",
-    "AcceptConfirmationModal": "Accetta modalità di conferma"
+    "AcceptConfirmationModal": "Accetta modalità di conferma",
+    "StartSearchForMissingMovie": "Avvia ricerca film mancanti",
+    "StartProcessing": "Avvia Lavorazione",
+    "StartImport": "Avvia Importazione",
+    "SearchFailedPleaseTryAgainLater": "Ricerca fallita, provare più tardi.",
+    "RequiredRestrictionPlaceHolder": "Il rilascio deve contenere almeno uno di questi termini (case insensitive)",
+    "Released": "Rilasciato",
+    "ProcessingFolders": "Elaborazione cartelle",
+    "NoMatchFound": "Nessuna corrispondenza trovata!",
+    "ImportRootPath": "Punta Radarr alla cartella contenente tutti i tuoi film, non ad una specifica. Es. {0} e non {1}",
+    "ImportIncludeQuality": "Assicurati che i tuoi file includano la qualità nel nome. Es. {0}",
+    "ImportErrors": "Importa Errori",
+    "Existing": "Esistente",
+    "EditRestriction": "Edita Limitazioni",
+    "Digital": "Digitale",
+    "CancelProcessing": "Annulla lavoro",
+    "AddRestriction": "Aggiungi Limitazioni",
+    "AddMovie": "Aggiungi FIlm"
 }
