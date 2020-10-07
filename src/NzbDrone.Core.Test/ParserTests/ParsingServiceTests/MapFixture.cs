@@ -118,7 +118,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Subject.Map(_parsedMovieInfo, "", null);
 
             Mocker.GetMock<IMovieService>()
-                  .Verify(v => v.FindByTitle(It.IsAny<string>(), It.IsAny<int>()), Times.Once());
+                .Verify(v => v.FindByTitle(It.IsAny<string>(), It.IsAny<int>(), null, null, null), Times.Once());
         }
 
         [Test]

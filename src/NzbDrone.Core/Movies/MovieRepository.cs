@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dapper;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
@@ -109,17 +110,76 @@ namespace NzbDrone.Core.Movies
         public List<Movie> FindByTitles(List<string> titles)
         {
             var distinct = titles.Distinct().ToList();
+
+            var results = new List<Movie>();
+
+            results.AddRange(FindByMovieTitles(distinct));
+            results.AddRange(FindByAltTitles(distinct));
+            results.AddRange(FindByTransTitles(distinct));
+
+            return results.DistinctBy(x => x.Id).ToList();
+        }
+
+        // This is a bit of a hack, but if you try to combine / rationalise these then
+        // SQLite makes a mess of the query plan and ends up doing a table scan
+        private List<Movie> FindByMovieTitles(List<string> titles)
+        {
             var movieDictionary = new Dictionary<int, Movie>();
 
-            var builder = Builder()
+            var builder = new SqlBuilder()
+                .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
+                .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
                 .LeftJoin<Movie, MovieTranslation>((m, tr) => m.Id == tr.MovieId)
-                .OrWhere<Movie>(x => distinct.Contains(x.CleanTitle))
-                .OrWhere<AlternativeTitle>(x => distinct.Contains(x.CleanTitle))
-                .OrWhere<MovieTranslation>(x => distinct.Contains(x.CleanTitle));
+                .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+                .Where<Movie>(x => titles.Contains(x.CleanTitle));
 
             _ = _database.QueryJoined<Movie, Profile, AlternativeTitle, MovieFile, MovieTranslation>(
                 builder,
                 (movie, profile, altTitle, file, trans) => Map(movieDictionary, movie, profile, altTitle, file, trans));
+
+            return movieDictionary.Values.ToList();
+        }
+
+        private List<Movie> FindByAltTitles(List<string> titles)
+        {
+            var movieDictionary = new Dictionary<int, Movie>();
+
+            var builder = new SqlBuilder()
+                .LeftJoin<AlternativeTitle, Movie>((t, m) => t.MovieId == m.Id)
+                .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
+                .LeftJoin<Movie, MovieTranslation>((m, tr) => m.Id == tr.MovieId)
+                .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+                .Where<AlternativeTitle>(x => titles.Contains(x.CleanTitle));
+
+            _ = _database.QueryJoined<AlternativeTitle, Profile, Movie, MovieFile, MovieTranslation>(
+                builder,
+                (altTitle, profile, movie, file, trans) =>
+                {
+                    _ = Map(movieDictionary, movie, profile, altTitle, file, trans);
+                    return null;
+                });
+
+            return movieDictionary.Values.ToList();
+        }
+
+        private List<Movie> FindByTransTitles(List<string> titles)
+        {
+            var movieDictionary = new Dictionary<int, Movie>();
+
+            var builder = new SqlBuilder()
+                .LeftJoin<MovieTranslation, Movie>((tr, m) => tr.MovieId == m.Id)
+                .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
+                .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
+                .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+                .Where<MovieTranslation>(x => titles.Contains(x.CleanTitle));
+
+            _ = _database.QueryJoined<MovieTranslation, Profile, Movie, MovieFile, AlternativeTitle>(
+                builder,
+                (trans, profile, movie, file, altTitle) =>
+                {
+                    _ = Map(movieDictionary, movie, profile, altTitle, file, trans);
+                    return null;
+                });
 
             return movieDictionary.Values.ToList();
         }
