@@ -505,13 +505,20 @@ namespace NzbDrone.Common.Disk
             return di.GetDirectories().ToList();
         }
 
-        public List<FileInfo> GetFileInfos(string path)
+        public FileInfo GetFileInfo(string path)
+        {
+            Ensure.That(path, () => path).IsValidPath();
+
+            return new FileInfo(path);
+        }
+
+        public List<FileInfo> GetFileInfos(string path, SearchOption searchOption = SearchOption.TopDirectoryOnly)
         {
             Ensure.That(path, () => path).IsValidPath();
 
             var di = new DirectoryInfo(path);
 
-            return di.GetFiles().ToList();
+            return di.GetFiles("*", searchOption).ToList();
         }
 
         public void RemoveEmptySubfolders(string path)
