@@ -28,7 +28,13 @@ namespace NzbDrone.Core.Indexers.FileList
             BaseUrl = "https://filelist.io";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
 
-            Categories = new int[] { (int)FileListCategories.Movie_HD, (int)FileListCategories.Movie_SD, (int)FileListCategories.Movie_4K };
+            Categories = new int[]
+            {
+                (int)FileListCategories.Movie_HD,
+                (int)FileListCategories.Movie_SD,
+                (int)FileListCategories.Movie_4K
+            };
+
             MultiLanguages = new List<int>();
             RequiredFlags = new List<int>();
         }
@@ -45,7 +51,7 @@ namespace NzbDrone.Core.Indexers.FileList
         [FieldDefinition(3, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your API key will be sent to that host.")]
         public string BaseUrl { get; set; }
 
-        [FieldDefinition(4, Label = "Categories", Type = FieldType.TagSelect, SelectOptions = typeof(FileListCategories), Advanced = true, HelpText = "Categories for use in search and feeds. If unspecified, all options are used.")]
+        [FieldDefinition(4, Label = "Categories", Type = FieldType.Select, SelectOptions = typeof(FileListCategories), Advanced = true, HelpText = "Categories for use in search and feeds. If unspecified, all options are used.")]
         public IEnumerable<int> Categories { get; set; }
 
         [FieldDefinition(5, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
@@ -65,15 +71,25 @@ namespace NzbDrone.Core.Indexers.FileList
 
     public enum FileListCategories
     {
+        [FieldOption]
         Movie_SD = 1,
+        [FieldOption]
         Movie_DVD = 2,
+        [FieldOption]
         Movie_DVDRO = 3,
+        [FieldOption]
         Movie_HD = 4,
+        [FieldOption]
         Movie_HDRO = 19,
+        [FieldOption]
         Movie_BluRay = 20,
+        [FieldOption]
         Movie_BluRay4K = 26,
+        [FieldOption]
         Movie_3D = 25,
+        [FieldOption]
         Movie_4K = 6,
+        [FieldOption]
         Xxx = 7
     }
 }

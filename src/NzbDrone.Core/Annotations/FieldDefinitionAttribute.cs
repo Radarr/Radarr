@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace NzbDrone.Core.Annotations
 {
@@ -21,6 +22,20 @@ namespace NzbDrone.Core.Annotations
         public string Section { get; set; }
         public HiddenType Hidden { get; set; }
         public string RequestAction { get; set; }
+    }
+
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    public class FieldOptionAttribute : Attribute
+    {
+        public FieldOptionAttribute(string label = null, [CallerLineNumber] int order = 0)
+        {
+            Order = order;
+            Label = label;
+        }
+
+        public int Order { get; private set; }
+        public string Label { get; set; }
+        public string Hint { get; set; }
     }
 
     public enum FieldType
