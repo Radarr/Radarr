@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using NLog;
+using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
@@ -17,7 +19,8 @@ namespace NzbDrone.Core.MediaCover
 {
     public interface IMapCoversToLocal
     {
-        void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers);
+        Dictionary<string, FileInfo> GetCoverFileInfos();
+        void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, FileInfo> fileInfos = null);
         string GetCoverPath(int movieId, MediaCoverTypes mediaCoverTypes, int? height = null);
     }
 
@@ -70,7 +73,19 @@ namespace NzbDrone.Core.MediaCover
             return Path.Combine(GetMovieCoverPath(movieId), coverTypes.ToString().ToLower() + heightSuffix + ".jpg");
         }
 
-        public void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers)
+        public Dictionary<string, FileInfo> GetCoverFileInfos()
+        {
+            if (!_diskProvider.FolderExists(_coverRootFolder))
+            {
+                return new Dictionary<string, FileInfo>();
+            }
+
+            return  _diskProvider
+                    .GetFileInfos(_coverRootFolder, SearchOption.AllDirectories)
+                    .ToDictionary(x => x.FullName, PathEqualityComparer.Instance);
+        }
+
+        public void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, FileInfo> fileInfos = null)
         {
             if (movieId == 0)
             {
@@ -90,9 +105,21 @@ namespace NzbDrone.Core.MediaCover
                     mediaCover.RemoteUrl = mediaCover.Url;
                     mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + ".jpg";
 
-                    if (_diskProvider.FileExists(filePath))
+                    FileInfo file;
+                    var fileExists = false;
+                    if (fileInfos != null)
                     {
-                        var lastWrite = _diskProvider.FileGetLastWrite(filePath);
+                        fileExists = fileInfos.TryGetValue(filePath, out file);
+                    }
+                    else
+                    {
+                        file = _diskProvider.GetFileInfo(filePath);
+                        fileExists = file.Exists;
+                    }
+
+                    if (fileExists)
+                    {
+                        var lastWrite = file.LastWriteTimeUtc;
                         mediaCover.Url += "?lastWrite=" + lastWrite.Ticks;
                     }
                 }

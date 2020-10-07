@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentValidation;
 using Nancy;
 using NzbDrone.Common.Extensions;
@@ -42,21 +44,21 @@ namespace Radarr.Api.V3.Movies
         private readonly IConfigService _configService;
 
         public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
-                            IMovieService moviesService,
-                            IMovieTranslationService movieTranslationService,
-                            IAddMovieService addMovieService,
-                            IMapCoversToLocal coverMapper,
-                            IManageCommandQueue commandQueueManager,
-                            IUpgradableSpecification qualityUpgradableSpecification,
-                            IConfigService configService,
-                            RootFolderValidator rootFolderValidator,
-                            MappedNetworkDriveValidator mappedNetworkDriveValidator,
-                            MoviePathValidator moviesPathValidator,
-                            MovieExistsValidator moviesExistsValidator,
-                            MovieAncestorValidator moviesAncestorValidator,
-                            SystemFolderValidator systemFolderValidator,
-                            ProfileExistsValidator profileExistsValidator,
-                            MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator)
+                           IMovieService moviesService,
+                           IMovieTranslationService movieTranslationService,
+                           IAddMovieService addMovieService,
+                           IMapCoversToLocal coverMapper,
+                           IManageCommandQueue commandQueueManager,
+                           IUpgradableSpecification qualityUpgradableSpecification,
+                           IConfigService configService,
+                           RootFolderValidator rootFolderValidator,
+                           MappedNetworkDriveValidator mappedNetworkDriveValidator,
+                           MoviePathValidator moviesPathValidator,
+                           MovieExistsValidator moviesExistsValidator,
+                           MovieAncestorValidator moviesAncestorValidator,
+                           SystemFolderValidator systemFolderValidator,
+                           ProfileExistsValidator profileExistsValidator,
+                           MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator)
             : base(signalRBroadcaster)
         {
             _moviesService = moviesService;
@@ -104,6 +106,8 @@ namespace Radarr.Api.V3.Movies
             var moviesResources = new List<MovieResource>();
             var configLanguage = (Language)_configService.MovieInfoLanguage;
 
+            Dictionary<string, FileInfo> coverFileInfos = null;
+
             if (tmdbId > 0)
             {
                 var movie = _moviesService.FindByTmdbId(tmdbId);
@@ -117,17 +121,26 @@ namespace Radarr.Api.V3.Movies
             }
             else
             {
-                var translations = _movieTranslationService.GetAllTranslationsForLanguage(configLanguage);
-                var movies = _moviesService.GetAllMovies();
+                var movieTask = Task.Run(() => _moviesService.GetAllMovies());
+
+                var translations = _movieTranslationService
+                    .GetAllTranslationsForLanguage(configLanguage)
+                    .ToDictionary(x => x.MovieId);
+
+                coverFileInfos = _coverMapper.GetCoverFileInfos();
+
+                var movies = movieTask.GetAwaiter().GetResult();
+
+                moviesResources = new List<MovieResource>(movies.Count);
 
                 foreach (var movie in movies)
                 {
-                    var translation = GetMovieTranslation(translations, movie, configLanguage);
-                    moviesResources.Add(movie.ToResource(_qualityUpgradableSpecification, translation));
+                    var translation = GetTranslationFromDict(translations, movie, configLanguage);
+                    var resource = movie.ToResource(_qualityUpgradableSpecification, translation);
+                    _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images, coverFileInfos);
+                    moviesResources.Add(resource);
                 }
             }
-
-            MapCoversToLocal(moviesResources.ToArray());
 
             return moviesResources;
         }
@@ -166,6 +179,21 @@ namespace Radarr.Api.V3.Movies
             }
 
             return translations.FirstOrDefault(t => t.Language == configLanguage && t.MovieId == movie.Id);
+        }
+
+        private MovieTranslation GetTranslationFromDict(Dictionary<int, MovieTranslation> translations, Movie movie, Language configLanguage)
+        {
+            if (configLanguage == Language.Original)
+            {
+                return new MovieTranslation
+                {
+                    Title = movie.OriginalTitle,
+                    Overview = movie.Overview
+                };
+            }
+
+            translations.TryGetValue(movie.Id, out var translation);
+            return translation;
         }
 
         private int AddMovie(MovieResource moviesResource)
@@ -211,12 +239,9 @@ namespace Radarr.Api.V3.Movies
             _moviesService.DeleteMovie(id, deleteFiles, addExclusion);
         }
 
-        private void MapCoversToLocal(params MovieResource[] movies)
+        private void MapCoversToLocal(MovieResource movie)
         {
-            foreach (var moviesResource in movies)
-            {
-                _coverMapper.ConvertToLocalUrls(moviesResource.Id, moviesResource.Images);
-            }
+            _coverMapper.ConvertToLocalUrls(movie.Id, movie.Images);
         }
 
         public void Handle(MovieImportedEvent message)
