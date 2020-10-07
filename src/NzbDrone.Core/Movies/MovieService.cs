@@ -27,6 +27,8 @@ namespace NzbDrone.Core.Movies
         List<Movie> FindByTmdbId(List<int> tmdbids);
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
+        Movie FindByTitle(string title, int? year, string arabicTitle, string romanTitle, List<Movie> candidates);
+        List<Movie> FindByTitleCandidates(string title, out string roman, out string arabic);
         Movie FindByTitleSlug(string slug);
         Movie FindByPath(string path);
         List<string> AllMoviePaths();
@@ -103,45 +105,35 @@ namespace NzbDrone.Core.Movies
 
         public Movie FindByTitle(string title)
         {
-            return FindByTitle(title.CleanMovieTitle(), null);
+            var candidates = FindByTitleCandidates(title, out var arabicTitle, out var romanTitle);
+
+            return FindByTitle(title, null, arabicTitle, romanTitle, candidates);
         }
 
         public Movie FindByTitle(string title, int year)
         {
-            return FindByTitle(title.CleanMovieTitle(), year as int?);
+            var candidates = FindByTitleCandidates(title, out var arabicTitle, out var romanTitle);
+
+            return FindByTitle(title, year, arabicTitle, romanTitle, candidates);
         }
 
-        private Movie FindByTitle(string cleanTitle, int? year)
+        public Movie FindByTitle(string cleanTitle, int? year, string arabicTitle, string romanTitle, List<Movie> candidates)
         {
-            cleanTitle = cleanTitle.ToLowerInvariant();
-            var cleanTitleWithRomanNumbers = cleanTitle;
-            var cleanTitleWithArabicNumbers = cleanTitle;
-
-            foreach (var arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
-            {
-                var arabicNumber = arabicRomanNumeral.ArabicNumeralAsString;
-                var romanNumber = arabicRomanNumeral.RomanNumeral;
-                cleanTitleWithRomanNumbers = cleanTitleWithRomanNumbers.Replace(arabicNumber, romanNumber);
-                cleanTitleWithArabicNumbers = cleanTitleWithArabicNumbers.Replace(romanNumber, arabicNumber);
-            }
-
-            var candidates = _movieRepository.FindByTitles(new List<string> { cleanTitle, cleanTitleWithArabicNumbers, cleanTitleWithRomanNumbers });
-
             var result = candidates.Where(x => x.CleanTitle == cleanTitle).FirstWithYear(year);
 
             if (result == null)
             {
                 result =
-                    candidates.Where(movie => movie.CleanTitle == cleanTitleWithArabicNumbers).FirstWithYear(year) ??
-                    candidates.Where(movie => movie.CleanTitle == cleanTitleWithRomanNumbers).FirstWithYear(year);
+                    candidates.Where(movie => movie.CleanTitle == arabicTitle).FirstWithYear(year) ??
+                    candidates.Where(movie => movie.CleanTitle == romanTitle).FirstWithYear(year);
             }
 
             if (result == null)
             {
                 result = candidates
                     .Where(m => m.AlternativeTitles.Any(t => t.CleanTitle == cleanTitle ||
-                                                        t.CleanTitle == cleanTitleWithArabicNumbers ||
-                                                        t.CleanTitle == cleanTitleWithRomanNumbers))
+                                                        t.CleanTitle == arabicTitle ||
+                                                        t.CleanTitle == romanTitle))
                     .FirstWithYear(year);
             }
 
@@ -149,12 +141,32 @@ namespace NzbDrone.Core.Movies
             {
                 result = candidates
                     .Where(m => m.Translations.Any(t => t.CleanTitle == cleanTitle ||
-                                                        t.CleanTitle == cleanTitleWithArabicNumbers ||
-                                                        t.CleanTitle == cleanTitleWithRomanNumbers))
+                                                        t.CleanTitle == arabicTitle ||
+                                                        t.CleanTitle == romanTitle))
                     .FirstWithYear(year);
             }
 
             return result;
+        }
+
+        public List<Movie> FindByTitleCandidates(string title, out string arabicTitle, out string romanTitle)
+        {
+            var cleanTitle = title.CleanMovieTitle().ToLowerInvariant();
+            romanTitle = cleanTitle;
+            arabicTitle = cleanTitle;
+
+            foreach (var arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
+            {
+                var arabicNumber = arabicRomanNumeral.ArabicNumeralAsString;
+                var romanNumber = arabicRomanNumeral.RomanNumeral;
+
+                romanTitle = romanTitle.Replace(arabicNumber, romanNumber);
+                arabicTitle = arabicTitle.Replace(romanNumber, arabicNumber);
+            }
+
+            romanTitle = romanTitle.ToLowerInvariant();
+
+            return _movieRepository.FindByTitles(new List<string> { cleanTitle, arabicTitle, romanTitle });
         }
 
         public Movie FindByImdbId(string imdbid)
