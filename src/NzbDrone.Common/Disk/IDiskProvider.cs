@@ -52,7 +52,8 @@ namespace NzbDrone.Common.Disk
         List<IMount> GetMounts();
         IMount GetMount(string path);
         List<DirectoryInfo> GetDirectoryInfos(string path);
-        List<FileInfo> GetFileInfos(string path);
+        FileInfo GetFileInfo(string path);
+        List<FileInfo> GetFileInfos(string path, SearchOption searchOption = SearchOption.TopDirectoryOnly);
         void RemoveEmptySubfolders(string path);
         void SaveStream(Stream stream, string path);
         bool IsValidFilePermissionMask(string mask);
