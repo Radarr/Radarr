@@ -201,20 +201,20 @@ namespace NzbDrone.Core.Parser
 
         private bool TryGetMovieByTitleAndOrYear(ParsedMovieInfo parsedMovieInfo, out MappingResult result)
         {
-            Func<Movie, bool> isNotNull = movie => movie != null;
-            Movie movieByTitleAndOrYear;
+            var candidates = _movieService.FindByTitleCandidates(parsedMovieInfo.MovieTitle, out var arabicTitle, out var romanTitle);
 
+            Movie movieByTitleAndOrYear;
             if (parsedMovieInfo.Year > 1800)
             {
-                movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
-                if (isNotNull(movieByTitleAndOrYear))
+                movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year, arabicTitle, romanTitle, candidates);
+                if (movieByTitleAndOrYear != null)
                 {
                     result = new MappingResult { Movie = movieByTitleAndOrYear };
                     return true;
                 }
 
-                movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
-                if (isNotNull(movieByTitleAndOrYear))
+                movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, null, arabicTitle, romanTitle, candidates);
+                if (movieByTitleAndOrYear != null)
                 {
                     result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.WrongYear };
                     return false;
@@ -224,8 +224,8 @@ namespace NzbDrone.Core.Parser
                 return false;
             }
 
-            movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle);
-            if (isNotNull(movieByTitleAndOrYear))
+            movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, null, arabicTitle, romanTitle, candidates);
+            if (movieByTitleAndOrYear != null)
             {
                 result = new MappingResult { Movie = movieByTitleAndOrYear };
                 return true;
