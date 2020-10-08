@@ -42,6 +42,8 @@ namespace NzbDrone.Automation.Test
             // Timeout as windows automation tests seem to take alot longer to get going
             driver = new ChromeDriver(service, options, new TimeSpan(0, 3, 0));
 
+            driver.Manage().Window.Size = new System.Drawing.Size(1920, 1080);
+
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger());
             _runner.KillAll();
             _runner.Start();
@@ -60,6 +62,19 @@ namespace NzbDrone.Automation.Test
         {
             return driver.FindElements(By.CssSelector("#errors div"))
                 .Select(e => e.Text);
+        }
+
+        protected void TakeScreenshot(string name)
+        {
+            try
+            {
+                Screenshot image = ((ITakesScreenshot)driver).GetScreenshot();
+                image.SaveAsFile($"./{name}_test_screenshot.png", ScreenshotImageFormat.Png);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to save screenshot {name}, {ex.Message}");
+            }
         }
 
         [OneTimeTearDown]
