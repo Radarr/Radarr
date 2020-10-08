@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { clearOptions, fetchOptions } from 'Store/Actions/providerOptionActions';
+import { clearOptions, defaultState, fetchOptions } from 'Store/Actions/providerOptionActions';
 import DeviceInput from './DeviceInput';
 
 function createMapStateToProps() {
   return createSelector(
     (state, { value }) => value,
-    (state) => state.providerOptions,
+    (state) => state.providerOptions.devices || defaultState,
     (value, devices) => {
 
       return {
@@ -51,7 +51,7 @@ class DeviceInputConnector extends Component {
   }
 
   componentWillUnmount = () => {
-    this.props.dispatchClearOptions();
+    this.props.dispatchClearOptions({ section: 'devices' });
   }
 
   //
@@ -65,6 +65,7 @@ class DeviceInputConnector extends Component {
     } = this.props;
 
     dispatchFetchOptions({
+      section: 'devices',
       action: 'getDevices',
       provider,
       providerData

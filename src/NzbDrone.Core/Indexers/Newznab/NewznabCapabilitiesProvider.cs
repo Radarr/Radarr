@@ -48,6 +48,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
 
             var request = new HttpRequest(url, HttpAccept.Rss);
+            request.AllowAutoRedirect = true;
 
             HttpResponse response;
 

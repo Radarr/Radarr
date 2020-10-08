@@ -106,5 +106,28 @@ namespace NzbDrone.Core.Indexers.Torznab
                 return new ValidationFailure(string.Empty, "Unable to connect to indexer, check the log for more details");
             }
         }
+
+        public override object RequestAction(string action, IDictionary<string, string> query)
+        {
+            if (action == "newznabCategories")
+            {
+                List<NewznabCategory> categories = null;
+                try
+                {
+                    categories = _capabilitiesProvider.GetCapabilities(Settings).Categories;
+                }
+                catch
+                {
+                    // Use default categories
+                }
+
+                return new
+                {
+                    options = NewznabCategoryFieldOptionsConverter.GetFieldSelectOptions(categories)
+                };
+            }
+
+            return base.RequestAction(action, query);
+        }
     }
 }

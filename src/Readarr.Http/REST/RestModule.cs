@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using FluentValidation.Results;
 using Nancy;
 using Nancy.Responses.Negotiation;
 using Newtonsoft.Json;
@@ -224,7 +225,7 @@ namespace Readarr.Http.REST
             return Negotiate.WithModel(model).WithStatusCode(statusCode);
         }
 
-        protected TResource ReadResourceFromRequest(bool skipValidate = false)
+        protected TResource ReadResourceFromRequest(bool skipValidate = false, bool skipSharedValidate = false)
         {
             var resource = new TResource();
 
@@ -242,7 +243,12 @@ namespace Readarr.Http.REST
                 throw new BadRequestException("Request body can't be empty");
             }
 
-            var errors = SharedValidator.Validate(resource).Errors.ToList();
+            var errors = new List<ValidationFailure>();
+
+            if (!skipSharedValidate)
+            {
+                errors.AddRange(SharedValidator.Validate(resource).Errors);
+            }
 
             if (Request.Method.Equals("POST", StringComparison.InvariantCultureIgnoreCase) && !skipValidate && !Request.Url.Path.EndsWith("/test", StringComparison.InvariantCultureIgnoreCase))
             {

@@ -27,7 +27,7 @@ namespace Readarr.Api.V1
             Get("schema", x => GetTemplates());
             Post("test", x => Test(ReadResourceFromRequest(true)));
             Post("testall", x => TestAll());
-            Post("action/{action}", x => RequestAction(x.action, ReadResourceFromRequest(true)));
+            Post("action/{action}", x => RequestAction(x.action, ReadResourceFromRequest(true, true)));
 
             GetResourceAll = GetAll;
             GetResourceById = GetProviderById;

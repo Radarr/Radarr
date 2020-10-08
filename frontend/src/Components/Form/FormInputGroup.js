@@ -9,6 +9,7 @@ import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
 import DeviceInputConnector from './DeviceInputConnector';
 import EnhancedSelectInput from './EnhancedSelectInput';
+import EnhancedSelectInputConnector from './EnhancedSelectInputConnector';
 import FormInputHelpText from './FormInputHelpText';
 import IndexerSelectInputConnector from './IndexerSelectInputConnector';
 import KeyValueListInput from './KeyValueListInput';
@@ -78,6 +79,9 @@ function getComponent(type) {
 
     case inputTypes.SELECT:
       return EnhancedSelectInput;
+
+    case inputTypes.DYNAMIC_SELECT:
+      return EnhancedSelectInputConnector;
 
     case inputTypes.SERIES_TYPE_SELECT:
       return SeriesTypeSelectInput;

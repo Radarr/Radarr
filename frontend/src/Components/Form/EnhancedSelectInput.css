@@ -65,3 +65,8 @@
   border-radius: 4px;
   background-color: $white;
 }
+
+.loading {
+  display: inline-block;
+  margin: 5px -5px 5px 0;
+}
