@@ -21,6 +21,17 @@ import styles from './EditQualityProfileModalContent.css';
 
 const MODAL_BODY_PADDING = parseInt(dimensions.modalBodyPadding);
 
+function getCustomFormatRender(formatItems, otherProps) {
+  return (
+    <QualityProfileFormatItems
+      profileFormatItems={formatItems.value}
+      errors={formatItems.errors}
+      warnings={formatItems.warnings}
+      {...otherProps}
+    />
+  );
+}
+
 class EditQualityProfileModalContent extends Component {
 
   //
@@ -251,6 +262,10 @@ class EditQualityProfileModalContent extends Component {
                             onChange={onLanguageChange}
                           />
                         </FormGroup>
+
+                        <div className={styles.formatItemLarge}>
+                          {getCustomFormatRender(formatItems, ...otherProps)}
+                        </div>
                       </div>
 
                       <div className={styles.formGroupWrapper}>
@@ -263,13 +278,8 @@ class EditQualityProfileModalContent extends Component {
                         />
                       </div>
 
-                      <div className={styles.formGroupWrapper}>
-                        <QualityProfileFormatItems
-                          profileFormatItems={formatItems.value}
-                          errors={formatItems.errors}
-                          warnings={formatItems.warnings}
-                          {...otherProps}
-                        />
+                      <div className={styles.formatItemSmall}>
+                        {getCustomFormatRender(formatItems, otherProps)}
                       </div>
                     </div>
                   </Form>
