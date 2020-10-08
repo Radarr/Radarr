@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+using System.Reflection;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Automation.Test.PageModel;
 using OpenQA.Selenium;
@@ -21,6 +22,10 @@ namespace NzbDrone.Automation.Test
         {
             _page.MovieNavIcon.Click();
             _page.WaitForNoSpinner();
+
+            var imageName = MethodBase.GetCurrentMethod().Name;
+            TakeScreenshot(imageName);
+
             _page.Find(By.CssSelector("div[class*='MovieIndex']")).Should().NotBeNull();
         }
 
@@ -30,6 +35,9 @@ namespace NzbDrone.Automation.Test
             _page.CalendarNavIcon.Click();
             _page.WaitForNoSpinner();
 
+            var imageName = MethodBase.GetCurrentMethod().Name;
+            TakeScreenshot(imageName);
+
             _page.Find(By.CssSelector("div[class*='CalendarPage']")).Should().NotBeNull();
         }
 
@@ -38,6 +46,9 @@ namespace NzbDrone.Automation.Test
         {
             _page.ActivityNavIcon.Click();
             _page.WaitForNoSpinner();
+
+            var imageName = MethodBase.GetCurrentMethod().Name;
+            TakeScreenshot(imageName);
 
             _page.Find(By.LinkText("Queue")).Should().NotBeNull();
             _page.Find(By.LinkText("History")).Should().NotBeNull();
@@ -50,6 +61,9 @@ namespace NzbDrone.Automation.Test
             _page.SystemNavIcon.Click();
             _page.WaitForNoSpinner();
 
+            var imageName = MethodBase.GetCurrentMethod().Name;
+            TakeScreenshot(imageName);
+
             _page.Find(By.CssSelector("div[class*='Health']")).Should().NotBeNull();
         }
 
@@ -58,10 +72,11 @@ namespace NzbDrone.Automation.Test
         {
             _page.MovieNavIcon.Click();
             _page.WaitForNoSpinner();
-
             _page.Find(By.LinkText("Add New")).Click();
-
             _page.WaitForNoSpinner();
+
+            var imageName = MethodBase.GetCurrentMethod().Name;
+            TakeScreenshot(imageName);
 
             _page.Find(By.CssSelector("input[class*='AddNewMovie-searchInput']")).Should().NotBeNull();
         }
