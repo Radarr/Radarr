@@ -711,6 +711,16 @@ stages:
           chmod a+x ${TESTSFOLDER}/test.sh
           ${TESTSFOLDER}/test.sh ${OSNAME} Automation Test
         displayName: Run Automation Tests
+      - task: CopyFiles@2
+        displayName: 'Copy Screenshot to: $(Build.ArtifactStagingDirectory)'
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)'
+          Contents: |
+            **/*_test_screenshot.png
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/screenshots'
+      - publish: $(Build.ArtifactStagingDirectory)/screenshots
+        artifact: '$(osName)AutomationScreenshots'
+        displayName: Publish Screenshot Bundle
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'NUnit'
@@ -859,8 +869,14 @@ stages:
     - job:
       displayName: Discord Notification
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: 'windows-2019'
       steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: Download Screenshot Artifact
+          inputs:
+            buildType: 'current'
+            artifactName: 'WindowsAutomationScreenshots'
+            targetPath: $(Build.SourcesDirectory)
         - checkout: none
         - powershell: |
             iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Servarr/AzureDiscordNotify/master/DiscordNotify.ps1'))
