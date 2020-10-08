@@ -822,5 +822,16 @@
     "EditIndexer": "Bewerk Indexeerder",
     "Disabled": "Uitgeschakeld",
     "AutomaticSearch": "Automatisch Zoeken",
-    "AddIndexer": "Voeg Indexeerder Toe"
+    "AddIndexer": "Voeg Indexeerder Toe",
+    "ImportErrors": "Importeer Fouten",
+    "FocusSearchBox": "Focus Zoekvak",
+    "Existing": "Bestaande",
+    "EditRestriction": "Bewerk Restrictie",
+    "Digital": "Digitaal",
+    "CloseCurrentModal": "Sluit Huidig Bericht",
+    "CancelProcessing": "Annuleer Verwerking",
+    "Blacklisted": "Op de zwarte lijst",
+    "AddRestriction": "Voeg Restrictie Toe",
+    "AddMovie": "Voeg Film Toe",
+    "AcceptConfirmationModal": "Accepteer Bevestigingsbericht"
 }
