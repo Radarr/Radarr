@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Notifications.Webhook
 
             var payload = new WebhookGrabPayload
             {
-                EventType = "Grab",
+                EventType = WebhookEventType.Grab,
                 Movie = new WebhookMovie(message.Movie),
                 RemoteMovie = new WebhookRemoteMovie(remoteMovie),
                 Release = new WebhookRelease(quality, remoteMovie),
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Notifications.Webhook
 
             var payload = new WebhookImportPayload
             {
-                EventType = "Download",
+                EventType = WebhookEventType.Download,
                 Movie = new WebhookMovie(message.Movie),
                 RemoteMovie = new WebhookRemoteMovie(message.Movie),
                 MovieFile = new WebhookMovieFile(movieFile),
@@ -66,11 +66,25 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         public override void OnMovieRename(Movie movie)
         {
-            var payload = new WebhookPayload
+            var payload = new WebhookRenamePayload
             {
-                EventType = "Rename",
+                EventType = WebhookEventType.Rename,
                 Movie = new WebhookMovie(movie)
             };
+
+            _proxy.SendWebhook(payload, Settings);
+        }
+
+        public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        {
+            var payload = new WebhookHealthPayload
+                          {
+                              EventType = WebhookEventType.Health,
+                              Level = healthCheck.Type,
+                              Message = healthCheck.Message,
+                              Type = healthCheck.Source.Name,
+                              WikiUrl = healthCheck.WikiUrl?.ToString()
+                          };
 
             _proxy.SendWebhook(payload, Settings);
         }
@@ -92,7 +106,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 var payload = new WebhookGrabPayload
                 {
-                    EventType = "Test",
+                    EventType = WebhookEventType.Test,
                     Movie = new WebhookMovie
                     {
                         Id = 1,
