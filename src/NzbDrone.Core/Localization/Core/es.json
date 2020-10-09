@@ -832,5 +832,22 @@
     "MovieDetailsPreviousMovie": "Detalles de la Película: Película Anterior",
     "MovieDetailsNextMovie": "Detalles de la película: Siguiente Película",
     "CloseCurrentModal": "Cerrar Modal Actual",
-    "AcceptConfirmationModal": "Aceptar el Modal de Confirmación"
+    "AcceptConfirmationModal": "Aceptar el Modal de Confirmación",
+    "StartSearchForMissingMovie": "Empezar a buscar por película ausente",
+    "StartProcessing": "Comenzar Procesado",
+    "StartImport": "Comenzar Importación",
+    "SearchFailedPleaseTryAgainLater": "La búsqueda ha fallado, por favor inténtalo de nuevo más tarde.",
+    "RequiredRestrictionPlaceHolder": "El lanzamiento debe contener al menos uno de estos términos (no distingue entre mayúsculas y minúsculas)",
+    "Released": "Estrenada",
+    "ProcessingFolders": "Procesando Carpetas",
+    "NoMatchFound": "No se han encontrado coincidencias!",
+    "ImportRootPath": "Dirige Radarr a la carpeta con todas tus películas, no a una específica. ej. {0} y no {1}",
+    "ImportIncludeQuality": "Asegúrate de que los archivos incluyen la calidad en el nombre. ej. {0}",
+    "ImportErrors": "Errores al importar",
+    "Existing": "Existente",
+    "EditRestriction": "Editar Restricción",
+    "Digital": "Digital",
+    "CancelProcessing": "Cancelar Procesamiento",
+    "AddRestriction": "Añadir Restricción",
+    "AddMovie": "Añadir Película"
 }
