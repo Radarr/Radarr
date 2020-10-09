@@ -109,7 +109,7 @@ export default {
         selectedSchema.onHealthIssue = selectedSchema.supportsOnHealthIssue;
         selectedSchema.onDownloadFailure = selectedSchema.supportsOnDownloadFailure;
         selectedSchema.onImportFailure = selectedSchema.supportsOnImportFailure;
-        selectedSchema.onTrackRetag = selectedSchema.supportsOnTrackRetag;
+        selectedSchema.onBookRetag = selectedSchema.supportsOnBookRetag;
 
         return selectedSchema;
       });

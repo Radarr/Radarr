@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Notifications.Synology
             }
         }
 
-        public override void OnTrackRetag(BookRetagMessage message)
+        public override void OnBookRetag(BookRetagMessage message)
         {
             if (Settings.UpdateLibrary)
             {

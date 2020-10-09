@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Notifications
         {
         }
 
-        public virtual void OnTrackRetag(BookRetagMessage message)
+        public virtual void OnBookRetag(BookRetagMessage message)
         {
         }
 
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Notifications
         public bool SupportsOnHealthIssue => HasConcreteImplementation("OnHealthIssue");
         public bool SupportsOnDownloadFailure => HasConcreteImplementation("OnDownloadFailure");
         public bool SupportsOnImportFailure => HasConcreteImplementation("OnImportFailure");
-        public bool SupportsOnTrackRetag => HasConcreteImplementation("OnTrackRetag");
+        public bool SupportsOnBookRetag => HasConcreteImplementation("OnBookRetag");
 
         protected TSettings Settings => (TSettings)Definition.Settings;
 

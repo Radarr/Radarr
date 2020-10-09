@@ -262,11 +262,11 @@ namespace NzbDrone.Core.Notifications
                 Scrubbed = message.Scrubbed
             };
 
-            foreach (var notification in _notificationFactory.OnTrackRetagEnabled())
+            foreach (var notification in _notificationFactory.OnBookRetagEnabled())
             {
                 if (ShouldHandleArtist(notification.Definition, message.Author))
                 {
-                    notification.OnTrackRetag(retagMessage);
+                    notification.OnBookRetag(retagMessage);
                 }
             }
         }

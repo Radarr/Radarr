@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Notifications.Subsonic
             Notify(Settings, HEALTH_ISSUE_TITLE_BRANDED, healthCheck.Message);
         }
 
-        public override void OnTrackRetag(BookRetagMessage message)
+        public override void OnBookRetag(BookRetagMessage message)
         {
             Notify(Settings, BOOK_RETAGGED_TITLE_BRANDED, message.Message);
         }

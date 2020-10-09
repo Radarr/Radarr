@@ -21,7 +21,7 @@ function NotificationEventItems(props) {
     onHealthIssue,
     onDownloadFailure,
     onImportFailure,
-    onTrackRetag,
+    onBookRetag,
     supportsOnGrab,
     supportsOnReleaseImport,
     supportsOnUpgrade,
@@ -30,7 +30,7 @@ function NotificationEventItems(props) {
     includeHealthWarnings,
     supportsOnDownloadFailure,
     supportsOnImportFailure,
-    supportsOnTrackRetag
+    supportsOnBookRetag
   } = item;
 
   return (
@@ -114,10 +114,10 @@ function NotificationEventItems(props) {
           <div>
             <FormInputGroup
               type={inputTypes.CHECK}
-              name="onTrackRetag"
-              helpText="On Track Retag"
-              isDisabled={!supportsOnTrackRetag.value}
-              {...onTrackRetag}
+              name="onBookRetag"
+              helpText="On Book Retag"
+              isDisabled={!supportsOnBookRetag.value}
+              {...onBookRetag}
               onChange={onInputChange}
             />
           </div>

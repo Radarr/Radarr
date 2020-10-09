@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             _proxy.SendWebhook(payload, Settings);
         }
 
-        public override void OnTrackRetag(BookRetagMessage message)
+        public override void OnBookRetag(BookRetagMessage message)
         {
             var payload = new WebhookPayload
             {

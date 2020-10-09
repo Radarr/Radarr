@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Notifications.Slack
             _proxy.SendPayload(payload, Settings);
         }
 
-        public override void OnTrackRetag(BookRetagMessage message)
+        public override void OnBookRetag(BookRetagMessage message)
         {
             var attachments = new List<Attachment>
                               {

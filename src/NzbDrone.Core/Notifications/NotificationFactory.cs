@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Notifications
         List<INotification> OnHealthIssueEnabled();
         List<INotification> OnDownloadFailureEnabled();
         List<INotification> OnImportFailureEnabled();
-        List<INotification> OnTrackRetagEnabled();
+        List<INotification> OnBookRetagEnabled();
     }
 
     public class NotificationFactory : ProviderFactory<INotification, NotificationDefinition>, INotificationFactory
@@ -61,9 +61,9 @@ namespace NzbDrone.Core.Notifications
             return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnImportFailure).ToList();
         }
 
-        public List<INotification> OnTrackRetagEnabled()
+        public List<INotification> OnBookRetagEnabled()
         {
-            return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnTrackRetag).ToList();
+            return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnBookRetag).ToList();
         }
 
         public override void SetProviderCharacteristics(INotification provider, NotificationDefinition definition)
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Notifications
             definition.SupportsOnHealthIssue = provider.SupportsOnHealthIssue;
             definition.SupportsOnDownloadFailure = provider.SupportsOnDownloadFailure;
             definition.SupportsOnImportFailure = provider.SupportsOnImportFailure;
-            definition.SupportsOnTrackRetag = provider.SupportsOnTrackRetag;
+            definition.SupportsOnBookRetag = provider.SupportsOnBookRetag;
         }
     }
 }

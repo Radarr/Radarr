@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var book = message.Book;
             var environmentVariables = new StringDictionary();
 
-            environmentVariables.Add("Readarr_EventType", "BookDownload");
+            environmentVariables.Add("Readarr_EventType", "Download");
             environmentVariables.Add("Readarr_Author_Id", author.Id.ToString());
             environmentVariables.Add("Readarr_Author_Name", author.Metadata.Value.Name);
             environmentVariables.Add("Readarr_Author_Path", author.Path);
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
             if (message.BookFiles.Any())
             {
-                environmentVariables.Add("Readarr_AddedTrackPaths", string.Join("|", message.BookFiles.Select(e => e.Path)));
+                environmentVariables.Add("Readarr_AddedFilePaths", string.Join("|", message.BookFiles.Select(e => e.Path)));
             }
 
             if (message.OldFiles.Any())
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             ExecuteScript(environmentVariables);
         }
 
-        public override void OnTrackRetag(BookRetagMessage message)
+        public override void OnBookRetag(BookRetagMessage message)
         {
             var author = message.Author;
             var book = message.Book;

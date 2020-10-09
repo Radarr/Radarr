@@ -61,7 +61,7 @@ class Notification extends Component {
       onHealthIssue,
       onDownloadFailure,
       onImportFailure,
-      onTrackRetag,
+      onBookRetag,
       supportsOnGrab,
       supportsOnReleaseImport,
       supportsOnUpgrade,
@@ -69,7 +69,7 @@ class Notification extends Component {
       supportsOnHealthIssue,
       supportsOnDownloadFailure,
       supportsOnImportFailure,
-      supportsOnTrackRetag
+      supportsOnBookRetag
     } = this.props;
 
     return (
@@ -111,9 +111,9 @@ class Notification extends Component {
         }
 
         {
-          supportsOnTrackRetag && onTrackRetag &&
+          supportsOnBookRetag && onBookRetag &&
             <Label kind={kinds.SUCCESS}>
-              On Track Tag Update
+              On Book Tag Update
             </Label>
         }
 
@@ -139,7 +139,7 @@ class Notification extends Component {
         }
 
         {
-          !onGrab && !onReleaseImport && !onRename && !onTrackRetag &&
+          !onGrab && !onReleaseImport && !onRename && !onBookRetag &&
             !onHealthIssue && !onDownloadFailure && !onImportFailure &&
               <Label
                 kind={kinds.DISABLED}
@@ -180,7 +180,7 @@ Notification.propTypes = {
   onHealthIssue: PropTypes.bool.isRequired,
   onDownloadFailure: PropTypes.bool.isRequired,
   onImportFailure: PropTypes.bool.isRequired,
-  onTrackRetag: PropTypes.bool.isRequired,
+  onBookRetag: PropTypes.bool.isRequired,
   supportsOnGrab: PropTypes.bool.isRequired,
   supportsOnReleaseImport: PropTypes.bool.isRequired,
   supportsOnUpgrade: PropTypes.bool.isRequired,
@@ -188,7 +188,7 @@ Notification.propTypes = {
   supportsOnHealthIssue: PropTypes.bool.isRequired,
   supportsOnDownloadFailure: PropTypes.bool.isRequired,
   supportsOnImportFailure: PropTypes.bool.isRequired,
-  supportsOnTrackRetag: PropTypes.bool.isRequired,
+  supportsOnBookRetag: PropTypes.bool.isRequired,
   onConfirmDeleteNotification: PropTypes.func.isRequired
 };
 

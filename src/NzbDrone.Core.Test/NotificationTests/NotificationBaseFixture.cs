@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.NotificationTests
 
             public override void OnReleaseImport(BookDownloadMessage message)
             {
-                TestLogger.Info("OnAlbumDownload was called");
+                TestLogger.Info("OnDownload was called");
             }
 
             public override void OnRename(Author artist)
@@ -77,9 +77,9 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnImportFailure was called");
             }
 
-            public override void OnTrackRetag(BookRetagMessage message)
+            public override void OnBookRetag(BookRetagMessage message)
             {
-                TestLogger.Info("OnTrackRetag was called");
+                TestLogger.Info("OnBookRetag was called");
             }
         }
 
@@ -118,7 +118,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             notification.SupportsOnHealthIssue.Should().BeTrue();
             notification.SupportsOnDownloadFailure.Should().BeTrue();
             notification.SupportsOnImportFailure.Should().BeTrue();
-            notification.SupportsOnTrackRetag.Should().BeTrue();
+            notification.SupportsOnBookRetag.Should().BeTrue();
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             notification.SupportsOnHealthIssue.Should().BeFalse();
             notification.SupportsOnDownloadFailure.Should().BeFalse();
             notification.SupportsOnImportFailure.Should().BeFalse();
-            notification.SupportsOnTrackRetag.Should().BeFalse();
+            notification.SupportsOnBookRetag.Should().BeFalse();
         }
     }
 }
