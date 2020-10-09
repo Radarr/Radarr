@@ -25,9 +25,9 @@ namespace NzbDrone.Core.Notifications.Webhook
 
             var payload = new WebhookGrabPayload
             {
-                EventType = "Grab",
-                Author = new WebhookAuthor(message.Author),
-                Books = remoteBook.Books.ConvertAll(x => new WebhookBook(x)
+                EventType = WebhookEventType.Grab,
+                Artist = new WebhookAuthor(message.Author),
+                Albums = remoteBook.Books.ConvertAll(x => new WebhookBook(x)
                 {
                     // TODO: Stop passing these parameters inside an album v3
                     Quality = quality.Quality.Name,
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Notifications.Webhook
 
             var payload = new WebhookImportPayload
             {
-                EventType = "Download",
+                EventType = WebhookEventType.Download,
                 Artist = new WebhookAuthor(message.Author),
                 Book = new WebhookBook(message.Book),
                 BookFiles = bookFiles.ConvertAll(x => new WebhookBookFile(x)),
@@ -62,10 +62,10 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         public override void OnRename(Author author)
         {
-            var payload = new WebhookPayload
+            var payload = new WebhookRenamePayload
             {
-                EventType = "Rename",
-                Author = new WebhookAuthor(author)
+                EventType = WebhookEventType.Rename,
+                Artist = new WebhookAuthor(author)
             };
 
             _proxy.SendWebhook(payload, Settings);
@@ -73,11 +73,25 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         public override void OnBookRetag(BookRetagMessage message)
         {
-            var payload = new WebhookPayload
+            var payload = new WebhookRetagPayload
             {
-                EventType = "Retag",
-                Author = new WebhookAuthor(message.Author)
+                EventType = WebhookEventType.Retag,
+                Artist = new WebhookAuthor(message.Author)
             };
+
+            _proxy.SendWebhook(payload, Settings);
+        }
+
+        public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        {
+            var payload = new WebhookHealthPayload
+                          {
+                              EventType = WebhookEventType.Health,
+                              Level = healthCheck.Type,
+                              Message = healthCheck.Message,
+                              Type = healthCheck.Source.Name,
+                              WikiUrl = healthCheck.WikiUrl?.ToString()
+                          };
 
             _proxy.SendWebhook(payload, Settings);
         }
@@ -99,8 +113,8 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 var payload = new WebhookGrabPayload
                 {
-                    EventType = "Test",
-                    Author = new WebhookAuthor()
+                    EventType = WebhookEventType.Test,
+                    Artist = new WebhookAuthor()
                     {
                         Id = 1,
                         Name = "Test Name",
