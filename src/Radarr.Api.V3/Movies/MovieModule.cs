@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using Nancy;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Events;
@@ -42,6 +43,7 @@ namespace Radarr.Api.V3.Movies
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
         private readonly IConfigService _configService;
+        private readonly Logger _logger;
 
         public MovieModule(IBroadcastSignalRMessage signalRBroadcaster,
                            IMovieService moviesService,
@@ -58,7 +60,8 @@ namespace Radarr.Api.V3.Movies
                            MovieAncestorValidator moviesAncestorValidator,
                            SystemFolderValidator systemFolderValidator,
                            ProfileExistsValidator profileExistsValidator,
-                           MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator)
+                           MovieFolderAsRootFolderValidator movieFolderAsRootFolderValidator,
+                           Logger logger)
             : base(signalRBroadcaster)
         {
             _moviesService = moviesService;
@@ -68,6 +71,7 @@ namespace Radarr.Api.V3.Movies
             _configService = configService;
             _coverMapper = coverMapper;
             _commandQueueManager = commandQueueManager;
+            _logger = logger;
 
             GetResourceAll = AllMovie;
             GetResourceById = GetMovie;
@@ -121,15 +125,18 @@ namespace Radarr.Api.V3.Movies
             }
             else
             {
-                var movieTask = Task.Run(() => _moviesService.GetAllMovies());
+                _logger.Debug("Getting all movies");
+                var movies =  _moviesService.GetAllMovies();
+                _logger.Debug("Got all movies");
 
                 var translations = _movieTranslationService
                     .GetAllTranslationsForLanguage(configLanguage)
                     .ToDictionary(x => x.MovieId);
 
-                coverFileInfos = _coverMapper.GetCoverFileInfos();
+                _logger.Debug("Got translations");
 
-                var movies = movieTask.GetAwaiter().GetResult();
+                coverFileInfos = _coverMapper.GetCoverFileInfos();
+                _logger.Debug("got cover file infos");
 
                 moviesResources = new List<MovieResource>(movies.Count);
 
@@ -140,6 +147,8 @@ namespace Radarr.Api.V3.Movies
                     _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images, coverFileInfos);
                     moviesResources.Add(resource);
                 }
+
+                _logger.Debug("Mapped resources; done");
             }
 
             return moviesResources;
