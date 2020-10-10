@@ -518,7 +518,7 @@ namespace NzbDrone.Common.Disk
 
             var di = new DirectoryInfo(path);
 
-            return di.GetFiles("*", searchOption).ToList();
+            return di.EnumerateFiles("*", searchOption).ToList();
         }
 
         public void RemoveEmptySubfolders(string path)
