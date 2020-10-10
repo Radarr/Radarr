@@ -85,53 +85,72 @@ namespace NzbDrone.Core.DecisionEngine
                         }
                     }
 
-                    if (parsedBookInfo != null)
+                    if (parsedBookInfo != null && !parsedBookInfo.AuthorName.IsNullOrWhiteSpace())
                     {
-                        if (!parsedBookInfo.AuthorName.IsNullOrWhiteSpace())
+                        var remoteBook = _parsingService.Map(parsedBookInfo, searchCriteria);
+
+                        // try parsing again using the search criteria, in case it parsed but parsed incorrectly
+                        if ((remoteBook.Author == null || remoteBook.Books.Empty()) && searchCriteria != null)
                         {
-                            var remoteBook = _parsingService.Map(parsedBookInfo, searchCriteria);
+                            _logger.Debug("Author/Book null for {0}, reparsing with search criteria", report.Title);
+                            var parsedBookInfoWithCriteria = Parser.Parser.ParseBookTitleWithSearchCriteria(report.Title,
+                                                                                                                searchCriteria.Author,
+                                                                                                                searchCriteria.Books);
 
-                            // try parsing again using the search criteria, in case it parsed but parsed incorrectly
-                            if ((remoteBook.Author == null || remoteBook.Books.Empty()) && searchCriteria != null)
+                            if (parsedBookInfoWithCriteria != null && parsedBookInfoWithCriteria.AuthorName.IsNotNullOrWhiteSpace())
                             {
-                                _logger.Debug("Author/Book null for {0}, reparsing with search criteria", report.Title);
-                                var parsedBookInfoWithCriteria = Parser.Parser.ParseBookTitleWithSearchCriteria(report.Title,
-                                                                                                                  searchCriteria.Author,
-                                                                                                                  searchCriteria.Books);
-
-                                if (parsedBookInfoWithCriteria != null && parsedBookInfoWithCriteria.AuthorName.IsNotNullOrWhiteSpace())
-                                {
-                                    remoteBook = _parsingService.Map(parsedBookInfoWithCriteria, searchCriteria);
-                                }
+                                remoteBook = _parsingService.Map(parsedBookInfoWithCriteria, searchCriteria);
                             }
+                        }
 
-                            remoteBook.Release = report;
+                        remoteBook.Release = report;
 
-                            if (remoteBook.Author == null)
+                        if (remoteBook.Author == null)
+                        {
+                            decision = new DownloadDecision(remoteBook, new Rejection("Unknown Author"));
+
+                            // shove in the searched author in case of forced download in interactive search
+                            if (searchCriteria != null)
                             {
-                                decision = new DownloadDecision(remoteBook, new Rejection("Unknown Author"));
+                                remoteBook.Author = searchCriteria.Author;
+                                remoteBook.Books = searchCriteria.Books;
+                            }
+                        }
+                        else if (remoteBook.Books.Empty())
+                        {
+                            decision = new DownloadDecision(remoteBook, new Rejection("Unable to parse books from release name"));
+                            if (searchCriteria != null)
+                            {
+                                remoteBook.Books = searchCriteria.Books;
+                            }
+                        }
+                        else
+                        {
+                            _aggregationService.Augment(remoteBook);
+                            remoteBook.DownloadAllowed = remoteBook.Books.Any();
+                            decision = GetDecisionForReport(remoteBook, searchCriteria);
+                        }
+                    }
 
-                                // shove in the searched author in case of forced download in interactive search
-                                if (searchCriteria != null)
-                                {
-                                    remoteBook.Author = searchCriteria.Author;
-                                    remoteBook.Books = searchCriteria.Books;
-                                }
-                            }
-                            else if (remoteBook.Books.Empty())
+                    if (searchCriteria != null)
+                    {
+                        if (parsedBookInfo == null)
+                        {
+                            parsedBookInfo = new ParsedBookInfo
                             {
-                                decision = new DownloadDecision(remoteBook, new Rejection("Unable to parse books from release name"));
-                                if (searchCriteria != null)
-                                {
-                                    remoteBook.Books = searchCriteria.Books;
-                                }
-                            }
-                            else
+                                Quality = QualityParser.ParseQuality(report.Title)
+                            };
+                        }
+
+                        if (parsedBookInfo.AuthorName.IsNullOrWhiteSpace())
+                        {
+                            var remoteBook = new RemoteBook
                             {
-                                _aggregationService.Augment(remoteBook);
-                                remoteBook.DownloadAllowed = remoteBook.Books.Any();
-                                decision = GetDecisionForReport(remoteBook, searchCriteria);
-                            }
+                                Release = report,
+                                ParsedBookInfo = parsedBookInfo
+                            };
+
+                            decision = new DownloadDecision(remoteBook, new Rejection("Unable to parse release"));
                         }
                     }
                 }

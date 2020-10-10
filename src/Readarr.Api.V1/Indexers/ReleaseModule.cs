@@ -4,11 +4,14 @@ using FluentValidation;
 using Nancy;
 using NLog;
 using NzbDrone.Common.Cache;
+using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.IndexerSearch;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 using HttpStatusCode = System.Net.HttpStatusCode;
@@ -22,6 +25,9 @@ namespace Readarr.Api.V1.Indexers
         private readonly IMakeDownloadDecision _downloadDecisionMaker;
         private readonly IPrioritizeDownloadDecision _prioritizeDownloadDecision;
         private readonly IDownloadService _downloadService;
+        private readonly IAuthorService _authorService;
+        private readonly IBookService _bookService;
+        private readonly IParsingService _parsingService;
         private readonly Logger _logger;
 
         private readonly ICached<RemoteBook> _remoteBookCache;
@@ -31,6 +37,9 @@ namespace Readarr.Api.V1.Indexers
                              IMakeDownloadDecision downloadDecisionMaker,
                              IPrioritizeDownloadDecision prioritizeDownloadDecision,
                              IDownloadService downloadService,
+                             IAuthorService authorService,
+                             IBookService bookService,
+                             IParsingService parsingService,
                              ICacheManager cacheManager,
                              Logger logger)
         {
@@ -39,6 +48,9 @@ namespace Readarr.Api.V1.Indexers
             _downloadDecisionMaker = downloadDecisionMaker;
             _prioritizeDownloadDecision = prioritizeDownloadDecision;
             _downloadService = downloadService;
+            _authorService = authorService;
+            _bookService = bookService;
+            _parsingService = parsingService;
             _logger = logger;
 
             GetResourceAll = GetReleases;
@@ -63,6 +75,52 @@ namespace Readarr.Api.V1.Indexers
 
             try
             {
+                if (remoteBook.Author == null)
+                {
+                    if (release.BookId.HasValue)
+                    {
+                        var book = _bookService.GetBook(release.BookId.Value);
+
+                        remoteBook.Author = _authorService.GetAuthor(book.AuthorId);
+                        remoteBook.Books = new List<Book> { book };
+                    }
+                    else if (release.AuthorId.HasValue)
+                    {
+                        var author = _authorService.GetAuthor(release.AuthorId.Value);
+                        var books = _parsingService.GetAlbums(remoteBook.ParsedBookInfo, author);
+
+                        if (books.Empty())
+                        {
+                            throw new NzbDroneClientException(HttpStatusCode.NotFound, "Unable to parse books in the release");
+                        }
+
+                        remoteBook.Author = author;
+                        remoteBook.Books = books;
+                    }
+                    else
+                    {
+                        throw new NzbDroneClientException(HttpStatusCode.NotFound, "Unable to find matching author and books");
+                    }
+                }
+                else if (remoteBook.Books.Empty())
+                {
+                    var books = _parsingService.GetAlbums(remoteBook.ParsedBookInfo, remoteBook.Author);
+
+                    if (books.Empty() && release.BookId.HasValue)
+                    {
+                        var book = _bookService.GetBook(release.BookId.Value);
+
+                        books = new List<Book> { book };
+                    }
+
+                    remoteBook.Books = books;
+                }
+
+                if (remoteBook.Books.Empty())
+                {
+                    throw new NzbDroneClientException(HttpStatusCode.NotFound, "Unable to parse books in the release");
+                }
+
                 _downloadService.DownloadReport(remoteBook);
             }
             catch (ReleaseDownloadException ex)
@@ -101,9 +159,8 @@ namespace Readarr.Api.V1.Indexers
             catch (Exception ex)
             {
                 _logger.Error(ex, "Book search failed");
+                throw new NzbDroneClientException(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            return new List<ReleaseResource>();
         }
 
         private List<ReleaseResource> GetAuthorReleases(int authorId)
@@ -118,9 +175,8 @@ namespace Readarr.Api.V1.Indexers
             catch (Exception ex)
             {
                 _logger.Error(ex, "Author search failed");
+                throw new NzbDroneClientException(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            return new List<ReleaseResource>();
         }
 
         private List<ReleaseResource> GetRss()
