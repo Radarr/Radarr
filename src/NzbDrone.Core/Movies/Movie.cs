@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Movies
             Translations = new List<MovieTranslation>();
             Recommendations = new List<int>();
             OriginalLanguage = Language.English;
+            Ratings = new Ratings();
         }
 
         public int TmdbId { get; set; }
