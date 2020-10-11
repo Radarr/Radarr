@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -89,6 +89,12 @@ namespace NzbDrone.Update.UpdateEngine
             _logger.Info("Updating Readarr from version {0} to version {1}", _detectExistingVersion.GetExistingVersion(installationFolder), BuildInfo.Version);
 
             Verify(installationFolder, processId);
+
+            if (installationFolder.EndsWith(@"\bin\Lidarr") || installationFolder.EndsWith(@"/bin/Lidarr"))
+            {
+                installationFolder = installationFolder.GetParentPath();
+                _logger.Info("Fixed Installation Folder: {0}", installationFolder);
+            }
 
             var appType = _detectApplicationType.GetAppType();
 
