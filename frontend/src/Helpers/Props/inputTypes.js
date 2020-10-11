@@ -10,6 +10,7 @@ export const PASSWORD = 'password';
 export const PATH = 'path';
 export const QUALITY_PROFILE_SELECT = 'qualityProfileSelect';
 export const ROOT_FOLDER_SELECT = 'rootFolderSelect';
+export const INDEXER_FLAGS_SELECT = 'indexerFlagsSelect';
 export const SELECT = 'select';
 export const TAG = 'tag';
 export const TEXT = 'text';
@@ -30,6 +31,7 @@ export const all = [
   PATH,
   QUALITY_PROFILE_SELECT,
   ROOT_FOLDER_SELECT,
+  INDEXER_FLAGS_SELECT,
   SELECT,
   TAG,
   TEXT,

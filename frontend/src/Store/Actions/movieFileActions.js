@@ -141,7 +141,10 @@ export const actionHandlers = handleThunks({
     const {
       movieFileIds,
       languages,
-      quality
+      indexerFlags,
+      quality,
+      edition,
+      releaseGroup
     } = payload;
 
     dispatch(set({ section, isSaving: true }));
@@ -154,8 +157,20 @@ export const actionHandlers = handleThunks({
       data.languages = languages;
     }
 
+    if (indexerFlags !== undefined) {
+      data.indexerFlags = indexerFlags;
+    }
+
     if (quality) {
       data.quality = quality;
+    }
+
+    if (releaseGroup) {
+      data.releaseGroup = releaseGroup;
+    }
+
+    if (edition) {
+      data.edition = edition;
     }
 
     const promise = createAjaxRequest({
@@ -174,8 +189,20 @@ export const actionHandlers = handleThunks({
             props.languages = languages;
           }
 
+          if (indexerFlags) {
+            props.indexerFlags = indexerFlags;
+          }
+
           if (quality) {
             props.quality = quality;
+          }
+
+          if (edition) {
+            props.edition = edition;
+          }
+
+          if (releaseGroup) {
+            props.releaseGroup = releaseGroup;
           }
 
           return updateItem({ section, id, ...props });

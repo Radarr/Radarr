@@ -3,16 +3,14 @@ import React, { Component } from 'react';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableRow from 'Components/Table/TableRow';
 import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
-import SelectLanguageModal from 'MovieFile/Language/SelectLanguageModal';
+import FileEditModal from 'MovieFile/Edit/FileEditModal';
 import MediaInfoConnector from 'MovieFile/MediaInfoConnector';
 import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
-import SelectQualityModal from 'MovieFile/Quality/SelectQualityModal';
 import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
 import FileDetailsModal from '../FileDetailsModal';
@@ -28,31 +26,14 @@ class MovieFileEditorRow extends Component {
     super(props, context);
 
     this.state = {
-      isSelectQualityModalOpen: false,
-      isSelectLanguageModalOpen: false,
       isConfirmDeleteModalOpen: false,
-      isFileDetailsModalOpen: false
+      isFileDetailsModalOpen: false,
+      isFileEditModalOpen: false
     };
   }
 
   //
   // Listeners
-
-  onSelectQualityPress = () => {
-    this.setState({ isSelectQualityModalOpen: true });
-  }
-
-  onSelectLanguagePress = () => {
-    this.setState({ isSelectLanguageModalOpen: true });
-  }
-
-  onSelectQualityModalClose = () => {
-    this.setState({ isSelectQualityModalOpen: false });
-  }
-
-  onSelectLanguageModalClose = () => {
-    this.setState({ isSelectLanguageModalOpen: false });
-  }
 
   onDeletePress = () => {
     this.setState({ isConfirmDeleteModalOpen: true });
@@ -76,6 +57,14 @@ class MovieFileEditorRow extends Component {
     this.setState({ isFileDetailsModalOpen: false });
   }
 
+  onFileEditPress = () => {
+    this.setState({ isFileEditModalOpen: true });
+  }
+
+  onFileEditModalClose = () => {
+    this.setState({ isFileEditModalOpen: false });
+  }
+
   //
   // Render
 
@@ -92,9 +81,8 @@ class MovieFileEditorRow extends Component {
     } = this.props;
 
     const {
-      isSelectQualityModalOpen,
-      isSelectLanguageModalOpen,
       isFileDetailsModalOpen,
+      isFileEditModalOpen,
       isConfirmDeleteModalOpen
     } = this.state;
 
@@ -132,10 +120,8 @@ class MovieFileEditorRow extends Component {
           {formatBytes(size)}
         </TableRowCell>
 
-        <TableRowCellButton
+        <TableRowCell
           className={styles.language}
-          title={translate('ClickToChangeLanguage')}
-          onPress={this.onSelectLanguagePress}
         >
           {
             showLanguagePlaceholder &&
@@ -149,12 +135,10 @@ class MovieFileEditorRow extends Component {
                 languages={languages}
               />
           }
-        </TableRowCellButton>
+        </TableRowCell>
 
-        <TableRowCellButton
+        <TableRowCell
           className={styles.quality}
-          title={translate('ClickToChangeQuality')}
-          onPress={this.onSelectQualityPress}
         >
           {
             showQualityPlaceholder &&
@@ -169,7 +153,7 @@ class MovieFileEditorRow extends Component {
                 isCutoffNotMet={qualityCutoffNotMet}
               />
           }
-        </TableRowCellButton>
+        </TableRowCell>
 
         <TableRowCell
           className={styles.formats}
@@ -180,6 +164,11 @@ class MovieFileEditorRow extends Component {
         </TableRowCell>
 
         <TableRowCell className={styles.actions}>
+          <IconButton
+            name={icons.EDIT}
+            onPress={this.onFileEditPress}
+          />
+
           <IconButton
             name={icons.MEDIA_INFO}
             onPress={this.onFileDetailsPress}
@@ -198,6 +187,12 @@ class MovieFileEditorRow extends Component {
           mediaInfo={mediaInfo}
         />
 
+        <FileEditModal
+          movieFileId={id}
+          isOpen={isFileEditModalOpen}
+          onModalClose={this.onFileEditModalClose}
+        />
+
         <ConfirmModal
           isOpen={isConfirmDeleteModalOpen}
           ids={[id]}
@@ -207,22 +202,6 @@ class MovieFileEditorRow extends Component {
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDelete}
           onCancel={this.onConfirmDeleteModalClose}
-        />
-
-        <SelectQualityModal
-          isOpen={isSelectQualityModalOpen}
-          ids={[id]}
-          qualityId={quality ? quality.quality.id : 0}
-          proper={quality ? quality.revision.version > 1 : false}
-          real={quality ? quality.revision.real > 0 : false}
-          onModalClose={this.onSelectQualityModalClose}
-        />
-
-        <SelectLanguageModal
-          isOpen={isSelectLanguageModalOpen}
-          ids={[id]}
-          languageIds={languages ? languages.map((l) => l.id) : []}
-          onModalClose={this.onSelectLanguageModalClose}
         />
       </TableRow>
     );

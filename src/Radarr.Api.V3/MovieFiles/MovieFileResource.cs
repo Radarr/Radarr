@@ -19,13 +19,15 @@ namespace Radarr.Api.V3.MovieFiles
         public long Size { get; set; }
         public DateTime DateAdded { get; set; }
         public string SceneName { get; set; }
-        public IndexerFlags IndexerFlags { get; set; }
+        public int IndexerFlags { get; set; }
         public QualityModel Quality { get; set; }
         public List<CustomFormatResource> CustomFormats { get; set; }
         public MediaInfoResource MediaInfo { get; set; }
         public string OriginalFilePath { get; set; }
         public bool QualityCutoffNotMet { get; set; }
         public List<Language> Languages { get; set; }
+        public string ReleaseGroup { get; set; }
+        public string Edition { get; set; }
     }
 
     public static class MovieFileResourceMapper
@@ -48,9 +50,11 @@ namespace Radarr.Api.V3.MovieFiles
                 Size = model.Size,
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
-                IndexerFlags = model.IndexerFlags,
+                IndexerFlags = (int)model.IndexerFlags,
                 Quality = model.Quality,
                 Languages = model.Languages,
+                ReleaseGroup = model.ReleaseGroup,
+                Edition = model.Edition,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
                 OriginalFilePath = model.OriginalFilePath
             };
@@ -73,9 +77,11 @@ namespace Radarr.Api.V3.MovieFiles
                 Size = model.Size,
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
-                IndexerFlags = model.IndexerFlags,
+                IndexerFlags = (int)model.IndexerFlags,
                 Quality = model.Quality,
                 Languages = model.Languages,
+                Edition = model.Edition,
+                ReleaseGroup = model.ReleaseGroup,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
                 OriginalFilePath = model.OriginalFilePath
             };
@@ -98,9 +104,11 @@ namespace Radarr.Api.V3.MovieFiles
                 Size = model.Size,
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,
-                IndexerFlags = model.IndexerFlags,
+                IndexerFlags = (int)model.IndexerFlags,
                 Quality = model.Quality,
                 Languages = model.Languages,
+                Edition = model.Edition,
+                ReleaseGroup = model.ReleaseGroup,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
                 QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(movie.Profile, model.Quality),
                 OriginalFilePath = model.OriginalFilePath
