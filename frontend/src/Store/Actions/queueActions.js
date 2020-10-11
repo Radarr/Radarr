@@ -306,9 +306,9 @@ export const actionHandlers = handleThunks({
     }).request;
 
     promise.done((data) => {
-      dispatch(batchActions([
-        fetchQueue(),
+      dispatch(fetchQueue());
 
+      dispatch(batchActions([
         ...ids.map((id) => {
           return updateItem({
             section: paged,
@@ -394,10 +394,10 @@ export const actionHandlers = handleThunks({
     }).request;
 
     promise.done((data) => {
-      dispatch(batchActions([
-        set({ section: paged, isRemoving: false }),
-        fetchQueue()
-      ]));
+      // Don't use batchActions with thunks
+      dispatch(fetchQueue());
+
+      dispatch(set({ section: paged, isRemoving: false }));
     });
 
     promise.fail((xhr) => {
