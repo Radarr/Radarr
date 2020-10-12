@@ -47,12 +47,13 @@ function EditRestrictionModalContent(props) {
             <FormLabel>{translate('MustContain')}</FormLabel>
 
             <FormInputGroup
+              {...required}
               type={inputTypes.TEXT_TAG}
               name="required"
               helpText={translate('RequiredRestrictionHelpText')}
               kind={kinds.SUCCESS}
               placeholder={translate('RequiredRestrictionPlaceHolder')}
-              {...required}
+              canEdit={true}
               onChange={onInputChange}
             />
           </FormGroup>
@@ -61,12 +62,13 @@ function EditRestrictionModalContent(props) {
             <FormLabel>{translate('MustNotContain')}</FormLabel>
 
             <FormInputGroup
+              {...ignored}
               type={inputTypes.TEXT_TAG}
               name="ignored"
               helpText={translate('IgnoredHelpText')}
               kind={kinds.DANGER}
               placeholder={translate('IgnoredPlaceHolder')}
-              {...ignored}
+              canEdit={true}
               onChange={onInputChange}
             />
           </FormGroup>
