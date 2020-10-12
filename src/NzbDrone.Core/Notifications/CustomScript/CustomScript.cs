@@ -46,6 +46,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Readarr_Release_BookCount", remoteBook.Books.Count.ToString());
             environmentVariables.Add("Readarr_Release_BookReleaseDates", string.Join(",", remoteBook.Books.Select(e => e.ReleaseDate)));
             environmentVariables.Add("Readarr_Release_BookTitles", string.Join("|", remoteBook.Books.Select(e => e.Title)));
+            environmentVariables.Add("Readarr_Release_BookIds", string.Join("|", remoteBook.Books.Select(e => e.Id.ToString())));
             environmentVariables.Add("Readarr_Release_Title", remoteBook.Release.Title);
             environmentVariables.Add("Readarr_Release_Indexer", remoteBook.Release.Indexer ?? string.Empty);
             environmentVariables.Add("Readarr_Release_Size", remoteBook.Release.Size.ToString());
