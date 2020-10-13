@@ -183,7 +183,7 @@ class AddNewMovieSearchResult extends Component {
             <div>
               <Label size={sizes.LARGE}>
                 <HeartRating
-                  rating={ratings.value}
+                  ratings={ratings}
                   iconSize={13}
                 />
               </Label>

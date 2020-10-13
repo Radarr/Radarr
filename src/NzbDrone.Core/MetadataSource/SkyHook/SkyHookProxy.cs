@@ -202,9 +202,20 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var certificationCountry = _configService.CertificationCountry.ToString();
 
             movie.Certification = resource.Certifications.FirstOrDefault(m => m.Country == certificationCountry)?.Certification;
-            movie.Ratings = resource.Ratings.Select(MapRatings).FirstOrDefault() ?? new Ratings();
+            movie.Ratings = MapRatings(resource.MovieRatings) ?? new Ratings();
             movie.Genres = resource.Genres;
             movie.Recommendations = resource.Recommendations?.Select(r => r.TmdbId).ToList() ?? new List<int>();
+
+            //Workaround due to metadata change until cache cleans up
+            if (movie.Ratings.Tmdb == null)
+            {
+                var tmdbRating = resource.Ratings.FirstOrDefault();
+                movie.Ratings.Tmdb = new RatingChild
+                {
+                    Votes = tmdbRating.Count,
+                    Value = tmdbRating.Value
+                };
+            }
 
             var now = DateTime.Now;
 
@@ -512,18 +523,56 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             return newAlternativeTitle;
         }
 
-        private static Ratings MapRatings(RatingResource rating)
+        private static Ratings MapRatings(RatingResource ratings)
         {
-            if (rating == null)
+            if (ratings == null)
             {
                 return new Ratings();
             }
 
-            return new Ratings
+            var mappedRatings = new Ratings();
+
+            if (ratings.Tmdb != null)
             {
-                Votes = rating.Count,
-                Value = rating.Value
-            };
+                mappedRatings.Tmdb = new RatingChild
+                {
+                    Type = (RatingType)Enum.Parse(typeof(RatingType), ratings.Tmdb.Type),
+                    Value = ratings.Tmdb.Value,
+                    Votes = ratings.Tmdb.Count
+                };
+            }
+
+            if (ratings.Imdb != null)
+            {
+                mappedRatings.Imdb = new RatingChild
+                {
+                    Type = (RatingType)Enum.Parse(typeof(RatingType), ratings.Imdb.Type),
+                    Value = ratings.Imdb.Value,
+                    Votes = ratings.Imdb.Count
+                };
+            }
+
+            if (ratings.Metacritic != null)
+            {
+                mappedRatings.Metacritic = new RatingChild
+                {
+                    Type = (RatingType)Enum.Parse(typeof(RatingType), ratings.Metacritic.Type),
+                    Value = ratings.Metacritic.Value,
+                    Votes = ratings.Metacritic.Count
+                };
+            }
+
+            if (ratings.RottenTomatoes != null)
+            {
+                mappedRatings.RottenTomatoes = new RatingChild
+                {
+                    Type = (RatingType)Enum.Parse(typeof(RatingType), ratings.RottenTomatoes.Type),
+                    Value = ratings.RottenTomatoes.Value,
+                    Votes = ratings.RottenTomatoes.Count
+                };
+            }
+
+            return mappedRatings;
         }
 
         private static MediaCover.MediaCover MapImage(ImageResource arg)

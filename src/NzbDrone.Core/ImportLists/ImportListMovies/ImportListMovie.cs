@@ -13,6 +13,7 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
             Images = new List<MediaCover.MediaCover>();
             Genres = new List<string>();
             Translations = new List<MovieTranslation>();
+            Ratings = new Ratings();
         }
 
         public int TmdbId { get; set; }

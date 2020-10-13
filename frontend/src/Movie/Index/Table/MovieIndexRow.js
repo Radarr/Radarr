@@ -332,7 +332,7 @@ class MovieIndexRow extends Component {
                   className={styles[name]}
                 >
                   <HeartRating
-                    rating={ratings.value}
+                    ratings={ratings}
                   />
                 </VirtualTableRowCell>
               );

@@ -131,10 +131,38 @@ export const filterPredicates = {
     return dateFilterPredicate(item.digitalRelease, filterValue, type);
   },
 
-  ratings: function(item, filterValue, type) {
+  tmdbRating: function(item, filterValue, type) {
     const predicate = filterTypePredicates[type];
 
-    return predicate(item.ratings.value * 10, filterValue);
+    const rating = item.ratings.tmdb ? item.ratings.tmdb.value : 0;
+
+    return predicate(rating * 10, filterValue);
+  },
+
+  tmdbVotes: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+
+    const rating = item.ratings.tmdb ? item.ratings.tmdb.votes : 0;
+
+    return predicate(rating, filterValue);
+  },
+
+  imdbRating: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+
+    console.log(item.ratings);
+
+    const rating = item.ratings.imdb ? item.ratings.imdb.value : 0;
+
+    return predicate(rating, filterValue);
+  },
+
+  imdbVotes: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+
+    const rating = item.ratings.imdb ? item.ratings.imdb.votes : 0;
+
+    return predicate(rating, filterValue);
   },
 
   qualityCutoffNotMet: function(item) {

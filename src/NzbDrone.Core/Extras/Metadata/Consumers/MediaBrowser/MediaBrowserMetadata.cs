@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
                 movieElement.Add(new XElement("Overview", movie.Overview));
                 movieElement.Add(new XElement("LocalTitle", movie.Title));
 
-                movieElement.Add(new XElement("Rating", movie.Ratings.Value));
+                movieElement.Add(new XElement("Rating", movie.Ratings.Tmdb?.Value ?? 0));
                 movieElement.Add(new XElement("ProductionYear", movie.Year));
                 movieElement.Add(new XElement("RunningTime", movie.Runtime));
                 movieElement.Add(new XElement("IMDB", movie.ImdbId));

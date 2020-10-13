@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import TextTruncate from 'react-text-truncate';
-import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
+import ImdbRating from 'Components/ImdbRating';
 import InfoLabel from 'Components/InfoLabel';
 import IconButton from 'Components/Link/IconButton';
 import Marquee from 'Components/Marquee';
@@ -16,6 +16,8 @@ import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
+import RottenTomatoRating from 'Components/RottenTomatoRating';
+import TmdbRating from 'Components/TmdbRating';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
@@ -450,17 +452,6 @@ class MovieDetails extends Component {
                     }
 
                     {
-                      !!ratings &&
-                        <span className={styles.rating}>
-                          <HeartRating
-                            rating={ratings.value}
-                            iconSize={20}
-                            hideHeart={isSmallScreen}
-                          />
-                        </span>
-                    }
-
-                    {
                       <span className={styles.links}>
                         <Tooltip
                           anchor={
@@ -499,6 +490,36 @@ class MovieDetails extends Component {
                         </span>
                     }
                   </div>
+                </div>
+
+                <div className={styles.details}>
+                  {
+                    !!ratings.tmdb &&
+                      <span className={styles.rating}>
+                        <TmdbRating
+                          ratings={ratings}
+                          iconSize={20}
+                        />
+                      </span>
+                  }
+                  {
+                    !!ratings.imdb &&
+                      <span className={styles.rating}>
+                        <ImdbRating
+                          ratings={ratings}
+                          iconSize={20}
+                        />
+                      </span>
+                  }
+                  {
+                    !!ratings.rottenTomatoes &&
+                      <span className={styles.rating}>
+                        <RottenTomatoRating
+                          ratings={ratings}
+                          iconSize={20}
+                        />
+                      </span>
+                  }
                 </div>
 
                 <div className={styles.detailsLabels}>
