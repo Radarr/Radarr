@@ -709,6 +709,7 @@ stages:
           TargetFolder: '$(Build.ArtifactStagingDirectory)/screenshots'
       - publish: $(Build.ArtifactStagingDirectory)/screenshots
         artifact: '$(osName)AutomationScreenshots'
+        continueOnError: true
         displayName: Publish Screenshot Bundle
       - task: PublishTestResults@2
         inputs:
