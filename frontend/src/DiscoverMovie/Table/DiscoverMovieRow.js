@@ -246,7 +246,7 @@ class DiscoverMovieRow extends Component {
                   className={styles[name]}
                 >
                   <HeartRating
-                    rating={ratings.value}
+                    ratings={ratings}
                   />
                 </VirtualTableRowCell>
               );
@@ -373,7 +373,7 @@ DiscoverMovieRow.propTypes = {
   digitalRelease: PropTypes.string,
   runtime: PropTypes.number,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
-  ratings: PropTypes.object.isRequired,
+  ratings: PropTypes.arrayOf(PropTypes.object).isRequired,
   certification: PropTypes.string,
   collection: PropTypes.object,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,

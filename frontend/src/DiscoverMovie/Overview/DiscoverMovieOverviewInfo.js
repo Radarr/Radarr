@@ -73,7 +73,7 @@ function getInfoRowProps(row, props) {
     return {
       title: translate('Ratings'),
       iconName: icons.HEART,
-      label: `${props.ratings.value * 10}%`
+      label: `${props.ratings.tmdb.value * 10}%`
     };
   }
 

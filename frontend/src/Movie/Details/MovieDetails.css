@@ -5,7 +5,7 @@
 .header {
   position: relative;
   width: 100%;
-  height: 350px;
+  height: 375px;
 }
 
 .errorMessage {
@@ -41,8 +41,8 @@
 .poster {
   flex-shrink: 0;
   margin-right: 35px;
-  width: 200px;
-  height: 294px;
+  width: 217px;
+  height: 319px;
 }
 
 .info {

@@ -209,7 +209,7 @@ export const defaultState = {
     ratings: function(item) {
       const { ratings = {} } = item;
 
-      return ratings.value;
+      return ratings.tmdb? ratings.tmdb.value : 0;
     }
   },
 
@@ -357,8 +357,23 @@ export const defaultState = {
       }
     },
     {
-      name: 'ratings',
-      label: translate('Ratings'),
+      name: 'tmdbRating',
+      label: translate('TmdbRating'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'tmdbVotes',
+      label: translate('TmdbVotes'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'imdbRating',
+      label: translate('ImdbRating'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'imdbVotes',
+      label: translate('ImdbVotes'),
       type: filterBuilderTypes.NUMBER
     },
     {

@@ -112,7 +112,7 @@ function DiscoverMoviePosterInfo(props) {
     return (
       <div className={styles.info}>
         <HeartRating
-          rating={ratings.value}
+          ratings={ratings}
         />
       </div>
     );
@@ -129,7 +129,7 @@ DiscoverMoviePosterInfo.propTypes = {
   digitalRelease: PropTypes.string,
   physicalRelease: PropTypes.string,
   runtime: PropTypes.number,
-  ratings: PropTypes.object,
+  ratings: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
