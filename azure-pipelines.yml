@@ -387,11 +387,6 @@ stages:
         displayName: Enable Windows Test Service
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - bash: |
-          wget https://github.com/acoustid/chromaprint/releases/download/v1.4.3/chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz
-          sudo tar xf chromaprint-fpcalc-1.4.3-linux-x86_64.tar.gz --strip-components=1 --directory /usr/bin
-        displayName: Install fpcalc
-        condition: and(succeeded(), eq(variables['osName'], 'Linux'))
-      - bash: |
           SYMLINK=6_6_0
           MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
           echo "##vso[task.setvariable variable=MONOPREFIX;]$MONOPREFIX"
@@ -694,20 +689,6 @@ stages:
           cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Radarr/. ./bin/
         displayName: Move Package Contents
       - bash: |
-          if [[ $OSNAME == "Mac" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-macos.tar.gz
-          elif [[ $OSNAME == "Linux" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
-          else
-          echo "Unhandled OS"
-          exit 1
-          fi
-          curl -s -L "$url" | tar -xz
-          chmod +x geckodriver
-          mv geckodriver _tests
-        displayName: Install Gecko Driver
-        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
-      - bash: |
           chmod a+x ${TESTSFOLDER}/test.sh
           ${TESTSFOLDER}/test.sh ${OSNAME} Automation Test
         displayName: Run Automation Tests
@@ -721,6 +702,7 @@ stages:
       - publish: $(Build.ArtifactStagingDirectory)/screenshots
         artifact: '$(osName)AutomationScreenshots'
         displayName: Publish Screenshot Bundle
+        continueOnError: true
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'NUnit'
@@ -872,6 +854,7 @@ stages:
         vmImage: 'windows-2019'
       steps:
         - task: DownloadPipelineArtifact@2
+          continueOnError: true
           displayName: Download Screenshot Artifact
           inputs:
             buildType: 'current'
