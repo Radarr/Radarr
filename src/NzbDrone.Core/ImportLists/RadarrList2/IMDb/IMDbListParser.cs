@@ -32,9 +32,9 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
             if (_settings.ListId.StartsWith("ls", StringComparison.OrdinalIgnoreCase))
             {
                 //Parse TSV response from IMDB export
-                var row = importResponse.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                var rows = importResponse.Content.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-                movies = row.Skip(1).SelectList(m => new ImportListMovie { ImdbId = m.Split(',')[1] });
+                movies = rows.Skip(1).SelectList(m => m.Split(',')).Where(m => m.Length > 1).SelectList(i => new ImportListMovie { ImdbId = i[1] });
 
                 return movies;
             }
