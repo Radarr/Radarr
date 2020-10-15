@@ -11,6 +11,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser.Model;
 using NzbDrone.SignalR;
 using Radarr.Api.V3.CustomFormats;
 using Radarr.Http;
@@ -110,9 +111,11 @@ namespace Radarr.Api.V3.MovieFiles
         private void SetMovieFile(MovieFileResource movieFileResource)
         {
             var movieFile = _mediaFileService.GetMovie(movieFileResource.Id);
-            movieFile.IndexerFlags = movieFileResource.IndexerFlags;
+            movieFile.IndexerFlags = (IndexerFlags)movieFileResource.IndexerFlags;
             movieFile.Quality = movieFileResource.Quality;
             movieFile.Languages = movieFileResource.Languages;
+            movieFile.Edition = movieFileResource.Edition;
+            movieFile.ReleaseGroup = movieFileResource.ReleaseGroup;
             _mediaFileService.Update(movieFile);
         }
 
@@ -132,6 +135,21 @@ namespace Radarr.Api.V3.MovieFiles
                 {
                     // Don't allow user to set movieFile with 'Any' or 'Original' language
                     movieFile.Languages = resource.Languages.Where(l => l != Language.Any || l != Language.Original || l != null).ToList();
+                }
+
+                if (resource.IndexerFlags != null)
+                {
+                    movieFile.IndexerFlags = (IndexerFlags)resource.IndexerFlags.Value;
+                }
+
+                if (resource.Edition != null)
+                {
+                    movieFile.Edition = resource.Edition;
+                }
+
+                if (resource.ReleaseGroup != null)
+                {
+                    movieFile.ReleaseGroup = resource.ReleaseGroup;
                 }
             }
 
