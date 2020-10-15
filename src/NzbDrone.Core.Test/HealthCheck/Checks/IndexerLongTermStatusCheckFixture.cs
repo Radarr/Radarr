@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.HealthCheck.Checks;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
@@ -24,6 +25,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Mocker.GetMock<IIndexerStatusService>()
                    .Setup(v => v.GetBlockedProviders())
                    .Returns(_blockedIndexers);
+
+            Mocker.GetMock<ILocalizationService>()
+                   .Setup(v => v.GetLocalizedString(It.IsAny<string>()))
+                   .Returns("Error");
         }
 
         private Mock<IIndexer> GivenIndexer(int id, double backoffHours, double failureHours)
