@@ -50,7 +50,6 @@ class FileEditModalContent extends Component {
   }
 
   onInputChange = ({ name, value }) => {
-    console.log('file', name, value);
     this.setState({ [name]: value });
   }
 
