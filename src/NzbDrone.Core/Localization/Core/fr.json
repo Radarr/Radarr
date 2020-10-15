@@ -846,5 +846,8 @@
     "Digital": "Numérique",
     "CancelProcessing": "Annuler le traitement",
     "AddRestriction": "Ajouter Restriction",
-    "AddMovie": "Ajouter Film"
+    "AddMovie": "Ajouter Film",
+    "IndexerLongTermStatusCheckSingleClientMessage": "Indexeurs indisponibles en raison de pannes pendant plus de 6 heures : {0}",
+    "IndexerLongTermStatusCheckAllClientMessage": "Tous les indexeurs sont indisponibles en raison d'échecs de plus de 6 heures",
+    "EditMovieFile": "Modifier Fichier Vidéo"
 }
