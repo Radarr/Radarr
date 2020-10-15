@@ -98,7 +98,7 @@ class FileEditModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Edit Movie File - {relativePath}
+          {translate('EditMovieFile')} - {relativePath}
         </ModalHeader>
 
         <ModalBody>
