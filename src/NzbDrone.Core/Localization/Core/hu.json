@@ -838,5 +838,7 @@
     "SetTags": "Címkék beállítása",
     "RegularExpressionsCanBeTested": "A reguláris kifejezések tesztelhetők ",
     "NotificationTriggers": "Értesítés(ek) kiváltója",
-    "GrabRelease": "Release megragadása"
+    "GrabRelease": "Release megragadása",
+    "IndexerLongTermStatusCheckSingleClientMessage": "Az összes indexer elérhetetlen több mint 6 órája, meghibásodás miatt: {0}",
+    "IndexerLongTermStatusCheckAllClientMessage": "Az összes indexer elérhetetlen több mint 6 órája, meghibásodás miatt"
 }
