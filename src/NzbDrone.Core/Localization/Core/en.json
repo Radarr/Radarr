@@ -734,7 +734,7 @@
   "TagCannotBeDeletedWhileInUse": "Cannot be deleted while in use",
   "TagIsNotUsedAndCanBeDeleted": "Tag is not used and can be deleted",
   "Tags": "Tags",
-  "TagsHelpText": "Applies to movies with at least one matching tag",
+  "TagsHelpText": "Tags list items will be added with",
   "TagsSettingsSummary": "See all tags and how they are used. Unused tags can be removed",
   "Tasks": "Tasks",
   "Test": "Test",
