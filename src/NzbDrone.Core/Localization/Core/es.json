@@ -849,5 +849,8 @@
     "Digital": "Digital",
     "CancelProcessing": "Cancelar Procesamiento",
     "AddRestriction": "Añadir Restricción",
-    "AddMovie": "Añadir Película"
+    "AddMovie": "Añadir Película",
+    "IndexerLongTermStatusCheckSingleClientMessage": "Indexers no disponible por errores durando más de 6 horas: {0}",
+    "IndexerLongTermStatusCheckAllClientMessage": "Ningún indexer está disponible por errores durando más de 6 horas",
+    "EditMovieFile": "Editar Archivo de Película"
 }
