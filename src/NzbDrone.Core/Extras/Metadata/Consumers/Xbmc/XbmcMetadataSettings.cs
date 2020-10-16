@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         {
             MovieMetadata = true;
             MovieMetadataURL = false;
-            MovieMetadataLanguage = 1;
+            MovieMetadataLanguage = (int)Language.English;
             MovieImages = true;
             UseMovieNfo = false;
         }
