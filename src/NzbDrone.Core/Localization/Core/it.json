@@ -843,5 +843,9 @@
     "Digital": "Digitale",
     "CancelProcessing": "Annulla lavoro",
     "AddRestriction": "Aggiungi Limitazioni",
-    "AddMovie": "Aggiungi FIlm"
+    "AddMovie": "Aggiungi FIlm",
+    "ListTagsHelpText": "Gli elementi dell'elenco dei tag saranno aggiunti con",
+    "IndexerLongTermStatusCheckSingleClientMessage": "Alcuni indexer non disponibili da più di 6 ore a causa di errori: {0}",
+    "IndexerLongTermStatusCheckAllClientMessage": "Nessun indexer è disponibile da più di 6 ore a causa di errori",
+    "EditMovieFile": "Edita File del Film"
 }
