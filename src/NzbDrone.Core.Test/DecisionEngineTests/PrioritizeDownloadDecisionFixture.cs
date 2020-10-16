@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             var remoteMovie = new RemoteMovie();
             remoteMovie.ParsedMovieInfo = new ParsedMovieInfo();
-            remoteMovie.ParsedMovieInfo.MovieTitle = "A Movie";
+            remoteMovie.ParsedMovieInfo.MovieTitles = new List<string> { "A Movie" };
             remoteMovie.ParsedMovieInfo.Year = 1998;
             remoteMovie.ParsedMovieInfo.Quality = quality;
 

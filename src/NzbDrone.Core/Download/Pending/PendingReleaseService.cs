@@ -227,7 +227,7 @@ namespace NzbDrone.Core.Download.Pending
             var targetItem = FindPendingRelease(queueId);
             var movieReleases = _repository.AllByMovieId(targetItem.MovieId);
 
-            var releasesToRemove = movieReleases.Where(c => c.ParsedMovieInfo.MovieTitle == targetItem.ParsedMovieInfo.MovieTitle);
+            var releasesToRemove = movieReleases.Where(c => c.ParsedMovieInfo.PrimaryMovieTitle == targetItem.ParsedMovieInfo.PrimaryMovieTitle);
 
             _repository.DeleteMany(releasesToRemove.Select(c => c.Id));
         }

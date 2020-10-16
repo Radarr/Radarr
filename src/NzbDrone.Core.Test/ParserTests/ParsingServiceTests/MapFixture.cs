@@ -45,69 +45,69 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
             _parsedMovieInfo = new ParsedMovieInfo
             {
-                MovieTitle = _movie.Title,
+                MovieTitles = new List<string> { _movie.Title },
                 Languages = new List<Language> { Language.English },
                 Year = _movie.Year,
             };
 
             _wrongYearInfo = new ParsedMovieInfo
             {
-                MovieTitle = _movie.Title,
+                MovieTitles = new List<string> { _movie.Title },
                 Languages = new List<Language> { Language.English },
                 Year = 1900,
             };
 
             _wrongTitleInfo = new ParsedMovieInfo
             {
-                MovieTitle = "Other Title",
+                MovieTitles = new List<string> { "Other Title" },
                 Languages = new List<Language> { Language.English },
                 Year = 2015
             };
 
             _alternativeTitleInfo = new ParsedMovieInfo
             {
-                MovieTitle = _movie.AlternativeTitles.First().Title,
+                MovieTitles = new List<string> { _movie.AlternativeTitles.First().Title },
                 Languages = new List<Language> { Language.English },
                 Year = _movie.Year,
             };
 
             _translationTitleInfo = new ParsedMovieInfo
             {
-                MovieTitle = _movie.Translations.First().Title,
+                MovieTitles = new List<string> { _movie.Translations.First().Title },
                 Languages = new List<Language> { Language.English },
                 Year = _movie.Year,
             };
 
             _romanTitleInfo = new ParsedMovieInfo
             {
-                MovieTitle = "Fack Ju Göthe II",
+                MovieTitles = new List<string> { "Fack Ju Göthe II" },
                 Languages = new List<Language> { Language.English },
                 Year = _movie.Year,
             };
 
             _umlautInfo = new ParsedMovieInfo
             {
-                MovieTitle = "Fack Ju Goethe 2",
+                MovieTitles = new List<string> { "Fack Ju Goethe 2" },
                 Languages = new List<Language> { Language.English },
                 Year = _movie.Year
             };
 
             _umlautAltInfo = new ParsedMovieInfo
             {
-                MovieTitle = "Fack Ju Goethe 2: Same same",
+                MovieTitles = new List<string> { "Fack Ju Goethe 2: Same same" },
                 Languages = new List<Language> { Language.English },
                 Year = _movie.Year
             };
 
             _multiLanguageInfo = new ParsedMovieInfo
             {
-                MovieTitle = _movie.Title,
+                MovieTitles = { _movie.Title },
                 Languages = new List<Language> { Language.Original, Language.French }
             };
 
             _multiLanguageWithOriginalInfo = new ParsedMovieInfo
             {
-                MovieTitle = _movie.Title,
+                MovieTitles = { _movie.Title },
                 Languages = new List<Language> { Language.Original, Language.French, Language.English }
             };
 
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Subject.Map(_parsedMovieInfo, "", null);
 
             Mocker.GetMock<IMovieService>()
-                .Verify(v => v.FindByTitle(It.IsAny<string>(), It.IsAny<int>(), null, null, null), Times.Once());
+                .Verify(v => v.FindByTitle(It.IsAny<List<string>>(), It.IsAny<int>(), It.IsAny<List<string>>(), null), Times.Once());
         }
 
         [Test]

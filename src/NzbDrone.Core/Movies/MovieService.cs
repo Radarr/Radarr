@@ -27,8 +27,8 @@ namespace NzbDrone.Core.Movies
         List<Movie> FindByTmdbId(List<int> tmdbids);
         Movie FindByTitle(string title);
         Movie FindByTitle(string title, int year);
-        Movie FindByTitle(string title, int? year, string arabicTitle, string romanTitle, List<Movie> candidates);
-        List<Movie> FindByTitleCandidates(string title, out string roman, out string arabic);
+        Movie FindByTitle(List<string> titles, int? year, List<string> otherTitles, List<Movie> candidates);
+        List<Movie> FindByTitleCandidates(List<string> titles, out List<string> otherTitles);
         Movie FindByTitleSlug(string slug);
         Movie FindByPath(string path);
         Dictionary<int, string> AllMoviePaths();
@@ -106,68 +106,74 @@ namespace NzbDrone.Core.Movies
 
         public Movie FindByTitle(string title)
         {
-            var candidates = FindByTitleCandidates(title, out var arabicTitle, out var romanTitle);
+            var candidates = FindByTitleCandidates(new List<string> { title }, out var otherTitles);
 
-            return FindByTitle(title, null, arabicTitle, romanTitle, candidates);
+            return FindByTitle(new List<string> { title }, null, otherTitles, candidates);
         }
 
         public Movie FindByTitle(string title, int year)
         {
-            var candidates = FindByTitleCandidates(title, out var arabicTitle, out var romanTitle);
+            var candidates = FindByTitleCandidates(new List<string> { title }, out var otherTitles);
 
-            return FindByTitle(title, year, arabicTitle, romanTitle, candidates);
+            return FindByTitle(new List<string> { title }, year, otherTitles, candidates);
         }
 
-        public Movie FindByTitle(string cleanTitle, int? year, string arabicTitle, string romanTitle, List<Movie> candidates)
+        public Movie FindByTitle(List<string> cleanTitles, int? year, List<string> otherTitles, List<Movie> candidates)
         {
-            var result = candidates.Where(x => x.CleanTitle == cleanTitle).FirstWithYear(year);
+            var result = candidates.Where(x => cleanTitles.Contains(x.CleanTitle)).FirstWithYear(year);
 
             if (result == null)
             {
                 result =
-                    candidates.Where(movie => movie.CleanTitle == arabicTitle).FirstWithYear(year) ??
-                    candidates.Where(movie => movie.CleanTitle == romanTitle).FirstWithYear(year);
+                    candidates.Where(movie => otherTitles.Contains(movie.CleanTitle)).FirstWithYear(year);
             }
 
             if (result == null)
             {
                 result = candidates
-                    .Where(m => m.AlternativeTitles.Any(t => t.CleanTitle == cleanTitle ||
-                                                        t.CleanTitle == arabicTitle ||
-                                                        t.CleanTitle == romanTitle))
+                    .Where(m => m.AlternativeTitles.Any(t => cleanTitles.Contains(t.CleanTitle) ||
+                                                        otherTitles.Contains(t.CleanTitle)))
                     .FirstWithYear(year);
             }
 
             if (result == null)
             {
                 result = candidates
-                    .Where(m => m.Translations.Any(t => t.CleanTitle == cleanTitle ||
-                                                        t.CleanTitle == arabicTitle ||
-                                                        t.CleanTitle == romanTitle))
+                    .Where(m => m.Translations.Any(t => cleanTitles.Contains(t.CleanTitle) ||
+                                                        otherTitles.Contains(t.CleanTitle)))
                     .FirstWithYear(year);
             }
 
             return result;
         }
 
-        public List<Movie> FindByTitleCandidates(string title, out string arabicTitle, out string romanTitle)
+        public List<Movie> FindByTitleCandidates(List<string> titles, out List<string> otherTitles)
         {
-            var cleanTitle = title.CleanMovieTitle().ToLowerInvariant();
-            romanTitle = cleanTitle;
-            arabicTitle = cleanTitle;
+            var lookupTitles = new List<string>();
+            otherTitles = new List<string>();
 
-            foreach (var arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
+            foreach (var title in titles)
             {
-                var arabicNumber = arabicRomanNumeral.ArabicNumeralAsString;
-                var romanNumber = arabicRomanNumeral.RomanNumeral;
+                var cleanTitle = title.CleanMovieTitle().ToLowerInvariant();
+                var romanTitle = cleanTitle;
+                var arabicTitle = cleanTitle;
 
-                romanTitle = romanTitle.Replace(arabicNumber, romanNumber);
-                arabicTitle = arabicTitle.Replace(romanNumber, arabicNumber);
+                foreach (var arabicRomanNumeral in RomanNumeralParser.GetArabicRomanNumeralsMapping())
+                {
+                    var arabicNumber = arabicRomanNumeral.ArabicNumeralAsString;
+                    var romanNumber = arabicRomanNumeral.RomanNumeral;
+
+                    romanTitle = romanTitle.Replace(arabicNumber, romanNumber);
+                    arabicTitle = arabicTitle.Replace(romanNumber, arabicNumber);
+                }
+
+                romanTitle = romanTitle.ToLowerInvariant();
+
+                otherTitles.AddRange(new List<string> { arabicTitle, romanTitle });
+                lookupTitles.AddRange(new List<string> { cleanTitle, arabicTitle, romanTitle });
             }
 
-            romanTitle = romanTitle.ToLowerInvariant();
-
-            return _movieRepository.FindByTitles(new List<string> { cleanTitle, arabicTitle, romanTitle });
+            return _movieRepository.FindByTitles(lookupTitles);
         }
 
         public Movie FindByImdbId(string imdbid)

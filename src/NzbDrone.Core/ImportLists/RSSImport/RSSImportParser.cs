@@ -146,7 +146,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
 
             if (result != null)
             {
-                releaseInfo.Title = result.MovieTitle;
+                releaseInfo.Title = result.PrimaryMovieTitle;
                 releaseInfo.Year = result.Year;
                 releaseInfo.ImdbId = result.ImdbId;
             }

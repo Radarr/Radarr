@@ -322,10 +322,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var yearTerm = "";
 
-                if (parserResult != null && parserResult.MovieTitle != title)
+                if (parserResult != null && parserResult.PrimaryMovieTitle != title)
                 {
                     //Parser found something interesting!
-                    parserTitle = parserResult.MovieTitle.ToLower().Replace(".", " "); //TODO Update so not every period gets replaced (e.g. R.I.P.D.)
+                    parserTitle = parserResult.PrimaryMovieTitle.ToLower().Replace(".", " "); //TODO Update so not every period gets replaced (e.g. R.I.P.D.)
                     if (parserResult.Year > 1800)
                     {
                         yearTerm = parserResult.Year.ToString();

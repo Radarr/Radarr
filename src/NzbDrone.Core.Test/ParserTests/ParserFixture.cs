@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("www.Torrenting.org - Movie.2008.720p.X264-DIMENSION", "Movie")]
         public void should_parse_movie_title(string postTitle, string title)
         {
-            Parser.Parser.ParseMovieTitle(postTitle).MovieTitle.Should().Be(title);
+            Parser.Parser.ParseMovieTitle(postTitle).PrimaryMovieTitle.Should().Be(title);
         }
 
         [TestCase("Movie.Aufbruch.nach.Pandora.Extended.2009.German.DTS.720p.BluRay.x264-SoW", "Movie Aufbruch nach Pandora", "Extended", 2009)]
@@ -99,16 +99,85 @@ namespace NzbDrone.Core.Test.ParserTests
             ParsedMovieInfo movie = Parser.Parser.ParseMovieTitle(postTitle);
             using (new AssertionScope())
             {
-                movie.MovieTitle.Should().Be(title);
+                movie.PrimaryMovieTitle.Should().Be(title);
                 movie.Edition.Should().Be(edition);
                 movie.Year.Should().Be(year);
+            }
+        }
+
+        [TestCase("L'hypothèse.du.tableau.volé.AKA.The.Hypothesis.of.the.Stolen.Painting.1978.1080p.CINET.WEB-DL.AAC2.0.x264-Cinefeel.mkv",
+            new string[]
+            {
+                "L'hypothèse du tableau volé AKA The Hypothesis of the Stolen Painting",
+                "L'hypothèse du tableau volé",
+                "The Hypothesis of the Stolen Painting"
+            })]
+        [TestCase("Akahige.AKA.Red.Beard.1965.CD1.CRiTERiON.DVDRip.XviD-KG.avi",
+            new string[]
+            {
+                "Akahige AKA Red Beard",
+                "Akahige",
+                "Red Beard"
+            })]
+        [TestCase("Akasen.chitai.AKA.Street.of.Shame.1956.1080p.BluRay.x264.FLAC.1.0.mkv",
+            new string[]
+            {
+                "Akasen chitai AKA Street of Shame",
+                "Akasen chitai",
+                "Street of Shame"
+            })]
+        [TestCase("Time.Under.Fire.(aka.Beneath.the.Bermuda.Triangle).1997.DVDRip.x264.CG-Grzechsin.mkv",
+            new string[]
+            {
+                "Time Under Fire (aka Beneath the Bermuda Triangle)",
+                "Time Under Fire",
+                "Beneath the Bermuda Triangle"
+            })]
+        [TestCase("Nochnoy.prodavet. AKA.Graveyard.Shift.2005.DVDRip.x264-HANDJOB.mkv",
+            new string[]
+            {
+                "Nochnoy prodavet  AKA Graveyard Shift",
+                "Nochnoy prodavet",
+                "Graveyard Shift"
+            })]
+        [TestCase("AKA.2002.DVDRip.x264-HANDJOB.mkv",
+            new string[]
+            {
+                "AKA"
+            })]
+        [TestCase("Unbreakable.2000.BluRay.1080p.DTS.x264.dxva-EuReKA.mkv",
+            new string[]
+            {
+                "Unbreakable"
+            })]
+        [TestCase("Aka Ana (2008).avi",
+            new string[]
+            {
+                "Aka Ana"
+            })]
+        [TestCase("Return to Return to Nuke 'em High aka Volume 2 (2018) 1080p.mp4",
+            new string[]
+            {
+                "Return to Return to Nuke 'em High aka Volume 2",
+                "Return to Return to Nuke 'em High",
+                "Volume 2"
+            })]
+        public void should_parse_movie_alternative_titles(string postTitle, string[] parsedTitles)
+        {
+            var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            movieInfo.MovieTitles.Count.Should().Be(parsedTitles.Length);
+
+            for (var i = 0; i < movieInfo.MovieTitles.Count; i += 1)
+            {
+                movieInfo.MovieTitles[i].Should().Be(parsedTitles[i]);
             }
         }
 
         [TestCase("(1995) Movie Name", "Movie Name")]
         public void should_parse_movie_folder_name(string postTitle, string title)
         {
-            Parser.Parser.ParseMovieTitle(postTitle, true).MovieTitle.Should().Be(title);
+            Parser.Parser.ParseMovieTitle(postTitle, true).PrimaryMovieTitle.Should().Be(title);
         }
 
         [TestCase("1776.1979.EXTENDED.720p.BluRay.X264-AMIABLE", 1979)]

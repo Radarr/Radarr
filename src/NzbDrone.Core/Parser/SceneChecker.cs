@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.Parser
+namespace NzbDrone.Core.Parser
 {
     public static class SceneChecker
     {
@@ -26,7 +26,7 @@
             if (parsedTitle == null ||
                 parsedTitle.ReleaseGroup == null ||
                 parsedTitle.Quality.Quality == Qualities.Quality.Unknown ||
-                string.IsNullOrWhiteSpace(parsedTitle.MovieTitle) ||
+                string.IsNullOrWhiteSpace(parsedTitle.PrimaryMovieTitle) ||
                 string.IsNullOrWhiteSpace(parsedTitle.ReleaseTitle))
             {
                 return null;

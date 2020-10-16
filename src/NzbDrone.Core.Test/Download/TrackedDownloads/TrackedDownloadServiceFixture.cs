@@ -49,13 +49,13 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
                 ParsedMovieInfo = new ParsedMovieInfo()
                 {
-                    MovieTitle = "A Movie",
+                    MovieTitles = new List<string> { "A Movie" },
                     Year = 1998
                 }
             };
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.Map(It.Is<ParsedMovieInfo>(i => i.MovieTitle == "A Movie"), It.IsAny<string>(), null))
+                  .Setup(s => s.Map(It.Is<ParsedMovieInfo>(i => i.PrimaryMovieTitle == "A Movie"), It.IsAny<string>(), null))
                   .Returns(new MappingResult { RemoteMovie = remoteEpisode });
 
             ParseMovieTitle();
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
                 ParsedMovieInfo = new ParsedMovieInfo()
                 {
-                    MovieTitle = "A Movie",
+                    MovieTitles = { "A Movie" },
                     Year = 1998
                 }
             };
@@ -156,7 +156,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
                 ParsedMovieInfo = new ParsedMovieInfo()
                 {
-                    MovieTitle = "A Movie",
+                    MovieTitles = { "A Movie" },
                     Year = 1998
                 }
             };
