@@ -683,20 +683,6 @@ stages:
           cp -r -v ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin/Readarr/. ./bin/
         displayName: Move Package Contents
       - bash: |
-          if [[ $OSNAME == "Mac" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-macos.tar.gz
-          elif [[ $OSNAME == "Linux" ]]; then
-          url=https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-linux64.tar.gz
-          else
-          echo "Unhandled OS"
-          exit 1
-          fi
-          curl -s -L "$url" | tar -xz
-          chmod +x geckodriver
-          mv geckodriver _tests
-        displayName: Install Gecko Driver
-        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
-      - bash: |
           chmod a+x ${TESTSFOLDER}/test.sh
           ${TESTSFOLDER}/test.sh ${OSNAME} Automation Test
         displayName: Run Automation Tests
@@ -709,7 +695,7 @@ stages:
           TargetFolder: '$(Build.ArtifactStagingDirectory)/screenshots'
       - publish: $(Build.ArtifactStagingDirectory)/screenshots
         artifact: '$(osName)AutomationScreenshots'
-        continueOnError: true
+        condition: and(succeeded(), eq(variables['System.JobAttempt'], '1'))
         displayName: Publish Screenshot Bundle
       - task: PublishTestResults@2
         inputs:
