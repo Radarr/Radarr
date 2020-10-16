@@ -606,7 +606,7 @@
     "MIA": "MIA",
     "MetadataSettingsSummary": "Készítsen metadatafájlokat, amikor filmeket importál vagy frissít",
     "MetadataSettings": "Metadata Beállítások",
-    "Metadata": "Metadata",
+    "Metadata": "Metaadat(ok)",
     "Message": "Üzenet",
     "MediaManagementSettingsSummary": "Elnevezési és fájlkezelési beállítások",
     "MediaManagementSettings": "Média Kezelési Beállítások",
@@ -840,5 +840,7 @@
     "NotificationTriggers": "Értesítés(ek) kiváltója",
     "GrabRelease": "Release megragadása",
     "IndexerLongTermStatusCheckSingleClientMessage": "Az összes indexer elérhetetlen több mint 6 órája, meghibásodás miatt: {0}",
-    "IndexerLongTermStatusCheckAllClientMessage": "Az összes indexer elérhetetlen több mint 6 órája, meghibásodás miatt"
+    "IndexerLongTermStatusCheckAllClientMessage": "Az összes indexer elérhetetlen több mint 6 órája, meghibásodás miatt",
+    "EditMovieFile": "Filmfájl szerkesztése",
+    "ListTagsHelpText": "A címkék listájának elemei hozzá lesznek adva"
 }
