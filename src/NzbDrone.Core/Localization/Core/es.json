@@ -46,7 +46,7 @@
     "CustomFilters": "Filtros Personalizados",
     "Crew": "Equipo",
     "Connections": "Conexiones",
-    "Connect": "Conexiones",
+    "Connect": "Conectar",
     "CompletedDownloadHandling": "Manipulación de descargas completas",
     "Clear": "Borrar",
     "ChooseAnotherFolder": "Elige otra Carpeta",
@@ -852,5 +852,6 @@
     "AddMovie": "Añadir Película",
     "IndexerLongTermStatusCheckSingleClientMessage": "Indexers no disponible por errores durando más de 6 horas: {0}",
     "IndexerLongTermStatusCheckAllClientMessage": "Ningún indexer está disponible por errores durando más de 6 horas",
-    "EditMovieFile": "Editar Archivo de Película"
+    "EditMovieFile": "Editar Archivo de Película",
+    "ListTagsHelpText": "Etiquetas con las que se añadirán los elementos"
 }
