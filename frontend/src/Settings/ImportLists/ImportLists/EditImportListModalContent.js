@@ -173,7 +173,7 @@ function EditImportListModalContent(props) {
                 <FormInputGroup
                   type={inputTypes.TAG}
                   name="tags"
-                  helpText={translate('TagsHelpText')}
+                  helpText={translate('ListTagsHelpText')}
                   {...tags}
                   onChange={onInputChange}
                 />
