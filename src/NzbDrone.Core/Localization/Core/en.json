@@ -365,6 +365,7 @@
   "ListSettings": "List Settings",
   "ListsSettingsSummary": "Import Lists, list exclusions",
   "ListSyncLevelHelpText": "Movies in library will be removed or unmonitored if not in your list",
+  "ListTagsHelpText": "Tags list items will be added with",
   "ListUpdateInterval": "List Update Interval",
   "LoadingMovieCreditsFailed": "Loading movie credits failed",
   "LoadingMovieExtraFilesFailed": "Loading movie extra files failed",
