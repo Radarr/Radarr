@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Parser.Augmenters
                 }                // First, let's augment the language!
 
                 var languageTitle = movieInfo.SimpleReleaseTitle;
-                if (movieInfo.MovieTitle.IsNotNullOrWhiteSpace())
+                if (movieInfo.PrimaryMovieTitle.IsNotNullOrWhiteSpace())
                 {
                     if (languageTitle.ToLower().Contains("multi") && indexerSettings?.MultiLanguages?.Any() == true)
                     {

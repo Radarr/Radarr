@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_properly_parse_hashed_releases(string path, string title, Quality quality, string releaseGroup)
         {
             var result = Parser.Parser.ParseMoviePath(path);
-            result.MovieTitle.Should().Be(title);
+            result.PrimaryMovieTitle.Should().Be(title);
             result.Quality.Quality.Should().Be(quality);
             result.ReleaseGroup.Should().Be(releaseGroup);
         }

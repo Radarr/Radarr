@@ -76,7 +76,7 @@ namespace NzbDrone.Core.CustomFormats
 
             var info = new ParsedMovieInfo
             {
-                MovieTitle = movieFile.Movie.Title,
+                MovieTitles = new List<string>() { movieFile.Movie.Title },
                 SimpleReleaseTitle = sceneName.SimplifyReleaseTitle(),
                 Quality = movieFile.Quality,
                 Languages = movieFile.Languages,
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.CustomFormats
 
             var info = new ParsedMovieInfo
             {
-                MovieTitle = movie.Title,
+                MovieTitles = new List<string>() { movie.Title },
                 SimpleReleaseTitle = parsed?.SimpleReleaseTitle ?? blocklist.SourceTitle.SimplifyReleaseTitle(),
                 Quality = blocklist.Quality,
                 Languages = blocklist.Languages,
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.CustomFormats
 
             var info = new ParsedMovieInfo
             {
-                MovieTitle = movie.Title,
+                MovieTitles = new List<string>() { movie.Title },
                 SimpleReleaseTitle = parsed?.SimpleReleaseTitle ?? history.SourceTitle.SimplifyReleaseTitle(),
                 Quality = history.Quality,
                 Languages = history.Languages,

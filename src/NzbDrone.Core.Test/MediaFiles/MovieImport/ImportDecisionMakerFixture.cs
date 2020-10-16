@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             _fileInfo = new ParsedMovieInfo
             {
-                MovieTitle = "The Office",
+                MovieTitles = new List<string> { "The Office" },
                 Year = 2018,
                 Quality = _quality
             };

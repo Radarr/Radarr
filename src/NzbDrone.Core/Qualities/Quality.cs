@@ -208,6 +208,7 @@ namespace NzbDrone.Core.Qualities
         public static readonly List<Quality> All;
 
         public static readonly Quality[] AllLookup;
+
         public static readonly HashSet<QualityDefinition> DefaultQualityDefinitions;
         public static Quality FindById(int id)
         {

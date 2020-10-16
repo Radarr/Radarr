@@ -7,12 +7,18 @@ namespace NzbDrone.Core.Parser.Model
 {
     public class ParsedMovieInfo
     {
-        public string MovieTitle { get; set; }
+        public ParsedMovieInfo()
+        {
+            MovieTitles = new List<string>();
+            Languages = new List<Language>();
+        }
+
+        public List<string> MovieTitles { get; set; }
         public string OriginalTitle { get; set; }
         public string ReleaseTitle { get; set; }
         public string SimpleReleaseTitle { get; set; }
         public QualityModel Quality { get; set; }
-        public List<Language> Languages { get; set; } = new List<Language>();
+        public List<Language> Languages { get; set; }
         public string ReleaseGroup { get; set; }
         public string ReleaseHash { get; set; }
         public string Edition { get; set; }
@@ -22,9 +28,22 @@ namespace NzbDrone.Core.Parser.Model
         [JsonIgnore]
         public Dictionary<string, object> ExtraInfo { get; set; } = new Dictionary<string, object>();
 
+        public string PrimaryMovieTitle
+        {
+            get
+            {
+                if (MovieTitles.Count > 0)
+                {
+                    return MovieTitles[0];
+                }
+
+                return null;
+            }
+        }
+
         public override string ToString()
         {
-            return string.Format("{0} - {1} {2}", MovieTitle, Year, Quality);
+            return string.Format("{0} - {1} {2}", PrimaryMovieTitle, Year, Quality);
         }
     }
 }

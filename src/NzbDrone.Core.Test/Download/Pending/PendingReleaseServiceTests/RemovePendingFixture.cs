@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _pending.Add(new PendingRelease
             {
                 Id = id,
-                ParsedMovieInfo = new ParsedMovieInfo { MovieTitle = title, Year = year },
+                ParsedMovieInfo = new ParsedMovieInfo { MovieTitles = new List<string> { title }, Year = year },
                 MovieId = _movie.Id
             });
         }
