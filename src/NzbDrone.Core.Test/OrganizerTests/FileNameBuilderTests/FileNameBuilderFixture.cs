@@ -364,7 +364,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.FULL}";
 
-            _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
+            _movieFile.MediaInfo = new MediaInfoModel()
             {
                 VideoFormat = "AVC",
                 AudioFormat = "DTS",
@@ -376,12 +376,33 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be("South.Park.H264.DTS[EN+ES].[EN+ES+IT]");
         }
 
+        [TestCase("Norwegian Bokmal", "NB")]
+        [TestCase("Swedis", "SV")]
+        [TestCase("Chinese", "ZH")]
+        public void should_format_languagecodes_properly(string language, string code)
+        {
+            _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.FULL}";
+
+            _movieFile.MediaInfo = new MediaInfoModel()
+            {
+                VideoCodec = "AVC",
+                AudioFormat = "DTS",
+                AudioChannels = 6,
+                AudioLanguages = "English",
+                Subtitles = language,
+                SchemaRevision = 3
+            };
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be($"South.Park.X264.DTS.[{code}]");
+        }
+
         [Test]
         public void should_exclude_english_in_mediainfo_audio_language()
         {
             _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.FULL}";
 
-            _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
+            _movieFile.MediaInfo = new MediaInfoModel()
             {
                 VideoFormat = "AVC",
                 AudioFormat = "DTS",
@@ -398,7 +419,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         {
             _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.3D}.{MediaInfo.Simple}";
 
-            _movieFile.MediaInfo = new Core.MediaFiles.MediaInfo.MediaInfoModel()
+            _movieFile.MediaInfo = new MediaInfoModel()
             {
                 VideoFormat = "AVC",
                 VideoMultiViewCount = 2,

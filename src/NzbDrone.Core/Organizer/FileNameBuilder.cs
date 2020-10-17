@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles;
@@ -414,9 +415,23 @@ namespace NzbDrone.Core.Organizer
             var cultures = CultureInfo.GetCultures(CultureTypes.NeutralCultures);
             for (int i = 0; i < tokens.Count; i++)
             {
+                if (tokens[i] == "Swedis")
+                {
+                    // Probably typo in mediainfo (should be 'Swedish')
+                    tokens[i] = "SV";
+                    continue;
+                }
+
+                if (tokens[i] == "Chinese" && OsInfo.IsNotWindows)
+                {
+                    // Mono only has 'Chinese (Simplified)' & 'Chinese (Traditional)'
+                    tokens[i] = "ZH";
+                    continue;
+                }
+
                 try
                 {
-                    var cultureInfo = cultures.FirstOrDefault(p => p.EnglishName == tokens[i]);
+                    var cultureInfo = cultures.FirstOrDefault(p => p.EnglishName.RemoveAccent() == tokens[i]);
 
                     if (cultureInfo != null)
                     {
