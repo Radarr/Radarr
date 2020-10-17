@@ -104,7 +104,6 @@ namespace Radarr.Api.V3.Movies
         {
             var tmdbId = Request.GetIntegerQueryParameter("tmdbId");
             var moviesResources = new List<MovieResource>();
-            var configLanguage = (Language)_configService.MovieInfoLanguage;
 
             Dictionary<string, FileInfo> coverFileInfos = null;
 
@@ -114,13 +113,12 @@ namespace Radarr.Api.V3.Movies
 
                 if (movie != null)
                 {
-                    var translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
-                    var translation = GetMovieTranslation(translations, movie, configLanguage);
-                    moviesResources.AddIfNotNull(movie.ToResource(_qualityUpgradableSpecification, translation));
+                    moviesResources.AddIfNotNull(MapToResource(movie));
                 }
             }
             else
             {
+                var configLanguage = (Language)_configService.MovieInfoLanguage;
                 var movieTask = Task.Run(() => _moviesService.GetAllMovies());
 
                 var translations = _movieTranslationService
