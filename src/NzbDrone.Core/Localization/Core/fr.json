@@ -791,9 +791,9 @@
     "PackageVersion": "Version du package",
     "Original": "Original",
     "OpenBrowserOnStart": "Ouvrir le navigateur au démarrage",
-    "OnUpgradeHelpText": "Être averti lorsque les films sont mis à niveau vers une meilleure qualité",
+    "OnUpgradeHelpText": "Lors de la mise à niveau",
     "OnRenameHelpText": "Lors du changement de nom",
-    "OnDownloadHelpText": "Être averti lorsque les films sont importés avec succès",
+    "OnDownloadHelpText": "À l'importation",
     "OnDeleteHelpText": "Lors de la suppression",
     "NoUpdatesAreAvailable": "Aucune mise à jour n'est disponible",
     "NotMonitored": "Pas surveillé",
@@ -849,5 +849,8 @@
     "AddMovie": "Ajouter Film",
     "IndexerLongTermStatusCheckSingleClientMessage": "Indexeurs indisponibles en raison de pannes pendant plus de 6 heures : {0}",
     "IndexerLongTermStatusCheckAllClientMessage": "Tous les indexeurs sont indisponibles en raison d'échecs de plus de 6 heures",
-    "EditMovieFile": "Modifier Fichier Vidéo"
+    "EditMovieFile": "Modifier Fichier Vidéo",
+    "Yesterday": "Hier",
+    "Tomorrow": "Demain",
+    "Today": "Aujourd'hui"
 }
