@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Extras
             var sourcePath = localMovie.Path;
             var sourceFolder = _diskProvider.GetParentFolder(sourcePath);
             var sourceFileName = Path.GetFileNameWithoutExtension(sourcePath);
-            var files = _diskProvider.GetFiles(sourceFolder, SearchOption.TopDirectoryOnly).Where(f => f != localMovie.Path);
+            var files = _diskProvider.GetFiles(sourceFolder, SearchOption.AllDirectories).Where(f => f != localMovie.Path);
 
             var wantedExtensions = _configService.ExtraFileExtensions.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                                                      .Select(e => e.Trim(' ', '.'))
