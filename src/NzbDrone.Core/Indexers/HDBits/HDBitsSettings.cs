@@ -34,13 +34,13 @@ namespace NzbDrone.Core.Indexers.HDBits
             RequiredFlags = new List<int>();
         }
 
-        [FieldDefinition(0, Label = "Username")]
+        [FieldDefinition(0, Label = "Username", Privacy = PrivacyLevel.UserName)]
         public string Username { get; set; }
 
         [FieldDefinition(1, Type = FieldType.TagSelect, SelectOptions = typeof(LanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
-        [FieldDefinition(2, Label = "API Key")]
+        [FieldDefinition(2, Label = "API Key", Privacy = PrivacyLevel.ApiKey)]
         public string ApiKey { get; set; }
 
         [FieldDefinition(3, Label = "API URL", Advanced = true, HelpText = "Do not change this unless you know what you're doing. Since your API key will be sent to that host.")]

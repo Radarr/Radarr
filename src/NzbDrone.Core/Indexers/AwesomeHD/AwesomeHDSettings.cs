@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
         [FieldDefinition(1, Type = FieldType.TagSelect, SelectOptions = typeof(LanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
-        [FieldDefinition(2, Label = "Passkey")]
+        [FieldDefinition(2, Label = "Passkey", Privacy = PrivacyLevel.ApiKey)]
         public string Passkey { get; set; }
 
         [FieldDefinition(3, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]

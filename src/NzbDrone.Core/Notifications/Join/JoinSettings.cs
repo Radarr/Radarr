@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Notifications.Join
 
         private static readonly JoinSettingsValidator Validator = new JoinSettingsValidator();
 
-        [FieldDefinition(0, Label = "API Key", HelpText = "The API Key from your Join account settings (click Join API button).", HelpLink = "https://joinjoaomgcd.appspot.com/")]
+        [FieldDefinition(0, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "The API Key from your Join account settings (click Join API button).", HelpLink = "https://joinjoaomgcd.appspot.com/")]
         public string ApiKey { get; set; }
 
         [FieldDefinition(1, Label = "Device IDs", HelpText = "Deprecated, use Device Names instead. Comma separated list of Device IDs you'd like to send notifications to. If unset, all devices will receive notifications.")]

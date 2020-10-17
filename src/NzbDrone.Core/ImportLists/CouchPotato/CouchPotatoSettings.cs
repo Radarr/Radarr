@@ -36,7 +36,7 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
         [FieldDefinition(2, Label = "CouchPotato Url Base", HelpText = "If you have CouchPotato configured via reverse proxy put the base path here. e.g. couchpotato. Leave blank for no base URL.")]
         public string UrlBase { get; set; }
 
-        [FieldDefinition(3, Label = "CouchPotato API Key", HelpText = "CouchPotato API Key. This can found within Settings > General")]
+        [FieldDefinition(3, Label = "CouchPotato API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "CouchPotato API Key. This can found within Settings > General")]
         public string ApiKey { get; set; }
 
         [FieldDefinition(4, Label = "Only Wanted", HelpText = "Only add wanted movies.", Type = FieldType.Checkbox)]

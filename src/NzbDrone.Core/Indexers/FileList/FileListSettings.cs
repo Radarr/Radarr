@@ -39,10 +39,10 @@ namespace NzbDrone.Core.Indexers.FileList
             RequiredFlags = new List<int>();
         }
 
-        [FieldDefinition(0, Label = "Username")]
+        [FieldDefinition(0, Label = "Username", Privacy = PrivacyLevel.UserName)]
         public string Username { get; set; }
 
-        [FieldDefinition(1, Label = "Passkey")]
+        [FieldDefinition(1, Label = "Passkey", Privacy = PrivacyLevel.ApiKey)]
         public string Passkey { get; set; }
 
         [FieldDefinition(2, Type = FieldType.TagSelect, SelectOptions = typeof(LanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]

@@ -32,10 +32,10 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
         [FieldDefinition(0, Label = "API URL", HelpText = "URL to TorrentPotato api.")]
         public string BaseUrl { get; set; }
 
-        [FieldDefinition(1, Label = "Username", HelpText = "The username you use at your indexer.")]
+        [FieldDefinition(1, Label = "Username", HelpText = "The username you use at your indexer.", Privacy = PrivacyLevel.UserName)]
         public string User { get; set; }
 
-        [FieldDefinition(2, Label = "Passkey", HelpText = "The password you use at your Indexer.")]
+        [FieldDefinition(2, Label = "Passkey", HelpText = "The password you use at your Indexer.", Privacy = PrivacyLevel.Password)]
         public string Passkey { get; set; }
 
         [FieldDefinition(3, Type = FieldType.TagSelect, SelectOptions = typeof(LanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]

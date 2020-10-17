@@ -31,7 +31,7 @@ namespace NzbDrone.Core.ImportLists.Radarr
         [FieldDefinition(0, Label = "Full URL", HelpText = "URL, including port, of the Radarr V3 instance to import from")]
         public string BaseUrl { get; set; }
 
-        [FieldDefinition(1, Label = "API Key", HelpText = "Apikey of the Radarr V3 instance to import from")]
+        [FieldDefinition(1, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "Apikey of the Radarr V3 instance to import from")]
         public string ApiKey { get; set; }
 
         [FieldDefinition(2, Type = FieldType.Device, RequestAction = "getProfiles", Label = "Profiles", HelpText = "Profiles from the source instance to import from")]

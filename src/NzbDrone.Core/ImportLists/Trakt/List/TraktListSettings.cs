@@ -19,7 +19,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.List
         {
         }
 
-        [FieldDefinition(1, Label = "Username", HelpText = "Username for the List to import from")]
+        [FieldDefinition(1, Label = "Username", Privacy = PrivacyLevel.UserName, HelpText = "Username for the List to import from")]
         public string Username { get; set; }
 
         [FieldDefinition(2, Label = "List Name", HelpText = "List name for import, list must be public or you must have access to the list")]

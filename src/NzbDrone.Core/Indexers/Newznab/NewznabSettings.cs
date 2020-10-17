@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         [FieldDefinition(1, Type = FieldType.TagSelect, SelectOptions = typeof(LanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
-        [FieldDefinition(2, Label = "API Key")]
+        [FieldDefinition(2, Label = "API Key", Privacy = PrivacyLevel.ApiKey)]
         public string ApiKey { get; set; }
 
         [FieldDefinition(3, Label = "Categories", HelpText = "Comma Separated list, leave blank to disable all categories", Advanced = true)]
