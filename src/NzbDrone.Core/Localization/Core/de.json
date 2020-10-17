@@ -477,7 +477,7 @@
     "OnGrabHelpText": "Erfassen",
     "OnHealthIssueHelpText": "Zustandsproblem",
     "OnRenameHelpText": "Umbennenen",
-    "OnUpgradeHelpText": "Bei Qualitätsverbesserungen von Filmen",
+    "OnUpgradeHelpText": "Upgrade",
     "OpenBrowserOnStart": "Browser beim Start öffnen",
     "Original": "Orginal",
     "PackageVersion": "Paket Version",
@@ -608,7 +608,7 @@
     "NoMinimumForAnyRuntime": "Kein Minimum für Laufzeiten",
     "AnalyticsEnabledHelpText": "Sende anonyme Nutzungs- und Fehlerinformationen an die Server von Radarr. Dazu gehören Informationen über Browser, welche Seiten der Radarr-Weboberfläche aufgerufen wurden, Fehlerberichte sowie Betriebssystem- und Laufzeitversion. Wir werden diese Informationen verwenden, um Funktionen und Fehlerbehebungen zu priorisieren.",
     "IgnoredHelpText": "Ein Release wird abgelehnt, wenn es einen oder mehrere dieser Begriffe enthält (Groß- und Kleinschreibung wird nicht berücksichtigt)",
-    "OnDownloadHelpText": "Film Import",
+    "OnDownloadHelpText": "Import",
     "RestartRequiredHelpTextWarning": "Erfordert einen Neustart",
     "ApiKey": "API-Schlüssel",
     "ImportedTo": "Importiert nach",
@@ -849,5 +849,12 @@
     "CancelProcessing": "Verarbeitung abbrechen",
     "EditRestriction": "Beschränkung bearbeiten",
     "AddRestriction": "Beschränkung hinzufügen",
-    "AddMovie": "Film hinzufügen"
+    "AddMovie": "Film hinzufügen",
+    "Yesterday": "Gestern",
+    "Tomorrow": "Morgen",
+    "Today": "Heute",
+    "ListTagsHelpText": "Tags Liseneinträge werden hinzugefügt mit",
+    "IndexerLongTermStatusCheckSingleClientMessage": "Indexer wegen über 6 Stunden langen bestehenden Fehlern nicht verfügbar: {0}",
+    "IndexerLongTermStatusCheckAllClientMessage": "Alle Indexer sind wegen über 6 Stunden langen bestehender Fehler nicht verfügbar",
+    "EditMovieFile": "FIlmdateil bearbeiten"
 }
