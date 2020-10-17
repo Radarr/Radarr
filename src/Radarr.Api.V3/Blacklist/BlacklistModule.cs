@@ -5,6 +5,7 @@ using NzbDrone.Core.Blacklisting;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Datastore;
 using Radarr.Http;
+using Radarr.Http.Extensions;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Blacklist
@@ -24,6 +25,7 @@ namespace Radarr.Api.V3.Blacklist
             DeleteResource = DeleteBlacklist;
 
             Get("/movie", x => GetMovieBlacklist());
+            Delete("/bulk", x => Remove());
         }
 
         private PagingResource<BlacklistResource> GetBlacklist(PagingResource<BlacklistResource> pagingResource)
@@ -50,6 +52,15 @@ namespace Radarr.Api.V3.Blacklist
         private void DeleteBlacklist(int id)
         {
             _blacklistService.Delete(id);
+        }
+
+        private object Remove()
+        {
+            var resource = Request.Body.FromJson<BlacklistBulkResource>();
+
+            _blacklistService.Delete(resource.Ids);
+
+            return new object();
         }
     }
 }

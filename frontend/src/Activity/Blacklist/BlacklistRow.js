@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import IconButton from 'Components/Link/IconButton';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import TableRow from 'Components/Table/TableRow';
 import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
@@ -42,6 +43,7 @@ class BlacklistRow extends Component {
 
   render() {
     const {
+      id,
       movie,
       sourceTitle,
       quality,
@@ -51,7 +53,9 @@ class BlacklistRow extends Component {
       protocol,
       indexer,
       message,
+      isSelected,
       columns,
+      onSelectedChange,
       onRemovePress
     } = this.props;
 
@@ -61,6 +65,12 @@ class BlacklistRow extends Component {
 
     return (
       <TableRow>
+        <TableSelectCell
+          id={id}
+          isSelected={isSelected}
+          onSelectedChange={onSelectedChange}
+        />
+
         {
           columns.map((column) => {
             const {
@@ -194,7 +204,9 @@ BlacklistRow.propTypes = {
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,
   message: PropTypes.string,
+  isSelected: PropTypes.bool.isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onSelectedChange: PropTypes.func.isRequired,
   onRemovePress: PropTypes.func.isRequired
 };
 

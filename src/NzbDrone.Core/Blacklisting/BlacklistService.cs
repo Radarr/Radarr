@@ -18,6 +18,7 @@ namespace NzbDrone.Core.Blacklisting
         PagingSpec<Blacklist> Paged(PagingSpec<Blacklist> pagingSpec);
         List<Blacklist> GetByMovieId(int movieId);
         void Delete(int id);
+        void Delete(List<int> ids);
     }
 
     public class BlacklistService : IBlacklistService,
@@ -74,6 +75,11 @@ namespace NzbDrone.Core.Blacklisting
         public void Delete(int id)
         {
             _blacklistRepository.Delete(id);
+        }
+
+        public void Delete(List<int> ids)
+        {
+            _blacklistRepository.DeleteMany(ids);
         }
 
         private bool SameNzb(Blacklist item, ReleaseInfo release)

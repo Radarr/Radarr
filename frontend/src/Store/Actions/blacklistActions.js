@@ -1,8 +1,11 @@
 import { createAction } from 'redux-actions';
+import { batchActions } from 'redux-batched-actions';
 import { sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
 import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
 import translate from 'Utilities/String/translate';
+import { set, updateItem } from './baseActions';
 import createHandleActions from './Creators/createHandleActions';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
@@ -25,6 +28,7 @@ export const defaultState = {
   sortDirection: sortDirections.DESCENDING,
   error: null,
   items: [],
+  isRemoving: false,
 
   columns: [
     {
@@ -96,7 +100,8 @@ export const GOTO_LAST_BLACKLIST_PAGE = 'blacklist/gotoBlacklistLastPage';
 export const GOTO_BLACKLIST_PAGE = 'blacklist/gotoBlacklistPage';
 export const SET_BLACKLIST_SORT = 'blacklist/setBlacklistSort';
 export const SET_BLACKLIST_TABLE_OPTION = 'blacklist/setBlacklistTableOption';
-export const REMOVE_FROM_BLACKLIST = 'blacklist/removeFromBlacklist';
+export const REMOVE_BLACKLIST_ITEM = 'blacklist/removeBlacklistItem';
+export const REMOVE_BLACKLIST_ITEMS = 'blacklist/removeBlacklistItems';
 export const CLEAR_BLACKLIST = 'blacklist/clearBlacklist';
 
 //
@@ -110,7 +115,8 @@ export const gotoBlacklistLastPage = createThunk(GOTO_LAST_BLACKLIST_PAGE);
 export const gotoBlacklistPage = createThunk(GOTO_BLACKLIST_PAGE);
 export const setBlacklistSort = createThunk(SET_BLACKLIST_SORT);
 export const setBlacklistTableOption = createAction(SET_BLACKLIST_TABLE_OPTION);
-export const removeFromBlacklist = createThunk(REMOVE_FROM_BLACKLIST);
+export const removeBlacklistItem = createThunk(REMOVE_BLACKLIST_ITEM);
+export const removeBlacklistItems = createThunk(REMOVE_BLACKLIST_ITEMS);
 export const clearBlacklist = createAction(CLEAR_BLACKLIST);
 
 //
@@ -131,7 +137,53 @@ export const actionHandlers = handleThunks({
       [serverSideCollectionHandlers.SORT]: SET_BLACKLIST_SORT
     }),
 
-  [REMOVE_FROM_BLACKLIST]: createRemoveItemHandler(section, '/blacklist')
+  [REMOVE_BLACKLIST_ITEM]: createRemoveItemHandler(section, '/blacklist'),
+
+  [REMOVE_BLACKLIST_ITEMS]: function(getState, payload, dispatch) {
+    const {
+      ids
+    } = payload;
+
+    dispatch(batchActions([
+      ...ids.map((id) => {
+        return updateItem({
+          section,
+          id,
+          isRemoving: true
+        });
+      }),
+
+      set({ section, isRemoving: true })
+    ]));
+
+    const promise = createAjaxRequest({
+      url: '/blacklist/bulk',
+      method: 'DELETE',
+      dataType: 'json',
+      data: JSON.stringify({ ids })
+    }).request;
+
+    promise.done((data) => {
+      // Don't use batchActions with thunks
+      dispatch(fetchBlacklist());
+
+      dispatch(set({ section, isRemoving: false }));
+    });
+
+    promise.fail((xhr) => {
+      dispatch(batchActions([
+        ...ids.map((id) => {
+          return updateItem({
+            section,
+            id,
+            isRemoving: false
+          });
+        }),
+
+        set({ section, isRemoving: false })
+      ]));
+    });
+  }
 });
 
 //
