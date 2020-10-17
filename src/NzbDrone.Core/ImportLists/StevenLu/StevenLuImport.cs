@@ -9,9 +9,9 @@ namespace NzbDrone.Core.ImportLists.StevenLu
     {
         public override string Name => "StevenLu Custom";
 
-        public override ImportListType ListType => ImportListType.Advanced;
+        public override ImportListSource ListType => ImportListSource.Advanced;
         public override bool Enabled => true;
-        public override bool EnableAuto => false;
+        public override ImportListType EnableAuto => ImportListType.Manual;
 
         public StevenLuImport(IHttpClient httpClient,
                               IImportListStatusService importListStatusService,

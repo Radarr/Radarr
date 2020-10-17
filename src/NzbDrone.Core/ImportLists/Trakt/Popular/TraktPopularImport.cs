@@ -21,7 +21,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.Popular
 
         public override string Name => "Trakt Popular List";
         public override bool Enabled => true;
-        public override bool EnableAuto => false;
+        public override ImportListType EnableAuto => ImportListType.Manual;
 
         public override IParseImportListResponse GetParser()
         {

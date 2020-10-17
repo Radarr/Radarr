@@ -31,9 +31,9 @@ namespace NzbDrone.Core.ImportLists
 
         public abstract string Name { get; }
 
-        public abstract ImportListType ListType { get; }
+        public abstract ImportListSource ListType { get; }
         public abstract bool Enabled { get; }
-        public abstract bool EnableAuto { get; }
+        public abstract ImportListType EnableAuto { get; }
 
         public abstract ImportListFetchResult Fetch();
 
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.ImportLists
                 {
                     Name = GetType().Name,
                     Enabled = config.Validate().IsValid && Enabled,
-                    EnableAuto = true,
+                    EnableAuto = ImportListType.Automatic,
                     Implementation = GetType().Name,
                     Settings = config
                 };

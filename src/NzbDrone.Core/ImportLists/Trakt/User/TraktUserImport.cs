@@ -21,7 +21,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.User
 
         public override string Name => "Trakt User";
         public override bool Enabled => true;
-        public override bool EnableAuto => false;
+        public override ImportListType EnableAuto => ImportListType.Manual;
 
         public override IImportListRequestGenerator GetRequestGenerator()
         {

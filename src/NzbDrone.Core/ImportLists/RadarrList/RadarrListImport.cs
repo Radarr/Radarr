@@ -11,9 +11,9 @@ namespace NzbDrone.Core.ImportLists.RadarrList
     {
         public override string Name => "Custom Lists";
 
-        public override ImportListType ListType => ImportListType.Advanced;
+        public override ImportListSource ListType => ImportListSource.Advanced;
         public override bool Enabled => true;
-        public override bool EnableAuto => false;
+        public override ImportListType EnableAuto => ImportListType.Manual;
 
         public RadarrListImport(IHttpClient httpClient,
             IImportListStatusService importListStatusService,

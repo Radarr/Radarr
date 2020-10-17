@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.ImportList
                   .Returns(cleanLevel);
         }
 
-        private void GivenList(int id, bool enabledAuto)
+        private void GivenList(int id, ImportListType enabledAuto)
         {
             var importListDefinition = new ImportListDefinition { Id = id, EnableAuto = enabledAuto };
 
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Test.ImportList
             CreateListResult(id, enabledAuto);
         }
 
-        private Mock<IImportList> CreateListResult(int id, bool enabledAuto)
+        private Mock<IImportList> CreateListResult(int id, ImportListType enabledAuto)
         {
             var importListDefinition = new ImportListDefinition { Id = id, EnableAuto = enabledAuto };
 
@@ -133,7 +133,7 @@ namespace NzbDrone.Core.Test.ImportList
         public void should_not_clean_library_if_config_value_disable()
         {
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
-            GivenList(1, true);
+            GivenList(1, ImportListType.Automatic);
             GivenCleanLevel("disabled");
 
             Subject.Execute(_commandAll);
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Test.ImportList
         public void should_log_only_on_clean_library_if_config_value_logonly()
         {
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
-            GivenList(1, true);
+            GivenList(1, ImportListType.Automatic);
             GivenCleanLevel("logOnly");
 
             Mocker.GetMock<IMovieService>()
@@ -172,7 +172,7 @@ namespace NzbDrone.Core.Test.ImportList
         public void should_unmonitor_on_clean_library_if_config_value_keepAndUnmonitor()
         {
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
-            GivenList(1, true);
+            GivenList(1, ImportListType.Automatic);
             GivenCleanLevel("keepAndUnmonitor");
 
             Mocker.GetMock<IMovieService>()
@@ -197,7 +197,7 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
             _importListFetch.Movies[0].TmdbId = 6;
 
-            GivenList(1, true);
+            GivenList(1, ImportListType.Automatic);
             GivenCleanLevel("keepAndUnmonitor");
 
             Mocker.GetMock<IMovieService>()
@@ -217,7 +217,7 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch.Movies[0].TmdbId = 0;
             _importListFetch.Movies[0].ImdbId = "6";
 
-            GivenList(1, true);
+            GivenList(1, ImportListType.Automatic);
             GivenCleanLevel("keepAndUnmonitor");
 
             Mocker.GetMock<IMovieService>()
@@ -234,7 +234,7 @@ namespace NzbDrone.Core.Test.ImportList
         public void should_delete_movies_not_files_on_clean_library_if_config_value_logonly()
         {
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
-            GivenList(1, true);
+            GivenList(1, ImportListType.Automatic);
             GivenCleanLevel("removeAndKeep");
 
             Mocker.GetMock<IMovieService>()
@@ -260,7 +260,7 @@ namespace NzbDrone.Core.Test.ImportList
         public void should_delete_movies_and_files_on_clean_library_if_config_value_logonly()
         {
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
-            GivenList(1, true);
+            GivenList(1, ImportListType.Automatic);
             GivenCleanLevel("removeAndDelete");
 
             Mocker.GetMock<IMovieService>()
@@ -288,7 +288,7 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
             GivenListFailure();
 
-            GivenList(1, true);
+            GivenList(1, ImportListType.Automatic);
             GivenCleanLevel("disabled");
 
             Subject.Execute(_commandAll);
@@ -301,7 +301,7 @@ namespace NzbDrone.Core.Test.ImportList
         public void should_add_new_movies_from_single_list_to_library()
         {
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
-            GivenList(1, true);
+            GivenList(1, ImportListType.Automatic);
             GivenCleanLevel("disabled");
 
             Subject.Execute(_commandAll);
@@ -317,8 +317,8 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
             _importListFetch.Movies.AddRange(_list2Movies);
 
-            GivenList(1, true);
-            GivenList(2, true);
+            GivenList(1, ImportListType.Automatic);
+            GivenList(2, ImportListType.Automatic);
 
             GivenCleanLevel("disabled");
 
@@ -335,8 +335,8 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
             _importListFetch.Movies.AddRange(_list2Movies);
 
-            GivenList(1, true);
-            GivenList(2, false);
+            GivenList(1, ImportListType.Automatic);
+            GivenList(2, ImportListType.Manual);
 
             GivenCleanLevel("disabled");
 
@@ -354,8 +354,8 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch.Movies.AddRange(_list2Movies);
             _importListFetch.Movies[0].TmdbId = 4;
 
-            GivenList(1, true);
-            GivenList(2, true);
+            GivenList(1, ImportListType.Automatic);
+            GivenList(2, ImportListType.Automatic);
 
             GivenCleanLevel("disabled");
 
@@ -372,8 +372,8 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
             _importListFetch.Movies.AddRange(_list2Movies);
 
-            GivenList(1, true);
-            GivenList(2, true);
+            GivenList(1, ImportListType.Automatic);
+            GivenList(2, ImportListType.Automatic);
 
             GivenCleanLevel("disabled");
 
@@ -394,8 +394,8 @@ namespace NzbDrone.Core.Test.ImportList
             _importListFetch.Movies.ForEach(m => m.ListId = 1);
             _importListFetch.Movies.AddRange(_list2Movies);
 
-            GivenList(1, true);
-            GivenList(2, true);
+            GivenList(1, ImportListType.Automatic);
+            GivenList(2, ImportListType.Automatic);
 
             GivenCleanLevel("disabled");
 

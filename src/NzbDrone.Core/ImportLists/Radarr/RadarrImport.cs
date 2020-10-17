@@ -16,9 +16,9 @@ namespace NzbDrone.Core.ImportLists.Radarr
         private readonly IRadarrV3Proxy _radarrV3Proxy;
         public override string Name => "Radarr";
         public override bool Enabled => true;
-        public override bool EnableAuto => false;
+        public override ImportListType EnableAuto => ImportListType.Manual;
 
-        public override ImportListType ListType => ImportListType.Program;
+        public override ImportListSource ListType => ImportListSource.Program;
 
         public RadarrImport(IRadarrV3Proxy radarrV3Proxy,
                             IImportListStatusService importListStatusService,

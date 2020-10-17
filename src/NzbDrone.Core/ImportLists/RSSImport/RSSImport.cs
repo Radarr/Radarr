@@ -11,9 +11,9 @@ namespace NzbDrone.Core.ImportLists.RSSImport
     {
         public override string Name => "RSS List";
 
-        public override ImportListType ListType => ImportListType.Advanced;
+        public override ImportListSource ListType => ImportListSource.Advanced;
         public override bool Enabled => true;
-        public override bool EnableAuto => false;
+        public override ImportListType EnableAuto => ImportListType.Manual;
 
         public RSSImport(IHttpClient httpClient, IImportListStatusService importListStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, importListStatusService, configService, parsingService, logger)
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
                 {
                     Name = "IMDb List",
                     Enabled = Enabled,
-                    EnableAuto = true,
+                    EnableAuto = ImportListType.Automatic,
                     ProfileId = 1,
                     Implementation = GetType().Name,
                     Settings = new RSSImportSettings { Link = "https://rss.imdb.com/list/YOURLISTID" },
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
                 {
                     Name = "IMDb Watchlist",
                     Enabled = Enabled,
-                    EnableAuto = true,
+                    EnableAuto = ImportListType.Automatic,
                     ProfileId = 1,
                     Implementation = GetType().Name,
                     Settings = new RSSImportSettings { Link = "https://rss.imdb.com/user/IMDBUSERID/watchlist" },

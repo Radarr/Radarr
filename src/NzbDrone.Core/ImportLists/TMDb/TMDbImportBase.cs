@@ -10,7 +10,7 @@ namespace NzbDrone.Core.ImportLists.TMDb
     public abstract class TMDbImportListBase<TSettings> : HttpImportListBase<TSettings>
         where TSettings : TMDbSettingsBase<TSettings>, new()
     {
-        public override ImportListType ListType => ImportListType.TMDB;
+        public override ImportListSource ListType => ImportListSource.TMDB;
 
         public readonly ISearchForNewMovie _skyhookProxy;
         public readonly IHttpRequestBuilderFactory _requestBuilder;

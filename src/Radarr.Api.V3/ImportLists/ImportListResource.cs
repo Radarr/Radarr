@@ -6,13 +6,13 @@ namespace Radarr.Api.V3.ImportLists
     public class ImportListResource : ProviderResource
     {
         public bool Enabled { get; set; }
-        public bool EnableAuto { get; set; }
+        public ImportListType EnableAuto { get; set; }
         public bool ShouldMonitor { get; set; }
         public string RootFolderPath { get; set; }
         public int QualityProfileId { get; set; }
         public bool SearchOnAdd { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
-        public ImportListType ListType { get; set; }
+        public ImportListSource ListType { get; set; }
         public int ListOrder { get; set; }
     }
 

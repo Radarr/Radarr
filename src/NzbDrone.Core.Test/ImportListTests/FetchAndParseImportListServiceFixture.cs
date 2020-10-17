@@ -42,12 +42,12 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Returns<Movie>(m => new Movie { TmdbId = m.TmdbId });
         }
 
-        private void GivenList(int id, bool enabled, bool enabledAuto, ImportListFetchResult fetchResult)
+        private void GivenList(int id, bool enabled, ImportListType enabledAuto, ImportListFetchResult fetchResult)
         {
             CreateListResult(id, enabled, enabledAuto, fetchResult);
         }
 
-        private Mock<IImportList> CreateListResult(int id, bool enabled, bool enabledAuto, ImportListFetchResult fetchResult)
+        private Mock<IImportList> CreateListResult(int id, bool enabled, ImportListType enabledAuto, ImportListFetchResult fetchResult)
         {
             var importListDefinition = new ImportListDefinition { Id = id, EnableAuto = enabledAuto };
 
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         public void should_return_failure_if_blocked_list()
         {
             var fetchResult = new ImportListFetchResult();
-            GivenList(1, true, true, fetchResult);
+            GivenList(1, true, ImportListType.Automatic, fetchResult);
             GivenBlockedList(1);
 
             var listResult = Subject.Fetch();
@@ -82,11 +82,11 @@ namespace NzbDrone.Core.Test.ImportListTests
         public void should_return_failure_if_one_blocked_list_one_good_list()
         {
             var fetchResult1 = new ImportListFetchResult();
-            GivenList(1, true, true, fetchResult1);
+            GivenList(1, true, ImportListType.Automatic, fetchResult1);
             GivenBlockedList(1);
 
             var fetchResult2 = new ImportListFetchResult { Movies = _listMovies, AnyFailure = true };
-            GivenList(2, true, true, fetchResult2);
+            GivenList(2, true, ImportListType.Automatic, fetchResult2);
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeTrue();
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         public void should_return_failure_if_single_list_fails()
         {
             var fetchResult = new ImportListFetchResult { Movies = _listMovies, AnyFailure = true };
-            GivenList(1, true, true, fetchResult);
+            GivenList(1, true, ImportListType.Automatic, fetchResult);
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeTrue();
@@ -106,9 +106,9 @@ namespace NzbDrone.Core.Test.ImportListTests
         public void should_return_failure_if_any_list_fails()
         {
             var fetchResult1 = new ImportListFetchResult { Movies = _listMovies, AnyFailure = true };
-            GivenList(1, true, true, fetchResult1);
+            GivenList(1, true, ImportListType.Automatic, fetchResult1);
             var fetchResult2 = new ImportListFetchResult { Movies = _listMovies, AnyFailure = false };
-            GivenList(2, true, true, fetchResult2);
+            GivenList(2, true, ImportListType.Automatic, fetchResult2);
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeTrue();
@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         {
             var listId = 1;
             var fetchResult = new ImportListFetchResult { Movies = _listMovies, AnyFailure = false };
-            GivenList(listId, true, true, fetchResult);
+            GivenList(listId, true, ImportListType.Automatic, fetchResult);
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeFalse();
@@ -145,7 +145,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         {
             var listId = 1;
             var fetchResult = new ImportListFetchResult { Movies = _listMovies, AnyFailure = true };
-            GivenList(listId, true, true, fetchResult);
+            GivenList(listId, true, ImportListType.Automatic, fetchResult);
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeTrue();
@@ -159,10 +159,10 @@ namespace NzbDrone.Core.Test.ImportListTests
         {
             var passedListId = 1;
             var fetchResult1 = new ImportListFetchResult { Movies = _listMovies, AnyFailure = false };
-            GivenList(passedListId, true, true, fetchResult1);
+            GivenList(passedListId, true, ImportListType.Automatic, fetchResult1);
             var failedListId = 2;
             var fetchResult2 = new ImportListFetchResult { Movies = _listMovies, AnyFailure = true };
-            GivenList(failedListId, true, true, fetchResult2);
+            GivenList(failedListId, true, ImportListType.Automatic, fetchResult2);
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeTrue();
@@ -176,10 +176,10 @@ namespace NzbDrone.Core.Test.ImportListTests
         {
             var passedListId = 1;
             var fetchResult1 = new ImportListFetchResult { Movies = _listMovies, AnyFailure = false };
-            GivenList(passedListId, true, true, fetchResult1);
+            GivenList(passedListId, true, ImportListType.Automatic, fetchResult1);
             var failedListId = 2;
             var fetchResult2 = new ImportListFetchResult { Movies = _listMovies, AnyFailure = false };
-            GivenList(failedListId, true, true, fetchResult2);
+            GivenList(failedListId, true, ImportListType.Automatic, fetchResult2);
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeFalse();

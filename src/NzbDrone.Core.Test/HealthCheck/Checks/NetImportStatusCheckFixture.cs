@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
             var mockList = new Mock<IImportList>();
             mockList.SetupGet(s => s.Definition).Returns(new ImportListDefinition { Id = id });
-            mockList.SetupGet(s => s.EnableAuto).Returns(true);
+            mockList.SetupGet(s => s.EnableAuto).Returns(ImportListType.Automatic);
 
             _lists.Add(mockList.Object);
 

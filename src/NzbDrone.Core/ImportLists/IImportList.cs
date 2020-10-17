@@ -5,9 +5,9 @@ namespace NzbDrone.Core.ImportLists
     public interface IImportList : IProvider
     {
         bool Enabled { get; }
-        bool EnableAuto { get; }
+        ImportListType EnableAuto { get; }
 
-        ImportListType ListType { get; }
+        ImportListSource ListType { get; }
         ImportListFetchResult Fetch();
     }
 }

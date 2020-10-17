@@ -49,6 +49,12 @@ function EditImportListModalContent(props) {
     fields
   } = item;
 
+  const importListTypeOptions = [
+    { key: 'manual', value: 'Manual' },
+    { key: 'automatic', value: 'Automatic Add' },
+    { key: 'exclusion', value: 'Exclusion List' }
+  ];
+
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
@@ -100,8 +106,9 @@ function EditImportListModalContent(props) {
                 <FormLabel>{translate('EnableAutomaticAdd')}</FormLabel>
 
                 <FormInputGroup
-                  type={inputTypes.CHECK}
+                  type={inputTypes.SELECT}
                   name="enableAuto"
+                  values={importListTypeOptions}
                   helpText={translate('EnableAutoHelpText')}
                   {...enableAuto}
                   onChange={onInputChange}

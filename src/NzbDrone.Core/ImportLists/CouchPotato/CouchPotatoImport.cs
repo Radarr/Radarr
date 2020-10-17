@@ -9,9 +9,9 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
     {
         public override string Name => "CouchPotato";
 
-        public override ImportListType ListType => ImportListType.Program;
+        public override ImportListSource ListType => ImportListSource.Program;
         public override bool Enabled => true;
-        public override bool EnableAuto => false;
+        public override ImportListType EnableAuto => ImportListType.Manual;
 
         public CouchPotatoImport(IHttpClient httpClient, IImportListStatusService importListStatusService, IConfigService configService, IParsingService parsingService, Logger logger)
             : base(httpClient, importListStatusService, configService, parsingService, logger)

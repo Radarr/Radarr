@@ -12,9 +12,9 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.StevenLu
 
         public override string Name => "StevenLu List";
 
-        public override ImportListType ListType => ImportListType.Other;
+        public override ImportListSource ListType => ImportListSource.Other;
         public override bool Enabled => true;
-        public override bool EnableAuto => false;
+        public override ImportListType EnableAuto => ImportListType.Manual;
 
         public StevenLu2Import(IRadarrCloudRequestBuilder requestBuilder,
                               IHttpClient httpClient,

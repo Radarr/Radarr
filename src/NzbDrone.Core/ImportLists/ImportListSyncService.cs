@@ -51,7 +51,7 @@ namespace NzbDrone.Core.ImportLists
         {
             var result = _listFetcherAndParser.Fetch();
 
-            if (_importListFactory.Enabled().Where(a => ((ImportListDefinition)a.Definition).EnableAuto).Empty())
+            if (_importListFactory.Enabled().Where(a => ((ImportListDefinition)a.Definition).EnableAuto == ImportListType.Automatic).Empty())
             {
                 _logger.Info("No auto enabled lists, skipping sync and cleaning");
                 return;
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.ImportLists
 
         private void ProcessMovieReport(ImportListDefinition importList, ImportListMovie report, List<ImportExclusion> listExclusions, List<int> dbMovies, List<Movie> moviesToAdd)
         {
-            if (report.TmdbId == 0 || !importList.EnableAuto)
+            if (report.TmdbId == 0 || importList.EnableAuto != ImportListType.Automatic)
             {
                 return;
             }

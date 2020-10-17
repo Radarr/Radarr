@@ -21,7 +21,7 @@ namespace NzbDrone.Api.ImportList
             base.MapToResource(resource, definition);
 
             resource.Enabled = definition.Enabled;
-            resource.EnableAuto = definition.EnableAuto;
+            resource.EnableAuto = (int)definition.EnableAuto;
             resource.ProfileId = definition.ProfileId;
             resource.RootFolderPath = definition.RootFolderPath;
             resource.ShouldMonitor = definition.ShouldMonitor;
@@ -34,7 +34,7 @@ namespace NzbDrone.Api.ImportList
             base.MapToModel(definition, resource);
 
             definition.Enabled = resource.Enabled;
-            definition.EnableAuto = resource.EnableAuto;
+            definition.EnableAuto = (ImportListType)resource.EnableAuto;
             definition.ProfileId = resource.ProfileId;
             definition.RootFolderPath = resource.RootFolderPath;
             definition.ShouldMonitor = resource.ShouldMonitor;

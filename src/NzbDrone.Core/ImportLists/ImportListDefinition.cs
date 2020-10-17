@@ -12,7 +12,7 @@ namespace NzbDrone.Core.ImportLists
         }
 
         public bool Enabled { get; set; }
-        public bool EnableAuto { get; set; }
+        public ImportListType EnableAuto { get; set; }
         public bool ShouldMonitor { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
         public int ProfileId { get; set; }
@@ -20,6 +20,6 @@ namespace NzbDrone.Core.ImportLists
         public bool SearchOnAdd { get; set; }
         public override bool Enable => Enabled;
 
-        public ImportListType ListType { get; set; }
+        public ImportListSource ListType { get; set; }
     }
 }

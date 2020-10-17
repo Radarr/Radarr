@@ -22,7 +22,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.Popular
 
         public override string Name => "TMDb Popular";
         public override bool Enabled => true;
-        public override bool EnableAuto => false;
+        public override ImportListType EnableAuto => ImportListType.Manual;
 
         public override IParseImportListResponse GetParser()
         {

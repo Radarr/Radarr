@@ -24,7 +24,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
 
         public override string Name => "TMDb User";
         public override bool Enabled => true;
-        public override bool EnableAuto => false;
+        public override ImportListType EnableAuto => ImportListType.Manual;
 
         public override IParseImportListResponse GetParser()
         {
