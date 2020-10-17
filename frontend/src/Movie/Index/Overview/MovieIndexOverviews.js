@@ -72,7 +72,8 @@ class MovieIndexOverviews extends Component {
       sortKey,
       overviewOptions,
       jumpToCharacter,
-      isMovieEditorActive
+      isMovieEditorActive,
+      isSmallScreen
     } = this.props;
 
     const {
@@ -82,13 +83,15 @@ class MovieIndexOverviews extends Component {
 
     if (prevProps.sortKey !== sortKey ||
         prevProps.overviewOptions !== overviewOptions) {
-      this.calculateGrid();
+      this.calculateGrid(this.state.width, isSmallScreen);
     }
 
-    if (this._grid &&
+    if (
+      this._grid &&
         (prevState.width !== width ||
             prevState.rowHeight !== rowHeight ||
             hasDifferentItemsOrOrder(prevProps.items, items) ||
+            prevProps.overviewOptions !== overviewOptions ||
             prevProps.isMovieEditorActive !== isMovieEditorActive)) {
       // recomputeGridSize also forces Grid to discard its cache of rendered cells
       this._grid.recomputeGridSize();
