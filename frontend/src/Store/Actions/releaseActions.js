@@ -29,11 +29,20 @@ export const defaultState = {
     age: function(item, direction) {
       return item.ageMinutes;
     },
+
     peers: function(item, direction) {
       const seeders = item.seeders || 0;
       const leechers = item.leechers || 0;
 
       return seeders * 1000000 + leechers;
+    },
+
+    languages: function(item, direction) {
+      if (item.languages.length > 1) {
+        return 10000;
+      }
+
+      return item.languages[0].id;
     },
 
     indexerFlags: function(item, direction) {

@@ -54,7 +54,7 @@ const columns = [
     isVisible: true
   },
   {
-    name: 'languageWeight',
+    name: 'languages',
     label: translate('Language'),
     isSortable: true,
     isVisible: true
