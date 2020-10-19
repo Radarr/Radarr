@@ -523,10 +523,10 @@
     "Options": "Opciók",
     "OpenThisModal": "Nyissa meg ezt a modált",
     "OpenBrowserOnStart": "Indításkor nyissa meg a böngészőt",
-    "OnUpgradeHelpText": "Küldj értesítést, ha egy filmből letöltésre került egy jobb minőségű",
+    "OnUpgradeHelpText": "Minőségjavítás alatt",
     "OnRenameHelpText": "Átnevezés alatt",
     "OnHealthIssueHelpText": "Állapotprobléma",
-    "OnDownloadHelpText": "Küldj értesítést, ha a filmet sikeresen importáltad",
+    "OnDownloadHelpText": "Importálás alatt",
     "OnDeleteHelpText": "Törlés alatt",
     "Ok": "Ok",
     "OAuthPopupMessage": "A böngésződ blokkolja az előugró ablakokat",
@@ -842,5 +842,8 @@
     "IndexerLongTermStatusCheckSingleClientMessage": "Az összes indexer elérhetetlen több mint 6 órája, meghibásodás miatt: {0}",
     "IndexerLongTermStatusCheckAllClientMessage": "Az összes indexer elérhetetlen több mint 6 órája, meghibásodás miatt",
     "EditMovieFile": "Filmfájl szerkesztése",
-    "ListTagsHelpText": "A címkék listájának elemei hozzá lesznek adva"
+    "ListTagsHelpText": "A címkék listájának elemei hozzá lesznek adva",
+    "Yesterday": "Tegnap",
+    "Tomorrow": "Holnap",
+    "Today": "Ma"
 }
