@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions';
-import { filterBuilderTypes, filterBuilderValueTypes, filterTypes, sortDirections } from 'Helpers/Props';
+import { filterBuilderTypes, filterBuilderValueTypes, filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import translate from 'Utilities/String/translate';
@@ -81,6 +81,14 @@ export const defaultState = {
 
       // Default to false
       return false;
+    },
+
+    peers: function(item, value, type) {
+      const predicate = filterTypePredicates[type];
+      const seeders = item.seeders || 0;
+      const leechers = item.leechers || 0;
+
+      return predicate(seeders + leechers, value);
     },
 
     rejectionCount: function(item, value, type) {
