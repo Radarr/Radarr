@@ -508,8 +508,8 @@
     "Overview": "Panoramica",
     "Original": "Originale",
     "OpenBrowserOnStart": "Apri il browser all'avvio",
-    "OnUpgradeHelpText": "Notifica quando i film sono aggiornati ad una qualità migliore",
-    "OnDownloadHelpText": "Notifica quando i film sono stati importati con successo",
+    "OnUpgradeHelpText": "In aggiornamento",
+    "OnDownloadHelpText": "In importazione",
     "OnDeleteHelpText": "In cancellazione",
     "NoUpdatesAreAvailable": "Nessun aggiornamento disponibile",
     "NotMonitored": "Non monitorato",
@@ -847,5 +847,8 @@
     "ListTagsHelpText": "Gli elementi dell'elenco dei tag saranno aggiunti con",
     "IndexerLongTermStatusCheckSingleClientMessage": "Alcuni indexer non disponibili da più di 6 ore a causa di errori: {0}",
     "IndexerLongTermStatusCheckAllClientMessage": "Nessun indexer è disponibile da più di 6 ore a causa di errori",
-    "EditMovieFile": "Edita File del Film"
+    "EditMovieFile": "Edita File del Film",
+    "Yesterday": "Ieri",
+    "Tomorrow": "Domani",
+    "Today": "Oggi"
 }
