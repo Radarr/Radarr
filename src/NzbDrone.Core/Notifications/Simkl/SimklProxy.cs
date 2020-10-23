@@ -18,8 +18,8 @@ namespace NzbDrone.Core.Notifications.Simkl
 
     public class SimklProxy : ISimklProxy
     {
-        private const string URL = "https://api.simkl.com";
-        private const string OAuthUrl = "https://api.simkl.com/oauth/authorize";
+        private const string URL = "https://simkl.com";
+        private const string OAuthUrl = "https://simkl.com/oauth/authorize";
         private const string RedirectUri = "https://auth.servarr.com/v1/simkl/auth";
         private const string RenewUri = "https://auth.servarr.com/v1/simkl/renew";
         private const string ClientId = "03d807fd74d79caa123c19dc7a2f1cb5851604e6b0e2530b03986fc95c4f19c6";
