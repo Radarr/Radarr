@@ -3,8 +3,8 @@ import React from 'react';
 import SelectInput from './SelectInput';
 
 const monitorTypesOptions = [
-  { key: 'true', value: 'True' },
-  { key: 'false', value: 'False' }
+  { key: 'true', value: 'Yes' },
+  { key: 'false', value: 'No' }
 ];
 
 function MovieMonitoredSelectInput(props) {
