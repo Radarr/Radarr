@@ -158,7 +158,8 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
 
                 if (version < new Version("5.1"))
                 {
-                    return new ValidationFailure(string.Empty, "Old Hadouken client with unsupported API, need 5.1 or higher");
+                    return new ValidationFailure(string.Empty,
+                        "Old Hadouken client with unsupported API, need 5.1 or higher");
                 }
             }
             catch (DownloadClientAuthenticationException ex)
@@ -166,6 +167,13 @@ namespace NzbDrone.Core.Download.Clients.Hadouken
                 _logger.Error(ex, "Unable to authenticate");
 
                 return new NzbDroneValidationFailure("Password", "Authentication failed");
+            }
+            catch (Exception ex)
+            {
+                return new NzbDroneValidationFailure("Host", "Unable to connect to Hadouken")
+                       {
+                           DetailedDescription = ex.Message
+                       };
             }
 
             return null;
