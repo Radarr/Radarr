@@ -122,7 +122,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 Url = $"https://www.themoviedb.org/movie/{message.Movie.TmdbId}",
                 Description = isUpgrade ? "Movie Upgraded" : "Movie Imported",
                 Title = message.Movie.Year > 0 ? $"{message.Movie.Title} ({message.Movie.Year})" : message.Movie.Title,
-                Color = isUpgrade ? (int)DiscordColors.Upgrade : (int)DiscordColors.Standard,
+                Color = isUpgrade ? (int)DiscordColors.Upgrade : (int)DiscordColors.Success,
                 Fields = new List<DiscordField>(),
                 Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
             };
