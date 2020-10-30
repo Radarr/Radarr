@@ -13,6 +13,7 @@ using NzbDrone.Core.ImportLists.ImportListMovies;
 using NzbDrone.Core.Indexers.Exceptions;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.ThingiProvider;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.ImportLists
 {
@@ -187,7 +188,9 @@ namespace NzbDrone.Core.ImportLists
 
                 if (releases.Empty())
                 {
-                    return new ValidationFailure(string.Empty, "No results were returned from your list, please check your settings.");
+                    return new NzbDroneValidationFailure(string.Empty,
+                               "No results were returned from your import list, please check your settings.")
+                    { IsWarning = true };
                 }
             }
             catch (RequestLimitReachedException)

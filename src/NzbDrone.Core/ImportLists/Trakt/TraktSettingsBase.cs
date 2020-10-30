@@ -14,9 +14,20 @@ namespace NzbDrone.Core.ImportLists.Trakt
         public TraktSettingsBaseValidator()
         {
             RuleFor(c => c.Link).ValidRootUrl();
-            RuleFor(c => c.AccessToken).NotEmpty();
-            RuleFor(c => c.RefreshToken).NotEmpty();
-            RuleFor(c => c.Expires).NotEmpty();
+
+            RuleFor(c => c.AccessToken).NotEmpty()
+                           .OverridePropertyName("SignIn")
+                           .WithMessage("Must authenticate with Trakt");
+
+            RuleFor(c => c.RefreshToken).NotEmpty()
+                                        .OverridePropertyName("SignIn")
+                                        .WithMessage("Must authenticate with Trakt")
+                                        .When(c => c.AccessToken.IsNotNullOrWhiteSpace());
+
+            RuleFor(c => c.Expires).NotEmpty()
+                                   .OverridePropertyName("SignIn")
+                                   .WithMessage("Must authenticate with Trakt")
+                                   .When(c => c.AccessToken.IsNotNullOrWhiteSpace() && c.RefreshToken.IsNotNullOrWhiteSpace());
 
             // Loose validation @TODO
             RuleFor(c => c.Rating)
