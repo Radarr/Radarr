@@ -47,6 +47,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
         [TestCase(1490, 1, Resolution.R720p)]
         [TestCase(1280, 1, Resolution.R720p)] // HD
         [TestCase(1200, 1, Resolution.R720p)]
+        [TestCase(1024, 1, Resolution.R576p)]
+        [TestCase(768, 576, Resolution.R576p)]
         [TestCase(800, 1, Resolution.R480p)]
         [TestCase(720, 1, Resolution.R480p)] // SDTV
         [TestCase(600, 1, Resolution.R480p)]

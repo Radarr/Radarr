@@ -45,6 +45,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
                 return AugmentQualityResult.ResolutionOnly((int)Resolution.R720p, Confidence.MediaInfo);
             }
 
+            if (width >= 1000 || height >= 560)
+            {
+                _logger.Trace("Resolution {0}x{1} considered 576p", width, height);
+                return AugmentQualityResult.ResolutionOnly((int)Resolution.R576p, Confidence.MediaInfo);
+            }
+
             if (width > 0 && height > 0)
             {
                 _logger.Trace("Resolution {0}x{1} considered 480p", width, height);
