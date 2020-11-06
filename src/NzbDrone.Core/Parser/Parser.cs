@@ -7,8 +7,6 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Parser.Model;
-#if !LIBRARY
-#endif
 
 namespace NzbDrone.Core.Parser
 {

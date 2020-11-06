@@ -164,7 +164,7 @@ namespace NzbDrone.Core.Qualities
             {
                 AllLookup[quality.Id] = quality;
             }
-#if !LIBRARY
+
             DefaultQualityDefinitions = new HashSet<QualityDefinition>
             {
                 new QualityDefinition(Quality.Unknown)     { Weight = 1,  MinSize = 0, MaxSize = 100, PreferredSize = 95 },
@@ -203,15 +203,12 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.BRDISK)      { Weight = 25, MinSize = 0, MaxSize = null, PreferredSize = null },
                 new QualityDefinition(Quality.RAWHD)       { Weight = 26, MinSize = 0, MaxSize = null, PreferredSize = null }
             };
-#endif
         }
 
         public static readonly List<Quality> All;
 
         public static readonly Quality[] AllLookup;
-#if !LIBRARY
         public static readonly HashSet<QualityDefinition> DefaultQualityDefinitions;
-#endif
         public static Quality FindById(int id)
         {
             if (id == 0)

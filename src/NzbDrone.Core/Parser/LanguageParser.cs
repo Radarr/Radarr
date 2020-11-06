@@ -241,9 +241,7 @@ namespace NzbDrone.Core.Parser
         {
             try
             {
-#if !LIBRARY
                 Logger.Debug("Parsing language from subtitle file: {0}", fileName);
-#endif
 
                 var simpleFilename = Path.GetFileNameWithoutExtension(fileName);
                 var languageMatch = SubtitleLanguageRegex.Match(simpleFilename);
@@ -255,15 +253,12 @@ namespace NzbDrone.Core.Parser
 
                     return isoLanguage?.Language ?? Language.Unknown;
                 }
-#if !LIBRARY
+
                 Logger.Debug("Unable to parse langauge from subtitle file: {0}", fileName);
-#endif
             }
             catch (Exception)
             {
-#if !LIBRARY
                 Logger.Debug("Failed parsing langauge from subtitle file: {0}", fileName);
-#endif
             }
 
             return Language.Unknown;
