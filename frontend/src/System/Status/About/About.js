@@ -60,7 +60,7 @@ class About extends Component {
             isNetCore &&
               <DescriptionListItem
                 title={translate('NetCore')}
-                data={'Yes'}
+                data={`Yes (${runtimeVersion})`}
               />
           }
 
