@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Notifications.DiscordNotifier
         }
 
         public override string Link => "https://discordnotifier.com";
-        public override string Name => "Discord Notifier";
+        public override string Name => "DiscordNotifier.com";
 
         public override void OnGrab(GrabMessage message)
         {
