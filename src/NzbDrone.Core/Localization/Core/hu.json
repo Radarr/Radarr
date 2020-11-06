@@ -763,7 +763,7 @@
     "IllRestartLater": "Később Újraindítom",
     "IgnoredPlaceHolder": "Új korlátozás hozzáadása",
     "IgnoredHelpText": "A kiadás elutasításra kerül, ha egy vagy több kifejezést tartalmaz (A kis- és nagybetűket nem vesszük figyelembe)",
-    "IgnoreDeletedMovies": "Ignorált Törölt Filmek",
+    "IgnoreDeletedMovies": "Törölt filmek megfigyelésének leállítása",
     "IgnoredAddresses": "Ignorált Címek",
     "Ignored": "Ignorált",
     "IconForCutoffUnmet": "Ikon a Sikertelen Küszöbszint Elérésére",
