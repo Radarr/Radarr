@@ -59,7 +59,7 @@ class About extends Component {
             isNetCore &&
               <DescriptionListItem
                 title=".NET Core"
-                data={'Yes'}
+                data={`Yes (${runtimeVersion})`}
               />
           }
 
