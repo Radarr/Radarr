@@ -125,6 +125,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("DEXTER.S07E01.ARE.YOU.1080P.HDTV.x264-QCF", false)]
         [TestCase("DEXTER.S07E01.ARE.YOU.1080P.HDTV.proper.X264-QCF", true)]
         [TestCase("Dexter - S01E01 - Title [HDTV-1080p]", false)]
+        [TestCase("Super.Robot.Monkey.Team.Hyperforce.Go.2020.1080i.HDTV.DD5.1.H.264-NOGRP", false)]
         public void should_parse_hdtv1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R1080p);
@@ -281,19 +282,13 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080p, Modifier.BRDISK);
         }
 
-        //[TestCase("POI S02E11 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
-        //[TestCase("How I Met Your Mother S01E18 Nothing Good Happens After 2 A.M. 720p HDTV DD5.1 MPEG2-TrollHD", false)]
-        //[TestCase("The Voice S01E11 The Finals 1080i HDTV DD5.1 MPEG2-TrollHD", false)]
-        //[TestCase("Californication.S07E11.1080i.HDTV.DD5.1.MPEG2-NTb.ts", false)]
-        //[TestCase("Game of Thrones S04E10 1080i HDTV MPEG2 DD5.1-CtrlHD.ts", false)]
-        //[TestCase("VICE.S02E05.1080i.HDTV.DD2.0.MPEG2-NTb.ts", false)]
-        //[TestCase("Show - S03E01 - Episode Title Raw-HD.ts", false)]
-        //[TestCase("Saturday.Night.Live.Vintage.S10E09.Eddie.Murphy.The.Honeydrippers.1080i.UPSCALE.HDTV.DD5.1.MPEG2-zebra", false)]
-        //[TestCase("The.Colbert.Report.2011-08-04.1080i.HDTV.MPEG-2-CtrlHD", false)]
-        //public void should_parse_raw_quality(string title, bool proper)
-        //{
-        //    ParseAndVerifyQuality(title, Quality.RAWHD, proper);
-        //}
+        [TestCase("Pan.2015.Open.Matte.1080i.HDTV.DD5.1.MPEG2", false)]
+        [TestCase("Nobody.To.Watch.Over.Me.2009.1080i.HDTV.AAC2.0.MPEG2-PepelefuF", false)]
+        public void should_parse_raw_quality(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R1080p, Modifier.RAWHD);
+        }
+
         [TestCase("Sonny.With.a.Chance.S02E15", false)]
         [TestCase("Law & Order: Special Victims Unit - 11x11 - Quickie", false)]
         [TestCase("Series.Title.S01E01.webm", false)]

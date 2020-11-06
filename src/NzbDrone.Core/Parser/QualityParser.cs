@@ -36,8 +36,10 @@ namespace NzbDrone.Core.Parser
                                                                 )(?:\b|$|[ .])",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex RawHDRegex = new Regex(@"\b(?<rawhd>RawHD|1080i[-_. ]HDTV|Raw[-_. ]HD|MPEG[-_. ]?2)\b",
+        private static readonly Regex RawHDRegex = new Regex(@"\b(?<rawhd>RawHD|Raw[-_. ]HD)\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private static readonly Regex MPEG2Regex = new Regex(@"\b(?<mpeg2>MPEG[-_. ]?2)\b");
 
         private static readonly Regex BRDISKRegex = new Regex(@"\b(COMPLETE|ISO|BDISO|BD25|BD50|BR.?DISK)\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -125,6 +127,15 @@ namespace NzbDrone.Core.Parser
             var codecRegex = CodecRegex.Match(normalizedName);
             var remuxMatch = RemuxRegex.IsMatch(normalizedName);
             var brDiskMatch = BRDISKRegex.IsMatch(normalizedName);
+
+            if (RawHDRegex.IsMatch(normalizedName) && !brDiskMatch)
+            {
+                result.SourceDetectionSource = QualityDetectionSource.Name;
+                result.ResolutionDetectionSource = QualityDetectionSource.Name;
+                result.Quality = Quality.RAWHD;
+
+                return result;
+            }
 
             if (resolution != Resolution.Unknown)
             {
@@ -278,6 +289,12 @@ namespace NzbDrone.Core.Parser
 
                 if (sourceMatch.Groups["hdtv"].Success)
                 {
+                    if (MPEG2Regex.IsMatch(normalizedName))
+                    {
+                        result.Quality = Quality.RAWHD;
+                        return result;
+                    }
+
                     if (resolution == Resolution.R2160p)
                     {
                         result.Quality = Quality.HDTV2160p;
