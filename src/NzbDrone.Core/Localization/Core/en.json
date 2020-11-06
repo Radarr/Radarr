@@ -298,7 +298,7 @@
   "IconForCutoffUnmet": "Icon for Cutoff Unmet",
   "Ignored": "Ignored",
   "IgnoredAddresses": "Ignored Addresses",
-  "IgnoreDeletedMovies": "Ignore Deleted Movies",
+  "IgnoreDeletedMovies": "Unmonitor Deleted Movies",
   "IgnoredHelpText": "The release will be rejected if it contains one or more of the terms (case insensitive)",
   "IgnoredPlaceHolder": "Add new restriction",
   "IllRestartLater": "I'll restart later",
