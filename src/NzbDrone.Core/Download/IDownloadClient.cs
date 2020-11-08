@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Download
         DownloadProtocol Protocol { get; }
         string Download(RemoteMovie remoteMovie);
         IEnumerable<DownloadClientItem> GetItems();
-        OsPath GetOutputPath(string downloadId);
+        DownloadClientItem GetImportItem(DownloadClientItem item, DownloadClientItem previousImportAttempt);
         void RemoveItem(string downloadId, bool deleteData);
         DownloadClientInfo GetStatus();
         void MarkItemAsImported(DownloadClientItem downloadClientItem);

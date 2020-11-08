@@ -219,13 +219,14 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             Proxy.RemoveTorrent(hash.ToLower(), deleteData, Settings);
         }
 
-        public override OsPath GetOutputPath(string hash)
+        public override DownloadClientItem GetImportItem(DownloadClientItem item, DownloadClientItem previousImportAttempt)
         {
-            var torrent = Proxy.GetTorrentProperties(hash, Settings);
-            var savePath = new OsPath(torrent.SavePath);
-            _logger.Trace($"Got save path {savePath}");
+            var result = item.Clone();
 
-            var files = Proxy.GetTorrentFiles(hash, Settings);
+            var properties = Proxy.GetTorrentProperties(item.DownloadId, Settings);
+            var savePath = new OsPath(properties.SavePath);
+
+            var files = Proxy.GetTorrentFiles(item.DownloadId, Settings);
 
             OsPath outputPath;
             if (!files.Any())
@@ -249,7 +250,9 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 outputPath = savePath + relativePath;
             }
 
-            return _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath);
+            result.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath);
+
+            return result;
         }
 
         public override DownloadClientInfo GetStatus()
