@@ -40,7 +40,15 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
     {
         public string Hash { get; set; } // Torrent hash
 
+        [JsonProperty(PropertyName = "save_path")]
+        public string SavePath { get; set; }
+
         [JsonProperty(PropertyName = "seeding_time")]
         public long SeedingTime { get; set; } // Torrent seeding time
+    }
+
+    public class QBittorrentTorrentFile
+    {
+        public string Name { get; set; }
     }
 }

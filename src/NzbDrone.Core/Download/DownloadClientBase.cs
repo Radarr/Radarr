@@ -66,6 +66,12 @@ namespace NzbDrone.Core.Download
 
         public abstract string Download(RemoteMovie remoteMovie);
         public abstract IEnumerable<DownloadClientItem> GetItems();
+
+        public virtual OsPath GetOutputPath(string downloadId)
+        {
+            return new OsPath(null);
+        }
+
         public abstract void RemoveItem(string downloadId, bool deleteData);
         public abstract DownloadClientInfo GetStatus();
 

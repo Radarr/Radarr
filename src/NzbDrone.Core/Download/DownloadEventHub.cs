@@ -6,7 +6,8 @@ using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Download
 {
-    public class DownloadEventHub : IHandle<DownloadFailedEvent>,
+    public class DownloadEventHub : IHandle<DownloadImportingEvent>,
+                                    IHandle<DownloadFailedEvent>,
                                     IHandle<DownloadCompletedEvent>,
                                     IHandle<DownloadCanBeRemovedEvent>
     {
@@ -35,6 +36,14 @@ namespace NzbDrone.Core.Download
             RemoveFromDownloadClient(trackedDownload);
         }
 
+        public void Handle(DownloadImportingEvent message)
+        {
+            if (message.TrackedDownload.DownloadItem.OutputPath.IsEmpty)
+            {
+                PopulateOutputPath(message.TrackedDownload);
+            }
+        }
+
         public void Handle(DownloadCompletedEvent message)
         {
             if (_configService.RemoveCompletedDownloads &&
@@ -54,6 +63,15 @@ namespace NzbDrone.Core.Download
         {
             // Already verified that it can be removed, just needs to be removed
             RemoveFromDownloadClient(message.TrackedDownload);
+        }
+
+        private void PopulateOutputPath(TrackedDownload trackedDownload)
+        {
+            if (trackedDownload.DownloadItem.OutputPath.IsEmpty)
+            {
+                var downloadClient = _downloadClientProvider.Get(trackedDownload.DownloadClient);
+                trackedDownload.DownloadItem.OutputPath = downloadClient.GetOutputPath(trackedDownload.DownloadItem.DownloadId);
+            }
         }
 
         private void RemoveFromDownloadClient(TrackedDownload trackedDownload)

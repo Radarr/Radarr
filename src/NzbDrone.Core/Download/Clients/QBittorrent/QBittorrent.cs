@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
@@ -138,18 +139,12 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this),
                     RemainingSize = (long)(torrent.Size * (1.0 - torrent.Progress)),
                     RemainingTime = GetRemainingTime(torrent),
-                    SeedRatio = torrent.Ratio,
-                    OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.SavePath)),
+                    SeedRatio = torrent.Ratio
                 };
 
                 // Avoid removing torrents that haven't reached the global max ratio.
                 // Removal also requires the torrent to be paused, in case a higher max ratio was set on the torrent itself (which is not exposed by the api).
                 item.CanMoveFiles = item.CanBeRemoved = torrent.State == "pausedUP" && HasReachedSeedLimit(torrent, config);
-
-                if (!item.OutputPath.IsEmpty && item.OutputPath.FileName != torrent.Name)
-                {
-                    item.OutputPath += torrent.Name;
-                }
 
                 switch (torrent.State)
                 {
@@ -222,6 +217,39 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         public override void RemoveItem(string hash, bool deleteData)
         {
             Proxy.RemoveTorrent(hash.ToLower(), deleteData, Settings);
+        }
+
+        public override OsPath GetOutputPath(string hash)
+        {
+            var torrent = Proxy.GetTorrentProperties(hash, Settings);
+            var savePath = new OsPath(torrent.SavePath);
+            _logger.Trace($"Got save path {savePath}");
+
+            var files = Proxy.GetTorrentFiles(hash, Settings);
+
+            OsPath outputPath;
+            if (!files.Any())
+            {
+                outputPath = new OsPath(null);
+            }
+            else if (files.Count == 1)
+            {
+                outputPath = savePath + files[0].Name;
+            }
+            else
+            {
+                // we have multiple files in the torrent so just get
+                // the first subdirectory
+                var relativePath = new OsPath(files[0].Name);
+                while (!relativePath.Directory.IsEmpty)
+                {
+                    relativePath = relativePath.Directory;
+                }
+
+                outputPath = savePath + relativePath;
+            }
+
+            return _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath);
         }
 
         public override DownloadClientInfo GetStatus()

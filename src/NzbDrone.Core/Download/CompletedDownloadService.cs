@@ -57,6 +57,8 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
+            _eventAggregator.PublishEvent(new DownloadImportingEvent(trackedDownload));
+
             // Only process tracked downloads that are still downloading
             if (trackedDownload.State != TrackedDownloadState.Downloading)
             {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FluentAssertions;
 using Moq;
@@ -124,6 +125,24 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             Mocker.GetMock<IQBittorrentProxy>()
                 .Setup(s => s.GetTorrents(It.IsAny<QBittorrentSettings>()))
                 .Returns(torrents);
+
+            foreach (var torrent in torrents)
+            {
+                Mocker.GetMock<IQBittorrentProxy>()
+                    .Setup(s => s.GetTorrentProperties(torrent.Hash, It.IsAny<QBittorrentSettings>()))
+                    .Returns(new QBittorrentTorrentProperties { SavePath = torrent.SavePath });
+
+                Mocker.GetMock<IQBittorrentProxy>()
+                    .Setup(s => s.GetTorrentFiles(torrent.Hash, It.IsAny<QBittorrentSettings>()))
+                    .Returns(new List<QBittorrentTorrentFile> { new QBittorrentTorrentFile { Name = torrent.Name } });
+            }
+        }
+
+        private void GivenTorrentFiles(string hash, List<QBittorrentTorrentFile> files)
+        {
+            Mocker.GetMock<IQBittorrentProxy>()
+                .Setup(s => s.GetTorrentFiles(hash, It.IsAny<QBittorrentSettings>()))
+                .Returns(files);
         }
 
         [Test]
@@ -259,6 +278,67 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         }
 
         [Test]
+        public void single_file_torrent_outputpath_should_have_sanitised_name()
+        {
+            var torrent = new QBittorrentTorrent
+            {
+                Hash = "HASH",
+                Name = @"Droned.S01E01.Test\'s.1080p.WEB-DL-DRONE.mkv",
+                Size = 1000,
+                Progress = 0.7,
+                Eta = 8640000,
+                State = "stalledDL",
+                Label = "",
+                SavePath = @"C:\Torrents".AsOsAgnostic()
+            };
+
+            var file = new QBittorrentTorrentFile
+            {
+                Name = "Droned.S01E01.Tests.1080p.WEB-DL-DRONE.mkv"
+            };
+
+            GivenTorrents(new List<QBittorrentTorrent> { torrent });
+            GivenTorrentFiles(torrent.Hash, new List<QBittorrentTorrentFile> { file });
+
+            var path = Subject.GetOutputPath(torrent.Hash);
+
+            path.Should().Be(Path.Combine(torrent.SavePath, file.Name));
+        }
+
+        [Test]
+        public void multi_file_torrent_outputpath_should_have_sanitised_name()
+        {
+            var torrent = new QBittorrentTorrent
+            {
+                Hash = "HASH",
+                Name = @"Droned.S01.\1/2",
+                Size = 1000,
+                Progress = 0.7,
+                Eta = 8640000,
+                State = "stalledDL",
+                Label = "",
+                SavePath = @"C:\Torrents".AsOsAgnostic()
+            };
+
+            var files = new List<QBittorrentTorrentFile>
+            {
+                new QBittorrentTorrentFile
+                {
+                    Name = @"Droned.S01.12\E01.mkv".AsOsAgnostic()
+                },
+                new QBittorrentTorrentFile
+                {
+                    Name = @"Droned.S01.12\E02.mkv".AsOsAgnostic()
+                }
+            };
+
+            GivenTorrents(new List<QBittorrentTorrent> { torrent });
+            GivenTorrentFiles(torrent.Hash, files);
+            var path = Subject.GetOutputPath(torrent.Hash);
+
+            path.FullPath.Should().Be(Path.Combine(torrent.SavePath, "Droned.S01.12") + Path.DirectorySeparatorChar);
+        }
+
         public void missingFiles_item_should_have_required_properties()
         {
             var torrent = new QBittorrentTorrent
