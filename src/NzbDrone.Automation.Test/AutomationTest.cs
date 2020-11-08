@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NLog;
@@ -9,7 +10,7 @@ using NzbDrone.Automation.Test.PageModel;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Test.Common;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 
 namespace NzbDrone.Automation.Test
@@ -34,12 +35,12 @@ namespace NzbDrone.Automation.Test
         [OneTimeSetUp]
         public void SmokeTestSetup()
         {
-            var options = new FirefoxOptions();
+            var options = new ChromeOptions();
             options.AddArguments("--headless");
-            FirefoxDriverService service = FirefoxDriverService.CreateDefaultService();
+            var service = ChromeDriverService.CreateDefaultService();
 
-            // service.Host = "::1"; // Workaround netcore/selenium bug https://github.com/SeleniumHQ/selenium/issues/7840
-            driver = new FirefoxDriver(service, options, new System.TimeSpan(0, 3, 0));
+            // Timeout as windows automation tests seem to take alot longer to get going
+            driver = new ChromeDriver(service, options, new TimeSpan(0, 3, 0));
 
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger());
             _runner.KillAll();

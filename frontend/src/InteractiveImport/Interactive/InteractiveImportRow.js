@@ -1,18 +1,20 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import formatBytes from 'Utilities/Number/formatBytes';
-import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import Icon from 'Components/Icon';
-import TableRow from 'Components/Table/TableRow';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
+import TableRow from 'Components/Table/TableRow';
 import Popover from 'Components/Tooltip/Popover';
-import MovieQuality from 'Movie/MovieQuality';
-import MovieLanguage from 'Movie/MovieLanguage';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
+import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
 import SelectMovieModal from 'InteractiveImport/Movie/SelectMovieModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
-import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
+import MovieLanguage from 'Movie/MovieLanguage';
+import MovieQuality from 'Movie/MovieQuality';
+import formatBytes from 'Utilities/Number/formatBytes';
+import translate from 'Utilities/String/translate';
 import InteractiveImportRowCellPlaceholder from './InteractiveImportRowCellPlaceholder';
 import styles from './InteractiveImportRow.css';
 
@@ -137,6 +139,7 @@ class InteractiveImportRow extends Component {
       languages,
       size,
       rejections,
+      isReprocessing,
       isSelected,
       onSelectedChange
     } = this.props;
@@ -147,11 +150,11 @@ class InteractiveImportRow extends Component {
       isSelectLanguageModalOpen
     } = this.state;
 
-    const movieTitle = movie ? movie.title : '';
+    const movieTitle = movie ? movie.title + ( movie.year > 0 ? ` (${movie.year})` : '') : '';
 
     const showMoviePlaceholder = isSelected && !movie;
     const showQualityPlaceholder = isSelected && !quality;
-    const showLanguagePlaceholder = isSelected && !languages;
+    const showLanguagePlaceholder = isSelected && !languages && !isReprocessing;
 
     return (
       <TableRow>
@@ -170,7 +173,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           isDisabled={!allowMovieChange}
-          title={allowMovieChange ? 'Click to change movie' : undefined}
+          title={allowMovieChange ? translate('ClickToChangeMovie') : undefined}
           onPress={this.onSelectMoviePress}
         >
           {
@@ -180,7 +183,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           className={styles.quality}
-          title="Click to change quality"
+          title={translate('ClickToChangeQuality')}
           onPress={this.onSelectQualityPress}
         >
           {
@@ -199,7 +202,7 @@ class InteractiveImportRow extends Component {
 
         <TableRowCellButton
           className={styles.language}
-          title="Click to change language"
+          title={translate('ClickToChangeLanguage')}
           onPress={this.onSelectLanguagePress}
         >
           {
@@ -208,11 +211,20 @@ class InteractiveImportRow extends Component {
           }
 
           {
-            !showLanguagePlaceholder && !!languages &&
+            !showLanguagePlaceholder && !!languages && !isReprocessing ?
               <MovieLanguage
                 className={styles.label}
                 languages={languages}
-              />
+              /> :
+              null
+          }
+
+          {
+            isReprocessing ?
+              <LoadingIndicator className={styles.reprocessing}
+                size={20}
+
+              /> : null
           }
         </TableRowCellButton>
 
@@ -230,7 +242,7 @@ class InteractiveImportRow extends Component {
                     kind={kinds.DANGER}
                   />
                 }
-                title="Release Rejected"
+                title={translate('ReleaseRejected')}
                 body={
                   <ul>
                     {
@@ -286,6 +298,7 @@ InteractiveImportRow.propTypes = {
   languages: PropTypes.arrayOf(PropTypes.object),
   size: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isReprocessing: PropTypes.bool,
   isSelected: PropTypes.bool,
   onSelectedChange: PropTypes.func.isRequired,
   onValidRowChange: PropTypes.func.isRequired

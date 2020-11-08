@@ -1,8 +1,8 @@
 import { kinds } from 'Helpers/Props';
 
-function getProgressBarKind(status, monitored, hasFile) {
-  if (status === 'announced') {
-    return kinds.PRIMARY;
+function getProgressBarKind(status, monitored, hasFile, isAvailable, queue = false) {
+  if (queue) {
+    return kinds.QUEUE;
   }
 
   if (hasFile && monitored) {
@@ -13,11 +13,15 @@ function getProgressBarKind(status, monitored, hasFile) {
     return kinds.DEFAULT;
   }
 
-  if (monitored) {
+  if (isAvailable) {
     return kinds.DANGER;
   }
 
-  return kinds.WARNING;
+  if (!monitored) {
+    return kinds.WARNING;
+  }
+
+  return kinds.PRIMARY;
 }
 
 export default getProgressBarKind;

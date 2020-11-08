@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
 import Alert from 'Components/Alert';
-import Button from 'Components/Link/Button';
 import FieldSet from 'Components/FieldSet';
+import Button from 'Components/Link/Button';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import AddDownloadClientItem from './AddDownloadClientItem';
 import styles from './AddDownloadClientModalContent.css';
 
@@ -42,7 +43,9 @@ class AddDownloadClientModalContent extends Component {
 
           {
             !isSchemaFetching && !!schemaError &&
-              <div>Unable to add a new downloadClient, please try again.</div>
+              <div>
+                {translate('UnableToAddANewDownloadClientPleaseTryAgain')}
+              </div>
           }
 
           {
@@ -50,11 +53,15 @@ class AddDownloadClientModalContent extends Component {
               <div>
 
                 <Alert kind={kinds.INFO}>
-                  <div>Radarr supports any downloadClient that uses the Newznab standard, as well as other downloadClients listed below.</div>
-                  <div>For more information on the individual downloadClients, clink on the info buttons.</div>
+                  <div>
+                    {translate('RadarrSupportsAnyDownloadClient')}
+                  </div>
+                  <div>
+                    {translate('ForMoreInformationOnTheIndividualDownloadClients')}
+                  </div>
                 </Alert>
 
-                <FieldSet legend="Usenet">
+                <FieldSet legend={translate('Usenet')}>
                   <div className={styles.downloadClients}>
                     {
                       usenetDownloadClients.map((downloadClient) => {
@@ -71,7 +78,7 @@ class AddDownloadClientModalContent extends Component {
                   </div>
                 </FieldSet>
 
-                <FieldSet legend="Torrents">
+                <FieldSet legend={translate('Torrents')}>
                   <div className={styles.downloadClients}>
                     {
                       torrentDownloadClients.map((downloadClient) => {
@@ -94,7 +101,7 @@ class AddDownloadClientModalContent extends Component {
           <Button
             onPress={onModalClose}
           >
-            Close
+            {translate('Close')}
           </Button>
         </ModalFooter>
       </ModalContent>

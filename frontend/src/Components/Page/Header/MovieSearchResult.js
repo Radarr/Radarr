@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { kinds } from 'Helpers/Props';
 import Label from 'Components/Label';
+import { kinds } from 'Helpers/Props';
 import MoviePoster from 'Movie/MoviePoster';
 import styles from './MovieSearchResult.css';
 
@@ -9,6 +9,7 @@ function MovieSearchResult(props) {
   const {
     match,
     title,
+    year,
     images,
     alternateTitles,
     tags
@@ -17,10 +18,10 @@ function MovieSearchResult(props) {
   let alternateTitle = null;
   let tag = null;
 
-  if (match.key === 'alternateTitles.cleanTitle') {
-    alternateTitle = alternateTitles[match.arrayIndex];
+  if (match.key === 'alternateTitles.title') {
+    alternateTitle = alternateTitles[match.refIndex];
   } else if (match.key === 'tags.label') {
-    tag = tags[match.arrayIndex];
+    tag = tags[match.refIndex];
   }
 
   return (
@@ -35,7 +36,7 @@ function MovieSearchResult(props) {
 
       <div className={styles.titles}>
         <div className={styles.title}>
-          {title}
+          {title} { year > 0 ? `(${year})` : ''}
         </div>
 
         {
@@ -65,6 +66,7 @@ function MovieSearchResult(props) {
 
 MovieSearchResult.propTypes = {
   title: PropTypes.string.isRequired,
+  year: PropTypes.number.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
   tags: PropTypes.arrayOf(PropTypes.object).isRequired,

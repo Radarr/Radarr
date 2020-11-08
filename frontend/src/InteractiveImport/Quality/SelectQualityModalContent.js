@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes, kinds } from 'Helpers/Props';
-import Button from 'Components/Link/Button';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
+import FormLabel from 'Components/Form/FormLabel';
+import Button from 'Components/Link/Button';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 class SelectQualityModalContent extends Component {
 
@@ -91,14 +92,16 @@ class SelectQualityModalContent extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to load qualities</div>
+              <div>
+                {translate('UnableToLoadQualities')}
+              </div>
           }
 
           {
             isPopulated && !error &&
               <Form>
                 <FormGroup>
-                  <FormLabel>Quality</FormLabel>
+                  <FormLabel>{translate('Quality')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.SELECT}
@@ -110,7 +113,7 @@ class SelectQualityModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Proper</FormLabel>
+                  <FormLabel>{translate('Proper')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.CHECK}
@@ -121,7 +124,7 @@ class SelectQualityModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Real</FormLabel>
+                  <FormLabel>{translate('Real')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.CHECK}
@@ -136,7 +139,7 @@ class SelectQualityModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <Button

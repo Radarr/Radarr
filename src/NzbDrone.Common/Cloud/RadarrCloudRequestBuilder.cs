@@ -6,7 +6,6 @@ namespace NzbDrone.Common.Cloud
     {
         IHttpRequestBuilderFactory Services { get; }
         IHttpRequestBuilderFactory TMDB { get; }
-        IHttpRequestBuilderFactory TMDBSingle { get; }
         IHttpRequestBuilderFactory RadarrMetadata { get; }
     }
 
@@ -14,14 +13,10 @@ namespace NzbDrone.Common.Cloud
     {
         public RadarrCloudRequestBuilder()
         {
-            Services = new HttpRequestBuilder("https://radarr.lidarr.audio/v1/")
+            Services = new HttpRequestBuilder("https://radarr.servarr.com/v1/")
                 .CreateFactory();
 
             TMDB = new HttpRequestBuilder("https://api.themoviedb.org/{api}/{route}/{id}{secondaryRoute}")
-                .SetHeader("Authorization", $"Bearer {AuthToken}")
-                .CreateFactory();
-
-            TMDBSingle = new HttpRequestBuilder("https://api.themoviedb.org/3/{route}")
                 .SetHeader("Authorization", $"Bearer {AuthToken}")
                 .CreateFactory();
 
@@ -31,7 +26,6 @@ namespace NzbDrone.Common.Cloud
 
         public IHttpRequestBuilderFactory Services { get; private set; }
         public IHttpRequestBuilderFactory TMDB { get; private set; }
-        public IHttpRequestBuilderFactory TMDBSingle { get; private set; }
         public IHttpRequestBuilderFactory RadarrMetadata { get; private set; }
 
         public string AuthToken => "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYTczNzMzMDE5NjFkMDNmOTdmODUzYTg3NmRkMTIxMiIsInN1YiI6IjU4NjRmNTkyYzNhMzY4MGFiNjAxNzUzNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.gh1BwogCCKOda6xj9FRMgAAj_RYKMMPC3oNlcBtlmwk";

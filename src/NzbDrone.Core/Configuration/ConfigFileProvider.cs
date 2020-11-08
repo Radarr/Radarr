@@ -180,7 +180,7 @@ namespace NzbDrone.Core.Configuration
         // TODO: Change back to "master" for the first stable release.
         public string Branch => GetValue("Branch", "aphrodite").ToLowerInvariant();
 
-        public string LogLevel => GetValue("LogLevel", "info");
+        public string LogLevel => GetValue("LogLevel", "info").ToLowerInvariant();
         public string ConsoleLogLevel => GetValue("ConsoleLogLevel", string.Empty, persist: false);
         public bool LogSql => GetValueBoolean("LogSql", false, persist: false);
         public int LogRotate => GetValueInt("LogRotate", 50, persist: false);

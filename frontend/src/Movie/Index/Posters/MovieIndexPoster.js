@@ -1,15 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import IconButton from 'Components/Link/IconButton';
 import CheckInput from 'Components/Form/CheckInput';
-import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import Icon from 'Components/Icon';
 import Label from 'Components/Label';
+import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
-import MoviePoster from 'Movie/MoviePoster';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import Popover from 'Components/Tooltip/Popover';
+import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
+import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
+import MoviePoster from 'Movie/MoviePoster';
+import translate from 'Utilities/String/translate';
 import MovieIndexPosterInfo from './MovieIndexPosterInfo';
 import styles from './MovieIndexPoster.css';
 
@@ -77,9 +81,13 @@ class MovieIndexPoster extends Component {
   render() {
     const {
       id,
+      tmdbId,
+      imdbId,
+      youTubeTrailerId,
       title,
       monitored,
       hasFile,
+      isAvailable,
       status,
       titleSlug,
       images,
@@ -101,6 +109,8 @@ class MovieIndexPoster extends Component {
       isMovieEditorActive,
       isSelected,
       onSelectedChange,
+      queueStatus,
+      queueState,
       ...otherProps
     } = this.props;
 
@@ -135,7 +145,7 @@ class MovieIndexPoster extends Component {
             <SpinnerIconButton
               className={styles.action}
               name={icons.REFRESH}
-              title="Refresh movie"
+              title={translate('RefreshMovie')}
               isSpinning={isRefreshingMovie}
               onPress={onRefreshMoviePress}
             />
@@ -145,7 +155,7 @@ class MovieIndexPoster extends Component {
                 <SpinnerIconButton
                   className={styles.action}
                   name={icons.SEARCH}
-                  title="Search for movie"
+                  title={translate('SearchForMovie')}
                   isSpinning={isSearchingMovie}
                   onPress={onSearchPress}
                 />
@@ -154,16 +164,35 @@ class MovieIndexPoster extends Component {
             <IconButton
               className={styles.action}
               name={icons.EDIT}
-              title="Edit movie"
+              title={translate('EditMovie')}
               onPress={this.onEditMoviePress}
             />
+
+            <span className={styles.externalLinks}>
+              <Popover
+                anchor={
+                  <Icon
+                    name={icons.EXTERNAL_LINK}
+                    size={12}
+                  />
+                }
+                title={translate('Links')}
+                body={
+                  <MovieDetailsLinks
+                    tmdbId={tmdbId}
+                    imdbId={imdbId}
+                    youTubeTrailerId={youTubeTrailerId}
+                  />
+                }
+              />
+            </span>
           </Label>
 
           {
             status === 'ended' &&
               <div
                 className={styles.ended}
-                title="Ended"
+                title={translate('Ended')}
               />
           }
 
@@ -198,6 +227,9 @@ class MovieIndexPoster extends Component {
           status={status}
           posterWidth={posterWidth}
           detailedProgressBar={detailedProgressBar}
+          queueStatus={queueStatus}
+          queueState={queueState}
+          isAvailable={isAvailable}
         />
 
         {
@@ -252,6 +284,7 @@ MovieIndexPoster.propTypes = {
   title: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
+  isAvailable: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -272,7 +305,12 @@ MovieIndexPoster.propTypes = {
   onSearchPress: PropTypes.func.isRequired,
   isMovieEditorActive: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
-  onSelectedChange: PropTypes.func.isRequired
+  onSelectedChange: PropTypes.func.isRequired,
+  tmdbId: PropTypes.number.isRequired,
+  imdbId: PropTypes.string,
+  youTubeTrailerId: PropTypes.string,
+  queueStatus: PropTypes.string,
+  queueState: PropTypes.string
 };
 
 MovieIndexPoster.defaultProps = {

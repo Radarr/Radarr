@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import colors from 'Styles/Variables/colors';
-import CircularProgressBar from 'Components/CircularProgressBar';
 import QueueDetails from 'Activity/Queue/QueueDetails';
+import CircularProgressBar from 'Components/CircularProgressBar';
+import colors from 'Styles/Variables/colors';
+import translate from 'Utilities/String/translate';
 
 function CalendarEventQueueDetails(props) {
   const {
@@ -25,7 +26,7 @@ function CalendarEventQueueDetails(props) {
       status={status}
       errorMessage={errorMessage}
       progressBar={
-        <div title={`Movie is downloading - ${progress.toFixed(1)}% ${title}`}>
+        <div title={translate('MovieIsDownloadingInterp', [progress.toFixed(1), title])}>
           <CircularProgressBar
             progress={progress}
             size={20}

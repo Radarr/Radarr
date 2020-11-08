@@ -4,6 +4,7 @@ import FieldSet from 'Components/FieldSet';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import translate from 'Utilities/String/translate';
 import ScheduledTaskRowConnector from './ScheduledTaskRowConnector';
 
 const columns = [
@@ -46,7 +47,7 @@ function ScheduledTasks(props) {
   } = props;
 
   return (
-    <FieldSet legend="Scheduled">
+    <FieldSet legend={translate('Scheduled')}>
       {
         isFetching && !isPopulated &&
           <LoadingIndicator />

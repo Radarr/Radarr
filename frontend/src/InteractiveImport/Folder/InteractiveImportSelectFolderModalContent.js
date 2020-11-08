@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds, sizes } from 'Helpers/Props';
-import Button from 'Components/Link/Button';
-import Icon from 'Components/Icon';
 import PathInputConnector from 'Components/Form/PathInputConnector';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
+import Icon from 'Components/Icon';
+import Button from 'Components/Link/Button';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import { icons, kinds, sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import RecentFolderRow from './RecentFolderRow';
 import styles from './InteractiveImportSelectFolderModalContent.css';
 
@@ -75,7 +76,7 @@ class InteractiveImportSelectFolderModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manual Import - Select Folder
+          {translate('ManualImport')} - {translate('SelectFolder')}
         </ModalHeader>
 
         <ModalBody>
@@ -124,7 +125,7 @@ class InteractiveImportSelectFolderModalContent extends Component {
                   name={icons.QUICK}
                 />
 
-                Quick Import
+                {translate('QuickImport')}
               </Button>
             </div>
 
@@ -141,7 +142,7 @@ class InteractiveImportSelectFolderModalContent extends Component {
                   name={icons.INTERACTIVE}
                 />
 
-                Interactive Import
+                {translate('InteractiveImport')}
               </Button>
             </div>
           </div>
@@ -149,7 +150,7 @@ class InteractiveImportSelectFolderModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Cancel
+            {translate('Cancel')}
           </Button>
         </ModalFooter>
       </ModalContent>

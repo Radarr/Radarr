@@ -1,6 +1,8 @@
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.HealthCheck.Checks;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
@@ -8,6 +10,14 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
     [TestFixture]
     public class ReleaseBranchCheckFixture : CoreTest<ReleaseBranchCheck>
     {
+        [SetUp]
+        public void Setup()
+        {
+            Mocker.GetMock<ILocalizationService>()
+                  .Setup(s => s.GetLocalizedString(It.IsAny<string>()))
+                  .Returns("Some Warning Message");
+        }
+
         private void GivenValidBranch(string branch)
         {
             Mocker.GetMock<IConfigFileProvider>()
@@ -24,7 +34,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         }
 
         [TestCase("develop")]
-        [TestCase("nightly")]
+        [TestCase("v0.2")]
         public void should_return_error_when_branch_is_v1(string branch)
         {
             GivenValidBranch(branch);
@@ -32,8 +42,8 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Subject.Check().ShouldBeError();
         }
 
-        [TestCase("aphrodite")]
-        [TestCase("Aphrodite")]
+        [TestCase("nightly")]
+        [TestCase("Nightly")]
         public void should_return_no_warning_when_branch_valid(string branch)
         {
             GivenValidBranch(branch);

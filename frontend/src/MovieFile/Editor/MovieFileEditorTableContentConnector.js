@@ -3,28 +3,33 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import getQualities from 'Utilities/Quality/getQualities';
-import createMovieSelector from 'Store/Selectors/createMovieSelector';
 import { deleteMovieFile, updateMovieFiles } from 'Store/Actions/movieFileActions';
-import { fetchQualityProfileSchema, fetchLanguages } from 'Store/Actions/settingsActions';
+import { fetchLanguages, fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
+import createMovieSelector from 'Store/Selectors/createMovieSelector';
+import getQualities from 'Utilities/Quality/getQualities';
 import MovieFileEditorTableContent from './MovieFileEditorTableContent';
 
 function createMapStateToProps() {
   return createSelector(
+    (state, { movieId }) => movieId,
     (state) => state.movieFiles,
     (state) => state.settings.languages,
     (state) => state.settings.qualityProfiles,
     createMovieSelector(),
     (
+      movieId,
       movieFiles,
       languageProfiles,
       qualityProfiles
     ) => {
       const languages = languageProfiles.items;
       const qualities = getQualities(qualityProfiles.schema.items);
+      const filesForMovie = movieFiles.items.filter((obj) => {
+        return obj.movieId === movieId;
+      });
 
       return {
-        items: movieFiles.items,
+        items: filesForMovie,
         isDeleting: movieFiles.isDeleting,
         isSaving: movieFiles.isSaving,
         error: null,

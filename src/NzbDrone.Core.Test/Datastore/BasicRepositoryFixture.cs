@@ -291,16 +291,32 @@ namespace NzbDrone.Core.Test.Datastore
             Subject.All().ToList().Should().BeEmpty();
         }
 
-        [Test]
-        public void get_paged_should_work()
+        [TestCase(1, 2)]
+        [TestCase(2, 2)]
+        [TestCase(3, 1)]
+        public void get_paged_should_work(int page, int count)
         {
             Subject.InsertMany(_basicList);
-            var data = Subject.GetPaged(new PagingSpec<ScheduledTask>() { Page = 0, PageSize = 2, SortKey = "LastExecution", SortDirection = SortDirection.Descending });
+            var data = Subject.GetPaged(new PagingSpec<ScheduledTask>() { Page = page, PageSize = 2, SortKey = "LastExecution", SortDirection = SortDirection.Descending });
 
-            data.Page.Should().Be(0);
+            data.Page.Should().Be(page);
             data.PageSize.Should().Be(2);
             data.TotalRecords.Should().Be(_basicList.Count);
-            data.Records.Should().BeEquivalentTo(_basicList.OrderByDescending(x => x.LastExecution).Take(2));
+            data.Records.Should().BeEquivalentTo(_basicList.OrderByDescending(x => x.LastExecution).Skip((page - 1) * 2).Take(2));
+        }
+
+        [TestCase(1, 2)]
+        [TestCase(2, 2)]
+        [TestCase(3, 1)]
+        public void get_paged_should_work_with_null_sort_key(int page, int count)
+        {
+            Subject.InsertMany(_basicList);
+            var data = Subject.GetPaged(new PagingSpec<ScheduledTask>() { Page = page, PageSize = 2, SortDirection = SortDirection.Descending });
+
+            data.Page.Should().Be(page);
+            data.PageSize.Should().Be(2);
+            data.TotalRecords.Should().Be(_basicList.Count);
+            data.Records.Should().BeEquivalentTo(_basicList.OrderByDescending(x => x.Id).Skip((page - 1) * 2).Take(2));
         }
     }
 }

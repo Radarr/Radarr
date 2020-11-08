@@ -104,9 +104,9 @@ namespace NzbDrone.Common.Test.Http
             Mocker.SetConstant<IHttpDispatcher>(Mocker.Resolve<TDispatcher>());
 
             // Used for manual testing of socks proxies.
-            //Mocker.GetMock<IHttpProxySettingsProvider>()
-            //      .Setup(v => v.GetProxySettings(It.IsAny<HttpRequest>()))
-            //      .Returns(new HttpProxySettings(ProxyType.Socks5, "127.0.0.1", 5476, "", false));
+            // Mocker.GetMock<IHttpProxySettingsProvider>()
+            //       .Setup(v => v.GetProxySettings(It.IsAny<HttpUri>()))
+            //       .Returns(new HttpProxySettings(ProxyType.Socks5, "127.0.0.1", 5476, "", false));
 
             // Roundrobin over the two servers, to reduce the chance of hitting the ratelimiter.
             _httpBinHost2 = _httpBinHosts[_httpBinRandom++ % _httpBinHosts.Length];
@@ -284,11 +284,43 @@ namespace NzbDrone.Common.Test.Http
         }
 
         [Test]
+        public void should_download_file()
+        {
+            var file = GetTempFilePath();
+
+            var url = "https://radarr.video/img/slider/moviedetails.png";
+
+            Subject.DownloadFile(url, file);
+
+            var fileInfo = new FileInfo(file);
+            fileInfo.Exists.Should().BeTrue();
+            fileInfo.Length.Should().Be(251536);
+        }
+
+        [Test]
+        public void should_download_file_with_redirect()
+        {
+            var file = GetTempFilePath();
+
+            var request = new HttpRequestBuilder($"https://{_httpBinHost}/redirect-to")
+                .AddQueryParam("url", $"https://radarr.video/img/slider/moviedetails.png")
+                .Build();
+
+            Subject.DownloadFile(request.Url.FullUri, file);
+
+            ExceptionVerification.ExpectedErrors(0);
+
+            var fileInfo = new FileInfo(file);
+            fileInfo.Exists.Should().BeTrue();
+            fileInfo.Length.Should().Be(251536);
+        }
+
+        [Test]
         public void should_not_download_file_with_error()
         {
             var file = GetTempFilePath();
 
-            Assert.Throws<WebException>(() => Subject.DownloadFile("http://download.sonarr.tv/wrongpath", file));
+            Assert.Throws<WebException>(() => Subject.DownloadFile("https://download.sonarr.tv/wrongpath", file));
 
             File.Exists(file).Should().BeFalse();
 
@@ -320,7 +352,7 @@ namespace NzbDrone.Common.Test.Http
             var oldRequest = new HttpRequest($"https://{_httpBinHost2}/get");
             oldRequest.Cookies["my"] = "cookie";
 
-            var oldClient = new HttpClient(new IHttpRequestInterceptor[0], Mocker.Resolve<ICacheManager>(), Mocker.Resolve<IRateLimitService>(), Mocker.Resolve<IHttpDispatcher>(), Mocker.GetMock<IUserAgentBuilder>().Object, Mocker.Resolve<Logger>());
+            var oldClient = new HttpClient(new IHttpRequestInterceptor[0], Mocker.Resolve<ICacheManager>(), Mocker.Resolve<IRateLimitService>(), Mocker.Resolve<IHttpDispatcher>(), Mocker.Resolve<Logger>());
 
             oldClient.Should().NotBeSameAs(Subject);
 
@@ -398,7 +430,7 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_delete_request_cookie()
         {
-            var requestDelete = new HttpRequest($"http://{_httpBinHost}/cookies/delete?my");
+            var requestDelete = new HttpRequest($"https://{_httpBinHost}/cookies/delete?my");
             requestDelete.Cookies.Add("my", "cookie");
             requestDelete.AllowAutoRedirect = true;
             requestDelete.StoreRequestCookie = false;
@@ -473,7 +505,7 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_temp_store_response_cookie()
         {
-            var requestSet = new HttpRequest($"http://{_httpBinHost}/cookies/set?my=cookie");
+            var requestSet = new HttpRequest($"https://{_httpBinHost}/cookies/set?my=cookie");
             requestSet.AllowAutoRedirect = true;
             requestSet.StoreRequestCookie = false;
             requestSet.StoreResponseCookie.Should().BeFalse();
@@ -607,7 +639,7 @@ namespace NzbDrone.Common.Test.Http
 
             responseDelete.Resource.Cookies.Should().BeEmpty();
 
-            requestCookies = new HttpRequest($"http://{_httpBinHost}/cookies");
+            requestCookies = new HttpRequest($"https://{_httpBinHost}/cookies");
             requestCookies.StoreRequestCookie = false;
             requestCookies.StoreResponseCookie = false;
 

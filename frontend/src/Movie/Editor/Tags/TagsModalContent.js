@@ -1,17 +1,18 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes, kinds, sizes } from 'Helpers/Props';
-import Label from 'Components/Label';
-import Button from 'Components/Link/Button';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
-import ModalBody from 'Components/Modal/ModalBody';
-import ModalFooter from 'Components/Modal/ModalFooter';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
+import Label from 'Components/Label';
+import Button from 'Components/Link/Button';
+import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
+import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes, kinds, sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './TagsModalContent.css';
 
 class TagsModalContent extends Component {
@@ -74,7 +75,7 @@ class TagsModalContent extends Component {
         <ModalBody>
           <Form>
             <FormGroup>
-              <FormLabel>Tags</FormLabel>
+              <FormLabel>{translate('Tags')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.TAG}
@@ -85,7 +86,7 @@ class TagsModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Apply Tags</FormLabel>
+              <FormLabel>{translate('ApplyTags')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.SELECT}
@@ -93,17 +94,17 @@ class TagsModalContent extends Component {
                 value={applyTags}
                 values={applyTagsOptions}
                 helpTexts={[
-                  'How to apply tags to the selected movies',
-                  'Add: Add the tags the existing list of tags',
-                  'Remove: Remove the entered tags',
-                  'Replace: Replace the tags with the entered tags (enter no tags to clear all tags)'
+                  translate('ApplyTagsHelpTexts1'),
+                  translate('ApplyTagsHelpTexts2'),
+                  translate('ApplyTagsHelpTexts3'),
+                  translate('ApplyTagsHelpTexts4')
                 ]}
                 onChange={this.onInputChange}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Result</FormLabel>
+              <FormLabel>{translate('Result')}</FormLabel>
 
               <div className={styles.result}>
                 {
@@ -120,7 +121,7 @@ class TagsModalContent extends Component {
                     return (
                       <Label
                         key={tag.id}
-                        title={removeTag ? 'Removing tag' : 'Existing tag'}
+                        title={removeTag ? translate('RemovingTag') : translate('ExistingTag')}
                         kind={removeTag ? kinds.INVERSE : kinds.INFO}
                         size={sizes.LARGE}
                       >
@@ -146,7 +147,7 @@ class TagsModalContent extends Component {
                         return (
                           <Label
                             key={tag.id}
-                            title={'Adding tag'}
+                            title={translate('AddingTag')}
                             kind={kinds.SUCCESS}
                             size={sizes.LARGE}
                           >
@@ -162,14 +163,14 @@ class TagsModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <Button
             kind={kinds.PRIMARY}
             onPress={this.onApplyTagsPress}
           >
-            Apply
+            {translate('Apply')}
           </Button>
         </ModalFooter>
       </ModalContent>

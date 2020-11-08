@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
-import { sortDirections } from 'Helpers/Props';
 import VirtualTable from 'Components/Table/VirtualTable';
 import VirtualTableRow from 'Components/Table/VirtualTableRow';
+import { sortDirections } from 'Helpers/Props';
 import MovieIndexItemConnector from 'Movie/Index/MovieIndexItemConnector';
+import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import MovieIndexHeaderConnector from './MovieIndexHeaderConnector';
 import MovieIndexRow from './MovieIndexRow';
 import styles from './MovieIndexTable.css';
@@ -49,7 +49,8 @@ class MovieIndexTable extends Component {
       columns,
       selectedState,
       onSelectedChange,
-      isMovieEditorActive
+      isMovieEditorActive,
+      movieRuntimeFormat
     } = this.props;
 
     const movie = items[rowIndex];
@@ -68,6 +69,7 @@ class MovieIndexTable extends Component {
           isSelected={selectedState[movie.id]}
           onSelectedChange={onSelectedChange}
           isMovieEditorActive={isMovieEditorActive}
+          movieRuntimeFormat={movieRuntimeFormat}
         />
       </VirtualTableRow>
     );
@@ -135,7 +137,8 @@ MovieIndexTable.propTypes = {
   selectedState: PropTypes.object.isRequired,
   onSelectedChange: PropTypes.func.isRequired,
   onSelectAllChange: PropTypes.func.isRequired,
-  isMovieEditorActive: PropTypes.bool.isRequired
+  isMovieEditorActive: PropTypes.bool.isRequired,
+  movieRuntimeFormat: PropTypes.string.isRequired
 };
 
 export default MovieIndexTable;

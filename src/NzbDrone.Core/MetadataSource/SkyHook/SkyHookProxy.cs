@@ -15,7 +15,7 @@ using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Movies.Credits;
-using NzbDrone.Core.NetImport.TMDb;
+using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Parser;
 
 namespace NzbDrone.Core.MetadataSource.SkyHook
@@ -25,44 +25,44 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
-        private readonly IHttpRequestBuilderFactory _movieBuilder;
         private readonly IHttpRequestBuilderFactory _radarrMetadata;
         private readonly IConfigService _configService;
         private readonly IMovieService _movieService;
+        private readonly IMovieTranslationService _movieTranslationService;
 
         public SkyHookProxy(IHttpClient httpClient,
             IRadarrCloudRequestBuilder requestBuilder,
             IConfigService configService,
             IMovieService movieService,
+            IMovieTranslationService movieTranslationService,
             Logger logger)
         {
             _httpClient = httpClient;
-            _movieBuilder = requestBuilder.TMDB;
             _radarrMetadata = requestBuilder.RadarrMetadata;
             _configService = configService;
             _movieService = movieService;
+            _movieTranslationService = movieTranslationService;
 
             _logger = logger;
         }
 
         public HashSet<int> GetChangedMovies(DateTime startTime)
         {
-            var startDate = startTime.ToString("o");
+            // Round down to the hour to ensure we cover gap and don't kill cache every call
+            var cacheAdjustedStart = startTime.AddMinutes(-15);
+            var startDate = cacheAdjustedStart.Date.AddHours(cacheAdjustedStart.Hour).ToString("s");
 
-            var request = _movieBuilder.Create()
-                .SetSegment("api", "3")
-                .SetSegment("route", "movie")
-                .SetSegment("id", "")
-                .SetSegment("secondaryRoute", "changes")
-                .AddQueryParam("start_date", startDate)
+            var request = _radarrMetadata.Create()
+                .SetSegment("route", "movie/changed")
+                .AddQueryParam("since", startDate)
                 .Build();
 
             request.AllowAutoRedirect = true;
             request.SuppressHttpError = true;
 
-            var response = _httpClient.Get<MovieSearchResource>(request);
+            var response = _httpClient.Get<List<int>>(request);
 
-            return new HashSet<int>(response.Resource.Results.Select(c => c.Id));
+            return new HashSet<int>(response.Resource);
         }
 
         public Tuple<Movie, List<Credit>> GetMovieInfo(int tmdbId)
@@ -160,16 +160,22 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.TmdbId = resource.TmdbId;
             movie.ImdbId = resource.ImdbId;
             movie.Title = resource.Title;
+            movie.OriginalTitle = resource.OriginalTitle;
             movie.TitleSlug = resource.TitleSlug;
-            movie.CleanTitle = resource.Title.CleanSeriesTitle();
+            movie.CleanTitle = resource.Title.CleanMovieTitle();
             movie.SortTitle = Parser.Parser.NormalizeTitle(resource.Title);
             movie.Overview = resource.Overview;
 
             movie.AlternativeTitles.AddRange(resource.AlternativeTitles.Select(MapAlternativeTitle));
 
+            movie.Translations.AddRange(resource.Translations.Select(MapTranslation));
+
+            movie.OriginalLanguage = IsoLanguages.Find(resource.OriginalLanguage.ToLower())?.Language ?? Language.English;
+
             movie.Website = resource.Homepage;
             movie.InCinemas = resource.InCinema;
             movie.PhysicalRelease = resource.PhysicalRelease;
+            movie.DigitalRelease = resource.DigitalRelease;
 
             movie.Year = resource.Year;
 
@@ -195,44 +201,24 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             var now = DateTime.Now;
 
-            //handle the case when we have both theatrical and physical release dates
-            if (resource.InCinema.HasValue && resource.PhysicalRelease.HasValue)
-            {
-                if (now < resource.InCinema)
-                {
-                    movie.Status = MovieStatusType.Announced;
-                }
-                else if (now >= resource.InCinema)
-                {
-                    movie.Status = MovieStatusType.InCinemas;
-                }
+            movie.Status = MovieStatusType.Announced;
 
-                if (now >= resource.PhysicalRelease)
+            if (resource.InCinema.HasValue && now > resource.InCinema)
+            {
+                movie.Status = MovieStatusType.InCinemas;
+
+                if (!resource.PhysicalRelease.HasValue && !resource.DigitalRelease.HasValue && now > resource.InCinema.Value.AddDays(90))
                 {
                     movie.Status = MovieStatusType.Released;
                 }
             }
 
-            //handle the case when we have theatrical release dates but we dont know the physical release date
-            else if (resource.InCinema.HasValue && (now >= resource.InCinema))
-            {
-                movie.Status = MovieStatusType.InCinemas;
-            }
-
-            //handle the case where we only have a physical release date
-            else if ((resource.PhysicalRelease.HasValue && (now >= resource.PhysicalRelease)) || (resource.DigitalRelease.HasValue && (now >= resource.DigitalRelease)))
+            if (resource.PhysicalRelease.HasValue && now >= resource.PhysicalRelease)
             {
                 movie.Status = MovieStatusType.Released;
             }
 
-            //otherwise the title has only been announced
-            else
-            {
-                movie.Status = MovieStatusType.Announced;
-            }
-
-            //since TMDB lacks alot of information lets assume that stuff is released if its been in cinemas for longer than 3 months.
-            if (!movie.PhysicalRelease.HasValue && (movie.Status == MovieStatusType.InCinemas) && (DateTime.Now.Subtract(movie.InCinemas.Value).TotalSeconds > 60 * 60 * 24 * 30 * 3))
+            if (resource.DigitalRelease.HasValue && now >= resource.DigitalRelease)
             {
                 movie.Status = MovieStatusType.Released;
             }
@@ -266,10 +252,16 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
         {
             try
             {
-                Movie newMovie = movie;
+                var newMovie = movie;
+
                 if (movie.TmdbId > 0)
                 {
-                    newMovie = GetMovieInfo(movie.TmdbId).Item1;
+                    newMovie = _movieService.FindByTmdbId(movie.TmdbId);
+
+                    if (newMovie == null)
+                    {
+                        newMovie = GetMovieInfo(movie.TmdbId).Item1;
+                    }
                 }
                 else if (movie.ImdbId.IsNotNullOrWhiteSpace())
                 {
@@ -336,7 +328,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                     {
                         try
                         {
-                            return new List<Movie> { GetMovieByImdbId(parserResult.ImdbId) };
+                            var movieLookup = GetMovieByImdbId(parserResult.ImdbId);
+                            return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? movieLookup };
                         }
                         catch (Exception)
                         {
@@ -360,7 +353,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
-                        return new List<Movie> { GetMovieByImdbId(imdbid) };
+                        var movieLookup = GetMovieByImdbId(imdbid);
+                        return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? movieLookup };
                     }
                     catch (MovieNotFoundException)
                     {
@@ -381,7 +375,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                     try
                     {
-                        return new List<Movie> { GetMovieInfo(tmdbid).Item1 };
+                        var movieLookup = GetMovieInfo(tmdbid).Item1;
+                        return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? movieLookup };
                     }
                     catch (MovieNotFoundException)
                     {
@@ -425,6 +420,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 movie = MapMovie(result);
             }
+            else
+            {
+                movie.Translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
+            }
 
             return movie;
         }
@@ -467,8 +466,21 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             {
                 Title = arg.Title,
                 SourceType = SourceType.TMDB,
-                CleanTitle = arg.Title.CleanSeriesTitle(),
+                CleanTitle = arg.Title.CleanMovieTitle(),
                 Language = IsoLanguages.Find(arg.Language.ToLower())?.Language ?? Language.English
+            };
+
+            return newAlternativeTitle;
+        }
+
+        private static MovieTranslation MapTranslation(TranslationResource arg)
+        {
+            var newAlternativeTitle = new MovieTranslation
+            {
+                Title = arg.Title,
+                Overview = arg.Overview,
+                CleanTitle = arg.Title.CleanMovieTitle(),
+                Language = IsoLanguages.Find(arg.Language.ToLower())?.Language
             };
 
             return newAlternativeTitle;

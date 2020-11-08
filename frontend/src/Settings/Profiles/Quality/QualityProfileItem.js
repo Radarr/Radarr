@@ -1,10 +1,11 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import { icons } from 'Helpers/Props';
+import CheckInput from 'Components/Form/CheckInput';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
-import CheckInput from 'Components/Form/CheckInput';
+import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './QualityProfileItem.css';
 
 class QualityProfileItem extends Component {
@@ -63,7 +64,7 @@ class QualityProfileItem extends Component {
               <IconButton
                 className={styles.createGroupButton}
                 name={icons.GROUP}
-                title="Group"
+                title={translate('Group')}
                 onPress={this.onCreateGroupPress}
               />
           }
@@ -95,7 +96,7 @@ class QualityProfileItem extends Component {
             <div className={styles.dragHandle}>
               <Icon
                 className={styles.dragIcon}
-                title="Create group"
+                title={translate('CreateGroup')}
                 name={icons.REORDER}
               />
             </div>

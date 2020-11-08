@@ -29,6 +29,11 @@ namespace NzbDrone.Core.Extras.Others
 
         public override int Order => 2;
 
+        public override IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie)
+        {
+            return Enumerable.Empty<ExtraFile>();
+        }
+
         public override IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles)
         {
             return Enumerable.Empty<ExtraFile>();
@@ -39,7 +44,7 @@ namespace NzbDrone.Core.Extras.Others
             return Enumerable.Empty<ExtraFile>();
         }
 
-        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        public override IEnumerable<ExtraFile> CreateAfterMovieFolder(Movie movie, string movieFolder)
         {
             return Enumerable.Empty<ExtraFile>();
         }
@@ -68,8 +73,11 @@ namespace NzbDrone.Core.Extras.Others
         {
             var extraFile = ImportFile(movie, movieFile, path, readOnly, extension, null);
 
-            _mediaFileAttributeService.SetFilePermissions(path);
-            _otherExtraFileService.Upsert(extraFile);
+            if (extraFile != null)
+            {
+                _mediaFileAttributeService.SetFilePermissions(path);
+                _otherExtraFileService.Upsert(extraFile);
+            }
 
             return extraFile;
         }

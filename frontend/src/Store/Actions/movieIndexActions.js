@@ -1,15 +1,17 @@
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import createAjaxRequest from 'Utilities/createAjaxRequest';
-import sortByName from 'Utilities/Array/sortByName';
 import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
-import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
-import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
-import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
 import { createThunk, handleThunks } from 'Store/thunks';
-import createHandleActions from './Creators/createHandleActions';
+import sortByName from 'Utilities/Array/sortByName';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
+import translate from 'Utilities/String/translate';
 import { set, updateItem } from './baseActions';
-import { filters, filterPredicates, sortPredicates } from './movieActions';
+import createHandleActions from './Creators/createHandleActions';
+import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
+import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
+import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
+import { filterPredicates, filters, sortPredicates } from './movieActions';
+
 //
 // Variables
 
@@ -65,111 +67,123 @@ export const defaultState = {
     },
     {
       name: 'status',
-      columnLabel: 'Release Status',
+      columnLabel: translate('ReleaseStatus'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'sortTitle',
-      label: 'Movie Title',
+      label: translate('MovieTitle'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'collection',
-      label: 'Collection',
+      label: translate('Collection'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'studio',
-      label: 'Studio',
+      label: translate('Studio'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'qualityProfileId',
-      label: 'Quality Profile',
+      label: translate('QualityProfile'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'added',
-      label: 'Added',
+      label: translate('Added'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'year',
+      label: translate('Year'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'inCinemas',
-      label: 'In Cinemas',
+      label: translate('InCinemas'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'digitalRelease',
+      label: translate('DigitalRelease'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'physicalRelease',
-      label: 'Physical Release',
+      label: translate('PhysicalRelease'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'runtime',
-      label: 'Runtime',
+      label: translate('Runtime'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'minimumAvailability',
-      label: 'Min Availability',
+      label: translate('MinAvailability'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'path',
-      label: 'Path',
+      label: translate('Path'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'sizeOnDisk',
-      label: 'Size on Disk',
+      label: translate('SizeOnDisk'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'genres',
-      label: 'Genres',
+      label: translate('Genres'),
       isSortable: false,
       isVisible: false
     },
     {
       name: 'movieStatus',
-      label: 'Status',
+      label: translate('Status'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'ratings',
-      label: 'Rating',
+      label: translate('Ratings'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'certification',
-      label: 'Certification',
+      label: translate('Certification'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'tags',
-      label: 'Tags',
+      label: translate('Tags'),
       isSortable: false,
       isVisible: false
     },
     {
       name: 'actions',
-      columnLabel: 'Actions',
+      columnLabel: translate('Actions'),
       isVisible: true,
       isModifiable: false
     }
@@ -205,19 +219,24 @@ export const defaultState = {
   filterBuilderProps: [
     {
       name: 'monitored',
-      label: 'Monitored',
+      label: translate('Monitored'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
     },
     {
+      name: 'title',
+      label: translate('Title'),
+      type: filterBuilderTypes.STRING
+    },
+    {
       name: 'status',
-      label: 'Status',
+      label: translate('Status'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.MOVIE_STATUS
     },
     {
       name: 'studio',
-      label: 'Studio',
+      label: translate('Studio'),
       type: filterBuilderTypes.EXACT,
       optionsSelector: function(items) {
         const tagList = items.reduce((acc, movie) => {
@@ -236,7 +255,7 @@ export const defaultState = {
     },
     {
       name: 'collection',
-      label: 'Collection',
+      label: translate('Collection'),
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const collectionList = items.reduce((acc, movie) => {
@@ -255,47 +274,58 @@ export const defaultState = {
     },
     {
       name: 'qualityProfileId',
-      label: 'Quality Profile',
+      label: translate('QualityProfile'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.QUALITY_PROFILE
     },
     {
       name: 'added',
-      label: 'Added',
+      label: translate('Added'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
+      name: 'year',
+      label: translate('Year'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
       name: 'inCinemas',
-      label: 'In Cinemas',
+      label: translate('InCinemas'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'physicalRelease',
-      label: 'Physical Release',
+      label: translate('PhysicalRelease'),
+      type: filterBuilderTypes.DATE,
+      valueType: filterBuilderValueTypes.DATE
+    },
+    {
+      name: 'digitalRelease',
+      label: translate('DigitalRelease'),
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'runtime',
-      label: 'Runtime',
+      label: translate('Runtime'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'path',
-      label: 'Path',
+      label: translate('Path'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'sizeOnDisk',
-      label: 'Size on Disk',
+      label: translate('SizeOnDisk'),
       type: filterBuilderTypes.NUMBER,
       valueType: filterBuilderValueTypes.BYTES
     },
     {
       name: 'genres',
-      label: 'Genres',
+      label: translate('Genres'),
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const genreList = items.reduce((acc, movie) => {
@@ -314,12 +344,12 @@ export const defaultState = {
     },
     {
       name: 'ratings',
-      label: 'Rating',
+      label: translate('Ratings'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'certification',
-      label: 'Certification',
+      label: translate('Certification'),
       type: filterBuilderTypes.EXACT,
       optionsSelector: function(items) {
         const certificationList = items.reduce((acc, movie) => {
@@ -338,7 +368,7 @@ export const defaultState = {
     },
     {
       name: 'tags',
-      label: 'Tags',
+      label: translate('Tags'),
       type: filterBuilderTypes.ARRAY,
       valueType: filterBuilderValueTypes.TAG
     }

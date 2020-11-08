@@ -1,16 +1,17 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import titleCase from 'Utilities/String/titleCase';
-import formatDate from 'Utilities/Date/formatDate';
-import formatDateTime from 'Utilities/Date/formatDateTime';
-import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
-import { icons, kinds } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
-import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import TableRow from 'Components/Table/TableRow';
+import { icons, kinds } from 'Helpers/Props';
+import formatDate from 'Utilities/Date/formatDate';
+import formatDateTime from 'Utilities/Date/formatDateTime';
+import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
+import titleCase from 'Utilities/String/titleCase';
+import translate from 'Utilities/String/translate';
 import styles from './QueuedTaskRow.css';
 
 function getStatusIconProps(status, message) {
@@ -224,7 +225,7 @@ class QueuedTaskRow extends Component {
           {
             status === 'queued' &&
               <IconButton
-                title="Removed from task queue"
+                title={translate('RemovedFromTaskQueue')}
                 name={icons.REMOVE}
                 onPress={this.onCancelPress}
               />
@@ -234,10 +235,10 @@ class QueuedTaskRow extends Component {
         <ConfirmModal
           isOpen={isCancelConfirmModalOpen}
           kind={kinds.DANGER}
-          title="Cancel"
-          message={'Are you sure you want to cancel this pending task?'}
-          confirmLabel="Yes, Cancel"
-          cancelLabel="No, Leave It"
+          title={translate('Cancel')}
+          message={translate('CancelPendingTask')}
+          confirmLabel={translate('YesCancel')}
+          cancelLabel={translate('NoLeaveIt')}
           onConfirm={onCancelPress}
           onCancel={this.onAbortCancel}
         />

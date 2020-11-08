@@ -3,11 +3,11 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.CustomFormats.Events;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.NetImport;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Profiles
@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Profiles
         Profile Get(int id);
         bool Exists(int id);
         Profile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed);
+        List<Language> GetAcceptableLanguages(int profileId);
     }
 
     public class ProfileService : IProfileService,
@@ -31,19 +32,19 @@ namespace NzbDrone.Core.Profiles
         private readonly IProfileRepository _profileRepository;
         private readonly ICustomFormatService _formatService;
         private readonly IMovieService _movieService;
-        private readonly INetImportFactory _netImportFactory;
+        private readonly IImportListFactory _importListFactory;
         private readonly Logger _logger;
 
         public ProfileService(IProfileRepository profileRepository,
                               ICustomFormatService formatService,
                               IMovieService movieService,
-                              INetImportFactory netImportFactory,
+                              IImportListFactory importListFactory,
                               Logger logger)
         {
             _profileRepository = profileRepository;
             _formatService = formatService;
             _movieService = movieService;
-            _netImportFactory = netImportFactory;
+            _importListFactory = importListFactory;
             _logger = logger;
         }
 
@@ -59,7 +60,7 @@ namespace NzbDrone.Core.Profiles
 
         public void Delete(int id)
         {
-            if (_movieService.GetAllMovies().Any(c => c.ProfileId == id) || _netImportFactory.All().Any(c => c.ProfileId == id))
+            if (_movieService.GetAllMovies().Any(c => c.ProfileId == id) || _importListFactory.All().Any(c => c.ProfileId == id))
             {
                 throw new ProfileInUseException(id);
             }
@@ -201,8 +202,7 @@ namespace NzbDrone.Core.Profiles
                 Quality.WEBRip1080p,
                 Quality.Bluray720p,
                 Quality.Bluray1080p,
-                Quality.Remux1080p,
-                Quality.Remux2160p);
+                Quality.Remux1080p);
         }
 
         public Profile GetDefaultProfile(string name, Quality cutoff = null, params Quality[] allowed)
@@ -263,6 +263,24 @@ namespace NzbDrone.Core.Profiles
             };
 
             return qualityProfile;
+        }
+
+        public List<Language> GetAcceptableLanguages(int profileId)
+        {
+            var profile = Get(profileId);
+
+            var wantedTitleLanguages = profile.FormatItems.Where(i => i.Score > 0).Select(item => item.Format)
+                .SelectMany(format => format.Specifications)
+                .Where(specification => specification is LanguageSpecification && !specification.Negate)
+                .Cast<LanguageSpecification>()
+                .Where(specification => specification.Value > 0)
+                .Select(specification => (Language)specification.Value)
+                .Distinct()
+                .ToList();
+
+            wantedTitleLanguages.Add(profile.Language);
+
+            return wantedTitleLanguages;
         }
 
         private Profile AddDefaultProfile(string name, Quality cutoff, params Quality[] allowed)

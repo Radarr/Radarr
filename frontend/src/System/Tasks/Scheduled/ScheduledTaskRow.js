@@ -1,13 +1,13 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import TableRow from 'Components/Table/TableRow';
+import { icons } from 'Helpers/Props';
 import formatDate from 'Utilities/Date/formatDate';
 import formatDateTime from 'Utilities/Date/formatDateTime';
 import formatTimeSpan from 'Utilities/Date/formatTimeSpan';
-import { icons } from 'Helpers/Props';
-import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-import TableRow from 'Components/Table/TableRow';
-import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import styles from './ScheduledTaskRow.css';
 
 function getFormattedDates(props) {

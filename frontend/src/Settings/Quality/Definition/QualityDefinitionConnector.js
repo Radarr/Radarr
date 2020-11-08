@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setQualityDefinitionValue } from 'Store/Actions/settingsActions';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
+import { setQualityDefinitionValue } from 'Store/Actions/settingsActions';
 import QualityDefinition from './QualityDefinition';
 
 const mapDispatchToProps = {

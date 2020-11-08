@@ -1,12 +1,13 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import { icons } from 'Helpers/Props';
+import CheckInput from 'Components/Form/CheckInput';
+import TextInput from 'Components/Form/TextInput';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
-import CheckInput from 'Components/Form/CheckInput';
-import TextInput from 'Components/Form/TextInput';
+import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import QualityProfileItemDragSource from './QualityProfileItemDragSource';
 import styles from './QualityProfileItemGroup.css';
 
@@ -77,7 +78,7 @@ class QualityProfileItemGroup extends Component {
                 <IconButton
                   className={styles.deleteGroupButton}
                   name={icons.UNGROUP}
-                  title="Ungroup"
+                  title={translate('Ungroup')}
                   onPress={this.onDeleteGroupPress}
                 />
 
@@ -133,7 +134,7 @@ class QualityProfileItemGroup extends Component {
                 <Icon
                   className={styles.dragIcon}
                   name={icons.REORDER}
-                  title="Reorder"
+                  title={translate('Reorder')}
                 />
               </div>
             )

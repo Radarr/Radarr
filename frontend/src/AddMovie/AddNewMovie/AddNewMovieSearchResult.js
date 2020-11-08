@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds, sizes } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
 import Link from 'Components/Link/Link';
+import Tooltip from 'Components/Tooltip/Tooltip';
+import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
+import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import MoviePoster from 'Movie/MoviePoster';
+import translate from 'Utilities/String/translate';
 import AddNewMovieModal from './AddNewMovieModal';
 import styles from './AddNewMovieSearchResult.css';
 
@@ -39,7 +42,7 @@ class AddNewMovieSearchResult extends Component {
     this.setState({ isNewAddMovieModalOpen: false });
   }
 
-  onTMDBLinkPress = (event) => {
+  onExternalLinkPress = (event) => {
     event.stopPropagation();
   }
 
@@ -49,6 +52,8 @@ class AddNewMovieSearchResult extends Component {
   render() {
     const {
       tmdbId,
+      imdbId,
+      youTubeTrailerId,
       title,
       titleSlug,
       year,
@@ -89,45 +94,43 @@ class AddNewMovieSearchResult extends Component {
           }
 
           <div className={styles.content}>
-            <div className={styles.title}>
-              {title}
+            <div className={styles.titleRow}>
+              <div className={styles.titleContainer}>
+                <div className={styles.title}>
+                  {title}
 
-              {
-                !title.contains(year) && !!year &&
-                  <span className={styles.year}>({year})</span>
-              }
+                  {
+                    !title.contains(year) && !!year ?
+                      <span className={styles.year}>
+                        ({year})
+                      </span> :
+                      null
+                  }
+                </div>
+              </div>
 
-              {
-                isExistingMovie &&
-                  <Icon
-                    className={styles.alreadyExistsIcon}
-                    name={icons.CHECK_CIRCLE}
-                    size={36}
-                    title="Already in your library"
-                  />
-              }
+              <div className={styles.icons}>
 
-              {
-                isExclusionMovie &&
-                  <Icon
-                    className={styles.exclusionIcon}
-                    name={icons.DANGER}
-                    size={36}
-                    title="Movie is on Net Import Exclusion List"
-                  />
-              }
+                {
+                  isExistingMovie &&
+                    <Icon
+                      className={styles.alreadyExistsIcon}
+                      name={icons.CHECK_CIRCLE}
+                      size={36}
+                      title={translate('AlreadyInYourLibrary')}
+                    />
+                }
 
-              <Link
-                className={styles.tmdbLink}
-                to={`https://www.themoviedb.org/movie/${tmdbId}`}
-                onPress={this.onTMDBLinkPress}
-              >
-                <Icon
-                  className={styles.tmdbLinkIcon}
-                  name={icons.EXTERNAL_LINK}
-                  size={28}
-                />
-              </Link>
+                {
+                  isExclusionMovie &&
+                    <Icon
+                      className={styles.exclusionIcon}
+                      name={icons.DANGER}
+                      size={36}
+                      title={translate('MovieIsOnImportExclusionList')}
+                    />
+                }
+              </div>
             </div>
 
             <div>
@@ -144,6 +147,32 @@ class AddNewMovieSearchResult extends Component {
                     {studio}
                   </Label>
               }
+
+              <Tooltip
+                anchor={
+                  <Label
+                    size={sizes.LARGE}
+                  >
+                    <Icon
+                      name={icons.EXTERNAL_LINK}
+                      size={13}
+                    />
+
+                    <span className={styles.links}>
+                      Links
+                    </span>
+                  </Label>
+                }
+                tooltip={
+                  <MovieDetailsLinks
+                    tmdbId={tmdbId}
+                    youTubeTrailerId={youTubeTrailerId}
+                    imdbId={imdbId}
+                  />
+                }
+                kind={kinds.INVERSE}
+                position={tooltipPositions.BOTTOM}
+              />
 
               {
                 status === 'ended' &&
@@ -179,6 +208,8 @@ class AddNewMovieSearchResult extends Component {
 
 AddNewMovieSearchResult.propTypes = {
   tmdbId: PropTypes.number.isRequired,
+  imdbId: PropTypes.string,
+  youTubeTrailerId: PropTypes.string,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,

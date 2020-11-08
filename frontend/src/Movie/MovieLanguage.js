@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Label from 'Components/Label';
-import { kinds, tooltipPositions } from 'Helpers/Props';
 import Popover from 'Components/Tooltip/Popover';
+import { kinds, tooltipPositions } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 function MovieLanguage(props) {
   const {
@@ -37,7 +38,7 @@ function MovieLanguage(props) {
           Multi-Language
         </Label>
       }
-      title="Languages"
+      title={translate('Languages')}
       body={
         <ul>
           {

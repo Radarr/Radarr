@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds } from 'Helpers/Props';
+import HistoryDetailsModal from 'Activity/History/Details/HistoryDetailsModal';
+import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import TableRow from 'Components/Table/TableRow';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import MovieQuality from 'Movie/MovieQuality';
+import TableRow from 'Components/Table/TableRow';
+import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
-import HistoryEventTypeCell from 'Activity/History/HistoryEventTypeCell';
-import HistoryDetailsModal from 'Activity/History/Details/HistoryDetailsModal';
+import MovieQuality from 'Movie/MovieQuality';
+import translate from 'Utilities/String/translate';
 import styles from './MovieHistoryRow.css';
 
 class MovieHistoryRow extends Component {
@@ -81,7 +82,7 @@ class MovieHistoryRow extends Component {
           data={data}
         />
 
-        <TableRowCell>
+        <TableRowCell className={styles.sourceTitle}>
           {sourceTitle}
         </TableRowCell>
 
@@ -117,7 +118,7 @@ class MovieHistoryRow extends Component {
           {
             eventType === 'grabbed' &&
               <IconButton
-                title="Mark as failed"
+                title={translate('MarkAsFailed')}
                 name={icons.REMOVE}
                 onPress={this.onMarkAsFailedPress}
               />
@@ -127,9 +128,9 @@ class MovieHistoryRow extends Component {
         <ConfirmModal
           isOpen={isMarkAsFailedModalOpen}
           kind={kinds.DANGER}
-          title="Mark as Failed"
-          message={`Are you sure you want to mark '${sourceTitle}' as failed?`}
-          confirmLabel="Mark as Failed"
+          title={translate('MarkAsFailed')}
+          message={translate('MarkAsFailedMessageText', [sourceTitle])}
+          confirmLabel={translate('MarkAsFailed')}
           onConfirm={this.onConfirmMarkAsFailed}
           onCancel={this.onMarkAsFailedModalClose}
         />

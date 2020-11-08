@@ -4,6 +4,7 @@ using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators;
 using NzbDrone.Core.Parser.Model;
@@ -12,7 +13,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation
 {
     public interface IAggregationService
     {
-        LocalMovie Augment(LocalMovie localMovie, bool otherFiles);
+        LocalMovie Augment(LocalMovie localMovie, DownloadClientItem downloadClientItem, bool otherFiles);
     }
 
     public class AggregationService : IAggregationService
@@ -36,7 +37,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation
             _logger = logger;
         }
 
-        public LocalMovie Augment(LocalMovie localMovie, bool otherFiles)
+        public LocalMovie Augment(LocalMovie localMovie, DownloadClientItem downloadClientItem, bool otherFiles)
         {
             var isMediaFile = MediaFileExtensions.Extensions.Contains(Path.GetExtension(localMovie.Path));
 
@@ -61,7 +62,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation
             {
                 try
                 {
-                    augmenter.Aggregate(localMovie, otherFiles);
+                    augmenter.Aggregate(localMovie, downloadClientItem, otherFiles);
                 }
                 catch (Exception ex)
                 {

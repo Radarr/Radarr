@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import getQualities from 'Utilities/Quality/getQualities';
-import { fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
 import { updateInteractiveImportItems } from 'Store/Actions/interactiveImportActions';
+import { fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
+import getQualities from 'Utilities/Quality/getQualities';
 import SelectQualityModalContent from './SelectQualityModalContent';
 
 function createMapStateToProps() {

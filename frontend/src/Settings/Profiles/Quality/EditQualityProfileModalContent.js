@@ -1,21 +1,22 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes, kinds, sizes } from 'Helpers/Props';
-import dimensions from 'Styles/Variables/dimensions';
+import Form from 'Components/Form/Form';
+import FormGroup from 'Components/Form/FormGroup';
+import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
 import Button from 'Components/Link/Button';
 import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Measure from 'Components/Measure';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import Form from 'Components/Form/Form';
-import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
-import FormInputGroup from 'Components/Form/FormInputGroup';
-import QualityProfileItems from './QualityProfileItems';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes, kinds, sizes } from 'Helpers/Props';
+import dimensions from 'Styles/Variables/dimensions';
+import translate from 'Utilities/String/translate';
 import QualityProfileFormatItems from './QualityProfileFormatItems';
+import QualityProfileItems from './QualityProfileItems';
 import styles from './EditQualityProfileModalContent.css';
 
 const MODAL_BODY_PADDING = parseInt(dimensions.modalBodyPadding);
@@ -145,7 +146,9 @@ class EditQualityProfileModalContent extends Component {
 
               {
                 !isFetching && !!error &&
-                  <div>Unable to add a new quality profile, please try again.</div>
+                  <div>
+                    {translate('UnableToAddANewQualityProfilePleaseTryAgain')}
+                  </div>
               }
 
               {
@@ -177,7 +180,7 @@ class EditQualityProfileModalContent extends Component {
                             type={inputTypes.CHECK}
                             name="upgradeAllowed"
                             {...upgradeAllowed}
-                            helpText="If disabled qualities will not be upgraded"
+                            helpText={translate('UpgradeAllowedHelpText')}
                             onChange={onInputChange}
                           />
                         </FormGroup>
@@ -194,7 +197,7 @@ class EditQualityProfileModalContent extends Component {
                                 name="cutoff"
                                 {...cutoff}
                                 values={qualities}
-                                helpText="Once this quality is reached Radarr will no longer download movies"
+                                helpText={translate('CutoffHelpText')}
                                 onChange={onCutoffChange}
                               />
                             </FormGroup>
@@ -211,7 +214,7 @@ class EditQualityProfileModalContent extends Component {
                                 type={inputTypes.NUMBER}
                                 name="minFormatScore"
                                 {...minFormatScore}
-                                helpText="Minimum custom format score allowed to download"
+                                helpText={translate('MinFormatScoreHelpText')}
                                 onChange={onInputChange}
                               />
                             </FormGroup>
@@ -228,7 +231,7 @@ class EditQualityProfileModalContent extends Component {
                                 type={inputTypes.NUMBER}
                                 name="cutoffFormatScore"
                                 {...cutoffFormatScore}
-                                helpText="Once this custom format score is reached Radarr will no longer download movies"
+                                helpText={translate('CutoffFormatScoreHelpText')}
                                 onChange={onInputChange}
                               />
                             </FormGroup>
@@ -244,7 +247,7 @@ class EditQualityProfileModalContent extends Component {
                             name="language"
                             values={languages}
                             value={languageId}
-                            helpText="Language for Releases"
+                            helpText={translate('LanguageHelpText')}
                             onChange={onLanguageChange}
                           />
                         </FormGroup>
@@ -297,7 +300,7 @@ class EditQualityProfileModalContent extends Component {
                     isDisabled={isInUse}
                     onPress={onDeleteQualityProfilePress}
                   >
-                    Delete
+                    {translate('Delete')}
                   </Button>
                 </div> :
                 null
@@ -306,7 +309,7 @@ class EditQualityProfileModalContent extends Component {
             <Button
               onPress={onModalClose}
             >
-              Cancel
+              {translate('Cancel')}
             </Button>
 
             <SpinnerErrorButton
@@ -314,7 +317,7 @@ class EditQualityProfileModalContent extends Component {
               error={saveError}
               onPress={onSavePress}
             >
-              Save
+              {translate('Save')}
             </SpinnerErrorButton>
           </ModalFooter>
         </Measure>

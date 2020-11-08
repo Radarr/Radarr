@@ -1,12 +1,13 @@
 import $ from 'jquery';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
+import { set } from 'Store/Actions/baseActions';
+import { createThunk, handleThunks } from 'Store/thunks';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import requestAction from 'Utilities/requestAction';
 import getSectionState from 'Utilities/State/getSectionState';
 import updateSectionState from 'Utilities/State/updateSectionState';
-import { createThunk, handleThunks } from 'Store/thunks';
-import { set } from 'Store/Actions/baseActions';
+import translate from 'Utilities/String/translate';
 import createHandleActions from './Creators/createHandleActions';
 
 //
@@ -59,7 +60,7 @@ function showOAuthWindow(url, payload) {
       responseJSON: [
         {
           propertyName: payload.name,
-          errorMessage: 'Pop-ups are being blocked by your browser'
+          errorMessage: translate('OAuthPopupMessage')
         }
       ]
     };

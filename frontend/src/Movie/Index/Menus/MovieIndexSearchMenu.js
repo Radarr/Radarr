@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { align, icons } from 'Helpers/Props';
 import Menu from 'Components/Menu/Menu';
 import MenuContent from 'Components/Menu/MenuContent';
-import ToolbarMenuButton from 'Components/Menu/ToolbarMenuButton';
 import SearchMenuItem from 'Components/Menu/SearchMenuItem';
+import ToolbarMenuButton from 'Components/Menu/ToolbarMenuButton';
+import { align, icons } from 'Helpers/Props';
 
 class MovieIndexSearchMenu extends Component {
 

@@ -10,6 +10,10 @@
   }
 }
 
+.link {
+  composes: link from '~Calendar/Events/CalendarEvent.css';
+}
+
 .eventWrapper {
   display: flex;
   flex: 1 0 1px;
@@ -30,7 +34,8 @@
   border: none !important;
 }
 
-.movieTitle {
+.movieTitle,
+.genres {
   @add-mixin truncate;
 
   flex: 0 1 300px;
@@ -61,6 +66,10 @@
   composes: missing from '~Calendar/Events/CalendarEvent.css';
 }
 
+.unreleased {
+  composes: unreleased from '~Calendar/Events/CalendarEvent.css';
+}
+
 @media only screen and (max-width: $breakpointSmall) {
   .event {
     flex-direction: column;
@@ -80,4 +89,9 @@
   .movieTitle {
     flex: 0 0 100%;
   }
+}
+
+.dateIcon {
+  display: inline;
+  margin-right: 10px;
 }

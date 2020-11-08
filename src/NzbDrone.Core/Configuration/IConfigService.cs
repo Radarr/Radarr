@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using NzbDrone.Common.Http.Proxy;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
-using NzbDrone.Core.Parser;
+using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Security;
 
 namespace NzbDrone.Core.Configuration
@@ -29,7 +30,7 @@ namespace NzbDrone.Core.Configuration
         bool AutoUnmonitorPreviouslyDownloadedMovies { get; set; }
         string RecycleBin { get; set; }
         int RecycleBinCleanupDays { get; set; }
-        bool AutoDownloadPropers { get; set; }
+        ProperDownloadTypes DownloadPropersAndRepacks { get; set; }
         bool CreateEmptyMovieFolders { get; set; }
         bool DeleteEmptyFolders { get; set; }
         FileDateType FileDate { get; set; }
@@ -59,7 +60,7 @@ namespace NzbDrone.Core.Configuration
         bool AllowHardcodedSubs { get; set; }
         string WhitelistedHardcodedSubs { get; set; }
 
-        int NetImportSyncInterval { get; set; }
+        int ImportListSyncInterval { get; set; }
         string ListSyncLevel { get; set; }
         string ImportExclusions { get; set; }
 
@@ -69,12 +70,15 @@ namespace NzbDrone.Core.Configuration
         //UI
         int FirstDayOfWeek { get; set; }
         string CalendarWeekColumnHeader { get; set; }
+        MovieRuntimeFormatType MovieRuntimeFormat { get; set; }
 
         string ShortDateFormat { get; set; }
         string LongDateFormat { get; set; }
         string TimeFormat { get; set; }
         bool ShowRelativeDates { get; set; }
         bool EnableColorImpairedMode { get; set; }
+        int MovieInfoLanguage { get; set; }
+        int UILanguage { get; set; }
 
         //Internal
         bool CleanupMetadataImages { get; set; }

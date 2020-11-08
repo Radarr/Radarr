@@ -1,7 +1,7 @@
 import moment from 'moment';
+import * as filterTypes from 'Helpers/Props/filterTypes';
 import isAfter from 'Utilities/Date/isAfter';
 import isBefore from 'Utilities/Date/isBefore';
-import * as filterTypes from 'Helpers/Props/filterTypes';
 
 export default function(itemValue, filterValue, type) {
   if (!itemValue) {
@@ -21,10 +21,20 @@ export default function(itemValue, filterValue, type) {
         isBefore(itemValue)
       );
 
+    case filterTypes.NOT_IN_LAST:
+      return (
+        isBefore(itemValue, { [filterValue.time]: filterValue.value * -1 })
+      );
+
     case filterTypes.IN_NEXT:
       return (
         isAfter(itemValue) &&
         isBefore(itemValue, { [filterValue.time]: filterValue.value })
+      );
+
+    case filterTypes.NOT_IN_NEXT:
+      return (
+        isAfter(itemValue, { [filterValue.time]: filterValue.value })
       );
 
     default:

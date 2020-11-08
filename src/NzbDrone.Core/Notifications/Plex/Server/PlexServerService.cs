@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentValidation.Results;
@@ -13,6 +14,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
     public interface IPlexServerService
     {
         void UpdateLibrary(Movie movie, PlexServerSettings settings);
+        void UpdateLibrary(IEnumerable<Movie> movie, PlexServerSettings settings);
         ValidationFailure Test(PlexServerSettings settings);
     }
 
@@ -33,9 +35,15 @@ namespace NzbDrone.Core.Notifications.Plex.Server
 
         public void UpdateLibrary(Movie movie, PlexServerSettings settings)
         {
+            UpdateLibrary(new[] { movie }, settings);
+        }
+
+        public void UpdateLibrary(IEnumerable<Movie> multipleMovies, PlexServerSettings settings)
+        {
             try
             {
                 _logger.Debug("Sending Update Request to Plex Server");
+                var watch = Stopwatch.StartNew();
 
                 var version = _versionCache.Get(settings.Host, () => GetVersion(settings), TimeSpan.FromHours(2));
                 ValidateVersion(version);
@@ -45,12 +53,31 @@ namespace NzbDrone.Core.Notifications.Plex.Server
 
                 if (partialUpdates)
                 {
-                    UpdatePartialSection(movie, sections, settings);
+                    var partiallyUpdated = true;
+
+                    foreach (var movie in multipleMovies)
+                    {
+                        partiallyUpdated &= UpdatePartialSection(movie, sections, settings);
+
+                        if (!partiallyUpdated)
+                        {
+                            break;
+                        }
+                    }
+
+                    // Only update complete sections if all partial updates failed
+                    if (!partiallyUpdated)
+                    {
+                        _logger.Debug("Unable to update partial section, updating all Movie sections");
+                        sections.ForEach(s => UpdateSection(s.Id, settings));
+                    }
                 }
                 else
                 {
                     sections.ForEach(s => UpdateSection(s.Id, settings));
                 }
+
+                _logger.Debug("Finished sending Update Request to Plex Server (took {0} ms)", watch.ElapsedMilliseconds);
             }
             catch (Exception ex)
             {
@@ -123,7 +150,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             _plexServerProxy.Update(sectionId, settings);
         }
 
-        private void UpdatePartialSection(Movie movie, List<PlexSection> sections, PlexServerSettings settings)
+        private bool UpdatePartialSection(Movie movie, List<PlexSection> sections, PlexServerSettings settings)
         {
             var partiallyUpdated = false;
 
@@ -140,12 +167,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 }
             }
 
-            // Only update complete sections if all partial updates failed
-            if (!partiallyUpdated)
-            {
-                _logger.Debug("Unable to update partial section, updating all Movie sections");
-                sections.ForEach(s => UpdateSection(s.Id, settings));
-            }
+            return partiallyUpdated;
         }
 
         private int? GetMetadataId(int sectionId, Movie movie, string language, PlexServerSettings settings)
@@ -159,6 +181,8 @@ namespace NzbDrone.Core.Notifications.Plex.Server
         {
             try
             {
+                _versionCache.Remove(settings.Host);
+                _partialUpdateCache.Remove(settings.Host);
                 var sections = GetSections(settings);
 
                 if (sections.Empty())

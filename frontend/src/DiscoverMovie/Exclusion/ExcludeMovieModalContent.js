@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './ExcludeMovieModalContent.css';
 
 class ExcludeMovieModalContent extends Component {
@@ -44,14 +45,14 @@ class ExcludeMovieModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Close
+            {translate('Close')}
           </Button>
 
           <Button
             kind={kinds.DANGER}
             onPress={this.onExcludeMovieConfirmed}
           >
-            Exlude
+            Exclude
           </Button>
         </ModalFooter>
       </ModalContent>

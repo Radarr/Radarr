@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.MediaFiles.MediaInfo;
@@ -79,6 +81,22 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [Test]
         public void should_sum_AudioChannelPositions_including_decimal()
         {
+            var mediaInfoModel = new MediaInfoModel
+            {
+                AudioChannels = 2,
+                AudioChannelPositions = "3/2/0.1",
+                AudioChannelPositionsText = null,
+                SchemaRevision = 3
+            };
+
+            MediaInfoFormatter.FormatAudioChannels(mediaInfoModel).Should().Be(5.1m);
+        }
+
+        [Test]
+        public void should_ignore_culture_on_channel_summary()
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
+
             var mediaInfoModel = new MediaInfoModel
             {
                 AudioChannels = 2,

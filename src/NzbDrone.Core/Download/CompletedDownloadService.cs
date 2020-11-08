@@ -170,23 +170,28 @@ namespace NzbDrone.Core.Download
 
             if (allMoviesImportedInHistory)
             {
+                // Log different error messages depending on the circumstances, but treat both as fully imported, because that's the reality.
+                // The second message shouldn't be logged in most cases, but continued reporting would indicate an ongoing issue.
                 if (atLeastOneMovieImported)
                 {
                     _logger.Debug("All movies were imported in history for {0}", trackedDownload.DownloadItem.Title);
-                    trackedDownload.State = TrackedDownloadState.Imported;
-                    _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, trackedDownload.RemoteMovie.Movie.Id));
-
-                    return true;
+                }
+                else
+                {
+                    _logger.Debug()
+                           .Message("No Movies were just imported, but all movies were previously imported, possible issue with download history.")
+                           .Property("MovieId", trackedDownload.RemoteMovie.Movie.Id)
+                           .Property("DownloadId", trackedDownload.DownloadItem.DownloadId)
+                           .Property("Title", trackedDownload.DownloadItem.Title)
+                           .Property("Path", trackedDownload.DownloadItem.OutputPath.ToString())
+                           .WriteSentryWarn("DownloadHistoryIncomplete")
+                           .Write();
                 }
 
-                _logger.Debug()
-                       .Message("No Movies were just imported, but all movies were previously imported, possible issue with download history.")
-                       .Property("MovieId", trackedDownload.RemoteMovie.Movie.Id)
-                       .Property("DownloadId", trackedDownload.DownloadItem.DownloadId)
-                       .Property("Title", trackedDownload.DownloadItem.Title)
-                       .Property("Path", trackedDownload.DownloadItem.OutputPath.ToString())
-                       .WriteSentryWarn("DownloadHistoryIncomplete")
-                       .Write();
+                trackedDownload.State = TrackedDownloadState.Imported;
+                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload, trackedDownload.RemoteMovie.Movie.Id));
+
+                return true;
             }
 
             _logger.Debug("Not all movies have been imported for {0}", trackedDownload.DownloadItem.Title);

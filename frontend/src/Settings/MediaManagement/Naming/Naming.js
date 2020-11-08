@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes, sizes } from 'Helpers/Props';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import FormInputButton from 'Components/Form/FormInputButton';
 import FieldSet from 'Components/FieldSet';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
+import FormInputButton from 'Components/Form/FormInputButton';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import { inputTypes, sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import NamingModal from './NamingModal';
 import styles from './Naming.css';
 
@@ -101,7 +102,7 @@ class Naming extends Component {
     }
 
     return (
-      <FieldSet legend="Movie Naming">
+      <FieldSet legend={translate('MovieNaming')}>
         {
           isFetching &&
             <LoadingIndicator />
@@ -109,31 +110,33 @@ class Naming extends Component {
 
         {
           !isFetching && error &&
-            <div>Unable to load Naming settings</div>
+            <div>
+              {translate('UnableToLoadNamingSettings')}
+            </div>
         }
 
         {
           hasSettings && !isFetching && !error &&
             <Form>
               <FormGroup size={sizes.MEDIUM}>
-                <FormLabel>Rename Movies</FormLabel>
+                <FormLabel>{translate('RenameMovies')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="renameMovies"
-                  helpText="Radarr will use the existing file name if renaming is disabled"
+                  helpText={translate('RenameMoviesHelpText')}
                   onChange={onInputChange}
                   {...settings.renameMovies}
                 />
               </FormGroup>
 
               <FormGroup size={sizes.MEDIUM}>
-                <FormLabel>Replace Illegal Characters</FormLabel>
+                <FormLabel>{translate('ReplaceIllegalCharacters')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="replaceIllegalCharacters"
-                  helpText="Replace illegal characters. If unchecked, Radarr will remove them instead"
+                  helpText={translate('ReplaceIllegalCharactersHelpText')}
                   onChange={onInputChange}
                   {...settings.replaceIllegalCharacters}
                 />
@@ -142,13 +145,13 @@ class Naming extends Component {
               {
                 replaceIllegalCharacters &&
                   <FormGroup>
-                    <FormLabel>Colon Replacement</FormLabel>
+                    <FormLabel>{translate('ColonReplacement')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="colonReplacementFormat"
                       values={colonReplacementOptions}
-                      helpText="Change how Radarr handles colon replacement"
+                      helpText={translate('ColonReplacementFormatHelpText')}
                       onChange={onInputChange}
                       {...settings.colonReplacementFormat}
                     />
@@ -158,7 +161,7 @@ class Naming extends Component {
               {
                 renameMovies &&
                   <FormGroup size={sizes.LARGE}>
-                    <FormLabel>Standard Movie Format</FormLabel>
+                    <FormLabel>{translate('StandardMovieFormat')}</FormLabel>
 
                     <FormInputGroup
                       inputClassName={styles.namingInput}
@@ -177,7 +180,7 @@ class Naming extends Component {
                 advancedSettings={advancedSettings}
                 isAdvanced={true}
               >
-                <FormLabel>Movie Folder Format</FormLabel>
+                <FormLabel>{translate('MovieFolderFormat')}</FormLabel>
 
                 <FormInputGroup
                   inputClassName={styles.namingInput}

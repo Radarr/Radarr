@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Test.ProviderTests.RecycleBinProviderTests
         {
             WithoutRecycleBin();
 
-            var path = @"C:\Test\TV\30 Rock\S01E01.avi".AsOsAgnostic();
+            var path = @"C:\Test\Movie\The Mask (1994)\The Mask.avi".AsOsAgnostic();
 
             Mocker.Resolve<RecycleBinProvider>().DeleteFile(path);
 
@@ -40,11 +40,11 @@ namespace NzbDrone.Core.Test.ProviderTests.RecycleBinProviderTests
         {
             WithRecycleBin();
 
-            var path = @"C:\Test\TV\30 Rock\S01E01.avi".AsOsAgnostic();
+            var path = @"C:\Test\Movie\The Mask (1994)\The Mask.avi".AsOsAgnostic();
 
             Mocker.Resolve<RecycleBinProvider>().DeleteFile(path);
 
-            Mocker.GetMock<IDiskTransferService>().Verify(v => v.TransferFile(path, @"C:\Test\Recycle Bin\S01E01.avi".AsOsAgnostic(), TransferMode.Move, false, true), Times.Once());
+            Mocker.GetMock<IDiskTransferService>().Verify(v => v.TransferFile(path, @"C:\Test\Recycle Bin\The Mask.avi".AsOsAgnostic(), TransferMode.Move, false), Times.Once());
         }
 
         [Test]
@@ -52,15 +52,15 @@ namespace NzbDrone.Core.Test.ProviderTests.RecycleBinProviderTests
         {
             WithRecycleBin();
 
-            var path = @"C:\Test\TV\30 Rock\S01E01.avi".AsOsAgnostic();
+            var path = @"C:\Test\Movie\The Mask (1994)\The Mask.avi".AsOsAgnostic();
 
             Mocker.GetMock<IDiskProvider>()
-                .Setup(v => v.FileExists(@"C:\Test\Recycle Bin\S01E01.avi".AsOsAgnostic()))
+                .Setup(v => v.FileExists(@"C:\Test\Recycle Bin\The Mask.avi".AsOsAgnostic()))
                 .Returns(true);
 
             Mocker.Resolve<RecycleBinProvider>().DeleteFile(path);
 
-            Mocker.GetMock<IDiskTransferService>().Verify(v => v.TransferFile(path, @"C:\Test\Recycle Bin\S01E01_2.avi".AsOsAgnostic(), TransferMode.Move, false, true), Times.Once());
+            Mocker.GetMock<IDiskTransferService>().Verify(v => v.TransferFile(path, @"C:\Test\Recycle Bin\The Mask_2.avi".AsOsAgnostic(), TransferMode.Move, false), Times.Once());
         }
 
         [Test]
@@ -68,11 +68,23 @@ namespace NzbDrone.Core.Test.ProviderTests.RecycleBinProviderTests
         {
             WindowsOnly();
             WithRecycleBin();
-            var path = @"C:\Test\TV\30 Rock\S01E01.avi".AsOsAgnostic();
+            var path = @"C:\Test\Movie\The Mask (1994)\The Mask.avi".AsOsAgnostic();
 
             Mocker.Resolve<RecycleBinProvider>().DeleteFile(path);
 
-            Mocker.GetMock<IDiskProvider>().Verify(v => v.FileSetLastWriteTime(@"C:\Test\Recycle Bin\S01E01.avi".AsOsAgnostic(), It.IsAny<DateTime>()), Times.Once());
+            Mocker.GetMock<IDiskProvider>().Verify(v => v.FileSetLastWriteTime(@"C:\Test\Recycle Bin\The Mask.avi".AsOsAgnostic(), It.IsAny<DateTime>()), Times.Once());
+        }
+
+        [Test]
+        public void should_use_subfolder_when_passed_in()
+        {
+            WithRecycleBin();
+
+            var path = @"C:\Test\Movie\The Mask (1994)\The Mask.avi".AsOsAgnostic();
+
+            Mocker.Resolve<RecycleBinProvider>().DeleteFile(path, "The Mask (1994)");
+
+            Mocker.GetMock<IDiskTransferService>().Verify(v => v.TransferFile(path, @"C:\Test\Recycle Bin\The Mask (1994)\The Mask.avi".AsOsAgnostic(), TransferMode.Move, false), Times.Once());
         }
     }
 }

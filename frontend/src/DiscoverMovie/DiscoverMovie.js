@@ -1,42 +1,44 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
-import getSelectedIds from 'Utilities/Table/getSelectedIds';
-import selectAll from 'Utilities/Table/selectAll';
-import toggleSelected from 'Utilities/Table/toggleSelected';
-import { align, icons, sortDirections } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import PageJumpBar from 'Components/Page/PageJumpBar';
-import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
-import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
-import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
-import AddListMovieTableConnector from './Table/AddListMovieTableConnector';
-import AddListMoviePosterOptionsModal from './Posters/Options/AddListMoviePosterOptionsModal';
-import AddListMoviePostersConnector from './Posters/AddListMoviePostersConnector';
-import AddListMovieOverviewOptionsModal from './Overview/Options/AddListMovieOverviewOptionsModal';
-import AddListMovieOverviewsConnector from './Overview/AddListMovieOverviewsConnector';
-import AddListMovieFilterMenu from './Menus/AddListMovieFilterMenu';
-import AddListMovieSortMenu from './Menus/AddListMovieSortMenu';
-import AddListMovieViewMenu from './Menus/AddListMovieViewMenu';
-import NoDiscoverMovie from './NoDiscoverMovie';
-import DiscoverMovieFooterConnector from './DiscoverMovieFooterConnector';
+import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
+import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
+import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
+import { align, icons, sortDirections } from 'Helpers/Props';
 import styles from 'Movie/Index/MovieIndex.css';
+import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
+import translate from 'Utilities/String/translate';
+import getSelectedIds from 'Utilities/Table/getSelectedIds';
+import selectAll from 'Utilities/Table/selectAll';
+import toggleSelected from 'Utilities/Table/toggleSelected';
+import DiscoverMovieFooterConnector from './DiscoverMovieFooterConnector';
+import DiscoverMovieFilterMenu from './Menus/DiscoverMovieFilterMenu';
+import DiscoverMovieSortMenu from './Menus/DiscoverMovieSortMenu';
+import DiscoverMovieViewMenu from './Menus/DiscoverMovieViewMenu';
+import NoDiscoverMovie from './NoDiscoverMovie';
+import DiscoverMovieOverviewsConnector from './Overview/DiscoverMovieOverviewsConnector';
+import DiscoverMovieOverviewOptionsModal from './Overview/Options/DiscoverMovieOverviewOptionsModal';
+import DiscoverMoviePostersConnector from './Posters/DiscoverMoviePostersConnector';
+import DiscoverMoviePosterOptionsModal from './Posters/Options/DiscoverMoviePosterOptionsModal';
+import DiscoverMovieTableConnector from './Table/DiscoverMovieTableConnector';
+import DiscoverMovieTableOptionsConnector from './Table/DiscoverMovieTableOptionsConnector';
 
 function getViewComponent(view) {
   if (view === 'posters') {
-    return AddListMoviePostersConnector;
+    return DiscoverMoviePostersConnector;
   }
 
   if (view === 'overview') {
-    return AddListMovieOverviewsConnector;
+    return DiscoverMovieOverviewsConnector;
   }
 
-  return AddListMovieTableConnector;
+  return DiscoverMovieTableConnector;
 }
 
 class DiscoverMovie extends Component {
@@ -211,6 +213,10 @@ class DiscoverMovie extends Component {
     this.onSelectAllChange({ value: !this.state.allSelected });
   }
 
+  onImportListSyncPress = () => {
+    this.props.onImportListSyncPress();
+  }
+
   onSelectedChange = ({ id, value, shiftKey = false }) => {
     this.setState((state) => {
       return toggleSelected(state, this.props.items, id, value, shiftKey, 'tmdbId');
@@ -247,6 +253,7 @@ class DiscoverMovie extends Component {
       onViewSelect,
       onScroll,
       onAddMoviesPress,
+      isSyncingLists,
       ...otherProps
     } = this.props;
 
@@ -272,7 +279,14 @@ class DiscoverMovie extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label={allSelected ? 'Unselect All' : 'Select All'}
+              label='Refresh Lists'
+              iconName={icons.REFRESH}
+              isSpinning={isSyncingLists}
+              isDisabled={hasNoMovie}
+              onPress={this.onImportListSyncPress}
+            />
+            <PageToolbarButton
+              label={allSelected ? translate('UnselectAll') : translate('SelectAll')}
               iconName={icons.CHECK_SQUARE}
               isDisabled={hasNoMovie}
               onPress={this.onSelectAllPress}
@@ -288,9 +302,10 @@ class DiscoverMovie extends Component {
                 <TableOptionsModalWrapper
                   {...otherProps}
                   columns={columns}
+                  optionsComponent={DiscoverMovieTableOptionsConnector}
                 >
                   <PageToolbarButton
-                    label="Options"
+                    label={translate('Options')}
                     iconName={icons.TABLE}
                   />
                 </TableOptionsModalWrapper> :
@@ -300,9 +315,8 @@ class DiscoverMovie extends Component {
             {
               view === 'posters' ?
                 <PageToolbarButton
-                  label="Options"
+                  label={translate('Options')}
                   iconName={icons.POSTER}
-                  isDisabled={hasNoMovie}
                   onPress={this.onPosterOptionsPress}
                 /> :
                 null
@@ -311,9 +325,8 @@ class DiscoverMovie extends Component {
             {
               view === 'overview' ?
                 <PageToolbarButton
-                  label="Options"
+                  label={translate('Options')}
                   iconName={icons.OVERVIEW}
-                  isDisabled={hasNoMovie}
                   onPress={this.onOverviewOptionsPress}
                 /> :
                 null
@@ -324,20 +337,20 @@ class DiscoverMovie extends Component {
                 <PageToolbarSeparator />
             }
 
-            <AddListMovieViewMenu
+            <DiscoverMovieViewMenu
               view={view}
               isDisabled={hasNoMovie}
               onViewSelect={onViewSelect}
             />
 
-            <AddListMovieSortMenu
+            <DiscoverMovieSortMenu
               sortKey={sortKey}
               sortDirection={sortDirection}
               isDisabled={hasNoMovie}
               onSortSelect={onSortSelect}
             />
 
-            <AddListMovieFilterMenu
+            <DiscoverMovieFilterMenu
               selectedFilterKey={selectedFilterKey}
               filters={filters}
               customFilters={customFilters}
@@ -361,7 +374,9 @@ class DiscoverMovie extends Component {
 
             {
               !isFetching && !!error &&
-                <div>Unable to load movies</div>
+                <div>
+                  {translate('UnableToLoadMovies')}
+                </div>
             }
 
             {
@@ -408,12 +423,12 @@ class DiscoverMovie extends Component {
             />
         }
 
-        <AddListMoviePosterOptionsModal
+        <DiscoverMoviePosterOptionsModal
           isOpen={isPosterOptionsModalOpen}
           onModalClose={this.onPosterOptionsModalClose}
         />
 
-        <AddListMovieOverviewOptionsModal
+        <DiscoverMovieOverviewOptionsModal
           isOpen={isOverviewOptionsModalOpen}
           onModalClose={this.onOverviewOptionsModalClose}
         />
@@ -435,13 +450,15 @@ DiscoverMovie.propTypes = {
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
   view: PropTypes.string.isRequired,
+  isSyncingLists: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
   onSortSelect: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
   onViewSelect: PropTypes.func.isRequired,
   onScroll: PropTypes.func.isRequired,
   onAddMoviesPress: PropTypes.func.isRequired,
-  onExcludeMoviesPress: PropTypes.func.isRequired
+  onExcludeMoviesPress: PropTypes.func.isRequired,
+  onImportListSyncPress: PropTypes.func.isRequired
 };
 
 export default DiscoverMovie;

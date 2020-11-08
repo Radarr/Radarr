@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using NLog;
 using NzbDrone.Core.Lifecycle;
 
@@ -9,7 +9,7 @@ namespace Radarr.Host
         void Attach();
     }
 
-    internal class CancelHandler : ICancelHandler
+    public class CancelHandler : ICancelHandler
     {
         private readonly ILifecycleService _lifecycleService;
         private object _syncRoot;

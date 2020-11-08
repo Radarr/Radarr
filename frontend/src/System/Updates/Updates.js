@@ -1,15 +1,16 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
-import { icons, kinds } from 'Helpers/Props';
-import formatDate from 'Utilities/Date/formatDate';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import SpinnerButton from 'Components/Link/SpinnerButton';
-import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
+import SpinnerButton from 'Components/Link/SpinnerButton';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import InlineMarkdown from 'Components/Markdown/InlineMarkdown';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
+import { icons, kinds } from 'Helpers/Props';
+import formatDate from 'Utilities/Date/formatDate';
+import translate from 'Utilities/String/translate';
 import UpdateChanges from './UpdateChanges';
 import styles from './Updates.css';
 
@@ -48,7 +49,7 @@ class Updates extends Component {
     };
 
     return (
-      <PageContent title="Updates">
+      <PageContent title={translate('Updates')}>
         <PageContentBody>
           {
             !isPopulated && !hasError &&
@@ -57,7 +58,9 @@ class Updates extends Component {
 
           {
             noUpdates &&
-              <div>No updates are available</div>
+              <div>
+                {translate('NoUpdatesAreAvailable')}
+              </div>
           }
 
           {
@@ -161,19 +164,21 @@ class Updates extends Component {
 
                         {
                           !hasChanges &&
-                            <div>Maintenance release</div>
+                            <div>
+                              {translate('MaintenanceRelease')}
+                            </div>
                         }
 
                         {
                           hasChanges &&
                             <div className={styles.changes}>
                               <UpdateChanges
-                                title="New"
+                                title={translate('New')}
                                 changes={update.changes.new}
                               />
 
                               <UpdateChanges
-                                title="Fixed"
+                                title={translate('Fixed')}
                                 changes={update.changes.fixed}
                               />
                             </div>

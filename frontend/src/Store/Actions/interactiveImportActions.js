@@ -1,12 +1,12 @@
 import moment from 'moment';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import createAjaxRequest from 'Utilities/createAjaxRequest';
-import { createThunk, handleThunks } from 'Store/thunks';
 import { sortDirections } from 'Helpers/Props';
-import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
+import { createThunk, handleThunks } from 'Store/thunks';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
+import { set, update, updateItem } from './baseActions';
 import createHandleActions from './Creators/createHandleActions';
-import { set, update } from './baseActions';
+import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 
 //
 // Variables
@@ -15,12 +15,16 @@ export const section = 'interactiveImport';
 
 const MAXIMUM_RECENT_FOLDERS = 10;
 
+let abortCurrentRequest = null;
+let currentIds = [];
+
 //
 // State
 
 export const defaultState = {
   isFetching: false,
   isPopulated: false,
+  isReprocessing: false,
   error: null,
   items: [],
   sortKey: 'quality',
@@ -41,7 +45,7 @@ export const defaultState = {
     },
 
     quality: function(item, direction) {
-      return item.quality ? item.quality.qualityWeight : 0;
+      return item.qualityWeight || 0;
     }
   }
 };
@@ -55,6 +59,7 @@ export const persistState = [
 // Actions Types
 
 export const FETCH_INTERACTIVE_IMPORT_ITEMS = 'interactiveImport/fetchInteractiveImportItems';
+export const REPROCESS_INTERACTIVE_IMPORT_ITEMS = 'interactiveImport/reprocessInteractiveImportItems';
 export const SET_INTERACTIVE_IMPORT_SORT = 'interactiveImport/setInteractiveImportSort';
 export const UPDATE_INTERACTIVE_IMPORT_ITEM = 'interactiveImport/updateInteractiveImportItem';
 export const UPDATE_INTERACTIVE_IMPORT_ITEMS = 'interactiveImport/updateInteractiveImportItems';
@@ -67,6 +72,7 @@ export const SET_INTERACTIVE_IMPORT_MODE = 'interactiveImport/setInteractiveImpo
 // Action Creators
 
 export const fetchInteractiveImportItems = createThunk(FETCH_INTERACTIVE_IMPORT_ITEMS);
+export const reprocessInteractiveImportItems = createThunk(REPROCESS_INTERACTIVE_IMPORT_ITEMS);
 export const setInteractiveImportSort = createAction(SET_INTERACTIVE_IMPORT_SORT);
 export const updateInteractiveImportItem = createAction(UPDATE_INTERACTIVE_IMPORT_ITEM);
 export const updateInteractiveImportItems = createAction(UPDATE_INTERACTIVE_IMPORT_ITEMS);
@@ -111,6 +117,76 @@ export const actionHandlers = handleThunks({
         isPopulated: false,
         error: xhr
       }));
+    });
+  },
+
+  [REPROCESS_INTERACTIVE_IMPORT_ITEMS]: function(getState, payload, dispatch) {
+    if (abortCurrentRequest) {
+      abortCurrentRequest();
+    }
+
+    dispatch(batchActions([
+      ...currentIds.map((id) => updateItem({
+        section,
+        id,
+        isReprocessing: false,
+        updateOnly: true
+      })),
+      ...payload.ids.map((id) => updateItem({
+        section,
+        id,
+        isReprocessing: true,
+        updateOnly: true
+      }))
+    ]));
+
+    const items = getState()[section].items;
+
+    const requestPayload = payload.ids.map((id) => {
+      const item = items.find((i) => i.id === id);
+
+      return {
+        id,
+        path: item.path,
+        movieId: item.movie.id,
+        downloadId: item.downloadId
+      };
+    });
+
+    const { request, abortRequest } = createAjaxRequest({
+      method: 'POST',
+      url: '/manualimport',
+      contentType: 'application/json',
+      data: JSON.stringify(requestPayload)
+    });
+
+    abortCurrentRequest = abortRequest;
+    currentIds = payload.ids;
+
+    request.done((data) => {
+      dispatch(batchActions(
+        data.map((item) => updateItem({
+          section,
+          ...item,
+          isReprocessing: false,
+          updateOnly: true
+        }))
+      ));
+    });
+
+    request.fail((xhr) => {
+      if (xhr.aborted) {
+        return;
+      }
+
+      dispatch(batchActions(
+        payload.ids.map((id) => updateItem({
+          section,
+          id,
+          isReprocessing: false,
+          updateOnly: true
+        }))
+      ));
     });
   }
 });

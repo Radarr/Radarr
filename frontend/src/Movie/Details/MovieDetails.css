@@ -53,6 +53,7 @@
 }
 
 .titleRow {
+  position: relative;
   display: flex;
   justify-content: space-between;
   flex: 0 0 auto;
@@ -66,7 +67,7 @@
 .title {
   font-weight: 300;
   font-size: 50px;
-  line-height: 50px;
+  line-height: 60px;
 }
 
 .toggleMonitoredContainer {
@@ -94,6 +95,8 @@
 }
 
 .movieNavigationButtons {
+  position: absolute;
+  right: 0;
   white-space: nowrap;
 }
 
@@ -112,13 +115,16 @@
 
 .details {
   margin-bottom: 8px;
+  padding-left: 7px;
   font-weight: 300;
   font-size: 20px;
 }
 
+.links,
+.rating,
 .year,
 .runtime {
-  margin-right: 15px;
+  margin-right: 14px;
 }
 
 .certification {
@@ -145,9 +151,7 @@
 .qualityProfileName,
 .statusName,
 .studio,
-.collection,
-.links,
-.tags {
+.collection {
   font-weight: 300;
   font-size: 17px;
 }
@@ -155,6 +159,7 @@
 .overview {
   flex: 1 0 auto;
   margin-top: 8px;
+  padding-left: 7px;
   min-height: 0;
   font-size: $intermediateFontSize;
 }
@@ -199,7 +204,20 @@
 }
 
 @media only screen and (max-width: $breakpointLarge) {
-  .poster {
+  .poster,
+  .movieNavigationButtons {
     display: none;
+  }
+
+  .certification,
+  .links,
+  .rating,
+  .year,
+  .runtime {
+    margin-right: 9px;
+  }
+
+  .details {
+    font-size: 19px;
   }
 }

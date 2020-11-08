@@ -1,8 +1,9 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Runtime.InteropServices;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Processes;
+using NzbDrone.Core.Localization;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
@@ -14,7 +15,9 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public MonoNotNetCoreCheck(IOsInfo osInfo,
                                    IProcessProvider processProvider,
+                                   ILocalizationService localizationService,
                                    Logger logger)
+            : base(localizationService)
         {
             _osInfo = osInfo;
             _processProvider = processProvider;
@@ -42,7 +45,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             return new HealthCheck(GetType(),
                                    HealthCheckResult.Warning,
-                                   "Please upgrade to the .NET Core version of Radarr",
+                                   _localizationService.GetLocalizedString("MonoNotNetCoreCheckMessage"),
                                    "#update-to-net-core-version");
         }
 

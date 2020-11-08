@@ -9,6 +9,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         public string ImdbId { get; set; }
         public string Overview { get; set; }
         public string Title { get; set; }
+        public string OriginalTitle { get; set; }
         public string TitleSlug { get; set; }
         public List<RatingResource> Ratings { get; set; }
         public int? Runtime { get; set; }

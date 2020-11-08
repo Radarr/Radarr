@@ -41,7 +41,7 @@ namespace NzbDrone.Api.RootFolders
 
         private RootFolderResource GetRootFolder(int id)
         {
-            return _rootFolderService.Get(id).ToResource();
+            return _rootFolderService.Get(id, true).ToResource();
         }
 
         private int CreateRootFolder(RootFolderResource rootFolderResource)

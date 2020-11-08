@@ -5,7 +5,7 @@ function createQueueItemSelector() {
     (state, { movieId }) => movieId,
     (state) => state.queue.details.items,
     (movieId, details) => {
-      if (!movieId) {
+      if (!movieId || !details) {
         return null;
       }
 

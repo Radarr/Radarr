@@ -2,10 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { shortcuts } from 'Components/keyboardShortcuts';
 import Button from 'Components/Link/Button';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import translate from 'Utilities/String/translate';
 import styles from './KeyboardShortcutsModalContent.css';
 
 function getShortcuts() {
@@ -19,18 +20,26 @@ function getShortcuts() {
 }
 
 function getShortcutKey(combo, isOsx) {
-  const comboMatch = combo.match(/(.+?)\+(.)/);
+  const comboMatch = combo.match(/(.+?)\+(.*)/);
 
   if (!comboMatch) {
     return combo;
   }
 
   const modifier = comboMatch[1];
-  const key = comboMatch[2];
+  let key = comboMatch[2];
   let osModifier = modifier;
 
   if (modifier === 'mod') {
-    osModifier = isOsx ? 'cmd' : 'ctrl';
+    osModifier = isOsx ? 'cmd' : 'Ctrl';
+  }
+
+  if (key === 'home') {
+    key = isOsx ? '↑' : 'Home';
+  }
+
+  if (key === 'end') {
+    key = isOsx ? '↓' : 'End';
   }
 
   return `${osModifier} + ${key}`;
@@ -75,7 +84,7 @@ function KeyboardShortcutsModalContent(props) {
         <Button
           onPress={onModalClose}
         >
-          Close
+          {translate('Close')}
         </Button>
       </ModalFooter>
     </ModalContent>

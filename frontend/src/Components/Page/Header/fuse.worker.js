@@ -3,9 +3,8 @@ import Fuse from 'fuse.js';
 const fuseOptions = {
   shouldSort: true,
   includeMatches: true,
+  ignoreLocation: true,
   threshold: 0.3,
-  location: 0,
-  distance: 100,
   minMatchCharLength: 1,
   keys: [
     'title',
@@ -48,7 +47,7 @@ function getSuggestions(movies, value) {
   return suggestions;
 }
 
-self.addEventListener('message', (e) => {
+onmessage = function(e) {
   if (!e) {
     return;
   }
@@ -58,5 +57,12 @@ self.addEventListener('message', (e) => {
     value
   } = e.data;
 
-  self.postMessage(getSuggestions(movies, value));
-});
+  const suggestions = getSuggestions(movies, value);
+
+  const results = {
+    value,
+    suggestions
+  };
+
+  self.postMessage(results);
+};

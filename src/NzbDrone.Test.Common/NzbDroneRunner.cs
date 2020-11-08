@@ -1,11 +1,13 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
 using NLog;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
 using NzbDrone.Core.Configuration;
 using RestSharp;
@@ -20,50 +22,23 @@ namespace NzbDrone.Test.Common
 
         public string AppData { get; private set; }
         public string ApiKey { get; private set; }
+        public int Port { get; private set; }
 
         public NzbDroneRunner(Logger logger, int port = 7878)
         {
             _processProvider = new ProcessProvider(logger);
-            _restClient = new RestClient("http://localhost:7878/api/v3");
-        }
+            _restClient = new RestClient($"http://localhost:{port}/api/v3");
 
-        private void CopyDirectory(string source, string target)
-        {
-            foreach (var dirPath in Directory.GetDirectories(source, "*", SearchOption.AllDirectories))
-            {
-                Directory.CreateDirectory(dirPath.Replace(source, target));
-            }
-
-            foreach (var newPath in Directory.GetFiles(source, "*.*", SearchOption.AllDirectories))
-            {
-                File.Copy(newPath, newPath.Replace(source, target), true);
-            }
+            Port = port;
         }
 
         public void Start()
         {
             AppData = Path.Combine(TestContext.CurrentContext.TestDirectory, "_intg_" + TestBase.GetUID());
+            Directory.CreateDirectory(AppData);
 
-            if (!Directory.Exists(Path.Combine(TestContext.CurrentContext.TestDirectory, "CachedAppData")))
-            {
-                Directory.CreateDirectory(AppData);
-                GenerateConfigFile();
-                StartInternal();
-                KillAll(false);
+            GenerateConfigFile();
 
-                CopyDirectory(AppData, Path.Combine(TestContext.CurrentContext.TestDirectory, "CachedAppData"));
-            }
-            else
-            {
-                CopyDirectory(Path.Combine(TestContext.CurrentContext.TestDirectory, "CachedAppData"), AppData);
-                GenerateConfigFile();
-            }
-
-            StartInternal();
-        }
-
-        private void StartInternal()
-        {
             string consoleExe;
             if (OsInfo.IsWindows)
             {
@@ -105,7 +80,7 @@ namespace NzbDrone.Test.Common
 
                 if (statusCall.ResponseStatus == ResponseStatus.Completed)
                 {
-                    TestContext.Progress.WriteLine("Radarr is started. Running Tests");
+                    TestContext.Progress.WriteLine($"Radarr {Port} is started. Running Tests");
                     return;
                 }
 
@@ -115,7 +90,32 @@ namespace NzbDrone.Test.Common
             }
         }
 
-        public void KillAll(bool delete = true)
+        public void Kill()
+        {
+            try
+            {
+                if (_nzbDroneProcess != null)
+                {
+                    _nzbDroneProcess.Refresh();
+                    if (_nzbDroneProcess.HasExited)
+                    {
+                        var log = File.ReadAllLines(Path.Combine(AppData, "logs", "Radarr.trace.txt"));
+                        var output = log.Join(Environment.NewLine);
+                        TestContext.Progress.WriteLine("Process has exited prematurely: ExitCode={0} Output:\n{1}", _nzbDroneProcess.ExitCode, output);
+                    }
+
+                    _processProvider.Kill(_nzbDroneProcess.Id);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // May happen if the process closes while being closed
+            }
+
+            TestBase.DeleteTempFolder(AppData);
+        }
+
+        public void KillAll()
         {
             try
             {
@@ -132,21 +132,19 @@ namespace NzbDrone.Test.Common
                 // May happen if the process closes while being closed
             }
 
-            if (delete)
-            {
-                TestBase.DeleteTempFolder(AppData);
-            }
+            TestBase.DeleteTempFolder(AppData);
         }
 
         private void Start(string outputRadarrConsoleExe)
         {
-            var args = "-nobrowser -data=\"" + AppData + "\"";
+            TestContext.Progress.WriteLine("Starting instance from {0} on port {1}", outputRadarrConsoleExe, Port);
+            var args = "-nobrowser -nosingleinstancecheck -data=\"" + AppData + "\"";
             _nzbDroneProcess = _processProvider.Start(outputRadarrConsoleExe, args, null, OnOutputDataReceived, OnOutputDataReceived);
         }
 
         private void OnOutputDataReceived(string data)
         {
-            TestContext.Progress.WriteLine(data);
+            TestContext.Progress.WriteLine($" [{Port}] > " + data);
 
             if (data.Contains("Press enter to exit"))
             {
@@ -165,7 +163,9 @@ namespace NzbDrone.Test.Common
                 new XDeclaration("1.0", "utf-8", "yes"),
                 new XElement(ConfigFileProvider.CONFIG_ELEMENT_NAME,
                              new XElement(nameof(ConfigFileProvider.ApiKey), apiKey),
-                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false)));
+                             new XElement(nameof(ConfigFileProvider.LogLevel), "trace"),
+                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false),
+                             new XElement(nameof(ConfigFileProvider.Port), Port)));
 
             var data = xDoc.ToString();
 

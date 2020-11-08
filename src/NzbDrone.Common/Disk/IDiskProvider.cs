@@ -10,6 +10,7 @@ namespace NzbDrone.Common.Disk
     {
         long? GetAvailableSpace(string path);
         void InheritFolderPermissions(string filename);
+        void SetEveryonePermissions(string filename);
         void SetPermissions(string path, string mask);
         void CopyPermissions(string sourcePath, string targetPath);
         long? GetTotalSize(string path);
@@ -28,10 +29,13 @@ namespace NzbDrone.Common.Disk
         long GetFileSize(string path);
         void CreateFolder(string path);
         void DeleteFile(string path);
+        void CloneFile(string source, string destination, bool overwrite = false);
         void CopyFile(string source, string destination, bool overwrite = false);
         void MoveFile(string source, string destination, bool overwrite = false);
         void MoveFolder(string source, string destination, bool overwrite = false);
+        bool TryRenameFile(string source, string destination);
         bool TryCreateHardLink(string source, string destination);
+        bool TryCreateRefLink(string source, string destination);
         void DeleteFolder(string path, bool recursive);
         string ReadAllText(string filePath);
         void WriteAllText(string filename, string contents);
@@ -40,7 +44,6 @@ namespace NzbDrone.Common.Disk
         bool IsFileLocked(string path);
         string GetPathRoot(string path);
         string GetParentFolder(string path);
-        void SetPermissions(string filename, WellKnownSidType accountSid, FileSystemRights rights, AccessControlType controlType);
         FileAttributes GetFileAttributes(string path);
         void EmptyFolder(string path);
         string GetVolumeLabel(string path);

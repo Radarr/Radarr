@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
+import { kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import TagDetailsModal from './Details/TagDetailsModal';
 import styles from './Tag.css';
 
@@ -55,7 +56,7 @@ class Tag extends Component {
       delayProfileIds,
       notificationIds,
       restrictionIds,
-      netImportIds,
+      importListIds,
       movieIds
     } = this.props;
 
@@ -68,7 +69,7 @@ class Tag extends Component {
       delayProfileIds.length ||
       notificationIds.length ||
       restrictionIds.length ||
-      netImportIds.length ||
+      importListIds.length ||
       movieIds.length
     );
 
@@ -114,9 +115,9 @@ class Tag extends Component {
               }
 
               {
-                !!netImportIds.length &&
+                !!importListIds.length &&
                   <div>
-                    {netImportIds.length} list{netImportIds.length > 1 && 's'}
+                    {importListIds.length} list{importListIds.length > 1 && 's'}
                   </div>
               }
             </div>
@@ -136,7 +137,7 @@ class Tag extends Component {
           delayProfileIds={delayProfileIds}
           notificationIds={notificationIds}
           restrictionIds={restrictionIds}
-          netImportIds={netImportIds}
+          importListIds={importListIds}
           isOpen={isDetailsModalOpen}
           onModalClose={this.onDetailsModalClose}
           onDeleteTagPress={this.onDeleteTagPress}
@@ -145,9 +146,9 @@ class Tag extends Component {
         <ConfirmModal
           isOpen={isDeleteTagModalOpen}
           kind={kinds.DANGER}
-          title="Delete Tag"
-          message={`Are you sure you want to delete the tag '${label}'?`}
-          confirmLabel="Delete"
+          title={translate('DeleteTag')}
+          message={translate('DeleteTagMessageText', [label])}
+          confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteTag}
           onCancel={this.onDeleteTagModalClose}
         />
@@ -162,7 +163,7 @@ Tag.propTypes = {
   delayProfileIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   notificationIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   restrictionIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-  netImportIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  importListIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   movieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   onConfirmDeleteTag: PropTypes.func.isRequired
 };
@@ -171,7 +172,7 @@ Tag.defaultProps = {
   delayProfileIds: [],
   notificationIds: [],
   restrictionIds: [],
-  netImportIds: [],
+  importListIds: [],
   movieIds: []
 };
 

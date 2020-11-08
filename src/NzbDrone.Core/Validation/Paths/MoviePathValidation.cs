@@ -1,4 +1,4 @@
-﻿using FluentValidation.Validators;
+using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
 
@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Validation.Paths
         private readonly IMovieService _moviesService;
 
         public MoviePathValidator(IMovieService moviesService)
-            : base("Path is already configured for another movie")
+            : base("Path is already configured for another movie: {moviePath}")
         {
             _moviesService = moviesService;
         }
@@ -23,6 +23,8 @@ namespace NzbDrone.Core.Validation.Paths
 
             dynamic instance = context.ParentContext.InstanceToValidate;
             var instanceId = (int)instance.Id;
+
+            context.MessageFormatter.AppendArgument("moviePath", context.PropertyValue.ToString());
 
             return !_moviesService.GetAllMovies().Exists(s => s.Path.PathEquals(context.PropertyValue.ToString()) && s.Id != instanceId);
         }

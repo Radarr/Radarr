@@ -3,7 +3,7 @@
     <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.0" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
     <PackageReference Include="NunitXml.TestLogger" Version="2.1.41" />
@@ -19,9 +19,6 @@
     <ProjectReference Include="..\NzbDrone.Core\Radarr.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\Logo\1024.png">
       <Link>Files\1024.png</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -30,10 +27,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild">
-    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish">
-    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(PublishDir)" />
-  </Target>
 </Project>

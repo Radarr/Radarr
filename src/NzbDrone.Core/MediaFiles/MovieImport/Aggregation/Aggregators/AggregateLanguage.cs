@@ -1,49 +1,52 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Language;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 {
     public class AggregateLanguage : IAggregateLocalMovie
     {
+        private readonly List<IAugmentLanguage> _augmentLanguages;
         private readonly Logger _logger;
 
-        public AggregateLanguage(Logger logger)
+        public AggregateLanguage(IEnumerable<IAugmentLanguage> augmentLanguages,
+                                Logger logger)
         {
+            _augmentLanguages = augmentLanguages.OrderBy(a => a.Order).ToList();
             _logger = logger;
         }
 
-        public LocalMovie Aggregate(LocalMovie localMovie, bool otherFiles)
+        public LocalMovie Aggregate(LocalMovie localMovie, DownloadClientItem downloadClientItem, bool otherFiles)
         {
-            // Get languages in preferred order, download client item, folder and finally file.
-            // Non-English languages will be preferred later, in the event there is a conflict
-            // between parsed languages the more preferred item will be used.
-            var languages = new List<Language>();
+            var languages = new List<Language> { localMovie.Movie.OriginalLanguage ?? Language.Unknown };
+            var languagesConfidence = Confidence.Default;
 
-            languages.AddRange(GetLanguage(localMovie.DownloadClientMovieInfo));
-            languages.AddRange(GetLanguage(localMovie.FolderMovieInfo));
-            languages.AddRange(GetLanguage(localMovie.FileMovieInfo));
-
-            var language = new List<Language> { languages.FirstOrDefault(l => l != Language.English) ?? Language.English };
-
-            _logger.Debug("Using language: {0}", language.First());
-
-            localMovie.Languages = language;
-
-            return localMovie;
-        }
-
-        private List<Language> GetLanguage(ParsedMovieInfo parsedMovieInfo)
-        {
-            if (parsedMovieInfo == null)
+            foreach (var augmentLanguage in _augmentLanguages)
             {
-                // English is the default language when otherwise unknown
-                return new List<Language> { Language.English };
+                var augmentedLanguage = augmentLanguage.AugmentLanguage(localMovie, downloadClientItem);
+                if (augmentedLanguage == null)
+                {
+                    continue;
+                }
+
+                _logger.Trace("Considering Languages {0} ({1}) from {2}", string.Join(", ", augmentedLanguage.Languages ?? new List<Language>()), augmentedLanguage.Confidence, augmentLanguage.Name);
+
+                if (augmentedLanguage?.Languages != null && augmentedLanguage.Languages.Count > 0 && !(augmentedLanguage.Languages.Count == 1 && augmentedLanguage.Languages.Contains(Language.Unknown)))
+                {
+                    languages = augmentedLanguage.Languages;
+                    languagesConfidence = augmentedLanguage.Confidence;
+                }
             }
 
-            return parsedMovieInfo.Languages;
+            _logger.Debug("Selected languages: {0}", string.Join(", ", languages.ToList()));
+
+            localMovie.Languages = languages;
+
+            return localMovie;
         }
     }
 }

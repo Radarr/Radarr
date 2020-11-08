@@ -6,6 +6,7 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
 
@@ -15,7 +16,6 @@ namespace NzbDrone.Core.Movies
     {
         bool MoviePathExists(string path);
         List<Movie> FindByTitles(List<string> titles);
-        List<Movie> FindByTitleInexact(string cleanTitle);
         Movie FindByImdbId(string imdbid);
         Movie FindByTmdbId(int tmdbid);
         List<Movie> FindByTmdbId(List<int> tmdbids);
@@ -27,6 +27,8 @@ namespace NzbDrone.Core.Movies
         PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff);
         Movie FindByPath(string path);
         List<string> AllMoviePaths();
+        List<int> AllMovieTmdbIds();
+        List<int> GetRecommendations();
     }
 
     public class MovieRepository : BasicRepository<Movie>, IMovieRepository
@@ -45,7 +47,7 @@ namespace NzbDrone.Core.Movies
             .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
             .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId);
 
-        private Movie Map(Dictionary<int, Movie> dict, Movie movie, Profile profile, AlternativeTitle altTitle, MovieFile movieFile)
+        private Movie Map(Dictionary<int, Movie> dict, Movie movie, Profile profile, AlternativeTitle altTitle, MovieFile movieFile, MovieTranslation translation = null)
         {
             Movie movieEntry;
 
@@ -60,6 +62,11 @@ namespace NzbDrone.Core.Movies
             if (altTitle != null)
             {
                 movieEntry.AlternativeTitles.Add(altTitle);
+            }
+
+            if (translation != null)
+            {
+                movieEntry.Translations.Add(translation);
             }
 
             return movieEntry;
@@ -102,13 +109,19 @@ namespace NzbDrone.Core.Movies
         public List<Movie> FindByTitles(List<string> titles)
         {
             var distinct = titles.Distinct().ToList();
-            return Query(Builder().OrWhere<Movie>(x => distinct.Contains(x.CleanTitle))
-                         .OrWhere<AlternativeTitle>(x => distinct.Contains(x.CleanTitle)));
-        }
+            var movieDictionary = new Dictionary<int, Movie>();
 
-        public List<Movie> FindByTitleInexact(string cleanTitle)
-        {
-            return Query(x => cleanTitle.Contains(x.CleanTitle));
+            var builder = Builder()
+                .LeftJoin<Movie, MovieTranslation>((m, tr) => m.Id == tr.MovieId)
+                .OrWhere<Movie>(x => distinct.Contains(x.CleanTitle))
+                .OrWhere<AlternativeTitle>(x => distinct.Contains(x.CleanTitle))
+                .OrWhere<MovieTranslation>(x => distinct.Contains(x.CleanTitle));
+
+            _ = _database.QueryJoined<Movie, Profile, AlternativeTitle, MovieFile, MovieTranslation>(
+                builder,
+                (movie, profile, altTitle, file, trans) => Map(movieDictionary, movie, profile, altTitle, file, trans));
+
+            return movieDictionary.Values.ToList();
         }
 
         public Movie FindByImdbId(string imdbid)
@@ -147,7 +160,8 @@ namespace NzbDrone.Core.Movies
             var builder = Builder()
                 .Where<Movie>(m =>
                               (m.InCinemas >= start && m.InCinemas <= end) ||
-                              (m.PhysicalRelease >= start && m.PhysicalRelease <= end));
+                              (m.PhysicalRelease >= start && m.PhysicalRelease <= end) ||
+                              (m.DigitalRelease >= start && m.DigitalRelease <= end));
 
             if (!includeUnmonitored)
             {
@@ -206,6 +220,31 @@ namespace NzbDrone.Core.Movies
             {
                 return conn.Query<string>("SELECT Path FROM Movies").ToList();
             }
+        }
+
+        public List<int> AllMovieTmdbIds()
+        {
+            using (var conn = _database.OpenConnection())
+            {
+                return conn.Query<int>("SELECT TmdbId FROM Movies").ToList();
+            }
+        }
+
+        public List<int> GetRecommendations()
+        {
+            var recommendations = new List<List<int>>();
+            var tmdbIds = AllMovieTmdbIds();
+
+            using (var conn = _database.OpenConnection())
+            {
+                recommendations =  conn.Query<List<int>>("SELECT Recommendations FROM Movies ORDER BY id DESC LIMIT 100").ToList();
+            }
+
+            return recommendations.SelectMany(x => x)
+                                  .Where(r => !tmdbIds.Any(m => m == r))
+                                  .Distinct()
+                                  .Take(100)
+                                  .ToList();
         }
     }
 }

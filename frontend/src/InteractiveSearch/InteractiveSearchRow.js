@@ -1,22 +1,23 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
+import Icon from 'Components/Icon';
+import Link from 'Components/Link/Link';
+import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import ConfirmModal from 'Components/Modal/ConfirmModal';
+import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import TableRow from 'Components/Table/TableRow';
+import Popover from 'Components/Tooltip/Popover';
+import { icons, kinds, tooltipPositions } from 'Helpers/Props';
+import MovieFormats from 'Movie/MovieFormats';
+import MovieLanguage from 'Movie/MovieLanguage';
+import MovieQuality from 'Movie/MovieQuality';
 import formatDateTime from 'Utilities/Date/formatDateTime';
 import formatAge from 'Utilities/Number/formatAge';
 import formatBytes from 'Utilities/Number/formatBytes';
-import { icons, kinds, tooltipPositions } from 'Helpers/Props';
-import Icon from 'Components/Icon';
-import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-import Link from 'Components/Link/Link';
-import ConfirmModal from 'Components/Modal/ConfirmModal';
-import TableRow from 'Components/Table/TableRow';
-import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import Popover from 'Components/Tooltip/Popover';
-import ProtocolLabel from 'Activity/Queue/ProtocolLabel';
+import translate from 'Utilities/String/translate';
 import Peers from './Peers';
 import styles from './InteractiveSearchRow.css';
-import MovieQuality from 'Movie/MovieQuality';
-import MovieFormats from 'Movie/MovieFormats';
-import MovieLanguage from 'Movie/MovieLanguage';
 
 function getDownloadIcon(isGrabbing, isGrabbed, grabError) {
   if (isGrabbing) {
@@ -123,7 +124,10 @@ class InteractiveSearchRow extends Component {
       isGrabbed,
       longDateFormat,
       timeFormat,
-      grabError
+      grabError,
+      historyGrabbedData,
+      historyFailedData,
+      blacklistData
     } = this.props;
 
     return (
@@ -142,13 +146,49 @@ class InteractiveSearchRow extends Component {
         </TableRowCell>
 
         <TableRowCell className={styles.title}>
-          <Link to={infoUrl}>
-            {title}
+          <Link
+            to={infoUrl}
+            title={title}
+          >
+            <div>
+              {title}
+            </div>
           </Link>
         </TableRowCell>
 
         <TableRowCell className={styles.indexer}>
           {indexer}
+        </TableRowCell>
+
+        <TableRowCell className={styles.history}>
+          {
+            historyGrabbedData?.date && !historyFailedData?.date &&
+              <Icon
+                name={icons.DOWNLOADING}
+                kind={kinds.DEFAULT}
+                title={`${translate('Grabbed')}: ${formatDateTime(historyGrabbedData.date, longDateFormat, timeFormat, { includeSeconds: true })}`}
+              />
+          }
+
+          {
+            historyFailedData?.date &&
+              <Icon
+                className={styles.failed}
+                name={icons.DOWNLOADING}
+                kind={kinds.DANGER}
+                title={`${translate('Failed')}: ${formatDateTime(historyFailedData.date, longDateFormat, timeFormat, { includeSeconds: true })}`}
+              />
+          }
+
+          {
+            blacklistData?.date &&
+              <Icon
+                className={historyGrabbedData || historyFailedData ? styles.blacklist : ''}
+                name={icons.BLACKLIST}
+                kind={kinds.DANGER}
+                title={`${translate('Blacklisted')}: ${formatDateTime(blacklistData.date, longDateFormat, timeFormat, { includeSeconds: true })}`}
+              />
+          }
         </TableRowCell>
 
         <TableRowCell className={styles.size}>
@@ -198,7 +238,7 @@ class InteractiveSearchRow extends Component {
                     kind={kinds.PRIMARY}
                   />
                 }
-                title="Indexer Flags"
+                title={translate('IndexerFlags')}
                 body={
                   <ul>
                     {
@@ -227,7 +267,7 @@ class InteractiveSearchRow extends Component {
                     kind={kinds.DANGER}
                   />
                 }
-                title="Release Rejected"
+                title={translate('ReleaseRejected')}
                 body={
                   <ul>
                     {
@@ -260,9 +300,9 @@ class InteractiveSearchRow extends Component {
         <ConfirmModal
           isOpen={this.state.isConfirmGrabModalOpen}
           kind={kinds.WARNING}
-          title="Grab Release"
-          message={`Radarr was unable to determine which movie this release was for. Radarr may be unable to automatically import this release. Do you want to grab '${title}'?`}
-          confirmLabel="Grab"
+          title={translate('GrabRelease')}
+          message={translate('GrabReleaseMessageText', [title])}
+          confirmLabel={translate('Grab')}
           onConfirm={this.onGrabConfirm}
           onCancel={this.onGrabCancel}
         />
@@ -298,7 +338,10 @@ InteractiveSearchRow.propTypes = {
   longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   searchPayload: PropTypes.object.isRequired,
-  onGrabPress: PropTypes.func.isRequired
+  onGrabPress: PropTypes.func.isRequired,
+  historyFailedData: PropTypes.object,
+  historyGrabbedData: PropTypes.object,
+  blacklistData: PropTypes.object
 };
 
 InteractiveSearchRow.defaultProps = {

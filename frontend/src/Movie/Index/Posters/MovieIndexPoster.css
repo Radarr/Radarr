@@ -19,9 +19,7 @@ $hoverScale: 1.05;
   position: relative;
 }
 
-.link {
-  composes: link from '~Components/Link/Link.css';
-
+.poster {
   position: relative;
   display: block;
   background-color: $defaultColor;
@@ -42,31 +40,12 @@ $hoverScale: 1.05;
   font-size: 20px;
 }
 
-.nextAiring {
-  background-color: #fafbfc;
-  text-align: center;
-  font-size: $smallFontSize;
-}
-
 .title {
   @add-mixin truncate;
 
   background-color: #fafbfc;
   text-align: center;
   font-size: $smallFontSize;
-}
-
-.ended {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 1;
-  width: 0;
-  height: 0;
-  border-width: 0 25px 25px 0;
-  border-style: solid;
-  border-color: transparent $dangerColor transparent transparent;
-  color: $white;
 }
 
 .controls {
@@ -82,13 +61,6 @@ $hoverScale: 1.05;
   transition: opacity 0;
 }
 
-.editorSelect {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 3;
-}
-
 .action {
   composes: button from '~Components/Link/IconButton.css';
 
@@ -101,4 +73,42 @@ $hoverScale: 1.05;
   .container {
     padding: 5px;
   }
+}
+
+.ended {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  border-width: 0 25px 25px 0;
+  border-style: solid;
+  border-color: transparent $dangerColor transparent transparent;
+  color: $white;
+}
+
+.editorSelect {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
+}
+
+.externalLinks {
+  margin-left: 0.5em;
+}
+
+.link {
+  composes: link from '~Components/Link/Link.css';
+
+  position: relative;
+  display: block;
+  background-color: $defaultColor;
+}
+
+.nextAiring {
+  background-color: #fafbfc;
+  text-align: center;
+  font-size: $smallFontSize;
 }

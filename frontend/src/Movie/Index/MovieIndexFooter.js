@@ -1,15 +1,18 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import formatBytes from 'Utilities/Number/formatBytes';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
+import formatBytes from 'Utilities/Number/formatBytes';
+import translate from 'Utilities/String/translate';
 import styles from './MovieIndexFooter.css';
 
 class MovieIndexFooter extends PureComponent {
 
   render() {
     const {
-      movies
+      movies,
+      colorImpairedMode
     } = this.props;
 
     const count = movies.length;
@@ -23,12 +26,6 @@ class MovieIndexFooter extends PureComponent {
         movieFiles += 1;
       }
 
-      // if (s.status === 'ended') {
-      //   ended++;
-      // } else {
-      //   continuing++;
-      // }
-
       if (s.monitored) {
         monitored++;
       }
@@ -41,58 +38,83 @@ class MovieIndexFooter extends PureComponent {
         <div>
           <div className={styles.legendItem}>
             <div className={styles.ended} />
-            <div>Downloaded and Monitored</div>
+            <div>
+              {translate('DownloadedAndMonitored')}
+            </div>
           </div>
 
           <div className={styles.legendItem}>
             <div className={styles.availNotMonitored} />
-            <div>Downloaded, but not Monitored</div>
+            <div>
+              {translate('DownloadedButNotMonitored')}
+            </div>
           </div>
 
           <div className={styles.legendItem}>
-            <div className={styles.missingMonitored} />
-            <div>Missing, Monitored and considered Available</div>
+            <div className={classNames(
+              styles.missingMonitored,
+              colorImpairedMode && 'colorImpaired'
+            )}
+            />
+            <div>
+              {translate('MissingMonitoredAndConsideredAvailable')}
+            </div>
           </div>
 
           <div className={styles.legendItem}>
-            <div className={styles.missingUnmonitored} />
-            <div>Missing, not Monitored</div>
+            <div className={classNames(
+              styles.missingUnmonitored,
+              colorImpairedMode && 'colorImpaired'
+            )}
+            />
+            <div>
+              {translate('MissingNotMonitored')}
+            </div>
+          </div>
+
+          <div className={styles.legendItem}>
+            <div className={styles.queue} />
+            <div>
+              {translate('Queued')}
+            </div>
           </div>
 
           <div className={styles.legendItem}>
             <div className={styles.continuing} />
-            <div>Unreleased</div>
+            <div>
+              {translate('Unreleased')}
+            </div>
           </div>
         </div>
 
         <div className={styles.statistics}>
           <DescriptionList>
             <DescriptionListItem
-              title="Movies"
+              title={translate('Movies')}
               data={count}
             />
 
             <DescriptionListItem
-              title="Movie Files"
+              title={translate('MovieFiles')}
               data={movieFiles}
             />
           </DescriptionList>
 
           <DescriptionList>
             <DescriptionListItem
-              title="Monitored"
+              title={translate('Monitored')}
               data={monitored}
             />
 
             <DescriptionListItem
-              title="Unmonitored"
+              title={translate('Unmonitored')}
               data={count - monitored}
             />
           </DescriptionList>
 
           <DescriptionList>
             <DescriptionListItem
-              title="Total File Size"
+              title={translate('TotalFileSize')}
               data={formatBytes(totalFileSize)}
             />
           </DescriptionList>
@@ -103,7 +125,8 @@ class MovieIndexFooter extends PureComponent {
 }
 
 MovieIndexFooter.propTypes = {
-  movies: PropTypes.arrayOf(PropTypes.object).isRequired
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  colorImpairedMode: PropTypes.bool.isRequired
 };
 
 export default MovieIndexFooter;

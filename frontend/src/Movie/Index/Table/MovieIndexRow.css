@@ -36,14 +36,20 @@
   flex: 1 0 125px;
 }
 
-.added,
 .inCinemas,
 .physicalRelease,
-.runtime,
+.digitalRelease,
 .genres {
   composes: cell;
 
   flex: 0 0 180px;
+}
+
+.added,
+.runtime {
+  composes: cell;
+
+  flex: 0 0 100px;
 }
 
 .movieStatus,
@@ -51,6 +57,12 @@
   composes: cell;
 
   flex: 0 0 100px;
+}
+
+.year {
+  composes: cell;
+
+  flex: 0 0 80px;
 }
 
 .path {
@@ -81,11 +93,17 @@
   composes: cell;
 
   flex: 0 1 90px;
-  min-width: 60px;
+  min-width: 90px;
 }
 
 .checkInput {
   composes: input from '~Components/Form/CheckInput.css';
 
   margin-top: 0;
+}
+
+.externalLinks {
+  margin: 0 2px;
+  width: 22px;
+  text-align: center;
 }

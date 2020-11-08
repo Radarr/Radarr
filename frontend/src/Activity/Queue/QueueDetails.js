@@ -1,8 +1,9 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons, kinds } from 'Helpers/Props';
 import Icon from 'Components/Icon';
+import { icons, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 function QueueDetails(props) {
   const {
@@ -23,7 +24,7 @@ function QueueDetails(props) {
     return (
       <Icon
         name={icons.PENDING}
-        title={`Release will be processed ${moment(estimatedCompletionTime).fromNow()}`}
+        title={translate('ReleaseWillBeProcessedInterp', [moment(estimatedCompletionTime).fromNow()])}
       />
     );
   }
@@ -34,7 +35,7 @@ function QueueDetails(props) {
         <Icon
           name={icons.DOWNLOAD}
           kind={kinds.DANGER}
-          title={`Import failed: ${errorMessage}`}
+          title={translate('ImportFailedInterp', [errorMessage])}
         />
       );
     }
@@ -47,7 +48,7 @@ function QueueDetails(props) {
       <Icon
         name={icons.DOWNLOADING}
         kind={kinds.DANGER}
-        title={`Download failed: ${errorMessage}`}
+        title={translate('DownloadFailedInterp', [errorMessage])}
       />
     );
   }
@@ -57,7 +58,7 @@ function QueueDetails(props) {
       <Icon
         name={icons.DOWNLOADING}
         kind={kinds.DANGER}
-        title="Download failed: check download client for more details"
+        title={translate('DownloadFailedCheckDownloadClientForMoreDetails')}
       />
     );
   }
@@ -67,7 +68,7 @@ function QueueDetails(props) {
       <Icon
         name={icons.DOWNLOADING}
         kind={kinds.WARNING}
-        title="Download warning: check download client for more details"
+        title={translate('DownloadWarningCheckDownloadClientForMoreDetails')}
       />
     );
   }
@@ -76,7 +77,7 @@ function QueueDetails(props) {
     return (
       <Icon
         name={icons.DOWNLOADING}
-        title={`Movie is downloading - ${progress.toFixed(1)}% ${title}`}
+        title={translate('MovieIsDownloadingInterp', [progress.toFixed(1), title])}
       />
     );
   }

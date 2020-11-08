@@ -1,0 +1,15 @@
+.grid {
+  flex: 1 0 auto;
+}
+
+.container {
+  &:hover {
+    .content {
+      background-color: $tableRowHoverBackgroundColor;
+    }
+  }
+}
+
+.externalLinks {
+  margin-right: 0.5em;
+}

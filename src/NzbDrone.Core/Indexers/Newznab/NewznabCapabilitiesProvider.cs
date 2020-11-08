@@ -67,14 +67,15 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
             catch (XmlException ex)
             {
+                ex.WithData(response, 128 * 1024);
+                _logger.Trace("Unexpected Response content ({0} bytes): {1}", response.ResponseData.Length, response.Content);
                 _logger.Debug(ex, "Failed to parse newznab api capabilities for {0}", indexerSettings.BaseUrl);
-
-                ex.WithData(response);
                 throw;
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Failed to determine newznab api capabilities for {0}, using the defaults instead till Radarr restarts", indexerSettings.BaseUrl);
+                ex.WithData(response, 128 * 1024);
+                _logger.Trace("Unexpected Response content ({0} bytes): {1}", response.ResponseData.Length, response.Content);
             }
 
             return capabilities;
@@ -88,14 +89,16 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             if (xDoc == null)
             {
-                throw new XmlException("Invalid XML");
+                throw new XmlException("Invalid XML").WithData(response);
             }
+
+            NewznabRssParser.CheckError(xDoc, new IndexerResponse(new IndexerRequest(response.Request), response));
 
             var xmlRoot = xDoc.Element("caps");
 
             if (xmlRoot == null)
             {
-                throw new XmlException("Unexpected XML");
+                throw new XmlException("Unexpected XML").WithData(response);
             }
 
             var xmlLimits = xmlRoot.Element("limits");
@@ -116,17 +119,6 @@ namespace NzbDrone.Core.Indexers.Newznab
                 else if (xmlBasicSearch.Attribute("supportedParams") != null)
                 {
                     capabilities.SupportedSearchParameters = xmlBasicSearch.Attribute("supportedParams").Value.Split(',');
-                }
-
-                var xmlTvSearch = xmlSearching.Element("tv-search");
-                if (xmlTvSearch == null || xmlTvSearch.Attribute("available").Value != "yes")
-                {
-                    capabilities.SupportedTvSearchParameters = null;
-                }
-                else if (xmlTvSearch.Attribute("supportedParams") != null)
-                {
-                    capabilities.SupportedTvSearchParameters = xmlTvSearch.Attribute("supportedParams").Value.Split(',');
-                    capabilities.SupportsAggregateIdSearch = true;
                 }
 
                 var xmlMovieSearch = xmlSearching.Element("movie-search");

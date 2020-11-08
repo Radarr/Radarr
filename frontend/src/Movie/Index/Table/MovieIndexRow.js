@@ -1,20 +1,25 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import titleCase from 'Utilities/String/titleCase';
-import formatBytes from 'Utilities/Number/formatBytes';
-import { icons } from 'Helpers/Props';
 import HeartRating from 'Components/HeartRating';
+import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-import TagListConnector from 'Components/TagListConnector';
-import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
-import MovieTitleLink from 'Movie/MovieTitleLink';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
-import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
-import MovieStatusCell from './MovieStatusCell';
-import MovieFileStatusConnector from 'Movie/MovieFileStatusConnector';
+import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
+import TagListConnector from 'Components/TagListConnector';
+import Popover from 'Components/Tooltip/Popover';
+import { icons } from 'Helpers/Props';
+import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
+import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import MovieFileStatusConnector from 'Movie/MovieFileStatusConnector';
+import MovieTitleLink from 'Movie/MovieTitleLink';
+import formatRuntime from 'Utilities/Date/formatRuntime';
+import formatBytes from 'Utilities/Number/formatBytes';
+import titleCase from 'Utilities/String/titleCase';
+import translate from 'Utilities/String/translate';
+import MovieStatusCell from './MovieStatusCell';
 import styles from './MovieIndexRow.css';
 
 class MovieIndexRow extends Component {
@@ -61,6 +66,9 @@ class MovieIndexRow extends Component {
   render() {
     const {
       id,
+      tmdbId,
+      imdbId,
+      youTubeTrailerId,
       monitored,
       status,
       title,
@@ -69,8 +77,10 @@ class MovieIndexRow extends Component {
       studio,
       qualityProfile,
       added,
+      year,
       inCinemas,
       physicalRelease,
+      digitalRelease,
       runtime,
       minimumAvailability,
       path,
@@ -87,7 +97,10 @@ class MovieIndexRow extends Component {
       isSelected,
       onRefreshMoviePress,
       onSearchPress,
-      onSelectedChange
+      onSelectedChange,
+      queueStatus,
+      queueState,
+      movieRuntimeFormat
     } = this.props;
 
     const {
@@ -139,10 +152,12 @@ class MovieIndexRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
+
                   <MovieTitleLink
                     titleSlug={titleSlug}
                     title={title}
                   />
+
                 </VirtualTableRowCell>
               );
             }
@@ -191,12 +206,34 @@ class MovieIndexRow extends Component {
               );
             }
 
+            if (name === 'year') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {year}
+                </VirtualTableRowCell>
+              );
+            }
+
             if (name === 'inCinemas') {
               return (
                 <RelativeDateCellConnector
                   key={name}
                   className={styles[name]}
                   date={inCinemas}
+                  component={VirtualTableRowCell}
+                />
+              );
+            }
+
+            if (name === 'digitalRelease') {
+              return (
+                <RelativeDateCellConnector
+                  key={name}
+                  className={styles[name]}
+                  date={digitalRelease}
                   component={VirtualTableRowCell}
                 />
               );
@@ -219,7 +256,7 @@ class MovieIndexRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
-                  {runtime} Minutes
+                  {formatRuntime(runtime, movieRuntimeFormat)}
                 </VirtualTableRowCell>
               );
             }
@@ -240,6 +277,7 @@ class MovieIndexRow extends Component {
                 <VirtualTableRowCell
                   key={name}
                   className={styles[name]}
+                  title={path}
                 >
                   {path}
                 </VirtualTableRowCell>
@@ -280,6 +318,8 @@ class MovieIndexRow extends Component {
                 >
                   <MovieFileStatusConnector
                     movieId={id}
+                    queueStatus={queueStatus}
+                    queueState={queueState}
                   />
                 </VirtualTableRowCell>
               );
@@ -328,9 +368,28 @@ class MovieIndexRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
+                  <span className={styles.externalLinks}>
+                    <Popover
+                      anchor={
+                        <Icon
+                          name={icons.EXTERNAL_LINK}
+                          size={12}
+                        />
+                      }
+                      title={translate('Links')}
+                      body={
+                        <MovieDetailsLinks
+                          tmdbId={tmdbId}
+                          imdbId={imdbId}
+                          youTubeTrailerId={youTubeTrailerId}
+                        />
+                      }
+                    />
+                  </span>
+
                   <SpinnerIconButton
                     name={icons.REFRESH}
-                    title="Refresh movie"
+                    title={translate('RefreshMovie')}
                     isSpinning={isRefreshingMovie}
                     onPress={onRefreshMoviePress}
                   />
@@ -340,7 +399,7 @@ class MovieIndexRow extends Component {
                       <SpinnerIconButton
                         className={styles.action}
                         name={icons.SEARCH}
-                        title="Search for movie"
+                        title={translate('SearchForMovie')}
                         isSpinning={isSearchingMovie}
                         onPress={onSearchPress}
                       />
@@ -348,7 +407,7 @@ class MovieIndexRow extends Component {
 
                   <IconButton
                     name={icons.EDIT}
-                    title="Edit Movie"
+                    title={translate('EditMovie')}
                     onPress={this.onEditMoviePress}
                   />
                 </VirtualTableRowCell>
@@ -386,8 +445,10 @@ MovieIndexRow.propTypes = {
   collection: PropTypes.object,
   qualityProfile: PropTypes.object.isRequired,
   added: PropTypes.string,
+  year: PropTypes.number,
   inCinemas: PropTypes.string,
   physicalRelease: PropTypes.string,
+  digitalRelease: PropTypes.string,
   runtime: PropTypes.number,
   minimumAvailability: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
@@ -404,7 +465,13 @@ MovieIndexRow.propTypes = {
   onSearchPress: PropTypes.func.isRequired,
   isMovieEditorActive: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
-  onSelectedChange: PropTypes.func.isRequired
+  onSelectedChange: PropTypes.func.isRequired,
+  tmdbId: PropTypes.number.isRequired,
+  imdbId: PropTypes.string,
+  youTubeTrailerId: PropTypes.string,
+  queueStatus: PropTypes.string,
+  queueState: PropTypes.string,
+  movieRuntimeFormat: PropTypes.string.isRequired
 };
 
 MovieIndexRow.defaultProps = {

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Link from 'Components/Link/Link';
-import FieldSet from 'Components/FieldSet';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
-import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
 import DescriptionListItemDescription from 'Components/DescriptionList/DescriptionListItemDescription';
+import DescriptionListItemTitle from 'Components/DescriptionList/DescriptionListItemTitle';
+import FieldSet from 'Components/FieldSet';
+import Link from 'Components/Link/Link';
+import translate from 'Utilities/String/translate';
 
 class MoreInfo extends Component {
 
@@ -12,7 +13,7 @@ class MoreInfo extends Component {
 
   render() {
     return (
-      <FieldSet legend="More Info">
+      <FieldSet legend={translate('MoreInfo')}>
         <DescriptionList>
           <DescriptionListItemTitle>Home page</DescriptionListItemTitle>
           <DescriptionListItemDescription>
@@ -31,7 +32,7 @@ class MoreInfo extends Component {
 
           <DescriptionListItemTitle>Donations</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://radarr.video/donate">radarr.video/donate</Link>
+            <Link to="https://opencollective.com/radarr">opencollective.com/radarr</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Source</DescriptionListItemTitle>

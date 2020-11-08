@@ -1,3 +1,4 @@
+using NzbDrone.Core.Download;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
@@ -5,7 +6,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
 {
     public class AugmentQualityFromFileName : IAugmentQuality
     {
-        public AugmentQualityResult AugmentQuality(LocalMovie localMovie)
+        public int Order => 1;
+        public string Name => "FileName";
+
+        public AugmentQualityResult AugmentQuality(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             var quality = localMovie.FileMovieInfo?.Quality;
 
@@ -14,16 +18,24 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
                 return null;
             }
 
-            var confidence = quality.QualityDetectionSource == QualityDetectionSource.Extension
-                ? Confidence.Fallback
-                : Confidence.Tag;
+            var sourceConfidence = quality.SourceDetectionSource == QualityDetectionSource.Name
+                ? Confidence.Tag
+                : Confidence.Fallback;
+
+            var resolutionConfidence = quality.ResolutionDetectionSource == QualityDetectionSource.Name
+                ? Confidence.Tag
+                : Confidence.Fallback;
+
+            var modifierConfidence = quality.ModifierDetectionSource == QualityDetectionSource.Name
+                ? Confidence.Tag
+                : Confidence.Fallback;
 
             return new AugmentQualityResult(quality.Quality.Source,
-                                            confidence,
+                                            sourceConfidence,
                                             quality.Quality.Resolution,
-                                            confidence,
+                                            resolutionConfidence,
                                             quality.Quality.Modifier,
-                                            confidence,
+                                            modifierConfidence,
                                             quality.Revision);
         }
     }

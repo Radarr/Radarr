@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { sizes } from 'Helpers/Props';
 import FieldSet from 'Components/FieldSet';
-import Button from 'Components/Link/Button';
 import SelectInput from 'Components/Form/SelectInput';
 import TextInput from 'Components/Form/TextInput';
+import Button from 'Components/Link/Button';
 import Modal from 'Components/Modal/Modal';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import NamingOption from './NamingOption';
 import styles from './NamingModal.css';
 
@@ -118,6 +119,7 @@ class NamingModal extends Component {
       { token: '{Movie CleanTitle}', example: 'Movie Title' },
       { token: '{Movie TitleThe}', example: 'Movie Title, The' },
       { token: '{Movie TitleFirstCharacter}', example: 'M' },
+      { token: '{Movie Collection}', example: 'The Movie Collection' },
       { token: '{Movie Certification}', example: 'R' },
       { token: '{Release Year}', example: '2009' }
     ];
@@ -194,7 +196,7 @@ class NamingModal extends Component {
 
             {
               !advancedSettings &&
-                <FieldSet legend="File Names">
+                <FieldSet legend={translate('FileNames')}>
                   <div className={styles.groups}>
                     {
                       fileNameTokens.map(({ token, example }) => {
@@ -219,7 +221,7 @@ class NamingModal extends Component {
                 </FieldSet>
             }
 
-            <FieldSet legend="Movie">
+            <FieldSet legend={translate('Movie')}>
               <div className={styles.groups}>
                 {
                   movieTokens.map(({ token, example }) => {
@@ -241,7 +243,7 @@ class NamingModal extends Component {
               </div>
             </FieldSet>
 
-            <FieldSet legend="Movie ID">
+            <FieldSet legend={translate('MovieID')}>
               <div className={styles.groups}>
                 {
                   movieIdTokens.map(({ token, example }) => {
@@ -266,7 +268,7 @@ class NamingModal extends Component {
             {
               additional &&
                 <div>
-                  <FieldSet legend="Quality">
+                  <FieldSet legend={translate('Quality')}>
                     <div className={styles.groups}>
                       {
                         qualityTokens.map(({ token, example }) => {
@@ -288,7 +290,7 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Media Info">
+                  <FieldSet legend={translate('MediaInfo')}>
                     <div className={styles.groups}>
                       {
                         mediaInfoTokens.map(({ token, example }) => {
@@ -310,7 +312,7 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Release Group">
+                  <FieldSet legend={translate('ReleaseGroup')}>
                     <div className={styles.groups}>
                       {
                         releaseGroupTokens.map(({ token, example }) => {
@@ -332,7 +334,7 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Edition">
+                  <FieldSet legend={translate('Edition')}>
                     <div className={styles.groups}>
                       {
                         editionTokens.map(({ token, example }) => {
@@ -354,7 +356,7 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Custom Formats">
+                  <FieldSet legend={translate('CustomFormats')}>
                     <div className={styles.groups}>
                       {
                         customFormatTokens.map(({ token, example }) => {
@@ -376,7 +378,7 @@ class NamingModal extends Component {
                     </div>
                   </FieldSet>
 
-                  <FieldSet legend="Original">
+                  <FieldSet legend={translate('Original')}>
                     <div className={styles.groups}>
                       {
                         originalTokens.map(({ token, example }) => {
@@ -410,7 +412,7 @@ class NamingModal extends Component {
               onSelectionChange={this.onInputSelectionChange}
             />
             <Button onPress={onModalClose}>
-              Close
+              {translate('Close')}
             </Button>
           </ModalFooter>
         </ModalContent>

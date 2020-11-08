@@ -36,8 +36,8 @@ namespace NzbDrone.Core.Test.MediaFiles
             Mocker.GetMock<IDiskScanService>().Setup(c => c.GetVideoFiles(It.IsAny<string>(), It.IsAny<bool>()))
                   .Returns(_videoFiles);
 
-            Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterFiles(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
-                  .Returns<string, IEnumerable<string>>((b, s) => s.ToList());
+            Mocker.GetMock<IDiskScanService>().Setup(c => c.FilterPaths(It.IsAny<string>(), It.IsAny<IEnumerable<string>>(), It.IsAny<bool>()))
+                  .Returns<string, IEnumerable<string>, bool>((b, s, e) => s.ToList());
 
             Mocker.GetMock<IDiskProvider>().Setup(c => c.GetDirectories(It.IsAny<string>()))
                   .Returns(_subFolders);
@@ -256,8 +256,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IDetectSample>()
                   .Setup(s => s.IsSample(It.IsAny<Movie>(),
-                      It.IsAny<string>(),
-                      It.IsAny<bool>()))
+                      It.IsAny<string>()))
                   .Returns(DetectSampleResult.Sample);
 
             Subject.ProcessRootFolder(new DirectoryInfo(_droneFactory));
@@ -326,8 +325,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IDetectSample>()
                   .Setup(s => s.IsSample(It.IsAny<Movie>(),
-                      It.IsAny<string>(),
-                      It.IsAny<bool>()))
+                      It.IsAny<string>()))
                   .Returns(DetectSampleResult.Sample);
 
             Mocker.GetMock<IDiskProvider>()
@@ -434,8 +432,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Mocker.GetMock<IDetectSample>()
                   .Setup(s => s.IsSample(It.IsAny<Movie>(),
-                      It.IsAny<string>(),
-                      It.IsAny<bool>()))
+                      It.IsAny<string>()))
                   .Returns(DetectSampleResult.Sample);
 
             Mocker.GetMock<IDiskProvider>()

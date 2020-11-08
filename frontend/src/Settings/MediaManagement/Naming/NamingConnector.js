@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
-import { fetchNamingSettings, setNamingSettingsValue, fetchNamingExamples } from 'Store/Actions/settingsActions';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
+import { fetchNamingExamples, fetchNamingSettings, setNamingSettingsValue } from 'Store/Actions/settingsActions';
+import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import Naming from './Naming';
 
 const SECTION = 'naming';
@@ -50,7 +50,7 @@ class NamingConnector extends Component {
   }
 
   componentWillUnmount() {
-    this.props.clearPendingChanges({ section: SECTION });
+    this.props.clearPendingChanges({ section: `settings.${SECTION}` });
   }
 
   //

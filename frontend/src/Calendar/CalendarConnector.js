@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
+import * as commandNames from 'Commands/commandNames';
+import * as calendarActions from 'Store/Actions/calendarActions';
+import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
+import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import selectUniqueIds from 'Utilities/Object/selectUniqueIds';
-import * as calendarActions from 'Store/Actions/calendarActions';
-import { fetchMovieFiles, clearMovieFiles } from 'Store/Actions/movieFileActions';
-import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
-import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
-import * as commandNames from 'Commands/commandNames';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import Calendar from './Calendar';
 
 const UPDATE_DELAY = 3600000; // 1 hour
@@ -76,15 +76,14 @@ class CalendarConnector extends Component {
     } = this.props;
 
     if (hasDifferentItems(prevProps.items, items)) {
-      const movieIds = selectUniqueIds(items, 'id');
       const movieFileIds = selectUniqueIds(items, 'movieFileId');
-
-      if (items.length) {
-        this.props.fetchQueueDetails({ movieIds });
-      }
 
       if (movieFileIds.length) {
         this.props.fetchMovieFiles({ movieFileIds });
+      }
+
+      if (items.length) {
+        this.props.fetchQueueDetails();
       }
     }
 

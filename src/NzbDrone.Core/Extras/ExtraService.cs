@@ -23,6 +23,7 @@ namespace NzbDrone.Core.Extras
     public class ExtraService : IExtraService,
                                 IHandle<MediaCoversUpdatedEvent>,
                                 IHandle<MovieFolderCreatedEvent>,
+                                IHandle<MovieScannedEvent>,
                                 IHandle<MovieRenamedEvent>
     {
         private readonly IMediaFileService _mediaFileService;
@@ -63,7 +64,7 @@ namespace NzbDrone.Core.Extras
                 movieFile = newMovieFile;
             }
 
-            CreateAfterImport(localMovie.Movie, movieFile);
+            CreateAfterMovieImport(localMovie.Movie, movieFile);
         }
 
         public void ImportExtraFiles(LocalMovie localMovie, MovieFile movieFile, bool isReadOnly)
@@ -81,7 +82,7 @@ namespace NzbDrone.Core.Extras
 
             var sourceFolder = _diskProvider.GetParentFolder(sourcePath);
             var sourceFileName = Path.GetFileNameWithoutExtension(sourcePath);
-            var files = _diskProvider.GetFiles(sourceFolder, SearchOption.TopDirectoryOnly);
+            var files = _diskProvider.GetFiles(sourceFolder, SearchOption.TopDirectoryOnly).Where(f => f != localMovie.Path);
 
             var wantedExtensions = _configService.ExtraFileExtensions.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                                                      .Select(e => e.Trim(' ', '.'))
@@ -136,7 +137,7 @@ namespace NzbDrone.Core.Extras
             }
         }
 
-        private void CreateAfterImport(Movie movie, MovieFile movieFile)
+        private void CreateAfterMovieImport(Movie movie, MovieFile movieFile)
         {
             foreach (var extraFileManager in _extraFileManagers)
             {
@@ -145,6 +146,19 @@ namespace NzbDrone.Core.Extras
         }
 
         public void Handle(MediaCoversUpdatedEvent message)
+        {
+            if (message.Updated)
+            {
+                var movie = message.Movie;
+
+                foreach (var extraFileManager in _extraFileManagers)
+                {
+                    extraFileManager.CreateAfterMediaCoverUpdate(movie);
+                }
+            }
+        }
+
+        public void Handle(MovieScannedEvent message)
         {
             var movie = message.Movie;
             var movieFiles = GetMovieFiles(movie.Id);
@@ -161,7 +175,7 @@ namespace NzbDrone.Core.Extras
 
             foreach (var extraFileManager in _extraFileManagers)
             {
-                extraFileManager.CreateAfterMovieImport(movie, message.MovieFolder);
+                extraFileManager.CreateAfterMovieFolder(movie, message.MovieFolder);
             }
         }
 

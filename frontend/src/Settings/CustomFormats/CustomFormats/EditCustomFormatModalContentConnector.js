@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import { cloneCustomFormatSpecification, deleteCustomFormatSpecification, fetchCustomFormatSpecifications, saveCustomFormat, setCustomFormatValue } from 'Store/Actions/settingsActions';
 import createProviderSettingsSelector from 'Store/Selectors/createProviderSettingsSelector';
-import { setCustomFormatValue, saveCustomFormat, fetchCustomFormatSpecifications, cloneCustomFormatSpecification, deleteCustomFormatSpecification } from 'Store/Actions/settingsActions';
 import EditCustomFormatModalContent from './EditCustomFormatModalContent';
 
 function createMapStateToProps() {

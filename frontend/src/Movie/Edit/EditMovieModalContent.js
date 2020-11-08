@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes, kinds } from 'Helpers/Props';
-import Button from 'Components/Link/Button';
-import SpinnerButton from 'Components/Link/SpinnerButton';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
-import ModalBody from 'Components/Modal/ModalBody';
-import ModalFooter from 'Components/Modal/ModalFooter';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
+import Button from 'Components/Link/Button';
+import SpinnerButton from 'Components/Link/SpinnerButton';
+import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
+import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes, kinds } from 'Helpers/Props';
 import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
+import translate from 'Utilities/String/translate';
 import styles from './EditMovieModalContent.css';
 
 class EditMovieModalContent extends Component {
@@ -78,7 +79,7 @@ class EditMovieModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Edit - {title}
+          {translate('Edit')} - {title}
         </ModalHeader>
 
         <ModalBody>
@@ -86,19 +87,19 @@ class EditMovieModalContent extends Component {
             {...otherProps}
           >
             <FormGroup>
-              <FormLabel>Monitored</FormLabel>
+              <FormLabel>{translate('Monitored')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="monitored"
-                helpText="Download movie if available"
+                helpText={translate('MonitoredHelpText')}
                 {...monitored}
                 onChange={onInputChange}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Minimum Availability</FormLabel>
+              <FormLabel>{translate('MinimumAvailability')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.AVAILABILITY_SELECT}
@@ -109,7 +110,7 @@ class EditMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Quality Profile</FormLabel>
+              <FormLabel>{translate('QualityProfile')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.QUALITY_PROFILE_SELECT}
@@ -120,7 +121,7 @@ class EditMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Path</FormLabel>
+              <FormLabel>{translate('Path')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.PATH}
@@ -131,7 +132,7 @@ class EditMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Tags</FormLabel>
+              <FormLabel>{translate('Tags')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.TAG}
@@ -149,20 +150,20 @@ class EditMovieModalContent extends Component {
             kind={kinds.DANGER}
             onPress={onDeleteMoviePress}
           >
-            Delete
+            {translate('Delete')}
           </Button>
 
           <Button
             onPress={onModalClose}
           >
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <SpinnerButton
             isSpinning={isSaving}
             onPress={this.onSavePress}
           >
-            Save
+            {translate('Save')}
           </SpinnerButton>
         </ModalFooter>
 

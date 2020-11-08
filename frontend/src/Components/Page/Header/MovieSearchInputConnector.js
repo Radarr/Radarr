@@ -1,5 +1,5 @@
-import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createDeepEqualSelector from 'Store/Selectors/createDeepEqualSelector';
@@ -16,6 +16,7 @@ function createCleanMovieSelector() {
           title,
           titleSlug,
           sortTitle,
+          year,
           images,
           alternateTitles = [],
           tags = []
@@ -25,6 +26,7 @@ function createCleanMovieSelector() {
           title,
           titleSlug,
           sortTitle,
+          year,
           images,
           alternateTitles,
           firstCharacter: title.charAt(0).toLowerCase(),

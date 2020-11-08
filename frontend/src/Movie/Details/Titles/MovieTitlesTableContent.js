@@ -3,18 +3,24 @@ import React, { Component } from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import styles from './MovieTitlesTableContent.css';
+import translate from 'Utilities/String/translate';
 import MovieTitlesRow from './MovieTitlesRow';
+import styles from './MovieTitlesTableContent.css';
 
 const columns = [
   {
     name: 'altTitle',
-    label: 'Alternative Title',
+    label: translate('AlternativeTitle'),
     isVisible: true
   },
   {
     name: 'language',
-    label: 'Language',
+    label: translate('Language'),
+    isVisible: true
+  },
+  {
+    name: 'sourceType',
+    label: translate('Type'),
     isVisible: true
   }
 ];

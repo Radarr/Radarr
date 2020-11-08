@@ -1,30 +1,31 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds, sizes } from 'Helpers/Props';
-import formatBytes from 'Utilities/Number/formatBytes';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FieldSet from 'Components/FieldSet';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import ProgressBar from 'Components/ProgressBar';
+import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import TableRow from 'Components/Table/TableRow';
-import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import ProgressBar from 'Components/ProgressBar';
+import { kinds, sizes } from 'Helpers/Props';
+import formatBytes from 'Utilities/Number/formatBytes';
+import translate from 'Utilities/String/translate';
 import styles from './DiskSpace.css';
 
 const columns = [
   {
     name: 'path',
-    label: 'Location',
+    label: translate('Location'),
     isVisible: true
   },
   {
     name: 'freeSpace',
-    label: 'Free Space',
+    label: translate('FreeSpace'),
     isVisible: true
   },
   {
     name: 'totalSpace',
-    label: 'Total Space',
+    label: translate('TotalSpace'),
     isVisible: true
   },
   {
@@ -41,11 +42,12 @@ class DiskSpace extends Component {
   render() {
     const {
       isFetching,
-      items
+      items,
+      isSmallScreen
     } = this.props;
 
     return (
-      <FieldSet legend="Disk Space">
+      <FieldSet legend={translate('DiskSpace')}>
         {
           isFetching &&
             <LoadingIndicator />
@@ -64,7 +66,7 @@ class DiskSpace extends Component {
                       totalSpace
                     } = item;
 
-                    const diskUsage = (100 - freeSpace / totalSpace * 100);
+                    const diskUsage = Math.round(100 - freeSpace / totalSpace * 100);
                     let diskUsageKind = kinds.PRIMARY;
 
                     if (diskUsage > 90) {
@@ -97,6 +99,8 @@ class DiskSpace extends Component {
                             progress={diskUsage}
                             kind={diskUsageKind}
                             size={sizes.MEDIUM}
+                            showText={((!isSmallScreen && diskUsage >= 12) || (isSmallScreen && diskUsage >= 45))}
+                            text={`${diskUsage}%`}
                           />
                         </TableRowCell>
                       </TableRow>
@@ -114,7 +118,8 @@ class DiskSpace extends Component {
 
 DiskSpace.propTypes = {
   isFetching: PropTypes.bool.isRequired,
-  items: PropTypes.array.isRequired
+  items: PropTypes.array.isRequired,
+  isSmallScreen: PropTypes.bool.isRequired
 };
 
 export default DiskSpace;

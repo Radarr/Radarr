@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
-import SelectInput from 'Components/Form/SelectInput';
 import AvailabilitySelectInput from 'Components/Form/AvailabilitySelectInput';
 import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
+import SelectInput from 'Components/Form/SelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
+import { kinds } from 'Helpers/Props';
 import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
-import TagsModal from './Tags/TagsModal';
+import translate from 'Utilities/String/translate';
 import DeleteMovieModal from './Delete/DeleteMovieModal';
 import MovieEditorFooterLabel from './MovieEditorFooterLabel';
+import TagsModal from './Tags/TagsModal';
 import styles from './MovieEditorFooter.css';
 
 const NO_CHANGE = 'noChange';
@@ -162,7 +163,7 @@ class MovieEditorFooter extends Component {
       <PageContentFooter>
         <div className={styles.inputContainer}>
           <MovieEditorFooterLabel
-            label="Monitor Movie"
+            label={translate('MonitorMovie')}
             isSaving={isSaving && monitored !== NO_CHANGE}
           />
 
@@ -177,7 +178,7 @@ class MovieEditorFooter extends Component {
 
         <div className={styles.inputContainer}>
           <MovieEditorFooterLabel
-            label="Quality Profile"
+            label={translate('QualityProfile')}
             isSaving={isSaving && qualityProfileId !== NO_CHANGE}
           />
 
@@ -192,7 +193,7 @@ class MovieEditorFooter extends Component {
 
         <div className={styles.inputContainer}>
           <MovieEditorFooterLabel
-            label="Minimum Availability"
+            label={translate('MinimumAvailability')}
             isSaving={isSaving && minimumAvailability !== NO_CHANGE}
           />
 
@@ -207,7 +208,7 @@ class MovieEditorFooter extends Component {
 
         <div className={styles.inputContainer}>
           <MovieEditorFooterLabel
-            label="Root Folder"
+            label={translate('RootFolder')}
             isSaving={isSaving && rootFolderPath !== NO_CHANGE}
           />
 
@@ -224,7 +225,7 @@ class MovieEditorFooter extends Component {
         <div className={styles.buttonContainer}>
           <div className={styles.buttonContainerContent}>
             <MovieEditorFooterLabel
-              label={`${selectedCount} Movie(s) Selected`}
+              label={translate('MoviesSelectedInterp', [selectedCount])}
               isSaving={false}
             />
 
@@ -237,7 +238,7 @@ class MovieEditorFooter extends Component {
                   isDisabled={!selectedCount || isOrganizingMovie}
                   onPress={onOrganizeMoviePress}
                 >
-                  Rename Files
+                  {translate('RenameFiles')}
                 </SpinnerButton>
 
                 <SpinnerButton
@@ -246,7 +247,7 @@ class MovieEditorFooter extends Component {
                   isDisabled={!selectedCount || isOrganizingMovie}
                   onPress={this.onTagsPress}
                 >
-                  Set Tags
+                  {translate('SetTags')}
                 </SpinnerButton>
               </div>
 
@@ -257,7 +258,7 @@ class MovieEditorFooter extends Component {
                 isDisabled={!selectedCount || isDeleting}
                 onPress={this.onDeleteSelectedPress}
               >
-                Delete
+                {translate('Delete')}
               </SpinnerButton>
             </div>
           </div>

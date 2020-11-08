@@ -1,12 +1,13 @@
 import { createAction } from 'redux-actions';
-import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
-import { createThunk, handleThunks } from 'Store/thunks';
 import { sortDirections } from 'Helpers/Props';
-import createClearReducer from './Creators/Reducers/createClearReducer';
-import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
+import { createThunk, handleThunks } from 'Store/thunks';
+import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
+import translate from 'Utilities/String/translate';
 import createHandleActions from './Creators/createHandleActions';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
+import createClearReducer from './Creators/Reducers/createClearReducer';
+import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 
 //
 // Variables
@@ -28,49 +29,49 @@ export const defaultState = {
   columns: [
     {
       name: 'movies.sortTitle',
-      label: 'Movie Title',
+      label: translate('MovieTitle'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'sourceTitle',
-      label: 'Source Title',
+      label: translate('SourceTitle'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'languages',
-      label: 'Language',
+      label: translate('Languages'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'quality',
-      label: 'Quality',
+      label: translate('Quality'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'customFormats',
-      label: 'Formats',
+      label: translate('Formats'),
       isSortable: false,
       isVisible: true
     },
     {
       name: 'date',
-      label: 'Date',
+      label: translate('Date'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'indexer',
-      label: 'Indexer',
+      label: translate('Indexer'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'actions',
-      columnLabel: 'Actions',
+      columnLabel: translate('Actions'),
       isVisible: true,
       isModifiable: false
     }

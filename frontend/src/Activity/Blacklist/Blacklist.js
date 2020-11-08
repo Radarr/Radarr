@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { align, icons } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import PageContent from 'Components/Page/PageContent';
+import PageContentBody from 'Components/Page/PageContentBody';
+import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
+import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
+import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import TablePager from 'Components/Table/TablePager';
-import PageContent from 'Components/Page/PageContent';
-import PageContentBody from 'Components/Page/PageContentBody';
-import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
-import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
-import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
+import { align, icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import BlacklistRowConnector from './BlacklistRowConnector';
 
 class Blacklist extends Component {
@@ -32,11 +33,11 @@ class Blacklist extends Component {
     } = this.props;
 
     return (
-      <PageContent title="Blacklist">
+      <PageContent title={translate('Blacklist')}>
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label="Clear"
+              label={translate('Clear')}
               iconName={icons.CLEAR}
               isSpinning={isClearingBlacklistExecuting}
               onPress={onClearBlacklistPress}
@@ -49,7 +50,7 @@ class Blacklist extends Component {
               columns={columns}
             >
               <PageToolbarButton
-                label="Options"
+                label={translate('Options')}
                 iconName={icons.TABLE}
               />
             </TableOptionsModalWrapper>
@@ -64,13 +65,15 @@ class Blacklist extends Component {
 
           {
             !isFetching && !!error &&
-              <div>Unable to load blacklist</div>
+              <div>
+                {translate('UnableToLoadBlacklist')}
+              </div>
           }
 
           {
             isPopulated && !error && !items.length &&
               <div>
-                No history blacklist
+                {translate('NoHistory')}
               </div>
           }
 

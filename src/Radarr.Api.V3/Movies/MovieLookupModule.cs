@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Nancy;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
@@ -15,13 +17,21 @@ namespace Radarr.Api.V3.Movies
         private readonly ISearchForNewMovie _searchProxy;
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IBuildFileNames _fileNameBuilder;
+        private readonly IMapCoversToLocal _coverMapper;
+        private readonly IConfigService _configService;
 
-        public MovieLookupModule(ISearchForNewMovie searchProxy, IProvideMovieInfo movieInfo, IBuildFileNames fileNameBuilder)
+        public MovieLookupModule(ISearchForNewMovie searchProxy,
+                                 IProvideMovieInfo movieInfo,
+                                 IBuildFileNames fileNameBuilder,
+                                 IMapCoversToLocal coverMapper,
+                                 IConfigService configService)
             : base("/movie/lookup")
         {
             _movieInfo = movieInfo;
             _searchProxy = searchProxy;
             _fileNameBuilder = fileNameBuilder;
+            _coverMapper = coverMapper;
+            _configService = configService;
             Get("/", x => Search());
             Get("/tmdb", x => SearchByTmdbId());
             Get("/imdb", x => SearchByImdbId());
@@ -33,7 +43,8 @@ namespace Radarr.Api.V3.Movies
             if (int.TryParse(Request.Query.tmdbId, out tmdbId))
             {
                 var result = _movieInfo.GetMovieInfo(tmdbId).Item1;
-                return result.ToResource();
+                var translation = result.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
+                return result.ToResource(translation);
             }
 
             throw new BadRequestException("Tmdb Id was not valid");
@@ -43,24 +54,31 @@ namespace Radarr.Api.V3.Movies
         {
             string imdbId = Request.Query.imdbId;
             var result = _movieInfo.GetMovieByImdbId(imdbId);
-            return result.ToResource();
+
+            var translation = result.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
+            return result.ToResource(translation);
         }
 
         private object Search()
         {
-            var imdbResults = _searchProxy.SearchForNewMovie((string)Request.Query.term);
-            return MapToResource(imdbResults);
+            var searchResults = _searchProxy.SearchForNewMovie((string)Request.Query.term);
+
+            return MapToResource(searchResults);
         }
 
         private IEnumerable<MovieResource> MapToResource(IEnumerable<Movie> movies)
         {
             foreach (var currentMovie in movies)
             {
-                var resource = currentMovie.ToResource();
+                var translation = currentMovie.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
+                var resource = currentMovie.ToResource(translation);
+
+                _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images);
+
                 var poster = currentMovie.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
-                    resource.RemotePoster = poster.Url;
+                    resource.RemotePoster = poster.RemoteUrl;
                 }
 
                 resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie);

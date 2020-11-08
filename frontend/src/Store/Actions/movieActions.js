@@ -1,17 +1,18 @@
 import _ from 'lodash';
 import { createAction } from 'redux-actions';
+import { filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
+import { createThunk, handleThunks } from 'Store/thunks';
 // import { batchActions } from 'redux-batched-actions';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import dateFilterPredicate from 'Utilities/Date/dateFilterPredicate';
 import padNumber from 'Utilities/Number/padNumber';
-import { filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
-import { createThunk, handleThunks } from 'Store/thunks';
-import createSetSettingValueReducer from './Creators/Reducers/createSetSettingValueReducer';
-import createFetchHandler from './Creators/createFetchHandler';
-import createSaveProviderHandler from './Creators/createSaveProviderHandler';
-import createRemoveItemHandler from './Creators/createRemoveItemHandler';
-import createHandleActions from './Creators/createHandleActions';
+import translate from 'Utilities/String/translate';
 import { updateItem } from './baseActions';
+import createFetchHandler from './Creators/createFetchHandler';
+import createHandleActions from './Creators/createHandleActions';
+import createRemoveItemHandler from './Creators/createRemoveItemHandler';
+import createSaveProviderHandler from './Creators/createSaveProviderHandler';
+import createSetSettingValueReducer from './Creators/Reducers/createSetSettingValueReducer';
 
 //
 // Variables
@@ -21,12 +22,12 @@ export const section = 'movies';
 export const filters = [
   {
     key: 'all',
-    label: 'All',
+    label: translate('All'),
     filters: []
   },
   {
     key: 'monitored',
-    label: 'Monitored Only',
+    label: translate('MonitoredOnly'),
     filters: [
       {
         key: 'monitored',
@@ -37,7 +38,7 @@ export const filters = [
   },
   {
     key: 'unmonitored',
-    label: 'Unmonitored Only',
+    label: translate('Unmonitored'),
     filters: [
       {
         key: 'monitored',
@@ -48,7 +49,7 @@ export const filters = [
   },
   {
     key: 'missing',
-    label: 'Missing',
+    label: translate('Missing'),
     filters: [
       {
         key: 'monitored',
@@ -64,7 +65,7 @@ export const filters = [
   },
   {
     key: 'wanted',
-    label: 'Wanted',
+    label: translate('Wanted'),
     filters: [
       {
         key: 'monitored',
@@ -85,7 +86,7 @@ export const filters = [
   },
   {
     key: 'cutoffunmet',
-    label: 'Cut-off Unmet',
+    label: translate('CutoffUnmet'),
     filters: [
       {
         key: 'monitored',
@@ -124,6 +125,10 @@ export const filterPredicates = {
 
   physicalRelease: function(item, filterValue, type) {
     return dateFilterPredicate(item.physicalRelease, filterValue, type);
+  },
+
+  digitalRelease: function(item, filterValue, type) {
+    return dateFilterPredicate(item.digitalRelease, filterValue, type);
   },
 
   ratings: function(item, filterValue, type) {

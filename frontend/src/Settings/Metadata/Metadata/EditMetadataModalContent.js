@@ -1,20 +1,22 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { inputTypes } from 'Helpers/Props';
-import Button from 'Components/Link/Button';
-import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
-import ModalBody from 'Components/Modal/ModalBody';
-import ModalFooter from 'Components/Modal/ModalFooter';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
 import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
+import Button from 'Components/Link/Button';
+import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
+import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
+import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 function EditMetadataModalContent(props) {
   const {
+    advancedSettings,
     isSaving,
     saveError,
     item,
@@ -40,12 +42,12 @@ function EditMetadataModalContent(props) {
       <ModalBody>
         <Form {...otherProps}>
           <FormGroup>
-            <FormLabel>Enable</FormLabel>
+            <FormLabel>{translate('Enable')}</FormLabel>
 
             <FormInputGroup
               type={inputTypes.CHECK}
               name="enable"
-              helpText="Enable metadata file creation for this metadata type"
+              helpText={translate('EnableHelpText')}
               {...enable}
               onChange={onInputChange}
             />
@@ -56,6 +58,7 @@ function EditMetadataModalContent(props) {
               return (
                 <ProviderFieldFormGroup
                   key={field.name}
+                  advancedSettings={advancedSettings}
                   provider="metadata"
                   {...field}
                   isDisabled={!enable.value}
@@ -72,7 +75,7 @@ function EditMetadataModalContent(props) {
         <Button
           onPress={onModalClose}
         >
-          Cancel
+          {translate('Cancel')}
         </Button>
 
         <SpinnerErrorButton
@@ -80,7 +83,7 @@ function EditMetadataModalContent(props) {
           error={saveError}
           onPress={onSavePress}
         >
-          Save
+          {translate('Save')}
         </SpinnerErrorButton>
       </ModalFooter>
     </ModalContent>
@@ -88,6 +91,7 @@ function EditMetadataModalContent(props) {
 }
 
 EditMetadataModalContent.propTypes = {
+  advancedSettings: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,
   item: PropTypes.object.isRequired,

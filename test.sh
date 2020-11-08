@@ -22,7 +22,7 @@ rm -f "$TEST_LOG_FILE"
 # Uncomment to log test output to a file instead of the console
 export RADARR_TESTS_LOG_OUTPUT="File"
 
-VSTEST_PARAMS="--Platform:x64 --logger:nunit;LogFilePath=TestResult.xml"
+VSTEST_PARAMS="--logger:nunit;LogFilePath=TestResult.xml"
 
 if [ "$PLATFORM" = "Mac" ]; then
 
@@ -60,13 +60,13 @@ for i in "${FILES[@]}";
   do ASSEMBLIES="$ASSEMBLIES $TEST_DIR/$i"
 done
 
-DOTNET_PARAMS="$ASSEMBLIES --TestCaseFilter:$WHERE $VSTEST_PARAMS"
+DOTNET_PARAMS="$ASSEMBLIES --filter:$WHERE $VSTEST_PARAMS"
 
 if [ "$COVERAGE" = "Coverage" ]; then
-  dotnet vstest $DOTNET_PARAMS --settings:"src/coverlet.runsettings" --ResultsDirectory:./CoverageResults
+  dotnet test $DOTNET_PARAMS --settings:"src/coverlet.runsettings" --results-directory:./CoverageResults
   EXIT_CODE=$?
 elif [ "$COVERAGE" = "Test" ] ; then
-  dotnet vstest $DOTNET_PARAMS
+  dotnet test $DOTNET_PARAMS
   EXIT_CODE=$?
 else
   echo "Run Type must be provided as third argument: Coverage or Test"

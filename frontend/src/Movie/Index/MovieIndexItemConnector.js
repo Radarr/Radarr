@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createMovieSelector from 'Store/Selectors/createMovieSelector';
+import * as commandNames from 'Commands/commandNames';
+import { executeCommand } from 'Store/Actions/commandActions';
 import createExecutingCommandsSelector from 'Store/Selectors/createExecutingCommandsSelector';
 import createMovieQualityProfileSelector from 'Store/Selectors/createMovieQualityProfileSelector';
-import { executeCommand } from 'Store/Actions/commandActions';
-import * as commandNames from 'Commands/commandNames';
+import createMovieSelector from 'Store/Selectors/createMovieSelector';
 
 function selectShowSearchAction() {
   return createSelector(
@@ -32,11 +32,13 @@ function createMapStateToProps() {
     createMovieQualityProfileSelector(),
     selectShowSearchAction(),
     createExecutingCommandsSelector(),
+    (state) => state.queue.details.items,
     (
       movie,
       qualityProfile,
       showSearchAction,
-      executingCommands
+      executingCommands,
+      queueItems
     ) => {
 
       // If a movie is deleted this selector may fire before the parent
@@ -51,23 +53,27 @@ function createMapStateToProps() {
       const isRefreshingMovie = executingCommands.some((command) => {
         return (
           command.name === commandNames.REFRESH_MOVIE &&
-          command.body.movieId === movie.id
+          command.body.movieIds.includes(movie.id)
         );
       });
 
       const isSearchingMovie = executingCommands.some((command) => {
         return (
           command.name === commandNames.MOVIE_SEARCH &&
-          command.body.movieId === movie.id
+          command.body.movieIds.includes(movie.id)
         );
       });
+
+      const firstQueueItem = queueItems.find((q) => q.movieId === movie.id);
 
       return {
         ...movie,
         qualityProfile,
         showSearchAction,
         isRefreshingMovie,
-        isSearchingMovie
+        isSearchingMovie,
+        queueStatus: firstQueueItem ? firstQueueItem.status : null,
+        queueState: firstQueueItem ? firstQueueItem.trackedDownloadState : null
       };
     }
   );
@@ -85,7 +91,7 @@ class MovieIndexItemConnector extends Component {
   onRefreshMoviePress = () => {
     this.props.dispatchExecuteCommand({
       name: commandNames.REFRESH_MOVIE,
-      movieId: this.props.id
+      movieIds: [this.props.id]
     });
   }
 

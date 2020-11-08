@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Grid, WindowScroller } from 'react-virtualized';
-import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
-import dimensions from 'Styles/Variables/dimensions';
 import Measure from 'Components/Measure';
+import dimensions from 'Styles/Variables/dimensions';
+import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import MovieCreditPosterConnector from './MovieCreditPosterConnector';
 import styles from './MovieCreditPosters.css';
 

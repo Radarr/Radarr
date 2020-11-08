@@ -91,6 +91,14 @@ namespace Radarr.Host
 
             _runtimeInfo.IsExiting = false;
             DbFactory.RegisterDatabase(_container);
+
+            _container.Resolve<IEventAggregator>().PublishEvent(new ApplicationStartingEvent());
+
+            if (_runtimeInfo.IsExiting)
+            {
+                return;
+            }
+
             _hostController.StartServer();
 
             if (!_startupContext.Flags.Contains(StartupContext.NO_BROWSER)

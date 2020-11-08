@@ -5,10 +5,14 @@ function createMovieCountSelector() {
   return createSelector(
     createAllMoviesSelector(),
     (state) => state.movies.error,
-    (movies, error) => {
+    (state) => state.movies.isFetching,
+    (state) => state.movies.isPopulated,
+    (movies, error, isFetching, isPopulated) => {
       return {
         count: movies.length,
-        error
+        error,
+        isFetching,
+        isPopulated
       };
     }
   );

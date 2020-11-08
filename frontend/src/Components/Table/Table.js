@@ -1,11 +1,11 @@
+import classNames from 'classnames';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import classNames from 'classnames';
-import { icons, scrollDirections } from 'Helpers/Props';
 import IconButton from 'Components/Link/IconButton';
 import Scroller from 'Components/Scroller/Scroller';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
+import { icons, scrollDirections } from 'Helpers/Props';
 import TableHeader from './TableHeader';
 import TableHeaderCell from './TableHeaderCell';
 import TableSelectAllHeaderCell from './TableSelectAllHeaderCell';
@@ -52,6 +52,7 @@ function Table(props) {
           scrollDirections.HORIZONTAL :
           scrollDirections.NONE
       }
+      autoFocus={false}
     >
       <table className={className}>
         <TableHeader>

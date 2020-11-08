@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes } from 'Helpers/Props';
 import FieldSet from 'Components/FieldSet';
-import Button from 'Components/Link/Button';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
+import FormLabel from 'Components/Form/FormLabel';
+import Button from 'Components/Link/Button';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import { firstDayOfWeekOptions, weekColumnOptions, timeFormatOptions } from 'Settings/UI/UISettings';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes } from 'Helpers/Props';
+import { firstDayOfWeekOptions, timeFormatOptions, weekColumnOptions } from 'Settings/UI/UISettings';
+import translate from 'Utilities/String/translate';
 
 class CalendarOptionsModalContent extends Component {
 
@@ -110,38 +111,38 @@ class CalendarOptionsModalContent extends Component {
         </ModalHeader>
 
         <ModalBody>
-          <FieldSet legend="Local">
+          <FieldSet legend={translate('Local')}>
             <Form>
               <FormGroup>
-                <FormLabel>Show Movie Information</FormLabel>
+                <FormLabel>{translate('ShowMovieInformation')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="showMovieInformation"
                   value={showMovieInformation}
-                  helpText="Show movie genres and certification"
+                  helpText={translate('ShowMovieInformationHelpText')}
                   onChange={this.onOptionInputChange}
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Icon for Cutoff Unmet</FormLabel>
+                <FormLabel>{translate('IconForCutoffUnmet')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="showCutoffUnmetIcon"
                   value={showCutoffUnmetIcon}
-                  helpText="Show icon for files when the cutoff hasn't been met"
+                  helpText={translate('ShowCutoffUnmetIconHelpText')}
                   onChange={this.onOptionInputChange}
                 />
               </FormGroup>
             </Form>
           </FieldSet>
 
-          <FieldSet legend="Global">
+          <FieldSet legend={translate('Global')}>
             <Form>
               <FormGroup>
-                <FormLabel>First Day of Week</FormLabel>
+                <FormLabel>{translate('FirstDayOfWeek')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.SELECT}
@@ -153,7 +154,7 @@ class CalendarOptionsModalContent extends Component {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Week Column Header</FormLabel>
+                <FormLabel>{translate('WeekColumnHeader')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.SELECT}
@@ -161,12 +162,12 @@ class CalendarOptionsModalContent extends Component {
                   values={weekColumnOptions}
                   value={calendarWeekColumnHeader}
                   onChange={this.onGlobalInputChange}
-                  helpText="Shown above each column when week is the active view"
+                  helpText={translate('HelpText')}
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Time Format</FormLabel>
+                <FormLabel>{translate('TimeFormat')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.SELECT}
@@ -176,13 +177,13 @@ class CalendarOptionsModalContent extends Component {
                   onChange={this.onGlobalInputChange}
                 />
               </FormGroup><FormGroup>
-                <FormLabel>Enable Color-Impaired Mode</FormLabel>
+                <FormLabel>{translate('EnableColorImpairedMode')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
                   name="enableColorImpairedMode"
                   value={enableColorImpairedMode}
-                  helpText="Altered style to allow color-impaired users to better distinguish color coded information"
+                  helpText={translate('EnableColorImpairedModeHelpText')}
                   onChange={this.onGlobalInputChange}
                 />
               </FormGroup>
@@ -193,7 +194,7 @@ class CalendarOptionsModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Close
+            {translate('Close')}
           </Button>
         </ModalFooter>
       </ModalContent>

@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes, kinds } from 'Helpers/Props';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
 import Button from 'Components/Link/Button';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './DeleteMovieModalContent.css';
 
 class DeleteMovieModalContent extends Component {
@@ -21,7 +22,7 @@ class DeleteMovieModalContent extends Component {
 
     this.state = {
       deleteFiles: false,
-      addNetImportExclusion: false
+      addImportExclusion: false
     };
   }
 
@@ -32,16 +33,16 @@ class DeleteMovieModalContent extends Component {
     this.setState({ deleteFiles: value });
   }
 
-  onAddNetImportExclusionChange = ({ value }) => {
-    this.setState({ addNetImportExclusion: value });
+  onAddImportExclusionChange = ({ value }) => {
+    this.setState({ addImportExclusion: value });
   }
 
   onDeleteMovieConfirmed = () => {
     const deleteFiles = this.state.deleteFiles;
-    const addNetImportExclusion = this.state.addNetImportExclusion;
+    const addImportExclusion = this.state.addImportExclusion;
 
-    this.setState({ deleteFiles: false, addNetImportExclusion: false });
-    this.props.onDeleteSelectedPress(deleteFiles, addNetImportExclusion);
+    this.setState({ deleteFiles: false, addImportExclusion: false });
+    this.props.onDeleteSelectedPress(deleteFiles, addImportExclusion);
   }
 
   //
@@ -54,7 +55,7 @@ class DeleteMovieModalContent extends Component {
     } = this.props;
 
     const deleteFiles = this.state.deleteFiles;
-    const addNetImportExclusion = this.state.addNetImportExclusion;
+    const addImportExclusion = this.state.addImportExclusion;
 
     return (
       <ModalContent onModalClose={onModalClose}>
@@ -78,15 +79,15 @@ class DeleteMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Add List Exclusion</FormLabel>
+              <FormLabel>{translate('AddListExclusion')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
-                name="addNetImportExclusion"
-                value={addNetImportExclusion}
-                helpText="Prevent movie from being added to Radarr by lists"
+                name="addImportExclusion"
+                value={addImportExclusion}
+                helpText={translate('AddImportExclusionHelpText')}
                 kind={kinds.DANGER}
-                onChange={this.onAddNetImportExclusionChange}
+                onChange={this.onAddImportExclusionChange}
               />
             </FormGroup>
           </div>
@@ -120,14 +121,14 @@ class DeleteMovieModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <Button
             kind={kinds.DANGER}
             onPress={this.onDeleteMovieConfirmed}
           >
-            Delete
+            {translate('Delete')}
           </Button>
         </ModalFooter>
       </ModalContent>

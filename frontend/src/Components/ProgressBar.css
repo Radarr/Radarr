@@ -73,6 +73,10 @@
   background-color: $infoColor;
 }
 
+.queue {
+  background-color: $queueColor;
+}
+
 .small {
   height: $progressBarSmallHeight;
 

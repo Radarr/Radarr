@@ -1,18 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, inputTypes, kinds, sizes } from 'Helpers/Props';
+import Form from 'Components/Form/Form';
+import FormGroup from 'Components/Form/FormGroup';
+import FormInputButton from 'Components/Form/FormInputButton';
+import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
 import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import ClipboardButton from 'Components/Link/ClipboardButton';
-import Form from 'Components/Form/Form';
-import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
-import FormInputGroup from 'Components/Form/FormInputGroup';
-import FormInputButton from 'Components/Form/FormInputButton';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { icons, inputTypes, kinds, sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 function getUrls(state) {
   const {
@@ -114,37 +115,37 @@ class CalendarLinkModalContent extends Component {
         <ModalBody>
           <Form>
             <FormGroup>
-              <FormLabel>Include Unmonitored</FormLabel>
+              <FormLabel>{translate('IncludeUnmonitored')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="unmonitored"
                 value={unmonitored}
-                helpText="Include unmonitored movies in the iCal feed"
+                helpText={translate('UnmonitoredHelpText')}
                 onChange={this.onInputChange}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Show as All-Day Events</FormLabel>
+              <FormLabel>{translate('ShowAsAllDayEvents')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.CHECK}
                 name="asAllDay"
                 value={asAllDay}
-                helpText="Events will appear as all-day events in your calendar"
+                helpText={translate('AsAllDayHelpText')}
                 onChange={this.onInputChange}
               />
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>Tags</FormLabel>
+              <FormLabel>{translate('Tags')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.TAG}
                 name="tags"
                 value={tags}
-                helpText="Feed will only contain movies with at least one matching tag"
+                helpText={translate('TagsHelpText')}
                 onChange={this.onInputChange}
               />
             </FormGroup>
@@ -152,14 +153,14 @@ class CalendarLinkModalContent extends Component {
             <FormGroup
               size={sizes.LARGE}
             >
-              <FormLabel>iCal Feed</FormLabel>
+              <FormLabel>{translate('ICalFeed')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.TEXT}
                 name="iCalHttpUrl"
                 value={iCalHttpUrl}
                 readOnly={true}
-                helpText="Copy this URL to your client(s) or click to subscribe if your browser supports webcal"
+                helpText={translate('ICalHttpUrlHelpText')}
                 buttons={[
                   <ClipboardButton
                     key="copy"
@@ -186,7 +187,7 @@ class CalendarLinkModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Close
+            {translate('Close')}
           </Button>
         </ModalFooter>
       </ModalContent>

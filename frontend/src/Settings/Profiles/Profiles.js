@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import Link from 'Components/Link/Link';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
-import Link from 'Components/Link/Link';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
-import QualityProfilesConnector from './Quality/QualityProfilesConnector';
+import translate from 'Utilities/String/translate';
 import DelayProfilesConnector from './Delay/DelayProfilesConnector';
+import QualityProfilesConnector from './Quality/QualityProfilesConnector';
 import styles from './Profiles.css';
 // Only a single DragDrop Context can exist so it's done here to allow editing
 // quality profiles and reordering delay profiles to work.
@@ -18,7 +19,7 @@ class Profiles extends Component {
 
   render() {
     return (
-      <PageContent title="Profiles">
+      <PageContent title={translate('Profiles')}>
         <SettingsToolbarConnector
           showSave={false}
         />

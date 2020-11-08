@@ -1,19 +1,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { inputTypes, kinds } from 'Helpers/Props';
 import Alert from 'Components/Alert';
+import Form from 'Components/Form/Form';
+import FormGroup from 'Components/Form/FormGroup';
+import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
+import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
 import Button from 'Components/Link/Button';
 import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import Form from 'Components/Form/Form';
-import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
-import FormInputGroup from 'Components/Form/FormInputGroup';
-import ProviderFieldFormGroup from 'Components/Form/ProviderFieldFormGroup';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
+import NotificationEventItems from './NotificationEventItems';
 import styles from './EditNotificationModalContent.css';
 
 function EditNotificationModalContent(props) {
@@ -38,17 +40,6 @@ function EditNotificationModalContent(props) {
     id,
     implementationName,
     name,
-    onGrab,
-    onDownload,
-    onUpgrade,
-    onRename,
-    onHealthIssue,
-    supportsOnGrab,
-    supportsOnDownload,
-    supportsOnUpgrade,
-    supportsOnRename,
-    supportsOnHealthIssue,
-    includeHealthWarnings,
     tags,
     fields,
     message
@@ -68,7 +59,9 @@ function EditNotificationModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>Unable to add a new notification, please try again.</div>
+            <div>
+              {translate('UnableToAddANewNotificationPleaseTryAgain')}
+            </div>
         }
 
         {
@@ -85,7 +78,7 @@ function EditNotificationModalContent(props) {
               }
 
               <FormGroup>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>{translate('Name')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TEXT}
@@ -95,97 +88,18 @@ function EditNotificationModalContent(props) {
                 />
               </FormGroup>
 
-              <FormGroup>
-                <FormLabel>On Grab</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="onGrab"
-                  helpText="Be notified when movies are available for download and has been sent to a download client"
-                  isDisabled={!supportsOnGrab.value}
-                  {...onGrab}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
+              <NotificationEventItems
+                item={item}
+                onInputChange={onInputChange}
+              />
 
               <FormGroup>
-                <FormLabel>On Import</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="onDownload"
-                  helpText="Be notified when movies are successfully imported"
-                  isDisabled={!supportsOnDownload.value}
-                  {...onDownload}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
-
-              {
-                onDownload.value &&
-                  <FormGroup>
-                    <FormLabel>On Upgrade</FormLabel>
-
-                    <FormInputGroup
-                      type={inputTypes.CHECK}
-                      name="onUpgrade"
-                      helpText="Be notified when movies are upgraded to a better quality"
-                      isDisabled={!supportsOnUpgrade.value}
-                      {...onUpgrade}
-                      onChange={onInputChange}
-                    />
-                  </FormGroup>
-              }
-
-              <FormGroup>
-                <FormLabel>On Rename</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="onRename"
-                  helpText="Be notified when movies are renamed"
-                  isDisabled={!supportsOnRename.value}
-                  {...onRename}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <FormLabel>On Health Issue</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="onHealthIssue"
-                  helpText="Be notified on health check failures"
-                  isDisabled={!supportsOnHealthIssue.value}
-                  {...onHealthIssue}
-                  onChange={onInputChange}
-                />
-              </FormGroup>
-
-              {
-                onHealthIssue.value &&
-                  <FormGroup>
-                    <FormLabel>Include Health Warnings</FormLabel>
-
-                    <FormInputGroup
-                      type={inputTypes.CHECK}
-                      name="includeHealthWarnings"
-                      helpText="Be notified on health warnings in addition to errors"
-                      isDisabled={!supportsOnHealthIssue.value}
-                      {...includeHealthWarnings}
-                      onChange={onInputChange}
-                    />
-                  </FormGroup>
-              }
-
-              <FormGroup>
-                <FormLabel>Tags</FormLabel>
+                <FormLabel>{translate('Tags')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TAG}
                   name="tags"
-                  helpText="Only send notifications for movies with at least one matching tag"
+                  helpText={translate('TagsHelpText')}
                   {...tags}
                   onChange={onInputChange}
                 />
@@ -218,7 +132,7 @@ function EditNotificationModalContent(props) {
               kind={kinds.DANGER}
               onPress={onDeleteNotificationPress}
             >
-              Delete
+              {translate('Delete')}
             </Button>
         }
 
@@ -227,13 +141,13 @@ function EditNotificationModalContent(props) {
           error={saveError}
           onPress={onTestPress}
         >
-          Test
+          {translate('Test')}
         </SpinnerErrorButton>
 
         <Button
           onPress={onModalClose}
         >
-          Cancel
+          {translate('Cancel')}
         </Button>
 
         <SpinnerErrorButton
@@ -241,7 +155,7 @@ function EditNotificationModalContent(props) {
           error={saveError}
           onPress={onSavePress}
         >
-          Save
+          {translate('Save')}
         </SpinnerErrorButton>
       </ModalFooter>
     </ModalContent>

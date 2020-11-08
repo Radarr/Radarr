@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Parser.Model
         public string CommentUrl { get; set; }
         public int IndexerId { get; set; }
         public string Indexer { get; set; }
+        public int IndexerPriority { get; set; }
         public DownloadProtocol DownloadProtocol { get; set; }
         public int TvdbId { get; set; }
         public int TvRageId { get; set; }
@@ -97,6 +98,7 @@ namespace NzbDrone.Core.Parser.Model
         AHD_Internal = 64, // AHD, internal
         G_Scene = 128, //General, the torrent comes from the "scene"
         G_Freeleech75 = 256, //Currently only used for AHD, signifies a torrent counts towards 75 percent of your download quota.
-        G_Freeleech25 = 512 //Currently only used for AHD, signifies a torrent counts towards 25 percent of your download quota.
+        G_Freeleech25 = 512, //Currently only used for AHD, signifies a torrent counts towards 25 percent of your download quota.
+        AHD_UserRelease = 1024 // AHD, internal
     }
 }

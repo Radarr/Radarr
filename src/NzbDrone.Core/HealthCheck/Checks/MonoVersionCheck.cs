@@ -1,6 +1,7 @@
 using System;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Localization;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
@@ -9,7 +10,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
         private readonly IPlatformInfo _platformInfo;
         private readonly Logger _logger;
 
-        public MonoVersionCheck(IPlatformInfo platformInfo, Logger logger)
+        public MonoVersionCheck(IPlatformInfo platformInfo, ILocalizationService localizationService, Logger logger)
+            : base(localizationService)
         {
             _platformInfo = platformInfo;
             _logger = logger;
@@ -44,30 +46,28 @@ namespace NzbDrone.Core.HealthCheck.Checks
             }
 
             // Stable Mono versions
-            var stableVersion = new Version("5.16");
+            var stableVersion = new Version("5.18");
             if (monoVersion >= stableVersion)
             {
                 _logger.Debug("Mono version is {0} or better: {1}", stableVersion, monoVersion);
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Notice,
-                    $"Currently installed Mono version {monoVersion} is supported but upgrading to {bestVersion} is recommended.",
+                    string.Format(_localizationService.GetLocalizedString("MonoVersionCheckUpgradeRecommendedMessage"), monoVersion, bestVersion),
                     "#currently-installed-mono-version-is-supported-but-upgrading-is-recommended");
             }
 
-            // Old but supported Mono versions, there are known bugs
-            var supportedVersion = new Version("5.4");
-            if (monoVersion >= supportedVersion)
+            var oldVersion = new Version("5.4");
+            if (monoVersion >= oldVersion)
             {
-                _logger.Debug("Mono version is {0} or better: {1}", supportedVersion, monoVersion);
                 return new HealthCheck(GetType(),
-                    HealthCheckResult.Warning,
-                    $"Currently installed Mono version {monoVersion} is supported but has some known issues. Please upgrade Mono to version {bestVersion}.",
-                    "#currently-installed-mono-version-is-supported-but-upgrading-is-recommended");
+                    HealthCheckResult.Error,
+                    string.Format(_localizationService.GetLocalizedString("MonoVersionCheckUpgradeRecommendedMessage"), monoVersion, bestVersion),
+                    "#currently-installed-mono-version-is-old-and-unsupported");
             }
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Error,
-                $"Currently installed Mono version {monoVersion} is old and unsupported. Please upgrade Mono to version {bestVersion}.",
+                string.Format(_localizationService.GetLocalizedString("MonoVersionCheckUpgradeRecommendedMessage"), monoVersion, bestVersion),
                 "#currently-installed-mono-version-is-old-and-unsupported");
         }
 

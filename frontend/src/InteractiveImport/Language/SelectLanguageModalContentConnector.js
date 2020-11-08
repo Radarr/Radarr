@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchLanguages } from 'Store/Actions/settingsActions';
 import { updateInteractiveImportItems } from 'Store/Actions/interactiveImportActions';
+import { fetchLanguages } from 'Store/Actions/settingsActions';
 import SelectLanguageModalContent from './SelectLanguageModalContent';
 
 function createMapStateToProps() {

@@ -1,40 +1,57 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import moment from 'moment';
+import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
+import firstCharToUpper from 'Utilities/String/firstCharToUpper';
+import translate from 'Utilities/String/translate';
 import styles from './MovieStatusLabel.css';
 
-function getMovieStatus(hasFile, isMonitored, inCinemas) {
-  const currentTime = moment();
+function getMovieStatus(hasFile, isMonitored, isAvailable, queueDetails = false) {
+
+  if (queueDetails.items[0]) {
+    const queueStatus = queueDetails.items[0].status;
+    const queueState = queueDetails.items[0].trackedDownloadStatus;
+    const queueStatusText = getQueueStatusText(queueStatus, queueState);
+
+    if (queueStatusText) {
+      return queueStatusText;
+    }
+  }
 
   if (hasFile) {
-    return 'Downloaded';
+    return 'downloaded';
   }
 
   if (!isMonitored) {
-    return 'Unmonitored';
+    return 'unmonitored';
   }
 
-  if (inCinemas.isBefore(currentTime) && !hasFile) {
-    return 'Missing';
+  if (isAvailable && !hasFile) {
+    return 'missing';
   }
 
-  return 'Unreleased';
+  return 'notAvailable';
 }
 
 function MovieStatusLabel(props) {
   const {
     hasMovieFiles,
     monitored,
-    inCinemas
+    isAvailable,
+    queueDetails
   } = props;
 
-  const status = getMovieStatus(hasMovieFiles, monitored, moment(inCinemas));
+  const status = getMovieStatus(hasMovieFiles, monitored, isAvailable, queueDetails);
+  let statusClass = status;
+
+  if (queueDetails.items.length) {
+    statusClass = 'queue';
+  }
 
   return (
     <span
-      className={styles[status.toLowerCase()]}
+      className={styles[statusClass]}
     >
-      {status}
+      {translate(firstCharToUpper(status))}
     </span>
   );
 }
@@ -42,7 +59,8 @@ function MovieStatusLabel(props) {
 MovieStatusLabel.propTypes = {
   hasMovieFiles: PropTypes.bool.isRequired,
   monitored: PropTypes.bool.isRequired,
-  inCinemas: PropTypes.string
+  isAvailable: PropTypes.bool.isRequired,
+  queueDetails: PropTypes.object
 };
 
 MovieStatusLabel.defaultProps = {

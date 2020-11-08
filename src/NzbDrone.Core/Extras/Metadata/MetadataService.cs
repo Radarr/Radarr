@@ -56,6 +56,31 @@ namespace NzbDrone.Core.Extras.Metadata
 
         public override int Order => 0;
 
+        public override IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie)
+        {
+            var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
+            _cleanMetadataService.Clean(movie);
+
+            if (!_diskProvider.FolderExists(movie.Path))
+            {
+                _logger.Info("Movie folder does not exist, skipping metadata image creation");
+                return Enumerable.Empty<MetadataFile>();
+            }
+
+            var files = new List<MetadataFile>();
+
+            foreach (var consumer in _metadataFactory.Enabled())
+            {
+                var consumerFiles = GetMetadataFilesForConsumer(consumer, metadataFiles);
+
+                files.AddRange(ProcessMovieImages(consumer, movie, consumerFiles));
+            }
+
+            _metadataFileService.Upsert(files);
+
+            return files;
+        }
+
         public override IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles)
         {
             var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
@@ -100,7 +125,7 @@ namespace NzbDrone.Core.Extras.Metadata
             return files;
         }
 
-        public override IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder)
+        public override IEnumerable<ExtraFile> CreateAfterMovieFolder(Movie movie, string movieFolder)
         {
             var metadataFiles = _metadataFileService.GetFilesByMovie(movie.Id);
 
@@ -279,6 +304,10 @@ namespace NzbDrone.Core.Extras.Metadata
                 }
 
                 _mediaFileAttributeService.SetFilePermissions(fullPath);
+            }
+            catch (HttpException ex)
+            {
+                _logger.Warn(ex, "Couldn't download image {0} for {1}. {2}", image.Url, movie, ex.Message);
             }
             catch (WebException ex)
             {

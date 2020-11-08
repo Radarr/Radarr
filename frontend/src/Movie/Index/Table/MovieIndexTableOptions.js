@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes } from 'Helpers/Props';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
+import { inputTypes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 class MovieIndexTableOptions extends Component {
 
@@ -54,13 +55,13 @@ class MovieIndexTableOptions extends Component {
 
     return (
       <FormGroup>
-        <FormLabel>Show Search</FormLabel>
+        <FormLabel>{translate('ShowSearch')}</FormLabel>
 
         <FormInputGroup
           type={inputTypes.CHECK}
           name="showSearchAction"
           value={showSearchAction}
-          helpText="Show search button on hover"
+          helpText={translate('ShowSearchHelpText')}
           onChange={this.onTableOptionChange}
         />
       </FormGroup>

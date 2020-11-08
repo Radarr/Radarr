@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
 import VirtualTableRowCell from 'Components/Table/Cells/TableRowCell';
 import { getMovieStatusDetails } from 'Movie/MovieStatus';
@@ -10,7 +9,6 @@ function ListMovieStatusCell(props) {
   const {
     className,
     status,
-    isExclusion,
     component: Component,
     ...otherProps
   } = props;
@@ -28,15 +26,6 @@ function ListMovieStatusCell(props) {
         title={`${statusDetails.title}: ${statusDetails.message}`}
       />
 
-      {
-        isExclusion ?
-          <Icon
-            className={styles.exclusionIcon}
-            name={icons.DANGER}
-            title={'Movie Excluded From Automatic Add'}
-          /> : null
-      }
-
     </Component>
   );
 }
@@ -44,7 +33,6 @@ function ListMovieStatusCell(props) {
 ListMovieStatusCell.propTypes = {
   className: PropTypes.string.isRequired,
   status: PropTypes.string.isRequired,
-  isExclusion: PropTypes.bool.isRequired,
   component: PropTypes.elementType
 };
 

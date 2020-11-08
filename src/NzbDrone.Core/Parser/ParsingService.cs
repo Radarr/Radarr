@@ -6,8 +6,8 @@ using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.AlternativeTitles;
 using NzbDrone.Core.Parser.Augmenters;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
@@ -67,20 +67,13 @@ namespace NzbDrone.Core.Parser
         {
             if (helpers != null)
             {
-                minimalInfo = AugmentMovieInfo(minimalInfo, helpers);
-            }
+                var augmenters = _augmenters.Where(a => helpers.Any(t => a.HelperType.IsInstanceOfType(t)) || a.HelperType == null);
 
-            return minimalInfo;
-        }
-
-        private ParsedMovieInfo AugmentMovieInfo(ParsedMovieInfo minimalInfo, List<object> helpers)
-        {
-            var augmenters = _augmenters.Where(a => helpers.Any(t => a.HelperType.IsInstanceOfType(t)) || a.HelperType == null);
-
-            foreach (var augmenter in augmenters)
-            {
-                minimalInfo = augmenter.AugmentMovieInfo(minimalInfo,
-                    helpers.FirstOrDefault(h => augmenter.HelperType.IsInstanceOfType(h)));
+                foreach (var augmenter in augmenters)
+                {
+                    minimalInfo = augmenter.AugmentMovieInfo(minimalInfo,
+                        helpers.FirstOrDefault(h => augmenter.HelperType.IsInstanceOfType(h)));
+                }
             }
 
             return minimalInfo;
@@ -132,14 +125,12 @@ namespace NzbDrone.Core.Parser
                 return _movieService.FindByTitle(title);
             }
 
-            var movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, parsedMovieInfo.Year);
-
-            if (movies == null)
+            if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out var result) && result.MappingResultType == MappingResultType.Success)
             {
-                movies = _movieService.FindByTitle(parsedMovieInfo.MovieTitle.Replace("DC", "").Trim());
+                return result.Movie;
             }
 
-            return movies;
+            return null;
         }
 
         public MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null)
@@ -152,6 +143,13 @@ namespace NzbDrone.Core.Parser
                 result.Movie = null;
             }
 
+            //Use movie language as fallback if we could't parse a language (more accurate than just using English)
+            if (parsedMovieInfo.Languages.Count <= 1 && parsedMovieInfo.Languages.First() == Language.Unknown && result.Movie != null)
+            {
+                parsedMovieInfo.Languages = new List<Language> { result.Movie.OriginalLanguage };
+                _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", result.Movie.OriginalLanguage.Name);
+            }
+
             result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
 
             return result;
@@ -159,8 +157,8 @@ namespace NzbDrone.Core.Parser
 
         private MappingResult GetMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)
         {
-            // TODO: Answer me this: Wouldn't it be smarter to start out looking for a movie if we have an ImDb Id?
             MappingResult result = null;
+
             if (!string.IsNullOrWhiteSpace(imdbId) && imdbId != "0")
             {
                 if (TryGetMovieByImDbId(parsedMovieInfo, imdbId, out result))
@@ -178,8 +176,10 @@ namespace NzbDrone.Core.Parser
             }
             else
             {
-                TryGetMovieByTitleAndOrYear(parsedMovieInfo, out result);
-                return result;
+                if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out result))
+                {
+                    return result;
+                }
             }
 
             // nothing found up to here => logging that and returning null
@@ -213,7 +213,7 @@ namespace NzbDrone.Core.Parser
         private bool TryGetMovieByTitleAndOrYear(ParsedMovieInfo parsedMovieInfo, out MappingResult result)
         {
             Func<Movie, bool> isNotNull = movie => movie != null;
-            Movie movieByTitleAndOrYear = null;
+            Movie movieByTitleAndOrYear;
 
             if (parsedMovieInfo.Year > 1800)
             {
@@ -250,34 +250,33 @@ namespace NzbDrone.Core.Parser
         {
             Movie possibleMovie = null;
 
-            List<string> possibleTitles = new List<string>();
+            var possibleTitles = new List<string>();
 
             possibleTitles.Add(searchCriteria.Movie.CleanTitle);
+            possibleTitles.AddRange(searchCriteria.Movie.AlternativeTitles.Select(t => t.CleanTitle));
+            possibleTitles.AddRange(searchCriteria.Movie.Translations.Select(t => t.CleanTitle));
 
-            foreach (AlternativeTitle altTitle in searchCriteria.Movie.AlternativeTitles)
-            {
-                possibleTitles.Add(altTitle.CleanTitle);
-            }
+            var cleanTitle = parsedMovieInfo.MovieTitle.CleanMovieTitle();
 
-            foreach (string title in possibleTitles)
+            foreach (var title in possibleTitles)
             {
-                if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                if (title == cleanTitle)
                 {
                     possibleMovie = searchCriteria.Movie;
                 }
 
-                foreach (ArabicRomanNumeral numeralMapping in _arabicRomanNumeralMappings)
+                foreach (var numeralMapping in _arabicRomanNumeralMappings)
                 {
-                    string arabicNumeral = numeralMapping.ArabicNumeralAsString;
-                    string romanNumeral = numeralMapping.RomanNumeralLowerCase;
+                    var arabicNumeral = numeralMapping.ArabicNumeralAsString;
+                    var romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
                     //_logger.Debug(cleanTitle);
-                    if (title.Replace(arabicNumeral, romanNumeral) == parsedMovieInfo.MovieTitle.CleanSeriesTitle())
+                    if (title.Replace(arabicNumeral, romanNumeral) == cleanTitle)
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
 
-                    if (title == parsedMovieInfo.MovieTitle.CleanSeriesTitle().Replace(arabicNumeral, romanNumeral))
+                    if (title == cleanTitle.Replace(arabicNumeral, romanNumeral))
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
@@ -323,7 +322,7 @@ namespace NzbDrone.Core.Parser
                         return
                             $"Failed to map movie, found title {RemoteMovie.ParsedMovieInfo.MovieTitle}, expected one of: {RemoteMovie.Movie.Title}{comma}{string.Join(", ", RemoteMovie.Movie.AlternativeTitles)}";
                     default:
-                        return $"Failed to map movie for unkown reasons";
+                        return $"Failed to map movie for unknown reasons";
                 }
             }
         }

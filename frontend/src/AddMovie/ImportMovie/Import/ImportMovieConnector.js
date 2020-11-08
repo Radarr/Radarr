@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { setImportMovieValue, importMovie, clearImportMovie } from 'Store/Actions/importMovieActions';
-import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
-import { setAddMovieDefault } from 'Store/Actions/addMovieActions';
 import createRouteMatchShape from 'Helpers/Props/Shapes/createRouteMatchShape';
+import { setAddMovieDefault } from 'Store/Actions/addMovieActions';
+import { clearImportMovie, importMovie, setImportMovieValue } from 'Store/Actions/importMovieActions';
+import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import ImportMovie from './ImportMovie';
 
 function createMapStateToProps() {
@@ -71,15 +71,14 @@ class ImportMovieConnector extends Component {
 
   componentDidMount() {
     const {
+      rootFolderId,
       qualityProfiles,
       defaultQualityProfileId,
       dispatchFetchRootFolders,
       dispatchSetAddMovieDefault
     } = this.props;
 
-    if (!this.props.rootFoldersPopulated) {
-      dispatchFetchRootFolders();
-    }
+    dispatchFetchRootFolders({ id: rootFolderId, timeout: false });
 
     let setDefaults = false;
     const setDefaultPayload = {};
@@ -139,6 +138,8 @@ const routeMatchShape = createRouteMatchShape({
 
 ImportMovieConnector.propTypes = {
   match: routeMatchShape.isRequired,
+  rootFolderId: PropTypes.number.isRequired,
+  rootFoldersFetching: PropTypes.bool.isRequired,
   rootFoldersPopulated: PropTypes.bool.isRequired,
   qualityProfiles: PropTypes.arrayOf(PropTypes.object).isRequired,
   defaultQualityProfileId: PropTypes.number.isRequired,

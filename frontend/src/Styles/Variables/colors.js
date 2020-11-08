@@ -14,6 +14,7 @@ module.exports = {
   dangerColor: '#f05050',
   warningColor: '#ffa500',
   infoColor: '#5d9cec',
+  queueColor: '#7a43b6',
   purple: '#7a43b6',
   pink: '#ff69b4',
   radarrYellow,

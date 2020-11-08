@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import { bulkDeleteMovie } from 'Store/Actions/movieIndexActions';
+import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import DeleteMovieModalContent from './DeleteMovieModalContent';
 
 function createMapStateToProps() {
@@ -31,11 +31,11 @@ function createMapStateToProps() {
 
 function createMapDispatchToProps(dispatch, props) {
   return {
-    onDeleteSelectedPress(deleteFiles, addNetImportExclusion) {
+    onDeleteSelectedPress(deleteFiles, addImportExclusion) {
       dispatch(bulkDeleteMovie({
         movieIds: props.movieIds,
         deleteFiles,
-        addNetImportExclusion
+        addImportExclusion
       }));
 
       props.onModalClose();

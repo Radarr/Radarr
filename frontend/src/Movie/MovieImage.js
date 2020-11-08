@@ -160,6 +160,7 @@ class MovieImage extends Component {
             src={url}
             onError={this.onError}
             onLoad={this.onLoad}
+            rel="noreferrer"
           />
         </LazyLoad>
       );

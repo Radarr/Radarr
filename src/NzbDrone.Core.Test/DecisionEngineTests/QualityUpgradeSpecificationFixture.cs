@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
@@ -51,11 +51,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             CustomFormatsFixture.GivenCustomFormats(_customFormat1, _customFormat2);
         }
 
-        private void GivenAutoDownloadPropers(bool autoDownloadPropers)
+        private void GivenAutoDownloadPropers(ProperDownloadTypes type)
         {
             Mocker.GetMock<IConfigService>()
-                  .SetupGet(s => s.AutoDownloadPropers)
-                  .Returns(autoDownloadPropers);
+                  .SetupGet(s => s.DownloadPropersAndRepacks)
+                  .Returns(type);
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                   List<CustomFormat> newFormats,
                                   bool expected)
         {
-            GivenAutoDownloadPropers(true);
+            GivenAutoDownloadPropers(ProperDownloadTypes.PreferAndUpgrade);
 
             var profile = new Profile
             {
@@ -86,9 +86,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_false_if_proper_and_autoDownloadPropers_is_false()
+        public void should_return_true_if_proper_and_download_propers_is_do_not_download()
         {
-            GivenAutoDownloadPropers(false);
+            GivenAutoDownloadPropers(ProperDownloadTypes.DoNotUpgrade);
 
             var profile = new Profile { Items = Qualities.QualityFixture.GetDefaultQualities() };
 

@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds, inputTypes } from 'Helpers/Props';
-import SpinnerButton from 'Components/Link/SpinnerButton';
+import CheckInput from 'Components/Form/CheckInput';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
-import CheckInput from 'Components/Form/CheckInput';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
+import FormLabel from 'Components/Form/FormLabel';
+import SpinnerButton from 'Components/Link/SpinnerButton';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes, kinds } from 'Helpers/Props';
 import MoviePoster from 'Movie/MoviePoster';
+import translate from 'Utilities/String/translate';
 import styles from './AddNewMovieModalContent.css';
 
 class AddNewMovieModalContent extends Component {
@@ -95,7 +96,7 @@ class AddNewMovieModalContent extends Component {
 
               <Form>
                 <FormGroup>
-                  <FormLabel>Root Folder</FormLabel>
+                  <FormLabel>{translate('RootFolder')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.ROOT_FOLDER_SELECT}
@@ -108,7 +109,7 @@ class AddNewMovieModalContent extends Component {
                       movieFolder: folder,
                       isWindows
                     }}
-                    helpText={`'${folder}' subfolder will be created automatically`}
+                    helpText={translate('SubfolderWillBeCreatedAutomaticallyInterp', [folder])}
                     onChange={onInputChange}
                     {...rootFolderPath}
                   />
@@ -128,7 +129,7 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Minimum Availability</FormLabel>
+                  <FormLabel>{translate('MinimumAvailability')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.AVAILABILITY_SELECT}
@@ -139,7 +140,7 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Quality Profile</FormLabel>
+                  <FormLabel>{translate('QualityProfile')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.QUALITY_PROFILE_SELECT}
@@ -150,7 +151,7 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>Tags</FormLabel>
+                  <FormLabel>{translate('Tags')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.TAG}

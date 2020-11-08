@@ -1,20 +1,22 @@
 using FluentValidation;
-using NzbDrone.Core.NetImport;
+using NzbDrone.Core.ImportLists;
+using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 
-namespace NzbDrone.Api.NetImport
+namespace NzbDrone.Api.ImportList
 {
-    public class NetImportModule : ProviderModuleBase<NetImportResource, INetImport, NetImportDefinition>
+    public class ImportListModule : ProviderModuleBase<ImportListResource, IImportList, ImportListDefinition>
     {
-        public NetImportModule(NetImportFactory netImportFactory)
-            : base(netImportFactory, "netimport")
+        public ImportListModule(ImportListFactory importListFactory, ProfileExistsValidator profileExistsValidator)
+            : base(importListFactory, "netimport")
         {
             PostValidator.RuleFor(c => c.RootFolderPath).IsValidPath();
             PostValidator.RuleFor(c => c.MinimumAvailability).NotNull();
-            PostValidator.RuleFor(c => c.ProfileId).NotNull();
+            SharedValidator.RuleFor(c => c.ProfileId).ValidId();
+            SharedValidator.RuleFor(c => c.ProfileId).SetValidator(profileExistsValidator);
         }
 
-        protected override void MapToResource(NetImportResource resource, NetImportDefinition definition)
+        protected override void MapToResource(ImportListResource resource, ImportListDefinition definition)
         {
             base.MapToResource(resource, definition);
 
@@ -27,7 +29,7 @@ namespace NzbDrone.Api.NetImport
             resource.Tags = definition.Tags;
         }
 
-        protected override void MapToModel(NetImportDefinition definition, NetImportResource resource)
+        protected override void MapToModel(ImportListDefinition definition, ImportListResource resource)
         {
             base.MapToModel(definition, resource);
 
@@ -40,7 +42,7 @@ namespace NzbDrone.Api.NetImport
             definition.Tags = resource.Tags;
         }
 
-        protected override void Validate(NetImportDefinition definition, bool includeWarnings)
+        protected override void Validate(ImportListDefinition definition, bool includeWarnings)
         {
             if (!definition.Enable)
             {

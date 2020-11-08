@@ -4,6 +4,7 @@ const livereload = require('gulp-livereload');
 const path = require('path');
 const webpack = require('webpack');
 const errorHandler = require('./helpers/errorHandler');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -47,6 +48,8 @@ HtmlWebpackPlugin.prototype.injectAssetsIntoHtml = function(html, assets, assetT
 };
 
 const plugins = [
+  new OptimizeCssAssetsPlugin({}),
+
   new webpack.DefinePlugin({
     __DEV__: !isProduction,
     'process.env.NODE_ENV': isProduction ? JSON.stringify('production') : JSON.stringify('development')
@@ -254,7 +257,7 @@ gulp.task('webpack', () => {
 gulp.task('webpackWatch', () => {
   config.watch = true;
 
-  return webpackStream(config)
+  return webpackStream(config, webpack)
     .on('error', errorHandler)
     .pipe(gulp.dest('_output/UI'))
     .on('error', errorHandler)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -70,7 +70,15 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                 foreach (var torrent in torrents)
                 {
                     var id = torrent.Id;
+
                     var title = $"{torrent.Name}.{torrent.Year}.{torrent.Resolution}.{torrent.Media}.{torrent.Encoding}.{torrent.AudioFormat}-{torrent.ReleaseGroup}";
+
+                    if (torrent.Encoding.ToLower() == "x265")
+                    {
+                        //Per AHD staff they only allow HDR x265 encodes (https://github.com/Radarr/Radarr/issues/4386)
+                        title = $"{torrent.Name}.{torrent.Year}.{torrent.Resolution}.{torrent.Media}.HDR.{torrent.Encoding}.{torrent.AudioFormat}-{torrent.ReleaseGroup}";
+                    }
+
                     IndexerFlags flags = 0;
 
                     if (torrent.Freeleech == "0.00")
@@ -96,6 +104,11 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
                     if (torrent.Internal)
                     {
                         flags |= IndexerFlags.AHD_Internal;
+                    }
+
+                    if (torrent.UserRelease)
+                    {
+                        flags |= IndexerFlags.AHD_UserRelease;
                     }
 
                     var imdbId = 0;

@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { align, icons } from 'Helpers/Props';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import FilterMenu from 'Components/Menu/FilterMenu';
+import PageContent from 'Components/Page/PageContent';
+import PageContentBody from 'Components/Page/PageContentBody';
+import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
+import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
+import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import TablePager from 'Components/Table/TablePager';
-import PageContent from 'Components/Page/PageContent';
-import PageContentBody from 'Components/Page/PageContentBody';
-import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
-import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
-import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
-import FilterMenu from 'Components/Menu/FilterMenu';
+import { align, icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import LogsTableRow from './LogsTableRow';
 
 function LogsTable(props) {
@@ -32,11 +33,11 @@ function LogsTable(props) {
   } = props;
 
   return (
-    <PageContent title="Logs">
+    <PageContent title={translate('Logs')}>
       <PageToolbar>
         <PageToolbarSection>
           <PageToolbarButton
-            label="Refresh"
+            label={translate('Refresh')}
             iconName={icons.REFRESH}
             spinningName={icons.REFRESH}
             isSpinning={isFetching}
@@ -44,7 +45,7 @@ function LogsTable(props) {
           />
 
           <PageToolbarButton
-            label="Clear"
+            label={translate('Clear')}
             iconName={icons.CLEAR}
             isSpinning={clearLogExecuting}
             onPress={onClearLogsPress}
@@ -58,7 +59,7 @@ function LogsTable(props) {
             canModifyColumns={false}
           >
             <PageToolbarButton
-              label="Options"
+              label={translate('Options')}
               iconName={icons.TABLE}
             />
           </TableOptionsModalWrapper>

@@ -7,13 +7,19 @@ import ExtraFileTableContent from './ExtraFileTableContent';
 
 function createMapStateToProps() {
   return createSelector(
+    (state, { movieId }) => movieId,
     (state) => state.extraFiles,
     createMovieSelector(),
     (
-      ExtraFiles
+      movieId,
+      extraFiles
     ) => {
+      const filesForMovie = extraFiles.items.filter((obj) => {
+        return obj.movieId === movieId;
+      });
+
       return {
-        items: ExtraFiles.items,
+        items: filesForMovie,
         error: null
       };
     }

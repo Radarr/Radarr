@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { kinds, sizes } from 'Helpers/Props';
 import Label from 'Components/Label';
 import Link from 'Components/Link/Link';
+import { kinds, sizes } from 'Helpers/Props';
 import styles from './MovieDetailsLinks.css';
 
 function MovieDetailsLinks(props) {
@@ -23,7 +23,7 @@ function MovieDetailsLinks(props) {
           kind={kinds.INFO}
           size={sizes.LARGE}
         >
-          The Movie DB
+          TMDb
         </Label>
       </Link>
 
@@ -51,7 +51,7 @@ function MovieDetailsLinks(props) {
               kind={kinds.INFO}
               size={sizes.LARGE}
             >
-              IMDB
+              IMDb
             </Label>
           </Link>
       }

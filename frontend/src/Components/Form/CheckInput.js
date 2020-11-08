@@ -1,8 +1,8 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import { icons, kinds } from 'Helpers/Props';
 import Icon from 'Components/Icon';
+import { icons, kinds } from 'Helpers/Props';
 import FormInputHelpText from './FormInputHelpText';
 import styles from './CheckInput.css';
 

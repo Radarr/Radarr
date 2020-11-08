@@ -2,20 +2,45 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
-import { setUISettingsValue, saveUISettings, fetchUISettings } from 'Store/Actions/settingsActions';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
+import { fetchUISettings, saveUISettings, setUISettingsValue } from 'Store/Actions/settingsActions';
+import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import UISettings from './UISettings';
 
 const SECTION = 'ui';
+
+function createLanguagesSelector() {
+  return createSelector(
+    (state) => state.settings.languages,
+    (languages) => {
+      const items = languages.items;
+      const filterItems = ['Any', 'Unknown'];
+
+      if (!items) {
+        return [];
+      }
+
+      const newItems = items.filter((lang) => !filterItems.includes(lang.name)).map((item) => {
+        return {
+          key: item.id,
+          value: item.name
+        };
+      });
+
+      return newItems;
+    }
+  );
+}
 
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
     createSettingsSectionSelector(SECTION),
-    (advancedSettings, sectionSettings) => {
+    createLanguagesSelector(),
+    (advancedSettings, sectionSettings, languages) => {
       return {
         advancedSettings,
+        languages,
         ...sectionSettings
       };
     }

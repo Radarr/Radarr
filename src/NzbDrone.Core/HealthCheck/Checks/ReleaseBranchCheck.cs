@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Configuration.Events;
+using NzbDrone.Core.Localization;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
@@ -10,7 +11,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
     {
         private readonly IConfigFileProvider _configFileService;
 
-        public ReleaseBranchCheck(IConfigFileProvider configFileService)
+        public ReleaseBranchCheck(IConfigFileProvider configFileService, ILocalizationService localizationService)
+            : base(localizationService)
         {
             _configFileService = configFileService;
         }
@@ -21,12 +23,17 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (!Enum.GetNames(typeof(ReleaseBranches)).Any(x => x.ToLower() == currentBranch))
             {
-                if (currentBranch == "develop" || currentBranch == "nightly")
+                if (currentBranch == "develop" || currentBranch == "v0.2")
                 {
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format("Branch {0} is for a previous version of Radarr, set branch to 'Aphrodite' for further updates", _configFileService.Branch), "#branch-is-for-a-previous-version");
+                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckPreviousVersionMessage"), _configFileService.Branch), "#branch-is-for-a-previous-version");
                 }
 
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format("Branch {0} is not a valid Radarr release branch, you will not receive updates", _configFileService.Branch), "#branch-is-not-a-valid-release-branch");
+                if (currentBranch == "aphrodite")
+                {
+                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format("Branch 'aphrodite' has been merged, switch to 'nightly' for further V3 development", _configFileService.Branch), "#branch-is-for-a-previous-version");
+                }
+
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckOfficialBranchMessage"), _configFileService.Branch), "#branch-is-not-a-valid-release-branch");
             }
 
             return new HealthCheck(GetType());
@@ -34,7 +41,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public enum ReleaseBranches
         {
-            Aphrodite
+            Nightly
         }
     }
 }

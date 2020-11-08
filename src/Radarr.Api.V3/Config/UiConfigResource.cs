@@ -9,6 +9,9 @@ namespace Radarr.Api.V3.Config
         public int FirstDayOfWeek { get; set; }
         public string CalendarWeekColumnHeader { get; set; }
 
+        // Movies
+        public MovieRuntimeFormatType MovieRuntimeFormat { get; set; }
+
         //Dates
         public string ShortDateFormat { get; set; }
         public string LongDateFormat { get; set; }
@@ -16,6 +19,8 @@ namespace Radarr.Api.V3.Config
         public bool ShowRelativeDates { get; set; }
 
         public bool EnableColorImpairedMode { get; set; }
+        public int MovieInfoLanguage { get; set; }
+        public int UILanguage { get; set; }
     }
 
     public static class UiConfigResourceMapper
@@ -27,12 +32,16 @@ namespace Radarr.Api.V3.Config
                 FirstDayOfWeek = model.FirstDayOfWeek,
                 CalendarWeekColumnHeader = model.CalendarWeekColumnHeader,
 
+                MovieRuntimeFormat = model.MovieRuntimeFormat,
+
                 ShortDateFormat = model.ShortDateFormat,
                 LongDateFormat = model.LongDateFormat,
                 TimeFormat = model.TimeFormat,
                 ShowRelativeDates = model.ShowRelativeDates,
 
                 EnableColorImpairedMode = model.EnableColorImpairedMode,
+                MovieInfoLanguage = model.MovieInfoLanguage,
+                UILanguage = model.UILanguage
             };
         }
     }

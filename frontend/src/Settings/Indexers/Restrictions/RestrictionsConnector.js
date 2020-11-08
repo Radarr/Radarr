@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchRestrictions, deleteRestriction } from 'Store/Actions/settingsActions';
+import { deleteRestriction, fetchRestrictions } from 'Store/Actions/settingsActions';
 import createTagsSelector from 'Store/Selectors/createTagsSelector';
 import Restrictions from './Restrictions';
 

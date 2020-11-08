@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import DownloadClient from './DownloadClient';
+import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import AddDownloadClientModal from './AddDownloadClientModal';
+import DownloadClient from './DownloadClient';
 import EditDownloadClientModalConnector from './EditDownloadClientModalConnector';
 import styles from './DownloadClients.css';
 
@@ -58,9 +59,9 @@ class DownloadClients extends Component {
     } = this.state;
 
     return (
-      <FieldSet legend="Download Clients">
+      <FieldSet legend={translate('DownloadClients')}>
         <PageSectionContent
-          errorMessage="Unable to load download clients"
+          errorMessage={translate('UnableToLoadDownloadClients')}
           {...otherProps}
         >
           <div className={styles.downloadClients}>

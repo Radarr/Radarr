@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { inputTypes } from 'Helpers/Props';
 import FieldSet from 'Components/FieldSet';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
+import { inputTypes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 const logLevelOptions = [
   { key: 'info', value: 'Info' },
@@ -23,15 +24,15 @@ function LoggingSettings(props) {
   } = settings;
 
   return (
-    <FieldSet legend="Logging">
+    <FieldSet legend={translate('Logging')}>
       <FormGroup>
-        <FormLabel>Log Level</FormLabel>
+        <FormLabel>{translate('LogLevel')}</FormLabel>
 
         <FormInputGroup
           type={inputTypes.SELECT}
           name="logLevel"
           values={logLevelOptions}
-          helpTextWarning={logLevel.value === 'trace' ? 'Trace logging should only be enabled temporarily' : undefined}
+          helpTextWarning={logLevel.value === 'trace' ? translate('LogLevelTraceHelpTextWarning') : undefined}
           onChange={onInputChange}
           {...logLevel}
         />

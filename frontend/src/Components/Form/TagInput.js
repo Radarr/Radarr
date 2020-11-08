@@ -1,7 +1,7 @@
+import classNames from 'classnames';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import { kinds } from 'Helpers/Props';
 import tagShape from 'Helpers/Props/Shapes/tagShape';
 import AutoSuggestInput from './AutoSuggestInput';

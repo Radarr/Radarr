@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
 import IconButton from 'Components/Link/IconButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
+import { icons, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import EditIndexerModalConnector from './EditIndexerModalConnector';
 import styles from './Indexer.css';
 
@@ -68,7 +69,9 @@ class Indexer extends Component {
       enableAutomaticSearch,
       enableInteractiveSearch,
       supportsRss,
-      supportsSearch
+      supportsSearch,
+      priority,
+      showPriority
     } = this.props;
 
     return (
@@ -84,7 +87,7 @@ class Indexer extends Component {
 
           <IconButton
             className={styles.cloneButton}
-            title="Clone Profile"
+            title={translate('CloneIndexer')}
             name={icons.CLONE}
             onPress={this.onCloneIndexerPress}
           />
@@ -102,24 +105,30 @@ class Indexer extends Component {
           {
             supportsSearch && enableAutomaticSearch &&
               <Label kind={kinds.SUCCESS}>
-                Automatic Search
+                {translate('AutomaticSearch')}
               </Label>
           }
 
           {
             supportsSearch && enableInteractiveSearch &&
               <Label kind={kinds.SUCCESS}>
-                Interactive Search
+                {translate('InteractiveSearch')}
               </Label>
           }
 
+          {
+            showPriority &&
+              <Label kind={kinds.DEFAULT}>
+                {translate('Priority')}: {priority}
+              </Label>
+          }
           {
             !enableRss && !enableAutomaticSearch && !enableInteractiveSearch &&
               <Label
                 kind={kinds.DISABLED}
                 outline={true}
               >
-                Disabled
+                {translate('Disabled')}
               </Label>
           }
         </div>
@@ -134,9 +143,9 @@ class Indexer extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteIndexerModalOpen}
           kind={kinds.DANGER}
-          title="Delete Indexer"
-          message={`Are you sure you want to delete the indexer '${name}'?`}
-          confirmLabel="Delete"
+          title={translate('DeleteIndexer')}
+          message={translate('DeleteIndexerMessageText', [name])}
+          confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteIndexer}
           onCancel={this.onDeleteIndexerModalClose}
         />
@@ -154,7 +163,9 @@ Indexer.propTypes = {
   supportsRss: PropTypes.bool.isRequired,
   supportsSearch: PropTypes.bool.isRequired,
   onCloneIndexerPress: PropTypes.func.isRequired,
-  onConfirmDeleteIndexer: PropTypes.func.isRequired
+  onConfirmDeleteIndexer: PropTypes.func.isRequired,
+  priority: PropTypes.number.isRequired,
+  showPriority: PropTypes.bool.isRequired
 };
 
 export default Indexer;

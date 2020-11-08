@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import Indexer from './Indexer';
+import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import AddIndexerModal from './AddIndexerModal';
 import EditIndexerModalConnector from './EditIndexerModalConnector';
+import Indexer from './Indexer';
 import styles from './Indexers.css';
 
 class Indexers extends Component {
@@ -63,10 +64,12 @@ class Indexers extends Component {
       isEditIndexerModalOpen
     } = this.state;
 
+    const showPriority = items.some((index) => index.priority !== 25);
+
     return (
-      <FieldSet legend="Indexers">
+      <FieldSet legend={translate('Indexers')}>
         <PageSectionContent
-          errorMessage="Unable to load Indexers"
+          errorMessage={translate('UnableToLoadIndexers')}
           {...otherProps}
         >
           <div className={styles.indexers}>
@@ -76,6 +79,7 @@ class Indexers extends Component {
                   <Indexer
                     key={item.id}
                     {...item}
+                    showPriority={showPriority}
                     onCloneIndexerPress={this.onCloneIndexerPress}
                     onConfirmDeleteIndexer={onConfirmDeleteIndexer}
                   />

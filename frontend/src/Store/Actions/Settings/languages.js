@@ -1,5 +1,5 @@
-import { createThunk } from 'Store/thunks';
 import createFetchHandler from 'Store/Actions/Creators/createFetchHandler';
+import { createThunk } from 'Store/thunks';
 
 //
 // Variables

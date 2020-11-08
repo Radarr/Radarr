@@ -11,6 +11,7 @@ function MovieIndexPosterInfo(props) {
     showQualityProfile,
     added,
     inCinemas,
+    digitalRelease,
     physicalRelease,
     certification,
     path,
@@ -73,6 +74,24 @@ function MovieIndexPosterInfo(props) {
     );
   }
 
+  if (sortKey === 'digitalRelease' && digitalRelease) {
+    const digitalReleaseDate = getRelativeDate(
+      digitalRelease,
+      shortDateFormat,
+      showRelativeDates,
+      {
+        timeFormat,
+        timeForToday: false
+      }
+    );
+
+    return (
+      <div className={styles.info}>
+        {`Digital ${digitalReleaseDate}`}
+      </div>
+    );
+  }
+
   if (sortKey === 'physicalRelease' && physicalRelease) {
     const physicalReleaseDate = getRelativeDate(
       physicalRelease,
@@ -125,6 +144,7 @@ MovieIndexPosterInfo.propTypes = {
   added: PropTypes.string,
   inCinemas: PropTypes.string,
   certification: PropTypes.string,
+  digitalRelease: PropTypes.string,
   physicalRelease: PropTypes.string,
   path: PropTypes.string.isRequired,
   sizeOnDisk: PropTypes.number,

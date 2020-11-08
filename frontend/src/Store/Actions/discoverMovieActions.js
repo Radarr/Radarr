@@ -1,21 +1,22 @@
 import _ from 'lodash';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import getSectionState from 'Utilities/State/getSectionState';
-import updateSectionState from 'Utilities/State/updateSectionState';
+import { filterBuilderTypes, filterBuilderValueTypes, filterTypes, sortDirections } from 'Helpers/Props';
+import { createThunk, handleThunks } from 'Store/thunks';
+import sortByName from 'Utilities/Array/sortByName';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getNewMovie from 'Utilities/Movie/getNewMovie';
-import { filterBuilderTypes, filterBuilderValueTypes, filterTypes, sortDirections } from 'Helpers/Props';
-import sortByName from 'Utilities/Array/sortByName';
-import { createThunk, handleThunks } from 'Store/thunks';
-import createSetSettingValueReducer from './Creators/Reducers/createSetSettingValueReducer';
+import getSectionState from 'Utilities/State/getSectionState';
+import updateSectionState from 'Utilities/State/updateSectionState';
+import translate from 'Utilities/String/translate';
+import { removeItem, set, updateItem } from './baseActions';
 import createHandleActions from './Creators/createHandleActions';
-import { set, updateItem, removeItem } from './baseActions';
-import { filterPredicates } from './movieActions';
-import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
-import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
-import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
 import createClearReducer from './Creators/Reducers/createClearReducer';
+import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
+import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
+import createSetSettingValueReducer from './Creators/Reducers/createSetSettingValueReducer';
+import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
+import { filterPredicates } from './movieActions';
 
 //
 // Variables
@@ -39,12 +40,17 @@ export const defaultState = {
   secondarySortDirection: sortDirections.ASCENDING,
   view: 'overview',
 
+  options: {
+    includeRecommendations: true
+  },
+
   defaults: {
     rootFolderPath: '',
     monitor: 'true',
     qualityProfileId: 0,
     minimumAvailability: 'announced',
-    tags: []
+    tags: [],
+    searchForMovie: false
   },
 
   posterOptions: {
@@ -55,7 +61,11 @@ export const defaultState = {
   overviewOptions: {
     detailedProgressBar: false,
     size: 'medium',
-    showStudio: true
+    showStudio: true,
+    showRatings: true,
+    showYear: true,
+    showCertification: true,
+    showGenres: true
   },
 
   tableOptions: {
@@ -65,57 +75,88 @@ export const defaultState = {
   columns: [
     {
       name: 'status',
-      columnLabel: 'Status',
+      columnLabel: translate('Status'),
+      isSortable: true,
+      isVisible: true,
+      isModifiable: false
+    },
+    {
+      name: 'isRecommendation',
+      columnLabel: 'Recommedation',
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'sortTitle',
-      label: 'Movie Title',
+      label: translate('MovieTitle'),
       isSortable: true,
       isVisible: true,
       isModifiable: false
     },
     {
+      name: 'collection',
+      label: translate('Collection'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'studio',
-      label: 'Studio',
+      label: translate('Studio'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'inCinemas',
-      label: 'In Cinemas',
+      label: translate('InCinemas'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'physicalRelease',
-      label: 'Physical Release',
+      label: translate('PhysicalRelease'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'digitalRelease',
+      label: translate('DigitalRelease'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'runtime',
+      label: translate('Runtime'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'genres',
-      label: 'Genres',
+      label: translate('Genres'),
       isSortable: false,
       isVisible: false
     },
     {
       name: 'ratings',
-      label: 'Rating',
+      label: translate('Ratings'),
       isSortable: true,
       isVisible: false
     },
     {
       name: 'certification',
-      label: 'Certification',
+      label: translate('Certification'),
       isSortable: true,
       isVisible: false
     },
     {
+      name: 'lists',
+      label: 'Lists',
+      isSortable: false,
+      isVisible: false
+    },
+    {
       name: 'actions',
-      columnLabel: 'Actions',
+      columnLabel: translate('Actions'),
       isVisible: true,
       isModifiable: false
     }
@@ -144,6 +185,12 @@ export const defaultState = {
       return result;
     },
 
+    collection: function(item) {
+      const { collection ={} } = item;
+
+      return collection.name;
+    },
+
     studio: function(item) {
       const studio = item.studio;
 
@@ -162,7 +209,7 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: 'All',
+      label: translate('All'),
       filters: []
     },
     {
@@ -210,6 +257,25 @@ export const defaultState = {
       }
     },
     {
+      name: 'collection',
+      label: translate('Collection'),
+      type: filterBuilderTypes.ARRAY,
+      optionsSelector: function(items) {
+        const collectionList = items.reduce((acc, movie) => {
+          if (movie.collection) {
+            acc.push({
+              id: movie.collection.name,
+              name: movie.collection.name
+            });
+          }
+
+          return acc;
+        }, []);
+
+        return collectionList.sort(sortByName);
+      }
+    },
+    {
       name: 'inCinemas',
       label: 'In Cinemas',
       type: filterBuilderTypes.DATE,
@@ -220,6 +286,17 @@ export const defaultState = {
       label: 'Physical Release',
       type: filterBuilderTypes.DATE,
       valueType: filterBuilderValueTypes.DATE
+    },
+    {
+      name: 'digitalRelease',
+      label: 'Digital Release',
+      type: filterBuilderTypes.DATE,
+      valueType: filterBuilderValueTypes.DATE
+    },
+    {
+      name: 'runtime',
+      label: translate('Runtime'),
+      type: filterBuilderTypes.NUMBER
     },
     {
       name: 'genres',
@@ -251,6 +328,12 @@ export const defaultState = {
       type: filterBuilderTypes.EXACT
     },
     {
+      name: 'lists',
+      label: 'Lists',
+      type: filterBuilderTypes.ARRAY,
+      valueType: filterBuilderValueTypes.IMPORTLIST
+    },
+    {
       name: 'isExcluded',
       label: 'On Excluded List',
       type: filterBuilderTypes.EXACT,
@@ -259,6 +342,12 @@ export const defaultState = {
     {
       name: 'isExisting',
       label: 'Exists in Library',
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.BOOL
+    },
+    {
+      name: 'isRecommendation',
+      label: 'Recommended',
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
     }
@@ -273,6 +362,7 @@ export const persistState = [
   'discoverMovie.customFilters',
   'discoverMovie.view',
   'discoverMovie.columns',
+  'discoverMovie.options',
   'discoverMovie.posterOptions',
   'discoverMovie.overviewOptions',
   'discoverMovie.tableOptions'
@@ -292,11 +382,12 @@ export const FETCH_DISCOVER_MOVIES = 'discoverMovie/fetchDiscoverMovies';
 export const SET_LIST_MOVIE_SORT = 'discoverMovie/setListMovieSort';
 export const SET_LIST_MOVIE_FILTER = 'discoverMovie/setListMovieFilter';
 export const SET_LIST_MOVIE_VIEW = 'discoverMovie/setListMovieView';
+export const SET_LIST_MOVIE_OPTION = 'discoverMovie/setListMovieMovieOption';
 export const SET_LIST_MOVIE_TABLE_OPTION = 'discoverMovie/setListMovieTableOption';
 export const SET_LIST_MOVIE_POSTER_OPTION = 'discoverMovie/setListMoviePosterOption';
 export const SET_LIST_MOVIE_OVERVIEW_OPTION = 'discoverMovie/setListMovieOverviewOption';
 
-export const ADD_NET_IMPORT_EXCLUSIONS = 'discoverMovie/addNetImportExclusions';
+export const ADD_IMPORT_EXCLUSIONS = 'discoverMovie/addImportExclusions';
 
 //
 // Action Creators
@@ -311,11 +402,12 @@ export const fetchDiscoverMovies = createThunk(FETCH_DISCOVER_MOVIES);
 export const setListMovieSort = createAction(SET_LIST_MOVIE_SORT);
 export const setListMovieFilter = createAction(SET_LIST_MOVIE_FILTER);
 export const setListMovieView = createAction(SET_LIST_MOVIE_VIEW);
+export const setListMovieOption = createAction(SET_LIST_MOVIE_OPTION);
 export const setListMovieTableOption = createAction(SET_LIST_MOVIE_TABLE_OPTION);
 export const setListMoviePosterOption = createAction(SET_LIST_MOVIE_POSTER_OPTION);
 export const setListMovieOverviewOption = createAction(SET_LIST_MOVIE_OVERVIEW_OPTION);
 
-export const addNetImportExclusions = createThunk(ADD_NET_IMPORT_EXCLUSIONS);
+export const addImportExclusions = createThunk(ADD_IMPORT_EXCLUSIONS);
 
 export const setAddMovieValue = createAction(SET_ADD_MOVIE_VALUE, (payload) => {
   return {
@@ -337,8 +429,10 @@ export const actionHandlers = handleThunks({
       ...otherPayload
     } = payload;
 
+    const includeRecommendations = getState().discoverMovie.options.includeRecommendations;
+
     const promise = createAjaxRequest({
-      url: '/movies/discover',
+      url: `/importlist/movie?includeRecommendations=${includeRecommendations}`,
       data: otherPayload,
       traditional: true
     }).request;
@@ -390,7 +484,8 @@ export const actionHandlers = handleThunks({
       dispatch(batchActions([
         updateItem({ section: 'movies', ...data }),
 
-        removeItem({ section: 'discoverMovie', ...itemToUpdate }),
+        itemToUpdate.lists.length === 0 ? removeItem({ section: 'discoverMovie', ...itemToUpdate }) :
+          updateItem({ section: 'discoverMovie', ...itemToUpdate, isExisting: true }),
 
         set({
           section,
@@ -426,11 +521,13 @@ export const actionHandlers = handleThunks({
       // Make sure we have a selected movie and
       // the same movie hasn't been added yet.
       if (selectedMovie && !acc.some((a) => a.tmdbId === selectedMovie.tmdbId)) {
-        const newMovie = getNewMovie(_.cloneDeep(selectedMovie), addOptions);
-        newMovie.id = 0;
+        if (!selectedMovie.isExisting) {
+          const newMovie = getNewMovie(_.cloneDeep(selectedMovie), addOptions);
+          newMovie.id = 0;
 
-        addedIds.push(id);
-        acc.push(newMovie);
+          addedIds.push(id);
+          acc.push(newMovie);
+        }
       }
 
       return acc;
@@ -453,28 +550,23 @@ export const actionHandlers = handleThunks({
 
         ...data.map((movie) => updateItem({ section: 'movies', ...movie })),
 
-        ...addedIds.map((id) => removeItem({ section, id }))
+        ...addedIds.map((id) => (items.find((i) => i.id === id).lists.length === 0 ? removeItem({ section, id }) : updateItem({ section, id, isExisting: true })))
+
       ]));
     });
 
     promise.fail((xhr) => {
-      dispatch(batchActions(
+      dispatch(
         set({
           section,
-          isImporting: false,
-          isImported: true
-        }),
-
-        addedIds.map((id) => updateItem({
-          section,
-          id,
-          importError: xhr
-        }))
-      ));
+          isAdding: false,
+          isAdded: true
+        })
+      );
     });
   },
 
-  [ADD_NET_IMPORT_EXCLUSIONS]: function(getState, payload, dispatch) {
+  [ADD_IMPORT_EXCLUSIONS]: function(getState, payload, dispatch) {
 
     const ids = payload.ids;
     const items = getState().discoverMovie.items;
@@ -494,14 +586,14 @@ export const actionHandlers = handleThunks({
     }, []);
 
     const promise = createAjaxRequest({
-      url: '/exclusions',
+      url: '/exclusions/bulk',
       method: 'POST',
       data: JSON.stringify(exclusions)
     }).request;
 
     promise.done((data) => {
       dispatch(batchActions([
-        ...data.map((item) => updateItem({ section: 'settings.netImportExclusions', ...item })),
+        ...data.map((item) => updateItem({ section: 'settings.importExclusions', ...item })),
 
         ...data.map((item) => updateItem({ section, id: item.tmdbId, isExcluded: true })),
 
@@ -546,6 +638,18 @@ export const reducers = createHandleActions({
 
   [SET_LIST_MOVIE_VIEW]: function(state, { payload }) {
     return Object.assign({}, state, { view: payload.view });
+  },
+
+  [SET_LIST_MOVIE_OPTION]: function(state, { payload }) {
+    const discoveryMovieOptions = state.options;
+
+    return {
+      ...state,
+      options: {
+        ...discoveryMovieOptions,
+        ...payload
+      }
+    };
   },
 
   [SET_LIST_MOVIE_TABLE_OPTION]: createSetTableOptionReducer(section),

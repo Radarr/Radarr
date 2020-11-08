@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { setAddMovieDefault, addMovie } from 'Store/Actions/discoverMovieActions';
+import AddNewMovieModalContent from 'AddMovie/AddNewMovie/AddNewMovieModalContent';
+import { addMovie, setAddMovieDefault } from 'Store/Actions/discoverMovieActions';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createSystemStatusSelector from 'Store/Selectors/createSystemStatusSelector';
 import selectSettings from 'Store/Selectors/selectSettings';
-import AddNewMovieModalContent from 'AddMovie/AddNewMovie/AddNewMovieModalContent';
 
 function createMapStateToProps() {
   return createSelector(

@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import getErrorMessage from 'Utilities/Object/getErrorMessage';
-import { icons, kinds } from 'Helpers/Props';
+import TextInput from 'Components/Form/TextInput';
+import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import Link from 'Components/Link/Link';
-import Icon from 'Components/Icon';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import TextInput from 'Components/Form/TextInput';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
+import { icons, kinds } from 'Helpers/Props';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
+import translate from 'Utilities/String/translate';
 import AddNewMovieSearchResultConnector from './AddNewMovieSearchResultConnector';
 import styles from './AddNewMovie.css';
 
@@ -87,7 +88,7 @@ class AddNewMovie extends Component {
     const isFetching = this.state.isFetching;
 
     return (
-      <PageContent title="Add New Movie">
+      <PageContent title={translate('AddNewMovie')}>
         <PageContentBody>
           <div className={styles.searchContainer}>
             <div className={styles.searchIconContainer}>
@@ -126,7 +127,7 @@ class AddNewMovie extends Component {
             !isFetching && !!error ?
               <div className={styles.message}>
                 <div className={styles.helpText}>
-                  Failed to load search results, please try again.
+                  {translate('FailedLoadingSearchResults')}
                 </div>
                 <div>{getErrorMessage(error)}</div>
               </div> : null
@@ -151,11 +152,15 @@ class AddNewMovie extends Component {
           {
             !isFetching && !error && !items.length && !!term &&
               <div className={styles.message}>
-                <div className={styles.noResults}>Couldn't find any results for '{term}'</div>
-                <div>You can also search using TMDB ID or IMDB ID of a movie. eg. tmdb:71663</div>
+                <div className={styles.noResults}>
+                  {translate('CouldNotFindResults', [term])}
+                </div>
+                <div>
+                  {translate('YouCanAlsoSearch')}
+                </div>
                 <div>
                   <Link to="https://github.com/Radarr/Radarr/wiki/FAQ#why-cant-i-add-a-new-movie-when-i-know-the-tmdb-id">
-                    Why can't I find my movie?
+                    {translate('CantFindMovie')}
                   </Link>
                 </div>
               </div>
@@ -166,9 +171,11 @@ class AddNewMovie extends Component {
               null :
               <div className={styles.message}>
                 <div className={styles.helpText}>
-                  It's easy to add a new movie, just start typing the name the movie you want to add.
+                  {translate('AddNewMessage')}
                 </div>
-                <div>You can also search using TMDB ID of a movie. eg. tmdb:71663</div>
+                <div>
+                  {translate('AddNewTmdbIdMessage')}
+                </div>
               </div>
           }
 
@@ -176,14 +183,14 @@ class AddNewMovie extends Component {
             !term && !hasExistingMovies ?
               <div className={styles.message}>
                 <div className={styles.noMoviesText}>
-                  You haven't added any movies yet, do you want to import some or all of your movies first?
+                  {translate('HaveNotAddedMovies')}
                 </div>
                 <div>
                   <Button
                     to="/add/import"
                     kind={kinds.PRIMARY}
                   >
-                    Import Existing Movies
+                    {translate('ImportExistingMovies')}
                   </Button>
                 </div>
               </div> :

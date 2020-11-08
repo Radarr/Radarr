@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createDeepEqualSelector from 'Store/Selectors/createDeepEqualSelector';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
+import createDeepEqualSelector from 'Store/Selectors/createDeepEqualSelector';
+import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import MovieIndexFooter from './MovieIndexFooter';
 
 function createUnoptimizedSelector() {
@@ -39,9 +40,11 @@ function createMoviesSelector() {
 function createMapStateToProps() {
   return createSelector(
     createMoviesSelector(),
-    (movies) => {
+    createUISettingsSelector(),
+    (movies, uiSettings) => {
       return {
-        movies
+        movies,
+        colorImpairedMode: uiSettings.enableColorImpairedMode
       };
     }
   );

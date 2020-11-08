@@ -1,15 +1,16 @@
+import classNames from 'classnames';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
+import QueueStatusConnector from 'Activity/Queue/Status/QueueStatusConnector';
+import OverlayScroller from 'Components/Scroller/OverlayScroller';
+import Scroller from 'Components/Scroller/Scroller';
 import { icons } from 'Helpers/Props';
 import locationShape from 'Helpers/Props/Shapes/locationShape';
 import dimensions from 'Styles/Variables/dimensions';
-import OverlayScroller from 'Components/Scroller/OverlayScroller';
-import Scroller from 'Components/Scroller/Scroller';
-import QueueStatusConnector from 'Activity/Queue/Status/QueueStatusConnector';
 import HealthStatusConnector from 'System/Status/Health/HealthStatusConnector';
+import translate from 'Utilities/String/translate';
 import MessagesConnector from './Messages/MessagesConnector';
 import PageSidebarItem from './PageSidebarItem';
 import styles from './PageSidebar.css';
@@ -20,20 +21,20 @@ const SIDEBAR_WIDTH = parseInt(dimensions.sidebarWidth);
 const links = [
   {
     iconName: icons.MOVIE_CONTINUING,
-    title: 'Movies',
+    title: translate('Movies'),
     to: '/',
     alias: '/movies',
     children: [
       {
-        title: 'Add New',
+        title: translate('AddNew'),
         to: '/add/new'
       },
       {
-        title: 'Import',
+        title: translate('Import'),
         to: '/add/import'
       },
       {
-        title: 'Discover',
+        title: translate('Discover'),
         to: '/add/discover'
       }
     ]
@@ -41,26 +42,26 @@ const links = [
 
   {
     iconName: icons.CALENDAR,
-    title: 'Calendar',
+    title: translate('Calendar'),
     to: '/calendar'
   },
 
   {
     iconName: icons.ACTIVITY,
-    title: 'Activity',
+    title: translate('Activity'),
     to: '/activity/queue',
     children: [
       {
-        title: 'Queue',
+        title: translate('Queue'),
         to: '/activity/queue',
         statusComponent: QueueStatusConnector
       },
       {
-        title: 'History',
+        title: translate('History'),
         to: '/activity/history'
       },
       {
-        title: 'Blacklist',
+        title: translate('Blacklist'),
         to: '/activity/blacklist'
       }
     ]
@@ -68,55 +69,55 @@ const links = [
 
   {
     iconName: icons.SETTINGS,
-    title: 'Settings',
+    title: translate('Settings'),
     to: '/settings',
     children: [
       {
-        title: 'Media Management',
+        title: translate('MediaManagement'),
         to: '/settings/mediamanagement'
       },
       {
-        title: 'Profiles',
+        title: translate('Profiles'),
         to: '/settings/profiles'
       },
       {
-        title: 'Quality',
+        title: translate('Quality'),
         to: '/settings/quality'
       },
       {
-        title: 'Custom Formats',
+        title: translate('CustomFormats'),
         to: '/settings/customformats'
       },
       {
-        title: 'Indexers',
+        title: translate('Indexers'),
         to: '/settings/indexers'
       },
       {
-        title: 'Download Clients',
+        title: translate('DownloadClients'),
         to: '/settings/downloadclients'
       },
       {
-        title: 'Lists',
-        to: '/settings/netimports'
+        title: translate('Lists'),
+        to: '/settings/importlists'
       },
       {
-        title: 'Connect',
+        title: translate('Connect'),
         to: '/settings/connect'
       },
       {
-        title: 'Metadata',
+        title: translate('Metadata'),
         to: '/settings/metadata'
       },
       {
-        title: 'Tags',
+        title: translate('Tags'),
         to: '/settings/tags'
       },
       {
-        title: 'General',
+        title: translate('General'),
         to: '/settings/general'
       },
       {
-        title: 'UI',
+        title: translate('UI'),
         to: '/settings/ui'
       }
     ]
@@ -124,32 +125,32 @@ const links = [
 
   {
     iconName: icons.SYSTEM,
-    title: 'System',
+    title: translate('System'),
     to: '/system/status',
     children: [
       {
-        title: 'Status',
+        title: translate('Status'),
         to: '/system/status',
         statusComponent: HealthStatusConnector
       },
       {
-        title: 'Tasks',
+        title: translate('Tasks'),
         to: '/system/tasks'
       },
       {
-        title: 'Backup',
+        title: translate('Backup'),
         to: '/system/backup'
       },
       {
-        title: 'Updates',
+        title: translate('Updates'),
         to: '/system/updates'
       },
       {
-        title: 'Events',
+        title: translate('Events'),
         to: '/system/events'
       },
       {
-        title: 'Log Files',
+        title: translate('LogFiles'),
         to: '/system/logs/files'
       }
     ]

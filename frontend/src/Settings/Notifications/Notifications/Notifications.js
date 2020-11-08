@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import Notification from './Notification';
+import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import AddNotificationModal from './AddNotificationModal';
 import EditNotificationModalConnector from './EditNotificationModalConnector';
+import Notification from './Notification';
 import styles from './Notifications.css';
 
 class Notifications extends Component {
@@ -58,9 +59,9 @@ class Notifications extends Component {
     } = this.state;
 
     return (
-      <FieldSet legend="Connections">
+      <FieldSet legend={translate('Connections')}>
         <PageSectionContent
-          errorMessage="Unable to load Notifications"
+          errorMessage={translate('UnableToLoadNotifications')}
           {...otherProps}
         >
           <div className={styles.notifications}>

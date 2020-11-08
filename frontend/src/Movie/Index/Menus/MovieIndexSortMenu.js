@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { align, sortDirections } from 'Helpers/Props';
-import SortMenu from 'Components/Menu/SortMenu';
 import MenuContent from 'Components/Menu/MenuContent';
+import SortMenu from 'Components/Menu/SortMenu';
 import SortMenuItem from 'Components/Menu/SortMenuItem';
+import { align, sortDirections } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 function MovieIndexSortMenu(props) {
   const {
@@ -34,7 +35,7 @@ function MovieIndexSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Title
+          {translate('Title')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -43,7 +44,7 @@ function MovieIndexSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Studio
+          {translate('Studio')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -52,7 +53,7 @@ function MovieIndexSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Quality Profile
+          {translate('QualityProfile')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -61,7 +62,16 @@ function MovieIndexSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Added
+          {translate('Added')}
+        </SortMenuItem>
+
+        <SortMenuItem
+          name="year"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('Year')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -70,7 +80,7 @@ function MovieIndexSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          In Cinemas
+          {translate('InCinemas')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -79,7 +89,16 @@ function MovieIndexSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Physical Release
+          {translate('PhysicalRelease')}
+        </SortMenuItem>
+
+        <SortMenuItem
+          name="digitalRelease"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('DigitalRelease')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -88,7 +107,7 @@ function MovieIndexSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Path
+          {translate('Path')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -97,7 +116,7 @@ function MovieIndexSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Size on Disk
+          {translate('SizeOnDisk')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -106,7 +125,7 @@ function MovieIndexSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Certification
+          {translate('Certification')}
         </SortMenuItem>
       </MenuContent>
     </SortMenu>

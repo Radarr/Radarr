@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Movies
     public interface IAddMovieService
     {
         Movie AddMovie(Movie newMovie);
-        List<Movie> AddMovies(List<Movie> newMovies);
+        List<Movie> AddMovies(List<Movie> newMovies, bool ignoreErrors = false);
     }
 
     public class AddMovieService : IAddMovieService
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Movies
             return newMovie;
         }
 
-        public List<Movie> AddMovies(List<Movie> newMovies)
+        public List<Movie> AddMovies(List<Movie> newMovies, bool ignoreErrors = false)
         {
             var added = DateTime.UtcNow;
             var moviesToAdd = new List<Movie>();
@@ -60,10 +60,22 @@ namespace NzbDrone.Core.Movies
             foreach (var m in newMovies)
             {
                 // TODO: Verify if adding skyhook data will be slow
-                var movie = AddSkyhookData(m);
-                movie = SetPropertiesAndValidate(movie);
-                movie.Added = added;
-                moviesToAdd.Add(movie);
+                try
+                {
+                    var movie = AddSkyhookData(m);
+                    movie = SetPropertiesAndValidate(movie);
+                    movie.Added = added;
+                    moviesToAdd.Add(movie);
+                }
+                catch (ValidationException ex)
+                {
+                    if (!ignoreErrors)
+                    {
+                        throw;
+                    }
+
+                    _logger.Debug("TmdbId {0} was not added due to validation failures. {1}", m.TmdbId, ex.Message);
+                }
             }
 
             return _movieService.AddMovies(moviesToAdd);
@@ -100,7 +112,7 @@ namespace NzbDrone.Core.Movies
                 newMovie.Path = Path.Combine(newMovie.RootFolderPath, folderName);
             }
 
-            newMovie.CleanTitle = newMovie.Title.CleanSeriesTitle();
+            newMovie.CleanTitle = newMovie.Title.CleanMovieTitle();
             newMovie.SortTitle = MovieTitleNormalizer.Normalize(newMovie.Title, newMovie.TmdbId);
             newMovie.Added = DateTime.UtcNow;
 

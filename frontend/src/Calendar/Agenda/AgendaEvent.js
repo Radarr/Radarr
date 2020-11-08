@@ -1,13 +1,13 @@
+import classNames from 'classnames';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import { icons, kinds } from 'Helpers/Props';
+import CalendarEventQueueDetails from 'Calendar/Events/CalendarEventQueueDetails';
 import getStatusStyle from 'Calendar/getStatusStyle';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
-import CalendarEventQueueDetails from 'Calendar/Events/CalendarEventQueueDetails';
-import MovieTitleLink from 'Movie/MovieTitleLink';
+import { icons, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './AgendaEvent.css';
 
 class AgendaEvent extends Component {
@@ -41,34 +41,65 @@ class AgendaEvent extends Component {
       movieFile,
       title,
       titleSlug,
+      genres,
+      isAvailable,
       inCinemas,
+      digitalRelease,
+      physicalRelease,
       monitored,
       hasFile,
       grabbed,
       queueItem,
       showDate,
+      showMovieInformation,
       showCutoffUnmetIcon,
       longDateFormat,
-      colorImpairedMode
+      colorImpairedMode,
+      startDate,
+      endDate
     } = this.props;
 
-    const startTime = moment(inCinemas);
+    const agendaStart = Date.parse(startDate);
+    const agendaEnd = Date.parse(endDate);
+    const cinemaDate = Date.parse(inCinemas);
+    const digitalDate = Date.parse(digitalRelease);
+    let startTime = physicalRelease;
+    let releaseIcon = icons.DISC;
+
+    if (digitalDate >= agendaStart && digitalDate <= agendaEnd) {
+      startTime = digitalRelease;
+      releaseIcon = icons.MOVIE_FILE;
+    }
+
+    if (cinemaDate >= agendaStart && cinemaDate <= agendaEnd) {
+      startTime = inCinemas;
+      releaseIcon = icons.IN_CINEMAS;
+    }
+
+    startTime = moment(startTime);
     const downloading = !!(queueItem || grabbed);
     const isMonitored = monitored;
-    const statusStyle = getStatusStyle(hasFile, downloading, startTime, isMonitored);
+    const statusStyle = getStatusStyle(hasFile, downloading, isAvailable, isMonitored);
+    const joinedGenres = genres.slice(0, 2).join(', ');
+    const link = `/movie/${titleSlug}`;
 
     return (
       <div>
         <Link
-          className={styles.event}
-          component="div"
-          onPress={this.onPress}
+          className={classNames(
+            styles.event,
+            styles.link
+          )}
+          to={link}
         >
           <div className={styles.date}>
-            {
-              showDate &&
-                startTime.format(longDateFormat)
-            }
+            <div className={styles.dateIcon}>
+              <Icon
+                name={releaseIcon}
+                kind={kinds.DEFAULT}
+              />
+            </div>
+            {(showDate) ? startTime.format(longDateFormat) : null}
           </div>
 
           <div
@@ -79,11 +110,15 @@ class AgendaEvent extends Component {
             )}
           >
             <div className={styles.movieTitle}>
-              <MovieTitleLink
-                titleSlug={titleSlug}
-                title={title}
-              />
+              {title}
             </div>
+
+            {
+              showMovieInformation &&
+                <div className={styles.genres}>
+                  {joinedGenres}
+                </div>
+            }
 
             {
               !!queueItem &&
@@ -99,7 +134,7 @@ class AgendaEvent extends Component {
                 <Icon
                   className={styles.statusIcon}
                   name={icons.DOWNLOADING}
-                  title="Movie is downloading"
+                  title={translate('MovieIsDownloading')}
                 />
             }
 
@@ -111,7 +146,7 @@ class AgendaEvent extends Component {
                   className={styles.statusIcon}
                   name={icons.MOVIE_FILE}
                   kind={kinds.WARNING}
-                  title="Quality cutoff has not been met"
+                  title={translate('QualityCutoffHasNotBeenMet')}
                 />
             }
           </div>
@@ -126,16 +161,27 @@ AgendaEvent.propTypes = {
   movieFile: PropTypes.object,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
-  inCinemas: PropTypes.string.isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isAvailable: PropTypes.bool.isRequired,
+  inCinemas: PropTypes.string,
+  digitalRelease: PropTypes.string,
+  physicalRelease: PropTypes.string,
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
   showDate: PropTypes.bool.isRequired,
+  showMovieInformation: PropTypes.bool.isRequired,
   showCutoffUnmetIcon: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
   longDateFormat: PropTypes.string.isRequired,
-  colorImpairedMode: PropTypes.bool.isRequired
+  colorImpairedMode: PropTypes.bool.isRequired,
+  startDate: PropTypes.date,
+  endDate: PropTypes.date
+};
+
+AgendaEvent.defaultProps = {
+  genres: []
 };
 
 export default AgendaEvent;

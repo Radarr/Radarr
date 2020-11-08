@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
-import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import { saveDimensions, setIsSidebarVisible } from 'Store/Actions/appActions';
 import { fetchCustomFilters } from 'Store/Actions/customFilterActions';
 import { fetchMovies } from 'Store/Actions/movieActions';
-import { fetchTags } from 'Store/Actions/tagActions';
-import { fetchQualityProfiles, fetchUISettings, fetchLanguages, fetchNetImports } from 'Store/Actions/settingsActions';
+import { fetchImportLists, fetchLanguages, fetchQualityProfiles, fetchUISettings } from 'Store/Actions/settingsActions';
 import { fetchStatus } from 'Store/Actions/systemActions';
+import { fetchTags } from 'Store/Actions/tagActions';
+import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import ErrorPage from './ErrorPage';
 import LoadingPage from './LoadingPage';
 import Page from './Page';
@@ -48,7 +48,7 @@ const selectIsPopulated = createSelector(
   (state) => state.settings.ui.isPopulated,
   (state) => state.settings.qualityProfiles.isPopulated,
   (state) => state.settings.languages.isPopulated,
-  (state) => state.settings.netImports.isPopulated,
+  (state) => state.settings.importLists.isPopulated,
   (state) => state.system.status.isPopulated,
   (
     customFiltersIsPopulated,
@@ -56,7 +56,7 @@ const selectIsPopulated = createSelector(
     uiSettingsIsPopulated,
     qualityProfilesIsPopulated,
     languagesIsPopulated,
-    netImportsIsPopulated,
+    importListsIsPopulated,
     systemStatusIsPopulated
   ) => {
     return (
@@ -65,7 +65,7 @@ const selectIsPopulated = createSelector(
       uiSettingsIsPopulated &&
       qualityProfilesIsPopulated &&
       languagesIsPopulated &&
-      netImportsIsPopulated &&
+      importListsIsPopulated &&
       systemStatusIsPopulated
     );
   }
@@ -77,7 +77,7 @@ const selectErrors = createSelector(
   (state) => state.settings.ui.error,
   (state) => state.settings.qualityProfiles.error,
   (state) => state.settings.languages.error,
-  (state) => state.settings.netImports.error,
+  (state) => state.settings.importLists.error,
   (state) => state.system.status.error,
   (
     customFiltersError,
@@ -85,7 +85,7 @@ const selectErrors = createSelector(
     uiSettingsError,
     qualityProfilesError,
     languagesError,
-    netImportsError,
+    importListsError,
     systemStatusError
   ) => {
     const hasError = !!(
@@ -94,7 +94,7 @@ const selectErrors = createSelector(
       uiSettingsError ||
       qualityProfilesError ||
       languagesError ||
-      netImportsError ||
+      importListsError ||
       systemStatusError
     );
 
@@ -105,7 +105,7 @@ const selectErrors = createSelector(
       uiSettingsError,
       qualityProfilesError,
       languagesError,
-      netImportsError,
+      importListsError,
       systemStatusError
     };
   }
@@ -153,8 +153,8 @@ function createMapDispatchToProps(dispatch, props) {
     dispatchFetchLanguages() {
       dispatch(fetchLanguages());
     },
-    dispatchFetchNetImports() {
-      dispatch(fetchNetImports());
+    dispatchFetchImportLists() {
+      dispatch(fetchImportLists());
     },
     dispatchFetchUISettings() {
       dispatch(fetchUISettings());
@@ -191,7 +191,7 @@ class PageConnector extends Component {
       this.props.dispatchFetchTags();
       this.props.dispatchFetchQualityProfiles();
       this.props.dispatchFetchLanguages();
-      this.props.dispatchFetchNetImports();
+      this.props.dispatchFetchImportLists();
       this.props.dispatchFetchUISettings();
       this.props.dispatchFetchStatus();
     }
@@ -215,7 +215,7 @@ class PageConnector extends Component {
       dispatchFetchTags,
       dispatchFetchQualityProfiles,
       dispatchFetchLanguages,
-      dispatchFetchNetImports,
+      dispatchFetchImportLists,
       dispatchFetchUISettings,
       dispatchFetchStatus,
       ...otherProps
@@ -254,7 +254,7 @@ PageConnector.propTypes = {
   dispatchFetchTags: PropTypes.func.isRequired,
   dispatchFetchQualityProfiles: PropTypes.func.isRequired,
   dispatchFetchLanguages: PropTypes.func.isRequired,
-  dispatchFetchNetImports: PropTypes.func.isRequired,
+  dispatchFetchImportLists: PropTypes.func.isRequired,
   dispatchFetchUISettings: PropTypes.func.isRequired,
   dispatchFetchStatus: PropTypes.func.isRequired,
   onSidebarVisibleChange: PropTypes.func.isRequired

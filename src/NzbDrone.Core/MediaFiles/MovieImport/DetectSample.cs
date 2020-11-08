@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using NLog;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
@@ -8,7 +9,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 {
     public interface IDetectSample
     {
-        DetectSampleResult IsSample(Movie movie, string path, bool isSpecial);
+        DetectSampleResult IsSample(Movie movie, string path);
     }
 
     public class DetectSample : IDetectSample
@@ -22,26 +23,29 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _logger = logger;
         }
 
-        public DetectSampleResult IsSample(Movie movie, string path, bool isSpecial)
+        public DetectSampleResult IsSample(Movie movie, string path)
         {
-            if (isSpecial)
-            {
-                _logger.Debug("Special, skipping sample check");
-                return DetectSampleResult.NotSample;
-            }
-
             var extension = Path.GetExtension(path);
 
-            if (extension != null && extension.Equals(".flv", StringComparison.InvariantCultureIgnoreCase))
+            if (extension != null)
             {
-                _logger.Debug("Skipping sample check for .flv file");
-                return DetectSampleResult.NotSample;
-            }
+                if (extension.Equals(".flv", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _logger.Debug("Skipping sample check for .flv file");
+                    return DetectSampleResult.NotSample;
+                }
 
-            if (extension != null && extension.Equals(".strm", StringComparison.InvariantCultureIgnoreCase))
-            {
-                _logger.Debug("Skipping sample check for .strm file");
-                return DetectSampleResult.NotSample;
+                if (extension.Equals(".strm", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    _logger.Debug("Skipping sample check for .strm file");
+                    return DetectSampleResult.NotSample;
+                }
+
+                if (new string[] { ".iso", ".img", ".m2ts" }.Contains(extension, StringComparer.OrdinalIgnoreCase))
+                {
+                    _logger.Debug($"Skipping sample check for DVD/BR image file '{path}'");
+                    return DetectSampleResult.NotSample;
+                }
             }
 
             // TODO: Use MediaInfo from the import process, no need to re-process the file again here
@@ -63,11 +67,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             if (runTime.Value.TotalSeconds < minimumRuntime)
             {
-                _logger.Debug("[{0}] appears to be a sample. Runtime: {1} seconds. Expected at least: {2} seconds", path, runTime, minimumRuntime);
+                _logger.Debug("[{0}] appears to be a sample. Runtime: {1} seconds. Expected at least: {2} seconds", path, runTime.Value.TotalSeconds, minimumRuntime);
                 return DetectSampleResult.Sample;
             }
 
-            _logger.Debug("Runtime is over 90 seconds");
+            _logger.Debug("Runtime of {0} is more than {1} seconds, Not Sample", runTime.Value.TotalSeconds, minimumRuntime);
             return DetectSampleResult.NotSample;
         }
 

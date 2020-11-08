@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes, sizes } from 'Helpers/Props';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FieldSet from 'Components/FieldSet';
-import PageContent from 'Components/Page/PageContent';
-import PageContentBody from 'Components/Page/PageContentBody';
-import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import PageContent from 'Components/Page/PageContent';
+import PageContentBody from 'Components/Page/PageContentBody';
+import { inputTypes, sizes } from 'Helpers/Props';
 import RootFoldersConnector from 'RootFolder/RootFoldersConnector';
+import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
+import translate from 'Utilities/String/translate';
 import NamingConnector from './Naming/NamingConnector';
 import AddRootFolderConnector from './RootFolder/AddRootFolderConnector';
 
@@ -18,6 +19,12 @@ const rescanAfterRefreshOptions = [
   { key: 'always', value: 'Always' },
   { key: 'afterManual', value: 'After Manual Refresh' },
   { key: 'never', value: 'Never' }
+];
+
+const downloadPropersAndRepacksOptions = [
+  { key: 'preferAndUpgrade', value: 'Prefer and Upgrade' },
+  { key: 'doNotUpgrade', value: 'Do not Upgrade Automatically' },
+  { key: 'doNotPrefer', value: 'Do not Prefer' }
 ];
 
 const fileDateOptions = [
@@ -45,7 +52,7 @@ class MediaManagement extends Component {
     } = this.props;
 
     return (
-      <PageContent title="Media Management Settings">
+      <PageContent title={translate('MediaManagementSettings')}>
         <SettingsToolbarConnector
           advancedSettings={advancedSettings}
           {...otherProps}
@@ -57,15 +64,17 @@ class MediaManagement extends Component {
 
           {
             isFetching &&
-              <FieldSet legend="Naming Settings">
+              <FieldSet legend={translate('NamingSettings')}>
                 <LoadingIndicator />
               </FieldSet>
           }
 
           {
             !isFetching && error &&
-              <FieldSet legend="Naming Settings">
-                <div>Unable to load Media Management settings</div>
+              <FieldSet legend={translate('NamingSettings')}>
+                <div>
+                  {translate('UnableToLoadMediaManagementSettings')}
+                </div>
               </FieldSet>
           }
 
@@ -77,18 +86,19 @@ class MediaManagement extends Component {
               >
                 {
                   advancedSettings &&
-                    <FieldSet legend="Folders">
+                    <FieldSet legend={translate('Folders')}>
                       <FormGroup
                         advancedSettings={advancedSettings}
                         isAdvanced={true}
                         size={sizes.MEDIUM}
                       >
-                        <FormLabel>Create empty movie folders</FormLabel>
+                        <FormLabel>{translate('CreateEmptyMovieFolders')}</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.CHECK}
+                          isDisabled={settings.deleteEmptyFolders.value && !settings.createEmptyMovieFolders.value}
                           name="createEmptyMovieFolders"
-                          helpText="Create missing movie folders during disk scan"
+                          helpText={translate('CreateEmptyMovieFoldersHelpText')}
                           onChange={onInputChange}
                           {...settings.createEmptyMovieFolders}
                         />
@@ -99,12 +109,13 @@ class MediaManagement extends Component {
                         isAdvanced={true}
                         size={sizes.MEDIUM}
                       >
-                        <FormLabel>Delete empty folders</FormLabel>
+                        <FormLabel>{translate('DeleteEmptyFolders')}</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.CHECK}
+                          isDisabled={settings.createEmptyMovieFolders.value && !settings.deleteEmptyFolders.value}
                           name="deleteEmptyFolders"
-                          helpText="Delete empty movie folders during disk scan and when movie files are deleted"
+                          helpText={translate('DeleteEmptyFoldersHelpText')}
                           onChange={onInputChange}
                           {...settings.deleteEmptyFolders}
                         />
@@ -115,7 +126,7 @@ class MediaManagement extends Component {
                 {
                   advancedSettings &&
                     <FieldSet
-                      legend="Importing"
+                      legend={translate('Importing')}
                     >
                       {
                         !isWindows &&
@@ -124,12 +135,12 @@ class MediaManagement extends Component {
                             isAdvanced={true}
                             size={sizes.MEDIUM}
                           >
-                            <FormLabel>Skip Free Space Check</FormLabel>
+                            <FormLabel>{translate('SkipFreeSpaceCheck')}</FormLabel>
 
                             <FormInputGroup
                               type={inputTypes.CHECK}
                               name="skipFreeSpaceCheckWhenImporting"
-                              helpText="Use when Radarr is unable to detect free space from your movie root folder"
+                              helpText={translate('SkipFreeSpaceCheckWhenImportingHelpText')}
                               onChange={onInputChange}
                               {...settings.skipFreeSpaceCheckWhenImporting}
                             />
@@ -141,13 +152,13 @@ class MediaManagement extends Component {
                         isAdvanced={true}
                         size={sizes.MEDIUM}
                       >
-                        <FormLabel>Minimum Free Space</FormLabel>
+                        <FormLabel>{translate('MinimumFreeSpace')}</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.NUMBER}
                           unit='MB'
                           name="minimumFreeSpaceWhenImporting"
-                          helpText="Prevent import if it would leave less than this amount of disk space available"
+                          helpText={translate('MinimumFreeSpaceWhenImportingHelpText')}
                           onChange={onInputChange}
                           {...settings.minimumFreeSpaceWhenImporting}
                         />
@@ -158,25 +169,25 @@ class MediaManagement extends Component {
                         isAdvanced={true}
                         size={sizes.MEDIUM}
                       >
-                        <FormLabel>Use Hardlinks instead of Copy</FormLabel>
+                        <FormLabel>{translate('UseHardlinksInsteadOfCopy')}</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="copyUsingHardlinks"
-                          helpText="Use Hardlinks when trying to copy files from torrents that are still being seeded"
-                          helpTextWarning="Occasionally, file locks may prevent renaming files that are being seeded. You may temporarily disable seeding and use Radarr's rename function as a work around."
+                          helpText={translate('CopyUsingHardlinksHelpText')}
+                          helpTextWarning={translate('CopyUsingHardlinksHelpTextWarning')}
                           onChange={onInputChange}
                           {...settings.copyUsingHardlinks}
                         />
                       </FormGroup>
 
                       <FormGroup size={sizes.MEDIUM}>
-                        <FormLabel>Import Extra Files</FormLabel>
+                        <FormLabel>{translate('ImportExtraFiles')}</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="importExtraFiles"
-                          helpText="Import matching extra files (subtitles, nfo, etc) after importing an movie file"
+                          helpText={translate('ImportExtraFilesHelpText')}
                           onChange={onInputChange}
                           {...settings.importExtraFiles}
                         />
@@ -188,14 +199,14 @@ class MediaManagement extends Component {
                             advancedSettings={advancedSettings}
                             isAdvanced={true}
                           >
-                            <FormLabel>Import Extra Files</FormLabel>
+                            <FormLabel>{translate('ImportExtraFiles')}</FormLabel>
 
                             <FormInputGroup
                               type={inputTypes.TEXT}
                               name="extraFileExtensions"
                               helpTexts={[
-                                'Comma separated list of extra files to import (.nfo will be imported as .nfo-orig)',
-                                'Examples: ".sub, .nfo" or "sub,nfo"'
+                                translate('ExtraFileExtensionsHelpTexts1'),
+                                translate('ExtraFileExtensionsHelpTexts2')
                               ]}
                               onChange={onInputChange}
                               {...settings.extraFileExtensions}
@@ -206,15 +217,15 @@ class MediaManagement extends Component {
                 }
 
                 <FieldSet
-                  legend="File Management"
+                  legend={translate('FileManagement')}
                 >
                   <FormGroup size={sizes.MEDIUM}>
-                    <FormLabel>Ignore Deleted Movies</FormLabel>
+                    <FormLabel>{translate('IgnoreDeletedMovies')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="autoUnmonitorPreviouslyDownloadedMovies"
-                      helpText="Movies deleted from disk are automatically unmonitored in Radarr"
+                      helpText={translate('AutoUnmonitorPreviouslyDownloadedMoviesHelpText')}
                       onChange={onInputChange}
                       {...settings.autoUnmonitorPreviouslyDownloadedMovies}
                     />
@@ -225,14 +236,23 @@ class MediaManagement extends Component {
                     isAdvanced={true}
                     size={sizes.MEDIUM}
                   >
-                    <FormLabel>Download Propers</FormLabel>
+                    <FormLabel>{translate('DownloadPropersAndRepacks')}</FormLabel>
 
                     <FormInputGroup
-                      type={inputTypes.CHECK}
-                      name="autoDownloadPropers"
-                      helpText="Should Radarr automatically upgrade to propers when available?"
+                      type={inputTypes.SELECT}
+                      name="downloadPropersAndRepacks"
+                      helpTexts={[
+                        translate('DownloadPropersAndRepacksHelpText1'),
+                        translate('DownloadPropersAndRepacksHelpText2')
+                      ]}
+                      helpTextWarning={
+                        settings.downloadPropersAndRepacks.value === 'doNotPrefer' ?
+                          translate('DownloadPropersAndRepacksHelpTextWarning') :
+                          undefined
+                      }
+                      values={downloadPropersAndRepacksOptions}
                       onChange={onInputChange}
-                      {...settings.autoDownloadPropers}
+                      {...settings.downloadPropersAndRepacks}
                     />
                   </FormGroup>
 
@@ -241,12 +261,12 @@ class MediaManagement extends Component {
                     isAdvanced={true}
                     size={sizes.MEDIUM}
                   >
-                    <FormLabel>Analyse video files</FormLabel>
+                    <FormLabel>{translate('AnalyseVideoFiles')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="enableMediaInfo"
-                      helpText="Extract video information such as resolution, runtime and codec information from files. This requires Radarr to read parts of the file which may cause high disk or network activity during scans."
+                      helpText={translate('EnableMediaInfoHelpText')}
                       onChange={onInputChange}
                       {...settings.enableMediaInfo}
                     />
@@ -256,13 +276,13 @@ class MediaManagement extends Component {
                     advancedSettings={advancedSettings}
                     isAdvanced={true}
                   >
-                    <FormLabel>Rescan Movie Folder after Refresh</FormLabel>
+                    <FormLabel>{translate('RescanMovieFolderAfterRefresh')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="rescanAfterRefresh"
-                      helpText="Rescan the movie folder after refreshing the movie"
-                      helpTextWarning="Radarr will not automatically detect changes to files when not set to 'Always'"
+                      helpText={translate('RescanAfterRefreshHelpText')}
+                      helpTextWarning={translate('RescanAfterRefreshHelpTextWarning')}
                       values={rescanAfterRefreshOptions}
                       onChange={onInputChange}
                       {...settings.rescanAfterRefresh}
@@ -273,12 +293,12 @@ class MediaManagement extends Component {
                     advancedSettings={advancedSettings}
                     isAdvanced={true}
                   >
-                    <FormLabel>Change File Date</FormLabel>
+                    <FormLabel>{translate('ChangeFileDate')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="fileDate"
-                      helpText="Change file date on import/rescan"
+                      helpText={translate('FileDateHelpText')}
                       values={fileDateOptions}
                       onChange={onInputChange}
                       {...settings.fileDate}
@@ -289,12 +309,12 @@ class MediaManagement extends Component {
                     advancedSettings={advancedSettings}
                     isAdvanced={true}
                   >
-                    <FormLabel>Recycling Bin</FormLabel>
+                    <FormLabel>{translate('RecyclingBin')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.PATH}
                       name="recycleBin"
-                      helpText="Movie files will go here when deleted instead of being permanently deleted"
+                      helpText={translate('RecycleBinHelpText')}
                       onChange={onInputChange}
                       {...settings.recycleBin}
                     />
@@ -304,13 +324,13 @@ class MediaManagement extends Component {
                     advancedSettings={advancedSettings}
                     isAdvanced={true}
                   >
-                    <FormLabel>Recycling Bin Cleanup</FormLabel>
+                    <FormLabel>{translate('RecyclingBinCleanup')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.NUMBER}
                       name="recycleBinCleanupDays"
-                      helpText="Set to 0 to disable automatic cleanup"
-                      helpTextWarning="Files in the recycle bin older than the selected number of days will be cleaned up automatically"
+                      helpText={translate('RecycleBinCleanupDaysHelpText')}
+                      helpTextWarning={translate('RecycleBinCleanupDaysHelpTextWarning')}
                       min={0}
                       onChange={onInputChange}
                       {...settings.recycleBinCleanupDays}
@@ -321,20 +341,20 @@ class MediaManagement extends Component {
                 {
                   advancedSettings && !isWindows &&
                     <FieldSet
-                      legend="Permissions"
+                      legend={translate('Permissions')}
                     >
                       <FormGroup
                         advancedSettings={advancedSettings}
                         isAdvanced={true}
                         size={sizes.MEDIUM}
                       >
-                        <FormLabel>Set Permissions</FormLabel>
+                        <FormLabel>{translate('SetPermissions')}</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.CHECK}
                           name="setPermissionsLinux"
-                          helpText="Should chmod be run when files are imported/renamed?"
-                          helpTextWarning="If you're unsure what these settings do, do not alter them."
+                          helpText={translate('SetPermissionsLinuxHelpText')}
+                          helpTextWarning={translate('SetPermissionsLinuxHelpTextWarning')}
                           onChange={onInputChange}
                           {...settings.setPermissionsLinux}
                         />
@@ -344,14 +364,14 @@ class MediaManagement extends Component {
                         advancedSettings={advancedSettings}
                         isAdvanced={true}
                       >
-                        <FormLabel>File chmod mode</FormLabel>
+                        <FormLabel>{translate('FileChmodMode')}</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.TEXT}
                           name="fileChmod"
                           helpTexts={[
-                            'Octal, applied to media files when imported/renamed by Radarr',
-                            'The same mode is applied to movie/sub folders with the execute bit added, e.g., 0644 becomes 0755'
+                            translate('FileChmodHelpTexts1'),
+                            translate('FileChmodHelpTexts2')
                           ]}
                           onChange={onInputChange}
                           {...settings.fileChmod}
@@ -362,7 +382,7 @@ class MediaManagement extends Component {
               </Form>
           }
 
-          <FieldSet legend="Root Folders">
+          <FieldSet legend={translate('RootFolders')}>
             <RootFoldersConnector />
             <AddRootFolderConnector />
           </FieldSet>

@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createHealthCheckSelector from 'Store/Selectors/createHealthCheckSelector';
-import { fetchHealth } from 'Store/Actions/systemActions';
 import { testAllDownloadClients, testAllIndexers } from 'Store/Actions/settingsActions';
+import { fetchHealth } from 'Store/Actions/systemActions';
+import createHealthCheckSelector from 'Store/Selectors/createHealthCheckSelector';
 import Health from './Health';
 
 function createMapStateToProps() {

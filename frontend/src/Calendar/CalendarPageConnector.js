@@ -1,16 +1,16 @@
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import moment from 'moment';
-import { isCommandExecuting } from 'Utilities/Command';
-import isBefore from 'Utilities/Date/isBefore';
 import * as commandNames from 'Commands/commandNames';
 import withCurrentPage from 'Components/withCurrentPage';
-import { executeCommand } from 'Store/Actions/commandActions';
 import { searchMissing, setCalendarDaysCount, setCalendarFilter } from 'Store/Actions/calendarActions';
+import { executeCommand } from 'Store/Actions/commandActions';
+import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
+import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createMovieCountSelector from 'Store/Selectors/createMovieCountSelector';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
-import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
-import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
+import { isCommandExecuting } from 'Utilities/Command';
+import isBefore from 'Utilities/Date/isBefore';
 import CalendarPage from './CalendarPage';
 
 function createMissingMovieIdsSelector() {
@@ -79,6 +79,8 @@ function createMapStateToProps() {
         colorImpairedMode: uiSettings.enableColorImpairedMode,
         hasMovie: !!movieCount.count,
         movieError: movieCount.error,
+        movieIsFetching: movieCount.isFetching,
+        movieIsPopulated: movieCount.isPopulated,
         missingMovieIds,
         isRssSyncExecuting,
         isSearchingForMissing

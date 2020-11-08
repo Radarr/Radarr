@@ -72,7 +72,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 downloadClientItemInfo = _parsingService.EnhanceMovieInfo(downloadClientItemInfo);
             }
 
-            var nonSampleVideoFileCount = GetNonSampleVideoFileCount(newFiles, movie, downloadClientItemInfo, folderInfo);
+            var nonSampleVideoFileCount = GetNonSampleVideoFileCount(newFiles, movie);
 
             var decisions = new List<ImportDecision>();
 
@@ -125,7 +125,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             ImportDecision decision;
             try
             {
-                _aggregationService.Augment(localMovie, otherFiles);
+                _aggregationService.Augment(localMovie, downloadClientItem, otherFiles);
 
                 if (localMovie.Movie == null)
                 {
@@ -200,11 +200,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             return null;
         }
 
-        private int GetNonSampleVideoFileCount(List<string> videoFiles, Movie movie, ParsedMovieInfo downloadClientItemInfo, ParsedMovieInfo folderInfo)
+        private int GetNonSampleVideoFileCount(List<string> videoFiles, Movie movie)
         {
             return videoFiles.Count(file =>
             {
-                var sample = _detectSample.IsSample(movie, file, false);
+                var sample = _detectSample.IsSample(movie, file);
 
                 if (sample == DetectSampleResult.Sample)
                 {

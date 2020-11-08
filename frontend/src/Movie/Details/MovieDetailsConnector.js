@@ -1,22 +1,25 @@
+import { push } from 'connected-react-router';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { findCommand, isCommandExecuting } from 'Utilities/Command';
-import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
+import * as commandNames from 'Commands/commandNames';
+import { fetchBlacklist } from 'Store/Actions/blacklistActions';
+import { executeCommand } from 'Store/Actions/commandActions';
+import { clearExtraFiles, fetchExtraFiles } from 'Store/Actions/extraFileActions';
+import { toggleMovieMonitored } from 'Store/Actions/movieActions';
+import { clearMovieCredits, fetchMovieCredits } from 'Store/Actions/movieCreditsActions';
+import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
+import { clearMovieHistory, fetchMovieHistory } from 'Store/Actions/movieHistoryActions';
+import { clearQueueDetails, fetchQueueDetails } from 'Store/Actions/queueActions';
+import { cancelFetchReleases, clearReleases } from 'Store/Actions/releaseActions';
+import { fetchImportListSchema } from 'Store/Actions/settingsActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
-import { fetchMovieFiles, clearMovieFiles } from 'Store/Actions/movieFileActions';
-import { fetchExtraFiles, clearExtraFiles } from 'Store/Actions/extraFileActions';
-import { fetchMovieCredits, clearMovieCredits } from 'Store/Actions/movieCreditsActions';
-import { toggleMovieMonitored } from 'Store/Actions/movieActions';
-import { fetchQueueDetails, clearQueueDetails } from 'Store/Actions/queueActions';
-import { clearReleases, cancelFetchReleases } from 'Store/Actions/releaseActions';
-import { fetchNetImportSchema } from 'Store/Actions/settingsActions';
-import { executeCommand } from 'Store/Actions/commandActions';
-import * as commandNames from 'Commands/commandNames';
+import { findCommand, isCommandExecuting } from 'Utilities/Command';
+import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import MovieDetails from './MovieDetails';
 
 const selectMovieFiles = createSelector(
@@ -86,7 +89,10 @@ function createMapStateToProps() {
     createAllMoviesSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
-    (titleSlug, movieFiles, movieCredits, extraFiles, allMovies, commands, dimensions) => {
+    (state) => state.queue.details,
+    (state) => state.app.isSidebarVisible,
+    (state) => state.settings.ui.item.movieRuntimeFormat,
+    (titleSlug, movieFiles, movieCredits, extraFiles, allMovies, commands, dimensions, queueDetails, isSidebarVisible, movieRuntimeFormat) => {
       const sortedMovies = _.orderBy(allMovies, 'sortTitle');
       const movieIndex = _.findIndex(sortedMovies, { titleSlug });
       const movie = sortedMovies[movieIndex];
@@ -117,7 +123,7 @@ function createMapStateToProps() {
 
       const previousMovie = sortedMovies[movieIndex - 1] || _.last(sortedMovies);
       const nextMovie = sortedMovies[movieIndex + 1] || _.first(sortedMovies);
-      const isMovieRefreshing = isCommandExecuting(findCommand(commands, { name: commandNames.REFRESH_MOVIE, movieId: movie.id }));
+      const isMovieRefreshing = isCommandExecuting(findCommand(commands, { name: commandNames.REFRESH_MOVIE, movieIds: [movie.id] }));
       const movieRefreshingCommand = findCommand(commands, { name: commandNames.REFRESH_MOVIE });
       const allMoviesRefreshing = (
         isCommandExecuting(movieRefreshingCommand) &&
@@ -157,27 +163,71 @@ function createMapStateToProps() {
         sizeOnDisk,
         previousMovie,
         nextMovie,
-        isSmallScreen: dimensions.isSmallScreen
+        isSmallScreen: dimensions.isSmallScreen,
+        isSidebarVisible,
+        queueDetails,
+        movieRuntimeFormat
       };
     }
   );
 }
 
-const mapDispatchToProps = {
-  fetchMovieFiles,
-  clearMovieFiles,
-  fetchMovieCredits,
-  clearMovieCredits,
-  fetchExtraFiles,
-  clearExtraFiles,
-  clearReleases,
-  cancelFetchReleases,
-  fetchNetImportSchema,
-  toggleMovieMonitored,
-  fetchQueueDetails,
-  clearQueueDetails,
-  executeCommand
-};
+function createMapDispatchToProps(dispatch, props) {
+  return {
+    dispatchFetchMovieFiles({ movieId }) {
+      dispatch(fetchMovieFiles({ movieId }));
+    },
+    dispatchClearMovieFiles() {
+      dispatch(clearMovieFiles());
+    },
+    dispatchFetchMovieHistory({ movieId }) {
+      dispatch(fetchMovieHistory({ movieId }));
+    },
+    dispatchClearMovieHistory() {
+      dispatch(clearMovieHistory());
+    },
+    dispatchFetchMovieCredits({ movieId }) {
+      dispatch(fetchMovieCredits({ movieId }));
+    },
+    dispatchClearMovieCredits() {
+      dispatch(clearMovieCredits());
+    },
+    dispatchFetchExtraFiles({ movieId }) {
+      dispatch(fetchExtraFiles({ movieId }));
+    },
+    dispatchClearExtraFiles() {
+      dispatch(clearExtraFiles());
+    },
+    dispatchClearReleases() {
+      dispatch(clearReleases());
+    },
+    dispatchCancelFetchReleases() {
+      dispatch(cancelFetchReleases());
+    },
+    dispatchFetchQueueDetails({ movieId }) {
+      dispatch(fetchQueueDetails({ movieId }));
+    },
+    dispatchClearQueueDetails() {
+      dispatch(clearQueueDetails());
+    },
+    dispatchFetchImportListSchema() {
+      dispatch(fetchImportListSchema());
+    },
+    dispatchToggleMovieMonitored(payload) {
+      dispatch(toggleMovieMonitored(payload));
+    },
+    dispatchExecuteCommand(payload) {
+      dispatch(executeCommand(payload));
+    },
+    onGoToMovie(titleSlug) {
+      dispatch(push(`${window.Radarr.urlBase}/movie/${titleSlug}`));
+    },
+    dispatchFetchBlacklist() {
+      // TODO: Allow for passing a movie id to fetch a single movie's blacklist data
+      dispatch(fetchBlacklist());
+    }
+  };
+}
 
 class MovieDetailsConnector extends Component {
 
@@ -227,41 +277,48 @@ class MovieDetailsConnector extends Component {
   populate = () => {
     const movieId = this.props.id;
 
-    this.props.fetchMovieFiles({ movieId });
-    this.props.fetchExtraFiles({ movieId });
-    this.props.fetchMovieCredits({ movieId });
-    this.props.fetchQueueDetails({ movieId });
-    this.props.fetchNetImportSchema();
+    this.props.dispatchFetchMovieFiles({ movieId });
+    this.props.dispatchFetchMovieHistory({ movieId });
+    this.props.dispatchFetchExtraFiles({ movieId });
+    this.props.dispatchFetchMovieCredits({ movieId });
+    this.props.dispatchFetchQueueDetails({ movieId });
+    this.props.dispatchFetchImportListSchema();
+    this.props.dispatchFetchBlacklist();
+  }
+
+  repopulate = () => {
+    this.props.dispatchFetchBlacklist();
   }
 
   unpopulate = () => {
-    this.props.cancelFetchReleases();
-    this.props.clearMovieFiles();
-    this.props.clearExtraFiles();
-    this.props.clearMovieCredits();
-    this.props.clearQueueDetails();
-    this.props.clearReleases();
+    this.props.dispatchCancelFetchReleases();
+    this.props.dispatchClearMovieFiles();
+    this.props.dispatchClearMovieHistory();
+    this.props.dispatchClearExtraFiles();
+    this.props.dispatchClearMovieCredits();
+    this.props.dispatchClearQueueDetails();
+    this.props.dispatchClearReleases();
   }
 
   //
   // Listeners
 
   onMonitorTogglePress = (monitored) => {
-    this.props.toggleMovieMonitored({
+    this.props.dispatchToggleMovieMonitored({
       movieId: this.props.id,
       monitored
     });
   }
 
   onRefreshPress = () => {
-    this.props.executeCommand({
+    this.props.dispatchExecuteCommand({
       name: commandNames.REFRESH_MOVIE,
-      movieId: this.props.id
+      movieIds: [this.props.id]
     });
   }
 
   onSearchPress = () => {
-    this.props.executeCommand({
+    this.props.dispatchExecuteCommand({
       name: commandNames.MOVIE_SEARCH,
       movieIds: [this.props.id]
     });
@@ -291,19 +348,23 @@ MovieDetailsConnector.propTypes = {
   isRenamingFiles: PropTypes.bool.isRequired,
   isRenamingMovie: PropTypes.bool.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
-  fetchMovieFiles: PropTypes.func.isRequired,
-  clearMovieFiles: PropTypes.func.isRequired,
-  fetchExtraFiles: PropTypes.func.isRequired,
-  clearExtraFiles: PropTypes.func.isRequired,
-  fetchMovieCredits: PropTypes.func.isRequired,
-  clearMovieCredits: PropTypes.func.isRequired,
-  clearReleases: PropTypes.func.isRequired,
-  cancelFetchReleases: PropTypes.func.isRequired,
-  toggleMovieMonitored: PropTypes.func.isRequired,
-  fetchQueueDetails: PropTypes.func.isRequired,
-  clearQueueDetails: PropTypes.func.isRequired,
-  fetchNetImportSchema: PropTypes.func.isRequired,
-  executeCommand: PropTypes.func.isRequired
+  dispatchFetchMovieFiles: PropTypes.func.isRequired,
+  dispatchClearMovieFiles: PropTypes.func.isRequired,
+  dispatchFetchMovieHistory: PropTypes.func.isRequired,
+  dispatchClearMovieHistory: PropTypes.func.isRequired,
+  dispatchFetchExtraFiles: PropTypes.func.isRequired,
+  dispatchClearExtraFiles: PropTypes.func.isRequired,
+  dispatchFetchMovieCredits: PropTypes.func.isRequired,
+  dispatchClearMovieCredits: PropTypes.func.isRequired,
+  dispatchClearReleases: PropTypes.func.isRequired,
+  dispatchCancelFetchReleases: PropTypes.func.isRequired,
+  dispatchToggleMovieMonitored: PropTypes.func.isRequired,
+  dispatchFetchQueueDetails: PropTypes.func.isRequired,
+  dispatchClearQueueDetails: PropTypes.func.isRequired,
+  dispatchFetchImportListSchema: PropTypes.func.isRequired,
+  dispatchExecuteCommand: PropTypes.func.isRequired,
+  dispatchFetchBlacklist: PropTypes.func.isRequired,
+  onGoToMovie: PropTypes.func.isRequired
 };
 
-export default connect(createMapStateToProps, mapDispatchToProps)(MovieDetailsConnector);
+export default connect(createMapStateToProps, createMapDispatchToProps)(MovieDetailsConnector);

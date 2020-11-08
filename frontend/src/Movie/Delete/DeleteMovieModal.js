@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { sizes } from 'Helpers/Props';
 import Modal from 'Components/Modal/Modal';
+import { sizes } from 'Helpers/Props';
 import DeleteMovieModalContentConnector from './DeleteMovieModalContentConnector';
 
 function DeleteMovieModal(props) {
   const {
     isOpen,
     onModalClose,
+    previousMovie,
     ...otherProps
   } = props;
 
@@ -20,6 +21,7 @@ function DeleteMovieModal(props) {
       <DeleteMovieModalContentConnector
         {...otherProps}
         onModalClose={onModalClose}
+        previousMovie={previousMovie}
       />
     </Modal>
   );
@@ -27,7 +29,8 @@ function DeleteMovieModal(props) {
 
 DeleteMovieModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  onModalClose: PropTypes.func.isRequired
+  onModalClose: PropTypes.func.isRequired,
+  previousMovie: PropTypes.string
 };
 
 export default DeleteMovieModal;

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Notifications.PushBullet
         [FieldDefinition(0, Label = "Access Token", HelpLink = "https://www.pushbullet.com/#settings/account")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(1, Label = "Device IDs", HelpText = "List of device IDs (leave blank to send to all devices)", Type = FieldType.Device)]
+        [FieldDefinition(1, Label = "Device IDs", HelpText = "List of device IDs (leave blank to send to all devices)", Type = FieldType.Device, RequestAction = "getDevices")]
         public IEnumerable<string> DeviceIds { get; set; }
 
         [FieldDefinition(2, Label = "Channel Tags", HelpText = "List of Channel Tags to send notifications to", Type = FieldType.Tag)]

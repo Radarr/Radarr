@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchLanguages } from 'Store/Actions/settingsActions';
-import { updateMovieFiles } from 'Store/Actions/movieFileActions';
 import SelectLanguageModalContent from 'InteractiveImport/Language/SelectLanguageModalContent';
+import { updateMovieFiles } from 'Store/Actions/movieFileActions';
+import { fetchLanguages } from 'Store/Actions/settingsActions';
 
 function createMapStateToProps() {
   return createSelector(
@@ -18,11 +18,14 @@ function createMapStateToProps() {
         items
       } = languages;
 
+      const filterItems = ['Any'];
+      const filteredLanguages = items.filter((lang) => !filterItems.includes(lang.name));
+
       return {
         isFetching,
         isPopulated,
         error,
-        items
+        items: filteredLanguages
       };
     }
   );

@@ -1,11 +1,12 @@
+import classNames from 'classnames';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import classNames from 'classnames';
-import { icons, kinds } from 'Helpers/Props';
 import getStatusStyle from 'Calendar/getStatusStyle';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
+import { icons, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import CalendarEventQueueDetails from './CalendarEventQueueDetails';
 import styles from './CalendarEvent.css';
 
@@ -17,11 +18,15 @@ class CalendarEvent extends Component {
   render() {
     const {
       movieFile,
+      isAvailable,
       inCinemas,
+      physicalRelease,
+      digitalRelease,
       title,
       titleSlug,
       genres,
       monitored,
+      certification,
       hasFile,
       grabbed,
       queueItem,
@@ -31,13 +36,24 @@ class CalendarEvent extends Component {
       date
     } = this.props;
 
-    const startTime = moment(inCinemas);
     const isDownloading = !!(queueItem || grabbed);
     const isMonitored = monitored;
-    const statusStyle = getStatusStyle(hasFile, isDownloading, startTime, isMonitored);
+    const statusStyle = getStatusStyle(hasFile, isDownloading, isAvailable, isMonitored);
     const joinedGenres = genres.slice(0, 2).join(', ');
     const link = `/movie/${titleSlug}`;
-    const eventType = moment(date).isSame(moment(inCinemas), 'day') ? 'In Cinemas' : 'Physical Release';
+    const eventType = [];
+
+    if (moment(date).isSame(moment(inCinemas), 'day')) {
+      eventType.push('Cinemas');
+    }
+
+    if (moment(date).isSame(moment(physicalRelease), 'day')) {
+      eventType.push('Physical');
+    }
+
+    if (moment(date).isSame(moment(digitalRelease), 'day')) {
+      eventType.push('Digital');
+    }
 
     return (
       <div>
@@ -70,7 +86,7 @@ class CalendarEvent extends Component {
                 <Icon
                   className={styles.statusIcon}
                   name={icons.DOWNLOADING}
-                  title="movie is downloading"
+                  title={translate('MovieIsDownloading')}
                 />
             }
 
@@ -82,7 +98,7 @@ class CalendarEvent extends Component {
                   className={styles.statusIcon}
                   name={icons.MOVIE_FILE}
                   kind={kinds.WARNING}
-                  title="Quality cutoff has not been met"
+                  title={translate('QualityCutoffHasNotBeenMet')}
                 />
             }
           </div>
@@ -100,7 +116,10 @@ class CalendarEvent extends Component {
             showMovieInformation &&
               <div className={styles.movieInfo}>
                 <div className={styles.genres}>
-                  {eventType}
+                  {eventType.join(', ')}
+                </div>
+                <div>
+                  {certification}
                 </div>
               </div>
           }
@@ -117,8 +136,12 @@ CalendarEvent.propTypes = {
   movieFile: PropTypes.object,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
-  inCinemas: PropTypes.string.isRequired,
+  isAvailable: PropTypes.bool.isRequired,
+  inCinemas: PropTypes.string,
+  physicalRelease: PropTypes.string,
+  digitalRelease: PropTypes.string,
   monitored: PropTypes.bool.isRequired,
+  certification: PropTypes.string,
   hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,

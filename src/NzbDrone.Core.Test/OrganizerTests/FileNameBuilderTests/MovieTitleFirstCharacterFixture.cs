@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                     .Build();
 
             _namingConfig = NamingConfig.Default;
-            _namingConfig.RenameEpisodes = true;
+            _namingConfig.RenameMovies = true;
 
             Mocker.GetMock<INamingConfigService>()
                   .Setup(c => c.GetConfig()).Returns(_namingConfig);

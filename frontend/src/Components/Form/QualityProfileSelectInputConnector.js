@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import sortByName from 'Utilities/Array/sortByName';
 import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
+import sortByName from 'Utilities/Array/sortByName';
 import SelectInput from './SelectInput';
 
 function createMapStateToProps() {
@@ -55,7 +55,7 @@ class QualityProfileSelectInputConnector extends Component {
       values
     } = this.props;
 
-    if (!value || !_.some(values, (option) => parseInt(option.key) === value)) {
+    if (!value || !values.some((v) => v.key === value) ) {
       const firstValue = _.find(values, (option) => !isNaN(parseInt(option.key)));
 
       if (firstValue) {

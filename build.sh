@@ -71,7 +71,7 @@ Build()
 YarnInstall()
 {
     ProgressStart 'yarn install'
-    yarn install --frozen-lockfile
+    yarn install --frozen-lockfile --network-timeout 120000
     ProgressEnd 'yarn install'
 }
 
@@ -235,7 +235,7 @@ PackageTests()
     # geckodriver.exe isn't copied by dotnet publish
     if [ "$runtime" = "win-x64" ];
     then
-        curl -Lso gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-win64.zip"
+        curl -Lso gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-win64.zip"
         unzip -o gecko.zip
         cp geckodriver.exe "$testPackageFolder/$framework/win-x64/publish"
     fi
@@ -319,6 +319,7 @@ then
     then
         PackageTests "netcoreapp3.1" "win-x64"
         PackageTests "netcoreapp3.1" "linux-x64"
+        PackageTests "netcoreapp3.1" "linux-musl-x64"
         PackageTests "netcoreapp3.1" "osx-x64"
         PackageTests "net462" "linux-x64"
     else
@@ -350,7 +351,9 @@ then
     then
         Package "netcoreapp3.1" "win-x64"
         Package "netcoreapp3.1" "linux-x64"
+        Package "netcoreapp3.1" "linux-musl-x64"
         Package "netcoreapp3.1" "linux-arm64"
+        Package "netcoreapp3.1" "linux-musl-arm64"
         Package "netcoreapp3.1" "linux-arm"
         Package "netcoreapp3.1" "osx-x64"
         Package "net462" "linux-x64"

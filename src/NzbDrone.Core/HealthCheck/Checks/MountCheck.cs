@@ -1,6 +1,7 @@
 using System.Linq;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.HealthCheck.Checks
@@ -10,7 +11,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
         private readonly IDiskProvider _diskProvider;
         private readonly IMovieService _movieService;
 
-        public MountCheck(IDiskProvider diskProvider, IMovieService movieService)
+        public MountCheck(IDiskProvider diskProvider, IMovieService movieService, ILocalizationService localizationService)
+            : base(localizationService)
         {
             _diskProvider = diskProvider;
             _movieService = movieService;
@@ -27,7 +29,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (mounts.Any())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, "Mount containing a movie path is mounted read-only: " + string.Join(",", mounts.Select(m => m.Name)), "#movie-mount-ro");
+                return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("MountCheckMessage") + string.Join(", ", mounts.Select(m => m.Name)), "#movie-mount-ro");
             }
 
             return new HealthCheck(GetType());

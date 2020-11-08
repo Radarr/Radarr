@@ -2,22 +2,34 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchOptions, clearOptions } from 'Store/Actions/providerOptionActions';
+import { clearOptions, fetchOptions } from 'Store/Actions/providerOptionActions';
 import DeviceInput from './DeviceInput';
 
 function createMapStateToProps() {
   return createSelector(
     (state, { value }) => value,
+    (state, { name }) => name,
     (state) => state.providerOptions,
-    (value, devices) => {
+    (value, name, devices) => {
+      const {
+        isFetching,
+        isPopulated,
+        error,
+        items
+      } = devices;
 
       return {
-        ...devices,
+        isFetching,
+        isPopulated,
+        error,
+        items: items[name] || [],
         selectedDevices: value.map((valueDevice) => {
+          const sectionItems = items[name] || [];
+
           // Disable equality ESLint rule so we don't need to worry about
           // a type mismatch between the value items and the device ID.
           // eslint-disable-next-line eqeqeq
-          const device = devices.items.find((d) => d.id == valueDevice);
+          const device = sectionItems.find((d) => d.id == valueDevice);
 
           if (device) {
             return {
@@ -61,11 +73,14 @@ class DeviceInputConnector extends Component {
     const {
       provider,
       providerData,
-      dispatchFetchOptions
+      dispatchFetchOptions,
+      requestAction,
+      name
     } = this.props;
 
     dispatchFetchOptions({
-      action: 'getDevices',
+      action: requestAction,
+      itemSection: name,
       provider,
       providerData
     });
@@ -94,6 +109,7 @@ class DeviceInputConnector extends Component {
 DeviceInputConnector.propTypes = {
   provider: PropTypes.string.isRequired,
   providerData: PropTypes.object.isRequired,
+  requestAction: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   dispatchFetchOptions: PropTypes.func.isRequired,

@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
 import Card from 'Components/Card';
 import Label from 'Components/Label';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
+import { kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import EditDownloadClientModalConnector from './EditDownloadClientModalConnector';
 import styles from './DownloadClient.css';
 
@@ -103,9 +104,9 @@ class DownloadClient extends Component {
         <ConfirmModal
           isOpen={this.state.isDeleteDownloadClientModalOpen}
           kind={kinds.DANGER}
-          title="Delete Download Client"
-          message={`Are you sure you want to delete the download client '${name}'?`}
-          confirmLabel="Delete"
+          title={translate('DeleteDownloadClient')}
+          message={translate('DeleteDownloadClientMessageText', [name])}
+          confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteDownloadClient}
           onCancel={this.onDeleteDownloadClientModalClose}
         />

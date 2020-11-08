@@ -1,17 +1,21 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import TextTruncate from 'react-text-truncate';
-import { icons } from 'Helpers/Props';
-import dimensions from 'Styles/Variables/dimensions';
-import fonts from 'Styles/Variables/fonts';
+import CheckInput from 'Components/Form/CheckInput';
+import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
-import CheckInput from 'Components/Form/CheckInput';
-import MoviePoster from 'Movie/MoviePoster';
-import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
+import Popover from 'Components/Tooltip/Popover';
+import { icons } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
+import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
+import MoviePoster from 'Movie/MoviePoster';
+import dimensions from 'Styles/Variables/dimensions';
+import fonts from 'Styles/Variables/fonts';
+import translate from 'Utilities/String/translate';
 import MovieIndexOverviewInfo from './MovieIndexOverviewInfo';
 import styles from './MovieIndexOverview.css';
 
@@ -81,10 +85,14 @@ class MovieIndexOverview extends Component {
   render() {
     const {
       id,
+      tmdbId,
+      imdbId,
+      youTubeTrailerId,
       title,
       overview,
       monitored,
       hasFile,
+      isAvailable,
       status,
       titleSlug,
       images,
@@ -106,6 +114,8 @@ class MovieIndexOverview extends Component {
       isMovieEditorActive,
       isSelected,
       onSelectedChange,
+      queueStatus,
+      queueState,
       ...otherProps
     } = this.props;
 
@@ -160,9 +170,12 @@ class MovieIndexOverview extends Component {
             <MovieIndexProgressBar
               monitored={monitored}
               hasFile={hasFile}
+              isAvailable={isAvailable}
               status={status}
               posterWidth={posterWidth}
               detailedProgressBar={overviewOptions.detailedProgressBar}
+              queueStatus={queueStatus}
+              queueState={queueState}
             />
           </div>
 
@@ -176,9 +189,28 @@ class MovieIndexOverview extends Component {
               </Link>
 
               <div className={styles.actions}>
+                <span className={styles.externalLinks}>
+                  <Popover
+                    anchor={
+                      <Icon
+                        name={icons.EXTERNAL_LINK}
+                        size={12}
+                      />
+                    }
+                    title={translate('Links')}
+                    body={
+                      <MovieDetailsLinks
+                        tmdbId={tmdbId}
+                        imdbId={imdbId}
+                        youTubeTrailerId={youTubeTrailerId}
+                      />
+                    }
+                  />
+                </span>
+
                 <SpinnerIconButton
                   name={icons.REFRESH}
-                  title="Refresh Movie"
+                  title={translate('RefreshMovie')}
                   isSpinning={isRefreshingMovie}
                   onPress={onRefreshMoviePress}
                 />
@@ -188,7 +220,7 @@ class MovieIndexOverview extends Component {
                     <SpinnerIconButton
                       className={styles.action}
                       name={icons.SEARCH}
-                      title="Search for movie"
+                      title={translate('SearchForMovie')}
                       isSpinning={isSearchingMovie}
                       onPress={onSearchPress}
                     />
@@ -196,7 +228,7 @@ class MovieIndexOverview extends Component {
 
                 <IconButton
                   name={icons.EDIT}
-                  title="Edit Movie"
+                  title={translate('EditMovie')}
                   onPress={this.onEditMoviePress}
                 />
               </div>
@@ -251,6 +283,7 @@ MovieIndexOverview.propTypes = {
   overview: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
+  isAvailable: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -271,7 +304,12 @@ MovieIndexOverview.propTypes = {
   onSearchPress: PropTypes.func.isRequired,
   isMovieEditorActive: PropTypes.bool.isRequired,
   isSelected: PropTypes.bool,
-  onSelectedChange: PropTypes.func.isRequired
+  onSelectedChange: PropTypes.func.isRequired,
+  tmdbId: PropTypes.number.isRequired,
+  imdbId: PropTypes.string,
+  youTubeTrailerId: PropTypes.string,
+  queueStatus: PropTypes.string,
+  queueState: PropTypes.string
 };
 
 export default MovieIndexOverview;

@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { inputTypes } from 'Helpers/Props';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FieldSet from 'Components/FieldSet';
-import PageContent from 'Components/Page/PageContent';
-import PageContentBody from 'Components/Page/PageContentBody';
-import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
 import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import PageContent from 'Components/Page/PageContent';
+import PageContentBody from 'Components/Page/PageContentBody';
+import { inputTypes } from 'Helpers/Props';
+import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
+import translate from 'Utilities/String/translate';
 
 export const firstDayOfWeekOptions = [
   { key: 0, value: 'Sunday' },
@@ -42,6 +43,11 @@ export const timeFormatOptions = [
   { key: 'HH:mm', value: '17:00/17:30' }
 ];
 
+export const movieRuntimeFormatOptions = [
+  { key: 'hoursMinutes', value: '1h 15m' },
+  { key: 'minutes', value: '75 mins' }
+];
+
 class UISettings extends Component {
 
   //
@@ -55,11 +61,12 @@ class UISettings extends Component {
       hasSettings,
       onInputChange,
       onSavePress,
+      languages,
       ...otherProps
     } = this.props;
 
     return (
-      <PageContent title="UI Settings">
+      <PageContent title={translate('UISettings')}>
         <SettingsToolbarConnector
           {...otherProps}
           onSavePress={onSavePress}
@@ -73,7 +80,9 @@ class UISettings extends Component {
 
           {
             !isFetching && error &&
-              <div>Unable to load UI settings</div>
+              <div>
+                {translate('UnableToLoadUISettings')}
+              </div>
           }
 
           {
@@ -82,9 +91,9 @@ class UISettings extends Component {
                 id="uiSettings"
                 {...otherProps}
               >
-                <FieldSet legend="Calendar">
+                <FieldSet legend={translate('Calendar')}>
                   <FormGroup>
-                    <FormLabel>First Day of Week</FormLabel>
+                    <FormLabel>{translate('SettingsFirstDayOfWeek')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -96,24 +105,36 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>Week Column Header</FormLabel>
+                    <FormLabel>{translate('SettingsWeekColumnHeader')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
                       name="calendarWeekColumnHeader"
                       values={weekColumnOptions}
                       onChange={onInputChange}
-                      helpText="Shown above each column when week is the active view"
+                      helpText={translate('SettingsWeekColumnHeaderHelpText')}
                       {...settings.calendarWeekColumnHeader}
                     />
                   </FormGroup>
                 </FieldSet>
 
-                <FieldSet
-                  legend="Dates"
-                >
+                <FieldSet legend={translate('Movies')}>
                   <FormGroup>
-                    <FormLabel>Short Date Format</FormLabel>
+                    <FormLabel>{translate('SettingsRuntimeFormat')}</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="movieRuntimeFormat"
+                      values={movieRuntimeFormatOptions}
+                      onChange={onInputChange}
+                      {...settings.movieRuntimeFormat}
+                    />
+                  </FormGroup>
+                </FieldSet>
+
+                <FieldSet legend={translate('Dates')}>
+                  <FormGroup>
+                    <FormLabel>{translate('SettingsShortDateFormat')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -125,7 +146,7 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>Long Date Format</FormLabel>
+                    <FormLabel>{translate('SettingsLongDateFormat')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -137,7 +158,7 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>Time Format</FormLabel>
+                    <FormLabel>{translate('SettingsTimeFormat')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.SELECT}
@@ -149,28 +170,54 @@ class UISettings extends Component {
                   </FormGroup>
 
                   <FormGroup>
-                    <FormLabel>Show Relative Dates</FormLabel>
+                    <FormLabel>{translate('SettingsShowRelativeDates')}</FormLabel>
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="showRelativeDates"
-                      helpText="Show relative (Today/Yesterday/etc) or absolute dates"
+                      helpText={translate('SettingsShowRelativeDatesHelpText')}
                       onChange={onInputChange}
                       {...settings.showRelativeDates}
                     />
                   </FormGroup>
                 </FieldSet>
 
-                <FieldSet
-                  legend="Style"
-                >
+                <FieldSet legend={translate('Style')}>
                   <FormGroup>
-                    <FormLabel>Enable Color-Impaired Mode</FormLabel>
+                    <FormLabel>{translate('SettingsEnableColorImpairedMode')}</FormLabel>
                     <FormInputGroup
                       type={inputTypes.CHECK}
                       name="enableColorImpairedMode"
-                      helpText="Altered style to allow color-impaired users to better distinguish color coded information"
+                      helpText={translate('SettingsEnableColorImpairedModeHelpText')}
                       onChange={onInputChange}
                       {...settings.enableColorImpairedMode}
+                    />
+                  </FormGroup>
+                </FieldSet>
+
+                <FieldSet legend={translate('Language')}>
+                  <FormGroup>
+                    <FormLabel>{translate('MovieInfoLanguage')}</FormLabel>
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="movieInfoLanguage"
+                      values={languages}
+                      helpText={translate('MovieInfoLanguageHelpText')}
+                      helpTextWarning={translate('MovieInfoLanguageHelpTextWarning')}
+                      onChange={onInputChange}
+                      {...settings.movieInfoLanguage}
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+                    <FormLabel>{translate('UILanguage')}</FormLabel>
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="uiLanguage"
+                      values={languages}
+                      helpText={translate('UILanguageHelpText')}
+                      helpTextWarning={translate('UILanguageHelpTextWarning')}
+                      onChange={onInputChange}
+                      {...settings.uiLanguage}
                     />
                   </FormGroup>
                 </FieldSet>
@@ -189,6 +236,7 @@ UISettings.propTypes = {
   settings: PropTypes.object.isRequired,
   hasSettings: PropTypes.bool.isRequired,
   onSavePress: PropTypes.func.isRequired,
+  languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   onInputChange: PropTypes.func.isRequired
 };
 

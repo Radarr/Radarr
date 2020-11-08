@@ -1,19 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { inputTypes, kinds } from 'Helpers/Props';
-import { boolSettingShape, numberSettingShape, tagSettingShape } from 'Helpers/Props/Shapes/settingShape';
+import Alert from 'Components/Alert';
+import Form from 'Components/Form/Form';
+import FormGroup from 'Components/Form/FormGroup';
+import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
 import Button from 'Components/Link/Button';
 import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import Alert from 'Components/Alert';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import Form from 'Components/Form/Form';
-import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
-import FormInputGroup from 'Components/Form/FormInputGroup';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { inputTypes, kinds } from 'Helpers/Props';
+import { boolSettingShape, numberSettingShape, tagSettingShape } from 'Helpers/Props/Shapes/settingShape';
+import translate from 'Utilities/String/translate';
 import styles from './EditDelayProfileModalContent.css';
 
 function EditDelayProfileModalContent(props) {
@@ -56,21 +57,23 @@ function EditDelayProfileModalContent(props) {
 
         {
           !isFetching && !!error &&
-            <div>Unable to add a new quality profile, please try again.</div>
+            <div>
+              {translate('UnableToAddANewQualityProfilePleaseTryAgain')}
+            </div>
         }
 
         {
           !isFetching && !error &&
             <Form {...otherProps}>
               <FormGroup>
-                <FormLabel>Protocol</FormLabel>
+                <FormLabel>{translate('Protocol')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.SELECT}
                   name="protocol"
                   value={protocol}
                   values={protocolOptions}
-                  helpText="Choose which protocol(s) to use and which one is preferred when choosing between otherwise equal releases"
+                  helpText={translate('ProtocolHelpText')}
                   onChange={onProtocolChange}
                 />
               </FormGroup>
@@ -78,14 +81,14 @@ function EditDelayProfileModalContent(props) {
               {
                 enableUsenet.value &&
                   <FormGroup>
-                    <FormLabel>Usenet Delay</FormLabel>
+                    <FormLabel>{translate('UsenetDelay')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.NUMBER}
                       name="usenetDelay"
                       unit="minutes"
                       {...usenetDelay}
-                      helpText="Delay in minutes to wait before grabbing a release from Usenet"
+                      helpText={translate('UsenetDelayHelpText')}
                       onChange={onInputChange}
                     />
                   </FormGroup>
@@ -94,14 +97,14 @@ function EditDelayProfileModalContent(props) {
               {
                 enableTorrent.value &&
                   <FormGroup>
-                    <FormLabel>Torrent Delay</FormLabel>
+                    <FormLabel>{translate('TorrentDelay')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.NUMBER}
                       name="torrentDelay"
                       unit="minutes"
                       {...torrentDelay}
-                      helpText="Delay in minutes to wait before grabbing a torrent"
+                      helpText={translate('TorrentDelayHelpText')}
                       onChange={onInputChange}
                     />
                   </FormGroup>
@@ -114,13 +117,13 @@ function EditDelayProfileModalContent(props) {
                   </Alert> :
 
                   <FormGroup>
-                    <FormLabel>Tags</FormLabel>
+                    <FormLabel>{translate('Tags')}</FormLabel>
 
                     <FormInputGroup
                       type={inputTypes.TAG}
                       name="tags"
                       {...tags}
-                      helpText="Applies to movies with at least one matching tag"
+                      helpText={translate('TagsHelpText')}
                       onChange={onInputChange}
                     />
                   </FormGroup>
@@ -136,14 +139,14 @@ function EditDelayProfileModalContent(props) {
               kind={kinds.DANGER}
               onPress={onDeleteDelayProfilePress}
             >
-              Delete
+              {translate('Delete')}
             </Button>
         }
 
         <Button
           onPress={onModalClose}
         >
-          Cancel
+          {translate('Cancel')}
         </Button>
 
         <SpinnerErrorButton
@@ -151,7 +154,7 @@ function EditDelayProfileModalContent(props) {
           error={saveError}
           onPress={onSavePress}
         >
-          Save
+          {translate('Save')}
         </SpinnerErrorButton>
       </ModalFooter>
     </ModalContent>

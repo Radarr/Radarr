@@ -26,6 +26,19 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
             return pageableRequests;
         }
 
+        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        {
+            var pageableRequests = new IndexerPageableRequestChain();
+
+            foreach (var queryTitle in searchCriteria.QueryTitles)
+            {
+                pageableRequests.Add(GetPagedRequests(string.Format("{0}",
+                    queryTitle)));
+            }
+
+            return pageableRequests;
+        }
+
         private IEnumerable<IndexerRequest> GetPagedRequests(string query)
         {
             var url = new StringBuilder();
@@ -38,16 +51,6 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
             }
 
             yield return new IndexerRequest(url.ToString(), HttpAccept.Rss);
-        }
-
-        public IndexerPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
-        {
-            var pageableRequests = new IndexerPageableRequestChain();
-
-            pageableRequests.Add(GetPagedRequests(string.Format("{0}",
-                    searchCriteria.Movie.Title)));
-
-            return pageableRequests;
         }
 
         public Func<IDictionary<string, string>> GetCookies { get; set; }

@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { kinds } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
+import { kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './NoMovie.css';
 
 function NoMovie(props) {
@@ -11,7 +12,7 @@ function NoMovie(props) {
     return (
       <div>
         <div className={styles.message}>
-          All movies are hidden due to the applied filter.
+          {translate('AllMoviesHiddenDueToFilter')}
         </div>
       </div>
     );
@@ -28,7 +29,7 @@ function NoMovie(props) {
           to="/add/import"
           kind={kinds.PRIMARY}
         >
-          Import Existing Movies
+          {translate('ImportExistingMovies')}
         </Button>
       </div>
 
@@ -37,7 +38,7 @@ function NoMovie(props) {
           to="/add/new"
           kind={kinds.PRIMARY}
         >
-          Add New Movie
+          {translate('AddNewMovie')}
         </Button>
       </div>
     </div>

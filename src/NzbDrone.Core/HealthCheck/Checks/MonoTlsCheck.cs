@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using NLog;
 using NLog.Fluent;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Localization;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
@@ -11,7 +12,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
         private readonly IPlatformInfo _platformInfo;
         private readonly Logger _logger;
 
-        public MonoTlsCheck(IPlatformInfo platformInfo, Logger logger)
+        public MonoTlsCheck(IPlatformInfo platformInfo, ILocalizationService localizationService, Logger logger)
+            : base(localizationService)
         {
             _platformInfo = platformInfo;
             _logger = logger;
@@ -33,7 +35,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                        .WriteSentryDebug("LegacyTlsProvider", monoVersion.ToString())
                        .Write();
 
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, "Sonarr Mono 4.x tls workaround still enabled, consider removing MONO_TLS_PROVIDER=legacy environment option");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("MonoTlsCheckMessage"));
             }
 
             return new HealthCheck(GetType());

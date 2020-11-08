@@ -1,59 +1,60 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import getErrorMessage from 'Utilities/Object/getErrorMessage';
-import getSelectedIds from 'Utilities/Table/getSelectedIds';
-import selectAll from 'Utilities/Table/selectAll';
-import toggleSelected from 'Utilities/Table/toggleSelected';
-import { align, icons, kinds, scrollDirections } from 'Helpers/Props';
-import Button from 'Components/Link/Button';
-import Icon from 'Components/Icon';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import SelectInput from 'Components/Form/SelectInput';
+import Icon from 'Components/Icon';
+import Button from 'Components/Link/Button';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Menu from 'Components/Menu/Menu';
 import MenuButton from 'Components/Menu/MenuButton';
 import MenuContent from 'Components/Menu/MenuContent';
 import SelectedMenuItem from 'Components/Menu/SelectedMenuItem';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
+import { align, icons, kinds, scrollDirections } from 'Helpers/Props';
 import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
-import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import SelectMovieModal from 'InteractiveImport/Movie/SelectMovieModal';
+import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
+import getErrorMessage from 'Utilities/Object/getErrorMessage';
+import translate from 'Utilities/String/translate';
+import getSelectedIds from 'Utilities/Table/getSelectedIds';
+import selectAll from 'Utilities/Table/selectAll';
+import toggleSelected from 'Utilities/Table/toggleSelected';
 import InteractiveImportRow from './InteractiveImportRow';
 import styles from './InteractiveImportModalContent.css';
 
 const columns = [
   {
     name: 'relativePath',
-    label: 'Relative Path',
+    label: translate('RelativePath'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'movie',
-    label: 'Movie',
+    label: translate('Movie'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'quality',
-    label: 'Quality',
+    label: translate('Quality'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'languages',
-    label: 'Languages',
+    label: translate('Languages'),
     isSortable: true,
     isVisible: true
   },
   {
     name: 'size',
-    label: 'Size',
+    label: translate('Size'),
     isSortable: true,
     isVisible: true
   },
@@ -73,8 +74,8 @@ const filterExistingFilesOptions = {
 };
 
 const importModeOptions = [
-  { key: 'move', value: 'Move Files' },
-  { key: 'copy', value: 'Hardlink/Copy Files' }
+  { key: 'move', value: translate('MoveFiles') },
+  { key: 'copy', value: translate('HardlinkCopyFiles') }
 ];
 
 const SELECT = 'select';
@@ -331,7 +332,7 @@ class InteractiveImportModalContent extends Component {
 
           <div className={styles.rightButtons}>
             <Button onPress={onModalClose}>
-              Cancel
+              {translate('Cancel')}
             </Button>
 
             {

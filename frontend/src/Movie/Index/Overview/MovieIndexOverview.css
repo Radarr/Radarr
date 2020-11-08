@@ -93,3 +93,12 @@ $hoverScale: 1.05;
     display: none;
   }
 }
+
+.externalLinks {
+  margin-right: 0.5em;
+}
+
+.queue {
+  padding-left: 2px;
+  border-left: 4px solid $queueColor;
+}

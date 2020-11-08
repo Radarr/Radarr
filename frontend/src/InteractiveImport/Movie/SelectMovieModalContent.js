@@ -1,22 +1,21 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { scrollDirections } from 'Helpers/Props';
+import TextInput from 'Components/Form/TextInput';
+import Button from 'Components/Link/Button';
+import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
+import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import FuseWorker from 'Components/Page/Header/fuse.worker';
+import Scroller from 'Components/Scroller/Scroller';
 import VirtualTable from 'Components/Table/VirtualTable';
 import VirtualTableRow from 'Components/Table/VirtualTableRow';
-import Button from 'Components/Link/Button';
-import Scroller from 'Components/Scroller/Scroller';
-import TextInput from 'Components/Form/TextInput';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
-import ModalBody from 'Components/Modal/ModalBody';
-import ModalFooter from 'Components/Modal/ModalFooter';
-import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import { scrollDirections } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import SelectMovieRow from './SelectMovieRow';
-import FuseWorker from 'Components/Page/Header/fuse.worker';
 import styles from './SelectMovieModalContent.css';
-
-const workerInstance = new FuseWorker();
 
 class SelectMovieModalContent extends Component {
 
@@ -26,16 +25,31 @@ class SelectMovieModalContent extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this._worker = null;
+
     this.state = {
       scroller: null,
       filter: '',
-      showLoading: false,
+      loading: false,
       suggestions: props.items
     };
   }
 
-  componentDidMount() {
-    workerInstance.addEventListener('message', this.onSuggestionsReceived, false);
+  componentWillUnmount() {
+    if (this._worker) {
+      this._worker.removeEventListener('message', this.onSuggestionsReceived, false);
+      this._worker.terminate();
+      this._worker = null;
+    }
+  }
+
+  getWorker() {
+    if (!this._worker) {
+      this._worker = new FuseWorker();
+      this._worker.addEventListener('message', this.onSuggestionsReceived, false);
+    }
+
+    return this._worker;
   }
 
   //
@@ -70,13 +84,13 @@ class SelectMovieModalContent extends Component {
   onFilterChange = ({ value }) => {
     if (value) {
       this.setState({
-        showLoading: true,
+        loading: true,
         filter: value.toLowerCase()
       });
       this.requestSuggestions(value);
     } else {
       this.setState({
-        showLoading: false,
+        loading: false,
         filter: '',
         suggestions: this.props.items
       });
@@ -85,26 +99,58 @@ class SelectMovieModalContent extends Component {
   }
 
   requestSuggestions = _.debounce((value) => {
-    const payload = {
-      value,
-      movies: this.props.items
-    };
+    if (!this.state.loading) {
+      return;
+    }
 
-    workerInstance.postMessage(payload);
+    const requestLoading = this.state.requestLoading;
+
+    this.setState({
+      requestValue: value,
+      requestLoading: true
+    });
+
+    if (!requestLoading) {
+      const payload = {
+        value,
+        movies: this.props.items
+      };
+
+      this.getWorker().postMessage(payload);
+    }
   }, 250);
 
   onSuggestionsReceived = (message) => {
-    this.setState((state, props) => {
-      // this guards against setting a stale set of suggestions returned
-      // after the filter has been cleared
-      if (state.filter !== '') {
-        return {
-          showLoading: false,
-          suggestions: message.data.map((suggestion) => suggestion.item)
-        };
-      }
-      return {};
-    });
+    const {
+      value,
+      suggestions
+    } = message.data;
+
+    if (!this.state.loading) {
+      this.setState({
+        requestValue: null,
+        requestLoading: false
+      });
+    } else if (value === this.state.requestValue) {
+      this.setState({
+        suggestions: suggestions.map((suggestion) => suggestion.item),
+        requestValue: null,
+        requestLoading: false,
+        loading: false
+      });
+    } else {
+      this.setState({
+        suggestions: suggestions.map((suggestion) => suggestion.item),
+        requestLoading: true
+      });
+
+      const payload = {
+        value: this.state.requestValue,
+        movies: this.props.items
+      };
+
+      this.getWorker().postMessage(payload);
+    }
   }
 
   //
@@ -119,7 +165,7 @@ class SelectMovieModalContent extends Component {
     const {
       scroller,
       filter,
-      showLoading,
+      loading,
       suggestions
     } = this.state;
 
@@ -137,7 +183,7 @@ class SelectMovieModalContent extends Component {
         >
           <TextInput
             className={styles.filterInput}
-            placeholder="Search movies"
+            placeholder={translate('FilterPlaceHolder')}
             name="filter"
             value={filter}
             autoFocus={true}
@@ -151,7 +197,7 @@ class SelectMovieModalContent extends Component {
           >
             <div>
               {
-                showLoading || !scroller ?
+                loading || !scroller ?
                   <LoadingIndicator /> :
                   <VirtualTable
                     header={
@@ -172,7 +218,7 @@ class SelectMovieModalContent extends Component {
           <div className={styles.path}>{relativePath}</div>
           <div className={styles.buttons}>
             <Button onPress={onModalClose}>
-              Cancel
+              {translate('Cancel')}
             </Button>
           </div>
         </ModalFooter>

@@ -46,13 +46,19 @@ namespace NzbDrone.Core.Test.UpdateTests
             const string branch = "develop";
             UseRealHttp();
             var recent = Subject.GetRecentUpdates(branch, new Version(2, 0));
+            var recentWithChanges = recent.Where(c => c.Changes != null);
 
             recent.Should().NotBeEmpty();
             recent.Should().OnlyContain(c => c.Hash.IsNotNullOrWhiteSpace());
             recent.Should().OnlyContain(c => c.FileName.Contains("Radarr"));
             recent.Should().OnlyContain(c => c.ReleaseDate.Year >= 2014);
-            recent.Where(c => c.Changes != null).Should().OnlyContain(c => c.Changes.New != null);
-            recent.Where(c => c.Changes != null).Should().OnlyContain(c => c.Changes.Fixed != null);
+
+            if (recentWithChanges.Any())
+            {
+                recentWithChanges.Should().OnlyContain(c => c.Changes.New != null);
+                recentWithChanges.Should().OnlyContain(c => c.Changes.Fixed != null);
+            }
+
             recent.Should().OnlyContain(c => c.Branch == branch);
         }
     }

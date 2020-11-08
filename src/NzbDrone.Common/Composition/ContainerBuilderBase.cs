@@ -30,14 +30,14 @@ namespace NzbDrone.Common.Composition
 #if !NETCOREAPP
             foreach (var assembly in assemblies)
             {
-                _loadedTypes.AddRange(Assembly.Load(assembly).GetTypes());
+                _loadedTypes.AddRange(Assembly.Load(assembly).GetExportedTypes());
             }
 #else
             var startupPath = AppDomain.CurrentDomain.BaseDirectory;
 
             foreach (var assemblyName in assemblies)
             {
-                _loadedTypes.AddRange(AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(startupPath, $"{assemblyName}.dll")).GetTypes());
+                _loadedTypes.AddRange(AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(startupPath, $"{assemblyName}.dll")).GetExportedTypes());
             }
 
             var toRegisterResolver = new List<string> { "System.Data.SQLite" };

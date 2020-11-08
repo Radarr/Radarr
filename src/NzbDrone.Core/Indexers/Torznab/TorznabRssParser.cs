@@ -51,15 +51,16 @@ namespace NzbDrone.Core.Indexers.Torznab
         protected override ReleaseInfo ProcessItem(XElement item, ReleaseInfo releaseInfo)
         {
             var torrentInfo = base.ProcessItem(item, releaseInfo) as TorrentInfo;
-            if (GetImdbId(item) != null)
+
+            if (torrentInfo != null)
             {
-                if (torrentInfo != null)
+                if (GetImdbId(item) != null)
                 {
                     torrentInfo.ImdbId = int.Parse(GetImdbId(item).Substring(2));
                 }
-            }
 
-            torrentInfo.IndexerFlags = GetFlags(item);
+                torrentInfo.IndexerFlags = GetFlags(item);
+            }
 
             return torrentInfo;
         }

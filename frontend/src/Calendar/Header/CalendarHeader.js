@@ -1,15 +1,16 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { align, icons } from 'Helpers/Props';
-import Button from 'Components/Link/Button';
+import * as calendarViews from 'Calendar/calendarViews';
 import Icon from 'Components/Icon';
+import Button from 'Components/Link/Button';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Menu from 'Components/Menu/Menu';
 import MenuButton from 'Components/Menu/MenuButton';
 import MenuContent from 'Components/Menu/MenuContent';
 import ViewMenuItem from 'Components/Menu/ViewMenuItem';
-import * as calendarViews from 'Calendar/calendarViews';
+import { align, icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import CalendarHeaderViewButton from './CalendarHeaderViewButton';
 import styles from './CalendarHeader.css';
 
@@ -192,7 +193,7 @@ class CalendarHeader extends Component {
                       selectedView={view}
                       onPress={this.onViewChange}
                     >
-                      Day
+                      {translate('Day')}
                     </ViewMenuItem>
 
                     <ViewMenuItem
@@ -200,7 +201,7 @@ class CalendarHeader extends Component {
                       selectedView={view}
                       onPress={this.onViewChange}
                     >
-                      Agenda
+                      {translate('Agenda')}
                     </ViewMenuItem>
                   </MenuContent>
                 </Menu> :

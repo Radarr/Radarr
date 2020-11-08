@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons } from 'Helpers/Props';
 import keyboardShortcuts, { shortcuts } from 'Components/keyboardShortcuts';
 import IconButton from 'Components/Link/IconButton';
 import Link from 'Components/Link/Link';
+import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
+import KeyboardShortcutsModal from './KeyboardShortcutsModal';
 import MovieSearchInputConnector from './MovieSearchInputConnector';
 import PageHeaderActionsMenuConnector from './PageHeaderActionsMenuConnector';
-import KeyboardShortcutsModal from './KeyboardShortcutsModal';
 import styles from './PageHeader.css';
 
 class PageHeader extends Component {
@@ -74,8 +75,15 @@ class PageHeader extends Component {
           <IconButton
             className={styles.donate}
             name={icons.HEART}
-            to="https://radarr.video/donate.html"
+            to="https://opencollective.com/radarr"
             size={14}
+          />
+          <IconButton
+            className={styles.translate}
+            title={translate('SuggestTranslationChange')}
+            name={icons.TRANSLATE}
+            to="https://translate.servarr.com/projects/radarr/radarr/"
+            size={24}
           />
           <PageHeaderActionsMenuConnector
             onKeyboardShortcutsPress={this.onOpenKeyboardShortcutsModal}

@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { sizes } from 'Helpers/Props';
 import Button from 'Components/Link/Button';
 import Modal from 'Components/Modal/Modal';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import MediaInfoPopover from './Editor/MediaInfoPopover';
 
 function FileDetailsModal(props) {
@@ -26,7 +27,7 @@ function FileDetailsModal(props) {
         onModalClose={onModalClose}
       >
         <ModalHeader>
-          Details
+          {translate('Details')}
         </ModalHeader>
 
         <ModalBody>
@@ -35,7 +36,7 @@ function FileDetailsModal(props) {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Close
+            {translate('Close')}
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -46,7 +47,7 @@ function FileDetailsModal(props) {
 FileDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
-  mediaInfo: PropTypes.object.isRequired
+  mediaInfo: PropTypes.object
 };
 
 export default FileDetailsModal;

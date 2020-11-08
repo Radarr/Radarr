@@ -14,9 +14,10 @@ namespace NzbDrone.Core.Extras.Files
     public interface IManageExtraFiles
     {
         int Order { get; }
+        IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie);
         IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles);
         IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile);
-        IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder);
+        IEnumerable<ExtraFile> CreateAfterMovieFolder(Movie movie, string movieFolder);
         IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles);
         ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly);
     }
@@ -41,15 +42,17 @@ namespace NzbDrone.Core.Extras.Files
         }
 
         public abstract int Order { get; }
+        public abstract IEnumerable<ExtraFile> CreateAfterMediaCoverUpdate(Movie movie);
         public abstract IEnumerable<ExtraFile> CreateAfterMovieScan(Movie movie, List<MovieFile> movieFiles);
         public abstract IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, MovieFile movieFile);
-        public abstract IEnumerable<ExtraFile> CreateAfterMovieImport(Movie movie, string movieFolder);
+        public abstract IEnumerable<ExtraFile> CreateAfterMovieFolder(Movie movie, string movieFolder);
         public abstract IEnumerable<ExtraFile> MoveFilesAfterRename(Movie movie, List<MovieFile> movieFiles);
         public abstract ExtraFile Import(Movie movie, MovieFile movieFile, string path, string extension, bool readOnly);
 
         protected TExtraFile ImportFile(Movie movie, MovieFile movieFile, string path, bool readOnly, string extension, string fileNameSuffix = null)
         {
-            var newFolder = Path.GetDirectoryName(Path.Combine(movie.Path, movieFile.RelativePath));
+            var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
+            var newFolder = Path.GetDirectoryName(movieFilePath);
             var filenameBuilder = new StringBuilder(Path.GetFileNameWithoutExtension(movieFile.RelativePath));
 
             if (fileNameSuffix.IsNotNullOrWhiteSpace())
@@ -60,6 +63,13 @@ namespace NzbDrone.Core.Extras.Files
             filenameBuilder.Append(extension);
 
             var newFileName = Path.Combine(newFolder, filenameBuilder.ToString());
+
+            if (newFileName == movieFilePath)
+            {
+                _logger.Debug("Extra file {0} not imported, due to naming interference with movie file", path);
+                return null;
+            }
+
             var transferMode = TransferMode.Move;
 
             if (readOnly)
@@ -67,7 +77,7 @@ namespace NzbDrone.Core.Extras.Files
                 transferMode = _configService.CopyUsingHardlinks ? TransferMode.HardLinkOrCopy : TransferMode.Copy;
             }
 
-            _diskTransferService.TransferFile(path, newFileName, transferMode, true, false);
+            _diskTransferService.TransferFile(path, newFileName, transferMode, true);
 
             return new TExtraFile
             {

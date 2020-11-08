@@ -1,22 +1,23 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import formatBytes from 'Utilities/Number/formatBytes';
 import IconButton from 'Components/Link/IconButton';
-import { icons, kinds } from 'Helpers/Props';
-import TableRow from 'Components/Table/TableRow';
+import ConfirmModal from 'Components/Modal/ConfirmModal';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRowCellButton from 'Components/Table/Cells/TableRowCellButton';
-import MovieQuality from 'Movie/MovieQuality';
+import TableRow from 'Components/Table/TableRow';
+import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
-import ConfirmModal from 'Components/Modal/ConfirmModal';
-import SelectQualityModal from 'MovieFile/Quality/SelectQualityModal';
+import MovieQuality from 'Movie/MovieQuality';
 import SelectLanguageModal from 'MovieFile/Language/SelectLanguageModal';
-import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
 import MediaInfoConnector from 'MovieFile/MediaInfoConnector';
+import * as mediaInfoTypes from 'MovieFile/mediaInfoTypes';
+import SelectQualityModal from 'MovieFile/Quality/SelectQualityModal';
+import formatBytes from 'Utilities/Number/formatBytes';
+import translate from 'Utilities/String/translate';
+import FileDetailsModal from '../FileDetailsModal';
 import MovieFileRowCellPlaceholder from './MovieFileRowCellPlaceholder';
 import styles from './MovieFileEditorRow.css';
-import FileDetailsModal from '../FileDetailsModal';
 
 class MovieFileEditorRow extends Component {
 
@@ -133,7 +134,7 @@ class MovieFileEditorRow extends Component {
 
         <TableRowCellButton
           className={styles.language}
-          title="Click to change language"
+          title={translate('ClickToChangeLanguage')}
           onPress={this.onSelectLanguagePress}
         >
           {
@@ -152,7 +153,7 @@ class MovieFileEditorRow extends Component {
 
         <TableRowCellButton
           className={styles.quality}
-          title="Click to change quality"
+          title={translate('ClickToChangeQuality')}
           onPress={this.onSelectQualityPress}
         >
           {
@@ -185,7 +186,7 @@ class MovieFileEditorRow extends Component {
           />
 
           <IconButton
-            title="Delete file"
+            title={translate('DeleteFile')}
             name={icons.REMOVE}
             onPress={this.onDeletePress}
           />
@@ -201,9 +202,9 @@ class MovieFileEditorRow extends Component {
           isOpen={isConfirmDeleteModalOpen}
           ids={[id]}
           kind={kinds.DANGER}
-          title="Delete Selected Movie Files"
-          message={'Are you sure you want to delete the selected movie files?'}
-          confirmLabel="Delete"
+          title={translate('DeleteSelectedMovieFiles')}
+          message={translate('DeleteSelectedMovieFilesMessage')}
+          confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDelete}
           onCancel={this.onConfirmDeleteModalClose}
         />
@@ -237,7 +238,7 @@ MovieFileEditorRow.propTypes = {
   customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
-  mediaInfo: PropTypes.object.isRequired,
+  mediaInfo: PropTypes.object,
   onDeletePress: PropTypes.func.isRequired
 };
 

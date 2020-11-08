@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
-import { fetchDownloadClientOptions, setDownloadClientOptionsValue, saveDownloadClientOptions } from 'Store/Actions/settingsActions';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
+import { fetchDownloadClientOptions, saveDownloadClientOptions, setDownloadClientOptionsValue } from 'Store/Actions/settingsActions';
+import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import DownloadClientOptions from './DownloadClientOptions';
 
 const SECTION = 'downloadClientOptions';
@@ -64,7 +64,7 @@ class DownloadClientOptionsConnector extends Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatchClearPendingChanges({ section: SECTION });
+    this.props.dispatchClearPendingChanges({ section: `settings.${SECTION}` });
   }
 
   //

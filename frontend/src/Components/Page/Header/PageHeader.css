@@ -21,8 +21,9 @@
 }
 
 .logoFull {
-  width: 144px;
-  height: 48px;
+  margin-left: 15px;
+  width: 120px;
+  height: 40px;
 }
 
 .logo {
@@ -43,9 +44,28 @@
   flex-grow: 1;
 }
 
+.translate {
+  composes: link from '~Components/Link/Link.css';
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  color: #fff;
+  text-align: center;
+  line-height: 60px;
+
+  &:hover {
+    color: $toobarButtonHoverColor;
+  }
+}
+
 .donate {
   composes: link from '~Components/Link/Link.css';
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 30px;
   color: $themeRed;
   text-align: center;
@@ -64,8 +84,11 @@
   .sidebarToggleContainer {
     display: flex;
   }
+}
 
-  .donate {
+@media only screen and (max-width: $breakpointExtraSmall) {
+  .donate,
+  .translate {
     display: none;
   }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,11 +5,9 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
-using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -23,6 +20,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
     public interface IManualImportService
     {
         List<ManualImportItem> GetMediaFiles(string path, string downloadId, int? movieId, bool filterExistingFiles);
+        ManualImportItem ReprocessItem(string path, string downloadId, int movieId);
     }
 
     public class ManualImportService : IExecute<ManualImportCommand>, IManualImportService
@@ -37,8 +35,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IDownloadedMovieImportService _downloadedMovieImportService;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IConfigService _config;
-        private readonly IHistoryService _historyService;
         private readonly Logger _logger;
 
         public ManualImportService(IDiskProvider diskProvider,
@@ -51,8 +47,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                                    ITrackedDownloadService trackedDownloadService,
                                    IDownloadedMovieImportService downloadedMovieImportService,
                                    IEventAggregator eventAggregator,
-                                   IConfigService config,
-                                   IHistoryService historyService,
                                    Logger logger)
         {
             _diskProvider = diskProvider;
@@ -65,8 +59,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             _trackedDownloadService = trackedDownloadService;
             _downloadedMovieImportService = downloadedMovieImportService;
             _eventAggregator = eventAggregator;
-            _config = config;
-            _historyService = historyService;
             _logger = logger;
         }
 
@@ -98,6 +90,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             return ProcessFolder(path, path, downloadId, movieId, filterExistingFiles);
         }
 
+        public ManualImportItem ReprocessItem(string path, string downloadId, int movieId)
+        {
+            var rootFolder = Path.GetDirectoryName(path);
+            var movie = _movieService.GetMovie(movieId);
+
+            return ProcessFile(rootFolder, rootFolder, path, downloadId, movie);
+        }
+
         private List<ManualImportItem> ProcessFolder(string rootFolder, string baseFolder, string downloadId, int? movieId, bool filterExistingFiles)
         {
             DownloadClientItem downloadClientItem = null;
@@ -120,8 +120,11 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
             if (movie == null)
             {
-                var files = _diskScanService.FilterFiles(baseFolder, _diskScanService.GetVideoFiles(baseFolder, false));
-                var subfolders = _diskScanService.FilterFiles(baseFolder, _diskProvider.GetDirectories(baseFolder));
+                // Filter paths based on the rootFolder, so files in subfolders that should be ignored are ignored.
+                // It will lead to some extra directories being checked for files, but it saves the processing of them and is cleaner than
+                // teaching FilterPaths to know whether it's processing a file or a folder and changing it's filtering based on that.
+                var files = _diskScanService.FilterPaths(rootFolder, _diskScanService.GetVideoFiles(baseFolder, false));
+                var subfolders = _diskScanService.FilterPaths(rootFolder, _diskProvider.GetDirectories(baseFolder));
 
                 var processedFiles = files.Select(file => ProcessFile(rootFolder, baseFolder, file, downloadId));
                 var processedFolders = subfolders.SelectMany(subfolder => ProcessFolder(rootFolder, subfolder, downloadId, null, filterExistingFiles));
@@ -130,7 +133,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             }
 
             var folderInfo = Parser.Parser.ParseMovieTitle(directoryInfo.Name);
-            var movieFiles = _diskScanService.GetVideoFiles(baseFolder).ToList();
+            var movieFiles = _diskScanService.FilterPaths(rootFolder, _diskScanService.GetVideoFiles(baseFolder).ToList());
             var decisions = _importDecisionMaker.GetImportDecisions(movieFiles, movie, downloadClientItem, folderInfo, SceneSource(movie, baseFolder), filterExistingFiles);
 
             return decisions.Select(decision => MapItem(decision, rootFolder, downloadId, directoryInfo.Name)).ToList();
@@ -168,7 +171,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
                 if (relativeParseInfo != null)
                 {
-                    movie = _movieService.FindByTitle(relativeParseInfo.MovieTitle);
+                    movie = _movieService.FindByTitle(relativeParseInfo.MovieTitle, relativeParseInfo.Year);
                 }
             }
 
@@ -267,7 +270,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                     localMovie.FolderMovieInfo = Parser.Parser.ParseMovieTitle(file.FolderName);
                 }
 
-                localMovie = _aggregationService.Augment(localMovie, false);
+                localMovie = _aggregationService.Augment(localMovie, trackedDownload?.DownloadItem, false);
 
                 // Apply the user-chosen values.
                 localMovie.Movie = movie;

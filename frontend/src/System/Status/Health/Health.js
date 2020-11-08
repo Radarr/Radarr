@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import titleCase from 'Utilities/String/titleCase';
-import { icons, kinds } from 'Helpers/Props';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import FieldSet from 'Components/FieldSet';
+import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import TableRow from 'Components/Table/TableRow';
-import TableRowCell from 'Components/Table/Cells/TableRowCell';
+import { icons, kinds } from 'Helpers/Props';
+import titleCase from 'Utilities/String/titleCase';
+import translate from 'Utilities/String/translate';
 import styles from './Health.css';
 
 function getInternalLink(source) {
@@ -21,7 +22,7 @@ function getInternalLink(source) {
       return (
         <IconButton
           name={icons.SETTINGS}
-          title="Settings"
+          title={translate('Settings')}
           to="/settings/indexers"
         />
       );
@@ -31,7 +32,7 @@ function getInternalLink(source) {
       return (
         <IconButton
           name={icons.SETTINGS}
-          title="Settings"
+          title={translate('Settings')}
           to="/settings/downloadclients"
         />
       );
@@ -39,7 +40,7 @@ function getInternalLink(source) {
       return (
         <IconButton
           name={icons.PLAY}
-          title="Movie Editor"
+          title={translate('MovieEditor')}
           to="/movieeditor"
         />
       );
@@ -47,7 +48,7 @@ function getInternalLink(source) {
       return (
         <IconButton
           name={icons.UPDATE}
-          title="Updates"
+          title={translate('Updates')}
           to="/system/updates"
         />
       );
@@ -62,7 +63,7 @@ function getTestLink(source, props) {
       return (
         <SpinnerIconButton
           name={icons.TEST}
-          title="Test All"
+          title={translate('TestAll')}
           isSpinning={props.isTestingAllIndexers}
           onPress={props.dispatchTestAllIndexers}
         />
@@ -72,7 +73,7 @@ function getTestLink(source, props) {
       return (
         <SpinnerIconButton
           name={icons.TEST}
-          title="Test All"
+          title={translate('TestAll')}
           isSpinning={props.isTestingAllDownloadClients}
           onPress={props.dispatchTestAllDownloadClients}
         />
@@ -91,12 +92,12 @@ const columns = [
   },
   {
     name: 'message',
-    label: 'Message',
+    label: translate('Message'),
     isVisible: true
   },
   {
     name: 'actions',
-    label: 'Actions',
+    label: translate('Actions'),
     isVisible: true
   }
 ];
@@ -119,7 +120,7 @@ class Health extends Component {
       <FieldSet
         legend={
           <div className={styles.legend}>
-            Health
+            {translate('Health')}
 
             {
               isFetching && isPopulated &&
@@ -139,7 +140,7 @@ class Health extends Component {
         {
           !healthIssues &&
             <div className={styles.healthOk}>
-              No issues with your configuration
+              {translate('HealthNoIssues')}
             </div>
         }
 
@@ -184,7 +185,7 @@ class Health extends Component {
                           <IconButton
                             name={icons.WIKI}
                             to={item.wikiUrl}
-                            title="Read the Wiki for more information"
+                            title={translate('ReadTheWikiForMoreInformation')}
                           />
 
                           {

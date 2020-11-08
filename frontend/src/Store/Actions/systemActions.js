@@ -1,16 +1,17 @@
 import { createAction } from 'redux-actions';
+import { filterTypes, sortDirections } from 'Helpers/Props';
+import { setAppValue } from 'Store/Actions/appActions';
+import { createThunk, handleThunks } from 'Store/thunks';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
-import { filterTypes, sortDirections } from 'Helpers/Props';
-import { createThunk, handleThunks } from 'Store/thunks';
-import { setAppValue } from 'Store/Actions/appActions';
-import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
-import createClearReducer from './Creators/Reducers/createClearReducer';
-import createFetchHandler from './Creators/createFetchHandler';
-import createRemoveItemHandler from './Creators/createRemoveItemHandler';
-import createHandleActions from './Creators/createHandleActions';
-import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
+import translate from 'Utilities/String/translate';
 import { set } from './baseActions';
+import createFetchHandler from './Creators/createFetchHandler';
+import createHandleActions from './Creators/createHandleActions';
+import createRemoveItemHandler from './Creators/createRemoveItemHandler';
+import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
+import createClearReducer from './Creators/Reducers/createClearReducer';
+import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 
 //
 // Variables
@@ -80,34 +81,34 @@ export const defaultState = {
     columns: [
       {
         name: 'level',
-        columnLabel: 'Level',
+        columnLabel: translate('Level'),
         isSortable: false,
         isVisible: true,
         isModifiable: false
       },
       {
         name: 'logger',
-        label: 'Component',
+        label: translate('Component'),
         isSortable: false,
         isVisible: true,
         isModifiable: false
       },
       {
         name: 'message',
-        label: 'Message',
+        label: translate('Message'),
         isVisible: true,
         isModifiable: false
       },
       {
         name: 'time',
-        label: 'Time',
+        label: translate('Time'),
         isSortable: true,
         isVisible: true,
         isModifiable: false
       },
       {
         name: 'actions',
-        columnLabel: 'Actions',
+        columnLabel: translate('Actions'),
         isSortable: true,
         isVisible: true,
         isModifiable: false
@@ -119,12 +120,12 @@ export const defaultState = {
     filters: [
       {
         key: 'all',
-        label: 'All',
+        label: translate('All'),
         filters: []
       },
       {
         key: 'info',
-        label: 'Info',
+        label: translate('Info'),
         filters: [
           {
             key: 'level',
@@ -135,7 +136,7 @@ export const defaultState = {
       },
       {
         key: 'warn',
-        label: 'Warn',
+        label: translate('Warn'),
         filters: [
           {
             key: 'level',
@@ -146,7 +147,7 @@ export const defaultState = {
       },
       {
         key: 'error',
-        label: 'Error',
+        label: translate('Error'),
         filters: [
           {
             key: 'level',

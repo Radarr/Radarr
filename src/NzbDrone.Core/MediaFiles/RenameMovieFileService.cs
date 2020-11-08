@@ -127,6 +127,8 @@ namespace NzbDrone.Core.MediaFiles
             _logger.ProgressInfo("Renaming {0} files for {1}", movieFiles.Count, movie.Title);
             RenameFiles(movieFiles, movie);
             _logger.ProgressInfo("Selected movie files renamed for {0}", movie.Title);
+
+            _eventAggregator.PublishEvent(new RenameCompletedEvent());
         }
 
         public void Execute(RenameMovieCommand message)
@@ -141,6 +143,8 @@ namespace NzbDrone.Core.MediaFiles
                 RenameFiles(movieFiles, movie);
                 _logger.ProgressInfo("All movie files renamed for {0}", movie.Title);
             }
+
+            _eventAggregator.PublishEvent(new RenameCompletedEvent());
         }
     }
 }

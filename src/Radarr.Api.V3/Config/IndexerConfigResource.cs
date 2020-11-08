@@ -1,5 +1,4 @@
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Parser;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Config

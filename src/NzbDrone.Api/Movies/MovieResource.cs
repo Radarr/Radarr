@@ -122,7 +122,6 @@ namespace NzbDrone.Api.Movies
                 SortTitle = model.SortTitle,
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,
-                PhysicalReleaseNote = model.PhysicalReleaseNote,
                 HasFile = model.HasFile,
                 Downloaded = downloaded,
 
@@ -139,7 +138,6 @@ namespace NzbDrone.Api.Movies
 
                 Year = model.Year,
                 SecondaryYear = model.SecondaryYear,
-                SecondaryYearSourceId = model.SecondaryYearSourceId,
 
                 Path = model.Path,
                 ProfileId = model.ProfileId,
@@ -189,7 +187,6 @@ namespace NzbDrone.Api.Movies
                 SortTitle = resource.SortTitle,
                 InCinemas = resource.InCinemas,
                 PhysicalRelease = resource.PhysicalRelease,
-                PhysicalReleaseNote = resource.PhysicalReleaseNote,
 
                 //TotalEpisodeCount
                 //EpisodeCount
@@ -203,7 +200,6 @@ namespace NzbDrone.Api.Movies
 
                 Year = resource.Year,
                 SecondaryYear = resource.SecondaryYear,
-                SecondaryYearSourceId = resource.SecondaryYearSourceId,
 
                 Path = resource.Path,
                 ProfileId = resource.ProfileId,

@@ -21,11 +21,13 @@ namespace NzbDrone.Mono.Disk
         private readonly Logger _logger;
         private readonly IProcMountProvider _procMountProvider;
         private readonly ISymbolicLinkResolver _symLinkResolver;
+        private readonly ICreateRefLink _createRefLink;
 
-        public DiskProvider(IProcMountProvider procMountProvider, ISymbolicLinkResolver symLinkResolver, Logger logger)
+        public DiskProvider(IProcMountProvider procMountProvider, ISymbolicLinkResolver symLinkResolver, ICreateRefLink createRefLink, Logger logger)
         {
             _procMountProvider = procMountProvider;
             _symLinkResolver = symLinkResolver;
+            _createRefLink = createRefLink;
             _logger = logger;
         }
 
@@ -53,21 +55,10 @@ namespace NzbDrone.Mono.Disk
 
         public override void InheritFolderPermissions(string filename)
         {
-            Ensure.That(filename, () => filename).IsValidPath();
+        }
 
-            try
-            {
-                var file = new FileInfo(filename);
-                var fs = file.GetAccessControl();
-                fs.SetAccessRuleProtection(false, false);
-                file.SetAccessControl(fs);
-            }
-            catch (NotImplementedException)
-            {
-            }
-            catch (PlatformNotSupportedException)
-            {
-            }
+        public override void SetEveryonePermissions(string filename)
+        {
         }
 
         public override void SetPermissions(string path, string mask)
@@ -181,6 +172,19 @@ namespace NzbDrone.Mono.Disk
             var mount = GetMount(path);
 
             return mount?.TotalSize;
+        }
+
+        protected override void CloneFileInternal(string source, string destination, bool overwrite)
+        {
+            if (!File.Exists(destination) && !UnixFileSystemInfo.GetFileSystemEntry(source).IsSymbolicLink)
+            {
+                if (_createRefLink.TryCreateRefLink(source, destination))
+                {
+                    return;
+                }
+            }
+
+            CopyFileInternal(source, destination, overwrite);
         }
 
         protected override void CopyFileInternal(string source, string destination, bool overwrite)
@@ -395,6 +399,11 @@ namespace NzbDrone.Mono.Disk
             }
         }
 
+        public override bool TryRenameFile(string source, string destination)
+        {
+            return Syscall.rename(source, destination) == 0;
+        }
+
         public override bool TryCreateHardLink(string source, string destination)
         {
             try
@@ -409,11 +418,29 @@ namespace NzbDrone.Mono.Disk
                 fileInfo.CreateLink(destination);
                 return true;
             }
-            catch (Exception ex)
+            catch (UnixIOException ex)
             {
-                _logger.Debug(ex, string.Format("Hardlink '{0}' to '{1}' failed.", source, destination));
+                if (ex.ErrorCode == Errno.EXDEV)
+                {
+                    _logger.Trace("Hardlink '{0}' to '{1}' failed due to cross-device access.", source, destination);
+                }
+                else
+                {
+                    _logger.Debug(ex, "Hardlink '{0}' to '{1}' failed.", source, destination);
+                }
+
                 return false;
             }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "Hardlink '{0}' to '{1}' failed.", source, destination);
+                return false;
+            }
+        }
+
+        public override bool TryCreateRefLink(string source, string destination)
+        {
+            return _createRefLink.TryCreateRefLink(source, destination);
         }
 
         private uint GetUserId(string user)

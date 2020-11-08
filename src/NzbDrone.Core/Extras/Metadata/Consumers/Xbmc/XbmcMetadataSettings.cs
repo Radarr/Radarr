@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         public XbmcMetadataSettings()
         {
             MovieMetadata = true;
-            MovieMetadataURL = true;
+            MovieMetadataURL = false;
             MovieImages = true;
             UseMovieNfo = false;
         }

@@ -8,14 +8,15 @@ import DiscoverMovieFooter from './DiscoverMovieFooter';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.discoverMovie,
-    (state) => state.settings.netImportExclusions,
+    (state) => state.settings.importExclusions,
     (state, { selectedIds }) => selectedIds,
-    (discoverMovie, netImportExclusions, selectedIds) => {
+    (discoverMovie, importExclusions, selectedIds) => {
       const {
         monitor: defaultMonitor,
         qualityProfileId: defaultQualityProfileId,
         minimumAvailability: defaultMinimumAvailability,
-        rootFolderPath: defaultRootFolderPath
+        rootFolderPath: defaultRootFolderPath,
+        searchForMovie: defaultSearchForMovie
       } = discoverMovie.defaults;
 
       const {
@@ -24,7 +25,7 @@ function createMapStateToProps() {
 
       const {
         isSaving
-      } = netImportExclusions;
+      } = importExclusions;
 
       return {
         selectedCount: selectedIds.length,
@@ -33,7 +34,8 @@ function createMapStateToProps() {
         defaultMonitor,
         defaultQualityProfileId,
         defaultMinimumAvailability,
-        defaultRootFolderPath
+        defaultRootFolderPath,
+        defaultSearchForMovie
       };
     }
   );

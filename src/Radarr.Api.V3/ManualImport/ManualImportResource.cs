@@ -39,8 +39,7 @@ namespace Radarr.Api.V3.ManualImport
                 Id = HashConverter.GetHashInt31(model.Path),
                 Path = model.Path,
                 RelativePath = model.RelativePath,
-
-                // FolderName = model.FolderName,
+                FolderName = model.FolderName,
                 Name = model.Name,
                 Size = model.Size,
                 Movie = model.Movie.ToResource(),

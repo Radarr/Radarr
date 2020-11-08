@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { align } from 'Helpers/Props';
-import ViewMenu from 'Components/Menu/ViewMenu';
 import MenuContent from 'Components/Menu/MenuContent';
+import ViewMenu from 'Components/Menu/ViewMenu';
 import ViewMenuItem from 'Components/Menu/ViewMenuItem';
+import { align } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 function MovieIndexViewMenu(props) {
   const {
@@ -23,7 +24,7 @@ function MovieIndexViewMenu(props) {
           selectedView={view}
           onPress={onViewSelect}
         >
-          Table
+          {translate('Table')}
         </ViewMenuItem>
 
         <ViewMenuItem
@@ -31,7 +32,7 @@ function MovieIndexViewMenu(props) {
           selectedView={view}
           onPress={onViewSelect}
         >
-          Posters
+          {translate('Posters')}
         </ViewMenuItem>
 
         <ViewMenuItem
@@ -39,7 +40,7 @@ function MovieIndexViewMenu(props) {
           selectedView={view}
           onPress={onViewSelect}
         >
-          Overview
+          {translate('Overview')}
         </ViewMenuItem>
       </MenuContent>
     </ViewMenu>

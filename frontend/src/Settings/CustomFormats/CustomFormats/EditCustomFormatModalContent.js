@@ -1,23 +1,25 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { icons, inputTypes, kinds } from 'Helpers/Props';
-import FieldSet from 'Components/FieldSet';
 import Card from 'Components/Card';
+import FieldSet from 'Components/FieldSet';
+import Form from 'Components/Form/Form';
+import FormGroup from 'Components/Form/FormGroup';
+import FormInputGroup from 'Components/Form/FormInputGroup';
+import FormLabel from 'Components/Form/FormLabel';
 import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import SpinnerErrorButton from 'Components/Link/SpinnerErrorButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
-import Form from 'Components/Form/Form';
-import FormGroup from 'Components/Form/FormGroup';
-import FormLabel from 'Components/Form/FormLabel';
-import FormInputGroup from 'Components/Form/FormInputGroup';
-import Specification from './Specifications/Specification';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { icons, inputTypes, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
+import ImportCustomFormatModal from './ImportCustomFormatModal';
 import AddSpecificationModal from './Specifications/AddSpecificationModal';
 import EditSpecificationModalConnector from './Specifications/EditSpecificationModalConnector';
+import Specification from './Specifications/Specification';
 import styles from './EditCustomFormatModalContent.css';
 
 class EditCustomFormatModalContent extends Component {
@@ -30,7 +32,8 @@ class EditCustomFormatModalContent extends Component {
 
     this.state = {
       isAddSpecificationModalOpen: false,
-      isEditSpecificationModalOpen: false
+      isEditSpecificationModalOpen: false,
+      isImportCustomFormatModalOpen: false
     };
   }
 
@@ -50,6 +53,14 @@ class EditCustomFormatModalContent extends Component {
 
   onEditSpecificationModalClose = () => {
     this.setState({ isEditSpecificationModalOpen: false });
+  }
+
+  onImportPress = () => {
+    this.setState({ isImportCustomFormatModalOpen: true });
+  }
+
+  onImportCustomFormatModalClose = () => {
+    this.setState({ isImportCustomFormatModalOpen: false });
   }
 
   //
@@ -75,7 +86,8 @@ class EditCustomFormatModalContent extends Component {
 
     const {
       isAddSpecificationModalOpen,
-      isEditSpecificationModalOpen
+      isEditSpecificationModalOpen,
+      isImportCustomFormatModalOpen
     } = this.state;
 
     const {
@@ -100,7 +112,9 @@ class EditCustomFormatModalContent extends Component {
 
             {
               !isFetching && !!error &&
-                <div>Unable to add a new custom format, please try again.</div>
+                <div>
+                  {translate('UnableToAddANewCustomFormatPleaseTryAgain')}
+                </div>
             }
 
             {
@@ -123,19 +137,19 @@ class EditCustomFormatModalContent extends Component {
                     </FormGroup>
 
                     <FormGroup>
-                      <FormLabel>Include Custom Format when Renaming</FormLabel>
+                      <FormLabel>{translate('IncludeCustomFormatWhenRenaming')}</FormLabel>
 
                       <FormInputGroup
                         type={inputTypes.CHECK}
                         name="includeCustomFormatWhenRenaming"
-                        helpText="Include in {Custom Formats} renaming format"
+                        helpText={translate('IncludeCustomFormatWhenRenamingHelpText')}
                         {...includeCustomFormatWhenRenaming}
                         onChange={onInputChange}
                       />
                     </FormGroup>
                   </Form>
 
-                  <FieldSet legend="Conditions">
+                  <FieldSet legend={translate('Conditions')}>
                     <div className={styles.customFormats}>
                       {
                         specifications.map((tag) => {
@@ -173,6 +187,12 @@ class EditCustomFormatModalContent extends Component {
                     isOpen={isEditSpecificationModalOpen}
                     onModalClose={this.onEditSpecificationModalClose}
                   />
+
+                  <ImportCustomFormatModal
+                    isOpen={isImportCustomFormatModalOpen}
+                    onModalClose={this.onImportCustomFormatModalClose}
+                  />
+
                 </div>
             }
           </div>
@@ -185,14 +205,24 @@ class EditCustomFormatModalContent extends Component {
                 kind={kinds.DANGER}
                 onPress={onDeleteCustomFormatPress}
               >
-                Delete
+                {translate('Delete')}
+              </Button>
+          }
+
+          {
+            !id &&
+              <Button
+                className={styles.deleteButton}
+                onPress={this.onImportPress}
+              >
+                {translate('Import')}
               </Button>
           }
 
           <Button
             onPress={onModalClose}
           >
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <SpinnerErrorButton
@@ -200,7 +230,7 @@ class EditCustomFormatModalContent extends Component {
             error={saveError}
             onPress={onSavePress}
           >
-            Save
+            {translate('Save')}
           </SpinnerErrorButton>
         </ModalFooter>
       </ModalContent>

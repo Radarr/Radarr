@@ -123,9 +123,7 @@ namespace Radarr.Api.V3.Calendar
             occurrence.Description = movie.Overview;
             occurrence.Categories = new List<string>() { movie.Studio };
 
-            var physicalText = movie.PhysicalReleaseNote.IsNotNullOrWhiteSpace()
-                ? $"(Physical Release, {movie.PhysicalReleaseNote})"
-                : "(Physical Release)";
+            var physicalText = "(Physical Release)";
             occurrence.Summary = $"{movie.Title} " + (cinemasRelease ? "(Theatrical Release)" : physicalText);
         }
     }

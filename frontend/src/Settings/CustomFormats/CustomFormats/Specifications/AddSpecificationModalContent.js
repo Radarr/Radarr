@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { kinds } from 'Helpers/Props';
 import Alert from 'Components/Alert';
-import Link from 'Components/Link/Link';
 import Button from 'Components/Link/Button';
+import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import AddSpecificationItem from './AddSpecificationItem';
 import styles from './AddSpecificationModalContent.css';
 
@@ -41,7 +42,9 @@ class AddSpecificationModalContent extends Component {
 
           {
             !isSchemaFetching && !!schemaError &&
-              <div>Unable to add a new condition, please try again.</div>
+              <div>
+                {translate('UnableToAddANewConditionPleaseTryAgain')}
+              </div>
           }
 
           {
@@ -49,8 +52,13 @@ class AddSpecificationModalContent extends Component {
               <div>
 
                 <Alert kind={kinds.INFO}>
-                  <div>Radarr supports custom conditions against the release properties below.</div>
-                  <div>Visit <Link to='https://github.com/Radarr/Radarr/wiki/Custom-Formats-Aphrodite'>GitHub</Link> for more details.</div>
+                  <div>
+                    {translate('RadarrSupportsCustomConditionsAgainstTheReleasePropertiesBelow')}
+                  </div>
+                  <div>
+                    {translate('VisitGithubCustomFormatsAphrodite')}
+                    <Link to="https://github.com/Radarr/Radarr/wiki/Custom-Formats-Aphrodite">GitHub</Link>
+                  </div>
                 </Alert>
 
                 <div className={styles.specifications}>
@@ -74,7 +82,7 @@ class AddSpecificationModalContent extends Component {
           <Button
             onPress={onModalClose}
           >
-            Close
+            {translate('Close')}
           </Button>
         </ModalFooter>
       </ModalContent>

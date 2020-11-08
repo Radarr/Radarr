@@ -9,7 +9,7 @@
     <PackageReference Include="FluentMigrator.Runner" Version="4.0.0-alpha.268" />
     <PackageReference Include="FluentMigrator.Runner.SQLite" Version="4.0.0-alpha.268" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0007" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLog" Version="4.7.0" />
     <PackageReference Include="TinyTwitter" Version="1.1.2" />
@@ -26,17 +26,13 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
-    <RuntimeFiles Include="..\Runtimes\$(RuntimeIdentifier)\*" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="..\..\Logo\64.png">
       <Link>Resources\Logo\64.png</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <Target Name="CopyRuntimeFilesOnBuild" AfterTargets="AfterBuild">
-    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(OutDir)" />
-  </Target>
-  <Target Name="CopyRuntimeFilesOnPublish" AfterTargets="Publish">
-    <Copy SourceFiles="@(RuntimeFiles)" DestinationFolder="$(PublishDir)" />
-  </Target>
+  <ItemGroup>
+    <Content Include="Localization\Core\**">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

@@ -1,13 +1,14 @@
 import { createAction } from 'redux-actions';
-import createAjaxRequest from 'Utilities/createAjaxRequest';
-import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
 import { filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
-import createClearReducer from './Creators/Reducers/createClearReducer';
-import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
+import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
+import translate from 'Utilities/String/translate';
+import { updateItem } from './baseActions';
 import createHandleActions from './Creators/createHandleActions';
 import createServerSideCollectionHandlers from './Creators/createServerSideCollectionHandlers';
-import { updateItem } from './baseActions';
+import createClearReducer from './Creators/Reducers/createClearReducer';
+import createSetTableOptionReducer from './Creators/Reducers/createSetTableOptionReducer';
 
 //
 // Variables
@@ -29,58 +30,58 @@ export const defaultState = {
   columns: [
     {
       name: 'eventType',
-      columnLabel: 'Event Type',
+      columnLabel: translate('EventType'),
       isVisible: true,
       isModifiable: false
     },
     {
       name: 'movies.sortTitle',
-      label: 'Movie',
+      label: translate('Movie'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'languages',
-      label: 'Language',
+      label: translate('Languages'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'quality',
-      label: 'Quality',
+      label: translate('Quality'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'customFormats',
-      label: 'Formats',
+      label: translate('Formats'),
       isSortable: false,
       isVisible: true
     },
     {
       name: 'date',
-      label: 'Date',
+      label: translate('Date'),
       isSortable: true,
       isVisible: true
     },
     {
       name: 'downloadClient',
-      label: 'Download Client',
+      label: translate('DownloadClient'),
       isVisible: false
     },
     {
       name: 'indexer',
-      label: 'Indexer',
+      label: translate('Indexer'),
       isVisible: false
     },
     {
       name: 'releaseGroup',
-      label: 'Release Group',
+      label: translate('ReleaseGroup'),
       isVisible: false
     },
     {
       name: 'details',
-      columnLabel: 'Details',
+      columnLabel: translate('Details'),
       isVisible: true,
       isModifiable: false
     }
@@ -91,12 +92,12 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: 'All',
+      label: translate('All'),
       filters: []
     },
     {
       key: 'grabbed',
-      label: 'Grabbed',
+      label: translate('Grabbed'),
       filters: [
         {
           key: 'eventType',
@@ -107,7 +108,7 @@ export const defaultState = {
     },
     {
       key: 'imported',
-      label: 'Imported',
+      label: translate('Imported'),
       filters: [
         {
           key: 'eventType',
@@ -118,7 +119,7 @@ export const defaultState = {
     },
     {
       key: 'failed',
-      label: 'Failed',
+      label: translate('Failed'),
       filters: [
         {
           key: 'eventType',
@@ -129,7 +130,7 @@ export const defaultState = {
     },
     {
       key: 'deleted',
-      label: 'Deleted',
+      label: translate('Deleted'),
       filters: [
         {
           key: 'eventType',
@@ -140,7 +141,7 @@ export const defaultState = {
     },
     {
       key: 'renamed',
-      label: 'Renamed',
+      label: translate('Renamed'),
       filters: [
         {
           key: 'eventType',
@@ -151,7 +152,7 @@ export const defaultState = {
     },
     {
       key: 'ignored',
-      label: 'Ignored',
+      label: translate('Ignored'),
       filters: [
         {
           key: 'eventType',

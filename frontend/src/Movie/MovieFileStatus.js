@@ -1,58 +1,35 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons, kinds, sizes } from 'Helpers/Props';
-import Icon from 'Components/Icon';
-import ProgressBar from 'Components/ProgressBar';
-import QueueDetails from 'Activity/Queue/QueueDetails';
-import MovieQuality from 'Movie/MovieQuality';
 import Label from 'Components/Label';
+import { kinds } from 'Helpers/Props';
+import MovieQuality from 'Movie/MovieQuality';
+import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
+import translate from 'Utilities/String/translate';
 import styles from './MovieFileStatus.css';
 
 function MovieFileStatus(props) {
   const {
     isAvailable,
     monitored,
-    grabbed,
-    queueItem,
-    movieFile
+    movieFile,
+    queueStatus,
+    queueState
   } = props;
 
   const hasMovieFile = !!movieFile;
-  const isQueued = !!queueItem;
   const hasReleased = isAvailable;
 
-  if (isQueued) {
-    const {
-      sizeleft,
-      size
-    } = queueItem;
-
-    const progress = (100 - sizeleft / size * 100);
+  if (queueStatus) {
+    const queueStatusText = getQueueStatusText(queueStatus, queueState);
 
     return (
       <div className={styles.center}>
-        <QueueDetails
-          {...queueItem}
-          progressBar={
-            <ProgressBar
-              title={`Movie is downloading - ${progress.toFixed(1)}% ${queueItem.title}`}
-              progress={progress}
-              kind={kinds.PURPLE}
-              size={sizes.MEDIUM}
-            />
-          }
-        />
-      </div>
-    );
-  }
-
-  if (grabbed) {
-    return (
-      <div className={styles.center}>
-        <Icon
-          name={icons.DOWNLOADING}
-          title="Movie is downloading"
-        />
+        <Label
+          title={queueStatusText}
+          kind={kinds.QUEUE}
+        >
+          {queueStatusText}
+        </Label>
       </div>
     );
   }
@@ -77,10 +54,10 @@ function MovieFileStatus(props) {
     return (
       <div className={styles.center}>
         <Label
-          title="Not Monitored"
+          title={translate('NotMonitored')}
           kind={kinds.WARNING}
         >
-          Not Monitored
+          {translate('NotMonitored')}
         </Label>
       </div>
     );
@@ -90,10 +67,10 @@ function MovieFileStatus(props) {
     return (
       <div className={styles.center}>
         <Label
-          title="Movie Available, but Missing"
+          title={translate('MovieAvailableButMissing')}
           kind={kinds.DANGER}
         >
-          Missing
+          {translate('Missing')}
         </Label>
       </div>
     );
@@ -102,10 +79,10 @@ function MovieFileStatus(props) {
   return (
     <div className={styles.center}>
       <Label
-        title="Not Available"
+        title={translate('NotAvailable')}
         kind={kinds.INFO}
       >
-        Not Available
+        {translate('NotAvailable')}
       </Label>
     </div>
   );
@@ -114,9 +91,9 @@ function MovieFileStatus(props) {
 MovieFileStatus.propTypes = {
   isAvailable: PropTypes.bool,
   monitored: PropTypes.bool.isRequired,
-  grabbed: PropTypes.bool,
-  queueItem: PropTypes.object,
-  movieFile: PropTypes.object
+  movieFile: PropTypes.object,
+  queueStatus: PropTypes.string,
+  queueState: PropTypes.string
 };
 
 export default MovieFileStatus;

@@ -1,6 +1,7 @@
 using System;
 using System.Security.Principal;
 using System.ServiceProcess;
+using System.Threading;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Common.EnvironmentInfo;
@@ -72,6 +73,7 @@ namespace NzbDrone.Common.Test
             Subject.Install(TEMP_SERVICE_NAME);
             Subject.ServiceExist(TEMP_SERVICE_NAME).Should().BeTrue();
             Subject.Uninstall(TEMP_SERVICE_NAME);
+            Thread.Sleep(2000);
             Subject.ServiceExist(TEMP_SERVICE_NAME).Should().BeFalse();
 
             ExceptionVerification.ExpectedWarns(1);

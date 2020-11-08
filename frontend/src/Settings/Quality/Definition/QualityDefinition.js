@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import ReactSlider from 'react-slider';
-import formatBytes from 'Utilities/Number/formatBytes';
-import roundNumber from 'Utilities/Number/roundNumber';
-import { kinds, tooltipPositions } from 'Helpers/Props';
-import Label from 'Components/Label';
 import NumberInput from 'Components/Form/NumberInput';
 import TextInput from 'Components/Form/TextInput';
+import Label from 'Components/Label';
 import Popover from 'Components/Tooltip/Popover';
+import { kinds, tooltipPositions } from 'Helpers/Props';
+import formatBytes from 'Utilities/Number/formatBytes';
+import roundNumber from 'Utilities/Number/roundNumber';
+import translate from 'Utilities/String/translate';
 import QualityDefinitionLimits from './QualityDefinitionLimits';
 import styles from './QualityDefinition.css';
 
@@ -193,11 +194,11 @@ class QualityDefinition extends Component {
                 anchor={
                   <Label kind={kinds.INFO}>{minSixty}</Label>
                 }
-                title="Minimum Limits"
+                title={translate('MinimumLimits')}
                 body={
                   <QualityDefinitionLimits
                     bytes={minBytes}
-                    message="No minimum for any runtime"
+                    message={translate('NoMinimumForAnyRuntime')}
                   />
                 }
                 position={tooltipPositions.BOTTOM}
@@ -209,11 +210,11 @@ class QualityDefinition extends Component {
                 anchor={
                   <Label kind={kinds.SUCCESS}>{preferredSixty}</Label>
                 }
-                title="Preferred Size"
+                title={translate('PreferredSize')}
                 body={
                   <QualityDefinitionLimits
                     bytes={preferredBytes}
-                    message="No limit for any runtime"
+                    message={translate('NoLimitForAnyRuntime')}
                   />
                 }
                 position={tooltipPositions.BOTTOM}
@@ -225,11 +226,11 @@ class QualityDefinition extends Component {
                 anchor={
                   <Label kind={kinds.WARNING}>{maxSixty}</Label>
                 }
-                title="Maximum Limits"
+                title={translate('MaximumLimits')}
                 body={
                   <QualityDefinitionLimits
                     bytes={maxBytes}
-                    message="No limit for any runtime"
+                    message={translate('NoLimitForAnyRuntime')}
                   />
                 }
                 position={tooltipPositions.BOTTOM}

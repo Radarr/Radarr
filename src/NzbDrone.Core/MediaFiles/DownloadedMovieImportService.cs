@@ -131,7 +131,7 @@ namespace NzbDrone.Core.MediaFiles
                         return false;
                     }
 
-                    if (_detectSample.IsSample(movie, videoFile, false) != DetectSampleResult.Sample)
+                    if (_detectSample.IsSample(movie, videoFile) != DetectSampleResult.Sample)
                     {
                         _logger.Warn("Non-sample file detected: [{0}]", videoFile);
                         return false;
@@ -189,7 +189,7 @@ namespace NzbDrone.Core.MediaFiles
                 _logger.Debug("{0} folder quality: {1}", cleanedUpName, folderInfo.Quality);
             }
 
-            var videoFiles = _diskScanService.FilterFiles(directoryInfo.FullName, _diskScanService.GetVideoFiles(directoryInfo.FullName));
+            var videoFiles = _diskScanService.FilterPaths(directoryInfo.FullName, _diskScanService.GetVideoFiles(directoryInfo.FullName));
 
             if (downloadClientItem == null)
             {

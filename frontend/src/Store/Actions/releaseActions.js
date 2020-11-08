@@ -1,11 +1,12 @@
 import { createAction } from 'redux-actions';
-import createAjaxRequest from 'Utilities/createAjaxRequest';
 import { filterBuilderTypes, filterBuilderValueTypes, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
-import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
-import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
+import createAjaxRequest from 'Utilities/createAjaxRequest';
+import translate from 'Utilities/String/translate';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
+import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
+import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
 
 //
 // Variables
@@ -61,7 +62,7 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: 'All',
+      label: translate('All'),
       filters: []
     }
   ],
@@ -113,50 +114,50 @@ export const defaultState = {
   filterBuilderProps: [
     {
       name: 'title',
-      label: 'Title',
+      label: translate('Title'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'age',
-      label: 'Age',
+      label: translate('Age'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'protocol',
-      label: 'Protocol',
+      label: translate('Protocol'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.PROTOCOL
     },
     {
       name: 'indexerId',
-      label: 'Indexer',
+      label: translate('Indexer'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.INDEXER
     },
     {
       name: 'size',
-      label: 'Size',
+      label: translate('Size'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'seeders',
-      label: 'Seeders',
+      label: translate('Seeders'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'peers',
-      label: 'Peers',
+      label: translate('Peers'),
       type: filterBuilderTypes.NUMBER
     },
     {
       name: 'quality',
-      label: 'Quality',
+      label: translate('Quality'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.QUALITY
     },
     {
       name: 'rejectionCount',
-      label: 'Rejection Count',
+      label: translate('RejectionCount'),
       type: filterBuilderTypes.NUMBER
     }
   ],

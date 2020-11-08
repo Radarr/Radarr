@@ -1,17 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons } from 'Helpers/Props';
 import Icon from 'Components/Icon';
+import { icons } from 'Helpers/Props';
 import styles from './HeartRating.css';
 
-function HeartRating({ rating, iconSize }) {
+function HeartRating({ rating, iconSize, hideHeart }) {
   return (
     <span>
-      <Icon
-        className={styles.heart}
-        name={icons.HEART}
-        size={iconSize}
-      />
+      {
+        !hideHeart &&
+          <Icon
+            className={styles.heart}
+            name={icons.HEART}
+            size={iconSize}
+          />
+      }
 
       {rating * 10}%
     </span>
@@ -20,7 +23,8 @@ function HeartRating({ rating, iconSize }) {
 
 HeartRating.propTypes = {
   rating: PropTypes.number.isRequired,
-  iconSize: PropTypes.number.isRequired
+  iconSize: PropTypes.number.isRequired,
+  hideHeart: PropTypes.bool
 };
 
 HeartRating.defaultProps = {

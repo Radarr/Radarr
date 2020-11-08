@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { icons, kinds } from 'Helpers/Props';
 import Alert from 'Components/Alert';
-import Button from 'Components/Link/Button';
 import Icon from 'Components/Icon';
-import ModalContent from 'Components/Modal/ModalContent';
-import ModalHeader from 'Components/Modal/ModalHeader';
+import Button from 'Components/Link/Button';
 import ModalBody from 'Components/Modal/ModalBody';
+import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
+import ModalHeader from 'Components/Modal/ModalHeader';
+import { icons, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './OrganizeMovieModalContent.css';
 
 function OrganizeMovieModalContent(props) {
@@ -51,7 +52,7 @@ function OrganizeMovieModalContent(props) {
 
       <ModalFooter>
         <Button onPress={onModalClose}>
-          Cancel
+          {translate('Cancel')}
         </Button>
 
         <Button

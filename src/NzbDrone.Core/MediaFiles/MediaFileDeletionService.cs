@@ -122,23 +122,27 @@ namespace NzbDrone.Core.MediaFiles
         [EventHandleOrder(EventHandleOrder.Last)]
         public void Handle(MovieFileDeletedEvent message)
         {
-            if (message.Reason == DeleteMediaFileReason.Upgrade)
-            {
-                return;
-            }
-
             if (_configService.DeleteEmptyFolders)
             {
                 var movie = message.MovieFile.Movie;
-                var movieFileFolder = message.MovieFile.Path.GetParentPath();
+                var moviePath = movie.Path;
+                var folder = message.MovieFile.Path.GetParentPath();
 
-                if (_diskProvider.GetFiles(movie.Path, SearchOption.AllDirectories).Empty())
+                while (moviePath.IsParentPath(folder))
                 {
-                    _diskProvider.DeleteFolder(movie.Path, true);
+                    if (_diskProvider.FolderExists(folder))
+                    {
+                        _diskProvider.RemoveEmptySubfolders(folder);
+                    }
+
+                    folder = folder.GetParentPath();
                 }
-                else if (_diskProvider.GetFiles(movieFileFolder, SearchOption.AllDirectories).Empty())
+
+                _diskProvider.RemoveEmptySubfolders(moviePath);
+
+                if (_diskProvider.FolderEmpty(moviePath))
                 {
-                    _diskProvider.RemoveEmptySubfolders(movieFileFolder);
+                    _diskProvider.DeleteFolder(moviePath, true);
                 }
             }
         }

@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             const string title = "Carniv\u00E0le";
 
-            title.CleanSeriesTitle().Should().Be("carnivale");
+            title.CleanMovieTitle().Should().Be("carnivale");
         }
 
         [TestCase("The.Man.from.U.N.C.L.E.2015.1080p.BluRay.x264-SPARKS", "The Man from U.N.C.L.E.")]
@@ -171,7 +171,7 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
             parsed.Languages.Count().Should().Be(1);
-            parsed.Languages.First().Should().Be(Language.English);
+            parsed.Languages.First().Should().Be(Language.Unknown);
         }
 
         [TestCase("The.Purge.3.Election.Year.2016.German.DTS.DL.720p.BluRay.x264-MULTiPLEX")]
