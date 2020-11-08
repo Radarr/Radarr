@@ -55,5 +55,19 @@
     "DeleteCustomFormat": "Удалить пользовательский формат",
     "DeleteBackupMessageText": "Вы уверены, что хотите удалить резервную копию '{0}'?",
     "DeleteBackup": "Удалить резервную копию",
-    "Delete": "Удалить"
+    "Delete": "Удалить",
+    "DownloadClientCheckNoneAvailableMessage": "Ни один загрузчик не доступен",
+    "DownloadClient": "Загрузчик",
+    "DotNetVersionCheckOldUnsupportedMessage": "Установлення на данный момент версия .Net Framework {0} слишком старая и не поддерживается. Пожалуйста, обновите .Net Framework до версии {1}.",
+    "DotNetVersionCheckNotRecommendedMessage": "Установленный на данный момент .Net Framework {0} поддерживается, однако рекомендуется обновить его до версии {1}.",
+    "Docker": "Docker",
+    "DiskSpace": "Дисковое пространство",
+    "ClickToChangeLanguage": "Нажмите чтобы сменить язык",
+    "ChooseAnotherFolder": "Выбрать другой каталог",
+    "Clear": "Очистить",
+    "CertificateValidation": "Проверка сертификата",
+    "CancelProcessing": "Отмена",
+    "CancelPendingTask": "Вы уверены, что хотите убрать данную задачу из очереди?",
+    "Cancel": "Отменить",
+    "Calendar": "Календарь"
 }
