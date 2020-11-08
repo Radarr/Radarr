@@ -123,6 +123,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
+            var version = Proxy.GetApiVersion(Settings);
             var config = Proxy.GetConfig(Settings);
             var torrents = Proxy.GetTorrents(Settings);
 
@@ -141,6 +142,11 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     RemainingTime = GetRemainingTime(torrent),
                     SeedRatio = torrent.Ratio
                 };
+
+                if (version >= new Version("2.6.1"))
+                {
+                    item.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.ContentPath));
+                }
 
                 // Avoid removing torrents that haven't reached the global max ratio.
                 // Removal also requires the torrent to be paused, in case a higher max ratio was set on the torrent itself (which is not exposed by the api).
@@ -222,6 +228,12 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         public override DownloadClientItem GetImportItem(DownloadClientItem item, DownloadClientItem previousImportAttempt)
         {
             var result = item.Clone();
+
+            // On API version >= 2.6.1 this is already set correctly
+            if (!result.OutputPath.IsEmpty)
+            {
+                return result;
+            }
 
             var properties = Proxy.GetTorrentProperties(item.DownloadId, Settings);
             var savePath = new OsPath(properties.SavePath);
