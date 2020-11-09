@@ -227,25 +227,26 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public override DownloadClientItem GetImportItem(DownloadClientItem item, DownloadClientItem previousImportAttempt)
         {
-            var result = item.Clone();
-
             // On API version >= 2.6.1 this is already set correctly
-            if (!result.OutputPath.IsEmpty)
+            if (!item.OutputPath.IsEmpty)
             {
-                return result;
+                return item;
+            }
+
+            var files = Proxy.GetTorrentFiles(item.DownloadId, Settings);
+            if (!files.Any())
+            {
+                _logger.Debug($"No files found for torrent {item.Title} in qBittorrent");
+                return item;
             }
 
             var properties = Proxy.GetTorrentProperties(item.DownloadId, Settings);
             var savePath = new OsPath(properties.SavePath);
 
-            var files = Proxy.GetTorrentFiles(item.DownloadId, Settings);
+            var result = item.Clone();
 
             OsPath outputPath;
-            if (!files.Any())
-            {
-                outputPath = new OsPath(null);
-            }
-            else if (files.Count == 1)
+            if (files.Count == 1)
             {
                 outputPath = savePath + files[0].Name;
             }

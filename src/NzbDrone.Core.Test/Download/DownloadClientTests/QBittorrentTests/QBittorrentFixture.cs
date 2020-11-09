@@ -372,6 +372,39 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         }
 
         [Test]
+        public void api_261_should_use_content_path()
+        {
+            var torrent = new QBittorrentTorrent
+            {
+                Hash = "HASH",
+                Name = @"Droned.S01.\1/2",
+                Size = 1000,
+                Progress = 0.7,
+                Eta = 8640000,
+                State = "stalledDL",
+                Label = "",
+                SavePath = @"C:\Torrents".AsOsAgnostic(),
+                ContentPath = @"C:\Torrents\Droned.S01.12".AsOsAgnostic()
+            };
+
+            GivenTorrents(new List<QBittorrentTorrent> { torrent });
+
+            Mocker.GetMock<IQBittorrentProxy>()
+                .Setup(v => v.GetApiVersion(It.IsAny<QBittorrentSettings>()))
+                .Returns(new Version(2, 6, 1));
+
+            var item = new DownloadClientItem
+            {
+                DownloadId = torrent.Hash,
+                OutputPath = new OsPath(torrent.ContentPath)
+            };
+
+            var result = Subject.GetImportItem(item, null);
+
+            result.OutputPath.FullPath.Should().Be(torrent.ContentPath);
+        }
+
+        [Test]
         public void Download_should_return_unique_id()
         {
             GivenSuccessfulDownload();

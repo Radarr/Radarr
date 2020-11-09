@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Download
 
         public virtual DownloadClientItem GetImportItem(DownloadClientItem item, DownloadClientItem previousImportAttempt)
         {
-            return item.Clone();
+            return item;
         }
 
         public abstract void RemoveItem(string downloadId, bool deleteData);
