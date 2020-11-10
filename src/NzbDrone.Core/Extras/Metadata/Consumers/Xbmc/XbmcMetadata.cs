@@ -1,3 +1,6 @@
+// Esquema obtenido de: https://kodi.wiki/view/NFO_files/Movies 
+// Validado para Kodiv V18 (Leila)
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,7 +50,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         private static readonly Regex MovieImagesRegex = new Regex(@"^(?<type>poster|banner|fanart|clearart|discart|keyart|landscape|logo|backdrop|clearlogo)\.(?:png|jpe?g)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex MovieFileImageRegex = new Regex(@"(?<type>-thumb|-poster|-banner|-fanart|-clearart|-discart|-keyart|-landscape|-logo|-backdrop|-clearlogo)\.(?:png|jpe?g)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public override string Name => "Kodi (XBMC) / Emby";
+        public override string Name => "Kodi/XBMC/Jellyfin";
 
         public override string GetFilenameAfterMove(Movie movie, MovieFile movieFile, MetadataFile metadataFile)
         {
@@ -141,74 +144,46 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     var fanarts = movie.Images.Where(i => i.CoverType == MediaCoverTypes.Fanart);
 
                     var details = new XElement("movie");
-
+                    
                     details.Add(new XElement("title", movieTranslation?.Title ?? movie.Title));
+
+                    details.Add(new XElement("originaltitle", movie.OriginalTitle));
+
+                    details.Add(new XElement("sorttitle", movie.SortTitle));
 
                     if (movie.Ratings != null && movie.Ratings.Votes > 0)
                     {
                         details.Add(new XElement("rating", movie.Ratings.Value));
                     }
 
+                    #region userrating
+                    // pendiente de poner
+                    #endregion
+
+                    #region top250
+                    // pendiente de poner
+                    #endregion
+
+                    #region outline
+                    // pendiente de poner
+                    #endregion
+
                     details.Add(new XElement("plot", movieTranslation?.Overview ?? movie.Overview));
-                    details.Add(new XElement("id", movie.ImdbId));
-                    details.Add(new XElement("tmdbid", movie.TmdbId));
 
-                    if (movie.ImdbId.IsNotNullOrWhiteSpace())
+                    #region tagline
+                    // pendiente de poner
+                    #endregion
+
+                    details.Add(new XElement("runtime", movie.Runtime));
+
+                    // banner? clearart? clearlogo? discart? landscape? poster?
+                    if (thumbnail != null)
                     {
-                        var imdbId = new XElement("uniqueid", movie.ImdbId);
-                        imdbId.SetAttributeValue("type", "imdb");
-                        imdbId.SetAttributeValue("default", true);
-                        details.Add(imdbId);
-                    }
-
-                    var uniqueId = new XElement("uniqueid", movie.TmdbId);
-                    uniqueId.SetAttributeValue("type", "tmdb");
-                    details.Add(uniqueId);
-
-                    if (movie.Certification.IsNotNullOrWhiteSpace())
-                    {
-                        details.Add(new XElement("mpaa", movie.Certification));
-                    }
-
-                    details.Add(new XElement("year", movie.Year));
-
-                    if (movie.InCinemas.HasValue)
-                    {
-                        details.Add(new XElement("premiered", movie.InCinemas.Value.ToString("yyyy-MM-dd")));
-                    }
-
-                    if (movie.Collection?.Name != null)
-                    {
-                        var setElement = new XElement("set");
-
-                        setElement.Add(new XElement("name", movie.Collection.Name));
-
-                        details.Add(setElement);
-                    }
-
-                    if (movie.Collection?.TmdbId > 0)
-                    {
-                        details.Add(new XElement("tmdbCollectionId", movie.Collection.TmdbId));
-
-                        var uniqueSetId = new XElement("uniqueid", movie.Collection.TmdbId);
-                        uniqueSetId.SetAttributeValue("type", "tmdbSet");
-                        details.Add(uniqueSetId);
-                    }
-
-                    foreach (var genre in movie.Genres)
-                    {
-                        details.Add(new XElement("genre", genre));
-                    }
-
-                    details.Add(new XElement("studio", movie.Studio));
-
-                    if (thumbnail == null)
-                    {
-                        details.Add(new XElement("thumb"));
+                        details.Add(new XElement("thumb", thumbnail.Url));
                     }
                     else
                     {
-                        details.Add(new XElement("thumb", thumbnail.Url));
+                        details.Add(new XElement("thumb"));
                     }
 
                     foreach (var poster in posters)
@@ -233,7 +208,104 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         details.Add(fanartElement);
                     }
 
-                    details.Add(new XElement("watched", watched));
+                    if (movie.Certification.IsNotNullOrWhiteSpace())
+                    {
+                        details.Add(new XElement("mpaa", movie.Certification));
+                    }
+
+                    #region playcount
+                    // pendiente de poner
+                    #endregion
+
+                    #region lastplayed
+                    // pendiente de poner
+                    #endregion
+
+                    // #region id
+                    // details.Add(new XElement("id", movie.ImdbId));
+                    // details.Add(new XElement("tmdbid", movie.TmdbId));
+                    // #endregion
+
+                    var uniqueId = new XElement("uniqueid", movie.TmdbId);
+                    uniqueId.SetAttributeValue("type", "tmdb");
+                    details.Add(uniqueId);
+
+                    if (movie.ImdbId.IsNotNullOrWhiteSpace())
+                    {
+                        var imdbId = new XElement("uniqueid", movie.ImdbId);
+                        imdbId.SetAttributeValue("type", "imdb");
+                        imdbId.SetAttributeValue("default", true);
+                        details.Add(imdbId);
+                    }
+
+                    foreach (var genre in movie.Genres)
+                    {
+                        details.Add(new XElement("genre", genre));
+                    }
+
+                    #region country
+                    // pendiente de poner
+                    #endregion
+
+                    if (movie.Collection?.Name != null)
+                    {
+                        var setElement = new XElement("set");
+
+                        setElement.Add(new XElement("name", movie.Collection.Name));
+
+                        details.Add(setElement);
+                    }
+
+                    #region tag
+                    //details.Add(new XElement("tag", movie.Tags)); //Añadido Tags //Estan vacios en la BBDD...
+                    #endregion
+
+                    // esto hay que comprobarlo, porque este credits es el escritor y lo mete como ¿actores?
+                    var credits = _creditService.GetAllCreditsForMovie(movie.Id);
+
+                    foreach (var credit in credits)
+                    {
+                        if (credit.Name != null && credit.Character != null)
+                        {
+                            var actorElement = new XElement("actor");
+
+                            actorElement.Add(new XElement("name", credit.Name));
+                            actorElement.Add(new XElement("role", credit.Character));
+                            actorElement.Add(new XElement("order", credit.Order));
+
+                            var headshot = credit.Images.FirstOrDefault(m => m.CoverType == MediaCoverTypes.Headshot);
+
+                            if (headshot != null && headshot.Url != null)
+                            {
+                                actorElement.Add(new XElement("thumb", headshot.Url));
+                            }
+
+                            details.Add(actorElement);
+                        }
+                    }
+
+                    if (movie.InCinemas.HasValue)
+                    {
+                        details.Add(new XElement("premiered", movie.InCinemas.Value.ToString("yyyy-MM-dd")));
+                    }
+
+                    details.Add(new XElement("year", movie.Year));
+
+                    #region collection
+                    // Esto no aparece en el NFO de Kodi, pendiente de ver si borrar o no
+                    // if (movie.Collection?.TmdbId > 0)
+                    // {
+                    //     details.Add(new XElement("tmdbCollectionId", movie.Collection.TmdbId));
+
+                    //     var uniqueSetId = new XElement("uniqueid", movie.Collection.TmdbId);
+                    //     uniqueSetId.SetAttributeValue("type", "tmdbSet");
+                    //     details.Add(uniqueSetId);
+                    // }
+                    #endregion
+
+                    details.Add(new XElement("studio", movie.Studio));
+                    
+                    details.Add(new XElement("trailer", "https://www.youtube.com/watch?v=" + movie.YouTubeTrailerId)); //Añadido el trailer
 
                     if (movieFile.MediaInfo != null)
                     {
@@ -273,33 +345,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                             streamDetails.Add(subtitle);
                         }
 
-                        var credits = _creditService.GetAllCreditsForMovie(movie.Id);
-
-                        foreach (var credit in credits)
-                        {
-                            if (credit.Name != null && credit.Character != null)
-                            {
-                                var actorElement = new XElement("actor");
-
-                                actorElement.Add(new XElement("name", credit.Name));
-                                actorElement.Add(new XElement("role", credit.Character));
-                                actorElement.Add(new XElement("order", credit.Order));
-
-                                var headshot = credit.Images.FirstOrDefault(m => m.CoverType == MediaCoverTypes.Headshot);
-
-                                if (headshot != null && headshot.Url != null)
-                                {
-                                    actorElement.Add(new XElement("thumb", headshot.Url));
-                                }
-
-                                details.Add(actorElement);
-                            }
-                        }
-
                         fileInfo.Add(streamDetails);
                         details.Add(fileInfo);
                     }
-
                     doc.Add(details);
                     doc.Save(xw);
 
