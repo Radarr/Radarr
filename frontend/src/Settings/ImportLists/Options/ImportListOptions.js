@@ -21,9 +21,9 @@ function ImportListOptions(props) {
   const cleanLibraryLevelOptions = [
     { key: 'disabled', value: 'Disabled' },
     { key: 'logOnly', value: 'Log Only' },
-    { key: 'keepAndUnmonitor', value: 'Keep and Unmonitor' },
-    { key: 'removeAndKeep', value: 'Remove and Keep' },
-    { key: 'removeAndDelete', value: 'Remove and Delete' }
+    { key: 'keepAndUnmonitor', value: 'Keep and Unmonitor Movie' },
+    { key: 'removeAndKeep', value: 'Remove Movie and Keep Files' },
+    { key: 'removeAndDelete', value: 'Remove Movie and Delete Files' }
   ];
 
   return (
@@ -65,6 +65,7 @@ function ImportListOptions(props) {
                 name="listSyncLevel"
                 values={cleanLibraryLevelOptions}
                 helpText={translate('ListSyncLevelHelpText')}
+                helpTextWarning={settings.listSyncLevel.value === 'removeAndDelete' ? translate('ListSyncLevelHelpTextWarning') : undefined}
                 onChange={onInputChange}
                 {...settings.listSyncLevel}
               />
