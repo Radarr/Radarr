@@ -3,7 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net462;netcoreapp3.1</TargetFrameworks>
     <NeutralLanguage>en</NeutralLanguage>
-    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>..\NzbDrone.Host\Readarr.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>

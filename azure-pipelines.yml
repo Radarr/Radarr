@@ -184,7 +184,11 @@ stages:
       - bash: ./build.sh --packages
         displayName: Create Packages
       - bash: |
-          setup/inno/ISCC.exe setup/readarr.iss //DFramework=netcoreapp3.1
+          setup/inno/ISCC.exe setup/readarr.iss //DFramework=netcoreapp3.1 //DRuntime=win-x86
+          cp setup/output/Readarr.*windows.netcoreapp3.1.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Readarr.${BUILDNAME}.windows-core-x86-installer.exe
+        displayName: Create .NET Core Windows installer
+      - bash: |
+          setup/inno/ISCC.exe setup/readarr.iss //DFramework=netcoreapp3.1 //DRuntime=win-x64
           cp setup/output/Readarr.*windows.netcoreapp3.1.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Readarr.${BUILDNAME}.windows-core-x64-installer.exe
         displayName: Create .NET Core Windows installer
       - publish: $(Build.ArtifactStagingDirectory)
@@ -228,7 +232,14 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).windows-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/windows/netcoreapp3.1
+          rootFolderOrFile: $(artifactsFolder)/win-x64/netcoreapp3.1
+      - task: ArchiveFiles@2
+        displayName: Create Windows x86 Core zip
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Readarr.$(buildName).windows-core-x86.zip'
+          archiveType: 'zip'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/win-x86/netcoreapp3.1
       - task: ArchiveFiles@2
         displayName: Create MacOS Core app
         inputs:

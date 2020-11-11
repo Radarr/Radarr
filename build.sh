@@ -185,12 +185,13 @@ PackageMacOSApp()
 PackageWindows()
 {
     local framework="$1"
+    local runtime="$2"
     
     ProgressStart "Creating Windows Package for $framework"
 
-    local folder=$artifactsFolder/windows/$framework/Readarr
+    local folder=$artifactsFolder/$runtime/$framework/Readarr
     
-    PackageFiles "$folder" "$framework" "win-x64"
+    PackageFiles "$folder" "$framework" "$runtime"
 
     echo "Removing Readarr.Mono"
     rm -f $folder/Readarr.Mono.*
@@ -216,7 +217,7 @@ Package()
             PackageLinux "$framework" "$runtime"
             ;;
         win)
-            PackageWindows "$framework"
+            PackageWindows "$framework" "$runtime"
             ;;
         osx)
             PackageMacOS "$framework"
@@ -233,14 +234,6 @@ PackageTests()
     cp test.sh "$testPackageFolder/$framework/$runtime/publish"
 
     rm -f $testPackageFolder/$framework/$runtime/*.log.config
-
-    # geckodriver.exe isn't copied by dotnet publish
-    if [ "$runtime" = "win-x64" ];
-    then
-        curl -Lso gecko.zip "https://github.com/mozilla/geckodriver/releases/download/v0.27.0/geckodriver-v0.27.0-win64.zip"
-        unzip -o gecko.zip
-        cp geckodriver.exe "$testPackageFolder/$framework/win-x64/publish"
-    fi
 
     ProgressEnd 'Creating Test Package'
 }
@@ -320,6 +313,7 @@ then
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
         PackageTests "netcoreapp3.1" "win-x64"
+        PackageTests "netcoreapp3.1" "win-x86"
         PackageTests "netcoreapp3.1" "linux-x64"
         PackageTests "netcoreapp3.1" "linux-musl-x64"
         PackageTests "netcoreapp3.1" "osx-x64"
@@ -352,6 +346,7 @@ then
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
         Package "netcoreapp3.1" "win-x64"
+        Package "netcoreapp3.1" "win-x86"
         Package "netcoreapp3.1" "linux-x64"
         Package "netcoreapp3.1" "linux-musl-x64"
         Package "netcoreapp3.1" "linux-arm64"
