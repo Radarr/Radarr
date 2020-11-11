@@ -49,8 +49,8 @@ Name: "startupShortcut"; Description: "Create shortcut in Startup folder (Starts
 Name: "none"; Description: "Do not start automatically"; GroupDescription: "Start automatically"; Flags: exclusive unchecked
 
 [Files]
-Source: "..\_artifacts\windows\{#Framework}\Radarr\Radarr.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\_artifacts\windows\{#Framework}\Radarr\*"; Excludes: "Radarr.Update"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\_artifacts\{#Runtime}\{#Framework}\Radarr\Radarr.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\_artifacts\{#Runtime}\{#Framework}\Radarr\*"; Excludes: "Radarr.Update"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
