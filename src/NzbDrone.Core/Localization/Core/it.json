@@ -850,5 +850,6 @@
     "EditMovieFile": "Edita File del Film",
     "Yesterday": "Ieri",
     "Tomorrow": "Domani",
-    "Today": "Oggi"
+    "Today": "Oggi",
+    "ListSyncLevelHelpTextWarning": "I file del film saranno cancellati permanentemente, questo può dipendere dalla pulizia della libreria se la lista è vuota"
 }
