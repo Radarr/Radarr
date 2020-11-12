@@ -208,7 +208,7 @@ class DiscoverMovieOverview extends Component {
                     <Icon
                       name={icons.RECOMMENDED}
                       size={10}
-                      title={translate('MovieIsRecommendFromList')}
+                      title={translate('MovieIsRecommendFromTMDB')}
                     />
                   </Label> :
                   null
