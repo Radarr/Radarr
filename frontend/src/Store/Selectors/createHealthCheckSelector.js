@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import translate from 'Utilities/String/translate';
 
 function createHealthCheckSelector() {
   return createSelector(
@@ -11,8 +12,8 @@ function createHealthCheckSelector() {
         items.push({
           source: 'UI',
           type: 'warning',
-          message: 'Could not connect to SignalR, UI won\'t update',
-          wikiUrl: 'https://github.com/Radarr/Radarr/wiki/Health-Checks#could-not-connect-to-signalr'
+          message: translate('CouldNotConnectSignalR'),
+          wikiUrl: 'https://wiki.servarr.com/Radarr_System#Could_not_connect_to_signalR'
         });
       }
 

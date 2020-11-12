@@ -35,8 +35,8 @@ function NotificationEventItems(props) {
       <FormLabel>{translate('NotificationTriggers')}</FormLabel>
       <div>
         <FormInputHelpText
-          text="Select which events should trigger this notification"
-          link="https://github.com/Radarr/Radarr/wiki/Connections"
+          text={translate('NotifcationTriggersHelpText')}
+          link="https://wiki.servarr.com/Radarr_Settings#Connections"
         />
         <div className={styles.events}>
           <div>

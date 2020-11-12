@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
 
         public override string Name => "Custom Script";
 
-        public override string Link => "https://github.com/Radarr/Radarr/wiki/Custom-Post-Processing-Scripts";
+        public override string Link => "https://wiki.servarr.com/Radarr_Settings#Connections";
 
         public override ProviderMessage Message => new ProviderMessage("Testing will execute the script with the EventType set to Test, ensure your script handles this correctly", ProviderMessageType.Warning);
 

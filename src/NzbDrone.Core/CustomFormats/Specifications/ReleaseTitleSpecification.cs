@@ -8,7 +8,7 @@ namespace NzbDrone.Core.CustomFormats
     {
         public override int Order => 1;
         public override string ImplementationName => "Release Title";
-        public override string InfoLink => "https://github.com/Radarr/Radarr/wiki/Custom-Formats-Aphrodite#release-title";
+        public override string InfoLink => "https://wiki.servarr.com/Radarr_Settings#Custom_Formats_2";
 
         protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo)
         {

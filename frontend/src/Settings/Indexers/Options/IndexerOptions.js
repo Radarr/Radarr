@@ -85,7 +85,7 @@ function IndexerOptions(props) {
                 type={inputTypes.CHECK}
                 name="preferIndexerFlags"
                 helpText={translate('PreferIndexerFlagsHelpText')}
-                helpLink="https://github.com/Radarr/Radarr/wiki/Indexer-Flags"
+                helpLink="https://wiki.servarr.com/Definitions#Indexer_Flags"
                 onChange={onInputChange}
                 {...settings.preferIndexerFlags}
               />
@@ -118,7 +118,7 @@ function IndexerOptions(props) {
                 unit="minutes"
                 helpText={translate('HelpText')}
                 helpTextWarning={translate('RSSSyncIntervalHelpTextWarning')}
-                helpLink="https://github.com/Radarr/Radarr/wiki/RSS-Sync"
+                helpLink="https://wiki.servarr.com/Radarr_FAQ#How_does_Radarr_work"
                 onChange={onInputChange}
                 {...settings.rssSyncInterval}
               />
