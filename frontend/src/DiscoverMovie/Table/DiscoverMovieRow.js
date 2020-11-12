@@ -287,7 +287,7 @@ class DiscoverMovieRow extends Component {
                       <Icon
                         name={icons.RECOMMENDED}
                         size={12}
-                        title='Recommended'
+                        title={translate('MovieIsRecommendFromList')}
                       /> :
                       null
                   }
