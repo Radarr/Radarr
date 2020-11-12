@@ -6,6 +6,7 @@ using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.HealthCheck.Checks;
@@ -69,6 +70,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Mocker.GetMock<IProvideDownloadClient>()
                   .Setup(s => s.GetDownloadClients())
                   .Returns(new IDownloadClient[] { _downloadClient.Object });
+
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.EnableCompletedDownloadHandling)
+                  .Returns(true);
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(x => x.FolderExists(It.IsAny<string>()))

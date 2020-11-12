@@ -5,6 +5,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Messaging;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
@@ -24,22 +25,31 @@ namespace NzbDrone.Core.HealthCheck.Checks
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IProvideDownloadClient _downloadClientProvider;
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
         private readonly IOsInfo _osInfo;
 
         public RemotePathMappingCheck(IDiskProvider diskProvider,
                                       IProvideDownloadClient downloadClientProvider,
+                                      IConfigService configService,
                                       IOsInfo osInfo,
                                       Logger logger)
         {
             _diskProvider = diskProvider;
             _downloadClientProvider = downloadClientProvider;
+            _configService = configService;
             _logger = logger;
             _osInfo = osInfo;
         }
 
         public override HealthCheck Check()
         {
+            // We don't care about client folders if we are not handling completed files
+            if (!_configService.EnableCompletedDownloadHandling)
+            {
+                return new HealthCheck(GetType());
+            }
+
             var clients = _downloadClientProvider.GetDownloadClients();
 
             foreach (var client in clients)
@@ -101,6 +111,12 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public HealthCheck Check(IEvent message)
         {
+            // We don't care about client folders if we are not handling completed files
+            if (!_configService.EnableCompletedDownloadHandling)
+            {
+                return new HealthCheck(GetType());
+            }
+
             if (typeof(TrackImportFailedEvent).IsAssignableFrom(message.GetType()))
             {
                 var failureMessage = (TrackImportFailedEvent)message;
