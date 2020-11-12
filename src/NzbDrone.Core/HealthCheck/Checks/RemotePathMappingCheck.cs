@@ -5,6 +5,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Messaging;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
@@ -25,11 +26,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IProvideDownloadClient _downloadClientProvider;
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
         private readonly IOsInfo _osInfo;
 
         public RemotePathMappingCheck(IDiskProvider diskProvider,
                                       IProvideDownloadClient downloadClientProvider,
+                                      IConfigService configService,
                                       IOsInfo osInfo,
                                       Logger logger,
                                       ILocalizationService localizationService)
@@ -37,12 +40,19 @@ namespace NzbDrone.Core.HealthCheck.Checks
         {
             _diskProvider = diskProvider;
             _downloadClientProvider = downloadClientProvider;
+            _configService = configService;
             _logger = logger;
             _osInfo = osInfo;
         }
 
         public override HealthCheck Check()
         {
+            // We don't care about client folders if we are not handling completed files
+            if (!_configService.EnableCompletedDownloadHandling)
+            {
+                return new HealthCheck(GetType());
+            }
+
             var clients = _downloadClientProvider.GetDownloadClients();
 
             foreach (var client in clients)
@@ -104,6 +114,12 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public HealthCheck Check(IEvent message)
         {
+            // We don't care about client folders if we are not handling completed files
+            if (!_configService.EnableCompletedDownloadHandling)
+            {
+                return new HealthCheck(GetType());
+            }
+
             if (typeof(MovieImportFailedEvent).IsAssignableFrom(message.GetType()))
             {
                 var failureMessage = (MovieImportFailedEvent)message;
@@ -118,13 +134,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     }
                     else
                     {
-                        // If the file doesn't exist but TrackInfo is not null then the message is coming from
-                        // ImportApprovedTracks and the file must have been removed part way through processing
+                        // If the file doesn't exist but MovieInfo is not null then the message is coming from
+                        // ImportApprovedMovies and the file must have been removed part way through processing
                         return new HealthCheck(GetType(), HealthCheckResult.Error, $"File {moviePath} was removed part way though procesing.");
                     }
                 }
 
-                // If the previous case did not match then the failure occured in DownloadedTracksImportService,
+                // If the previous case did not match then the failure occured in DownloadedMovieImportService,
                 // while trying to locate the files reported by the download client
                 var client = _downloadClientProvider.GetDownloadClients().FirstOrDefault(x => x.Definition.Name == failureMessage.DownloadClientInfo.Name);
                 try
