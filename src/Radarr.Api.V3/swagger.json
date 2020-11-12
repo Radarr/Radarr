@@ -742,13 +742,13 @@
                         "source": "ImportMechanismCheck",
                         "type": "warning",
                         "message": "Enable Completed Download Handling",
-                        "wikiUrl": "https://github.com/Radarr/Radarr/wiki/Health-checks#enable-completed-download-handling"
+                        "wikiUrl": "https://wiki.servarr.com/Radarr_System#Completed.2FFailed_Download_Handling"
                       },
                       {
                         "source": "DownloadClientCheck",
                         "type": "error",
                         "message": "Unable to communicate with qBittorrent. Failed to connect to qBittorrent, check your settings.",
-                        "wikiUrl": "https://github.com/Radarr/Radarr/wiki/Health-checks#unable-to-communicate-with-download-client"
+                        "wikiUrl": "https://wiki.servarr.com/Radarr_System#Download_Clients"
                       }
                     ]
                   }
@@ -1333,7 +1333,7 @@
                         "implementationName": "IMDb Lists",
                         "implementation": "IMDbListImport",
                         "configContract": "IMDbListSettings",
-                        "infoLink": "https://github.com/Radarr/Radarr/wiki/Supported-ImportLists#imdblistimport",
+                        "infoLink": "https://wiki.servarr.com/Radarr_Settings#Lists",
                         "tags": [
                           2
                         ],

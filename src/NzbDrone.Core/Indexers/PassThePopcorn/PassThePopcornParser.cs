@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                                          $"Leechers: {torrent.Leechers}" +
                                          $"ReleaseName: {torrent.ReleaseName}" +
                                          $"ID: {torrent.Id}" +
-                                         "}. Please immediately report this info on https://github.com/Radarr/Radarr/issues/1584.");
+                                         "}. Please immediately report this info on https://github.com/Radarr/Radarr/issues/new?assignees=&labels=bug&template=bug_report.md&title=Encountered%20Exception%20Parsing%20%20PTP%20Torrent.");
                         throw;
                     }
                 }
