@@ -450,6 +450,7 @@
   "MovieIsDownloadingInterp": "Movie is downloading - {0}% {1}",
   "MovieIsMonitored": "Movie is monitored",
   "MovieIsOnImportExclusionList": "Movie is on Import Exclusion List",
+  "MovieIsRecommendFromTMDB": "Movie is recommended from TMDB recommendations",
   "MovieIsUnmonitored": "Movie is unmonitored",
   "MovieNaming": "Movie Naming",
   "Movies": "Movies",
