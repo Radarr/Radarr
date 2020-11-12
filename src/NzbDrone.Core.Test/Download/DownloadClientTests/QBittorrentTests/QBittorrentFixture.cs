@@ -130,11 +130,11 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             foreach (var torrent in torrents)
             {
                 Mocker.GetMock<IQBittorrentProxy>()
-                    .Setup(s => s.GetTorrentProperties(torrent.Hash, It.IsAny<QBittorrentSettings>()))
+                    .Setup(s => s.GetTorrentProperties(torrent.Hash.ToLower(), It.IsAny<QBittorrentSettings>()))
                     .Returns(new QBittorrentTorrentProperties { SavePath = torrent.SavePath });
 
                 Mocker.GetMock<IQBittorrentProxy>()
-                    .Setup(s => s.GetTorrentFiles(torrent.Hash, It.IsAny<QBittorrentSettings>()))
+                    .Setup(s => s.GetTorrentFiles(torrent.Hash.ToLower(), It.IsAny<QBittorrentSettings>()))
                     .Returns(new List<QBittorrentTorrentFile> { new QBittorrentTorrentFile { Name = torrent.Name } });
             }
         }
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
         private void GivenTorrentFiles(string hash, List<QBittorrentTorrentFile> files)
         {
             Mocker.GetMock<IQBittorrentProxy>()
-                .Setup(s => s.GetTorrentFiles(hash, It.IsAny<QBittorrentSettings>()))
+                .Setup(s => s.GetTorrentFiles(hash.ToLower(), It.IsAny<QBittorrentSettings>()))
                 .Returns(files);
         }
 

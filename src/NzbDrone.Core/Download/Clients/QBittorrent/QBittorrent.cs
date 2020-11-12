@@ -233,14 +233,14 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 return item;
             }
 
-            var files = Proxy.GetTorrentFiles(item.DownloadId, Settings);
+            var files = Proxy.GetTorrentFiles(item.DownloadId.ToLower(), Settings);
             if (!files.Any())
             {
                 _logger.Debug($"No files found for torrent {item.Title} in qBittorrent");
                 return item;
             }
 
-            var properties = Proxy.GetTorrentProperties(item.DownloadId, Settings);
+            var properties = Proxy.GetTorrentProperties(item.DownloadId.ToLower(), Settings);
             var savePath = new OsPath(properties.SavePath);
 
             var result = item.Clone();
