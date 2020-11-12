@@ -666,12 +666,14 @@ namespace NzbDrone.Core.Parser
             if (ProperRegex.IsMatch(normalizedName))
             {
                 result.Revision.Version = 2;
+                result.RevisionDetectionSource = QualityDetectionSource.Name;
             }
 
             if (RepackRegex.IsMatch(normalizedName))
             {
                 result.Revision.Version = 2;
                 result.Revision.IsRepack = true;
+                result.RevisionDetectionSource = QualityDetectionSource.Name;
             }
 
             var versionRegexResult = VersionRegex.Match(normalizedName);
@@ -679,6 +681,7 @@ namespace NzbDrone.Core.Parser
             if (versionRegexResult.Success)
             {
                 result.Revision.Version = Convert.ToInt32(versionRegexResult.Groups["version"].Value);
+                result.RevisionDetectionSource = QualityDetectionSource.Name;
             }
 
             // TODO: re-enable this when we have a reliable way to determine real
@@ -688,6 +691,7 @@ namespace NzbDrone.Core.Parser
             if (realRegexResult.Count > 0)
             {
                 result.Revision.Real = realRegexResult.Count;
+                result.RevisionDetectionSource = QualityDetectionSource.Name;
             }
 
             return result;

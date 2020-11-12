@@ -37,10 +37,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
             _mediaInfoAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>())).Returns(AugmentQualityResult.ResolutionOnly((int)Resolution.R1080p, Confidence.MediaInfo));
 
             _fileExtensionAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
-                                   .Returns(new AugmentQualityResult(Source.TV, Confidence.Fallback, (int)Resolution.R720p, Confidence.Fallback, Modifier.NONE, Confidence.Fallback, new Revision()));
+                                   .Returns(new AugmentQualityResult(Source.TV, Confidence.Fallback, (int)Resolution.R720p, Confidence.Fallback, Modifier.NONE, Confidence.Fallback, new Revision(), Confidence.Fallback));
 
             _nameAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
-                          .Returns(new AugmentQualityResult(Source.TV, Confidence.Default, 480, Confidence.Default, Modifier.NONE, Confidence.Fallback, new Revision()));
+                          .Returns(new AugmentQualityResult(Source.TV, Confidence.Default, 480, Confidence.Default, Modifier.NONE, Confidence.Fallback, new Revision(), Confidence.Default));
 
             _releaseNameAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
                                  .Returns(AugmentQualityResult.SourceOnly(Source.WEBDL, Confidence.MediaInfo));
@@ -113,6 +113,62 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
             result.Quality.SourceDetectionSource.Should().Be(QualityDetectionSource.Name);
             result.Quality.ResolutionDetectionSource.Should().Be(QualityDetectionSource.Name);
             result.Quality.Quality.Should().Be(Quality.WEBDL480p);
+        }
+
+        [Test]
+        public void should_return_version_1_when_no_version_specified()
+        {
+            GivenAugmenters(_nameAugmenter, _releaseNameAugmenter);
+
+            var result = Subject.Aggregate(new LocalMovie(), new DownloadClientItem(), false);
+
+            result.Quality.Revision.Version.Should().Be(1);
+            result.Quality.RevisionDetectionSource.Should().Be(QualityDetectionSource.Unknown);
+        }
+
+        [Test]
+        public void should_return_version_2_when_name_indicates_proper()
+        {
+            _nameAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
+                          .Returns(new AugmentQualityResult(Source.TV, Confidence.Default, 480, Confidence.Default, Modifier.NONE, Confidence.Default, new Revision(2), Confidence.Tag));
+
+            GivenAugmenters(_nameAugmenter, _releaseNameAugmenter);
+
+            var result = Subject.Aggregate(new LocalMovie(), new DownloadClientItem(), false);
+
+            result.Quality.Revision.Version.Should().Be(2);
+            result.Quality.RevisionDetectionSource.Should().Be(QualityDetectionSource.Name);
+        }
+
+        [Test]
+        public void should_return_version_0_when_file_name_indicates_v0()
+        {
+            _nameAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
+                          .Returns(new AugmentQualityResult(Source.TV, Confidence.Default, 480, Confidence.Default, Modifier.NONE, Confidence.Default, new Revision(0), Confidence.Tag));
+
+            GivenAugmenters(_nameAugmenter, _releaseNameAugmenter);
+
+            var result = Subject.Aggregate(new LocalMovie(), new DownloadClientItem(), false);
+
+            result.Quality.Revision.Version.Should().Be(0);
+            result.Quality.RevisionDetectionSource.Should().Be(QualityDetectionSource.Name);
+        }
+
+        [Test]
+        public void should_return_version_2_when_file_name_indicates_v0_and_release_name_indicates_v2()
+        {
+            _nameAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
+                          .Returns(new AugmentQualityResult(Source.TV, Confidence.Default, 480, Confidence.Default, Modifier.NONE, Confidence.Default, new Revision(0), Confidence.Tag));
+
+            _releaseNameAugmenter.Setup(s => s.AugmentQuality(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
+                                 .Returns(new AugmentQualityResult(Source.TV, Confidence.Default, 480, Confidence.Default, Modifier.NONE, Confidence.Default, new Revision(2), Confidence.Tag));
+
+            GivenAugmenters(_nameAugmenter, _releaseNameAugmenter);
+
+            var result = Subject.Aggregate(new LocalMovie(), new DownloadClientItem(), false);
+
+            result.Quality.Revision.Version.Should().Be(2);
+            result.Quality.RevisionDetectionSource.Should().Be(QualityDetectionSource.Name);
         }
     }
 }

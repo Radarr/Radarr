@@ -30,13 +30,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
                 ? Confidence.Tag
                 : Confidence.Fallback;
 
+            var revisionConfidence = quality.RevisionDetectionSource == QualityDetectionSource.Name
+                ? Confidence.Tag
+                : Confidence.Fallback;
+
             return new AugmentQualityResult(quality.Quality.Source,
                                             sourceConfidence,
                                             quality.Quality.Resolution,
                                             resolutionConfidence,
                                             quality.Quality.Modifier,
                                             modifierConfidence,
-                                            quality.Revision);
+                                            quality.Revision,
+                                            revisionConfidence);
         }
     }
 }

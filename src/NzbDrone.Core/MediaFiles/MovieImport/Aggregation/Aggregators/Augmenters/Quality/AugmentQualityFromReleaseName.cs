@@ -33,17 +33,24 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenter
             }
 
             var historyQuality = QualityParser.ParseQuality(history.SourceTitle);
+
             var sourceConfidence = historyQuality.SourceDetectionSource == QualityDetectionSource.Name
                 ? Confidence.Tag
                 : Confidence.Fallback;
+
             var resolutionConfidence = historyQuality.ResolutionDetectionSource == QualityDetectionSource.Name
                 ? Confidence.Tag
                 : Confidence.Fallback;
+
             var modifierConfidence = historyQuality.ModifierDetectionSource == QualityDetectionSource.Name
                 ? Confidence.Tag
                 : Confidence.Fallback;
 
-            return new AugmentQualityResult(historyQuality.Quality.Source, sourceConfidence, historyQuality.Quality.Resolution, resolutionConfidence, historyQuality.Quality.Modifier, modifierConfidence, historyQuality.Revision);
+            var revisionConfidence = historyQuality.RevisionDetectionSource == QualityDetectionSource.Name
+                ? Confidence.Tag
+                : Confidence.Fallback;
+
+            return new AugmentQualityResult(historyQuality.Quality.Source, sourceConfidence, historyQuality.Quality.Resolution, resolutionConfidence, historyQuality.Quality.Modifier, modifierConfidence, historyQuality.Revision, revisionConfidence);
         }
     }
 }

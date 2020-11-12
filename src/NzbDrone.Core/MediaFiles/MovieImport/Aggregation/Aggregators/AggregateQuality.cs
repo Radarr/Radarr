@@ -28,7 +28,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
             var resolutionConfidence = Confidence.Default;
             var modifier = Modifier.NONE;
             var modifierConfidence = Confidence.Default;
-            var revision = new Revision();
+            var revision = new Revision(1);
+            var revisionConfidence = Confidence.Default;
 
             foreach (var augmentQuality in _augmentQualities)
             {
@@ -61,9 +62,24 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
                     modifierConfidence = augmentedQuality.ModifierConfidence;
                 }
 
-                if (augmentedQuality.Revision != null && augmentedQuality.Revision > revision)
+                if (augmentedQuality.Revision != null)
                 {
-                    revision = augmentedQuality.Revision;
+                    // Update the revision and confidence if it is higher than the current confidence,
+                    // this will allow explicitly detected v0 to override the v1 default.
+                    if (augmentedQuality.RevisionConfidence > revisionConfidence)
+                    {
+                        revision = augmentedQuality.Revision;
+                        revisionConfidence = augmentedQuality.RevisionConfidence;
+                    }
+
+                    // Update the revision and confidence if it is the same confidence and the revision is higher,
+                    // this will allow the best revision to be used in the event there is a disagreement.
+                    else if (augmentedQuality.RevisionConfidence == revisionConfidence &&
+                             augmentedQuality.Revision > revision)
+                    {
+                        revision = augmentedQuality.Revision;
+                        revisionConfidence = augmentedQuality.RevisionConfidence;
+                    }
                 }
             }
 
@@ -92,6 +108,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
             {
                 quality.SourceDetectionSource = QualityDetectionSource.Name;
             }
+
+            quality.RevisionDetectionSource = revisionConfidence == Confidence.Tag ? QualityDetectionSource.Name : QualityDetectionSource.Unknown;
 
             _logger.Debug("Using quality: {0}", quality);
 
