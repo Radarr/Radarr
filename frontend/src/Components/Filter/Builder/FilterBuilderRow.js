@@ -8,10 +8,11 @@ import DateFilterBuilderRowValue from './DateFilterBuilderRowValue';
 import FilterBuilderRowValueConnector from './FilterBuilderRowValueConnector';
 import ImportListFilterBuilderRowValueConnector from './ImportListFilterBuilderRowValueConnector';
 import IndexerFilterBuilderRowValueConnector from './IndexerFilterBuilderRowValueConnector';
-import MovieStatusFilterBuilderRowValue from './MovieStatusFilterBuilderRowValue';
+import MinimumAvailabilityFilterBuilderRowValue from './MinimumAvailabilityFilterBuilderRowValue';
 import ProtocolFilterBuilderRowValue from './ProtocolFilterBuilderRowValue';
 import QualityFilterBuilderRowValueConnector from './QualityFilterBuilderRowValueConnector';
 import QualityProfileFilterBuilderRowValueConnector from './QualityProfileFilterBuilderRowValueConnector';
+import ReleaseStatusFilterBuilderRowValue from './ReleaseStatusFilterBuilderRowValue';
 import TagFilterBuilderRowValueConnector from './TagFilterBuilderRowValueConnector';
 import styles from './FilterBuilderRow.css';
 
@@ -69,8 +70,11 @@ function getRowValueConnector(selectedFilterBuilderProp) {
     case filterBuilderValueTypes.QUALITY_PROFILE:
       return QualityProfileFilterBuilderRowValueConnector;
 
-    case filterBuilderValueTypes.MOVIE_STATUS:
-      return MovieStatusFilterBuilderRowValue;
+    case filterBuilderValueTypes.RELEASE_STATUS:
+      return ReleaseStatusFilterBuilderRowValue;
+
+    case filterBuilderValueTypes.MINIMUM_AVAILABILITY:
+      return MinimumAvailabilityFilterBuilderRowValue;
 
     case filterBuilderValueTypes.TAG:
       return TagFilterBuilderRowValueConnector;
