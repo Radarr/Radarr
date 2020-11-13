@@ -423,7 +423,7 @@
     "ICalFeed": "iCal-Feed",
     "IconForCutoffUnmet": "Symbol für Schwelle nicht erreicht",
     "IgnoredAddresses": "Ignorierte Adressen",
-    "IgnoreDeletedMovies": "Gelöschte Filme ignorieren",
+    "IgnoreDeletedMovies": "Gelöschte Filme nicht mehr beobachten",
     "IllRestartLater": "Später neustarten",
     "ImportExtraFiles": "Extra Dateien importieren",
     "Importing": "Importiere",
@@ -856,5 +856,9 @@
     "ListTagsHelpText": "Tags Liseneinträge werden hinzugefügt mit",
     "IndexerLongTermStatusCheckSingleClientMessage": "Indexer wegen über 6 Stunden langen bestehenden Fehlern nicht verfügbar: {0}",
     "IndexerLongTermStatusCheckAllClientMessage": "Alle Indexer sind wegen über 6 Stunden langen bestehender Fehler nicht verfügbar",
-    "EditMovieFile": "FIlmdateil bearbeiten"
+    "EditMovieFile": "FIlmdateil bearbeiten",
+    "MovieIsRecommend": "Film wird aufgrund der jüngsten Hinzufügungen empfohlen",
+    "ListSyncLevelHelpTextWarning": "Filmdateien werden dauerhaft gelöcht, dies kann deine ganze Bibliothek leeren wenn deine Listen leer sind",
+    "ConsideredAvailable": "Verfügbarkeit angenommen",
+    "Announced": "Angekündigt"
 }
