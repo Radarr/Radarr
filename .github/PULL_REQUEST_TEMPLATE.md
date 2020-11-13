@@ -3,6 +3,7 @@ YES | NO
 
 #### Description
 
+#### Screenshot (if UI related)
 
 #### Todos
 - [ ] Tests
@@ -10,4 +11,4 @@ YES | NO
 
 #### Issues Fixed or Closed by this PR
 
-* #
+* Fixes #XXXX
