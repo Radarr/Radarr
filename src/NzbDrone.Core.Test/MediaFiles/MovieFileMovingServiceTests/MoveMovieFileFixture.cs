@@ -10,6 +10,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -54,6 +55,10 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieFileMovingServiceTests
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FileExists(It.IsAny<string>()))
                   .Returns(true);
+
+            Mocker.GetMock<IRootFolderService>()
+                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>()))
+                  .Returns(rootFolder);
         }
 
         [Test]
