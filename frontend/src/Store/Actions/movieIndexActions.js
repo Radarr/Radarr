@@ -225,7 +225,7 @@ export const defaultState = {
     },
     {
       name: 'isAvailable',
-      label: translate('IsAvailable'),
+      label: translate('ConsideredAvailable'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
     },
