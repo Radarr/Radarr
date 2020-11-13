@@ -165,7 +165,7 @@ class DiscoverMovieOverview extends Component {
                       className={styles.exclusionIcon}
                       name={icons.DANGER}
                       size={30}
-                      title='Movie is on Import Exclusion List'
+                      title={translate('MovieAlreadyExcluded')}
                     />
                 }
               </Link>
@@ -208,6 +208,7 @@ class DiscoverMovieOverview extends Component {
                     <Icon
                       name={icons.RECOMMENDED}
                       size={10}
+                      title={translate('MovieIsRecommendFromTMDB')}
                     />
                   </Label> :
                   null
