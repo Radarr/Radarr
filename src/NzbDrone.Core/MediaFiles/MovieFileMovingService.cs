@@ -11,6 +11,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.MediaFiles
 {
@@ -30,6 +31,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IMediaFileAttributeService _mediaFileAttributeService;
         private readonly IEventAggregator _eventAggregator;
         private readonly IConfigService _configService;
+        private readonly IRootFolderService _rootFolderService;
         private readonly Logger _logger;
 
         public MovieFileMovingService(IUpdateMovieFileService updateMovieFileService,
@@ -39,6 +41,7 @@ namespace NzbDrone.Core.MediaFiles
                                 IMediaFileAttributeService mediaFileAttributeService,
                                 IEventAggregator eventAggregator,
                                 IConfigService configService,
+                                IRootFolderService rootFolderService,
                                 Logger logger)
         {
             _updateMovieFileService = updateMovieFileService;
@@ -48,6 +51,7 @@ namespace NzbDrone.Core.MediaFiles
             _mediaFileAttributeService = mediaFileAttributeService;
             _eventAggregator = eventAggregator;
             _configService = configService;
+            _rootFolderService = rootFolderService;
             _logger = logger;
         }
 
@@ -140,7 +144,7 @@ namespace NzbDrone.Core.MediaFiles
             var movieFileFolder = Path.GetDirectoryName(filePath);
 
             var movieFolder = movie.Path;
-            var rootFolder = new OsPath(movieFolder).Directory.FullPath;
+            var rootFolder = _rootFolderService.GetBestRootFolderPath(movieFolder);
 
             if (!_diskProvider.FolderExists(rootFolder))
             {
