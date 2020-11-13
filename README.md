@@ -115,7 +115,7 @@ Radarr is currently undergoing rapid development and pull requests are actively 
 ### Development
 
 * Open `Radarr.sln` in Visual Studio 2019 or run the build.sh script, if Mono is installed. Alternatively you can use Jetbrains Rider, since it works on all Platforms.
-* Make sure `NzbDrone.Console` is set as the startup project
+* Make sure `Radarr.Console` is set as the startup project
 * Run `build.sh` before running, or build in VS
 
 ## Supporters
