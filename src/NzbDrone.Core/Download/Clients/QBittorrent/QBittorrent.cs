@@ -260,7 +260,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     relativePath = relativePath.Directory;
                 }
 
-                outputPath = savePath + relativePath;
+                outputPath = savePath + relativePath.FileName;
             }
 
             result.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath);
