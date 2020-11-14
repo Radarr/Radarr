@@ -116,13 +116,12 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>
-                    {translate('Monitor')}
-                  </FormLabel>
+                  <FormLabel>{translate('Monitored')}</FormLabel>
 
                   <FormInputGroup
-                    type={inputTypes.MOVIE_MONITORED_SELECT}
+                    type={inputTypes.CHECK}
                     name="monitor"
+                    helpText={translate('MonitoredHelpText')}
                     onChange={onInputChange}
                     {...monitor}
                   />
