@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Indexers;
 
 namespace NzbDrone.Core.Download
 {
@@ -25,6 +26,20 @@ namespace NzbDrone.Core.Download
 
         public bool CanMoveFiles { get; set; }
         public bool CanBeRemoved { get; set; }
+        public bool Removed { get; set; }
+
+        public DownloadClientItem Clone()
+        {
+            return MemberwiseClone() as DownloadClientItem;
+        }
+    }
+
+    public class DownloadClientItemClientInfo
+    {
+        public DownloadProtocol Protocol { get; set; }
+        public string Type { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
         public bool Removed { get; set; }
     }

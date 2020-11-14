@@ -26,16 +26,19 @@ namespace NzbDrone.Core.Download
         private readonly IHistoryService _historyService;
         private readonly IDownloadedBooksImportService _downloadedTracksImportService;
         private readonly IAuthorService _authorService;
+        private readonly IProvideImportItemService _importItemService;
         private readonly ITrackedDownloadAlreadyImported _trackedDownloadAlreadyImported;
 
         public CompletedDownloadService(IEventAggregator eventAggregator,
                                         IHistoryService historyService,
+                                        IProvideImportItemService importItemService,
                                         IDownloadedBooksImportService downloadedTracksImportService,
                                         IAuthorService authorService,
                                         ITrackedDownloadAlreadyImported trackedDownloadAlreadyImported)
         {
             _eventAggregator = eventAggregator;
             _historyService = historyService;
+            _importItemService = importItemService;
             _downloadedTracksImportService = downloadedTracksImportService;
             _authorService = authorService;
             _trackedDownloadAlreadyImported = trackedDownloadAlreadyImported;
@@ -48,6 +51,8 @@ namespace NzbDrone.Core.Download
             {
                 return;
             }
+
+            trackedDownload.ImportItem = _importItemService.ProvideImportItem(trackedDownload.DownloadItem, trackedDownload.ImportItem);
 
             // Only process tracked downloads that are still downloading
             if (trackedDownload.State != TrackedDownloadState.Downloading)
@@ -63,7 +68,7 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            var downloadItemOutputPath = trackedDownload.DownloadItem.OutputPath;
+            var downloadItemOutputPath = trackedDownload.ImportItem.OutputPath;
 
             if (downloadItemOutputPath.IsEmpty)
             {
@@ -101,7 +106,7 @@ namespace NzbDrone.Core.Download
         {
             trackedDownload.State = TrackedDownloadState.Importing;
 
-            var outputPath = trackedDownload.DownloadItem.OutputPath.FullPath;
+            var outputPath = trackedDownload.ImportItem.OutputPath.FullPath;
             var importResults = _downloadedTracksImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteBook.Author, trackedDownload.DownloadItem);
 
             if (importResults.Empty())

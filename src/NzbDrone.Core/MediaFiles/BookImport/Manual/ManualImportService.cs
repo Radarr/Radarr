@@ -86,7 +86,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
                     return new List<ManualImportItem>();
                 }
 
-                path = trackedDownload.DownloadItem.OutputPath.FullPath;
+                path = trackedDownload.ImportItem.OutputPath.FullPath;
             }
 
             if (!_diskProvider.FolderExists(path))
@@ -348,13 +348,15 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
             {
                 var trackedDownload = groupedTrackedDownload.First().TrackedDownload;
 
-                if (_diskProvider.FolderExists(trackedDownload.DownloadItem.OutputPath.FullPath))
+                var outputPath = trackedDownload.ImportItem.OutputPath.FullPath;
+
+                if (_diskProvider.FolderExists(outputPath))
                 {
                     if (_downloadedTracksImportService.ShouldDeleteFolder(
-                            _diskProvider.GetDirectoryInfo(trackedDownload.DownloadItem.OutputPath.FullPath),
+                            _diskProvider.GetDirectoryInfo(outputPath),
                             trackedDownload.RemoteBook.Author) && trackedDownload.DownloadItem.CanMoveFiles)
                     {
-                        _diskProvider.DeleteFolder(trackedDownload.DownloadItem.OutputPath.FullPath, true);
+                        _diskProvider.DeleteFolder(outputPath, true);
                     }
                 }
 

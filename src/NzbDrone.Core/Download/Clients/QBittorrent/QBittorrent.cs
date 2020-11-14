@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
@@ -122,6 +123,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
+            var version = Proxy.GetApiVersion(Settings);
             var config = Proxy.GetConfig(Settings);
             var torrents = Proxy.GetTorrents(Settings);
 
@@ -138,18 +140,17 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                     DownloadClient = Definition.Name,
                     RemainingSize = (long)(torrent.Size * (1.0 - torrent.Progress)),
                     RemainingTime = GetRemainingTime(torrent),
-                    SeedRatio = torrent.Ratio,
-                    OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.SavePath)),
+                    SeedRatio = torrent.Ratio
                 };
+
+                if (version >= new Version("2.6.1"))
+                {
+                    item.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, new OsPath(torrent.ContentPath));
+                }
 
                 // Avoid removing torrents that haven't reached the global max ratio.
                 // Removal also requires the torrent to be paused, in case a higher max ratio was set on the torrent itself (which is not exposed by the api).
                 item.CanMoveFiles = item.CanBeRemoved = torrent.State == "pausedUP" && HasReachedSeedLimit(torrent, config);
-
-                if (!item.OutputPath.IsEmpty && item.OutputPath.FileName != torrent.Name)
-                {
-                    item.OutputPath += torrent.Name;
-                }
 
                 switch (torrent.State)
                 {
@@ -217,6 +218,49 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         public override void RemoveItem(string hash, bool deleteData)
         {
             Proxy.RemoveTorrent(hash.ToLower(), deleteData, Settings);
+        }
+
+        public override DownloadClientItem GetImportItem(DownloadClientItem item, DownloadClientItem previousImportAttempt)
+        {
+            // On API version >= 2.6.1 this is already set correctly
+            if (!item.OutputPath.IsEmpty)
+            {
+                return item;
+            }
+
+            var files = Proxy.GetTorrentFiles(item.DownloadId.ToLower(), Settings);
+            if (!files.Any())
+            {
+                _logger.Debug($"No files found for torrent {item.Title} in qBittorrent");
+                return item;
+            }
+
+            var properties = Proxy.GetTorrentProperties(item.DownloadId.ToLower(), Settings);
+            var savePath = new OsPath(properties.SavePath);
+
+            var result = item.Clone();
+
+            OsPath outputPath;
+            if (files.Count == 1)
+            {
+                outputPath = savePath + files[0].Name;
+            }
+            else
+            {
+                // we have multiple files in the torrent so just get
+                // the first subdirectory
+                var relativePath = new OsPath(files[0].Name);
+                while (!relativePath.Directory.IsEmpty)
+                {
+                    relativePath = relativePath.Directory;
+                }
+
+                outputPath = savePath + relativePath.FileName;
+            }
+
+            result.OutputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath);
+
+            return result;
         }
 
         public override DownloadClientInfo GetStatus()

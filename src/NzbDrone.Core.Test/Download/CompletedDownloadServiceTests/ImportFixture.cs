@@ -37,6 +37,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
 
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
                     .With(c => c.State = TrackedDownloadState.Downloading)
+                    .With(c => c.ImportItem = completed)
                     .With(c => c.DownloadItem = completed)
                     .With(c => c.RemoteBook = remoteBook)
                     .Build();
