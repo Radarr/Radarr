@@ -9,8 +9,11 @@ namespace NzbDrone.Core.Indexers.Newznab
     {
         public static List<FieldSelectOption> GetFieldSelectOptions(List<NewznabCategory> categories)
         {
-            // Ignore categories not relevant for Lidarr
-            var ignoreCategories = new[] { 0, 1000, 2000, 4000, 5000, 6000, 7000 };
+            // Ignore categories not relevant for Readarr
+            var ignoreCategories = new[] { 1000, 2000, 3000, 4000, 5000, 6000 };
+
+            // And maybe relevant for specific users
+            var unimportantCategories = new[] { 0, 8000 };
 
             var result = new List<FieldSelectOption>();
 
@@ -20,25 +23,20 @@ namespace NzbDrone.Core.Indexers.Newznab
                 categories = new List<NewznabCategory>();
                 categories.Add(new NewznabCategory
                 {
-                    Id = 3000,
-                    Name = "Music",
+                    Id = 7000,
+                    Name = "Books",
                     Subcategories = new List<NewznabCategory>
                     {
-                        new NewznabCategory { Id = 3040, Name = "Loseless" },
-                        new NewznabCategory { Id = 3010, Name = "MP3" },
-                        new NewznabCategory { Id = 3050, Name = "Other" },
-                        new NewznabCategory { Id = 3030, Name = "Audiobook" }
+                        new NewznabCategory { Id = 7010, Name = "Misc books" },
+                        new NewznabCategory { Id = 7020, Name = "Ebook" },
+                        new NewznabCategory { Id = 7030, Name = "Comics" },
+                        new NewznabCategory { Id = 7040, Name = "Magazines" }
                     }
                 });
             }
 
-            foreach (var category in categories)
+            foreach (var category in categories.Where(cat => !ignoreCategories.Contains(cat.Id)).OrderBy(cat => unimportantCategories.Contains(cat.Id)).ThenBy(cat => cat.Id))
             {
-                if (ignoreCategories.Contains(category.Id))
-                {
-                    continue;
-                }
-
                 result.Add(new FieldSelectOption
                 {
                     Value = category.Id,
@@ -48,7 +46,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
                 if (category.Subcategories != null)
                 {
-                    foreach (var subcat in category.Subcategories)
+                    foreach (var subcat in category.Subcategories.OrderBy(cat => cat.Id))
                     {
                         result.Add(new FieldSelectOption
                         {
@@ -60,8 +58,6 @@ namespace NzbDrone.Core.Indexers.Newznab
                     }
                 }
             }
-
-            result.Sort((l, r) => l.Value.CompareTo(r.Value));
 
             return result;
         }

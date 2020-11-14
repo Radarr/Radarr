@@ -209,7 +209,11 @@ namespace Readarr.Http.ClientSchema
             {
                 return fieldValue =>
                 {
-                    if (fieldValue.GetType() == typeof(JArray))
+                    if (fieldValue == null)
+                    {
+                        return Enumerable.Empty<int>();
+                    }
+                    else if (fieldValue.GetType() == typeof(JArray))
                     {
                         return ((JArray)fieldValue).Select(s => s.Value<int>());
                     }
@@ -223,7 +227,11 @@ namespace Readarr.Http.ClientSchema
             {
                 return fieldValue =>
                 {
-                    if (fieldValue.GetType() == typeof(JArray))
+                    if (fieldValue == null)
+                    {
+                        return Enumerable.Empty<string>();
+                    }
+                    else if (fieldValue.GetType() == typeof(JArray))
                     {
                         return ((JArray)fieldValue).Select(s => s.Value<string>());
                     }
