@@ -96,7 +96,9 @@ class AddNewMovieModalContent extends Component {
 
               <Form>
                 <FormGroup>
-                  <FormLabel>{translate('RootFolder')}</FormLabel>
+                  <FormLabel>
+                    {translate('RootFolder')}
+                  </FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.ROOT_FOLDER_SELECT}
@@ -117,19 +119,22 @@ class AddNewMovieModalContent extends Component {
 
                 <FormGroup>
                   <FormLabel>
-                    {translate('Monitor')}
+                    {translate('Monitored')}
                   </FormLabel>
 
                   <FormInputGroup
-                    type={inputTypes.MOVIE_MONITORED_SELECT}
+                    type={inputTypes.CHECK}
                     name="monitor"
+                    helpText={translate('MonitoredHelpText')}
                     onChange={onInputChange}
                     {...monitor}
                   />
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>{translate('MinimumAvailability')}</FormLabel>
+                  <FormLabel>
+                    {translate('MinimumAvailability')}
+                  </FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.AVAILABILITY_SELECT}
@@ -140,7 +145,9 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>{translate('QualityProfile')}</FormLabel>
+                  <FormLabel>
+                    {translate('QualityProfile')}
+                  </FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.QUALITY_PROFILE_SELECT}
@@ -151,7 +158,9 @@ class AddNewMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>{translate('Tags')}</FormLabel>
+                  <FormLabel>
+                    {translate('Tags')}
+                  </FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.TAG}

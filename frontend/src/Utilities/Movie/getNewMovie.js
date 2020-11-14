@@ -14,7 +14,7 @@ function getNewMovie(movie, payload) {
   };
 
   movie.addOptions = addOptions;
-  movie.monitored = monitor === 'true';
+  movie.monitored = monitor;
   movie.qualityProfileId = qualityProfileId;
   movie.minimumAvailability = minimumAvailability;
   movie.rootFolderPath = rootFolderPath;
