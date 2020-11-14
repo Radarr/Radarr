@@ -73,7 +73,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                     return new List<ManualImportItem>();
                 }
 
-                path = trackedDownload.DownloadItem.OutputPath.FullPath;
+                path = trackedDownload.ImportItem.OutputPath.FullPath;
             }
 
             if (!_diskProvider.FolderExists(path))
@@ -305,14 +305,15 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 var trackedDownload = groupedTrackedDownload.First().TrackedDownload;
 
                 var importMovie = groupedTrackedDownload.First().ImportResult.ImportDecision.LocalMovie.Movie;
+                var outputPath = trackedDownload.ImportItem.OutputPath.FullPath;
 
-                if (_diskProvider.FolderExists(trackedDownload.DownloadItem.OutputPath.FullPath))
+                if (_diskProvider.FolderExists(outputPath))
                 {
                     if (_downloadedMovieImportService.ShouldDeleteFolder(
-                            new DirectoryInfo(trackedDownload.DownloadItem.OutputPath.FullPath),
+                            new DirectoryInfo(outputPath),
                             importMovie) && trackedDownload.DownloadItem.CanMoveFiles)
                     {
-                        _diskProvider.DeleteFolder(trackedDownload.DownloadItem.OutputPath.FullPath, true);
+                        _diskProvider.DeleteFolder(outputPath, true);
                     }
                 }
 
