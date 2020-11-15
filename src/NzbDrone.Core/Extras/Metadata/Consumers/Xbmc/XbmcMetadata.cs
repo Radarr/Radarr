@@ -260,8 +260,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         streamDetails.Add(video);
 
                         var audio = new XElement("audio");
+                        var audioChannelCount = movieFile.MediaInfo.AudioChannelsStream > 0 ? movieFile.MediaInfo.AudioChannelsStream : movieFile.MediaInfo.AudioChannelsContainer;
                         audio.Add(new XElement("bitrate", movieFile.MediaInfo.AudioBitrate));
-                        audio.Add(new XElement("channels", movieFile.MediaInfo.AudioChannels));
+                        audio.Add(new XElement("channels", audioChannelCount));
                         audio.Add(new XElement("codec", MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName)));
                         audio.Add(new XElement("language", movieFile.MediaInfo.AudioLanguages));
                         streamDetails.Add(audio);
