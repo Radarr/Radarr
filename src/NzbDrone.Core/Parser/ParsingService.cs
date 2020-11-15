@@ -214,7 +214,7 @@ namespace NzbDrone.Core.Parser
                 }
 
                 // Only default to not using year when one is parsed if only one movie candidate exists
-                if (candidates.Count == 1)
+                if (candidates != null && candidates.Count == 1)
                 {
                     movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, null, arabicTitle, romanTitle, candidates);
                     if (movieByTitleAndOrYear != null)
