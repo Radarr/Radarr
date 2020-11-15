@@ -213,11 +213,15 @@ namespace NzbDrone.Core.Parser
                     return true;
                 }
 
-                movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, null, arabicTitle, romanTitle, candidates);
-                if (movieByTitleAndOrYear != null)
+                // Only default to not using year when one is parsed if only one movie candidate exists
+                if (candidates.Count == 1)
                 {
-                    result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.WrongYear };
-                    return false;
+                    movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitle, null, arabicTitle, romanTitle, candidates);
+                    if (movieByTitleAndOrYear != null)
+                    {
+                        result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.WrongYear };
+                        return false;
+                    }
                 }
 
                 result = new MappingResult { Movie = movieByTitleAndOrYear, MappingResultType = MappingResultType.TitleNotFound };
