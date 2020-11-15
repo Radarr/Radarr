@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
+using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.ImportLists.ImportExclusions;
 using NzbDrone.Core.ImportLists.ImportListMovies;
 using NzbDrone.Core.Languages;
@@ -20,6 +21,7 @@ namespace Radarr.Api.V3.ImportLists
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly IImportListMovieService _listMovieService;
+        private readonly IImportListFactory _importListFactory;
         private readonly IImportExclusionsService _importExclusionService;
         private readonly IConfigService _configService;
 
@@ -27,6 +29,7 @@ namespace Radarr.Api.V3.ImportLists
                                     IProvideMovieInfo movieInfo,
                                     IBuildFileNames fileNameBuilder,
                                     IImportListMovieService listMovieService,
+                                    IImportListFactory importListFactory,
                                     IImportExclusionsService importExclusionsService,
                                     IConfigService configService)
             : base("/importlist/movie")
@@ -35,6 +38,7 @@ namespace Radarr.Api.V3.ImportLists
             _movieInfo = movieInfo;
             _fileNameBuilder = fileNameBuilder;
             _listMovieService = listMovieService;
+            _importListFactory = importListFactory;
             _importExclusionService = importExclusionsService;
             _configService = configService;
             Get("/", x => GetDiscoverMovies());
@@ -64,7 +68,7 @@ namespace Radarr.Api.V3.ImportLists
                 realResults.ForEach(x => x.IsRecommendation = true);
             }
 
-            var listMovies = MapToResource(_listMovieService.GetAllListMovies(), movieLanguge).ToList();
+            var listMovies = MapToResource(_listMovieService.GetAllForLists(_importListFactory.Enabled().Select(x => x.Definition.Id).ToList()), movieLanguge).ToList();
 
             realResults.AddRange(listMovies);
 

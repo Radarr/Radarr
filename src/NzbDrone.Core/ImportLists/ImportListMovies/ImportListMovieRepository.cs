@@ -6,7 +6,7 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
 {
     public interface IImportListMovieRepository : IBasicRepository<ImportListMovie>
     {
-        List<ImportListMovie> GetAllForList(int listId);
+        List<ImportListMovie> GetAllForLists(List<int> listIds);
     }
 
     public class ImportListMovieRepository : BasicRepository<ImportListMovie>, IImportListMovieRepository
@@ -16,9 +16,9 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
         {
         }
 
-        public List<ImportListMovie> GetAllForList(int listId)
+        public List<ImportListMovie> GetAllForLists(List<int> listIds)
         {
-            return Query(x => x.ListId == listId);
+            return Query(x => listIds.Contains(x.ListId));
         }
     }
 }

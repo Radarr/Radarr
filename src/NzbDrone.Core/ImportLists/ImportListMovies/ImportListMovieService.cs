@@ -9,7 +9,7 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
     public interface IImportListMovieService
     {
         List<ImportListMovie> GetAllListMovies();
-        List<ImportListMovie> GetAllForList(int listId);
+        List<ImportListMovie> GetAllForLists(List<int> listIds);
         ImportListMovie AddListMovie(ImportListMovie listMovie);
         List<ImportListMovie> AddListMovies(List<ImportListMovie> listMovies);
         List<ImportListMovie> SyncMoviesForList(List<ImportListMovie> listMovies, int listId);
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
 
         public List<ImportListMovie> SyncMoviesForList(List<ImportListMovie> listMovies, int listId)
         {
-            var existingListMovies = GetAllForList(listId);
+            var existingListMovies = GetAllForLists(new List<int> { listId });
 
             listMovies.ForEach(l => l.Id = existingListMovies.FirstOrDefault(e => e.TmdbId == l.TmdbId)?.Id ?? 0);
 
@@ -59,9 +59,9 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
             return _importListMovieRepository.All().ToList();
         }
 
-        public List<ImportListMovie> GetAllForList(int listId)
+        public List<ImportListMovie> GetAllForLists(List<int> listIds)
         {
-            return _importListMovieRepository.GetAllForList(listId).ToList();
+            return _importListMovieRepository.GetAllForLists(listIds).ToList();
         }
 
         public void RemoveListMovie(ImportListMovie listMovie)
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
 
         public void HandleAsync(ProviderDeletedEvent<IImportList> message)
         {
-            var moviesOnList = _importListMovieRepository.GetAllForList(message.ProviderId);
+            var moviesOnList = _importListMovieRepository.GetAllForLists(new List<int> { message.ProviderId });
             _importListMovieRepository.DeleteMany(moviesOnList);
         }
     }
