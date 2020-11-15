@@ -30,7 +30,7 @@ export const defaultState = {
 
   defaults: {
     rootFolderPath: '',
-    monitor: true,
+    monitor: 'true',
     qualityProfileId: 0,
     minimumAvailability: 'announced',
     tags: []
