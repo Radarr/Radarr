@@ -143,7 +143,7 @@ namespace NzbDrone.Update.UpdateEngine
                     _terminateNzbDrone.Terminate(processId);
 
                     _logger.Info("Waiting for external auto-restart.");
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < 10; i++)
                     {
                         System.Threading.Thread.Sleep(1000);
 
