@@ -9,6 +9,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.HealthCheck.Checks;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Parser.Model;
@@ -39,7 +40,12 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         {
             _downloadItem = new DownloadClientItem
             {
-                DownloadClient = "Test",
+                DownloadClientInfo = new DownloadClientItemClientInfo
+                {
+                    Protocol = DownloadProtocol.Usenet,
+                    Id = 1,
+                    Name = "Test"
+                },
                 DownloadId = "TestId",
                 OutputPath = new OsPath(_downloadItemPath)
             };
@@ -166,7 +172,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_return_ok_on_track_imported_event()
         {
             GivenFolderExists(_downloadRootPath);
-            var importEvent = new TrackImportedEvent(new LocalBook(), new BookFile(), new List<BookFile>(), true, new DownloadClientItem());
+            var importEvent = new TrackImportedEvent(new LocalBook(), new BookFile(), new List<BookFile>(), true, new DownloadClientItem { DownloadClientInfo = new DownloadClientItemClientInfo() });
 
             Subject.Check(importEvent).ShouldBeOk();
         }
@@ -180,7 +186,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             };
             GivenFileExists(localTrack.Path);
 
-            var importEvent = new TrackImportFailedEvent(new Exception(), localTrack, true, new DownloadClientItem());
+            var importEvent = new TrackImportFailedEvent(new Exception(), localTrack, true, new DownloadClientItem { DownloadClientInfo = new DownloadClientItemClientInfo() });
 
             Subject.Check(importEvent).ShouldBeError(wikiFragment: "permissions-error");
         }

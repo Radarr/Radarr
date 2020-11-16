@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 item.Category = Settings.MusicCategory;
                 item.Title = torrent.Name;
 
-                item.DownloadClient = Definition.Name;
+                item.DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this);
 
                 item.OutputPath = GetOutputPath(outputPath, torrent);
                 item.TotalSize = torrent.TotalSize;

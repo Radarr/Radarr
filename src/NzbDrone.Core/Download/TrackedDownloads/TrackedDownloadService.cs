@@ -232,7 +232,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 existingItem.CanMoveFiles != downloadItem.CanMoveFiles)
             {
                 _logger.Debug("Tracking '{0}:{1}': ClientState={2}{3} ReadarrStage={4} Book='{5}' OutputPath={6}.",
-                    downloadItem.DownloadClient,
+                    downloadItem.DownloadClientInfo.Name,
                     downloadItem.Title,
                     downloadItem.Status,
                     downloadItem.CanBeRemoved ? "" : downloadItem.CanMoveFiles ? " (busy)" : " (readonly)",

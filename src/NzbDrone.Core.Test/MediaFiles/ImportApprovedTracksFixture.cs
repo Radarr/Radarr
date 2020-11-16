@@ -28,6 +28,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         private List<ImportDecision<LocalBook>> _approvedDecisions;
 
         private DownloadClientItem _downloadClientItem;
+        private DownloadClientItemClientInfo _clientInfo;
 
         [SetUp]
         public void Setup()
@@ -74,7 +75,8 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Setup(s => s.UpgradeBookFile(It.IsAny<BookFile>(), It.IsAny<LocalBook>(), It.IsAny<bool>()))
                   .Returns(new BookFileMoveResult());
 
-            _downloadClientItem = Builder<DownloadClientItem>.CreateNew().Build();
+            _clientInfo = Builder<DownloadClientItemClientInfo>.CreateNew().Build();
+            _downloadClientItem = Builder<DownloadClientItem>.CreateNew().With(x => x.DownloadClientInfo = _clientInfo).Build();
 
             Mocker.GetMock<IMediaFileService>()
                 .Setup(s => s.GetFilesByBook(It.IsAny<int>()))
@@ -186,7 +188,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_copy_when_cannot_move_files_downloads()
         {
-            Subject.Import(new List<ImportDecision<LocalBook>> { _approvedDecisions.First() }, true, new DownloadClientItem { Title = "Alien.Ant.Farm-Truant", CanMoveFiles = false });
+            Subject.Import(new List<ImportDecision<LocalBook>> { _approvedDecisions.First() }, true, new DownloadClientItem { Title = "Alien.Ant.Farm-Truant", CanMoveFiles = false, DownloadClientInfo = _clientInfo });
 
             Mocker.GetMock<IUpgradeMediaFiles>()
                   .Verify(v => v.UpgradeBookFile(It.IsAny<BookFile>(), _approvedDecisions.First().Item, true), Times.Once());
@@ -195,7 +197,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_use_override_importmode()
         {
-            Subject.Import(new List<ImportDecision<LocalBook>> { _approvedDecisions.First() }, true, new DownloadClientItem { Title = "Alien.Ant.Farm-Truant", CanMoveFiles = false }, ImportMode.Move);
+            Subject.Import(new List<ImportDecision<LocalBook>> { _approvedDecisions.First() }, true, new DownloadClientItem { Title = "Alien.Ant.Farm-Truant", CanMoveFiles = false, DownloadClientInfo = _clientInfo }, ImportMode.Move);
 
             Mocker.GetMock<IUpgradeMediaFiles>()
                   .Verify(v => v.UpgradeBookFile(It.IsAny<BookFile>(), _approvedDecisions.First().Item, false), Times.Once());

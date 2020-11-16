@@ -35,15 +35,15 @@ namespace NzbDrone.Core.Download
             }
 
             var downloadIgnoredEvent = new DownloadIgnoredEvent
-                                      {
-                                          AuthorId = author.Id,
-                                          BookIds = books.Select(e => e.Id).ToList(),
-                                          Quality = trackedDownload.RemoteBook.ParsedBookInfo.Quality,
-                                          SourceTitle = trackedDownload.DownloadItem.Title,
-                                          DownloadClient = trackedDownload.DownloadItem.DownloadClient,
-                                          DownloadId = trackedDownload.DownloadItem.DownloadId,
-                                          Message = "Manually ignored"
-                                      };
+            {
+                AuthorId = author.Id,
+                BookIds = books.Select(e => e.Id).ToList(),
+                Quality = trackedDownload.RemoteBook.ParsedBookInfo.Quality,
+                SourceTitle = trackedDownload.DownloadItem.Title,
+                DownloadClientInfo = trackedDownload.DownloadItem.DownloadClientInfo,
+                DownloadId = trackedDownload.DownloadItem.DownloadId,
+                Message = "Manually ignored"
+            };
 
             _eventAggregator.PublishEvent(downloadIgnoredEvent);
             return true;

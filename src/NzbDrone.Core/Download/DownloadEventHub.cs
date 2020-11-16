@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Download
             var downloadClient = _downloadClientProvider.Get(trackedDownload.DownloadClient);
             try
             {
-                _logger.Debug("[{0}] Removing download from {1} history", trackedDownload.DownloadItem.Title, trackedDownload.DownloadItem.DownloadClient);
+                _logger.Debug("[{0}] Removing download from {1} history", trackedDownload.DownloadItem.Title, trackedDownload.DownloadItem.DownloadClientInfo.Name);
                 downloadClient.RemoveItem(trackedDownload.DownloadItem.DownloadId, true);
                 trackedDownload.DownloadItem.Removed = true;
             }
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Download
             var downloadClient = _downloadClientProvider.Get(trackedDownload.DownloadClient);
             try
             {
-                _logger.Debug("[{0}] Marking download as imported from {1}", trackedDownload.DownloadItem.Title, trackedDownload.DownloadItem.DownloadClient);
+                _logger.Debug("[{0}] Marking download as imported from {1}", trackedDownload.DownloadItem.Title, trackedDownload.DownloadItem.DownloadClientInfo.Name);
                 downloadClient.MarkItemAsImported(trackedDownload.DownloadItem);
             }
             catch (NotSupportedException e)

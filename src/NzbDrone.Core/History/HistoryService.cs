@@ -369,7 +369,7 @@ namespace NzbDrone.Core.History
                     DownloadId = message.DownloadId
                 };
 
-                history.Data.Add("DownloadClient", message.DownloadClient);
+                history.Data.Add("DownloadClient", message.DownloadClientInfo.Name);
                 history.Data.Add("Message", message.Message);
 
                 historyToAdd.Add(history);
