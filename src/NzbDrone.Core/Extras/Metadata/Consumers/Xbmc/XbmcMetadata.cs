@@ -253,7 +253,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     {
                         if (credit.Name != null && credit.Job == "Screenplay")
                         {
-                            details.Add(new XElement("writer", credit.Name));
+                            details.Add(new XElement("credits", credit.Name));
                         }
                     }
 
