@@ -851,5 +851,8 @@
     "Yesterday": "Ieri",
     "Tomorrow": "Domani",
     "Today": "Oggi",
-    "ListSyncLevelHelpTextWarning": "I file del film saranno cancellati permanentemente, questo può dipendere dalla pulizia della libreria se la lista è vuota"
+    "ListSyncLevelHelpTextWarning": "I file del film saranno cancellati permanentemente, questo può dipendere dalla pulizia della libreria se la lista è vuota",
+    "MovieIsRecommend": "Il film è raccomandato in base alle aggiunte recenti",
+    "ConsideredAvailable": "Considerato disponibile",
+    "Announced": "Annunciato"
 }
