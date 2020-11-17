@@ -336,6 +336,19 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                             return new List<Movie>();
                         }
                     }
+
+                    if (parserResult.TmdbId > 0)
+                    {
+                        try
+                        {
+                            var movieLookup = GetMovieInfo(parserResult.TmdbId).Item1;
+                            return movieLookup == null ? new List<Movie>() : new List<Movie> { _movieService.FindByTmdbId(movieLookup.TmdbId) ?? movieLookup };
+                        }
+                        catch (Exception)
+                        {
+                            return new List<Movie>();
+                        }
+                    }
                 }
 
                 parserTitle = StripTrailingTheFromTitle(parserTitle);

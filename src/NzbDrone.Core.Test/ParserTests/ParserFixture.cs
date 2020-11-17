@@ -120,6 +120,15 @@ namespace NzbDrone.Core.Test.ParserTests
             Parser.Parser.ParseMovieTitle(postTitle).Year.Should().Be(year);
         }
 
+        [TestCase("Ghostbusters (2016) {tmdbid-43074}", 43074)]
+        [TestCase("Ghostbusters (2016) [tmdb-43074]", 43074)]
+        [TestCase("Ghostbusters (2016) {tmdb-43074}", 43074)]
+        [TestCase("Ghostbusters (2016) {tmdb-2020}", 2020)]
+        public void should_parse_tmdb_id(string postTitle, int tmdbId)
+        {
+            Parser.Parser.ParseMovieTitle(postTitle).TmdbId.Should().Be(tmdbId);
+        }
+
         [TestCase("Prometheus 2012 Directors Cut", "Directors Cut")]
         [TestCase("Star Wars Episode IV - A New Hope 1999 (Despecialized).mkv", "Despecialized")]
         [TestCase("Prometheus.2012.(Special.Edition.Remastered).[Bluray-1080p].mkv", "Special Edition Remastered")]
