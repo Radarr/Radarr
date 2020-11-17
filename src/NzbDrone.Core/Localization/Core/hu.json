@@ -849,5 +849,7 @@
     "MovieIsRecommend": "A filmajánlás a legutóbb hozzáadott(ak) alapján",
     "ListSyncLevelHelpTextWarning": "A filmfájlok véglegesen törlődnek, ez a könyvtár törlését eredményezheti, ha a listád üres",
     "ConsideredAvailable": "Feltételezhetően elérhető",
-    "Announced": "Bejelentett"
+    "Announced": "Bejelentett",
+    "Yes": "Igen",
+    "No": "Nem"
 }
