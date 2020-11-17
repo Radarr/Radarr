@@ -423,7 +423,7 @@
     "ImportedTo": "Importado Para",
     "IllRestartLater": "Reiniciarei mais tarde",
     "IgnoredHelpText": "A versão será rejeitada caso contenha um ou mais destes termos (sem distinção de maiúsculas ou minúsculas)",
-    "IgnoreDeletedMovies": "Ignorar Filmes Deletados",
+    "IgnoreDeletedMovies": "Desmonitorar Filmes Deletados",
     "IgnoredAddresses": "Endereços ignorados",
     "IconForCutoffUnmet": "Ícone para Ponto de Corte Não-alcançado",
     "ICalHttpUrlHelpText": "Copie este endereço para sua aplicação ou clique para registrar-se caso seu navegador suporte webcal",
@@ -855,5 +855,11 @@
     "ListTagsHelpText": "Tags com as quais se adicionarão os elementos",
     "IndexerLongTermStatusCheckSingleClientMessage": "Indexadores temporariamente indisponíveis devido a erros por mais de 6 horas: {0}",
     "IndexerLongTermStatusCheckAllClientMessage": "Todos os indexadores estão temporariamente indisponíveis devido a erros por mais de 6 horas",
-    "EditMovieFile": "Editar Arquivo do Filme"
+    "EditMovieFile": "Editar Arquivo do Filme",
+    "Yes": "Sim",
+    "No": "Não",
+    "MovieIsRecommend": "Filme recomendado baseado em adições recentes",
+    "ListSyncLevelHelpTextWarning": "Os arquivos de filme serão permanentemente deletados, isso poderá causar uma limpeza total de sua biblioteca se suas listas estiverem vazias",
+    "ConsideredAvailable": "Considerado Disponível",
+    "Announced": "Anunciado"
 }
