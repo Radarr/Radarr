@@ -45,14 +45,14 @@ namespace NzbDrone.Core.Localization
 
         public Dictionary<string, string> GetLocalizationDictionary()
         {
-            var language = IsoLanguages.Get((Language)_configService.UILanguage).TwoLetterCode;
+            var language = GetSetLanguageFileName();
 
             return GetLocalizationDictionary(language);
         }
 
         public string GetLocalizedString(string phrase)
         {
-            var language = IsoLanguages.Get((Language)_configService.UILanguage).TwoLetterCode;
+            var language = GetSetLanguageFileName();
 
             return GetLocalizedString(phrase, language);
         }
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Localization
 
             if (language.IsNullOrWhiteSpace())
             {
-                language = IsoLanguages.Get((Language)_configService.UILanguage).TwoLetterCode;
+                language = GetSetLanguageFileName();
             }
 
             if (language == null)
@@ -82,6 +82,19 @@ namespace NzbDrone.Core.Localization
             }
 
             return phrase;
+        }
+
+        private string GetSetLanguageFileName()
+        {
+            var isoLanguage = IsoLanguages.Get((Language)_configService.UILanguage);
+            var language = isoLanguage.TwoLetterCode;
+
+            if (isoLanguage.CountryCode.IsNotNullOrWhiteSpace())
+            {
+                language = string.Format("{0}_{1}", language, isoLanguage.CountryCode);
+            }
+
+            return language;
         }
 
         private Dictionary<string, string> GetLocalizationDictionary(string language)
@@ -109,9 +122,11 @@ namespace NzbDrone.Core.Localization
             var dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             var baseFilenamePath = Path.Combine(prefix, baseFilename);
+            var languageBaseFilenamePath = Path.Combine(prefix, GetResourceFilename(culture.Split('_')[0]));
             var alternativeFilenamePath = Path.Combine(prefix, GetResourceFilename(culture));
 
             await CopyInto(dictionary, baseFilenamePath).ConfigureAwait(false);
+            await CopyInto(dictionary, languageBaseFilenamePath).ConfigureAwait(false);
             await CopyInto(dictionary, alternativeFilenamePath).ConfigureAwait(false);
 
             return dictionary;

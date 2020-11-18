@@ -148,6 +148,15 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Bulgarian);
         }
 
+        [TestCase("Pulp.Fiction.1994.Dublado.1080p.XviD-LOL")]
+        [TestCase("Uma.Aventura.Lego.2.2019.1080p.Bluray.Dublado.WWW.TPF.GRATIS")]
+        public void should_parse_language_brazilian_portuguese(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.PortugueseBR);
+        }
+
         [TestCase("Pulp.Fiction.1994.Polish.1080p.XviD-LOL")]
         public void should_parse_language_polish(string postTitle)
         {

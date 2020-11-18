@@ -11,13 +11,13 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("en", "", "eng", "English", Language.English),
                                                                new IsoLanguage("fr", "fr", "fra", "French", Language.French),
                                                                new IsoLanguage("es", "", "spa", "Spanish", Language.Spanish),
-                                                               new IsoLanguage("de", "", "deu", "German", Language.German),
+                                                               new IsoLanguage("de", "de", "deu", "German", Language.German),
                                                                new IsoLanguage("it", "", "ita", "Italian", Language.Italian),
                                                                new IsoLanguage("da", "", "dan", "Danish", Language.Danish),
                                                                new IsoLanguage("nl", "", "nld", "Dutch", Language.Dutch),
                                                                new IsoLanguage("ja", "", "jpn", "Japanese", Language.Japanese),
                                                                new IsoLanguage("is", "", "isl", "Icelandic", Language.Icelandic),
-                                                               new IsoLanguage("zh", "", "zho", "Chinese", Language.Chinese),
+                                                               new IsoLanguage("zh", "cn", "zho", "Chinese", Language.Chinese),
                                                                new IsoLanguage("ru", "", "rus", "Russian", Language.Russian),
                                                                new IsoLanguage("pl", "", "pol", "Polish", Language.Polish),
                                                                new IsoLanguage("vi", "", "vie", "Vietnamese", Language.Vietnamese),
@@ -35,7 +35,8 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("hi", "", "hin", "Hindi", Language.Hindi),
                                                                new IsoLanguage("th", "", "tha", "Thai", Language.Thai),
                                                                new IsoLanguage("bg", "", "bul", "Bulgarian", Language.Bulgarian),
-                                                               new IsoLanguage("ro", "", "ron", "Romanian", Language.Romanian)
+                                                               new IsoLanguage("ro", "", "ron", "Romanian", Language.Romanian),
+                                                               new IsoLanguage("pt", "br", "", "Portuguese (Brazil)", Language.PortugueseBR)
                                                            };
 
         public static IsoLanguage Find(string isoCode)
