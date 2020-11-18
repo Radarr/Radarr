@@ -860,5 +860,7 @@
     "MovieIsRecommend": "Film wird aufgrund der jüngsten Hinzufügungen empfohlen",
     "ListSyncLevelHelpTextWarning": "Filmdateien werden dauerhaft gelöcht, dies kann deine ganze Bibliothek leeren wenn deine Listen leer sind",
     "ConsideredAvailable": "Verfügbarkeit angenommen",
-    "Announced": "Angekündigt"
+    "Announced": "Angekündigt",
+    "Yes": "Ja",
+    "No": "Nein"
 }
