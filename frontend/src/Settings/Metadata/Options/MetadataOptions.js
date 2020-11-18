@@ -10,8 +10,14 @@ import { inputTypes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
 export const certificationCountryOptions = [
-  { key: 'us', value: 'United States' },
-  { key: 'gb', value: 'Great Britain' }
+  { key: 'au', value: 'Australia' },
+  { key: 'br', value: 'Brazil' },
+  { key: 'ca', value: 'Canada' },
+  { key: 'fr', value: 'France' },
+  { key: 'de', value: 'Germany' },
+  { key: 'gb', value: 'Great Britain' },
+  { key: 'it', value: 'Italy' },
+  { key: 'us', value: 'United States' }
 ];
 
 function MetadataOptions(props) {
