@@ -231,6 +231,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 return sceneNameFile;
             }
 
+            var folderTitle = localMovie.FolderMovieInfo?.ReleaseTitle;
+            if (folderTitle.IsNotNullOrWhiteSpace() && SceneChecker.IsSceneTitle(folderTitle))
+            {
+                return folderTitle;
+            }
+
             return null;
         }
     }

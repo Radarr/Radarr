@@ -171,28 +171,14 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        [Ignore("Series")]
-        public void should_not_use_nzb_title_as_scene_name_if_full_season()
-        {
-            GivenNewDownload();
-            _approvedDecisions.First().LocalMovie.Path = Path.Combine(_downloadClientItem.OutputPath.ToString(), "malcolm.in.the.middle.s02e23.dvdrip.xvid-ingot.mkv");
-            _downloadClientItem.Title = "malcolm.in.the.middle.s02.dvdrip.xvid-ingot";
-
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, _downloadClientItem);
-
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<MovieFile>(c => c.SceneName == "malcolm.in.the.middle.s02e23.dvdrip.xvid-ingot")));
-        }
-
-        [Test]
-        [Ignore("Series")]
         public void should_use_file_name_as_scenename_only_if_it_looks_like_scenename()
         {
             GivenNewDownload();
-            _approvedDecisions.First().LocalMovie.Path = Path.Combine(_downloadClientItem.OutputPath.ToString(), "malcolm.in.the.middle.s02e23.dvdrip.xvid-ingot.mkv");
+            _approvedDecisions.First().LocalMovie.Path = Path.Combine(_downloadClientItem.OutputPath.ToString(), "movie.title.2018.dvdrip.xvid-ingot.mkv");
 
             Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
 
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<MovieFile>(c => c.SceneName == "malcolm.in.the.middle.s02e23.dvdrip.xvid-ingot")));
+            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<MovieFile>(c => c.SceneName == "movie.title.2018.dvdrip.xvid-ingot")));
         }
 
         [Test]
@@ -200,6 +186,36 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenNewDownload();
             _approvedDecisions.First().LocalMovie.Path = Path.Combine(_downloadClientItem.OutputPath.ToString(), "aaaaa.mkv");
+
+            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
+
+            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<MovieFile>(c => c.SceneName == null)));
+        }
+
+        [Test]
+        public void should_use_folder_name_as_scenename_only_if_it_looks_like_scenename()
+        {
+            GivenNewDownload();
+            _approvedDecisions.First().LocalMovie.Path = Path.Combine(_downloadClientItem.OutputPath.ToString(), "aaaaa.mkv");
+            _approvedDecisions.First().LocalMovie.FolderMovieInfo = new ParsedMovieInfo
+            {
+                ReleaseTitle = "movie.title.2018.dvdrip.xvid-ingot"
+            };
+
+            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
+
+            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<MovieFile>(c => c.SceneName == "movie.title.2018.dvdrip.xvid-ingot")));
+        }
+
+        [Test]
+        public void should_not_use_folder_name_as_scenename_if_it_doesnt_looks_like_scenename()
+        {
+            GivenNewDownload();
+            _approvedDecisions.First().LocalMovie.Path = Path.Combine(_downloadClientItem.OutputPath.ToString(), "aaaaa.mkv");
+            _approvedDecisions.First().LocalMovie.FolderMovieInfo = new ParsedMovieInfo
+            {
+                ReleaseTitle = "aaaaa.mkv"
+            };
 
             Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
 

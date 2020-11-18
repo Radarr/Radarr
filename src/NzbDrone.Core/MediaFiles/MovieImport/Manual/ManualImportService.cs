@@ -268,6 +268,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 if (file.FolderName.IsNotNullOrWhiteSpace())
                 {
                     localMovie.FolderMovieInfo = Parser.Parser.ParseMovieTitle(file.FolderName);
+                    localMovie.SceneSource = !existingFile;
                 }
 
                 localMovie = _aggregationService.Augment(localMovie, trackedDownload?.DownloadItem, false);
