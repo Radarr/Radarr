@@ -149,41 +149,45 @@ export const actionHandlers = handleThunks({
 
     dispatch(set({ section, isSaving: true }));
 
-    const data = {
+    const requestData = {
       movieFileIds
     };
 
     if (languages) {
-      data.languages = languages;
+      requestData.languages = languages;
     }
 
     if (indexerFlags !== undefined) {
-      data.indexerFlags = indexerFlags;
+      requestData.indexerFlags = indexerFlags;
     }
 
     if (quality) {
-      data.quality = quality;
+      requestData.quality = quality;
     }
 
     if (releaseGroup) {
-      data.releaseGroup = releaseGroup;
+      requestData.releaseGroup = releaseGroup;
     }
 
     if (edition) {
-      data.edition = edition;
+      requestData.edition = edition;
     }
 
     const promise = createAjaxRequest({
       url: '/movieFile/editor',
       method: 'PUT',
       dataType: 'json',
-      data: JSON.stringify(data)
+      data: JSON.stringify(requestData)
     }).request;
 
-    promise.done(() => {
+    promise.done((data) => {
       dispatch(batchActions([
         ...movieFileIds.map((id) => {
           const props = {};
+
+          const movieFile = data.find((file) => file.id === id);
+
+          props.qualityCutoffNotMet = movieFile.qualityCutoffNotMet;
 
           if (languages) {
             props.languages = languages;
