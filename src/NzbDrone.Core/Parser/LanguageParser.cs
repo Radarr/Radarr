@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(LanguageParser));
 
-        private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<italian>\b(?:ita|italian)\b)|(?<german>\b(?:german|videomann|ger)\b)|(?<flemish>flemish)|(?<bulgarian>bgaudio)|(?<greek>greek)|(?<french>(?:\W|_)(?:FR|VO|VFF|VFQ|VFI|VF2|TRUEFRENCH)(?:\W|_))|(?<russian>\brus\b)|(?<english>\beng\b)|(?<hungarian>\b(?:HUNDUB|HUN)\b)|(?<hebrew>\bHebDub\b)|(?<chinese>\[(?:CH[ST]|BIG5|GB)\]|简|繁|字幕)",
+        private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<italian>\b(?:ita|italian)\b)|(?<german>\b(?:german|videomann|ger)\b)|(?<flemish>flemish)|(?<bulgarian>bgaudio)|(?<brazilian>dublado)|(?<greek>greek)|(?<french>(?:\W|_)(?:FR|VO|VFF|VFQ|VFI|VF2|TRUEFRENCH)(?:\W|_))|(?<russian>\brus\b)|(?<english>\beng\b)|(?<hungarian>\b(?:HUNDUB|HUN)\b)|(?<hebrew>\bHebDub\b)|(?<chinese>\[(?:CH[ST]|BIG5|GB)\]|简|繁|字幕)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?<lithuanian>\bLT\b)|(?<czech>\bCZ\b)",
@@ -197,6 +197,11 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["bulgarian"].Success)
                 {
                     languages.Add(Language.Bulgarian);
+                }
+
+                if (match.Groups["brazilian"].Success)
+                {
+                    languages.Add(Language.PortugueseBR);
                 }
 
                 if (match.Groups["dutch"].Success)

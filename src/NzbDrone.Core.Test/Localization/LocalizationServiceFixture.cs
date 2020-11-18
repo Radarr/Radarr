@@ -30,13 +30,23 @@ namespace NzbDrone.Core.Test.Localization
         }
 
         [Test]
+        public void should_get_string_in_default_language_dictionary_if_no_lang_country_code_exists_and_string_exists()
+        {
+            var localizedString = Subject.GetLocalizedString("BackupNow", "de_de");
+
+            localizedString.Should().Be("Jetzt sichern");
+
+            ExceptionVerification.ExpectedErrors(1);
+        }
+
+        [Test]
         public void should_get_string_in_default_dictionary_if_no_lang_exists_and_string_exists()
         {
             var localizedString = Subject.GetLocalizedString("BackupNow", "an");
 
             localizedString.Should().Be("Backup Now");
 
-            ExceptionVerification.ExpectedErrors(1);
+            ExceptionVerification.ExpectedErrors(2);
         }
 
         [Test]

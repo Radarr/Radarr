@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Language.Should().Be(Language.Portuguese);
         }
 
-        [TestCase("pt-BR")]
+        [TestCase("de-AU")]
         public void should_not_return_portuguese(string isoCode)
         {
             var result = IsoLanguages.Find(isoCode);
