@@ -44,6 +44,7 @@ namespace Radarr.Api.V3.Indexers
         public bool DownloadAllowed { get; set; }
         public int ReleaseWeight { get; set; }
         public IEnumerable<string> IndexerFlags { get; set; }
+        public string Edition { get; set; }
 
         public string MagnetUrl { get; set; }
         public string InfoHash { get; set; }
@@ -96,6 +97,7 @@ namespace Radarr.Api.V3.Indexers
                 DownloadUrl = releaseInfo.DownloadUrl,
                 InfoUrl = releaseInfo.InfoUrl,
                 DownloadAllowed = remoteMovie.DownloadAllowed,
+                Edition = parsedMovieInfo.Edition,
 
                 //ReleaseWeight
                 MagnetUrl = torrentInfo.MagnetUrl,
