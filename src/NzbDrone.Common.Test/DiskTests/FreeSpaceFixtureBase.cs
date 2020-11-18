@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using FluentAssertions;
 using NUnit.Framework;
@@ -30,47 +30,10 @@ namespace NzbDrone.Common.Test.DiskTests
 
         [Ignore("Docker")]
         [Test]
-        public void should_be_able_to_check_space_on_ramdrive()
-        {
-            PosixOnly();
-            Subject.GetAvailableSpace("/run/").Should().NotBe(0);
-        }
-
-        [Ignore("Docker")]
-        [Test]
         public void should_return_free_disk_space()
         {
             var result = Subject.GetAvailableSpace(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
             result.Should().BeGreaterThan(0);
-        }
-
-        [Test]
-        public void should_be_able_to_get_space_on_unc()
-        {
-            WindowsOnly();
-
-            var result = Subject.GetAvailableSpace(@"\\localhost\c$\Windows");
-            result.Should().BeGreaterThan(0);
-        }
-
-        [Test]
-        public void should_throw_if_drive_doesnt_exist()
-        {
-            WindowsOnly();
-
-            // Find a drive that doesn't exist.
-            for (char driveletter = 'Z'; driveletter > 'D'; driveletter--)
-            {
-                if (new DriveInfo(driveletter.ToString()).IsReady)
-                {
-                    continue;
-                }
-
-                Assert.Throws<DirectoryNotFoundException>(() => Subject.GetAvailableSpace(driveletter + @":\NOT_A_REAL_PATH\DOES_NOT_EXIST".AsOsAgnostic()));
-                return;
-            }
-
-            Assert.Inconclusive("No drive available for testing.");
         }
 
         [Ignore("Docker")]
