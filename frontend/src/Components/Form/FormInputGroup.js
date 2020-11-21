@@ -9,6 +9,7 @@ import CaptchaInputConnector from './CaptchaInputConnector';
 import CheckInput from './CheckInput';
 import DeviceInputConnector from './DeviceInputConnector';
 import EnhancedSelectInput from './EnhancedSelectInput';
+import EnhancedSelectInputConnector from './EnhancedSelectInputConnector';
 import FormInputHelpText from './FormInputHelpText';
 import IndexerFlagsSelectInputConnector from './IndexerFlagsSelectInputConnector';
 import KeyValueListInput from './KeyValueListInput';
@@ -24,6 +25,7 @@ import TagSelectInputConnector from './TagSelectInputConnector';
 import TextArea from './TextArea';
 import TextInput from './TextInput';
 import TextTagInputConnector from './TextTagInputConnector';
+import UMaskInput from './UMaskInput';
 import styles from './FormInputGroup.css';
 
 function getComponent(type) {
@@ -73,6 +75,8 @@ function getComponent(type) {
     case inputTypes.SELECT:
       return EnhancedSelectInput;
 
+    case inputTypes.DYNAMIC_SELECT:
+      return EnhancedSelectInputConnector;
     case inputTypes.TAG:
       return TagInputConnector;
 
@@ -84,6 +88,9 @@ function getComponent(type) {
 
     case inputTypes.TAG_SELECT:
       return TagSelectInputConnector;
+
+    case inputTypes.UMASK:
+      return UMaskInput;
 
     default:
       return TextInput;
@@ -192,7 +199,7 @@ function FormInputGroup(props) {
       }
 
       {
-        !checkInput && helpTextWarning &&
+        (!checkInput || helpText) && helpTextWarning &&
           <FormInputHelpText
             text={helpTextWarning}
             isWarning={true}

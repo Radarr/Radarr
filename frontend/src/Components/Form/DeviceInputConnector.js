@@ -2,34 +2,22 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { clearOptions, fetchOptions } from 'Store/Actions/providerOptionActions';
+import { clearOptions, defaultState, fetchOptions } from 'Store/Actions/providerOptionActions';
 import DeviceInput from './DeviceInput';
 
 function createMapStateToProps() {
   return createSelector(
     (state, { value }) => value,
-    (state, { name }) => name,
-    (state) => state.providerOptions,
-    (value, name, devices) => {
-      const {
-        isFetching,
-        isPopulated,
-        error,
-        items
-      } = devices;
+    (state) => state.providerOptions.devices || defaultState,
+    (value, devices) => {
 
       return {
-        isFetching,
-        isPopulated,
-        error,
-        items: items[name] || [],
+        ...devices,
         selectedDevices: value.map((valueDevice) => {
-          const sectionItems = items[name] || [];
-
           // Disable equality ESLint rule so we don't need to worry about
           // a type mismatch between the value items and the device ID.
           // eslint-disable-next-line eqeqeq
-          const device = sectionItems.find((d) => d.id == valueDevice);
+          const device = devices.items.find((d) => d.id == valueDevice);
 
           if (device) {
             return {
@@ -63,7 +51,7 @@ class DeviceInputConnector extends Component {
   }
 
   componentWillUnmount = () => {
-    this.props.dispatchClearOptions();
+    this.props.dispatchClearOptions({ section: 'devices' });
   }
 
   //
@@ -73,14 +61,12 @@ class DeviceInputConnector extends Component {
     const {
       provider,
       providerData,
-      dispatchFetchOptions,
-      requestAction,
-      name
+      dispatchFetchOptions
     } = this.props;
 
     dispatchFetchOptions({
-      action: requestAction,
-      itemSection: name,
+      section: 'devices',
+      action: 'getDevices',
       provider,
       providerData
     });
@@ -109,7 +95,6 @@ class DeviceInputConnector extends Component {
 DeviceInputConnector.propTypes = {
   provider: PropTypes.string.isRequired,
   providerData: PropTypes.object.isRequired,
-  requestAction: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   dispatchFetchOptions: PropTypes.func.isRequired,

@@ -48,6 +48,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
 
             var request = new HttpRequest(url, HttpAccept.Rss);
+            request.AllowAutoRedirect = true;
 
             HttpResponse response;
 
@@ -76,6 +77,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             {
                 ex.WithData(response, 128 * 1024);
                 _logger.Trace("Unexpected Response content ({0} bytes): {1}", response.ResponseData.Length, response.Content);
+                _logger.Error(ex, "Failed to determine newznab api capabilities for {0}, using the defaults instead till Radarr restarts", indexerSettings.BaseUrl);
             }
 
             return capabilities;

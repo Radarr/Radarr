@@ -364,17 +364,32 @@ class MediaManagement extends Component {
                         advancedSettings={advancedSettings}
                         isAdvanced={true}
                       >
-                        <FormLabel>{translate('FileChmodMode')}</FormLabel>
+                        <FormLabel>{translate('ChmodFolder')}</FormLabel>
+
+                        <FormInputGroup
+                          type={inputTypes.UMASK}
+                          name="chmodFolder"
+                          helpText={translate('ChmodFolderHelpText')}
+                          helpTextWarning={translate('ChmodFolderHelpTextWarning')}
+                          onChange={onInputChange}
+                          {...settings.chmodFolder}
+                        />
+                      </FormGroup>
+
+                      <FormGroup
+                        advancedSettings={advancedSettings}
+                        isAdvanced={true}
+                      >
+                        <FormLabel>{translate('ChmodGroup')}</FormLabel>
 
                         <FormInputGroup
                           type={inputTypes.TEXT}
-                          name="fileChmod"
-                          helpTexts={[
-                            translate('FileChmodHelpTexts1'),
-                            translate('FileChmodHelpTexts2')
-                          ]}
+                          name="chownGroup"
+                          helpText={translate('ChmodGroupHelpText')}
+                          helpTextWarning={translate('ChmodGroupHelpTextWarning')}
+                          values={fileDateOptions}
                           onChange={onInputChange}
-                          {...settings.fileChmod}
+                          {...settings.chownGroup}
                         />
                       </FormGroup>
                     </FieldSet>
