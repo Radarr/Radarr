@@ -91,8 +91,8 @@ namespace NzbDrone.Core.ImportLists.Radarr
                     options = devices.OrderBy(d => d.Name, StringComparer.InvariantCultureIgnoreCase)
                                             .Select(d => new
                                             {
-                                                id = d.Id,
-                                                name = d.Name
+                                                Value = d.Id,
+                                                Name = d.Name
                                             })
                 };
             }
@@ -106,8 +106,8 @@ namespace NzbDrone.Core.ImportLists.Radarr
                     options = devices.OrderBy(d => d.Label, StringComparer.InvariantCultureIgnoreCase)
                                             .Select(d => new
                                             {
-                                                id = d.Id,
-                                                name = d.Label
+                                                Value = d.Id,
+                                                Name = d.Label
                                             })
                 };
             }

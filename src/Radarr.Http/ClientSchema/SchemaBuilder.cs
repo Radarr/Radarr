@@ -100,13 +100,19 @@ namespace Radarr.Http.ClientSchema
                         Order = fieldAttribute.Order,
                         Advanced = fieldAttribute.Advanced,
                         Type = fieldAttribute.Type.ToString().FirstCharToLower(),
-                        Section = fieldAttribute.Section,
-                        RequestAction = fieldAttribute.RequestAction
+                        Section = fieldAttribute.Section
                     };
 
                     if (fieldAttribute.Type == FieldType.Select || fieldAttribute.Type == FieldType.TagSelect)
                     {
-                        field.SelectOptions = GetSelectOptions(fieldAttribute.SelectOptions);
+                        if (fieldAttribute.SelectOptionsProviderAction.IsNotNullOrWhiteSpace())
+                        {
+                            field.SelectOptionsProviderAction = fieldAttribute.SelectOptionsProviderAction;
+                        }
+                        else
+                        {
+                            field.SelectOptions = GetSelectOptions(fieldAttribute.SelectOptions);
+                        }
                     }
 
                     if (fieldAttribute.Hidden != HiddenType.Visible)
@@ -215,7 +221,11 @@ namespace Radarr.Http.ClientSchema
             {
                 return fieldValue =>
                 {
-                    if (fieldValue.GetType() == typeof(JArray))
+                    if (fieldValue == null)
+                    {
+                        return Enumerable.Empty<int>();
+                    }
+                    else if (fieldValue.GetType() == typeof(JArray))
                     {
                         return ((JArray)fieldValue).Select(s => s.Value<int>());
                     }
@@ -229,7 +239,11 @@ namespace Radarr.Http.ClientSchema
             {
                 return fieldValue =>
                 {
-                    if (fieldValue.GetType() == typeof(JArray))
+                    if (fieldValue == null)
+                    {
+                        return Enumerable.Empty<string>();
+                    }
+                    else if (fieldValue.GetType() == typeof(JArray))
                     {
                         return ((JArray)fieldValue).Select(s => s.Value<string>());
                     }

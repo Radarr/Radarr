@@ -34,10 +34,10 @@ namespace NzbDrone.Core.ImportLists.Radarr
         [FieldDefinition(1, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "Apikey of the Radarr V3 instance to import from")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(2, Type = FieldType.Device, RequestAction = "getProfiles", Label = "Profiles", HelpText = "Profiles from the source instance to import from")]
+        [FieldDefinition(2, Type = FieldType.Select, SelectOptionsProviderAction = "getProfiles", Label = "Profiles", HelpText = "Profiles from the source instance to import from")]
         public IEnumerable<int> ProfileIds { get; set; }
 
-        [FieldDefinition(3, Type = FieldType.Device, RequestAction = "getTags", Label = "Tags", HelpText = "Tags from the source instance to import from")]
+        [FieldDefinition(3, Type = FieldType.Select, SelectOptionsProviderAction = "getTags", Label = "Tags", HelpText = "Tags from the source instance to import from")]
         public IEnumerable<int> TagIds { get; set; }
 
         public NzbDroneValidationResult Validate()

@@ -19,7 +19,8 @@ namespace Radarr.Api.V3.Config
         public bool PathsDefaultStatic { get; set; }
 
         public bool SetPermissionsLinux { get; set; }
-        public string FileChmod { get; set; }
+        public string ChmodFolder { get; set; }
+        public string ChownGroup { get; set; }
 
         public bool SkipFreeSpaceCheckWhenImporting { get; set; }
         public int MinimumFreeSpaceWhenImporting { get; set; }
@@ -46,7 +47,8 @@ namespace Radarr.Api.V3.Config
                 AutoRenameFolders = model.AutoRenameFolders,
 
                 SetPermissionsLinux = model.SetPermissionsLinux,
-                FileChmod = model.FileChmod,
+                ChmodFolder = model.ChmodFolder,
+                ChownGroup = model.ChownGroup,
 
                 SkipFreeSpaceCheckWhenImporting = model.SkipFreeSpaceCheckWhenImporting,
                 MinimumFreeSpaceWhenImporting = model.MinimumFreeSpaceWhenImporting,

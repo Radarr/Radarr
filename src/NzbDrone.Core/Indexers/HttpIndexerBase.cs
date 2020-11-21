@@ -321,7 +321,14 @@ namespace NzbDrone.Core.Indexers
                     _indexerStatusService.UpdateCookies(Definition.Id, cookies, expiration);
                 };
                 var generator = GetRequestGenerator();
-                var releases = FetchPage(generator.GetRecentRequests().GetAllTiers().First().First(), parser);
+                var firstRequest = generator.GetRecentRequests().GetAllTiers().FirstOrDefault()?.FirstOrDefault();
+
+                if (firstRequest == null)
+                {
+                    return new ValidationFailure(string.Empty, "No rss feed query available. This may be an issue with the indexer or your indexer category settings.");
+                }
+
+                var releases = FetchPage(firstRequest, parser);
 
                 if (releases.Empty())
                 {
