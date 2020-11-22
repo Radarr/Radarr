@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         [Test]
         public void should_get_recent_updates()
         {
-            const string branch = "develop";
+            const string branch = "nightly";
             UseRealHttp();
             var recent = Subject.GetRecentUpdates(branch, new Version(2, 0));
             var recentWithChanges = recent.Where(c => c.Changes != null);
