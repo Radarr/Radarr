@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
@@ -100,6 +100,10 @@ namespace NzbDrone.Windows.Disk
                 Logger.Warn(e, "Couldn't set permission for {0}. account:{1} rights:{2} accessControlType:{3}", filename, accountSid, rights, controlType);
                 throw;
             }
+        }
+
+        public override void SetFilePermissions(string path, string mask, string group)
+        {
         }
 
         public override void SetPermissions(string path, string mask, string group)

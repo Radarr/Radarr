@@ -8,6 +8,7 @@ using Mono.Unix.Native;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 
@@ -24,6 +25,7 @@ namespace NzbDrone.Mono.Disk
         private readonly IProcMountProvider _procMountProvider;
         private readonly ISymbolicLinkResolver _symLinkResolver;
         private readonly IRefLinkCreator _createRefLink;
+        private readonly Logger _logger;
 
         public DiskProvider(IProcMountProvider procMountProvider,
                             ISymbolicLinkResolver symLinkResolver,
@@ -78,16 +80,28 @@ namespace NzbDrone.Mono.Disk
         {
         }
 
+        public override void SetFilePermissions(string path, string mask, string group)
+        {
+            var permissions = NativeConvert.FromOctalPermissionString(mask);
+
+            SetPermissions(path, mask, group, permissions);
+        }
+
         public override void SetPermissions(string path, string mask, string group)
         {
-            _logger.Debug("Setting permissions: {0} on {1}", mask, path);
-
             var permissions = NativeConvert.FromOctalPermissionString(mask);
 
             if (_fileSystem.File.Exists(path))
             {
                 permissions = GetFilePermissions(permissions);
             }
+
+            SetPermissions(path, mask, group, permissions);
+        }
+
+        protected void SetPermissions(string path, string mask, string group, FilePermissions permissions)
+        {
+            _logger.Debug("Setting permissions: {0} on {1}", mask, path);
 
             // Preserve non-access permissions
             if (Syscall.stat(path, out var curStat) < 0)

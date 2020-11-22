@@ -38,6 +38,7 @@ namespace NzbDrone.Mono.Test.DiskProviderTests
                 {
                     Syscall.chmod(_tempPath, FilePermissions.S_IRUSR | FilePermissions.S_IWUSR);
                 }
+
                 _tempPath = null;
             }
         }
@@ -55,7 +56,6 @@ namespace NzbDrone.Mono.Test.DiskProviderTests
         protected void SetWritePermissionsInternal(string path, bool writable, bool setgid)
         {
             // Remove Write permissions, we're still owner so we can clean it up, but we'll have to do that explicitly.
-
             Stat stat;
             Syscall.stat(path, out stat);
             FilePermissions mode = stat.st_mode;
@@ -68,7 +68,6 @@ namespace NzbDrone.Mono.Test.DiskProviderTests
             {
                 mode &= ~(FilePermissions.S_IWUSR | FilePermissions.S_IWGRP | FilePermissions.S_IWOTH);
             }
-
 
             if (setgid)
             {
