@@ -1,6 +1,7 @@
 {
   "paths": [
-    "frontend/src/**/*.js"
+    "frontend/src/**/*.js",
+    "src/NzbDrone.Core/Localization/Core/*.json"
   ],
   "ignored": [
     "**/node_modules/**/*"
