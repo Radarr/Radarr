@@ -781,7 +781,7 @@
     "Wanted": "Keresett",
     "WaitingToProcess": "Várakozás feldolgozásra",
     "WaitingToImport": "Várakozás importálásra",
-    "VisitGithubCustomFormatsAphrodite": "Látogasd meg a GitHub-ot további információkért: ",
+    "VisitGithubCustomFormatsAphrodite": "További részletekért keresd fel a Wikit: ",
     "View": "Nézet",
     "VideoCodec": "Videókodek",
     "Version": "Verzió",
@@ -851,5 +851,14 @@
     "ConsideredAvailable": "Feltételezhetően elérhető",
     "Announced": "Bejelentett",
     "Yes": "Igen",
-    "No": "Nem"
+    "No": "Nem",
+    "NotifcationTriggersHelpText": "Válaszd ki, hogy mely események indítsák el ezt az értesítést",
+    "MappedDrivesRunningAsService": "A hozzárendelt hálózati meghajtók nem érhetők el, ha Windows szolgáltatásként futnak. További információkért olvasd át a GYIK-et",
+    "CouldNotConnectSignalR": "Nem sikerült csatlakozni a SignalR-hez, a felhasználói felület nem frissül",
+    "ChmodGroupHelpTextWarning": "Ez csak akkor működik, ha a Radarrt futtató felhasználó a fájl tulajdonosa. Jobb, ha a letöltési kliens ugyanazt a csoportot használja, mint a Radarr.",
+    "ChmodGroupHelpText": "Csoport neve vagy gid. A gid használata távoli fájlrendszerekhez.",
+    "ChmodGroup": "chmod Csoport",
+    "ChmodFolderHelpTextWarning": "Ez csak akkor működik, ha a Radarr-t futtató felhasználó a fájl tulajdonosa. Jobb, ha ellenőrzöd a letöltési kliensben megfelelően vannak-e beállítva az engedélyek.",
+    "ChmodFolderHelpText": "Octal, importáláskor / átnevezéskor alkalmazva a média mappákra és fájlokra (bitek végrehajtása nélkül)",
+    "ChmodFolder": "chmod Mappa"
 }
