@@ -26,7 +26,7 @@ function MovieIndexSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Monitored/Status
+          {translate('MonitoredStatus')}
         </SortMenuItem>
 
         <SortMenuItem

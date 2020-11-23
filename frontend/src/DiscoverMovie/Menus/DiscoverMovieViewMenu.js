@@ -4,6 +4,7 @@ import MenuContent from 'Components/Menu/MenuContent';
 import ViewMenu from 'Components/Menu/ViewMenu';
 import ViewMenuItem from 'Components/Menu/ViewMenuItem';
 import { align } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 function DiscoverMovieViewMenu(props) {
   const {
@@ -23,7 +24,7 @@ function DiscoverMovieViewMenu(props) {
           selectedView={view}
           onPress={onViewSelect}
         >
-          Table
+          {translate('Table')}
         </ViewMenuItem>
 
         <ViewMenuItem
@@ -31,7 +32,7 @@ function DiscoverMovieViewMenu(props) {
           selectedView={view}
           onPress={onViewSelect}
         >
-          Posters
+          {translate('Posters')}
         </ViewMenuItem>
 
         <ViewMenuItem
@@ -39,7 +40,7 @@ function DiscoverMovieViewMenu(props) {
           selectedView={view}
           onPress={onViewSelect}
         >
-          Overview
+          {translate('Overview')}
         </ViewMenuItem>
       </MenuContent>
     </ViewMenu>

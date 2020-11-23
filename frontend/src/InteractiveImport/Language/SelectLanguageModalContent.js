@@ -77,7 +77,7 @@ class SelectLanguageModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Manual Import - Select Language
+          {translate('ManualImportSelectLanguage')}
         </ModalHeader>
 
         <ModalBody>
@@ -128,7 +128,7 @@ class SelectLanguageModalContent extends Component {
             kind={kinds.SUCCESS}
             onPress={this.onLanguageSelect}
           >
-            Select Languges
+            {translate('SelectLanguges')}
           </Button>
         </ModalFooter>
       </ModalContent>

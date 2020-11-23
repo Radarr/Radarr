@@ -48,12 +48,16 @@ class MovieTitlesTableContent extends Component {
 
         {
           !isFetching && !!error &&
-            <div className={styles.blankpad}>Unable to load alternative titles.</div>
+            <div className={styles.blankpad}>
+              {translate('UnableToLoadAltTitle')}
+            </div>
         }
 
         {
           isPopulated && !hasItems && !error &&
-            <div className={styles.blankpad}>No alternative titles.</div>
+            <div className={styles.blankpad}>
+              {translate('NoAltTitle')}
+            </div>
         }
 
         {

@@ -53,7 +53,7 @@ class EditDownloadClientModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          {`${id ? 'Edit' : 'Add'} Download Client - ${implementationName}`}
+          {`${id ? translate('Edit') : translate('Add')} ${translate('DownloadClient')} - ${implementationName}`}
         </ModalHeader>
 
         <ModalBody>

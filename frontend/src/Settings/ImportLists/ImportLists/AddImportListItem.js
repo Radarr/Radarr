@@ -58,7 +58,7 @@ class AddImportListItem extends Component {
                     size={sizes.SMALL}
                     onPress={this.onImportListSelect}
                   >
-                    Custom
+                    {translate('Custom')}
                   </Button>
 
                   <Menu className={styles.presetsMenu}>
@@ -66,7 +66,7 @@ class AddImportListItem extends Component {
                       className={styles.presetsMenuButton}
                       size={sizes.SMALL}
                     >
-                      Presets
+                      {translate('Presets')}
                     </Button>
 
                     <MenuContent>

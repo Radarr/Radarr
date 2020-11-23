@@ -8,9 +8,9 @@ import { inputTypes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
 const logLevelOptions = [
-  { key: 'info', value: 'Info' },
-  { key: 'debug', value: 'Debug' },
-  { key: 'trace', value: 'Trace' }
+  { key: 'info', value: translate('Info') },
+  { key: 'debug', value: translate('Debug') },
+  { key: 'trace', value: translate('Trace') }
 ];
 
 function LoggingSettings(props) {

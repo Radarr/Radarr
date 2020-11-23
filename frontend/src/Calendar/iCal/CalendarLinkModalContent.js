@@ -109,7 +109,7 @@ class CalendarLinkModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Radarr Calendar Feed
+          {translate('RadarrCalendarFeed')}
         </ModalHeader>
 
         <ModalBody>

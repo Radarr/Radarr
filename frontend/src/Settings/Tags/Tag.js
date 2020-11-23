@@ -126,7 +126,7 @@ class Tag extends Component {
         {
           !isTagUsed &&
             <div>
-              No links
+              {translate('NoLinks')}
             </div>
         }
 

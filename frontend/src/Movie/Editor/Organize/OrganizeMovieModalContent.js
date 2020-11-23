@@ -21,12 +21,12 @@ function OrganizeMovieModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        Organize Selected Movies
+        {translate('OrganizeSelectedMovies')}
       </ModalHeader>
 
       <ModalBody>
         <Alert>
-          Tip: To preview a rename... select "Cancel" then click any movie title and use the
+          {translate('PreviewRenameHelpText')}
           <Icon
             className={styles.renameIcon}
             name={icons.ORGANIZE}
@@ -34,7 +34,7 @@ function OrganizeMovieModalContent(props) {
         </Alert>
 
         <div className={styles.message}>
-          Are you sure you want to organize all files in the {movieTitles.length} selected movie(s)?
+          {translate('OrganizeConfirm', [movieTitles.length])}
         </div>
 
         <ul>
@@ -59,7 +59,7 @@ function OrganizeMovieModalContent(props) {
           kind={kinds.DANGER}
           onPress={onOrganizeMoviePress}
         >
-          Organize
+          {translate('Organize')}
         </Button>
       </ModalFooter>
     </ModalContent>

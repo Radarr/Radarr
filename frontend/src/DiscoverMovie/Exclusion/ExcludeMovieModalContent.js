@@ -38,7 +38,7 @@ class ExcludeMovieModalContent extends Component {
 
         <ModalBody>
           <div className={styles.pathContainer}>
-            Exclude {title}? This will prevent Radarr from adding automatically via list sync.
+            {translate('ExcludeTitle', [title])}
           </div>
 
         </ModalBody>

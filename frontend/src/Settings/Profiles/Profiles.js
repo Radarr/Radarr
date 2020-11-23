@@ -29,9 +29,9 @@ class Profiles extends Component {
             <QualityProfilesConnector />
             <DelayProfilesConnector />
             <div className={styles.addCustomFormatMessage}>
-              Looking for Release Profiles? Try
-              <Link to='/settings/customformats'> Custom Formats </Link>
-              instead.
+              {translate('LookingForReleaseProfiles1')}
+              <Link to='/settings/customformats'> {translate('CustomFormats')} </Link>
+              {translate('LookingForReleaseProfiles2')}
             </div>
           </DndProvider>
         </PageContentBody>

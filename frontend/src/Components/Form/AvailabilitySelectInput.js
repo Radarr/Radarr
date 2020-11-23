@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import translate from 'Utilities/String/translate';
 import SelectInput from './SelectInput';
 
 const availabilityOptions = [
-  { key: 'announced', value: 'Announced' },
-  { key: 'inCinemas', value: 'In Cinemas' },
-  { key: 'released', value: 'Released' },
-  { key: 'preDB', value: 'PreDB' }
+  { key: 'announced', value: translate('Announced') },
+  { key: 'inCinemas', value: translate('InCinemas') },
+  { key: 'released', value: translate('Released') },
+  { key: 'preDB', value: translate('PreDB') }
 ];
 
 function AvailabilitySelectInput(props) {

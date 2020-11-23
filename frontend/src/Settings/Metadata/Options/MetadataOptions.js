@@ -9,6 +9,8 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import { inputTypes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
+// Note: Do Not Translate Certification Countries
+
 export const certificationCountryOptions = [
   { key: 'au', value: 'Australia' },
   { key: 'br', value: 'Brazil' },

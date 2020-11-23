@@ -39,7 +39,7 @@ function EditImportExclusionModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {id ? 'Edit List Exclusion' : 'Add List Exclusion'}
+        {id ? translate('EditListExclusion') : translate('AddListExclusion')}
       </ModalHeader>
 
       <ModalBody className={styles.body}>

@@ -15,32 +15,44 @@ class MoreInfo extends Component {
     return (
       <FieldSet legend={translate('MoreInfo')}>
         <DescriptionList>
-          <DescriptionListItemTitle>Home page</DescriptionListItemTitle>
+          <DescriptionListItemTitle>
+            {translate('HomePage')}
+          </DescriptionListItemTitle>
           <DescriptionListItemDescription>
             <Link to="https://radarr.video/">radarr.video</Link>
           </DescriptionListItemDescription>
 
-          <DescriptionListItemTitle>Discord</DescriptionListItemTitle>
+          <DescriptionListItemTitle>
+            {translate('Discord')}
+          </DescriptionListItemTitle>
           <DescriptionListItemDescription>
             <Link to="https://discord.gg/r5wJPt9">discord.gg/r5wJPt9</Link>
           </DescriptionListItemDescription>
 
-          <DescriptionListItemTitle>Wiki</DescriptionListItemTitle>
+          <DescriptionListItemTitle>
+            {translate('Wiki')}
+          </DescriptionListItemTitle>
           <DescriptionListItemDescription>
             <Link to="https://wiki.servarr.com/Radarr">wiki.servarr.com/Radarr</Link>
           </DescriptionListItemDescription>
 
-          <DescriptionListItemTitle>Donations</DescriptionListItemTitle>
+          <DescriptionListItemTitle>
+            {translate('Donations')}
+          </DescriptionListItemTitle>
           <DescriptionListItemDescription>
             <Link to="https://opencollective.com/radarr">opencollective.com/radarr</Link>
           </DescriptionListItemDescription>
 
-          <DescriptionListItemTitle>Source</DescriptionListItemTitle>
+          <DescriptionListItemTitle>
+            {translate('Source')}
+          </DescriptionListItemTitle>
           <DescriptionListItemDescription>
             <Link to="https://github.com/Radarr/Radarr/">github.com/Radarr/Radarr</Link>
           </DescriptionListItemDescription>
 
-          <DescriptionListItemTitle>Feature Requests</DescriptionListItemTitle>
+          <DescriptionListItemTitle>
+            {translate('FeatureRequests')}
+          </DescriptionListItemTitle>
           <DescriptionListItemDescription>
             <Link to="https://github.com/Radarr/Radarr/issues">github.com/Radarr/Radarr/issues</Link>
           </DescriptionListItemDescription>

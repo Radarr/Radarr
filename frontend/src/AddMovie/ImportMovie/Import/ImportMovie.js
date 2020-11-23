@@ -116,7 +116,7 @@ class ImportMovie extends Component {
             rootFoldersPopulated &&
             !unmappedFolders.length ?
               <div>
-                All movies in {path} have been imported
+                {translate('AllMoviesInPathHaveBeenImported', [path])}
               </div> :
               null
           }

@@ -12,15 +12,15 @@ import { icons, inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
 const authenticationMethodOptions = [
-  { key: 'none', value: 'None' },
-  { key: 'basic', value: 'Basic (Browser Popup)' },
-  { key: 'forms', value: 'Forms (Login Page)' }
+  { key: 'none', value: translate('None') },
+  { key: 'basic', value: translate('AuthBasic') },
+  { key: 'forms', value: translate('AuthForm') }
 ];
 
 const certificateValidationOptions = [
-  { key: 'enabled', value: 'Enabled' },
-  { key: 'disabledForLocalAddresses', value: 'Disabled for Local Addresses' },
-  { key: 'disabled', value: 'Disabled' }
+  { key: 'enabled', value: translate('Enabled') },
+  { key: 'disabledForLocalAddresses', value: translate('CertValidationNoLocal') },
+  { key: 'disabled', value: translate('Disabled') }
 ];
 
 class SecuritySettings extends Component {

@@ -13,8 +13,8 @@ import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import translate from 'Utilities/String/translate';
 
 export const firstDayOfWeekOptions = [
-  { key: 0, value: 'Sunday' },
-  { key: 1, value: 'Monday' }
+  { key: 0, value: translate('Sunday') },
+  { key: 1, value: translate('Monday') }
 ];
 
 export const weekColumnOptions = [

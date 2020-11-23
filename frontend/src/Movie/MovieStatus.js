@@ -1,30 +1,31 @@
 import { icons } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 export function getMovieStatusDetails(status) {
 
   let statusDetails = {
     icon: icons.ANNOUNCED,
-    title: 'Announced',
-    message: 'Movie is announced'
+    title: translate('Announced'),
+    message: translate('AnnoucedMsg')
   };
 
   if (status === 'deleted') {
     statusDetails = {
       icon: icons.MOVIE_DELETED,
-      title: 'Deleted',
-      message: 'Movie was deleted from TMDb'
+      title: translate('Deleted'),
+      message: translate('DeletedMsg')
     };
   } else if (status === 'inCinemas') {
     statusDetails = {
       icon: icons.IN_CINEMAS,
-      title: 'In Cinemas',
-      message: 'Movie is in Cinemas'
+      title: translate('InCinemas'),
+      message: translate('InCinemasMsg')
     };
   } else if (status === 'released') {
     statusDetails = {
       icon: icons.MOVIE_FILE,
-      title: 'Released',
-      message: 'Movie is released'
+      title: translate('Released'),
+      message: translate('ReleasedMsg')
     };
   }
 

@@ -41,11 +41,11 @@ class Updates extends Component {
     const hasUpdateToInstall = hasUpdates && _.some(items, { installable: true, latest: true });
     const noUpdateToInstall = hasUpdates && !hasUpdateToInstall;
 
-    const externalUpdaterPrefix = 'Unable to update Radarr directly,';
+    const externalUpdaterPrefix = translate('UnableToUpdateRadarrDirectly');
     const externalUpdaterMessages = {
-      external: 'Radarr is configured to use an external update mechanism',
-      apt: 'use apt to install the update',
-      docker: 'update the docker container to receive the update'
+      external: translate('ExternalUpdater'),
+      apt: translate('AptUpdater'),
+      docker: translate('DockerUpdater')
     };
 
     return (
@@ -74,7 +74,7 @@ class Updates extends Component {
                       isSpinning={isInstallingUpdate}
                       onPress={onInstallLatestPress}
                     >
-                      Install Latest
+                      {translate('InstallLatest')}
                     </SpinnerButton> :
 
                     <Fragment>
@@ -110,7 +110,7 @@ class Updates extends Component {
                 />
 
                 <div className={styles.message}>
-                  The latest version of Radarr is already installed
+                  {translate('OnLatestVersion')}
                 </div>
 
                 {
@@ -156,7 +156,7 @@ class Updates extends Component {
                                 className={styles.label}
                                 kind={kinds.SUCCESS}
                               >
-                                Currently Installed
+                                {translate('CurrentlyInstalled')}
                               </Label> :
                               null
                           }

@@ -173,7 +173,7 @@ class SelectMovieModalContent extends Component {
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
           <div className={styles.header}>
-            Manual Import - Select Movie
+            {translate('ManualImportSelectMovie')}
           </div>
         </ModalHeader>
 

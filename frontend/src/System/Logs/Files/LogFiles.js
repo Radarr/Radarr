@@ -83,7 +83,7 @@ class LogFiles extends Component {
             {
               currentLogView === 'Log Files' &&
                 <div>
-                  The log level defaults to 'Info' and can be changed in <Link to="/settings/general">General Settings</Link>
+                  {translate('TheLogLevelDefault')} <Link to="/settings/general">{translate('GeneralSettings')}</Link>
                 </div>
             }
           </Alert>

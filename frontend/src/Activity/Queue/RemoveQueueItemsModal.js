@@ -87,7 +87,7 @@ class RemoveQueueItemsModal extends Component {
 
           <ModalBody>
             <div className={styles.message}>
-              Are you sure you want to remove {selectedCount} item{selectedCount > 1 ? 's' : ''} from the queue?
+              {translate('AreYouSureYouWantToRemoveSelectedItemsFromQueue', [selectedCount, selectedCount > 1 ? 's' : ''])}
             </div>
 
             <FormGroup>

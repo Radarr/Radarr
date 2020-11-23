@@ -64,7 +64,7 @@ function EditSpecificationModalContent(props) {
 
           <FormGroup>
             <FormLabel>
-              Name
+              {translate('Name')}
             </FormLabel>
 
             <FormInputGroup
@@ -92,7 +92,7 @@ function EditSpecificationModalContent(props) {
 
           <FormGroup>
             <FormLabel>
-              Negate
+              {translate('Negate')}
             </FormLabel>
 
             <FormInputGroup
@@ -106,7 +106,7 @@ function EditSpecificationModalContent(props) {
 
           <FormGroup>
             <FormLabel>
-              Required
+              {translate('Required')}
             </FormLabel>
 
             <FormInputGroup

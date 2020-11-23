@@ -29,7 +29,7 @@ function TagDetailsModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        Tag Details - {label}
+        {translate('TagDetails', [label])}
       </ModalHeader>
 
       <ModalBody>

@@ -7,6 +7,7 @@ import * as commandNames from 'Commands/commandNames';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { clearInteractiveImport, fetchInteractiveImportItems, setInteractiveImportMode, setInteractiveImportSort } from 'Store/Actions/interactiveImportActions';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
+import translate from 'Utilities/String/translate';
 import InteractiveImportModalContent from './InteractiveImportModalContent';
 
 function createMapStateToProps() {
@@ -113,17 +114,17 @@ class InteractiveImportModalContentConnector extends Component {
         } = item;
 
         if (!movie) {
-          this.setState({ interactiveImportErrorMessage: 'Movie must be chosen for each selected file' });
+          this.setState({ interactiveImportErrorMessage: translate('InteractiveImportErrMovie') });
           return false;
         }
 
         if (!quality) {
-          this.setState({ interactiveImportErrorMessage: 'Quality must be chosen for each selected file' });
+          this.setState({ interactiveImportErrorMessage: translate('InteractiveImportErrQuality') });
           return false;
         }
 
         if (!languages) {
-          this.setState({ interactiveImportErrorMessage: 'Language must be chosen for each selected file' });
+          this.setState({ interactiveImportErrorMessage: translate('InteractiveImportErrLanguage') });
           return false;
         }
 

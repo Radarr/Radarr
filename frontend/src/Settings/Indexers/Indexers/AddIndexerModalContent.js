@@ -32,7 +32,7 @@ class AddIndexerModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Add Indexer
+          {translate('AddIndexer')}
         </ModalHeader>
 
         <ModalBody>

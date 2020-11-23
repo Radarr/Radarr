@@ -100,7 +100,7 @@ class EditCustomFormatModalContent extends Component {
       <ModalContent onModalClose={onModalClose}>
 
         <ModalHeader>
-          {id ? 'Edit Custom Format' : 'Add Custom Format'}
+          {id ? translate('EditCustomFormat') : translate('AddCustomFormat')}
         </ModalHeader>
 
         <ModalBody>
@@ -125,7 +125,7 @@ class EditCustomFormatModalContent extends Component {
                   >
                     <FormGroup>
                       <FormLabel>
-                        Name
+                        {translate('Name')}
                       </FormLabel>
 
                       <FormInputGroup

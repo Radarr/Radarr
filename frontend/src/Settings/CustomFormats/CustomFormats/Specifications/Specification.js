@@ -92,14 +92,14 @@ class Specification extends Component {
           {
             negate &&
               <Label kind={kinds.DANGER}>
-                {'Negated'}
+                {translate('Negated')}
               </Label>
           }
 
           {
             required &&
               <Label kind={kinds.SUCCESS}>
-                {'Required'}
+                {translate('Required')}
               </Label>
           }
         </div>
@@ -118,7 +118,7 @@ class Specification extends Component {
           message={
             <div>
               <div>
-                Are you sure you want to delete format tag '{name}'?
+                {translate('AreYouSureYouWantToDeleteFormat', [name])}
               </div>
             </div>
           }

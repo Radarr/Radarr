@@ -4,6 +4,7 @@ import MenuContent from 'Components/Menu/MenuContent';
 import SortMenu from 'Components/Menu/SortMenu';
 import SortMenuItem from 'Components/Menu/SortMenuItem';
 import { align, sortDirections } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 
 function DiscoverMovieSortMenu(props) {
   const {
@@ -25,7 +26,7 @@ function DiscoverMovieSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Status
+          {translate('Status')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -34,7 +35,7 @@ function DiscoverMovieSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Title
+          {translate('Title')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -43,7 +44,7 @@ function DiscoverMovieSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Studio
+          {translate('Studio')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -52,7 +53,7 @@ function DiscoverMovieSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          In Cinemas
+          {translate('InCinemas')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -61,7 +62,7 @@ function DiscoverMovieSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Physical Release
+          {translate('PhysicalRelease')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -70,7 +71,7 @@ function DiscoverMovieSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Digital Release
+          {translate('DigitalRelease')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -79,7 +80,7 @@ function DiscoverMovieSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Runtime
+          {translate('Runtime')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -88,7 +89,7 @@ function DiscoverMovieSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Rating
+          {translate('Rating')}
         </SortMenuItem>
 
         <SortMenuItem
@@ -97,7 +98,7 @@ function DiscoverMovieSortMenu(props) {
           sortDirection={sortDirection}
           onPress={onSortSelect}
         >
-          Certification
+          {translate('Certification')}
         </SortMenuItem>
       </MenuContent>
     </SortMenu>

@@ -21,7 +21,7 @@ function NoMovie(props) {
   return (
     <div>
       <div className={styles.message}>
-        No movies found, to get started you'll want to add a new movie or import some existing ones.
+        {translate('NoMoviesExist')}
       </div>
 
       <div className={styles.buttonContainer}>

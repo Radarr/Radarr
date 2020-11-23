@@ -11,7 +11,7 @@ import styles from './MovieFileEditorTableContent.css';
 const columns = [
   {
     name: 'title',
-    label: 'Relative Path',
+    label: translate('RelativePath'),
     isVisible: true
   },
   {

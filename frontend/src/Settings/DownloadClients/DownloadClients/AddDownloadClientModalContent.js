@@ -32,7 +32,7 @@ class AddDownloadClientModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Add DownloadClient
+          {translate('AddDownloadClient')}
         </ModalHeader>
 
         <ModalBody>

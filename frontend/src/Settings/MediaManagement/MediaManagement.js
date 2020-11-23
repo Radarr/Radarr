@@ -16,21 +16,21 @@ import NamingConnector from './Naming/NamingConnector';
 import AddRootFolderConnector from './RootFolder/AddRootFolderConnector';
 
 const rescanAfterRefreshOptions = [
-  { key: 'always', value: 'Always' },
-  { key: 'afterManual', value: 'After Manual Refresh' },
-  { key: 'never', value: 'Never' }
+  { key: 'always', value: translate('Always') },
+  { key: 'afterManual', value: translate('AfterManualRefresh') },
+  { key: 'never', value: translate('Never') }
 ];
 
 const downloadPropersAndRepacksOptions = [
-  { key: 'preferAndUpgrade', value: 'Prefer and Upgrade' },
-  { key: 'doNotUpgrade', value: 'Do not Upgrade Automatically' },
-  { key: 'doNotPrefer', value: 'Do not Prefer' }
+  { key: 'preferAndUpgrade', value: translate('PreferAndUpgrade') },
+  { key: 'doNotUpgrade', value: translate('DoNotUpgradeAutomatically') },
+  { key: 'doNotPrefer', value: translate('DoNotPrefer') }
 ];
 
 const fileDateOptions = [
-  { key: 'none', value: 'None' },
-  { key: 'cinemas', value: 'In Cinemas Date' },
-  { key: 'release', value: 'Physical Release Date' }
+  { key: 'none', value: translate('None') },
+  { key: 'cinemas', value: translate('InCinemasDate') },
+  { key: 'release', value: translate('PhysicalReleaseDate') }
 ];
 
 class MediaManagement extends Component {

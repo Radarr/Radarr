@@ -242,7 +242,7 @@ class MovieIndexPoster extends Component {
         {
           showMonitored &&
             <div className={styles.title}>
-              {monitored ? 'Monitored' : 'Unmonitored'}
+              {monitored ? translate('Monitored') : translate('Unmonitored')}
             </div>
         }
 

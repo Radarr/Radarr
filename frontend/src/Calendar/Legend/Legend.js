@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { icons, kinds } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import LegendIconItem from './LegendIconItem';
 import LegendItem from './LegendItem';
 import styles from './Legend.css';
@@ -16,10 +17,10 @@ function Legend(props) {
   if (showCutoffUnmetIcon) {
     iconsToShow.push(
       <LegendIconItem
-        name="Cutoff Not Met"
+        name={translate('CutoffUnmet')}
         icon={icons.MOVIE_FILE}
         kind={kinds.WARNING}
-        tooltip="Quality or language cutoff has not been met"
+        tooltip={translate('QualityOrLangCutoffHasNotBeenMet')}
       />
     );
   }
@@ -28,28 +29,28 @@ function Legend(props) {
     <div className={styles.legend}>
       <div>
         <LegendItem
-          status="unreleased"
-          tooltip="Movie hasn't released yet"
+          status={translate('Unreleased')}
+          tooltip={translate('MovieHasntReleasedYet')}
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
-          status="unmonitored"
-          tooltip="Movie is unmonitored"
+          status={translate('Unmonitored')}
+          tooltip={translate('MovieIsUnmonitored')}
           colorImpairedMode={colorImpairedMode}
         />
       </div>
 
       <div>
         <LegendItem
-          status="downloading"
-          tooltip="Movie is currently downloading"
+          status={translate('Downloading')}
+          tooltip={translate('MovieIsDownloading')}
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
-          status="downloaded"
-          tooltip="Movie was downloaded and sorted"
+          status={translate('Downloaded')}
+          tooltip={translate('MovieWasDownloadedAndSorted')}
           colorImpairedMode={colorImpairedMode}
         />
       </div>

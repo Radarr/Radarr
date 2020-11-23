@@ -68,8 +68,8 @@ class QualityProfileFormatItems extends Component {
     if (profileFormatItems.length < 1) {
       return (
         <div className={styles.addCustomFormatMessage}>
-          Want more control over which downloads are preferred? Add a
-          <Link to='/settings/customformats'> Custom Format </Link>
+          {translate('MoreControlCFText')}
+          <Link to='/settings/customformats'> {translate('CustomFormat')} </Link>
         </div>
       );
     }
@@ -82,7 +82,7 @@ class QualityProfileFormatItems extends Component {
 
         <div>
           <FormInputHelpText
-            text='Radarr scores each release using the sum of scores for matching custom formats. If a new release would improve the score, at the same or better quality, then Radarr will grab it.'
+            text={translate('CustomFormatHelpText')}
           />
 
           {
@@ -114,10 +114,10 @@ class QualityProfileFormatItems extends Component {
           <div className={styles.formats}>
             <div className={styles.headerContainer}>
               <div className={styles.headerTitle}>
-                Custom Format
+                {translate('CustomFormat')}
               </div>
               <div className={styles.headerScore}>
-                Score
+                {translate('Score')}
               </div>
             </div>
             {

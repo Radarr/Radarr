@@ -107,7 +107,7 @@ class CalendarOptionsModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Calendar Options
+          {translate('CalendarOptions')}
         </ModalHeader>
 
         <ModalBody>

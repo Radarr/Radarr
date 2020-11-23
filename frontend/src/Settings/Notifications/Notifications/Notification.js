@@ -82,42 +82,42 @@ class Notification extends Component {
         {
           supportsOnGrab && onGrab &&
             <Label kind={kinds.SUCCESS}>
-              On Grab
+              {translate('OnGrab')}
             </Label>
         }
 
         {
           supportsOnDelete && onDelete &&
             <Label kind={kinds.SUCCESS}>
-              On Delete
+              {translate('OnDelete')}
             </Label>
         }
 
         {
           supportsOnDownload && onDownload &&
             <Label kind={kinds.SUCCESS}>
-              On Import
+              {translate('OnImport')}
             </Label>
         }
 
         {
           supportsOnUpgrade && onDownload && onUpgrade &&
             <Label kind={kinds.SUCCESS}>
-              On Upgrade
+              {translate('OnUpgrade')}
             </Label>
         }
 
         {
           supportsOnRename && onRename &&
             <Label kind={kinds.SUCCESS}>
-              On Rename
+              {translate('OnRename')}
             </Label>
         }
 
         {
           supportsOnHealthIssue && onHealthIssue &&
             <Label kind={kinds.SUCCESS}>
-              On Health Issue
+              {translate('OnHealthIssue')}
             </Label>
         }
 
@@ -127,7 +127,7 @@ class Notification extends Component {
               kind={kinds.DISABLED}
               outline={true}
             >
-              Disabled
+              {translate('Disabled')}
             </Label>
         }
 

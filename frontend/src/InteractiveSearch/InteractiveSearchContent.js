@@ -128,21 +128,21 @@ function InteractiveSearchContent(props) {
       {
         !isFetching && !!error &&
           <div>
-            Unable to load results for this movie search. Try again later
+            {translate('UnableToLoadResultsIntSearch')}
           </div>
       }
 
       {
         !isFetching && isPopulated && !totalReleasesCount &&
           <div>
-            No results found
+            {translate('NoResultsFound')}
           </div>
       }
 
       {
         !!totalReleasesCount && isPopulated && !items.length &&
           <div>
-            All results are hidden by the applied filter
+            {translate('AllResultsHiddenFilter')}
           </div>
       }
 
@@ -176,7 +176,7 @@ function InteractiveSearchContent(props) {
       {
         totalReleasesCount !== items.length && !!items.length &&
           <div className={styles.filteredMessage}>
-            Some results are hidden by the applied filter
+            {translate('SomeResultsHiddenFilter')}
           </div>
       }
     </div>

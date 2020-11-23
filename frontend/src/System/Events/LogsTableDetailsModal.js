@@ -28,7 +28,7 @@ function LogsTableDetailsModal(props) {
         onModalClose={onModalClose}
       >
         <ModalHeader>
-          Details
+          {translate('Details')}
         </ModalHeader>
 
         <ModalBody>

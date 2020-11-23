@@ -152,10 +152,10 @@ class QualityDefinition extends Component {
     const minSixty = `${formatBytes(minBytes * 60)}/h`;
 
     const preferredBytes = preferredSize * 1024 * 1024;
-    const preferredSixty = preferredBytes ? `${formatBytes(preferredBytes * 60)}/h` : 'Unlimited';
+    const preferredSixty = preferredBytes ? `${formatBytes(preferredBytes * 60)}/h` : translate('Unlimited');
 
     const maxBytes = maxSize && maxSize * 1024 * 1024;
-    const maxSixty = maxBytes ? `${formatBytes(maxBytes * 60)}/h` : 'Unlimited';
+    const maxSixty = maxBytes ? `${formatBytes(maxBytes * 60)}/h` : translate('Unlimited');
 
     return (
       <div className={styles.qualityDefinition}>
@@ -243,7 +243,7 @@ class QualityDefinition extends Component {
           advancedSettings &&
             <div className={styles.megabytesPerMinute}>
               <div>
-                Min
+                {translate('Min')}
 
                 <NumberInput
                   className={styles.sizeInput}
@@ -258,7 +258,7 @@ class QualityDefinition extends Component {
               </div>
 
               <div>
-                Preferred
+                {translate('Preferred')}
 
                 <NumberInput
                   className={styles.sizeInput}
@@ -273,7 +273,7 @@ class QualityDefinition extends Component {
               </div>
 
               <div>
-                Max
+                {translate('Max')}
 
                 <NumberInput
                   className={styles.sizeInput}

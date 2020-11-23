@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { icons } from 'Helpers/Props';
 import dimensions from 'Styles/Variables/dimensions';
+import translate from 'Utilities/String/translate';
 import DiscoverMovieOverviewInfoRow from './DiscoverMovieOverviewInfoRow';
 import styles from './DiscoverMovieOverviewInfo.css';
 
@@ -54,7 +55,7 @@ function getInfoRowProps(row, props) {
 
   if (name === 'year') {
     return {
-      title: 'Year',
+      title: translate('Year'),
       iconName: icons.CALENDAR,
       label: props.year
     };
@@ -62,7 +63,7 @@ function getInfoRowProps(row, props) {
 
   if (name === 'genres') {
     return {
-      title: 'Genres',
+      title: translate('Genres'),
       iconName: icons.GENRE,
       label: props.genres.slice(0, 2).join(', ')
     };
@@ -70,7 +71,7 @@ function getInfoRowProps(row, props) {
 
   if (name === 'ratings') {
     return {
-      title: 'Ratings',
+      title: translate('Ratings'),
       iconName: icons.HEART,
       label: `${props.ratings.value * 10}%`
     };
@@ -78,7 +79,7 @@ function getInfoRowProps(row, props) {
 
   if (name === 'certification') {
     return {
-      title: 'Certification',
+      title: translate('Certification'),
       iconName: icons.FILM,
       label: props.certification
     };
@@ -86,7 +87,7 @@ function getInfoRowProps(row, props) {
 
   if (name === 'studio') {
     return {
-      title: 'Studio',
+      title: translate('Studio'),
       iconName: icons.STUDIO,
       label: props.studio
     };
