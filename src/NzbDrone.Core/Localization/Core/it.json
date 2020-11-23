@@ -677,7 +677,7 @@
     "WeekColumnHeader": "Intestazione colonna settimana",
     "WaitingToProcess": "In attesa di processo",
     "WaitingToImport": "In attesa di importazione",
-    "VisitGithubCustomFormatsAphrodite": "Visita Github per maggiori dettagli: ",
+    "VisitGithubCustomFormatsAphrodite": "Visita la wiki per maggiori dettagli: ",
     "Version": "Versione",
     "Username": "Nome utente",
     "UseProxy": "Usa Proxy",
@@ -854,5 +854,16 @@
     "ListSyncLevelHelpTextWarning": "I file del film saranno cancellati permanentemente, questo può dipendere dalla pulizia della libreria se la lista è vuota",
     "MovieIsRecommend": "Il film è raccomandato in base alle aggiunte recenti",
     "ConsideredAvailable": "Considerato disponibile",
-    "Announced": "Annunciato"
+    "Announced": "Annunciato",
+    "Yes": "Si",
+    "NotifcationTriggersHelpText": "Selezionare quali eventi attiveranno questa notifica",
+    "No": "No",
+    "MappedDrivesRunningAsService": "I drive di rete mappati non sono disponibili eseguendo come servizio di Windows. Vedere le FAQ per maggiori informazioni",
+    "CouldNotConnectSignalR": "Non ho potuto connettermi a SignalR, la UI non si aggiornerà",
+    "ChmodGroupHelpTextWarning": "Funziona solo se l'utente di Radarr è il proprietario del file. E' meglio assicurarsi che i client di download usino lo stesso gruppo di Radarr.",
+    "ChmodGroupHelpText": "Nome Gruppo o guida. Usa guida per sistemi remoti.",
+    "ChmodGroup": "Permessi Gruppo",
+    "ChmodFolderHelpTextWarning": "Funziona solo se l'utente di Radarr è il proprietario del file. E' meglio assicurarsi che i client di download impostino i permessi correttamente.",
+    "ChmodFolderHelpText": "Octal, applicato durante importazione/rinomina di cartelle e file (senza execute bits)",
+    "ChmodFolder": "Permessi Cartella"
 }
