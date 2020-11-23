@@ -19,11 +19,11 @@ function ImportListOptions(props) {
   } = props;
 
   const cleanLibraryLevelOptions = [
-    { key: 'disabled', value: 'Disabled' },
-    { key: 'logOnly', value: 'Log Only' },
-    { key: 'keepAndUnmonitor', value: 'Keep and Unmonitor Movie' },
-    { key: 'removeAndKeep', value: 'Remove Movie and Keep Files' },
-    { key: 'removeAndDelete', value: 'Remove Movie and Delete Files' }
+    { key: 'disabled', value: translate('Disabled') },
+    { key: 'logOnly', value: translate('LogOnly') },
+    { key: 'keepAndUnmonitor', value: translate('KeepAndUnmonitorMovie') },
+    { key: 'removeAndKeep', value: translate('RemoveMovieAndKeepFiles') },
+    { key: 'removeAndDelete', value: translate('RemoveMovieAndDeleteFiles') }
   ];
 
   return (

@@ -66,12 +66,12 @@ class DeleteMovieModalContent extends Component {
     const deleteFiles = this.state.deleteFiles;
     const addImportExclusion = this.state.addImportExclusion;
 
-    let deleteFilesLabel = `Delete ${movieFileCount} Movie Files`;
-    let deleteFilesHelpText = 'Delete the movie files and movie folder';
+    let deleteFilesLabel = translate('DeleteFilesLabel', [movieFileCount]);
+    let deleteFilesHelpText = translate('DeleteFilesHelpText');
 
     if (movieFileCount === 0) {
-      deleteFilesLabel = 'Delete Movie Folder';
-      deleteFilesHelpText = 'Delete the movie folder and it\'s contents';
+      deleteFilesLabel = translate('DeleteMovieFolderLabel');
+      deleteFilesHelpText = translate('DeleteMovieFolderHelpText');
     }
 
     return (
@@ -79,7 +79,7 @@ class DeleteMovieModalContent extends Component {
         onModalClose={onModalClose}
       >
         <ModalHeader>
-          Delete - {title}
+          {translate('DeleteHeader', [title])}
         </ModalHeader>
 
         <ModalBody>
@@ -108,23 +108,29 @@ class DeleteMovieModalContent extends Component {
           {
             deleteFiles &&
               <div className={styles.deleteFilesMessage}>
-                <div>The movie folder <strong>{path}</strong> and all it's content will be deleted.</div>
+                <div>
+                  {translate('DeleteTheMovieFolder', [path])}
+                </div>
 
                 {
                   !!movieFileCount &&
-                    <div>{movieFileCount} movie files totaling {formatBytes(sizeOnDisk)}</div>
+                    <div>
+                      {movieFileCount} {translate('MovieFilesTotaling')} {formatBytes(sizeOnDisk)}
+                    </div>
                 }
               </div>
           }
 
           <FormGroup>
-            <FormLabel>Add List Exclusion</FormLabel>
+            <FormLabel>
+              {translate('AddListExclusion')}
+            </FormLabel>
 
             <FormInputGroup
               type={inputTypes.CHECK}
               name="addImportExclusion"
               value={addImportExclusion}
-              helpText="Prevent movie from being added to Radarr by lists"
+              helpText={translate('AddImportExclusionHelpText')}
               kind={kinds.DANGER}
               onChange={this.onAddImportExclusionChange}
             />

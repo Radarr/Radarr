@@ -279,7 +279,7 @@ class DiscoverMovie extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label='Refresh Lists'
+              label={translate('RefreshLists')}
               iconName={icons.REFRESH}
               isSpinning={isSyncingLists}
               isDisabled={hasNoMovie}

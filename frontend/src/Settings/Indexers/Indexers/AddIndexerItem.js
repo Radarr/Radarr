@@ -58,7 +58,7 @@ class AddIndexerItem extends Component {
                     size={sizes.SMALL}
                     onPress={this.onIndexerSelect}
                   >
-                    Custom
+                    {translate('Custom')}
                   </Button>
 
                   <Menu className={styles.presetsMenu}>
@@ -66,7 +66,7 @@ class AddIndexerItem extends Component {
                       className={styles.presetsMenuButton}
                       size={sizes.SMALL}
                     >
-                      Presets
+                      {translate('Presets')}
                     </Button>
 
                     <MenuContent>

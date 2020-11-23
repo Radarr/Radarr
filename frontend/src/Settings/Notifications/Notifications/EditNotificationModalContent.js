@@ -48,7 +48,7 @@ function EditNotificationModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {`${id ? 'Edit' : 'Add'} Connection - ${implementationName}`}
+        {`${id ? translate('Edit') : translate('Add')} ${translate('Connection')} - ${implementationName}`}
       </ModalHeader>
 
       <ModalBody>

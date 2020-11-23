@@ -138,8 +138,8 @@ class DiscoverMovieFooter extends Component {
     } = this.state;
 
     const monitoredOptions = [
-      { key: true, value: 'Monitored' },
-      { key: false, value: 'Unmonitored' }
+      { key: true, value: translate('Monitored') },
+      { key: false, value: translate('Unmonitored') }
     ];
 
     return (

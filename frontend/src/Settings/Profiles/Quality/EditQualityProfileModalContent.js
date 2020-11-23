@@ -140,7 +140,7 @@ class EditQualityProfileModalContent extends Component {
           onMeasure={this.onHeaderMeasure}
         >
           <ModalHeader>
-            {id ? 'Edit Quality Profile' : 'Add Quality Profile'}
+            {id ? translate('EditQualityProfile') : translate('AddQualityProfile')}
           </ModalHeader>
         </Measure>
 
@@ -171,7 +171,7 @@ class EditQualityProfileModalContent extends Component {
                       <div className={styles.formGroupWrapper}>
                         <FormGroup size={sizes.EXTRA_SMALL}>
                           <FormLabel size={sizes.SMALL}>
-                            Name
+                            {translate('Name')}
                           </FormLabel>
 
                           <FormInputGroup
@@ -184,7 +184,7 @@ class EditQualityProfileModalContent extends Component {
 
                         <FormGroup size={sizes.EXTRA_SMALL}>
                           <FormLabel size={sizes.SMALL}>
-                            Upgrades Allowed
+                            {translate('UpgradesAllowed')}
                           </FormLabel>
 
                           <FormInputGroup
@@ -200,7 +200,7 @@ class EditQualityProfileModalContent extends Component {
                           upgradeAllowed.value &&
                             <FormGroup size={sizes.EXTRA_SMALL}>
                               <FormLabel size={sizes.SMALL}>
-                                Upgrade Until Quality
+                                {translate('UpgradeUntilQuality')}
                               </FormLabel>
 
                               <FormInputGroup
@@ -218,7 +218,7 @@ class EditQualityProfileModalContent extends Component {
                           formatItems.value.length > 0 &&
                             <FormGroup size={sizes.EXTRA_SMALL}>
                               <FormLabel size={sizes.SMALL}>
-                                Minimum Custom Format Score
+                                {translate('MinimumCustomFormatScore')}
                               </FormLabel>
 
                               <FormInputGroup
@@ -235,7 +235,7 @@ class EditQualityProfileModalContent extends Component {
                           upgradeAllowed.value && formatItems.value.length > 0 &&
                             <FormGroup size={sizes.EXTRA_SMALL}>
                               <FormLabel size={sizes.SMALL}>
-                                Upgrade Until Custom Format Score
+                                {translate('UpgradeUntilCustomFormatScore')}
                               </FormLabel>
 
                               <FormInputGroup
@@ -250,7 +250,7 @@ class EditQualityProfileModalContent extends Component {
 
                         <FormGroup size={sizes.EXTRA_SMALL}>
                           <FormLabel size={sizes.SMALL}>
-                            Language
+                            {translate('Language')}
                           </FormLabel>
 
                           <FormInputGroup
@@ -301,7 +301,7 @@ class EditQualityProfileModalContent extends Component {
                   className={styles.deleteButtonContainer}
                   title={
                     isInUse ?
-                      'Can\'t delete a quality profile that is attached to a movie' :
+                      translate('QualityProfileInUse') :
                       undefined
                   }
                 >

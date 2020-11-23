@@ -173,13 +173,13 @@ function HistoryDetails(props) {
 
     switch (reason) {
       case 'Manual':
-        reasonMessage = 'File was deleted by via UI';
+        reasonMessage = translate('FileWasDeletedByViaUI');
         break;
       case 'MissingFromDisk':
-        reasonMessage = 'Radarr was unable to find the file on disk so it was removed';
+        reasonMessage = translate('MissingFromDisk');
         break;
       case 'Upgrade':
-        reasonMessage = 'File was deleted to import an upgrade';
+        reasonMessage = translate('FileWasDeletedByUpgrade');
         break;
       default:
         reasonMessage = '';

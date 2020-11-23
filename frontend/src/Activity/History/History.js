@@ -94,7 +94,7 @@ class History extends Component {
 
             isPopulated && !hasError && !items.length &&
               <div>
-                No history found
+                {translate('NoHistory')}
               </div>
           }
 

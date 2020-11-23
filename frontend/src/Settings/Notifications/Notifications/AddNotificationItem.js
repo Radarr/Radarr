@@ -58,7 +58,7 @@ class AddNotificationItem extends Component {
                     size={sizes.SMALL}
                     onPress={this.onNotificationSelect}
                   >
-                    Custom
+                    {translate('Custom')}
                   </Button>
 
                   <Menu className={styles.presetsMenu}>
@@ -66,7 +66,7 @@ class AddNotificationItem extends Component {
                       className={styles.presetsMenuButton}
                       size={sizes.SMALL}
                     >
-                      Presets
+                      {translate('Presets')}
                     </Button>
 
                     <MenuContent>

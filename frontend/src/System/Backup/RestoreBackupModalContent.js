@@ -14,7 +14,7 @@ import styles from './RestoreBackupModalContent.css';
 
 function getErrorMessage(error) {
   if (!error || !error.responseJSON || !error.responseJSON.message) {
-    return 'Error restoring backup';
+    return translate('ErrorRestoringBackup');
   }
 
   return error.responseJSON.message;
@@ -146,7 +146,7 @@ class RestoreBackupModalContent extends Component {
 
         <ModalBody>
           {
-            !!id && `Would you like to restore the backup '${name}'?`
+            !!id && translate('WouldYouLikeToRestoreBackup', [name])
           }
 
           {
@@ -203,7 +203,7 @@ class RestoreBackupModalContent extends Component {
 
         <ModalFooter>
           <div className={styles.additionalInfo}>
-            Note: Radarr will automatically restart and reload the UI during the restore process.
+            {translate('RestartReloadNote')}
           </div>
 
           <Button onPress={onModalClose}>
@@ -216,7 +216,7 @@ class RestoreBackupModalContent extends Component {
             isSpinning={isRestoring}
             onPress={this.onRestorePress}
           >
-            Restore
+            {translate('Restore')}
           </SpinnerButton>
         </ModalFooter>
       </ModalContent>

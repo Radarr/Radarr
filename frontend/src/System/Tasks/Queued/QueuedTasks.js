@@ -10,32 +10,32 @@ import QueuedTaskRowConnector from './QueuedTaskRowConnector';
 const columns = [
   {
     name: 'trigger',
-    label: '',
+    label: translate('Trigger'),
     isVisible: true
   },
   {
     name: 'commandName',
-    label: 'Name',
+    label: translate('Name'),
     isVisible: true
   },
   {
     name: 'queued',
-    label: 'Queued',
+    label: translate('Queued'),
     isVisible: true
   },
   {
     name: 'started',
-    label: 'Started',
+    label: translate('Started'),
     isVisible: true
   },
   {
     name: 'ended',
-    label: 'Ended',
+    label: translate('Ended'),
     isVisible: true
   },
   {
     name: 'duration',
-    label: 'Duration',
+    label: translate('Duration'),
     isVisible: true
   },
   {

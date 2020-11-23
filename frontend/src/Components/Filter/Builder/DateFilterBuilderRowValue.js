@@ -5,16 +5,17 @@ import SelectInput from 'Components/Form/SelectInput';
 import TextInput from 'Components/Form/TextInput';
 import { IN_LAST, IN_NEXT, NOT_IN_LAST, NOT_IN_NEXT } from 'Helpers/Props/filterTypes';
 import isString from 'Utilities/String/isString';
+import translate from 'Utilities/String/translate';
 import { NAME } from './FilterBuilderRowValue';
 import styles from './DateFilterBuilderRowValue.css';
 
 const timeOptions = [
-  { key: 'seconds', value: 'seconds' },
-  { key: 'minutes', value: 'minutes' },
-  { key: 'hours', value: 'hours' },
-  { key: 'days', value: 'days' },
-  { key: 'weeks', value: 'weeks' },
-  { key: 'months', value: 'months' }
+  { key: 'seconds', value: translate('Seconds') },
+  { key: 'minutes', value: translate('Minutes') },
+  { key: 'hours', value: translate('Hours') },
+  { key: 'days', value: translate('Days') },
+  { key: 'weeks', value: translate('Weeks') },
+  { key: 'months', value: translate('Months') }
 ];
 
 function isInFilter(filterType) {

@@ -38,10 +38,10 @@ function UpdateSettings(props) {
       value: titleCase(packageUpdateMechanism)
     });
   } else {
-    updateOptions.push({ key: 'builtIn', value: 'Built-In' });
+    updateOptions.push({ key: 'builtIn', value: translate('BuiltIn') });
   }
 
-  updateOptions.push({ key: 'script', value: 'Script' });
+  updateOptions.push({ key: 'script', value: translate('Script') });
 
   return (
     <FieldSet legend={translate('Updates')}>

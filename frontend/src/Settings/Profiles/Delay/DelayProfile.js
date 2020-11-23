@@ -88,9 +88,9 @@ class DelayProfile extends Component {
     let preferred = titleCase(preferredProtocol);
 
     if (!enableUsenet) {
-      preferred = 'Only Torrent';
+      preferred = translate('OnlyTorrent');
     } else if (!enableTorrent) {
-      preferred = 'Only Usenet';
+      preferred = translate('OnlyUsenet');
     }
 
     return (

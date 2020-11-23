@@ -154,7 +154,7 @@ class CustomFormat extends Component {
           message={
             <div>
               <div>
-                Are you sure you want to delete custom format '{name}'?
+                {translate('AreYouSureYouWantToDeleteFormat', [name])}
               </div>
             </div>
           }

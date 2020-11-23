@@ -102,9 +102,9 @@ class NamingModal extends Component {
     ];
 
     const caseOptions = [
-      { key: 'title', value: 'Default Case' },
-      { key: 'lower', value: 'Lower Case' },
-      { key: 'upper', value: 'Upper Case' }
+      { key: 'title', value: translate('DefaultCase') },
+      { key: 'lower', value: translate('LowerCase') },
+      { key: 'upper', value: translate('UpperCase') }
     ];
 
     const fileNameTokens = [
@@ -174,7 +174,7 @@ class NamingModal extends Component {
       >
         <ModalContent onModalClose={onModalClose}>
           <ModalHeader>
-            File Name Tokens
+            {translate('FileNameTokens')}
           </ModalHeader>
 
           <ModalBody>

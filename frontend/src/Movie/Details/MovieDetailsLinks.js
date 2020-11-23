@@ -3,6 +3,7 @@ import React from 'react';
 import Label from 'Components/Label';
 import Link from 'Components/Link/Link';
 import { kinds, sizes } from 'Helpers/Props';
+import translate from 'Utilities/String/translate';
 import styles from './MovieDetailsLinks.css';
 
 function MovieDetailsLinks(props) {
@@ -23,7 +24,7 @@ function MovieDetailsLinks(props) {
           kind={kinds.INFO}
           size={sizes.LARGE}
         >
-          TMDb
+          {translate('TMDb')}
         </Label>
       </Link>
 
@@ -36,7 +37,7 @@ function MovieDetailsLinks(props) {
           kind={kinds.INFO}
           size={sizes.LARGE}
         >
-          Trakt
+          {translate('Trakt')}
         </Label>
       </Link>
 
@@ -51,7 +52,7 @@ function MovieDetailsLinks(props) {
               kind={kinds.INFO}
               size={sizes.LARGE}
             >
-              IMDb
+              {translate('IMDb')}
             </Label>
           </Link>
       }
@@ -67,7 +68,7 @@ function MovieDetailsLinks(props) {
               kind={kinds.INFO}
               size={sizes.LARGE}
             >
-              Movie Chat
+              {translate('MovieChat')}
             </Label>
           </Link>
       }
@@ -83,7 +84,7 @@ function MovieDetailsLinks(props) {
               kind={kinds.DANGER}
               size={sizes.LARGE}
             >
-              Trailer
+              {translate('Trailer')}
             </Label>
           </Link>
       }

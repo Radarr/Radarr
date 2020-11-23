@@ -60,7 +60,7 @@ class DeleteMovieModalContent extends Component {
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Delete Selected Movie(s)
+          {translate('DeleteSelectedMovie')}
         </ModalHeader>
 
         <ModalBody>

@@ -85,7 +85,7 @@ class MovieDetailsPageConnector extends Component {
     if (!isFetching && !!error) {
       return (
         <div className={styles.errorMessage}>
-          {getErrorMessage(error, 'Failed to load movie from API')}
+          {getErrorMessage(error, translate('FailedToLoadMovieFromAPI'))}
         </div>
       );
     }

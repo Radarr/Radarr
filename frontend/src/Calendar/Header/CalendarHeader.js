@@ -168,7 +168,7 @@ class CalendarHeader extends Component {
                           selectedView={view}
                           onPress={this.onViewChange}
                         >
-                          Month
+                          {translate('Month')}
                         </ViewMenuItem>
                     }
 
@@ -177,7 +177,7 @@ class CalendarHeader extends Component {
                       selectedView={view}
                       onPress={this.onViewChange}
                     >
-                      Week
+                      {translate('Week')}
                     </ViewMenuItem>
 
                     <ViewMenuItem
@@ -185,7 +185,7 @@ class CalendarHeader extends Component {
                       selectedView={view}
                       onPress={this.onViewChange}
                     >
-                      Forecast
+                      {translate('Forecast')}
                     </ViewMenuItem>
 
                     <ViewMenuItem

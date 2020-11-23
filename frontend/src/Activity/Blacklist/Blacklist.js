@@ -208,9 +208,9 @@ class Blacklist extends Component {
         <ConfirmModal
           isOpen={isConfirmRemoveModalOpen}
           kind={kinds.DANGER}
-          title="Remove Selected"
-          message={'Are you sure you want to remove the selected items from the blacklist?'}
-          confirmLabel="Remove Selected"
+          title={translate('RemoveSelected')}
+          message={translate('AreYouSureYouWantToRemoveTheSelectedItemsFromBlacklist')}
+          confirmLabel={translate('RemoveSelected')}
           onConfirm={this.onRemoveSelectedConfirmed}
           onCancel={this.onConfirmRemoveModalClose}
         />

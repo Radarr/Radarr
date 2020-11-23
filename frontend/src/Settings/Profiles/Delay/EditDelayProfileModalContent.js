@@ -46,7 +46,7 @@ function EditDelayProfileModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        {id ? 'Edit Delay Profile' : 'Add Delay Profile'}
+        {id ? translate('EditDelayProfile') : translate('AddDelayProfile')}
       </ModalHeader>
 
       <ModalBody>
@@ -113,7 +113,7 @@ function EditDelayProfileModalContent(props) {
               {
                 id === 1 ?
                   <Alert>
-                    This is the default profile. It applies to all movies that don't have an explicit profile.
+                    {translate('DefaultDelayProfile')}
                   </Alert> :
 
                   <FormGroup>

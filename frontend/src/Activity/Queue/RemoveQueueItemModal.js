@@ -81,12 +81,12 @@ class RemoveQueueItemModal extends Component {
           onModalClose={this.onModalClose}
         >
           <ModalHeader>
-            Remove - {sourceTitle}
+            {translate('Remove')} - {sourceTitle}
           </ModalHeader>
 
           <ModalBody>
             <div>
-              Are you sure you want to remove '{sourceTitle}' from the queue?
+              {translate('RemoveFromQueueText', [sourceTitle])}
             </div>
 
             <FormGroup>

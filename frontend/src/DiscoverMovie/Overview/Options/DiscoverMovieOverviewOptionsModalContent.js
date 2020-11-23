@@ -14,9 +14,9 @@ import { inputTypes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
 const posterSizeOptions = [
-  { key: 'small', value: 'Small' },
-  { key: 'medium', value: 'Medium' },
-  { key: 'large', value: 'Large' }
+  { key: 'small', value: translate('Small') },
+  { key: 'medium', value: translate('Medium') },
+  { key: 'large', value: translate('Large') }
 ];
 
 class DiscoverMovieOverviewOptionsModalContent extends Component {

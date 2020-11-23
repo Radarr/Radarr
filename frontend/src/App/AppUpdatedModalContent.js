@@ -26,27 +26,27 @@ function AppUpdatedModalContent(props) {
   return (
     <ModalContent onModalClose={onModalClose}>
       <ModalHeader>
-        Radarr Updated
+        {translate('RadarrUpdated')}
       </ModalHeader>
 
       <ModalBody>
-        <div>
-          Version <span className={styles.version}>{version}</span> of Radarr has been installed, in order to get the latest changes you'll need to reload Radarr.
-        </div>
+        <div dangerouslySetInnerHTML={{ __html: translate('VersionUpdateText', [`<span className=${styles.version}>${version}</span>`]) }} />
 
         {
           isPopulated && !error && !!update &&
             <div>
               {
                 !update.changes &&
-                  <div className={styles.maintenance}>Maintenance release</div>
+                  <div className={styles.maintenance}>
+                    {translate('MaintenanceRelease')}
+                  </div>
               }
 
               {
                 !!update.changes &&
                   <div>
                     <div className={styles.changes}>
-                      What's new?
+                      {translate('WhatsNew')}
                     </div>
 
                     <UpdateChanges
@@ -73,14 +73,14 @@ function AppUpdatedModalContent(props) {
         <Button
           onPress={onSeeChangesPress}
         >
-          Recent Changes
+          translate('RecentChanges')
         </Button>
 
         <Button
           kind={kinds.PRIMARY}
           onPress={onModalClose}
         >
-          Reload
+          translate('Reload')
         </Button>
       </ModalFooter>
     </ModalContent>

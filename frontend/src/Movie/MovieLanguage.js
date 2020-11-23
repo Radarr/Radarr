@@ -35,7 +35,7 @@ function MovieLanguage(props) {
           className={className}
           kind={isCutoffNotMet ? kinds.INVERSE : kinds.DEFAULT}
         >
-          Multi-Language
+          {translate('MultiLanguage')}
         </Label>
       }
       title={translate('Languages')}

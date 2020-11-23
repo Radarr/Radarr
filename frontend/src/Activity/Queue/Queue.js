@@ -203,14 +203,14 @@ class Queue extends Component {
           {
             !isRefreshing && hasError &&
               <div>
-                Failed to load Queue
+                {translate('FailedToLoadQueue')}
               </div>
           }
 
           {
             isPopulated && !hasError && !items.length &&
               <div>
-                Queue is empty
+                {translate('QueueIsEmpty')}
               </div>
           }
 

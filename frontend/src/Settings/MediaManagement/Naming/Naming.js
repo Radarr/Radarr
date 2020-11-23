@@ -13,10 +13,10 @@ import NamingModal from './NamingModal';
 import styles from './Naming.css';
 
 const colonReplacementOptions = [
-  { key: 'delete', value: 'Delete' },
-  { key: 'dash', value: 'Replace with Dash' },
-  { key: 'spaceDash', value: 'Replace with Space Dash' },
-  { key: 'spaceDashSpace', value: 'Replace with Space Dash Space' }
+  { key: 'delete', value: translate('Delete') },
+  { key: 'dash', value: translate('ReplaceWithDash') },
+  { key: 'spaceDash', value: translate('ReplaceWithSpaceDash') },
+  { key: 'spaceDashSpace', value: translate('ReplaceWithSpaceDashSpace') }
 ];
 
 class Naming extends Component {
@@ -91,13 +91,13 @@ class Naming extends Component {
       if (examples.movieExample) {
         standardMovieFormatHelpTexts.push(`Movie: ${examples.movieExample}`);
       } else {
-        standardMovieFormatErrors.push({ message: 'Movie: Invalid Format' });
+        standardMovieFormatErrors.push({ message: translate('MovieInvalidFormat') });
       }
 
       if (examples.movieFolderExample) {
         movieFolderFormatHelpTexts.push(`Example: ${examples.movieFolderExample}`);
       } else {
-        movieFolderFormatErrors.push({ message: 'Invalid Format' });
+        movieFolderFormatErrors.push({ message: translate('InvalidFormat') });
       }
     }
 

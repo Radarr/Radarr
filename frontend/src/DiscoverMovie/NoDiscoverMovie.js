@@ -21,7 +21,7 @@ function NoDiscoverMovie(props) {
   return (
     <div>
       <div className={styles.message}>
-        No list items or recommendations found, to get started you'll want to add a new movie, import some existing ones, or add a list.
+        {translate('NoListRecommendations')}
       </div>
 
       <div className={styles.buttonContainer}>

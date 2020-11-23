@@ -32,7 +32,7 @@ class QualityDefinitions extends Component {
             {
               advancedSettings ?
                 <div className={styles.megabytesPerMinute}>
-                  Megabytes Per Minute
+                  {translate('MegabytesPerMinute')}
                 </div> :
                 null
             }
@@ -54,7 +54,7 @@ class QualityDefinitions extends Component {
 
           <div className={styles.sizeLimitHelpTextContainer}>
             <div className={styles.sizeLimitHelpText}>
-              Limits are automatically adjusted for the movie runtime.
+              {translate('QualityLimitsHelpText')}
             </div>
           </div>
         </PageSectionContent>
