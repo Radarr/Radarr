@@ -69,5 +69,10 @@
     "CancelProcessing": "Отмена",
     "CancelPendingTask": "Вы уверены, что хотите убрать данную задачу из очереди?",
     "Cancel": "Отменить",
-    "Calendar": "Календарь"
+    "Calendar": "Календарь",
+    "DBMigration": "Перенос БД",
+    "Day": "День",
+    "Dates": "Даты",
+    "Date": "Дата",
+    "DeleteIndexer": "Удалить индексер"
 }
