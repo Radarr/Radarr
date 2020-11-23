@@ -29,7 +29,7 @@
         "tags": [
           "Movie"
         ],
-        "summary": "Get all movies",
+        "summary": "Get All Movies",
         "description": "Returns all movies stored in the database",
         "operationId": "getMovie",
         "parameters": [
@@ -175,7 +175,7 @@
         "tags": [
           "Movie"
         ],
-        "summary": "Get movie by database id",
+        "summary": "Get a Movie",
         "description": "Returns a single movie",
         "operationId": "getMovieById",
         "parameters": [
@@ -223,7 +223,7 @@
         "tags": [
           "Movie"
         ],
-        "summary": "Delete movie",
+        "summary": "Delete a Movie",
         "description": "",
         "operationId": "deleteMovie",
         "parameters": [
@@ -276,7 +276,7 @@
         "tags": [
           "Tag"
         ],
-        "summary": "Return usage details for a given tag id",
+        "summary": "Get a Tag Details",
         "description": "Returns the id of all items in the database which use the specified tag",
         "operationId": "",
         "responses": {
@@ -320,7 +320,7 @@
         "tags": [
           "Tag"
         ],
-        "summary": "Return usage details for all tags in database",
+        "summary": "Get All Tag Details",
         "description": "Returns a list of tag detail objects for all tags in the database.",
         "operationId": "",
         "responses": {
@@ -357,7 +357,7 @@
         "tags": [
           "Tag"
         ],
-        "summary": "Get tag by database id",
+        "summary": "Get a Tag",
         "description": "Return a given tag and its label by the database id.",
         "operationId": "",
         "responses": {
@@ -388,7 +388,7 @@
         "tags": [
           "Tag"
         ],
-        "summary": "Delete tag by database id",
+        "summary": "Delete a Tag",
         "description": "Delete a tag",
         "operationId": "",
         "responses": {
@@ -415,11 +415,44 @@
             "type": "integer"
           }
         }
-      ]
+      ],
+      "put": {
+        "summary": "Edit a Tag",
+        "operationId": "put-tag-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "tags": [
+          "Tag"
+        ],
+        "description": "Edit a Tag by its database id",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tag"
+              }
+            }
+          }
+        }
+      }
     },
     "/tag": {
       "get": {
-        "summary": "Get all tags",
+        "summary": "Get All Tags",
         "description": "Get all tags in the database",
         "operationId": "",
         "responses": {
@@ -452,43 +485,11 @@
           "Tag"
         ]
       },
-      "put": {
-        "tags": [
-          "Tag"
-        ],
-        "summary": "Update tag",
-        "description": "Update a tags label.",
-        "operationId": "",
-        "requestBody": {
-          "description": "Tag object that needs to be updated",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Tag"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful request"
-          },
-          "401": {
-            "description": "Invalid API Key"
-          }
-        },
-        "security": [
-          {
-            "X-API-Key": []
-          }
-        ]
-      },
       "post": {
         "tags": [
           "Tag"
         ],
-        "summary": "Create a new tag",
+        "summary": "Create a Tag",
         "description": "Create a new tag that can be assigned to a movie, list, delay profile, notification, or restriction",
         "operationId": "",
         "requestBody": {
@@ -520,7 +521,7 @@
     },
     "/diskspace": {
       "get": {
-        "summary": "Get system diskspace information",
+        "summary": "Get System Diskspace Information",
         "responses": {
           "200": {
             "description": "Successful request",
@@ -572,12 +573,9 @@
         ]
       }
     },
-    "/status": {
+    "/system/status": {
       "get": {
-        "summary": "Get internal information",
-        "tags": [
-          "Status"
-        ],
+        "summary": "Get Application Status",
         "responses": {
           "200": {
             "description": "Successful request",
@@ -715,12 +713,16 @@
           }
         ],
         "description": "Find out information such as OS, version, paths used, etc",
-        "parameters": []
-      }
+        "parameters": [],
+        "tags": [
+          "System"
+        ]
+      },
+      "parameters": []
     },
     "/health": {
       "get": {
-        "summary": "Get Radarr's health information",
+        "summary": "Get Failed Health Checks",
         "tags": [
           "Health"
         ],
@@ -774,7 +776,7 @@
     },
     "/command": {
       "post": {
-        "summary": "command",
+        "summary": "Post a Command",
         "tags": [
           "Command"
         ],
@@ -823,7 +825,7 @@
     },
     "/update": {
       "get": {
-        "summary": "List of recent updates",
+        "summary": "Get Recent Updates",
         "tags": [
           "Update"
         ],
@@ -925,7 +927,7 @@
     },
     "/qualityProfile": {
       "get": {
-        "summary": "Get Radarr's quality profiles",
+        "summary": "Get All Quality Profiles",
         "tags": [
           "Quality"
         ],
@@ -963,7 +965,7 @@
     },
     "/calendar": {
       "get": {
-        "summary": "Get Radarr's calendar events",
+        "summary": "Get Calendar Events",
         "tags": [
           "Calendar"
         ],
@@ -1017,7 +1019,7 @@
     },
     "/queue": {
       "get": {
-        "summary": "Get Radarr's queue items",
+        "summary": "Get Activity Queue",
         "tags": [
           "Queue"
         ],
@@ -1090,7 +1092,7 @@
     },
     "/history": {
       "get": {
-        "summary": "Get Radarr's history items",
+        "summary": "Get History",
         "responses": {
           "200": {
             "description": "Successful request",
@@ -1180,9 +1182,9 @@
         ]
       }
     },
-    "/customFilter": {
+    "/customfilter": {
       "get": {
-        "summary": "Get Radarr's custom filters",
+        "summary": "Get UI Custom Filters",
         "tags": [
           "Custom Filters"
         ],
@@ -1286,14 +1288,12 @@
             "apikey": []
           }
         ]
-      }
+      },
+      "parameters": []
     },
     "/importlist": {
       "get": {
-        "summary": "Get import list information",
-        "tags": [
-          "Import"
-        ],
+        "summary": "Get All Import Lists",
         "responses": {
           "200": {
             "description": "Successful response",
@@ -1358,16 +1358,16 @@
           {
             "apikey": []
           }
+        ],
+        "tags": [
+          "Import Lists"
         ]
       },
       "parameters": []
     },
-    "/ui": {
+    "/config/ui": {
       "get": {
-        "summary": "Get UI settings",
-        "tags": [
-          "UI"
-        ],
+        "summary": "Get UI Settings",
         "responses": {
           "200": {
             "description": "Successful request",
@@ -1440,12 +1440,94 @@
           {
             "apikey": []
           }
+        ],
+        "tags": [
+          "Settings"
         ]
+      },
+      "parameters": [],
+      "put": {
+        "summary": "Edit UI Settings",
+        "operationId": "putconfig-ui",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "description": "Edit one or many UI settings and save to to the database",
+        "tags": [
+          "Settings"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "firstDayOfWeek": {
+                    "type": "integer"
+                  },
+                  "calendarWeekColumnHeader": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "movieRuntimeFormat": {
+                    "type": "string",
+                    "minLength": 1,
+                    "enum": [
+                      "hoursMinutes",
+                      "minutes"
+                    ]
+                  },
+                  "shortDateFormat": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "longDateFormat": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "timeFormat": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "showRelativeDates": {
+                    "type": "boolean"
+                  },
+                  "enableColorImpairedMode": {
+                    "type": "boolean"
+                  },
+                  "movieInfoLanguage": {
+                    "type": "number"
+                  },
+                  "id": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        }
       }
     },
     "/remotePathMapping": {
       "get": {
-        "summary": "Get Radarr's remote path mappings",
+        "summary": "Get All Remote Path Mappings",
         "tags": [
           "Remote Path Mapping"
         ],
@@ -1525,7 +1607,7 @@
     },
     "/downloadclient": {
       "get": {
-        "summary": "Get Radarr's download client list",
+        "summary": "Get All Download Clients",
         "tags": [
           "Download Client"
         ],
@@ -1562,7 +1644,7 @@
     },
     "/blacklist": {
       "get": {
-        "summary": "Get Radarr's blacklisted movies",
+        "summary": "Get Blacklisted Releases",
         "tags": [
           "Blacklist"
         ],
@@ -1664,7 +1746,7 @@
         ]
       },
       "delete": {
-        "summary": "Remove a blacklisted movie",
+        "summary": "Delete a Blacklisted Release",
         "operationId": "delete-blackList",
         "responses": {
           "200": {
@@ -1698,7 +1780,7 @@
     },
     "/blacklist/movie": {
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Get Blacklisted Releases for a Movie",
         "tags": [
           "Blacklist"
         ],
@@ -1745,7 +1827,7 @@
     },
     "/blacklist/bulk": {
       "delete": {
-        "summary": "",
+        "summary": "Delete Blacklisted Releases",
         "operationId": "delete-blacklist-bulk",
         "responses": {
           "200": {
@@ -1788,7 +1870,7 @@
     },
     "/indexer": {
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Get All Indexers",
         "tags": [
           "Indexer"
         ],
@@ -1855,7 +1937,7 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Get an Indexer",
         "tags": [
           "Indexer"
         ],
@@ -1887,7 +1969,7 @@
         ]
       },
       "put": {
-        "summary": "",
+        "summary": "Edit an Indexer",
         "operationId": "put-indexer-id",
         "responses": {
           "200": {
@@ -1910,7 +1992,7 @@
         ]
       },
       "delete": {
-        "summary": "",
+        "summary": "Delete an Indexer",
         "operationId": "delete-indexer-id",
         "responses": {
           "200": {
@@ -1947,7 +2029,7 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Get a Download Client",
         "tags": [
           "Download Client"
         ],
@@ -1978,7 +2060,7 @@
         ]
       },
       "delete": {
-        "summary": "",
+        "summary": "Delete a Download Client",
         "operationId": "delete-downloadclient-id",
         "responses": {
           "200": {
@@ -1999,7 +2081,7 @@
         ]
       },
       "put": {
-        "summary": "",
+        "summary": "Edit a Download Client",
         "operationId": "put-downloadclient-id",
         "responses": {
           "200": {
@@ -2032,8 +2114,10 @@
     },
     "/notification": {
       "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
+        "summary": "Get All Notifications",
+        "tags": [
+          "Notification"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2078,7 +2162,7 @@
         }
       ],
       "get": {
-        "summary": "Your GET endpoint",
+        "summary": "Get a Notification",
         "tags": [
           "Notification"
         ],
@@ -2109,7 +2193,7 @@
         "description": "Get Notification by database id"
       },
       "delete": {
-        "summary": "",
+        "summary": "Delete a Notification",
         "operationId": "delete-notification-id",
         "responses": {
           "200": {
@@ -2133,7 +2217,7 @@
         ]
       },
       "put": {
-        "summary": "",
+        "summary": "Edit a Notification",
         "operationId": "put-notification-id",
         "responses": {
           "200": {
@@ -2168,8 +2252,10 @@
     },
     "/metadata": {
       "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
+        "summary": "Get All Metadata",
+        "tags": [
+          "Metadata"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2202,8 +2288,10 @@
     },
     "/movie/lookup": {
       "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
+        "summary": "Lookup a Movie to Add",
+        "tags": [
+          "Movie"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2247,8 +2335,10 @@
     },
     "/history/movie": {
       "get": {
-        "summary": "Your GET endpoint",
-        "tags": [],
+        "summary": "Get History for a Movie",
+        "tags": [
+          "History"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -2288,6 +2378,396 @@
             "description": "history event type to retrieve"
           }
         ],
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
+    "/movie/editor": {
+      "put": {
+        "summary": "Edit Multiple Movies",
+        "operationId": "put-movie-editor",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "description": "Editor endpoint is used by the movie editor in Radarr. The Edit operation allows to edit properties of multiple movies at once",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "movieIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "monitored": {
+                    "type": "boolean"
+                  },
+                  "qualityProfileId": {
+                    "type": "integer"
+                  },
+                  "minimumAvailability": {
+                    "type": "string"
+                  },
+                  "rootFolderPath": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "applyTags": {
+                    "type": "string",
+                    "enum": [
+                      "add",
+                      "remove",
+                      "replace"
+                    ]
+                  },
+                  "moveFiles": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "movieIds"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Movie"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Multiple Movies",
+        "operationId": "delete-movie-editor",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "description": "Editor endpoint is used by the movie editor in Radarr. The Delete operation allows mass deletion of movies (and optionally files).",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "movieIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  },
+                  "deleteFIles": {
+                    "type": "boolean"
+                  },
+                  "addImportExclusion": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "movieIds",
+                  "deleteFIles",
+                  "addImportExclusion"
+                ]
+              }
+            }
+          }
+        },
+        "tags": [
+          "Movie"
+        ]
+      }
+    },
+    "/movie/import": {
+      "post": {
+        "summary": "Add Movies From Folders",
+        "operationId": "post-movie-import",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "description": "The movie import endpoint is used by the bulk import view in Radarr UI. It allows movies to be bulk added to the Radarr database.",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Movie"
+        ]
+      }
+    },
+    "/moviefile": {
+      "get": {
+        "summary": "Get Multiple MovieFiles",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MovieFile"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "operationId": "get-moviefile",
+        "description": "The moviefile endpoint allows for retrieval of all moviefile by a list of ids or by the associated movieid. Either the moviefileids OR movieid query parameter must be passed.",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "array"
+            },
+            "in": "query",
+            "name": "moviefileids",
+            "description": "Comma separated list of moviefile ids",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "movieid",
+            "description": "Database id of movie to retrieve files for",
+            "required": true
+          }
+        ],
+        "tags": [
+          "MovieFile"
+        ]
+      }
+    },
+    "/moviefile/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a MovieFile",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieFile"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "operationId": "get-moviefile-id",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "description": "Get a movie file object by its database id.",
+        "tags": [
+          "MovieFile"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a Movie",
+        "operationId": "delete-moviefile-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "description": "Allows for deletion of a moviefile by its database id.",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "tags": [
+          "MovieFile"
+        ]
+      }
+    },
+    "/importlist/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get an Import List",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportList"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-importlist-id",
+        "description": "",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Edit an Import List",
+        "operationId": "put-importlist-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an Import List",
+        "operationId": "delete-importlist-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "description": "",
         "security": [
           {
             "X-API-Key": []
@@ -3353,6 +3833,150 @@
           "message",
           "id"
         ]
+      },
+      "MovieFile": {
+        "description": "",
+        "type": "object",
+        "title": "",
+        "properties": {
+          "movieId": {
+            "type": "integer"
+          },
+          "relativePath": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "size": {
+            "type": "number"
+          },
+          "dateAdded": {
+            "type": "string",
+            "minLength": 1
+          },
+          "indexerFlags": {
+            "type": "integer"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/Quality"
+          },
+          "mediaInfo": {
+            "type": "object",
+            "required": [
+              "audioAdditionalFeatures",
+              "audioBitrate",
+              "audioChannels",
+              "audioCodec",
+              "audioLanguages",
+              "audioStreamCount",
+              "videoBitDepth",
+              "videoBitrate",
+              "videoCodec",
+              "videoFps",
+              "resolution",
+              "runTime",
+              "scanType",
+              "subtitles"
+            ],
+            "properties": {
+              "audioAdditionalFeatures": {
+                "type": "string"
+              },
+              "audioBitrate": {
+                "type": "number"
+              },
+              "audioChannels": {
+                "type": "number"
+              },
+              "audioCodec": {
+                "type": "string",
+                "minLength": 1
+              },
+              "audioLanguages": {
+                "type": "string"
+              },
+              "audioStreamCount": {
+                "type": "number"
+              },
+              "videoBitDepth": {
+                "type": "number"
+              },
+              "videoBitrate": {
+                "type": "number"
+              },
+              "videoCodec": {
+                "type": "string",
+                "minLength": 1
+              },
+              "videoFps": {
+                "type": "number"
+              },
+              "resolution": {
+                "type": "string",
+                "minLength": 1
+              },
+              "runTime": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scanType": {
+                "type": "string",
+                "minLength": 1
+              },
+              "subtitles": {
+                "type": "string"
+              }
+            }
+          },
+          "qualityCutoffNotMet": {
+            "type": "boolean"
+          },
+          "languages": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "name"
+              ]
+            }
+          },
+          "releaseGroup": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "movieId",
+          "relativePath",
+          "path",
+          "size",
+          "dateAdded",
+          "indexerFlags",
+          "quality",
+          "mediaInfo",
+          "qualityCutoffNotMet",
+          "languages",
+          "releaseGroup",
+          "id"
+        ]
       }
     },
     "securitySchemes": {
@@ -3371,10 +3995,31 @@
   },
   "tags": [
     {
+      "name": "Movie"
+    },
+    {
+      "name": "MovieFile"
+    },
+    {
       "name": "History"
     },
     {
+      "name": "Blacklist"
+    },
+    {
+      "name": "Queue"
+    },
+    {
       "name": "Indexer"
+    },
+    {
+      "name": "Download Client"
+    },
+    {
+      "name": "Import Lists"
+    },
+    {
+      "name": "Notification"
     },
     {
       "name": "Tag"
@@ -3383,13 +4028,13 @@
       "name": "Disk Space"
     },
     {
-      "name": "Download Client"
+      "name": "Settings"
     },
     {
-      "name": "Blacklist"
+      "name": "Metadata"
     },
     {
-      "name": "Notification"
+      "name": "System"
     }
   ]
 }
