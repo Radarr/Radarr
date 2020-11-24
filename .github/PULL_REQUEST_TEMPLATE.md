@@ -8,6 +8,7 @@ YES | NO
 #### Todos
 - [ ] Tests
 - [ ] Translation Keys
+- [ ] Wiki Updates
 
 #### Issues Fixed or Closed by this PR
 
