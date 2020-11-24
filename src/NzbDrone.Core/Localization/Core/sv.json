@@ -72,7 +72,7 @@
     "Analytics": "Analys",
     "All": "Samtliga",
     "Agenda": "Agenda",
-    "AddNewTmdbIdMessage": "Du kan även söka genom filmens TMDb-Id, t.ex. tmdb:71663",
+    "AddNewTmdbIdMessage": "Du kan även söka genom filmens TMDb-Id, t.ex. 'tmdb:71663'",
     "AddNewMessage": "För att lägga till en ny film, börja skriva namnet på filmen du vill lägga till",
     "MoreInfo": "Mer info",
     "Month": "Månad",
@@ -195,7 +195,7 @@
     "Deleted": "Raderad",
     "CutoffUnmet": "Avgränsande ej tillgodosedd",
     "CustomFormatsSettingsSummary": "Anpassade format och Inställningar",
-    "ConnectSettingsSummary": "Aviseringar, anslutningar till media-servrar/klienter och anpassade script",
+    "ConnectSettingsSummary": "Aviseringar, anslutningar till media-servrar/klienter, och anpassade script",
     "Collection": "Samling",
     "Certification": "Certifikation",
     "Added": "Tillagd",
@@ -388,7 +388,7 @@
     "AddingTag": "Lägg till tagg",
     "AddIndexer": "Lägg till indexerare",
     "Yesterday": "Igår",
-    "VisitGithubCustomFormatsAphrodite": "Besök GitHub för mer information: ",
+    "VisitGithubCustomFormatsAphrodite": "Besök wikin för mer information: ",
     "Username": "Användarnamn",
     "WaitingToImport": "Väntar på att importera",
     "WaitingToProcess": "Väntar på att bearbeta",
@@ -468,5 +468,9 @@
     "ImportErrors": "Import fel",
     "ImportedTo": "Importerad till",
     "IgnoredAddresses": "Ignorerade adresser",
-    "ICalFeed": "iCal-flöde"
+    "ICalFeed": "iCal-flöde",
+    "Wiki": "Wiki",
+    "YesMoveFiles": "Ja, flytta filerna",
+    "YesCancel": "Ja, avbryt",
+    "Yes": "Ja"
 }
