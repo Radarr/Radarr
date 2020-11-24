@@ -723,7 +723,7 @@
     "AllowMovieChangeClickToChangeMovie": "Klicken um den Film zu bearbeiten",
     "AddingTag": "Tag hinzufügen",
     "YouCanAlsoSearch": "Es kann auch nach der TMDb oder IMDb ID eines Filmes gesucht werden. Z.B.: 'tmdb:71663'",
-    "VisitGithubCustomFormatsAphrodite": "Besuche Github für mehr details: ",
+    "VisitGithubCustomFormatsAphrodite": "Besuche das Wiki für mehr Details: ",
     "Unreleased": "Unveröffentlicht",
     "UnableToLoadUISettings": "Oberflächen Einstellungen konnten nicht geladen werden",
     "UnableToLoadTheCalendar": "Kalender konnte nicht geladen werden",
@@ -862,5 +862,14 @@
     "ConsideredAvailable": "Verfügbarkeit angenommen",
     "Announced": "Angekündigt",
     "Yes": "Ja",
-    "No": "Nein"
+    "No": "Nein",
+    "NotifcationTriggersHelpText": "Wähle aus welche Events die Benachrichtigung auslösen sollen",
+    "MappedDrivesRunningAsService": "Zugeordnete Netzlaufwerke sind nicht verfügbar, wenn Radarr als Windows-Dienst ausgeführt wird. Bitte lesen Sie die FAQ für weitere Informationen",
+    "CouldNotConnectSignalR": "Es konnte keine Verbindung zu SignalR hergestellt werden. Die Oberfläche wird daher nicht mehr aktualisiert",
+    "ChmodGroupHelpTextWarning": "Dies funktioniert nur, wenn der Benutzer, der Radarr ausführt, der Eigentümer der Datei ist. Es ist besser, sicherzustellen, dass der Download-Client die gleiche Gruppe wie Radarr verwendet.",
+    "ChmodGroupHelpText": "Gruppenname oder gid. Verwenden Sie gid für entfernte Dateisysteme.",
+    "ChmodGroup": "chmod Gruppe",
+    "ChmodFolderHelpTextWarning": "Dies funktioniert nur, wenn der Benutzer, der Radarr ausführt, der Eigentümer der Datei ist. Es ist besser, sicherzustellen, dass der Download-Client die Berechtigungen richtig setzt.",
+    "ChmodFolderHelpText": "Oktal, wird beim Importieren/Umbenennen von Medienordnern und Dateien angewendet (ohne Ausführungsbits)",
+    "ChmodFolder": "chmod Ordner"
 }
