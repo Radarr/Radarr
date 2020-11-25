@@ -1053,5 +1053,6 @@
     "Max": "Maximum",
     "ManualImportSelectQuality": " Manuális Importálás - Minőség kiválasztása",
     "UsenetDelayTime": "Usenet késleltetés: {0}",
-    "UpperCase": "Nagybetű"
+    "UpperCase": "Nagybetű",
+    "UpgradeUntilQuality": "Frissítés a minőség eléréséig"
 }
