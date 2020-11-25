@@ -224,7 +224,7 @@
           "Movie"
         ],
         "summary": "Delete a Movie",
-        "description": "",
+        "description": "Delete a single movie by database id",
         "operationId": "deleteMovie",
         "parameters": [
           {
@@ -254,6 +254,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Invalid ID supplied"
           },
@@ -1223,10 +1226,7 @@
                             "value": {
                               "type": "array",
                               "items": {
-                                "type": [
-                                  "string",
-                                  "number"
-                                ]
+                                "type": "string"
                               }
                             },
                             "type": {
@@ -2709,7 +2709,9 @@
       ],
       "get": {
         "summary": "Get an Import List",
-        "tags": [],
+        "tags": [
+          "Import Lists"
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -2754,6 +2756,9 @@
           {
             "apikey": []
           }
+        ],
+        "tags": [
+          "Import Lists"
         ]
       },
       "delete": {
@@ -2775,6 +2780,9 @@
           {
             "apikey": []
           }
+        ],
+        "tags": [
+          "Import Lists"
         ]
       }
     }
