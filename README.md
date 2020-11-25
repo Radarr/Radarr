@@ -34,7 +34,7 @@ Radarr is a movie collection manager for Usenet and BitTorrent users. It can mon
 
 ## Support
 
-[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60)](https://discord.gg/5WQc3S8)
+[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60)](https://discord.gg/r5wJPt9)
 [![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60)](https://www.reddit.com/r/Radarr)
 [![GitHub - Bugs and Feature Requests Only](https://img.shields.io/badge/github-issues-red.svg?maxAge=60)](https://github.com/Radarr/Radarr/issues)
 [![Wiki](https://img.shields.io/badge/github-wiki-181717.svg?maxAge=60)](https://wiki.servarr.com/Radarr)
