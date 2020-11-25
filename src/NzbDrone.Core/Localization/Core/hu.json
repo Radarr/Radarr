@@ -1054,5 +1054,6 @@
     "ManualImportSelectQuality": " Manuális Importálás - Minőség kiválasztása",
     "UsenetDelayTime": "Usenet késleltetés: {0}",
     "UpperCase": "Nagybetű",
-    "UpgradeUntilQuality": "Frissítés a minőség eléréséig"
+    "UpgradeUntilQuality": "Frissítés a minőség eléréséig",
+    "UsenetDisabled": "Usenet letiltva"
 }
