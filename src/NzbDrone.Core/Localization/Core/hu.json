@@ -915,5 +915,11 @@
     "AddDownloadClient": "Letöltőkliens hozzáadása",
     "AddDelayProfile": "Késleltetési profil hozzáadása",
     "AddCustomFormat": "Egyéni formátum hozzáadása",
-    "Add": "Hozzáadás"
+    "Add": "Hozzáadás",
+    "FileNameTokens": "Fájlnév Tokenek",
+    "FeatureRequests": "Funkció kérése",
+    "FailedToLoadQueue": "Nem sikerült betölteni a várólistát",
+    "FailedToLoadMovieFromAPI": "Nem sikerült betölteni a filmet az API-ból",
+    "ExternalUpdater": "A Radarr egy külső frissítési mechanizmus használatára van konfigurálva",
+    "ExcludeTitle": "Kizárja a következőt: {0}? Ez megakadályozza, hogy a Radarr automatikusan hozzáadja a listaszinkronizáláshoz."
 }
