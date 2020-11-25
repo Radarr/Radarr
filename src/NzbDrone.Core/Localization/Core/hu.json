@@ -944,5 +944,7 @@
     "IMDb": "IMDb",
     "LowerCase": "Kisbetű",
     "LookingForReleaseProfiles2": "helyett",
-    "LookingForReleaseProfiles1": "Kiadási profilokat keresel? Próbáld ki"
+    "LookingForReleaseProfiles1": "Kiadási profilokat keresel? Próbáld ki",
+    "ManualImportSelectMovie": "Manuális importálás - Válassz Filmet",
+    "ManualImportSelectLanguage": "Manuális importálás - Válassz Nyelvet"
 }
