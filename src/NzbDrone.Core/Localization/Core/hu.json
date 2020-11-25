@@ -1051,5 +1051,7 @@
     "MegabytesPerMinute": "Megabájt per perc",
     "Medium": "Közepes",
     "Max": "Maximum",
-    "ManualImportSelectQuality": " Manuális Importálás - Minőség kiválasztása"
+    "ManualImportSelectQuality": " Manuális Importálás - Minőség kiválasztása",
+    "UsenetDelayTime": "Usenet késleltetés: {0}",
+    "UpperCase": "Nagybetű"
 }
