@@ -39,7 +39,7 @@ namespace Radarr.Api.V3.ManualImport
             {
                 var processedItem = _manualImportService.ReprocessItem(item.Path, item.DownloadId, item.MovieId);
 
-                item.Movie = processedItem.Movie.ToResource();
+                item.Movie = processedItem.Movie.ToResource(0);
                 item.Rejections = processedItem.Rejections;
                 item.Languages = processedItem.Languages;
             }

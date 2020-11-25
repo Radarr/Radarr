@@ -72,9 +72,10 @@ namespace Radarr.Api.V3.Calendar
                 return null;
             }
 
+            var availDelay = _configService.AvailabilityDelay;
             var translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
             var translation = GetMovieTranslation(translations, movie);
-            var resource = movie.ToResource(_qualityUpgradableSpecification, translation);
+            var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
 
             return resource;
         }

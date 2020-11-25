@@ -42,9 +42,10 @@ namespace Radarr.Api.V3.Movies
             int tmdbId = -1;
             if (int.TryParse(Request.Query.tmdbId, out tmdbId))
             {
+                var availDelay = _configService.AvailabilityDelay;
                 var result = _movieInfo.GetMovieInfo(tmdbId).Item1;
                 var translation = result.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
-                return result.ToResource(translation);
+                return result.ToResource(availDelay, translation);
             }
 
             throw new BadRequestException("Tmdb Id was not valid");
@@ -55,8 +56,9 @@ namespace Radarr.Api.V3.Movies
             string imdbId = Request.Query.imdbId;
             var result = _movieInfo.GetMovieByImdbId(imdbId);
 
+            var availDelay = _configService.AvailabilityDelay;
             var translation = result.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
-            return result.ToResource(translation);
+            return result.ToResource(availDelay, translation);
         }
 
         private object Search()
@@ -70,8 +72,9 @@ namespace Radarr.Api.V3.Movies
         {
             foreach (var currentMovie in movies)
             {
+                var availDelay = _configService.AvailabilityDelay;
                 var translation = currentMovie.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
-                var resource = currentMovie.ToResource(translation);
+                var resource = currentMovie.ToResource(availDelay, translation);
 
                 _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images);
 

@@ -22,7 +22,7 @@ namespace Radarr.Api.V3.Movies
             var resource = Request.Body.FromJson<List<MovieResource>>();
             var newMovies = resource.ToModel();
 
-            return _addMovieService.AddMovies(newMovies).ToResource();
+            return _addMovieService.AddMovies(newMovies).ToResource(0);
         }
     }
 }

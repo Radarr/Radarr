@@ -86,7 +86,7 @@ namespace Radarr.Api.V3.Movies
             }
 
             return ResponseWithCode(_movieService.UpdateMovie(moviesToUpdate, !resource.MoveFiles)
-                                    .ToResource(),
+                                    .ToResource(0),
                                     HttpStatusCode.Accepted);
         }
 
