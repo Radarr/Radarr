@@ -941,5 +941,8 @@
     "InstallLatest": "Legfrissebb telepítése",
     "InCinemasMsg": "A film a mozikban",
     "InCinemasDate": "Mozipremier dátum",
-    "IMDb": "IMDb"
+    "IMDb": "IMDb",
+    "LowerCase": "Kisbetű",
+    "LookingForReleaseProfiles2": "helyett",
+    "LookingForReleaseProfiles1": "Kiadási profilokat keresel? Próbáld ki"
 }
