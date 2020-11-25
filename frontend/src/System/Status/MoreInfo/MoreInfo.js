@@ -21,7 +21,7 @@ class MoreInfo extends Component {
 
           <DescriptionListItemTitle>Wiki</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://github.com/readarr/Readarr/wiki">wiki.readarr.com</Link>
+            <Link to="https://wiki.servarr.com/readarr">Wiki</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Reddit</DescriptionListItemTitle>
@@ -31,7 +31,7 @@ class MoreInfo extends Component {
 
           <DescriptionListItemTitle>Discord</DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://discord.gg/Rt6gQdB">#readarr on Discord</Link>
+            <Link to="https://discord.gg/rkEXY2Rbgn">Readarr</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>Donations</DescriptionListItemTitle>
