@@ -21,9 +21,9 @@ Readarr is a ebook (and maybe eventually magazine/audiobook) collection manager 
 
 ## Support
 
-[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60)](https://discord.gg/WWd5ZGg)
+[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60)](https://discord.gg/rkEXY2Rbgn)
 [![GitHub](https://img.shields.io/badge/github-issues-red.svg?maxAge=60)](https://github.com/Readarr/Readarr/issues)
-[![GitHub Wiki](https://img.shields.io/badge/github-wiki-181717.svg?maxAge=60)](https://github.com/Readarr/Readarr/wiki)
+[![Wiki](https://img.shields.io/badge/github-wiki-181717.svg?maxAge=60)](https://wiki.servarr.com/Readarr)
 [![Docker Pulls](https://img.shields.io/docker/pulls/hotio/readarr)](https://hub.docker.com/r/hotio/readarr)
 
 ## Contributors
@@ -34,23 +34,16 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 
 Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/readarr#backer)]
 
-<a href="https://opencollective.com/readarr#backers" target="_blank"><img src="https://opencollective.com/readarr/backers.svg?width=890"></a>
-
+<img src="https://opencollective.com/readarr/backers.svg?width=890"></a>
 
 ## Sponsors
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/readarr#sponsor)]
 
-<a href="https://opencollective.com/readarr/sponsor/0/website" target="_blank"><img src="https://opencollective.com/readarr/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/readarr/sponsor/1/website" target="_blank"><img src="https://opencollective.com/readarr/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/readarr/sponsor/2/website" target="_blank"><img src="https://opencollective.com/readarr/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/readarr/sponsor/3/website" target="_blank"><img src="https://opencollective.com/readarr/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/readarr/sponsor/4/website" target="_blank"><img src="https://opencollective.com/readarr/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/readarr/sponsor/5/website" target="_blank"><img src="https://opencollective.com/readarr/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/readarr/sponsor/6/website" target="_blank"><img src="https://opencollective.com/readarr/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/readarr/sponsor/7/website" target="_blank"><img src="https://opencollective.com/readarr/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/readarr/sponsor/8/website" target="_blank"><img src="https://opencollective.com/readarr/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/readarr/sponsor/9/website" target="_blank"><img src="https://opencollective.com/readarr/sponsor/9/avatar.svg"></a>
+<img src="https://opencollective.com/readarr/sponsors.svg?width=890"></a>
+
+## Mega Sponsors
+<img src="https://opencollective.com/readarr/tiers/mega-sponsor.svg?width=890"></a>
 
 ### License
 

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support via Discord
+    url: [https://discord.gg/rkEXY2Rbgn]
+    about: Chat with users and devs on support and setup related topics.
+  - name: Support via Reddit
+    url: https://reddit.com/r/Readarr
+    about: Discuss and search thru support topics.
