@@ -1059,5 +1059,6 @@
     "Wiki": "Wiki",
     "WhatsNew": "Mi az újdonság?",
     "Weeks": "Hetek",
-    "VersionUpdateText": "A Radarr {0} verziója telepítve van, a legfrissebb módosítások eléréséhez frissítsd a weblapot."
+    "VersionUpdateText": "A Radarr {0} verziója telepítve van, a legfrissebb módosítások eléréséhez frissítsd a weblapot.",
+    "WouldYouLikeToRestoreBackup": "Szeretnéd visszaállítani a {0} biztonsági mentést?"
 }
