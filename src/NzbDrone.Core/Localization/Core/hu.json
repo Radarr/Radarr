@@ -1055,5 +1055,9 @@
     "UsenetDelayTime": "Usenet késleltetés: {0}",
     "UpperCase": "Nagybetű",
     "UpgradeUntilQuality": "Frissítés a minőség eléréséig",
-    "UsenetDisabled": "Usenet letiltva"
+    "UsenetDisabled": "Usenet letiltva",
+    "Wiki": "Wiki",
+    "WhatsNew": "Mi az újdonság?",
+    "Weeks": "Hetek",
+    "VersionUpdateText": "A Radarr {0} verziója telepítve van, a legfrissebb módosítások eléréséhez frissítsd a weblapot."
 }
