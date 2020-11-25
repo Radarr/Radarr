@@ -928,5 +928,18 @@
     "Images": "Képek",
     "HttpHttps": "HTTP(S)",
     "Hours": "Órák",
-    "HomePage": "Kezdőlap"
+    "HomePage": "Kezdőlap",
+    "LogOnly": "Csak naplózás",
+    "LastUsed": "Utoljára használt",
+    "LastExecution": "Utoljára végrehajtott",
+    "Large": "Óriási",
+    "KeepAndUnmonitorMovie": "Megtartás és megfigyelés kikapcsolása a filmnél",
+    "InvalidFormat": "Érvénytelen Formátum",
+    "InteractiveImportErrQuality": ": A minőség kiválasztása szükséges mindegyik kiválasztott fájlnál",
+    "InteractiveImportErrMovie": "A film kiválasztása szükséges mindegyik kiválaszott fájlnál",
+    "InteractiveImportErrLanguage": "A nyelv kiválasztása szükséges mindegyik kiválasztot fájlnál.",
+    "InstallLatest": "Legfrissebb telepítése",
+    "InCinemasMsg": "A film a mozikban",
+    "InCinemasDate": "Mozi premier dátum",
+    "IMDb": "IMDb"
 }
