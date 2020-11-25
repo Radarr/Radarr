@@ -924,5 +924,9 @@
     "ExcludeTitle": "Kizárja a következőt: {0}? Ez megakadályozza, hogy a Radarr automatikusan hozzáadja a listaszinkronizáláshoz.",
     "FolderMoveRenameWarning": "Ezzel a filmmappa a filmmappa formátuma szerint is átnevezésre kerül a beállításokban.",
     "FileWasDeletedByViaUI": "A fájlt a felhasználói felületen keresztül törölték",
-    "FileWasDeletedByUpgrade": "A fájlt törölték a frissítés importálásához"
+    "FileWasDeletedByUpgrade": "A fájlt törölték a frissítés importálásához",
+    "Images": "Képek",
+    "HttpHttps": "HTTP(S)",
+    "Hours": "Órák",
+    "HomePage": "Kezdőlap"
 }
