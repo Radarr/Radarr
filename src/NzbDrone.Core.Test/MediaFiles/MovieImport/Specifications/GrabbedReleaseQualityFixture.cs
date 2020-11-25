@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         }
 
         [Test]
-        public void should_be_rejected_if_grabbed_history_quality_does_not_match()
+        public void should_be_accepted_if_grabbed_history_quality_does_not_match_log_only()
         {
             var history = Builder<MovieHistory>.CreateListOfSize(1)
                                                   .All()
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             GivenHistory(history);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
         }
     }
 }

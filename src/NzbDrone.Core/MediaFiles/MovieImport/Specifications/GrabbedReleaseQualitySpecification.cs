@@ -14,22 +14,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
     {
         private readonly Logger _logger;
         private readonly IHistoryService _historyService;
-        private readonly IParsingService _parsingService;
 
         public GrabbedReleaseQualitySpecification(Logger logger,
-            IHistoryService historyService,
-            IParsingService parsingService)
+            IHistoryService historyService)
         {
             _logger = logger;
             _historyService = historyService;
-            _parsingService = parsingService;
         }
 
         public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             if (downloadClientItem == null)
             {
-                _logger.Debug("No download client item provided, skipping.");
                 return Decision.Accept();
             }
 
@@ -47,8 +43,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             {
                 if (item.Quality.Quality != Quality.Unknown && item.Quality != localMovie.Quality)
                 {
+                    // Log only for info, spec removed due to common webdl/webrip mismatches
                     _logger.Debug("Quality for grabbed release ({0}) does not match the quality of the file ({1})", item.Quality, localMovie.Quality);
-                    return Decision.Reject("File quality does not match quality of the grabbed release");
                 }
             }
 
