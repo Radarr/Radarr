@@ -581,7 +581,7 @@
     "MoveFiles": "Fájl(ok) mozgatása",
     "MountCheckMessage": "A filmútvonalat tartalmazó mappa csak olvasható: ",
     "MoreInfo": "Több Információ",
-    "YouCanAlsoSearch": "Kereshetsz a film TMDb azonosítójával vagy IMDb azonosítójával is. Például. tmdb: 71663",
+    "YouCanAlsoSearch": "Kereshetsz a film TMDb azonosítójával vagy IMDb azonosítójával is. Például. \"tmdb: 71663\"",
     "MonoNotNetCoreCheckMessage": "Kérjük, frissítsd a Radarr .NET Core verzióját",
     "MonitorMovie": "Film Monitorozása",
     "MonitoredOnly": "Csak a Megfigyelt",
