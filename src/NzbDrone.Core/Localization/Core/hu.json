@@ -921,5 +921,8 @@
     "FailedToLoadQueue": "Nem sikerült betölteni a várólistát",
     "FailedToLoadMovieFromAPI": "Nem sikerült betölteni a filmet az API-ból",
     "ExternalUpdater": "A Radarr egy külső frissítési mechanizmus használatára van konfigurálva",
-    "ExcludeTitle": "Kizárja a következőt: {0}? Ez megakadályozza, hogy a Radarr automatikusan hozzáadja a listaszinkronizáláshoz."
+    "ExcludeTitle": "Kizárja a következőt: {0}? Ez megakadályozza, hogy a Radarr automatikusan hozzáadja a listaszinkronizáláshoz.",
+    "FolderMoveRenameWarning": "Ezzel a filmmappa a filmmappa formátuma szerint is átnevezésre kerül a beállításokban.",
+    "FileWasDeletedByViaUI": "A fájlt a felhasználói felületen keresztül törölték",
+    "FileWasDeletedByUpgrade": "A fájlt törölték a frissítés importálásához"
 }
