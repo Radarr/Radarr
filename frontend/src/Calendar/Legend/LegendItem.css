@@ -1,33 +1,74 @@
+.legendItemContainer {
+  margin-right: 5px;
+  width: 220px;
+}
+
 .legendItem {
-  margin: 3px 0;
-  margin-right: 6px;
-  padding-left: 5px;
-  width: 150px;
-  border-left-width: 4px;
-  border-left-style: solid;
-  cursor: default;
+  display: inline-flex;
+  margin-top: -1px;
+  vertical-align: middle;
+  line-height: 16px;
 }
 
-/*
- * Status
- */
-
-.downloaded {
-  composes: downloaded from '~Calendar/Events/CalendarEvent.css';
+.legendItemColor {
+  margin-right: 8px;
+  width: 30px;
+  height: 16px;
+  border-radius: 4px;
 }
 
-.downloading {
-  composes: downloading from '~Calendar/Events/CalendarEvent.css';
+.queue {
+  composes: legendItemColor;
+
+  background-color: $queueColor;
 }
 
-.unmonitored {
-  composes: unmonitored from '~Calendar/Events/CalendarEvent.css';
+.continuing {
+  composes: legendItemColor;
+
+  background-color: $primaryColor;
 }
 
-.missing {
-  composes: missing from '~Calendar/Events/CalendarEvent.css';
+.availNotMonitored {
+  composes: legendItemColor;
+
+  background-color: $darkGray;
 }
 
-.unreleased {
-  composes: unreleased from '~Calendar/Events/CalendarEvent.css';
+.ended {
+  composes: legendItemColor;
+
+  background-color: $successColor;
+}
+
+.missingMonitored {
+  composes: legendItemColor;
+
+  background-color: $dangerColor;
+
+  &:global(.colorImpaired) {
+    background: repeating-linear-gradient(90deg, color($dangerColor shade(5%)), color($dangerColor shade(5%)) 5px, color($dangerColor shade(15%)) 5px, color($dangerColor shade(15%)) 10px);
+  }
+}
+
+.missingUnmonitored {
+  composes: legendItemColor;
+
+  background-color: $warningColor;
+
+  &:global(.colorImpaired) {
+    background: repeating-linear-gradient(45deg, $warningColor, $warningColor 5px, color($warningColor tint(15%)) 5px, color($warningColor tint(15%)) 10px);
+  }
+}
+
+.missingMonitoredColorImpaired {
+  background: repeating-linear-gradient(90deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+}
+
+.missingUnmonitoredColorImpaired {
+  background: repeating-linear-gradient(45deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+}
+
+.legendItemText {
+  display: inline-block;
 }

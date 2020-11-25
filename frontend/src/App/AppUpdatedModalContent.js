@@ -73,14 +73,14 @@ function AppUpdatedModalContent(props) {
         <Button
           onPress={onSeeChangesPress}
         >
-          translate('RecentChanges')
+          {translate('RecentChanges')}
         </Button>
 
         <Button
           kind={kinds.PRIMARY}
           onPress={onModalClose}
         >
-          translate('Reload')
+          {translate('Reload')}
         </Button>
       </ModalFooter>
     </ModalContent>

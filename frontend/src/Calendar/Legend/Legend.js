@@ -29,32 +29,45 @@ function Legend(props) {
     <div className={styles.legend}>
       <div>
         <LegendItem
-          status={translate('Unreleased')}
-          tooltip={translate('MovieHasntReleasedYet')}
+          style='ended'
+          name={translate('DownloadedAndMonitored')}
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
-          status={translate('Unmonitored')}
-          tooltip={translate('MovieIsUnmonitored')}
+          style='availNotMonitored'
+          name={translate('DownloadedButNotMonitored')}
           colorImpairedMode={colorImpairedMode}
         />
       </div>
 
       <div>
         <LegendItem
-          status={translate('Downloading')}
-          tooltip={translate('MovieIsDownloading')}
+          style='missingMonitored'
+          name={translate('MissingMonitoredAndConsideredAvailable')}
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
-          status={translate('Downloaded')}
-          tooltip={translate('MovieWasDownloadedAndSorted')}
+          style='missingUnmonitored'
+          name={translate('MissingNotMonitored')}
           colorImpairedMode={colorImpairedMode}
         />
       </div>
 
+      <div>
+        <LegendItem
+          style='queue'
+          name={translate('Queued')}
+          colorImpairedMode={colorImpairedMode}
+        />
+
+        <LegendItem
+          style='continuing'
+          name={translate('Unreleased')}
+          colorImpairedMode={colorImpairedMode}
+        />
+      </div>
       {
         iconsToShow.length > 0 &&
           <div>
