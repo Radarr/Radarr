@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Support Requests will be closed immediately, if you are unsure go to our [Reddit](https://www.reddit.com/r/radarr/) or [Discord](https://discord.gg/r5wJPt9) first. Exceptions do not mean you found a bug!
+about: Support Requests will be closed immediately, if you are unsure go to our Reddit or Discord first. Exceptions do not mean you found a bug!
 title: ''
 labels: bug
 assignees: ''
