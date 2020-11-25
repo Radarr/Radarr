@@ -52,7 +52,7 @@ namespace Radarr.Api.V3.History
 
             if (includeMovie)
             {
-                resource.Movie = model.Movie.ToResource();
+                resource.Movie = model.Movie.ToResource(0);
             }
 
             if (model.Movie != null)

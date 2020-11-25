@@ -49,7 +49,7 @@ namespace Radarr.Api.V3.Queue
             {
                 Id = model.Id,
                 MovieId = model.Movie?.Id,
-                Movie = includeMovie && model.Movie != null ? model.Movie.ToResource() : null,
+                Movie = includeMovie && model.Movie != null ? model.Movie.ToResource(0) : null,
                 Languages = model.Languages,
                 Quality = model.Quality,
                 CustomFormats = model.RemoteMovie?.CustomFormats.ToResource(),

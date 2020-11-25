@@ -48,7 +48,7 @@ namespace Radarr.Api.V3.Blacklist
                 Indexer = model.Indexer,
                 Message = model.Message,
 
-                Movie = model.Movie.ToResource()
+                Movie = model.Movie.ToResource(0)
             };
         }
     }

@@ -75,7 +75,7 @@ namespace Radarr.Api.V3.Movies
 
     public static class MovieResourceMapper
     {
-        public static MovieResource ToResource(this Movie model)
+        public static MovieResource ToResource(this Movie model, int availDelay, MovieTranslation movieTranslation = null, IUpgradableSpecification upgradableSpecification = null)
         {
             if (model == null)
             {
@@ -83,129 +83,7 @@ namespace Radarr.Api.V3.Movies
             }
 
             long size = model.MovieFile?.Size ?? 0;
-            MovieFileResource movieFile = model.MovieFile?.ToResource(model);
 
-            return new MovieResource
-            {
-                Id = model.Id,
-                TmdbId = model.TmdbId,
-                Title = model.Title,
-                OriginalTitle = model.OriginalTitle,
-                SortTitle = model.SortTitle,
-                InCinemas = model.InCinemas,
-                PhysicalRelease = model.PhysicalRelease,
-                DigitalRelease = model.DigitalRelease,
-                HasFile = model.HasFile,
-
-                SizeOnDisk = size,
-                Status = model.Status,
-                Overview = model.Overview,
-
-                Images = model.Images,
-
-                Year = model.Year,
-                SecondaryYear = model.SecondaryYear,
-
-                Path = model.Path,
-                QualityProfileId = model.ProfileId,
-
-                Monitored = model.Monitored,
-                MinimumAvailability = model.MinimumAvailability,
-
-                IsAvailable = model.IsAvailable(),
-                FolderName = model.FolderName(),
-
-                Runtime = model.Runtime,
-                CleanTitle = model.CleanTitle,
-                ImdbId = model.ImdbId,
-                TitleSlug = model.TitleSlug,
-                RootFolderPath = model.RootFolderPath,
-                Certification = model.Certification,
-                Website = model.Website,
-                Genres = model.Genres,
-                Tags = model.Tags,
-                Added = model.Added,
-                AddOptions = model.AddOptions,
-                AlternateTitles = model.AlternativeTitles.ToResource(),
-                Ratings = model.Ratings,
-                MovieFile = movieFile,
-                YouTubeTrailerId = model.YouTubeTrailerId,
-                Studio = model.Studio,
-                Collection = model.Collection
-            };
-        }
-
-        public static MovieResource ToResource(this Movie model, MovieTranslation movieTranslation)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-
-            long size = model.MovieFile?.Size ?? 0;
-            MovieFileResource movieFile = model.MovieFile?.ToResource(model);
-
-            var translatedTitle = movieTranslation?.Title ?? model.Title;
-            var translatedOverview = movieTranslation?.Overview ?? model.Overview;
-
-            return new MovieResource
-            {
-                Id = model.Id,
-                TmdbId = model.TmdbId,
-                Title = translatedTitle,
-                OriginalTitle = model.OriginalTitle,
-                SortTitle = translatedTitle.NormalizeTitle(),
-                InCinemas = model.InCinemas,
-                PhysicalRelease = model.PhysicalRelease,
-                DigitalRelease = model.DigitalRelease,
-                HasFile = model.HasFile,
-
-                SizeOnDisk = size,
-                Status = model.Status,
-                Overview = translatedOverview,
-
-                Images = model.Images,
-
-                Year = model.Year,
-                SecondaryYear = model.SecondaryYear,
-
-                Path = model.Path,
-                QualityProfileId = model.ProfileId,
-
-                Monitored = model.Monitored,
-                MinimumAvailability = model.MinimumAvailability,
-
-                IsAvailable = model.IsAvailable(),
-                FolderName = model.FolderName(),
-
-                Runtime = model.Runtime,
-                CleanTitle = model.CleanTitle,
-                ImdbId = model.ImdbId,
-                TitleSlug = model.TitleSlug,
-                RootFolderPath = model.RootFolderPath,
-                Certification = model.Certification,
-                Website = model.Website,
-                Genres = model.Genres,
-                Tags = model.Tags,
-                Added = model.Added,
-                AddOptions = model.AddOptions,
-                AlternateTitles = model.AlternativeTitles.ToResource(),
-                Ratings = model.Ratings,
-                MovieFile = movieFile,
-                YouTubeTrailerId = model.YouTubeTrailerId,
-                Studio = model.Studio,
-                Collection = model.Collection
-            };
-        }
-
-        public static MovieResource ToResource(this Movie model, IUpgradableSpecification upgradableSpecification, MovieTranslation movieTranslation)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-
-            long size = model.MovieFile?.Size ?? 0;
             MovieFileResource movieFile = model.MovieFile?.ToResource(model, upgradableSpecification);
 
             var translatedTitle = movieTranslation?.Title ?? model.Title;
@@ -238,7 +116,7 @@ namespace Radarr.Api.V3.Movies
                 Monitored = model.Monitored,
                 MinimumAvailability = model.MinimumAvailability,
 
-                IsAvailable = model.IsAvailable(),
+                IsAvailable = model.IsAvailable(availDelay),
                 FolderName = model.FolderName(),
 
                 Runtime = model.Runtime,
@@ -318,9 +196,9 @@ namespace Radarr.Api.V3.Movies
             return movie;
         }
 
-        public static List<MovieResource> ToResource(this IEnumerable<Movie> movies)
+        public static List<MovieResource> ToResource(this IEnumerable<Movie> movies, int availDelay)
         {
-            return movies.Select(ToResource).ToList();
+            return movies.Select(x => ToResource(x, availDelay)).ToList();
         }
 
         public static List<Movie> ToModel(this IEnumerable<MovieResource> resources)

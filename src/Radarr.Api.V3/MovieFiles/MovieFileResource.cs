@@ -60,33 +60,6 @@ namespace Radarr.Api.V3.MovieFiles
             };
         }
 
-        public static MovieFileResource ToResource(this MovieFile model, NzbDrone.Core.Movies.Movie movie)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-
-            return new MovieFileResource
-            {
-                Id = model.Id,
-
-                MovieId = model.MovieId,
-                RelativePath = model.RelativePath,
-                Path = Path.Combine(movie.Path, model.RelativePath),
-                Size = model.Size,
-                DateAdded = model.DateAdded,
-                SceneName = model.SceneName,
-                IndexerFlags = (int)model.IndexerFlags,
-                Quality = model.Quality,
-                Languages = model.Languages,
-                Edition = model.Edition,
-                ReleaseGroup = model.ReleaseGroup,
-                MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-                OriginalFilePath = model.OriginalFilePath
-            };
-        }
-
         public static MovieFileResource ToResource(this MovieFile model, NzbDrone.Core.Movies.Movie movie, IUpgradableSpecification upgradableSpecification)
         {
             if (model == null)
@@ -110,7 +83,7 @@ namespace Radarr.Api.V3.MovieFiles
                 Edition = model.Edition,
                 ReleaseGroup = model.ReleaseGroup,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
-                QualityCutoffNotMet = upgradableSpecification.QualityCutoffNotMet(movie.Profile, model.Quality),
+                QualityCutoffNotMet = upgradableSpecification?.QualityCutoffNotMet(movie.Profile, model.Quality) ?? false,
                 OriginalFilePath = model.OriginalFilePath
             };
         }
