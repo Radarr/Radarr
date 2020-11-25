@@ -622,7 +622,7 @@
     "MarkAsFailed": "Megjelölés Sikertelenként",
     "ManualImport": "Manuális Importálás",
     "Manual": "Manuális",
-    "MaintenanceRelease": "Karbantartási frissítés",
+    "MaintenanceRelease": "Karbantartási frissítés: hibajavítások és egyéb fejlesztések. További részletekért lásd: Github Commmit Historyn",
     "Logs": "Logok",
     "LogLevelTraceHelpTextWarning": "A nyomkövetést csak ideiglenesen szabad engedélyezni",
     "LogLevel": "Log Szint",
@@ -937,9 +937,9 @@
     "InvalidFormat": "Érvénytelen Formátum",
     "InteractiveImportErrQuality": ": A minőség kiválasztása szükséges mindegyik kiválasztott fájlnál",
     "InteractiveImportErrMovie": "A film kiválasztása szükséges mindegyik kiválaszott fájlnál",
-    "InteractiveImportErrLanguage": "A nyelv kiválasztása szükséges mindegyik kiválasztot fájlnál.",
+    "InteractiveImportErrLanguage": "A nyelv kiválasztása szükséges mindegyik kiválasztott fájlnál.",
     "InstallLatest": "Legfrissebb telepítése",
     "InCinemasMsg": "A film a mozikban",
-    "InCinemasDate": "Mozi premier dátum",
+    "InCinemasDate": "Mozipremier dátum",
     "IMDb": "IMDb"
 }
