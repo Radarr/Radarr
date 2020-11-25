@@ -1,35 +1,34 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import titleCase from 'Utilities/String/titleCase';
 import styles from './LegendItem.css';
 
 function LegendItem(props) {
   const {
     name,
-    status,
-    tooltip,
+    style,
     colorImpairedMode
   } = props;
 
   return (
-    <div
-      className={classNames(
-        styles.legendItem,
-        styles[status],
-        colorImpairedMode && 'colorImpaired'
-      )}
-      title={tooltip}
-    >
-      {name ? name : titleCase(status)}
+    <div className={styles.legendItemContainer}>
+      <div
+        className={classNames(
+          styles.legendItem,
+          styles[style],
+          colorImpairedMode && 'colorImpaired'
+        )}
+      />
+      <div className={classNames(styles.legendItemText, colorImpairedMode && styles[`${style}ColorImpaired`])}>
+        {name}
+      </div>
     </div>
   );
 }
 
 LegendItem.propTypes = {
-  name: PropTypes.string,
-  status: PropTypes.string.isRequired,
-  tooltip: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  style: PropTypes.string.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired
 };
 
