@@ -17,6 +17,20 @@ namespace Readarr.Http.REST
         private const string ROOT_ROUTE = "/";
         private const string ID_ROUTE = @"/(?<id>[\d]{1,10})";
 
+        // See src/Lidarr.Api.V1/Queue/QueueModule.cs
+        private static readonly HashSet<string> VALID_SORT_KEYS = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "timeleft",
+            "estimatedCompletionTime",
+            "protocol",
+            "indexer",
+            "downloadClient",
+            "quality",
+            "status",
+            "title",
+            "progress"
+        };
+
         private readonly HashSet<string> _excludedKeys = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
         {
             "page",
@@ -292,7 +306,15 @@ namespace Readarr.Http.REST
 
             if (Request.Query.SortKey != null)
             {
-                pagingResource.SortKey = Request.Query.SortKey.ToString();
+                var sortKey = Request.Query.SortKey.ToString();
+
+                if (!VALID_SORT_KEYS.Contains(sortKey) &&
+                    !TableMapping.Mapper.IsValidSortKey(sortKey))
+                {
+                    throw new BadRequestException($"Invalid sort key {sortKey}");
+                }
+
+                pagingResource.SortKey = sortKey;
 
                 // For backwards compatibility with v2
                 if (Request.Query.SortDir != null)
