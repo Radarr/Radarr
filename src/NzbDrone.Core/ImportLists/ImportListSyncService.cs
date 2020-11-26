@@ -76,6 +76,9 @@ namespace NzbDrone.Core.ImportLists
             if (dbMovies.Contains(report.TmdbId))
             {
                 _logger.Debug("{0} [{1}] Rejected, Movie Exists in DB", report.TmdbId, report.Title);
+
+                AddTagsToExistingMovie(importList, report);
+
                 return;
             }
 
@@ -212,6 +215,26 @@ namespace NzbDrone.Core.ImportLists
             }
 
             _movieService.UpdateMovie(moviesToUpdate, true);
+        }
+
+        private void AddTagsToExistingMovie(ImportListDefinition importList, ImportListMovie report)
+        {
+            _logger.Debug("{0} [{1}] Checking if necessary to add new tag/s to existing Movie.", report.TmdbId, report.Title);
+
+            var movie = _movieService.FindByTmdbId(report.TmdbId);
+
+            if (movie != null)
+            {
+                foreach (var tag in importList.Tags)
+                {
+                    if (!movie.Tags.Contains(tag))
+                    {
+                        movie.Tags.Add(tag);
+                    }
+                }
+
+                _movieService.UpdateMovie(movie);
+            }
         }
     }
 }
