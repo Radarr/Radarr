@@ -47,8 +47,8 @@ function MoveMovieModal(props) {
         <ModalBody>
           {
             destinationRootFolder ?
-              translate('MovieFolders1', [destinationRootFolder]) :
-              translate('MovieFolders2', [originalPath, destinationPath])
+              translate('MoveFolders1', [destinationRootFolder]) :
+              translate('MoveFolders2', [originalPath, destinationPath])
           }
           {
             destinationRootFolder ?
