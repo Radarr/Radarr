@@ -196,9 +196,9 @@ namespace Radarr.Api.V3.Movies
             return movie;
         }
 
-        public static List<MovieResource> ToResource(this IEnumerable<Movie> movies, int availDelay)
+        public static List<MovieResource> ToResource(this IEnumerable<Movie> movies, int availDelay, IUpgradableSpecification upgradableSpecification = null)
         {
-            return movies.Select(x => ToResource(x, availDelay)).ToList();
+            return movies.Select(x => ToResource(x, availDelay, null, upgradableSpecification)).ToList();
         }
 
         public static List<Movie> ToModel(this IEnumerable<MovieResource> resources)

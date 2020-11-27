@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Nancy;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Commands;
@@ -13,12 +14,14 @@ namespace Radarr.Api.V3.Movies
     {
         private readonly IMovieService _movieService;
         private readonly IManageCommandQueue _commandQueueManager;
+        private readonly IUpgradableSpecification _upgradableSpecification;
 
-        public MovieEditorModule(IMovieService movieService, IManageCommandQueue commandQueueManager)
+        public MovieEditorModule(IMovieService movieService, IManageCommandQueue commandQueueManager, IUpgradableSpecification upgradableSpecification)
             : base("/movie/editor")
         {
             _movieService = movieService;
             _commandQueueManager = commandQueueManager;
+            _upgradableSpecification = upgradableSpecification;
             Put("/", movie => SaveAll());
             Delete("/", movie => DeleteMovies());
         }
@@ -86,7 +89,7 @@ namespace Radarr.Api.V3.Movies
             }
 
             return ResponseWithCode(_movieService.UpdateMovie(moviesToUpdate, !resource.MoveFiles)
-                                    .ToResource(0),
+                                    .ToResource(0, _upgradableSpecification),
                                     HttpStatusCode.Accepted);
         }
 
