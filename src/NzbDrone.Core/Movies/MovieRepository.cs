@@ -29,6 +29,7 @@ namespace NzbDrone.Core.Movies
         Movie FindByPath(string path);
         List<string> AllMoviePaths();
         List<int> AllMovieTmdbIds();
+        Dictionary<int, List<int>> AllMovieTags();
         List<int> GetRecommendations();
     }
 
@@ -287,6 +288,16 @@ namespace NzbDrone.Core.Movies
             using (var conn = _database.OpenConnection())
             {
                 return conn.Query<int>("SELECT TmdbId FROM Movies").ToList();
+            }
+        }
+
+        public Dictionary<int, List<int>> AllMovieTags()
+        {
+            using (var conn = _database.OpenConnection())
+            {
+                string strSql = "SELECT Id AS [Key], Tags AS [Value] FROM Movies";
+                var tags = conn.Query<KeyValuePair<int, List<int>>>(strSql).ToDictionary(x => x.Key, x => x.Value);
+                return tags;
             }
         }
 

@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Tags
             var importLists = _importListFactory.AllForTag(tagId);
             var notifications = _notificationFactory.AllForTag(tagId);
             var restrictions = _restrictionService.AllForTag(tagId);
-            var movies = _movieService.AllForTag(tagId);
+            var movies = _movieService.AllMovieTags().Where(x => x.Value.Contains(tagId)).Select(x => x.Key).ToList();
 
             return new TagDetails
             {
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Tags
                 ImportListIds = importLists.Select(c => c.Id).ToList(),
                 NotificationIds = notifications.Select(c => c.Id).ToList(),
                 RestrictionIds = restrictions.Select(c => c.Id).ToList(),
-                MovieIds = movies.Select(c => c.Id).ToList()
+                MovieIds = movies
             };
         }
 
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Tags
             var importLists = _importListFactory.All();
             var notifications = _notificationFactory.All();
             var restrictions = _restrictionService.All();
-            var movies = _movieService.GetAllMovies();
+            var movies = _movieService.AllMovieTags();
 
             var details = new List<TagDetails>();
 
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Tags
                     ImportListIds = importLists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     NotificationIds = notifications.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
-                    MovieIds = movies.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList()
+                    MovieIds = movies.Where(c => c.Value.Contains(tag.Id)).Select(c => c.Key).ToList()
                 });
             }
 

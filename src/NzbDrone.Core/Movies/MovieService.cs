@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Movies
         void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false);
         void DeleteMovies(List<int> movieIds, bool deleteFiles, bool addExclusion = false);
         List<Movie> GetAllMovies();
-        List<Movie> AllForTag(int tagId);
+        Dictionary<int, List<int>> AllMovieTags();
         Movie UpdateMovie(Movie movie);
         List<Movie> UpdateMovie(List<Movie> movie, bool useExistingRelativeFolder);
         List<Movie> FilterExistingMovies(List<Movie> movies);
@@ -227,10 +227,9 @@ namespace NzbDrone.Core.Movies
             return _movieRepository.All().ToList();
         }
 
-        public List<Movie> AllForTag(int tagId)
+        public Dictionary<int, List<int>> AllMovieTags()
         {
-            return GetAllMovies().Where(s => s.Tags.Contains(tagId))
-                                 .ToList();
+            return _movieRepository.AllMovieTags();
         }
 
         public Movie UpdateMovie(Movie movie)
