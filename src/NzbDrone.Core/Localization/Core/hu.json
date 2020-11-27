@@ -396,7 +396,7 @@
     "RescanMovieFolderAfterRefresh": "Film mappa újraszkennelése a frissítés után",
     "RescanAfterRefreshHelpTextWarning": "A Radarr nem érzékeli automatikusan a fájlok változását, ha nincs beállítva „Always”-re",
     "RescanAfterRefreshHelpText": "A film frissítése után vizsgálja át a filmmappát",
-    "RequiredRestrictionPlaceHolder": "A kiadásnak tartalmaznia kell legalább egy ilyen kifejezést (a kis- és nagybetűket nem veszi figyelembe)",
+    "RequiredRestrictionPlaceHolder": "Új korlátozás hozzáadása",
     "RequiredPlaceHolder": "Új korlátozás hozzáadása",
     "RequiredHelpText": "Ennek a {0} feltételnek meg kell egyeznie az egyéni formátum alkalmazásához. Ellenkező esetben egyetlen {1} egyezés elegendő.",
     "ReplaceIllegalCharactersHelpText": "Helyettesítse az illegális karaktereket. Ha nincs bejelölve, akkor a Radarr eltávolítja őket",
@@ -744,7 +744,7 @@
     "ImportRootPath": "Mutasd meg a Radarr-nak a filmeket tartalmazó főkönyvtáradat, nem egy konkrét filmmappát. Például. {0} és nem {1}",
     "ImportMovies": "Filmek Importálása",
     "ImportMechanismHealthCheckMessage": "Engedélyezd a befejezett letöltés(ek) kezelését",
-    "ImportListSyncIntervalHelpText": "A Radarr milyen gyakran szinkronizáljon a listáival.",
+    "ImportListSyncIntervalHelpText": "A Radarr milyen gyakran szinkronizáljon a listáival. A minimum érték 6 óra",
     "ImportListStatusCheckSingleClientMessage": "A listák nem érhetőek el a következő hiba miatt: {0}",
     "ImportListStatusCheckAllClientMessage": "Az összes lista elérhetetlen, hiba miatt",
     "Importing": "Importálás Folyamatban",
@@ -1061,5 +1061,7 @@
     "Weeks": "Hetek",
     "VersionUpdateText": "A Radarr {0} verziója telepítve van, a legfrissebb módosítások eléréséhez frissítsd a weblapot.",
     "WouldYouLikeToRestoreBackup": "Szeretnéd visszaállítani a {0} biztonsági mentést?",
-    "YesMoveFiles": "Igen, helyezze át a fájlokat"
+    "YesMoveFiles": "Igen, helyezze át a fájlokat",
+    "RequiredRestrictionHelpText": "A kiadásnak tartalmaznia kell legalább egy ilyen kifejezést (a kis- és nagybetűk nem számítanak)",
+    "MoveFolders2": "Szeretnéd áthelyezni a filmfájlokat a(z) „{0}” mappából a(z) „{1}” mappába?"
 }
