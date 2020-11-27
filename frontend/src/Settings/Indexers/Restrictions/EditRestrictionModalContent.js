@@ -49,7 +49,7 @@ function EditRestrictionModalContent(props) {
             <FormInputGroup
               type={inputTypes.TEXT_TAG}
               name="required"
-              helpText={translate('RequiredHelpText')}
+              helpText={translate('RequiredRestrictionHelpText')}
               kind={kinds.SUCCESS}
               placeholder={translate('RequiredRestrictionPlaceHolder')}
               {...required}
