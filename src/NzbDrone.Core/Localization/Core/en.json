@@ -391,7 +391,7 @@
   "Importing": "Importing",
   "ImportListStatusCheckAllClientMessage": "All lists are unavailable due to failures",
   "ImportListStatusCheckSingleClientMessage": "Lists unavailable due to failures: {0}",
-  "ImportListSyncIntervalHelpText": "How often Radarr syncs with your lists.",
+  "ImportListSyncIntervalHelpText": "How often Radarr syncs with your lists. Minimum value of 6 hours",
   "ImportMechanismHealthCheckMessage": "Enable Completed Download Handling",
   "ImportMovies": "Import Movies",
   "ImportRootPath": "Point Radarr to the folder containing all of your movies, not a specific one. e.g. {0} and not {1}",

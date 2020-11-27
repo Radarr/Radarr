@@ -147,19 +147,10 @@ namespace NzbDrone.Core.Jobs
 
         private int GetImportListSyncInterval()
         {
-            var interval = _configService.ImportListSyncInterval;
+            //Enforce 6 hour min on list sync
+            var interval = Math.Max(_configService.ImportListSyncInterval, 6);
 
-            if (interval > 0 && interval < 10)
-            {
-                return 10;
-            }
-
-            if (interval < 0)
-            {
-                return 0;
-            }
-
-            return interval;
+            return interval * 60;
         }
 
         public void Handle(CommandExecutedEvent message)

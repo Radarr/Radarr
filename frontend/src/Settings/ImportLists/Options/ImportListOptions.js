@@ -11,6 +11,7 @@ import translate from 'Utilities/String/translate';
 
 function ImportListOptions(props) {
   const {
+    advancedSettings,
     isFetching,
     error,
     settings,
@@ -27,52 +28,59 @@ function ImportListOptions(props) {
   ];
 
   return (
-    <FieldSet legend={translate('Options')}>
-      {
-        isFetching &&
-          <LoadingIndicator />
-      }
+    advancedSettings &&
+      <FieldSet legend={translate('Options')}>
+        {
+          isFetching &&
+            <LoadingIndicator />
+        }
 
-      {
-        !isFetching && error &&
-          <div>
-            {translate('UnableToLoadListOptions')}
-          </div>
-      }
+        {
+          !isFetching && error &&
+            <div>
+              {translate('UnableToLoadListOptions')}
+            </div>
+        }
 
-      {
-        hasSettings && !isFetching && !error &&
-          <Form>
-            <FormGroup>
-              <FormLabel>{translate('ListUpdateInterval')}</FormLabel>
+        {
+          hasSettings && !isFetching && !error &&
+            <Form>
+              <FormGroup
+                advancedSettings={advancedSettings}
+                isAdvanced={true}
+              >
+                <FormLabel>{translate('ListUpdateInterval')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.NUMBER}
-                name="importListSyncInterval"
-                min={0}
-                unit="minutes"
-                helpText={translate('ImportListSyncIntervalHelpText')}
-                onChange={onInputChange}
-                {...settings.importListSyncInterval}
-              />
-            </FormGroup>
+                <FormInputGroup
+                  type={inputTypes.NUMBER}
+                  name="importListSyncInterval"
+                  min={6}
+                  unit="hours"
+                  helpText={translate('ImportListSyncIntervalHelpText')}
+                  onChange={onInputChange}
+                  {...settings.importListSyncInterval}
+                />
+              </FormGroup>
 
-            <FormGroup>
-              <FormLabel>{translate('CleanLibraryLevel')}</FormLabel>
+              <FormGroup
+                advancedSettings={advancedSettings}
+                isAdvanced={true}
+              >
+                <FormLabel>{translate('CleanLibraryLevel')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.SELECT}
-                name="listSyncLevel"
-                values={cleanLibraryLevelOptions}
-                helpText={translate('ListSyncLevelHelpText')}
-                helpTextWarning={settings.listSyncLevel.value === 'removeAndDelete' ? translate('ListSyncLevelHelpTextWarning') : undefined}
-                onChange={onInputChange}
-                {...settings.listSyncLevel}
-              />
-            </FormGroup>
-          </Form>
-      }
-    </FieldSet>
+                <FormInputGroup
+                  type={inputTypes.SELECT}
+                  name="listSyncLevel"
+                  values={cleanLibraryLevelOptions}
+                  helpText={translate('ListSyncLevelHelpText')}
+                  helpTextWarning={settings.listSyncLevel.value === 'removeAndDelete' ? translate('ListSyncLevelHelpTextWarning') : undefined}
+                  onChange={onInputChange}
+                  {...settings.listSyncLevel}
+                />
+              </FormGroup>
+            </Form>
+        }
+      </FieldSet>
   );
 }
 

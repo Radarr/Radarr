@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Configuration
 
         public int ImportListSyncInterval
         {
-            get { return GetValueInt("ImportListSyncInterval", 240); }
+            get { return GetValueInt("ImportListSyncInterval", 24); }
 
             set { SetValue("ImportListSyncInterval", value); }
         }
