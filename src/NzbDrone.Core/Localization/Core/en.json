@@ -732,7 +732,6 @@
   "RejectionCount": "Rejection Count",
   "RelativePath": "Relative Path",
   "ReleaseBranchCheckOfficialBranchMessage": "Branch {0} is not a valid Radarr release branch, you will not receive updates",
-  "ReleaseBranchCheckPreviousVersionMessage": "Branch {0} is for a previous version of Radarr, set branch to 'Nightly' for further updates",
   "Released": "Released",
   "ReleaseDates": "Release Dates",
   "ReleasedMsg": "Movie is released",

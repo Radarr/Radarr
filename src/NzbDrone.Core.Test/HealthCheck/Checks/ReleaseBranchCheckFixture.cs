@@ -25,24 +25,20 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                     .Returns(branch);
         }
 
-        [Test]
-        public void should_return_warning_when_branch_not_valid()
+        [TestCase("aphrodite")]
+        [TestCase("qbit-fix")]
+        [TestCase("phantom")]
+        public void should_return_warning_when_branch_is_not_valid(string branch)
         {
-            GivenValidBranch("master");
+            GivenValidBranch(branch);
 
             Subject.Check().ShouldBeWarning();
         }
 
-        [TestCase("develop")]
-        public void should_return_error_when_branch_is_v1(string branch)
-        {
-            GivenValidBranch(branch);
-
-            Subject.Check().ShouldBeError();
-        }
-
         [TestCase("nightly")]
         [TestCase("Nightly")]
+        [TestCase("develop")]
+        [TestCase("master")]
         public void should_return_no_warning_when_branch_valid(string branch)
         {
             GivenValidBranch(branch);
