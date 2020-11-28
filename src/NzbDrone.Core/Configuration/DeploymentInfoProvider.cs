@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Configuration
             var releaseInfoPath = Path.Combine(bin, "release_info");
 
             PackageUpdateMechanism = UpdateMechanism.BuiltIn;
-            DefaultBranch = "nightly";
+            DefaultBranch = "master";
 
             if (Path.GetFileName(bin) == "bin" && diskProvider.FileExists(packageInfoPath))
             {

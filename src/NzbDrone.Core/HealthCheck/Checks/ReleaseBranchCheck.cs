@@ -23,11 +23,6 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (!Enum.GetNames(typeof(ReleaseBranches)).Any(x => x.ToLower() == currentBranch))
             {
-                if (currentBranch == "develop")
-                {
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckPreviousVersionMessage"), _configFileService.Branch), "#branch-is-for-a-previous-version");
-                }
-
                 return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckOfficialBranchMessage"), _configFileService.Branch), "#branch-is-not-a-valid-release-branch");
             }
 
@@ -36,6 +31,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public enum ReleaseBranches
         {
+            Master,
+            Develop,
             Nightly
         }
     }
