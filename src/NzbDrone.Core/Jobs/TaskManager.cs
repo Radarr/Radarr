@@ -172,10 +172,13 @@ namespace NzbDrone.Core.Jobs
             var importList = _scheduledTaskRepository.GetDefinition(typeof(ImportListSyncCommand));
             importList.Interval = GetImportListSyncInterval();
 
+            var backup = _scheduledTaskRepository.GetDefinition(typeof(BackupCommand));
+            backup.Interval = GetBackupInterval();
+
             var refreshMonitoredDownloads = _scheduledTaskRepository.GetDefinition(typeof(RefreshMonitoredDownloadsCommand));
             refreshMonitoredDownloads.Interval = _configService.CheckForFinishedDownloadInterval;
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, importList, refreshMonitoredDownloads });
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, importList, refreshMonitoredDownloads, backup });
         }
     }
 }
