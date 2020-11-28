@@ -170,7 +170,7 @@ namespace NzbDrone.Core.Jobs
             rss.Interval = _configService.RssSyncInterval;
 
             var importList = _scheduledTaskRepository.GetDefinition(typeof(ImportListSyncCommand));
-            importList.Interval = _configService.ImportListSyncInterval;
+            importList.Interval = GetImportListSyncInterval();
 
             var refreshMonitoredDownloads = _scheduledTaskRepository.GetDefinition(typeof(RefreshMonitoredDownloadsCommand));
             refreshMonitoredDownloads.Interval = _configService.CheckForFinishedDownloadInterval;

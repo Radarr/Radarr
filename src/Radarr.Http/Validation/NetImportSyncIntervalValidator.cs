@@ -5,7 +5,7 @@ namespace Radarr.Http.Validation
     public class ImportListSyncIntervalValidator : PropertyValidator
     {
         public ImportListSyncIntervalValidator()
-            : base("Must be between 10 and 1440 or 0 to disable")
+            : base("Must be greater than 6 hours")
         {
         }
 
@@ -18,12 +18,7 @@ namespace Radarr.Http.Validation
 
             var value = (int)context.PropertyValue;
 
-            if (value == 0)
-            {
-                return true;
-            }
-
-            if (value >= 10 && value <= 1440)
+            if (value >= 6)
             {
                 return true;
             }

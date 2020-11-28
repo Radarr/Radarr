@@ -1,20 +1,20 @@
-﻿using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Configuration;
 using Radarr.Http.REST;
 
 namespace NzbDrone.Api.Config
 {
-    public class ImportListConfigResource : RestResource
+    public class NetImportConfigResource : RestResource
     {
         public int ImportListSyncInterval { get; set; }
         public string ListSyncLevel { get; set; }
         public string ImportExclusions { get; set; }
     }
 
-    public static class ImportListConfigResourceMapper
+    public static class NetImportConfigResourceMapper
     {
-        public static ImportListConfigResource ToResource(IConfigService model)
+        public static NetImportConfigResource ToResource(IConfigService model)
         {
-            return new ImportListConfigResource
+            return new NetImportConfigResource
             {
                 ImportListSyncInterval = model.ImportListSyncInterval,
                 ListSyncLevel = model.ListSyncLevel,

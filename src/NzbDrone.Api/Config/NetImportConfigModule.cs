@@ -3,18 +3,18 @@ using Radarr.Http.Validation;
 
 namespace NzbDrone.Api.Config
 {
-    public class ImportListConfigModule : NzbDroneConfigModule<ImportListConfigResource>
+    public class NetImportConfigModule : NzbDroneConfigModule<NetImportConfigResource>
     {
-        public ImportListConfigModule(IConfigService configService)
+        public NetImportConfigModule(IConfigService configService)
             : base(configService)
         {
             SharedValidator.RuleFor(c => c.ImportListSyncInterval)
                .IsValidImportListSyncInterval();
         }
 
-        protected override ImportListConfigResource ToResource(IConfigService model)
+        protected override NetImportConfigResource ToResource(IConfigService model)
         {
-            return ImportListConfigResourceMapper.ToResource(model);
+            return NetImportConfigResourceMapper.ToResource(model);
         }
     }
 }
