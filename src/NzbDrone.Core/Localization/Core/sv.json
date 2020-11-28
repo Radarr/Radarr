@@ -571,5 +571,8 @@
     "RequiredRestrictionPlaceHolder": "Lägg till ny restriktion",
     "Required": "Nödvändig",
     "ReplaceWithDash": "Ersätt med bindestreck",
-    "Replace": "Ersätta"
+    "Replace": "Ersätta",
+    "ConsideredAvailable": "Anses vara tillgänglig",
+    "Connection": "Anslutning",
+    "CheckDownloadClientForDetails": "Kontrollera nedladdningsklienten för mer detaljer"
 }
