@@ -1,4 +1,6 @@
+using System;
 using System.ServiceProcess;
+using System.Threading;
 using NLog;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
@@ -127,8 +129,16 @@ namespace Radarr.Host
                     _runtimeInfo.RestartPending = true;
                 }
 
-                LogManager.Configuration = null;
                 Shutdown();
+
+                LogManager.Configuration = null;
+
+                if (_runtimeInfo.IsWindowsTray)
+                {
+                    //Sleep to let other processes close gracefully.
+                    Thread.Sleep(5000);
+                    Environment.Exit(0);
+                }
             }
         }
     }

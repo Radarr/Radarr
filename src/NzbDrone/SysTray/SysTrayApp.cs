@@ -33,6 +33,7 @@ namespace NzbDrone.SysTray
         {
             Application.ThreadException += OnThreadException;
             Application.ApplicationExit += OnApplicationExit;
+            AppDomain.CurrentDomain.ProcessExit += OnApplicationExit;
 
             _trayMenu.Items.Add(new ToolStripMenuItem("Launch Browser", null, LaunchBrowser));
             _trayMenu.Items.Add(new ToolStripMenuItem("-"));
