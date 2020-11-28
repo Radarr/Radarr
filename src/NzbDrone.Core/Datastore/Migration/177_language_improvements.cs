@@ -59,6 +59,15 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Execute.WithConnection(FixLanguagesMoveFile);
             Execute.WithConnection(FixLanguagesHistory);
+
+            //Force refresh all movies in library
+            Update.Table("ScheduledTasks")
+                .Set(new { LastExecution = "2014-01-01 00:00:00" })
+                .Where(new { TypeName = "NzbDrone.Core.Movies.Commands.RefreshMovieCommand" });
+
+            Update.Table("Movies")
+                .Set(new { LastInfoSync = "2014-01-01 00:00:00" })
+                .AllRows();
         }
 
         private void FixLanguagesMoveFile(IDbConnection conn, IDbTransaction tran)
