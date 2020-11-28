@@ -427,7 +427,7 @@
   "InteractiveImport": "Interactive Import",
   "InteractiveImportErrLanguage": "Language must be chosen for each selected file",
   "InteractiveImportErrMovie": "Movie must be chosen for each selected file",
-  "InteractiveImportErrQuality": ": Quality must be chosen for each selected file",
+  "InteractiveImportErrQuality": "Quality must be chosen for each selected file",
   "InteractiveSearch": "Interactive Search",
   "Interval": "Interval",
   "InvalidFormat": "Invalid Format",
