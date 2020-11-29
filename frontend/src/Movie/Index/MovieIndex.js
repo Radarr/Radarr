@@ -246,7 +246,7 @@ class MovieIndex extends Component {
 
   onKeyUp = (event) => {
     const jumpBarItems = this.state.jumpBarItems.order;
-    if (event.path.length === 4) {
+    if (event.composedPath && event.composedPath().length === 4) {
       if (event.keyCode === keyCodes.HOME && event.ctrlKey) {
         this.setState({ jumpToCharacter: jumpBarItems[0] });
       }

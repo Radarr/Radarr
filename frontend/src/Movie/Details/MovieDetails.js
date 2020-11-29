@@ -178,7 +178,7 @@ class MovieDetails extends Component {
   }
 
   onKeyUp = (event) => {
-    if (event.path.length === 4) {
+    if (event.composedPath && event.composedPath().length === 4) {
       if (event.keyCode === keyCodes.LEFT_ARROW) {
         this.props.onGoToMovie(this.props.previousMovie.titleSlug);
       }
