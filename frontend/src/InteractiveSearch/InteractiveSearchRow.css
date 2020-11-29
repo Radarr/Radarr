@@ -55,12 +55,10 @@
 
 .title {
   composes: cell;
-
-  max-width: 30vw;
 }
 
 .title div {
-  @add-mixin truncate;
+  overflow-wrap: break-word;
 }
 
 .history {
