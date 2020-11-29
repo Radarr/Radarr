@@ -167,7 +167,7 @@ namespace NzbDrone.Core.Download.History
                 EventType = DownloadHistoryEventType.DownloadImported,
                 MovieId = message.MovieId,
                 DownloadId = downloadItem.DownloadId,
-                SourceTitle = downloadItem.OutputPath.ToString(),
+                SourceTitle = downloadItem.Title,
                 Date = DateTime.UtcNow,
                 Protocol = message.TrackedDownload.Protocol,
                 DownloadClientId = message.TrackedDownload.DownloadClient
