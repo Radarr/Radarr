@@ -25,6 +25,7 @@ class AddIndexerModalContent extends Component {
       schemaError,
       usenetIndexers,
       torrentIndexers,
+      directConnectIndexers,
       onIndexerSelect,
       onModalClose
     } = this.props;
@@ -60,6 +61,23 @@ class AddIndexerModalContent extends Component {
                     {translate('ForMoreInformationOnTheIndividualIndexers')}
                   </div>
                 </Alert>
+
+                <FieldSet legend="DirectConnect">
+                  <div className={styles.indexers}>
+                    {
+                      directConnectIndexers.map((indexer) => {
+                        return (
+                          <AddIndexerItem
+                            key={indexer.implementation}
+                            implementation={indexer.implementation}
+                            {...indexer}
+                            onIndexerSelect={onIndexerSelect}
+                          />
+                        );
+                      })
+                    }
+                  </div>
+                </FieldSet>
 
                 <FieldSet legend={translate('Usenet')}>
                   <div className={styles.indexers}>
@@ -115,6 +133,7 @@ AddIndexerModalContent.propTypes = {
   schemaError: PropTypes.object,
   usenetIndexers: PropTypes.arrayOf(PropTypes.object).isRequired,
   torrentIndexers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  directConnectIndexers: PropTypes.arrayOf(PropTypes.object).isRequired,
   onIndexerSelect: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
