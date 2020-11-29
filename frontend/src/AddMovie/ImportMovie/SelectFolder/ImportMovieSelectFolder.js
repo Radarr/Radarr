@@ -103,6 +103,7 @@ class ImportMovieSelectFolder extends Component {
                   <ul>
                     <li className={styles.tip} dangerouslySetInnerHTML={{ __html: translate('ImportIncludeQuality', ['<code>movie.2008.bluray.mkv</code>']) }} />
                     <li className={styles.tip} dangerouslySetInnerHTML={{ __html: translate('ImportRootPath', [`<code>${isWindows ? 'C:\\movies' : '/movies'}</code>`, `<code>${isWindows ? 'C:\\movies\\the matrix' : '/movies/the matrix'}</code>`]) }} />
+                    <li className={styles.tip}>{translate('ImportNotForDownloads')}</li>
                   </ul>
                 </div>
 
