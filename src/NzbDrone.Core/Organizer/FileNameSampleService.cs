@@ -52,6 +52,7 @@ namespace NzbDrone.Core.Organizer
             _movie = new Movie
             {
                 Title = "The Movie: Title",
+                OriginalTitle = "The Original Movie Title",
                 Collection = new MovieCollection { Name = "The Movie Collection", TmdbId = 123654 },
                 Certification = "R",
                 Year = 2010,
