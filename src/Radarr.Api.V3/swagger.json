@@ -3994,7 +3994,7 @@
         "description": "Used when not providing the key via URL"
       },
       "apikey": {
-        "name": "API Key",
+        "name": "apikey",
         "type": "apiKey",
         "in": "query",
         "description": "Used when not providing the key via header"
