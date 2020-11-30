@@ -5,6 +5,7 @@ using System.Linq;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Books;
@@ -47,7 +48,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Readarr_Release_BookReleaseDates", string.Join(",", remoteBook.Books.Select(e => e.ReleaseDate)));
             environmentVariables.Add("Readarr_Release_BookTitles", string.Join("|", remoteBook.Books.Select(e => e.Title)));
             environmentVariables.Add("Readarr_Release_BookIds", string.Join("|", remoteBook.Books.Select(e => e.Id.ToString())));
-            environmentVariables.Add("Readarr_Release_GRIds", string.Join("|", remoteBook.Books.Select(e => e.ForeignBookId.ToString())));
+            environmentVariables.Add("Readarr_Release_GRIds", remoteBook.Books.Select(x => x.Editions.Value.Single(e => e.Monitored).ForeignEditionId).ConcatToString("|"));
             environmentVariables.Add("Readarr_Release_Title", remoteBook.Release.Title);
             environmentVariables.Add("Readarr_Release_Indexer", remoteBook.Release.Indexer ?? string.Empty);
             environmentVariables.Add("Readarr_Release_Size", remoteBook.Release.Size.ToString());

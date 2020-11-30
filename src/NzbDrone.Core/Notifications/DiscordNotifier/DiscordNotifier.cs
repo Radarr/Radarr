@@ -1,7 +1,5 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
@@ -18,7 +16,7 @@ namespace NzbDrone.Core.Notifications.DiscordNotifier
         }
 
         public override string Link => "https://discordnotifier.com";
-        public override string Name => "Discord Notifier";
+        public override string Name => "DiscordNotifier.com";
 
         public override void OnGrab(GrabMessage message)
         {
@@ -35,7 +33,7 @@ namespace NzbDrone.Core.Notifications.DiscordNotifier
             variables.Add("Readarr_Release_BookReleaseDates", string.Join(",", remoteBook.Books.Select(e => e.ReleaseDate)));
             variables.Add("Readarr_Release_BookTitles", string.Join("|", remoteBook.Books.Select(e => e.Title)));
             variables.Add("Readarr_Release_BookIds", string.Join("|", remoteBook.Books.Select(e => e.Id.ToString())));
-            variables.Add("Readarr_Release_GRIds", string.Join("|", remoteBook.Books.Select(e => e.ForeignBookId.ToString())));
+            variables.Add("Readarr_Release_GRIds", remoteBook.Books.Select(x => x.Editions.Value.Single(e => e.Monitored).ForeignEditionId).ConcatToString("|"));
             variables.Add("Readarr_Release_Title", remoteBook.Release.Title);
             variables.Add("Readarr_Release_Indexer", remoteBook.Release.Indexer ?? string.Empty);
             variables.Add("Readarr_Release_Size", remoteBook.Release.Size.ToString());
