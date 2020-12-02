@@ -523,9 +523,9 @@
     "MonoVersionCheckNotSupportedMessage": "A versão Mono atualmente instalada {0} não é mais compatível. Atualize Mono para a versão {1}.",
     "MonoVersion": "Versão do Mono",
     "MonoTlsCheckMessage": "Solução alternativa para Radarr Mono 4.x tls ainda habilitada, considere a remoção de MONO_TLS_PROVIDER=legacy environment option",
-    "MovieYearHelpText": "O ano do filme a ser excluído",
-    "MovieYear": "Ano do Filme",
-    "MovieWasDownloadedAndSorted": "Filme foi baixado e classificado",
+    "MovieYearHelpText": "O ano do filme a excluir",
+    "MovieYear": "Ano do filme",
+    "MovieWasDownloadedAndSorted": "Filme baixado e classificado",
     "MovieTitleHelpText": "O título do filme a ser excluído (pode ser qualquer coisa significativa)",
     "MovieTitle": "Título do Filme",
     "MoviesSelectedInterp": "{0} Filme(s) Selecionado(s)",
@@ -566,5 +566,13 @@
     "MoreControlCFText": "Quer mais controle sobre quais downloads são preferidos? Adicione um",
     "Months": "Meses",
     "Min": "Mín.",
-    "Logging": "Registro em log"
+    "Logging": "Registro em log",
+    "NegateHelpText": "Se verificado, o formato personalizado não se aplica caso a condição corresponda a {0}.",
+    "Negated": "Negado",
+    "Negate": "Negar",
+    "NamingSettings": "Configurações de nomenclatura",
+    "Name": "Nome",
+    "MustNotContain": "Não deve conter",
+    "MustContain": "Deve conter",
+    "MultiLanguage": "Vários idiomas"
 }
