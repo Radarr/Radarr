@@ -1522,7 +1522,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ]
       }
     },
     "/remotePathMapping": {
@@ -1701,9 +1709,6 @@
         "security": [
           {
             "X-API-Key": []
-          },
-          {
-            "apikey": []
           }
         ],
         "parameters": [
@@ -1760,6 +1765,9 @@
         "security": [
           {
             "X-API-Key": []
+          },
+          {
+            "apikey": []
           }
         ],
         "parameters": [
@@ -2071,9 +2079,6 @@
         "security": [
           {
             "X-API-Key": []
-          },
-          {
-            "apikey": []
           }
         ],
         "tags": [
@@ -2784,6 +2789,507 @@
         "tags": [
           "Import Lists"
         ]
+      }
+    },
+    "/config/host": {
+      "get": {
+        "summary": "Get Host Settings",
+        "tags": [
+          "Settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "bindAddress": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "port": {
+                      "type": "integer"
+                    },
+                    "sslPort": {
+                      "type": "integer"
+                    },
+                    "enableSsl": {
+                      "type": "boolean"
+                    },
+                    "launchBrowser": {
+                      "type": "boolean"
+                    },
+                    "authenticationMethod": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "analyticsEnabled": {
+                      "type": "boolean"
+                    },
+                    "username": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "password": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "logLevel": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "consoleLogLevel": {
+                      "type": "string"
+                    },
+                    "branch": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "apiKey": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sslCertPath": {
+                      "type": "string"
+                    },
+                    "sslCertPassword": {
+                      "type": "string"
+                    },
+                    "urlBase": {
+                      "type": "string"
+                    },
+                    "updateAutomatically": {
+                      "type": "boolean"
+                    },
+                    "updateMechanism": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "updateScriptPath": {
+                      "type": "string"
+                    },
+                    "proxyEnabled": {
+                      "type": "boolean"
+                    },
+                    "proxyType": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "proxyHostname": {
+                      "type": "string"
+                    },
+                    "proxyPort": {
+                      "type": "integer"
+                    },
+                    "proxyUsername": {
+                      "type": "string"
+                    },
+                    "proxyPassword": {
+                      "type": "string"
+                    },
+                    "proxyBypassFilter": {
+                      "type": "string"
+                    },
+                    "proxyBypassLocalAddresses": {
+                      "type": "boolean"
+                    },
+                    "certificateValidation": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "backupFolder": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "backupInterval": {
+                      "type": "integer"
+                    },
+                    "backupRetention": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "bindAddress",
+                    "port",
+                    "sslPort",
+                    "enableSsl",
+                    "launchBrowser",
+                    "authenticationMethod",
+                    "analyticsEnabled",
+                    "username",
+                    "password",
+                    "logLevel",
+                    "consoleLogLevel",
+                    "branch",
+                    "apiKey",
+                    "sslCertPath",
+                    "sslCertPassword",
+                    "urlBase",
+                    "updateAutomatically",
+                    "updateMechanism",
+                    "updateScriptPath",
+                    "proxyEnabled",
+                    "proxyType",
+                    "proxyHostname",
+                    "proxyPort",
+                    "proxyUsername",
+                    "proxyPassword",
+                    "proxyBypassFilter",
+                    "proxyBypassLocalAddresses",
+                    "certificateValidation",
+                    "backupFolder",
+                    "backupInterval",
+                    "backupRetention",
+                    "id"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "operationId": "get-config-host",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "description": "Get General/Host settings for Radarr."
+      },
+      "put": {
+        "summary": "Edit Host Settings",
+        "operationId": "put-config-host",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "description": "Edit General/Host settings for Radarr.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "bindAddress": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "port": {
+                    "type": "number"
+                  },
+                  "sslPort": {
+                    "type": "number"
+                  },
+                  "enableSsl": {
+                    "type": "boolean"
+                  },
+                  "launchBrowser": {
+                    "type": "boolean"
+                  },
+                  "authenticationMethod": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "analyticsEnabled": {
+                    "type": "boolean"
+                  },
+                  "username": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "logLevel": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "consoleLogLevel": {
+                    "type": "string"
+                  },
+                  "branch": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "apiKey": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sslCertPath": {
+                    "type": "string"
+                  },
+                  "sslCertPassword": {
+                    "type": "string"
+                  },
+                  "urlBase": {
+                    "type": "string"
+                  },
+                  "updateAutomatically": {
+                    "type": "boolean"
+                  },
+                  "updateMechanism": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "updateScriptPath": {
+                    "type": "string"
+                  },
+                  "proxyEnabled": {
+                    "type": "boolean"
+                  },
+                  "proxyType": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "proxyHostname": {
+                    "type": "string"
+                  },
+                  "proxyPort": {
+                    "type": "number"
+                  },
+                  "proxyUsername": {
+                    "type": "string"
+                  },
+                  "proxyPassword": {
+                    "type": "string"
+                  },
+                  "proxyBypassFilter": {
+                    "type": "string"
+                  },
+                  "proxyBypassLocalAddresses": {
+                    "type": "boolean"
+                  },
+                  "certificateValidation": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "backupFolder": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "backupInterval": {
+                    "type": "number"
+                  },
+                  "backupRetention": {
+                    "type": "number"
+                  },
+                  "id": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "bindAddress",
+                  "port",
+                  "sslPort",
+                  "enableSsl",
+                  "launchBrowser",
+                  "authenticationMethod",
+                  "analyticsEnabled",
+                  "username",
+                  "password",
+                  "logLevel",
+                  "consoleLogLevel",
+                  "branch",
+                  "apiKey",
+                  "sslCertPath",
+                  "sslCertPassword",
+                  "urlBase",
+                  "updateAutomatically",
+                  "updateMechanism",
+                  "updateScriptPath",
+                  "proxyEnabled",
+                  "proxyType",
+                  "proxyHostname",
+                  "proxyPort",
+                  "proxyUsername",
+                  "proxyPassword",
+                  "proxyBypassFilter",
+                  "proxyBypassLocalAddresses",
+                  "certificateValidation",
+                  "backupFolder",
+                  "backupInterval",
+                  "backupRetention",
+                  "id"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Settings"
+        ],
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
+    "/config/naming": {
+      "get": {
+        "summary": "Get Naming Settings",
+        "tags": [
+          "Settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "renameMovies": {
+                      "type": "boolean"
+                    },
+                    "replaceIllegalCharacters": {
+                      "type": "boolean"
+                    },
+                    "colonReplacementFormat": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "standardMovieFormat": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "movieFolderFormat": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "includeQuality": {
+                      "type": "boolean"
+                    },
+                    "replaceSpaces": {
+                      "type": "boolean"
+                    },
+                    "id": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "renameMovies",
+                    "replaceIllegalCharacters",
+                    "colonReplacementFormat",
+                    "standardMovieFormat",
+                    "movieFolderFormat",
+                    "includeQuality",
+                    "replaceSpaces",
+                    "id"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "operationId": "get-config-naming",
+        "description": "Get Settings for movie file and folder naming.",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Edit Naming Settings",
+        "operationId": "put-config-naming",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "tags": [
+          "Settings"
+        ],
+        "description": "Edit Settings for movie file and folder naming.",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "renameMovies": {
+                    "type": "boolean"
+                  },
+                  "replaceIllegalCharacters": {
+                    "type": "boolean"
+                  },
+                  "colonReplacementFormat": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "standardMovieFormat": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "movieFolderFormat": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "includeQuality": {
+                    "type": "boolean"
+                  },
+                  "replaceSpaces": {
+                    "type": "boolean"
+                  },
+                  "id": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "renameMovies",
+                  "replaceIllegalCharacters",
+                  "colonReplacementFormat",
+                  "standardMovieFormat",
+                  "movieFolderFormat",
+                  "includeQuality",
+                  "replaceSpaces",
+                  "id"
+                ]
+              }
+            }
+          }
+        }
       }
     }
   },
