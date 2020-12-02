@@ -641,5 +641,6 @@
     "MonoVersion": "Mono version",
     "MonitoredStatus": "Bevakad/Status",
     "Minutes": "Minuter",
-    "Monday": "Måndag"
+    "Monday": "Måndag",
+    "AfterManualRefresh": "Efter manuell uppdatering"
 }
