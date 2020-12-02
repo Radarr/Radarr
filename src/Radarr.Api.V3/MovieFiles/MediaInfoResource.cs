@@ -52,16 +52,12 @@ namespace Radarr.Api.V3.MovieFiles
 
         private static string FormatRuntime(TimeSpan runTime)
         {
-            var formattedRuntime = "";
-
             if (runTime.Hours > 0)
             {
-                formattedRuntime += $"{runTime.Hours}:";
+                return $"{runTime.Hours}:{runTime.Minutes:00}:{runTime.Seconds:00}";
             }
 
-            formattedRuntime += $"{runTime.Minutes}:{runTime.Seconds}";
-
-            return formattedRuntime;
+            return $"{runTime.Minutes}:{runTime.Seconds:00}";
         }
     }
 }
