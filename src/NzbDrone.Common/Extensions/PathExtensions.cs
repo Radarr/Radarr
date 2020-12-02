@@ -12,6 +12,7 @@ namespace NzbDrone.Common.Extensions
     {
         private const string APP_CONFIG_FILE = "config.xml";
         private const string DB = "radarr.db";
+        private const string DB_OLD = "nzbdrone.db";
         private const string DB_RESTORE = "radarr.restore";
         private const string LOG_DB = "logs.db";
         private const string NLOG_CONFIG_FILE = "nlog.config";
@@ -303,6 +304,11 @@ namespace NzbDrone.Common.Extensions
             return Path.Combine(GetUpdateBackUpAppDataFolder(appFolderInfo), DB);
         }
 
+        public static string GetV0UpdateBackupDatabase(this IAppFolderInfo appFolderInfo)
+        {
+            return Path.Combine(GetUpdateBackUpAppDataFolder(appFolderInfo), DB_OLD);
+        }
+
         public static string GetUpdatePackageFolder(this IAppFolderInfo appFolderInfo)
         {
             return Path.Combine(GetUpdateSandboxFolder(appFolderInfo), UPDATE_PACKAGE_FOLDER_NAME);
@@ -321,6 +327,11 @@ namespace NzbDrone.Common.Extensions
         public static string GetDatabase(this IAppFolderInfo appFolderInfo)
         {
             return Path.Combine(GetAppDataPath(appFolderInfo), DB);
+        }
+
+        public static string GetV0Database(this IAppFolderInfo appFolderInfo)
+        {
+            return Path.Combine(GetAppDataPath(appFolderInfo), DB_OLD);
         }
 
         public static string GetDatabaseRestore(this IAppFolderInfo appFolderInfo)
