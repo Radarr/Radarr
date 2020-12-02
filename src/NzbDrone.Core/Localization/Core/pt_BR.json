@@ -572,7 +572,17 @@
     "Negate": "Negar",
     "NamingSettings": "Configurações de nomenclatura",
     "Name": "Nome",
-    "MustNotContain": "Não deve conter",
-    "MustContain": "Deve conter",
-    "MultiLanguage": "Vários idiomas"
+    "MustNotContain": "Não Deve Conter",
+    "MustContain": "Deve Conter",
+    "MultiLanguage": "Multi-Idiomas",
+    "View": "Exibir",
+    "Week": "Semana",
+    "WeekColumnHeader": "Cabeçalho da Coluna da Semana",
+    "Weeks": "Semanas",
+    "Wiki": "Wiki",
+    "Yes": "Sim",
+    "Year": "Ano",
+    "YesCancel": "Sim, Cancelar",
+    "YesMoveFiles": "Sim, Mover os Arquivos",
+    "YouCanAlsoSearch": "Você também pode pesquisar usando TMDb ID ou IMDb ID de um filme. Por exemplo: `tmdb: 71663`"
 }
