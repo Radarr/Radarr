@@ -584,5 +584,21 @@
     "Year": "Ano",
     "YesCancel": "Sim, Cancelar",
     "YesMoveFiles": "Sim, Mover os Arquivos",
-    "YouCanAlsoSearch": "Você também pode pesquisar usando TMDb ID ou IMDb ID de um filme. Por exemplo: `tmdb: 71663`"
+    "YouCanAlsoSearch": "Você também pode pesquisar usando TMDb ID ou IMDb ID de um filme. Por exemplo: `tmdb: 71663`",
+    "NoMatchFound": "Nenhuma correspondência encontrada",
+    "NoLogFiles": "Sem arquivos de log",
+    "NoListRecommendations": "Não foram encontrados itens da lista ou recomendações. Para começar, adicione um novo filme, importe alguns existentes ou adicione uma lista.",
+    "NoLinks": "Sem links",
+    "NoLimitForAnyRuntime": "Sem limite para qualquer tempo de execução",
+    "NoLeaveIt": "Não, deixe assim",
+    "NoHistory": "Sem histórico",
+    "NoEventsFound": "Nenhum evento encontrado",
+    "NoChanges": "Sem alterações",
+    "NoChange": "Sem alteração",
+    "NoBackupsAreAvailable": "Não há backups disponíveis",
+    "NoAltTitle": "Nenhum título alternativo.",
+    "No": "Não",
+    "NextExecution": "Próxima execução",
+    "New": "Novo",
+    "NetCore": ".NET Core"
 }
