@@ -853,5 +853,16 @@
     "IndexerLongTermStatusCheckSingleClientMessage": "Indexers no disponible por errores durando más de 6 horas: {0}",
     "IndexerLongTermStatusCheckAllClientMessage": "Ningún indexer está disponible por errores durando más de 6 horas",
     "EditMovieFile": "Editar Archivo de Película",
-    "ListTagsHelpText": "Etiquetas con las que se añadirán los elementos"
+    "ListTagsHelpText": "Etiquetas con las que se añadirán los elementos",
+    "AddToDownloadQueue": "Añadida a la cola de descarga",
+    "Add": "Añadir",
+    "AddCustomFormat": "Añadir Formato Personalizado",
+    "AddDelayProfile": "Añadir Perfil de Retardo",
+    "AddDownloadClient": "Añadir Gestor de Descargas",
+    "AddedToDownloadQueue": "Añadida a la cola de descargas",
+    "AddNotification": "Añadir Notificación",
+    "AddQualityProfile": "Añadir Perfil de Calidad",
+    "AddRootFolder": "Añadir Carpeta Raíz",
+    "AfterManualRefresh": "Después de Refresco Manual",
+    "AllFiles": "Todos los Archivos"
 }
