@@ -33,6 +33,7 @@ export const defaultState = {
     monitor: 'true',
     qualityProfileId: 0,
     minimumAvailability: 'announced',
+    searchForMovie: true,
     tags: []
   }
 };

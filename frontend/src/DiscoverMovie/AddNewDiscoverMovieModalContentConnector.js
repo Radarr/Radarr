@@ -53,13 +53,14 @@ class AddNewDiscoverMovieModalContentConnector extends Component {
     this.props.setAddMovieDefault({ [name]: value });
   }
 
-  onAddMoviePress = (searchForMovie) => {
+  onAddMoviePress = () => {
     const {
       tmdbId,
       rootFolderPath,
       monitor,
       qualityProfileId,
       minimumAvailability,
+      searchForMovie,
       tags
     } = this.props;
 
@@ -69,8 +70,8 @@ class AddNewDiscoverMovieModalContentConnector extends Component {
       monitor: monitor.value,
       qualityProfileId: qualityProfileId.value,
       minimumAvailability: minimumAvailability.value,
-      tags: tags.value,
-      searchForMovie
+      searchForMovie: searchForMovie.value,
+      tags: tags.value
     });
 
     this.props.onModalClose(true);
@@ -96,6 +97,7 @@ AddNewDiscoverMovieModalContentConnector.propTypes = {
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
   minimumAvailability: PropTypes.object.isRequired,
+  searchForMovie: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,
   onModalClose: PropTypes.func.isRequired,
   setAddMovieDefault: PropTypes.func.isRequired,

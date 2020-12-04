@@ -18,29 +18,14 @@ import styles from './AddNewMovieModalContent.css';
 class AddNewMovieModalContent extends Component {
 
   //
-  // Lifecycle
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      searchForMovie: false
-    };
-  }
-
-  //
   // Listeners
-
-  onSearchForMissingMovieChange = ({ value }) => {
-    this.setState({ searchForMovie: value });
-  }
 
   onQualityProfileIdChange = ({ value }) => {
     this.props.onInputChange({ name: 'qualityProfileId', value: parseInt(value) });
   }
 
   onAddMoviePress = () => {
-    this.props.onAddMoviePress(this.state.searchForMovie);
+    this.props.onAddMoviePress();
   }
 
   //
@@ -57,6 +42,7 @@ class AddNewMovieModalContent extends Component {
       monitor,
       qualityProfileId,
       minimumAvailability,
+      searchForMovie,
       folder,
       tags,
       isSmallScreen,
@@ -175,8 +161,8 @@ class AddNewMovieModalContent extends Component {
               containerClassName={styles.searchForMissingMovieContainer}
               className={styles.searchForMissingMovieInput}
               name="searchForMovie"
-              value={this.state.searchForMovie}
-              onChange={this.onSearchForMissingMovieChange}
+              onChange={onInputChange}
+              {...searchForMovie}
             />
           </label>
 
@@ -205,6 +191,7 @@ AddNewMovieModalContent.propTypes = {
   monitor: PropTypes.object.isRequired,
   qualityProfileId: PropTypes.object,
   minimumAvailability: PropTypes.object.isRequired,
+  searchForMovie: PropTypes.object.isRequired,
   folder: PropTypes.string.isRequired,
   tags: PropTypes.object.isRequired,
   isSmallScreen: PropTypes.bool.isRequired,
