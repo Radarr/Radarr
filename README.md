@@ -30,7 +30,7 @@ Radarr is a movie collection manager for Usenet and BitTorrent users. It can mon
 
 ## Feature Requests
 
-[Feature Requests](https://github.com/lidarr/Radarr/issues/new?assignees=&labels=Type%3A+Enhancement&template=feature_request.md&title=)
+[Feature Requests](https://github.com/Radarr/Radarr/issues/new?assignees=&labels=Type%3A+Enhancement&template=feature_request.md&title=)
 
 ## Support
 
