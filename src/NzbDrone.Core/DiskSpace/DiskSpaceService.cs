@@ -43,8 +43,8 @@ namespace NzbDrone.Core.DiskSpace
         private IEnumerable<string> GetMoviesRootPaths()
         {
             return _movieService.AllMoviePaths()
-                .Where(s => _diskProvider.FolderExists(s))
-                .Select(s => _diskProvider.GetPathRoot(s))
+                .Where(s => _diskProvider.FolderExists(s.Value))
+                .Select(s => _diskProvider.GetPathRoot(s.Value))
                 .Distinct();
         }
 

@@ -29,7 +29,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
         public override HealthCheck Check()
         {
             var rootFolders = _movieService.AllMoviePaths()
-                                                           .Select(s => _rootFolderService.GetBestRootFolderPath(s))
+                                                           .Select(s => _rootFolderService.GetBestRootFolderPath(s.Value))
                                                            .Distinct();
 
             var missingRootFolders = rootFolders.Where(s => !_diskProvider.FolderExists(s))

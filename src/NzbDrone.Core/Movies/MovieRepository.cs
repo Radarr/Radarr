@@ -27,7 +27,8 @@ namespace NzbDrone.Core.Movies
         void SetFileId(int fileId, int movieId);
         PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff);
         Movie FindByPath(string path);
-        List<string> AllMoviePaths();
+        Dictionary<int, string> AllMoviePaths();
+        Dictionary<int, string> AllMovieTitleSlugs();
         List<int> AllMovieTmdbIds();
         Dictionary<int, List<int>> AllMovieTags();
         List<int> GetRecommendations();
@@ -275,11 +276,21 @@ namespace NzbDrone.Core.Movies
             return Query(x => x.Path == path).FirstOrDefault();
         }
 
-        public List<string> AllMoviePaths()
+        public Dictionary<int, string> AllMoviePaths()
         {
             using (var conn = _database.OpenConnection())
             {
-                return conn.Query<string>("SELECT Path FROM Movies").ToList();
+                var strSql = "SELECT Id AS [Key], Path AS [Value] FROM Movies";
+                return conn.Query<KeyValuePair<int, string>>(strSql).ToDictionary(x => x.Key, x => x.Value);
+            }
+        }
+
+        public Dictionary<int, string> AllMovieTitleSlugs()
+        {
+            using (var conn = _database.OpenConnection())
+            {
+                var strSql = "SELECT Id AS [Key], TitleSlug AS [Value] FROM Movies";
+                return conn.Query<KeyValuePair<int, string>>(strSql).ToDictionary(x => x.Key, x => x.Value);
             }
         }
 
@@ -295,9 +306,8 @@ namespace NzbDrone.Core.Movies
         {
             using (var conn = _database.OpenConnection())
             {
-                string strSql = "SELECT Id AS [Key], Tags AS [Value] FROM Movies";
-                var tags = conn.Query<KeyValuePair<int, List<int>>>(strSql).ToDictionary(x => x.Key, x => x.Value);
-                return tags;
+                var strSql = "SELECT Id AS [Key], Tags AS [Value] FROM Movies";
+                return conn.Query<KeyValuePair<int, List<int>>>(strSql).ToDictionary(x => x.Key, x => x.Value);
             }
         }
 

@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.RootFolderTests
         {
             Mocker.GetMock<IMovieRepository>()
                   .Setup(s => s.AllMoviePaths())
-                  .Returns(new List<string>());
+                  .Returns(new Dictionary<int, string>());
 
             var root = new RootFolder { Path = path.AsOsAgnostic() };
 
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Test.RootFolderTests
 
             Mocker.GetMock<IMovieRepository>()
                   .Setup(s => s.AllMoviePaths())
-                  .Returns(new List<string>());
+                  .Returns(new Dictionary<int, string>());
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetDirectories(rootFolder.Path))

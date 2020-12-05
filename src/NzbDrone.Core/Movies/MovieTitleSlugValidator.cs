@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
@@ -25,15 +26,17 @@ namespace NzbDrone.Core.Movies
             var instanceId = (int)instance.Id;
             var slug = context.PropertyValue.ToString();
 
-            var conflictingMovie = _movieService.GetAllMovies()
-                                                  .FirstOrDefault(s => s.TitleSlug.IsNotNullOrWhiteSpace() &&
-                                                              s.TitleSlug.Equals(context.PropertyValue.ToString()) &&
-                                                              s.Id != instanceId);
+            var conflictingId = _movieService.AllMovieTitleSlugs()
+                                                  .FirstOrDefault(s => s.Value.IsNotNullOrWhiteSpace() &&
+                                                                  s.Value.Equals(context.PropertyValue.ToString()) &&
+                                                                  s.Key != instanceId);
 
-            if (conflictingMovie == null)
+            if (conflictingId.Equals(default(KeyValuePair<int, string>)))
             {
                 return true;
             }
+
+            var conflictingMovie = _movieService.GetMovie(conflictingId.Key);
 
             context.MessageFormatter.AppendArgument("slug", slug);
             context.MessageFormatter.AppendArgument("movieTitle", conflictingMovie.Title);

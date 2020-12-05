@@ -31,8 +31,9 @@ namespace NzbDrone.Core.Movies
         List<Movie> FindByTitleCandidates(string title, out string roman, out string arabic);
         Movie FindByTitleSlug(string slug);
         Movie FindByPath(string path);
-        List<string> AllMoviePaths();
+        Dictionary<int, string> AllMoviePaths();
         List<int> AllMovieTmdbIds();
+        Dictionary<int, string> AllMovieTitleSlugs();
         bool MovieExists(Movie movie);
         List<Movie> GetMoviesByFileId(int fileId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
@@ -189,9 +190,14 @@ namespace NzbDrone.Core.Movies
             return _movieRepository.FindByPath(path);
         }
 
-        public List<string> AllMoviePaths()
+        public Dictionary<int, string> AllMoviePaths()
         {
             return _movieRepository.AllMoviePaths();
+        }
+
+        public Dictionary<int, string> AllMovieTitleSlugs()
+        {
+            return _movieRepository.AllMovieTitleSlugs();
         }
 
         public List<int> AllMovieTmdbIds()
