@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.AllMoviePaths())
-                  .Returns(movies.Select(x => x.Path).ToList());
+                  .Returns(movies.ToDictionary(x => x.Id, x => x.Path));
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetParentFolder(movies.First().Path))
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         {
             Mocker.GetMock<IMovieService>()
                   .Setup(s => s.AllMoviePaths())
-                  .Returns(new List<string>());
+                  .Returns(new Dictionary<int, string>());
 
             Subject.Check().ShouldBeOk();
         }

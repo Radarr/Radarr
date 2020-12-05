@@ -29,17 +29,21 @@ namespace NzbDrone.Core.Test.MovieTests
                             };
 
             Mocker.GetMock<IMovieService>()
-                  .Setup(s => s.GetAllMovies())
-                  .Returns(_movies);
+                  .Setup(s => s.AllMovieTitleSlugs())
+                  .Returns(_movies.ToDictionary(m => m.Id, m => m.TitleSlug));
         }
 
         [Test]
         public void should_not_be_valid_if_there_is_an_existing_movie_with_the_same_title_slug()
         {
+            Mocker.GetMock<IMovieService>()
+                  .Setup(s => s.GetMovie(_movies.First().Id))
+                  .Returns(_movies.First());
+
             var movie = Builder<Movie>.CreateNew()
-                                        .With(s => s.Id = 100)
-                                        .With(s => s.TitleSlug = _movies.First().TitleSlug)
-                                        .Build();
+                            .With(s => s.Id = 100)
+                            .With(s => s.TitleSlug = _movies.First().TitleSlug)
+                            .Build();
 
             _validator.Validate(movie).IsValid.Should().BeFalse();
         }

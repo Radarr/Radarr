@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentValidation.Validators;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
@@ -26,7 +27,7 @@ namespace NzbDrone.Core.Validation.Paths
 
             context.MessageFormatter.AppendArgument("moviePath", context.PropertyValue.ToString());
 
-            return !_moviesService.GetAllMovies().Exists(s => s.Path.PathEquals(context.PropertyValue.ToString()) && s.Id != instanceId);
+            return !_moviesService.AllMoviePaths().Any(s => s.Value.PathEquals(context.PropertyValue.ToString()) && s.Key != instanceId);
         }
     }
 }

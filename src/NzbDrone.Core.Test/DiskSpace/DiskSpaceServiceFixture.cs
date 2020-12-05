@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.DiskSpace
         {
             Mocker.GetMock<IMovieService>()
                 .Setup(v => v.AllMoviePaths())
-                .Returns(movies.Select(x => x.Path).ToList());
+                .Returns(movies.ToDictionary(x => x.Id, x => x.Path));
         }
 
         private void GivenExistingFolder(string folder)
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.DiskSpace
         [Test]
         public void should_check_diskspace_for_same_root_folder_only_once()
         {
-            GivenMovies(new Movie { Path = _moviesFolder }, new Movie { Path = _moviesFolder2 });
+            GivenMovies(new Movie { Id = 1, Path = _moviesFolder }, new Movie { Id = 2, Path = _moviesFolder2 });
 
             GivenExistingFolder(_moviesFolder);
             GivenExistingFolder(_moviesFolder2);

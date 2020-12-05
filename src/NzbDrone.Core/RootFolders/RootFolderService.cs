@@ -67,7 +67,7 @@ namespace NzbDrone.Core.RootFolders
         {
             var rootFolders = _rootFolderRepository.All().ToList();
 
-            var moviePaths = _movieRepository.AllMoviePaths().ToList();
+            var moviePaths = _movieRepository.AllMoviePaths();
 
             rootFolders.ForEach(folder =>
             {
@@ -116,7 +116,7 @@ namespace NzbDrone.Core.RootFolders
 
             _rootFolderRepository.Insert(rootFolder);
 
-            var moviePaths = _movieRepository.AllMoviePaths().ToList();
+            var moviePaths = _movieRepository.AllMoviePaths();
 
             GetDetails(rootFolder, moviePaths, true);
 
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.RootFolders
             _rootFolderRepository.Delete(id);
         }
 
-        private List<UnmappedFolder> GetUnmappedFolders(string path, List<string> moviePaths)
+        private List<UnmappedFolder> GetUnmappedFolders(string path, Dictionary<int, string> moviePaths)
         {
             _logger.Debug("Generating list of unmapped folders");
 
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.RootFolders
             }
 
             var possibleMovieFolders = _diskProvider.GetDirectories(path).ToList();
-            var unmappedFolders = possibleMovieFolders.Except(moviePaths.Select(s => s), PathEqualityComparer.Instance).ToList();
+            var unmappedFolders = possibleMovieFolders.Except(moviePaths.Select(s => s.Value), PathEqualityComparer.Instance).ToList();
 
             foreach (string unmappedFolder in unmappedFolders)
             {
@@ -167,7 +167,7 @@ namespace NzbDrone.Core.RootFolders
         public RootFolder Get(int id, bool timeout)
         {
             var rootFolder = _rootFolderRepository.Get(id);
-            var moviePaths = _movieRepository.AllMoviePaths().ToList();
+            var moviePaths = _movieRepository.AllMoviePaths();
 
             GetDetails(rootFolder, moviePaths, timeout);
 
@@ -188,7 +188,7 @@ namespace NzbDrone.Core.RootFolders
             return possibleRootFolder.Path;
         }
 
-        private void GetDetails(RootFolder rootFolder, List<string> moviePaths, bool timeout)
+        private void GetDetails(RootFolder rootFolder, Dictionary<int, string> moviePaths, bool timeout)
         {
             Task.Run(() =>
             {
