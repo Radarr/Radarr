@@ -202,7 +202,7 @@
   "DeleteIndexerMessageText": "Are you sure you want to delete the indexer '{0}'?",
   "DeleteList": "Delete List",
   "DeleteListMessageText": "Are you sure you want to delete the list '{0}'?",
-  "DeleteMovieFolderHelpText": "Delete the movie folder and it's contents",
+  "DeleteMovieFolderHelpText": "Delete the movie folder and its contents",
   "DeleteMovieFolderLabel": "Delete Movie Folder",
   "DeleteNotification": "Delete Notification",
   "DeleteNotificationMessageText": "Are you sure you want to delete the notification '{0}'?",
