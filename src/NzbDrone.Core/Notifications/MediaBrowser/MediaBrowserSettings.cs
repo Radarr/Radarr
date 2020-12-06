@@ -12,6 +12,7 @@ namespace NzbDrone.Core.Notifications.Emby
         {
             RuleFor(c => c.Host).ValidHost();
             RuleFor(c => c.ApiKey).NotEmpty();
+            RuleFor(c => c.UpdateLibraryDelay).GreaterThanOrEqualTo(0);
         }
     }
 
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.Notifications.Emby
         public MediaBrowserSettings()
         {
             Port = 8096;
+            UpdateLibraryDelay = 0;
         }
 
         [FieldDefinition(0, Label = "Host")]
@@ -41,6 +43,9 @@ namespace NzbDrone.Core.Notifications.Emby
 
         [FieldDefinition(5, Label = "Update Library", HelpText = "Update Library on Import & Rename?", Type = FieldType.Checkbox)]
         public bool UpdateLibrary { get; set; }
+
+        [FieldDefinition(6, Label = "Update Library Delay", HelpText = "Delay in Minutes to request Library Update", Type = FieldType.Number)]
+        public int UpdateLibraryDelay { get; set; }
 
         [JsonIgnore]
         public string Address => $"{Host}:{Port}";

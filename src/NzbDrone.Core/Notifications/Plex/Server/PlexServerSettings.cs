@@ -11,6 +11,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
         {
             RuleFor(c => c.Host).ValidHost();
             RuleFor(c => c.Port).InclusiveBetween(1, 65535);
+            RuleFor(c => c.UpdateLibraryDelay).GreaterThanOrEqualTo(0);
         }
     }
 
@@ -23,6 +24,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             Port = 32400;
             UpdateLibrary = true;
             SignIn = "startOAuth";
+            UpdateLibraryDelay = 0;
         }
 
         [FieldDefinition(0, Label = "Host")]
@@ -42,6 +44,9 @@ namespace NzbDrone.Core.Notifications.Plex.Server
 
         [FieldDefinition(5, Label = "Update Library", Type = FieldType.Checkbox)]
         public bool UpdateLibrary { get; set; }
+
+        [FieldDefinition(6, Label = "Update Library Delay", HelpText = "Delay in Minutes to request Library Update", Type = FieldType.Number)]
+        public int UpdateLibraryDelay { get; set; }
 
         public bool IsValid => !string.IsNullOrWhiteSpace(Host);
 

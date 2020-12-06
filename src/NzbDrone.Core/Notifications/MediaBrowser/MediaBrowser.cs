@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
+using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
 
@@ -8,14 +10,16 @@ namespace NzbDrone.Core.Notifications.Emby
     public class MediaBrowser : NotificationBase<MediaBrowserSettings>
     {
         private readonly IMediaBrowserService _mediaBrowserService;
+        private readonly Logger _logger;
 
-        public MediaBrowser(IMediaBrowserService mediaBrowserService)
+        public MediaBrowser(IMediaBrowserService mediaBrowserService, Logger logger)
         {
             _mediaBrowserService = mediaBrowserService;
+            _logger = logger;
         }
 
         public override string Link => "https://emby.media/";
-        public override string Name => "Emby";
+        public override string Name => "Jellyfin/Emby";
 
         public override void OnGrab(GrabMessage grabMessage)
         {
@@ -34,6 +38,14 @@ namespace NzbDrone.Core.Notifications.Emby
 
             if (Settings.UpdateLibrary)
             {
+                if (Settings.UpdateLibraryDelay > 0)
+                {
+                    var timeSpan = new TimeSpan(0, Settings.UpdateLibraryDelay, 0);
+                    System.Threading.Thread.Sleep(timeSpan);
+                }
+
+                _logger.Debug("{0} - Scheduling library update for created movie {1} {2}", Name, message.Movie.Id, message.Movie.Title);
+
                 _mediaBrowserService.UpdateMovies(Settings, message.Movie, "Created");
             }
         }
@@ -42,6 +54,14 @@ namespace NzbDrone.Core.Notifications.Emby
         {
             if (Settings.UpdateLibrary)
             {
+                if (Settings.UpdateLibraryDelay > 0)
+                {
+                    var timeSpan = new TimeSpan(0, Settings.UpdateLibraryDelay, 0);
+                    System.Threading.Thread.Sleep(timeSpan);
+                }
+
+                _logger.Debug("{0} - Scheduling library update for modified movie {1} {2}", Name, movie.Id, movie.Title);
+
                 _mediaBrowserService.UpdateMovies(Settings, movie, "Modified");
             }
         }

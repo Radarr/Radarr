@@ -65,7 +65,14 @@ namespace NzbDrone.Core.Notifications.Plex.Server
         {
             if (Settings.UpdateLibrary)
             {
-                _logger.Debug("Scheduling library update for movie {0} {1}", movie.Id, movie.Title);
+                if (Settings.UpdateLibraryDelay > 0)
+                {
+                    var timeSpan = new TimeSpan(0, Settings.UpdateLibraryDelay, 0);
+                    System.Threading.Thread.Sleep(timeSpan);
+                }
+
+                _logger.Debug("{0} - Scheduling library update for movie {1} {2}", Name, movie.Id, movie.Title);
+
                 var queue = _pendingMoviesCache.Get(Settings.Host, () => new PlexUpdateQueue());
                 lock (queue)
                 {
@@ -111,7 +118,14 @@ namespace NzbDrone.Core.Notifications.Plex.Server
 
                     if (Settings.UpdateLibrary)
                     {
-                        _logger.Debug("Performing library update for {0} movies", refreshingMovies.Count);
+                        if (Settings.UpdateLibraryDelay > 0)
+                        {
+                            var timeSpan = new TimeSpan(0, Settings.UpdateLibraryDelay, 0);
+                            System.Threading.Thread.Sleep(timeSpan);
+                        }
+
+                        _logger.Debug("{0} - Performing library update for {1} movies", Name, refreshingMovies.Count);
+
                         _plexServerService.UpdateLibrary(refreshingMovies, Settings);
                     }
                 }
