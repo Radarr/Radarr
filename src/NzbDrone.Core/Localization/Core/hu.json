@@ -741,7 +741,7 @@
     "IncludeCustomFormatWhenRenaming": "Az átnevezéskor vegye fel az egyéni formátumot",
     "InCinemas": "Mozikban",
     "ImportTipsMessage": "Néhány tipp az importálás zökkenőmentes lebonyolításához:",
-    "ImportRootPath": "Mutasd meg a Radarr-nak a filmeket tartalmazó főkönyvtáradat, nem egy konkrét filmmappát. Például. {0} és nem {1}",
+    "ImportRootPath": "Mutasd meg a Radarr-nak a filmeket tartalmazó főmappádat, ne egy adott filmmappát. Például. {0} és nem {1}. Ezenkívül minden filmnek a saját mappában kell lennie a gyökér / könyvtár mappában.",
     "ImportMovies": "Filmek Importálása",
     "ImportMechanismHealthCheckMessage": "Engedélyezd a befejezett letöltés(ek) kezelését",
     "ImportListSyncIntervalHelpText": "A Radarr milyen gyakran szinkronizáljon a listáival. A minimum érték 6 óra",
@@ -749,7 +749,7 @@
     "ImportListStatusCheckAllClientMessage": "Az összes lista elérhetetlen, hiba miatt",
     "Importing": "Importálás Folyamatban",
     "ImportIncludeQuality": "Győződj meg arról, hogy a fájlok tartalmazzák-e minőséget a fájlneveikben. pl. {0}",
-    "ImportHeader": "Importáld a már meglévő filmjeidet",
+    "ImportHeader": "Importálda már meglévő szervezett könyvtárat, hogy filmeket adhass a Radarrhoz",
     "ImportFailedInterp": "Importálás Sikertelen: {0}",
     "ImportFailed": "Importálás sikertelen: {0}",
     "ImportExtraFilesHelpText": "A megfelelő extra fájlok importálása (feliratok, nfo stb.) a filmfájl importálása után",
@@ -1063,5 +1063,7 @@
     "WouldYouLikeToRestoreBackup": "Szeretnéd visszaállítani a {0} biztonsági mentést?",
     "YesMoveFiles": "Igen, helyezze át a fájlokat",
     "RequiredRestrictionHelpText": "A kiadásnak tartalmaznia kell legalább egy ilyen kifejezést (a kis- és nagybetűk nem számítanak)",
-    "MoveFolders2": "Szeretnéd áthelyezni a filmfájlokat a(z) „{0}” mappából a(z) „{1}” mappába?"
+    "MoveFolders2": "Szeretnéd áthelyezni a filmfájlokat a(z) „{0}” mappából a(z) „{1}” mappába?",
+    "ImportNotForDownloads": "Ne használja ezt az Importálási módszert a letöltések importálására a letöltési kliensről. Ez CSAK a szervezett, meglévő könyvtárakra vonatkozik.",
+    "ImportLibrary": "Könyvtár importálás"
 }
