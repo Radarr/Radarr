@@ -37,6 +37,7 @@ namespace NzbDrone.Api.Movies
                            IAddMovieService addMovieService,
                            IMapCoversToLocal coverMapper,
                            RootFolderValidator rootFolderValidator,
+                           RecycleBinValidator recycleBinValidator,
                            MappedNetworkDriveValidator mappedNetworkDriveValidator,
                            MoviePathValidator moviesPathValidator,
                            MovieExistsValidator moviesExistsValidator,
@@ -66,6 +67,7 @@ namespace NzbDrone.Api.Movies
                            .SetValidator(mappedNetworkDriveValidator)
                            .SetValidator(moviesPathValidator)
                            .SetValidator(moviesAncestorValidator)
+                           .SetValidator(recycleBinValidator)
                            .SetValidator(systemFolderValidator)
                            .When(s => !s.Path.IsNullOrWhiteSpace());
 

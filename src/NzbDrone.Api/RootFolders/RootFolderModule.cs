@@ -16,6 +16,7 @@ namespace NzbDrone.Api.RootFolders
                                 RootFolderValidator rootFolderValidator,
                                 PathExistsValidator pathExistsValidator,
                                 MappedNetworkDriveValidator mappedNetworkDriveValidator,
+                                RecycleBinValidator recycleBinValidator,
                                 StartupFolderValidator startupFolderValidator,
                                 SystemFolderValidator systemFolderValidator,
                                 FolderWritableValidator folderWritableValidator)
@@ -34,6 +35,7 @@ namespace NzbDrone.Api.RootFolders
                            .SetValidator(rootFolderValidator)
                            .SetValidator(mappedNetworkDriveValidator)
                            .SetValidator(startupFolderValidator)
+                           .SetValidator(recycleBinValidator)
                            .SetValidator(pathExistsValidator)
                            .SetValidator(systemFolderValidator)
                            .SetValidator(folderWritableValidator);
