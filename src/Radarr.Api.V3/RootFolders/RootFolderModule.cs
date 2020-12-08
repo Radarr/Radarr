@@ -17,6 +17,7 @@ namespace Radarr.Api.V3.RootFolders
                                 RootFolderValidator rootFolderValidator,
                                 PathExistsValidator pathExistsValidator,
                                 MappedNetworkDriveValidator mappedNetworkDriveValidator,
+                                RecycleBinValidator recycleBinValidator,
                                 StartupFolderValidator startupFolderValidator,
                                 SystemFolderValidator systemFolderValidator,
                                 FolderWritableValidator folderWritableValidator)
@@ -35,6 +36,7 @@ namespace Radarr.Api.V3.RootFolders
                            .SetValidator(rootFolderValidator)
                            .SetValidator(mappedNetworkDriveValidator)
                            .SetValidator(startupFolderValidator)
+                           .SetValidator(recycleBinValidator)
                            .SetValidator(pathExistsValidator)
                            .SetValidator(systemFolderValidator)
                            .SetValidator(folderWritableValidator);
