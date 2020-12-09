@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Notifications.DiscordNotifier
             variables.Add("Readarr_Author_GRId", author.Metadata.Value.ForeignAuthorId);
             variables.Add("Readarr_Book_Id", book.Id.ToString());
             variables.Add("Readarr_Book_Title", book.Title);
-            variables.Add("Readarr_Book_GRId", book.ForeignBookId);
+            variables.Add("Readarr_Book_GRId", book.Editions.Value.Single(e => e.Monitored).ForeignEditionId.ToString());
             variables.Add("Readarr_Book_ReleaseDate", book.ReleaseDate.ToString());
             variables.Add("Readarr_Download_Client", message.DownloadClient ?? string.Empty);
             variables.Add("Readarr_Download_Id", message.DownloadId ?? string.Empty);
