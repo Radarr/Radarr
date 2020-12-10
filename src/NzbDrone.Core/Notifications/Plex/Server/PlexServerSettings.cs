@@ -11,6 +11,8 @@ namespace NzbDrone.Core.Notifications.Plex.Server
         {
             RuleFor(c => c.Host).ValidHost();
             RuleFor(c => c.Port).InclusiveBetween(1, 65535);
+            RuleFor(c => c.MapFrom).NotEmpty().Unless(c => !c.UseMapping);
+            RuleFor(c => c.MapTo).NotEmpty().Unless(c => !c.UseMapping);
         }
     }
 
@@ -42,6 +44,15 @@ namespace NzbDrone.Core.Notifications.Plex.Server
 
         [FieldDefinition(5, Label = "Update Library", Type = FieldType.Checkbox)]
         public bool UpdateLibrary { get; set; }
+
+        [FieldDefinition(6, Label = "Use Mapping", Type = FieldType.Checkbox)]
+        public bool UseMapping { get; set; }
+
+        [FieldDefinition(7, Label = "Map From", Type = FieldType.Textbox)]
+        public string MapFrom { get; set; }
+
+        [FieldDefinition(8, Label = "Map To", Type = FieldType.Textbox)]
+        public string MapTo { get; set; }
 
         public bool IsValid => !string.IsNullOrWhiteSpace(Host);
 

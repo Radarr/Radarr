@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Cache;
+using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Plex.Server
@@ -23,13 +26,15 @@ namespace NzbDrone.Core.Notifications.Plex.Server
         private readonly ICached<Version> _versionCache;
         private readonly ICached<bool> _partialUpdateCache;
         private readonly IPlexServerProxy _plexServerProxy;
+        private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
 
-        public PlexServerService(ICacheManager cacheManager, IPlexServerProxy plexServerProxy, Logger logger)
+        public PlexServerService(ICacheManager cacheManager, IPlexServerProxy plexServerProxy, IDiskProvider diskProvider, Logger logger)
         {
             _versionCache = cacheManager.GetCache<Version>(GetType(), "versionCache");
             _partialUpdateCache = cacheManager.GetCache<bool>(GetType(), "partialUpdateCache");
             _plexServerProxy = plexServerProxy;
+            _diskProvider = diskProvider;
             _logger = logger;
         }
 
@@ -49,6 +54,37 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 ValidateVersion(version);
 
                 var sections = GetSections(settings);
+
+                bool updatedAll = true;
+
+                foreach (var movie in multipleMovies)
+                {
+                    var movieLocation = _diskProvider.GetParentFolder(movie.Path).TrimEnd(Path.DirectorySeparatorChar);
+
+                    if (settings.UseMapping)
+                    {
+                        movieLocation = movieLocation.Replace(settings.MapFrom, settings.MapTo);
+                    }
+
+                    _logger.Debug("Searching matching section for {0}", movieLocation);
+                    var matchingSection = sections.FirstOrDefault(section => section.Locations.Any(location => location.Path.TrimEnd(Path.DirectorySeparatorChar) == movieLocation));
+                    if (matchingSection != null)
+                    {
+                        _plexServerProxy.UpdateMovie(movie.Path, matchingSection.Id, settings);
+                    }
+                    else
+                    {
+                        updatedAll = false;
+                        _logger.Warn("Failed to find matching section for {0}", movieLocation);
+                        break;
+                    }
+                }
+
+                if (updatedAll)
+                {
+                    return;
+                }
+
                 var partialUpdates = _partialUpdateCache.Get(settings.Host, () => PartialUpdatesAllowed(settings, version), TimeSpan.FromHours(2));
 
                 if (partialUpdates)
