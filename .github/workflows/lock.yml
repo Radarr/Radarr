@@ -3,7 +3,7 @@ name: 'Lock threads'
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0/10 * * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   lock:
@@ -18,4 +18,4 @@ jobs:
           issue-lock-labels: ''
           issue-lock-comment: ''
           issue-lock-reason: 'resolved'
-          process-only: 'issues'
+          process-only: ''
