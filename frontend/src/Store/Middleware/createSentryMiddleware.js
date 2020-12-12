@@ -88,6 +88,7 @@ export default function createSentryMiddleware() {
     environment: branch,
     release,
     sendDefaultPii: true,
+    ignoreErrors: ['ResizeObserver loop limit exceeded'],
     beforeSend: cleanseData,
     integrations: [
       new Integrations.RewriteFrames({ iteratee: stripUrlBase }),
