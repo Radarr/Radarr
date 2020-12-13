@@ -59,6 +59,7 @@
 }
 
 .titleRow {
+  position: relative;
   display: flex;
   justify-content: space-between;
   flex: 0 0 auto;
@@ -95,11 +96,9 @@
   margin-left: 20px;
 }
 
-.filterIcon {
-  float: right;
-}
-
-.authorNavigationButtons {
+.artistNavigationButtons {
+  position: absolute;
+  right: 0;
   white-space: nowrap;
 }
 
