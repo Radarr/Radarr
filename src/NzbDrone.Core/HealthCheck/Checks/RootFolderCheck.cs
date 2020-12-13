@@ -16,21 +16,24 @@ namespace NzbDrone.Core.HealthCheck.Checks
         private readonly IAuthorService _authorService;
         private readonly IImportListFactory _importListFactory;
         private readonly IDiskProvider _diskProvider;
+        private readonly IRootFolderService _rootFolderService;
 
-        public RootFolderCheck(IAuthorService authorService, IImportListFactory importListFactory, IDiskProvider diskProvider)
+        public RootFolderCheck(IArtistService authorService, IImportListFactory importListFactory, IDiskProvider diskProvider, IRootFolderService rootFolderService)
         {
             _authorService = authorService;
             _importListFactory = importListFactory;
             _diskProvider = diskProvider;
+            _rootFolderService = rootFolderService;
         }
 
         public override HealthCheck Check()
         {
-            var missingRootFolders = _authorService.GetAllAuthors()
-                                                   .Select(s => _diskProvider.GetParentFolder(s.Path))
-                                                   .Distinct()
-                                                   .Where(s => !_diskProvider.FolderExists(s))
-                                                   .ToList();
+            var rootFolders = _artistService.GetAllAuthors()
+                                                           .Select(s => _rootFolderService.GetBestRootFolderPath(s.Path))
+                                                           .Distinct();
+
+            var missingRootFolders = rootFolders.Where(s => !_diskProvider.FolderExists(s))
+                                                          .ToList();
 
             missingRootFolders.AddRange(_importListFactory.All()
                 .Select(s => s.RootFolderPath)
