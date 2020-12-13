@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Configuration;
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Download
 
             foreach (var trackedDownload in trackedDownloads)
             {
-                _eventAggregator.PublishEvent(new DownloadCompletedEvent(trackedDownload));
+                _eventAggregator.PublishEvent(new DownloadCanBeRemovedEvent(trackedDownload));
             }
         }
 
