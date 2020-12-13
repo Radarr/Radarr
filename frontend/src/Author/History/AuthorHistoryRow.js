@@ -94,7 +94,7 @@ class AuthorHistoryRow extends Component {
           {book.title}
         </TableRowCell>
 
-        <TableRowCell>
+        <TableRowCell className={styles.sourceTitle}>
           {sourceTitle}
         </TableRowCell>
 
