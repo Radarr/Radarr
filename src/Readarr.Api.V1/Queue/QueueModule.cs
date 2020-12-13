@@ -119,15 +119,15 @@ namespace Readarr.Api.V1.Queue
                 case "status":
                     return q => q.Status;
                 case "authors.sortName":
-                    return q => q.Author?.SortName;
+                    return q => q.Author?.SortName ?? string.Empty;
                 case "title":
                     return q => q.Title;
                 case "book":
                     return q => q.Book;
                 case "book.title":
-                    return q => q.Book?.Title;
+                    return q => q.Book?.Title ?? string.Empty;
                 case "book.releaseDate":
-                    return q => q.Book?.ReleaseDate;
+                    return q => q.Book?.ReleaseDate ?? DateTime.MinValue;
                 case "quality":
                     return q => q.Quality;
                 case "progress":
