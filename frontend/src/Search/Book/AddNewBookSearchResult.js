@@ -112,52 +112,42 @@ class AddNewBookSearchResult extends Component {
           }
 
           <div className={styles.content}>
-            <div className={styles.name}>
-              {title}
+            <div className={styles.titleRow}>
+              <div className={styles.titleContainer}>
+                <div className={styles.title}>
+                  {title}
 
-              {
-                !!disambiguation &&
-                  <span className={styles.year}>({disambiguation})</span>
-              }
+                  {
+                    !!disambiguation &&
+                      <span className={styles.year}>({disambiguation})</span>
+                  }
+                </div>
+              </div>
 
-              {
-                isExistingBook ?
+              <div className={styles.icons}>
+                {
+                  isExistingBook ?
+                    <Icon
+                      className={styles.alreadyExistsIcon}
+                      name={icons.CHECK_CIRCLE}
+                      size={36}
+                      title="Already in your library"
+                    /> :
+                    null
+                }
+
+                <Link
+                  className={styles.mbLink}
+                  to={`https://goodreads.com/book/show/${editions[0].foreignEditionId}`}
+                  onPress={this.onTVDBLinkPress}
+                >
                   <Icon
-                    className={styles.alreadyExistsIcon}
-                    name={icons.CHECK_CIRCLE}
-                    size={20}
-                    title="Book already in your library"
-                  /> :
-                  null
-              }
-
-              <Link
-                className={styles.mbLink}
-                to={`https://goodreads.com/book/show/${editions[0].foreignEditionId}`}
-                onPress={this.onMBLinkPress}
-              >
-                <Icon
-                  className={styles.mbLinkIcon}
-                  name={icons.EXTERNAL_LINK}
-                  size={28}
-                />
-              </Link>
-
-            </div>
-
-            <div>
-              <span className={styles.authorName}> By: {author.authorName}</span>
-
-              {
-                isExistingAuthor ?
-                  <Icon
-                    className={styles.alreadyExistsIcon}
-                    name={icons.CHECK_CIRCLE}
-                    size={15}
-                    title="Author already in your library"
-                  /> :
-                  null
-              }
+                    className={styles.mbLinkIcon}
+                    name={icons.EXTERNAL_LINK}
+                    size={28}
+                  />
+                </Link>
+              </div>
             </div>
 
             <div>

@@ -34,10 +34,20 @@
 
 .content {
   flex: 0 1 100%;
+  overflow: hidden;
+}
+
+.nameRow {
+  display: flex;
+}
+
+.nameContainer {
+  display: flex;
+  align-items: flex-end;
+  flex: 0 1 auto;
 }
 
 .name {
-  display: flex;
   font-weight: 300;
   font-size: 36px;
 }
@@ -45,6 +55,14 @@
 .year {
   margin-left: 10px;
   color: $disabledColor;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  height: 55px;
 }
 
 .mbLink {
@@ -68,4 +86,11 @@
   overflow: hidden;
   margin-top: 20px;
   text-align: justify;
+}
+
+@media only screen and (max-width: $breakpointMedium) {
+  .titleRow {
+    justify-content: space-between;
+    overflow: hidden;
+  }
 }

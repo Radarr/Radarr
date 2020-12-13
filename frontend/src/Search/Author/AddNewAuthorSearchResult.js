@@ -113,44 +113,49 @@ class AddNewAuthorSearchResult extends Component {
           }
 
           <div className={styles.content}>
-            <div className={styles.name}>
-              {authorName}
+            <div className={styles.nameRow}>
+              <div className={styles.nameContainer}>
+                <div className={styles.name}>
+                  {authorName}
 
-              {
-                !name.contains(year) && year ?
-                  <span className={styles.year}>
-                    ({year})
-                  </span> :
-                  null
-              }
+                  {
+                    !authorName.contains(year) && year ?
+                      <span className={styles.year}>
+                        ({year})
+                      </span> :
+                      null
+                  }
+                  {
+                    !!disambiguation &&
+                      <span className={styles.year}>({disambiguation})</span>
+                  }
+                </div>
+              </div>
 
-              {
-                !!disambiguation &&
-                  <span className={styles.year}>({disambiguation})</span>
-              }
+              <div className={styles.icons}>
+                {
+                  isExistingAuthor ?
+                    <Icon
+                      className={styles.alreadyExistsIcon}
+                      name={icons.CHECK_CIRCLE}
+                      size={36}
+                      title="Already in your library"
+                    /> :
+                    null
+                }
 
-              {
-                isExistingAuthor ?
+                <Link
+                  className={styles.mbLink}
+                  to={`https://goodreads.com/author/show/${foreignAuthorId}`}
+                  onPress={this.onMBLinkPress}
+                >
                   <Icon
-                    className={styles.alreadyExistsIcon}
-                    name={icons.CHECK_CIRCLE}
-                    size={36}
-                    title="Already in your library"
-                  /> :
-                  null
-              }
-
-              <Link
-                className={styles.mbLink}
-                to={`https://goodreads.com/author/show/${foreignAuthorId}`}
-                onPress={this.onMBLinkPress}
-              >
-                <Icon
-                  className={styles.mbLinkIcon}
-                  name={icons.EXTERNAL_LINK}
-                  size={28}
-                />
-              </Link>
+                    className={styles.mbLinkIcon}
+                    name={icons.EXTERNAL_LINK}
+                    size={28}
+                  />
+                </Link>
+              </div>
             </div>
 
             <div>
