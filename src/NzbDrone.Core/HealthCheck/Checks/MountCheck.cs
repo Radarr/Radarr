@@ -19,8 +19,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
         public override HealthCheck Check()
         {
             // Not best for optimization but due to possible symlinks and junctions, we get mounts based on series path so internals can handle mount resolution.
-            var mounts = _authorService.GetAllAuthors()
-                                       .Select(author => _diskProvider.GetMount(author.Path))
+            var mounts = _authorService.AllAuthorPaths()
+                                       .Select(path => _diskProvider.GetMount(path.Value))
                                        .Where(m => m != null && m.MountOptions != null && m.MountOptions.IsReadOnly)
                                        .DistinctBy(m => m.RootDirectory)
                                        .ToList();

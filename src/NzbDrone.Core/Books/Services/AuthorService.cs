@@ -27,6 +27,7 @@ namespace NzbDrone.Core.Books
         List<Author> AllForTag(int tagId);
         Author UpdateAuthor(Author author);
         List<Author> UpdateAuthors(List<Author> authors, bool useExistingRelativeFolder);
+        Dictionary<int, string> AllAuthorPaths();
         bool AuthorPathExists(string folder);
         void RemoveAddOptions(Author author);
     }
@@ -192,6 +193,11 @@ namespace NzbDrone.Core.Books
         public List<Author> GetAllAuthors()
         {
             return _cache.Get("GetAllAuthors", () => _authorRepository.All().ToList(), TimeSpan.FromSeconds(30));
+        }
+
+        public Dictionary<int, string> AllAuthorPaths()
+        {
+            return _authorRepository.AllAuthorPaths();
         }
 
         public List<Author> AllForTag(int tagId)

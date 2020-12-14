@@ -33,9 +33,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             _metadata = Builder<MetadataFile>.CreateListOfSize(1)
                .Build().ToList();
 
-            Mocker.GetMock<IAuthorService>()
-                .Setup(c => c.GetAllAuthors())
-                .Returns(_artist);
+            Mocker.GetMock<IArtistService>()
+                .Setup(c => c.AllArtistPaths())
+                .Returns(_artist.ToDictionary(x => x.Id, x => x.Path));
 
             Mocker.GetMock<IMetadataFileService>()
                 .Setup(c => c.GetFilesByAuthor(_artist.First().Id))
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Subject.Clean();
 
             Mocker.GetMock<IConfigService>().VerifySet(c => c.CleanupMetadataImages = true, Times.Never());
-            Mocker.GetMock<IAuthorService>().Verify(c => c.GetAllAuthors(), Times.Never());
+            Mocker.GetMock<IArtistService>().Verify(c => c.GetAllAuthors(), Times.Never());
 
             AssertImageWasNotRemoved();
         }
