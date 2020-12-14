@@ -6,10 +6,13 @@ import FilterMenu from 'Components/Menu/FilterMenu';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
+import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
+import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import { align, sortDirections } from 'Helpers/Props';
+import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
+import { align, icons, sortDirections } from 'Helpers/Props';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import selectAll from 'Utilities/Table/selectAll';
@@ -19,46 +22,6 @@ import AuthorEditorFilterModalConnector from './AuthorEditorFilterModalConnector
 import AuthorEditorFooter from './AuthorEditorFooter';
 import AuthorEditorRowConnector from './AuthorEditorRowConnector';
 import OrganizeAuthorModal from './Organize/OrganizeAuthorModal';
-
-function getColumns(showMetadataProfile) {
-  return [
-    {
-      name: 'status',
-      isSortable: true,
-      isVisible: true
-    },
-    {
-      name: 'sortName',
-      label: 'Name',
-      isSortable: true,
-      isVisible: true
-    },
-    {
-      name: 'qualityProfileId',
-      label: 'Quality Profile',
-      isSortable: true,
-      isVisible: true
-    },
-    {
-      name: 'metadataProfileId',
-      label: 'Metadata Profile',
-      isSortable: true,
-      isVisible: showMetadataProfile
-    },
-    {
-      name: 'path',
-      label: 'Path',
-      isSortable: true,
-      isVisible: true
-    },
-    {
-      name: 'tags',
-      label: 'Tags',
-      isSortable: false,
-      isVisible: true
-    }
-  ];
-}
 
 class AuthorEditor extends Component {
 
@@ -74,8 +37,7 @@ class AuthorEditor extends Component {
       lastToggled: null,
       selectedState: {},
       isOrganizingAuthorModalOpen: false,
-      isRetaggingAuthorModalOpen: false,
-      columns: getColumns(props.showMetadataProfile)
+      isRetaggingAuthorModalOpen: false
     };
   }
 
@@ -155,6 +117,7 @@ class AuthorEditor extends Component {
       error,
       totalItems,
       items,
+      columns,
       selectedFilterKey,
       filters,
       customFilters,
@@ -166,7 +129,7 @@ class AuthorEditor extends Component {
       deleteError,
       isOrganizingAuthor,
       isRetaggingAuthor,
-      showMetadataProfile,
+      onTableOptionChange,
       onSortPress,
       onFilterSelect
     } = this.props;
@@ -174,8 +137,7 @@ class AuthorEditor extends Component {
     const {
       allSelected,
       allUnselected,
-      selectedState,
-      columns
+      selectedState
     } = this.state;
 
     const selectedAuthorIds = this.getSelectedIds();
@@ -185,6 +147,18 @@ class AuthorEditor extends Component {
         <PageToolbar>
           <PageToolbarSection />
           <PageToolbarSection alignContent={align.RIGHT}>
+            <TableOptionsModalWrapper
+              columns={columns}
+              onTableOptionChange={onTableOptionChange}
+            >
+              <PageToolbarButton
+                label="Options"
+                iconName={icons.TABLE}
+              />
+            </TableOptionsModalWrapper>
+
+            <PageToolbarSeparator />
+
             <FilterMenu
               alignMenu={align.RIGHT}
               selectedFilterKey={selectedFilterKey}
@@ -254,7 +228,8 @@ class AuthorEditor extends Component {
           deleteError={deleteError}
           isOrganizingAuthor={isOrganizingAuthor}
           isRetaggingAuthor={isRetaggingAuthor}
-          showMetadataProfile={showMetadataProfile}
+          columns={columns}
+          showMetadataProfile={columns.find((column) => column.name === 'metadataProfileId').isVisible}
           onSaveSelected={this.onSaveSelected}
           onOrganizeAuthorPress={this.onOrganizeAuthorPress}
           onRetagAuthorPress={this.onRetagAuthorPress}
@@ -283,6 +258,7 @@ AuthorEditor.propTypes = {
   error: PropTypes.object,
   totalItems: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.oneOf(sortDirections.all),
   selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
@@ -294,7 +270,7 @@ AuthorEditor.propTypes = {
   deleteError: PropTypes.object,
   isOrganizingAuthor: PropTypes.bool.isRequired,
   isRetaggingAuthor: PropTypes.bool.isRequired,
-  showMetadataProfile: PropTypes.bool.isRequired,
+  onTableOptionChange: PropTypes.func.isRequired,
   onSortPress: PropTypes.func.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
   onSaveSelected: PropTypes.func.isRequired
