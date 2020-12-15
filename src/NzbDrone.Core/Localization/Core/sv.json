@@ -642,5 +642,8 @@
     "MonitoredStatus": "Bevakad/Status",
     "Minutes": "Minuter",
     "Monday": "Måndag",
-    "AfterManualRefresh": "Efter manuell uppdatering"
+    "AfterManualRefresh": "Efter manuell uppdatering",
+    "UnableToAddANewIndexerPleaseTryAgain": "Inte möjligt att lägga till en ny indexerare, var god försök igen.",
+    "UnableToAddANewDownloadClientPleaseTryAgain": "Inte möjligt att lägga till en ny nedladdningsklient, var god försök igen.",
+    "UnableToAddANewCustomFormatPleaseTryAgain": "Inte möjligt att lägga till ett nytt anpassat format, var god försök igen."
 }
