@@ -898,7 +898,7 @@
     "AuthForm": "Felhasználó (Bejelentkezési oldal)",
     "AuthBasic": "Alap (Böngésző felugró ablak)",
     "AreYouSureYouWantToRemoveTheSelectedItemsFromBlacklist": "Biztosan eltávolítja a kijelölt elemeket a feketelistáról?",
-    "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Biztosan eltávolítja az {1} elemet {2} a sorból?",
+    "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Biztosan eltávolítja az {0} elemet {1} a sorból?",
     "AreYouSureYouWantToDeleteFormat": "Biztosan törlöd a(z) {0} formátumú címkét?",
     "AptUpdater": "Az apt használatával telepítsd a frissítést",
     "AnnoucedMsg": "A film be van jelentve",
