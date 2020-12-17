@@ -118,5 +118,11 @@
     "AllFiles": "全部文件",
     "All": "全部",
     "AddNew": "新添加",
-    "Activity": "活动"
+    "Activity": "活动",
+    "AreYouSureYouWantToDeleteFormat": "您确定是否要删除",
+    "AptUpdater": "使用 apt 安装更新",
+    "AnalyseVideoFiles": "分析视频文件",
+    "Always": "总是",
+    "AlreadyInYourLibrary": "已经在库中",
+    "AllResultsHiddenFilter": "根据过滤条件所有结果已隐藏"
 }
