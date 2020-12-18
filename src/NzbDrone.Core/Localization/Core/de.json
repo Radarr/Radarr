@@ -1055,7 +1055,7 @@
     "AuthForm": "Formular (Login Seite)",
     "AuthBasic": "Einfach (Browser Popup)",
     "AreYouSureYouWantToRemoveTheSelectedItemsFromBlacklist": "Bist du icher, dass du die ausgewählten Einträge aus der Sperrliste entfernen willst?",
-    "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Bist du sicher, dass du {1} Einträge aus der Warteschlange löschen willst?",
+    "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Bist du sicher, dass du {0} Einträge aus der Warteschlange löschen willst?",
     "AreYouSureYouWantToDeleteFormat": "Bist du sicher, dass du das Formatierungstag {0} löschen willst ?",
     "AptUpdater": "Benutze 'apt' um das Update zu installieren",
     "AnnoucedMsg": "Film ist angekündigt",
