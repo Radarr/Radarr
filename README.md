@@ -28,16 +28,17 @@ Radarr is a movie collection manager for Usenet and BitTorrent users. It can mon
 * Adding metadata such as posters and information for Kodi and others to use
 * Advanced customization for profiles, such that Radarr will always download the copy you want
 
-## Feature Requests
-
-[Feature Requests](https://github.com/Radarr/Radarr/issues/new?assignees=&labels=Type%3A+Enhancement&template=feature_request.md&title=)
-
 ## Support
+Note: GitHub Issues are for Bugs and Feature Requests Only
 
 [![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60)](https://discord.gg/r5wJPt9)
 [![Reddit](https://img.shields.io/badge/reddit-discussion-FF4500.svg?maxAge=60)](https://www.reddit.com/r/Radarr)
 [![GitHub - Bugs and Feature Requests Only](https://img.shields.io/badge/github-issues-red.svg?maxAge=60)](https://github.com/Radarr/Radarr/issues)
-[![Wiki](https://img.shields.io/badge/github-wiki-181717.svg?maxAge=60)](https://wiki.servarr.com/Radarr)
+[![Wiki](https://img.shields.io/badge/servarr-wiki-181717.svg?maxAge=60)](https://wiki.servarr.com/Radarr)
+
+## Feature Requests
+
+[Feature Requests](https://github.com/Radarr/Radarr/issues/new?assignees=&labels=Type%3A+Enhancement&template=feature_request.md&title=)
 
 ## Contributors & Developers
 [API Documentation](https://radarr.video/docs/api/)
