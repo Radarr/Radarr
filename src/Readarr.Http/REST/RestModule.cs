@@ -20,6 +20,7 @@ namespace Readarr.Http.REST
         // See src/Readarr.Api.V1/Queue/QueueModule.cs
         private static readonly HashSet<string> VALID_SORT_KEYS = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
+            "authors.sortname", //Workaround authors table properties not being added on isValidSortKey call
             "timeleft",
             "estimatedCompletionTime",
             "protocol",
