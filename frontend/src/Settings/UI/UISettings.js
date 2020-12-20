@@ -200,7 +200,7 @@ class UISettings extends Component {
                   <FormGroup>
                     <FormLabel>{translate('MovieInfoLanguage')}</FormLabel>
                     <FormInputGroup
-                      type={inputTypes.SELECT}
+                      type={inputTypes.LANGUAGE_SELECT}
                       name="movieInfoLanguage"
                       values={languages}
                       helpText={translate('MovieInfoLanguageHelpText')}
@@ -213,7 +213,7 @@ class UISettings extends Component {
                   <FormGroup>
                     <FormLabel>{translate('UILanguage')}</FormLabel>
                     <FormInputGroup
-                      type={inputTypes.SELECT}
+                      type={inputTypes.LANGUAGE_SELECT}
                       name="uiLanguage"
                       values={uiLanguages}
                       helpText={translate('UILanguageHelpText')}

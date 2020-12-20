@@ -479,6 +479,7 @@ class EnhancedSelectInput extends Component {
                                 <OptionComponent
                                   key={v.key}
                                   id={v.key}
+                                  dividerAfter={v.dividerAfter}
                                   depth={depth}
                                   isSelected={isSelectedItem(index, this.props)}
                                   isDisabled={parentSelected}
@@ -539,6 +540,7 @@ class EnhancedSelectInput extends Component {
                         <OptionComponent
                           key={v.key}
                           id={v.key}
+                          dividerAfter={v.dividerAfter}
                           depth={depth}
                           isSelected={isSelectedItem(index, this.props)}
                           isMultiSelect={isMultiSelect}

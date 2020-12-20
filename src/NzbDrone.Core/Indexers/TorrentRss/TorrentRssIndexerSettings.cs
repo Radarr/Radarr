@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
         [FieldDefinition(2, Type = FieldType.Checkbox, Label = "Allow Zero Size", HelpText = "Enabling this will allow you to use feeds that don't specify release size, but be careful, size related checks will not be performed.")]
         public bool AllowZeroSize { get; set; }
 
-        [FieldDefinition(3, Type = FieldType.Select, SelectOptions = typeof(LanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
+        [FieldDefinition(3, Type = FieldType.Select, SelectOptions = typeof(RealLanguageFieldConverter), Label = "Multi Languages", HelpText = "What languages are normally in a multi release on this indexer?", Advanced = true)]
         public IEnumerable<int> MultiLanguages { get; set; }
 
         [FieldDefinition(4, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
