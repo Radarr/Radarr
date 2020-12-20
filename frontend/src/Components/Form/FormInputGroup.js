@@ -13,6 +13,7 @@ import EnhancedSelectInputConnector from './EnhancedSelectInputConnector';
 import FormInputHelpText from './FormInputHelpText';
 import IndexerFlagsSelectInputConnector from './IndexerFlagsSelectInputConnector';
 import KeyValueListInput from './KeyValueListInput';
+import LanguageSelectInputConnector from './LanguageSelectInputConnector';
 import MovieMonitoredSelectInput from './MovieMonitoredSelectInput';
 import NumberInput from './NumberInput';
 import OAuthInputConnector from './OAuthInputConnector';
@@ -71,6 +72,9 @@ function getComponent(type) {
 
     case inputTypes.INDEXER_FLAGS_SELECT:
       return IndexerFlagsSelectInputConnector;
+
+    case inputTypes.LANGUAGE_SELECT:
+      return LanguageSelectInputConnector;
 
     case inputTypes.SELECT:
       return EnhancedSelectInput;

@@ -49,6 +49,7 @@ function getSelectValues(selectOptions) {
     result.push({
       key: option.value,
       value: option.name,
+      dividerAfter: option.dividerAfter,
       hint: option.hint
     });
 

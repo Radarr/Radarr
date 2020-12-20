@@ -21,3 +21,8 @@
   color: $darkGray;
   font-size: $smallFontSize;
 }
+
+.divider {
+  border: none;
+  border-bottom: 1px solid $lightGray;
+}
