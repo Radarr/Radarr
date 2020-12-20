@@ -77,9 +77,10 @@ namespace NzbDrone.Host
                     }
                 })
                 .ConfigureKestrel(serverOptions =>
-                    {
-                        serverOptions.AllowSynchronousIO = true;
-                    })
+                {
+                    serverOptions.AllowSynchronousIO = true;
+                    serverOptions.Limits.MaxRequestBodySize = null;
+                })
                 .ConfigureLogging(logging =>
                 {
                     logging.AddProvider(new NLogLoggerProvider());
