@@ -14,10 +14,10 @@ namespace NzbDrone.Core.Parser
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(LanguageParser));
 
-        private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<italian>\b(?:ita|italian)\b)|(?<german>\b(?:german|videomann|ger)\b)|(?<flemish>flemish)|(?<bulgarian>bgaudio)|(?<brazilian>dublado)|(?<greek>greek)|(?<french>(?:\W|_)(?:FR|VO|VFF|VFQ|VFI|VF2|TRUEFRENCH)(?:\W|_))|(?<russian>\brus\b)|(?<english>\beng\b)|(?<hungarian>\b(?:HUNDUB|HUN)\b)|(?<hebrew>\bHebDub\b)|(?<chinese>\[(?:CH[ST]|BIG5|GB)\]|简|繁|字幕)",
+        private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<italian>\b(?:ita|italian)\b)|(?<german>\b(?:german|videomann|ger)\b)|(?<flemish>flemish)|(?<bulgarian>bgaudio)|(?<brazilian>dublado)|(?<greek>greek)|(?<french>(?:\W|_)(?:FR|VO|VFF|VFQ|VFI|VF2|TRUEFRENCH)(?:\W|_))|(?<russian>\brus\b)|(?<english>\beng\b)|(?<hungarian>\b(?:HUNDUB|HUN)\b)|(?<hebrew>\bHebDub\b)|(?<polish>\b(?:PL\W?DUB|DUB\W?PL|LEK\W?PL|PL\W?LEK)\b)|(?<chinese>\[(?:CH[ST]|BIG5|GB)\]|简|繁|字幕)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?<lithuanian>\bLT\b)|(?<czech>\bCZ\b)",
+        private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?<lithuanian>\bLT\b)|(?<czech>\bCZ\b)|(?<polish>\bPL\b)",
                                                                 RegexOptions.Compiled);
 
         private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})(?:[-_. ]forced)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -154,6 +154,11 @@ namespace NzbDrone.Core.Parser
             {
                 languages.Add(Language.Czech);
             }
+            
+            if (caseSensitiveMatch.Groups["polish"].Captures.Cast<Capture>().Any())
+            {
+                languages.Add(Language.Polish);
+            }
 
             var matches = LanguageRegex.Matches(title);
 
@@ -219,6 +224,11 @@ namespace NzbDrone.Core.Parser
                     languages.Add(Language.Hebrew);
                 }
 
+                if (match.Groups["polish"].Success)
+                {
+                    languages.Add(Language.Polish);
+                }
+                
                 if (match.Groups["chinese"].Success)
                 {
                     languages.Add(Language.Chinese);
