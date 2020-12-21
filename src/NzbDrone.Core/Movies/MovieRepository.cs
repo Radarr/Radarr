@@ -313,19 +313,18 @@ namespace NzbDrone.Core.Movies
 
         public List<int> GetRecommendations()
         {
-            var recommendations = new List<List<int>>();
-            var tmdbIds = AllMovieTmdbIds();
+            var recommendations = new List<int>();
 
             using (var conn = _database.OpenConnection())
             {
-                recommendations =  conn.Query<List<int>>("SELECT Recommendations FROM Movies ORDER BY id DESC LIMIT 100").ToList();
+                recommendations = conn.Query<int>(@"
+                    SELECT Rec FROM
+                    (SELECT CAST(j.value AS INT) AS Rec FROM Movies CROSS JOIN json_each(Movies.Recommendations) AS j
+                    WHERE Rec NOT IN (SELECT TmdbId FROM Movies))
+                    GROUP BY Rec ORDER BY count(*) DESC LIMIT 100;").ToList();
             }
 
-            return recommendations.SelectMany(x => x)
-                                  .Where(r => !tmdbIds.Any(m => m == r))
-                                  .Distinct()
-                                  .Take(100)
-                                  .ToList();
+            return recommendations;
         }
     }
 }
