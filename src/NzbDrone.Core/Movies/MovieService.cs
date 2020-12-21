@@ -286,7 +286,7 @@ namespace NzbDrone.Core.Movies
         public void SetFileId(Movie movie, MovieFile movieFile)
         {
             _movieRepository.SetFileId(movieFile.Id, movie.Id);
-            _logger.Info("Linking [{0}] > [{1}]", movieFile.RelativePath, movie);
+            _logger.Info("Assigning file [{0}] to movie [{1}]", movieFile.RelativePath, movie);
         }
 
         public List<Movie> GetMoviesByFileId(int fileId)
@@ -386,7 +386,7 @@ namespace NzbDrone.Core.Movies
             _movieRepository.Update(movie);
 
             //_movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
-            _logger.Info("Linking [{0}] > [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie);
+            _logger.Info("Assigning file [{0}] to movie [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie);
         }
 
         public void Handle(MovieFileDeletedEvent message)
