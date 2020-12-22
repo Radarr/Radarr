@@ -41,6 +41,11 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Kai.Po.Che.2013.1080p.BluRay.REMUX.AVC.DTS-X.MA.5.1", null)]
         [TestCase("Kai.Po.Che.2013.1080p.BluRay.REMUX.AVC.DTS-MA.5.1", null)]
         [TestCase("Kai.Po.Che.2013.1080p.BluRay.REMUX.AVC.DTS-ES.MA.5.1", null)]
+        [TestCase("SomeMovie.1080p.BluRay.DTS-X.264.-D-Z0N3.mkv", "D-Z0N3")]
+        [TestCase("SomeMovie.1080p.BluRay.DTS.x264.-Blu-bits.mkv", "Blu-bits")]
+        [TestCase("SomeMovie.1080p.BluRay.DTS.x264.-DX-TV.mkv", "DX-TV")]
+        [TestCase("SomeMovie.1080p.BluRay.DTS.x264.-FTW-HS.mkv", "FTW-HS")]
+        [TestCase("SomeMovie.1080p.BluRay.DTS.x264.-VH-PROD.mkv", "VH-PROD")]
 
         //[TestCase("", "")]
         public void should_parse_release_group(string title, string expected)
