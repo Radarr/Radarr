@@ -314,6 +314,7 @@
   "FailedLoadingSearchResults": "Failed to load search results, please try again.",
   "FailedToLoadMovieFromAPI": "Failed to load movie from API",
   "FailedToLoadQueue": "Failed to load Queue",
+  "Fatal": "Fatal",
   "FeatureRequests": "Feature Requests",
   "FileDateHelpText": "Change file date on import/rescan",
   "FileManagement": "File Management",
