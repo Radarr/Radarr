@@ -8,6 +8,9 @@ import { inputTypes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
 const logLevelOptions = [
+  { key: 'fatal', value: translate('Fatal') },
+  { key: 'error', value: translate('Error') },
+  { key: 'warn', value: translate('Warn') },
   { key: 'info', value: translate('Info') },
   { key: 'debug', value: translate('Debug') },
   { key: 'trace', value: translate('Trace') }
