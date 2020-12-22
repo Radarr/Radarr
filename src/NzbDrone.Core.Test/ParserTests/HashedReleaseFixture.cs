@@ -37,6 +37,13 @@ namespace NzbDrone.Core.Test.ParserTests
                 @"C:\Test\Deadwood.2018.1080p.BluRay.x264-RADARR\Backup_72023S02-12.mkv".AsOsAgnostic(),
                 "Deadwood",
                 Quality.Bluray1080p,
+                "RADARR"
+            },
+            new object[]
+            {
+                @"C:\Test\Deadwood.2018.1080p.BluRay.x264\Backup_72023S02-12.mkv".AsOsAgnostic(),
+                "Deadwood",
+                Quality.Bluray1080p,
                 null
             },
             new object[]
