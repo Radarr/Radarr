@@ -47,10 +47,6 @@ class Link extends Component {
         el = 'a';
         linkProps.href = to;
         linkProps.target = target || '_self';
-      } else if (to.startsWith(`${window.Readarr.urlBase}/`)) {
-        el = RouterLink;
-        linkProps.to = to;
-        linkProps.target = target;
       } else {
         el = RouterLink;
         linkProps.to = `${window.Readarr.urlBase}/${to.replace(/^\//, '')}`;
