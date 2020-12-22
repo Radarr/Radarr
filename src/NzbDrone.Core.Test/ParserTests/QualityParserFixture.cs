@@ -57,6 +57,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Some.Movie.S03E06.HDTV-WiDE", false)]
         [TestCase("Movie Name.S10E27.WS.DSR.XviD-2HD", false)]
         [TestCase("Movie Name.S03.TVRip.XviD-NOGRP", false)]
+        [TestCase("Some.Movie.1994.GERMAN.VHSRiP.x264-TAPECRACKERs", false)]
+        [TestCase("Some.Movie.1949.VHSRip.Xvid - UpPTMSNM", false)]
+        [TestCase("Some.Movie.1981.VHSRip.x264 - bigbumbee", false)]
+        [TestCase("Some.Movie.1990.VHSrip.XviD - CG", false)]
         public void should_parse_sdtv_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R480p);

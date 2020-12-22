@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Parser
                                                                 (?<cam>CAMRIP|CAM|HDCAM|HD-CAM)|
                                                                 (?<wp>WORKPRINT|WP)|
                                                                 (?<pdtv>PDTV)|
-                                                                (?<sdtv>SDTV)|
+                                                                (?<sdtv>SDTV|VHSRip)|
                                                                 (?<tvrip>TVRip)
                                                                 )(?:\b|$|[ .])",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
