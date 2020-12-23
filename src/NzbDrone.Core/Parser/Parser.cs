@@ -125,6 +125,11 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex YearInTitleRegex = new Regex(@"^(?<title>.+?)(?:\W|_)?(?<year>\d{4})",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        //Handle Exception Release Groups that don't follow -RlsGrp; Manual List
+        //First Group is groups whose releases end with RlsGroup) or RlsGroup]  second group (entries after `(?=\]|\))|`) is name only...BE VERY CAREFUL WITH THIS, HIGH CHANCE OF FALSE POSITIVES
+        private static readonly Regex ExceptionReleaseGroupRegex = new Regex(@"(?<releasegroup>(Tigole|Joy|YIFY|YTS.MX|FreetheFish|afm72)(?=\]|\))|KRaLiMaRKo|E\.N\.D)",
+                                                        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private static readonly Regex WordDelimiterRegex = new Regex(@"(\s|\.|,|_|-|=|'|\|)+", RegexOptions.Compiled);
         private static readonly Regex SpecialCharRegex = new Regex(@"(\&|\:|\\|\/)+", RegexOptions.Compiled);
         private static readonly Regex PunctuationRegex = new Regex(@"[^\w\s]", RegexOptions.Compiled);
@@ -449,6 +454,13 @@ namespace NzbDrone.Core.Parser
             }
 
             title = CleanReleaseGroupRegex.Replace(title);
+
+            var exceptionMatch = ExceptionReleaseGroupRegex.Matches(title);
+
+            if (exceptionMatch.Count != 0)
+            {
+                return exceptionMatch.OfType<Match>().Last().Groups["releasegroup"].Value;
+            }
 
             var matches = ReleaseGroupRegex.Matches(title);
 
