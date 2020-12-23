@@ -3,7 +3,7 @@
 We're always looking for people to help make Readarr even better, there are a number of ways to contribute.
 
 ## Documentation ##
-Setup guides, FAQ, the more information we have on the wiki the better.
+Setup guides, FAQ, the more information we have on the [wiki](https://wiki.servarr.com/Readarr) the better.
 
 ## Development ##
 
@@ -11,7 +11,7 @@ Setup guides, FAQ, the more information we have on the wiki the better.
 - Visual Studio 2019 or higher (https://www.visualstudio.com/vs/).  The community version is free and works (https://www.visualstudio.com/downloads/).
 - HTML/Javascript editor of choice (VS Code/Sublime Text/Webstorm/Atom/etc)
 - [Git](https://git-scm.com/downloads)
-- [NodeJS](https://nodejs.org/en/download/) (Node 8.X.X or higher)
+- [NodeJS](https://nodejs.org/en/download/) (Node 10.X.X or higher)
 - [Yarn](https://yarnpkg.com/)
 - .NET Core 3.1. 
 
@@ -19,15 +19,14 @@ Setup guides, FAQ, the more information we have on the wiki the better.
 
 1. Fork Readarr
 2. Clone the repository into your development machine. [*info*](https://help.github.com/articles/working-with-repositories)
-3. Grab the submodules `git submodule init && git submodule update`
-4. Install the required Node Packages `yarn install`
-5. Start gulp to monitor your dev environment for any changes that need post processing using `yarn start` command.
-6. Build the project in Visual Studio, Setting startup project to `Readarr.Console` and framework to `netcoreapp31`
-7. Debug the project in Visual Studio
-8. Open http://localhost:8787
+3. Install the required Node Packages `yarn install`
+4. Start gulp to monitor your dev environment for any changes that need post processing using `yarn start` command.
+5. Build the project in Visual Studio, Setting startup project to `Readarr.Console` and framework to `netcoreapp31`
+6. Debug the project in Visual Studio
+7. Open http://localhost:8787
 
 ### Contributing Code ###
-- If you're adding a new, already requested feature, please comment on [Github Issues](https://github.com/readarr/Readarr/issues "Github Issues") so work is not duplicated (If you want to add something not already on there, please talk to us first)
+- If you're adding a new, already requested feature, please comment on [Github Issues](https://github.com/Readarr/Readarr/issues "Github Issues") so work is not duplicated (If you want to add something not already on there, please talk to us first)
 - Rebase from Readarr's develop branch, don't merge
 - Make meaningful commits, or squash them
 - Feel free to make a pull request before work is complete, this will let us see where its at and make comments/suggest improvements
