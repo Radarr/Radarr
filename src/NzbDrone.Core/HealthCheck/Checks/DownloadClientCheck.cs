@@ -43,7 +43,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     _logger.Debug(ex, "Unable to communicate with {0}", downloadClient.Definition.Name);
 
                     var message = string.Format(_localizationService.GetLocalizedString("DownloadClientCheckUnableToCommunicateMessage"), downloadClient.Definition.Name);
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"{message} {ex.Message}", "#unable-to-communicate-with-download-client");
+                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"{message} {ex.Message}", "#unable_to_communicate_with_download_client");
                 }
             }
 
