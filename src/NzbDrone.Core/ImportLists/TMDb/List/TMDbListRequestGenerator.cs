@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.ImportLists.TMDb.List
@@ -10,9 +12,11 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
         public IHttpClient HttpClient { get; set; }
         public IHttpRequestBuilderFactory RequestBuilder { get; set; }
         public Logger Logger { get; set; }
+        public int MaxPages { get; set; }
 
         public TMDbListRequestGenerator()
         {
+            MaxPages = 5;
         }
 
         public virtual ImportListPageableRequestChain GetMovies()
@@ -26,16 +30,21 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
 
         private IEnumerable<ImportListRequest> GetMoviesRequest()
         {
-            Logger.Info($"Importing TMDb movies from list: {Settings.ListId}");
+            for (var pageNumber = 1; pageNumber <= MaxPages; pageNumber++)
+            {
+                Logger.Info($"Importing TMDb movies from list: {Settings.ListId}&page={pageNumber}");
 
-            var requestBuilder = RequestBuilder.Create()
-                                               .SetSegment("api", "3")
-                                               .SetSegment("route", "list")
-                                               .SetSegment("id", Settings.ListId)
-                                               .SetSegment("secondaryRoute", "");
+                var requestBuilder = RequestBuilder.Create()
+                                                   .SetSegment("api", "3")
+                                                   .SetSegment("route", "list")
+                                                   .SetSegment("id", Settings.ListId)
+                                                   .SetSegment("secondaryRoute", "");
 
-            yield return new ImportListRequest(requestBuilder.Accept(HttpAccept.Json)
-                                                            .Build());
+                requestBuilder.AddQueryParam("page", pageNumber, true);
+
+                yield return new ImportListRequest(requestBuilder.Accept(HttpAccept.Json)
+                                                                .Build());
+            }
         }
     }
 }
