@@ -2,6 +2,7 @@ import { createBrowserHistory } from 'history';
 import React from 'react';
 import { render } from 'react-dom';
 import createAppStore from 'Store/createAppStore';
+import 'Diag/ConsoleApi';
 import App from './App/App';
 
 import './preload';
