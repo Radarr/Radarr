@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
@@ -18,6 +18,12 @@ namespace NzbDrone.Core.Test.Datastore
         [SetUp]
         public void Setup()
         {
+            AssertionOptions.AssertEquivalencyUsing(options =>
+            {
+                options.Using<DateTime>(ctx => ctx.Subject.Should().BeCloseTo(ctx.Expectation.ToUniversalTime())).WhenTypeIs<DateTime>();
+                return options;
+            });
+
             _basicList = Builder<ScheduledTask>
                 .CreateListOfSize(5)
                 .All()
