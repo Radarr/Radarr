@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Nancy;
 using NLog;
 using Radarr.Http.Frontend.Mappers;
@@ -17,11 +18,11 @@ namespace Radarr.Http.Frontend
             _requestMappers = requestMappers;
             _logger = logger;
 
-            Get("/{resource*}", x => Index());
-            Get("/", x => Index());
+            Get("/{resource*}", async (x, ct) => await Index());
+            Get("/", async (x, ct) => await Index());
         }
 
-        private Response Index()
+        private async Task<Response> Index()
         {
             var path = Request.Url.Path;
 
@@ -37,7 +38,7 @@ namespace Radarr.Http.Frontend
 
             if (mapper != null)
             {
-                return mapper.GetResponse(path);
+                return await mapper.GetResponse(path);
             }
 
             _logger.Warn("Couldn't find handler for {0}", path);

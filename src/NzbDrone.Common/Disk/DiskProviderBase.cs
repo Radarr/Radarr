@@ -303,7 +303,7 @@ namespace NzbDrone.Common.Disk
 
             // File.WriteAllText is broken on net core when writing to some CIFS mounts
             // This workaround from https://github.com/dotnet/runtime/issues/42790#issuecomment-700362617
-            using (var fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
+            using (var fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None))
             {
                 using (var writer = new StreamWriter(fs))
                 {

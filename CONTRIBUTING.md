@@ -23,7 +23,7 @@ Setup guides, FAQ, the more information we have on the [wiki](https://wiki.serva
 4. Start gulp to monitor your dev environment for any changes that need post processing using `yarn start` command.
 5. Build the project in Visual Studio, Setting startup project to `Radarr.Console` and framework to `netcoreapp31`
 6. Debug the project in Visual Studio
-7. Open http://localhost:8686
+7. Open http://localhost:7878
 
 ### Contributing Code ###
 - If you're adding a new, already requested feature, please comment on [Github Issues](https://github.com/Radarr/Radarr/issues "Github Issues") so work is not duplicated (If you want to add something not already on there, please talk to us first)

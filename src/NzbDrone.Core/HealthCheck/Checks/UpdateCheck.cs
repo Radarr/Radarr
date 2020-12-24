@@ -48,7 +48,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     return new HealthCheck(GetType(),
                         HealthCheckResult.Error,
                         string.Format(_localizationService.GetLocalizedString("UpdateCheckStartupTranslocationMessage"), startupFolder),
-                        "#cannot-install-update-because-startup-folder-is-in-an-app-translocation-folder.");
+                        "#cannot_install_update_because_startup_folder_is_in_an_app_translocation_folder.");
                 }
 
                 if (!_diskProvider.FolderWritable(startupFolder))
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     return new HealthCheck(GetType(),
                         HealthCheckResult.Error,
                         string.Format(_localizationService.GetLocalizedString("UpdateCheckStartupNotWritableMessage"), startupFolder, Environment.UserName),
-                        "#cannot-install-update-because-startup-folder-is-not-writable-by-the-user");
+                        "#cannot_install_update_because_startup_folder_is_not_writable_by_the_user");
                 }
 
                 if (!_diskProvider.FolderWritable(uiFolder))
@@ -64,7 +64,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     return new HealthCheck(GetType(),
                         HealthCheckResult.Error,
                         string.Format(_localizationService.GetLocalizedString("UpdateCheckUINotWritableMessage"), uiFolder, Environment.UserName),
-                        "#cannot-install-update-because-ui-folder-is-not-writable-by-the-user");
+                        "#cannot_install_update_because_ui_folder_is_not_writable_by_the_user");
                 }
             }
 

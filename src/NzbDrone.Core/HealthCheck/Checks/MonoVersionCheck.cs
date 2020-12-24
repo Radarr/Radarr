@@ -33,7 +33,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Error,
                     $"Currently installed Mono version {monoVersion} has a bug that causes issues connecting to indexers/download clients. You should upgrade to a higher version",
-                    "#currently-installed-mono-version-is-old-and-unsupported");
+                    "#currently_installed_mono_version_is_old_and_unsupported");
             }
 
             // Currently best stable Mono version (5.18 gets us .net 4.7.2 support)
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Notice,
                     string.Format(_localizationService.GetLocalizedString("MonoVersionCheckUpgradeRecommendedMessage"), monoVersion, bestVersion),
-                    "#currently-installed-mono-version-is-supported-but-upgrading-is-recommended");
+                    "#currently_installed_mono_version_is_supported_but_upgrading_is_recommended");
             }
 
             var oldVersion = new Version("5.4");
@@ -62,13 +62,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Error,
                     string.Format(_localizationService.GetLocalizedString("MonoVersionCheckUpgradeRecommendedMessage"), monoVersion, bestVersion),
-                    "#currently-installed-mono-version-is-old-and-unsupported");
+                    "#currently_installed_mono_version_is_old_and_unsupported");
             }
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Error,
                 string.Format(_localizationService.GetLocalizedString("MonoVersionCheckUpgradeRecommendedMessage"), monoVersion, bestVersion),
-                "#currently-installed-mono-version-is-old-and-unsupported");
+                "#currently_installed_mono_version_is_old_and_unsupported");
         }
 
         public override bool CheckOnSchedule => false;

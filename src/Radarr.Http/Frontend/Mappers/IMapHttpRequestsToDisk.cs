@@ -1,4 +1,5 @@
-﻿using Nancy;
+﻿using System.Threading.Tasks;
+using Nancy;
 
 namespace Radarr.Http.Frontend.Mappers
 {
@@ -6,6 +7,6 @@ namespace Radarr.Http.Frontend.Mappers
     {
         string Map(string resourceUrl);
         bool CanHandle(string resourceUrl);
-        Response GetResponse(string resourceUrl);
+        Task<Response> GetResponse(string resourceUrl);
     }
 }
