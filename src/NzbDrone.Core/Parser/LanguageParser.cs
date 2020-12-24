@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Parser
             {
                 languages.Add(Language.Czech);
             }
-            
+
             if (caseSensitiveMatch.Groups["polish"].Captures.Cast<Capture>().Any())
             {
                 languages.Add(Language.Polish);
@@ -228,7 +228,7 @@ namespace NzbDrone.Core.Parser
                 {
                     languages.Add(Language.Polish);
                 }
-                
+
                 if (match.Groups["chinese"].Success)
                 {
                     languages.Add(Language.Chinese);

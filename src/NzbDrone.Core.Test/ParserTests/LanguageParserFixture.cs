@@ -158,6 +158,14 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Pulp.Fiction.1994.Polish.1080p.XviD-LOL")]
+        [TestCase("Pulp.Fiction.1994.PL.1080p.XviD-LOL")]
+        [TestCase("Pulp.Fiction.1994.PLDUB.1080p.XviD-LOL")]
+        [TestCase("Pulp.Fiction.1994.DUBPL.1080p.XviD-LOL")]
+        [TestCase("Pulp.Fiction.1994.PL-DUB.1080p.XviD-LOL")]
+        [TestCase("Pulp.Fiction.1994.DUB-PL.1080p.XviD-LOL")]
+        [TestCase("Pulp.Fiction.1994.PLLEK.1080p.XviD-LOL")]
+        [TestCase("Pulp.Fiction.1994.LEKPL.1080p.XviD-LOL")]
+        [TestCase("Pulp.Fiction.1994.PL-LEK.1080p.XviD-LOL")]
         public void should_parse_language_polish(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
