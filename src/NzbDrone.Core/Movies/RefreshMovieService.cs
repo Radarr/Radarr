@@ -241,7 +241,7 @@ namespace NzbDrone.Core.Movies
                     }
                     else
                     {
-                        _logger.Info("Skipping refresh of movie: {0}", movieLocal.Title);
+                        _logger.Debug("Skipping refresh of movie: {0}", movieLocal.Title);
                         RescanMovie(movieLocal, false, trigger);
                     }
                 }
