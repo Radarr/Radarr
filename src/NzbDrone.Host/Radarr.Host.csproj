@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NLog.Extensions.Logging" Version="1.6.2" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Api\Radarr.Api.csproj" />
