@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using NLog;
 using NzbDrone.Common.Composition;
@@ -27,6 +28,8 @@ namespace Radarr.Host
                 {
                     throw new TerminateApplicationException("Missing system requirements");
                 }
+
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
                 _container = MainAppContainerBuilder.BuildContainer(startupContext);
                 _container.Resolve<InitializeLogger>().Initialize();
