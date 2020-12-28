@@ -122,11 +122,17 @@ namespace NzbDrone.Core.Localization
             var dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             var baseFilenamePath = Path.Combine(prefix, baseFilename);
-            var languageBaseFilenamePath = Path.Combine(prefix, GetResourceFilename(culture.Split('_')[0]));
+
             var alternativeFilenamePath = Path.Combine(prefix, GetResourceFilename(culture));
 
             await CopyInto(dictionary, baseFilenamePath).ConfigureAwait(false);
-            await CopyInto(dictionary, languageBaseFilenamePath).ConfigureAwait(false);
+
+            if (culture.Contains("_"))
+            {
+                var languageBaseFilenamePath = Path.Combine(prefix, GetResourceFilename(culture.Split('_')[0]));
+                await CopyInto(dictionary, languageBaseFilenamePath).ConfigureAwait(false);
+            }
+
             await CopyInto(dictionary, alternativeFilenamePath).ConfigureAwait(false);
 
             return dictionary;
@@ -160,11 +166,11 @@ namespace NzbDrone.Core.Localization
 
         private static string GetResourceFilename(string culture)
         {
-            var parts = culture.Split('-');
+            var parts = culture.Split('_');
 
             if (parts.Length == 2)
             {
-                culture = parts[0].ToLowerInvariant() + "-" + parts[1].ToUpperInvariant();
+                culture = parts[0].ToLowerInvariant() + "_" + parts[1].ToUpperInvariant();
             }
             else
             {
