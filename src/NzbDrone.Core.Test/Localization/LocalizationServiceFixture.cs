@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.Localization
 
             localizedString.Should().Be("Backup Now");
 
-            ExceptionVerification.ExpectedErrors(2);
+            ExceptionVerification.ExpectedErrors(1);
         }
 
         [Test]
