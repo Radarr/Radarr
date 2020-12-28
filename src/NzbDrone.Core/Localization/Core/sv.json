@@ -533,7 +533,7 @@
     "Add": "Lägg till",
     "CertValidationNoLocal": "Inaktiverad för lokala adresser",
     "BindAddress": "Bindningsadress",
-    "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Är du säker på vill ta bort {1} föremål{2} från kön?",
+    "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Är du säker på vill ta bort {0} föremål{1} från kön?",
     "Announced": "Utannonserad",
     "AnnoucedMsg": "Filmen är utannonserad",
     "Always": "Alltid",
@@ -645,5 +645,6 @@
     "AfterManualRefresh": "Efter manuell uppdatering",
     "UnableToAddANewIndexerPleaseTryAgain": "Inte möjligt att lägga till en ny indexerare, var god försök igen.",
     "UnableToAddANewDownloadClientPleaseTryAgain": "Inte möjligt att lägga till en ny nedladdningsklient, var god försök igen.",
-    "UnableToAddANewCustomFormatPleaseTryAgain": "Inte möjligt att lägga till ett nytt anpassat format, var god försök igen."
+    "UnableToAddANewCustomFormatPleaseTryAgain": "Inte möjligt att lägga till ett nytt anpassat format, var god försök igen.",
+    "UnmonitoredHelpText": "Inkludera obevakade filmer i iCal flödet"
 }
