@@ -1,12 +1,12 @@
 Section: web
 Priority: optional
-Maintainer: Sonarr <contact@nzbdrone.com>
-Source: nzbdrone
-Homepage: https://sonarr.tv
-Vcs-Git: git@github.com:Sonarr/Sonarr.git
-Vcs-Browser: https://github.com/Sonarr/Sonarr
+Maintainer: Radarr
+Source: radarr
+Homepage: https://radarr.viedo
+Vcs-Git: git@github.com:Radarr/Radarr.git
+Vcs-Browser: https://github.com/Radarr/Radarr
 
-Package: nzbdrone
+Package: radarr
 Architecture: all
 Depends: libmono-cil-dev (>= 3.2), sqlite3 (>= 3.7), mediainfo (>= 0.7.52)
-Description: Sonarr is an internet PVR
+Description: Radarr is an internet PVR
