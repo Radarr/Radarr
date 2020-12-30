@@ -396,7 +396,7 @@
   "ImportListSyncIntervalHelpText": "How often Radarr syncs with your lists. Minimum value of 6 hours",
   "ImportMechanismHealthCheckMessage": "Enable Completed Download Handling",
   "ImportMovies": "Import Movies",
-  "ImportNotForDownloads": "Do not use this Import method to import downloads from your download client. This is ONLY for organized existing libraries.",
+  "ImportNotForDownloads": "Do not use for importing downloads from your download client, this is only for existing organized libraries, not unsorted files.",
   "ImportRootPath": "Point Radarr to the folder containing all of your movies, not a specific movie. e.g. {0} and not {1}. Additionally, each movie must be in its own folder within the root/library folder.",
   "ImportTipsMessage": "Some tips to ensure the import goes smoothly:",
   "InCinemas": "In Cinemas",
