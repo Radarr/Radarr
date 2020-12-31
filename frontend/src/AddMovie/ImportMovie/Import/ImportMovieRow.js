@@ -34,6 +34,13 @@ function ImportMovieRow(props) {
         {id}
       </VirtualTableRowCell>
 
+      <VirtualTableRowCell className={styles.movie}>
+        <ImportMovieSelectMovieConnector
+          id={id}
+          isExistingMovie={isExistingMovie}
+        />
+      </VirtualTableRowCell>
+
       <VirtualTableRowCell className={styles.monitor}>
         <FormInputGroup
           type={inputTypes.MOVIE_MONITORED_SELECT}
@@ -58,13 +65,6 @@ function ImportMovieRow(props) {
           name="qualityProfileId"
           value={qualityProfileId}
           onChange={onInputChange}
-        />
-      </VirtualTableRowCell>
-
-      <VirtualTableRowCell className={styles.movie}>
-        <ImportMovieSelectMovieConnector
-          id={id}
-          isExistingMovie={isExistingMovie}
         />
       </VirtualTableRowCell>
     </>
