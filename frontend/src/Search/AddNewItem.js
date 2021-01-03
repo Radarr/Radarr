@@ -6,7 +6,7 @@ import Button from 'Components/Link/Button';
 import Link from 'Components/Link/Link';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import { icons } from 'Helpers/Props';
 import AddNewAuthorSearchResultConnector from './Author/AddNewAuthorSearchResultConnector';
 import AddNewBookSearchResultConnector from './Book/AddNewBookSearchResultConnector';
@@ -87,7 +87,7 @@ class AddNewItem extends Component {
 
     return (
       <PageContent title="Add New Item">
-        <PageContentBodyConnector>
+        <PageContentBody>
           <div className={styles.searchContainer}>
             <div className={styles.searchIconContainer}>
               <Icon
@@ -182,7 +182,7 @@ class AddNewItem extends Component {
           }
 
           <div />
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

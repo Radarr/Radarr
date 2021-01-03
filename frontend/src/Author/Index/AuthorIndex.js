@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import NoAuthor from 'Author/NoAuthor';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageJumpBar from 'Components/Page/PageJumpBar';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
@@ -308,7 +308,7 @@ class AuthorIndex extends Component {
         </PageToolbar>
 
         <div className={styles.pageContentBodyWrapper}>
-          <PageContentBodyConnector
+          <PageContentBody
             registerScroller={this.setScrollerRef}
             className={styles.contentBody}
             innerClassName={styles[`${view}InnerContentBody`]}
@@ -347,7 +347,7 @@ class AuthorIndex extends Component {
               !error && isPopulated && !items.length &&
                 <NoAuthor totalItems={totalItems} />
             }
-          </PageContentBodyConnector>
+          </PageContentBody>
 
           {
             isLoaded && !!jumpBarItems.order.length &&

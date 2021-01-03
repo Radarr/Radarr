@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
@@ -106,7 +106,7 @@ class UnmappedFilesTable extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
-        <PageContentBodyConnector
+        <PageContentBody
           registerScroller={this.setScrollerRef}
         >
           {
@@ -143,7 +143,7 @@ class UnmappedFilesTable extends Component {
                 sortDirection={sortDirection}
               />
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

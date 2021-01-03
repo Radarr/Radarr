@@ -6,7 +6,7 @@ import NoAuthor from 'Author/NoAuthor';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageJumpBar from 'Components/Page/PageJumpBar';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
@@ -363,7 +363,7 @@ class Bookshelf extends Component {
         </PageToolbar>
 
         <div className={styles.pageContentBodyWrapper}>
-          <PageContentBodyConnector
+          <PageContentBody
             registerScroller={this.setScrollerRef}
             className={styles.contentBody}
             innerClassName={styles.innerContentBody}
@@ -414,7 +414,7 @@ class Bookshelf extends Component {
               !error && isPopulated && !items.length &&
                 <NoAuthor totalItems={totalItems} />
             }
-          </PageContentBodyConnector>
+          </PageContentBody>
 
           {
             isPopulated && !!jumpBarItems.order.length &&

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import { icons } from 'Helpers/Props';
@@ -77,7 +77,7 @@ class DownloadClientSettings extends Component {
           onSavePress={this.onSavePress}
         />
 
-        <PageContentBodyConnector>
+        <PageContentBody>
           <DownloadClientsConnector />
 
           <DownloadClientOptionsConnector
@@ -86,7 +86,7 @@ class DownloadClientSettings extends Component {
           />
 
           <RemotePathMappingsConnector />
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

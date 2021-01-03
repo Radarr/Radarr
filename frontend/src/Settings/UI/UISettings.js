@@ -7,7 +7,7 @@ import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import { inputTypes } from 'Helpers/Props';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 
@@ -65,7 +65,7 @@ class UISettings extends Component {
           onSavePress={onSavePress}
         />
 
-        <PageContentBodyConnector>
+        <PageContentBody>
           {
             isFetching &&
               <LoadingIndicator />
@@ -176,7 +176,7 @@ class UISettings extends Component {
                 </FieldSet>
               </Form>
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import MetadatasConnector from './Metadata/MetadatasConnector';
 import MetadataProviderConnector from './MetadataProvider/MetadataProviderConnector';
@@ -54,13 +54,13 @@ class MetadataSettings extends Component {
           onSavePress={this.onSavePress}
         />
 
-        <PageContentBodyConnector>
+        <PageContentBody>
           <MetadataProviderConnector
             onChildMounted={this.onChildMounted}
             onChildStateChange={this.onChildStateChange}
           />
           <MetadatasConnector />
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

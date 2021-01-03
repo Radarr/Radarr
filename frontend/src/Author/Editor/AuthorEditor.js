@@ -4,7 +4,7 @@ import NoAuthor from 'Author/NoAuthor';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import Table from 'Components/Table/Table';
@@ -196,7 +196,7 @@ class AuthorEditor extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
-        <PageContentBodyConnector>
+        <PageContentBody>
           {
             isFetching && !isPopulated &&
               <LoadingIndicator />
@@ -243,7 +243,7 @@ class AuthorEditor extends Component {
             !error && isPopulated && !items.length &&
               <NoAuthor totalItems={totalItems} />
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
 
         <AuthorEditorFooter
           authorIds={selectedAuthorIds}

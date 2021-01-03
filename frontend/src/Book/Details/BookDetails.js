@@ -17,7 +17,7 @@ import IconButton from 'Components/Link/IconButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
@@ -197,7 +197,7 @@ class BookDetails extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
-        <PageContentBodyConnector innerClassName={styles.innerContentBody}>
+        <PageContentBody innerClassName={styles.innerContentBody}>
           <div className={styles.header}>
             <div
               className={styles.backdrop}
@@ -467,7 +467,7 @@ class BookDetails extends Component {
             onModalClose={this.onDeleteBookModalClose}
           />
 
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

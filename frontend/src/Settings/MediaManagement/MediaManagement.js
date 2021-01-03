@@ -7,7 +7,7 @@ import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import { inputTypes, sizes } from 'Helpers/Props';
 import RemotePathMappingsConnector from 'Settings/DownloadClients/RemotePathMappings/RemotePathMappingsConnector';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
@@ -63,7 +63,7 @@ class MediaManagement extends Component {
           onSavePress={onSavePress}
         />
 
-        <PageContentBodyConnector>
+        <PageContentBody>
           <RootFoldersConnector />
           <RemotePathMappingsConnector />
           <NamingConnector />
@@ -445,7 +445,7 @@ class MediaManagement extends Component {
                 }
               </Form>
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

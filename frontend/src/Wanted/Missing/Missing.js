@@ -4,7 +4,7 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
@@ -198,7 +198,7 @@ class Missing extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
-        <PageContentBodyConnector>
+        <PageContentBody>
           {
             isAnyFetching && !isAllPopulated &&
               <LoadingIndicator />
@@ -278,7 +278,7 @@ class Missing extends Component {
             onModalClose={this.onInteractiveImportModalClose}
             showReplaceExistingFiles={true}
           />
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

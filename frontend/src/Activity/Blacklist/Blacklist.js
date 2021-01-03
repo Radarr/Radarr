@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
@@ -61,7 +61,7 @@ class Blacklist extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
-        <PageContentBodyConnector>
+        <PageContentBody>
           {
             isAnyFetching && !isAllPopulated &&
               <LoadingIndicator />
@@ -108,7 +108,7 @@ class Blacklist extends Component {
                 />
               </div>
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
       </PageContent>
     );
   }

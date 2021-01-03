@@ -3,7 +3,7 @@ import React from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
@@ -73,7 +73,7 @@ function LogsTable(props) {
         </PageToolbarSection>
       </PageToolbar>
 
-      <PageContentBodyConnector>
+      <PageContentBody>
         {
           isFetching && !isPopulated &&
             <LoadingIndicator />
@@ -116,7 +116,7 @@ function LogsTable(props) {
               />
             </div>
         }
-      </PageContentBodyConnector>
+      </PageContentBody>
     </PageContent>
   );
 }

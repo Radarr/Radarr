@@ -5,7 +5,7 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Measure from 'Components/Measure';
 import FilterMenu from 'Components/Menu/FilterMenu';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
@@ -130,7 +130,7 @@ class CalendarPage extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
-        <PageContentBodyConnector
+        <PageContentBody
           className={styles.calendarPageBody}
           innerClassName={styles.calendarInnerPageBody}
         >
@@ -171,7 +171,7 @@ class CalendarPage extends Component {
             hasAuthor && !!authorError &&
               <LegendConnector />
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
 
         <CalendarLinkModal
           isOpen={isCalendarLinkModalOpen}

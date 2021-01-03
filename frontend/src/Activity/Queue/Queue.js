@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
-import PageContentBodyConnector from 'Components/Page/PageContentBodyConnector';
+import PageContentBody from 'Components/Page/PageContentBody';
 import PageToolbar from 'Components/Page/Toolbar/PageToolbar';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
@@ -200,7 +200,7 @@ class Queue extends Component {
           </PageToolbarSection>
         </PageToolbar>
 
-        <PageContentBodyConnector>
+        <PageContentBody>
           {
             isRefreshing && !isAllPopulated &&
               <LoadingIndicator />
@@ -257,7 +257,7 @@ class Queue extends Component {
                 />
               </div>
           }
-        </PageContentBodyConnector>
+        </PageContentBody>
 
         <RemoveQueueItemsModal
           isOpen={isConfirmRemoveModalOpen}
