@@ -172,7 +172,7 @@ namespace NzbDrone.Core.Test.ParserTests
 
             result.Languages.Should().BeEquivalentTo(Language.Polish);
         }
-        
+
         [TestCase("Pulp.Fiction.1994.PL-SUB.1080p.XviD-LOL")]
         [TestCase("Pulp.Fiction.1994.PLSUB.1080p.XviD-LOL")]
         [TestCase("Pulp.Fiction.1994.SUB-PL.1080p.XviD-LOL")]
