@@ -249,8 +249,16 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R1080p);
         }
 
-        [TestCase("Rise.Of.The.Planet.Of.The.Apes.2011.2160p.UHD.BluRay.DD5.1.HDR.x265-CtrlHD.mkv", false)]
-        [TestCase("X-Men.Days.of.Future.Past.2014.2160p.UHD.BluRay.X265-IAMABLE.mkv", false)]
+        [TestCase("Revolution.S01E02.Chained.Heat.[Bluray2160p].mkv", false)]
+        [TestCase("[FFF] Namiuchigiwa no Muromi-san - 10 [BD][2160p-FLAC][0C4091AF]", false)]
+        [TestCase("[coldhell] Pupa v2 [BD2160p][5A45EABE].mkv", false)]
+        [TestCase("[Kaylith] Isshuukan Friends Specials - 01 [BD 2160p FLAC][429FD8C7].mkv", false)]
+        [TestCase("[Zurako] Log Horizon - 01 - The Apocalypse (BD 2160p AAC) [7AE12174].mkv", false)]
+        [TestCase("WEEDS.S03E01-06.DUAL.2160p.Blu-ray.AC3.-HELLYWOOD.avi", false)]
+        [TestCase("[Coalgirls]_Durarara!!_01_(3840x2160_Blu-ray_FLAC)_[8370CB8F].mkv", false)]
+        [TestCase("John.Carpenter.Live.Retrospective.2016.2018.2160p.MBluRay.x264-CRUELTY.mkv", false)]
+        [TestCase("Heart.Live.In.Atlantic.City.2019.2160p.MBLURAY.x264-MBLURAYFANS.mkv", false)]
+        [TestCase("Opeth.Garden.Of.The.Titans.Live.At.Red.Rocks.Amphitheatre.2017.2160p.MBluRay.x264-TREBLE.mkv", false)]
         public void should_parse_bluray2160p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R2160p);
