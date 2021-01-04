@@ -1064,6 +1064,6 @@
     "YesMoveFiles": "Igen, helyezze át a fájlokat",
     "RequiredRestrictionHelpText": "A kiadásnak tartalmaznia kell legalább egy ilyen kifejezést (a kis- és nagybetűk nem számítanak)",
     "MoveFolders2": "Szeretnéd áthelyezni a filmfájlokat a(z) „{0}” mappából a(z) „{1}” mappába?",
-    "ImportNotForDownloads": "Ne használja ezt az Importálási módszert a letöltések importálására a letöltési kliensről. Ez CSAK a szervezett, meglévő könyvtárakra vonatkozik.",
+    "ImportNotForDownloads": "Ne használja letöltések importálására a letöltötőkliensről, ez csak a meglévő szervezett könyvtárakra vonatkozik, nem rendezetlen mappákra/fájlokra.",
     "ImportLibrary": "Könyvtár importálás"
 }
