@@ -101,6 +101,10 @@ class MovieIndexPoster extends Component {
       showSearchAction,
       showRelativeDates,
       shortDateFormat,
+      showReleaseDate,
+      inCinemas,
+      physicalRelease,
+      digitalRelease,
       timeFormat,
       isRefreshingMovie,
       isSearchingMovie,
@@ -126,6 +130,19 @@ class MovieIndexPoster extends Component {
       width: `${posterWidth}px`,
       height: `${posterHeight}px`
     };
+
+    let releaseDate = '';
+    if (showReleaseDate) {
+      if (physicalRelease && digitalRelease) {
+        releaseDate = '';
+      } else if (physicalRelease && !digitalRelease) {
+        releaseDate = physicalRelease;
+      } else if (digitalRelease && !physicalRelease) {
+        releaseDate = digitalRelease;
+      } else {
+        releaseDate = inCinemas;
+      }
+    }
 
     return (
       <div className={styles.content}>
@@ -253,9 +270,17 @@ class MovieIndexPoster extends Component {
             </div>
         }
 
+        {
+          showReleaseDate &&
+            <div className={styles.title}>
+              {releaseDate}
+            </div>
+        }
+
         <MovieIndexPosterInfo
           qualityProfile={qualityProfile}
           showQualityProfile={showQualityProfile}
+          showReleaseDate={showReleaseDate}
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
@@ -298,6 +323,10 @@ MovieIndexPoster.propTypes = {
   showSearchAction: PropTypes.bool.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
+  showReleaseDate: PropTypes.bool.isRequired,
+  inCinemas: PropTypes.string,
+  physicalRelease: PropTypes.string,
+  digitalRelease: PropTypes.string,
   timeFormat: PropTypes.string.isRequired,
   isRefreshingMovie: PropTypes.bool.isRequired,
   isSearchingMovie: PropTypes.bool.isRequired,
