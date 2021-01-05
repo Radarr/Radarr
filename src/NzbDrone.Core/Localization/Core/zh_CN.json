@@ -1047,5 +1047,6 @@
     "Extension": "扩展",
     "Discord": "Discord",
     "CustomFormatUnknownConditionOption": "未知的条件“{1}”的选项“{0}”",
-    "Retention": "保留"
+    "Retention": "保留",
+    "ChmodGroupHelpText": "组名称或GID。对于远程文件系统请使用GID。"
 }
