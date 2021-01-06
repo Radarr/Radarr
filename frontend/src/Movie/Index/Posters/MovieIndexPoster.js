@@ -134,13 +134,57 @@ class MovieIndexPoster extends Component {
     let releaseDate = '';
     if (showReleaseDate) {
       if (physicalRelease && digitalRelease) {
-        releaseDate = '';
+        if (physicalRelease < digitalRelease) {
+          releaseDate = getRelativeDate(
+            physicalRelease,
+            shortDateFormat,
+            showRelativeDates,
+            {
+              timeFormat,
+              timeForToday: false
+            }
+          );
+        } else {
+          getRelativeDate(
+            digitalRelease,
+            shortDateFormat,
+            showRelativeDates,
+            {
+              timeFormat,
+              timeForToday: false
+            }
+          );
+        }
       } else if (physicalRelease && !digitalRelease) {
-        releaseDate = physicalRelease;
+        releaseDate = getRelativeDate(
+          physicalRelease,
+          shortDateFormat,
+          showRelativeDates,
+          {
+            timeFormat,
+            timeForToday: false
+          }
+        );
       } else if (digitalRelease && !physicalRelease) {
-        releaseDate = digitalRelease;
+        releaseDate = getRelativeDate(
+          digitalRelease,
+          shortDateFormat,
+          showRelativeDates,
+          {
+            timeFormat,
+            timeForToday: false
+          }
+        );
       } else {
-        releaseDate = inCinemas;
+        releaseDate = getRelativeDate(
+          inCinemas,
+          shortDateFormat,
+          showRelativeDates,
+          {
+            timeFormat,
+            timeForToday: false
+          }
+        );
       }
     }
 
@@ -272,9 +316,12 @@ class MovieIndexPoster extends Component {
 
         {
           showReleaseDate &&
-            <div className={styles.title}>
-              {releaseDate}
-            </div>
+          <RelativeDateCellConnector
+            key={releaseDate}
+            className={styles.title}
+            date={releaseDate}
+            component={VirtualTableRowCell}
+          />
         }
 
         <MovieIndexPosterInfo
