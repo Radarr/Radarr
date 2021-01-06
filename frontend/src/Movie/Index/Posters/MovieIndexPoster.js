@@ -136,56 +136,16 @@ class MovieIndexPoster extends Component {
     if (showReleaseDate) {
       if (physicalRelease && digitalRelease) {
         if (physicalRelease < digitalRelease) {
-          releaseDate = getRelativeDate(
-            physicalRelease,
-            shortDateFormat,
-            showRelativeDates,
-            {
-              timeFormat,
-              timeForToday: false
-            }
-          );
+          releaseDate = physicalRelease;
         } else {
-          getRelativeDate(
-            digitalRelease,
-            shortDateFormat,
-            showRelativeDates,
-            {
-              timeFormat,
-              timeForToday: false
-            }
-          );
+          releaseDate = digitalRelease;
         }
       } else if (physicalRelease && !digitalRelease) {
-        releaseDate = getRelativeDate(
-          physicalRelease,
-          shortDateFormat,
-          showRelativeDates,
-          {
-            timeFormat,
-            timeForToday: false
-          }
-        );
+        releaseDate = physicalRelease;
       } else if (digitalRelease && !physicalRelease) {
-        releaseDate = getRelativeDate(
-          digitalRelease,
-          shortDateFormat,
-          showRelativeDates,
-          {
-            timeFormat,
-            timeForToday: false
-          }
-        );
+        releaseDate = digitalRelease;
       } else {
-        releaseDate = getRelativeDate(
-          inCinemas,
-          shortDateFormat,
-          showRelativeDates,
-          {
-            timeFormat,
-            timeForToday: false
-          }
-        );
+        releaseDate = inCinemas;
       }
     }
 
@@ -318,7 +278,15 @@ class MovieIndexPoster extends Component {
         {
           showReleaseDate &&
             <div className={styles.title}>
-              {releaseDate}
+              {getRelativeDate(
+                releaseDate,
+                shortDateFormat,
+                showRelativeDates,
+                {
+                  timeFormat,
+                  timeForToday: false
+                }
+              )}
             </div>
         }
 
