@@ -38,7 +38,8 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
     detailedProgressBar,
     showTitle,
     showMonitored,
-    showQualityProfile
+    showQualityProfile,
+    showReleaseDate
   } = posterOptions;
 
   const nextAiringHeight = 19;
@@ -59,6 +60,10 @@ function calculateRowHeight(posterHeight, sortKey, isSmallScreen, posterOptions)
   }
 
   if (showQualityProfile) {
+    heights.push(19);
+  }
+
+  if (showReleaseDate) {
     heights.push(19);
   }
 
@@ -206,7 +211,8 @@ class MovieIndexPosters extends Component {
       detailedProgressBar,
       showTitle,
       showMonitored,
-      showQualityProfile
+      showQualityProfile,
+      showReleaseDate
     } = posterOptions;
 
     const movieIdx = rowIndex * columnCount + columnIndex;
@@ -235,6 +241,7 @@ class MovieIndexPosters extends Component {
           showTitle={showTitle}
           showMonitored={showMonitored}
           showQualityProfile={showQualityProfile}
+          showReleaseDate={showReleaseDate}
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
