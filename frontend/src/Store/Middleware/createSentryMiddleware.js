@@ -3,14 +3,26 @@ import * as Integrations from '@sentry/integrations';
 import _ from 'lodash';
 import parseUrl from 'Utilities/String/parseUrl';
 
+const IgnoreErrors = [
+  // Innocuous browser errors
+  /ResizeObserver loop limit exceeded/,
+  /ResizeObserver loop completed with undelivered notifications/
+];
+
 function cleanseUrl(url) {
   const properties = parseUrl(url);
 
   return `${properties.pathname}${properties.search}`;
 }
 
-function cleanseData(data) {
-  const result = _.cloneDeep(data);
+function shouldIgnoreException(s) {
+  return s && IgnoreErrors.find((pattern) => pattern.test(s));
+}
+
+function cleanseData(event, hint) {
+  const result = _.cloneDeep(event);
+
+  const error = hint && hint.originalException;
 
   result.transaction = cleanseUrl(result.transaction);
 
@@ -24,6 +36,14 @@ function cleanseData(data) {
         });
       }
     });
+  }
+
+  if (
+    error &&
+    error.message &&
+    shouldIgnoreException(error.message)
+  ) {
+    return null;
   }
 
   result.request.url = cleanseUrl(result.request.url);
@@ -88,7 +108,6 @@ export default function createSentryMiddleware() {
     environment: branch,
     release,
     sendDefaultPii: true,
-    ignoreErrors: ['ResizeObserver loop limit exceeded'],
     beforeSend: cleanseData,
     integrations: [
       new Integrations.RewriteFrames({ iteratee: stripUrlBase }),
