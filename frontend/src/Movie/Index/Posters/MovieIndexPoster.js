@@ -13,6 +13,7 @@ import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MoviePoster from 'Movie/MoviePoster';
+import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import translate from 'Utilities/String/translate';
 import MovieIndexPosterInfo from './MovieIndexPosterInfo';
 import styles from './MovieIndexPoster.css';
@@ -316,12 +317,9 @@ class MovieIndexPoster extends Component {
 
         {
           showReleaseDate &&
-          <RelativeDateCellConnector
-            key={releaseDate}
-            className={styles.title}
-            date={releaseDate}
-            component={VirtualTableRowCell}
-          />
+            <div className={styles.title}>
+              {releaseDate}
+            </div>
         }
 
         <MovieIndexPosterInfo
