@@ -1058,5 +1058,6 @@
     "ImportNotForDownloads": "Não use este método para importar do seu cliente de download. Isso se aplica APENAS a bibliotecas organizadas existentes.",
     "ImportLibrary": "Importar biblioteca",
     "DefaultCase": "Capitalização padrão",
-    "ChooseAnotherFolder": "Escolher outra pasta"
+    "ChooseAnotherFolder": "Escolher outra pasta",
+    "MIA": "MIA"
 }
