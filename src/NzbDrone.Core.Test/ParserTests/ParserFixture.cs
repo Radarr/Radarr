@@ -162,6 +162,7 @@ namespace NzbDrone.Core.Test.ParserTests
             parsed.ImdbId.Should().Be(imdb);
         }
 
+        [TestCase("asfd", null)]
         [TestCase("123", "tt0000123")]
         [TestCase("1234567", "tt1234567")]
         [TestCase("tt1234567", "tt1234567")]

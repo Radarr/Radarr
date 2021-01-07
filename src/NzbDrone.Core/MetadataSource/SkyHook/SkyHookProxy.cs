@@ -125,6 +125,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public Movie GetMovieByImdbId(string imdbId)
         {
+            imdbId = Parser.Parser.NormalizeImdbId(imdbId);
+
+            if (imdbId == null)
+            {
+                return null;
+            }
+
             var httpRequest = _radarrMetadata.Create()
                                              .SetSegment("route", "movie/imdb")
                                              .Resource(imdbId.ToString())
