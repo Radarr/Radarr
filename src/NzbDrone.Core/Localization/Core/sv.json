@@ -18,7 +18,7 @@
     "ImportTipsMessage": "Några tips för att försäkra oss om att importen går smärtfritt:",
     "ImportSecondTip": "Peka Radarr till mappen som innehåller alla dina filmer, inte en specifik film. T.ex.",
     "ImportMechanismHealthCheckMessage": "Aktivera Avklarad nedladdningshantering",
-    "ImportHeader": "Importera filmer du redan har",
+    "ImportHeader": "Importera ett befintligt organiserat bibliotek för att lägga till filmer till Radarr",
     "ImportFirstTip": "Var noga med att dina filer inkluderar kvalitet i filnamnet. T.ex.",
     "Import": "Import",
     "iCalLink": "iCal-länk",
