@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Notifications.Email
         {
             RuleFor(c => c.Server).NotEmpty();
             RuleFor(c => c.Port).InclusiveBetween(1, 65535);
-            RuleFor(c => c.From).NotEmpty().EmailAddress();
+            RuleFor(c => c.From).NotEmpty();
             RuleForEach(c => c.To).EmailAddress();
             RuleForEach(c => c.CC).EmailAddress();
             RuleForEach(c => c.Bcc).EmailAddress();
