@@ -74,4 +74,4 @@ Thank you to [<img src="/Logo/jetbrains.svg" alt="JetBrains" width="32"> JetBrai
 ### License
 
 * [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
-* Copyright 2010-2020
+* Copyright 2010-2021
