@@ -6,6 +6,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.EnsureThat;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Organizer;
@@ -67,7 +68,14 @@ namespace NzbDrone.Core.Movies
 
             foreach (var m in newMovies)
             {
-                _logger.Info("Adding Movie {0} Path: [{1}]", m, m.Path);
+                if (m.Path.IsNullOrWhiteSpace())
+                {
+                    _logger.Info("Adding Movie {0} Root Folder Path: [{1}]", m, m.RootFolderPath);
+                }
+                else
+                {
+                    _logger.Info("Adding Movie {0} Path: [{1}]", m, m.Path);
+                }
 
                 try
                 {
