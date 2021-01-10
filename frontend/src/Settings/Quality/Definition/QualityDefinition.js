@@ -277,7 +277,7 @@ class QualityDefinition extends Component {
 
                 <NumberInput
                   className={styles.sizeInput}
-                  name={`${id}.min`}
+                  name={`${id}.max`}
                   value={maxSize || MAX}
                   min={minSize + 5}
                   max={MAX}
