@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462;net5.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net472</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net462'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <PackageReference Include="Mono.Posix-4.5" Version="4.5.0" PrivateAssets="all" />
   </ItemGroup>
   <!--

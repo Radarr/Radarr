@@ -96,7 +96,7 @@ stages:
         artifact: WindowsCoreTests
         displayName: Publish Windows Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net462/linux-x64/publish'
+      - publish: '$(testsFolder)/net472/linux-x64/publish'
         artifact: LinuxTests
         displayName: Publish Linux Mono Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
@@ -261,7 +261,7 @@ stages:
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-x64/net462
+          rootFolderOrFile: $(artifactsFolder)/linux-x64/net472
       - task: ArchiveFiles@2
         displayName: Create Linux Core tar
         inputs:
