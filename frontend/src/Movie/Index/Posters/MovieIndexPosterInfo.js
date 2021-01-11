@@ -10,10 +10,12 @@ function MovieIndexPosterInfo(props) {
     studio,
     qualityProfile,
     showQualityProfile,
+    showReleaseDate,
     added,
     inCinemas,
     digitalRelease,
     physicalRelease,
+    releaseDate,
     certification,
     path,
     sizeOnDisk,
@@ -57,7 +59,25 @@ function MovieIndexPosterInfo(props) {
     );
   }
 
-  if (sortKey === 'inCinemas' && inCinemas) {
+  if (sortKey === 'releaseDate' && !showReleaseDate) {
+    const relativeReleaseDate = getRelativeDate(
+      releaseDate,
+      shortDateFormat,
+      showRelativeDates,
+      {
+        timeFormat,
+        timeForToday: false
+      }
+    );
+
+    return (
+      <div className={styles.info}>
+        {translate('releaseDate')}: {relativeReleaseDate}
+      </div>
+    );
+  }
+
+  if (sortKey === 'inCinemas' && inCinemas && !showReleaseDate) {
     const inCinemasDate = getRelativeDate(
       inCinemas,
       shortDateFormat,
@@ -75,7 +95,7 @@ function MovieIndexPosterInfo(props) {
     );
   }
 
-  if (sortKey === 'digitalRelease' && digitalRelease) {
+  if (sortKey === 'digitalRelease' && digitalRelease && !showReleaseDate) {
     const digitalReleaseDate = getRelativeDate(
       digitalRelease,
       shortDateFormat,
@@ -93,7 +113,7 @@ function MovieIndexPosterInfo(props) {
     );
   }
 
-  if (sortKey === 'physicalRelease' && physicalRelease) {
+  if (sortKey === 'physicalRelease' && physicalRelease && !showReleaseDate) {
     const physicalReleaseDate = getRelativeDate(
       physicalRelease,
       shortDateFormat,
@@ -147,9 +167,11 @@ MovieIndexPosterInfo.propTypes = {
   certification: PropTypes.string,
   digitalRelease: PropTypes.string,
   physicalRelease: PropTypes.string,
+  releaseDate: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
   sizeOnDisk: PropTypes.number,
   sortKey: PropTypes.string.isRequired,
+  showReleaseDate: PropTypes.bool.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired
