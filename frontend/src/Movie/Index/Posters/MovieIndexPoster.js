@@ -135,12 +135,14 @@ class MovieIndexPoster extends Component {
     let releaseDate = '';
     if (showReleaseDate) {
       releaseDate = inCinemas;
-      if (physicalRelease && digitalRelease) {
-        releaseDate = (physicalRelease < digitalRelease) ? physicalRelease : digitalRelease;
-      } else if (physicalRelease && !digitalRelease) {
-        releaseDate = physicalRelease;
-      } else if (digitalRelease && !physicalRelease) {
-        releaseDate = digitalRelease;
+      if (!inCinemas) {
+        if (physicalRelease && digitalRelease) {
+          releaseDate = (physicalRelease < digitalRelease) ? physicalRelease : digitalRelease;
+        } else if (physicalRelease && !digitalRelease) {
+          releaseDate = physicalRelease;
+        } else if (digitalRelease && !physicalRelease) {
+          releaseDate = digitalRelease;
+        }
       }
     }
 
