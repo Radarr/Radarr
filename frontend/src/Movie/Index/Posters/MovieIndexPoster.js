@@ -297,7 +297,6 @@ class MovieIndexPoster extends Component {
           inCinemas={inCinemas}
           physicalRelease={physicalRelease}
           digitalRelease={digitalRelease}
-          releaseDate={releaseDate}
           {...otherProps}
         />
 
