@@ -736,6 +736,7 @@
   "RelativePath": "Relative Path",
   "ReleaseBranchCheckOfficialBranchMessage": "Branch {0} is not a valid Radarr release branch, you will not receive updates",
   "Released": "Released",
+  "ReleaseDate": "Release Date",
   "ReleaseDates": "Release Dates",
   "ReleasedMsg": "Movie is released",
   "ReleaseGroup": "Release Group",
