@@ -25,7 +25,6 @@ namespace NzbDrone.Core.Test.NotificationTests.EmailTests
             _emailSettings = Builder<EmailSettings>.CreateNew()
                                         .With(s => s.Server = "someserver")
                                         .With(s => s.Port = 567)
-                                        .With(s => s.Ssl = true)
                                         .With(s => s.From = "radarr@radarr.video")
                                         .With(s => s.To = new string[] { "radarr@radarr.video" })
                                         .Build();
