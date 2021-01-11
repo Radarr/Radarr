@@ -288,12 +288,14 @@ class MovieIndexPoster extends Component {
         <MovieIndexPosterInfo
           qualityProfile={qualityProfile}
           showQualityProfile={showQualityProfile}
+          showReleaseDate={showReleaseDate}
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
           inCinemas={inCinemas}
           physicalRelease={physicalRelease}
           digitalRelease={digitalRelease}
+          releaseDate={releaseDate}
           {...otherProps}
         />
 
