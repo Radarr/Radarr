@@ -34,7 +34,6 @@ namespace NzbDrone.Core.Notifications.Email
         {
             Server = "smtp.gmail.com";
             Port = 587;
-            Ssl = true;
 
             To = Array.Empty<string>();
             CC = Array.Empty<string>();
@@ -47,8 +46,8 @@ namespace NzbDrone.Core.Notifications.Email
         [FieldDefinition(1, Label = "Port")]
         public int Port { get; set; }
 
-        [FieldDefinition(2, Label = "SSL", Type = FieldType.Checkbox)]
-        public bool Ssl { get; set; }
+        [FieldDefinition(2, Label = "Require Encryption", HelpText = "Require SSL (Port 465 only) or StartTLS (any other port)", Type = FieldType.Checkbox)]
+        public bool RequireEncryption { get; set; }
 
         [FieldDefinition(3, Label = "Username", Privacy = PrivacyLevel.UserName)]
         public string Username { get; set; }
