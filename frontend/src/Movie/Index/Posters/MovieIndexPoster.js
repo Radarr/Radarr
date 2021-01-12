@@ -270,18 +270,18 @@ class MovieIndexPoster extends Component {
         }
 
         {
-          showCinemaRelease && 
+          showCinemaRelease &&
             <div className={styles.title}>
-            {getRelativeDate(
-              inCinemas,
-              shortDateFormat,
-              showRelativeDates,
-              {
-                timeFormat,
-                timeForToday: false
-              }
-            )}
-          </div>
+              {getRelativeDate(
+                inCinemas,
+                shortDateFormat,
+                showRelativeDates,
+                {
+                  timeFormat,
+                  timeForToday: false
+                }
+              )}
+            </div>
         }
 
         {
