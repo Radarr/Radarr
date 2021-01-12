@@ -87,6 +87,13 @@ namespace NzbDrone.Core.Test.ParserTests
                 "Movie Title",
                 Quality.HDTV720p,
                 null
+            },
+            new object[]
+            {
+                @"C:\Test\Movie.Title.2018.720p.HDTV.H.264\cwnOJYks5E2WP7zGuzPkdkRK3JkWw0.mkv".AsOsAgnostic(),
+                "Movie Title",
+                Quality.HDTV720p,
+                null
             }
         };
 
