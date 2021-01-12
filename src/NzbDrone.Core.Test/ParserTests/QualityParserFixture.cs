@@ -241,9 +241,19 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("John.Carpenter.Live.Retrospective.2016.2018.1080p.MBluRay.x264-CRUELTY.mkv", false)]
         [TestCase("Heart.Live.In.Atlantic.City.2019.1080p.MBLURAY.x264-MBLURAYFANS.mkv", false)]
         [TestCase("Opeth.Garden.Of.The.Titans.Live.At.Red.Rocks.Amphitheatre.2017.1080p.MBluRay.x264-TREBLE.mkv", false)]
+        [TestCase("Rise.Of.The.Planet.Of.The.Apes.2011.UHD.BluRay.DD5.1.HDR.x265-CtrlHD/ctrlhd-rotpota-1080p.mkv", false)]
+        [TestCase("V for Vendetta 2005 1080p UHD BluRay DD+7.1 x264-LoRD.mkv", false)]
+        [TestCase("Rise.Of.The.Planet.Of.The.Apes.2011.1080p.UHD.BluRay.DD5.1.HDR.x265-CtrlHD.mkv", false)]
         public void should_parse_bluray1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R1080p);
+        }
+
+        [TestCase("Rise.Of.The.Planet.Of.The.Apes.2011.2160p.UHD.BluRay.DD5.1.HDR.x265-CtrlHD.mkv", false)]
+        [TestCase("X-Men.Days.of.Future.Past.2014.2160p.UHD.BluRay.X265-IAMABLE.mkv", false)]
+        public void should_parse_bluray2160p_quality(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R2160p);
         }
 
         [TestCase("Movie.Name.2004.576p.BDRip.x264-HANDJOB")]
@@ -267,6 +277,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("27.Dresses.2008.REMUX.2160p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
         [TestCase("The.Shining.1980.2160p.UHD.BluRay.Remux.HDR.HEVC.DTS-HD.MA.5.1-PmP.mkv")]
         [TestCase("Stranger.Things.2016.T1.UHDRemux.2160p.HEVC.Dual.AC3.5.1-TrueHD.5.1.Sub")]
+        [TestCase("[Dolby Vision] Game.of.Thrones.S07.MULTi.UHD.BLURAY.REMUX.DV-NoTag")]
         public void should_parse_remux2160p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R2160p, Modifier.REMUX);
