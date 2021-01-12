@@ -73,7 +73,7 @@ class MovieIndexPosterOptionsModalContent extends Component {
       state.showQualityProfile = showQualityProfile;
     }
 
-    if (showCinemaRelease != prevProps.showCinemaRelease) {
+    if (showCinemaRelease !== prevProps.showCinemaRelease) {
       state.showCinemaRelease = showCinemaRelease;
     }
 
