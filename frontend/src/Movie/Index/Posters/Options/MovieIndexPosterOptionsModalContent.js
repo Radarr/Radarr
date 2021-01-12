@@ -46,6 +46,7 @@ class MovieIndexPosterOptionsModalContent extends Component {
       showTitle,
       showMonitored,
       showQualityProfile,
+      showCinemaRelease,
       showReleaseDate,
       showSearchAction
     } = this.props;
