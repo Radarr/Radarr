@@ -75,15 +75,6 @@ function MovieIndexSortMenu(props) {
         </SortMenuItem>
 
         <SortMenuItem
-          name="releaseDate"
-          sortKey={sortKey}
-          sortDirection={sortDirection}
-          onPress={onSortSelect}
-        >
-          {translate('ReleaseDate')}
-        </SortMenuItem>
-
-        <SortMenuItem
           name="inCinemas"
           sortKey={sortKey}
           sortDirection={sortDirection}
