@@ -860,6 +860,8 @@
   "ShowAdvanced": "Show Advanced",
   "ShowAsAllDayEvents": "Show as All-Day Events",
   "ShowCertification": "Show Certification",
+  "ShowCinemaRelease": "Show Cinema Release Date",
+  "showCinemaReleaseHelpText": "Show cinema release date under poster",
   "ShowCutoffUnmetIconHelpText": "Show icon for files when the cutoff hasn't been met",
   "ShowDateAdded": "Show Date Added",
   "ShowGenres": "Show Genres",
