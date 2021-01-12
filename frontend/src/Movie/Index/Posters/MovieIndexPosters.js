@@ -212,6 +212,7 @@ class MovieIndexPosters extends Component {
       showTitle,
       showMonitored,
       showQualityProfile,
+      showCinemaRelease,
       showReleaseDate
     } = posterOptions;
 
@@ -242,6 +243,7 @@ class MovieIndexPosters extends Component {
           showMonitored={showMonitored}
           showQualityProfile={showQualityProfile}
           showReleaseDate={showReleaseDate}
+          showCinemaRelease={showCinemaRelease}
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
