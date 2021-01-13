@@ -165,11 +165,13 @@ class MovieFileEditorRow extends Component {
 
         <TableRowCell className={styles.actions}>
           <IconButton
+            title={translate('EditMovieFile')}
             name={icons.EDIT}
             onPress={this.onFileEditPress}
           />
 
           <IconButton
+            title={translate('Details')}
             name={icons.MEDIA_INFO}
             onPress={this.onFileDetailsPress}
           />
