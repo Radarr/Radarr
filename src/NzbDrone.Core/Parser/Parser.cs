@@ -79,7 +79,10 @@ namespace NzbDrone.Core.Parser
                 new Regex(@"^b00bs$", RegexOptions.Compiled | RegexOptions.IgnoreCase),
 
                 // additional Generic match for mixed-case hashes. - Started appearing Dec 2020
-                new Regex(@"^[0-9a-zA-Z]{30}", RegexOptions.Compiled)
+                new Regex(@"^[0-9a-zA-Z]{30}", RegexOptions.Compiled),
+
+                // additional Generic match for mixed-case hashes. - Started appearing Jan 2021
+                new Regex(@"^[0-9a-zA-Z]{39}", RegexOptions.Compiled)
             };
 
         //Regex to detect whether the title was reversed.

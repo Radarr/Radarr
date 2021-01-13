@@ -94,9 +94,15 @@ namespace NzbDrone.Core.Test.ParserTests
                 "Movie Title",
                 Quality.HDTV720p,
                 null
+            },
+            new object[]
+            {
+                @"C:\Test\Movie Title 1964 Criterion Collection 1080p Blu-ray Remux AVC DTS-HD MS 1 0\zM0vnVU1SoV4uwTihfzTHkYmJPBemgN3MqXG1fY.mkv".AsOsAgnostic(),
+                "Movie Title",
+                Quality.Remux1080p,
+                null
             }
         };
-
         [Test]
         [TestCaseSource(nameof(HashedReleaseParserCases))]
         public void should_properly_parse_hashed_releases(string path, string title, Quality quality, string releaseGroup)
