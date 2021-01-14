@@ -65,6 +65,27 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                     var title = torrent.ReleaseName;
                     IndexerFlags flags = 0;
 
+                    if (_settings.NewReleaseName)
+                    {
+                        if (!string.IsNullOrEmpty(torrent.RemasterTitle))
+                        {
+                            char[] charsToTrim = { '.', ' ' };
+                            torrent.RemasterTitle = torrent.RemasterTitle.Replace("With Commentary", "").Replace(" / ", ".").Trim(charsToTrim);
+                        }
+
+                        if (string.IsNullOrEmpty(torrent.ReleaseGroup))
+                        {
+                            title = $"{result.Title}.{result.Year}.{torrent.Resolution}.{torrent.Source}.{torrent.Codec}.{torrent.RemasterTitle}";
+                        }
+                        else
+                        {
+                            title = $"{result.Title}.{result.Year}.{torrent.Resolution}.{torrent.Source}.{torrent.Codec}.{torrent.RemasterTitle}-{torrent.ReleaseGroup}";
+                        }
+
+                        title = title.Replace(" ", ".");
+                    }
+
+
                     if (torrent.GoldenPopcorn)
                     {
                         flags |= IndexerFlags.PTP_Golden; //title = $"{title} 🍿";

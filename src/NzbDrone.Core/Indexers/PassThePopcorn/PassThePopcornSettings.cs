@@ -52,6 +52,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         [FieldDefinition(6, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/Definitions#Indexer_Flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
+        [FieldDefinition(7, Type = FieldType.Checkbox, Label = "New ReleaseTitle", HelpText = "Use the new releasetitle.")]
+        public bool NewReleaseName { get; set; }
+
         public NzbDroneValidationResult Validate()
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
