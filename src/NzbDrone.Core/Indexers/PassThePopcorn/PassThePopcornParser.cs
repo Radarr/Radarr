@@ -85,7 +85,6 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         title = title.Replace(" ", ".");
                     }
 
-
                     if (torrent.GoldenPopcorn)
                     {
                         flags |= IndexerFlags.PTP_Golden; //title = $"{title} 🍿";
