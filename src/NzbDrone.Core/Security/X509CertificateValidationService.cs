@@ -41,6 +41,11 @@ namespace NzbDrone.Core.Security
                 return true;
             }
 
+            if (request.RequestUri.Host == "localhost" || request.RequestUri.Host == "127.0.0.1")
+            {
+                return true;
+            }
+
             var ipAddresses = GetIPAddresses(request.RequestUri.Host);
             var certificateValidation = _configService.CertificateValidation;
 
