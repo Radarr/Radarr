@@ -19,7 +19,8 @@ const messages = [
   'I\'ll be here all week',
   'Don\'t forget to tip your waitress',
   'Apply directly to the forehead',
-  'Loading Battlestation'
+  'Loading Battlestation',
+  'Remove the joke "Congratulations! you are the 1000th visitor." on loading'
 ];
 
 let message = null;
