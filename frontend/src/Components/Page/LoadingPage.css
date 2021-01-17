@@ -1,3 +1,11 @@
 .page {
   composes: page from '~./Page.css';
 }
+
+.logoFull {
+  margin-top: 50px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 120px;
+  height: 40px;
+}
