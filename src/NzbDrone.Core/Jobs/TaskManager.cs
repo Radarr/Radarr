@@ -120,6 +120,11 @@ namespace NzbDrone.Core.Jobs
         {
             var interval = _configService.BackupInterval;
 
+            if (interval < 1)
+            {
+                interval = 1;
+            }
+
             return interval * 60 * 24;
         }
 
@@ -154,12 +159,12 @@ namespace NzbDrone.Core.Jobs
         public void HandleAsync(ConfigSavedEvent message)
         {
             var rss = _scheduledTaskRepository.GetDefinition(typeof(RssSyncCommand));
-            rss.Interval = _configService.RssSyncInterval;
+            rss.Interval = GetRssSyncInterval();
 
             var backup = _scheduledTaskRepository.GetDefinition(typeof(BackupCommand));
-            backup.Interval = _configService.BackupInterval;
+            backup.Interval = GetBackupInterval();
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask>{ rss, backup });
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, backup });
         }
     }
 }
