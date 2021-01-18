@@ -317,11 +317,21 @@ namespace NzbDrone.Core.Movies
 
             using (var conn = _database.OpenConnection())
             {
-                recommendations = conn.Query<int>(@"
-                    SELECT Rec FROM
-                    (SELECT CAST(j.value AS INT) AS Rec FROM Movies CROSS JOIN json_each(Movies.Recommendations) AS j
-                    WHERE Rec NOT IN (SELECT TmdbId FROM Movies union SELECT TmdbId from ImportExclusions))
-                    GROUP BY Rec ORDER BY count(*) DESC LIMIT 100;").ToList();
+                recommendations = conn.Query<int>(@"SELECT DISTINCT Rec FROM (
+                                                    SELECT DISTINCT Rec FROM
+                                                    (
+                                                    SELECT DISTINCT CAST(j.value AS INT) AS Rec FROM Movies CROSS JOIN json_each(Movies.Recommendations) AS j
+                                                    WHERE Rec NOT IN (SELECT TmdbId FROM Movies union SELECT TmdbId from ImportExclusions) LIMIT 10
+                                                    )
+                                                    UNION
+                                                    SELECT Rec FROM
+                                                    (
+                                                    SELECT CAST(j.value AS INT) AS Rec FROM Movies CROSS JOIN json_each(Movies.Recommendations) AS j
+                                                    WHERE Rec NOT IN (SELECT TmdbId FROM Movies union SELECT TmdbId from ImportExclusions)
+                                                    GROUP BY Rec ORDER BY count(*) DESC LIMIT 120
+                                                    )
+                                                    )
+                                                    LIMIT 100;").ToList();
             }
 
             return recommendations;
