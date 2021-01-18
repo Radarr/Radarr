@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Books;
@@ -23,7 +24,7 @@ namespace Readarr.Api.V1.RootFolders
         public string Password { get; set; }
         public string Library { get; set; }
         public string OutputFormat { get; set; }
-        public int OutputProfile { get; set; }
+        public string OutputProfile { get; set; }
         public bool UseSsl { get; set; }
 
         public bool Accessible { get; set; }
@@ -58,7 +59,7 @@ namespace Readarr.Api.V1.RootFolders
                 Password = model.CalibreSettings?.Password,
                 Library = model.CalibreSettings?.Library,
                 OutputFormat = model.CalibreSettings?.OutputFormat,
-                OutputProfile = model.CalibreSettings?.OutputProfile ?? 0,
+                OutputProfile = ((CalibreProfile)(model.CalibreSettings?.OutputProfile ?? 0)).ToString(),
                 UseSsl = model.CalibreSettings?.UseSsl ?? false,
 
                 Accessible = model.Accessible,
@@ -86,7 +87,7 @@ namespace Readarr.Api.V1.RootFolders
                     Password = resource.Password,
                     Library = resource.Library,
                     OutputFormat = resource.OutputFormat,
-                    OutputProfile = resource.OutputProfile,
+                    OutputProfile = (int)Enum.Parse(typeof(CalibreProfile), resource.OutputProfile, true),
                     UseSsl = resource.UseSsl
                 };
             }

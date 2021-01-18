@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Books.Calibre
 
     public enum CalibreProfile
     {
-        Default,
+        @default,
         cybookg3,
         cybook_opus,
         generic_eink,

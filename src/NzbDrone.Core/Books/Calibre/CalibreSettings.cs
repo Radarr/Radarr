@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Books.Calibre
             RuleFor(c => c.Password).NotEmpty().When(c => !string.IsNullOrWhiteSpace(c.Username));
 
             RuleFor(c => c.OutputFormat).Must(x => x.Split(',').All(y => Enum.TryParse<CalibreFormat>(y, true, out _))).WithMessage("Invalid output formats");
+            RuleFor(c => c.OutputProfile).InclusiveBetween(0, (int)Enum.GetValues(typeof(CalibreProfile)).Cast<CalibreProfile>().Max());
         }
     }
 

@@ -1,4 +1,5 @@
 import * as align from './align';
+import * as calibreProfiles from './calibreProfiles';
 import * as filterBuilderTypes from './filterBuilderTypes';
 import * as filterBuilderValueTypes from './filterBuilderValueTypes';
 import filterTypePredicates from './filterTypePredicates';
@@ -15,6 +16,7 @@ import * as tooltipPositions from './tooltipPositions';
 
 export {
   align,
+  calibreProfiles,
   inputTypes,
   filterBuilderTypes,
   filterBuilderValueTypes,

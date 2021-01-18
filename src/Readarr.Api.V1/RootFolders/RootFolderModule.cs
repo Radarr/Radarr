@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http;
 using NzbDrone.Core.Books.Calibre;
 using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation;
@@ -52,6 +53,11 @@ namespace Readarr.Api.V1.RootFolders
             PostValidator.RuleFor(c => c.Path)
                 .SetValidator(rootFolderValidator);
 
+            SharedValidator.RuleFor(c => c)
+                .Must(x => CalibreLibraryOnlyUsedOnce(x))
+                .When(x => x.IsCalibreLibrary)
+                .WithMessage("Calibre library is already configured as a root folder");
+
             SharedValidator.RuleFor(c => c.Name)
                 .NotEmpty();
 
@@ -68,6 +74,25 @@ namespace Readarr.Api.V1.RootFolders
             SharedValidator.RuleFor(c => c.Password).NotEmpty().When(c => !string.IsNullOrWhiteSpace(c.Username));
 
             SharedValidator.RuleFor(c => c.OutputFormat).Must(x => x.Split(',').All(y => Enum.TryParse<CalibreFormat>(y, true, out _))).When(x => x.OutputFormat.IsNotNullOrWhiteSpace()).WithMessage("Invalid output formats");
+            SharedValidator.RuleFor(c => c.OutputProfile).IsEnumName(typeof(CalibreProfile));
+        }
+
+        private bool CalibreLibraryOnlyUsedOnce(RootFolderResource settings)
+        {
+            var newUri = GetLibraryUri(settings);
+            return !_rootFolderService.All().Exists(x => x.Id != settings.Id &&
+                                                    x.CalibreSettings != null &&
+                                                    GetLibraryUri(x.CalibreSettings) == newUri);
+        }
+
+        private string GetLibraryUri(RootFolderResource settings)
+        {
+            return HttpUri.CombinePath(HttpRequestBuilder.BuildBaseUrl(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase), settings.Library);
+        }
+
+        private string GetLibraryUri(CalibreSettings settings)
+        {
+            return HttpUri.CombinePath(HttpRequestBuilder.BuildBaseUrl(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase), settings.Library);
         }
 
         private RootFolderResource GetRootFolder(int id)
@@ -94,6 +119,11 @@ namespace Readarr.Api.V1.RootFolders
             if (model.Path != rootFolderResource.Path)
             {
                 throw new BadRequestException("Cannot edit root folder path");
+            }
+
+            if (model.IsCalibreLibrary)
+            {
+                _calibreProxy.Test(model.CalibreSettings);
             }
 
             _rootFolderService.Update(model);

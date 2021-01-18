@@ -166,7 +166,7 @@ namespace NzbDrone.Core.MediaFiles
 
                     options.Conversion_options.Output_fmt = format;
 
-                    if (settings.OutputProfile != (int)CalibreProfile.Default)
+                    if (settings.OutputProfile != (int)CalibreProfile.@default)
                     {
                         options.Conversion_options.Options.Output_profile = ((CalibreProfile)settings.OutputProfile).ToString();
                     }

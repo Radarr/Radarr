@@ -15,7 +15,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import Popover from 'Components/Tooltip/Popover';
-import { icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
+import { calibreProfiles, icons, inputTypes, kinds, tooltipPositions } from 'Helpers/Props';
 import styles from './EditRootFolderModalContent.css';
 
 function EditRootFolderModalContent(props) {
@@ -54,6 +54,8 @@ function EditRootFolderModalContent(props) {
     outputProfile,
     useSsl
   } = item;
+
+  const profileHelpText = calibreProfiles.options.find((x) => x.key === outputProfile.value).description;
 
   return (
     <ModalContent onModalClose={onModalClose}>
@@ -191,7 +193,20 @@ function EditRootFolderModalContent(props) {
                     </FormGroup>
 
                     <FormGroup>
-                      <FormLabel>Convert to format</FormLabel>
+                      <FormLabel>
+                        Convert to format
+                        <Popover
+                          anchor={
+                            <Icon
+                              className={styles.labelIcon}
+                              name={icons.INFO}
+                            />
+                          }
+                          title="Calibre output format"
+                          body={'Specify the output format.  Options are: MOBI, EPUB, AZW3, DOCX, FB2, HTMLZ, LIT, LRF, PDB, PDF, PMLZ, RB, RTF, SNB, TCR, TXT, TXTZ, ZIP'}
+                          position={tooltipPositions.RIGHT}
+                        />
+                      </FormLabel>
 
                       <FormInputGroup
                         type={inputTypes.TEXT}
@@ -203,12 +218,26 @@ function EditRootFolderModalContent(props) {
                     </FormGroup>
 
                     <FormGroup>
-                      <FormLabel>Calibre Output Profile</FormLabel>
+                      <FormLabel>
+                        Calibre Output Profile
+                        <Popover
+                          anchor={
+                            <Icon
+                              className={styles.labelIcon}
+                              name={icons.INFO}
+                            />
+                          }
+                          title="Calibre output profile"
+                          body={'Specify the output profile. The output profile tells the calibre conversion system how to optimize the created document for the specified device (such as by resizing images for the device screen size). In some cases, an output profile can be used to optimize the output for a particular device, but this is rarely necessary.'}
+                          position={tooltipPositions.RIGHT}
+                        />
+                      </FormLabel>
 
                       <FormInputGroup
-                        type={inputTypes.NUMBER}
+                        type={inputTypes.SELECT}
                         name="outputProfile"
-                        helpText="Output profile for conversion"
+                        values={calibreProfiles.options}
+                        helpText={profileHelpText}
                         {...outputProfile}
                         onChange={onInputChange}
                       />

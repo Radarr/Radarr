@@ -50,7 +50,7 @@ export default {
       host: 'localhost',
       port: 8080,
       useSsl: false,
-      outputProfile: 0,
+      outputProfile: 'default',
       defaultTags: []
     },
     isSaving: false,
