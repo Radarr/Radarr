@@ -705,7 +705,7 @@
   "Queue": "Queue",
   "Queued": "Queued",
   "QueueIsEmpty": "Queue is empty",
-  "QuickImport": "Quick Import",
+  "QuickImport": "Move Automatically",
   "Radarr": "Radarr",
   "RadarrCalendarFeed": "Radarr Calendar Feed",
   "RadarrSupportsAnyDownloadClient": "Radarr supports any download client that uses the Newznab standard, as well as other download clients listed below.",
