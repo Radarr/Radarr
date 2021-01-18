@@ -1076,5 +1076,5 @@
     "RequiredRestrictionHelpText": "Das Release mus mindesten eines der Begriffe beinhalten ( Groß-/Kleinschreibung wird nicht beachtet )",
     "MoveFolders2": "Bist du sicher, dass du die Filmdateien von '{0}' nach '{1}' verschieben willst ?",
     "ImportLibrary": "Mediathek Import",
-    "ImportNotForDownloads": "Diese Importierungsmethode ist nicht dafür gedacht, abgeschlossene Downloads deines Download Client hinzuzufügen. Dies ist NUR für organisierte Mediatheken."
+    "ImportNotForDownloads": "Benutze dies NICHT um abgeschlossene Downloads deines Download Clients hinzuzufügen. Dies ist NUR für vorhandene organisierte Mediatheken und nicht für unsortierte Dateien."
 }
