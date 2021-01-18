@@ -72,6 +72,7 @@ class BookRow extends Component {
       releaseDate,
       title,
       seriesTitle,
+      position,
       pageCount,
       ratings,
       isSaving,
@@ -136,6 +137,17 @@ class BookRow extends Component {
                   className={styles.title}
                 >
                   {seriesTitle || ''}
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'position') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.title}
+                >
+                  {position || ''}
                 </TableRowCell>
               );
             }
@@ -216,6 +228,7 @@ BookRow.propTypes = {
   releaseDate: PropTypes.string,
   title: PropTypes.string.isRequired,
   seriesTitle: PropTypes.string.isRequired,
+  position: PropTypes.number,
   pageCount: PropTypes.number,
   ratings: PropTypes.object.isRequired,
   titleSlug: PropTypes.string.isRequired,
