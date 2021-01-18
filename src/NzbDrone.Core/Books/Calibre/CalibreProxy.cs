@@ -245,31 +245,81 @@ namespace NzbDrone.Core.Books.Calibre
         {
             _bookCache.Clear();
 
-            try
+            var ids = GetAllBookIds(settings);
+            var result = new List<string>();
+
+            const int count = 100;
+            var offset = 0;
+
+            while (offset < ids.Count)
             {
                 var builder = GetBuilder($"ajax/books", settings);
-                builder.LogResponseContent = false;
+                builder.AddQueryParam("ids", ids.Skip(offset).Take(count).ConcatToString(","));
 
                 var request = builder.Build();
-                var response = _httpClient.Get<Dictionary<int, CalibreBook>>(request);
-
-                var result = new List<string>();
-
-                foreach (var book in response.Resource.Values)
+                try
                 {
-                    var remotePath = book?.Formats.Values.OrderBy(f => f.LastModified).FirstOrDefault()?.Path;
-                    if (remotePath == null)
+                    var response = _httpClient.Get<Dictionary<int, CalibreBook>>(request);
+                    foreach (var book in response.Resource.Values)
                     {
-                        continue;
+                        var remotePath = book?.Formats.Values.OrderBy(f => f.LastModified).FirstOrDefault()?.Path;
+                        if (remotePath == null)
+                        {
+                            continue;
+                        }
+
+                        var localPath = _pathMapper.RemapRemoteToLocal(settings.Host, new OsPath(remotePath)).FullPath;
+                        result.Add(localPath);
+
+                        _bookCache.Set(localPath, book, TimeSpan.FromMinutes(5));
                     }
-
-                    var localPath = _pathMapper.RemapRemoteToLocal(settings.Host, new OsPath(remotePath)).FullPath;
-                    result.Add(localPath);
-
-                    _bookCache.Set(localPath, book, TimeSpan.FromMinutes(5));
+                }
+                catch (HttpException ex)
+                {
+                    throw new CalibreException("Unable to connect to calibre library: {0}", ex, ex.Message);
                 }
 
-                return result;
+                offset += count;
+            }
+
+            return result;
+        }
+
+        public List<int> GetAllBookIds(CalibreSettings settings)
+        {
+            // the magic string is 'allbooks' converted to hex
+            var builder = GetBuilder($"/ajax/category/616c6c626f6f6b73", settings);
+            const int count = 100;
+            var offset = 0;
+
+            var ids = new List<int>();
+
+            while (true)
+            {
+                var result = GetPaged<CalibreCategory>(builder, count, offset);
+                if (!result.Resource.BookIds.Any())
+                {
+                    break;
+                }
+
+                offset += count;
+                ids.AddRange(result.Resource.BookIds);
+            }
+
+            return ids;
+        }
+
+        private HttpResponse<T> GetPaged<T>(HttpRequestBuilder builder, int count, int offset)
+            where T : new()
+        {
+            builder.AddQueryParam("num", count, replace: true);
+            builder.AddQueryParam("offset", offset, replace: true);
+
+            var request = builder.Build();
+
+            try
+            {
+                return _httpClient.Get<T>(request);
             }
             catch (HttpException ex)
             {
