@@ -320,7 +320,7 @@ namespace NzbDrone.Core.Movies
                 recommendations = conn.Query<int>(@"
                     SELECT Rec FROM
                     (SELECT CAST(j.value AS INT) AS Rec FROM Movies CROSS JOIN json_each(Movies.Recommendations) AS j
-                    WHERE Rec NOT IN (SELECT TmdbId FROM Movies))
+                    WHERE Rec NOT IN (SELECT TmdbId FROM Movies union SELECT TmdbId from ImportExclusions))
                     GROUP BY Rec ORDER BY count(*) DESC LIMIT 100;").ToList();
             }
 
