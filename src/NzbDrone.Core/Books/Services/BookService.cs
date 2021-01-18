@@ -63,15 +63,13 @@ namespace NzbDrone.Core.Books
 
         public Book AddBook(Book newBook, bool doRefresh = true)
         {
-            var editions = newBook.Editions.Value;
-            editions.ForEach(x => x.Monitored = newBook.Id > 0);
-
             _bookRepository.Upsert(newBook);
 
+            var editions = newBook.Editions.Value;
             editions.ForEach(x => x.BookId = newBook.Id);
 
-            _editionService.InsertMany(editions);
-            _editionService.SetMonitored(editions.First());
+            _editionService.InsertMany(editions.Where(x => x.Id == 0).ToList());
+            _editionService.SetMonitored(editions.FirstOrDefault(x => x.Monitored) ?? editions.First());
 
             _eventAggregator.PublishEvent(new BookAddedEvent(GetBook(newBook.Id), doRefresh));
 

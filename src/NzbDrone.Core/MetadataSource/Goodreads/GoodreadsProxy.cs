@@ -438,10 +438,20 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
                 var book = _bookService.FindById(remote.Item2.ForeignBookId);
                 var result = book ?? remote.Item2;
 
-                var edition = _editionService.GetEditionByForeignEditionId(remote.Item2.Editions.Value.Single(x => x.Monitored).ForeignEditionId);
-                if (edition != null)
+                // at this point, book could have the wrong edition.
+                // Check if we already have the correct edition.
+                var remoteEdition = remote.Item2.Editions.Value.Single(x => x.Monitored);
+                var localEdition = _editionService.GetEditionByForeignEditionId(remoteEdition.ForeignEditionId);
+                if (localEdition != null)
                 {
-                    result.Editions = new List<Edition> { edition };
+                    result.Editions = new List<Edition> { localEdition };
+                }
+
+                // If we don't have the correct edition in the response, add it in.
+                if (!result.Editions.Value.Any(x => x.ForeignEditionId == remoteEdition.ForeignEditionId))
+                {
+                    result.Editions.Value.ForEach(x => x.Monitored = false);
+                    result.Editions.Value.Add(remoteEdition);
                 }
 
                 var author = _authorService.FindById(remote.Item1);

@@ -141,7 +141,7 @@ class AddNewItem extends Component {
                       );
                     } else if (item.book) {
                       const book = item.book;
-                      const edition = book.editions[0];
+                      const edition = book.editions.find((x) => x.monitored);
                       return (
                         <AddNewBookSearchResultConnector
                           key={item.id}
