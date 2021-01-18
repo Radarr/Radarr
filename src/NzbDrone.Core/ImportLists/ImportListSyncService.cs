@@ -157,7 +157,6 @@ namespace NzbDrone.Core.ImportLists
 
             _logger.Trace($"Mapped {report.EditionGoodreadsId} to {mappedAlbum}");
 
-            report.EditionGoodreadsId = mappedAlbum.Editions.Value.Single(x => x.Monitored).ForeignEditionId;
             report.BookGoodreadsId = mappedAlbum.ForeignBookId;
             report.Book = mappedAlbum.Title;
             report.Author = mappedAlbum.AuthorMetadata?.Value?.Name;
