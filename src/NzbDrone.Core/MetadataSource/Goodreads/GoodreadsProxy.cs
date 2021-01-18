@@ -273,7 +273,10 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
             var bookDict = books.ToDictionary(x => x.ForeignBookId);
 
             // only take series where there are some works
-            foreach (var seriesResource in resource.List.Where(x => x.Works.Any()))
+            // and the title is not null
+            // e.g. https://www.goodreads.com/series/work/6470221?format=xml is in series 260494
+            // which has a null title and is not shown anywhere on goodreads webpage
+            foreach (var seriesResource in resource.List.Where(x => x.Title.IsNotNullOrWhiteSpace() && x.Works.Any()))
             {
                 var series = MapSeries(seriesResource);
                 series.LinkItems = new List<SeriesBookLink>();
