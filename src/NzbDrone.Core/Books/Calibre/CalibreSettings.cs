@@ -36,6 +36,7 @@ namespace NzbDrone.Core.Books.Calibre
         public string UrlBase { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Library { get; set; }
         public string OutputFormat { get; set; }
         public int OutputProfile { get; set; }
         public bool UseSsl { get; set; }

@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Disk;
@@ -13,12 +15,12 @@ using NzbDrone.Common.Serializer;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.RemotePathMappings;
+using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Books.Calibre
 {
     public interface ICalibreProxy
     {
-        void GetLibraryInfo(CalibreSettings settings);
         CalibreImportJob AddBook(BookFile book, CalibreSettings settings);
         void AddFormat(BookFile file, CalibreSettings settings);
         void RemoveFormats(int calibreId, IEnumerable<string> formats, CalibreSettings settings);
@@ -27,10 +29,13 @@ namespace NzbDrone.Core.Books.Calibre
         long ConvertBook(int calibreId, CalibreConversionOptions options, CalibreSettings settings);
         List<string> GetAllBookFilePaths(CalibreSettings settings);
         CalibreBook GetBook(int calibreId, CalibreSettings settings);
+        void Test(CalibreSettings settings);
     }
 
     public class CalibreProxy : ICalibreProxy
     {
+        private const int PAGE_SIZE = 1000;
+
         private readonly IHttpClient _httpClient;
         private readonly IMapCoversToLocal _mediaCoverService;
         private readonly IRemotePathMappingService _pathMapper;
@@ -62,7 +67,7 @@ namespace NzbDrone.Core.Books.Calibre
 
             try
             {
-                var builder = GetBuilder($"cdb/add-book/{jobid}/{addDuplicates}/{filename}", settings);
+                var builder = GetBuilder($"cdb/add-book/{jobid}/{addDuplicates}/{filename}/{settings.Library}", settings);
 
                 var request = builder.Build();
                 request.SetContent(body);
@@ -171,7 +176,7 @@ namespace NzbDrone.Core.Books.Calibre
 
         private void ExecuteSetFields(int id, CalibreChangesPayload payload, CalibreSettings settings)
         {
-            var builder = GetBuilder($"cdb/set-fields/{id}", settings)
+            var builder = GetBuilder($"cdb/set-fields/{id}/{settings.Library}", settings)
                 .Post()
                 .SetHeader("Content-Type", "application/json");
 
@@ -185,9 +190,9 @@ namespace NzbDrone.Core.Books.Calibre
         {
             try
             {
-                var builder = GetBuilder($"conversion/book-data/{calibreId}", settings);
-
-                var request = builder.Build();
+                var request = GetBuilder($"conversion/book-data/{calibreId}", settings)
+                    .AddQueryParam("library_id", settings.Library)
+                    .Build();
 
                 return _httpClient.Get<CalibreBookData>(request).Resource;
             }
@@ -201,9 +206,9 @@ namespace NzbDrone.Core.Books.Calibre
         {
             try
             {
-                var builder = GetBuilder($"conversion/start/{calibreId}", settings);
-
-                var request = builder.Build();
+                var request = GetBuilder($"conversion/start/{calibreId}", settings)
+                    .AddQueryParam("library_id", settings.Library)
+                    .Build();
                 request.SetContent(options.ToJson());
 
                 var jobId = _httpClient.Post<long>(request).Resource;
@@ -223,7 +228,7 @@ namespace NzbDrone.Core.Books.Calibre
         {
             try
             {
-                var builder = GetBuilder($"ajax/book/{calibreId}", settings);
+                var builder = GetBuilder($"ajax/book/{calibreId}/{settings.Library}", settings);
 
                 var request = builder.Build();
                 var book = _httpClient.Get<CalibreBook>(request).Resource;
@@ -248,13 +253,13 @@ namespace NzbDrone.Core.Books.Calibre
             var ids = GetAllBookIds(settings);
             var result = new List<string>();
 
-            const int count = 100;
             var offset = 0;
 
             while (offset < ids.Count)
             {
-                var builder = GetBuilder($"ajax/books", settings);
-                builder.AddQueryParam("ids", ids.Skip(offset).Take(count).ConcatToString(","));
+                var builder = GetBuilder($"ajax/books/{settings.Library}", settings);
+                builder.LogResponseContent = false;
+                builder.AddQueryParam("ids", ids.Skip(offset).Take(PAGE_SIZE).ConcatToString(","));
 
                 var request = builder.Build();
                 try
@@ -279,7 +284,7 @@ namespace NzbDrone.Core.Books.Calibre
                     throw new CalibreException("Unable to connect to calibre library: {0}", ex, ex.Message);
                 }
 
-                offset += count;
+                offset += PAGE_SIZE;
             }
 
             return result;
@@ -288,21 +293,20 @@ namespace NzbDrone.Core.Books.Calibre
         public List<int> GetAllBookIds(CalibreSettings settings)
         {
             // the magic string is 'allbooks' converted to hex
-            var builder = GetBuilder($"/ajax/category/616c6c626f6f6b73", settings);
-            const int count = 100;
+            var builder = GetBuilder($"/ajax/category/616c6c626f6f6b73/{settings.Library}", settings);
             var offset = 0;
 
             var ids = new List<int>();
 
             while (true)
             {
-                var result = GetPaged<CalibreCategory>(builder, count, offset);
+                var result = GetPaged<CalibreCategory>(builder, PAGE_SIZE, offset);
                 if (!result.Resource.BookIds.Any())
                 {
                     break;
                 }
 
-                offset += count;
+                offset += PAGE_SIZE;
                 ids.AddRange(result.Resource.BookIds);
             }
 
@@ -327,18 +331,13 @@ namespace NzbDrone.Core.Books.Calibre
             }
         }
 
-        public void GetLibraryInfo(CalibreSettings settings)
+        private CalibreLibraryInfo GetLibraryInfo(CalibreSettings settings)
         {
-            try
-            {
-                var builder = GetBuilder($"ajax/library-info", settings);
-                var request = builder.Build();
-                var response = _httpClient.Execute(request);
-            }
-            catch (HttpException ex)
-            {
-                throw new CalibreException("Unable to connect to calibre library: {0}", ex, ex.Message);
-            }
+            var builder = GetBuilder($"ajax/library-info", settings);
+            var request = builder.Build();
+            var response = _httpClient.Get<CalibreLibraryInfo>(request);
+
+            return response.Resource;
         }
 
         private HttpRequestBuilder GetBuilder(string relativePath, CalibreSettings settings)
@@ -361,8 +360,9 @@ namespace NzbDrone.Core.Books.Calibre
 
         private async Task PollConvertStatus(long jobId, CalibreSettings settings)
         {
-            var builder = GetBuilder($"/conversion/status/{jobId}", settings);
-            var request = builder.Build();
+            var request = GetBuilder($"/conversion/status/{jobId}", settings)
+                .AddQueryParam("library_id", settings.Library)
+                .Build();
 
             while (true)
             {
@@ -380,6 +380,94 @@ namespace NzbDrone.Core.Books.Calibre
 
                 await Task.Delay(2000);
             }
+        }
+
+        public void Test(CalibreSettings settings)
+        {
+            var failures = new List<ValidationFailure> { TestCalibre(settings) };
+            var validationResult = new ValidationResult(failures);
+            var result = new NzbDroneValidationResult(validationResult.Errors);
+
+            if (!result.IsValid || result.HasWarnings)
+            {
+                throw new ValidationException(result.Failures);
+            }
+        }
+
+        private ValidationFailure TestCalibre(CalibreSettings settings)
+        {
+            var builder = GetBuilder("", settings);
+            builder.Accept(HttpAccept.Html);
+            builder.SuppressHttpError = true;
+
+            var request = builder.Build();
+            request.LogResponseContent = false;
+            HttpResponse response;
+
+            try
+            {
+                response = _httpClient.Execute(request);
+            }
+            catch (WebException ex)
+            {
+                _logger.Error(ex, "Unable to connect to calibre");
+                if (ex.Status == WebExceptionStatus.ConnectFailure)
+                {
+                    return new NzbDroneValidationFailure("Host", "Unable to connect")
+                    {
+                        DetailedDescription = "Please verify the hostname and port."
+                    };
+                }
+
+                return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + ex.Message);
+            }
+
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return new ValidationFailure("Host", "Could not connect");
+            }
+
+            if (response.Content.Contains(@"guac-login"))
+            {
+                return new ValidationFailure("Port", "Bad port. This is the container's remote calibre GUI, not the calibre content server.  Try mapping port 8081.");
+            }
+
+            if (!response.Content.Contains(@"<title>calibre</title>"))
+            {
+                return new ValidationFailure("Port", "Not a valid calibre content server");
+            }
+
+            CalibreLibraryInfo libraryInfo;
+            try
+            {
+                libraryInfo = GetLibraryInfo(settings);
+            }
+            catch (HttpException e)
+            {
+                if (e.Response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    return new NzbDroneValidationFailure("Username", "Authentication failure")
+                    {
+                        DetailedDescription = "Please verify your username and password."
+                    };
+                }
+                else
+                {
+                    return new NzbDroneValidationFailure(string.Empty, "Unknown exception: " + e.Message);
+                }
+            }
+
+            if (settings.Library.IsNullOrWhiteSpace())
+            {
+                settings.Library = libraryInfo.DefaultLibrary;
+            }
+
+            if (!libraryInfo.LibraryMap.ContainsKey(settings.Library))
+            {
+                return new ValidationFailure("Library", "Not a valid library in calibre");
+            }
+
+            return null;
         }
     }
 }

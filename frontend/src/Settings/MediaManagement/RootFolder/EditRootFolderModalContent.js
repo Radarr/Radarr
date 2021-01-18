@@ -49,6 +49,7 @@ function EditRootFolderModalContent(props) {
     urlBase,
     username,
     password,
+    library,
     outputFormat,
     outputProfile,
     useSsl
@@ -100,7 +101,7 @@ function EditRootFolderModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Calibre Library</FormLabel>
+                <FormLabel>Use Calibre</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.CHECK}
@@ -173,6 +174,18 @@ function EditRootFolderModalContent(props) {
                         name="password"
                         helpText="Calibre content server password"
                         {...password}
+                        onChange={onInputChange}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>Calibre Library</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.TEXT}
+                        name="library"
+                        helpText="Calibre content server library name.  Leave blank for default."
+                        {...library}
                         onChange={onInputChange}
                       />
                     </FormGroup>

@@ -21,6 +21,7 @@ namespace Readarr.Api.V1.RootFolders
         public string UrlBase { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Library { get; set; }
         public string OutputFormat { get; set; }
         public int OutputProfile { get; set; }
         public bool UseSsl { get; set; }
@@ -55,6 +56,7 @@ namespace Readarr.Api.V1.RootFolders
                 UrlBase = model.CalibreSettings?.UrlBase,
                 Username = model.CalibreSettings?.Username,
                 Password = model.CalibreSettings?.Password,
+                Library = model.CalibreSettings?.Library,
                 OutputFormat = model.CalibreSettings?.OutputFormat,
                 OutputProfile = model.CalibreSettings?.OutputProfile ?? 0,
                 UseSsl = model.CalibreSettings?.UseSsl ?? false,
@@ -82,6 +84,7 @@ namespace Readarr.Api.V1.RootFolders
                     UrlBase = resource.UrlBase,
                     Username = resource.Username,
                     Password = resource.Password,
+                    Library = resource.Library,
                     OutputFormat = resource.OutputFormat,
                     OutputProfile = resource.OutputProfile,
                     UseSsl = resource.UseSsl

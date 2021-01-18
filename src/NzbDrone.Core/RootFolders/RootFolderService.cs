@@ -2,15 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Http;
-using NzbDrone.Core.Books.Calibre;
-using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.Messaging.Commands;
@@ -34,19 +30,16 @@ namespace NzbDrone.Core.RootFolders
     {
         private readonly IRootFolderRepository _rootFolderRepository;
         private readonly IDiskProvider _diskProvider;
-        private readonly ICalibreProxy _calibreProxy;
         private readonly IManageCommandQueue _commandQueueManager;
         private readonly Logger _logger;
 
         public RootFolderService(IRootFolderRepository rootFolderRepository,
-                                 ICalibreProxy calibreProxy,
                                  IDiskProvider diskProvider,
                                  IManageCommandQueue commandQueueManager,
                                  Logger logger)
         {
             _rootFolderRepository = rootFolderRepository;
             _diskProvider = diskProvider;
-            _calibreProxy = calibreProxy;
             _commandQueueManager = commandQueueManager;
             _logger = logger;
         }
@@ -97,12 +90,6 @@ namespace NzbDrone.Core.RootFolders
             if (!_diskProvider.FolderWritable(rootFolder.Path))
             {
                 throw new UnauthorizedAccessException(string.Format("Root folder path '{0}' is not writable by user '{1}'", rootFolder.Path, Environment.UserName));
-            }
-
-            if (rootFolder.IsCalibreLibrary)
-            {
-                // This will throw on failure
-                _calibreProxy.GetLibraryInfo(rootFolder.CalibreSettings);
             }
         }
 

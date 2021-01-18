@@ -16,8 +16,10 @@ namespace Readarr.Api.V1.RootFolders
     public class RootFolderModule : ReadarrRestModuleWithSignalR<RootFolderResource, RootFolder>
     {
         private readonly IRootFolderService _rootFolderService;
+        private readonly ICalibreProxy _calibreProxy;
 
         public RootFolderModule(IRootFolderService rootFolderService,
+                                ICalibreProxy calibreProxy,
                                 IBroadcastSignalRMessage signalRBroadcaster,
                                 RootFolderValidator rootFolderValidator,
                                 PathExistsValidator pathExistsValidator,
@@ -30,6 +32,7 @@ namespace Readarr.Api.V1.RootFolders
             : base(signalRBroadcaster)
         {
             _rootFolderService = rootFolderService;
+            _calibreProxy = calibreProxy;
 
             GetResourceAll = GetRootFolders;
             GetResourceById = GetRootFolder;
@@ -75,6 +78,11 @@ namespace Readarr.Api.V1.RootFolders
         private int CreateRootFolder(RootFolderResource rootFolderResource)
         {
             var model = rootFolderResource.ToModel();
+
+            if (model.IsCalibreLibrary)
+            {
+                _calibreProxy.Test(model.CalibreSettings);
+            }
 
             return _rootFolderService.Add(model).Id;
         }
