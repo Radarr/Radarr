@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Parser.Model;
@@ -49,7 +48,7 @@ namespace Readarr.Api.V1.BookFiles
             return new BookFileResource
             {
                 Id = model.Id,
-                BookId = model.EditionId,
+                BookId = model.Edition.Value?.BookId ?? 0,
                 Path = model.Path,
                 Size = model.Size,
                 DateAdded = model.DateAdded,
@@ -71,7 +70,7 @@ namespace Readarr.Api.V1.BookFiles
                 Id = model.Id,
 
                 AuthorId = author.Id,
-                BookId = model.EditionId,
+                BookId = model.Edition.Value?.BookId ?? 0,
                 Path = model.Path,
                 Size = model.Size,
                 DateAdded = model.DateAdded,
