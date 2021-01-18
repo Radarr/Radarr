@@ -72,7 +72,14 @@ namespace NzbDrone.Core.Books.Calibre
                 var request = builder.Build();
                 request.SetContent(body);
 
-                return _httpClient.Post<CalibreImportJob>(request).Resource;
+                var response = _httpClient.Post<CalibreImportJob>(request).Resource;
+
+                if (response.Id == 0)
+                {
+                    throw new CalibreException("Calibre rejected duplicate book");
+                }
+
+                return response;
             }
             catch (HttpException ex)
             {
