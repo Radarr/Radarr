@@ -8,6 +8,7 @@ using System.Text;
 using Dapper;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Messaging.Events;
+using static Dapper.SqlMapper;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -173,7 +174,18 @@ namespace NzbDrone.Core.Datastore
         private TModel Insert(IDbConnection connection, IDbTransaction transaction, TModel model)
         {
             SqlBuilderExtensions.LogQuery(_insertSql, model);
-            var multi = connection.QueryMultiple(_insertSql, model, transaction);
+
+            GridReader multi;
+            try
+            {
+                multi = connection.QueryMultiple(_insertSql, model, transaction);
+            }
+            catch (Exception e)
+            {
+                e.Data.Add("SQL", SqlBuilderExtensions.GetSqlLogString(_insertSql, model));
+                throw;
+            }
+
             var id = (int)multi.Read().First().id;
             _keyProperty.SetValue(model, id);
 
@@ -367,7 +379,14 @@ namespace NzbDrone.Core.Datastore
 
             SqlBuilderExtensions.LogQuery(sql, model);
 
-            connection.Execute(sql, model, transaction: transaction);
+            try
+            {
+                connection.Execute(sql, model, transaction: transaction);
+            }
+            catch (Exception e)
+            {
+                e.Data.Add("SQL", SqlBuilderExtensions.GetSqlLogString(sql, model));
+            }
         }
 
         private void UpdateFields(IDbConnection connection, IDbTransaction transaction, IList<TModel> models, List<PropertyInfo> propertiesToUpdate)
@@ -379,7 +398,14 @@ namespace NzbDrone.Core.Datastore
                 SqlBuilderExtensions.LogQuery(sql, model);
             }
 
-            connection.Execute(sql, models, transaction: transaction);
+            try
+            {
+                connection.Execute(sql, models, transaction: transaction);
+            }
+            catch (Exception e)
+            {
+                e.Data.Add("SQL", SqlBuilderExtensions.GetSqlLogString(sql, models));
+            }
         }
 
         protected virtual SqlBuilder PagedBuilder() => Builder();
