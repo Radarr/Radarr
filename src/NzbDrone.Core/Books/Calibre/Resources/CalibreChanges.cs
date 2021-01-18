@@ -26,8 +26,9 @@ namespace NzbDrone.Core.Books.Calibre
         public string Series { get; set; }
         [JsonProperty("series_index")]
         public double? SeriesIndex { get; set; }
-
+        [JsonProperty("added_formats")]
         public List<CalibreAddFormat> AddedFormats { get; set; }
+        [JsonProperty("removed_formats")]
         public List<string> RemovedFormats { get; set; }
     }
 
