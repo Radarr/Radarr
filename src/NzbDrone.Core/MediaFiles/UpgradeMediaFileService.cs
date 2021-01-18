@@ -75,7 +75,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 if (_diskProvider.FileExists(bookFilePath))
                 {
-                    _logger.Debug("Removing existing book file: {0}", file);
+                    _logger.Debug("Removing existing book file: {0} CalibreId: {1}", file, file.CalibreId);
 
                     if (!isCalibre)
                     {
@@ -83,12 +83,10 @@ namespace NzbDrone.Core.MediaFiles
                     }
                     else
                     {
-                        _calibre.RemoveFormats(file.CalibreId,
-                                              new[]
-                                              {
-                                                  Path.GetExtension(bookFile.Path)
-                                              },
-                                              settings);
+                        var existing = _calibre.GetBook(file.CalibreId, settings);
+                        var existingFormats = existing.Formats.Keys;
+                        _logger.Debug($"Removing existing formats {existingFormats.ConcatToString()} from calibre");
+                        _calibre.RemoveFormats(file.CalibreId, existingFormats, settings);
                     }
                 }
 
@@ -126,7 +124,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public BookFile CalibreAddAndConvert(BookFile file, CalibreSettings settings)
         {
-            _logger.Trace($"Importing to calibre: {file.Path}");
+            _logger.Trace($"Importing to calibre: {file.Path} calibre id: {file.CalibreId}");
 
             if (file.CalibreId == 0)
             {

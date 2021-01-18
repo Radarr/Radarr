@@ -110,10 +110,10 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                     continue;
                 }
 
-                if (replaceExisting)
-                {
-                    RemoveExistingTrackFiles(author, book);
-                }
+                // if (replaceExisting)
+                // {
+                //     RemoveExistingTrackFiles(author, book);
+                // }
 
                 // set the correct release to be monitored before importing the new files
                 var newRelease = albumDecision.First().Item.Edition;
