@@ -154,7 +154,8 @@ export const defaultState = {
     {
       name: 'size',
       label: translate('Size'),
-      type: filterBuilderTypes.NUMBER
+      type: filterBuilderTypes.NUMBER,
+      valueType: filterBuilderValueTypes.BYTES
     },
     {
       name: 'seeders',
