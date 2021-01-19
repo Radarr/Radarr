@@ -428,19 +428,19 @@ stages:
           mono520:
             testName: 'Mono 5.20'
             artifactName: LinuxTests
-            containerImage: servarr/testimages:mono-5.20
+            containerImage: ghcr.io/servarr/testimages:mono-5.20
           mono610:
             testName: 'Mono 6.10'
             artifactName: LinuxTests
-            containerImage: servarr/testimages:mono-6.10
+            containerImage: ghcr.io/servarr/testimages:mono-6.10
           mono612:
             testName: 'Mono 6.12'
             artifactName: LinuxTests
-            containerImage: servarr/testimages:mono-6.12
+            containerImage: ghcr.io/servarr/testimages:mono-6.12
           alpine:
             testName: 'Musl Net Core'
             artifactName: LinuxMuslCoreTests
-            containerImage: servarr/testimages:alpine
+            containerImage: ghcr.io/servarr/testimages:alpine
 
       pool:
         vmImage: 'ubuntu-18.04'
@@ -576,22 +576,22 @@ stages:
           mono520:
             testName: 'Mono 5.20'
             artifactName: LinuxTests
-            containerImage: servarr/testimages:mono-5.20
+            containerImage: ghcr.io/servarr/testimages:mono-5.20
             pattern: 'Readarr.**.linux.tar.gz'
           mono610:
             testName: 'Mono 6.10'
             artifactName: LinuxTests
-            containerImage: servarr/testimages:mono-6.10
+            containerImage: ghcr.io/servarr/testimages:mono-6.10
             pattern: 'Readarr.**.linux.tar.gz'
           mono612:
             testName: 'Mono 6.12'
             artifactName: LinuxTests
-            containerImage: servarr/testimages:mono-6.12
+            containerImage: ghcr.io/servarr/testimages:mono-6.12
             pattern: 'Readarr.**.linux.tar.gz'
           alpine:
             testName: 'Musl Net Core'
             artifactName: LinuxMuslCoreTests
-            containerImage: servarr/testimages:alpine
+            containerImage: ghcr.io/servarr/testimages:alpine
             pattern: 'Readarr.**.linux-musl-core-x64.tar.gz'
 
       pool:
