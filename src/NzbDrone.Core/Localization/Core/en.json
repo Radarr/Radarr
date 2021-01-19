@@ -894,6 +894,7 @@
   "SourcePath": "Source Path",
   "SourceRelativePath": "Source Relative Path",
   "SourceTitle": "Source Title",
+  "SqliteVersionCheckUpgradeRequiredMessage": "Currently installed SQLite version {0} is no longer supported. Please upgrade SQLite to at least version {1}.",
   "SSLCertPassword": "SSL Cert Password",
   "SSLCertPasswordHelpText": "Password for pfx file",
   "SSLCertPath": "SSL Cert Path",
