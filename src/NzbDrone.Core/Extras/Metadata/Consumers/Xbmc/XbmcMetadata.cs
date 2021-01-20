@@ -274,7 +274,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                     details.Add(new XElement("studio", movie.Studio));
 
-                    details.Add(new XElement("trailer", "https://www.youtube.com/watch?v=" + movie.YouTubeTrailerId));
+                    details.Add(new XElement("trailer", "plugin://plugin.video.youtube/play/?video_id=" + movie.YouTubeTrailerId));
 
                     if (movieFile.MediaInfo != null)
                     {
