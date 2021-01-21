@@ -97,14 +97,12 @@ namespace NzbDrone.Common.EnvironmentInfo
             }
             else
             {
-                return IsMusl() ? Os.LinuxMusl : Os.Linux;
+#if ISMUSL
+                return Os.LinuxMusl;
+#else
+                return Os.Linux;
+#endif
             }
-        }
-
-        private static bool IsMusl()
-        {
-            var output = RunAndCapture("ldd", "/bin/ls");
-            return output.Contains("libc.musl");
         }
 
         private static string RunAndCapture(string filename, string args)
