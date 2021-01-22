@@ -140,7 +140,7 @@ class MovieIndexPoster extends Component {
       releaseDateType = (physicalRelease < digitalRelease) ? 'Released' : 'Digital';
     } else if (physicalRelease && !digitalRelease) {
       releaseDate = physicalRelease;
-      releaseDateType = 'released';
+      releaseDateType = 'Released';
     } else if (digitalRelease && !physicalRelease) {
       releaseDate = digitalRelease;
       releaseDateType = 'Digital';
