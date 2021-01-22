@@ -134,13 +134,16 @@ class MovieIndexPoster extends Component {
     };
 
     let releaseDate = '';
-
+    let releaseDateType = '';
     if (physicalRelease && digitalRelease) {
       releaseDate = (physicalRelease < digitalRelease) ? physicalRelease : digitalRelease;
+      releaseDateType = (physicalRelease < digitalRelease) ? 'Released' : 'Digital';
     } else if (physicalRelease && !digitalRelease) {
       releaseDate = physicalRelease;
+      releaseDateType = 'released';
     } else if (digitalRelease && !physicalRelease) {
       releaseDate = digitalRelease;
+      releaseDateType = 'Digital';
     }
 
     return (
@@ -270,9 +273,9 @@ class MovieIndexPoster extends Component {
         }
 
         {
-          showCinemaRelease &&
+          showCinemaRelease && inCinemas &&
             <div className={styles.title}>
-              {getRelativeDate(
+              {translate('InCinemas')}: {getRelativeDate(
                 inCinemas,
                 shortDateFormat,
                 showRelativeDates,
@@ -285,9 +288,16 @@ class MovieIndexPoster extends Component {
         }
 
         {
+          showCinemaRelease && !inCinemas &&
+            <div className={styles.title}>
+              {translate('NoCinemaRelease')}
+            </div>
+        }
+
+        {
           showReleaseDate &&
             <div className={styles.title}>
-              {getRelativeDate(
+              {translate(releaseDateType)}: {getRelativeDate(
                 releaseDate,
                 shortDateFormat,
                 showRelativeDates,
