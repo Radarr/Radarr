@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             return _cache.Find(downloadId);
         }
 
-        public void UpdateAlbumCache(int bookId)
+        public void UpdateBookCache(int bookId)
         {
             var updateCacheItems = _cache.Values.Where(x => x.RemoteBook != null && x.RemoteBook.Books.Any(a => a.Id == bookId)).ToList();
 
@@ -267,7 +267,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
         public void Handle(BookDeletedEvent message)
         {
-            UpdateAlbumCache(message.Book.Id);
+            UpdateBookCache(message.Book.Id);
         }
     }
 }

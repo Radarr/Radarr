@@ -32,13 +32,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            var fakeArtist = Builder<Author>.CreateNew()
+            var fakeAuthor = Builder<Author>.CreateNew()
                          .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.MP3_320.Id })
                          .Build();
 
             _remoteBook = new RemoteBook
             {
-                Author = fakeArtist,
+                Author = fakeAuthor,
                 ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
             };
         }

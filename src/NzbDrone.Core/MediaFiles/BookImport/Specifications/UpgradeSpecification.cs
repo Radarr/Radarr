@@ -24,7 +24,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
             var files = item.Book?.BookFiles?.Value;
             if (files == null || !files.Any())
             {
-                // No existing books, skip.  This guards against new artists not having a QualityProfile.
+                // No existing books, skip.  This guards against new authors not having a QualityProfile.
                 return Decision.Accept();
             }
 

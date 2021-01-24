@@ -13,14 +13,14 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
     [TestFixture]
     public class GetMatchingPreferredWordsFixture : CoreTest<Core.Profiles.Releases.PreferredWordService>
     {
-        private Author _artist = null;
+        private Author _author = null;
         private List<ReleaseProfile> _releaseProfiles = null;
-        private string _title = "Artist.Name-Album.Name-2018-Flac-Vinyl-Readarr";
+        private string _title = "Author.Name-Book.Name-2018-Flac-Vinyl-Readarr";
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                                      .With(s => s.Tags = new HashSet<int>(new[] { 1, 2 }))
                                      .Build();
 
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
                   .Setup(s => s.EnabledForTags(It.IsAny<HashSet<int>>(), It.IsAny<int>()))
                   .Returns(new List<ReleaseProfile>());
 
-            Subject.GetMatchingPreferredWords(_artist, _title).Should().BeEmpty();
+            Subject.GetMatchingPreferredWords(_author, _title).Should().BeEmpty();
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
             _releaseProfiles.First().Preferred.RemoveAt(0);
             GivenReleaseProfile();
 
-            Subject.GetMatchingPreferredWords(_artist, _title).Should().BeEmpty();
+            Subject.GetMatchingPreferredWords(_author, _title).Should().BeEmpty();
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
         {
             GivenReleaseProfile();
 
-            Subject.GetMatchingPreferredWords(_artist, _title).Should().Contain(new[] { "Vinyl" });
+            Subject.GetMatchingPreferredWords(_author, _title).Should().Contain(new[] { "Vinyl" });
         }
     }
 }

@@ -28,9 +28,9 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Aggregation.Aggregators
             return new LocalEdition(tracks);
         }
 
-        private void VerifyData(LocalBook track, string artist, string title, int trackNum, int disc)
+        private void VerifyData(LocalBook track, string author, string title, int trackNum, int disc)
         {
-            track.FileTrackInfo.ArtistTitle.Should().Be(artist);
+            track.FileTrackInfo.AuthorTitle.Should().Be(author);
             track.FileTrackInfo.Title.Should().Be(title);
             track.FileTrackInfo.TrackNumbers[0].Should().Be(trackNum);
             track.FileTrackInfo.DiscNumber.Should().Be(disc);
@@ -59,23 +59,23 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Aggregation.Aggregators
         {
             private static List<string[]> tokenList = new List<string[]>
             {
-                new[] { "trackNum2", "artist", "title", "tag" },
-                new[] { "trackNum3", "artist", "title", "tag" },
-                new[] { "trackNum2", "artist", "tag", "title" },
-                new[] { "trackNum3", "artist", "tag", "title" },
-                new[] { "trackNum2", "artist", "title" },
-                new[] { "trackNum3", "artist", "title" },
+                new[] { "trackNum2", "author", "title", "tag" },
+                new[] { "trackNum3", "author", "title", "tag" },
+                new[] { "trackNum2", "author", "tag", "title" },
+                new[] { "trackNum3", "author", "tag", "title" },
+                new[] { "trackNum2", "author", "title" },
+                new[] { "trackNum3", "author", "title" },
 
-                new[] { "artist", "tag", "trackNum2", "title" },
-                new[] { "artist", "tag", "trackNum3", "title" },
-                new[] { "artist", "trackNum2", "title", "tag" },
-                new[] { "artist", "trackNum3", "title", "tag" },
-                new[] { "artist", "trackNum2", "title" },
-                new[] { "artist", "trackNum3", "title" },
+                new[] { "author", "tag", "trackNum2", "title" },
+                new[] { "author", "tag", "trackNum3", "title" },
+                new[] { "author", "trackNum2", "title", "tag" },
+                new[] { "author", "trackNum3", "title", "tag" },
+                new[] { "author", "trackNum2", "title" },
+                new[] { "author", "trackNum3", "title" },
 
-                new[] { "artist", "title", "tag" },
-                new[] { "artist", "tag", "title" },
-                new[] { "artist", "title" },
+                new[] { "author", "title", "tag" },
+                new[] { "author", "tag", "title" },
+                new[] { "author", "title" },
 
                 new[] { "trackNum2", "title" },
                 new[] { "trackNum3", "title" },
@@ -135,8 +135,8 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Aggregation.Aggregators
                 {
                     switch (field)
                     {
-                        case "artist":
-                            components.Add("artist name".Replace(" ", whitespace));
+                        case "author":
+                            components.Add("author name".Replace(" ", whitespace));
                             break;
                         case "tag":
                             components.Add("tag string ignore".Replace(" ", whitespace));
@@ -165,9 +165,9 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Aggregation.Aggregators
             {
                 var info = tracks[i - 1].FileTrackInfo;
 
-                if (tokens.Contains("artist"))
+                if (tokens.Contains("author"))
                 {
-                    info.ArtistTitle.Should().Be("artist name".Replace(" ", whitespace));
+                    info.AuthorTitle.Should().Be("author name".Replace(" ", whitespace));
                 }
 
                 if (tokens.Contains("title"))

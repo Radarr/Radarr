@@ -7,21 +7,21 @@ using NUnit.Framework;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
+namespace NzbDrone.Core.Test.MusicTests.BookRepositoryTests
 {
     [TestFixture]
-    public class AlbumRepositoryFixture : DbTest<BookService, Book>
+    public class BookRepositoryFixture : DbTest<BookService, Book>
     {
-        private Author _artist;
-        private Book _album;
-        private Book _albumSpecial;
-        private List<Book> _albums;
-        private BookRepository _albumRepo;
+        private Author _author;
+        private Book _book;
+        private Book _bookSpecial;
+        private List<Book> _books;
+        private BookRepository _bookRepo;
 
         [SetUp]
         public void Setup()
         {
-            _artist = new Author
+            _author = new Author
             {
                 Name = "Alien Ant Farm",
                 Monitored = true,
@@ -30,92 +30,92 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
                 AuthorMetadataId = 1
             };
 
-            _albumRepo = Mocker.Resolve<BookRepository>();
+            _bookRepo = Mocker.Resolve<BookRepository>();
 
-            _album = new Book
+            _book = new Book
             {
                 Title = "ANThology",
                 ForeignBookId = "1",
                 TitleSlug = "1-ANThology",
                 CleanTitle = "anthology",
-                Author = _artist,
-                AuthorMetadataId = _artist.AuthorMetadataId,
+                Author = _author,
+                AuthorMetadataId = _author.AuthorMetadataId,
             };
 
-            _albumRepo.Insert(_album);
-            _albumRepo.Update(_album);
+            _bookRepo.Insert(_book);
+            _bookRepo.Update(_book);
 
-            _albumSpecial = new Book
+            _bookSpecial = new Book
             {
                 Title = "+",
                 ForeignBookId = "2",
                 TitleSlug = "2-_",
                 CleanTitle = "",
-                Author = _artist,
-                AuthorMetadataId = _artist.AuthorMetadataId
+                Author = _author,
+                AuthorMetadataId = _author.AuthorMetadataId
             };
 
-            _albumRepo.Insert(_albumSpecial);
+            _bookRepo.Insert(_bookSpecial);
         }
 
         [TestCase("ANThology")]
         [TestCase("anthology")]
         [TestCase("anthology!")]
-        public void should_find_album_in_db_by_title(string title)
+        public void should_find_book_in_db_by_title(string title)
         {
-            var album = _albumRepo.FindByTitle(_artist.AuthorMetadataId, title);
+            var book = _bookRepo.FindByTitle(_author.AuthorMetadataId, title);
 
-            album.Should().NotBeNull();
-            album.Title.Should().Be(_album.Title);
+            book.Should().NotBeNull();
+            book.Title.Should().Be(_book.Title);
         }
 
         [Test]
-        public void should_find_album_in_db_by_title_all_special_characters()
+        public void should_find_book_in_db_by_title_all_special_characters()
         {
-            var album = _albumRepo.FindByTitle(_artist.AuthorMetadataId, "+");
+            var book = _bookRepo.FindByTitle(_author.AuthorMetadataId, "+");
 
-            album.Should().NotBeNull();
-            album.Title.Should().Be(_albumSpecial.Title);
+            book.Should().NotBeNull();
+            book.Title.Should().Be(_bookSpecial.Title);
         }
 
         [TestCase("ANTholog")]
         [TestCase("nthology")]
         [TestCase("antholoyg")]
         [TestCase("÷")]
-        public void should_not_find_album_in_db_by_incorrect_title(string title)
+        public void should_not_find_book_in_db_by_incorrect_title(string title)
         {
-            var album = _albumRepo.FindByTitle(_artist.AuthorMetadataId, title);
+            var book = _bookRepo.FindByTitle(_author.AuthorMetadataId, title);
 
-            album.Should().BeNull();
+            book.Should().BeNull();
         }
 
         [Test]
-        public void should_not_find_album_when_two_albums_have_same_name()
+        public void should_not_find_book_when_two_books_have_same_name()
         {
-            var albums = Builder<Book>.CreateListOfSize(2)
+            var books = Builder<Book>.CreateListOfSize(2)
                 .All()
                 .With(x => x.Id = 0)
-                .With(x => x.Author = _artist)
-                .With(x => x.AuthorMetadataId = _artist.AuthorMetadataId)
+                .With(x => x.Author = _author)
+                .With(x => x.AuthorMetadataId = _author.AuthorMetadataId)
                 .With(x => x.Title = "Weezer")
                 .With(x => x.CleanTitle = "weezer")
                 .Build();
 
-            _albumRepo.InsertMany(albums);
+            _bookRepo.InsertMany(books);
 
-            var album = _albumRepo.FindByTitle(_artist.AuthorMetadataId, "Weezer");
+            var book = _bookRepo.FindByTitle(_author.AuthorMetadataId, "Weezer");
 
-            _albumRepo.All().Should().HaveCount(4);
-            album.Should().BeNull();
+            _bookRepo.All().Should().HaveCount(4);
+            book.Should().BeNull();
         }
 
-        private void GivenMultipleAlbums()
+        private void GivenMultipleBooks()
         {
-            _albums = Builder<Book>.CreateListOfSize(4)
+            _books = Builder<Book>.CreateListOfSize(4)
                 .All()
                 .With(x => x.Id = 0)
-                .With(x => x.Author = _artist)
-                .With(x => x.AuthorMetadataId = _artist.AuthorMetadataId)
+                .With(x => x.Author = _author)
+                .With(x => x.AuthorMetadataId = _author.AuthorMetadataId)
                 .TheFirst(1)
 
                 // next
@@ -134,25 +134,25 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumRepositoryTests
                 .With(x => x.ReleaseDate = DateTime.UtcNow.AddDays(-2))
                 .BuildList();
 
-            _albumRepo.InsertMany(_albums);
+            _bookRepo.InsertMany(_books);
         }
 
         [Test]
-        public void get_next_albums_should_return_next_album()
+        public void get_next_books_should_return_next_book()
         {
-            GivenMultipleAlbums();
+            GivenMultipleBooks();
 
-            var result = _albumRepo.GetNextBooks(new[] { _artist.AuthorMetadataId });
-            result.Should().BeEquivalentTo(_albums.Take(1));
+            var result = _bookRepo.GetNextBooks(new[] { _author.AuthorMetadataId });
+            result.Should().BeEquivalentTo(_books.Take(1));
         }
 
         [Test]
-        public void get_last_albums_should_return_next_album()
+        public void get_last_books_should_return_next_book()
         {
-            GivenMultipleAlbums();
+            GivenMultipleBooks();
 
-            var result = _albumRepo.GetLastBooks(new[] { _artist.AuthorMetadataId });
-            result.Should().BeEquivalentTo(_albums.Skip(2).Take(1));
+            var result = _bookRepo.GetLastBooks(new[] { _author.AuthorMetadataId });
+            result.Should().BeEquivalentTo(_books.Skip(2).Take(1));
         }
     }
 }

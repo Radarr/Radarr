@@ -200,7 +200,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.HadoukenTests
         {
             GivenSuccessfulDownload();
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             var id = Subject.Download(remoteBook);
 
@@ -279,7 +279,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.HadoukenTests
         [Test]
         public void Download_from_magnet_link_should_return_hash_uppercase()
         {
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             remoteBook.Release.DownloadUrl = "magnet:?xt=urn:btih:a45129e59d8750f9da982f53552b1e4f0457ee9f";
 
@@ -294,7 +294,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.HadoukenTests
         [Test]
         public void Download_from_torrent_file_should_return_hash_uppercase()
         {
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             Mocker.GetMock<IHadoukenProxy>()
                .Setup(v => v.AddTorrentFile(It.IsAny<HadoukenSettings>(), It.IsAny<byte[]>()))

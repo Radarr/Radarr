@@ -15,7 +15,7 @@ namespace Readarr.Api.V1.Bookshelf
         {
             _authorService = authorService;
             _bookMonitoredService = bookMonitoredService;
-            Post("/", artist => UpdateAll());
+            Post("/", author => UpdateAll());
         }
 
         private object UpdateAll()

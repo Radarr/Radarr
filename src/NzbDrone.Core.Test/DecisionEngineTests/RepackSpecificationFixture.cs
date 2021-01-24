@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     public class RepackSpecificationFixture : CoreTest<RepackSpecification>
     {
         private ParsedBookInfo _parsedBookInfo;
-        private List<Book> _albums;
+        private List<Book> _books;
         private List<BookFile> _trackFiles;
 
         [SetUp]
@@ -31,13 +31,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                            .With(p => p.ReleaseGroup = "Readarr")
                                                            .Build();
 
-            _albums = Builder<Book>.CreateListOfSize(1)
+            _books = Builder<Book>.CreateListOfSize(1)
                                         .All()
                                         .BuildList();
 
             _trackFiles = Builder<BookFile>.CreateListOfSize(3)
                                             .All()
-                                            .With(t => t.EditionId = _albums.First().Id)
+                                            .With(t => t.EditionId = _books.First().Id)
                                             .BuildList();
 
             Mocker.GetMock<IMediaFileService>()
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             var remoteBook = Builder<RemoteBook>.CreateNew()
                                                       .With(e => e.ParsedBookInfo = _parsedBookInfo)
-                                                      .With(e => e.Books = _albums)
+                                                      .With(e => e.Books = _books)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteBook, null)
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var remoteBook = Builder<RemoteBook>.CreateNew()
                                                       .With(e => e.ParsedBookInfo = _parsedBookInfo)
-                                                      .With(e => e.Books = _albums)
+                                                      .With(e => e.Books = _books)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteBook, null)
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var remoteBook = Builder<RemoteBook>.CreateNew()
                                                       .With(e => e.ParsedBookInfo = _parsedBookInfo)
-                                                      .With(e => e.Books = _albums)
+                                                      .With(e => e.Books = _books)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteBook, null)
@@ -124,7 +124,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var remoteBook = Builder<RemoteBook>.CreateNew()
                                                       .With(e => e.ParsedBookInfo = _parsedBookInfo)
-                                                      .With(e => e.Books = _albums)
+                                                      .With(e => e.Books = _books)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteBook, null)
@@ -153,7 +153,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var remoteBook = Builder<RemoteBook>.CreateNew()
                                                       .With(e => e.ParsedBookInfo = _parsedBookInfo)
-                                                      .With(e => e.Books = _albums)
+                                                      .With(e => e.Books = _books)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteBook, null)
@@ -180,7 +180,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var remoteBook = Builder<RemoteBook>.CreateNew()
                                                       .With(e => e.ParsedBookInfo = _parsedBookInfo)
-                                                      .With(e => e.Books = _albums)
+                                                      .With(e => e.Books = _books)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteBook, null)
@@ -207,7 +207,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var remoteBook = Builder<RemoteBook>.CreateNew()
                                                       .With(e => e.ParsedBookInfo = _parsedBookInfo)
-                                                      .With(e => e.Books = _albums)
+                                                      .With(e => e.Books = _books)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteBook, null)
@@ -236,7 +236,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             var remoteBook = Builder<RemoteBook>.CreateNew()
                                                       .With(e => e.ParsedBookInfo = _parsedBookInfo)
-                                                      .With(e => e.Books = _albums)
+                                                      .With(e => e.Books = _books)
                                                       .Build();
 
             Subject.IsSatisfiedBy(remoteBook, null)

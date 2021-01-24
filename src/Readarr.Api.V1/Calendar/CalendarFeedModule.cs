@@ -73,7 +73,7 @@ namespace Readarr.Api.V1.Calendar
 
             foreach (var book in books.OrderBy(v => v.ReleaseDate.Value))
             {
-                var author = _authorService.GetAuthor(book.AuthorId); // Temp fix TODO: Figure out why Album.Artist is not populated during AlbumsBetweenDates Query
+                var author = _authorService.GetAuthor(book.AuthorId); // Temp fix TODO: Figure out why Book.Author is not populated during BooksBetweenDates Query
 
                 if (tags.Any() && tags.None(author.Tags.Contains))
                 {
@@ -83,7 +83,7 @@ namespace Readarr.Api.V1.Calendar
                 var occurrence = calendar.Create<CalendarEvent>();
                 occurrence.Uid = "Readarr_book_" + book.Id;
 
-                //occurrence.Status = album.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
+                //occurrence.Status = book.HasFile ? EventStatus.Confirmed : EventStatus.Tentative;
                 occurrence.Description = book.Editions.Value.Single(x => x.Monitored).Overview;
                 occurrence.Categories = book.Genres;
 

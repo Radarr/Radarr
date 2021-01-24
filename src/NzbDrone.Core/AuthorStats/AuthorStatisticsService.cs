@@ -37,7 +37,7 @@ namespace NzbDrone.Core.AuthorStats
         {
             var bookStatistics = _cache.Get("AllAuthors", () => _authorStatisticsRepository.AuthorStatistics());
 
-            return bookStatistics.GroupBy(s => s.AuthorId).Select(s => MapArtistStatistics(s.ToList())).ToList();
+            return bookStatistics.GroupBy(s => s.AuthorId).Select(s => MapAuthorStatistics(s.ToList())).ToList();
         }
 
         public AuthorStatistics AuthorStatistics(int authorId)
@@ -49,10 +49,10 @@ namespace NzbDrone.Core.AuthorStats
                 return new AuthorStatistics();
             }
 
-            return MapArtistStatistics(stats);
+            return MapAuthorStatistics(stats);
         }
 
-        private AuthorStatistics MapArtistStatistics(List<BookStatistics> bookStatistics)
+        private AuthorStatistics MapAuthorStatistics(List<BookStatistics> bookStatistics)
         {
             var authorStatistics = new AuthorStatistics
             {

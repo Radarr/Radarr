@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Notifications
             _logger = logger;
         }
 
-        private string GetMessage(Author author, List<Book> albums, QualityModel quality)
+        private string GetMessage(Author author, List<Book> books, QualityModel quality)
         {
             var qualityString = quality.Quality.ToString();
 
@@ -41,23 +41,23 @@ namespace NzbDrone.Core.Notifications
                 qualityString += " Proper";
             }
 
-            var albumTitles = string.Join(" + ", albums.Select(e => e.Title));
+            var bookTitles = string.Join(" + ", books.Select(e => e.Title));
 
             return string.Format("{0} - {1} - [{2}]",
                                     author.Name,
-                                    albumTitles,
+                                    bookTitles,
                                     qualityString);
         }
 
-        private string GetAlbumDownloadMessage(Author author, Book album, List<BookFile> tracks)
+        private string GetBookDownloadMessage(Author author, Book book, List<BookFile> tracks)
         {
             return string.Format("{0} - {1} ({2} Tracks Imported)",
                 author.Name,
-                album.Title,
+                book.Title,
                 tracks.Count);
         }
 
-        private string GetAlbumIncompleteImportMessage(string source)
+        private string GetBookIncompleteImportMessage(string source)
         {
             return string.Format("Readarr failed to Import all tracks for {0}",
                 source);
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Notifications
                                  string.Join("\n", diff.Select(x => $"{x.Key}: {FormatMissing(x.Value.Item1)} → {FormatMissing(x.Value.Item2)}")));
         }
 
-        private bool ShouldHandleArtist(ProviderDefinition definition, Author author)
+        private bool ShouldHandleAuthor(ProviderDefinition definition, Author author)
         {
             if (definition.Tags.Empty())
             {
@@ -126,7 +126,7 @@ namespace NzbDrone.Core.Notifications
             {
                 try
                 {
-                    if (!ShouldHandleArtist(notification.Definition, message.Book.Author))
+                    if (!ShouldHandleAuthor(notification.Definition, message.Book.Author))
                     {
                         continue;
                     }
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Notifications
 
             var downloadMessage = new BookDownloadMessage
             {
-                Message = GetAlbumDownloadMessage(message.Author, message.Book, message.ImportedBooks),
+                Message = GetBookDownloadMessage(message.Author, message.Book, message.ImportedBooks),
                 Author = message.Author,
                 Book = message.Book,
                 DownloadClient = message.DownloadClient,
@@ -162,7 +162,7 @@ namespace NzbDrone.Core.Notifications
             {
                 try
                 {
-                    if (ShouldHandleArtist(notification.Definition, message.Author))
+                    if (ShouldHandleAuthor(notification.Definition, message.Author))
                     {
                         if (downloadMessage.OldFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
                         {
@@ -183,7 +183,7 @@ namespace NzbDrone.Core.Notifications
             {
                 try
                 {
-                    if (ShouldHandleArtist(notification.Definition, message.Author))
+                    if (ShouldHandleAuthor(notification.Definition, message.Author))
                     {
                         notification.OnRename(message.Author);
                     }
@@ -226,7 +226,7 @@ namespace NzbDrone.Core.Notifications
 
             foreach (var notification in _notificationFactory.OnDownloadFailureEnabled())
             {
-                if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteBook.Author))
+                if (ShouldHandleAuthor(notification.Definition, message.TrackedDownload.RemoteBook.Author))
                 {
                     notification.OnDownloadFailure(downloadFailedMessage);
                 }
@@ -238,12 +238,12 @@ namespace NzbDrone.Core.Notifications
             // TODO: Build out this message so that we can pass on what failed and what was successful
             var downloadMessage = new BookDownloadMessage
             {
-                Message = GetAlbumIncompleteImportMessage(message.TrackedDownload.DownloadItem.Title),
+                Message = GetBookIncompleteImportMessage(message.TrackedDownload.DownloadItem.Title),
             };
 
             foreach (var notification in _notificationFactory.OnImportFailureEnabled())
             {
-                if (ShouldHandleArtist(notification.Definition, message.TrackedDownload.RemoteBook.Author))
+                if (ShouldHandleAuthor(notification.Definition, message.TrackedDownload.RemoteBook.Author))
                 {
                     notification.OnImportFailure(downloadMessage);
                 }
@@ -264,7 +264,7 @@ namespace NzbDrone.Core.Notifications
 
             foreach (var notification in _notificationFactory.OnBookRetagEnabled())
             {
-                if (ShouldHandleArtist(notification.Definition, message.Author))
+                if (ShouldHandleAuthor(notification.Definition, message.Author))
                 {
                     notification.OnBookRetag(retagMessage);
                 }

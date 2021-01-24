@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Download
                 var downloadProtocol = report.RemoteBook.Release.DownloadProtocol;
 
                 //Skip if already grabbed
-                if (IsAlbumProcessed(grabbed, report))
+                if (IsBookProcessed(grabbed, report))
                 {
                     continue;
                 }
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Download
             return decisions.Where(c => (c.Approved || c.TemporarilyRejected) && c.RemoteBook.Books.Any()).ToList();
         }
 
-        private bool IsAlbumProcessed(List<DownloadDecision> decisions, DownloadDecision report)
+        private bool IsBookProcessed(List<DownloadDecision> decisions, DownloadDecision report)
         {
             var bookIds = report.RemoteBook.Books.Select(e => e.Id).ToList();
 
@@ -133,13 +133,13 @@ namespace NzbDrone.Core.Download
 
         private void PreparePending(List<Tuple<DownloadDecision, PendingReleaseReason>> queue, List<DownloadDecision> grabbed, List<DownloadDecision> pending, DownloadDecision report, PendingReleaseReason reason)
         {
-            // If a release was already grabbed with matching albums we should store it as a fallback
+            // If a release was already grabbed with matching books we should store it as a fallback
             // and filter it out the next time it is processed.
             // If a higher quality release failed to add to the download client, but a lower quality release
             // was sent to another client we still list it normally so it apparent that it'll grab next time.
             // Delayed is treated the same, but only the first is listed the subsequent items as stored as Fallback.
-            if (IsAlbumProcessed(grabbed, report) ||
-                IsAlbumProcessed(pending, report))
+            if (IsBookProcessed(grabbed, report) ||
+                IsBookProcessed(pending, report))
             {
                 reason = PendingReleaseReason.Fallback;
             }

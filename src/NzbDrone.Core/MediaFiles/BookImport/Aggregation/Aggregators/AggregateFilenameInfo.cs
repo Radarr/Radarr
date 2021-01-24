@@ -121,7 +121,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Aggregation.Aggregators
 
             // Given both an "author" and "title" field, assume that one is
             // *actually* the author, which must be uniform, and use the other
-            // for the title. This, of course, won't work for VA albums.
+            // for the title. This, of course, won't work for VA books.
             string titleField;
             string author;
             if (keys.Contains("author"))
@@ -148,9 +148,9 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Aggregation.Aggregators
 
                 foreach (var track in matches.Keys)
                 {
-                    if (track.FileTrackInfo.ArtistTitle.IsNullOrWhiteSpace())
+                    if (track.FileTrackInfo.AuthorTitle.IsNullOrWhiteSpace())
                     {
-                        track.FileTrackInfo.ArtistTitle = author;
+                        track.FileTrackInfo.AuthorTitle = author;
                     }
                 }
             }

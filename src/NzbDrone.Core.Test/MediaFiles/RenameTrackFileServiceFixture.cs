@@ -14,24 +14,24 @@ namespace NzbDrone.Core.Test.MediaFiles
 {
     public class RenameTrackFileServiceFixture : CoreTest<RenameBookFileService>
     {
-        private Author _artist;
+        private Author _author;
         private List<BookFile> _trackFiles;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                                      .Build();
 
             _trackFiles = Builder<BookFile>.CreateListOfSize(2)
                                                 .All()
-                                                .With(e => e.Author = _artist)
+                                                .With(e => e.Author = _author)
                                                 .Build()
                                                 .ToList();
 
             Mocker.GetMock<IAuthorService>()
-                  .Setup(s => s.GetAuthor(_artist.Id))
-                  .Returns(_artist);
+                  .Setup(s => s.GetAuthor(_author.Id))
+                  .Returns(_author);
         }
 
         private void GivenNoTrackFiles()
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         private void GivenMovedFiles()
         {
             Mocker.GetMock<IMoveBookFiles>()
-                  .Setup(s => s.MoveBookFile(It.IsAny<BookFile>(), _artist));
+                  .Setup(s => s.MoveBookFile(It.IsAny<BookFile>(), _author));
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             GivenNoTrackFiles();
 
-            Subject.Execute(new RenameFilesCommand(_artist.Id, new List<int> { 1 }));
+            Subject.Execute(new RenameFilesCommand(_author.Id, new List<int> { 1 }));
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(v => v.PublishEvent(It.IsAny<AuthorRenamedEvent>()), Times.Never());
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Setup(s => s.MoveBookFile(It.IsAny<BookFile>(), It.IsAny<Author>()))
                   .Throws(new SameFilenameException("Same file name", "Filename"));
 
-            Subject.Execute(new RenameFilesCommand(_artist.Id, new List<int> { 1 }));
+            Subject.Execute(new RenameFilesCommand(_author.Id, new List<int> { 1 }));
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(v => v.PublishEvent(It.IsAny<AuthorRenamedEvent>()), Times.Never());
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             GivenTrackFiles();
             GivenMovedFiles();
 
-            Subject.Execute(new RenameFilesCommand(_artist.Id, new List<int> { 1 }));
+            Subject.Execute(new RenameFilesCommand(_author.Id, new List<int> { 1 }));
 
             Mocker.GetMock<IEventAggregator>()
                   .Verify(v => v.PublishEvent(It.IsAny<AuthorRenamedEvent>()), Times.Once());
@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             GivenTrackFiles();
             GivenMovedFiles();
 
-            Subject.Execute(new RenameFilesCommand(_artist.Id, new List<int> { 1 }));
+            Subject.Execute(new RenameFilesCommand(_author.Id, new List<int> { 1 }));
 
             Mocker.GetMock<IMediaFileService>()
                   .Verify(v => v.Update(It.IsAny<BookFile>()), Times.Exactly(2));
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             var files = new List<int> { 1 };
 
-            Subject.Execute(new RenameFilesCommand(_artist.Id, files));
+            Subject.Execute(new RenameFilesCommand(_author.Id, files));
 
             Mocker.GetMock<IMediaFileService>()
                   .Verify(v => v.Get(files), Times.Once());

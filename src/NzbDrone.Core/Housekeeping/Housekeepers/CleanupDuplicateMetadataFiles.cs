@@ -14,12 +14,12 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            DeleteDuplicateArtistMetadata();
+            DeleteDuplicateAuthorMetadata();
             DeleteDuplicateBookMetadata();
             DeleteDuplicateBookFileMetadata();
         }
 
-        private void DeleteDuplicateArtistMetadata()
+        private void DeleteDuplicateAuthorMetadata()
         {
             using (var mapper = _database.OpenConnection())
             {

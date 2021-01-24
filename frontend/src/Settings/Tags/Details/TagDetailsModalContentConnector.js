@@ -9,7 +9,7 @@ function findMatchingItems(ids, items) {
   });
 }
 
-function createMatchingAuthorSelector() {
+function createUnorderedMatchingAuthorSelector() {
   return createSelector(
     (state, { authorIds }) => authorIds,
     createAllAuthorSelector(),
@@ -17,13 +17,13 @@ function createMatchingAuthorSelector() {
   );
 }
 
-function createMatchingArtistSelector() {
+function createMatchingAuthorSelector() {
   return createSelector(
-    createUnorderedMatchingArtistSelector(),
-    (artists) => {
-      return artists.sort((artistA, artistB) => {
-        const sortNameA = artistA.sortName;
-        const sortNameB = artistB.sortName;
+    createUnorderedMatchingAuthorSelector(),
+    (authors) => {
+      return authors.sort((authorA, authorB) => {
+        const sortNameA = authorA.sortName;
+        const sortNameB = authorB.sortName;
 
         if (sortNameA > sortNameB) {
           return 1;

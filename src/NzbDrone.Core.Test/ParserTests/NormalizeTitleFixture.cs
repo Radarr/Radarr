@@ -12,10 +12,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Castle (2009)", "castle2009")]
         [TestCase("Parenthood.2010", "parenthood2010")]
         [TestCase("Law_and_Order_SVU", "lawordersvu")]
-        public void should_normalize_artist_title(string parsedArtistName, string artistName)
+        public void should_normalize_author_title(string parsedAuthorName, string authorName)
         {
-            var result = parsedArtistName.CleanAuthorName();
-            result.Should().Be(artistName);
+            var result = parsedAuthorName.CleanAuthorName();
+            result.Should().Be(authorName);
         }
 
         [TestCase("CaPitAl", "capital")]
@@ -99,10 +99,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The Office", "theoffice")]
         [TestCase("The Tonight Show With Jay Leno", "thetonightshowwithjayleno")]
         [TestCase("The.Daily.Show", "thedailyshow")]
-        public void should_not_remove_from_the_beginning_of_the_title(string parsedArtistName, string artistName)
+        public void should_not_remove_from_the_beginning_of_the_title(string parsedAuthorName, string authorName)
         {
-            var result = parsedArtistName.CleanAuthorName();
-            result.Should().Be(artistName);
+            var result = parsedAuthorName.CleanAuthorName();
+            result.Should().Be(authorName);
         }
 
         [TestCase("the")]

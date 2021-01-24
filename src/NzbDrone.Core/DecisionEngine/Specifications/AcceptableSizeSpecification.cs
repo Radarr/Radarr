@@ -29,7 +29,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             /*
             _logger.Debug("Beginning size check for: {0}", subject);
 
-            var quality = subject.ParsedAlbumInfo.Quality.Quality;
+            var quality = subject.ParsedBookInfo.Quality.Quality;
 
             if (subject.Release.Size == 0)
             {

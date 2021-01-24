@@ -23,12 +23,12 @@ namespace Readarr.Api.V1.Books
             if (Request.Query.bookId.HasValue)
             {
                 var bookId = (int)Request.Query.bookId;
-                return _audioTagService.GetRetagPreviewsByAlbum(bookId).Where(x => x.Changes.Any()).ToResource();
+                return _audioTagService.GetRetagPreviewsByBook(bookId).Where(x => x.Changes.Any()).ToResource();
             }
             else if (Request.Query.AuthorId.HasValue)
             {
                 var authorId = (int)Request.Query.AuthorId;
-                return _audioTagService.GetRetagPreviewsByArtist(authorId).Where(x => x.Changes.Any()).ToResource();
+                return _audioTagService.GetRetagPreviewsByAuthor(authorId).Where(x => x.Changes.Any()).ToResource();
             }
             else
             {

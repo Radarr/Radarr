@@ -8,23 +8,23 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
+namespace NzbDrone.Core.Test.MusicTests.BookMonitoredServiceTests
 {
     [TestFixture]
-    public class SetAlbumMontitoredFixture : CoreTest<BookMonitoredService>
+    public class SetBookMontitoredFixture : CoreTest<BookMonitoredService>
     {
-        private Author _artist;
-        private List<Book> _albums;
+        private Author _author;
+        private List<Book> _books;
 
         [SetUp]
         public void Setup()
         {
-            const int albums = 4;
+            const int books = 4;
 
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                                      .Build();
 
-            _albums = Builder<Book>.CreateListOfSize(albums)
+            _books = Builder<Book>.CreateListOfSize(books)
                                         .All()
                                         .With(e => e.Monitored = true)
                                         .With(e => e.ReleaseDate = DateTime.UtcNow.AddDays(-7))
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
 
             Mocker.GetMock<IBookService>()
                   .Setup(s => s.GetBooksByAuthor(It.IsAny<int>()))
-                  .Returns(_albums);
+                  .Returns(_books);
 
             Mocker.GetMock<IBookService>()
                 .Setup(s => s.GetAuthorBooksWithFiles(It.IsAny<Author>()))
@@ -49,9 +49,9 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
         }
 
         [Test]
-        public void should_be_able_to_monitor_artist_without_changing_albums()
+        public void should_be_able_to_monitor_author_without_changing_books()
         {
-            Subject.SetBookMonitoredStatus(_artist, null);
+            Subject.SetBookMonitoredStatus(_author, null);
 
             Mocker.GetMock<IAuthorService>()
                   .Verify(v => v.UpdateAuthor(It.IsAny<Author>()), Times.Once());
@@ -61,37 +61,37 @@ namespace NzbDrone.Core.Test.MusicTests.AlbumMonitoredServiceTests
         }
 
         [Test]
-        public void should_be_able_to_monitor_albums_when_passed_in_artist()
+        public void should_be_able_to_monitor_books_when_passed_in_author()
         {
-            var albumsToMonitor = new List<string> { _albums.First().ForeignBookId };
+            var booksToMonitor = new List<string> { _books.First().ForeignBookId };
 
-            Subject.SetBookMonitoredStatus(_artist, new MonitoringOptions { Monitored = true, BooksToMonitor = albumsToMonitor });
+            Subject.SetBookMonitoredStatus(_author, new MonitoringOptions { Monitored = true, BooksToMonitor = booksToMonitor });
 
             Mocker.GetMock<IAuthorService>()
                 .Verify(v => v.UpdateAuthor(It.IsAny<Author>()), Times.Once());
 
-            VerifyMonitored(e => e.ForeignBookId == _albums.First().ForeignBookId);
-            VerifyNotMonitored(e => e.ForeignBookId != _albums.First().ForeignBookId);
+            VerifyMonitored(e => e.ForeignBookId == _books.First().ForeignBookId);
+            VerifyNotMonitored(e => e.ForeignBookId != _books.First().ForeignBookId);
         }
 
         [Test]
-        public void should_be_able_to_monitor_all_albums()
+        public void should_be_able_to_monitor_all_books()
         {
-            Subject.SetBookMonitoredStatus(_artist, new MonitoringOptions { Monitor = MonitorTypes.All });
+            Subject.SetBookMonitoredStatus(_author, new MonitoringOptions { Monitor = MonitorTypes.All });
 
             Mocker.GetMock<IBookService>()
                   .Verify(v => v.UpdateMany(It.Is<List<Book>>(l => l.All(e => e.Monitored))));
         }
 
         [Test]
-        public void should_be_able_to_monitor_new_albums_only()
+        public void should_be_able_to_monitor_new_books_only()
         {
             var monitoringOptions = new MonitoringOptions
             {
                 Monitor = MonitorTypes.Future
             };
 
-            Subject.SetBookMonitoredStatus(_artist, monitoringOptions);
+            Subject.SetBookMonitoredStatus(_author, monitoringOptions);
 
             VerifyMonitored(e => e.ReleaseDate.HasValue && e.ReleaseDate.Value.After(DateTime.UtcNow));
             VerifyMonitored(e => !e.ReleaseDate.HasValue);

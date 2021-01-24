@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaCover
     {
         void ConvertToLocalUrls(int entityId, MediaCoverEntity coverEntity, IEnumerable<MediaCover> covers);
         string GetCoverPath(int entityId, MediaCoverEntity coverEntity, MediaCoverTypes mediaCoverTypes, string extension, int? height = null);
-        void EnsureAlbumCovers(Book book);
+        void EnsureBookCovers(Book book);
     }
 
     public class MediaCoverService :
@@ -74,11 +74,11 @@ namespace NzbDrone.Core.MediaCover
 
             if (coverEntity == MediaCoverEntity.Book)
             {
-                return Path.Combine(GetAlbumCoverPath(entityId), coverTypes.ToString().ToLower() + heightSuffix + extension);
+                return Path.Combine(GetBookCoverPath(entityId), coverTypes.ToString().ToLower() + heightSuffix + extension);
             }
             else
             {
-                return Path.Combine(GetArtistCoverPath(entityId), coverTypes.ToString().ToLower() + heightSuffix + extension);
+                return Path.Combine(GetAuthorCoverPath(entityId), coverTypes.ToString().ToLower() + heightSuffix + extension);
             }
         }
 
@@ -105,17 +105,17 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        private string GetArtistCoverPath(int authorId)
+        private string GetAuthorCoverPath(int authorId)
         {
             return Path.Combine(_coverRootFolder, authorId.ToString());
         }
 
-        private string GetAlbumCoverPath(int bookId)
+        private string GetBookCoverPath(int bookId)
         {
             return Path.Combine(_coverRootFolder, "Books", bookId.ToString());
         }
 
-        private void EnsureArtistCovers(Author author)
+        private void EnsureAuthorCovers(Author author)
         {
             var toResize = new List<Tuple<MediaCover, bool>>();
 
@@ -162,7 +162,7 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        public void EnsureAlbumCovers(Book book)
+        public void EnsureBookCovers(Book book)
         {
             foreach (var cover in book.Editions.Value.Single(x => x.Monitored).Images.Where(e => e.CoverType == MediaCoverTypes.Cover))
             {
@@ -176,7 +176,7 @@ namespace NzbDrone.Core.MediaCover
 
                     if (!alreadyExists)
                     {
-                        DownloadAlbumCover(book, cover, serverFileHeaders.LastModified ?? DateTime.Now);
+                        DownloadBookCover(book, cover, serverFileHeaders.LastModified ?? DateTime.Now);
                     }
                 }
                 catch (WebException e)
@@ -207,7 +207,7 @@ namespace NzbDrone.Core.MediaCover
             }
         }
 
-        private void DownloadAlbumCover(Book book, MediaCover cover, DateTime lastModified)
+        private void DownloadBookCover(Book book, MediaCover cover, DateTime lastModified)
         {
             var fileName = GetCoverPath(book.Id, MediaCoverEntity.Book, cover.CoverType, cover.Extension, null);
 
@@ -306,12 +306,12 @@ namespace NzbDrone.Core.MediaCover
 
         public void HandleAsync(AuthorRefreshCompleteEvent message)
         {
-            EnsureArtistCovers(message.Author);
+            EnsureAuthorCovers(message.Author);
 
-            var albums = _bookService.GetBooksByAuthor(message.Author.Id);
-            foreach (Book book in albums)
+            var books = _bookService.GetBooksByAuthor(message.Author.Id);
+            foreach (Book book in books)
             {
-                EnsureAlbumCovers(book);
+                EnsureBookCovers(book);
             }
 
             _eventAggregator.PublishEvent(new MediaCoversUpdatedEvent(message.Author));
@@ -319,7 +319,7 @@ namespace NzbDrone.Core.MediaCover
 
         public void HandleAsync(AuthorDeletedEvent message)
         {
-            var path = GetArtistCoverPath(message.Author.Id);
+            var path = GetAuthorCoverPath(message.Author.Id);
             if (_diskProvider.FolderExists(path))
             {
                 _diskProvider.DeleteFolder(path, true);
@@ -328,7 +328,7 @@ namespace NzbDrone.Core.MediaCover
 
         public void HandleAsync(BookDeletedEvent message)
         {
-            var path = GetAlbumCoverPath(message.Book.Id);
+            var path = GetBookCoverPath(message.Book.Id);
             if (_diskProvider.FolderExists(path))
             {
                 _diskProvider.DeleteFolder(path, true);

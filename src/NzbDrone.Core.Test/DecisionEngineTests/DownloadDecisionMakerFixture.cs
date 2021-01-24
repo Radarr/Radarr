@@ -147,7 +147,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_not_attempt_to_map_album_if_not_parsable()
+        public void should_not_attempt_to_map_book_if_not_parsable()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
             _reports[0].Title = "Not parsable";
@@ -159,11 +159,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
             _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
             _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
-
         }
 
         [Test]
-        public void should_not_attempt_to_map_album_if_artist_title_is_blank()
+        public void should_not_attempt_to_map_book_if_author_title_is_blank()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
             _reports[0].Title = "2013 - Night Visions";
@@ -185,20 +184,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenSpecifications(_pass1, _pass2, _pass3);
             _reports[0].Title = "1937 - Snow White and the Seven Dwarves";
 
-            var artist = new Artist { Name = "Some Artist" };
-            var albums = new List<Album> { new Album { Title = "Some Album" } };
+            var author = new Author { Name = "Some Author" };
+            var books = new List<Book> { new Book { Title = "Some Book" } };
 
-            Subject.GetSearchDecision(_reports, new AlbumSearchCriteria { Artist = artist, Albums = albums }).ToList();
+            Subject.GetSearchDecision(_reports, new BookSearchCriteria { Author = author, Books = books }).ToList();
 
-            Mocker.GetMock<IParsingService>().Verify(c => c.Map(It.IsAny<ParsedAlbumInfo>(), It.IsAny<SearchCriteriaBase>()), Times.Never());
+            Mocker.GetMock<IParsingService>().Verify(c => c.Map(It.IsAny<ParsedBookInfo>(), It.IsAny<SearchCriteriaBase>()), Times.Never());
 
-            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
-            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
-            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteAlbum>(), null), Times.Never());
+            _pass1.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
+            _pass2.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
+            _pass3.Verify(c => c.IsSatisfiedBy(It.IsAny<RemoteBook>(), null), Times.Never());
         }
 
         [Test]
-        public void should_not_attempt_to_make_decision_if_artist_is_unknown()
+        public void should_not_attempt_to_make_decision_if_author_is_unknown()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
@@ -234,7 +233,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_unknown_artist_rejection_if_artist_is_unknown()
+        public void should_return_unknown_author_rejection_if_author_is_unknown()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
@@ -246,22 +245,22 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_only_include_reports_for_requested_albums()
+        public void should_only_include_reports_for_requested_books()
         {
-            var artist = Builder<Author>.CreateNew().Build();
+            var author = Builder<Author>.CreateNew().Build();
 
-            var albums = Builder<Book>.CreateListOfSize(2)
+            var books = Builder<Book>.CreateListOfSize(2)
                 .All()
-                .With(v => v.AuthorId, artist.Id)
-                .With(v => v.Author, new LazyLoaded<Author>(artist))
+                .With(v => v.AuthorId, author.Id)
+                .With(v => v.Author, new LazyLoaded<Author>(author))
                 .BuildList();
 
-            var criteria = new AuthorSearchCriteria { Books = albums.Take(1).ToList() };
+            var criteria = new AuthorSearchCriteria { Books = books.Take(1).ToList() };
 
-            var reports = albums.Select(v =>
+            var reports = books.Select(v =>
                 new ReleaseInfo()
                 {
-                    Title = string.Format("{0}-{1}[FLAC][2017][DRONE]", artist.Name, v.Title)
+                    Title = string.Format("{0}-{1}[FLAC][2017][DRONE]", author.Name, v.Title)
                 }).ToList();
 
             Mocker.GetMock<IParsingService>()
@@ -271,8 +270,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     {
                         DownloadAllowed = true,
                         ParsedBookInfo = p,
-                        Author = artist,
-                        Books = albums.Where(v => v.Title == p.BookTitle).ToList()
+                        Author = author,
+                        Books = books.Where(v => v.Title == p.BookTitle).ToList()
                     });
 
             Mocker.SetConstant<IEnumerable<IDecisionEngineSpecification>>(new List<IDecisionEngineSpecification>
@@ -288,7 +287,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_not_allow_download_if_artist_is_unknown()
+        public void should_not_allow_download_if_author_is_unknown()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 
@@ -302,7 +301,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_not_allow_download_if_no_albums_found()
+        public void should_not_allow_download_if_no_books_found()
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
 

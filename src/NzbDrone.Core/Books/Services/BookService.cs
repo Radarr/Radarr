@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Books
         List<Book> GetBooksByAuthorMetadataId(int authorMetadataId);
         List<Book> GetBooksForRefresh(int authorMetadataId, IEnumerable<string> foreignIds);
         List<Book> GetBooksByFileIds(IEnumerable<int> fileIds);
-        Book AddBook(Book newAlbum, bool doRefresh = true);
+        Book AddBook(Book newBook, bool doRefresh = true);
         Book FindById(string foreignId);
         Book FindBySlug(string titleSlug);
         Book FindByTitle(int authorMetadataId, string title);
@@ -153,7 +153,7 @@ namespace NzbDrone.Core.Books
             var sortedBooks = books.Select(s => new
             {
                 MatchProb = scoreFunction(s, title),
-                Album = s
+                Book = s
             })
                 .ToList()
                 .OrderByDescending(s => s.MatchProb)
@@ -161,7 +161,7 @@ namespace NzbDrone.Core.Books
 
             return sortedBooks.TakeWhile((x, i) => i == 0 || sortedBooks[i - 1].MatchProb - x.MatchProb < fuzzGap)
                 .TakeWhile((x, i) => x.MatchProb > fuzzThreshold || (i > 0 && sortedBooks[i - 1].MatchProb > fuzzThreshold))
-                .Select(x => x.Album)
+                .Select(x => x.Book)
                 .ToList();
         }
 

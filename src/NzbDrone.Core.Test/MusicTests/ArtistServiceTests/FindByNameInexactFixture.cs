@@ -5,15 +5,15 @@ using NUnit.Framework;
 using NzbDrone.Core.Books;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
+namespace NzbDrone.Core.Test.MusicTests.AuthorServiceTests
 {
     [TestFixture]
 
     public class FindByNameInexactFixture : CoreTest<AuthorService>
     {
-        private List<Author> _artists;
+        private List<Author> _authors;
 
-        private Author CreateArtist(string name)
+        private Author CreateAuthor(string name)
         {
             return Builder<Author>.CreateNew()
                 .With(a => a.Name = name)
@@ -25,47 +25,47 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistServiceTests
         [SetUp]
         public void Setup()
         {
-            _artists = new List<Author>();
-            _artists.Add(CreateArtist("The Black Eyed Peas"));
-            _artists.Add(CreateArtist("The Black Keys"));
+            _authors = new List<Author>();
+            _authors.Add(CreateAuthor("The Black Eyed Peas"));
+            _authors.Add(CreateAuthor("The Black Keys"));
 
             Mocker.GetMock<IAuthorRepository>()
                 .Setup(s => s.All())
-                .Returns(_artists);
+                .Returns(_authors);
         }
 
         [TestCase("The Black Eyde Peas", "The Black Eyed Peas")]
         [TestCase("Black Eyed Peas", "The Black Eyed Peas")]
         [TestCase("The Black eys", "The Black Keys")]
         [TestCase("Black Keys", "The Black Keys")]
-        public void should_find_artist_in_db_by_name_inexact(string name, string expected)
+        public void should_find_author_in_db_by_name_inexact(string name, string expected)
         {
-            var artist = Subject.FindByNameInexact(name);
+            var author = Subject.FindByNameInexact(name);
 
-            artist.Should().NotBeNull();
-            artist.Name.Should().Be(expected);
+            author.Should().NotBeNull();
+            author.Name.Should().Be(expected);
         }
 
         [Test]
-        public void should_find_artist_when_the_is_omitted_from_start()
+        public void should_find_author_when_the_is_omitted_from_start()
         {
-            _artists = new List<Author>();
-            _artists.Add(CreateArtist("Black Keys"));
-            _artists.Add(CreateArtist("The Black Eyed Peas"));
+            _authors = new List<Author>();
+            _authors.Add(CreateAuthor("Black Keys"));
+            _authors.Add(CreateAuthor("The Black Eyed Peas"));
 
             Mocker.GetMock<IAuthorRepository>()
                 .Setup(s => s.All())
-                .Returns(_artists);
+                .Returns(_authors);
 
             Subject.FindByNameInexact("The Black Keys").Should().NotBeNull();
         }
 
         [TestCase("The Black Peas")]
-        public void should_not_find_artist_in_db_by_ambiguous_name(string name)
+        public void should_not_find_author_in_db_by_ambiguous_name(string name)
         {
-            var artist = Subject.FindByNameInexact(name);
+            var author = Subject.FindByNameInexact(name);
 
-            artist.Should().BeNull();
+            author.Should().BeNull();
         }
     }
 }

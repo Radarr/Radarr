@@ -7,11 +7,11 @@ using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 {
-    public class AlbumUpgradeSpecification : IImportDecisionEngineSpecification<LocalEdition>
+    public class BookUpgradeSpecification : IImportDecisionEngineSpecification<LocalEdition>
     {
         private readonly Logger _logger;
 
-        public AlbumUpgradeSpecification(Logger logger)
+        public BookUpgradeSpecification(Logger logger)
         {
             _logger = logger;
         }
@@ -32,8 +32,8 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
             //     _logger.Debug("Min quality of existing files: {0}", existingMinQuality);
             //     if (qualityComparer.Compare(existingMinQuality, newMinQuality) > 0)
             //     {
-            //         _logger.Debug("This album isn't a quality upgrade for all tracks. Skipping {0}", item);
-            //         return Decision.Reject("Not an upgrade for existing album file(s)");
+            //         _logger.Debug("This book isn't a quality upgrade for all tracks. Skipping {0}", item);
+            //         return Decision.Reject("Not an upgrade for existing book file(s)");
             //     }
             // }
             return Decision.Accept();

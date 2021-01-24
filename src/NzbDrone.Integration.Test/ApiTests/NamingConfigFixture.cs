@@ -85,7 +85,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         }
 
         [Test]
-        public void should_get_bad_request_if_artist_folder_format_does_not_contain_artist_name()
+        public void should_get_bad_request_if_author_folder_format_does_not_contain_author_name()
         {
             IgnoreOnMonoVersions("5.12", "5.14");
 

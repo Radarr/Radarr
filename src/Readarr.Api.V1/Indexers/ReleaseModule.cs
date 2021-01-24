@@ -87,7 +87,7 @@ namespace Readarr.Api.V1.Indexers
                     else if (release.AuthorId.HasValue)
                     {
                         var author = _authorService.GetAuthor(release.AuthorId.Value);
-                        var books = _parsingService.GetAlbums(remoteBook.ParsedBookInfo, author);
+                        var books = _parsingService.GetBooks(remoteBook.ParsedBookInfo, author);
 
                         if (books.Empty())
                         {
@@ -104,7 +104,7 @@ namespace Readarr.Api.V1.Indexers
                 }
                 else if (remoteBook.Books.Empty())
                 {
-                    var books = _parsingService.GetAlbums(remoteBook.ParsedBookInfo, remoteBook.Author);
+                    var books = _parsingService.GetBooks(remoteBook.ParsedBookInfo, remoteBook.Author);
 
                     if (books.Empty() && release.BookId.HasValue)
                     {

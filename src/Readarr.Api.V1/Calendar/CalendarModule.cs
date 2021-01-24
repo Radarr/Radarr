@@ -31,7 +31,7 @@ namespace Readarr.Api.V1.Calendar
             var includeUnmonitored = Request.GetBooleanQueryParameter("unmonitored");
             var includeAuthor = Request.GetBooleanQueryParameter("includeAuthor");
 
-            //TODO: Add Album Image support to AlbumModuleWithSignalR
+            //TODO: Add Book Image support to BookModuleWithSignalR
             var includeBookImages = Request.GetBooleanQueryParameter("includeBookImages");
 
             var queryStart = Request.Query.Start;

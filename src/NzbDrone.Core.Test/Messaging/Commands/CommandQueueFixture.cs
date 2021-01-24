@@ -130,7 +130,7 @@ namespace NzbDrone.Core.Test.Messaging.Commands
 
             var newCommandModel = Builder<CommandModel>
                 .CreateNew()
-                .With(c => c.Name = "RefreshArtist")
+                .With(c => c.Name = "RefreshAuthor")
                 .With(c => c.Body = new RefreshAuthorCommand())
                 .Build();
 
@@ -167,7 +167,7 @@ namespace NzbDrone.Core.Test.Messaging.Commands
 
             var newCommandModel = Builder<CommandModel>
                 .CreateNew()
-                .With(c => c.Name = "RefreshArtist")
+                .With(c => c.Name = "RefreshAuthor")
                 .With(c => c.Body = new RefreshAuthorCommand())
                 .Build();
 

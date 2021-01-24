@@ -9,15 +9,15 @@ namespace NzbDrone.Core.Parser.Model
         //public int TrackNumber { get; set; }
         public string Title { get; set; }
         public string CleanTitle { get; set; }
-        public string ArtistTitle { get; set; }
-        public string AlbumTitle { get; set; }
+        public string AuthorTitle { get; set; }
+        public string BookTitle { get; set; }
         public string SeriesTitle { get; set; }
         public string SeriesIndex { get; set; }
         public string Isbn { get; set; }
         public string Asin { get; set; }
         public string GoodreadsId { get; set; }
-        public string ArtistMBId { get; set; }
-        public string AlbumMBId { get; set; }
+        public string AuthorMBId { get; set; }
+        public string BookMBId { get; set; }
         public string ReleaseMBId { get; set; }
         public string RecordingMBId { get; set; }
         public string TrackMBId { get; set; }
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Parser.Model
                 trackString = string.Format("{0}", string.Join("-", TrackNumbers.Select(c => c.ToString("00"))));
             }
 
-            return string.Format("{0} - {1} - {2}:{3} {4}: {5}", ArtistTitle, AlbumTitle, DiscNumber, trackString, Title, Quality);
+            return string.Format("{0} - {1} - {2}:{3} {4}: {5}", AuthorTitle, BookTitle, DiscNumber, trackString, Title, Quality);
         }
     }
 }

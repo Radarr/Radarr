@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         [TestCase("Robert Harris", "Robert Harris")]
         [TestCase("James Patterson", "James Patterson")]
         [TestCase("Antoine de Saint-Exupéry", "Antoine de Saint-Exupéry")]
-        public void successful_artist_search(string title, string expected)
+        public void successful_author_search(string title, string expected)
         {
             var result = Subject.SearchForNewAuthor(title);
 
@@ -51,9 +51,9 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         [TestCase("goodreads:3", null, "Harry Potter and the Philosopher's Stone")]
         [TestCase("asin:B0192CTMYG", null, "Harry Potter and the Sorcerer's Stone")]
         [TestCase("isbn:9780439554930", null, "Harry Potter and the Sorcerer's Stone")]
-        public void successful_album_search(string title, string artist, string expected)
+        public void successful_book_search(string title, string author, string expected)
         {
-            var result = Subject.SearchForNewBook(title, artist);
+            var result = Subject.SearchForNewBook(title, author);
 
             result.Should().NotBeEmpty();
 
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         [TestCase("readarrid: -12")]
         [TestCase("readarrid: aaaa")]
         [TestCase("adjalkwdjkalwdjklawjdlKAJD")]
-        public void no_artist_search_result(string term)
+        public void no_author_search_result(string term)
         {
             var result = Subject.SearchForNewAuthor(term);
             result.Should().BeEmpty();

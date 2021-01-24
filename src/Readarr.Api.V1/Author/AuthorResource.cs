@@ -90,7 +90,7 @@ namespace Readarr.Api.V1.Author
                 ForeignAuthorId = model.Metadata.Value.ForeignAuthorId,
                 TitleSlug = model.Metadata.Value.TitleSlug,
 
-                // Root folder path is now calculated from the artist path
+                // Root folder path is now calculated from the author path
                 // RootFolderPath = model.RootFolderPath,
                 Genres = model.Metadata.Value.Genres,
                 Tags = model.Tags,

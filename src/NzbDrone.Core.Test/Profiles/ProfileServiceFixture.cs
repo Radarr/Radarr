@@ -41,13 +41,13 @@ namespace NzbDrone.Core.Test.Profiles
         }
 
         [Test]
-        public void should_not_be_able_to_delete_profile_if_assigned_to_artist()
+        public void should_not_be_able_to_delete_profile_if_assigned_to_author()
         {
             var profile = Builder<QualityProfile>.CreateNew()
                                           .With(p => p.Id = 2)
                                           .Build();
 
-            var artistList = Builder<Author>.CreateListOfSize(3)
+            var authorList = Builder<Author>.CreateListOfSize(3)
                                             .Random(1)
                                             .With(c => c.QualityProfileId = profile.Id)
                                             .Build().ToList();
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Test.Profiles
                 .With(f => f.DefaultQualityProfileId = 1)
                 .BuildList();
 
-            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(artistList);
+            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(authorList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
             Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
             Mocker.GetMock<IProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.Profiles
                 .With(p => p.Id = 2)
                 .Build();
 
-            var artistList = Builder<Author>.CreateListOfSize(3)
+            var authorList = Builder<Author>.CreateListOfSize(3)
                 .All()
                 .With(c => c.QualityProfileId = 1)
                 .Build().ToList();
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.Profiles
                 .With(f => f.DefaultQualityProfileId = 1)
                 .BuildList();
 
-            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(artistList);
+            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(authorList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
             Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
             Mocker.GetMock<IProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
@@ -111,7 +111,7 @@ namespace NzbDrone.Core.Test.Profiles
                 .With(p => p.Id = 2)
                 .Build();
 
-            var artistList = Builder<Author>.CreateListOfSize(3)
+            var authorList = Builder<Author>.CreateListOfSize(3)
                 .All()
                 .With(c => c.QualityProfileId = 1)
                 .Build().ToList();
@@ -126,7 +126,7 @@ namespace NzbDrone.Core.Test.Profiles
                 .With(f => f.DefaultQualityProfileId = profile.Id)
                 .BuildList();
 
-            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(artistList);
+            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(authorList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
             Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
             Mocker.GetMock<IProfileRepository>().Setup(c => c.Get(profile.Id)).Returns(profile);
@@ -137,9 +137,9 @@ namespace NzbDrone.Core.Test.Profiles
         }
 
         [Test]
-        public void should_delete_profile_if_not_assigned_to_artist_import_list_or_root_folder()
+        public void should_delete_profile_if_not_assigned_to_author_import_list_or_root_folder()
         {
-            var artistList = Builder<Author>.CreateListOfSize(3)
+            var authorList = Builder<Author>.CreateListOfSize(3)
                                             .All()
                                             .With(c => c.QualityProfileId = 2)
                                             .Build().ToList();
@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Test.Profiles
                 .With(f => f.DefaultQualityProfileId = 2)
                 .BuildList();
 
-            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(artistList);
+            Mocker.GetMock<IAuthorService>().Setup(c => c.GetAllAuthors()).Returns(authorList);
             Mocker.GetMock<IImportListFactory>().Setup(c => c.All()).Returns(importLists);
             Mocker.GetMock<IRootFolderService>().Setup(c => c.All()).Returns(rootFolders);
 

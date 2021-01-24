@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
     public class CleanupDuplicateMetadataFilesFixture : DbTest<CleanupDuplicateMetadataFiles, MetadataFile>
     {
         [Test]
-        public void should_not_delete_metadata_files_when_they_are_for_the_same_artist_but_different_consumers()
+        public void should_not_delete_metadata_files_when_they_are_for_the_same_author_but_different_consumers()
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_not_delete_metadata_files_for_different_artist()
+        public void should_not_delete_metadata_files_for_different_author()
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_delete_metadata_files_when_they_are_for_the_same_artist_and_consumer()
+        public void should_delete_metadata_files_when_they_are_for_the_same_author_and_consumer()
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_not_delete_metadata_files_when_there_is_only_one_for_that_artist_and_consumer()
+        public void should_not_delete_metadata_files_when_there_is_only_one_for_that_author_and_consumer()
         {
             var file = Builder<MetadataFile>.CreateNew()
                                          .BuildNew();
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_not_delete_metadata_files_when_they_are_for_the_same_album_but_different_consumers()
+        public void should_not_delete_metadata_files_when_they_are_for_the_same_book_but_different_consumers()
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
@@ -81,7 +81,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_not_delete_metadata_files_for_different_album()
+        public void should_not_delete_metadata_files_for_different_book()
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_delete_metadata_files_when_they_are_for_the_same_album_and_consumer()
+        public void should_delete_metadata_files_when_they_are_for_the_same_book_and_consumer()
         {
             var files = Builder<MetadataFile>.CreateListOfSize(2)
                                              .All()
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_not_delete_metadata_files_when_there_is_only_one_for_that_album_and_consumer()
+        public void should_not_delete_metadata_files_when_there_is_only_one_for_that_book_and_consumer()
         {
             var file = Builder<MetadataFile>.CreateNew()
                                          .BuildNew();

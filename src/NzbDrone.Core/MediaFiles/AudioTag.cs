@@ -21,10 +21,10 @@ namespace NzbDrone.Core.MediaFiles
 
         public string Title { get; set; }
         public string[] Performers { get; set; }
-        public string[] AlbumArtists { get; set; }
+        public string[] BookAuthors { get; set; }
         public uint Track { get; set; }
         public uint TrackCount { get; set; }
-        public string Album { get; set; }
+        public string Book { get; set; }
         public uint Disc { get; set; }
         public uint DiscCount { get; set; }
         public string Media { get; set; }
@@ -65,10 +65,10 @@ namespace NzbDrone.Core.MediaFiles
 
                 Title = tag.Title ?? tag.TitleSort;
                 Performers = tag.Performers ?? tag.PerformersSort;
-                AlbumArtists = tag.AlbumArtists ?? tag.AlbumArtistsSort;
+                BookAuthors = tag.AlbumArtists ?? tag.AlbumArtistsSort;
                 Track = tag.Track;
                 TrackCount = tag.TrackCount;
-                Album = tag.Album ?? tag.AlbumSort;
+                Book = tag.Album ?? tag.AlbumSort;
                 Disc = tag.Disc;
                 DiscCount = tag.DiscCount;
                 Year = tag.Year;
@@ -285,9 +285,9 @@ namespace NzbDrone.Core.MediaFiles
             Logger.Debug($"Starting tag write for {path}");
 
             // patch up any null fields to work around TagLib exception for
-            // WMA with null performers/albumartists
+            // WMA with null performers/bookauthors
             Performers = Performers ?? new string[0];
-            AlbumArtists = AlbumArtists ?? new string[0];
+            BookAuthors = BookAuthors ?? new string[0];
             Genres = Genres ?? new string[0];
 
             TagLib.File file = null;
@@ -299,10 +299,10 @@ namespace NzbDrone.Core.MediaFiles
                 // do the ones with direct support in TagLib
                 tag.Title = Title;
                 tag.Performers = Performers;
-                tag.AlbumArtists = AlbumArtists;
+                tag.AlbumArtists = BookAuthors;
                 tag.Track = Track;
                 tag.TrackCount = TrackCount;
-                tag.Album = Album;
+                tag.Album = Book;
                 tag.Disc = Disc;
                 tag.DiscCount = DiscCount;
                 tag.Publisher = Publisher;
@@ -410,20 +410,20 @@ namespace NzbDrone.Core.MediaFiles
                 var oldValue = Performers.Any() ? string.Join(" / ", Performers) : null;
                 var newValue = other.Performers.Any() ? string.Join(" / ", other.Performers) : null;
 
-                output.Add("Artist", Tuple.Create(oldValue, newValue));
+                output.Add("Author", Tuple.Create(oldValue, newValue));
             }
 
-            if (Album != other.Album)
+            if (Book != other.Book)
             {
-                output.Add("Album", Tuple.Create(Album, other.Album));
+                output.Add("Book", Tuple.Create(Book, other.Book));
             }
 
-            if (!AlbumArtists.SequenceEqual(other.AlbumArtists))
+            if (!BookAuthors.SequenceEqual(other.BookAuthors))
             {
-                var oldValue = AlbumArtists.Any() ? string.Join(" / ", AlbumArtists) : null;
-                var newValue = other.AlbumArtists.Any() ? string.Join(" / ", other.AlbumArtists) : null;
+                var oldValue = BookAuthors.Any() ? string.Join(" / ", BookAuthors) : null;
+                var newValue = other.BookAuthors.Any() ? string.Join(" / ", other.BookAuthors) : null;
 
-                output.Add("Album Artist", Tuple.Create(oldValue, newValue));
+                output.Add("Book Author", Tuple.Create(oldValue, newValue));
             }
 
             if (Track != other.Track)
@@ -507,14 +507,14 @@ namespace NzbDrone.Core.MediaFiles
                 };
             }
 
-            var author = tag.AlbumArtists?.FirstOrDefault();
+            var author = tag.BookAuthors?.FirstOrDefault();
 
             if (author.IsNullOrWhiteSpace())
             {
                 author = tag.Performers?.FirstOrDefault();
             }
 
-            var artistTitleInfo = new AuthorTitleInfo
+            var authorTitleInfo = new AuthorTitleInfo
             {
                 Title = author,
                 Year = (int)tag.Year
@@ -522,8 +522,8 @@ namespace NzbDrone.Core.MediaFiles
 
             return new ParsedTrackInfo
             {
-                AlbumTitle = tag.Album,
-                ArtistTitle = author,
+                BookTitle = tag.Book,
+                AuthorTitle = author,
                 DiscNumber = (int)tag.Disc,
                 DiscCount = (int)tag.DiscCount,
                 Year = tag.Year,

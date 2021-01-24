@@ -11,37 +11,37 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
     [TestFixture]
     public class CleanupOrphanedHistoryItemsFixture : DbTest<CleanupOrphanedHistoryItems, History.History>
     {
-        private Author _artist;
-        private Book _album;
+        private Author _author;
+        private Book _book;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                                      .BuildNew();
 
-            _album = Builder<Book>.CreateNew()
+            _book = Builder<Book>.CreateNew()
                 .BuildNew();
         }
 
-        private void GivenArtist()
+        private void GivenAuthor()
         {
-            Db.Insert(_artist);
+            Db.Insert(_author);
         }
 
-        private void GivenAlbum()
+        private void GivenBook()
         {
-            Db.Insert(_album);
+            Db.Insert(_book);
         }
 
         [Test]
-        public void should_delete_orphaned_items_by_artist()
+        public void should_delete_orphaned_items_by_author()
         {
-            GivenAlbum();
+            GivenBook();
 
             var history = Builder<History.History>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.BookId = _album.Id)
+                                                  .With(h => h.BookId = _book.Id)
                                                   .BuildNew();
             Db.Insert(history);
 
@@ -50,13 +50,13 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_delete_orphaned_items_by_album()
+        public void should_delete_orphaned_items_by_book()
         {
-            GivenArtist();
+            GivenAuthor();
 
             var history = Builder<History.History>.CreateNew()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.AuthorId = _artist.Id)
+                                                  .With(h => h.AuthorId = _author.Id)
                                                   .BuildNew();
             Db.Insert(history);
 
@@ -65,45 +65,45 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         }
 
         [Test]
-        public void should_not_delete_unorphaned_data_by_artist()
+        public void should_not_delete_unorphaned_data_by_author()
         {
-            GivenArtist();
-            GivenAlbum();
+            GivenAuthor();
+            GivenBook();
 
             var history = Builder<History.History>.CreateListOfSize(2)
                                                   .All()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.BookId = _album.Id)
+                                                  .With(h => h.BookId = _book.Id)
                                                   .TheFirst(1)
-                                                  .With(h => h.AuthorId = _artist.Id)
+                                                  .With(h => h.AuthorId = _author.Id)
                                                   .BuildListOfNew();
 
             Db.InsertMany(history);
 
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(h => h.AuthorId == _artist.Id);
+            AllStoredModels.Should().Contain(h => h.AuthorId == _author.Id);
         }
 
         [Test]
-        public void should_not_delete_unorphaned_data_by_album()
+        public void should_not_delete_unorphaned_data_by_book()
         {
-            GivenArtist();
-            GivenAlbum();
+            GivenAuthor();
+            GivenBook();
 
             var history = Builder<History.History>.CreateListOfSize(2)
                                                   .All()
                                                   .With(h => h.Quality = new QualityModel())
-                                                  .With(h => h.AuthorId = _artist.Id)
+                                                  .With(h => h.AuthorId = _author.Id)
                                                   .TheFirst(1)
-                                                  .With(h => h.BookId = _album.Id)
+                                                  .With(h => h.BookId = _book.Id)
                                                   .BuildListOfNew();
 
             Db.InsertMany(history);
 
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(h => h.BookId == _album.Id);
+            AllStoredModels.Should().Contain(h => h.BookId == _book.Id);
         }
     }
 }

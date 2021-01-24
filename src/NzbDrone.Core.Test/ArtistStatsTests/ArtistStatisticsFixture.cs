@@ -9,38 +9,38 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.ArtistStatsTests
+namespace NzbDrone.Core.Test.AuthorStatsTests
 {
     [TestFixture]
-    public class ArtistStatisticsFixture : DbTest<AuthorStatisticsRepository, Author>
+    public class AuthorStatisticsFixture : DbTest<AuthorStatisticsRepository, Author>
     {
-        private Author _artist;
-        private Book _album;
+        private Author _author;
+        private Book _book;
         private Edition _edition;
         private BookFile _trackFile;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                 .With(a => a.AuthorMetadataId = 10)
                 .BuildNew();
-            Db.Insert(_artist);
+            Db.Insert(_author);
 
-            _album = Builder<Book>.CreateNew()
+            _book = Builder<Book>.CreateNew()
                 .With(e => e.ReleaseDate = DateTime.Today.AddDays(-5))
                 .With(e => e.AuthorMetadataId = 10)
                 .BuildNew();
-            Db.Insert(_album);
+            Db.Insert(_book);
 
             _edition = Builder<Edition>.CreateNew()
-                .With(e => e.BookId = _album.Id)
+                .With(e => e.BookId = _book.Id)
                 .With(e => e.Monitored = true)
                 .BuildNew();
             Db.Insert(_edition);
 
             _trackFile = Builder<BookFile>.CreateNew()
-                .With(e => e.Author = _artist)
+                .With(e => e.Author = _author)
                 .With(e => e.Edition = _edition)
                 .With(e => e.EditionId == _edition.Id)
                 .With(e => e.Quality = new QualityModel(Quality.MP3_320))
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.ArtistStatsTests
         }
 
         [Test]
-        public void should_get_stats_for_artist()
+        public void should_get_stats_for_author()
         {
             var stats = Subject.AuthorStatistics();
 

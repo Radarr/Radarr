@@ -2,114 +2,114 @@
   "expectedMusicBrainzReleaseIds": [
     "25f0fa1b-ae04-479a-a182-18a655ff6040"
   ],
-  "libraryArtists": [
+  "libraryAuthors": [
     {
-      "artist": "70248960-cb53-4ea4-943a-edb18f7d336f",
+      "author": "70248960-cb53-4ea4-943a-edb18f7d336f",
       "metadataProfile": {
-        "name": "Album+Single",
-        "primaryAlbumTypes": [
+        "name": "Book+Single",
+        "primaryBookTypes": [
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 4,
               "name": "Other"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 3,
               "name": "Broadcast"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 2,
               "name": "Single"
             },
             "allowed": true
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 1,
               "name": "EP"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 0,
-              "name": "Album"
+              "name": "Book"
             },
             "allowed": true
           }
         ],
-        "secondaryAlbumTypes": [
+        "secondaryBookTypes": [
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 10,
               "name": "Demo"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 9,
               "name": "Mixtape/Street"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 8,
               "name": "DJ-mix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 7,
               "name": "Remix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 6,
               "name": "Live"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 4,
               "name": "Interview"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 3,
               "name": "Spokenword"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 2,
               "name": "Soundtrack"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 1,
               "name": "Compilation"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 0,
               "name": "Studio"
             },
@@ -154,13 +154,13 @@
   "singleRelease": false,
   "tracks": [
     {
-      "path": "/mnt/data1/ReadarrTest/Bruce Springsteen/Album/10_Glory_Days.mp3",
+      "path": "/mnt/data1/ReadarrTest/Bruce Springsteen/Book/10_Glory_Days.mp3",
       "fileTrackInfo": {
         "title": "Glory Days",
         "cleanTitle": "Glory Days",
-        "artistTitle": "Bruce Springsteen",
-        "albumTitle": "Born in the U.S.A.",
-        "artistTitleInfo": {
+        "authorTitle": "Bruce Springsteen",
+        "bookTitle": "Born in the U.S.A.",
+        "authorTitleInfo": {
           "title": "Bruce Springsteen",
           "year": 1984
         },
@@ -191,13 +191,13 @@
       }
     },
     {
-      "path": "/mnt/data1/ReadarrTest/Bruce Springsteen/Album/11_Dancing_In_The_Dark.mp3",
+      "path": "/mnt/data1/ReadarrTest/Bruce Springsteen/Book/11_Dancing_In_The_Dark.mp3",
       "fileTrackInfo": {
         "title": "Dancing In The Dark",
         "cleanTitle": "Dancing In The Dark",
-        "artistTitle": "Bruce Springsteen",
-        "albumTitle": "Born in the U.S.A.",
-        "artistTitleInfo": {
+        "authorTitle": "Bruce Springsteen",
+        "bookTitle": "Born in the U.S.A.",
+        "authorTitleInfo": {
           "title": "Bruce Springsteen",
           "year": 1984
         },

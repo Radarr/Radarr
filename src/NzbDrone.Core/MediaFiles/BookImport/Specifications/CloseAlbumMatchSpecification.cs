@@ -6,12 +6,12 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 {
-    public class CloseAlbumMatchSpecification : IImportDecisionEngineSpecification<LocalEdition>
+    public class CloseBookMatchSpecification : IImportDecisionEngineSpecification<LocalEdition>
     {
-        private const double _albumThreshold = 0.20;
+        private const double _bookThreshold = 0.20;
         private readonly Logger _logger;
 
-        public CloseAlbumMatchSpecification(Logger logger)
+        public CloseBookMatchSpecification(Logger logger)
         {
             _logger = logger;
         }
@@ -26,27 +26,27 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
             {
                 dist = item.Distance.NormalizedDistance();
                 reasons = item.Distance.Reasons;
-                if (dist > _albumThreshold)
+                if (dist > _bookThreshold)
                 {
-                    _logger.Debug($"Album match is not close enough: {dist} vs {_albumThreshold} {reasons}. Skipping {item}");
-                    return Decision.Reject($"Album match is not close enough: {1 - dist:P1} vs {1 - _albumThreshold:P0} {reasons}");
+                    _logger.Debug($"Book match is not close enough: {dist} vs {_bookThreshold} {reasons}. Skipping {item}");
+                    return Decision.Reject($"Book match is not close enough: {1 - dist:P1} vs {1 - _bookThreshold:P0} {reasons}");
                 }
             }
 
             // otherwise importing existing files in library
             else
             {
-                // get album distance ignoring whether tracks are missing
+                // get book distance ignoring whether tracks are missing
                 dist = item.Distance.NormalizedDistanceExcluding(new List<string> { "missing_tracks", "unmatched_tracks" });
                 reasons = item.Distance.Reasons;
-                if (dist > _albumThreshold)
+                if (dist > _bookThreshold)
                 {
-                    _logger.Debug($"Album match is not close enough: {dist} vs {_albumThreshold} {reasons}. Skipping {item}");
-                    return Decision.Reject($"Album match is not close enough: {1 - dist:P1} vs {1 - _albumThreshold:P0} {reasons}");
+                    _logger.Debug($"Book match is not close enough: {dist} vs {_bookThreshold} {reasons}. Skipping {item}");
+                    return Decision.Reject($"Book match is not close enough: {1 - dist:P1} vs {1 - _bookThreshold:P0} {reasons}");
                 }
             }
 
-            _logger.Debug($"Accepting release {item}: dist {dist} vs {_albumThreshold} {reasons}");
+            _logger.Debug($"Accepting release {item}: dist {dist} vs {_bookThreshold} {reasons}");
             return Decision.Accept();
         }
     }

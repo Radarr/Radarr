@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
                 .With(x => x.OriginalReleaseDate = new DateTime(2009, 4, 1))
                 .With(x => x.OriginalYear = 2009)
                 .With(x => x.Performers = new[] { "Performer1" })
-                .With(x => x.AlbumArtists = new[] { "방탄소년단" })
+                .With(x => x.BookAuthors = new[] { "방탄소년단" })
                 .With(x => x.Genres = new[] { "Genre1", "Genre2" })
                 .With(x => x.ImageFile = imageFile)
                 .With(x => x.ImageSize = imageSize)
@@ -209,7 +209,7 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
             var expected = new AudioTag()
             {
                 Performers = new string[0],
-                AlbumArtists = new string[0],
+                BookAuthors = new string[0],
                 Genres = new string[0]
             };
 
@@ -307,21 +307,21 @@ namespace NzbDrone.Core.Test.MediaFiles.AudioTagServiceFixture
         private BookFile GivenPopulatedTrackfile(int mediumOffset)
         {
             var meta = Builder<AuthorMetadata>.CreateNew().Build();
-            var artist = Builder<Author>.CreateNew()
+            var author = Builder<Author>.CreateNew()
                 .With(x => x.Metadata = meta)
                 .Build();
 
-            var album = Builder<Book>.CreateNew()
-                .With(x => x.Author = artist)
+            var book = Builder<Book>.CreateNew()
+                .With(x => x.Author = author)
                 .Build();
 
             var edition = Builder<Edition>.CreateNew()
-                .With(x => x.Book = album)
+                .With(x => x.Book = book)
                 .Build();
 
             var file = Builder<BookFile>.CreateNew()
                 .With(x => x.Edition = edition)
-                .With(x => x.Author = artist)
+                .With(x => x.Author = author)
                 .Build();
 
             return file;

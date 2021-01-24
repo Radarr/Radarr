@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
     [TestFixture]
     public class FreeSpaceSpecificationFixture : CoreTest<FreeSpaceSpecification>
     {
-        private Author _artist;
+        private Author _author;
         private LocalBook _localTrack;
         private string _rootFolder;
 
@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
         {
             _rootFolder = @"C:\Test\Music".AsOsAgnostic();
 
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                                      .With(s => s.Path = Path.Combine(_rootFolder, "Alice in Chains"))
                                      .Build();
 
@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
             {
                 Path = @"C:\Test\Unsorted\Alice in Chains\Alice in Chains - track1.mp3".AsOsAgnostic(),
                 Book = new Book(),
-                Author = _artist
+                Author = _author
             };
         }
 
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
         }
 
         [Test]
-        public void should_use_artist_paths_parent_for_free_space_check()
+        public void should_use_author_paths_parent_for_free_space_check()
         {
             GivenFileSize(100.Megabytes());
             GivenFreeSpace(1.Gigabytes());
@@ -117,7 +117,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
         }
 
         [Test]
-        public void should_skip_check_for_files_under_artist_folder()
+        public void should_skip_check_for_files_under_author_folder()
         {
             _localTrack.ExistingFile = true;
 

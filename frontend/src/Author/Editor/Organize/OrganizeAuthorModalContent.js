@@ -25,7 +25,7 @@ function OrganizeAuthorModalContent(props) {
 
       <ModalBody>
         <Alert>
-          Tip: To preview a rename, select "Cancel", then select any artist name and use the
+          Tip: To preview a rename, select "Cancel", then select any author name and use the
           <Icon
             className={styles.renameIcon}
             name={icons.ORGANIZE}

@@ -15,7 +15,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Aggregation.Aggregators
 
             if (quality == null)
             {
-                quality = localTrack.DownloadClientAlbumInfo?.Quality;
+                quality = localTrack.DownloadClientBookInfo?.Quality;
             }
 
             localTrack.Quality = quality;

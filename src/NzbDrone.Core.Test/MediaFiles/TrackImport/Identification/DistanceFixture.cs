@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
         public void test_distance()
         {
             var dist = new Distance();
-            dist.Add("album", 0.5);
+            dist.Add("book", 0.5);
             dist.Add("media_count", 0.25);
             dist.Add("media_count", 0.75);
 
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
         public void test_max_distance()
         {
             var dist = new Distance();
-            dist.Add("album", 0.5);
+            dist.Add("book", 0.5);
             dist.Add("media_count", 0.0);
             dist.Add("media_count", 0.0);
 
@@ -157,7 +157,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
         public void test_raw_distance()
         {
             var dist = new Distance();
-            dist.Add("album", 0.5);
+            dist.Add("book", 0.5);
             dist.Add("media_count", 0.25);
             dist.Add("media_count", 0.5);
 

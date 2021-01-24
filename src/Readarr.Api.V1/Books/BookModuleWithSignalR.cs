@@ -67,12 +67,12 @@ namespace Readarr.Api.V1.Books
 
             if (includeAuthor)
             {
-                var artist = book.Author.Value;
+                var author = book.Author.Value;
 
-                resource.Author = artist.ToResource();
+                resource.Author = author.ToResource();
             }
 
-            FetchAndLinkAlbumStatistics(resource);
+            FetchAndLinkBookStatistics(resource);
             MapCoversToLocal(resource);
 
             return resource;
@@ -119,7 +119,7 @@ namespace Readarr.Api.V1.Books
             return result;
         }
 
-        private void FetchAndLinkAlbumStatistics(BookResource resource)
+        private void FetchAndLinkBookStatistics(BookResource resource)
         {
             LinkAuthorStatistics(resource, _authorStatisticsService.AuthorStatistics(resource.AuthorId));
         }

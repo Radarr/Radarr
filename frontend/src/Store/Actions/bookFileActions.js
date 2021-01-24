@@ -220,9 +220,9 @@ export const actionHandlers = handleThunks({
         ...bookFileIds.map((id) => {
           const props = {};
 
-          const trackFile = data.find((file) => file.id === id);
+          const bookFile = data.find((file) => file.id === id);
 
-          props.qualityCutoffNotMet = trackFile.qualityCutoffNotMet;
+          props.qualityCutoffNotMet = bookFile.qualityCutoffNotMet;
 
           if (quality) {
             props.quality = quality;

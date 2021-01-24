@@ -56,15 +56,15 @@ namespace NzbDrone.Core.Extras.Metadata
 
                     if (metadata.Type == MetadataType.BookImage || metadata.Type == MetadataType.BookMetadata)
                     {
-                        var localAlbum = _parsingService.GetLocalAlbum(possibleMetadataFile, author);
+                        var localBook = _parsingService.GetLocalBook(possibleMetadataFile, author);
 
-                        if (localAlbum == null)
+                        if (localBook == null)
                         {
                             _logger.Debug("Extra file folder has multiple Books: {0}", possibleMetadataFile);
                             continue;
                         }
 
-                        metadata.BookId = localAlbum.Id;
+                        metadata.BookId = localBook.Id;
                     }
 
                     if (metadata.Type == MetadataType.BookMetadata)

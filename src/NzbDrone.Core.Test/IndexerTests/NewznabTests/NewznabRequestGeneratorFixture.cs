@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 {
     public class NewznabRequestGeneratorFixture : CoreTest<NewznabRequestGenerator>
     {
-        private BookSearchCriteria _singleAlbumSearchCriteria;
+        private BookSearchCriteria _singleBookSearchCriteria;
         private NewznabCapabilities _capabilities;
 
         [SetUp]
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
                 ApiKey = "abcd",
             };
 
-            _singleAlbumSearchCriteria = new BookSearchCriteria
+            _singleBookSearchCriteria = new BookSearchCriteria
             {
                 Author = new Books.Author { Name = "Alien Ant Farm" },
                 BookTitle = "TruANT"
@@ -50,11 +50,11 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
 
         [Test]
         [Ignore("Disabled since no usenet indexers seem to support it")]
-        public void should_search_by_artist_and_album_if_supported()
+        public void should_search_by_author_and_book_if_supported()
         {
             _capabilities.SupportedBookSearchParameters = new[] { "q", "author", "title" };
 
-            var results = Subject.GetSearchRequests(_singleAlbumSearchCriteria);
+            var results = Subject.GetSearchRequests(_singleBookSearchCriteria);
             results.GetTier(0).Should().HaveCount(1);
 
             var page = results.GetAllTiers().First().First();

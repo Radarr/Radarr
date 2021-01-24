@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
         [TestCase(".png")]
         [TestCase(".jpg")]
-        public void should_convert_album_cover_urls_to_local(string extension)
+        public void should_convert_book_cover_urls_to_local(string extension)
         {
             var covers = new List<MediaCover.MediaCover>
                 {

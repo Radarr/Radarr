@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
                                                     .With(h => h.Title = "Drone.S01E01.HDTV")
                                                     .Build();
 
-            var remoteBook = BuildRemoteAlbum();
+            var remoteBook = BuildRemoteBook();
 
             _trackedDownload = Builder<TrackedDownload>.CreateNew()
                     .With(c => c.State = TrackedDownloadState.Downloading)
@@ -55,11 +55,11 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
                   .Returns(new History.History());
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetArtist("Drone.S01E01.HDTV"))
+                  .Setup(s => s.GetAuthor("Drone.S01E01.HDTV"))
                   .Returns(remoteBook.Author);
         }
 
-        private Book CreateAlbum(int id)
+        private Book CreateBook(int id)
         {
             return new Book
             {
@@ -67,12 +67,12 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
             };
         }
 
-        private RemoteBook BuildRemoteAlbum()
+        private RemoteBook BuildRemoteBook()
         {
             return new RemoteBook
             {
                 Author = new Author(),
-                Books = new List<Book> { CreateAlbum(1) }
+                Books = new List<Book> { CreateBook(1) }
             };
         }
 
@@ -86,18 +86,18 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
                .Returns(new History.History() { SourceTitle = "Droned S01E01" });
 
             Mocker.GetMock<IParsingService>()
-               .Setup(s => s.GetArtist(It.IsAny<string>()))
+               .Setup(s => s.GetAuthor(It.IsAny<string>()))
                .Returns((Author)null);
 
             Mocker.GetMock<IParsingService>()
-                .Setup(s => s.GetArtist("Droned S01E01"))
-                .Returns(BuildRemoteAlbum().Author);
+                .Setup(s => s.GetAuthor("Droned S01E01"))
+                .Returns(BuildRemoteBook().Author);
         }
 
-        private void GivenArtistMatch()
+        private void GivenAuthorMatch()
         {
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetArtist(It.IsAny<string>()))
+                  .Setup(s => s.GetAuthor(It.IsAny<string>()))
                   .Returns(_trackedDownload.RemoteBook.Author);
         }
 
@@ -167,11 +167,11 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         [Test]
         public void should_mark_as_imported_if_all_tracks_were_imported_but_extra_files_were_not()
         {
-            GivenArtistMatch();
+            GivenAuthorMatch();
 
             _trackedDownload.RemoteBook.Books = new List<Book>
             {
-                CreateAlbum(1)
+                CreateBook(1)
             };
 
             Mocker.GetMock<IDownloadedBooksImportService>()
@@ -192,9 +192,9 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         {
             _trackedDownload.RemoteBook.Books = new List<Book>
             {
-                CreateAlbum(1),
-                CreateAlbum(1),
-                CreateAlbum(1)
+                CreateBook(1),
+                CreateBook(1),
+                CreateBook(1)
             };
 
             Mocker.GetMock<IDownloadedBooksImportService>()
@@ -227,9 +227,9 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         [Test]
         public void should_not_mark_as_imported_if_some_of_episodes_were_not_imported_including_history()
         {
-            var albums = Builder<Book>.CreateListOfSize(3).BuildList();
+            var books = Builder<Book>.CreateListOfSize(3).BuildList();
 
-            _trackedDownload.RemoteBook.Books = albums;
+            _trackedDownload.RemoteBook.Books = books;
 
             Mocker.GetMock<IDownloadedBooksImportService>()
                 .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Author>(), It.IsAny<DownloadClientItem>()))
@@ -261,7 +261,7 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         {
             _trackedDownload.RemoteBook.Books = new List<Book>
             {
-                CreateAlbum(1)
+                CreateBook(1)
             };
 
             Mocker.GetMock<IDownloadedBooksImportService>()
@@ -285,9 +285,9 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
         [Test]
         public void should_mark_as_imported_if_all_episodes_were_imported_including_history()
         {
-            var albums = Builder<Book>.CreateListOfSize(2).BuildList();
+            var books = Builder<Book>.CreateListOfSize(2).BuildList();
 
-            _trackedDownload.RemoteBook.Books = albums;
+            _trackedDownload.RemoteBook.Books = books;
 
             Mocker.GetMock<IDownloadedBooksImportService>()
                 .Setup(v => v.ProcessPath(It.IsAny<string>(), It.IsAny<ImportMode>(), It.IsAny<Author>(), It.IsAny<DownloadClientItem>()))
@@ -295,11 +295,11 @@ namespace NzbDrone.Core.Test.Download.CompletedDownloadServiceTests
                 {
                     new ImportResult(
                         new ImportDecision<LocalBook>(
-                            new LocalBook { Path = @"C:\TestPath\Droned.S01E01.mkv", Book = albums[0] })),
+                            new LocalBook { Path = @"C:\TestPath\Droned.S01E01.mkv", Book = books[0] })),
 
                     new ImportResult(
                         new ImportDecision<LocalBook>(
-                            new LocalBook { Path = @"C:\TestPath\Droned.S01E02.mkv", Book = albums[1] }), "Test Failure")
+                            new LocalBook { Path = @"C:\TestPath\Droned.S01E02.mkv", Book = books[1] }), "Test Failure")
                 });
 
             var history = Builder<History.History>.CreateListOfSize(2)

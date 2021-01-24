@@ -17,27 +17,27 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     [TestFixture]
     public class EarlyReleaseSpecificationFixture : TestBase<EarlyReleaseSpecification>
     {
-        private Author _artist;
-        private Book _album1;
-        private Book _album2;
+        private Author _author;
+        private Book _book1;
+        private Book _book2;
         private RemoteBook _remoteBook;
         private IndexerDefinition _indexerDefinition;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>.CreateNew().With(s => s.Id = 1).Build();
-            _album1 = Builder<Book>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
-            _album2 = Builder<Book>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
+            _author = Builder<Author>.CreateNew().With(s => s.Id = 1).Build();
+            _book1 = Builder<Book>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
+            _book2 = Builder<Book>.CreateNew().With(s => s.ReleaseDate = DateTime.Today).Build();
 
             _remoteBook = new RemoteBook
             {
-                Author = _artist,
-                Books = new List<Book> { _album1 },
+                Author = _author,
+                Books = new List<Book> { _book1 },
                 Release = new TorrentInfo
                 {
                     IndexerId = 1,
-                    Title = "Artist - Album [FLAC-RlsGrp]",
+                    Title = "Author - Book [FLAC-RlsGrp]",
                     PublishDate = DateTime.Today
                 }
             };
@@ -66,9 +66,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_true_if_release_contains_multiple_albums()
+        public void should_return_true_if_release_contains_multiple_books()
         {
-            _remoteBook.Books.Add(_album2);
+            _remoteBook.Books.Add(_book2);
 
             Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }

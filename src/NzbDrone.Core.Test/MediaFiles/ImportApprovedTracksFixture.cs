@@ -36,17 +36,17 @@ namespace NzbDrone.Core.Test.MediaFiles
             _rejectedDecisions = new List<ImportDecision<LocalBook>>();
             _approvedDecisions = new List<ImportDecision<LocalBook>>();
 
-            var artist = Builder<Author>.CreateNew()
+            var author = Builder<Author>.CreateNew()
                                         .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                                         .With(s => s.Path = @"C:\Test\Music\Alien Ant Farm".AsOsAgnostic())
                                         .Build();
 
-            var album = Builder<Book>.CreateNew()
-                .With(e => e.Author = artist)
+            var book = Builder<Book>.CreateNew()
+                .With(e => e.Author = author)
                 .Build();
 
             var edition = Builder<Edition>.CreateNew()
-                .With(e => e.Book = album)
+                .With(e => e.Book = book)
                 .Build();
 
             var rootFolder = Builder<RootFolder>.CreateNew()
@@ -60,10 +60,10 @@ namespace NzbDrone.Core.Test.MediaFiles
             _approvedDecisions.Add(new ImportDecision<LocalBook>(
                                        new LocalBook
                                        {
-                                           Author = artist,
-                                           Book = album,
+                                           Author = author,
+                                           Book = book,
                                            Edition = edition,
-                                           Path = Path.Combine(artist.Path, "Alien Ant Farm - 01 - Pilot.mp3"),
+                                           Path = Path.Combine(author.Path, "Alien Ant Farm - 01 - Pilot.mp3"),
                                            Quality = new QualityModel(Quality.MP3_320),
                                            FileTrackInfo = new ParsedTrackInfo
                                            {

@@ -26,14 +26,14 @@ namespace NzbDrone.Core.IndexerSearch
 
         public BookSearchService(ISearchForNzb nzbSearchService,
             IBookService bookService,
-            IBookCutoffService albumCutoffService,
+            IBookCutoffService bookCutoffService,
             IQueueService queueService,
             IProcessDownloadDecisions processDownloadDecisions,
             Logger logger)
         {
             _nzbSearchService = nzbSearchService;
             _bookService = bookService;
-            _bookCutoffService = albumCutoffService;
+            _bookCutoffService = bookCutoffService;
             _queueService = queueService;
             _processDownloadDecisions = processDownloadDecisions;
             _logger = logger;
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.IndexerSearch
 
         public void Execute(MissingBookSearchCommand message)
         {
-            List<Book> albums;
+            List<Book> books;
 
             if (message.AuthorId.HasValue)
             {
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.IndexerSearch
 
                 pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Author.Value.Monitored == true);
 
-                albums = _bookService.BooksWithoutFiles(pagingSpec).Records.Where(e => e.AuthorId.Equals(authorId)).ToList();
+                books = _bookService.BooksWithoutFiles(pagingSpec).Records.Where(e => e.AuthorId.Equals(authorId)).ToList();
             }
             else
             {
@@ -100,11 +100,11 @@ namespace NzbDrone.Core.IndexerSearch
 
                 pagingSpec.FilterExpressions.Add(v => v.Monitored == true && v.Author.Value.Monitored == true);
 
-                albums = _bookService.BooksWithoutFiles(pagingSpec).Records.ToList();
+                books = _bookService.BooksWithoutFiles(pagingSpec).Records.ToList();
             }
 
             var queue = _queueService.GetQueue().Where(q => q.Book != null).Select(q => q.Book.Id);
-            var missing = albums.Where(e => !queue.Contains(e.Id)).ToList();
+            var missing = books.Where(e => !queue.Contains(e.Id)).ToList();
 
             SearchForMissingBooks(missing, message.Trigger == CommandTrigger.Manual);
         }

@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
 
         protected string _serialNumber = "SERIALNUMBER";
         protected string _category = "readarr";
-        protected string _musicDirectory = @"music/Artist";
+        protected string _musicDirectory = @"music/Author";
         protected string _defaultDestination = "somepath";
         protected OsPath _physicalPath = new OsPath("/mnt/sdb1/mydata");
 
@@ -360,13 +360,13 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
                   .Callback(PrepareClientToReturnQueuedItem);
         }
 
-        protected override RemoteBook CreateRemoteAlbum()
+        protected override RemoteBook CreateRemoteBook()
         {
-            var album = base.CreateRemoteAlbum();
+            var book = base.CreateRemoteBook();
 
-            album.Release.DownloadUrl = DownloadURL;
+            book.Release.DownloadUrl = DownloadURL;
 
-            return album;
+            return book;
         }
 
         protected int GivenAllKindOfTasks()
@@ -387,7 +387,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenTvDirectory();
             GivenSuccessfulDownload();
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             var id = Subject.Download(remoteBook);
 
@@ -404,7 +404,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenMusicCategory();
             GivenSuccessfulDownload();
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             var id = Subject.Download(remoteBook);
 
@@ -420,7 +420,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
             GivenSerialNumber();
             GivenSuccessfulDownload();
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             var id = Subject.Download(remoteBook);
 
@@ -495,7 +495,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DownloadStationTests
         [Test]
         public void Download_should_throw_and_not_add_task_if_cannot_get_serial_number()
         {
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             Mocker.GetMock<ISerialNumberProvider>()
                   .Setup(s => s.GetSerialNumber(_settings))

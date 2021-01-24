@@ -38,7 +38,7 @@ namespace Readarr.Api.V1.Queue
 
     public static class QueueResourceMapper
     {
-        public static QueueResource ToResource(this NzbDrone.Core.Queue.Queue model, bool includeArtist, bool includeAlbum)
+        public static QueueResource ToResource(this NzbDrone.Core.Queue.Queue model, bool includeAuthor, bool includeBook)
         {
             if (model == null)
             {
@@ -50,8 +50,8 @@ namespace Readarr.Api.V1.Queue
                 Id = model.Id,
                 AuthorId = model.Author?.Id,
                 BookId = model.Book?.Id,
-                Author = includeArtist && model.Author != null ? model.Author.ToResource() : null,
-                Book = includeAlbum && model.Book != null ? model.Book.ToResource() : null,
+                Author = includeAuthor && model.Author != null ? model.Author.ToResource() : null,
+                Book = includeBook && model.Book != null ? model.Book.ToResource() : null,
                 Quality = model.Quality,
                 Size = model.Size,
                 Title = model.Title,

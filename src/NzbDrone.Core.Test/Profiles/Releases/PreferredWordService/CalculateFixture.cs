@@ -13,14 +13,14 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
     [TestFixture]
     public class CalculateFixture : CoreTest<Core.Profiles.Releases.PreferredWordService>
     {
-        private Author _artist = null;
+        private Author _author = null;
         private List<ReleaseProfile> _releaseProfiles = null;
-        private string _title = "Artist.Name-Album.Title.2018.FLAC.24bit-Readarr";
+        private string _title = "Author.Name-Book.Title.2018.FLAC.24bit-Readarr";
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                                      .With(s => s.Tags = new HashSet<int>(new[] { 1, 2 }))
                                      .Build();
 
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
                   .Setup(s => s.EnabledForTags(It.IsAny<HashSet<int>>(), It.IsAny<int>()))
                   .Returns(new List<ReleaseProfile>());
 
-            Subject.Calculate(_artist, _title, 0).Should().Be(0);
+            Subject.Calculate(_author, _title, 0).Should().Be(0);
         }
 
         [Test]
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
         {
             GivenMatchingTerms();
 
-            Subject.Calculate(_artist, _title, 0).Should().Be(0);
+            Subject.Calculate(_author, _title, 0).Should().Be(0);
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
         {
             GivenMatchingTerms("24bit");
 
-            Subject.Calculate(_artist, _title, 0).Should().Be(5);
+            Subject.Calculate(_author, _title, 0).Should().Be(5);
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
         {
             GivenMatchingTerms("16bit");
 
-            Subject.Calculate(_artist, _title, 0).Should().Be(-10);
+            Subject.Calculate(_author, _title, 0).Should().Be(-10);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.Profiles.Releases.PreferredWordService
 
             GivenMatchingTerms("24bit");
 
-            Subject.Calculate(_artist, _title, 0).Should().Be(10);
+            Subject.Calculate(_author, _title, 0).Should().Be(10);
         }
     }
 }

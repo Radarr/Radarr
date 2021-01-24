@@ -22,8 +22,8 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
     public class RemoveRejectedFixture : CoreTest<PendingReleaseService>
     {
         private DownloadDecision _temporarilyRejected;
-        private Author _artist;
-        private Book _album;
+        private Author _author;
+        private Book _book;
         private QualityProfile _profile;
         private ReleaseInfo _release;
         private ParsedBookInfo _parsedBookInfo;
@@ -32,10 +32,10 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                                      .Build();
 
-            _album = Builder<Book>.CreateNew()
+            _book = Builder<Book>.CreateNew()
                                        .Build();
 
             _profile = new QualityProfile
@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                    },
             };
 
-            _artist.QualityProfile = new LazyLoaded<QualityProfile>(_profile);
+            _author.QualityProfile = new LazyLoaded<QualityProfile>(_profile);
 
             _release = Builder<ReleaseInfo>.CreateNew().Build();
 
@@ -58,8 +58,8 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
             _parsedBookInfo.Quality = new QualityModel(Quality.MP3_320);
 
             _remoteBook = new RemoteBook();
-            _remoteBook.Books = new List<Book> { _album };
-            _remoteBook.Author = _artist;
+            _remoteBook.Books = new List<Book> { _book };
+            _remoteBook.Author = _author;
             _remoteBook.ParsedBookInfo = _parsedBookInfo;
             _remoteBook.Release = _release;
 
@@ -71,15 +71,15 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             Mocker.GetMock<IAuthorService>()
                   .Setup(s => s.GetAuthor(It.IsAny<int>()))
-                  .Returns(_artist);
+                  .Returns(_author);
 
             Mocker.GetMock<IAuthorService>()
                   .Setup(s => s.GetAuthors(It.IsAny<IEnumerable<int>>()))
-                  .Returns(new List<Author> { _artist });
+                  .Returns(new List<Author> { _author });
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetAlbums(It.IsAny<ParsedBookInfo>(), _artist, null))
-                  .Returns(new List<Book> { _album });
+                  .Setup(s => s.GetBooks(It.IsAny<ParsedBookInfo>(), _author, null))
+                  .Returns(new List<Book> { _book });
 
             Mocker.GetMock<IPrioritizeDownloadDecision>()
                   .Setup(s => s.PrioritizeDecisions(It.IsAny<List<DownloadDecision>>()))
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             var heldReleases = Builder<PendingRelease>.CreateListOfSize(1)
                                                    .All()
-                                                   .With(h => h.AuthorId = _artist.Id)
+                                                   .With(h => h.AuthorId = _author.Id)
                                                    .With(h => h.Title = title)
                                                    .With(h => h.Release = release)
                                                    .Build();

@@ -20,9 +20,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     public class AlreadyImportedSpecificationFixture : CoreTest<AlreadyImportedSpecification>
     {
         private const int FIRST_ALBUM_ID = 1;
-        private const string TITLE = "Some.Artist-Some.Album-2018-320kbps-CD-Readarr";
+        private const string TITLE = "Some.Author-Some.Book-2018-320kbps-CD-Readarr";
 
-        private Author _artist;
+        private Author _author;
         private QualityModel _mp3;
         private QualityModel _flac;
         private RemoteBook _remoteBook;
@@ -32,16 +32,16 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            var singleAlbumList = new List<Book>
+            var singleBookList = new List<Book>
                                     {
                                         new Book
                                         {
                                             Id = FIRST_ALBUM_ID,
-                                            Title = "Some Album"
+                                            Title = "Some Book"
                                         }
                                     };
 
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                                      .Build();
 
             _firstFile = new BookFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now };
@@ -51,9 +51,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _remoteBook = new RemoteBook
             {
-                Author = _artist,
+                Author = _author,
                 ParsedBookInfo = new ParsedBookInfo { Quality = _mp3 },
-                Books = singleAlbumList,
+                Books = singleBookList,
                 Release = Builder<ReleaseInfo>.CreateNew()
                                               .Build()
             };
@@ -101,7 +101,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_be_accepted_if_album_does_not_have_a_file()
+        public void should_be_accepted_if_book_does_not_have_a_file()
         {
             Mocker.GetMock<IMediaFileService>()
                 .Setup(c => c.GetFilesByBook(It.IsAny<int>()))
@@ -111,13 +111,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_be_accepted_if_album_does_not_have_grabbed_event()
+        public void should_be_accepted_if_book_does_not_have_grabbed_event()
         {
             Subject.IsSatisfiedBy(_remoteBook, null).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void should_be_accepted_if_album_does_not_have_imported_event()
+        public void should_be_accepted_if_book_does_not_have_imported_event()
         {
             GivenHistoryItem(Guid.NewGuid().ToString().ToUpper(), TITLE, _mp3, HistoryEventType.Grabbed);
 

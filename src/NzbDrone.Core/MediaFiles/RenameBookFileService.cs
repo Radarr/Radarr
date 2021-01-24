@@ -157,9 +157,9 @@ namespace NzbDrone.Core.MediaFiles
         public void Execute(RenameAuthorCommand message)
         {
             _logger.Debug("Renaming all files for selected author");
-            var artistToRename = _authorService.GetAuthors(message.AuthorIds);
+            var authorToRename = _authorService.GetAuthors(message.AuthorIds);
 
-            foreach (var author in artistToRename)
+            foreach (var author in authorToRename)
             {
                 var bookFiles = _mediaFileService.GetFilesByAuthor(author.Id);
                 _logger.ProgressInfo("Renaming all files in author: {0}", author.Name);

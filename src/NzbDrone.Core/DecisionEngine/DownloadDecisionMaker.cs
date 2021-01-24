@@ -81,7 +81,7 @@ namespace NzbDrone.Core.DecisionEngine
                         else
                         {
                             // try parsing fuzzy
-                            parsedBookInfo = _parsingService.ParseAlbumTitleFuzzy(report.Title);
+                            parsedBookInfo = _parsingService.ParseBookTitleFuzzy(report.Title);
                         }
                     }
 
@@ -156,23 +156,23 @@ namespace NzbDrone.Core.DecisionEngine
 
                     if (searchCriteria != null)
                     {
-                        if (parsedAlbumInfo == null)
+                        if (parsedBookInfo == null)
                         {
-                            parsedAlbumInfo = new ParsedAlbumInfo
+                            parsedBookInfo = new ParsedBookInfo
                             {
-                                Quality = QualityParser.ParseQuality(report.Title, null, 0)
+                                Quality = QualityParser.ParseQuality(report.Title, null)
                             };
                         }
 
-                        if (parsedAlbumInfo.ArtistName.IsNullOrWhiteSpace())
+                        if (parsedBookInfo.AuthorName.IsNullOrWhiteSpace())
                         {
-                            var remoteAlbum = new RemoteAlbum
+                            var remoteBook = new RemoteBook
                             {
                                 Release = report,
-                                ParsedAlbumInfo = parsedAlbumInfo
+                                ParsedBookInfo = parsedBookInfo
                             };
 
-                            decision = new DownloadDecision(remoteAlbum, new Rejection("Unable to parse release"));
+                            decision = new DownloadDecision(remoteBook, new Rejection("Unable to parse release"));
                         }
                     }
                 }

@@ -14,24 +14,24 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.MusicTests
 {
     [TestFixture]
-    public class MoveArtistServiceFixture : CoreTest<MoveAuthorService>
+    public class MoveAuthorServiceFixture : CoreTest<MoveAuthorService>
     {
-        private Author _artist;
+        private Author _author;
         private MoveAuthorCommand _command;
         private BulkMoveAuthorCommand _bulkCommand;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>
+            _author = Builder<Author>
                 .CreateNew()
                 .Build();
 
             _command = new MoveAuthorCommand
             {
                 AuthorId = 1,
-                SourcePath = @"C:\Test\Music\Artist".AsOsAgnostic(),
-                DestinationPath = @"C:\Test\Music2\Artist".AsOsAgnostic()
+                SourcePath = @"C:\Test\Music\Author".AsOsAgnostic(),
+                DestinationPath = @"C:\Test\Music2\Author".AsOsAgnostic()
             };
 
             _bulkCommand = new BulkMoveAuthorCommand
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.MusicTests
                     new BulkMoveAuthor
                     {
                         AuthorId = 1,
-                        SourcePath = @"C:\Test\Music\Artist".AsOsAgnostic()
+                        SourcePath = @"C:\Test\Music\Author".AsOsAgnostic()
                     }
                 },
                 DestinationRootFolder = @"C:\Test\Music2".AsOsAgnostic()
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.MusicTests
 
             Mocker.GetMock<IAuthorService>()
                 .Setup(s => s.GetAuthor(It.IsAny<int>()))
-                .Returns(_artist);
+                .Returns(_author);
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(s => s.FolderExists(It.IsAny<string>()))
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
-        public void should_revert_artist_path_on_error()
+        public void should_revert_author_path_on_error()
         {
             GivenFailedMove();
 
@@ -105,12 +105,12 @@ namespace NzbDrone.Core.Test.MusicTests
         [Test]
         public void should_build_new_path_when_root_folder_is_provided()
         {
-            var artistFolder = "Artist";
-            var expectedPath = Path.Combine(_bulkCommand.DestinationRootFolder, artistFolder);
+            var authorFolder = "Author";
+            var expectedPath = Path.Combine(_bulkCommand.DestinationRootFolder, authorFolder);
 
             Mocker.GetMock<IBuildFileNames>()
                 .Setup(s => s.GetAuthorFolder(It.IsAny<Author>(), null))
-                .Returns(artistFolder);
+                .Returns(authorFolder);
 
             Subject.Execute(_bulkCommand);
 
@@ -123,7 +123,7 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
-        public void should_skip_artist_folder_if_it_does_not_exist()
+        public void should_skip_author_folder_if_it_does_not_exist()
         {
             Mocker.GetMock<IDiskProvider>()
                 .Setup(s => s.FolderExists(It.IsAny<string>()))

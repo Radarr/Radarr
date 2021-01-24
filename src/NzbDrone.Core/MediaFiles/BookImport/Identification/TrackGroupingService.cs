@@ -23,7 +23,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 
         private static readonly List<string> MultiDiscMarkers = new List<string> { @"dis[ck]", @"cd" };
         private static readonly string MultiDiscPatternFormat = @"^(?<root>.*%s[\W_]*)\d";
-        private static readonly List<string> VariousArtistTitles = new List<string> { "", "various artists", "various", "va", "unknown" };
+        private static readonly List<string> VariousAuthorTitles = new List<string> { "", "various authors", "various", "va", "unknown" };
 
         public List<LocalEdition> GroupTracks(List<LocalBook> localTracks)
         {
@@ -53,11 +53,11 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 }
             }
 
-            // If anything didn't get grouped correctly, try grouping by Album (to pick up VA)
+            // If anything didn't get grouped correctly, try grouping by Book (to pick up VA)
             var unprocessed2 = new List<LocalBook>();
-            foreach (var group in unprocessed.GroupBy(x => x.FileTrackInfo.AlbumTitle))
+            foreach (var group in unprocessed.GroupBy(x => x.FileTrackInfo.BookTitle))
             {
-                _logger.Debug("Falling back to grouping by album tag");
+                _logger.Debug("Falling back to grouping by book tag");
                 var tracks = group.ToList();
                 if (LooksLikeSingleRelease(tracks))
                 {
@@ -69,10 +69,10 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 }
             }
 
-            // Finally fall back to grouping by Album/Artist pair
-            foreach (var group in unprocessed2.GroupBy(x => new { x.FileTrackInfo.ArtistTitle, x.FileTrackInfo.AlbumTitle }))
+            // Finally fall back to grouping by Book/Author pair
+            foreach (var group in unprocessed2.GroupBy(x => new { x.FileTrackInfo.AuthorTitle, x.FileTrackInfo.BookTitle }))
             {
-                _logger.Debug("Falling back to grouping by album+author tag");
+                _logger.Debug("Falling back to grouping by book+author tag");
                 releases.Add(new LocalEdition(group.ToList()));
             }
 
@@ -115,33 +115,33 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
         {
             // returns true if we think all the tracks belong to a single release
 
-            // author/album tags must be the same for 75% of tracks, with no more than 25% having different values
-            // (except in the case of various artists)
-            const double albumTagThreshold = 0.25;
-            const double artistTagThreshold = 0.25;
+            // author/book tags must be the same for 75% of tracks, with no more than 25% having different values
+            // (except in the case of various authors)
+            const double bookTagThreshold = 0.25;
+            const double authorTagThreshold = 0.25;
             const double tagFuzz = 0.9;
 
-            // check that any Album/Release MBID is unique
-            if (tracks.Select(x => x.FileTrackInfo.AlbumMBId).Distinct().Where(x => x.IsNotNullOrWhiteSpace()).Count() > 1 ||
+            // check that any Book/Release MBID is unique
+            if (tracks.Select(x => x.FileTrackInfo.BookMBId).Distinct().Where(x => x.IsNotNullOrWhiteSpace()).Count() > 1 ||
                 tracks.Select(x => x.FileTrackInfo.ReleaseMBId).Distinct().Where(x => x.IsNotNullOrWhiteSpace()).Count() > 1)
             {
                 _logger.Trace("LooksLikeSingleRelease: MBIDs are not unique");
                 return false;
             }
 
-            // check that there's a common album tag.
-            var albumTags = tracks.Select(x => x.FileTrackInfo.AlbumTitle);
-            if (!HasCommonEntry(albumTags, albumTagThreshold, tagFuzz))
+            // check that there's a common book tag.
+            var bookTags = tracks.Select(x => x.FileTrackInfo.BookTitle);
+            if (!HasCommonEntry(bookTags, bookTagThreshold, tagFuzz))
             {
-                _logger.Trace("LooksLikeSingleRelease: No common album tag");
+                _logger.Trace("LooksLikeSingleRelease: No common book tag");
                 return false;
             }
 
-            // If not various artists, make sure artists are sensible
-            if (!IsVariousArtists(tracks))
+            // If not various authors, make sure authors are sensible
+            if (!IsVariousAuthors(tracks))
             {
-                var artistTags = tracks.Select(x => x.FileTrackInfo.ArtistTitle);
-                if (!HasCommonEntry(artistTags, artistTagThreshold, tagFuzz))
+                var authorTags = tracks.Select(x => x.FileTrackInfo.AuthorTitle);
+                if (!HasCommonEntry(authorTags, authorTagThreshold, tagFuzz))
                 {
                     _logger.Trace("LooksLikeSingleRelease: No common author tag");
                     return false;
@@ -151,22 +151,22 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             return true;
         }
 
-        public static bool IsVariousArtists(List<LocalBook> tracks)
+        public static bool IsVariousAuthors(List<LocalBook> tracks)
         {
             // checks whether most common title is a known VA title
             // Also checks whether more than 75% of tracks have a distinct author and that the most common author
             // is responsible for < 25% of tracks
-            const double artistTagThreshold = 0.75;
+            const double authorTagThreshold = 0.75;
             const double tagFuzz = 0.9;
 
-            var artistTags = tracks.Select(x => x.FileTrackInfo.ArtistTitle);
+            var authorTags = tracks.Select(x => x.FileTrackInfo.AuthorTitle);
 
-            if (!HasCommonEntry(artistTags, artistTagThreshold, tagFuzz))
+            if (!HasCommonEntry(authorTags, authorTagThreshold, tagFuzz))
             {
                 return true;
             }
 
-            if (VariousArtistTitles.Contains(artistTags.GroupBy(x => x).OrderByDescending(x => x.Count()).First().Key, StringComparer.OrdinalIgnoreCase))
+            if (VariousAuthorTitles.Contains(authorTags.GroupBy(x => x).OrderByDescending(x => x.Count()).First().Key, StringComparer.OrdinalIgnoreCase))
             {
                 return true;
             }

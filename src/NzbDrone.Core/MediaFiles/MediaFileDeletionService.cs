@@ -104,9 +104,9 @@ namespace NzbDrone.Core.MediaFiles
             if (message.DeleteFiles)
             {
                 var author = message.Author;
-                var allArtists = _authorService.AllAuthorPaths();
+                var allAuthors = _authorService.AllAuthorPaths();
 
-                foreach (var s in allArtists)
+                foreach (var s in allAuthors)
                 {
                     if (s.Key == author.Id)
                     {

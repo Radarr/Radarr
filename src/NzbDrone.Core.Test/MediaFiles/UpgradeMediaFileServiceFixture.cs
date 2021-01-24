@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.MediaFiles
     {
         private BookFile _trackFile;
         private LocalBook _localTrack;
-        private string _rootPath = @"C:\Test\Music\Artist".AsOsAgnostic();
+        private string _rootPath = @"C:\Test\Music\Author".AsOsAgnostic();
 
         [SetUp]
         public void Setup()
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Subject.UpgradeBookFile(_trackFile, _localTrack);
 
-            // Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localTrack.Album.BookFiles.Value, DeleteMediaFileReason.Upgrade), Times.Once());
+            // Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localTrack.Book.BookFiles.Value, DeleteMediaFileReason.Upgrade), Times.Once());
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             Subject.UpgradeBookFile(_trackFile, _localTrack);
 
-            // Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localTrack.Album.BookFiles.Value, It.IsAny<DeleteMediaFileReason>()), Times.Never());
+            // Mocker.GetMock<IMediaFileService>().Verify(v => v.Delete(_localTrack.Book.BookFiles.Value, It.IsAny<DeleteMediaFileReason>()), Times.Never());
         }
     }
 }

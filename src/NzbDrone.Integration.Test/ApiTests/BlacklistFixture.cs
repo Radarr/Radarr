@@ -8,18 +8,18 @@ namespace NzbDrone.Integration.Test.ApiTests
     [TestFixture]
     public class BlacklistFixture : IntegrationTest
     {
-        private AuthorResource _artist;
+        private AuthorResource _author;
 
         [Test]
         [Ignore("Adding to blacklist not supported")]
         public void should_be_able_to_add_to_blacklist()
         {
-            _artist = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
+            _author = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
 
             Blacklist.Post(new BlacklistResource
             {
-                AuthorId = _artist.Id,
-                SourceTitle = "Blacklist - Album 1 [2015 FLAC]"
+                AuthorId = _author.Id,
+                SourceTitle = "Blacklist - Book 1 [2015 FLAC]"
             });
         }
 

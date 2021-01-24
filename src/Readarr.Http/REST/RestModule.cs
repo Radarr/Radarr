@@ -17,7 +17,7 @@ namespace Readarr.Http.REST
         private const string ROOT_ROUTE = "/";
         private const string ID_ROUTE = @"/(?<id>[\d]{1,10})";
 
-        // See src/Lidarr.Api.V1/Queue/QueueModule.cs
+        // See src/Readarr.Api.V1/Queue/QueueModule.cs
         private static readonly HashSet<string> VALID_SORT_KEYS = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "timeleft",

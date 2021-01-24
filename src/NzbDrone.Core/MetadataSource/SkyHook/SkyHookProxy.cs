@@ -37,7 +37,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             _logger = logger;
         }
 
-        public HashSet<string> GetChangedArtists(DateTime startTime)
+        public HashSet<string> GetChangedAuthors(DateTime startTime)
         {
             return null;
         }
@@ -76,10 +76,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
         public HashSet<string> GetChangedBooks(DateTime startTime)
         {
-            return _cache.Get("ChangedAlbums", () => GetChangedAlbumsUncached(startTime), TimeSpan.FromMinutes(30));
+            return _cache.Get("ChangedBooks", () => GetChangedBooksUncached(startTime), TimeSpan.FromMinutes(30));
         }
 
-        private HashSet<string> GetChangedAlbumsUncached(DateTime startTime)
+        private HashSet<string> GetChangedBooksUncached(DateTime startTime)
         {
             return null;
         }

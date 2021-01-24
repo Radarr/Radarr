@@ -12,128 +12,128 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
 
-    public class MonitoredAlbumSpecificationFixture : CoreTest<MonitoredBookSpecification>
+    public class MonitoredBookSpecificationFixture : CoreTest<MonitoredBookSpecification>
     {
-        private MonitoredBookSpecification _monitoredAlbumSpecification;
+        private MonitoredBookSpecification _monitoredBookSpecification;
 
         private RemoteBook _parseResultMulti;
         private RemoteBook _parseResultSingle;
-        private Author _fakeArtist;
-        private Book _firstAlbum;
-        private Book _secondAlbum;
+        private Author _fakeAuthor;
+        private Book _firstBook;
+        private Book _secondBook;
 
         [SetUp]
         public void Setup()
         {
-            _monitoredAlbumSpecification = Mocker.Resolve<MonitoredBookSpecification>();
+            _monitoredBookSpecification = Mocker.Resolve<MonitoredBookSpecification>();
 
-            _fakeArtist = Builder<Author>.CreateNew()
+            _fakeAuthor = Builder<Author>.CreateNew()
                 .With(c => c.Monitored = true)
                 .Build();
 
-            _firstAlbum = new Book { Monitored = true };
-            _secondAlbum = new Book { Monitored = true };
+            _firstBook = new Book { Monitored = true };
+            _secondBook = new Book { Monitored = true };
 
-            var singleAlbumList = new List<Book> { _firstAlbum };
-            var doubleAlbumList = new List<Book> { _firstAlbum, _secondAlbum };
+            var singleBookList = new List<Book> { _firstBook };
+            var doubleBookList = new List<Book> { _firstBook, _secondBook };
 
             _parseResultMulti = new RemoteBook
             {
-                Author = _fakeArtist,
-                Books = doubleAlbumList
+                Author = _fakeAuthor,
+                Books = doubleBookList
             };
 
             _parseResultSingle = new RemoteBook
             {
-                Author = _fakeArtist,
-                Books = singleAlbumList
+                Author = _fakeAuthor,
+                Books = singleBookList
             };
         }
 
-        private void WithFirstAlbumUnmonitored()
+        private void WithFirstBookUnmonitored()
         {
-            _firstAlbum.Monitored = false;
+            _firstBook.Monitored = false;
         }
 
-        private void WithSecondAlbumUnmonitored()
+        private void WithSecondBookUnmonitored()
         {
-            _secondAlbum.Monitored = false;
-        }
-
-        [Test]
-        public void setup_should_return_monitored_album_should_return_true()
-        {
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeTrue();
+            _secondBook.Monitored = false;
         }
 
         [Test]
-        public void not_monitored_artist_should_be_skipped()
+        public void setup_should_return_monitored_book_should_return_true()
         {
-            _fakeArtist.Monitored = false;
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void only_album_not_monitored_should_return_false()
+        public void not_monitored_author_should_be_skipped()
         {
-            WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            _fakeAuthor.Monitored = false;
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void both_albums_not_monitored_should_return_false()
+        public void only_book_not_monitored_should_return_false()
         {
-            WithFirstAlbumUnmonitored();
-            WithSecondAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+            WithFirstBookUnmonitored();
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void only_first_album_not_monitored_should_return_false()
+        public void both_books_not_monitored_should_return_false()
         {
-            WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+            WithFirstBookUnmonitored();
+            WithSecondBookUnmonitored();
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void only_second_album_not_monitored_should_return_false()
+        public void only_first_book_not_monitored_should_return_false()
         {
-            WithSecondAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+            WithFirstBookUnmonitored();
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_true_for_single_album_search()
+        public void only_second_book_not_monitored_should_return_false()
         {
-            _fakeArtist.Monitored = false;
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new BookSearchCriteria()).Accepted.Should().BeTrue();
+            WithSecondBookUnmonitored();
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
         }
 
         [Test]
-        public void should_return_true_if_album_is_not_monitored_and_monitoredEpisodesOnly_flag_is_false()
+        public void should_return_true_for_single_book_search()
         {
-            WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new BookSearchCriteria { MonitoredBooksOnly = false }).Accepted.Should().BeTrue();
+            _fakeAuthor.Monitored = false;
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultSingle, new BookSearchCriteria()).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void should_return_false_if_album_is_not_monitored_and_monitoredEpisodesOnly_flag_is_true()
+        public void should_return_true_if_book_is_not_monitored_and_monitoredEpisodesOnly_flag_is_false()
         {
-            WithFirstAlbumUnmonitored();
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultSingle, new BookSearchCriteria { MonitoredBooksOnly = true }).Accepted.Should().BeFalse();
+            WithFirstBookUnmonitored();
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultSingle, new BookSearchCriteria { MonitoredBooksOnly = false }).Accepted.Should().BeTrue();
         }
 
         [Test]
-        public void should_return_false_if_all_albums_are_not_monitored_for_discography_pack_release()
+        public void should_return_false_if_book_is_not_monitored_and_monitoredEpisodesOnly_flag_is_true()
         {
-            WithSecondAlbumUnmonitored();
+            WithFirstBookUnmonitored();
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultSingle, new BookSearchCriteria { MonitoredBooksOnly = true }).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_return_false_if_all_books_are_not_monitored_for_discography_pack_release()
+        {
+            WithSecondBookUnmonitored();
             _parseResultMulti.ParsedBookInfo = new ParsedBookInfo()
             {
                 Discography = true
             };
 
-            _monitoredAlbumSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+            _monitoredBookSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
         }
     }
 }

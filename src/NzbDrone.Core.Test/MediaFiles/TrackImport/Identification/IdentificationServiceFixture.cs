@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
     {
         private AuthorService _authorService;
         private AddAuthorService _addAuthorService;
-        private RefreshAuthorService _refreshArtistService;
+        private RefreshAuthorService _refreshAuthorService;
 
         private IdentificationService _Subject;
 
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
             _addAuthorService = Mocker.Resolve<AddAuthorService>();
 
             Mocker.SetConstant<IRefreshBookService>(Mocker.Resolve<RefreshBookService>());
-            _refreshArtistService = Mocker.Resolve<RefreshAuthorService>();
+            _refreshAuthorService = Mocker.Resolve<RefreshAuthorService>();
 
             Mocker.GetMock<IAddAuthorValidator>().Setup(x => x.Validate(It.IsAny<Author>())).Returns(new ValidationResult());
 
@@ -88,23 +88,23 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
             Mocker.GetMock<IMetadataProfileService>().Setup(x => x.Get(profile.Id)).Returns(profile);
         }
 
-        private List<Author> GivenArtists(List<AuthorTestCase> artists)
+        private List<Author> GivenAuthors(List<AuthorTestCase> authors)
         {
             var outp = new List<Author>();
-            for (int i = 0; i < artists.Count; i++)
+            for (int i = 0; i < authors.Count; i++)
             {
-                var meta = artists[i].MetadataProfile;
+                var meta = authors[i].MetadataProfile;
                 meta.Id = i + 1;
                 GivenMetadataProfile(meta);
-                outp.Add(GivenArtist(artists[i].Author, meta.Id));
+                outp.Add(GivenAuthor(authors[i].Author, meta.Id));
             }
 
             return outp;
         }
 
-        private Author GivenArtist(string foreignAuthorId, int metadataProfileId)
+        private Author GivenAuthor(string foreignAuthorId, int metadataProfileId)
         {
-            var artist = _addAuthorService.AddAuthor(new Author
+            var author = _addAuthorService.AddAuthor(new Author
             {
                 Metadata = new AuthorMetadata
                 {
@@ -116,11 +116,11 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
 
             var command = new RefreshAuthorCommand
             {
-                AuthorId = artist.Id,
+                AuthorId = author.Id,
                 Trigger = CommandTrigger.Unspecified
             };
 
-            _refreshArtistService.Execute(command);
+            _refreshAuthorService.Execute(command);
 
             return _authorService.FindById(foreignAuthorId);
         }
@@ -145,8 +145,8 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
             {
                 "FilesWithMBIds.json",
                 "PreferMissingToBadMatch.json",
-                "InconsistentTyposInAlbum.json",
-                "SucceedWhenManyAlbumsHaveSameTitle.json",
+                "InconsistentTyposInBook.json",
+                "SucceedWhenManyBooksHaveSameTitle.json",
                 "PenalizeUnknownMedia.json",
                 "CorruptFile.json",
                 "FilesWithoutTags.json"
@@ -172,9 +172,9 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Identification
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Files", "Identification", file);
             var testcase = JsonConvert.DeserializeObject<IdTestCase>(File.ReadAllText(path));
 
-            var artists = GivenArtists(testcase.LibraryAuthors);
-            var specifiedArtist = artists.SingleOrDefault(x => x.Metadata.Value.ForeignAuthorId == testcase.Author);
-            var idOverrides = new IdentificationOverrides { Author = specifiedArtist };
+            var authors = GivenAuthors(testcase.LibraryAuthors);
+            var specifiedAuthor = authors.SingleOrDefault(x => x.Metadata.Value.ForeignAuthorId == testcase.Author);
+            var idOverrides = new IdentificationOverrides { Author = specifiedAuthor };
 
             var tracks = testcase.Tracks.Select(x => new LocalBook
             {

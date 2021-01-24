@@ -163,7 +163,7 @@ namespace NzbDrone.Core.Blacklisting
 
         public void HandleAsync(AuthorDeletedEvent message)
         {
-            var blacklisted = _blacklistRepository.BlacklistedByArtist(message.Author.Id);
+            var blacklisted = _blacklistRepository.BlacklistedByAuthor(message.Author.Id);
 
             _blacklistRepository.DeleteMany(blacklisted);
         }

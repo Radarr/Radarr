@@ -35,8 +35,8 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Aggregation.Aggregators
                 parsed.Asin = book.Identifiers.GetValueOrDefault("mobi-asin");
                 parsed.Isbn = book.Identifiers.GetValueOrDefault("isbn");
                 parsed.GoodreadsId = book.Identifiers.GetValueOrDefault("goodreads");
-                parsed.ArtistTitle = book.AuthorSort;
-                parsed.AlbumTitle = book.Title;
+                parsed.AuthorTitle = book.AuthorSort;
+                parsed.BookTitle = book.Title;
             }
 
             return localTrack;

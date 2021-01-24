@@ -49,19 +49,19 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         {
             var details = Subject.GetBookInfo(mbId);
 
-            ValidateAlbums(new List<Book> { details.Item2 });
+            ValidateBooks(new List<Book> { details.Item2 });
 
             details.Item2.Title.Should().Be(name);
         }
 
         [Test]
-        public void getting_details_of_invalid_artist()
+        public void getting_details_of_invalid_author()
         {
             Assert.Throws<AuthorNotFoundException>(() => Subject.GetAuthorInfo("66c66aaa-6e2f-4930-8610-912e24c63ed1"));
         }
 
         [Test]
-        public void getting_details_of_invalid_album()
+        public void getting_details_of_invalid_book()
         {
             Assert.Throws<BookNotFoundException>(() => Subject.GetBookInfo("66c66aaa-6e2f-4930-8610-912e24c63ed1"));
         }
@@ -78,37 +78,37 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
             author.ForeignAuthorId.Should().NotBeNullOrWhiteSpace();
         }
 
-        private void ValidateAlbums(List<Book> albums, bool idOnly = false)
+        private void ValidateBooks(List<Book> books, bool idOnly = false)
         {
-            albums.Should().NotBeEmpty();
+            books.Should().NotBeEmpty();
 
-            foreach (var album in albums)
+            foreach (var book in books)
             {
-                album.ForeignBookId.Should().NotBeNullOrWhiteSpace();
+                book.ForeignBookId.Should().NotBeNullOrWhiteSpace();
                 if (!idOnly)
                 {
-                    ValidateAlbum(album);
+                    ValidateBook(book);
                 }
             }
 
-            //if atleast one album has title it means parse it working.
+            //if atleast one book has title it means parse it working.
             if (!idOnly)
             {
-                albums.Should().Contain(c => !string.IsNullOrWhiteSpace(c.Title));
+                books.Should().Contain(c => !string.IsNullOrWhiteSpace(c.Title));
             }
         }
 
-        private void ValidateAlbum(Book album)
+        private void ValidateBook(Book book)
         {
-            album.Should().NotBeNull();
+            book.Should().NotBeNull();
 
-            album.Title.Should().NotBeNullOrWhiteSpace();
+            book.Title.Should().NotBeNullOrWhiteSpace();
 
-            album.Should().NotBeNull();
+            book.Should().NotBeNull();
 
-            if (album.ReleaseDate.HasValue)
+            if (book.ReleaseDate.HasValue)
             {
-                album.ReleaseDate.Value.Kind.Should().Be(DateTimeKind.Utc);
+                book.ReleaseDate.Value.Kind.Should().Be(DateTimeKind.Utc);
             }
         }
     }

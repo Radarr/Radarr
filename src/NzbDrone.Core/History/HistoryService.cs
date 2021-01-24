@@ -100,13 +100,13 @@ namespace NzbDrone.Core.History
             var allHistory = _historyRepository.FindDownloadHistory(trackedDownload.BookInfo.Author.Id, trackedDownload.ImportedBook.Quality);
 
             //Find download related items for these episdoes
-            var albumsHistory = allHistory.Where(h => bookIds.Contains(h.BookId)).ToList();
+            var booksHistory = allHistory.Where(h => bookIds.Contains(h.BookId)).ToList();
 
-            var processedDownloadId = albumsHistory
+            var processedDownloadId = booksHistory
                 .Where(c => c.EventType != HistoryEventType.Grabbed && c.DownloadId != null)
                 .Select(c => c.DownloadId);
 
-            var stillDownloading = albumsHistory.Where(c => c.EventType == HistoryEventType.Grabbed && !processedDownloadId.Contains(c.DownloadId)).ToList();
+            var stillDownloading = booksHistory.Where(c => c.EventType == HistoryEventType.Grabbed && !processedDownloadId.Contains(c.DownloadId)).ToList();
 
             string downloadId = null;
 

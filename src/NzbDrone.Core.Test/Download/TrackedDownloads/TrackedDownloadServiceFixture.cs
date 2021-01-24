@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                  new History.History()
                 {
                      DownloadId = "35238",
-                     SourceTitle = "Audio Artist - Audio Album [2018 - FLAC]",
+                     SourceTitle = "Audio Author - Audio Book [2018 - FLAC]",
                      AuthorId = 5,
                      BookId = 4,
                 }
@@ -45,13 +45,13 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                 Books = new List<Book> { new Book { Id = 4 } },
                 ParsedBookInfo = new ParsedBookInfo()
                 {
-                    BookTitle = "Audio Album",
-                    AuthorName = "Audio Artist"
+                    BookTitle = "Audio Book",
+                    AuthorName = "Audio Author"
                 }
             };
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Album" && i.AuthorName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
+                  .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Book" && i.AuthorName == "Audio Author"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
                   .Returns(remoteBook);
 
             var client = new DownloadClientDefinition()
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         }
 
         [Test]
-        public void should_unmap_tracked_download_if_album_deleted()
+        public void should_unmap_tracked_download_if_book_deleted()
         {
             GivenDownloadHistory();
 
@@ -92,13 +92,13 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                 Books = new List<Book> { new Book { Id = 4 } },
                 ParsedBookInfo = new ParsedBookInfo()
                 {
-                    BookTitle = "Audio Album",
-                    AuthorName = "Audio Artist"
+                    BookTitle = "Audio Book",
+                    AuthorName = "Audio Author"
                 }
             };
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Album" && i.AuthorName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
+                  .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Book" && i.AuthorName == "Audio Author"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
                   .Returns(remoteBook);
 
             var client = new DownloadClientDefinition()
@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
             var item = new DownloadClientItem()
             {
-                Title = "Audio Artist - Audio Album [2018 - FLAC]",
+                Title = "Audio Author - Audio Book [2018 - FLAC]",
                 DownloadId = "35238",
                 DownloadClientInfo = new DownloadClientItemClientInfo
                 {
@@ -123,15 +123,15 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             var trackedDownload = Subject.TrackDownload(client, item);
             Subject.GetTrackedDownloads().Should().HaveCount(1);
 
-            // simulate deletion - album no longer maps
+            // simulate deletion - book no longer maps
             Mocker.GetMock<IParsingService>()
-                .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Album" && i.AuthorName == "Audio Artist"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
+                .Setup(s => s.Map(It.Is<ParsedBookInfo>(i => i.BookTitle == "Audio Book" && i.AuthorName == "Audio Author"), It.IsAny<int>(), It.IsAny<IEnumerable<int>>()))
                 .Returns(default(RemoteBook));
 
             // handle deletion event
             Subject.Handle(new BookDeletedEvent(remoteBook.Books.First(), false, false));
 
-            // verify download has null remote album
+            // verify download has null remote book
             var trackedDownloads = Subject.GetTrackedDownloads();
             trackedDownloads.Should().HaveCount(1);
             trackedDownloads.First().RemoteBook.Should().BeNull();

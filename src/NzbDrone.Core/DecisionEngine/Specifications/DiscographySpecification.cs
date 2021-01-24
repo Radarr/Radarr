@@ -23,12 +23,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         {
             if (subject.ParsedBookInfo.Discography)
             {
-                _logger.Debug("Checking if all albums in discography release have released. {0}", subject.Release.Title);
+                _logger.Debug("Checking if all books in discography release have released. {0}", subject.Release.Title);
 
                 if (subject.Books.Any(e => !e.ReleaseDate.HasValue || e.ReleaseDate.Value.After(DateTime.UtcNow)))
                 {
-                    _logger.Debug("Discography release {0} rejected. All albums haven't released yet.", subject.Release.Title);
-                    return Decision.Reject("Discography release rejected. All albums haven't released yet.");
+                    _logger.Debug("Discography release {0} rejected. All books haven't released yet.", subject.Release.Title);
+                    return Decision.Reject("Discography release rejected. All books haven't released yet.");
                 }
             }
 

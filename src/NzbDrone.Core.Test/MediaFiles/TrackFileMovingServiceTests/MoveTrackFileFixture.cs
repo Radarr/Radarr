@@ -21,24 +21,24 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
     [TestFixture]
     public class MoveTrackFileFixture : CoreTest<BookFileMovingService>
     {
-        private Author _artist;
+        private Author _author;
         private BookFile _trackFile;
         private LocalBook _localtrack;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>.CreateNew()
-                                     .With(s => s.Path = @"C:\Test\Music\Artist".AsOsAgnostic())
+            _author = Builder<Author>.CreateNew()
+                                     .With(s => s.Path = @"C:\Test\Music\Author".AsOsAgnostic())
                                      .Build();
 
             _trackFile = Builder<BookFile>.CreateNew()
                                                .With(f => f.Path = null)
-                                               .With(f => f.Path = Path.Combine(_artist.Path, @"Album\File.mp3"))
+                                               .With(f => f.Path = Path.Combine(_author.Path, @"Book\File.mp3"))
                                                .Build();
 
             _localtrack = Builder<LocalBook>.CreateNew()
-                                                 .With(l => l.Author = _artist)
+                                                 .With(l => l.Author = _author)
                                                  .With(l => l.Book = Builder<Book>.CreateNew().Build())
                                                  .Build();
 
@@ -48,11 +48,11 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
 
             Mocker.GetMock<IBuildFileNames>()
                   .Setup(s => s.BuildBookFilePath(It.IsAny<Author>(), It.IsAny<Edition>(), It.IsAny<string>(), It.IsAny<string>()))
-                  .Returns(@"C:\Test\Music\Artist\Album\File Name.mp3".AsOsAgnostic());
+                  .Returns(@"C:\Test\Music\Author\Book\File Name.mp3".AsOsAgnostic());
 
             Mocker.GetMock<IBuildFileNames>()
                   .Setup(s => s.BuildBookPath(It.IsAny<Author>()))
-                  .Returns(@"C:\Test\Music\Artist\Album".AsOsAgnostic());
+                  .Returns(@"C:\Test\Music\Author\Book".AsOsAgnostic());
 
             var rootFolder = @"C:\Test\Music\".AsOsAgnostic();
             Mocker.GetMock<IDiskProvider>()
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
         }
 
         [Test]
-        public void should_notify_on_artist_folder_creation()
+        public void should_notify_on_author_folder_creation()
         {
             Subject.MoveBookFile(_trackFile, _localtrack);
 
@@ -99,7 +99,7 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
         }
 
         [Test]
-        public void should_notify_on_album_folder_creation()
+        public void should_notify_on_book_folder_creation()
         {
             Subject.MoveBookFile(_trackFile, _localtrack);
 
@@ -109,10 +109,10 @@ namespace NzbDrone.Core.Test.MediaFiles.TrackFileMovingServiceTests
         }
 
         [Test]
-        public void should_not_notify_if_artist_folder_already_exists()
+        public void should_not_notify_if_author_folder_already_exists()
         {
             Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.FolderExists(_artist.Path))
+                  .Setup(s => s.FolderExists(_author.Path))
                   .Returns(true);
 
             Subject.MoveBookFile(_trackFile, _localtrack);

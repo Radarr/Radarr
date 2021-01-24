@@ -11,34 +11,34 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
     public class CleanupOrphanedBooksFixture : DbTest<CleanupOrphanedBooks, Book>
     {
         [Test]
-        public void should_delete_orphaned_albums()
+        public void should_delete_orphaned_books()
         {
-            var album = Builder<Book>.CreateNew()
+            var book = Builder<Book>.CreateNew()
                 .BuildNew();
 
-            Db.Insert(album);
+            Db.Insert(book);
             Subject.Clean();
             AllStoredModels.Should().BeEmpty();
         }
 
         [Test]
-        public void should_not_delete_unorphaned_albums()
+        public void should_not_delete_unorphaned_books()
         {
-            var artist = Builder<Author>.CreateNew()
+            var author = Builder<Author>.CreateNew()
                 .With(e => e.Metadata = new AuthorMetadata { Id = 1 })
                 .BuildNew();
 
-            Db.Insert(artist);
+            Db.Insert(author);
 
-            var albums = Builder<Book>.CreateListOfSize(2)
+            var books = Builder<Book>.CreateListOfSize(2)
                 .TheFirst(1)
-                .With(e => e.AuthorMetadataId = artist.Metadata.Value.Id)
+                .With(e => e.AuthorMetadataId = author.Metadata.Value.Id)
                 .BuildListOfNew();
 
-            Db.InsertMany(albums);
+            Db.InsertMany(books);
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            AllStoredModels.Should().Contain(e => e.AuthorMetadataId == artist.Metadata.Value.Id);
+            AllStoredModels.Should().Contain(e => e.AuthorMetadataId == author.Metadata.Value.Id);
         }
     }
 }

@@ -18,27 +18,27 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
     public class UpgradeSpecificationFixture : CoreTest<UpgradeSpecification>
     {
         /*
-        private Author _artist;
-        private Book _album;
+        private Author _author;
+        private Book _book;
         private LocalTrack _localTrack;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                                      .With(e => e.QualityProfile = new QualityProfile
                                      {
                                          Items = Qualities.QualityFixture.GetDefaultQualities(),
                                      }).Build();
 
-            _album = Builder<Book>.CreateNew().Build();
+            _book = Builder<Book>.CreateNew().Build();
 
             _localTrack = new LocalTrack
             {
                 Path = @"C:\Test\Imagine Dragons\Imagine.Dragons.Song.1.mp3",
                 Quality = new QualityModel(Quality.MP3_320, new Revision(version: 1)),
-                Artist = _artist,
-                Album = _album
+                Author = _author,
+                Book = _book
             };
         }
 

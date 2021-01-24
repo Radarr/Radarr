@@ -24,7 +24,7 @@ namespace NzbDrone.Core.ImportLists.LazyLibrarianImport
 
             var jsonResponse = JsonConvert.DeserializeObject<List<LazyLibrarianBook>>(_importListResponse.Content);
 
-            // no albums were return
+            // no books were return
             if (jsonResponse == null)
             {
                 return items;

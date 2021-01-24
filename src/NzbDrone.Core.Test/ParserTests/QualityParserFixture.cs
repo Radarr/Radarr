@@ -28,10 +28,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Some Song [192][2014][MP3]")]
         [TestCase("Other Song (192)[2014][MP3]")]
         [TestCase("Caetano Veloso Discografia Completa MP3 @256")]
-        [TestCase("Jake Bugg - Jake Bugg (Album) [2012] {MP3 256 kbps}")]
+        [TestCase("Jake Bugg - Jake Bugg (Book) [2012] {MP3 256 kbps}")]
         [TestCase("Clean Bandit - New Eyes [2014] [Mp3-256]-V3nom [GLT]")]
         [TestCase("PJ Harvey - Let England Shake [mp3-256-2011][trfkad]")]
-        [TestCase("Childish Gambino - Awaken, My Love Album 2016 mp3 320 Kbps")]
+        [TestCase("Childish Gambino - Awaken, My Love Book 2016 mp3 320 Kbps")]
         [TestCase("Maluma – Felices Los 4 MP3 320 Kbps 2017 Download")]
         [TestCase("Sia - This Is Acting (Standard Edition) [2016-Web-MP3-V0(VBR)]")]
         [TestCase("Mount Eerie - A Crow Looked at Me (2017) [MP3 V0 VBR)]")]
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCaseSource(nameof(SelfQualityParserCases))]
         public void parsing_our_own_quality_enum_name(Quality quality)
         {
-            var fileName = string.Format("Some album [{0}]", quality.Name);
+            var fileName = string.Format("Some book [{0}]", quality.Name);
             var result = QualityParser.ParseQuality(fileName);
             result.Quality.Should().Be(quality);
         }
@@ -92,9 +92,9 @@ namespace NzbDrone.Core.Test.ParserTests
             QualityParser.ParseCodec(null, null).Should().Be(Codec.Unknown);
         }
 
-        [TestCase("Artist Title - Album Title 2017 REPACK FLAC aAF", true)]
-        [TestCase("Artist Title - Album Title 2017 RERIP FLAC aAF", true)]
-        [TestCase("Artist Title - Album Title 2017 PROPER FLAC aAF", false)]
+        [TestCase("Author Title - Book Title 2017 REPACK FLAC aAF", true)]
+        [TestCase("Author Title - Book Title 2017 RERIP FLAC aAF", true)]
+        [TestCase("Author Title - Book Title 2017 PROPER FLAC aAF", false)]
         public void should_be_able_to_parse_repack(string title, bool isRepack)
         {
             var result = QualityParser.ParseQuality(title);

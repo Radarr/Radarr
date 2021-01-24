@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Test.Download
         }
 
         [Test]
-        public void should_redownload_album_on_failure()
+        public void should_redownload_book_on_failure()
         {
             var failedEvent = new DownloadFailedEvent
             {
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.Download
         }
 
         [Test]
-        public void should_redownload_multiple_albums_on_failure()
+        public void should_redownload_multiple_books_on_failure()
         {
             var failedEvent = new DownloadFailedEvent
             {
@@ -111,9 +111,9 @@ namespace NzbDrone.Core.Test.Download
         }
 
         [Test]
-        public void should_redownload_artist_on_failure()
+        public void should_redownload_author_on_failure()
         {
-            // note that artist is set to have 3 albums in setup
+            // note that author is set to have 3 books in setup
             var failedEvent = new DownloadFailedEvent
             {
                 AuthorId = 2,

@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Subject.IsUpgradable(
                         profile,
-                        new List<QualityModel> { new QualityModel(current, new Revision(version: currentVersion)) },
+                        new QualityModel(current, new Revision(version: currentVersion)),
                         NoPreferredWordScore,
                         new QualityModel(newQuality, new Revision(version: newVersion)),
                         NoPreferredWordScore)
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Subject.IsUpgradable(
                         profile,
-                        new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 1)) },
+                        new QualityModel(Quality.MP3_320, new Revision(version: 1)),
                         NoPreferredWordScore,
                         new QualityModel(Quality.MP3_320, new Revision(version: 2)),
                         NoPreferredWordScore)
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             Subject.IsUpgradable(
                         profile,
-                        new List<QualityModel> { new QualityModel(Quality.MP3_320, new Revision(version: 1)) },
+                        new QualityModel(Quality.MP3_320, new Revision(version: 1)),
                         NoPreferredWordScore,
                         new QualityModel(Quality.MP3_320, new Revision(version: 2)),
                         NoPreferredWordScore)

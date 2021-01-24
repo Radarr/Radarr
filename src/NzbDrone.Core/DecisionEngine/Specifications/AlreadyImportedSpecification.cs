@@ -52,15 +52,15 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     continue;
                 }
 
-                var historyForAlbum = _historyService.GetByBook(book.Id, null);
-                var lastGrabbed = historyForAlbum.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
+                var historyForBook = _historyService.GetByBook(book.Id, null);
+                var lastGrabbed = historyForBook.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
 
                 if (lastGrabbed == null)
                 {
                     continue;
                 }
 
-                var imported = historyForAlbum.FirstOrDefault(h =>
+                var imported = historyForBook.FirstOrDefault(h =>
                     h.EventType == HistoryEventType.DownloadImported &&
                     h.DownloadId == lastGrabbed.DownloadId);
 

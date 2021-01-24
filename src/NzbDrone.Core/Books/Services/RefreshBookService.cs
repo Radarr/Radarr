@@ -137,7 +137,7 @@ namespace NzbDrone.Core.Books
             if (newAuthor == null)
             {
                 var oldAuthor = local.Author.Value;
-                var addArtist = new Author
+                var addAuthor = new Author
                 {
                     Metadata = remote.AuthorMetadata.Value,
                     MetadataProfileId = oldAuthor.MetadataProfileId,
@@ -146,8 +146,8 @@ namespace NzbDrone.Core.Books
                     Monitored = oldAuthor.Monitored,
                     Tags = oldAuthor.Tags
                 };
-                _logger.Debug($"Adding missing parent author {addArtist}");
-                _addAuthorService.AddAuthor(addArtist);
+                _logger.Debug($"Adding missing parent author {addAuthor}");
+                _addAuthorService.AddAuthor(addAuthor);
             }
         }
 
@@ -192,7 +192,7 @@ namespace NzbDrone.Core.Books
             // Force update and fetch covers if images have changed so that we can write them into tags
             // if (remote.Images.Any() && !local.Images.SequenceEqual(remote.Images))
             // {
-            //     _mediaCoverService.EnsureAlbumCovers(remote);
+            //     _mediaCoverService.EnsureBookCovers(remote);
             //     result = UpdateResult.UpdateTags;
             // }
             local.UseMetadataFrom(remote);
@@ -328,7 +328,7 @@ namespace NzbDrone.Core.Books
             _eventAggregator.PublishEvent(new BookUpdatedEvent(_bookService.GetBook(entity.Id)));
         }
 
-        public bool RefreshBookInfo(List<Book> books, List<Book> remoteBooks, Author remoteData, bool forceAlbumRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
+        public bool RefreshBookInfo(List<Book> books, List<Book> remoteBooks, Author remoteData, bool forceBookRefresh, bool forceUpdateFileTags, DateTime? lastUpdate)
         {
             var updated = false;
 
@@ -341,7 +341,7 @@ namespace NzbDrone.Core.Books
 
             foreach (var book in books)
             {
-                if (forceAlbumRefresh ||
+                if (forceBookRefresh ||
                     (updatedGoodreadsBooks == null && _checkIfBookShouldBeRefreshed.ShouldRefresh(book)) ||
                     (updatedGoodreadsBooks != null && updatedGoodreadsBooks.Contains(book.ForeignBookId)))
                 {

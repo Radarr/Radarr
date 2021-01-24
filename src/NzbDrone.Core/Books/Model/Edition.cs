@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Books
             Ratings = new Ratings();
         }
 
-        // These correspond to columns in the Albums table
+        // These correspond to columns in the Books table
         // These are metadata entries
         public int BookId { get; set; }
         public string ForeignEditionId { get; set; }

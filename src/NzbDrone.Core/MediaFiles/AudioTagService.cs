@@ -23,8 +23,8 @@ namespace NzbDrone.Core.MediaFiles
         ParsedTrackInfo ReadTags(string file);
         void WriteTags(BookFile trackfile, bool newDownload, bool force = false);
         void SyncTags(List<Edition> tracks);
-        List<RetagBookFilePreview> GetRetagPreviewsByArtist(int authorId);
-        List<RetagBookFilePreview> GetRetagPreviewsByAlbum(int authorId);
+        List<RetagBookFilePreview> GetRetagPreviewsByAuthor(int authorId);
+        List<RetagBookFilePreview> GetRetagPreviewsByBook(int authorId);
     }
 
     public class AudioTagService : IAudioTagService,
@@ -171,14 +171,14 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-        public List<RetagBookFilePreview> GetRetagPreviewsByArtist(int authorId)
+        public List<RetagBookFilePreview> GetRetagPreviewsByAuthor(int authorId)
         {
             var files = _mediaFileService.GetFilesByAuthor(authorId);
 
             return GetPreviews(files).ToList();
         }
 
-        public List<RetagBookFilePreview> GetRetagPreviewsByAlbum(int bookId)
+        public List<RetagBookFilePreview> GetRetagPreviewsByBook(int bookId)
         {
             var files = _mediaFileService.GetFilesByBook(bookId);
 
@@ -231,10 +231,10 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Execute(RetagAuthorCommand message)
         {
-            _logger.Debug("Re-tagging all files for selected artists");
-            var artistToRename = _authorService.GetAuthors(message.AuthorIds);
+            _logger.Debug("Re-tagging all files for selected authors");
+            var authorToRename = _authorService.GetAuthors(message.AuthorIds);
 
-            foreach (var author in artistToRename)
+            foreach (var author in authorToRename)
             {
                 var bookFiles = _mediaFileService.GetFilesByAuthor(author.Id);
                 _logger.ProgressInfo("Re-tagging all files in author: {0}", author.Name);

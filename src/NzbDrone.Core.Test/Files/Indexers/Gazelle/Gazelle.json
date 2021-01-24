@@ -7,7 +7,7 @@
       {
         "groupId": 106951,
         "groupName": "Shania Twain",
-        "artist": "Shania Twain",
+        "author": "Shania Twain",
         "cover": "https:\\/\\/ptpimg.me\\/460az6.jpg",
         "tags": [
           "rock",
@@ -16,7 +16,7 @@
         "bookmarked": false,
         "vanityHouse": false,
         "groupYear": 1993,
-        "releaseType": "Album",
+        "releaseType": "Book",
         "groupTime": "1512951473",
         "maxSize": 653734702,
         "totalSnatched": 33,
@@ -26,7 +26,7 @@
           {
             "torrentId": 194008,
             "editionId": 1,
-            "artists": [
+            "authors": [
               {
                 "id": 9504,
                 "name": "Shania Twain",
@@ -60,7 +60,7 @@
           {
             "torrentId": 230096,
             "editionId": 1,
-            "artists": [
+            "authors": [
               {
                 "id": 9504,
                 "name": "Shania Twain",
@@ -94,7 +94,7 @@
           {
             "torrentId": 230086,
             "editionId": 1,
-            "artists": [
+            "authors": [
               {
                 "id": 9504,
                 "name": "Shania Twain",
@@ -128,7 +128,7 @@
           {
             "torrentId": 1541452,
             "editionId": 2,
-            "artists": [
+            "authors": [
               {
                 "id": 9504,
                 "name": "Shania Twain",

@@ -16,14 +16,14 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
     public class RemovePendingFixture : CoreTest<PendingReleaseService>
     {
         private List<PendingRelease> _pending;
-        private Book _album;
+        private Book _book;
 
         [SetUp]
         public void Setup()
         {
             _pending = new List<PendingRelease>();
 
-            _album = Builder<Book>.CreateNew()
+            _book = Builder<Book>.CreateNew()
                                        .Build();
 
             Mocker.GetMock<IPendingReleaseRepository>()
@@ -43,25 +43,25 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                   .Returns(new List<Author> { new Author() });
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetAlbums(It.IsAny<ParsedBookInfo>(), It.IsAny<Author>(), null))
-                  .Returns(new List<Book> { _album });
+                  .Setup(s => s.GetBooks(It.IsAny<ParsedBookInfo>(), It.IsAny<Author>(), null))
+                  .Returns(new List<Book> { _book });
         }
 
-        private void AddPending(int id, string album)
+        private void AddPending(int id, string book)
         {
             _pending.Add(new PendingRelease
             {
                 Id = id,
-                ParsedBookInfo = new ParsedBookInfo { BookTitle = album }
+                ParsedBookInfo = new ParsedBookInfo { BookTitle = book }
             });
         }
 
         [Test]
         public void should_remove_same_release()
         {
-            AddPending(id: 1, album: "Album");
+            AddPending(id: 1, book: "Book");
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-book{1}", 1, _album.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-book{1}", 1, _book.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 
@@ -71,12 +71,12 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         [Test]
         public void should_remove_multiple_releases_release()
         {
-            AddPending(id: 1, album: "Album 1");
-            AddPending(id: 2, album: "Album 2");
-            AddPending(id: 3, album: "Album 3");
-            AddPending(id: 4, album: "Album 3");
+            AddPending(id: 1, book: "Book 1");
+            AddPending(id: 2, book: "Book 2");
+            AddPending(id: 3, book: "Book 3");
+            AddPending(id: 4, book: "Book 3");
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-book{1}", 3, _album.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-book{1}", 3, _book.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 
@@ -84,14 +84,14 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
         }
 
         [Test]
-        public void should_not_remove_diffrent_albums()
+        public void should_not_remove_diffrent_books()
         {
-            AddPending(id: 1, album: "Album 1");
-            AddPending(id: 2, album: "Album 1");
-            AddPending(id: 3, album: "Album 2");
-            AddPending(id: 4, album: "Album 3");
+            AddPending(id: 1, book: "Book 1");
+            AddPending(id: 2, book: "Book 1");
+            AddPending(id: 3, book: "Book 2");
+            AddPending(id: 4, book: "Book 3");
 
-            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-book{1}", 1, _album.Id));
+            var queueId = HashConverter.GetHashInt31(string.Format("pending-{0}-book{1}", 1, _book.Id));
 
             Subject.RemovePendingQueueItems(queueId);
 

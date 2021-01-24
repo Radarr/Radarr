@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         {
             GivenSuccessfulDownload();
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             var id = Subject.Download(remoteBook);
 
@@ -216,7 +216,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.NzbVortexTests
         {
             GivenFailedDownload();
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             Assert.Throws<DownloadClientException>(() => Subject.Download(remoteBook));
         }

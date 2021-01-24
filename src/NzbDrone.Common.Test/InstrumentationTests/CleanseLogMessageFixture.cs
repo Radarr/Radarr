@@ -17,9 +17,11 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         [TestCase(@"https://baconbits.org/feeds.php?feed=torrents_tv&user=12345&auth=2b51db35e1910123321025a12b9933d2&passkey=mySecret&authkey=2b51db35e1910123321025a12b9933d2")]
         [TestCase(@"http://127.0.0.1:9117/dl/indexername?jackett_apikey=flwjiefewklfjacketmySecretsdfldskjfsdlk&path=we0re9f0sdfbase64sfdkfjsdlfjk&file=The+Torrent+File+Name.torrent")]
         [TestCase(@"http://nzb.su/getnzb/2b51db35e1912ffc138825a12b9933d2.nzb&i=37292&r=2b51db35e1910123321025a12b9933d2")]
+
         // NzbGet
         [TestCase(@"{ ""Name"" : ""ControlUsername"", ""Value"" : ""mySecret"" }, { ""Name"" : ""ControlPassword"", ""Value"" : ""mySecret"" }, ")]
         [TestCase(@"{ ""Name"" : ""Server1.Username"", ""Value"" : ""mySecret"" }, { ""Name"" : ""Server1.Password"", ""Value"" : ""mySecret"" }, ")]
+
         // Sabnzbd
         [TestCase(@"http://127.0.0.1:1234/api/call?vv=1&apikey=mySecret")]
         [TestCase(@"http://127.0.0.1:1234/api/call?vv=1&ma_username=mySecret&ma_password=mySecret")]
@@ -30,6 +32,7 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         [TestCase(@"""misc"":{""username"":""mySecret"",""api_key"":""mySecret"",""password"":""mySecret"",""nzb_key"":""mySecret""}")]
         [TestCase(@"""servers"":[{""username"":""mySecret"",""password"":""mySecret""}]")]
         [TestCase(@"""misc"":{""email_account"":""mySecret"",""email_to"":[],""email_from"":"""",""email_pwd"":""mySecret""}")]
+
         // uTorrent
         [TestCase(@"http://localhost:9091/gui/?token=wThmph5l0ZXfH-a6WOA4lqiLvyjCP0FpMrMeXmySecret_VXBO11HoKL751MAAAAA&list=1")]
         [TestCase(@",[""boss_key"",0,""mySecret"",{""access"":""Y""}],[""boss_key_salt"",0,""mySecret"",{""access"":""W""}]")]
@@ -37,18 +40,23 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         [TestCase(@",[""webui.uconnect_username"",2,""mySecret"",{""access"":""Y""}],[""webui.uconnect_password"",2,""mySecret"",{""access"":""Y""}]")]
         [TestCase(@",[""proxy.proxy"",2,""mySecret"",{""access"":""Y""}]")]
         [TestCase(@",[""proxy.username"",2,""mySecret"",{""access"":""Y""}],[""proxy.password"",2,""mySecret"",{""access"":""Y""}]")]
+
         // Deluge
         [TestCase(@",{""download_location"": ""C:\Users\\mySecret mySecret\\Downloads""}")]
         [TestCase(@",{""download_location"": ""/home/mySecret/Downloads""}")]
         [TestCase(@"auth.login(""mySecret"")")]
+
         // Download Station
         [TestCase(@"webapi/entry.cgi?api=(removed)&version=2&method=login&account=01233210&passwd=mySecret&format=sid&session=DownloadStation")]
+
         // BroadcastheNet
         [TestCase(@"method: ""getTorrents"", ""params"": [ ""mySecret"",")]
         [TestCase(@"getTorrents(""mySecret"", [asdfasdf], 100, 0)")]
         [TestCase(@"""DownloadURL"":""https:\/\/broadcasthe.net\/torrents.php?action=download&id=123&authkey=mySecret&torrent_pass=mySecret""")]
+
         // Spotify Refresh
         [TestCase(@"https://auth.servarr.com/renew?refresh_token=mySecret")]
+
         // Plex
         [TestCase(@" http://localhost:32400/library/metadata/12345/refresh?X-Plex-Client-Identifier=1234530f-422f-4aac-b6b3-01233210aaaa&X-Plex-Product=Sonarr&X-Plex-Platform=Windows&X-Plex-Platform-Version=7&X-Plex-Device-Name=Sonarr&X-Plex-Version=3.0.3.833&X-Plex-Token=mySecret")]
         public void should_clean_message(string message)

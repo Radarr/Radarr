@@ -134,7 +134,7 @@ namespace NzbDrone.Core.Books
 
             if (data.Metadata != null)
             {
-                var metadataResult = UpdateArtistMetadata(data.Metadata);
+                var metadataResult = UpdateAuthorMetadata(data.Metadata);
                 updated |= metadataResult >= UpdateResult.Standard;
                 forceUpdateFileTags |= metadataResult == UpdateResult.UpdateTags;
             }
@@ -206,7 +206,7 @@ namespace NzbDrone.Core.Books
             return updated;
         }
 
-        public UpdateResult UpdateArtistMetadata(List<AuthorMetadata> data)
+        public UpdateResult UpdateAuthorMetadata(List<AuthorMetadata> data)
         {
             var remoteMetadata = data.DistinctBy(x => x.ForeignAuthorId).ToList();
             var updated = _authorMetadataService.UpsertMany(remoteMetadata);

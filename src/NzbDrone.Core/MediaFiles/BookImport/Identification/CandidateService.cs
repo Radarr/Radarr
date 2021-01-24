@@ -60,7 +60,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 
             //     if (tagMbidRelease != null)
             //     {
-            //         tagCandidate = GetDbCandidatesByRelease(new List<AlbumRelease> { tagMbidRelease }, includeExisting);
+            //         tagCandidate = GetDbCandidatesByRelease(new List<BookRelease> { tagMbidRelease }, includeExisting);
             //     }
             // }
             if (idOverrides?.Edition != null)
@@ -113,7 +113,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 
         private List<CandidateEdition> GetDbCandidatesByEdition(List<Edition> editions, bool includeExisting)
         {
-            // get the local tracks on disk for each album
+            // get the local tracks on disk for each book
             var bookFiles = editions.Select(x => x.BookId)
                 .Distinct()
                 .ToDictionary(id => id, id => includeExisting ? _mediaFileService.GetFilesByBook(id) : new List<BookFile>());
@@ -138,11 +138,11 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             _logger.Trace("Getting candidates for {0}", author);
             var candidateReleases = new List<CandidateEdition>();
 
-            var albumTag = localEdition.LocalBooks.MostCommon(x => x.FileTrackInfo.AlbumTitle) ?? "";
-            if (albumTag.IsNotNullOrWhiteSpace())
+            var bookTag = localEdition.LocalBooks.MostCommon(x => x.FileTrackInfo.BookTitle) ?? "";
+            if (bookTag.IsNotNullOrWhiteSpace())
             {
-                var possibleAlbums = _bookService.GetCandidates(author.AuthorMetadataId, albumTag);
-                foreach (var book in possibleAlbums)
+                var possibleBooks = _bookService.GetCandidates(author.AuthorMetadataId, bookTag);
+                foreach (var book in possibleBooks)
                 {
                     candidateReleases.AddRange(GetDbCandidatesByBook(book, includeExisting));
                 }
@@ -154,11 +154,11 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
         private List<CandidateEdition> GetDbCandidates(LocalEdition localEdition, bool includeExisting)
         {
             // most general version, nothing has been specified.
-            // get all plausible artists, then all plausible albums, then get releases for each of these.
+            // get all plausible authors, then all plausible books, then get releases for each of these.
             var candidateReleases = new List<CandidateEdition>();
 
             // check if it looks like VA.
-            if (TrackGroupingService.IsVariousArtists(localEdition.LocalBooks))
+            if (TrackGroupingService.IsVariousAuthors(localEdition.LocalBooks))
             {
                 var va = _authorService.FindById(DistanceCalculator.VariousAuthorIds[0]);
                 if (va != null)
@@ -167,11 +167,11 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 }
             }
 
-            var artistTag = localEdition.LocalBooks.MostCommon(x => x.FileTrackInfo.ArtistTitle) ?? "";
-            if (artistTag.IsNotNullOrWhiteSpace())
+            var authorTag = localEdition.LocalBooks.MostCommon(x => x.FileTrackInfo.AuthorTitle) ?? "";
+            if (authorTag.IsNotNullOrWhiteSpace())
             {
-                var possibleArtists = _authorService.GetCandidates(artistTag);
-                foreach (var author in possibleArtists)
+                var possibleAuthors = _authorService.GetCandidates(authorTag);
+                foreach (var author in possibleAuthors)
                 {
                     candidateReleases.AddRange(GetDbCandidatesByAuthor(localEdition, author, includeExisting));
                 }
@@ -229,32 +229,32 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 if (remoteBooks == null || !remoteBooks.Any())
                 {
                     // fall back to author / book name search
-                    string artistTag;
+                    string authorTag;
 
-                    if (TrackGroupingService.IsVariousArtists(localEdition.LocalBooks))
+                    if (TrackGroupingService.IsVariousAuthors(localEdition.LocalBooks))
                     {
-                        artistTag = "Various Artists";
+                        authorTag = "Various Authors";
                     }
                     else
                     {
-                        artistTag = localEdition.LocalBooks.MostCommon(x => x.FileTrackInfo.ArtistTitle) ?? "";
+                        authorTag = localEdition.LocalBooks.MostCommon(x => x.FileTrackInfo.AuthorTitle) ?? "";
                     }
 
-                    var albumTag = localEdition.LocalBooks.MostCommon(x => x.FileTrackInfo.AlbumTitle) ?? "";
+                    var bookTag = localEdition.LocalBooks.MostCommon(x => x.FileTrackInfo.BookTitle) ?? "";
 
-                    if (artistTag.IsNullOrWhiteSpace() || albumTag.IsNullOrWhiteSpace())
+                    if (authorTag.IsNullOrWhiteSpace() || bookTag.IsNullOrWhiteSpace())
                     {
                         return candidates;
                     }
 
-                    remoteBooks = _bookSearchService.SearchForNewBook(albumTag, artistTag);
+                    remoteBooks = _bookSearchService.SearchForNewBook(bookTag, authorTag);
 
                     if (!remoteBooks.Any())
                     {
-                        var albumSearch = _bookSearchService.SearchForNewBook(albumTag, null);
-                        var artistSearch = _bookSearchService.SearchForNewBook(artistTag, null);
+                        var bookSearch = _bookSearchService.SearchForNewBook(bookTag, null);
+                        var authorSearch = _bookSearchService.SearchForNewBook(authorTag, null);
 
-                        remoteBooks = albumSearch.Concat(artistSearch).DistinctBy(x => x.ForeignBookId).ToList();
+                        remoteBooks = bookSearch.Concat(authorSearch).DistinctBy(x => x.ForeignBookId).ToList();
                     }
                 }
             }

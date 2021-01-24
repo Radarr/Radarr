@@ -25,8 +25,8 @@ namespace Readarr.Api.V1.Config
 
         public static void AddToResource(this BasicNamingConfig basicNamingConfig, NamingConfigResource resource)
         {
-            resource.IncludeArtistName = basicNamingConfig.IncludeArtistName;
-            resource.IncludeAlbumTitle = basicNamingConfig.IncludeAlbumTitle;
+            resource.IncludeAuthorName = basicNamingConfig.IncludeAuthorName;
+            resource.IncludeBookTitle = basicNamingConfig.IncludeBookTitle;
             resource.IncludeQuality = basicNamingConfig.IncludeQuality;
             resource.ReplaceSpaces = basicNamingConfig.ReplaceSpaces;
             resource.Separator = basicNamingConfig.Separator;

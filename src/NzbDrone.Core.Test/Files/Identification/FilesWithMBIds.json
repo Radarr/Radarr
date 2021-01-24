@@ -4,114 +4,114 @@
     "97189482-89ee-4d31-90c7-ba07b412d7f9",
     "9105a5b3-eb68-3a03-9aa8-f3495e602a4f"
   ],
-  "libraryArtists": [
+  "libraryAuthors": [
     {
-      "artist": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+      "author": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
       "metadataProfile": {
         "name": "Standard",
-        "primaryAlbumTypes": [
+        "primaryBookTypes": [
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 2,
               "name": "Single"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 4,
               "name": "Other"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 1,
               "name": "EP"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 3,
               "name": "Broadcast"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 0,
-              "name": "Album"
+              "name": "Book"
             },
             "allowed": true
           }
         ],
-        "secondaryAlbumTypes": [
+        "secondaryBookTypes": [
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 0,
               "name": "Studio"
             },
             "allowed": true
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 3,
               "name": "Spokenword"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 2,
               "name": "Soundtrack"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 7,
               "name": "Remix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 9,
               "name": "Mixtape/Street"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 6,
               "name": "Live"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 4,
               "name": "Interview"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 8,
               "name": "DJ-mix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 10,
               "name": "Demo"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 1,
               "name": "Compilation"
             },
@@ -160,14 +160,14 @@
       "fileTrackInfo": {
         "title": "Rolling in the Deep",
         "cleanTitle": "Rolling in the Deep",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "1a13c710-4b7e-4701-8968-cd61f2e58110",
         "discNumber": 1,
@@ -207,14 +207,14 @@
       "fileTrackInfo": {
         "title": "Rumour Has It",
         "cleanTitle": "Rumour Has It",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "797ae656-81d4-4d89-bddb-eca56f77ba72",
         "discNumber": 1,
@@ -254,14 +254,14 @@
       "fileTrackInfo": {
         "title": "Turning Tables",
         "cleanTitle": "Turning Tables",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "5ac6c47f-bce8-4718-8bc6-f1de40693d14",
         "discNumber": 1,
@@ -301,14 +301,14 @@
       "fileTrackInfo": {
         "title": "Don’t You Remember",
         "cleanTitle": "Don’t You Remember",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "f5057d26-1aac-47fe-b766-18c5a28927b1",
         "discNumber": 1,
@@ -348,14 +348,14 @@
       "fileTrackInfo": {
         "title": "Set Fire to the Rain",
         "cleanTitle": "Set Fire to the Rain",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "d1e0a99e-1894-457b-ba6a-985eeef4d0c4",
         "discNumber": 1,
@@ -395,14 +395,14 @@
       "fileTrackInfo": {
         "title": "He Won’t Go",
         "cleanTitle": "He Won’t Go",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "4dd209b9-80fd-4e11-8093-3bab2db810fc",
         "discNumber": 1,
@@ -442,14 +442,14 @@
       "fileTrackInfo": {
         "title": "Take It All",
         "cleanTitle": "Take It All",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "4f515654-052b-4631-8a78-57ea362cd18a",
         "discNumber": 1,
@@ -489,14 +489,14 @@
       "fileTrackInfo": {
         "title": "I’ll Be Waiting",
         "cleanTitle": "I’ll Be Waiting",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "dd2d2073-50c4-438a-91cc-a1fea1c81b12",
         "discNumber": 1,
@@ -536,14 +536,14 @@
       "fileTrackInfo": {
         "title": "One and Only",
         "cleanTitle": "One and Only",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "04f96056-91ac-4b64-af89-24c596013f05",
         "discNumber": 1,
@@ -583,14 +583,14 @@
       "fileTrackInfo": {
         "title": "Lovesong",
         "cleanTitle": "Lovesong",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "7932ba40-a0d3-4a7e-8d85-b351fd33317e",
         "discNumber": 1,
@@ -630,14 +630,14 @@
       "fileTrackInfo": {
         "title": "Someone Like You",
         "cleanTitle": "Someone Like You",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "028efe7f-cdfb-4135-846f-848f2fff15b1",
         "discNumber": 1,
@@ -677,14 +677,14 @@
       "fileTrackInfo": {
         "title": "I Found a Boy",
         "cleanTitle": "I Found a Boy",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "a027bfd5-c002-4a85-906e-f2c613c45022",
         "discNumber": 1,
@@ -724,14 +724,14 @@
       "fileTrackInfo": {
         "title": "Turning Tables (live acoustic)",
         "cleanTitle": "Turning Tables (live acoustic)",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "b2e47e6d-b69a-420a-aa52-31d3f38978ed",
         "discNumber": 1,
@@ -771,14 +771,14 @@
       "fileTrackInfo": {
         "title": "Don’t You Remember (live acoustic)",
         "cleanTitle": "Don’t You Remember (live acoustic)",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "b19a4995-7fbf-406a-8ff1-db5b8896bd28",
         "discNumber": 1,
@@ -818,14 +818,14 @@
       "fileTrackInfo": {
         "title": "Someone Like You (live acoustic)",
         "cleanTitle": "Someone Like You (live acoustic)",
-        "artistTitle": "Adele",
-        "albumTitle": "21",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "21",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2011
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "e4174758-d333-4a8e-a31f-dd0edd51518e",
         "releaseMBId": "768bc7f7-6b91-4b57-8a7b-1508636719e6",
         "recordingMBId": "c365d988-0f2d-4313-9c5f-a557c30f027b",
         "discNumber": 1,
@@ -865,14 +865,14 @@
       "fileTrackInfo": {
         "title": "Hello",
         "cleanTitle": "Hello",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "0a8e8d55-4b83-4f8a-9732-fbb5ded9f344",
         "discNumber": 1,
@@ -912,14 +912,14 @@
       "fileTrackInfo": {
         "title": "Send My Love (to Your New Lover)",
         "cleanTitle": "Send My Love (to Your New Lover)",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "1e74cd4c-cfa7-4bdb-99da-41869f5f1171",
         "discNumber": 1,
@@ -959,14 +959,14 @@
       "fileTrackInfo": {
         "title": "I Miss You",
         "cleanTitle": "I Miss You",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "20594682-fa10-43e8-80fa-b116c68f1b7f",
         "discNumber": 1,
@@ -1006,14 +1006,14 @@
       "fileTrackInfo": {
         "title": "When We Were Young",
         "cleanTitle": "When We Were Young",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "c5ad2611-071b-4003-bb22-eee8b4f48fe9",
         "discNumber": 1,
@@ -1053,14 +1053,14 @@
       "fileTrackInfo": {
         "title": "Remedy",
         "cleanTitle": "Remedy",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "cdc9f701-60b4-4e37-a94f-87d0e396f2bc",
         "discNumber": 1,
@@ -1100,14 +1100,14 @@
       "fileTrackInfo": {
         "title": "Water Under the Bridge",
         "cleanTitle": "Water Under the Bridge",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "ade2f0f3-39bf-46ad-a44d-7fc4a8069db7",
         "discNumber": 1,
@@ -1147,14 +1147,14 @@
       "fileTrackInfo": {
         "title": "River Lea",
         "cleanTitle": "River Lea",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "b7c37d3d-feea-4a73-8346-9e2392a292e6",
         "discNumber": 1,
@@ -1194,14 +1194,14 @@
       "fileTrackInfo": {
         "title": "Love in the Dark",
         "cleanTitle": "Love in the Dark",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "dedf519d-8eca-4756-9f93-c390308e0c1b",
         "discNumber": 1,
@@ -1241,14 +1241,14 @@
       "fileTrackInfo": {
         "title": "Million Years Ago",
         "cleanTitle": "Million Years Ago",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "870c62b6-ba2c-4873-b962-6289128e4a90",
         "discNumber": 1,
@@ -1288,14 +1288,14 @@
       "fileTrackInfo": {
         "title": "All I Ask",
         "cleanTitle": "All I Ask",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "bfe7a94e-4161-4802-8916-efe57e611842",
         "discNumber": 1,
@@ -1335,14 +1335,14 @@
       "fileTrackInfo": {
         "title": "Sweetest Devotion",
         "cleanTitle": "Sweetest Devotion",
-        "artistTitle": "Adele",
-        "albumTitle": "25",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "25",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2015
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "5537624c-3d2f-4f5c-8099-df916082c85c",
         "releaseMBId": "97189482-89ee-4d31-90c7-ba07b412d7f9",
         "recordingMBId": "b2c8aed1-777d-409b-941e-7d4c594697a2",
         "discNumber": 1,
@@ -1382,14 +1382,14 @@
       "fileTrackInfo": {
         "title": "Right as Rain",
         "cleanTitle": "Right as Rain",
-        "artistTitle": "Adele",
-        "albumTitle": "19",
-        "artistTitleInfo": {
+        "authorTitle": "Adele",
+        "bookTitle": "19",
+        "authorTitleInfo": {
           "title": "Adele",
           "year": 2008
         },
-        "artistMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
-        "albumMBId": "9796da06-2d59-3176-8598-2105f31ee54a",
+        "authorMBId": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+        "bookMBId": "9796da06-2d59-3176-8598-2105f31ee54a",
         "releaseMBId": "9105a5b3-eb68-3a03-9aa8-f3495e602a4f",
         "recordingMBId": "e5aa0386-15cc-43a8-a059-b14fc39b8301",
         "trackMBId": "d98b4797-f47e-3acf-b334-54c71c9cb608",

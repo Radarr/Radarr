@@ -28,9 +28,9 @@ namespace NzbDrone.Core.Test.ParserTests
         //[TestCase("Zog Bogbean - From The Marcy Playground")]
 
         // TODO: Rewrite this test to something that makes sense.
-        public void should_parse_artist_names(string title)
+        public void should_parse_author_names(string title)
         {
-            Parser.Parser.ParseTitle(title).ArtistTitle.Should().Be(title);
+            Parser.Parser.ParseTitle(title).AuthorTitle.Should().Be(title);
             ExceptionVerification.IgnoreWarns();
         }
     }

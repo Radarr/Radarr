@@ -34,31 +34,31 @@ namespace NzbDrone.Core.Test.Datastore
                 .Build();
             Db.Insert(metadata);
 
-            var artist = Builder<Author>.CreateListOfSize(1)
+            var author = Builder<Author>.CreateListOfSize(1)
                 .All()
                 .With(v => v.Id = 0)
                 .With(v => v.QualityProfileId = profile.Id)
                 .With(v => v.AuthorMetadataId = metadata.Id)
                 .BuildListOfNew();
 
-            Db.InsertMany(artist);
+            Db.InsertMany(author);
 
-            var albums = Builder<Book>.CreateListOfSize(3)
+            var books = Builder<Book>.CreateListOfSize(3)
                 .All()
                 .With(v => v.Id = 0)
                 .With(v => v.AuthorMetadataId = metadata.Id)
                 .BuildListOfNew();
 
-            Db.InsertMany(albums);
+            Db.InsertMany(books);
 
             var editions = new List<Edition>();
-            foreach (var album in albums)
+            foreach (var book in books)
             {
                 editions.Add(
                     Builder<Edition>.CreateNew()
                     .With(v => v.Id = 0)
-                    .With(v => v.BookId = album.Id)
-                    .With(v => v.ForeignEditionId = "test" + album.Id)
+                    .With(v => v.BookId = book.Id)
+                    .With(v => v.ForeignEditionId = "test" + book.Id)
                     .Build());
             }
 
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Test.Datastore
         }
 
         [Test]
-        public void should_lazy_load_artist_for_trackfile()
+        public void should_lazy_load_author_for_trackfile()
         {
             var db = Mocker.Resolve<IDatabase>();
             var tracks = db.Query<BookFile>(new SqlBuilder()).ToList();
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Datastore
                                                   new SqlBuilder()
                                                   .Join<BookFile, Edition>((t, a) => t.EditionId == a.Id)
                                                   .Join<Edition, Book>((e, b) => e.BookId == b.Id)
-                                                  .Join<Book, Author>((album, artist) => album.AuthorMetadataId == artist.AuthorMetadataId)
+                                                  .Join<Book, Author>((book, author) => book.AuthorMetadataId == author.AuthorMetadataId)
                                                   .Join<Author, AuthorMetadata>((a, m) => a.AuthorMetadataId == m.Id));
 
             Assert.IsNotEmpty(files);

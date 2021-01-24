@@ -38,10 +38,10 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 return;
             }
 
-            var artists = _authorService.AllAuthorPaths();
+            var authors = _authorService.AllAuthorPaths();
             var imageExtensions = new List<string> { ".jpg", ".png", ".gif" };
 
-            foreach (var author in artists)
+            foreach (var author in authors)
             {
                 var images = _metaFileService.GetFilesByAuthor(author.Key)
                     .Where(c => c.LastUpdated > new DateTime(2014, 12, 27) && imageExtensions.Any(x => c.RelativePath.EndsWith(x, StringComparison.InvariantCultureIgnoreCase)));

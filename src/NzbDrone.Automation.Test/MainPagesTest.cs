@@ -18,7 +18,7 @@ namespace NzbDrone.Automation.Test
         }
 
         [Test]
-        public void artist_page()
+        public void author_page()
         {
             _page.LibraryNavIcon.Click();
             _page.WaitForNoSpinner();
@@ -78,7 +78,7 @@ namespace NzbDrone.Automation.Test
         }
 
         [Test]
-        public void add_artist_page()
+        public void add_author_page()
         {
             _page.LibraryNavIcon.Click();
             _page.WaitForNoSpinner();

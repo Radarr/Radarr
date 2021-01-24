@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Parser.Model
         public DateTime Modified { get; set; }
         public ParsedTrackInfo FileTrackInfo { get; set; }
         public ParsedTrackInfo FolderTrackInfo { get; set; }
-        public ParsedBookInfo DownloadClientAlbumInfo { get; set; }
+        public ParsedBookInfo DownloadClientBookInfo { get; set; }
         public List<string> AcoustIdResults { get; set; }
         public Author Author { get; set; }
         public Book Book { get; set; }

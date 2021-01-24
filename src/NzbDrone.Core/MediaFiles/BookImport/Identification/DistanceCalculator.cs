@@ -16,7 +16,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(DistanceCalculator));
 
         public static readonly List<string> VariousAuthorIds = new List<string> { "89ad4ac3-39f7-470e-963a-56509c546377" };
-        private static readonly List<string> VariousArtistNames = new List<string> { "various artists", "various", "va", "unknown" };
+        private static readonly List<string> VariousAuthorNames = new List<string> { "various authors", "various", "va", "unknown" };
         private static readonly List<IsoCountry> PreferredCountries = new List<string>
         {
             "United States",
@@ -31,18 +31,18 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
         {
             var dist = new Distance();
 
-            var artists = new List<string> { localTracks.MostCommon(x => x.FileTrackInfo.ArtistTitle) ?? "" };
+            var authors = new List<string> { localTracks.MostCommon(x => x.FileTrackInfo.AuthorTitle) ?? "" };
 
             // Add version based on un-reversed
-            if (artists[0].Contains(','))
+            if (authors[0].Contains(','))
             {
-                artists.Add(artists[0].Split(',').Select(x => x.Trim()).Reverse().ConcatToString(" "));
+                authors.Add(authors[0].Split(',').Select(x => x.Trim()).Reverse().ConcatToString(" "));
             }
 
-            dist.AddString("artist", artists, edition.Book.Value.AuthorMetadata.Value.Name);
-            Logger.Trace("artist: '{0}' vs '{1}'; {2}", artists.ConcatToString("' or '"), edition.Book.Value.AuthorMetadata.Value.Name, dist.NormalizedDistance());
+            dist.AddString("author", authors, edition.Book.Value.AuthorMetadata.Value.Name);
+            Logger.Trace("author: '{0}' vs '{1}'; {2}", authors.ConcatToString("' or '"), edition.Book.Value.AuthorMetadata.Value.Name, dist.NormalizedDistance());
 
-            var title = localTracks.MostCommon(x => x.FileTrackInfo.AlbumTitle) ?? "";
+            var title = localTracks.MostCommon(x => x.FileTrackInfo.BookTitle) ?? "";
             var titleOptions = new List<string> { edition.Title, edition.Book.Value.Title };
             if (titleOptions[0].Contains("#"))
             {
@@ -58,21 +58,21 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 }
             }
 
-            dist.AddString("album", title, titleOptions);
-            Logger.Trace("album: '{0}' vs '{1}'; {2}", title, titleOptions.ConcatToString("' or '"), dist.NormalizedDistance());
+            dist.AddString("book", title, titleOptions);
+            Logger.Trace("book: '{0}' vs '{1}'; {2}", title, titleOptions.ConcatToString("' or '"), dist.NormalizedDistance());
 
             // Year
             var localYear = localTracks.MostCommon(x => x.FileTrackInfo.Year);
             if (localYear > 0 && edition.ReleaseDate.HasValue)
             {
-                var albumYear = edition.ReleaseDate?.Year ?? 0;
-                if (localYear == albumYear)
+                var bookYear = edition.ReleaseDate?.Year ?? 0;
+                if (localYear == bookYear)
                 {
                     dist.Add("year", 0.0);
                 }
                 else
                 {
-                    var remoteYear = albumYear;
+                    var remoteYear = bookYear;
                     var diff = Math.Abs(localYear - remoteYear);
                     var diff_max = Math.Abs(DateTime.Now.Year - remoteYear);
                     dist.AddRatio("year", diff, diff_max);

@@ -14,14 +14,14 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            DeleteOrphanedByArtist();
-            DeleteOrphanedByAlbum();
+            DeleteOrphanedByAuthor();
+            DeleteOrphanedByBook();
             DeleteOrphanedByTrackFile();
             DeleteWhereBookIdIsZero();
             DeleteWhereTrackFileIsZero();
         }
 
-        private void DeleteOrphanedByArtist()
+        private void DeleteOrphanedByAuthor()
         {
             using (var mapper = _database.OpenConnection())
             {
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
             }
         }
 
-        private void DeleteOrphanedByAlbum()
+        private void DeleteOrphanedByBook()
         {
             using (var mapper = _database.OpenConnection())
             {

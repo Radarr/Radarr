@@ -32,18 +32,16 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 if (file == null)
                 {
-                    _logger.Debug("File is no longer available, skipping this file.");
-                    continue;
+                    return Decision.Accept();
                 }
 
-                    if (!_upgradableSpecification.IsUpgradable(subject.Author.QualityProfile,
-                                                               currentQualities,
-                                                               _preferredWordServiceCalculator.Calculate(subject.Author, file.GetSceneOrFileName(), subject.Release?.IndexerId ?? 0),
-                                                               subject.ParsedBookInfo.Quality,
-                                                               subject.PreferredWordScore))
-                    {
-                        return Decision.Reject("Existing files on disk is of equal or higher preference: {0}", currentQualities.ConcatToString());
-                    }
+                if (!_upgradableSpecification.IsUpgradable(subject.Author.QualityProfile,
+                                                            file.Quality,
+                                                            _preferredWordServiceCalculator.Calculate(subject.Author, file.GetSceneOrFileName(), subject.Release?.IndexerId ?? 0),
+                                                            subject.ParsedBookInfo.Quality,
+                                                            subject.PreferredWordScore))
+                {
+                    return Decision.Reject("Existing files on disk is of equal or higher preference: {0}", file.Quality);
                 }
             }
 

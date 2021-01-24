@@ -32,10 +32,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _firstFile = new BookFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now };
             _secondFile = new BookFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 2)), DateAdded = DateTime.Now };
 
-            var singleAlbumList = new List<Book> { new Book { BookFiles = new List<BookFile>() } };
-            var doubleAlbumList = new List<Book> { new Book { BookFiles = new List<BookFile>() }, new Book { BookFiles = new List<BookFile>() }, new Book { BookFiles = new List<BookFile>() } };
+            var singleBookList = new List<Book> { new Book { BookFiles = new List<BookFile>() } };
+            var doubleBookList = new List<Book> { new Book { BookFiles = new List<BookFile>() }, new Book { BookFiles = new List<BookFile>() }, new Book { BookFiles = new List<BookFile>() } };
 
-            var fakeArtist = Builder<Author>.CreateNew()
+            var fakeAuthor = Builder<Author>.CreateNew()
                          .With(c => c.QualityProfile = new QualityProfile
                          {
                              UpgradeAllowed = true,
@@ -50,16 +50,16 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _parseResultMulti = new RemoteBook
             {
-                Author = fakeArtist,
+                Author = fakeAuthor,
                 ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
-                Books = doubleAlbumList
+                Books = doubleBookList
             };
 
             _parseResultSingle = new RemoteBook
             {
-                Author = fakeArtist,
+                Author = fakeAuthor,
                 ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
-                Books = singleAlbumList
+                Books = singleBookList
             };
         }
 
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_true_if_album_has_no_existing_file()
+        public void should_return_true_if_book_has_no_existing_file()
         {
             _parseResultSingle.Books.First().BookFiles = new List<BookFile>();
 
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_true_if_single_album_doesnt_exist_on_disk()
+        public void should_return_true_if_single_book_doesnt_exist_on_disk()
         {
             _parseResultSingle.Books = new List<Book>();
 

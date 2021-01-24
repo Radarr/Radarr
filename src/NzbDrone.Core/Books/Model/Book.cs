@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Books
             AddOptions = new AddBookOptions();
         }
 
-        // These correspond to columns in the Albums table
+        // These correspond to columns in the Books table
         // These are metadata entries
         public int AuthorMetadataId { get; set; }
         public string ForeignBookId { get; set; }
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Books
         [MemberwiseEqualityIgnore]
         public LazyLoaded<List<SeriesBookLink>> SeriesLinks { get; set; }
 
-        //compatibility properties with old version of Album
+        //compatibility properties with old version of Book
         [MemberwiseEqualityIgnore]
         [JsonIgnore]
         public int AuthorId

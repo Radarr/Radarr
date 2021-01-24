@@ -35,7 +35,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             _logger = logger;
         }
 
-        public List<LocalEdition> GetLocalAlbumReleases(List<LocalBook> localTracks, bool singleRelease)
+        public List<LocalEdition> GetLocalBookReleases(List<LocalBook> localTracks, bool singleRelease)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
             List<LocalEdition> releases;
@@ -68,13 +68,13 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
         public List<LocalEdition> Identify(List<LocalBook> localTracks, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config)
         {
             // 1 group localTracks so that we think they represent a single release
-            // 2 get candidates given specified author, album and release.  Candidates can include extra files already on disk.
+            // 2 get candidates given specified author, book and release.  Candidates can include extra files already on disk.
             // 3 find best candidate
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
             _logger.Debug("Starting track identification");
 
-            var releases = GetLocalAlbumReleases(localTracks, config.SingleRelease);
+            var releases = GetLocalBookReleases(localTracks, config.SingleRelease);
 
             int i = 0;
             foreach (var localRelease in releases)
@@ -112,22 +112,22 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             return localTracks;
         }
 
-        private void IdentifyRelease(LocalEdition localAlbumRelease, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config)
+        private void IdentifyRelease(LocalEdition localBookRelease, IdentificationOverrides idOverrides, ImportDecisionMakerConfig config)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            var candidateReleases = _candidateService.GetDbCandidatesFromTags(localAlbumRelease, idOverrides, config.IncludeExisting);
+            var candidateReleases = _candidateService.GetDbCandidatesFromTags(localBookRelease, idOverrides, config.IncludeExisting);
 
             if (candidateReleases.Count == 0 && config.AddNewAuthors)
             {
-                candidateReleases = _candidateService.GetRemoteCandidates(localAlbumRelease);
+                candidateReleases = _candidateService.GetRemoteCandidates(localBookRelease);
             }
 
             if (candidateReleases.Count == 0)
             {
                 // can't find any candidates even after fingerprinting
                 // populate the overrides and return
-                foreach (var localTrack in localAlbumRelease.LocalBooks)
+                foreach (var localTrack in localBookRelease.LocalBooks)
                 {
                     localTrack.Edition = idOverrides.Edition;
                     localTrack.Book = idOverrides.Book;
@@ -137,30 +137,30 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 return;
             }
 
-            _logger.Debug($"Got {candidateReleases.Count} candidates for {localAlbumRelease.LocalBooks.Count} tracks in {watch.ElapsedMilliseconds}ms");
+            _logger.Debug($"Got {candidateReleases.Count} candidates for {localBookRelease.LocalBooks.Count} tracks in {watch.ElapsedMilliseconds}ms");
 
             // convert all the TrackFiles that represent extra files to List<LocalTrack>
             var allLocalTracks = ToLocalTrack(candidateReleases
                                               .SelectMany(x => x.ExistingFiles)
-                                              .DistinctBy(x => x.Path), localAlbumRelease);
+                                              .DistinctBy(x => x.Path), localBookRelease);
 
             _logger.Debug($"Retrieved {allLocalTracks.Count} possible tracks in {watch.ElapsedMilliseconds}ms");
 
-            GetBestRelease(localAlbumRelease, candidateReleases, allLocalTracks);
+            GetBestRelease(localBookRelease, candidateReleases, allLocalTracks);
 
             _logger.Debug($"Best release found in {watch.ElapsedMilliseconds}ms");
 
-            localAlbumRelease.PopulateMatch();
+            localBookRelease.PopulateMatch();
 
             _logger.Debug($"IdentifyRelease done in {watch.ElapsedMilliseconds}ms");
         }
 
-        private void GetBestRelease(LocalEdition localAlbumRelease, List<CandidateEdition> candidateReleases, List<LocalBook> extraTracksOnDisk)
+        private void GetBestRelease(LocalEdition localBookRelease, List<CandidateEdition> candidateReleases, List<LocalBook> extraTracksOnDisk)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            _logger.Debug("Matching {0} track files against {1} candidates", localAlbumRelease.TrackCount, candidateReleases.Count);
-            _logger.Trace("Processing files:\n{0}", string.Join("\n", localAlbumRelease.LocalBooks.Select(x => x.Path)));
+            _logger.Debug("Matching {0} track files against {1} candidates", localBookRelease.TrackCount, candidateReleases.Count);
+            _logger.Trace("Processing files:\n{0}", string.Join("\n", localBookRelease.LocalBooks.Select(x => x.Path)));
 
             double bestDistance = 1.0;
 
@@ -172,7 +172,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
 
                 var extraTrackPaths = candidateRelease.ExistingFiles.Select(x => x.Path).ToList();
                 var extraTracks = extraTracksOnDisk.Where(x => extraTrackPaths.Contains(x.Path)).ToList();
-                var allLocalTracks = localAlbumRelease.LocalBooks.Concat(extraTracks).DistinctBy(x => x.Path).ToList();
+                var allLocalTracks = localBookRelease.LocalBooks.Concat(extraTracks).DistinctBy(x => x.Path).ToList();
 
                 var distance = DistanceCalculator.BookDistance(allLocalTracks, release);
                 var currDistance = distance.NormalizedDistance();
@@ -186,9 +186,9 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
                 if (currDistance < bestDistance)
                 {
                     bestDistance = currDistance;
-                    localAlbumRelease.Distance = distance;
-                    localAlbumRelease.Edition = release;
-                    localAlbumRelease.ExistingTracks = extraTracks;
+                    localBookRelease.Distance = distance;
+                    localBookRelease.Edition = release;
+                    localBookRelease.ExistingTracks = extraTracks;
                     if (currDistance == 0.0)
                     {
                         break;
@@ -197,7 +197,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Identification
             }
 
             watch.Stop();
-            _logger.Debug($"Best release: {localAlbumRelease.Edition} Distance {localAlbumRelease.Distance.NormalizedDistance()} found in {watch.ElapsedMilliseconds}ms");
+            _logger.Debug($"Best release: {localBookRelease.Edition} Distance {localBookRelease.Distance.NormalizedDistance()} found in {watch.ElapsedMilliseconds}ms");
         }
     }
 }

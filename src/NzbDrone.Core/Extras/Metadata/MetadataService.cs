@@ -104,11 +104,11 @@ namespace NzbDrone.Core.Extras.Metadata
             return files;
         }
 
-        public override IEnumerable<ExtraFile> CreateAfterBookImport(Author author, Book book, string authorFolder, string albumFolder)
+        public override IEnumerable<ExtraFile> CreateAfterBookImport(Author author, Book book, string authorFolder, string bookFolder)
         {
             var metadataFiles = _metadataFileService.GetFilesByAuthor(author.Id);
 
-            if (authorFolder.IsNullOrWhiteSpace() && albumFolder.IsNullOrWhiteSpace())
+            if (authorFolder.IsNullOrWhiteSpace() && bookFolder.IsNullOrWhiteSpace())
             {
                 return new List<MetadataFile>();
             }
@@ -205,21 +205,21 @@ namespace NzbDrone.Core.Extras.Metadata
             return null;
         }
 
-        private List<MetadataFile> GetMetadataFilesForConsumer(IMetadata consumer, List<MetadataFile> artistMetadata)
+        private List<MetadataFile> GetMetadataFilesForConsumer(IMetadata consumer, List<MetadataFile> authorMetadata)
         {
-            return artistMetadata.Where(c => c.Consumer == consumer.GetType().Name).ToList();
+            return authorMetadata.Where(c => c.Consumer == consumer.GetType().Name).ToList();
         }
 
         private MetadataFile ProcessAuthorMetadata(IMetadata consumer, Author author, List<MetadataFile> existingMetadataFiles)
         {
-            var artistMetadata = consumer.AuthorMetadata(author);
+            var authorMetadata = consumer.AuthorMetadata(author);
 
-            if (artistMetadata == null)
+            if (authorMetadata == null)
             {
                 return null;
             }
 
-            var hash = artistMetadata.Contents.SHA256Hash();
+            var hash = authorMetadata.Contents.SHA256Hash();
 
             var metadata = GetMetadataFile(author, existingMetadataFiles, e => e.Type == MetadataType.AuthorMetadata) ??
                                new MetadataFile
@@ -231,9 +231,9 @@ namespace NzbDrone.Core.Extras.Metadata
 
             if (hash == metadata.Hash)
             {
-                if (artistMetadata.RelativePath != metadata.RelativePath)
+                if (authorMetadata.RelativePath != metadata.RelativePath)
                 {
-                    metadata.RelativePath = artistMetadata.RelativePath;
+                    metadata.RelativePath = authorMetadata.RelativePath;
 
                     return metadata;
                 }
@@ -241,15 +241,15 @@ namespace NzbDrone.Core.Extras.Metadata
                 return null;
             }
 
-            var fullPath = Path.Combine(author.Path, artistMetadata.RelativePath);
+            var fullPath = Path.Combine(author.Path, authorMetadata.RelativePath);
 
             _otherExtraFileRenamer.RenameOtherExtraFile(author, fullPath);
 
             _logger.Debug("Writing Author Metadata to: {0}", fullPath);
-            SaveMetadataFile(fullPath, artistMetadata.Contents);
+            SaveMetadataFile(fullPath, authorMetadata.Contents);
 
             metadata.Hash = hash;
-            metadata.RelativePath = artistMetadata.RelativePath;
+            metadata.RelativePath = authorMetadata.RelativePath;
             metadata.Extension = Path.GetExtension(fullPath);
 
             return metadata;

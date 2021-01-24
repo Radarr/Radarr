@@ -2,114 +2,114 @@
   "expectedMusicBrainzReleaseIds": [
     "e34999c7-36bd-4d77-a10b-627b1b4f3904"
   ],
-  "libraryArtists": [
+  "libraryAuthors": [
     {
-      "artist": "401c3991-b76b-499d-8082-9f2df958ef78",
+      "author": "401c3991-b76b-499d-8082-9f2df958ef78",
       "metadataProfile": {
         "name": "Standard",
-        "primaryAlbumTypes": [
+        "primaryBookTypes": [
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 2,
               "name": "Single"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 4,
               "name": "Other"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 1,
               "name": "EP"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 3,
               "name": "Broadcast"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 0,
-              "name": "Album"
+              "name": "Book"
             },
             "allowed": true
           }
         ],
-        "secondaryAlbumTypes": [
+        "secondaryBookTypes": [
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 0,
               "name": "Studio"
             },
             "allowed": true
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 3,
               "name": "Spokenword"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 2,
               "name": "Soundtrack"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 7,
               "name": "Remix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 9,
               "name": "Mixtape/Street"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 6,
               "name": "Live"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 4,
               "name": "Interview"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 8,
               "name": "DJ-mix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 10,
               "name": "Demo"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 1,
               "name": "Compilation"
             },
@@ -156,8 +156,8 @@
     {
       "path": "/media/nas/video/unpacked/music/Phil_Collins_The_Essential_Going_Back_(081227946470)_REMASTERED_DELUXE_EDITION_2CD_FLAC_2016_WRE/101-phil_collins-going_back.flac",
       "fileTrackInfo": {
-        "artistTitle": "Phil Collins The Essential Going Back (081227946470) REMASTERED DELUXE EDITION 2CD FLAC 2016 WRE 101",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins The Essential Going Back (081227946470) REMASTERED DELUXE EDITION 2CD FLAC 2016 WRE 101",
+        "authorTitleInfo": {
           "title": "Phil Collins The Essential Going Back (081227946470) REMASTERED DELUXE EDITION 2CD FLAC 2016 WRE 101",
           "year": 0
         },
@@ -183,9 +183,9 @@
       "fileTrackInfo": {
         "title": "Girl (Why You Wanna Make Me Blue)",
         "cleanTitle": "Girl (Why You Wanna Make Me Blue)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -221,9 +221,9 @@
       "fileTrackInfo": {
         "title": "(Love Is Like A) Heatwave",
         "cleanTitle": "(Love Is Like A) Heatwave",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -259,9 +259,9 @@
       "fileTrackInfo": {
         "title": "Some Of Your Lovin'",
         "cleanTitle": "Some Of Your Lovin'",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -297,9 +297,9 @@
       "fileTrackInfo": {
         "title": "Going To A Go-Go",
         "cleanTitle": "Going To A Go-Go",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -335,9 +335,9 @@
       "fileTrackInfo": {
         "title": "Papa Was A Rolling Stone",
         "cleanTitle": "Papa Was A Rolling Stone",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -373,9 +373,9 @@
       "fileTrackInfo": {
         "title": "Loving You Is Sweeter Than Ever",
         "cleanTitle": "Loving You Is Sweeter Than Ever",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -411,9 +411,9 @@
       "fileTrackInfo": {
         "title": "Something About You",
         "cleanTitle": "Something About You",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -449,9 +449,9 @@
       "fileTrackInfo": {
         "title": "Talkin' About My Baby",
         "cleanTitle": "Talkin' About My Baby",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -487,9 +487,9 @@
       "fileTrackInfo": {
         "title": "Do I Love You",
         "cleanTitle": "Do I Love You",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -525,9 +525,9 @@
       "fileTrackInfo": {
         "title": "Never Dreamed You'd Leave In Summer",
         "cleanTitle": "Never Dreamed You'd Leave In Summer",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -563,9 +563,9 @@
       "fileTrackInfo": {
         "title": "Take Me In Your Arms (Rock Me For A Little While)",
         "cleanTitle": "Take Me In Your Arms (Rock Me For A Little While)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -601,9 +601,9 @@
       "fileTrackInfo": {
         "title": "Too Many Fish In The Sea",
         "cleanTitle": "Too Many Fish In The Sea",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -639,9 +639,9 @@
       "fileTrackInfo": {
         "title": "Uptight (Everything's Alright)",
         "cleanTitle": "Uptight (Everything's Alright)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -677,9 +677,9 @@
       "fileTrackInfo": {
         "title": "Signed, Sealed, Delivered (I'm Yours) Intro (Live)",
         "cleanTitle": "Signed, Sealed, Delivered (I'm Yours) Intro (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -715,9 +715,9 @@
       "fileTrackInfo": {
         "title": "Ain't Too Proud To Beg (Live)",
         "cleanTitle": "Ain't Too Proud To Beg (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -753,9 +753,9 @@
       "fileTrackInfo": {
         "title": "Girl (Why You Wanna Make Me Blue) (Live)",
         "cleanTitle": "Girl (Why You Wanna Make Me Blue) (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -791,9 +791,9 @@
       "fileTrackInfo": {
         "title": "Dancing In The Street (Live)",
         "cleanTitle": "Dancing In The Street (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -829,9 +829,9 @@
       "fileTrackInfo": {
         "title": "(Love Is Like A) Heatwave (Live)",
         "cleanTitle": "(Love Is Like A) Heatwave (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -867,9 +867,9 @@
       "fileTrackInfo": {
         "title": "Papa Was A Rolling Stone (Live)",
         "cleanTitle": "Papa Was A Rolling Stone (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -905,9 +905,9 @@
       "fileTrackInfo": {
         "title": "Never Dreamed You'd Leave In Summer (Live)",
         "cleanTitle": "Never Dreamed You'd Leave In Summer (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -943,9 +943,9 @@
       "fileTrackInfo": {
         "title": "Talkin' About My Baby (Live)",
         "cleanTitle": "Talkin' About My Baby (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -981,9 +981,9 @@
       "fileTrackInfo": {
         "title": "Do I Love You (Live)",
         "cleanTitle": "Do I Love You (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -1019,9 +1019,9 @@
       "fileTrackInfo": {
         "title": "Ain't That Peculiar (Live)",
         "cleanTitle": "Ain't That Peculiar (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -1057,9 +1057,9 @@
       "fileTrackInfo": {
         "title": "Too Many Fish In The Sea (Live)",
         "cleanTitle": "Too Many Fish In The Sea (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -1095,9 +1095,9 @@
       "fileTrackInfo": {
         "title": "You Really Got A Hold On Me (Live)",
         "cleanTitle": "You Really Got A Hold On Me (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -1133,9 +1133,9 @@
       "fileTrackInfo": {
         "title": "Something About You (Live)",
         "cleanTitle": "Something About You (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -1171,9 +1171,9 @@
       "fileTrackInfo": {
         "title": "Uptight (Everything's Alright) (Live)",
         "cleanTitle": "Uptight (Everything's Alright) (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -1209,9 +1209,9 @@
       "fileTrackInfo": {
         "title": "My Girl (Live)",
         "cleanTitle": "My Girl (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },
@@ -1247,9 +1247,9 @@
       "fileTrackInfo": {
         "title": "Going Back (Live)",
         "cleanTitle": "Going Back (Live)",
-        "artistTitle": "Phil Collins",
-        "albumTitle": "The Essential Going Back",
-        "artistTitleInfo": {
+        "authorTitle": "Phil Collins",
+        "bookTitle": "The Essential Going Back",
+        "authorTitleInfo": {
           "title": "Phil Collins",
           "year": 2016
         },

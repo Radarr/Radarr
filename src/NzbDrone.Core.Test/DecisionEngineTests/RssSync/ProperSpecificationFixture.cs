@@ -34,10 +34,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _firstFile = new BookFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
             _secondFile = new BookFile { Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)), DateAdded = DateTime.Now };
 
-            var singleAlbumList = new List<Book> { new Book { }, new Book { } };
-            var doubleAlbumList = new List<Book> { new Book { }, new Book { }, new Book { } };
+            var singleBookList = new List<Book> { new Book { }, new Book { } };
+            var doubleBookList = new List<Book> { new Book { }, new Book { }, new Book { } };
 
-            var fakeArtist = Builder<Author>.CreateNew()
+            var fakeAuthor = Builder<Author>.CreateNew()
                          .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.FLAC.Id })
                          .Build();
 
@@ -47,16 +47,16 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _parseResultMulti = new RemoteBook
             {
-                Author = fakeArtist,
+                Author = fakeAuthor,
                 ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MOBI, new Revision(version: 2)) },
-                Books = doubleAlbumList
+                Books = doubleBookList
             };
 
             _parseResultSingle = new RemoteBook
             {
-                Author = fakeArtist,
+                Author = fakeAuthor,
                 ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MOBI, new Revision(version: 2)) },
-                Books = singleAlbumList
+                Books = singleBookList
             };
         }
 

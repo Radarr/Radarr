@@ -28,7 +28,7 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(0)]
         public void missing_should_be_empty()
         {
-            EnsureNoArtist("14586394", "Andrew Hunter Murray");
+            EnsureNoAuthor("14586394", "Andrew Hunter Murray");
 
             var result = WantedMissing.GetPaged(0, 15, "releaseDate", "desc");
 
@@ -48,7 +48,7 @@ namespace NzbDrone.Integration.Test.ApiTests
 
         [Test]
         [Order(1)]
-        public void missing_should_have_artist()
+        public void missing_should_have_author()
         {
             EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", true);
 
@@ -63,8 +63,8 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void cutoff_should_have_monitored_items()
         {
             EnsureProfileCutoff(1, Quality.AZW3);
-            var artist = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", true);
-            EnsureBookFile(artist, 1, 1, Quality.MOBI);
+            var author = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", true);
+            EnsureBookFile(author, 1, 1, Quality.MOBI);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "releaseDate", "desc");
 
@@ -87,8 +87,8 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void cutoff_should_not_have_unmonitored_items()
         {
             EnsureProfileCutoff(1, Quality.AZW3);
-            var artist = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", false);
-            EnsureBookFile(artist, 1, 1, Quality.MOBI);
+            var author = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", false);
+            EnsureBookFile(author, 1, 1, Quality.MOBI);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "releaseDate", "desc");
 
@@ -97,11 +97,11 @@ namespace NzbDrone.Integration.Test.ApiTests
 
         [Test]
         [Order(2)]
-        public void cutoff_should_have_artist()
+        public void cutoff_should_have_author()
         {
             EnsureProfileCutoff(1, Quality.AZW3);
-            var artist = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", true);
-            EnsureBookFile(artist, 1, 1, Quality.MOBI);
+            var author = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", true);
+            EnsureBookFile(author, 1, 1, Quality.MOBI);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "releaseDate", "desc");
 
@@ -125,8 +125,8 @@ namespace NzbDrone.Integration.Test.ApiTests
         public void cutoff_should_have_unmonitored_items()
         {
             EnsureProfileCutoff(1, Quality.AZW3);
-            var artist = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", false);
-            EnsureBookFile(artist, 1, 1, Quality.MOBI);
+            var author = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", false);
+            EnsureBookFile(author, 1, 1, Quality.MOBI);
 
             var result = WantedCutoffUnmet.GetPaged(0, 15, "releaseDate", "desc", "monitored", "false");
 

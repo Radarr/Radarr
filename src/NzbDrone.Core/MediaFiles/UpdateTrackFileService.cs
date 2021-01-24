@@ -48,7 +48,7 @@ namespace NzbDrone.Core.MediaFiles
 
             switch (_configService.FileDate)
             {
-                case FileDateType.AlbumReleaseDate:
+                case FileDateType.BookReleaseDate:
                     {
                         if (!book.ReleaseDate.HasValue)
                         {

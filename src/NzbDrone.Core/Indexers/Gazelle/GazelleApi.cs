@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NzbDrone.Core.Indexers.Gazelle
 {
-    public class GazelleArtist
+    public class GazelleAuthor
     {
         public string Name { get; set; }
         public string Id { get; set; }
@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Indexers.Gazelle
     {
         public int TorrentId { get; set; }
         public int EditionId { get; set; }
-        public List<GazelleArtist> Artists { get; set; }
+        public List<GazelleAuthor> Authors { get; set; }
         public bool Remastered { get; set; }
         public string RemasterYear { get; set; }
         public string RemasterTitle { get; set; }
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Indexers.Gazelle
     {
         public string GroupId { get; set; }
         public string GroupName { get; set; }
-        public string Artist { get; set; }
+        public string Author { get; set; }
         public string GroupYear { get; set; }
         public string Cover { get; set; }
         public List<string> Tags { get; set; }

@@ -25,11 +25,11 @@ namespace NzbDrone.Core.Profiles.Releases
             _logger = logger;
         }
 
-        public int Calculate(Author series, string title, int indexerId)
+        public int Calculate(Author author, string title, int indexerId)
         {
             _logger.Trace("Calculating preferred word score for '{0}'", title);
 
-            var releaseProfiles = _releaseProfileService.EnabledForTags(artist.Tags, indexerId);
+            var releaseProfiles = _releaseProfileService.EnabledForTags(author.Tags, indexerId);
             var matchingPairs = new List<KeyValuePair<string, int>>();
 
             foreach (var releaseProfile in releaseProfiles)

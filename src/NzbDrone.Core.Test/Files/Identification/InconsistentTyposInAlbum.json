@@ -2,114 +2,114 @@
   "expectedMusicBrainzReleaseIds": [
     "134f5f3e-8b5f-46ab-809d-8c0dbc794f3e"
   ],
-  "libraryArtists": [
+  "libraryAuthors": [
     {
-      "artist": "c296e10c-110a-4103-9e77-47bfebb7fb2e",
+      "author": "c296e10c-110a-4103-9e77-47bfebb7fb2e",
       "metadataProfile": {
         "name": "Standard",
-        "primaryAlbumTypes": [
+        "primaryBookTypes": [
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 2,
               "name": "Single"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 4,
               "name": "Other"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 1,
               "name": "EP"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 3,
               "name": "Broadcast"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 0,
-              "name": "Album"
+              "name": "Book"
             },
             "allowed": true
           }
         ],
-        "secondaryAlbumTypes": [
+        "secondaryBookTypes": [
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 0,
               "name": "Studio"
             },
             "allowed": true
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 3,
               "name": "Spokenword"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 2,
               "name": "Soundtrack"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 7,
               "name": "Remix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 9,
               "name": "Mixtape/Street"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 6,
               "name": "Live"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 4,
               "name": "Interview"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 8,
               "name": "DJ-mix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 10,
               "name": "Demo"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 1,
               "name": "Compilation"
             },
@@ -158,9 +158,9 @@
       "fileTrackInfo": {
         "title": "Positive Vibration",
         "cleanTitle": "Positive Vibration",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -195,9 +195,9 @@
       "fileTrackInfo": {
         "title": "Roots Rock Reggae",
         "cleanTitle": "Roots Rock Reggae",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -232,9 +232,9 @@
       "fileTrackInfo": {
         "title": "Johnny Was",
         "cleanTitle": "Johnny Was",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -269,9 +269,9 @@
       "fileTrackInfo": {
         "title": "Cry To Me",
         "cleanTitle": "Cry To Me",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -306,9 +306,9 @@
       "fileTrackInfo": {
         "title": "Want More",
         "cleanTitle": "Want More",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -343,9 +343,9 @@
       "fileTrackInfo": {
         "title": "Crazy Baldhead",
         "cleanTitle": "Crazy Baldhead",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -380,9 +380,9 @@
       "fileTrackInfo": {
         "title": "Who The Cap Fit",
         "cleanTitle": "Who The Cap Fit",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -417,9 +417,9 @@
       "fileTrackInfo": {
         "title": "Night Shift",
         "cleanTitle": "Night Shift",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -454,9 +454,9 @@
       "fileTrackInfo": {
         "title": "War",
         "cleanTitle": "War",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -491,9 +491,9 @@
       "fileTrackInfo": {
         "title": "Rat Race",
         "cleanTitle": "Rat Race",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -528,9 +528,9 @@
       "fileTrackInfo": {
         "title": "Jah Live (Original Mix)",
         "cleanTitle": "Jah Live (Original Mix)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -565,9 +565,9 @@
       "fileTrackInfo": {
         "title": "Concrete",
         "cleanTitle": "Concrete",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -602,9 +602,9 @@
       "fileTrackInfo": {
         "title": "Roots Rock Reggae",
         "cleanTitle": "Roots Rock Reggae",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -639,9 +639,9 @@
       "fileTrackInfo": {
         "title": "Roots Rock Dub",
         "cleanTitle": "Roots Rock Dub",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -676,9 +676,9 @@
       "fileTrackInfo": {
         "title": "Want More (Alternate Mix)",
         "cleanTitle": "Want More (Alternate Mix)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -713,9 +713,9 @@
       "fileTrackInfo": {
         "title": "Crazy Baldhead (Alternate Mix)",
         "cleanTitle": "Crazy Baldhead (Alternate Mix)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -750,9 +750,9 @@
       "fileTrackInfo": {
         "title": "War (Alternate Mix)",
         "cleanTitle": "War (Alternate Mix)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -787,9 +787,9 @@
       "fileTrackInfo": {
         "title": "Johnny Was (Alternate Mix)",
         "cleanTitle": "Johnny Was (Alternate Mix)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -824,9 +824,9 @@
       "fileTrackInfo": {
         "title": "Introduction",
         "cleanTitle": "Introduction",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -861,9 +861,9 @@
       "fileTrackInfo": {
         "title": "Trenchtown Rock (Live)",
         "cleanTitle": "Trenchtown Rock (Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -898,9 +898,9 @@
       "fileTrackInfo": {
         "title": "Burnin And Looting (Live)",
         "cleanTitle": "Burnin And Looting (Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -935,9 +935,9 @@
       "fileTrackInfo": {
         "title": "Them Belly Full (Live)",
         "cleanTitle": "Them Belly Full (Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -972,9 +972,9 @@
       "fileTrackInfo": {
         "title": "Rebel Music (Live)",
         "cleanTitle": "Rebel Music (Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -1009,9 +1009,9 @@
       "fileTrackInfo": {
         "title": "I Shot The Sheriff (Live)",
         "cleanTitle": "I Shot The Sheriff (Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -1046,9 +1046,9 @@
       "fileTrackInfo": {
         "title": "Want More (Live)",
         "cleanTitle": "Want More (Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -1083,9 +1083,9 @@
       "fileTrackInfo": {
         "title": "No Woman No Cry (Live)",
         "cleanTitle": "No Woman No Cry (Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -1120,9 +1120,9 @@
       "fileTrackInfo": {
         "title": "Lively Up Yourself (Live)",
         "cleanTitle": "Lively Up Yourself (Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -1157,9 +1157,9 @@
       "fileTrackInfo": {
         "title": "Roots Rock Reggae (Live)",
         "cleanTitle": "Roots Rock Reggae (Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -1194,9 +1194,9 @@
       "fileTrackInfo": {
         "title": "Rat Race (Live)",
         "cleanTitle": "Rat Race (Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -1231,9 +1231,9 @@
       "fileTrackInfo": {
         "title": "Smile Jamica (Part One Live)",
         "cleanTitle": "Smile Jamica (Part One Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },
@@ -1268,9 +1268,9 @@
       "fileTrackInfo": {
         "title": "Smile Jamica (Part 2 Live)",
         "cleanTitle": "Smile Jamica (Part 2 Live)",
-        "artistTitle": "Bob Marley & The Wailers",
-        "albumTitle": "Rastaman Vibration (Remastered)",
-        "artistTitleInfo": {
+        "authorTitle": "Bob Marley & The Wailers",
+        "bookTitle": "Rastaman Vibration (Remastered)",
+        "authorTitleInfo": {
           "title": "Bob Marley & The Wailers",
           "year": 2002
         },

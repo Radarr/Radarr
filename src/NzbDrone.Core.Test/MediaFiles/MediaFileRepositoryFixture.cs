@@ -14,8 +14,8 @@ namespace NzbDrone.Core.Test.MediaFiles
     [TestFixture]
     public class MediaFileRepositoryFixture : DbTest<MediaFileRepository, BookFile>
     {
-        private Author _artist;
-        private Book _album;
+        private Author _author;
+        private Book _book;
         private Edition _edition;
 
         [SetUp]
@@ -26,21 +26,21 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .Build();
             Db.Insert(meta);
 
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                 .With(a => a.AuthorMetadataId = meta.Id)
                 .With(a => a.Id = 0)
                 .Build();
-            Db.Insert(_artist);
+            Db.Insert(_author);
 
-            _album = Builder<Book>.CreateNew()
+            _book = Builder<Book>.CreateNew()
                 .With(a => a.Id = 0)
-                .With(a => a.AuthorMetadataId = _artist.AuthorMetadataId)
+                .With(a => a.AuthorMetadataId = _author.AuthorMetadataId)
                 .Build();
-            Db.Insert(_album);
+            Db.Insert(_book);
 
             _edition = Builder<Edition>.CreateNew()
                 .With(a => a.Id = 0)
-                .With(a => a.BookId = _album.Id)
+                .With(a => a.BookId = _book.Id)
                 .Build();
             Db.Insert(_edition);
 
@@ -53,21 +53,21 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .TheRest()
                 .With(c => c.EditionId = 0)
                 .TheFirst(1)
-                .With(c => c.Path = @"C:\Test\Path\Artist\somefile1.flac".AsOsAgnostic())
+                .With(c => c.Path = @"C:\Test\Path\Author\somefile1.flac".AsOsAgnostic())
                 .TheNext(1)
-                .With(c => c.Path = @"C:\Test\Path\Artist\somefile2.flac".AsOsAgnostic())
+                .With(c => c.Path = @"C:\Test\Path\Author\somefile2.flac".AsOsAgnostic())
                 .BuildListOfNew();
             Db.InsertMany(files);
         }
 
         [Test]
-        public void get_files_by_artist()
+        public void get_files_by_author()
         {
             VerifyData();
-            var artistFiles = Subject.GetFilesByAuthor(_artist.Id);
-            VerifyEagerLoaded(artistFiles);
+            var authorFiles = Subject.GetFilesByAuthor(_author.Id);
+            VerifyEagerLoaded(authorFiles);
 
-            artistFiles.Should().OnlyContain(c => c.Author.Value.Id == _artist.Id);
+            authorFiles.Should().OnlyContain(c => c.Author.Value.Id == _author.Id);
         }
 
         [Test]
@@ -101,9 +101,9 @@ namespace NzbDrone.Core.Test.MediaFiles
                 .With(c => c.Id = 0)
                 .With(c => c.Quality = new QualityModel(Quality.MP3_320))
                 .TheFirst(1)
-                .With(c => c.Path = @"C:\Test\Path2\Artist\somefile1.flac".AsOsAgnostic())
+                .With(c => c.Path = @"C:\Test\Path2\Author\somefile1.flac".AsOsAgnostic())
                 .TheNext(1)
-                .With(c => c.Path = @"C:\Test\Path2\Artist\somefile2.flac".AsOsAgnostic())
+                .With(c => c.Path = @"C:\Test\Path2\Author\somefile2.flac".AsOsAgnostic())
                 .BuildListOfNew();
             Db.InsertMany(files);
 
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         public void get_file_by_path()
         {
             VerifyData();
-            var file = Subject.GetFileWithPath(@"C:\Test\Path\Artist\somefile2.flac".AsOsAgnostic());
+            var file = Subject.GetFileWithPath(@"C:\Test\Path\Author\somefile2.flac".AsOsAgnostic());
 
             file.Should().NotBeNull();
             file.Edition.IsLoaded.Should().BeTrue();
@@ -125,13 +125,13 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void get_files_by_album()
+        public void get_files_by_book()
         {
             VerifyData();
-            var files = Subject.GetFilesByBook(_album.Id);
+            var files = Subject.GetFilesByBook(_book.Id);
             VerifyEagerLoaded(files);
 
-            files.Should().OnlyContain(c => c.EditionId == _album.Id);
+            files.Should().OnlyContain(c => c.EditionId == _book.Id);
         }
 
         private void VerifyData()
@@ -166,12 +166,12 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void delete_files_by_album_should_work_if_join_fails()
+        public void delete_files_by_book_should_work_if_join_fails()
         {
-            Db.Delete(_album);
-            Subject.DeleteFilesByBook(_album.Id);
+            Db.Delete(_book);
+            Subject.DeleteFilesByBook(_book.Id);
 
-            Db.All<BookFile>().Where(x => x.EditionId == _album.Id).Should().HaveCount(0);
+            Db.All<BookFile>().Where(x => x.EditionId == _book.Id).Should().HaveCount(0);
         }
     }
 }

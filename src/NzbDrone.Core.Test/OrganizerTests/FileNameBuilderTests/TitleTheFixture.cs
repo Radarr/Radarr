@@ -14,8 +14,8 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
     [TestFixture]
     public class TitleTheFixture : CoreTest<FileNameBuilder>
     {
-        private Author _artist;
-        private Book _album;
+        private Author _author;
+        private Book _book;
         private Edition _edition;
         private BookFile _trackFile;
         private NamingConfig _namingConfig;
@@ -23,20 +23,20 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>
+            _author = Builder<Author>
                     .CreateNew()
                     .With(s => s.Name = "Alien Ant Farm")
                     .Build();
 
-            _album = Builder<Book>
+            _book = Builder<Book>
                     .CreateNew()
                     .With(s => s.Title = "Anthology")
                     .Build();
 
             _edition = Builder<Edition>
                 .CreateNew()
-                .With(s => s.Title = _album.Title)
-                .With(s => s.Book = _album)
+                .With(s => s.Title = _book.Title)
+                .With(s => s.Book = _book)
                 .Build();
 
             _trackFile = new BookFile { Quality = new QualityModel(Quality.MP3_320), ReleaseGroup = "ReadarrTest" };
@@ -66,10 +66,10 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         //[TestCase("", "")]
         public void should_get_expected_title_back(string name, string expected)
         {
-            _artist.Name = name;
+            _author.Name = name;
             _namingConfig.StandardBookFormat = "{Author NameThe}";
 
-            Subject.BuildBookFileName(_artist, _edition, _trackFile)
+            Subject.BuildBookFileName(_author, _edition, _trackFile)
                    .Should().Be(expected);
         }
 
@@ -79,10 +79,10 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [TestCase("3%")]
         public void should_not_change_title(string name)
         {
-            _artist.Name = name;
+            _author.Name = name;
             _namingConfig.StandardBookFormat = "{Author NameThe}";
 
-            Subject.BuildBookFileName(_artist, _edition, _trackFile)
+            Subject.BuildBookFileName(_author, _edition, _trackFile)
                    .Should().Be(name);
         }
     }

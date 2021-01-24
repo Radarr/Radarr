@@ -128,7 +128,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
         {
             DownloadClientItem downloadClientItem = null;
             var directoryInfo = new DirectoryInfo(folder);
-            author = author ?? _parsingService.GetArtist(directoryInfo.Name);
+            author = author ?? _parsingService.GetAuthor(directoryInfo.Name);
 
             if (downloadId.IsNotNullOrWhiteSpace())
             {
@@ -283,7 +283,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
 
             foreach (var importBookId in bookIds)
             {
-                var albumImportDecisions = new List<ImportDecision<LocalBook>>();
+                var bookImportDecisions = new List<ImportDecision<LocalBook>>();
 
                 // turn off anyReleaseOk if specified
                 if (importBookId.First().DisableReleaseSwitching)
@@ -323,19 +323,19 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Manual
                         importDecision.Reject(new Rejection($"Destination author folder {author.Path} is not in a Root Folder"));
                     }
 
-                    albumImportDecisions.Add(importDecision);
+                    bookImportDecisions.Add(importDecision);
                     fileCount += 1;
                 }
 
                 var downloadId = importBookId.Select(x => x.DownloadId).FirstOrDefault(x => x.IsNotNullOrWhiteSpace());
                 if (downloadId.IsNullOrWhiteSpace())
                 {
-                    imported.AddRange(_importApprovedBooks.Import(albumImportDecisions, message.ReplaceExistingFiles, null, message.ImportMode));
+                    imported.AddRange(_importApprovedBooks.Import(bookImportDecisions, message.ReplaceExistingFiles, null, message.ImportMode));
                 }
                 else
                 {
                     var trackedDownload = _trackedDownloadService.Find(downloadId);
-                    var importResults = _importApprovedBooks.Import(albumImportDecisions, message.ReplaceExistingFiles, trackedDownload.DownloadItem, message.ImportMode);
+                    var importResults = _importApprovedBooks.Import(bookImportDecisions, message.ReplaceExistingFiles, trackedDownload.DownloadItem, message.ImportMode);
 
                     imported.AddRange(importResults);
 

@@ -11,23 +11,23 @@ using NzbDrone.Core.Profiles.Qualities;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
+namespace NzbDrone.Core.Test.MusicTests.AuthorRepositoryTests
 {
     [TestFixture]
 
-    public class ArtistRepositoryFixture : DbTest<AuthorRepository, Author>
+    public class AuthorRepositoryFixture : DbTest<AuthorRepository, Author>
     {
-        private AuthorRepository _artistRepo;
-        private AuthorMetadataRepository _artistMetadataRepo;
+        private AuthorRepository _authorRepo;
+        private AuthorMetadataRepository _authorMetadataRepo;
 
         [SetUp]
         public void Setup()
         {
-            _artistRepo = Mocker.Resolve<AuthorRepository>();
-            _artistMetadataRepo = Mocker.Resolve<AuthorMetadataRepository>();
+            _authorRepo = Mocker.Resolve<AuthorRepository>();
+            _authorMetadataRepo = Mocker.Resolve<AuthorMetadataRepository>();
         }
 
-        private void AddArtist(string name, string foreignId, List<string> oldIds = null)
+        private void AddAuthor(string name, string foreignId, List<string> oldIds = null)
         {
             if (oldIds == null)
             {
@@ -40,22 +40,22 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
                 .With(a => a.TitleSlug = foreignId)
                 .BuildNew();
 
-            var artist = Builder<Author>.CreateNew()
+            var author = Builder<Author>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Metadata = metadata)
                 .With(a => a.CleanName = Parser.Parser.CleanAuthorName(name))
                 .With(a => a.ForeignAuthorId = foreignId)
                 .BuildNew();
 
-            _artistMetadataRepo.Insert(metadata);
-            artist.AuthorMetadataId = metadata.Id;
-            _artistRepo.Insert(artist);
+            _authorMetadataRepo.Insert(metadata);
+            author.AuthorMetadataId = metadata.Id;
+            _authorRepo.Insert(author);
         }
 
-        private void GivenArtists()
+        private void GivenAuthors()
         {
-            AddArtist("The Black Eyed Peas", "d5be5333-4171-427e-8e12-732087c6b78e");
-            AddArtist("The Black Keys", "d15721d8-56b4-453d-b506-fc915b14cba2", new List<string> { "6f2ed437-825c-4cea-bb58-bf7688c6317a" });
+            AddAuthor("The Black Eyed Peas", "d5be5333-4171-427e-8e12-732087c6b78e");
+            AddAuthor("The Black Keys", "d15721d8-56b4-453d-b506-fc915b14cba2", new List<string> { "6f2ed437-825c-4cea-bb58-bf7688c6317a" });
         }
 
         [Test]
@@ -77,11 +77,11 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
             Mocker.Resolve<QualityProfileRepository>().Insert(profile);
             Mocker.Resolve<MetadataProfileRepository>().Insert(metaProfile);
 
-            var artist = Builder<Author>.CreateNew().BuildNew();
-            artist.QualityProfileId = profile.Id;
-            artist.MetadataProfileId = metaProfile.Id;
+            var author = Builder<Author>.CreateNew().BuildNew();
+            author.QualityProfileId = profile.Id;
+            author.MetadataProfileId = metaProfile.Id;
 
-            Subject.Insert(artist);
+            Subject.Insert(author);
 
             StoredModel.QualityProfile.Should().NotBeNull();
             StoredModel.MetadataProfile.Should().NotBeNull();
@@ -89,42 +89,42 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
 
         [TestCase("The Black Eyed Peas")]
         [TestCase("The Black Keys")]
-        public void should_find_artist_in_db_by_name(string name)
+        public void should_find_author_in_db_by_name(string name)
         {
-            GivenArtists();
-            var artist = _artistRepo.FindByName(Parser.Parser.CleanAuthorName(name));
+            GivenAuthors();
+            var author = _authorRepo.FindByName(Parser.Parser.CleanAuthorName(name));
 
-            artist.Should().NotBeNull();
-            artist.Name.Should().Be(name);
+            author.Should().NotBeNull();
+            author.Name.Should().Be(name);
         }
 
         [Test]
-        public void should_find_artist_in_by_id()
+        public void should_find_author_in_by_id()
         {
-            GivenArtists();
-            var artist = _artistRepo.FindById("d5be5333-4171-427e-8e12-732087c6b78e");
+            GivenAuthors();
+            var author = _authorRepo.FindById("d5be5333-4171-427e-8e12-732087c6b78e");
 
-            artist.Should().NotBeNull();
-            artist.ForeignAuthorId.Should().Be("d5be5333-4171-427e-8e12-732087c6b78e");
+            author.Should().NotBeNull();
+            author.ForeignAuthorId.Should().Be("d5be5333-4171-427e-8e12-732087c6b78e");
         }
 
         [Test]
-        public void should_not_find_artist_if_multiple_artists_have_same_name()
+        public void should_not_find_author_if_multiple_authors_have_same_name()
         {
-            GivenArtists();
+            GivenAuthors();
 
             string name = "Alice Cooper";
-            AddArtist(name, "ee58c59f-8e7f-4430-b8ca-236c4d3745ae");
-            AddArtist(name, "4d7928cd-7ed2-4282-8c29-c0c9f966f1bd");
+            AddAuthor(name, "ee58c59f-8e7f-4430-b8ca-236c4d3745ae");
+            AddAuthor(name, "4d7928cd-7ed2-4282-8c29-c0c9f966f1bd");
 
-            _artistRepo.All().Should().HaveCount(4);
+            _authorRepo.All().Should().HaveCount(4);
 
-            var artist = _artistRepo.FindByName(Parser.Parser.CleanAuthorName(name));
-            artist.Should().BeNull();
+            var author = _authorRepo.FindByName(Parser.Parser.CleanAuthorName(name));
+            author.Should().BeNull();
         }
 
         [Test]
-        public void should_throw_sql_exception_adding_duplicate_artist()
+        public void should_throw_sql_exception_adding_duplicate_author()
         {
             var name = "test";
             var metadata = Builder<AuthorMetadata>.CreateNew()
@@ -132,19 +132,19 @@ namespace NzbDrone.Core.Test.MusicTests.ArtistRepositoryTests
                 .With(a => a.Name = name)
                 .BuildNew();
 
-            var artist1 = Builder<Author>.CreateNew()
+            var author1 = Builder<Author>.CreateNew()
                 .With(a => a.Id = 0)
                 .With(a => a.Metadata = metadata)
                 .With(a => a.CleanName = Parser.Parser.CleanAuthorName(name))
                 .BuildNew();
 
-            var artist2 = artist1.JsonClone();
-            artist2.Metadata = metadata;
+            var author2 = author1.JsonClone();
+            author2.Metadata = metadata;
 
-            _artistMetadataRepo.Insert(metadata);
-            _artistRepo.Insert(artist1);
+            _authorMetadataRepo.Insert(metadata);
+            _authorRepo.Insert(author1);
 
-            Action insertDupe = () => _artistRepo.Insert(artist2);
+            Action insertDupe = () => _authorRepo.Insert(author2);
             insertDupe.Should().Throw<SQLiteException>();
         }
     }

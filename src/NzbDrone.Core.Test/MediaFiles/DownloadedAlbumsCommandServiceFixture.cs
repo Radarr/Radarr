@@ -18,7 +18,7 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.MediaFiles
 {
     [TestFixture]
-    public class DownloadedAlbumsCommandServiceFixture : FileSystemTest<DownloadedBooksCommandService>
+    public class DownloadedBooksCommandServiceFixture : FileSystemTest<DownloadedBooksCommandService>
     {
         private string _downloadFolder = "c:\\drop_other\\Show.S01E01\\".AsOsAgnostic();
         private string _downloadFile = "c:\\drop_other\\Show.S01E01.mkv".AsOsAgnostic();

@@ -68,7 +68,7 @@ namespace NzbDrone.Core.MetadataSource.Goodreads
                 .CreateFactory();
         }
 
-        public HashSet<string> GetChangedArtists(DateTime startTime)
+        public HashSet<string> GetChangedAuthors(DateTime startTime)
         {
             return null;
         }

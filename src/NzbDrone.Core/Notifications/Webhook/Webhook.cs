@@ -26,10 +26,10 @@ namespace NzbDrone.Core.Notifications.Webhook
             var payload = new WebhookGrabPayload
             {
                 EventType = WebhookEventType.Grab,
-                Artist = new WebhookAuthor(message.Author),
-                Albums = remoteBook.Books.ConvertAll(x => new WebhookBook(x)
+                Author = new WebhookAuthor(message.Author),
+                Books = remoteBook.Books.ConvertAll(x => new WebhookBook(x)
                 {
-                    // TODO: Stop passing these parameters inside an album v3
+                    // TODO: Stop passing these parameters inside an book v3
                     Quality = quality.Quality.Name,
                     QualityVersion = quality.Revision.Version,
                     ReleaseGroup = remoteBook.ParsedBookInfo.ReleaseGroup
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             var payload = new WebhookImportPayload
             {
                 EventType = WebhookEventType.Download,
-                Artist = new WebhookAuthor(message.Author),
+                Author = new WebhookAuthor(message.Author),
                 Book = new WebhookBook(message.Book),
                 BookFiles = bookFiles.ConvertAll(x => new WebhookBookFile(x)),
                 IsUpgrade = message.OldFiles.Any(),
@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             var payload = new WebhookRenamePayload
             {
                 EventType = WebhookEventType.Rename,
-                Artist = new WebhookAuthor(author)
+                Author = new WebhookAuthor(author)
             };
 
             _proxy.SendWebhook(payload, Settings);
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             var payload = new WebhookRetagPayload
             {
                 EventType = WebhookEventType.Retag,
-                Artist = new WebhookAuthor(message.Author)
+                Author = new WebhookAuthor(message.Author)
             };
 
             _proxy.SendWebhook(payload, Settings);
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                 var payload = new WebhookGrabPayload
                 {
                     EventType = WebhookEventType.Test,
-                    Artist = new WebhookAuthor()
+                    Author = new WebhookAuthor()
                     {
                         Id = 1,
                         Name = "Test Name",

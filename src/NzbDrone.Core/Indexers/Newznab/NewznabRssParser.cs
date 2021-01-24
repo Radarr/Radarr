@@ -79,8 +79,8 @@ namespace NzbDrone.Core.Indexers.Newznab
         {
             releaseInfo = base.ProcessItem(item, releaseInfo);
 
-            releaseInfo.Author = GetArtist(item);
-            releaseInfo.Book = GetAlbum(item);
+            releaseInfo.Author = GetAuthor(item);
+            releaseInfo.Book = GetBook(item);
 
             return releaseInfo;
         }
@@ -121,25 +121,25 @@ namespace NzbDrone.Core.Indexers.Newznab
             return base.GetPublishDate(item);
         }
 
-        protected virtual string GetArtist(XElement item)
+        protected virtual string GetAuthor(XElement item)
         {
-            var artistString = TryGetNewznabAttribute(item, "author");
+            var authorString = TryGetNewznabAttribute(item, "author");
 
-            if (!artistString.IsNullOrWhiteSpace())
+            if (!authorString.IsNullOrWhiteSpace())
             {
-                return artistString;
+                return authorString;
             }
 
             return "";
         }
 
-        protected virtual string GetAlbum(XElement item)
+        protected virtual string GetBook(XElement item)
         {
-            var albumString = TryGetNewznabAttribute(item, "booktitle");
+            var bookString = TryGetNewznabAttribute(item, "booktitle");
 
-            if (!albumString.IsNullOrWhiteSpace())
+            if (!bookString.IsNullOrWhiteSpace())
             {
-                return albumString;
+                return bookString;
             }
 
             return "";

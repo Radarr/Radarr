@@ -12,21 +12,21 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.IndexerSearchTests
 {
     [TestFixture]
-    public class ArtistSearchServiceFixture : CoreTest<AuthorSearchService>
+    public class AuthorSearchServiceFixture : CoreTest<AuthorSearchService>
     {
-        private Author _artist;
+        private Author _author;
 
         [SetUp]
         public void Setup()
         {
-            _artist = new Author();
+            _author = new Author();
 
             Mocker.GetMock<IAuthorService>()
                 .Setup(s => s.GetAuthor(It.IsAny<int>()))
-                .Returns(_artist);
+                .Returns(_author);
 
             Mocker.GetMock<ISearchForNzb>()
-                .Setup(s => s.AuthorSearch(_artist.Id, false, true, false))
+                .Setup(s => s.AuthorSearch(_author.Id, false, true, false))
                 .Returns(new List<DownloadDecision>());
 
             Mocker.GetMock<IProcessDownloadDecisions>()
@@ -35,19 +35,19 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
         }
 
         [Test]
-        public void should_only_include_monitored_albums()
+        public void should_only_include_monitored_books()
         {
-            _artist.Books = new List<Book>
+            _author.Books = new List<Book>
             {
                 new Book { Monitored = false },
                 new Book { Monitored = true }
             };
 
-            Subject.Execute(new AuthorSearchCommand { AuthorId = _artist.Id, Trigger = CommandTrigger.Manual });
+            Subject.Execute(new AuthorSearchCommand { AuthorId = _author.Id, Trigger = CommandTrigger.Manual });
 
             Mocker.GetMock<ISearchForNzb>()
-                .Verify(v => v.AuthorSearch(_artist.Id, false, true, false),
-                    Times.Exactly(_artist.Books.Value.Count(s => s.Monitored)));
+                .Verify(v => v.AuthorSearch(_author.Id, false, true, false),
+                    Times.Exactly(_author.Books.Value.Count(s => s.Monitored)));
         }
     }
 }

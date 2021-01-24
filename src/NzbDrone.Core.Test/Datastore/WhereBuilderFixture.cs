@@ -54,12 +54,12 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void where_equal_property()
         {
-            var artist = new Author { Id = 10 };
-            _subject = Where(x => x.Id == artist.Id);
+            var author = new Author { Id = 10 };
+            _subject = Where(x => x.Id == author.Id);
 
             _subject.Parameters.ParameterNames.Should().HaveCount(1);
             _subject.ToString().Should().Be($"(\"Authors\".\"Id\" = @Clause1_P1)");
-            _subject.Parameters.Get<int>("Clause1_P1").Should().Be(artist.Id);
+            _subject.Parameters.Get<int>("Clause1_P1").Should().Be(author.Id);
         }
 
         [Test]
@@ -108,8 +108,8 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void where_equal_null_property()
         {
-            var artist = new Author { CleanName = null };
-            _subject = Where(x => x.CleanName == artist.CleanName);
+            var author = new Author { CleanName = null };
+            _subject = Where(x => x.CleanName == author.CleanName);
 
             _subject.ToString().Should().Be($"(\"Authors\".\"CleanName\" IS NULL)");
         }

@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Books
         void InsertMany(List<Edition> editions);
         void UpdateMany(List<Edition> editions);
         void DeleteMany(List<Edition> editions);
-        List<Edition> GetEditionsForRefresh(int albumId, IEnumerable<string> foreignEditionIds);
+        List<Edition> GetEditionsForRefresh(int bookId, IEnumerable<string> foreignEditionIds);
         List<Edition> GetEditionsByBook(int bookId);
         List<Edition> GetEditionsByAuthor(int authorId);
         List<Edition> SetMonitored(Edition edition);
@@ -66,9 +66,9 @@ namespace NzbDrone.Core.Books
             }
         }
 
-        public List<Edition> GetEditionsForRefresh(int albumId, IEnumerable<string> foreignEditionIds)
+        public List<Edition> GetEditionsForRefresh(int bookId, IEnumerable<string> foreignEditionIds)
         {
-            return _editionRepository.GetEditionsForRefresh(albumId, foreignEditionIds);
+            return _editionRepository.GetEditionsForRefresh(bookId, foreignEditionIds);
         }
 
         public List<Edition> GetEditionsByBook(int bookId)

@@ -87,15 +87,15 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             _magnetFilePath = Path.ChangeExtension(_filePath, extension);
         }
 
-        protected override RemoteBook CreateRemoteAlbum()
+        protected override RemoteBook CreateRemoteBook()
         {
-            var remoteBook = base.CreateRemoteAlbum();
+            var remoteBook = base.CreateRemoteBook();
             var torrentInfo = new TorrentInfo();
 
             torrentInfo.Title = remoteBook.Release.Title;
             torrentInfo.DownloadUrl = remoteBook.Release.DownloadUrl;
             torrentInfo.DownloadProtocol = remoteBook.Release.DownloadProtocol;
-            torrentInfo.MagnetUrl = "magnet:?xt=urn:btih:755248817d32b00cc853e633ecdc48e4c21bff15&dn=Artist.Album.FLAC.loseless-DEFiNE%5Brartv%5D&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710";
+            torrentInfo.MagnetUrl = "magnet:?xt=urn:btih:755248817d32b00cc853e633ecdc48e4c21bff15&dn=Author.Book.FLAC.loseless-DEFiNE%5Brartv%5D&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710";
 
             remoteBook.Release = torrentInfo;
 
@@ -141,7 +141,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void Download_should_download_file_if_it_doesnt_exist()
         {
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             Subject.Download(remoteBook);
 
@@ -155,7 +155,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         {
             GivenMagnetFilePath();
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().SaveMagnetFiles = true;
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
             remoteBook.Release.DownloadUrl = null;
             Subject.Download(remoteBook);
             Mocker.GetMock<IHttpClient>().Verify(c => c.Get(It.Is<HttpRequest>(v => v.Url.FullUri == _downloadUrl)), Times.Never());
@@ -173,7 +173,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().SaveMagnetFiles = true;
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().MagnetFileExtension = magnetFileExtension;
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
             remoteBook.Release.DownloadUrl = null;
 
             Subject.Download(remoteBook);
@@ -188,7 +188,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         public void Download_should_not_save_magnet_if_disabled()
         {
             GivenMagnetFilePath();
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
             remoteBook.Release.DownloadUrl = null;
 
             Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteBook));
@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         {
             Subject.Definition.Settings.As<TorrentBlackholeSettings>().SaveMagnetFiles = true;
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             Subject.Download(remoteBook);
 
@@ -220,7 +220,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
             var illegalTitle = "Radiohead - Scotch Mist [2008/FLAC/Lossless]";
             var expectedFilename = Path.Combine(_blackholeFolder, "Radiohead - Scotch Mist [2008+FLAC+Lossless]" + Path.GetExtension(_filePath));
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
             remoteBook.Release.Title = illegalTitle;
 
             Subject.Download(remoteBook);
@@ -233,7 +233,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void Download_should_throw_if_magnet_and_torrent_url_does_not_exist()
         {
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
             remoteBook.Release.DownloadUrl = null;
 
             Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteBook));
@@ -308,7 +308,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.Blackhole
         [Test]
         public void should_return_null_hash()
         {
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             Subject.Download(remoteBook).Should().BeNull();
         }

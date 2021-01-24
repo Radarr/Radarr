@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
 
         public RemoteBook Aggregate(RemoteBook remoteBook)
         {
-            remoteBook.PreferredWordScore = _preferredWordServiceCalculator.Calculate(remoteAlbum.Author, remoteBook.Release.Title, remoteBook.Release.IndexerId);
+            remoteBook.PreferredWordScore = _preferredWordServiceCalculator.Calculate(remoteBook.Author, remoteBook.Release.Title, remoteBook.Release.IndexerId);
 
             return remoteBook;
         }

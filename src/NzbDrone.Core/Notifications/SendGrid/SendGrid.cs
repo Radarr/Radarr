@@ -21,12 +21,12 @@ namespace NzbDrone.Core.Notifications.SendGrid
 
         public override void OnGrab(GrabMessage grabMessage)
         {
-            _proxy.SendNotification(ALBUM_GRABBED_TITLE, grabMessage.Message, Settings);
+            _proxy.SendNotification(BOOK_GRABBED_TITLE, grabMessage.Message, Settings);
         }
 
-        public override void OnReleaseImport(AlbumDownloadMessage message)
+        public override void OnReleaseImport(BookDownloadMessage message)
         {
-            _proxy.SendNotification(ALBUM_DOWNLOADED_TITLE, message.Message, Settings);
+            _proxy.SendNotification(BOOK_DOWNLOADED_TITLE, message.Message, Settings);
         }
 
         public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Notifications.SendGrid
             _proxy.SendNotification(DOWNLOAD_FAILURE_TITLE, message.Message, Settings);
         }
 
-        public override void OnImportFailure(AlbumDownloadMessage message)
+        public override void OnImportFailure(BookDownloadMessage message)
         {
             _proxy.SendNotification(IMPORT_FAILURE_TITLE, message.Message, Settings);
         }
@@ -51,7 +51,7 @@ namespace NzbDrone.Core.Notifications.SendGrid
             try
             {
                 const string title = "Test Notification";
-                const string body = "This is a test message from Lidarr";
+                const string body = "This is a test message from Readarr";
 
                 _proxy.SendNotification(title, body, Settings);
             }

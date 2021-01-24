@@ -50,10 +50,10 @@ namespace NzbDrone.Core.IndexerSearch
         public List<DownloadDecision> AuthorSearch(int authorId, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
             var author = _authorService.GetAuthor(authorId);
-            return ArtistSearch(author, missingOnly, userInvokedSearch, interactiveSearch);
+            return AuthorSearch(author, missingOnly, userInvokedSearch, interactiveSearch);
         }
 
-        public List<DownloadDecision> ArtistSearch(Author author, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
+        public List<DownloadDecision> AuthorSearch(Author author, bool missingOnly, bool userInvokedSearch, bool interactiveSearch)
         {
             var searchSpec = Get<AuthorSearchCriteria>(author, userInvokedSearch, interactiveSearch);
             var books = _bookService.GetBooksByAuthor(author.Id);
@@ -82,12 +82,12 @@ namespace NzbDrone.Core.IndexerSearch
             return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
         }
 
-        private TSpec Get<TSpec>(Author author, List<Book> albums, bool userInvokedSearch, bool interactiveSearch)
+        private TSpec Get<TSpec>(Author author, List<Book> books, bool userInvokedSearch, bool interactiveSearch)
             where TSpec : SearchCriteriaBase, new()
         {
             var spec = new TSpec();
 
-            spec.Books = albums;
+            spec.Books = books;
             spec.Author = author;
             spec.UserInvokedSearch = userInvokedSearch;
             spec.InteractiveSearch = interactiveSearch;

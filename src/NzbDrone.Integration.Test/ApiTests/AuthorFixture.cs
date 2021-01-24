@@ -11,9 +11,9 @@ namespace NzbDrone.Integration.Test.ApiTests
     {
         [Test]
         [Order(0)]
-        public void add_artist_with_tags_should_store_them()
+        public void add_author_with_tags_should_store_them()
         {
-            EnsureNoArtist("14586394", "Andrew Hunter Murray");
+            EnsureNoAuthor("14586394", "Andrew Hunter Murray");
             var tag = EnsureTag("abc");
 
             var author = Author.Lookup("readarr:43765115").Single();
@@ -32,82 +32,82 @@ namespace NzbDrone.Integration.Test.ApiTests
 
         [Test]
         [Order(0)]
-        public void add_artist_without_profileid_should_return_badrequest()
+        public void add_author_without_profileid_should_return_badrequest()
         {
             IgnoreOnMonoVersions("5.12", "5.14");
 
-            EnsureNoArtist("14586394", "Andrew Hunter Murray");
+            EnsureNoAuthor("14586394", "Andrew Hunter Murray");
 
-            var artist = Author.Lookup("readarr:43765115").Single();
+            var author = Author.Lookup("readarr:43765115").Single();
 
-            artist.Path = Path.Combine(AuthorRootFolder, artist.AuthorName);
+            author.Path = Path.Combine(AuthorRootFolder, author.AuthorName);
 
-            Author.InvalidPost(artist);
+            Author.InvalidPost(author);
         }
 
         [Test]
         [Order(0)]
-        public void add_artist_without_path_should_return_badrequest()
+        public void add_author_without_path_should_return_badrequest()
         {
             IgnoreOnMonoVersions("5.12", "5.14");
 
-            EnsureNoArtist("14586394", "Andrew Hunter Murray");
+            EnsureNoAuthor("14586394", "Andrew Hunter Murray");
 
-            var artist = Author.Lookup("readarr:43765115").Single();
+            var author = Author.Lookup("readarr:43765115").Single();
 
-            artist.QualityProfileId = 1;
+            author.QualityProfileId = 1;
 
-            Author.InvalidPost(artist);
+            Author.InvalidPost(author);
         }
 
         [Test]
         [Order(1)]
-        public void add_artist()
+        public void add_author()
         {
-            EnsureNoArtist("14586394", "Andrew Hunter Murray");
+            EnsureNoAuthor("14586394", "Andrew Hunter Murray");
 
-            var artist = Author.Lookup("readarr:43765115").Single();
+            var author = Author.Lookup("readarr:43765115").Single();
 
-            artist.QualityProfileId = 1;
-            artist.MetadataProfileId = 1;
-            artist.Path = Path.Combine(AuthorRootFolder, artist.AuthorName);
+            author.QualityProfileId = 1;
+            author.MetadataProfileId = 1;
+            author.Path = Path.Combine(AuthorRootFolder, author.AuthorName);
 
-            var result = Author.Post(artist);
+            var result = Author.Post(author);
 
             result.Should().NotBeNull();
             result.Id.Should().NotBe(0);
             result.QualityProfileId.Should().Be(1);
             result.MetadataProfileId.Should().Be(1);
-            result.Path.Should().Be(Path.Combine(AuthorRootFolder, artist.AuthorName));
+            result.Path.Should().Be(Path.Combine(AuthorRootFolder, author.AuthorName));
         }
 
         [Test]
         [Order(2)]
-        public void get_all_artist()
+        public void get_all_author()
         {
             EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
             EnsureAuthor("383606", "16160797", "Robert Galbraith");
 
-            var artists = Author.All();
+            var authors = Author.All();
 
-            artists.Should().NotBeNullOrEmpty();
-            artists.Should().Contain(v => v.ForeignAuthorId == "14586394");
-            artists.Should().Contain(v => v.ForeignAuthorId == "383606");
+            authors.Should().NotBeNullOrEmpty();
+            authors.Should().Contain(v => v.ForeignAuthorId == "14586394");
+            authors.Should().Contain(v => v.ForeignAuthorId == "383606");
         }
 
         [Test]
         [Order(2)]
-        public void get_artist_by_id()
+        public void get_author_by_id()
         {
-            var artist = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
+            var author = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
 
-            var result = Author.Get(artist.Id);
+            var result = Author.Get(author.Id);
 
             result.ForeignAuthorId.Should().Be("14586394");
         }
 
         [Test]
-        public void get_artist_by_unknown_id_should_return_404()
+        public void get_author_by_unknown_id_should_return_404()
         {
             IgnoreOnMonoVersions("5.12", "5.14");
 
@@ -116,70 +116,70 @@ namespace NzbDrone.Integration.Test.ApiTests
 
         [Test]
         [Order(2)]
-        public void update_artist_profile_id()
+        public void update_author_profile_id()
         {
-            var artist = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
+            var author = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
 
             var profileId = 1;
-            if (artist.QualityProfileId == profileId)
+            if (author.QualityProfileId == profileId)
             {
                 profileId = 2;
             }
 
-            artist.QualityProfileId = profileId;
+            author.QualityProfileId = profileId;
 
-            var result = Author.Put(artist);
+            var result = Author.Put(author);
 
-            Author.Get(artist.Id).QualityProfileId.Should().Be(profileId);
+            Author.Get(author.Id).QualityProfileId.Should().Be(profileId);
         }
 
         [Test]
         [Order(3)]
-        public void update_artist_monitored()
+        public void update_author_monitored()
         {
-            var artist = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", false);
+            var author = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray", false);
 
-            artist.Monitored.Should().BeFalse();
+            author.Monitored.Should().BeFalse();
 
-            artist.Monitored = true;
+            author.Monitored = true;
 
-            var result = Author.Put(artist);
+            var result = Author.Put(author);
 
             result.Monitored.Should().BeTrue();
         }
 
         [Test]
         [Order(3)]
-        public void update_artist_tags()
+        public void update_author_tags()
         {
-            var artist = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
+            var author = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
             var tag = EnsureTag("abc");
 
-            if (artist.Tags.Contains(tag.Id))
+            if (author.Tags.Contains(tag.Id))
             {
-                artist.Tags.Remove(tag.Id);
+                author.Tags.Remove(tag.Id);
 
-                var result = Author.Put(artist);
-                Author.Get(artist.Id).Tags.Should().NotContain(tag.Id);
+                var result = Author.Put(author);
+                Author.Get(author.Id).Tags.Should().NotContain(tag.Id);
             }
             else
             {
-                artist.Tags.Add(tag.Id);
+                author.Tags.Add(tag.Id);
 
-                var result = Author.Put(artist);
-                Author.Get(artist.Id).Tags.Should().Contain(tag.Id);
+                var result = Author.Put(author);
+                Author.Get(author.Id).Tags.Should().Contain(tag.Id);
             }
         }
 
         [Test]
         [Order(4)]
-        public void delete_artist()
+        public void delete_author()
         {
-            var artist = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
+            var author = EnsureAuthor("14586394", "43765115", "Andrew Hunter Murray");
 
-            Author.Get(artist.Id).Should().NotBeNull();
+            Author.Get(author.Id).Should().NotBeNull();
 
-            Author.Delete(artist.Id);
+            Author.Delete(author.Id);
 
             Author.All().Should().NotContain(v => v.ForeignAuthorId == "14586394");
         }

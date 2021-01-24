@@ -29,11 +29,11 @@ namespace NzbDrone.Core.Test.ValidationTests
         {
             WindowsOnly();
 
-            var artist = Builder<Author>.CreateNew()
+            var author = Builder<Author>.CreateNew()
                                         .With(s => s.Path = Environment.GetFolderPath(Environment.SpecialFolder.Windows))
                                         .Build();
 
-            _validator.Validate(artist).IsValid.Should().BeFalse();
+            _validator.Validate(author).IsValid.Should().BeFalse();
         }
 
         [Test]
@@ -41,11 +41,11 @@ namespace NzbDrone.Core.Test.ValidationTests
         {
             WindowsOnly();
 
-            var artist = Builder<Author>.CreateNew()
+            var author = Builder<Author>.CreateNew()
                                         .With(s => s.Path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Test"))
                                         .Build();
 
-            _validator.Validate(artist).IsValid.Should().BeFalse();
+            _validator.Validate(author).IsValid.Should().BeFalse();
         }
 
         [Test]
@@ -54,11 +54,11 @@ namespace NzbDrone.Core.Test.ValidationTests
             PosixOnly();
 
             var bin = OsInfo.IsOsx ? "/System" : "/bin";
-            var artist = Builder<Author>.CreateNew()
+            var author = Builder<Author>.CreateNew()
                                         .With(s => s.Path = bin)
                                         .Build();
 
-            _validator.Validate(artist).IsValid.Should().BeFalse();
+            _validator.Validate(author).IsValid.Should().BeFalse();
         }
 
         [Test]
@@ -67,11 +67,11 @@ namespace NzbDrone.Core.Test.ValidationTests
             PosixOnly();
 
             var bin = OsInfo.IsOsx ? "/System" : "/bin";
-            var artist = Builder<Author>.CreateNew()
+            var author = Builder<Author>.CreateNew()
                 .With(s => s.Path = Path.Combine(bin, "test"))
                 .Build();
 
-            _validator.Validate(artist).IsValid.Should().BeFalse();
+            _validator.Validate(author).IsValid.Should().BeFalse();
         }
     }
 }

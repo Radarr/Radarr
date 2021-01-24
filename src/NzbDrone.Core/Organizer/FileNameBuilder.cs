@@ -158,12 +158,12 @@ namespace NzbDrone.Core.Organizer
 
                 if (token.StartsWith("{Author", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    basicNamingConfig.IncludeArtistName = true;
+                    basicNamingConfig.IncludeAuthorName = true;
                 }
 
-                if (token.StartsWith("{Album", StringComparison.InvariantCultureIgnoreCase))
+                if (token.StartsWith("{Book", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    basicNamingConfig.IncludeAlbumTitle = true;
+                    basicNamingConfig.IncludeBookTitle = true;
                 }
 
                 if (token.StartsWith("{Quality", StringComparison.InvariantCultureIgnoreCase))

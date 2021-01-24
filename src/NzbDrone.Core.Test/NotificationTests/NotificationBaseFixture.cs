@@ -57,12 +57,12 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnDownload was called");
             }
 
-            public override void OnRename(Author artist)
+            public override void OnRename(Author author)
             {
                 TestLogger.Info("OnRename was called");
             }
 
-            public override void OnHealthIssue(NzbDrone.Core.HealthCheck.HealthCheck artist)
+            public override void OnHealthIssue(NzbDrone.Core.HealthCheck.HealthCheck author)
             {
                 TestLogger.Info("OnHealthIssue was called");
             }

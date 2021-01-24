@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private static readonly int NoPreferredWordScore = 0;
 
         [Test]
-        public void should_return_true_if_current_album_is_less_than_cutoff()
+        public void should_return_true_if_current_book_is_less_than_cutoff()
         {
             Subject.CutoffNotMet(
              new QualityProfile
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_false_if_current_album_is_equal_to_cutoff()
+        public void should_return_false_if_current_book_is_equal_to_cutoff()
         {
             Subject.CutoffNotMet(
             new QualityProfile
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_false_if_current_album_is_greater_than_cutoff()
+        public void should_return_false_if_current_book_is_greater_than_cutoff()
         {
             Subject.CutoffNotMet(
             new QualityProfile
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         }
 
         [Test]
-        public void should_return_true_when_new_album_is_proper_but_existing_is_not()
+        public void should_return_true_when_new_book_is_proper_but_existing_is_not()
         {
             Subject.CutoffNotMet(
             new QualityProfile

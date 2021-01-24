@@ -15,24 +15,24 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.MusicTests
 {
     [TestFixture]
-    public class AddAlbumFixture : CoreTest<AddBookService>
+    public class AddBookFixture : CoreTest<AddBookService>
     {
-        private Author _fakeArtist;
-        private Book _fakeAlbum;
+        private Author _fakeAuthor;
+        private Book _fakeBook;
 
         [SetUp]
         public void Setup()
         {
-            _fakeArtist = Builder<Author>
+            _fakeAuthor = Builder<Author>
                 .CreateNew()
                 .With(s => s.Path = null)
                 .With(s => s.Metadata = Builder<AuthorMetadata>.CreateNew().Build())
                 .Build();
         }
 
-        private void GivenValidAlbum(string readarrId)
+        private void GivenValidBook(string readarrId)
         {
-            _fakeAlbum = Builder<Book>
+            _fakeBook = Builder<Book>
                 .CreateNew()
                 .With(x => x.Editions = Builder<Edition>
                       .CreateListOfSize(1)
@@ -44,13 +44,13 @@ namespace NzbDrone.Core.Test.MusicTests
 
             Mocker.GetMock<IProvideBookInfo>()
                 .Setup(s => s.GetBookInfo(readarrId, true))
-                .Returns(Tuple.Create(_fakeArtist.Metadata.Value.ForeignAuthorId,
-                                      _fakeAlbum,
-                                      new List<AuthorMetadata> { _fakeArtist.Metadata.Value }));
+                .Returns(Tuple.Create(_fakeAuthor.Metadata.Value.ForeignAuthorId,
+                                      _fakeBook,
+                                      new List<AuthorMetadata> { _fakeAuthor.Metadata.Value }));
 
             Mocker.GetMock<IAddAuthorService>()
                 .Setup(s => s.AddAuthor(It.IsAny<Author>(), It.IsAny<bool>()))
-                .Returns(_fakeArtist);
+                .Returns(_fakeAuthor);
         }
 
         private void GivenValidPath()
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.MusicTests
                   .Returns<Author, NamingConfig>((c, n) => c.Name);
         }
 
-        private Book AlbumToAdd(string editionId, string bookId, string authorId)
+        private Book BookToAdd(string editionId, string bookId, string authorId)
         {
             return new Book
             {
@@ -81,28 +81,28 @@ namespace NzbDrone.Core.Test.MusicTests
         }
 
         [Test]
-        public void should_be_able_to_add_a_album_without_passing_in_name()
+        public void should_be_able_to_add_a_book_without_passing_in_name()
         {
-            var newAlbum = AlbumToAdd("edition", "book", "author");
+            var newBook = BookToAdd("edition", "book", "author");
 
-            GivenValidAlbum("edition");
+            GivenValidBook("edition");
             GivenValidPath();
 
-            var album = Subject.AddBook(newAlbum);
+            var book = Subject.AddBook(newBook);
 
-            album.Title.Should().Be(_fakeAlbum.Title);
+            book.Title.Should().Be(_fakeBook.Title);
         }
 
         [Test]
-        public void should_throw_if_album_cannot_be_found()
+        public void should_throw_if_book_cannot_be_found()
         {
-            var newAlbum = AlbumToAdd("edition", "book", "author");
+            var newBook = BookToAdd("edition", "book", "author");
 
             Mocker.GetMock<IProvideBookInfo>()
                   .Setup(s => s.GetBookInfo("edition", true))
                   .Throws(new BookNotFoundException("edition"));
 
-            Assert.Throws<ValidationException>(() => Subject.AddBook(newAlbum));
+            Assert.Throws<ValidationException>(() => Subject.AddBook(newBook));
 
             ExceptionVerification.ExpectedErrors(1);
         }

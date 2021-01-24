@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Books
             Metadata = new AuthorMetadata();
         }
 
-        // These correspond to columns in the Artists table
+        // These correspond to columns in the Authors table
         public int AuthorMetadataId { get; set; }
         public string CleanName { get; set; }
         public string SortName { get; set; }

@@ -69,10 +69,10 @@ namespace NzbDrone.Core.Test.MediaFiles
             }
         }
 
-        private void GivenValidArtist()
+        private void GivenValidAuthor()
         {
             Mocker.GetMock<IParsingService>()
-                  .Setup(s => s.GetArtist(It.IsAny<string>()))
+                  .Setup(s => s.GetAuthor(It.IsAny<string>()))
                   .Returns(Builder<Author>.CreateNew().Build());
         }
 
@@ -100,17 +100,17 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_search_for_artist_using_folder_name()
+        public void should_search_for_author_using_folder_name()
         {
             Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
-            Mocker.GetMock<IParsingService>().Verify(c => c.GetArtist("foldername"), Times.Once());
+            Mocker.GetMock<IParsingService>().Verify(c => c.GetAuthor("foldername"), Times.Once());
         }
 
         [Test]
         public void should_skip_if_file_is_in_use_by_another_process()
         {
-            GivenValidArtist();
+            GivenValidAuthor();
 
             foreach (var file in _audioFiles)
             {
@@ -123,9 +123,9 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_skip_if_no_artist_found()
+        public void should_skip_if_no_author_found()
         {
-            Mocker.GetMock<IParsingService>().Setup(c => c.GetArtist("foldername")).Returns((Author)null);
+            Mocker.GetMock<IParsingService>().Setup(c => c.GetAuthor("foldername")).Returns((Author)null);
 
             Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
@@ -137,9 +137,9 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_not_import_if_folder_is_a_artist_path()
+        public void should_not_import_if_folder_is_a_author_path()
         {
-            GivenValidArtist();
+            GivenValidAuthor();
 
             Mocker.GetMock<IAuthorService>()
                   .Setup(s => s.AuthorPathExists(It.IsAny<string>()))
@@ -173,7 +173,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_not_delete_folder_if_files_were_imported_and_audio_files_remain()
         {
-            GivenValidArtist();
+            GivenValidAuthor();
 
             var localTrack = new LocalBook();
 
@@ -206,14 +206,14 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.ProcessRootFolder(DiskProvider.GetDirectoryInfo(_droneFactory));
 
             Mocker.GetMock<IParsingService>()
-                .Verify(v => v.GetArtist(folderName), Times.Once());
+                .Verify(v => v.GetAuthor(folderName), Times.Once());
 
             Mocker.GetMock<IParsingService>()
-                .Verify(v => v.GetArtist(It.Is<string>(s => s.StartsWith(prefix))), Times.Never());
+                .Verify(v => v.GetAuthor(It.Is<string>(s => s.StartsWith(prefix))), Times.Never());
         }
 
         [Test]
-        public void should_return_importresult_on_unknown_artist()
+        public void should_return_importresult_on_unknown_author()
         {
             var fileName = @"C:\folder\file.mkv".AsOsAgnostic();
             FileSystem.AddFile(fileName, new MockFileData(string.Empty));
@@ -230,7 +230,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_not_delete_if_there_is_large_rar_file()
         {
-            GivenValidArtist();
+            GivenValidAuthor();
 
             var localTrack = new LocalBook();
 
@@ -262,7 +262,7 @@ namespace NzbDrone.Core.Test.MediaFiles
             Subject.ProcessPath(folderName).Should().BeEmpty();
 
             Mocker.GetMock<IParsingService>()
-                .Verify(v => v.GetArtist(It.IsAny<string>()), Times.Never());
+                .Verify(v => v.GetAuthor(It.IsAny<string>()), Times.Never());
 
             ExceptionVerification.ExpectedErrors(1);
         }
@@ -270,7 +270,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_not_delete_if_no_files_were_imported()
         {
-            GivenValidArtist();
+            GivenValidAuthor();
 
             var localTrack = new LocalBook();
 
@@ -296,7 +296,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_not_delete_folder_after_import()
         {
-            GivenValidArtist();
+            GivenValidAuthor();
 
             GivenSuccessfulImport();
 
@@ -310,7 +310,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_delete_folder_if_importmode_move()
         {
-            GivenValidArtist();
+            GivenValidAuthor();
 
             GivenSuccessfulImport();
 
@@ -324,7 +324,7 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_not_delete_folder_if_importmode_copy()
         {
-            GivenValidArtist();
+            GivenValidAuthor();
 
             GivenSuccessfulImport();
 

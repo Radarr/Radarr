@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 
         public SpecificationPriority Priority => SpecificationPriority.Database;
 
-        public Decision IsSatisfiedBy(LocalEdition localAlbumRelease, DownloadClientItem downloadClientItem)
+        public Decision IsSatisfiedBy(LocalEdition localBookRelease, DownloadClientItem downloadClientItem)
         {
             if (downloadClientItem == null)
             {
@@ -30,17 +30,17 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
                 return Decision.Accept();
             }
 
-            var albumRelease = localAlbumRelease.Edition;
+            var bookRelease = localBookRelease.Edition;
 
-            if ((!albumRelease?.BookFiles?.Value?.Any()) ?? true)
+            if ((!bookRelease.BookFiles?.Value?.Any()) ?? true)
             {
                 _logger.Debug("Skipping already imported check for book without files");
                 return Decision.Accept();
             }
 
-            var albumHistory = _historyService.GetByBook(albumRelease.Id, null);
-            var lastImported = albumHistory.FirstOrDefault(h => h.EventType == HistoryEventType.DownloadImported);
-            var lastGrabbed = albumHistory.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
+            var bookHistory = _historyService.GetByBook(bookRelease.BookId, null);
+            var lastImported = bookHistory.FirstOrDefault(h => h.EventType == HistoryEventType.DownloadImported);
+            var lastGrabbed = bookHistory.FirstOrDefault(h => h.EventType == HistoryEventType.Grabbed);
 
             if (lastImported == null)
             {

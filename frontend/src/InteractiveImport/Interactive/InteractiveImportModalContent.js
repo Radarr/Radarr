@@ -475,7 +475,7 @@ class InteractiveImportModalContent extends Component {
 
         <SelectEditionModal
           isOpen={selectModalOpen === EDITION}
-          importIdsByBook={_.chain(items).filter((x) => x.album).groupBy((x) => x.book.id).mapValues((x) => x.map((y) => y.id)).value()}
+          importIdsByBook={_.chain(items).filter((x) => x.book).groupBy((x) => x.book.id).mapValues((x) => x.map((y) => y.id)).value()}
           books={_.chain(items).filter((x) => x.book).keyBy((x) => x.book.id).mapValues((x) => ({ matchedEditionId: x.editionId, book: x.book })).values().value()}
           onModalClose={this.onSelectModalClose}
         />

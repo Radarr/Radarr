@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Download.Pending
                 var alreadyPending = _repository.AllByAuthorId(author.Id);
 
                 alreadyPending = IncludeRemoteBooks(alreadyPending, authorDecisions.ToDictionaryIgnoreDuplicates(v => v.Item1.RemoteBook.Release.Title, v => v.Item1.RemoteBook));
-                var alreadyPendingByAlbum = CreateBookLookup(alreadyPending);
+                var alreadyPendingByBook = CreateBookLookup(alreadyPending);
 
                 foreach (var pair in authorDecisions)
                 {
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Download.Pending
 
                     var bookIds = decision.RemoteBook.Books.Select(e => e.Id);
 
-                    var existingReports = bookIds.SelectMany(v => alreadyPendingByAlbum[v] ?? Enumerable.Empty<PendingRelease>())
+                    var existingReports = bookIds.SelectMany(v => alreadyPendingByBook[v] ?? Enumerable.Empty<PendingRelease>())
                                                     .Distinct().ToList();
 
                     var matchingReports = existingReports.Where(MatchingReleasePredicate(decision.RemoteBook.Release)).ToList();
@@ -116,7 +116,7 @@ namespace NzbDrone.Core.Download.Pending
                             {
                                 _repository.Delete(duplicate.Id);
                                 alreadyPending.Remove(duplicate);
-                                alreadyPendingByAlbum = CreateBookLookup(alreadyPending);
+                                alreadyPendingByBook = CreateBookLookup(alreadyPending);
                             }
                         }
 
@@ -132,8 +132,8 @@ namespace NzbDrone.Core.Download.Pending
         private ILookup<int, PendingRelease> CreateBookLookup(IEnumerable<PendingRelease> alreadyPending)
         {
             return alreadyPending.SelectMany(v => v.RemoteBook.Books
-                    .Select(d => new { Album = d, PendingRelease = v }))
-                .ToLookup(v => v.Album.Id, v => v.PendingRelease);
+                    .Select(d => new { Book = d, PendingRelease = v }))
+                .ToLookup(v => v.Book.Id, v => v.PendingRelease);
         }
 
         public List<ReleaseInfo> GetPending()
@@ -300,7 +300,7 @@ namespace NzbDrone.Core.Download.Pending
                 }
                 else
                 {
-                    books = _parsingService.GetAlbums(release.ParsedBookInfo, author);
+                    books = _parsingService.GetBooks(release.ParsedBookInfo, author);
                 }
 
                 release.RemoteBook = new RemoteBook

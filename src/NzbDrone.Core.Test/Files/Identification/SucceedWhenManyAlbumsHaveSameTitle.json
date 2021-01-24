@@ -2,114 +2,114 @@
   "expectedMusicBrainzReleaseIds": [
     "4e2dd34f-53fe-4d54-b564-b14a2871505e"
   ],
-  "libraryArtists": [
+  "libraryAuthors": [
     {
-      "artist": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+      "author": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
       "metadataProfile": {
         "name": "Standard",
-        "primaryAlbumTypes": [
+        "primaryBookTypes": [
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 2,
               "name": "Single"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 4,
               "name": "Other"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 1,
               "name": "EP"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 3,
               "name": "Broadcast"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 0,
-              "name": "Album"
+              "name": "Book"
             },
             "allowed": true
           }
         ],
-        "secondaryAlbumTypes": [
+        "secondaryBookTypes": [
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 0,
               "name": "Studio"
             },
             "allowed": true
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 3,
               "name": "Spokenword"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 2,
               "name": "Soundtrack"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 7,
               "name": "Remix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 9,
               "name": "Mixtape/Street"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 6,
               "name": "Live"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 4,
               "name": "Interview"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 8,
               "name": "DJ-mix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 10,
               "name": "Demo"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 1,
               "name": "Compilation"
             },
@@ -158,9 +158,9 @@
       "fileTrackInfo": {
         "title": "Africa",
         "cleanTitle": "Africa",
-        "artistTitle": "Weezer",
-        "albumTitle": "Weezer (Teal Album)",
-        "artistTitleInfo": {
+        "authorTitle": "Weezer",
+        "bookTitle": "Weezer (Teal Book)",
+        "authorTitleInfo": {
           "title": "Weezer",
           "year": 2019
         },
@@ -196,9 +196,9 @@
       "fileTrackInfo": {
         "title": "Everybody Wants To Rule The World",
         "cleanTitle": "Everybody Wants To Rule The World",
-        "artistTitle": "Weezer",
-        "albumTitle": "Weezer (Teal Album)",
-        "artistTitleInfo": {
+        "authorTitle": "Weezer",
+        "bookTitle": "Weezer (Teal Book)",
+        "authorTitleInfo": {
           "title": "Weezer",
           "year": 2019
         },
@@ -234,9 +234,9 @@
       "fileTrackInfo": {
         "title": "Sweet Dreams (Are Made Of This)",
         "cleanTitle": "Sweet Dreams (Are Made Of This)",
-        "artistTitle": "Weezer",
-        "albumTitle": "Weezer (Teal Album)",
-        "artistTitleInfo": {
+        "authorTitle": "Weezer",
+        "bookTitle": "Weezer (Teal Book)",
+        "authorTitleInfo": {
           "title": "Weezer",
           "year": 2019
         },
@@ -272,9 +272,9 @@
       "fileTrackInfo": {
         "title": "Take On Me",
         "cleanTitle": "Take On Me",
-        "artistTitle": "Weezer",
-        "albumTitle": "Weezer (Teal Album)",
-        "artistTitleInfo": {
+        "authorTitle": "Weezer",
+        "bookTitle": "Weezer (Teal Book)",
+        "authorTitleInfo": {
           "title": "Weezer",
           "year": 2019
         },
@@ -310,9 +310,9 @@
       "fileTrackInfo": {
         "title": "Happy Together",
         "cleanTitle": "Happy Together",
-        "artistTitle": "Weezer",
-        "albumTitle": "Weezer (Teal Album)",
-        "artistTitleInfo": {
+        "authorTitle": "Weezer",
+        "bookTitle": "Weezer (Teal Book)",
+        "authorTitleInfo": {
           "title": "Weezer",
           "year": 2019
         },
@@ -348,9 +348,9 @@
       "fileTrackInfo": {
         "title": "Paranoid",
         "cleanTitle": "Paranoid",
-        "artistTitle": "Weezer",
-        "albumTitle": "Weezer (Teal Album)",
-        "artistTitleInfo": {
+        "authorTitle": "Weezer",
+        "bookTitle": "Weezer (Teal Book)",
+        "authorTitleInfo": {
           "title": "Weezer",
           "year": 2019
         },
@@ -386,9 +386,9 @@
       "fileTrackInfo": {
         "title": "Mr. Blue Sky",
         "cleanTitle": "Mr. Blue Sky",
-        "artistTitle": "Weezer",
-        "albumTitle": "Weezer (Teal Album)",
-        "artistTitleInfo": {
+        "authorTitle": "Weezer",
+        "bookTitle": "Weezer (Teal Book)",
+        "authorTitleInfo": {
           "title": "Weezer",
           "year": 2019
         },
@@ -424,9 +424,9 @@
       "fileTrackInfo": {
         "title": "No Scrubs",
         "cleanTitle": "No Scrubs",
-        "artistTitle": "Weezer",
-        "albumTitle": "Weezer (Teal Album)",
-        "artistTitleInfo": {
+        "authorTitle": "Weezer",
+        "bookTitle": "Weezer (Teal Book)",
+        "authorTitleInfo": {
           "title": "Weezer",
           "year": 2019
         },
@@ -462,9 +462,9 @@
       "fileTrackInfo": {
         "title": "Billie Jean",
         "cleanTitle": "Billie Jean",
-        "artistTitle": "Weezer",
-        "albumTitle": "Weezer (Teal Album)",
-        "artistTitleInfo": {
+        "authorTitle": "Weezer",
+        "bookTitle": "Weezer (Teal Book)",
+        "authorTitleInfo": {
           "title": "Weezer",
           "year": 2019
         },
@@ -500,9 +500,9 @@
       "fileTrackInfo": {
         "title": "Stand By Me",
         "cleanTitle": "Stand By Me",
-        "artistTitle": "Weezer",
-        "albumTitle": "Weezer (Teal Album)",
-        "artistTitleInfo": {
+        "authorTitle": "Weezer",
+        "bookTitle": "Weezer (Teal Book)",
+        "authorTitleInfo": {
           "title": "Weezer",
           "year": 2019
         },

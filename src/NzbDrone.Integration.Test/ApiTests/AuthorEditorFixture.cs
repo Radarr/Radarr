@@ -24,19 +24,19 @@ namespace NzbDrone.Integration.Test.ApiTests
         }
 
         [Test]
-        public void should_be_able_to_update_multiple_artist()
+        public void should_be_able_to_update_multiple_author()
         {
             GivenExistingAuthor();
 
             var author = Author.All();
 
-            var artistEditor = new AuthorEditorResource
+            var authorEditor = new AuthorEditorResource
             {
                 QualityProfileId = 2,
                 AuthorIds = author.Select(o => o.Id).ToList()
             };
 
-            var result = Author.Editor(artistEditor);
+            var result = Author.Editor(authorEditor);
 
             result.Should().HaveCount(2);
             result.TrueForAll(s => s.QualityProfileId == 2).Should().BeTrue();

@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DelugeTests
         {
             GivenSuccessfulDownload();
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
 
             var id = Subject.Download(remoteBook);
 
@@ -216,7 +216,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.DelugeTests
         {
             GivenSuccessfulDownload();
 
-            var remoteBook = CreateRemoteAlbum();
+            var remoteBook = CreateRemoteBook();
             remoteBook.Release.DownloadUrl = magnetUrl;
 
             var id = Subject.Download(remoteBook);

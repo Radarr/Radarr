@@ -35,13 +35,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     continue;
                 }
 
-                // Get a distinct list of all current track qualities for a given book
-                var currentQualities = new List<QualityModel> { file.Quality };
-
-                _logger.Debug("Comparing file quality with report. Existing files contain {0}", currentQualities.ConcatToString());
+                _logger.Debug("Comparing file quality with report. Existing files contain {0}", file.Quality);
 
                 if (!_upgradableSpecification.IsUpgradeAllowed(qualityProfile,
-                                                               currentQualities,
+                                                               file.Quality,
                                                                subject.ParsedBookInfo.Quality))
                 {
                     _logger.Debug("Upgrading is not allowed by the quality profile");

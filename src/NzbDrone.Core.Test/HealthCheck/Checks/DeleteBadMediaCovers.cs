@@ -20,12 +20,12 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
     public class DeleteBadMediaCoversFixture : CoreTest<DeleteBadMediaCovers>
     {
         private List<MetadataFile> _metadata;
-        private List<Author> _artist;
+        private List<Author> _author;
 
         [SetUp]
         public void Setup()
         {
-            _artist = Builder<Author>.CreateListOfSize(1)
+            _author = Builder<Author>.CreateListOfSize(1)
                 .All()
                 .With(c => c.Path = "C:\\Music\\".AsOsAgnostic())
                 .Build().ToList();
@@ -33,12 +33,12 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             _metadata = Builder<MetadataFile>.CreateListOfSize(1)
                .Build().ToList();
 
-            Mocker.GetMock<IArtistService>()
-                .Setup(c => c.AllArtistPaths())
-                .Returns(_artist.ToDictionary(x => x.Id, x => x.Path));
+            Mocker.GetMock<IAuthorService>()
+                .Setup(c => c.AllAuthorPaths())
+                .Returns(_author.ToDictionary(x => x.Id, x => x.Path));
 
             Mocker.GetMock<IMetadataFileService>()
-                .Setup(c => c.GetFilesByAuthor(_artist.First().Id))
+                .Setup(c => c.GetFilesByAuthor(_author.First().Id))
                 .Returns(_metadata);
 
             Mocker.GetMock<IConfigService>().SetupGet(c => c.CleanupMetadataImages).Returns(true);
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [Test]
         public void should_not_process_non_image_files()
         {
-            _metadata.First().RelativePath = "album\\file.xml".AsOsAgnostic();
+            _metadata.First().RelativePath = "book\\file.xml".AsOsAgnostic();
             _metadata.First().Type = MetadataType.BookMetadata;
 
             Subject.Clean();
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Subject.Clean();
 
             Mocker.GetMock<IConfigService>().VerifySet(c => c.CleanupMetadataImages = true, Times.Never());
-            Mocker.GetMock<IArtistService>().Verify(c => c.GetAllAuthors(), Times.Never());
+            Mocker.GetMock<IAuthorService>().Verify(c => c.GetAllAuthors(), Times.Never());
 
             AssertImageWasNotRemoved();
         }
@@ -91,9 +91,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [Test]
         public void should_delete_html_images()
         {
-            var imagePath = "C:\\Music\\Album\\image.jpg".AsOsAgnostic();
+            var imagePath = "C:\\Music\\Book\\image.jpg".AsOsAgnostic();
             _metadata.First().LastUpdated = new DateTime(2014, 12, 29);
-            _metadata.First().RelativePath = "Album\\image.jpg".AsOsAgnostic();
+            _metadata.First().RelativePath = "Book\\image.jpg".AsOsAgnostic();
             _metadata.First().Type = MetadataType.AuthorImage;
 
             Mocker.GetMock<IDiskProvider>()
@@ -109,10 +109,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [Test]
         public void should_delete_empty_images()
         {
-            var imagePath = "C:\\Music\\Album\\image.jpg".AsOsAgnostic();
+            var imagePath = "C:\\Music\\Book\\image.jpg".AsOsAgnostic();
             _metadata.First().LastUpdated = new DateTime(2014, 12, 29);
             _metadata.First().Type = MetadataType.BookImage;
-            _metadata.First().RelativePath = "Album\\image.jpg".AsOsAgnostic();
+            _metadata.First().RelativePath = "Book\\image.jpg".AsOsAgnostic();
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.OpenReadStream(imagePath))
@@ -127,9 +127,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         [Test]
         public void should_not_delete_non_html_files()
         {
-            var imagePath = "C:\\Music\\Album\\image.jpg".AsOsAgnostic();
+            var imagePath = "C:\\Music\\Book\\image.jpg".AsOsAgnostic();
             _metadata.First().LastUpdated = new DateTime(2014, 12, 29);
-            _metadata.First().RelativePath = "Album\\image.jpg".AsOsAgnostic();
+            _metadata.First().RelativePath = "Book\\image.jpg".AsOsAgnostic();
 
             Mocker.GetMock<IDiskProvider>()
                 .Setup(c => c.OpenReadStream(imagePath))

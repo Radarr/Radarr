@@ -24,9 +24,9 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         {
             Ensure.That(title, () => title).IsNotNullOrWhiteSpace();
 
-            // Most VA albums are listed as VA, not Various Artists
+            // Most VA books are listed as VA, not Various Authors
             // TODO: Needed in Readarr??
-            if (title == "Various Artists")
+            if (title == "Various Authors")
             {
                 title = "VA";
             }

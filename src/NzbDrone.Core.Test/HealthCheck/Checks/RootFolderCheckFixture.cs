@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
     {
         private void GivenMissingRootFolder()
         {
-            var artist = Builder<Author>.CreateListOfSize(1)
+            var author = Builder<Author>.CreateListOfSize(1)
                                         .Build()
                                         .ToList();
 
@@ -26,14 +26,14 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
             Mocker.GetMock<IAuthorService>()
                   .Setup(s => s.AllAuthorPaths())
-                  .Returns(artist.ToDictionary(x => x.Id, x => x.Path));
+                  .Returns(author.ToDictionary(x => x.Id, x => x.Path));
 
             Mocker.GetMock<IImportListFactory>()
                 .Setup(s => s.All())
                 .Returns(importList);
 
             Mocker.GetMock<IDiskProvider>()
-                  .Setup(s => s.GetParentFolder(artist.First().Path))
+                  .Setup(s => s.GetParentFolder(author.First().Path))
                   .Returns(@"C:\Music");
 
             Mocker.GetMock<IDiskProvider>()
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         }
 
         [Test]
-        public void should_not_return_error_when_no_artist()
+        public void should_not_return_error_when_no_author()
         {
             Mocker.GetMock<IAuthorService>()
                   .Setup(s => s.AllAuthorPaths())
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         }
 
         [Test]
-        public void should_return_error_if_artist_parent_is_missing()
+        public void should_return_error_if_author_parent_is_missing()
         {
             GivenMissingRootFolder();
 

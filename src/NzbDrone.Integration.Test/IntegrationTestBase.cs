@@ -295,7 +295,7 @@ namespace NzbDrone.Integration.Test
             return result;
         }
 
-        public void EnsureNoArtist(string readarrId, string artistTitle)
+        public void EnsureNoAuthor(string readarrId, string authorTitle)
         {
             var result = Author.All().FirstOrDefault(v => v.ForeignAuthorId == readarrId);
 
@@ -305,14 +305,14 @@ namespace NzbDrone.Integration.Test
             }
         }
 
-        public void EnsureBookFile(AuthorResource artist, int bookId, int editionId, Quality quality)
+        public void EnsureBookFile(AuthorResource author, int bookId, int editionId, Quality quality)
         {
-            var result = Books.GetBooksInAuthor(artist.Id).Single(v => v.Id == editionId);
+            var result = Books.GetBooksInAuthor(author.Id).Single(v => v.Id == editionId);
 
             // if (result.BookFile == null)
             if (true)
             {
-                var path = Path.Combine(AuthorRootFolder, artist.AuthorName, "Track.mp3");
+                var path = Path.Combine(AuthorRootFolder, author.AuthorName, "Track.mp3");
 
                 Directory.CreateDirectory(Path.GetDirectoryName(path));
                 File.WriteAllText(path, "Fake Track");
@@ -324,7 +324,7 @@ namespace NzbDrone.Integration.Test
                             new ManualImportFile
                             {
                                 Path = path,
-                                AuthorId = artist.Id,
+                                AuthorId = author.Id,
                                 BookId = bookId,
                                 EditionId = editionId,
                                 Quality = new QualityModel(quality)
@@ -333,7 +333,7 @@ namespace NzbDrone.Integration.Test
                 });
                 Commands.WaitAll();
 
-                var track = Books.GetBooksInAuthor(artist.Id).Single(x => x.Id == editionId);
+                var track = Books.GetBooksInAuthor(author.Id).Single(x => x.Id == editionId);
 
                 // track.BookFileId.Should().NotBe(0);
             }

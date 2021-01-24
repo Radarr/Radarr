@@ -99,10 +99,10 @@ namespace Readarr.Api.V1.Author
         private AuthorResource GetAuthor(int id)
         {
             var author = _authorService.GetAuthor(id);
-            return GetArtistResource(author);
+            return GetAuthorResource(author);
         }
 
-        private AuthorResource GetArtistResource(NzbDrone.Core.Books.Author author)
+        private AuthorResource GetAuthorResource(NzbDrone.Core.Books.Author author)
         {
             if (author == null)
             {
@@ -111,8 +111,8 @@ namespace Readarr.Api.V1.Author
 
             var resource = author.ToResource();
             MapCoversToLocal(resource);
-            FetchAndLinkArtistStatistics(resource);
-            LinkNextPreviousAlbums(resource);
+            FetchAndLinkAuthorStatistics(resource);
+            LinkNextPreviousBooks(resource);
 
             //PopulateAlternateTitles(resource);
             LinkRootFolderPath(resource);
@@ -126,8 +126,8 @@ namespace Readarr.Api.V1.Author
             var authorResources = _authorService.GetAllAuthors().ToResource();
 
             MapCoversToLocal(authorResources.ToArray());
-            LinkNextPreviousAlbums(authorResources.ToArray());
-            LinkArtistStatistics(authorResources, authorStats);
+            LinkNextPreviousBooks(authorResources.ToArray());
+            LinkAuthorStatistics(authorResources, authorStats);
 
             //PopulateAlternateTitles(seriesResources);
             return authorResources;
@@ -182,7 +182,7 @@ namespace Readarr.Api.V1.Author
             }
         }
 
-        private void LinkNextPreviousAlbums(params AuthorResource[] authors)
+        private void LinkNextPreviousBooks(params AuthorResource[] authors)
         {
             var nextBooks = _bookService.GetNextBooksByAuthorMetadataId(authors.Select(x => x.AuthorMetadataId));
             var lastBooks = _bookService.GetLastBooksByAuthorMetadataId(authors.Select(x => x.AuthorMetadataId));
@@ -194,12 +194,12 @@ namespace Readarr.Api.V1.Author
             }
         }
 
-        private void FetchAndLinkArtistStatistics(AuthorResource resource)
+        private void FetchAndLinkAuthorStatistics(AuthorResource resource)
         {
-            LinkArtistStatistics(resource, _authorStatisticsService.AuthorStatistics(resource.Id));
+            LinkAuthorStatistics(resource, _authorStatisticsService.AuthorStatistics(resource.Id));
         }
 
-        private void LinkArtistStatistics(List<AuthorResource> resources, List<AuthorStatistics> authorStatistics)
+        private void LinkAuthorStatistics(List<AuthorResource> resources, List<AuthorStatistics> authorStatistics)
         {
             foreach (var author in resources)
             {
@@ -209,16 +209,16 @@ namespace Readarr.Api.V1.Author
                     continue;
                 }
 
-                LinkArtistStatistics(author, stats);
+                LinkAuthorStatistics(author, stats);
             }
         }
 
-        private void LinkArtistStatistics(AuthorResource resource, AuthorStatistics authorStatistics)
+        private void LinkAuthorStatistics(AuthorResource resource, AuthorStatistics authorStatistics)
         {
             resource.Statistics = authorStatistics.ToResource();
         }
 
-        //private void PopulateAlternateTitles(List<ArtistResource> resources)
+        //private void PopulateAlternateTitles(List<AuthorResource> resources)
         //{
         //    foreach (var resource in resources)
         //    {
@@ -226,7 +226,7 @@ namespace Readarr.Api.V1.Author
         //    }
         //}
 
-        //private void PopulateAlternateTitles(ArtistResource resource)
+        //private void PopulateAlternateTitles(AuthorResource resource)
         //{
         //    var mappings = _sceneMappingService.FindByTvdbId(resource.TvdbId);
 
@@ -241,12 +241,12 @@ namespace Readarr.Api.V1.Author
 
         public void Handle(BookImportedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Author));
+            BroadcastResourceChange(ModelAction.Updated, GetAuthorResource(message.Author));
         }
 
         public void Handle(BookEditedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Book.Author.Value));
+            BroadcastResourceChange(ModelAction.Updated, GetAuthorResource(message.Book.Author.Value));
         }
 
         public void Handle(BookFileDeletedEvent message)
@@ -256,17 +256,17 @@ namespace Readarr.Api.V1.Author
                 return;
             }
 
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.BookFile.Author.Value));
+            BroadcastResourceChange(ModelAction.Updated, GetAuthorResource(message.BookFile.Author.Value));
         }
 
         public void Handle(AuthorUpdatedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Author));
+            BroadcastResourceChange(ModelAction.Updated, GetAuthorResource(message.Author));
         }
 
         public void Handle(AuthorEditedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Author));
+            BroadcastResourceChange(ModelAction.Updated, GetAuthorResource(message.Author));
         }
 
         public void Handle(AuthorDeletedEvent message)
@@ -281,7 +281,7 @@ namespace Readarr.Api.V1.Author
 
         public void Handle(MediaCoversUpdatedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Updated, GetArtistResource(message.Author));
+            BroadcastResourceChange(ModelAction.Updated, GetAuthorResource(message.Author));
         }
     }
 }

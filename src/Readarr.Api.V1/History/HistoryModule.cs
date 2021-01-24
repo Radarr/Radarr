@@ -30,20 +30,20 @@ namespace Readarr.Api.V1.History
             GetResourcePaged = GetHistory;
 
             Get("/since", x => GetHistorySince());
-            Get("/author", x => GetArtistHistory());
+            Get("/author", x => GetAuthorHistory());
             Post("/failed", x => MarkAsFailed());
         }
 
-        protected HistoryResource MapToResource(NzbDrone.Core.History.History model, bool includeArtist, bool includeAlbum)
+        protected HistoryResource MapToResource(NzbDrone.Core.History.History model, bool includeAuthor, bool includeBook)
         {
             var resource = model.ToResource();
 
-            if (includeArtist)
+            if (includeAuthor)
             {
                 resource.Author = model.Author.ToResource();
             }
 
-            if (includeAlbum)
+            if (includeBook)
             {
                 resource.Book = model.Book.ToResource();
             }
@@ -110,7 +110,7 @@ namespace Readarr.Api.V1.History
             return _historyService.Since(date, eventType).Select(h => MapToResource(h, includeAuthor, includeBook)).ToList();
         }
 
-        private List<HistoryResource> GetArtistHistory()
+        private List<HistoryResource> GetAuthorHistory()
         {
             var queryAuthorId = Request.Query.AuthorId;
             var queryBookId = Request.Query.BookId;

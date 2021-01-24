@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Returns<List<Author>, bool>((x, y) => x);
         }
 
-        private void WithAlbum()
+        private void WithBook()
         {
             _importListReports.First().Book = "Meteora";
         }
@@ -88,21 +88,21 @@ namespace NzbDrone.Core.Test.ImportListTests
             _importListReports.First().EditionGoodreadsId = "1234";
         }
 
-        private void WithExistingArtist()
+        private void WithExistingAuthor()
         {
             Mocker.GetMock<IAuthorService>()
                 .Setup(v => v.FindById(_importListReports.First().AuthorGoodreadsId))
                 .Returns(new Author { ForeignAuthorId = _importListReports.First().AuthorGoodreadsId });
         }
 
-        private void WithExistingAlbum()
+        private void WithExistingBook()
         {
             Mocker.GetMock<IBookService>()
                 .Setup(v => v.FindById(_importListReports.First().EditionGoodreadsId))
                 .Returns(new Book { ForeignBookId = _importListReports.First().EditionGoodreadsId });
         }
 
-        private void WithExcludedArtist()
+        private void WithExcludedAuthor()
         {
             Mocker.GetMock<IImportListExclusionService>()
                 .Setup(v => v.All())
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Test.ImportListTests
                 });
         }
 
-        private void WithExcludedAlbum()
+        private void WithExcludedBook()
         {
             Mocker.GetMock<IImportListExclusionService>()
                 .Setup(v => v.All())
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_search_if_artist_title_and_no_artist_id()
+        public void should_search_if_author_title_and_no_author_id()
         {
             Subject.Execute(new ImportListSyncCommand());
 
@@ -145,7 +145,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_not_search_if_artist_title_and_artist_id()
+        public void should_not_search_if_author_title_and_author_id()
         {
             WithAuthorId();
             Subject.Execute(new ImportListSyncCommand());
@@ -155,9 +155,9 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_search_if_album_title_and_no_album_id()
+        public void should_search_if_book_title_and_no_book_id()
         {
-            WithAlbum();
+            WithBook();
             Subject.Execute(new ImportListSyncCommand());
 
             Mocker.GetMock<ISearchForNewBook>()
@@ -165,7 +165,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_not_search_if_album_title_and_album_id()
+        public void should_not_search_if_book_title_and_book_id()
         {
             WithAuthorId();
             WithBookId();
@@ -179,7 +179,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         public void should_not_search_if_all_info()
         {
             WithAuthorId();
-            WithAlbum();
+            WithBook();
             WithBookId();
             Subject.Execute(new ImportListSyncCommand());
 
@@ -191,10 +191,10 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_not_add_if_existing_artist()
+        public void should_not_add_if_existing_author()
         {
             WithAuthorId();
-            WithExistingArtist();
+            WithExistingAuthor();
 
             Subject.Execute(new ImportListSyncCommand());
 
@@ -203,10 +203,10 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_not_add_if_existing_album()
+        public void should_not_add_if_existing_book()
         {
             WithBookId();
-            WithExistingAlbum();
+            WithExistingBook();
 
             Subject.Execute(new ImportListSyncCommand());
 
@@ -215,10 +215,10 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_add_if_existing_artist_but_new_album()
+        public void should_add_if_existing_author_but_new_book()
         {
             WithBookId();
-            WithExistingArtist();
+            WithExistingAuthor();
 
             Subject.Execute(new ImportListSyncCommand());
 
@@ -229,7 +229,7 @@ namespace NzbDrone.Core.Test.ImportListTests
         [TestCase(ImportListMonitorType.None, false)]
         [TestCase(ImportListMonitorType.SpecificBook, true)]
         [TestCase(ImportListMonitorType.EntireAuthor, true)]
-        public void should_add_if_not_existing_artist(ImportListMonitorType monitor, bool expectedArtistMonitored)
+        public void should_add_if_not_existing_author(ImportListMonitorType monitor, bool expectedAuthorMonitored)
         {
             WithAuthorId();
             WithMonitorType(monitor);
@@ -237,13 +237,13 @@ namespace NzbDrone.Core.Test.ImportListTests
             Subject.Execute(new ImportListSyncCommand());
 
             Mocker.GetMock<IAddAuthorService>()
-                .Verify(v => v.AddAuthors(It.Is<List<Author>>(t => t.Count == 1 && t.First().Monitored == expectedArtistMonitored), false));
+                .Verify(v => v.AddAuthors(It.Is<List<Author>>(t => t.Count == 1 && t.First().Monitored == expectedAuthorMonitored), false));
         }
 
         [TestCase(ImportListMonitorType.None, false)]
         [TestCase(ImportListMonitorType.SpecificBook, true)]
         [TestCase(ImportListMonitorType.EntireAuthor, true)]
-        public void should_add_if_not_existing_album(ImportListMonitorType monitor, bool expectedAlbumMonitored)
+        public void should_add_if_not_existing_book(ImportListMonitorType monitor, bool expectedBookMonitored)
         {
             WithBookId();
             WithMonitorType(monitor);
@@ -251,14 +251,14 @@ namespace NzbDrone.Core.Test.ImportListTests
             Subject.Execute(new ImportListSyncCommand());
 
             Mocker.GetMock<IAddBookService>()
-                .Verify(v => v.AddBooks(It.Is<List<Book>>(t => t.Count == 1 && t.First().Monitored == expectedAlbumMonitored), false));
+                .Verify(v => v.AddBooks(It.Is<List<Book>>(t => t.Count == 1 && t.First().Monitored == expectedBookMonitored), false));
         }
 
         [Test]
-        public void should_not_add_artist_if_excluded_artist()
+        public void should_not_add_author_if_excluded_author()
         {
             WithAuthorId();
-            WithExcludedArtist();
+            WithExcludedAuthor();
 
             Subject.Execute(new ImportListSyncCommand());
 
@@ -267,10 +267,10 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_not_add_album_if_excluded_album()
+        public void should_not_add_book_if_excluded_book()
         {
             WithBookId();
-            WithExcludedAlbum();
+            WithExcludedBook();
 
             Subject.Execute(new ImportListSyncCommand());
 
@@ -279,11 +279,11 @@ namespace NzbDrone.Core.Test.ImportListTests
         }
 
         [Test]
-        public void should_not_add_album_if_excluded_artist()
+        public void should_not_add_book_if_excluded_author()
         {
             WithBookId();
             WithAuthorId();
-            WithExcludedArtist();
+            WithExcludedAuthor();
 
             Subject.Execute(new ImportListSyncCommand());
 

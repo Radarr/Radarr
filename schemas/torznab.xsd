@@ -44,8 +44,8 @@
       <!-- TV, Movies -->
       <xs:enumeration value="genre" />
       <!-- Music -->
-      <xs:enumeration value="artist" />
-      <xs:enumeration value="album" />
+      <xs:enumeration value="author" />
+      <xs:enumeration value="book" />
       <xs:enumeration value="publisher" />
       <xs:enumeration value="tracks" />
       <!-- Mixed -->

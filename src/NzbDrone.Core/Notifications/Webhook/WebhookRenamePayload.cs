@@ -2,6 +2,6 @@ namespace NzbDrone.Core.Notifications.Webhook
 {
     public class WebhookRenamePayload : WebhookPayload
     {
-        public WebhookArtist Artist { get; set; }
+        public WebhookAuthor Author { get; set; }
     }
 }

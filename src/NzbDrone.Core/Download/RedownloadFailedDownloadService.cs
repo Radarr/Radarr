@@ -50,9 +50,9 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            var albumsInArtist = _bookService.GetBooksByAuthor(message.AuthorId);
+            var booksInAuthor = _bookService.GetBooksByAuthor(message.AuthorId);
 
-            if (message.BookIds.Count == albumsInArtist.Count)
+            if (message.BookIds.Count == booksInAuthor.Count)
             {
                 _logger.Debug("Failed download was entire author, searching again");
 

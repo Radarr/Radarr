@@ -123,7 +123,7 @@ namespace Readarr.Api.V1.BookFiles
                                                         .Select(e => Convert.ToInt32(e))
                                                         .ToList();
 
-                // trackfiles will come back with the artist already populated
+                // trackfiles will come back with the author already populated
                 var bookFiles = _mediaFileService.Get(bookFileIds);
                 return bookFiles.ConvertAll(e => MapToResource(e));
             }

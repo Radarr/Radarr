@@ -8,6 +8,6 @@ namespace NzbDrone.Core.MetadataSource
     {
         Author GetAuthorInfo(string readarrId, bool useCache = true);
         Author GetAuthorAndBooks(string readarrId, double minPopularity = 0);
-        HashSet<string> GetChangedArtists(DateTime startTime);
+        HashSet<string> GetChangedAuthors(DateTime startTime);
     }
 }

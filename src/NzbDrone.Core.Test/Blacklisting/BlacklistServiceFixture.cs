@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.Blacklisting
                 AuthorId = 12345,
                 BookIds = new List<int> { 1 },
                 Quality = new QualityModel(Quality.MP3_320),
-                SourceTitle = "artist.name.album.title",
+                SourceTitle = "author.name.book.title",
                 DownloadClient = "SabnzbdClient",
                 DownloadId = "Sabnzbd_nzo_2dfh73k"
             };

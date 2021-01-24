@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                 new BookFile
                 {
                     Id = 1,
-                    Path = "/My.Artist.S01E01.mp3",
+                    Path = "/My.Author.S01E01.mp3",
                     Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
                     DateAdded = DateTime.Now,
                     EditionId = 1
@@ -42,36 +42,36 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                 new BookFile
                 {
                     Id = 2,
-                    Path = "/My.Artist.S01E02.mp3",
+                    Path = "/My.Author.S01E02.mp3",
                     Quality = new QualityModel(Quality.FLAC, new Revision(version: 1)),
                     DateAdded = DateTime.Now,
                     EditionId = 2
                 };
 
-            var singleAlbumList = new List<Book> { new Book { Id = 1 } };
-            var doubleAlbumList = new List<Book>
+            var singleBookList = new List<Book> { new Book { Id = 1 } };
+            var doubleBookList = new List<Book>
             {
                 new Book { Id = 1 },
                 new Book { Id = 2 }
             };
 
-            var fakeArtist = Builder<Author>.CreateNew()
+            var fakeAuthor = Builder<Author>.CreateNew()
                          .With(c => c.QualityProfile = new QualityProfile { Cutoff = Quality.FLAC.Id })
-                         .With(c => c.Path = @"C:\Music\My.Artist".AsOsAgnostic())
+                         .With(c => c.Path = @"C:\Music\My.Author".AsOsAgnostic())
                          .Build();
 
             _parseResultMulti = new RemoteBook
             {
-                Author = fakeArtist,
+                Author = fakeAuthor,
                 ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
-                Books = doubleAlbumList
+                Books = doubleBookList
             };
 
             _parseResultSingle = new RemoteBook
             {
-                Author = fakeArtist,
+                Author = fakeAuthor,
                 ParsedBookInfo = new ParsedBookInfo { Quality = new QualityModel(Quality.MP3_320, new Revision(version: 2)) },
-                Books = singleAlbumList
+                Books = singleBookList
             };
 
             GivenUnmonitorDeletedTracks(true);

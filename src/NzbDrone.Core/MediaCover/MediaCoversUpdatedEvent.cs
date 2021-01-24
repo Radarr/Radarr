@@ -6,7 +6,7 @@ namespace NzbDrone.Core.MediaCover
     public class MediaCoversUpdatedEvent : IEvent
     {
         public Author Author { get; set; }
-        public Book Album { get; set; }
+        public Book Book { get; set; }
 
         public MediaCoversUpdatedEvent(Author author)
         {
@@ -15,7 +15,7 @@ namespace NzbDrone.Core.MediaCover
 
         public MediaCoversUpdatedEvent(Book book)
         {
-            Album = book;
+            Book = book;
         }
     }
 }

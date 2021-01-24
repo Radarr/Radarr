@@ -57,7 +57,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
         private readonly Logger _logger;
 
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification<LocalBook>> trackSpecifications,
-                                   IEnumerable<IImportDecisionEngineSpecification<LocalEdition>> albumSpecifications,
+                                   IEnumerable<IImportDecisionEngineSpecification<LocalEdition>> bookSpecifications,
                                    IMediaFileService mediaFileService,
                                    IEBookTagService eBookTagService,
                                    IAudioTagService audioTagService,
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                                    Logger logger)
         {
             _trackSpecifications = trackSpecifications;
-            _bookSpecifications = albumSpecifications;
+            _bookSpecifications = bookSpecifications;
             _mediaFileService = mediaFileService;
             _eBookTagService = eBookTagService;
             _audioTagService = audioTagService;
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
 
                 var localTrack = new LocalBook
                 {
-                    DownloadClientAlbumInfo = downloadClientItemInfo,
+                    DownloadClientBookInfo = downloadClientItemInfo,
                     FolderTrackInfo = folderInfo,
                     Path = file.FullName,
                     Size = file.Length,

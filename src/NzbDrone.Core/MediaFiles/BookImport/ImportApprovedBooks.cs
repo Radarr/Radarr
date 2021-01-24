@@ -88,11 +88,11 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                 .GroupBy(e => e.Item.Book.ForeignBookId).ToList();
 
             var iDecision = 1;
-            foreach (var albumDecision in bookDecisions)
+            foreach (var bookDecision in bookDecisions)
             {
-                _logger.ProgressInfo($"Importing book {iDecision++}/{bookDecisions.Count} {albumDecision.First().Item.Book}");
+                _logger.ProgressInfo($"Importing book {iDecision++}/{bookDecisions.Count} {bookDecision.First().Item.Book}");
 
-                var decisionList = albumDecision.ToList();
+                var decisionList = bookDecision.ToList();
 
                 var author = EnsureAuthorAdded(decisionList, addedAuthors);
 
@@ -116,12 +116,12 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                 // }
 
                 // set the correct release to be monitored before importing the new files
-                var newRelease = albumDecision.First().Item.Edition;
+                var newRelease = bookDecision.First().Item.Edition;
                 _logger.Debug("Updating release to {0}", newRelease);
                 book.Editions = _editionService.SetMonitored(newRelease);
 
                 // Publish book edited event.
-                // Deliberatly don't put in the old book since we don't want to trigger an ArtistScan.
+                // Deliberatly don't put in the old book since we don't want to trigger an AuthorScan.
                 _eventAggregator.PublishEvent(new BookEditedEvent(book, book));
             }
 
@@ -260,15 +260,15 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                 _eventAggregator.PublishEvent(trackImportedEvent);
             }
 
-            var albumImports = importResults.Where(e => e.ImportDecision.Item.Book != null)
+            var bookImports = importResults.Where(e => e.ImportDecision.Item.Book != null)
                 .GroupBy(e => e.ImportDecision.Item.Book.Id).ToList();
 
-            foreach (var albumImport in albumImports)
+            foreach (var bookImport in bookImports)
             {
-                var book = albumImport.First().ImportDecision.Item.Book;
-                var author = albumImport.First().ImportDecision.Item.Author;
+                var book = bookImport.First().ImportDecision.Item.Book;
+                var author = bookImport.First().ImportDecision.Item.Author;
 
-                if (albumImport.Where(e => e.Errors.Count == 0).ToList().Count > 0 && author != null && book != null)
+                if (bookImport.Where(e => e.Errors.Count == 0).ToList().Count > 0 && author != null && book != null)
                 {
                     _eventAggregator.PublishEvent(new BookImportedEvent(
                         author,
@@ -284,7 +284,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
             importResults.AddRange(decisions.Where(c => !c.Approved)
                                             .Select(d => new ImportResult(d, d.Rejections.Select(r => r.Reason).ToArray())));
 
-            // Refresh any artists we added
+            // Refresh any authors we added
             if (addedAuthors.Any())
             {
                 _commandQueueManager.Push(new BulkRefreshAuthorCommand(addedAuthors.Select(x => x.Id).ToList(), true));
@@ -293,15 +293,15 @@ namespace NzbDrone.Core.MediaFiles.BookImport
             return importResults;
         }
 
-        private Author EnsureAuthorAdded(List<ImportDecision<LocalBook>> decisions, List<Author> addedArtists)
+        private Author EnsureAuthorAdded(List<ImportDecision<LocalBook>> decisions, List<Author> addedAuthors)
         {
             var author = decisions.First().Item.Author;
 
             if (author.Id == 0)
             {
-                var dbArtist = _authorService.FindById(author.ForeignAuthorId);
+                var dbAuthor = _authorService.FindById(author.ForeignAuthorId);
 
-                if (dbArtist == null)
+                if (dbAuthor == null)
                 {
                     _logger.Debug($"Adding remote author {author}");
                     var path = decisions.First().Item.Path;
@@ -327,8 +327,8 @@ namespace NzbDrone.Core.MediaFiles.BookImport
 
                     try
                     {
-                        dbArtist = _addAuthorService.AddAuthor(author, false);
-                        addedArtists.Add(dbArtist);
+                        dbAuthor = _addAuthorService.AddAuthor(author, false);
+                        addedAuthors.Add(dbAuthor);
                     }
                     catch (Exception e)
                     {
@@ -345,12 +345,12 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                 // Put in the newly loaded author
                 foreach (var decision in decisions)
                 {
-                    decision.Item.Author = dbArtist;
-                    decision.Item.Book.Author = dbArtist;
-                    decision.Item.Book.AuthorMetadataId = dbArtist.AuthorMetadataId;
+                    decision.Item.Author = dbAuthor;
+                    decision.Item.Book.Author = dbAuthor;
+                    decision.Item.Book.AuthorMetadataId = dbAuthor.AuthorMetadataId;
                 }
 
-                author = dbArtist;
+                author = dbAuthor;
             }
 
             return author;
@@ -380,7 +380,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                     catch (Exception e)
                     {
                         _logger.Error(e, "Failed to add book {0}", book);
-                        RejectAlbum(decisions);
+                        RejectBook(decisions);
 
                         return null;
                     }
@@ -389,7 +389,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
                 var edition = dbBook.Editions.Value.ExclusiveOrDefault(x => x.ForeignEditionId == decisions.First().Item.Edition.ForeignEditionId);
                 if (edition == null)
                 {
-                    RejectAlbum(decisions);
+                    RejectBook(decisions);
                     return null;
                 }
 
@@ -404,7 +404,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport
             return book;
         }
 
-        private void RejectAlbum(List<ImportDecision<LocalBook>> decisions)
+        private void RejectBook(List<ImportDecision<LocalBook>> decisions)
         {
             foreach (var decision in decisions)
             {

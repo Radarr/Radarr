@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Books
             _logger = logger;
         }
 
-        private void MoveSingleArtist(Author author, string sourcePath, string destinationPath, int? index = null, int? total = null)
+        private void MoveSingleAuthor(Author author, string sourcePath, string destinationPath, int? index = null, int? total = null)
         {
             if (!_diskProvider.FolderExists(sourcePath))
             {
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Books
         public void Execute(MoveAuthorCommand message)
         {
             var author = _authorService.GetAuthor(message.AuthorId);
-            MoveSingleArtist(author, message.SourcePath, message.DestinationPath);
+            MoveSingleAuthor(author, message.SourcePath, message.DestinationPath);
         }
 
         public void Execute(BulkMoveAuthorCommand message)
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Books
                 var author = _authorService.GetAuthor(s.AuthorId);
                 var destinationPath = Path.Combine(destinationRootFolder, _filenameBuilder.GetAuthorFolder(author));
 
-                MoveSingleArtist(author, s.SourcePath, destinationPath, index, authorToMove.Count);
+                MoveSingleAuthor(author, s.SourcePath, destinationPath, index, authorToMove.Count);
             }
 
             _logger.ProgressInfo("Finished moving {0} author to '{1}'", authorToMove.Count, destinationRootFolder);

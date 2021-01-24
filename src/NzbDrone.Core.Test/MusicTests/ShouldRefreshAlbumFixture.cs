@@ -8,95 +8,95 @@ using NzbDrone.Test.Common;
 namespace NzbDrone.Core.Test.MusicTests
 {
     [TestFixture]
-    public class ShouldRefreshAlbumFixture : TestBase<ShouldRefreshBook>
+    public class ShouldRefreshBookFixture : TestBase<ShouldRefreshBook>
     {
-        private Book _album;
+        private Book _book;
 
         [SetUp]
         public void Setup()
         {
-            _album = Builder<Book>.CreateNew()
+            _book = Builder<Book>.CreateNew()
                                    .With(e => e.ReleaseDate = DateTime.Today.AddDays(-100))
                                    .Build();
         }
 
-        private void GivenAlbumLastRefreshedMonthsAgo()
+        private void GivenBookLastRefreshedMonthsAgo()
         {
-            _album.LastInfoSync = DateTime.UtcNow.AddDays(-90);
+            _book.LastInfoSync = DateTime.UtcNow.AddDays(-90);
         }
 
-        private void GivenAlbumLastRefreshedYesterday()
+        private void GivenBookLastRefreshedYesterday()
         {
-            _album.LastInfoSync = DateTime.UtcNow.AddDays(-1);
+            _book.LastInfoSync = DateTime.UtcNow.AddDays(-1);
         }
 
-        private void GivenAlbumLastRefreshedRecently()
+        private void GivenBookLastRefreshedRecently()
         {
-            _album.LastInfoSync = DateTime.UtcNow.AddHours(-7);
+            _book.LastInfoSync = DateTime.UtcNow.AddHours(-7);
         }
 
         private void GivenRecentlyReleased()
         {
-            _album.ReleaseDate = DateTime.Today.AddDays(-7);
+            _book.ReleaseDate = DateTime.Today.AddDays(-7);
         }
 
         private void GivenFutureRelease()
         {
-            _album.ReleaseDate = DateTime.Today.AddDays(7);
+            _book.ReleaseDate = DateTime.Today.AddDays(7);
         }
 
         [Test]
-        public void should_return_false_if_album_last_refreshed_less_than_12_hours_ago()
+        public void should_return_false_if_book_last_refreshed_less_than_12_hours_ago()
         {
-            GivenAlbumLastRefreshedRecently();
+            GivenBookLastRefreshedRecently();
 
-            Subject.ShouldRefresh(_album).Should().BeFalse();
+            Subject.ShouldRefresh(_book).Should().BeFalse();
         }
 
         [Test]
-        public void should_return_true_if_album_last_refreshed_more_than_30_days_ago()
+        public void should_return_true_if_book_last_refreshed_more_than_30_days_ago()
         {
-            GivenAlbumLastRefreshedMonthsAgo();
+            GivenBookLastRefreshedMonthsAgo();
 
-            Subject.ShouldRefresh(_album).Should().BeTrue();
+            Subject.ShouldRefresh(_book).Should().BeTrue();
         }
 
         [Test]
-        public void should_return_true_if_album_released_in_last_30_days()
+        public void should_return_true_if_book_released_in_last_30_days()
         {
-            GivenAlbumLastRefreshedYesterday();
+            GivenBookLastRefreshedYesterday();
 
             GivenRecentlyReleased();
 
-            Subject.ShouldRefresh(_album).Should().BeTrue();
+            Subject.ShouldRefresh(_book).Should().BeTrue();
         }
 
         [Test]
-        public void should_return_true_if_album_releases_in_future()
+        public void should_return_true_if_book_releases_in_future()
         {
-            GivenAlbumLastRefreshedYesterday();
+            GivenBookLastRefreshedYesterday();
 
             GivenFutureRelease();
 
-            Subject.ShouldRefresh(_album).Should().BeTrue();
+            Subject.ShouldRefresh(_book).Should().BeTrue();
         }
 
         [Test]
-        public void should_return_false_when_recently_refreshed_album_released_over_30_days_ago()
+        public void should_return_false_when_recently_refreshed_book_released_over_30_days_ago()
         {
-            GivenAlbumLastRefreshedYesterday();
+            GivenBookLastRefreshedYesterday();
 
-            Subject.ShouldRefresh(_album).Should().BeFalse();
+            Subject.ShouldRefresh(_book).Should().BeFalse();
         }
 
         [Test]
-        public void should_return_false_when_recently_refreshed_album_released_in_last_30_days()
+        public void should_return_false_when_recently_refreshed_book_released_in_last_30_days()
         {
-            GivenAlbumLastRefreshedRecently();
+            GivenBookLastRefreshedRecently();
 
             GivenRecentlyReleased();
 
-            Subject.ShouldRefresh(_album).Should().BeFalse();
+            Subject.ShouldRefresh(_book).Should().BeFalse();
         }
     }
 }

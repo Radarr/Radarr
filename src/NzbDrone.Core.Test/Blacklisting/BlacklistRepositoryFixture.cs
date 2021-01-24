@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.Blacklisting
                 AuthorId = 12345,
                 BookIds = new List<int> { 1 },
                 Quality = new QualityModel(Quality.FLAC),
-                SourceTitle = "artist.name.album.title",
+                SourceTitle = "author.name.book.title",
                 Date = DateTime.UtcNow
             };
         }
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.Blacklisting
         }
 
         [Test]
-        public void should_should_have_album_ids()
+        public void should_should_have_book_ids()
         {
             Subject.Insert(_blacklist);
 

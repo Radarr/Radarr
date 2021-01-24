@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 
         public Decision IsSatisfiedBy(LocalEdition item, DownloadClientItem downloadClientItem)
         {
-            // Prevent imports to artists that are no longer inside a root folder Readarr manages
+            // Prevent imports to authors that are no longer inside a root folder Readarr manages
             var author = item.Edition.Book.Value.Author.Value;
 
             // a new author will have empty path, and will end up having path assinged based on file location

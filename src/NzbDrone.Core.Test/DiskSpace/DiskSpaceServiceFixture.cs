@@ -17,15 +17,15 @@ namespace NzbDrone.Core.Test.DiskSpace
     public class DiskSpaceServiceFixture : CoreTest<DiskSpaceService>
     {
         private RootFolder _rootDir;
-        private string _artistFolder1;
-        private string _artistFolder2;
+        private string _authorFolder1;
+        private string _authorFolder2;
 
         [SetUp]
         public void SetUp()
         {
             _rootDir = new RootFolder { Path = @"G:\fasdlfsdf".AsOsAgnostic() };
-            _artistFolder1 = Path.Combine(_rootDir.Path, "artist1");
-            _artistFolder2 = Path.Combine(_rootDir.Path, "artist2");
+            _authorFolder1 = Path.Combine(_rootDir.Path, "author1");
+            _authorFolder2 = Path.Combine(_rootDir.Path, "author2");
 
             Mocker.GetMock<IRootFolderService>()
                   .Setup(x => x.All())
@@ -47,14 +47,14 @@ namespace NzbDrone.Core.Test.DiskSpace
                   .Setup(v => v.GetTotalSize(It.IsAny<string>()))
                   .Returns(0);
 
-            GivenArtist();
+            GivenAuthor();
         }
 
-        private void GivenArtist(params Author[] artist)
+        private void GivenAuthor(params Author[] author)
         {
             Mocker.GetMock<IAuthorService>()
                   .Setup(v => v.GetAllAuthors())
-                  .Returns(artist.ToList());
+                  .Returns(author.ToList());
         }
 
         private void GivenExistingFolder(string folder)
@@ -65,11 +65,11 @@ namespace NzbDrone.Core.Test.DiskSpace
         }
 
         [Test]
-        public void should_check_diskspace_for_artist_folders()
+        public void should_check_diskspace_for_author_folders()
         {
-            GivenArtist(new Author { Path = _artistFolder1 });
+            GivenAuthor(new Author { Path = _authorFolder1 });
 
-            GivenExistingFolder(_artistFolder1);
+            GivenExistingFolder(_authorFolder1);
 
             var freeSpace = Subject.GetFreeSpace();
 
@@ -79,10 +79,10 @@ namespace NzbDrone.Core.Test.DiskSpace
         [Test]
         public void should_check_diskspace_for_same_root_folder_only_once()
         {
-            GivenArtist(new Author { Path = _artistFolder1 }, new Author { Path = _artistFolder2 });
+            GivenAuthor(new Author { Path = _authorFolder1 }, new Author { Path = _authorFolder2 });
 
-            GivenExistingFolder(_artistFolder1);
-            GivenExistingFolder(_artistFolder2);
+            GivenExistingFolder(_authorFolder1);
+            GivenExistingFolder(_authorFolder2);
 
             var freeSpace = Subject.GetFreeSpace();
 

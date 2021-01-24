@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -95,12 +96,9 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport.Specifications
         [Test]
         public void should_be_accepted_if_file_cannot_be_fetched()
         {
-            _localTrack.Tracks = Builder<Track>.CreateListOfSize(1)
-                .TheFirst(1)
-                .With(e => e.TrackFileId = 1)
-                .With(e => e.TrackFile = new LazyLoaded<TrackFile>((TrackFile)null))
-                .Build()
-                .ToList();
+            _localTrack.Book = Builder<Book>.CreateNew()
+                .With(e => e.BookFiles = new LazyLoaded<List<BookFile>>((List<BookFile>)null))
+                .Build();
 
             Subject.IsSatisfiedBy(_localTrack, null).Accepted.Should().BeTrue();
         }

@@ -34,12 +34,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public Decision IsSatisfiedBy(RemoteBook subject, SearchCriteriaBase searchCriteria)
         {
             var queue = _queueService.GetQueue();
-            var matchingAlbum = queue.Where(q => q.RemoteBook?.Author != null &&
+            var matchingBook = queue.Where(q => q.RemoteBook?.Author != null &&
                                                  q.RemoteBook.Author.Id == subject.Author.Id &&
                                                  q.RemoteBook.Books.Select(e => e.Id).Intersect(subject.Books.Select(e => e.Id)).Any())
                            .ToList();
 
-            foreach (var queueItem in matchingAlbum)
+            foreach (var queueItem in matchingBook)
             {
                 var remoteBook = queueItem.RemoteBook;
                 var qualityProfile = subject.Author.QualityProfile.Value;
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 _logger.Debug("Checking if release is higher quality than queued release. Queued: {0}", remoteBook.ParsedBookInfo.Quality);
 
                 if (!_upgradableSpecification.IsUpgradable(qualityProfile,
-                                                           new List<QualityModel> { remoteBook.ParsedBookInfo.Quality },
+                                                           remoteBook.ParsedBookInfo.Quality,
                                                            queuedItemPreferredWordScore,
                                                            subject.ParsedBookInfo.Quality,
                                                            subject.PreferredWordScore))
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 _logger.Debug("Checking if profiles allow upgrading. Queued: {0}", remoteBook.ParsedBookInfo.Quality);
 
                 if (!_upgradableSpecification.IsUpgradeAllowed(qualityProfile,
-                                                               new List<QualityModel> { remoteBook.ParsedBookInfo.Quality },
+                                                               remoteBook.ParsedBookInfo.Quality,
                                                                subject.ParsedBookInfo.Quality))
                 {
                     return Decision.Reject("Another release is queued and the Quality profile does not allow upgrades");

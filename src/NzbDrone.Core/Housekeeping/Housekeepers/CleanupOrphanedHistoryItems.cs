@@ -14,11 +14,11 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            CleanupOrphanedByArtist();
-            CleanupOrphanedByAlbum();
+            CleanupOrphanedByAuthor();
+            CleanupOrphanedByBook();
         }
 
-        private void CleanupOrphanedByArtist()
+        private void CleanupOrphanedByAuthor()
         {
             using (var mapper = _database.OpenConnection())
             {
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
             }
         }
 
-        private void CleanupOrphanedByAlbum()
+        private void CleanupOrphanedByBook()
         {
             using (var mapper = _database.OpenConnection())
             {

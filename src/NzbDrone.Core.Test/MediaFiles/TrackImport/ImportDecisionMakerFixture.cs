@@ -26,21 +26,21 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
     {
         private List<IFileInfo> _fileInfos;
         private LocalBook _localTrack;
-        private Author _artist;
-        private Book _album;
+        private Author _author;
+        private Book _book;
         private Edition _edition;
         private QualityModel _quality;
 
         private IdentificationOverrides _idOverrides;
         private ImportDecisionMakerConfig _idConfig;
 
-        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _albumpass1;
-        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _albumpass2;
-        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _albumpass3;
+        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _bookpass1;
+        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _bookpass2;
+        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _bookpass3;
 
-        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _albumfail1;
-        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _albumfail2;
-        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _albumfail3;
+        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _bookfail1;
+        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _bookfail2;
+        private Mock<IImportDecisionEngineSpecification<LocalEdition>> _bookfail3;
 
         private Mock<IImportDecisionEngineSpecification<LocalBook>> _pass1;
         private Mock<IImportDecisionEngineSpecification<LocalBook>> _pass2;
@@ -53,13 +53,13 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
         [SetUp]
         public void Setup()
         {
-            _albumpass1 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
-            _albumpass2 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
-            _albumpass3 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
+            _bookpass1 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
+            _bookpass2 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
+            _bookpass3 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
 
-            _albumfail1 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
-            _albumfail2 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
-            _albumfail3 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
+            _bookfail1 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
+            _bookfail2 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
+            _bookfail3 = new Mock<IImportDecisionEngineSpecification<LocalEdition>>();
 
             _pass1 = new Mock<IImportDecisionEngineSpecification<LocalBook>>();
             _pass2 = new Mock<IImportDecisionEngineSpecification<LocalBook>>();
@@ -69,13 +69,13 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
             _fail2 = new Mock<IImportDecisionEngineSpecification<LocalBook>>();
             _fail3 = new Mock<IImportDecisionEngineSpecification<LocalBook>>();
 
-            _albumpass1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
-            _albumpass2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
-            _albumpass3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
+            _bookpass1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
+            _bookpass2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
+            _bookpass3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
 
-            _albumfail1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_albumfail1"));
-            _albumfail2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_albumfail2"));
-            _albumfail3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_albumfail3"));
+            _bookfail1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_bookfail1"));
+            _bookfail2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_bookfail2"));
+            _bookfail3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_bookfail3"));
 
             _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
             _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Accept());
@@ -85,24 +85,24 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
             _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail2"));
             _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<LocalBook>(), It.IsAny<DownloadClientItem>())).Returns(Decision.Reject("_fail3"));
 
-            _artist = Builder<Author>.CreateNew()
+            _author = Builder<Author>.CreateNew()
                 .With(e => e.QualityProfileId = 1)
                 .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
                 .Build();
 
-            _album = Builder<Book>.CreateNew()
-                .With(x => x.Author = _artist)
+            _book = Builder<Book>.CreateNew()
+                .With(x => x.Author = _author)
                 .Build();
 
             _edition = Builder<Edition>.CreateNew()
-                .With(x => x.Book = _album)
+                .With(x => x.Book = _book)
                 .Build();
 
             _quality = new QualityModel(Quality.MP3_320);
 
             _localTrack = new LocalBook
             {
-                Author = _artist,
+                Author = _author,
                 Quality = _quality,
                 Book = new Book(),
                 Path = @"C:\Test\Unsorted\The.Office.S03E115.DVDRip.XviD-OSiTV.avi".AsOsAgnostic()
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
 
             _idOverrides = new IdentificationOverrides
             {
-                Author = _artist
+                Author = _author
             };
 
             _idConfig = new ImportDecisionMakerConfig();
@@ -130,7 +130,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
                 .Setup(c => c.FilterUnchangedFiles(It.IsAny<List<IFileInfo>>(), It.IsAny<FilterFilesType>()))
                 .Returns((List<IFileInfo> files, FilterFilesType filter) => files);
 
-            GivenSpecifications(_albumpass1);
+            GivenSpecifications(_bookpass1);
         }
 
         private void GivenSpecifications<T>(params Mock<IImportDecisionEngineSpecification<T>>[] mocks)
@@ -159,26 +159,26 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
         }
 
         [Test]
-        public void should_call_all_album_specifications()
+        public void should_call_all_book_specifications()
         {
             var downloadClientItem = Builder<DownloadClientItem>.CreateNew().Build();
             var itemInfo = new ImportDecisionMakerInfo { DownloadClientItem = downloadClientItem };
 
             GivenAugmentationSuccess();
-            GivenSpecifications(_albumpass1, _albumpass2, _albumpass3, _albumfail1, _albumfail2, _albumfail3);
+            GivenSpecifications(_bookpass1, _bookpass2, _bookpass3, _bookfail1, _bookfail2, _bookfail3);
 
             Subject.GetImportDecisions(_fileInfos, null, itemInfo, _idConfig);
 
-            _albumfail1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
-            _albumfail2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
-            _albumfail3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
-            _albumpass1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
-            _albumpass2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
-            _albumpass3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _bookfail1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _bookfail2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _bookfail3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _bookpass1.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _bookpass2.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
+            _bookpass3.Verify(c => c.IsSatisfiedBy(It.IsAny<LocalEdition>(), It.IsAny<DownloadClientItem>()), Times.Once());
         }
 
         [Test]
-        public void should_call_all_track_specifications_if_album_accepted()
+        public void should_call_all_track_specifications_if_book_accepted()
         {
             var downloadClientItem = Builder<DownloadClientItem>.CreateNew().Build();
             var itemInfo = new ImportDecisionMakerInfo { DownloadClientItem = downloadClientItem };
@@ -197,13 +197,13 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
         }
 
         [Test]
-        public void should_call_no_track_specifications_if_album_rejected()
+        public void should_call_no_track_specifications_if_book_rejected()
         {
             var downloadClientItem = Builder<DownloadClientItem>.CreateNew().Build();
             var itemInfo = new ImportDecisionMakerInfo { DownloadClientItem = downloadClientItem };
 
             GivenAugmentationSuccess();
-            GivenSpecifications(_albumpass1, _albumpass2, _albumpass3, _albumfail1, _albumfail2, _albumfail3);
+            GivenSpecifications(_bookpass1, _bookpass2, _bookpass3, _bookfail1, _bookfail2, _bookfail3);
             GivenSpecifications(_pass1, _pass2, _pass3, _fail1, _fail2, _fail3);
 
             Subject.GetImportDecisions(_fileInfos, null, itemInfo, _idConfig);
@@ -217,9 +217,9 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
         }
 
         [Test]
-        public void should_return_rejected_if_only_album_spec_fails()
+        public void should_return_rejected_if_only_book_spec_fails()
         {
-            GivenSpecifications(_albumfail1);
+            GivenSpecifications(_bookfail1);
             GivenSpecifications(_pass1);
 
             var result = Subject.GetImportDecisions(_fileInfos, null, null, _idConfig);
@@ -230,7 +230,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
         [Test]
         public void should_return_rejected_if_only_track_spec_fails()
         {
-            GivenSpecifications(_albumpass1);
+            GivenSpecifications(_bookpass1);
             GivenSpecifications(_fail1);
 
             var result = Subject.GetImportDecisions(_fileInfos, null, null, _idConfig);
@@ -239,9 +239,9 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
         }
 
         [Test]
-        public void should_return_rejected_if_one_album_spec_fails()
+        public void should_return_rejected_if_one_book_spec_fails()
         {
-            GivenSpecifications(_albumpass1, _albumfail1, _albumpass2, _albumpass3);
+            GivenSpecifications(_bookpass1, _bookfail1, _bookpass2, _bookpass3);
             GivenSpecifications(_pass1, _pass2, _pass3);
 
             var result = Subject.GetImportDecisions(_fileInfos, null, null, _idConfig);
@@ -252,7 +252,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
         [Test]
         public void should_return_rejected_if_one_track_spec_fails()
         {
-            GivenSpecifications(_albumpass1, _albumpass2, _albumpass3);
+            GivenSpecifications(_bookpass1, _bookpass2, _bookpass3);
             GivenSpecifications(_pass1, _fail1, _pass2, _pass3);
 
             var result = Subject.GetImportDecisions(_fileInfos, null, null, _idConfig);
@@ -264,7 +264,7 @@ namespace NzbDrone.Core.Test.MediaFiles.BookImport
         public void should_return_approved_if_all_specs_pass()
         {
             GivenAugmentationSuccess();
-            GivenSpecifications(_albumpass1, _albumpass2, _albumpass3);
+            GivenSpecifications(_bookpass1, _bookpass2, _bookpass3);
             GivenSpecifications(_pass1, _pass2, _pass3);
 
             var result = Subject.GetImportDecisions(_fileInfos, null, null, _idConfig);

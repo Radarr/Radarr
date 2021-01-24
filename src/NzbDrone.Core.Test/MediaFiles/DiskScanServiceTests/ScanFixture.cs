@@ -9,6 +9,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Core.Books;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.BookImport;
@@ -31,11 +32,11 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         public void Setup()
         {
             _rootFolder = @"C:\Test\Music".AsOsAgnostic();
-            _otherAuthorFolder = @"C:\Test\Music\OtherArtist".AsOsAgnostic();
-            var artistFolder = @"C:\Test\Music\Artist".AsOsAgnostic();
+            _otherAuthorFolder = @"C:\Test\Music\OtherAuthor".AsOsAgnostic();
+            var authorFolder = @"C:\Test\Music\Author".AsOsAgnostic();
 
             _author = Builder<Author>.CreateNew()
-                                     .With(s => s.Path = artistFolder)
+                                     .With(s => s.Path = authorFolder)
                                      .Build();
 
             Mocker.GetMock<IRootFolderService>()
@@ -73,7 +74,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
             }
         }
 
-        private void GivenArtistFolder()
+        private void GivenAuthorFolder()
         {
             GivenRootFolder(_author.Path);
         }
@@ -161,9 +162,9 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
-        public void should_find_files_at_root_of_artist_folder()
+        public void should_find_files_at_root_of_author_folder()
         {
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {
@@ -180,7 +181,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_extras_subfolder()
         {
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {
@@ -200,7 +201,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_AppleDouble_subfolder()
         {
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {
@@ -216,11 +217,11 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         }
 
         [Test]
-        public void should_scan_extras_artist_and_subfolders()
+        public void should_scan_extras_author_and_subfolders()
         {
             _author.Path = @"C:\Test\Music\Extras".AsOsAgnostic();
 
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {
@@ -241,11 +242,11 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_scan_files_that_start_with_period()
         {
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {
-                           Path.Combine(_author.Path, "Album 1", ".t01.mobi")
+                           Path.Combine(_author.Path, "Book 1", ".t01.mobi")
                        });
 
             Subject.Scan(new List<string> { _author.Path });
@@ -257,7 +258,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_subfolders_that_start_with_period()
         {
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {
@@ -276,7 +277,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_subfolder_of_season_folder_that_starts_with_a_period()
         {
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {
@@ -296,7 +297,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_Synology_eaDir()
         {
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {
@@ -313,7 +314,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_not_scan_thumb_folder()
         {
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {
@@ -332,7 +333,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         {
             _author.Path = @"C:\Test\Music\.hack".AsOsAgnostic();
 
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {
@@ -349,7 +350,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
         [Test]
         public void should_exclude_osx_metadata_files()
         {
-            GivenArtistFolder();
+            GivenAuthorFolder();
 
             GivenFiles(new List<string>
                        {

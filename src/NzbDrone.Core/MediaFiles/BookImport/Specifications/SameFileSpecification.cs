@@ -15,9 +15,9 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalBook item, DownloadClientItem downloadClientItem)
+        public Decision IsSatisfiedBy(LocalBook localBook, DownloadClientItem downloadClientItem)
         {
-            var bookFiles = item.Book?.BookFiles?.Value;
+            var bookFiles = localBook.Book?.BookFiles?.Value;
 
             if (bookFiles == null || !bookFiles.Any())
             {
@@ -27,9 +27,17 @@ namespace NzbDrone.Core.MediaFiles.BookImport.Specifications
 
             foreach (var bookFile in bookFiles)
             {
-                if (bookFile.Size == item.Size)
+                if (bookFile == null)
                 {
-                    _logger.Debug("'{0}' Has the same filesize as existing file", item.Path);
+                    var book = localBook.Book;
+                    _logger.Trace("Unable to get book file details from the DB. BookId: {0}", book.Id);
+
+                    return Decision.Accept();
+                }
+
+                if (bookFile.Size == localBook.Size)
+                {
+                    _logger.Debug("'{0}' Has the same filesize as existing file", localBook.Path);
                     return Decision.Reject("Has the same filesize as existing file");
                 }
             }

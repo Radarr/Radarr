@@ -327,7 +327,7 @@ namespace NzbDrone.Core.Books
             }
         }
 
-        private void RefreshSelectedArtists(List<int> authorIds, bool isNew, CommandTrigger trigger)
+        private void RefreshSelectedAuthors(List<int> authorIds, bool isNew, CommandTrigger trigger)
         {
             var updated = false;
             var authors = _authorService.GetAuthors(authorIds);
@@ -350,7 +350,7 @@ namespace NzbDrone.Core.Books
 
         public void Execute(BulkRefreshAuthorCommand message)
         {
-            RefreshSelectedArtists(message.AuthorIds, message.AreNewAuthors, message.Trigger);
+            RefreshSelectedAuthors(message.AuthorIds, message.AreNewAuthors, message.Trigger);
         }
 
         public void Execute(RefreshAuthorCommand message)
@@ -360,7 +360,7 @@ namespace NzbDrone.Core.Books
 
             if (message.AuthorId.HasValue)
             {
-                RefreshSelectedArtists(new List<int> { message.AuthorId.Value }, isNew, trigger);
+                RefreshSelectedAuthors(new List<int> { message.AuthorId.Value }, isNew, trigger);
             }
             else
             {
@@ -372,7 +372,7 @@ namespace NzbDrone.Core.Books
 
                 if (message.LastExecutionTime.HasValue && message.LastExecutionTime.Value.AddDays(14) > DateTime.UtcNow)
                 {
-                    updatedGoodreadsAuthors = _authorInfo.GetChangedArtists(message.LastStartTime.Value);
+                    updatedGoodreadsAuthors = _authorInfo.GetChangedAuthors(message.LastStartTime.Value);
                 }
 
                 foreach (var author in authors)

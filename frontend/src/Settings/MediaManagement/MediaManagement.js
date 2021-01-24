@@ -389,7 +389,7 @@ class MediaManagement extends Component {
                           type={inputTypes.UMASK}
                           name="chmodFolder"
                           helpText="Octal, applied during import/rename to media folders and files (without execute bits)"
-                          helpTextWarning="This only works if the user running Lidarr is the owner of the file. It's better to ensure the download client sets the permissions properly."
+                          helpTextWarning="This only works if the user running Readarr is the owner of the file. It's better to ensure the download client sets the permissions properly."
                           onChange={onInputChange}
                           {...settings.chmodFolder}
                         />

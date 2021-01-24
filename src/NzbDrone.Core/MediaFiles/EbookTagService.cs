@@ -63,8 +63,8 @@ namespace NzbDrone.Core.MediaFiles
             {
                 using (var bookRef = EpubReader.OpenBook(file))
                 {
-                    result.ArtistTitle = bookRef.AuthorList.FirstOrDefault();
-                    result.AlbumTitle = bookRef.Title;
+                    result.AuthorTitle = bookRef.AuthorList.FirstOrDefault();
+                    result.BookTitle = bookRef.Title;
 
                     var meta = bookRef.Schema.Package.Metadata;
 
@@ -99,8 +99,8 @@ namespace NzbDrone.Core.MediaFiles
             try
             {
                 var book = new Azw3File(file);
-                result.ArtistTitle = book.Author;
-                result.AlbumTitle = book.Title;
+                result.AuthorTitle = book.Author;
+                result.BookTitle = book.Title;
                 result.Isbn = StripIsbn(book.Isbn);
                 result.Asin = book.Asin;
                 result.Language = book.Language;
@@ -146,8 +146,8 @@ namespace NzbDrone.Core.MediaFiles
             try
             {
                 var book = PdfReader.Open(file, PdfDocumentOpenMode.InformationOnly);
-                result.ArtistTitle = book.Info.Author;
-                result.AlbumTitle = book.Info.Title;
+                result.AuthorTitle = book.Info.Author;
+                result.BookTitle = book.Info.Title;
 
                 _logger.Trace(book.Info.ToJson());
                 _logger.Trace(book.CustomValues.ToJson());

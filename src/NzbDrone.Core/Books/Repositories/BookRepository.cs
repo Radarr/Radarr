@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Books
 
         //x.Id == null is converted to SQL, so warning incorrect
 #pragma warning disable CS0472
-        private SqlBuilder AlbumsWithoutFilesBuilder(DateTime currentTime) => Builder()
+        private SqlBuilder BooksWithoutFilesBuilder(DateTime currentTime) => Builder()
             .Join<Book, Author>((l, r) => l.AuthorMetadataId == r.AuthorMetadataId)
             .Join<Book, Edition>((b, e) => b.Id == e.BookId)
             .LeftJoin<Edition, BookFile>((t, f) => t.Id == f.EditionId)
@@ -101,13 +101,13 @@ namespace NzbDrone.Core.Books
         {
             var currentTime = DateTime.UtcNow;
 
-            pagingSpec.Records = GetPagedRecords(AlbumsWithoutFilesBuilder(currentTime), pagingSpec, PagedQuery);
-            pagingSpec.TotalRecords = GetPagedRecordCount(AlbumsWithoutFilesBuilder(currentTime).SelectCountDistinct<Book>(x => x.Id), pagingSpec);
+            pagingSpec.Records = GetPagedRecords(BooksWithoutFilesBuilder(currentTime), pagingSpec, PagedQuery);
+            pagingSpec.TotalRecords = GetPagedRecordCount(BooksWithoutFilesBuilder(currentTime).SelectCountDistinct<Book>(x => x.Id), pagingSpec);
 
             return pagingSpec;
         }
 
-        private SqlBuilder AlbumsWhereCutoffUnmetBuilder(List<QualitiesBelowCutoff> qualitiesBelowCutoff) => Builder()
+        private SqlBuilder BooksWhereCutoffUnmetBuilder(List<QualitiesBelowCutoff> qualitiesBelowCutoff) => Builder()
             .Join<Book, Author>((l, r) => l.AuthorMetadataId == r.AuthorMetadataId)
             .Join<Book, Edition>((b, e) => b.Id == e.BookId)
             .LeftJoin<Edition, BookFile>((t, f) => t.Id == f.EditionId)
@@ -130,10 +130,10 @@ namespace NzbDrone.Core.Books
 
         public PagingSpec<Book> BooksWhereCutoffUnmet(PagingSpec<Book> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff)
         {
-            pagingSpec.Records = GetPagedRecords(AlbumsWhereCutoffUnmetBuilder(qualitiesBelowCutoff), pagingSpec, PagedQuery);
+            pagingSpec.Records = GetPagedRecords(BooksWhereCutoffUnmetBuilder(qualitiesBelowCutoff), pagingSpec, PagedQuery);
 
             var countTemplate = $"SELECT COUNT(*) FROM (SELECT /**select**/ FROM {TableMapping.Mapper.TableNameMapping(typeof(Book))} /**join**/ /**innerjoin**/ /**leftjoin**/ /**where**/ /**groupby**/ /**having**/)";
-            pagingSpec.TotalRecords = GetPagedRecordCount(AlbumsWhereCutoffUnmetBuilder(qualitiesBelowCutoff).Select(typeof(Book)), pagingSpec, countTemplate);
+            pagingSpec.TotalRecords = GetPagedRecordCount(BooksWhereCutoffUnmetBuilder(qualitiesBelowCutoff).Select(typeof(Book)), pagingSpec, countTemplate);
 
             return pagingSpec;
         }
@@ -176,8 +176,8 @@ namespace NzbDrone.Core.Books
 
         public void SetMonitored(IEnumerable<int> ids, bool monitored)
         {
-            var albums = ids.Select(x => new Book { Id = x, Monitored = monitored }).ToList();
-            SetFields(albums, p => p.Monitored);
+            var books = ids.Select(x => new Book { Id = x, Monitored = monitored }).ToList();
+            SetFields(books, p => p.Monitored);
         }
 
         public Book FindByTitle(int authorMetadataId, string title)

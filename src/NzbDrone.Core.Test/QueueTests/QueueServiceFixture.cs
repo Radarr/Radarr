@@ -30,17 +30,17 @@ namespace NzbDrone.Core.Test.QueueTests
                 .With(v => v.DownloadClientInfo = downloadClientInfo)
                 .Build();
 
-            var artist = Builder<Author>.CreateNew()
+            var author = Builder<Author>.CreateNew()
                 .Build();
 
-            var albums = Builder<Book>.CreateListOfSize(3)
+            var books = Builder<Book>.CreateListOfSize(3)
                 .All()
-                .With(e => e.AuthorId = artist.Id)
+                .With(e => e.AuthorId = author.Id)
                 .Build();
 
             var remoteBook = Builder<RemoteBook>.CreateNew()
-                .With(r => r.Author = artist)
-                .With(r => r.Books = new List<Book>(albums))
+                .With(r => r.Author = author)
+                .With(r => r.Books = new List<Book>(books))
                 .With(r => r.ParsedBookInfo = new ParsedBookInfo())
                 .Build();
 

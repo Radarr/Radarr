@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 return true;
             }
 
-            var allAlbumsImportedInHistory = trackedDownload.RemoteBook.Books.All(book =>
+            var allBooksImportedInHistory = trackedDownload.RemoteBook.Books.All(book =>
             {
                 var lastHistoryItem = historyItems.FirstOrDefault(h => h.BookId == book.Id);
 
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 return new[] { HistoryEventType.DownloadImported, HistoryEventType.BookFileImported }.Contains(lastHistoryItem.EventType);
             });
 
-            return allAlbumsImportedInHistory;
+            return allBooksImportedInHistory;
         }
     }
 }

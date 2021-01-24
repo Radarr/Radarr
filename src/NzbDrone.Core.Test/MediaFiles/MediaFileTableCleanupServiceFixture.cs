@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.MediaFiles
     {
         private readonly string _DELETED_PATH = @"c:\ANY FILE STARTING WITH THIS PATH IS CONSIDERED DELETED!".AsOsAgnostic();
         private List<Book> _tracks;
-        private Author _artist;
+        private Author _author;
 
         [SetUp]
         public void SetUp()
@@ -24,8 +24,8 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Build()
                   .ToList();
 
-            _artist = Builder<Author>.CreateNew()
-                                     .With(s => s.Path = @"C:\Test\Music\Artist".AsOsAgnostic())
+            _author = Builder<Author>.CreateNew()
+                                     .With(s => s.Path = @"C:\Test\Music\Author".AsOsAgnostic())
                                      .Build();
         }
 
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             GivenTrackFiles(trackFiles);
 
-            Subject.Clean(_artist.Path, FilesOnDisk(trackFiles));
+            Subject.Clean(_author.Path, FilesOnDisk(trackFiles));
 
             Mocker.GetMock<IMediaFileService>()
                 .Verify(c => c.DeleteMany(It.Is<List<BookFile>>(x => x.Count == 0), DeleteMediaFileReason.MissingFromDisk), Times.Once());
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             GivenTrackFiles(trackFiles);
 
-            Subject.Clean(_artist.Path, FilesOnDisk(trackFiles.Where(e => !e.Path.StartsWith(_DELETED_PATH))));
+            Subject.Clean(_author.Path, FilesOnDisk(trackFiles.Where(e => !e.Path.StartsWith(_DELETED_PATH))));
 
             Mocker.GetMock<IMediaFileService>()
                 .Verify(c => c.DeleteMany(It.Is<List<BookFile>>(e => e.Count == 2 && e.All(y => y.Path.StartsWith(_DELETED_PATH))), DeleteMediaFileReason.MissingFromDisk), Times.Once());
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             GivenTrackFiles(trackFiles);
 
-            Subject.Clean(_artist.Path, new List<string>());
+            Subject.Clean(_author.Path, new List<string>());
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Test.MediaFiles
 
             GivenTrackFiles(trackFiles);
 
-            Subject.Clean(_artist.Path, FilesOnDisk(trackFiles));
+            Subject.Clean(_author.Path, FilesOnDisk(trackFiles));
         }
     }
 }

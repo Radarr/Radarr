@@ -2,114 +2,114 @@
   "expectedMusicBrainzReleaseIds": [
     "9105a5b3-eb68-3a03-9aa8-f3495e602a4f"
   ],
-  "libraryArtists": [
+  "libraryAuthors": [
     {
-      "artist": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+      "author": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
       "metadataProfile": {
         "name": "Standard",
-        "primaryAlbumTypes": [
+        "primaryBookTypes": [
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 2,
               "name": "Single"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 4,
               "name": "Other"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 1,
               "name": "EP"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 3,
               "name": "Broadcast"
             },
             "allowed": false
           },
           {
-            "primaryAlbumType": {
+            "primaryBookType": {
               "id": 0,
-              "name": "Album"
+              "name": "Book"
             },
             "allowed": true
           }
         ],
-        "secondaryAlbumTypes": [
+        "secondaryBookTypes": [
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 0,
               "name": "Studio"
             },
             "allowed": true
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 3,
               "name": "Spokenword"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 2,
               "name": "Soundtrack"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 7,
               "name": "Remix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 9,
               "name": "Mixtape/Street"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 6,
               "name": "Live"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 4,
               "name": "Interview"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 8,
               "name": "DJ-mix"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 10,
               "name": "Demo"
             },
             "allowed": false
           },
           {
-            "secondaryAlbumType": {
+            "secondaryBookType": {
               "id": 1,
               "name": "Compilation"
             },
@@ -156,7 +156,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 101 - Daydreamer.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -188,7 +188,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 102 - Best for Last.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -220,7 +220,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 103 - Chasing Pavements.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -252,7 +252,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 104 - Cold Shoulder.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -284,7 +284,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 105 - Crazy for You.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -316,7 +316,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 106 - Melt My Heart to Stone.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -348,7 +348,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 107 - First Love.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -380,7 +380,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 108 - Right as Rain.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -412,7 +412,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 109 - Make You Feel My Love.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -444,7 +444,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 110 - My Same.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -476,7 +476,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 111 - Tired.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -508,7 +508,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD1/Adele - 19 - 112 - Hometown Glory.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -540,7 +540,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 201 - Chasing Pavements.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -572,7 +572,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 202 - Melt My Heart to Stone.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -604,7 +604,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 203 - That's It, I Quit, I'm Moving On.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -636,7 +636,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 204 - Crazy for You.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -668,7 +668,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 205 - Right as Rain.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -700,7 +700,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 206 - My Same.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -732,7 +732,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 207 - Make You Feel My Love.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -764,7 +764,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 208 - Daydreamer.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -796,7 +796,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 209 - Hometown Glory.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,
@@ -828,7 +828,7 @@
     {
       "path": "/mnt/data1/ImportTest/19_no_tags/CD2/Adele - 19 - 210 - Many Shades of Black.mp3",
       "fileTrackInfo": {
-        "artistTitleInfo": {
+        "authorTitleInfo": {
           "year": 0
         },
         "discNumber": 0,

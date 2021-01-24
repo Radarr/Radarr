@@ -90,7 +90,7 @@ namespace NzbDrone.Update.UpdateEngine
 
             Verify(installationFolder, processId);
 
-            if (installationFolder.EndsWith(@"\bin\Lidarr") || installationFolder.EndsWith(@"/bin/Lidarr"))
+            if (installationFolder.EndsWith(@"\bin\Readarr") || installationFolder.EndsWith(@"/bin/Readarr"))
             {
                 installationFolder = installationFolder.GetParentPath();
                 _logger.Info("Fixed Installation Folder: {0}", installationFolder);

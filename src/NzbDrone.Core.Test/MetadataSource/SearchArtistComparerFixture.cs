@@ -9,19 +9,19 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.MetadataSource
 {
     [TestFixture]
-    public class SearchArtistComparerFixture : CoreTest
+    public class SearchAuthorComparerFixture : CoreTest
     {
-        private List<Author> _artist;
+        private List<Author> _author;
 
         [SetUp]
         public void Setup()
         {
-            _artist = new List<Author>();
+            _author = new List<Author>();
         }
 
         private void WithSeries(string name)
         {
-            _artist.Add(new Author { Name = name });
+            _author.Add(new Author { Name = name });
         }
 
         [Test]
@@ -30,9 +30,9 @@ namespace NzbDrone.Core.Test.MetadataSource
             WithSeries("Talking Dead");
             WithSeries("The Walking Dead");
 
-            _artist.Sort(new SearchAuthorComparer("the walking dead"));
+            _author.Sort(new SearchAuthorComparer("the walking dead"));
 
-            _artist.First().Name.Should().Be("The Walking Dead");
+            _author.First().Name.Should().Be("The Walking Dead");
         }
 
         [Test]
@@ -41,9 +41,9 @@ namespace NzbDrone.Core.Test.MetadataSource
             WithSeries("Talking Dead");
             WithSeries("The Walking Dead");
 
-            _artist.Sort(new SearchAuthorComparer("walking dead"));
+            _author.Sort(new SearchAuthorComparer("walking dead"));
 
-            _artist.First().Name.Should().Be("The Walking Dead");
+            _author.First().Name.Should().Be("The Walking Dead");
         }
 
         [Test]
@@ -52,9 +52,9 @@ namespace NzbDrone.Core.Test.MetadataSource
             WithSeries("The Blacklist");
             WithSeries("Blacklist");
 
-            _artist.Sort(new SearchAuthorComparer("blacklist"));
+            _author.Sort(new SearchAuthorComparer("blacklist"));
 
-            _artist.First().Name.Should().Be("Blacklist");
+            _author.First().Name.Should().Be("Blacklist");
         }
 
         [Test]
@@ -63,9 +63,9 @@ namespace NzbDrone.Core.Test.MetadataSource
             WithSeries("Blacklist");
             WithSeries("The Blacklist");
 
-            _artist.Sort(new SearchAuthorComparer("the blacklist"));
+            _author.Sort(new SearchAuthorComparer("the blacklist"));
 
-            _artist.First().Name.Should().Be("The Blacklist");
+            _author.First().Name.Should().Be("The Blacklist");
         }
     }
 }

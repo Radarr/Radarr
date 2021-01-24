@@ -40,9 +40,9 @@ namespace NzbDrone.Core.Books
                 return true;
             }
 
-            var lastAlbum = _bookService.GetBooksByAuthor(author.Id).OrderByDescending(e => e.ReleaseDate).FirstOrDefault();
+            var lastBook = _bookService.GetBooksByAuthor(author.Id).OrderByDescending(e => e.ReleaseDate).FirstOrDefault();
 
-            if (lastAlbum != null && lastAlbum.ReleaseDate > DateTime.UtcNow.AddDays(-30))
+            if (lastBook != null && lastBook.ReleaseDate > DateTime.UtcNow.AddDays(-30))
             {
                 _logger.Trace("Last book in {0} released less than 30 days ago, should refresh.", author.Name);
                 return true;

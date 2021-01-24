@@ -2,8 +2,8 @@
 {
     public class BasicNamingConfig
     {
-        public bool IncludeArtistName { get; set; }
-        public bool IncludeAlbumTitle { get; set; }
+        public bool IncludeAuthorName { get; set; }
+        public bool IncludeBookTitle { get; set; }
         public bool IncludeQuality { get; set; }
         public bool ReplaceSpaces { get; set; }
         public string Separator { get; set; }

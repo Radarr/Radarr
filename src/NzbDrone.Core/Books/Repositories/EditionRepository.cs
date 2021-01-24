@@ -12,7 +12,7 @@ namespace NzbDrone.Core.Books
         Edition FindByForeignEditionId(string foreignEditionId);
         List<Edition> FindByBook(int id);
         List<Edition> FindByAuthor(int id);
-        List<Edition> GetEditionsForRefresh(int albumId, IEnumerable<string> foreignEditionIds);
+        List<Edition> GetEditionsForRefresh(int bookId, IEnumerable<string> foreignEditionIds);
         List<Edition> SetMonitored(Edition edition);
     }
 
@@ -30,14 +30,14 @@ namespace NzbDrone.Core.Books
             return edition;
         }
 
-        public List<Edition> GetEditionsForRefresh(int albumId, IEnumerable<string> foreignEditionIds)
+        public List<Edition> GetEditionsForRefresh(int bookId, IEnumerable<string> foreignEditionIds)
         {
-            return Query(r => r.BookId == albumId || foreignEditionIds.Contains(r.ForeignEditionId));
+            return Query(r => r.BookId == bookId || foreignEditionIds.Contains(r.ForeignEditionId));
         }
 
         public List<Edition> FindByBook(int id)
         {
-            // populate the albums and artist metadata also
+            // populate the books and author metadata also
             // this hopefully speeds up the track matching a lot
             var builder = new SqlBuilder()
                 .LeftJoin<Edition, Book>((e, b) => e.BookId == b.Id)

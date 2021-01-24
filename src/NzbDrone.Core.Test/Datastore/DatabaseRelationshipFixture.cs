@@ -15,13 +15,13 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void one_to_one()
         {
-            var album = Builder<Book>.CreateNew()
+            var book = Builder<Book>.CreateNew()
                 .With(c => c.Id = 0)
                 .With(x => x.ReleaseDate = DateTime.UtcNow)
                 .With(x => x.LastInfoSync = DateTime.UtcNow)
                 .With(x => x.Added = DateTime.UtcNow)
                 .BuildNew();
-            Db.Insert(album);
+            Db.Insert(book);
         }
 
         [Test]

@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
 
             Mocker.GetMock<IParsingService>()
                 .Setup(s => s.Map(It.IsAny<ParsedBookInfo>(), null))
-                .Returns(() => CreateRemoteAlbum());
+                .Returns(() => CreateRemoteBook());
 
             Mocker.GetMock<IHttpClient>()
                   .Setup(s => s.Get(It.IsAny<HttpRequest>()))
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
                 .Returns<string, OsPath>((h, r) => r);
         }
 
-        protected virtual RemoteBook CreateRemoteAlbum()
+        protected virtual RemoteBook CreateRemoteBook()
         {
             var remoteBook = new RemoteBook();
             remoteBook.Release = new ReleaseInfo();

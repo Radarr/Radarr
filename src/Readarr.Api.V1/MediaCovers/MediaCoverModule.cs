@@ -24,11 +24,11 @@ namespace Readarr.Api.V1.MediaCovers
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;
 
-            Get(MEDIA_COVER_AUTHOR_ROUTE, options => GetArtistMediaCover(options.authorId, options.filename));
-            Get(MEDIA_COVER_BOOK_ROUTE, options => GetAlbumMediaCover(options.authorId, options.filename));
+            Get(MEDIA_COVER_AUTHOR_ROUTE, options => GetAuthorMediaCover(options.authorId, options.filename));
+            Get(MEDIA_COVER_BOOK_ROUTE, options => GetBookMediaCover(options.authorId, options.filename));
         }
 
-        private object GetArtistMediaCover(int authorId, string filename)
+        private object GetAuthorMediaCover(int authorId, string filename)
         {
             var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", authorId.ToString(), filename);
 
@@ -48,7 +48,7 @@ namespace Readarr.Api.V1.MediaCovers
             return new StreamResponse(() => File.OpenRead(filePath), MimeTypes.GetMimeType(filePath));
         }
 
-        private object GetAlbumMediaCover(int bookId, string filename)
+        private object GetBookMediaCover(int bookId, string filename)
         {
             var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", "Books", bookId.ToString(), filename);
 

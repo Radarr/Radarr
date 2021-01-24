@@ -28,8 +28,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="492735000" />
             <newznab:attr name="guid" value="38884827e1e56b9336278a449e0a38ec" />
-            <newznab:attr name="album" value="Scary Creatures" />
-            <newznab:attr name="artist" value="Brainstorm" />
+            <newznab:attr name="book" value="Scary Creatures" />
+            <newznab:attr name="author" value="Brainstorm" />
             <newznab:attr name="label" value="AFM Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -49,8 +49,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="295696000" />
             <newznab:attr name="guid" value="d6395e3218b0b2ed15cbc3743df77112" />
-            <newznab:attr name="album" value="Cautionary Tale" />
-            <newznab:attr name="artist" value="Dylan LeBlanc" />
+            <newznab:attr name="book" value="Cautionary Tale" />
+            <newznab:attr name="author" value="Dylan LeBlanc" />
             <newznab:attr name="label" value="Single Lock Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Folk" />
@@ -71,8 +71,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="608379000" />
             <newznab:attr name="guid" value="dc3230ac8143dd9a2fab65c07ad0f295" />
-            <newznab:attr name="album" value="This Is Acting" />
-            <newznab:attr name="artist" value="Sia" />
+            <newznab:attr name="book" value="This Is Acting" />
+            <newznab:attr name="author" value="Sia" />
             <newznab:attr name="label" value="Monkey Puzzle RecordsRCA Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Pop" />
@@ -93,8 +93,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="908727000" />
             <newznab:attr name="guid" value="a5560bb5ecf2ad19642527a567d427d0" />
-            <newznab:attr name="album" value="Leben II Explicit" />
-            <newznab:attr name="artist" value="Azad" />
+            <newznab:attr name="book" value="Leben II Explicit" />
+            <newznab:attr name="author" value="Azad" />
             <newznab:attr name="label" value="Bozz Music" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Rap &amp; Hip-Hop" />
@@ -115,8 +115,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="693728000" />
             <newznab:attr name="guid" value="eb42bbef1b5d8e0697962a291371655b" />
-            <newznab:attr name="album" value="Planeta Mix Hits 2016 Winter Edition" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Planeta Mix Hits 2016 Winter Edition" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Planet Dance Music" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -137,8 +137,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="557772000" />
             <newznab:attr name="guid" value="812d0f7b9c38b6989d07c125eb35eabd" />
-            <newznab:attr name="album" value="Into the Legend" />
-            <newznab:attr name="artist" value="Rhapsody Of Fire" />
+            <newznab:attr name="book" value="Into the Legend" />
+            <newznab:attr name="author" value="Rhapsody Of Fire" />
             <newznab:attr name="label" value="AFM Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -159,8 +159,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="433859000" />
             <newznab:attr name="guid" value="6ac8a40d20fb27a3d8fc11cb41afae4b" />
-            <newznab:attr name="album" value="Dystopia" />
-            <newznab:attr name="artist" value="Megadeth" />
+            <newznab:attr name="book" value="Dystopia" />
+            <newznab:attr name="author" value="Megadeth" />
             <newznab:attr name="label" value="UMeTBoy Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -181,8 +181,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="409419000" />
             <newznab:attr name="guid" value="36b4176e900767359b5ad2cb5c3b9906" />
-            <newznab:attr name="album" value="Wildfire" />
-            <newznab:attr name="artist" value="Rachel Platten" />
+            <newznab:attr name="book" value="Wildfire" />
+            <newznab:attr name="author" value="Rachel Platten" />
             <newznab:attr name="label" value="Columbia" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Pop" />
@@ -203,8 +203,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="602702000" />
             <newznab:attr name="guid" value="fc1aaca4356bef96677483c7da2b5693" />
-            <newznab:attr name="album" value="For All Kings" />
-            <newznab:attr name="artist" value="Anthrax" />
+            <newznab:attr name="book" value="For All Kings" />
+            <newznab:attr name="author" value="Anthrax" />
             <newznab:attr name="label" value="Megaforce" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -225,8 +225,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="331143000" />
             <newznab:attr name="guid" value="c14b90c40483c0fe9ab9e93541453449" />
-            <newznab:attr name="album" value="Rare Breed" />
-            <newznab:attr name="artist" value="Shrine, The" />
+            <newznab:attr name="book" value="Rare Breed" />
+            <newznab:attr name="author" value="Shrine, The" />
             <newznab:attr name="label" value="Century Media" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -247,8 +247,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="512689000" />
             <newznab:attr name="guid" value="cf9908f3c878107d84c015aad48b8845" />
-            <newznab:attr name="album" value="For All Kings" />
-            <newznab:attr name="artist" value="Anthrax" />
+            <newznab:attr name="book" value="For All Kings" />
+            <newznab:attr name="author" value="Anthrax" />
             <newznab:attr name="label" value="Megaforce" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -269,8 +269,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="164608000" />
             <newznab:attr name="guid" value="06dcfac7a4b7f46dc1e9ec483f8ec73f" />
-            <newznab:attr name="album" value="For All Kings" />
-            <newznab:attr name="artist" value="Anthrax" />
+            <newznab:attr name="book" value="For All Kings" />
+            <newznab:attr name="author" value="Anthrax" />
             <newznab:attr name="label" value="Megaforce" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -291,8 +291,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="116494000" />
             <newznab:attr name="guid" value="952effe2dc87e5d1c271d5ea8fa3801f" />
-            <newznab:attr name="album" value="Exoplanet" />
-            <newznab:attr name="artist" value="Contortionist, The" />
+            <newznab:attr name="book" value="Exoplanet" />
+            <newznab:attr name="author" value="Contortionist, The" />
             <newznab:attr name="label" value="Good Fight Music" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Rock" />
@@ -313,8 +313,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="627256000" />
             <newznab:attr name="guid" value="474de3b6fe44b3190bf35fba59328327" />
-            <newznab:attr name="album" value="Hard Bass 2016" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Hard Bass 2016" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Imports" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -335,8 +335,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="400294000" />
             <newznab:attr name="guid" value="31c118f3e86f87b071768a7e090176d1" />
-            <newznab:attr name="album" value="This Is Acting" />
-            <newznab:attr name="artist" value="Sia" />
+            <newznab:attr name="book" value="This Is Acting" />
+            <newznab:attr name="author" value="Sia" />
             <newznab:attr name="label" value="Monkey Puzzle RecordsRCA Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Pop" />
@@ -357,8 +357,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="549938000" />
             <newznab:attr name="guid" value="664f15bd457f6669745fa494091f8108" />
-            <newznab:attr name="album" value="Monsieur Fall" />
-            <newznab:attr name="artist" value="Lefa" />
+            <newznab:attr name="book" value="Monsieur Fall" />
+            <newznab:attr name="author" value="Lefa" />
             <newznab:attr name="label" value="Imports" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Pop" />
@@ -379,8 +379,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="624799000" />
             <newznab:attr name="guid" value="a57f2a5d61f0b403b05904dc0e8a0d9e" />
-            <newznab:attr name="album" value="Now Thats What I Call Classic Rock" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Now Thats What I Call Classic Rock" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="NOW Joint Venture" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Rock" />
@@ -401,8 +401,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="971446000" />
             <newznab:attr name="guid" value="6b0315222a1df2a4b07f2681a9dbbc41" />
-            <newznab:attr name="album" value="Exterminate Extended DJ Versions WEB" />
-            <newznab:attr name="artist" value="Anime" />
+            <newznab:attr name="book" value="Exterminate Extended DJ Versions WEB" />
+            <newznab:attr name="author" value="Anime" />
             <newznab:attr name="genre" value="Hardcore" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="5" />
@@ -421,8 +421,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="154908000" />
             <newznab:attr name="guid" value="51ac24dbb3122346e6fa2860efc3cff7" />
-            <newznab:attr name="album" value="Absolute Uplifter, Vol 2 Euphoric Trance" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Absolute Uplifter, Vol 2 Euphoric Trance" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Rimoshee Traxx" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -443,8 +443,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="358513000" />
             <newznab:attr name="guid" value="d9e64c5efa86444f4c227fc99c155861" />
-            <newznab:attr name="album" value="The Gift Of Music" />
-            <newznab:attr name="artist" value="Dream Theater" />
+            <newznab:attr name="book" value="The Gift Of Music" />
+            <newznab:attr name="author" value="Dream Theater" />
             <newznab:attr name="label" value="Roadrunner Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -465,8 +465,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="152033000" />
             <newznab:attr name="guid" value="0d720fffa565fd1ab16f2f1eb8ef2129" />
-            <newznab:attr name="album" value="The End" />
-            <newznab:attr name="artist" value="Black Sabbath" />
+            <newznab:attr name="book" value="The End" />
+            <newznab:attr name="author" value="Black Sabbath" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="341" />
             <newznab:attr name="usenetdate" value="Mon, 25 Jan 2016 18:52:05 +0000" />
@@ -484,8 +484,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="253814000" />
             <newznab:attr name="guid" value="0040f26df09ad3b0742f3b32afe7f3ab" />
-            <newznab:attr name="album" value="Status Quo Remastered Explicit" />
-            <newznab:attr name="artist" value="Status Quo Quo" />
+            <newznab:attr name="book" value="Status Quo Remastered Explicit" />
+            <newznab:attr name="author" value="Status Quo Quo" />
             <newznab:attr name="label" value="Sidipus Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -506,8 +506,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="307205000" />
             <newznab:attr name="guid" value="b0109c03014ff38a7b080e4791a31cb1" />
-            <newznab:attr name="album" value="Polonaise Deel 12" />
-            <newznab:attr name="artist" value="Stanneke amp Goldfinger" />
+            <newznab:attr name="book" value="Polonaise Deel 12" />
+            <newznab:attr name="author" value="Stanneke amp Goldfinger" />
             <newznab:attr name="genre" value="Folk" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="3" />
@@ -526,8 +526,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="139348000" />
             <newznab:attr name="guid" value="3606e4c22779a8aa9da0fda29c851913" />
-            <newznab:attr name="album" value="From Glory Towards Void" />
-            <newznab:attr name="artist" value="Lutece" />
+            <newznab:attr name="book" value="From Glory Towards Void" />
+            <newznab:attr name="author" value="Lutece" />
             <newznab:attr name="label" value="Dooweet Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Classical" />
@@ -548,8 +548,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="85396000" />
             <newznab:attr name="guid" value="94b8ed888b3b42279961c3472e0b080d" />
-            <newznab:attr name="album" value="II" />
-            <newznab:attr name="artist" value="The Black Market Trust" />
+            <newznab:attr name="book" value="II" />
+            <newznab:attr name="author" value="The Black Market Trust" />
             <newznab:attr name="genre" value="Vocal Jazz; Pop" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="usenetdate" value="Mon, 25 Jan 2016 04:00:51 +0000" />
@@ -567,8 +567,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="494061000" />
             <newznab:attr name="guid" value="ab70097392213165d77bc41b5375aa4a" />
-            <newznab:attr name="album" value="Winter Thrice" />
-            <newznab:attr name="artist" value="Borknagar" />
+            <newznab:attr name="book" value="Winter Thrice" />
+            <newznab:attr name="author" value="Borknagar" />
             <newznab:attr name="label" value="Century Media" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -589,8 +589,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="157346000" />
             <newznab:attr name="guid" value="e562e530012f8e7b8e0340baed72060e" />
-            <newznab:attr name="album" value="Straight Outta Compton Original Motion Picture Score" />
-            <newznab:attr name="artist" value="Joseph Trapanese" />
+            <newznab:attr name="book" value="Straight Outta Compton Original Motion Picture Score" />
+            <newznab:attr name="author" value="Joseph Trapanese" />
             <newznab:attr name="label" value="UME" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Soundtracks" />
@@ -611,8 +611,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="344739000" />
             <newznab:attr name="guid" value="1b1d1cf2690e9cf344968d6e4cd5432f" />
-            <newznab:attr name="album" value="Deephouse Top 100 Vol3" />
-            <newznab:attr name="artist" value="VA" />
+            <newznab:attr name="book" value="Deephouse Top 100 Vol3" />
+            <newznab:attr name="author" value="VA" />
             <newznab:attr name="genre" value="House" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="6" />
@@ -631,8 +631,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="344739000" />
             <newznab:attr name="guid" value="bde795d6aa76e337ca996075d092f79a" />
-            <newznab:attr name="album" value="Deephouse Top 100 Vol3" />
-            <newznab:attr name="artist" value="VA" />
+            <newznab:attr name="book" value="Deephouse Top 100 Vol3" />
+            <newznab:attr name="author" value="VA" />
             <newznab:attr name="genre" value="House" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="8" />
@@ -651,8 +651,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="627117000" />
             <newznab:attr name="guid" value="4deac3811667801dce66637d05f4e6ca" />
-            <newznab:attr name="album" value="2016 GRAMMY Nominees" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="2016 GRAMMY Nominees" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="NARAS Grammy Nominees  Republic" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Pop" />
@@ -673,8 +673,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="109371000" />
             <newznab:attr name="guid" value="ba6e1b072dc863b65c1ea73c8c0994f3" />
-            <newznab:attr name="album" value="Aus Dem Schatten" />
-            <newznab:attr name="artist" value="Dvalin" />
+            <newznab:attr name="book" value="Aus Dem Schatten" />
+            <newznab:attr name="author" value="Dvalin" />
             <newznab:attr name="label" value="Imports" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -695,8 +695,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="24272000" />
             <newznab:attr name="guid" value="c6cca22fbd4e5c21584a88d7f7324965" />
-            <newznab:attr name="album" value="Pond Scum" />
-            <newznab:attr name="artist" value="Bonnie Prince Billy" />
+            <newznab:attr name="book" value="Pond Scum" />
+            <newznab:attr name="author" value="Bonnie Prince Billy" />
             <newznab:attr name="label" value="Drag City" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Rock" />
@@ -717,8 +717,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="456256000" />
             <newznab:attr name="guid" value="c3a554620060484770cd0d2034b5191d" />
-            <newznab:attr name="album" value="Urban Vibes, Vol 15 the Underground Sound of House Music" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Urban Vibes, Vol 15 the Underground Sound of House Music" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Recovery House" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -739,8 +739,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="456256000" />
             <newznab:attr name="guid" value="19ad406b3e21480794e5905f335fe19c" />
-            <newznab:attr name="album" value="Urban Vibes, Vol 15 the Underground Sound of House Music" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Urban Vibes, Vol 15 the Underground Sound of House Music" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Recovery House" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -761,8 +761,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="358555000" />
             <newznab:attr name="guid" value="44905e4b6dd3be7488dce4959d23103a" />
-            <newznab:attr name="album" value="Handsup Hits 2 Explicit" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Handsup Hits 2 Explicit" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Earthquake" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -783,8 +783,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="358555000" />
             <newznab:attr name="guid" value="32968fa3ecc7f15d9145477dc3f823aa" />
-            <newznab:attr name="album" value="Handsup Hits 2 Explicit" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Handsup Hits 2 Explicit" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Earthquake" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -805,8 +805,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="1324404000" />
             <newznab:attr name="guid" value="878d45b6cac8ccdb8d80ae60ae581af8" />
-            <newznab:attr name="album" value="Ultimate Trance Reflections" />
-            <newznab:attr name="artist" value="MKampTW" />
+            <newznab:attr name="book" value="Ultimate Trance Reflections" />
+            <newznab:attr name="author" value="MKampTW" />
             <newznab:attr name="genre" value="Trance" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="4" />
@@ -825,8 +825,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="111538000" />
             <newznab:attr name="guid" value="81f9e2d70f1164aef1a9543ccf817331" />
-            <newznab:attr name="album" value="Descent" />
-            <newznab:attr name="artist" value="Highborne" />
+            <newznab:attr name="book" value="Descent" />
+            <newznab:attr name="author" value="Highborne" />
             <newznab:attr name="label" value="Imminent Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Rock" />
@@ -847,8 +847,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="117578000" />
             <newznab:attr name="guid" value="da8c9de4ee5e9a4362dcac650ae42ef7" />
-            <newznab:attr name="album" value="L2l" />
-            <newznab:attr name="artist" value="Lifelss 2 Life" />
+            <newznab:attr name="book" value="L2l" />
+            <newznab:attr name="author" value="Lifelss 2 Life" />
             <newznab:attr name="label" value="Unsigned" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Christian &amp; Gospel" />
@@ -869,8 +869,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="110230000" />
             <newznab:attr name="guid" value="682506affbe0a2aaccc0f5f830e5349e" />
-            <newznab:attr name="album" value="Blackened Visions" />
-            <newznab:attr name="artist" value="Lumberjack Feedback" />
+            <newznab:attr name="book" value="Blackened Visions" />
+            <newznab:attr name="author" value="Lumberjack Feedback" />
             <newznab:attr name="label" value="KAOTOXIN" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Rock" />
@@ -891,8 +891,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="120720000" />
             <newznab:attr name="guid" value="6a1b8e3bdae227fc1f6d1a1819123ea0" />
-            <newznab:attr name="album" value="The Same Old Stories" />
-            <newznab:attr name="artist" value="Semidimes" />
+            <newznab:attr name="book" value="The Same Old Stories" />
+            <newznab:attr name="author" value="Semidimes" />
             <newznab:attr name="label" value="Gateways Productions  Art Gates Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -913,8 +913,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="105702000" />
             <newznab:attr name="guid" value="6afe8e823a75b1e122701e58ef31f4ed" />
-            <newznab:attr name="album" value="Rare Breed" />
-            <newznab:attr name="artist" value="Shrine, The" />
+            <newznab:attr name="book" value="Rare Breed" />
+            <newznab:attr name="author" value="Shrine, The" />
             <newznab:attr name="label" value="Century Media" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -935,8 +935,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="121798000" />
             <newznab:attr name="guid" value="c8d7048ddbb7044eecb3722dd532f2b9" />
-            <newznab:attr name="album" value="Exoplanet" />
-            <newznab:attr name="artist" value="Contortionist, The" />
+            <newznab:attr name="book" value="Exoplanet" />
+            <newznab:attr name="author" value="Contortionist, The" />
             <newznab:attr name="label" value="Good Fight Music" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Rock" />
@@ -957,8 +957,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="138935000" />
             <newznab:attr name="guid" value="ec0d7b18c13a076f6417ca7da1018c04" />
-            <newznab:attr name="album" value="Dystopia" />
-            <newznab:attr name="artist" value="Megadeth" />
+            <newznab:attr name="book" value="Dystopia" />
+            <newznab:attr name="author" value="Megadeth" />
             <newznab:attr name="label" value="UMeTBoy Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -979,8 +979,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="100495000" />
             <newznab:attr name="guid" value="fef4f9ead88a88d33253efdc25909263" />
-            <newznab:attr name="album" value="Klein Geluk" />
-            <newznab:attr name="artist" value="Will Tura" />
+            <newznab:attr name="book" value="Klein Geluk" />
+            <newznab:attr name="author" value="Will Tura" />
             <newznab:attr name="label" value="Universal Music Belgium" />
             <newznab:attr name="genre" value="Folk" />
             <newznab:attr name="year" value="2016" />
@@ -1000,8 +1000,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="124254000" />
             <newznab:attr name="guid" value="a932af5da0bc8e35967f4b00f72b2790" />
-            <newznab:attr name="album" value="Winter Thrice" />
-            <newznab:attr name="artist" value="Borknagar" />
+            <newznab:attr name="book" value="Winter Thrice" />
+            <newznab:attr name="author" value="Borknagar" />
             <newznab:attr name="label" value="Century Media" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -1022,8 +1022,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="491897000" />
             <newznab:attr name="guid" value="8a5309e266d1fb7676dff6c256de0b6a" />
-            <newznab:attr name="album" value="Media Markt TOP 40  2016 WEEK 04" />
-            <newznab:attr name="artist" value="Justin Bieber" />
+            <newznab:attr name="book" value="Media Markt TOP 40  2016 WEEK 04" />
+            <newznab:attr name="author" value="Justin Bieber" />
             <newznab:attr name="genre" value="Top 40" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="4" />
@@ -1042,8 +1042,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="393058000" />
             <newznab:attr name="guid" value="3a1cd051d0d477f35e9255fcbc77b0c9" />
-            <newznab:attr name="album" value="Exterminate Extended DJ Versions WEB" />
-            <newznab:attr name="artist" value="Anime" />
+            <newznab:attr name="book" value="Exterminate Extended DJ Versions WEB" />
+            <newznab:attr name="author" value="Anime" />
             <newznab:attr name="genre" value="Hardcore" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="4" />
@@ -1062,8 +1062,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="228128000" />
             <newznab:attr name="guid" value="7cf3e8abcb2a7ac2e660b97d2d7df788" />
-            <newznab:attr name="album" value="Number Two Explicit" />
-            <newznab:attr name="artist" value="Turkish Techno" />
+            <newznab:attr name="book" value="Number Two Explicit" />
+            <newznab:attr name="author" value="Turkish Techno" />
             <newznab:attr name="label" value="Dirt Cult Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Alternative Rock" />
@@ -1084,8 +1084,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="480863000" />
             <newznab:attr name="guid" value="31482d6031794cfb9cb52eedd4e8b960" />
-            <newznab:attr name="album" value="Dystopia" />
-            <newznab:attr name="artist" value="Megadeth" />
+            <newznab:attr name="book" value="Dystopia" />
+            <newznab:attr name="author" value="Megadeth" />
             <newznab:attr name="label" value="UMeTBoy Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -1106,8 +1106,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="264470000" />
             <newznab:attr name="guid" value="7fdf940f3d459c1e33c31d6a89ef13f2" />
-            <newznab:attr name="album" value="Love Dont Live Here Explicit" />
-            <newznab:attr name="artist" value="Lionheart" />
+            <newznab:attr name="book" value="Love Dont Live Here Explicit" />
+            <newznab:attr name="author" value="Lionheart" />
             <newznab:attr name="label" value="LHHC RECORDS" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -1128,8 +1128,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="517476000" />
             <newznab:attr name="guid" value="6bbf1e1423d477a6f942224e54eac60b" />
-            <newznab:attr name="album" value="House Clubhits Megamix Vol6" />
-            <newznab:attr name="artist" value="VA" />
+            <newznab:attr name="book" value="House Clubhits Megamix Vol6" />
+            <newznab:attr name="author" value="VA" />
             <newznab:attr name="genre" value="House" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="10" />
@@ -1148,8 +1148,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="337003000" />
             <newznab:attr name="guid" value="a88a5cc38ea18ea66e4e2b6ab918a0b8" />
-            <newznab:attr name="album" value="Wildfire" />
-            <newznab:attr name="artist" value="Rachel Platten" />
+            <newznab:attr name="book" value="Wildfire" />
+            <newznab:attr name="author" value="Rachel Platten" />
             <newznab:attr name="label" value="Columbia" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Pop" />
@@ -1170,8 +1170,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="319452000" />
             <newznab:attr name="guid" value="427874c8793cdbf0998d1271b5523b49" />
-            <newznab:attr name="album" value="Moth" />
-            <newznab:attr name="artist" value="Chairlift" />
+            <newznab:attr name="book" value="Moth" />
+            <newznab:attr name="author" value="Chairlift" />
             <newznab:attr name="label" value="Columbia" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Alternative Rock" />
@@ -1192,8 +1192,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="393726000" />
             <newznab:attr name="guid" value="573e6c6b7320094b89a9135538559f21" />
-            <newznab:attr name="album" value="Exterminate Extended DJ Versions WEB" />
-            <newznab:attr name="artist" value="Anime" />
+            <newznab:attr name="book" value="Exterminate Extended DJ Versions WEB" />
+            <newznab:attr name="author" value="Anime" />
             <newznab:attr name="genre" value="Hardcore" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="3" />
@@ -1212,8 +1212,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="215392000" />
             <newznab:attr name="guid" value="e3e39d2cac1e2f7b509d02f8391ec0ac" />
-            <newznab:attr name="album" value="Crack House Explicit" />
-            <newznab:attr name="artist" value="Danforth" />
+            <newznab:attr name="book" value="Crack House Explicit" />
+            <newznab:attr name="author" value="Danforth" />
             <newznab:attr name="label" value="Danforth Hardcore Paris" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Alternative Rock" />
@@ -1234,8 +1234,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="483771000" />
             <newznab:attr name="guid" value="5011e7db085ac89d11c6a6378ca7d7d2" />
-            <newznab:attr name="album" value="Monster Tape" />
-            <newznab:attr name="artist" value="Rimk" />
+            <newznab:attr name="book" value="Monster Tape" />
+            <newznab:attr name="author" value="Rimk" />
             <newznab:attr name="label" value="Imports" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Pop" />
@@ -1256,8 +1256,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="580190000" />
             <newznab:attr name="guid" value="b00e5ec0b5466aaf1b5ae33d0e7c7036" />
-            <newznab:attr name="album" value="Fin de Dream Avant Gotham City Explicit" />
-            <newznab:attr name="artist" value="HMagnum" />
+            <newznab:attr name="book" value="Fin de Dream Avant Gotham City Explicit" />
+            <newznab:attr name="author" value="HMagnum" />
             <newznab:attr name="label" value="Loudschool" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="World Music" />
@@ -1278,8 +1278,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="2786608000" />
             <newznab:attr name="guid" value="7cf1334353e9196b8473f0ea361c099b" />
-            <newznab:attr name="album" value="Hard Bass 2016" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Hard Bass 2016" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Imports" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -1300,8 +1300,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="329213000" />
             <newznab:attr name="guid" value="34f4a16d0bb579dde38de29f716f1bdf" />
-            <newznab:attr name="album" value="Cautionary Tale" />
-            <newznab:attr name="artist" value="Dylan LeBlanc" />
+            <newznab:attr name="book" value="Cautionary Tale" />
+            <newznab:attr name="author" value="Dylan LeBlanc" />
             <newznab:attr name="label" value="Single Lock Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Folk" />
@@ -1322,8 +1322,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="44773000" />
             <newznab:attr name="guid" value="d47f7d44a4aef15259e21323f3780ec1" />
-            <newznab:attr name="album" value="Jan 20 2016" />
-            <newznab:attr name="artist" value="Howard Stern Show" />
+            <newznab:attr name="book" value="Jan 20 2016" />
+            <newznab:attr name="author" value="Howard Stern Show" />
             <newznab:attr name="genre" value="Comedy" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="7" />
@@ -1342,8 +1342,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="28241000" />
             <newznab:attr name="guid" value="2dc103b2b15a63f2779e36dd7cf40232" />
-            <newznab:attr name="album" value="Cautionary Tale" />
-            <newznab:attr name="artist" value="Dylan LeBlanc" />
+            <newznab:attr name="book" value="Cautionary Tale" />
+            <newznab:attr name="author" value="Dylan LeBlanc" />
             <newznab:attr name="label" value="Single Lock Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Folk" />
@@ -1364,8 +1364,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="44754000" />
             <newznab:attr name="guid" value="be3cf337f012387b0e26c5e3a9c51281" />
-            <newznab:attr name="album" value="Jan 20 2016" />
-            <newznab:attr name="artist" value="Howard Stern Show" />
+            <newznab:attr name="book" value="Jan 20 2016" />
+            <newznab:attr name="author" value="Howard Stern Show" />
             <newznab:attr name="genre" value="Comedy" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="7" />
@@ -1384,8 +1384,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="44763000" />
             <newznab:attr name="guid" value="218d85679fdc286720b35763380d715b" />
-            <newznab:attr name="album" value="Jan 20 2016" />
-            <newznab:attr name="artist" value="Howard Stern Show" />
+            <newznab:attr name="book" value="Jan 20 2016" />
+            <newznab:attr name="author" value="Howard Stern Show" />
             <newznab:attr name="genre" value="Comedy" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="7" />
@@ -1404,8 +1404,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="393377000" />
             <newznab:attr name="guid" value="158c3782cbb82996b0a67dc43b5ad87b" />
-            <newznab:attr name="album" value="NRJ Winter Hits 2016" />
-            <newznab:attr name="artist" value="Justin Bieber" />
+            <newznab:attr name="book" value="NRJ Winter Hits 2016" />
+            <newznab:attr name="author" value="Justin Bieber" />
             <newznab:attr name="genre" value="Pop" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="8" />
@@ -1424,8 +1424,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="42361000" />
             <newznab:attr name="guid" value="fbc231e82faef5759a9742f678946e78" />
-            <newznab:attr name="album" value="Jan 20 2016" />
-            <newznab:attr name="artist" value="Howard Stern Show" />
+            <newznab:attr name="book" value="Jan 20 2016" />
+            <newznab:attr name="author" value="Howard Stern Show" />
             <newznab:attr name="genre" value="Comedy" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="8" />
@@ -1444,8 +1444,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="41082000" />
             <newznab:attr name="guid" value="2a6101c2e09ba53517186c3f211525c0" />
-            <newznab:attr name="album" value="Jan 20 2016" />
-            <newznab:attr name="artist" value="Howard Stern Show" />
+            <newznab:attr name="book" value="Jan 20 2016" />
+            <newznab:attr name="author" value="Howard Stern Show" />
             <newznab:attr name="genre" value="Comedy" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="8" />
@@ -1464,8 +1464,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="991267000" />
             <newznab:attr name="guid" value="b051509428cf7d265677e57e55e21a78" />
-            <newznab:attr name="album" value="German Top 100 Single Charts 16 Jan 2016" />
-            <newznab:attr name="artist" value="Adele" />
+            <newznab:attr name="book" value="German Top 100 Single Charts 16 Jan 2016" />
+            <newznab:attr name="author" value="Adele" />
             <newznab:attr name="genre" value="Pop" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="6" />
@@ -1484,8 +1484,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="672245000" />
             <newznab:attr name="guid" value="f6263050e63c48b3c169deea08019ae2" />
-            <newznab:attr name="album" value="DJ Sounds 20161" />
-            <newznab:attr name="artist" value="Avicii" />
+            <newznab:attr name="book" value="DJ Sounds 20161" />
+            <newznab:attr name="author" value="Avicii" />
             <newznab:attr name="label" value="Pink Revolver" />
             <newznab:attr name="genre" value="Dance" />
             <newznab:attr name="year" value="2016" />
@@ -1505,8 +1505,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="672245000" />
             <newznab:attr name="guid" value="6ce01dc1a826621c1892276af045b938" />
-            <newznab:attr name="album" value="DJ Sounds 20161" />
-            <newznab:attr name="artist" value="Avicii" />
+            <newznab:attr name="book" value="DJ Sounds 20161" />
+            <newznab:attr name="author" value="Avicii" />
             <newznab:attr name="label" value="Pink Revolver" />
             <newznab:attr name="genre" value="Dance" />
             <newznab:attr name="year" value="2016" />
@@ -1526,8 +1526,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="135093000" />
             <newznab:attr name="guid" value="be1bd46c6ecdf495bfcc780137853514" />
-            <newznab:attr name="album" value="Caged In Memories" />
-            <newznab:attr name="artist" value="Anima Tempo" />
+            <newznab:attr name="book" value="Caged In Memories" />
+            <newznab:attr name="author" value="Anima Tempo" />
             <newznab:attr name="genre" value="Metal" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="4" />
@@ -1546,8 +1546,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="303751000" />
             <newznab:attr name="guid" value="2408b6aff117464c5a577dcc35b8bac1" />
-            <newznab:attr name="album" value="Into the Legend" />
-            <newznab:attr name="artist" value="Rhapsody Of Fire" />
+            <newznab:attr name="book" value="Into the Legend" />
+            <newznab:attr name="author" value="Rhapsody Of Fire" />
             <newznab:attr name="label" value="AFM Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -1568,8 +1568,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="220695000" />
             <newznab:attr name="guid" value="0eee04bc2599d4b9627944cc3fef6b0a" />
-            <newznab:attr name="album" value="Scary Creatures" />
-            <newznab:attr name="artist" value="Brainstorm" />
+            <newznab:attr name="book" value="Scary Creatures" />
+            <newznab:attr name="author" value="Brainstorm" />
             <newznab:attr name="label" value="AFM Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -1590,8 +1590,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="661012000" />
             <newznab:attr name="guid" value="be4ac48e3a40631b3611cd50bb471841" />
-            <newznab:attr name="album" value="Hardstyle The Annual 2016 Explicit" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Hardstyle The Annual 2016 Explicit" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Be Yourself Music" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -1612,7 +1612,7 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="271778000" />
             <newznab:attr name="guid" value="e2afc175525a5ea0f5269ef5a03b507d" />
-            <newznab:attr name="artist" value="Benjamin Bluemchen" />
+            <newznab:attr name="author" value="Benjamin Bluemchen" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Alternative Rock" />
             <newznab:attr name="year" value="2016" />
@@ -1632,8 +1632,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="117666000" />
             <newznab:attr name="guid" value="59b0acad0a23ae5c0ccf2ef7a9d994b6" />
-            <newznab:attr name="album" value="Melancholia" />
-            <newznab:attr name="artist" value="Tribulation" />
+            <newznab:attr name="book" value="Melancholia" />
+            <newznab:attr name="author" value="Tribulation" />
             <newznab:attr name="label" value="Century Media" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -1654,8 +1654,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="205842000" />
             <newznab:attr name="guid" value="f55fd82e73969feee4a18a561bf61df1" />
-            <newznab:attr name="album" value="A State Of Trance Radio Top 20  January 2016" />
-            <newznab:attr name="artist" value="Dash Berlin" />
+            <newznab:attr name="book" value="A State Of Trance Radio Top 20  January 2016" />
+            <newznab:attr name="author" value="Dash Berlin" />
             <newznab:attr name="genre" value="Trance" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="14" />
@@ -1674,8 +1674,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="145323000" />
             <newznab:attr name="guid" value="39992159d6488a00adcfb39ee26408e8" />
-            <newznab:attr name="album" value="Tanz Der Skelette  Folge 48  by Videomann" />
-            <newznab:attr name="artist" value="Die Drei Fragezeichen Kids" />
+            <newznab:attr name="book" value="Tanz Der Skelette  Folge 48  by Videomann" />
+            <newznab:attr name="author" value="Die Drei Fragezeichen Kids" />
             <newznab:attr name="genre" value="Hoerspiel" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="usenetdate" value="Sun, 17 Jan 2016 00:01:02 +0000" />
@@ -1693,8 +1693,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="145144000" />
             <newznab:attr name="guid" value="9568ef54e722af0d827fadd7c4f3719e" />
-            <newznab:attr name="album" value="Tanz Der Skelette  Folge 48  by Videomann" />
-            <newznab:attr name="artist" value="Die Drei Fragezeichen Kids" />
+            <newznab:attr name="book" value="Tanz Der Skelette  Folge 48  by Videomann" />
+            <newznab:attr name="author" value="Die Drei Fragezeichen Kids" />
             <newznab:attr name="genre" value="Hoerspiel" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="usenetdate" value="Sun, 17 Jan 2016 00:01:02 +0000" />
@@ -1712,8 +1712,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="303085000" />
             <newznab:attr name="guid" value="7a545e70c7fb59de811a164089ca3cd4" />
-            <newznab:attr name="album" value="Deep Nirvana, Vol 4 25 DeepHouse Tunes" />
-            <newznab:attr name="artist" value="Deep Nirvana Vol 4 25 Deep" />
+            <newznab:attr name="book" value="Deep Nirvana, Vol 4 25 DeepHouse Tunes" />
+            <newznab:attr name="author" value="Deep Nirvana Vol 4 25 Deep" />
             <newznab:attr name="label" value="Groove Nation" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -1734,8 +1734,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="626000000" />
             <newznab:attr name="guid" value="03a7c325f9c7f5c90d3a0b9200f58b86" />
-            <newznab:attr name="album" value="Straight Outta Compton Music From The Motion Picture Explicit" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Straight Outta Compton Music From The Motion Picture Explicit" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="UME" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Soundtracks" />
@@ -1757,8 +1757,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="460165000" />
             <newznab:attr name="guid" value="201513128394d6471174f4c42d73e26c" />
-            <newznab:attr name="album" value="The Infinite Steve Vai An Anthology" />
-            <newznab:attr name="artist" value="Steve Vai" />
+            <newznab:attr name="book" value="The Infinite Steve Vai An Anthology" />
+            <newznab:attr name="author" value="Steve Vai" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="9" />
             <newznab:attr name="usenetdate" value="Sat, 16 Jan 2016 11:49:53 +0000" />
@@ -1776,7 +1776,7 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="190955000" />
             <newznab:attr name="guid" value="577a981b680b896fce8bb8a5c6829c4d" />
-            <newznab:attr name="artist" value="Varg" />
+            <newznab:attr name="author" value="Varg" />
             <newznab:attr name="label" value="Napalm Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -1797,8 +1797,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="133681000" />
             <newznab:attr name="guid" value="8297d9b82646f8aff603b1f8b277d673" />
-            <newznab:attr name="album" value="Motvind" />
-            <newznab:attr name="artist" value="Nifrost" />
+            <newznab:attr name="book" value="Motvind" />
+            <newznab:attr name="author" value="Nifrost" />
             <newznab:attr name="label" value="IndiGoBoom" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -1819,8 +1819,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="158783000" />
             <newznab:attr name="guid" value="5c3ef6652729ed046a22f5b749b6c8f1" />
-            <newznab:attr name="album" value="Die Rache des Untoten  Folge 179  by Videomann" />
-            <newznab:attr name="artist" value="Die drei Fragezeichen" />
+            <newznab:attr name="book" value="Die Rache des Untoten  Folge 179  by Videomann" />
+            <newznab:attr name="author" value="Die drei Fragezeichen" />
             <newznab:attr name="genre" value="Hoespiel" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="7" />
@@ -1839,8 +1839,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="384044000" />
             <newznab:attr name="guid" value="f8b01b2bf982572922980b45ed587d47" />
-            <newznab:attr name="album" value="The Best Deep House, Vol 1" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="The Best Deep House, Vol 1" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Twentythree Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -1861,8 +1861,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="485959000" />
             <newznab:attr name="guid" value="dc53f812c384fadc25af8d800e3870a3" />
-            <newznab:attr name="album" value="Hand aufs Herz Explicit" />
-            <newznab:attr name="artist" value="Unantastbar" />
+            <newznab:attr name="book" value="Hand aufs Herz Explicit" />
+            <newznab:attr name="author" value="Unantastbar" />
             <newznab:attr name="label" value="RookiesampKings" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Rock" />
@@ -1883,8 +1883,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="371163000" />
             <newznab:attr name="guid" value="288cd748eb0de993baad85d0ed13b0d2" />
-            <newznab:attr name="album" value="Tiergarten Explicit" />
-            <newznab:attr name="artist" value="Terrorgruppe" />
+            <newznab:attr name="book" value="Tiergarten Explicit" />
+            <newznab:attr name="author" value="Terrorgruppe" />
             <newznab:attr name="label" value="AggropopRecords" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Alternative Rock" />
@@ -1905,8 +1905,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="412969000" />
             <newznab:attr name="guid" value="031f0dc6f560180a935521a35bc11170" />
-            <newznab:attr name="album" value="Hardstyle Sounds Vol05" />
-            <newznab:attr name="artist" value="VA" />
+            <newznab:attr name="book" value="Hardstyle Sounds Vol05" />
+            <newznab:attr name="author" value="VA" />
             <newznab:attr name="label" value="I Love This Sound" />
             <newznab:attr name="genre" value="Techno" />
             <newznab:attr name="year" value="2016" />
@@ -1926,8 +1926,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="444843000" />
             <newznab:attr name="guid" value="8ce80d7775a0ef8799d91b432f842194" />
-            <newznab:attr name="album" value="Media Markt TOP 40  2016 WEEK 03" />
-            <newznab:attr name="artist" value="Justin Bieber" />
+            <newznab:attr name="book" value="Media Markt TOP 40  2016 WEEK 03" />
+            <newznab:attr name="author" value="Justin Bieber" />
             <newznab:attr name="genre" value="Top 40" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="2" />
@@ -1946,8 +1946,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="444843000" />
             <newznab:attr name="guid" value="13763b97f75ee8245f9fb14f5ea0b5c7" />
-            <newznab:attr name="album" value="Media Markt TOP 40  2016 WEEK 03" />
-            <newznab:attr name="artist" value="Justin Bieber" />
+            <newznab:attr name="book" value="Media Markt TOP 40  2016 WEEK 03" />
+            <newznab:attr name="author" value="Justin Bieber" />
             <newznab:attr name="genre" value="Top 40" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="4" />
@@ -1966,8 +1966,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="345186000" />
             <newznab:attr name="guid" value="8bb7a0045f07af8a39ae4568d366b2ca" />
-            <newznab:attr name="album" value="House Do Brasil, Vol 2" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="House Do Brasil, Vol 2" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="label" value="Gaathy Recordings" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Dance &amp; Electronic" />
@@ -1988,8 +1988,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="233252000" />
             <newznab:attr name="guid" value="802c4caf3ac508b49abcd9a5f06ec97c" />
-            <newznab:attr name="album" value="Rinse FM 01012016" />
-            <newznab:attr name="artist" value="Todd Edwards" />
+            <newznab:attr name="book" value="Rinse FM 01012016" />
+            <newznab:attr name="author" value="Todd Edwards" />
             <newznab:attr name="genre" value="House" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="2" />
@@ -2008,8 +2008,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="414959000" />
             <newznab:attr name="guid" value="59c990e1a889c7e6d436ea069ab90336" />
-            <newznab:attr name="album" value="Leben II Explicit" />
-            <newznab:attr name="artist" value="Azad" />
+            <newznab:attr name="book" value="Leben II Explicit" />
+            <newznab:attr name="author" value="Azad" />
             <newznab:attr name="label" value="Bozz Music" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Rap &amp; Hip-Hop" />
@@ -2030,8 +2030,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="166201000" />
             <newznab:attr name="guid" value="9ea015decb1907fb579f8fcd2d08daa2" />
-            <newznab:attr name="album" value="Into the Legend" />
-            <newznab:attr name="artist" value="Rhapsody Of Fire" />
+            <newznab:attr name="book" value="Into the Legend" />
+            <newznab:attr name="author" value="Rhapsody Of Fire" />
             <newznab:attr name="label" value="AFM Records" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Hard Rock &amp; Metal" />
@@ -2052,8 +2052,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="721704000" />
             <newznab:attr name="guid" value="10e3b9bc3c73702d3e1be80bdaceba5c" />
-            <newznab:attr name="album" value="Berlin Deep House 20161" />
-            <newznab:attr name="artist" value="Various Artists" />
+            <newznab:attr name="book" value="Berlin Deep House 20161" />
+            <newznab:attr name="author" value="Various Authors" />
             <newznab:attr name="genre" value="House, Club House, Deep House" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="6" />
@@ -2072,8 +2072,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="1544589000" />
             <newznab:attr name="guid" value="d62c60cd848b93d55d44266338f2918b" />
-            <newznab:attr name="album" value="Tech House Masters Fresh" />
-            <newznab:attr name="artist" value="Derek Howell" />
+            <newznab:attr name="book" value="Tech House Masters Fresh" />
+            <newznab:attr name="author" value="Derek Howell" />
             <newznab:attr name="genre" value="Electronic" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="5" />
@@ -2092,8 +2092,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="1470081000" />
             <newznab:attr name="guid" value="792c03529273a5f8fe44cd29c177ce22" />
-            <newznab:attr name="album" value="EDM Essentials  Future Banging Concert" />
-            <newznab:attr name="artist" value="Hardwell amp Armin van Buuren" />
+            <newznab:attr name="book" value="EDM Essentials  Future Banging Concert" />
+            <newznab:attr name="author" value="Hardwell amp Armin van Buuren" />
             <newznab:attr name="label" value="DO IT YOURSELF" />
             <newznab:attr name="genre" value="House" />
             <newznab:attr name="year" value="2016" />
@@ -2113,8 +2113,8 @@
             <newznab:attr name="category" value="3010" />
             <newznab:attr name="size" value="619827000" />
             <newznab:attr name="guid" value="a98724fb81f939a0c7b8b5a9852ea731" />
-            <newznab:attr name="album" value="Dance 2016" />
-            <newznab:attr name="artist" value="Sigala featuring Bryn Christopher" />
+            <newznab:attr name="book" value="Dance 2016" />
+            <newznab:attr name="author" value="Sigala featuring Bryn Christopher" />
             <newznab:attr name="genre" value="Dance" />
             <newznab:attr name="year" value="2016" />
             <newznab:attr name="grabs" value="5" />
@@ -2133,8 +2133,8 @@
             <newznab:attr name="category" value="3040" />
             <newznab:attr name="size" value="302517000" />
             <newznab:attr name="guid" value="184ba8c920c587da880b55bacb3d43c6" />
-            <newznab:attr name="album" value="Leave Me Alone" />
-            <newznab:attr name="artist" value="Hinds" />
+            <newznab:attr name="book" value="Leave Me Alone" />
+            <newznab:attr name="author" value="Hinds" />
             <newznab:attr name="label" value="Mom amp Pop Music" />
             <newznab:attr name="coverurl" value="https://api.nzbgeek.info/covers/music/.jpg" />
             <newznab:attr name="genre" value="Alternative Rock" />
