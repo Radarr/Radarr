@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -22,7 +23,13 @@ namespace Radarr.Host
         {
             try
             {
-                Logger.Info("Starting Radarr - {0} - Version {1}", Assembly.GetCallingAssembly().Location, Assembly.GetExecutingAssembly().GetName().Version);
+                Logger.Info("Starting Radarr - {0} - Version {1}",
+#if NETCOREAPP
+                            Process.GetCurrentProcess().MainModule.FileName,
+#else
+                            Assembly.GetCallingAssembly().Location,
+#endif
+                            Assembly.GetExecutingAssembly().GetName().Version);
 
                 if (!PlatformValidation.IsValidate(userAlert))
                 {
