@@ -26,9 +26,19 @@ namespace NzbDrone.Core.Notifications.Prowl
             _prowlProxy.SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, Settings.ApiKey, (ProwlPriority)Settings.Priority);
         }
 
-        public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
         {
-            _prowlProxy.SendNotification(HEALTH_ISSUE_TITLE, healthCheck.Message, Settings.ApiKey, (ProwlPriority)Settings.Priority);
+            _prowlProxy.SendNotification(MOVIE_FILE_DELETED_TITLE, deleteMessage.Message, Settings.ApiKey, (ProwlPriority)Settings.Priority);
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            _prowlProxy.SendNotification(MOVIE_DELETED_TITLE, deleteMessage.Message, Settings.ApiKey, (ProwlPriority)Settings.Priority);
+        }
+
+        public override void OnHealthIssue(HealthCheck.HealthCheck message)
+        {
+            _prowlProxy.SendNotification(HEALTH_ISSUE_TITLE, message.Message, Settings.ApiKey, (ProwlPriority)Settings.Priority);
         }
 
         public override ValidationResult Test()

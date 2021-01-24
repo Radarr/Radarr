@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Composition;
@@ -13,8 +13,9 @@ namespace NzbDrone.Core.Notifications
         List<INotification> OnDownloadEnabled();
         List<INotification> OnUpgradeEnabled();
         List<INotification> OnRenameEnabled();
+        List<INotification> OnMovieDeleteEnabled();
+        List<INotification> OnMovieFileDeleteEnabled();
         List<INotification> OnHealthIssueEnabled();
-        List<INotification> OnDeleteEnabled();
     }
 
     public class NotificationFactory : ProviderFactory<INotification, NotificationDefinition>, INotificationFactory
@@ -44,14 +45,24 @@ namespace NzbDrone.Core.Notifications
             return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnRename).ToList();
         }
 
+        public List<INotification> OnMovieDeleteEnabled()
+        {
+            return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnMovieDelete).ToList();
+        }
+
+        public List<INotification> OnMovieFileDeleteEnabled()
+        {
+            return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnMovieFileDelete).ToList();
+        }
+
+        public List<INotification> OnMovieFileDeleteForUpgradeEnabled()
+        {
+            return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnMovieFileDeleteForUpgrade).ToList();
+        }
+
         public List<INotification> OnHealthIssueEnabled()
         {
             return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnHealthIssue).ToList();
-        }
-
-        public List<INotification> OnDeleteEnabled()
-        {
-            return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnDelete).ToList();
         }
 
         public override void SetProviderCharacteristics(INotification provider, NotificationDefinition definition)
@@ -62,8 +73,10 @@ namespace NzbDrone.Core.Notifications
             definition.SupportsOnDownload = provider.SupportsOnDownload;
             definition.SupportsOnUpgrade = provider.SupportsOnUpgrade;
             definition.SupportsOnRename = provider.SupportsOnRename;
+            definition.SupportsOnMovieDelete = provider.SupportsOnMovieDelete;
+            definition.SupportsOnMovieFileDelete = provider.SupportsOnMovieFileDelete;
+            definition.SupportsOnMovieFileDeleteForUpgrade = provider.SupportsOnMovieFileDeleteForUpgrade;
             definition.SupportsOnHealthIssue = provider.SupportsOnHealthIssue;
-            definition.SupportsOnDelete = provider.SupportsOnDelete;
         }
     }
 }

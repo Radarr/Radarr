@@ -27,6 +27,16 @@ namespace NzbDrone.Core.Notifications.Join
             _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
         }
 
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
+        {
+            _proxy.SendNotification(MOVIE_FILE_DELETED_TITLE_BRANDED, deleteMessage.Message, Settings);
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            _proxy.SendNotification(MOVIE_DELETED_TITLE_BRANDED, deleteMessage.Message, Settings);
+        }
+
         public override void OnHealthIssue(HealthCheck.HealthCheck message)
         {
             _proxy.SendNotification(HEALTH_ISSUE_TITLE_BRANDED, message.Message, Settings);

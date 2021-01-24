@@ -29,11 +29,16 @@ namespace NzbDrone.Core.Notifications.Trakt
             _traktService.AddMovieToCollection(Settings, message.Movie, message.MovieFile);
         }
 
-        public override void OnDelete(DeleteMessage message)
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
         {
-            if (message.Reason != MediaFiles.DeleteMediaFileReason.Upgrade)
+            _traktService.RemoveMovieFromCollection(Settings, deleteMessage.Movie);
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            if (deleteMessage.DeletedFiles)
             {
-                _traktService.RemoveMovieFromCollection(Settings, message.Movie, message.MovieFile);
+                _traktService.RemoveMovieFromCollection(Settings, deleteMessage.Movie);
             }
         }
 

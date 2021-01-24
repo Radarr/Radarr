@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Movies;
@@ -65,6 +67,38 @@ namespace NzbDrone.Core.Notifications.Slack
                                 };
 
             var payload = CreatePayload("Renamed", attachments);
+
+            _proxy.SendPayload(payload, Settings);
+        }
+
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
+        {
+            var attachments = new List<Attachment>
+                              {
+                                  new Attachment
+                                  {
+                                      Title = deleteMessage.Movie.Title,
+                                      Text = Path.Combine(deleteMessage.Movie.Path, deleteMessage.MovieFile.RelativePath)
+                                  }
+                              };
+
+            var payload = CreatePayload("Movie File Deleted", attachments);
+
+            _proxy.SendPayload(payload, Settings);
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            var attachments = new List<Attachment>
+                              {
+                                  new Attachment
+                                  {
+                                      Title = deleteMessage.Movie.Title,
+                                      Text = deleteMessage.DeletedFilesMessage
+                                  }
+                              };
+
+            var payload = CreatePayload("Movie Deleted", attachments);
 
             _proxy.SendPayload(payload, Settings);
         }

@@ -48,6 +48,19 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             UpdateIfEnabled(movie);
         }
 
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
+        {
+            UpdateIfEnabled(deleteMessage.Movie);
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            if (deleteMessage.DeletedFiles)
+            {
+                UpdateIfEnabled(deleteMessage.Movie);
+            }
+        }
+
         private void UpdateIfEnabled(Movie movie)
         {
             if (Settings.UpdateLibrary)

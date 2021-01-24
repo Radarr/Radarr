@@ -1,4 +1,4 @@
-﻿using NzbDrone.Core.Notifications;
+using NzbDrone.Core.Notifications;
 
 namespace NzbDrone.Api.Notifications
 {
@@ -17,12 +17,16 @@ namespace NzbDrone.Api.Notifications
             resource.OnDownload = definition.OnDownload;
             resource.OnUpgrade = definition.OnUpgrade;
             resource.OnRename = definition.OnRename;
-            resource.OnDelete = definition.OnDelete;
+            resource.OnMovieDelete = definition.OnMovieDelete;
+            resource.OnMovieFileDelete = definition.OnMovieFileDelete;
+            resource.OnMovieFileDeleteForUpgrade = definition.OnMovieFileDeleteForUpgrade;
             resource.SupportsOnGrab = definition.SupportsOnGrab;
             resource.SupportsOnDownload = definition.SupportsOnDownload;
             resource.SupportsOnUpgrade = definition.SupportsOnUpgrade;
             resource.SupportsOnRename = definition.SupportsOnRename;
-            resource.SupportsOnDelete = definition.SupportsOnDelete;
+            resource.SupportsOnMovieDelete = definition.SupportsOnMovieDelete;
+            resource.SupportsOnMovieFileDelete = definition.SupportsOnMovieFileDelete;
+            resource.SupportsOnMovieFileDeleteForUpgrade = definition.SupportsOnMovieFileDeleteForUpgrade;
             resource.Tags = definition.Tags;
         }
 
@@ -34,12 +38,16 @@ namespace NzbDrone.Api.Notifications
             definition.OnDownload = resource.OnDownload;
             definition.OnUpgrade = resource.OnUpgrade;
             definition.OnRename = resource.OnRename;
-            definition.OnDelete = resource.OnDelete;
+            definition.OnMovieDelete = resource.OnMovieDelete;
+            definition.OnMovieFileDelete = resource.OnMovieFileDelete;
+            definition.OnMovieFileDeleteForUpgrade = resource.OnMovieFileDeleteForUpgrade;
             definition.SupportsOnGrab = resource.SupportsOnGrab;
             definition.SupportsOnDownload = resource.SupportsOnDownload;
             definition.SupportsOnUpgrade = resource.SupportsOnUpgrade;
             definition.SupportsOnRename = resource.SupportsOnRename;
-            definition.SupportsOnDelete = resource.SupportsOnDelete;
+            definition.SupportsOnMovieDelete = resource.SupportsOnMovieDelete;
+            definition.SupportsOnMovieFileDelete = resource.SupportsOnMovieFileDelete;
+            definition.SupportsOnMovieFileDeleteForUpgrade = resource.SupportsOnMovieFileDeleteForUpgrade;
             definition.Tags = resource.Tags;
         }
 

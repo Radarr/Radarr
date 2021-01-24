@@ -9,13 +9,17 @@ namespace Radarr.Api.V3.Notifications
         public bool OnDownload { get; set; }
         public bool OnUpgrade { get; set; }
         public bool OnRename { get; set; }
-        public bool OnDelete { get; set; }
+        public bool OnMovieDelete { get; set; }
+        public bool OnMovieFileDelete { get; set; }
+        public bool OnMovieFileDeleteForUpgrade { get; set; }
         public bool OnHealthIssue { get; set; }
         public bool SupportsOnGrab { get; set; }
         public bool SupportsOnDownload { get; set; }
         public bool SupportsOnUpgrade { get; set; }
         public bool SupportsOnRename { get; set; }
-        public bool SupportsOnDelete { get; set; }
+        public bool SupportsOnMovieDelete { get; set; }
+        public bool SupportsOnMovieFileDelete { get; set; }
+        public bool SupportsOnMovieFileDeleteForUpgrade { get; set; }
         public bool SupportsOnHealthIssue { get; set; }
         public bool IncludeHealthWarnings { get; set; }
         public string TestCommand { get; set; }
@@ -36,13 +40,17 @@ namespace Radarr.Api.V3.Notifications
             resource.OnDownload = definition.OnDownload;
             resource.OnUpgrade = definition.OnUpgrade;
             resource.OnRename = definition.OnRename;
-            resource.OnDelete = definition.OnDelete;
+            resource.OnMovieDelete = definition.OnMovieDelete;
+            resource.OnMovieFileDelete = definition.OnMovieFileDelete;
+            resource.OnMovieFileDeleteForUpgrade = definition.OnMovieFileDeleteForUpgrade;
             resource.OnHealthIssue = definition.OnHealthIssue;
             resource.SupportsOnGrab = definition.SupportsOnGrab;
             resource.SupportsOnDownload = definition.SupportsOnDownload;
             resource.SupportsOnUpgrade = definition.SupportsOnUpgrade;
             resource.SupportsOnRename = definition.SupportsOnRename;
-            resource.SupportsOnDelete = definition.SupportsOnDelete;
+            resource.SupportsOnMovieDelete = definition.SupportsOnMovieDelete;
+            resource.SupportsOnMovieFileDelete = definition.SupportsOnMovieFileDelete;
+            resource.SupportsOnMovieFileDeleteForUpgrade = definition.SupportsOnMovieFileDeleteForUpgrade;
             resource.SupportsOnHealthIssue = definition.SupportsOnHealthIssue;
             resource.IncludeHealthWarnings = definition.IncludeHealthWarnings;
 
@@ -62,13 +70,17 @@ namespace Radarr.Api.V3.Notifications
             definition.OnDownload = resource.OnDownload;
             definition.OnUpgrade = resource.OnUpgrade;
             definition.OnRename = resource.OnRename;
-            definition.OnDelete = resource.OnDelete;
+            definition.OnMovieDelete = resource.OnMovieDelete;
+            definition.OnMovieFileDelete = resource.OnMovieFileDelete;
+            definition.OnMovieFileDeleteForUpgrade = resource.OnMovieFileDeleteForUpgrade;
             definition.OnHealthIssue = resource.OnHealthIssue;
             definition.SupportsOnGrab = resource.SupportsOnGrab;
             definition.SupportsOnDownload = resource.SupportsOnDownload;
             definition.SupportsOnUpgrade = resource.SupportsOnUpgrade;
             definition.SupportsOnRename = resource.SupportsOnRename;
-            definition.SupportsOnDelete = resource.SupportsOnDelete;
+            definition.SupportsOnMovieDelete = resource.SupportsOnMovieDelete;
+            definition.SupportsOnMovieFileDelete = resource.SupportsOnMovieFileDelete;
+            definition.SupportsOnMovieFileDeleteForUpgrade = resource.SupportsOnMovieFileDeleteForUpgrade;
             definition.SupportsOnHealthIssue = resource.SupportsOnHealthIssue;
             definition.IncludeHealthWarnings = resource.IncludeHealthWarnings;
 

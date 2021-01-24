@@ -46,6 +46,26 @@ namespace NzbDrone.Core.Notifications.Synology
             }
         }
 
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
+        {
+            if (Settings.UpdateLibrary)
+            {
+                var fullPath = Path.Combine(deleteMessage.Movie.Path, deleteMessage.MovieFile.RelativePath);
+                _indexerProxy.DeleteFile(fullPath);
+            }
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            if (deleteMessage.DeletedFiles)
+            {
+                if (Settings.UpdateLibrary)
+                {
+                    _indexerProxy.DeleteFolder(deleteMessage.Movie.Path);
+                }
+            }
+        }
+
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
@@ -208,6 +209,43 @@ namespace NzbDrone.Core.Notifications.Discord
             }
 
             var payload = CreatePayload(null, new List<Embed> { embed });
+
+            _proxy.SendPayload(payload, Settings);
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            var movie = deleteMessage.Movie;
+
+            var attachments = new List<Embed>
+                              {
+                                  new Embed
+                                  {
+                                      Title = movie.Title,
+                                      Description = deleteMessage.DeletedFilesMessage
+                                  }
+                              };
+
+            var payload = CreatePayload("Movie Deleted", attachments);
+
+            _proxy.SendPayload(payload, Settings);
+        }
+
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
+        {
+            var movie = deleteMessage.Movie;
+
+            var fullPath = Path.Combine(deleteMessage.Movie.Path, deleteMessage.MovieFile.RelativePath);
+            var attachments = new List<Embed>
+                              {
+                                  new Embed
+                                  {
+                                      Title = movie.Title,
+                                      Description = deleteMessage.MovieFile.Path
+                                  }
+                              };
+
+            var payload = CreatePayload("Movie File Deleted", attachments);
 
             _proxy.SendPayload(payload, Settings);
         }
