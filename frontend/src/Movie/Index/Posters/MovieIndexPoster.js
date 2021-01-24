@@ -275,7 +275,9 @@ class MovieIndexPoster extends Component {
         {
           showCinemaRelease && inCinemas &&
             <div className={styles.title}>
-              {translate('InCinemas')}: {getRelativeDate(
+              <Icon
+                name={icons.IN_CINEMAS}
+              /> {getRelativeDate(
                 inCinemas,
                 shortDateFormat,
                 showRelativeDates,
@@ -288,16 +290,28 @@ class MovieIndexPoster extends Component {
         }
 
         {
-          showCinemaRelease && !inCinemas &&
+          showReleaseDate && releaseDateType === 'Released' &&
             <div className={styles.title}>
-              {translate('NoCinemaRelease')}
+              <Icon
+                name={icons.DISC}
+              /> {getRelativeDate(
+                releaseDate,
+                shortDateFormat,
+                showRelativeDates,
+                {
+                  timeFormat,
+                  timeForToday: false
+                }
+              )}
             </div>
         }
 
         {
-          showReleaseDate &&
+          showReleaseDate && releaseDateType === 'Digital' &&
             <div className={styles.title}>
-              {translate(releaseDateType)}: {getRelativeDate(
+              <Icon
+                name={icons.MOVIE_FILE}
+              /> {getRelativeDate(
                 releaseDate,
                 shortDateFormat,
                 showRelativeDates,
