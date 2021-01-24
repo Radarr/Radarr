@@ -43,19 +43,32 @@ class QueueRow extends Component {
   }
 
   onRemoveQueueItemModalConfirmed = (blacklist) => {
-    this.props.onRemoveQueueItemPress(blacklist);
+    const {
+      onRemoveQueueItemPress,
+      onQueueRowModalOpenOrClose
+    } = this.props;
+
+    onQueueRowModalOpenOrClose(false);
+    onRemoveQueueItemPress(blacklist);
+
     this.setState({ isRemoveQueueItemModalOpen: false });
   }
 
   onRemoveQueueItemModalClose = () => {
+    this.props.onQueueRowModalOpenOrClose(false);
+
     this.setState({ isRemoveQueueItemModalOpen: false });
   }
 
   onInteractiveImportPress = () => {
+    this.props.onQueueRowModalOpenOrClose(true);
+
     this.setState({ isInteractiveImportModalOpen: true });
   }
 
   onInteractiveImportModalClose = () => {
+    this.props.onQueueRowModalOpenOrClose(false);
+
     this.setState({ isInteractiveImportModalOpen: false });
   }
 
@@ -359,7 +372,8 @@ QueueRow.propTypes = {
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
   onSelectedChange: PropTypes.func.isRequired,
   onGrabPress: PropTypes.func.isRequired,
-  onRemoveQueueItemPress: PropTypes.func.isRequired
+  onRemoveQueueItemPress: PropTypes.func.isRequired,
+  onQueueRowModalOpenOrClose: PropTypes.func.isRequired
 };
 
 QueueRow.defaultProps = {
