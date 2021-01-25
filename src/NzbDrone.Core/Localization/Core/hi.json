@@ -1059,5 +1059,6 @@
     "MovieDetailsPreviousMovie": "मूवी का विवरण: पिछला मूवी",
     "MovieEditor": "मूवी एडिटर",
     "ReleaseWillBeProcessedInterp": "रिलीज़ को संसाधित किया जाएगा {0}",
-    "Edit": "संपादित करें"
+    "Edit": "संपादित करें",
+    "SqliteVersionCheckUpgradeRequiredMessage": "वर्तमान में स्थापित SQLite संस्करण {0} अब समर्थित नहीं है। कृपया SQLite को कम से कम संस्करण {1} में अपग्रेड करें।"
 }
