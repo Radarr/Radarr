@@ -1074,5 +1074,6 @@
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "Deseja restaurar o backup {0}?",
     "YesMoveFiles": "Sim, mova os arquivos",
-    "MoveFolders2": "Deseja mover os arquivos de filme de '{0}' para '{1}'?"
+    "MoveFolders2": "Deseja mover os arquivos de filme de '{0}' para '{1}'?",
+    "SqliteVersionCheckUpgradeRequiredMessage": "A versão SQLite atualmente instalada {0} não é mais compatível. Atualize o SQLite para pelo menos a versão {1}."
 }
