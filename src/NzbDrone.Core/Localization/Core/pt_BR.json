@@ -1059,5 +1059,6 @@
     "ImportLibrary": "Importar biblioteca",
     "DefaultCase": "Capitalização padrão",
     "ChooseAnotherFolder": "Escolher outra pasta",
-    "MIA": "MIA"
+    "MIA": "MIA",
+    "SqliteVersionCheckUpgradeRequiredMessage": "A versão SQLite atualmente instalada {0} não é mais compatível. Atualize o SQLite para pelo menos a versão {1}."
 }
