@@ -1069,5 +1069,6 @@
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "Ripristinare il backup {0}?",
     "YesMoveFiles": "Sì, sposta i file",
-    "MoveFolders2": "Spostare i file del film da \"{0}\" a \"{1}\"?"
+    "MoveFolders2": "Spostare i file del film da \"{0}\" a \"{1}\"?",
+    "SqliteVersionCheckUpgradeRequiredMessage": "La versione SQLite attualmente installata {0} non è più supportata. Aggiorna SQLite almeno alla versione {1}."
 }
