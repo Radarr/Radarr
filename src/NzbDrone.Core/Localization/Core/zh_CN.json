@@ -1059,5 +1059,6 @@
     "RetentionHelpText": "仅限Usenet：设置为零以设置无限保留",
     "TorrentDelayHelpText": "延迟几分钟等待获取洪流",
     "UsenetDelayHelpText": "延迟几分钟才能等待从Usenet获取发布",
-    "ReleaseWillBeProcessedInterp": "发布将被处理{0}"
+    "ReleaseWillBeProcessedInterp": "发布将被处理{0}",
+    "SqliteVersionCheckUpgradeRequiredMessage": "当前不再支持当前安装的SQLite版本{0}。请升级SQLite至少到版本{1}。"
 }
