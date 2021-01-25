@@ -1059,5 +1059,6 @@
     "MovieExcludedFromAutomaticAdd": "自動追加から除外された映画",
     "ReleaseWillBeProcessedInterp": "リリースは処理されます{0}",
     "Search": "探す",
-    "Edit": "編集"
+    "Edit": "編集",
+    "SqliteVersionCheckUpgradeRequiredMessage": "現在インストールされているSQLiteバージョン{0}はサポートされなくなりました。 SQLiteを少なくともバージョン{1}にアップグレードしてください。"
 }
