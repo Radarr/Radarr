@@ -1072,5 +1072,6 @@
     "WouldYouLikeToRestoreBackup": "Souhaitez-vous restaurer la sauvegarde {0}?",
     "Yes": "Oui",
     "YesMoveFiles": "Oui, déplacez les fichiers",
-    "MoveFolders2": "Souhaitez-vous déplacer les fichiers vidéo de «{0}» vers «{1}»?"
+    "MoveFolders2": "Souhaitez-vous déplacer les fichiers vidéo de «{0}» vers «{1}»?",
+    "SqliteVersionCheckUpgradeRequiredMessage": "La version {0} de SQLite actuellement installée n'est plus prise en charge. Veuillez mettre à niveau SQLite vers au moins la version {1}."
 }
