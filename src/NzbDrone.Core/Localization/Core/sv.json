@@ -1064,5 +1064,6 @@
     "UsenetDelayHelpText": "Fördröja på några minuter för att vänta innan du hämtar en utgåva från Usenet",
     "WeekColumnHeader": "Rubrik för veckokolumn",
     "WhitelistedHardcodedSubsHelpText": "Textrubriker som ställts in här kommer inte att betraktas som hårdkodade",
-    "MovieExcludedFromAutomaticAdd": "Film exkluderad från automatisk läggning"
+    "MovieExcludedFromAutomaticAdd": "Film exkluderad från automatisk läggning",
+    "SqliteVersionCheckUpgradeRequiredMessage": "För närvarande installerad SQLite-version {0} stöds inte längre. Uppgradera SQLite till minst version {1}."
 }
