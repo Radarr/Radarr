@@ -1059,5 +1059,6 @@
     "MissingNotMonitored": "Thiếu (Không được giám sát)",
     "MovieDetailsPreviousMovie": "Chi tiết phim: Phim trước",
     "MovieEditor": "Biên tập phim",
-    "Edit": "Biên tập"
+    "Edit": "Biên tập",
+    "SqliteVersionCheckUpgradeRequiredMessage": "Phiên bản SQLite được cài đặt hiện tại {0} không còn được hỗ trợ. Vui lòng nâng cấp SQLite lên ít nhất phiên bản {1}."
 }
