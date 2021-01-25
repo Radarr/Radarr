@@ -1059,5 +1059,6 @@
     "MovieExcludedFromAutomaticAdd": "סרט שאינו הוסף אוטומטי",
     "ReleaseWillBeProcessedInterp": "השחרור יעובד {0}",
     "Search": "לחפש",
-    "Edit": "לַעֲרוֹך"
+    "Edit": "לַעֲרוֹך",
+    "SqliteVersionCheckUpgradeRequiredMessage": "גרסת SQLite המותקנת כעת {0} אינה נתמכת עוד. אנא שדרג את SQLite לגרסה {1} לפחות."
 }
