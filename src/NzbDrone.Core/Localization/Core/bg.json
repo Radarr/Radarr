@@ -1059,5 +1059,6 @@
     "DestinationRelativePath": "Относителен път на дестинацията",
     "DownloadClientStatusCheckSingleClientMessage": "Клиентите за изтегляне са недостъпни поради грешки: {0}",
     "Images": "Изображения",
-    "IMDb": "IMDb"
+    "IMDb": "IMDb",
+    "SqliteVersionCheckUpgradeRequiredMessage": "Понастоящем инсталираната версия на SQLite {0} вече не се поддържа. Моля, надстройте SQLite поне до версия {1}."
 }
