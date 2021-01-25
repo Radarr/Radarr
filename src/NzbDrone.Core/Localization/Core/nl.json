@@ -1075,5 +1075,6 @@
     "WouldYouLikeToRestoreBackup": "Wilt u de back-up {0} herstellen?",
     "Yes": "Ja",
     "YesMoveFiles": "Ja, verplaats de bestanden",
-    "Yesterday": "Gisteren"
+    "Yesterday": "Gisteren",
+    "SqliteVersionCheckUpgradeRequiredMessage": "De momenteel geïnstalleerde SQLite-versie {0} wordt niet langer ondersteund. Upgrade SQLite naar minimaal versie {1}."
 }
