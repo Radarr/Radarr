@@ -1075,5 +1075,6 @@
     "Yes": "si",
     "YesMoveFiles": "Sí, mover los archivos",
     "Yesterday": "Ayer",
-    "MoveFolders2": "¿Le gustaría mover los archivos de película de '{0}' a '{1}'?"
+    "MoveFolders2": "¿Le gustaría mover los archivos de película de '{0}' a '{1}'?",
+    "SqliteVersionCheckUpgradeRequiredMessage": "La versión {0} de SQLite instalada actualmente ya no es compatible. Actualice SQLite al menos a la versión {1}."
 }
