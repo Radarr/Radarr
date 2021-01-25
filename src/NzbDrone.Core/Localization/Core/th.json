@@ -1059,5 +1059,6 @@
     "MovieDetailsPreviousMovie": "รายละเอียดภาพยนตร์: ภาพยนตร์เรื่องก่อนหน้า",
     "MovieEditor": "โปรแกรมตัดต่อภาพยนตร์",
     "ReleaseWillBeProcessedInterp": "การเผยแพร่จะได้รับการดำเนินการ {0}",
-    "Edit": "แก้ไข"
+    "Edit": "แก้ไข",
+    "SqliteVersionCheckUpgradeRequiredMessage": "ไม่รองรับ SQLite เวอร์ชัน {0} ที่ติดตั้งในปัจจุบันอีกต่อไป โปรดอัปเกรด SQLite เป็นเวอร์ชันอย่างน้อย {1}"
 }
