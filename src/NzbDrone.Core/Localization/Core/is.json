@@ -1059,5 +1059,6 @@
     "MovieExcludedFromAutomaticAdd": "Kvikmynd útilokuð frá sjálfvirkri viðbót",
     "ReleaseWillBeProcessedInterp": "Útgáfa verður afgreidd {0}",
     "Search": "Leitaðu",
-    "Edit": "Breyta"
+    "Edit": "Breyta",
+    "SqliteVersionCheckUpgradeRequiredMessage": "Núverandi uppsett SQLite útgáfa {0} er ekki lengur studd. Vinsamlegast uppfærðu SQLite í að minnsta kosti útgáfu {1}."
 }
