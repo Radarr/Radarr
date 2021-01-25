@@ -1063,5 +1063,6 @@
     "MissingNotMonitored": "Lipsește (fără monitorizare)",
     "MovieDetailsPreviousMovie": "Detalii film: Filmul anterior",
     "MovieExcludedFromAutomaticAdd": "Filmul este exclus din adăugarea automată",
-    "ReleaseWillBeProcessedInterp": "Eliberarea va fi procesată {0}"
+    "ReleaseWillBeProcessedInterp": "Eliberarea va fi procesată {0}",
+    "SqliteVersionCheckUpgradeRequiredMessage": "Versiunea SQLite instalată în prezent {0} nu mai este acceptată. Actualizați SQLite la cel puțin versiunea {1}."
 }
