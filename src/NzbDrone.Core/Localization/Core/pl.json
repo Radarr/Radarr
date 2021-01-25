@@ -1060,5 +1060,6 @@
     "MovieExcludedFromAutomaticAdd": "Film wykluczony z automatycznego dodawania",
     "ReleaseWillBeProcessedInterp": "Wersja zostanie przetworzona {0}",
     "Search": "Szukaj",
-    "Edit": "Edytować"
+    "Edit": "Edytować",
+    "SqliteVersionCheckUpgradeRequiredMessage": "Aktualnie zainstalowana wersja SQLite {0} nie jest już obsługiwana. Zaktualizuj SQLite przynajmniej do wersji {1}."
 }
