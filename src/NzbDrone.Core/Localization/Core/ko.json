@@ -1059,5 +1059,6 @@
     "MovieExcludedFromAutomaticAdd": "자동 추가에서 제외 된 영화",
     "ReleaseWillBeProcessedInterp": "릴리스가 {0} 처리됩니다.",
     "Search": "검색",
-    "Edit": "편집하다"
+    "Edit": "편집하다",
+    "SqliteVersionCheckUpgradeRequiredMessage": "현재 설치된 SQLite 버전 {0}은 더 이상 지원되지 않습니다. SQLite를 최소한 {1} 버전으로 업그레이드하십시오."
 }
