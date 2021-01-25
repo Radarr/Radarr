@@ -10,6 +10,7 @@ import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import { icons, kinds } from 'Helpers/Props';
 import formatDate from 'Utilities/Date/formatDate';
+import formatDateTime from 'Utilities/Date/formatDateTime';
 import translate from 'Utilities/String/translate';
 import UpdateChanges from './UpdateChanges';
 import styles from './Updates.css';
@@ -32,6 +33,8 @@ class Updates extends Component {
       isDocker,
       updateMechanismMessage,
       shortDateFormat,
+      longDateFormat,
+      timeFormat,
       onInstallLatestPress
     } = this.props;
 
@@ -138,7 +141,12 @@ class Updates extends Component {
                         <div className={styles.info}>
                           <div className={styles.version}>{update.version}</div>
                           <div className={styles.space}>&mdash;</div>
-                          <div className={styles.date}>{formatDate(update.releaseDate, shortDateFormat)}</div>
+                          <div
+                            className={styles.date}
+                            title={formatDateTime(update.releaseDate, longDateFormat, timeFormat)}
+                          >
+                            {formatDate(update.releaseDate, shortDateFormat)}
+                          </div>
 
                           {
                             update.branch === 'master' ?
@@ -155,8 +163,21 @@ class Updates extends Component {
                               <Label
                                 className={styles.label}
                                 kind={kinds.SUCCESS}
+                                title={formatDateTime(update.installedOn, longDateFormat, timeFormat)}
                               >
                                 {translate('CurrentlyInstalled')}
+                              </Label> :
+                              null
+                          }
+
+                          {
+                            update.version !== currentVersion && update.installedOn ?
+                              <Label
+                                className={styles.label}
+                                kind={kinds.INVERSE}
+                                title={formatDateTime(update.installedOn, longDateFormat, timeFormat)}
+                              >
+                                Previously Installed
                               </Label> :
                               null
                           }
@@ -222,6 +243,8 @@ Updates.propTypes = {
   updateMechanism: PropTypes.string,
   updateMechanismMessage: PropTypes.string,
   shortDateFormat: PropTypes.string.isRequired,
+  longDateFormat: PropTypes.string.isRequired,
+  timeFormat: PropTypes.string.isRequired,
   onInstallLatestPress: PropTypes.func.isRequired
 };
 

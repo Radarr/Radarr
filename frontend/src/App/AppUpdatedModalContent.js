@@ -11,9 +11,43 @@ import UpdateChanges from 'System/Updates/UpdateChanges';
 import translate from 'Utilities/String/translate';
 import styles from './AppUpdatedModalContent.css';
 
+function mergeUpdates(items, version, prevVersion) {
+  let installedIndex = items.findIndex((u) => u.version === version);
+  let installedPreviouslyIndex = items.findIndex((u) => u.version === prevVersion);
+
+  if (installedIndex === -1) {
+    installedIndex = 0;
+  }
+
+  if (installedPreviouslyIndex === -1) {
+    installedPreviouslyIndex = items.length;
+  } else if (installedPreviouslyIndex === installedIndex && items.size()) {
+    installedPreviouslyIndex += 1;
+  }
+
+  const appliedUpdates = items.slice(installedIndex, installedPreviouslyIndex);
+
+  if (!appliedUpdates.length) {
+    return null;
+  }
+
+  const appliedChanges = { new: [], fixed: [] };
+  appliedUpdates.forEach((u) => {
+    if (u.changes) {
+      appliedChanges.new.push(... u.changes.new);
+      appliedChanges.fixed.push(... u.changes.fixed);
+    }
+  });
+
+  const mergedUpdate = Object.assign({}, appliedUpdates[0], { changes: appliedChanges });
+
+  return mergedUpdate;
+}
+
 function AppUpdatedModalContent(props) {
   const {
     version,
+    prevVersion,
     isPopulated,
     error,
     items,
@@ -21,7 +55,7 @@ function AppUpdatedModalContent(props) {
     onModalClose
   } = props;
 
-  const update = items[0];
+  const update = mergeUpdates(items, version, prevVersion);
 
   return (
     <ModalContent onModalClose={onModalClose}>
@@ -89,6 +123,7 @@ function AppUpdatedModalContent(props) {
 
 AppUpdatedModalContent.propTypes = {
   version: PropTypes.string.isRequired,
+  prevVersion: PropTypes.string,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,

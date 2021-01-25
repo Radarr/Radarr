@@ -48,7 +48,9 @@ function createMapStateToProps() {
         isDocker: systemStatus.isDocker,
         updateMechanism: generalSettings.item.updateMechanism,
         updateMechanismMessage: status.packageUpdateMechanismMessage,
-        shortDateFormat: uiSettings.shortDateFormat
+        shortDateFormat: uiSettings.shortDateFormat,
+        longDateFormat: uiSettings.longDateFormat,
+        timeFormat: uiSettings.timeFormat
       };
     }
   );
