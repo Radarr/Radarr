@@ -1060,5 +1060,6 @@
     "MovieEditor": "Πρόγραμμα επεξεργασίας ταινιών",
     "MovieExcludedFromAutomaticAdd": "Η ταινία εξαιρείται από την αυτόματη προσθήκη",
     "ReleaseWillBeProcessedInterp": "Η κυκλοφορία θα υποβληθεί σε επεξεργασία {0}",
-    "Search": "Αναζήτηση"
+    "Search": "Αναζήτηση",
+    "SqliteVersionCheckUpgradeRequiredMessage": "Η τρέχουσα εγκατεστημένη έκδοση SQLite {0} δεν υποστηρίζεται πλέον. Αναβαθμίστε το SQLite σε τουλάχιστον έκδοση {1}."
 }
