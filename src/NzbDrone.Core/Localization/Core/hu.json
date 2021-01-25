@@ -1065,5 +1065,6 @@
     "RequiredRestrictionHelpText": "A kiadásnak tartalmaznia kell legalább egy ilyen kifejezést (a kis- és nagybetűk nem számítanak)",
     "MoveFolders2": "Szeretnéd áthelyezni a filmfájlokat a(z) „{0}” mappából a(z) „{1}” mappába?",
     "ImportNotForDownloads": "Ne használja letöltések importálására a letöltötőkliensről, ez csak a meglévő szervezett könyvtárakra vonatkozik, nem rendezetlen mappákra/fájlokra.",
-    "ImportLibrary": "Könyvtár importálás"
+    "ImportLibrary": "Könyvtár importálás",
+    "SqliteVersionCheckUpgradeRequiredMessage": "A jelenleg telepített {0} SQLite verzió már nem támogatott. Kérjük, frissítse az SQLite-t legalább a (z) {1} verzióra."
 }
