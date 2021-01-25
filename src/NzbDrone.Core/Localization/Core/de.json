@@ -1076,5 +1076,6 @@
     "RequiredRestrictionHelpText": "Das Release mus mindesten eines der Begriffe beinhalten ( Groß-/Kleinschreibung wird nicht beachtet )",
     "MoveFolders2": "Bist du sicher, dass du die Filmdateien von '{0}' nach '{1}' verschieben willst ?",
     "ImportLibrary": "Mediathek Import",
-    "ImportNotForDownloads": "Benutze dies NICHT um abgeschlossene Downloads deines Download Clients hinzuzufügen. Dies ist NUR für vorhandene organisierte Mediatheken und nicht für unsortierte Dateien."
+    "ImportNotForDownloads": "Benutze dies NICHT um abgeschlossene Downloads deines Download Clients hinzuzufügen. Dies ist NUR für vorhandene organisierte Mediatheken und nicht für unsortierte Dateien.",
+    "SqliteVersionCheckUpgradeRequiredMessage": "Die derzeit installierte SQLite-Version {0} wird nicht mehr unterstützt. Bitte aktualisieren Sie SQLite auf mindestens Version {1}."
 }
