@@ -8,6 +8,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
+using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -121,7 +122,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "HealthIssue");
-            environmentVariables.Add("Radarr_Health_Issue_Level", Enum.GetName(healthCheck.Type));
+            environmentVariables.Add("Radarr_Health_Issue_Level", Enum.GetName(typeof(HealthCheckResult), healthCheck.Type));
             environmentVariables.Add("Radarr_Health_Issue_Message", healthCheck.Message);
             environmentVariables.Add("Radarr_Health_Issue_Type", healthCheck.Source.Name);
             environmentVariables.Add("Radarr_Health_Issue_Wiki", healthCheck.WikiUrl.ToString() ?? string.Empty);
