@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Download.Clients.RTorrent
         [FieldDefinition(9, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing movies that released within the last 14 days")]
         public int RecentMoviePriority { get; set; }
 
-        [FieldDefinition(10, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing episodes that aired over 14 days ago")]
+        [FieldDefinition(10, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(RTorrentPriority), HelpText = "Priority to use when grabbing movies that were released over 14 days ago")]
         public int OlderMoviePriority { get; set; }
 
         [FieldDefinition(11, Label = "Add Stopped", Type = FieldType.Checkbox, HelpText = "Enabling will prevent magnets from downloading before downloading")]
