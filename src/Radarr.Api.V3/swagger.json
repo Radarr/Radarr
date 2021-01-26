@@ -3383,7 +3383,7 @@
             "type": "integer"
           },
           "titleSlug": {
-            "type": "integer"
+            "type": "string"
           },
           "certification": {
             "type": "string"
@@ -3470,7 +3470,7 @@
             "type": "integer"
           },
           "value": {
-            "type": "integer"
+            "type": "number"
           }
         },
         "xml": {
