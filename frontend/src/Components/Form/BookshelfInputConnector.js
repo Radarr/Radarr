@@ -3,22 +3,22 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { clearOptions, fetchOptions } from 'Store/Actions/providerOptionActions';
+import { clearOptions, defaultState, fetchOptions } from 'Store/Actions/providerOptionActions';
 import BookshelfInput from './BookshelfInput';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.providerOptions,
+    (state) => state.providerOptions.bookshelves || defaultState,
     (state, props) => props.name,
-    (state, name) => {
+    (bookshelves, name) => {
       const {
         items,
         ...otherState
-      } = state;
+      } = bookshelves;
       return ({
         helptext: items.helptext && items.helptext[name] ? items.helptext[name] : '',
-        user: items.user ? items.user : '',
-        items: items.shelves ? items.shelves : [],
+        user: items && items.user ? items.user : '',
+        items: items && items.shelves ? items.shelves : [],
         ...otherState
       });
     }
@@ -50,7 +50,7 @@ class BookshelfInputConnector extends Component {
   }
 
   componentWillUnmount = () => {
-    this.props.dispatchClearOptions();
+    this.props.dispatchClearOptions({ section: 'bookshelves' });
   }
 
   //
@@ -65,6 +65,7 @@ class BookshelfInputConnector extends Component {
     } = this.props;
 
     dispatchFetchOptions({
+      section: 'bookshelves',
       action: 'getBookshelves',
       queryParams: { name },
       provider,

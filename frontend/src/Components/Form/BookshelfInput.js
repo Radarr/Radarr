@@ -182,7 +182,8 @@ BookshelfInput.propTypes = {
 
 BookshelfInput.defaultProps = {
   className: styles.bookshelfInputWrapper,
-  inputClassName: styles.input
+  inputClassName: styles.input,
+  isPopulated: false
 };
 
 export default BookshelfInput;
