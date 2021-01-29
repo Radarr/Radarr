@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Download.Pending
 
         public void DeleteByAuthorId(int authorId)
         {
-            Delete(authorId);
+            Delete(x => x.AuthorId == authorId);
         }
 
         public List<PendingRelease> AllByAuthorId(int authorId)
