@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.MetadataSource.Goodreads
         }
 
         [TestCase("Philip Pullman", 0, typeof(Author), "Philip Pullman")]
-        [TestCase("Philip Pullman", 1, typeof(Book), "The Golden Compass")]
+        [TestCase("Philip Pullman", 1, typeof(Book), "The Subtle Knife")]
         public void successful_combined_search(string query, int position, Type resultType, string expected)
         {
             var result = Subject.SearchForNewEntity(query);
