@@ -16,7 +16,7 @@ function createMapStateToProps() {
         ...otherState
       } = bookshelves;
       return ({
-        helptext: items.helptext && items.helptext[name] ? items.helptext[name] : '',
+        helptext: items && items.helptext && items.helptext[name] ? items.helptext[name] : '',
         user: items && items.user ? items.user : '',
         items: items && items.shelves ? items.shelves : [],
         ...otherState
