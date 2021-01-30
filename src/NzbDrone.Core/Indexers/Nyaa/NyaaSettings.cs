@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
         public NyaaSettings()
         {
             BaseUrl = "";
-            AdditionalParameters = "";
+            AdditionalParameters = "&cats=1_0&filter=1";
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
             MultiLanguages = new List<int>();
             RequiredFlags = new List<int>();
