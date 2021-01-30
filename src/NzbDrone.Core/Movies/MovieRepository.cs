@@ -315,6 +315,11 @@ namespace NzbDrone.Core.Movies
         {
             var recommendations = new List<int>();
 
+            if (_database.Version < new Version("3.9.0"))
+            {
+                return recommendations;
+            }
+
             using (var conn = _database.OpenConnection())
             {
                 recommendations = conn.Query<int>(@"
