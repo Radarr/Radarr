@@ -88,7 +88,7 @@
   "BindAddressHelpText": "Valid IP4 address or '*' for all interfaces",
   "Blacklist": "Blacklist",
   "Blacklisted": "Blacklisted",
-  "BlacklistHelpText": "Prevents Radarr from automatically grabbing this movie again",
+  "BlacklistHelpText": "Prevents Radarr from automatically grabbing this release again",
   "BlacklistRelease": "Blacklist Release",
   "Branch": "Branch",
   "BranchUpdate": "Branch to use to update Radarr",
