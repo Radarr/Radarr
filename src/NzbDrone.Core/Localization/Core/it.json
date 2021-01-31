@@ -1070,5 +1070,11 @@
     "WouldYouLikeToRestoreBackup": "Ripristinare il backup {0}?",
     "YesMoveFiles": "Sì, sposta i file",
     "MoveFolders2": "Spostare i file del film da \"{0}\" a \"{1}\"?",
-    "SqliteVersionCheckUpgradeRequiredMessage": "La versione SQLite attualmente installata {0} non è più supportata. Aggiorna SQLite almeno alla versione {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "La versione SQLite attualmente installata {0} non è più supportata. Aggiorna SQLite almeno alla versione {1}.",
+    "NoCinemaRelease": "Nessuna uscita cinematografica",
+    "ReleaseDate": "Date di rilascio",
+    "ShowCinemaRelease": "Mostra la data di uscita del cinema",
+    "showCinemaReleaseHelpText": "Mostra la data di uscita del cinema sotto il poster",
+    "ShowReleaseDate": "Mostra data di uscita",
+    "ShowReleaseDateHelpText": "Mostra la data di uscita sotto il poster"
 }
