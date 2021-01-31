@@ -1060,5 +1060,11 @@
     "DownloadClientStatusCheckSingleClientMessage": "Клиентите за изтегляне са недостъпни поради грешки: {0}",
     "Images": "Изображения",
     "IMDb": "IMDb",
-    "SqliteVersionCheckUpgradeRequiredMessage": "Понастоящем инсталираната версия на SQLite {0} вече не се поддържа. Моля, надстройте SQLite поне до версия {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "Понастоящем инсталираната версия на SQLite {0} вече не се поддържа. Моля, надстройте SQLite поне до версия {1}.",
+    "ShowReleaseDate": "Показване на датата на издаване",
+    "ShowReleaseDateHelpText": "Показване на датата на пускане под постер",
+    "NoCinemaRelease": "Няма издание на кино",
+    "ReleaseDate": "Дати на издаване",
+    "ShowCinemaRelease": "Показване на датата на излизане на киното",
+    "showCinemaReleaseHelpText": "Покажете датата на излизане на киното под плакат"
 }
