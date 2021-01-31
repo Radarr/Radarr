@@ -1060,5 +1060,11 @@
     "ReleaseWillBeProcessedInterp": "השחרור יעובד {0}",
     "Search": "לחפש",
     "Edit": "לַעֲרוֹך",
-    "SqliteVersionCheckUpgradeRequiredMessage": "גרסת SQLite המותקנת כעת {0} אינה נתמכת עוד. אנא שדרג את SQLite לגרסה {1} לפחות."
+    "SqliteVersionCheckUpgradeRequiredMessage": "גרסת SQLite המותקנת כעת {0} אינה נתמכת עוד. אנא שדרג את SQLite לגרסה {1} לפחות.",
+    "ShowReleaseDateHelpText": "הצג תאריך יציאה תחת הכרזה",
+    "NoCinemaRelease": "אין מהדורה קולנועית",
+    "ReleaseDate": "תאריכי שחרור",
+    "ShowCinemaRelease": "הצג תאריך יציאה לקולנוע",
+    "showCinemaReleaseHelpText": "הצג תאריך יציאה לקולנוע תחת הכרזה",
+    "ShowReleaseDate": "הצגת תאריך פרסום"
 }
