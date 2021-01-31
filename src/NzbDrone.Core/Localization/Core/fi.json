@@ -1060,5 +1060,11 @@
     "MovieExcludedFromAutomaticAdd": "Elokuva ei sisälly automaattiseen lisäykseen",
     "ReleaseWillBeProcessedInterp": "Julkaisu käsitellään {0}",
     "Edit": "Muokata",
-    "SqliteVersionCheckUpgradeRequiredMessage": "Tällä hetkellä asennettua SQLite-versiota {0} ei enää tueta. Päivitä SQLite vähintään versioon {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "Tällä hetkellä asennettua SQLite-versiota {0} ei enää tueta. Päivitä SQLite vähintään versioon {1}.",
+    "NoCinemaRelease": "Ei elokuvateatteria",
+    "ReleaseDate": "Julkaisupäivät",
+    "ShowCinemaRelease": "Näytä elokuvan julkaisupäivä",
+    "showCinemaReleaseHelpText": "Näytä elokuvan julkaisupäivä julisteen alla",
+    "ShowReleaseDate": "Näytä julkaisupäivä",
+    "ShowReleaseDateHelpText": "Näytä julkaisupäivä julisteen alla"
 }
