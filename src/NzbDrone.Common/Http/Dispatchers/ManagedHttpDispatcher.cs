@@ -248,6 +248,11 @@ namespace NzbDrone.Common.Http.Dispatchers
                     case "Referer":
                         webRequest.Referer = header.Value;
                         break;
+                    case "Range":
+                        var split = header.Value.Split('=');
+                        var range = split[1].Split('-');
+                        webRequest.AddRange(split[0], int.Parse(range[0]), int.Parse(range[1]));
+                        break;
                     case "Transfer-Encoding":
                         webRequest.TransferEncoding = header.Value;
                         break;
