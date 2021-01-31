@@ -37,7 +37,7 @@ namespace Radarr.Api.V3.ManualImport
 
             foreach (var item in items)
             {
-                var processedItem = _manualImportService.ReprocessItem(item.Path, item.DownloadId, item.MovieId);
+                var processedItem = _manualImportService.ReprocessItem(item.Path, item.DownloadId, item.MovieId, item.Quality, item.Languages);
 
                 item.Movie = processedItem.Movie.ToResource(0);
                 item.Rejections = processedItem.Rejections;
