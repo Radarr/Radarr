@@ -1,11 +1,19 @@
 using System.Collections.Generic;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Profiles;
 using Radarr.Http;
 
 namespace Radarr.Api.V3.Indexers
 {
     public abstract class ReleaseModuleBase : RadarrRestModule<ReleaseResource>
     {
+        private readonly Profile _qualityProfie;
+
+        public ReleaseModuleBase(IProfileService qualityProfileService)
+        {
+            _qualityProfie = qualityProfileService.GetDefaultProfile(string.Empty);
+        }
+
         protected virtual List<ReleaseResource> MapDecisions(IEnumerable<DownloadDecision> decisions)
         {
             var result = new List<ReleaseResource>();
@@ -26,11 +34,7 @@ namespace Radarr.Api.V3.Indexers
 
             release.ReleaseWeight = initialWeight;
 
-            if (decision.RemoteMovie.Movie != null)
-            {
-                release.QualityWeight = decision.RemoteMovie.Movie
-                                                              .Profile.GetIndex(release.Quality.Quality).Index * 100;
-            }
+            release.QualityWeight = _qualityProfie.GetIndex(release.Quality.Quality).Index * 100;
 
             release.QualityWeight += release.Quality.Revision.Real * 10;
             release.QualityWeight += release.Quality.Revision.Version;
