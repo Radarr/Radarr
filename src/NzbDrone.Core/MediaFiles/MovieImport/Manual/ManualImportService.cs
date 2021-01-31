@@ -108,8 +108,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 SceneSource = SceneSource(movie, rootFolder),
                 ExistingFile = movie.Path.IsParentPath(path),
                 Size = _diskProvider.GetFileSize(path),
-                Languages = languages,
-                Quality = quality
+                Languages = (languages?.SingleOrDefault() ?? Language.Unknown) == Language.Unknown ? LanguageParser.ParseLanguages(path) : languages,
+                Quality = quality.Quality == Quality.Unknown ? QualityParser.ParseQuality(path) : quality
             };
 
             return MapItem(_importDecisionMaker.GetDecision(localEpisode, downloadClientItem), rootFolder, downloadId, null);
@@ -140,7 +140,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 // Filter paths based on the rootFolder, so files in subfolders that should be ignored are ignored.
                 // It will lead to some extra directories being checked for files, but it saves the processing of them and is cleaner than
                 // teaching FilterPaths to know whether it's processing a file or a folder and changing it's filtering based on that.
+                // If the movie is unknown for the directory and there are more than 100 files in the folder don't process the items before returning.
                 var files = _diskScanService.FilterPaths(rootFolder, _diskScanService.GetVideoFiles(baseFolder, false));
+
+                if (files.Count() > 100)
+                {
+                    return ProcessDownloadDirectory(rootFolder, files);
+                }
+
                 var subfolders = _diskScanService.FilterPaths(rootFolder, _diskProvider.GetDirectories(baseFolder));
 
                 var processedFiles = files.Select(file => ProcessFile(rootFolder, baseFolder, file, downloadId));
@@ -212,6 +219,24 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 Name = Path.GetFileNameWithoutExtension(file),
                 Rejections = new List<Rejection>()
             };
+        }
+
+        private List<ManualImportItem> ProcessDownloadDirectory(string rootFolder, List<string> videoFiles)
+        {
+            var items = new List<ManualImportItem>();
+
+            foreach (var file in videoFiles)
+            {
+                var localEpisode = new LocalMovie();
+                localEpisode.Path = file;
+                localEpisode.Quality = new QualityModel(Quality.Unknown);
+                localEpisode.Languages = new List<Language> { Language.Unknown };
+                localEpisode.Size = _diskProvider.GetFileSize(file);
+
+                items.Add(MapItem(new ImportDecision(localEpisode), rootFolder, null, null));
+            }
+
+            return items;
         }
 
         private bool SceneSource(Movie movie, string folder)

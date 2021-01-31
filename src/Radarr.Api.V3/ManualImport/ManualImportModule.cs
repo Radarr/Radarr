@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.MovieImport.Manual;
 using NzbDrone.Core.Qualities;
 using Radarr.Api.V3.Movies;
@@ -41,7 +42,15 @@ namespace Radarr.Api.V3.ManualImport
 
                 item.Movie = processedItem.Movie.ToResource(0);
                 item.Rejections = processedItem.Rejections;
-                item.Languages = processedItem.Languages;
+                if (item.Languages.Single() == Language.Unknown)
+                {
+                    item.Languages = processedItem.Languages;
+                }
+
+                if (item.Quality?.Quality == Quality.Unknown)
+                {
+                    item.Quality = processedItem.Quality;
+                }
             }
 
             return items;
