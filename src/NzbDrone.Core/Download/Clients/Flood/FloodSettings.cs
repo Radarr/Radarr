@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Download.Clients.Flood
                 "radarr"
             };
             AdditionalTags = Enumerable.Empty<int>();
-            StartOnAdd = true;
+            AddPaused = false;
         }
 
         [FieldDefinition(0, Label = "Use SSL", Type = FieldType.Checkbox)]
@@ -64,8 +64,8 @@ namespace NzbDrone.Core.Download.Clients.Flood
         [FieldDefinition(9, Label = "Additional Tags", Type = FieldType.Select, SelectOptions = typeof(AdditionalTags), HelpText = "Adds properties of media as tags. Hints are examples.", Advanced = true)]
         public IEnumerable<int> AdditionalTags { get; set; }
 
-        [FieldDefinition(10, Label = "Start on Add", Type = FieldType.Checkbox)]
-        public bool StartOnAdd { get; set; }
+        [FieldDefinition(10, Label = "Add Paused", Type = FieldType.Checkbox)]
+        public bool AddPaused { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
