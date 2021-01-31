@@ -1061,5 +1061,11 @@
     "MovieExcludedFromAutomaticAdd": "Η ταινία εξαιρείται από την αυτόματη προσθήκη",
     "ReleaseWillBeProcessedInterp": "Η κυκλοφορία θα υποβληθεί σε επεξεργασία {0}",
     "Search": "Αναζήτηση",
-    "SqliteVersionCheckUpgradeRequiredMessage": "Η τρέχουσα εγκατεστημένη έκδοση SQLite {0} δεν υποστηρίζεται πλέον. Αναβαθμίστε το SQLite σε τουλάχιστον έκδοση {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "Η τρέχουσα εγκατεστημένη έκδοση SQLite {0} δεν υποστηρίζεται πλέον. Αναβαθμίστε το SQLite σε τουλάχιστον έκδοση {1}.",
+    "NoCinemaRelease": "Χωρίς κυκλοφορία κινηματογράφου",
+    "ReleaseDate": "Ημερομηνίες κυκλοφορίας",
+    "ShowCinemaRelease": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου",
+    "showCinemaReleaseHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου κάτω από την αφίσα",
+    "ShowReleaseDate": "Εμφάνιση ημερομηνίας κυκλοφορίας",
+    "ShowReleaseDateHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας στην αφίσα"
 }
