@@ -1060,5 +1060,11 @@
     "DefaultCase": "Capitalização padrão",
     "ChooseAnotherFolder": "Escolher outra pasta",
     "MIA": "MIA",
-    "SqliteVersionCheckUpgradeRequiredMessage": "A versão SQLite atualmente instalada {0} não é mais compatível. Atualize o SQLite para pelo menos a versão {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "A versão SQLite atualmente instalada {0} não é mais compatível. Atualize o SQLite para pelo menos a versão {1}.",
+    "NoCinemaRelease": "Sem lançamento no cinema",
+    "ReleaseDate": "Datas de lançamento",
+    "ShowCinemaRelease": "Mostrar data de lançamento do cinema",
+    "showCinemaReleaseHelpText": "Mostrar data de lançamento do cinema abaixo do pôster",
+    "ShowReleaseDate": "Mostrar data de lançamento",
+    "ShowReleaseDateHelpText": "Mostrar data de lançamento abaixo do pôster"
 }
