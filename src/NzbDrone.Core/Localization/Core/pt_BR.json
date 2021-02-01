@@ -347,7 +347,7 @@
     "BranchUpdate": "Ramificação a ser usada para atualizar o Radarr",
     "Branch": "Ramificação",
     "BlacklistRelease": "Lançamento na lista de bloqueio",
-    "BlacklistHelpText": "Impede que o Radarr obtenha automaticamente este filme novamente",
+    "BlacklistHelpText": "Impede que o Radarr obtenha automaticamente este lançamento novamente",
     "Blacklisted": "Na lista de bloqueio",
     "Blacklist": "Lista de bloqueio",
     "BindAddressHelpText": "Endereço IP4 válido ou \"*\" para todas as interfaces",
