@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|(?<czech>\bCZ\b)|(?<polish>\bPL\b))(?:(?i)(?![\W|_|^]SUB))",
                                                                 RegexOptions.Compiled);
 
-        private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,})(?:[-_. ]forced)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[A-Za-z]{2,})(?:[-_. ]forced)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static List<Language> ParseLanguages(string title)
         {
