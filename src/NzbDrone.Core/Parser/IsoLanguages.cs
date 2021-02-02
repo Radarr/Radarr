@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Parser
             }
             else if (langCode.Length > 3)
             {
-                return FindByName(langCode);
+                return All.FirstOrDefault(l => l.EnglishName.ToLower() == name.Trim());
             }
 
             return null;
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Parser
 
         public static IsoLanguage FindByName(string name)
         {
-            return All.FirstOrDefault(l => l.EnglishName.ToLower() == name.Trim());
+            return All.FirstOrDefault(l => l.EnglishName == name.Trim());
         }
 
         public static IsoLanguage Get(Language language)
