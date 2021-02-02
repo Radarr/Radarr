@@ -63,13 +63,17 @@ namespace NzbDrone.Core.Parser
                 //Lookup ISO639-2T code
                 return All.FirstOrDefault(l => l.ThreeLetterCode == langCode);
             }
+            else if (langCode.Length > 3)
+            {
+                return FindByName(langCode);
+            }
 
             return null;
         }
 
         public static IsoLanguage FindByName(string name)
         {
-            return All.FirstOrDefault(l => l.EnglishName == name.Trim());
+            return All.FirstOrDefault(l => l.EnglishName.ToLower() == name.Trim());
         }
 
         public static IsoLanguage Get(Language language)
