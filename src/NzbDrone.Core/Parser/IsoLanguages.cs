@@ -65,7 +65,7 @@ namespace NzbDrone.Core.Parser
             }
             else if (langCode.Length > 3)
             {
-                return All.FirstOrDefault(l => l.EnglishName.ToLower() == name.Trim());
+                return All.FirstOrDefault(l => l.EnglishName.ToLower() == langCode.Trim());
             }
 
             return null;
