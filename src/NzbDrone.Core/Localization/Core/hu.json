@@ -164,7 +164,7 @@
     "BranchUpdate": "Ágazattípus a Radarr frissítéseihez",
     "Branch": "Ágazat",
     "BlacklistRelease": "Feketelistás Kiadás",
-    "BlacklistHelpText": "Megakadályozza, hogy a Radarr automatikusan letöltse újra ezt a filmet",
+    "BlacklistHelpText": "Megakadályozza, hogy a Radarr automatikusan letöltse újra",
     "Blacklisted": "Feketelistás",
     "Blacklist": "Feketelista",
     "BindAddressHelpText": "Érvényes IP4-cím, vagy „*” minden interfészhez",
