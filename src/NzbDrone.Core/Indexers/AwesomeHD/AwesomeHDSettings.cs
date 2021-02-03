@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Indexers.AwesomeHD
 
         public AwesomeHDSettings()
         {
-            BaseUrl = "https://awesome-hd.me";
+            BaseUrl = "https://awesome-hd.club";
             MinimumSeeders = 0;
             MultiLanguages = new List<int>();
             RequiredFlags = new List<int>();
