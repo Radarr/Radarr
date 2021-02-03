@@ -65,6 +65,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.VideoColourPrimaries.Should().Be("BT.601 NTSC");
             info.VideoTransferCharacteristics.Should().Be("BT.709");
             info.AudioAdditionalFeatures.Should().BeOneOf("", "LC");
+            info.VideoHdrFormat.Should().BeEmpty();
+            info.VideoHdrFormatCompatibility.Should().BeEmpty();
         }
 
         [Test]
@@ -106,6 +108,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.VideoColourPrimaries.Should().Be("BT.601 NTSC");
             info.VideoTransferCharacteristics.Should().Be("BT.709");
             info.AudioAdditionalFeatures.Should().BeOneOf("", "LC");
+            info.VideoHdrFormat.Should().BeEmpty();
+            info.VideoHdrFormatCompatibility.Should().BeEmpty();
         }
 
         [Test]
