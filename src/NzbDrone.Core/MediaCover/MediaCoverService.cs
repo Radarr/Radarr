@@ -21,6 +21,7 @@ namespace NzbDrone.Core.MediaCover
     {
         Dictionary<string, FileInfo> GetCoverFileInfos();
         void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, FileInfo> fileInfos = null);
+        void ConvertToLocalUrls(IEnumerable<Tuple<int, IEnumerable<MediaCover>>> items, Dictionary<string, FileInfo> coverFileInfos);
         string GetCoverPath(int movieId, MediaCoverTypes mediaCoverTypes, int? height = null);
     }
 
@@ -123,6 +124,14 @@ namespace NzbDrone.Core.MediaCover
                         mediaCover.Url += "?lastWrite=" + lastWrite.Ticks;
                     }
                 }
+            }
+        }
+
+        public void ConvertToLocalUrls(IEnumerable<Tuple<int, IEnumerable<MediaCover>>> items, Dictionary<string, FileInfo> coverFileInfos)
+        {
+            foreach (var movie in items)
+            {
+                ConvertToLocalUrls(movie.Item1, movie.Item2, coverFileInfos);
             }
         }
 
