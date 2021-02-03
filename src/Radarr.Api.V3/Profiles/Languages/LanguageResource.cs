@@ -1,11 +1,11 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Profiles.Languages
 {
     public class LanguageResource : RestResource
     {
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
         public new int Id { get; set; }
         public string Name { get; set; }
         public string NameLower => Name.ToLowerInvariant();

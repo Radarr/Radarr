@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
@@ -53,7 +53,7 @@ namespace Radarr.Api.V3.Indexers
         public DownloadProtocol Protocol { get; set; }
 
         // Sent when queuing an unknown release
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public int? MovieId { get; set; }
     }
 
