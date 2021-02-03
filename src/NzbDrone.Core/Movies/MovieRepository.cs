@@ -37,12 +37,16 @@ namespace NzbDrone.Core.Movies
     public class MovieRepository : BasicRepository<Movie>, IMovieRepository
     {
         private readonly IProfileRepository _profileRepository;
+        private readonly IAlternativeTitleRepository _alternativeTitleRepository;
+
         public MovieRepository(IMainDatabase database,
                                IProfileRepository profileRepository,
+                               IAlternativeTitleRepository alternativeTitleRepository,
                                IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
             _profileRepository = profileRepository;
+            _alternativeTitleRepository = alternativeTitleRepository;
         }
 
         protected override SqlBuilder Builder() => new SqlBuilder()
@@ -88,20 +92,30 @@ namespace NzbDrone.Core.Movies
 
         public override IEnumerable<Movie> All()
         {
-            // the skips the join on profile and populates manually
-            // to avoid repeatedly deserializing the same profile
+            // the skips the join on profile and alternative title and populates manually
+            // to avoid repeatedly deserializing the same profile / movie
             var builder = new SqlBuilder()
-                .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
                 .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId);
 
-            var movieDictionary = new Dictionary<int, Movie>();
             var profiles = _profileRepository.All().ToDictionary(x => x.Id);
+            var titles = _alternativeTitleRepository.All()
+                .GroupBy(x => x.MovieId)
+                .ToDictionary(x => x.Key, y => y.ToList());
 
-            _ = _database.QueryJoined<Movie, AlternativeTitle, MovieFile>(
+            return _database.QueryJoined<Movie, MovieFile>(
                 builder,
-                (movie, altTitle, file) => Map(movieDictionary, movie, profiles[movie.ProfileId], altTitle, file));
+                (movie, file) =>
+                {
+                    movie.MovieFile = file;
+                    movie.Profile = profiles[movie.ProfileId];
 
-            return movieDictionary.Values.ToList();
+                    if (titles.TryGetValue(movie.Id, out var altTitles))
+                    {
+                        movie.AlternativeTitles = altTitles;
+                    }
+
+                    return movie;
+                });
         }
 
         public bool MoviePathExists(string path)
