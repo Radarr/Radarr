@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Data.SQLite;
+using System.IO;
 using FluentValidation;
 using Nancy;
+using Nancy.Extensions;
+using Nancy.IO;
 using NLog;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Exceptions;
@@ -26,7 +29,10 @@ namespace Radarr.Http.ErrorManagement
 
             if (exception is ApiException apiException)
             {
-                _logger.Warn(apiException, "API Error");
+                _logger.Warn(apiException, "API Error:\n{0}", apiException.Message);
+                var body = RequestStream.FromStream(context.Request.Body).AsString();
+                _logger.Trace("Request body:\n{0}", body);
+
                 return apiException.ToErrorResponse(context);
             }
 
