@@ -2,7 +2,7 @@
 
 namespace NzbDrone.Api.Indexers
 {
-    public class IndexerResource : ProviderResource
+    public class IndexerResource : ProviderResource<IndexerResource>
     {
         public bool EnableRss { get; set; }
         public bool EnableSearch { get; set; }

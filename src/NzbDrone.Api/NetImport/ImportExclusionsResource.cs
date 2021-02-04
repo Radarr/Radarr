@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace NzbDrone.Api.ImportList
 {
-    public class ImportExclusionsResource : ProviderResource
+    public class ImportExclusionsResource : ProviderResource<ImportExclusionsResource>
     {
         //public int Id { get; set; }
         public int TmdbId { get; set; }

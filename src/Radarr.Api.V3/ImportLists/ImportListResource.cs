@@ -3,7 +3,7 @@ using NzbDrone.Core.Movies;
 
 namespace Radarr.Api.V3.ImportLists
 {
-    public class ImportListResource : ProviderResource
+    public class ImportListResource : ProviderResource<ImportListResource>
     {
         public bool Enabled { get; set; }
         public bool EnableAuto { get; set; }

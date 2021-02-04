@@ -15,7 +15,7 @@ namespace NzbDrone.Api
     public abstract class ProviderModuleBase<TProviderResource, TProvider, TProviderDefinition> : RadarrRestModule<TProviderResource>
         where TProviderDefinition : ProviderDefinition, new()
         where TProvider : IProvider
-        where TProviderResource : ProviderResource, new()
+        where TProviderResource : ProviderResource<TProviderResource>, new()
     {
         private readonly IProviderFactory<TProvider, TProviderDefinition> _providerFactory;
 
@@ -160,8 +160,7 @@ namespace NzbDrone.Api
                 {
                     var presetResource = new TProviderResource();
                     MapToResource(presetResource, v);
-
-                    return presetResource as ProviderResource;
+                    return presetResource;
                 }).ToList();
 
                 result.Add(providerResource);
