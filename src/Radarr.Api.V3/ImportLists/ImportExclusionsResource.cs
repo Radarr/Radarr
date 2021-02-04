@@ -4,7 +4,7 @@ using NzbDrone.Core.ImportLists.ImportExclusions;
 
 namespace Radarr.Api.V3.ImportLists
 {
-    public class ImportExclusionsResource : ProviderResource
+    public class ImportExclusionsResource : ProviderResource<ImportExclusionsResource>
     {
         //public int Id { get; set; }
         public int TmdbId { get; set; }

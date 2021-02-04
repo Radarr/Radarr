@@ -2,7 +2,7 @@
 
 namespace NzbDrone.Api.DownloadClient
 {
-    public class DownloadClientResource : ProviderResource
+    public class DownloadClientResource : ProviderResource<DownloadClientResource>
     {
         public bool Enable { get; set; }
         public DownloadProtocol Protocol { get; set; }

@@ -54,6 +54,14 @@ namespace NzbDrone.Integration.Test.ApiTests
         }
 
         [Test]
+        public void all_preset_fields_should_be_set_correctly()
+        {
+            var schema = GetNewznabSchemav3();
+
+            schema.Presets.Any(x => x.SupportsRss).Should().BeTrue();
+        }
+
+        [Test]
         public void v2_categories_should_be_array()
         {
             var schema = GetNewznabSchemav2();

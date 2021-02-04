@@ -2,7 +2,7 @@ using NzbDrone.Core.Notifications;
 
 namespace Radarr.Api.V3.Notifications
 {
-    public class NotificationResource : ProviderResource
+    public class NotificationResource : ProviderResource<NotificationResource>
     {
         public string Link { get; set; }
         public bool OnGrab { get; set; }

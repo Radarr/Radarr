@@ -8,7 +8,7 @@ namespace NzbDrone.Common.Serializer
     {
         public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            throw new NotImplementedException();
+            return JsonSerializer.Deserialize<T>(ref reader, options);
         }
 
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)

@@ -5,7 +5,7 @@ using Radarr.Http.REST;
 
 namespace NzbDrone.Api
 {
-    public class ProviderResource : RestResource
+    public class ProviderResource<T> : RestResource
     {
         public string Name { get; set; }
         public List<Field> Fields { get; set; }
@@ -15,6 +15,6 @@ namespace NzbDrone.Api
         public string InfoLink { get; set; }
         public ProviderMessage Message { get; set; }
 
-        public List<ProviderResource> Presets { get; set; }
+        public List<T> Presets { get; set; }
     }
 }

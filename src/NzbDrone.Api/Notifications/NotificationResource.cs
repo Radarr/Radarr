@@ -2,7 +2,7 @@
 
 namespace NzbDrone.Api.Notifications
 {
-    public class NotificationResource : ProviderResource
+    public class NotificationResource : ProviderResource<NotificationResource>
     {
         public bool OnGrab { get; set; }
         public bool OnDownload { get; set; }
