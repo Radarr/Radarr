@@ -59,16 +59,16 @@ namespace NzbDrone.Core.Indexers.Rarbg
                 torrentInfo.Seeders = torrent.seeders;
                 torrentInfo.Peers = torrent.leechers + torrent.seeders;
 
-                if (torrent.movie_info != null)
+                if (torrent.episode_info != null)
                 {
-                    if (torrent.movie_info.tvdb != null)
+                    if (torrent.episode_info.imdb != null)
                     {
-                        torrentInfo.TvdbId = torrent.movie_info.tvdb.Value;
+                        torrentInfo.ImdbId = int.Parse(torrent.episode_info.imdb.Substring(2));
                     }
 
-                    if (torrent.movie_info.tvrage != null)
+                    if (torrent.episode_info.themoviedb != null)
                     {
-                        torrentInfo.TvRageId = torrent.movie_info.tvrage.Value;
+                        torrentInfo.TmdbId = torrent.episode_info.themoviedb.Value;
                     }
                 }
 

@@ -150,8 +150,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("Size", message.Movie.Release.Size.ToString());
             history.Data.Add("DownloadUrl", message.Movie.Release.DownloadUrl);
             history.Data.Add("Guid", message.Movie.Release.Guid);
-            history.Data.Add("TvdbId", message.Movie.Release.TvdbId.ToString());
-            history.Data.Add("TvRageId", message.Movie.Release.TvRageId.ToString());
+            history.Data.Add("TmdbId", message.Movie.Release.TmdbId.ToString());
             history.Data.Add("Protocol", ((int)message.Movie.Release.DownloadProtocol).ToString());
             history.Data.Add("IndexerFlags", message.Movie.Release.IndexerFlags.ToString());
             history.Data.Add("IndexerId", message.Movie.Release.IndexerId.ToString());

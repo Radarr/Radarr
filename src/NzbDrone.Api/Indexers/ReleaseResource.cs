@@ -27,13 +27,9 @@ namespace NzbDrone.Api.Indexers
         public string ReleaseHash { get; set; }
         public string Edition { get; set; }
         public string Title { get; set; }
-        public bool FullSeason { get; set; }
-        public int SeasonNumber { get; set; }
         public List<Language> Languages { get; set; }
         public int Year { get; set; }
         public string MovieTitle { get; set; }
-        public int[] EpisodeNumbers { get; set; }
-        public int[] AbsoluteEpisodeNumbers { get; set; }
         public bool Approved { get; set; }
         public bool TemporarilyRejected { get; set; }
         public bool Rejected { get; set; }
@@ -111,8 +107,6 @@ namespace NzbDrone.Api.Indexers
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,
                 Rejected = model.Rejected,
-                TvdbId = releaseInfo.TvdbId,
-                TvRageId = releaseInfo.TvRageId,
                 Rejections = model.Rejections.Select(r => r.Reason).ToList(),
                 PublishDate = releaseInfo.PublishDate,
                 CommentUrl = releaseInfo.CommentUrl,
@@ -163,8 +157,6 @@ namespace NzbDrone.Api.Indexers
             model.IndexerId = resource.IndexerId;
             model.Indexer = resource.Indexer;
             model.DownloadProtocol = resource.DownloadProtocol;
-            model.TvdbId = resource.TvdbId;
-            model.TvRageId = resource.TvRageId;
             model.PublishDate = resource.PublishDate;
 
             return model;

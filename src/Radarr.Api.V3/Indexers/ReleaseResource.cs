@@ -35,6 +35,7 @@ namespace Radarr.Api.V3.Indexers
         public bool Approved { get; set; }
         public bool TemporarilyRejected { get; set; }
         public bool Rejected { get; set; }
+        public int TmdbId { get; set; }
         public int ImdbId { get; set; }
         public IEnumerable<string> Rejections { get; set; }
         public DateTime PublishDate { get; set; }
@@ -90,6 +91,7 @@ namespace Radarr.Api.V3.Indexers
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,
                 Rejected = model.Rejected,
+                TmdbId = releaseInfo.TmdbId,
                 ImdbId = releaseInfo.ImdbId,
                 Rejections = model.Rejections.Select(r => r.Reason).ToList(),
                 PublishDate = releaseInfo.PublishDate,
@@ -137,6 +139,7 @@ namespace Radarr.Api.V3.Indexers
             model.IndexerId = resource.IndexerId;
             model.Indexer = resource.Indexer;
             model.DownloadProtocol = resource.Protocol;
+            model.TmdbId = resource.TmdbId;
             model.ImdbId = resource.ImdbId;
             model.PublishDate = resource.PublishDate.ToUniversalTime();
 
