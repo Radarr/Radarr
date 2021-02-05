@@ -340,7 +340,7 @@
     "BypassProxyForLocalAddresses": "Contourner le proxy pour les adresses locales",
     "Branch": "Branche",
     "BlacklistRelease": "Mettre cette release sur la liste noire",
-    "BlacklistHelpText": "Empêche Radarr de récupérer automatiquement ce film",
+    "BlacklistHelpText": "Empêche Radarr de récupérer automatiquement cette version",
     "BindAddressHelpText": "Adresse IP4 valide ou '*' pour toutes les interfaces",
     "BindAddress": "Adresse d'attache",
     "Backups": "Sauvegardes",
