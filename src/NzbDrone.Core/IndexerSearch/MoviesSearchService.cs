@@ -41,11 +41,11 @@ namespace NzbDrone.Core.IndexerSearch
             var downloadedCount = 0;
             foreach (var movieId in message.MovieIds)
             {
-                var movies = _movieService.GetMovie(movieId);
+                var movie = _movieService.GetMovie(movieId);
 
-                if (!movies.Monitored)
+                if (!movie.Monitored && message.Trigger != CommandTrigger.Manual)
                 {
-                    _logger.Debug("Movie {0} is not monitored, skipping search", movies.Title);
+                    _logger.Debug("Movie {0} is not monitored, skipping search", movie.Title);
                     continue;
                 }
 
