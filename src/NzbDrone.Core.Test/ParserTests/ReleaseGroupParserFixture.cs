@@ -63,6 +63,23 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Ode To Joy (2009) (2160p BluRay x265 10bit HDR FreetheFish)", "FreetheFish")]
         [TestCase("Ode To Joy (2009) (2160p BluRay x265 10bit HDR afm72)", "afm72")]
         [TestCase("Ode To Joy (2009) (2160p BluRay x265 10bit HDR)", null)]
+        [TestCase("Marvel One Shot - Item 47 (2012) (1080p BluRay x265 HEVC 10bit AC3 2.0 Anna)", "Anna")]
+        [TestCase("Anna (2019) (1080p BluRay x265 HEVC 10bit AAC 7.1 Q22 Joy)", "Joy")]
+        [TestCase("Parasite (2019) (2160p BluRay x265 HEVC 10bit HDR AAC 7.1 Bandi)", "Bandi")]
+        [TestCase("Robin Williams - Weapons of Self Destruction (2009) (1080p HDTV x265 HEVC 10bit AAC 2.0 Ghost)", "Ghost")]
+        [TestCase("Ghost in the Shell (2017) (1080p BluRay x265 HEVC 10bit AAC 7.1 Tigole)", "Tigole")]
+        [TestCase("Mission - Impossible - Ghost Protocol (2011) (1080p BluRay x265 HEVC 10bit AAC 7.1 Tigole)", "Tigole")]
+        [TestCase("Ghost (1990) (1080p BluRay x265 HEVC 10bit AAC 5.1 Silence)", "Silence")]
+        [TestCase("Happy End (1999) (1080p BluRay x265 HEVC 10bit AAC 5.1 Korean Kappa)", "Kappa")]
+        [TestCase("Harry Potter and the Order of the Phoenix (2007) Open Matte (1080p AMZN WEB-DL x265 HEVC 10bit AAC 5.1 MONOLITH)", "MONOLITH")]
+        [TestCase("Spider-Man Far from Home (2019) (1080p BluRay x265 HEVC 10bit DTS 7.1 Qman)", "Qman")]
+        [TestCase("Suicide Squad - Hell to Pay (2018) + Extras (1080p BluRay x265 HEVC 10bit AAC 5.1 RZeroX)", "RZeroX")]
+        [TestCase("Gravity (2013) (Diamond Luxe Edition) + Extras (1080p BluRay x265 HEVC 10bit EAC3 7.1 SAMPA)", "SAMPA")]
+        [TestCase("Wonder Woman 1984 (2020) (1080p AMZN WEB-DL x265 HEVC 10bit EAC3 5.1 Silence)", "Silence")]
+        [TestCase("The.Silence.of.the.Lambs.1991.REMASTERED.720p.10bit.BluRay.6CH.x265.HEVC-PSA", "PSA")]
+        [TestCase("Seoul Station 2016 (1080p BluRay x265 HEVC 10bit DDP 5.1 theincognito)", "theincognito")]
+        [TestCase("Harry Potter - A History of Magic (2017) (1080p AMZN WEB-DL x265 HEVC 10bit EAC3 2.0 t3nzin)", "t3nzin")]
+        [TestCaes("John Wick Chapter 3 Parabellum (2019) (1080p BluRay x265 HEVC 10bit AAC 7.1 Vyndros)", "Vyndros")]
 
         public void should_parse_release_group(string title, string expected)
         {
