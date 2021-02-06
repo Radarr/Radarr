@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Silence.of.the.Lambs.1991.REMASTERED.720p.10bit.BluRay.6CH.x265.HEVC-PSA", "PSA")]
         [TestCase("Seoul Station 2016 (1080p BluRay x265 HEVC 10bit DDP 5.1 theincognito)", "theincognito")]
         [TestCase("Harry Potter - A History of Magic (2017) (1080p AMZN WEB-DL x265 HEVC 10bit EAC3 2.0 t3nzin)", "t3nzin")]
-        [TestCaes("John Wick Chapter 3 Parabellum (2019) (1080p BluRay x265 HEVC 10bit AAC 7.1 Vyndros)", "Vyndros")]
+        [TestCase("John Wick Chapter 3 Parabellum (2019) (1080p BluRay x265 HEVC 10bit AAC 7.1 Vyndros)", "Vyndros")]
 
         public void should_parse_release_group(string title, string expected)
         {
