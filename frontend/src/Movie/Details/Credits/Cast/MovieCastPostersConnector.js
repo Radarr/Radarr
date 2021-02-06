@@ -1,9 +1,7 @@
 import _ from 'lodash';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import MovieCreditPosters from '../MovieCreditPosters';
 import MovieCastPoster from './MovieCastPoster';
 
@@ -26,18 +24,7 @@ function createMapStateToProps() {
   );
 }
 
-const mapDispatchToProps = {
-  fetchRootFolders
-};
-
 class MovieCastPostersConnector extends Component {
-
-  //
-  // Lifecycle
-
-  componentDidMount() {
-    this.props.fetchRootFolders();
-  }
 
   //
   // Render
@@ -53,8 +40,4 @@ class MovieCastPostersConnector extends Component {
   }
 }
 
-MovieCastPostersConnector.propTypes = {
-  fetchRootFolders: PropTypes.func.isRequired
-};
-
-export default connect(createMapStateToProps, mapDispatchToProps)(MovieCastPostersConnector);
+export default connect(createMapStateToProps)(MovieCastPostersConnector);

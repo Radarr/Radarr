@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using FluentValidation;
 using FluentValidation.Results;
 using Nancy;
 using Nancy.Responses.Negotiation;
-using Newtonsoft.Json;
 using NzbDrone.Core.Datastore;
 using Radarr.Http.Extensions;
 
@@ -248,7 +248,7 @@ namespace Radarr.Http.REST
             {
                 resource = Request.Body.FromJson<TResource>();
             }
-            catch (JsonReaderException e)
+            catch (JsonException e)
             {
                 throw new BadRequestException($"Invalid request body. {e.Message}");
             }

@@ -56,9 +56,14 @@ namespace NzbDrone.Core.IndexerSearch
 
         public List<DownloadDecision> MovieSearch(Movie movie, bool userInvokedSearch, bool interactiveSearch)
         {
+            var downloadDecisions = new List<DownloadDecision>();
+
             var searchSpec = Get<MovieSearchCriteria>(movie, userInvokedSearch, interactiveSearch);
 
-            return Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
+            var decisions = Dispatch(indexer => indexer.Fetch(searchSpec), searchSpec);
+            downloadDecisions.AddRange(decisions);
+
+            return DeDupeDecisions(downloadDecisions);
         }
 
         private TSpec Get<TSpec>(Movie movie, bool userInvokedSearch, bool interactiveSearch)
@@ -131,6 +136,12 @@ namespace NzbDrone.Core.IndexerSearch
             _logger.Debug("Total of {0} reports were found for {1} from {2} indexers", reports.Count, criteriaBase, indexers.Count);
 
             return _makeDownloadDecision.GetSearchDecision(reports, criteriaBase).ToList();
+        }
+
+        private List<DownloadDecision> DeDupeDecisions(List<DownloadDecision> decisions)
+        {
+            // De-dupe reports by guid so duplicate results aren't returned. Pick the one with the least rejections.
+            return decisions.GroupBy(d => d.RemoteMovie.Release.Guid).Select(d => d.OrderBy(v => v.Rejections.Count()).First()).ToList();
         }
     }
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { updateInteractiveImportItems } from 'Store/Actions/interactiveImportActions';
+import { reprocessInteractiveImportItems, updateInteractiveImportItems } from 'Store/Actions/interactiveImportActions';
 import { fetchQualityProfileSchema } from 'Store/Actions/settingsActions';
 import getQualities from 'Utilities/Quality/getQualities';
 import SelectQualityModalContent from './SelectQualityModalContent';
@@ -31,6 +31,7 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   dispatchFetchQualityProfileSchema: fetchQualityProfileSchema,
+  dispatchReprocessInteractiveImportItems: reprocessInteractiveImportItems,
   dispatchUpdateInteractiveImportItems: updateInteractiveImportItems
 };
 
@@ -49,6 +50,12 @@ class SelectQualityModalContentConnector extends Component {
   // Listeners
 
   onQualitySelect = ({ qualityId, proper, real }) => {
+    const {
+      ids,
+      dispatchUpdateInteractiveImportItems,
+      dispatchReprocessInteractiveImportItems
+    } = this.props;
+
     const quality = _.find(this.props.items,
       (item) => item.id === qualityId);
 
@@ -57,13 +64,15 @@ class SelectQualityModalContentConnector extends Component {
       real: real ? 1 : 0
     };
 
-    this.props.dispatchUpdateInteractiveImportItems({
-      ids: this.props.ids,
+    dispatchUpdateInteractiveImportItems({
+      ids,
       quality: {
         quality,
         revision
       }
     });
+
+    dispatchReprocessInteractiveImportItems({ ids });
 
     this.props.onModalClose(true);
   }
@@ -88,6 +97,7 @@ SelectQualityModalContentConnector.propTypes = {
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchFetchQualityProfileSchema: PropTypes.func.isRequired,
+  dispatchReprocessInteractiveImportItems: PropTypes.func.isRequired,
   dispatchUpdateInteractiveImportItems: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

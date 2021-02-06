@@ -149,6 +149,8 @@ export const actionHandlers = handleThunks({
         id,
         path: item.path,
         movieId: item.movie.id,
+        quality: item.quality,
+        languages: item.languages,
         downloadId: item.downloadId
       };
     });

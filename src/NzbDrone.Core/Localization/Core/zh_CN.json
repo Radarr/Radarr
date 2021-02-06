@@ -1060,5 +1060,11 @@
     "TorrentDelayHelpText": "延迟几分钟等待获取洪流",
     "UsenetDelayHelpText": "延迟几分钟才能等待从Usenet获取发布",
     "ReleaseWillBeProcessedInterp": "发布将被处理{0}",
-    "SqliteVersionCheckUpgradeRequiredMessage": "当前不再支持当前安装的SQLite版本{0}。请升级SQLite至少到版本{1}。"
+    "SqliteVersionCheckUpgradeRequiredMessage": "当前不再支持当前安装的SQLite版本{0}。请升级SQLite至少到版本{1}。",
+    "NoCinemaRelease": "没有电影发行",
+    "ReleaseDate": "发布日期",
+    "ShowCinemaRelease": "电影院上映日期",
+    "showCinemaReleaseHelpText": "在海报下显示电影院上映日期",
+    "ShowReleaseDate": "显示发布日期",
+    "ShowReleaseDateHelpText": "在海报下显示发布日期"
 }

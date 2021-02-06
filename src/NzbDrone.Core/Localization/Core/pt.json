@@ -1075,5 +1075,11 @@
     "WouldYouLikeToRestoreBackup": "Deseja restaurar o backup {0}?",
     "YesMoveFiles": "Sim, mova os arquivos",
     "MoveFolders2": "Deseja mover os arquivos de filme de '{0}' para '{1}'?",
-    "SqliteVersionCheckUpgradeRequiredMessage": "A versão SQLite atualmente instalada {0} não é mais compatível. Atualize o SQLite para pelo menos a versão {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "A versão SQLite atualmente instalada {0} não é mais compatível. Atualize o SQLite para pelo menos a versão {1}.",
+    "showCinemaReleaseHelpText": "Mostrar data de lançamento do cinema embaixo do pôster",
+    "NoCinemaRelease": "Sem lançamento de cinema",
+    "ReleaseDate": "Datas de Lançamento",
+    "ShowCinemaRelease": "Mostrar data de lançamento do cinema",
+    "ShowReleaseDate": "Mostrar data de lançamento",
+    "ShowReleaseDateHelpText": "Mostrar data de lançamento abaixo do pôster"
 }

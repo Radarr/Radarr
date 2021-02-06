@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Icon from 'Components/Icon';
+import { icons } from 'Helpers/Props';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
@@ -10,6 +12,7 @@ function MovieIndexPosterInfo(props) {
     studio,
     qualityProfile,
     showQualityProfile,
+    showReleaseDate,
     added,
     inCinemas,
     digitalRelease,
@@ -57,7 +60,7 @@ function MovieIndexPosterInfo(props) {
     );
   }
 
-  if (sortKey === 'inCinemas' && inCinemas) {
+  if (sortKey === 'inCinemas' && inCinemas && !showReleaseDate) {
     const inCinemasDate = getRelativeDate(
       inCinemas,
       shortDateFormat,
@@ -70,12 +73,14 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {translate('InCinemas')}: {inCinemasDate}
+        <Icon
+          name={icons.IN_CINEMAS}
+        /> {inCinemasDate}
       </div>
     );
   }
 
-  if (sortKey === 'digitalRelease' && digitalRelease) {
+  if (sortKey === 'digitalRelease' && digitalRelease && !showReleaseDate) {
     const digitalReleaseDate = getRelativeDate(
       digitalRelease,
       shortDateFormat,
@@ -88,12 +93,14 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {translate('Digital')}: {digitalReleaseDate}
+        <Icon
+          name={icons.MOVIE_FILE}
+        /> {digitalReleaseDate}
       </div>
     );
   }
 
-  if (sortKey === 'physicalRelease' && physicalRelease) {
+  if (sortKey === 'physicalRelease' && physicalRelease && !showReleaseDate) {
     const physicalReleaseDate = getRelativeDate(
       physicalRelease,
       shortDateFormat,
@@ -106,7 +113,9 @@ function MovieIndexPosterInfo(props) {
 
     return (
       <div className={styles.info}>
-        {translate('Released')}: {physicalReleaseDate}
+        <Icon
+          name={icons.DISC}
+        /> {physicalReleaseDate}
       </div>
     );
   }
@@ -150,6 +159,7 @@ MovieIndexPosterInfo.propTypes = {
   path: PropTypes.string.isRequired,
   sizeOnDisk: PropTypes.number,
   sortKey: PropTypes.string.isRequired,
+  showReleaseDate: PropTypes.bool.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired

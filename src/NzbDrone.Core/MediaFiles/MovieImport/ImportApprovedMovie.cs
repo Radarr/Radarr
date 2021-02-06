@@ -128,7 +128,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                         movieFile.RelativePath = localMovie.Movie.Path.GetRelativePath(movieFile.Path);
                     }
 
-                    _mediaFileService.Add(movieFile);
+                    movieFile = _mediaFileService.Add(movieFile);
                     importResults.Add(new ImportResult(importDecision));
 
                     if (newDownload)

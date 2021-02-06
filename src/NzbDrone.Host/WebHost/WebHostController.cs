@@ -114,9 +114,9 @@ namespace Radarr.Host
                         options.PayloadSerializerSettings = Json.GetSerializerSettings();
                     });
 #else
-                    .AddNewtonsoftJsonProtocol(options =>
+                    .AddJsonProtocol(options =>
                     {
-                        options.PayloadSerializerSettings = Json.GetSerializerSettings();
+                        options.PayloadSerializerOptions = STJson.GetSerializerSettings();
                     });
 #endif
 

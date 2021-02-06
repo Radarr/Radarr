@@ -1060,5 +1060,11 @@
     "SearchCutoffUnmet": "Не выполнено прекращение поиска",
     "ImportLibrary": "Импорт библиотеки",
     "ImportNotForDownloads": "Не используйте для импорта загрузок из клиента загрузки, это только для существующих организованных библиотек, а не для несортированных файлов.",
-    "SqliteVersionCheckUpgradeRequiredMessage": "Установленная в настоящее время версия SQLite {0} больше не поддерживается. Обновите SQLite как минимум до версии {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "Установленная в настоящее время версия SQLite {0} больше не поддерживается. Обновите SQLite как минимум до версии {1}.",
+    "NoCinemaRelease": "Нет релиза в кино",
+    "ReleaseDate": "Дата выпуска",
+    "ShowCinemaRelease": "Дата выхода шоу в кинотеатре",
+    "showCinemaReleaseHelpText": "Показывать дату выхода кинотеатра под плакатом",
+    "ShowReleaseDate": "Показать дату выпуска",
+    "ShowReleaseDateHelpText": "Показать дату выпуска под плакатом"
 }

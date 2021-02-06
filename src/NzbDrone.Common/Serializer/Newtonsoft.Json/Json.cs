@@ -127,10 +127,5 @@ namespace NzbDrone.Common.Serializer
             Serializer.Serialize(jsonTextWriter, model);
             jsonTextWriter.Flush();
         }
-
-        public static void Serialize<TModel>(TModel model, Stream outputStream)
-        {
-            Serialize(model, new StreamWriter(outputStream));
-        }
     }
 }

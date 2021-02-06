@@ -8,6 +8,7 @@ import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import NotFound from 'Components/NotFound';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
+import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import translate from 'Utilities/String/translate';
 import MovieDetailsConnector from './MovieDetailsConnector';
@@ -46,13 +47,18 @@ function createMapStateToProps() {
 }
 
 const mapDispatchToProps = {
-  push
+  push,
+  fetchRootFolders
 };
 
 class MovieDetailsPageConnector extends Component {
 
   //
   // Lifecycle
+
+  componentDidMount() {
+    this.props.fetchRootFolders();
+  }
 
   componentDidUpdate(prevProps) {
     if (!this.props.titleSlug) {
@@ -112,7 +118,8 @@ MovieDetailsPageConnector.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   match: PropTypes.shape({ params: PropTypes.shape({ titleSlug: PropTypes.string.isRequired }).isRequired }).isRequired,
-  push: PropTypes.func.isRequired
+  push: PropTypes.func.isRequired,
+  fetchRootFolders: PropTypes.func.isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(MovieDetailsPageConnector);

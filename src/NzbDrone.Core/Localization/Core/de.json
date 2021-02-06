@@ -303,7 +303,7 @@
     "SearchOnAdd": "Beim hinzufügen suchen",
     "SearchMovie": "Film suchen",
     "RecentFolders": "Letzte Ordner",
-    "QuickImport": "Schnell Import",
+    "QuickImport": "Automatisch verschieben",
     "PosterSize": "Plakatgröße",
     "Posters": "Plakate",
     "PosterOptions": "Poster Optionen",
@@ -467,7 +467,7 @@
     "MustContain": "Muss beinhalten",
     "MustNotContain": "Darf nicht beinhalten",
     "NamingSettings": "Bennenungs Einstellungen",
-    "NetCore": ".NET Core",
+    "NetCore": ".NET",
     "New": "Neu",
     "NoLeaveIt": "Nein, nicht ändern",
     "NoLimitForAnyRuntime": "Keine Begrenzung der Laufzeiten",
@@ -1077,5 +1077,11 @@
     "MoveFolders2": "Bist du sicher, dass du die Filmdateien von '{0}' nach '{1}' verschieben willst ?",
     "ImportLibrary": "Mediathek Import",
     "ImportNotForDownloads": "Benutze dies NICHT um abgeschlossene Downloads deines Download Clients hinzuzufügen. Dies ist NUR für vorhandene organisierte Mediatheken und nicht für unsortierte Dateien.",
-    "SqliteVersionCheckUpgradeRequiredMessage": "Die derzeit installierte SQLite-Version {0} wird nicht mehr unterstützt. Bitte aktualisieren Sie SQLite auf mindestens Version {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "Die derzeit installierte SQLite-Version {0} wird nicht mehr unterstützt. Bitte aktualisieren Sie SQLite auf mindestens Version {1}.",
+    "NoCinemaRelease": "Keine Kinoveröffentlichung",
+    "ReleaseDate": "VÖ Termine",
+    "ShowCinemaRelease": "Erscheinungsdatum des Kinos anzeigen",
+    "showCinemaReleaseHelpText": "Erscheinungsdatum des Kinos unter Poster anzeigen",
+    "ShowReleaseDate": "Veröffentlichungsdatum anzeigen",
+    "ShowReleaseDateHelpText": "Erscheinungsdatum unter Poster anzeigen"
 }

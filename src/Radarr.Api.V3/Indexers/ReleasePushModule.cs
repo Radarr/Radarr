@@ -9,6 +9,7 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Profiles;
 
 namespace Radarr.Api.V3.Indexers
 {
@@ -22,7 +23,9 @@ namespace Radarr.Api.V3.Indexers
         public ReleasePushModule(IMakeDownloadDecision downloadDecisionMaker,
                                  IProcessDownloadDecisions downloadDecisionProcessor,
                                  IIndexerFactory indexerFactory,
+                                 IProfileService qualityProfileService,
                                  Logger logger)
+            : base(qualityProfileService)
         {
             _downloadDecisionMaker = downloadDecisionMaker;
             _downloadDecisionProcessor = downloadDecisionProcessor;

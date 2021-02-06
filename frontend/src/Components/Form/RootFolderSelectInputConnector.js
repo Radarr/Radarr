@@ -151,7 +151,8 @@ RootFolderSelectInputConnector.propTypes = {
 };
 
 RootFolderSelectInputConnector.defaultProps = {
-  includeNoChange: false
+  includeNoChange: false,
+  value: ''
 };
 
 export default connect(createMapStateToProps, createMapDispatchToProps)(RootFolderSelectInputConnector);

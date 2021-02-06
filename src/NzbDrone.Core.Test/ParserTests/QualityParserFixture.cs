@@ -86,6 +86,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Glee.S04E10.Glee.Actually.480p.WEB-DL.x264-mSD", false)]
         [TestCase("The.Big.Bang.Theory.S06E11.The.Santa.Simulation.480p.WEB-DL.x264-mSD", false)]
         [TestCase("Da.Vincis.Demons.S02E04.480p.WEB.DL.nSD.x264-NhaNc3", false)]
+        [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][480p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         public void should_parse_webdl480p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R480p);
@@ -145,6 +146,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Nightly.Show.2016.03.14.720p.WEB.x264-spamTV", false)]
         [TestCase("The.Nightly.Show.2016.03.14.720p.WEB.h264-spamTV", false)]
         [TestCase("BrainDead.S01E01.The.Insanity.Principle.720p.WEB-DL.DD5.1.H.264-BD", false)]
+        [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][720p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
+        [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         public void should_parse_webdl720p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R720p);
@@ -177,6 +180,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Legacies.2020.1080p.AMZN.WEB...", false)]
         [TestCase("Legacies.2020.1080p.AMZN.WEB.", false)]
         [TestCase("Movie Title - 2020 1080p Viva MKV WEB", false)]
+        [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][1080p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         public void should_parse_webdl1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R1080p);
@@ -193,6 +197,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Nightly.Show.2016.03.14.2160p.WEB.x264-spamTV", false)]
         [TestCase("The.Nightly.Show.2016.03.14.2160p.WEB.h264-spamTV", false)]
         [TestCase("The.Nightly.Show.2016.03.14.2160p.WEB.PROPER.h264-spamTV", true)]
+        [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][2160p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         public void should_parse_webdl2160p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R2160p);
