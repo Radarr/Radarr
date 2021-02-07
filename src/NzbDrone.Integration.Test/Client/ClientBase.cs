@@ -86,9 +86,18 @@ namespace NzbDrone.Integration.Test.Client
         {
         }
 
-        public List<TResource> All()
+        public List<TResource> All(Dictionary<string, object> queryParams = null)
         {
             var request = BuildRequest();
+
+            if (queryParams != null)
+            {
+                foreach (var param in queryParams)
+                {
+                    request.AddParameter(param.Key, param.Value);
+                }
+            }
+
             return Get<List<TResource>>(request);
         }
 
