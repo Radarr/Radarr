@@ -301,6 +301,8 @@ namespace NzbDrone.Core.Indexers
                 request.HttpRequest.RateLimit = RateLimit;
             }
 
+            request.HttpRequest.RateLimitKey = Definition.Id.ToString();
+
             request.HttpRequest.AllowAutoRedirect = true;
 
             return new IndexerResponse(request, _httpClient.Execute(request.HttpRequest));
