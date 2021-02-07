@@ -287,6 +287,13 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Czech);
         }
 
+        [TestCase("Mosul.2019.ARABIC.WEBRip.x264-VXT")]
+        public void should_parse_language_arabic(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+            result.Languages.Should().BeEquivalentTo(Language.Arabic);
+        }
+
         [TestCase("Pulp Fiction.en.sub")]
         [TestCase("Pulp Fiction.eng.sub")]
         [TestCase("Pulp.Fiction.eng.forced.sub")]

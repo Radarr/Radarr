@@ -87,6 +87,11 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Hindi);
             }
 
+            if (lowerTitle.Contains("arabic"))
+            {
+                languages.Add(Language.Arabic);
+            }
+
             if (lowerTitle.Contains("thai"))
             {
                 languages.Add(Language.Thai);
