@@ -5,7 +5,8 @@ import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import Measure from 'Components/Measure';
 import PageSectionContent from 'Components/Page/PageSectionContent';
-import { icons } from 'Helpers/Props';
+import Scroller from 'Components/Scroller/Scroller';
+import { icons, scrollDirections } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import DelayProfile from './DelayProfile';
 import DelayProfileDragPreview from './DelayProfileDragPreview';
@@ -72,48 +73,59 @@ class DelayProfiles extends Component {
             errorMessage={translate('UnableToLoadDelayProfiles')}
             {...otherProps}
           >
-            <div className={styles.delayProfilesHeader}>
-              <div className={styles.column}>Protocol</div>
-              <div className={styles.column}>Usenet Delay</div>
-              <div className={styles.column}>Torrent Delay</div>
-              <div className={styles.tags}>Tags</div>
-            </div>
-
-            <div className={styles.delayProfiles}>
-              {
-                items.map((item, index) => {
-                  return (
-                    <DelayProfileDragSource
-                      key={item.id}
-                      tagList={tagList}
-                      {...item}
-                      {...otherProps}
-                      index={index}
-                      isDragging={isDragging}
-                      isDraggingUp={isDraggingUp}
-                      isDraggingDown={isDraggingDown}
-                      onConfirmDeleteDelayProfile={onConfirmDeleteDelayProfile}
-                    />
-                  );
-                })
+            <Scroller
+              className={styles.horizontalScroll}
+              scrollDirection={
+                scrollDirections.HORIZONTAL
               }
+              autoFocus={false}
+            >
+              <div>
+                <div className={styles.delayProfilesHeader}>
+                  <div className={styles.column}>Protocol</div>
+                  <div className={styles.column}>Usenet Delay</div>
+                  <div className={styles.column}>Torrent Delay</div>
+                  <div className={styles.tags}>Tags</div>
+                </div>
 
-              <DelayProfileDragPreview
-                width={width}
-              />
-            </div>
+                <div className={styles.delayProfiles}>
+                  {
+                    items.map((item, index) => {
+                      return (
+                        <DelayProfileDragSource
+                          key={item.id}
+                          tagList={tagList}
+                          {...item}
+                          {...otherProps}
+                          index={index}
+                          isDragging={isDragging}
+                          isDraggingUp={isDraggingUp}
+                          isDraggingDown={isDraggingDown}
+                          onConfirmDeleteDelayProfile={onConfirmDeleteDelayProfile}
+                        />
+                      );
+                    })
+                  }
 
-            {
-              defaultProfile &&
-                <div>
-                  <DelayProfile
-                    tagList={tagList}
-                    isDragging={false}
-                    onConfirmDeleteDelayProfile={onConfirmDeleteDelayProfile}
-                    {...defaultProfile}
+                  <DelayProfileDragPreview
+                    width={width}
                   />
                 </div>
-            }
+
+                {
+                  defaultProfile ?
+                    <div>
+                      <DelayProfile
+                        tagList={tagList}
+                        isDragging={false}
+                        onConfirmDeleteDelayProfile={onConfirmDeleteDelayProfile}
+                        {...defaultProfile}
+                      />
+                    </div> :
+                    null
+                }
+              </div>
+            </Scroller>
 
             <div className={styles.addDelayProfile}>
               <Link

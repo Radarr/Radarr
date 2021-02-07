@@ -1060,5 +1060,11 @@
     "ReleaseWillBeProcessedInterp": "Vydání bude zpracováno {0}",
     "Search": "Vyhledávání",
     "Edit": "Upravit",
-    "SqliteVersionCheckUpgradeRequiredMessage": "Aktuálně nainstalovaná verze SQLite {0} již není podporována. Upgradujte SQLite alespoň na verzi {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "Aktuálně nainstalovaná verze SQLite {0} již není podporována. Upgradujte SQLite alespoň na verzi {1}.",
+    "ShowReleaseDate": "Zobrazit datum vydání",
+    "ShowReleaseDateHelpText": "Zobrazit datum vydání pod plakátem",
+    "NoCinemaRelease": "Žádné vydání kina",
+    "ReleaseDate": "Datum vydání",
+    "ShowCinemaRelease": "Zobrazit datum vydání kina",
+    "showCinemaReleaseHelpText": "Zobrazit datum vydání kina pod plakátem"
 }

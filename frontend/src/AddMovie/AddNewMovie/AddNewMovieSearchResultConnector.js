@@ -11,9 +11,9 @@ function createMapStateToProps() {
     createExclusionMovieSelector(),
     createDimensionsSelector(),
     (state) => state.queue.details.items,
-    (state) => state.tmdbId,
-    (isExistingMovie, isExclusionMovie, dimensions, queueItems, tmdbId) => {
-      const firstQueueItem = queueItems.find((q) => q.tmdbId === tmdbId);
+    (state, { internalId }) => internalId,
+    (isExistingMovie, isExclusionMovie, dimensions, queueItems, internalId) => {
+      const firstQueueItem = queueItems.find((q) => q.movieId === internalId && internalId > 0);
 
       return {
         isExistingMovie,

@@ -318,7 +318,6 @@ class MovieDetails extends Component {
             <PageToolbarButton
               label={translate('SearchMovie')}
               iconName={icons.SEARCH}
-              isDisabled={!monitored}
               isSpinning={isSearching}
               title={undefined}
               onPress={onSearchPress}

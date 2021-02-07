@@ -3,8 +3,8 @@ using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
 using Nancy;
-using Newtonsoft.Json;
 using NzbDrone.Common.Reflection;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
 using Radarr.Http;
@@ -188,7 +188,7 @@ namespace NzbDrone.Api
             var query = ((IDictionary<string, object>)Request.Query.ToDictionary()).ToDictionary(k => k.Key, k => k.Value.ToString());
 
             var data = _providerFactory.RequestAction(providerDefinition, action, query);
-            Response resp = JsonConvert.SerializeObject(data);
+            Response resp = data.ToJson();
             resp.ContentType = "application/json";
             return resp;
         }

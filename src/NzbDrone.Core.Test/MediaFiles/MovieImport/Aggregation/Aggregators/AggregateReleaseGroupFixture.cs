@@ -79,5 +79,45 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
 
             localMovie.ReleaseGroup.Should().Be("Wizzy");
         }
+
+        [Test]
+        public void should_not_use_imdbId()
+        {
+            var fileMovieInfo = Parser.Parser.ParseMovieTitle("Lock Stock and Two Smoking Barrels (1998) [imdb-tt0120735][Bluray-1080p][8bit][x264][DTS-HD MA 5.1]-FraMeSToR", false);
+            var folderMovieInfo = Parser.Parser.ParseMovieTitle("Lock Stock and Two Smoking Barrels (1998) {imdb-tt0120735}", false);
+            var downloadClientMovieInfo = Parser.Parser.ParseMovieTitle("Movie.Title.2008.WEB-DL", false);
+            var localMovie = new LocalMovie
+            {
+                FileMovieInfo = fileMovieInfo,
+                FolderMovieInfo = folderMovieInfo,
+                DownloadClientMovieInfo = downloadClientMovieInfo,
+                Path = @"C:\Test\Unsorted Movies\Movie.Title.2008\Movie.Title.2008.mkv".AsOsAgnostic(),
+                Movie = _movie
+            };
+
+            Subject.Aggregate(localMovie, null, false);
+
+            localMovie.ReleaseGroup.Should().Be("FraMeSToR");
+        }
+
+        [Test]
+        public void should_not_use_tmdbbId()
+        {
+            var fileMovieInfo = Parser.Parser.ParseMovieTitle("Lock Stock and Two Smoking Barrels (1998) [tmdb-100][Bluray-1080p][8bit][x264][DTS-HD MA 5.1]-FraMeSToR", false);
+            var folderMovieInfo = Parser.Parser.ParseMovieTitle("Lock Stock and Two Smoking Barrels (1998) {tmdb-100}", false);
+            var downloadClientMovieInfo = Parser.Parser.ParseMovieTitle("Movie.Title.2008.WEB-DL", false);
+            var localMovie = new LocalMovie
+            {
+                FileMovieInfo = fileMovieInfo,
+                FolderMovieInfo = folderMovieInfo,
+                DownloadClientMovieInfo = downloadClientMovieInfo,
+                Path = @"C:\Test\Unsorted Movies\Movie.Title.2008\Movie.Title.2008.mkv".AsOsAgnostic(),
+                Movie = _movie
+            };
+
+            Subject.Aggregate(localMovie, null, false);
+
+            localMovie.ReleaseGroup.Should().Be("FraMeSToR");
+        }
     }
 }

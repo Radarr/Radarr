@@ -13,6 +13,7 @@ import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MoviePoster from 'Movie/MoviePoster';
+import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import translate from 'Utilities/String/translate';
 import MovieIndexPosterInfo from './MovieIndexPosterInfo';
 import styles from './MovieIndexPoster.css';
@@ -101,6 +102,11 @@ class MovieIndexPoster extends Component {
       showSearchAction,
       showRelativeDates,
       shortDateFormat,
+      showReleaseDate,
+      showCinemaRelease,
+      inCinemas,
+      physicalRelease,
+      digitalRelease,
       timeFormat,
       isRefreshingMovie,
       isSearchingMovie,
@@ -126,6 +132,19 @@ class MovieIndexPoster extends Component {
       width: `${posterWidth}px`,
       height: `${posterHeight}px`
     };
+
+    let releaseDate = '';
+    let releaseDateType = '';
+    if (physicalRelease && digitalRelease) {
+      releaseDate = (physicalRelease < digitalRelease) ? physicalRelease : digitalRelease;
+      releaseDateType = (physicalRelease < digitalRelease) ? 'Released' : 'Digital';
+    } else if (physicalRelease && !digitalRelease) {
+      releaseDate = physicalRelease;
+      releaseDateType = 'Released';
+    } else if (digitalRelease && !physicalRelease) {
+      releaseDate = digitalRelease;
+      releaseDateType = 'Digital';
+    }
 
     return (
       <div className={styles.content}>
@@ -253,12 +272,67 @@ class MovieIndexPoster extends Component {
             </div>
         }
 
+        {
+          showCinemaRelease && inCinemas &&
+            <div className={styles.title}>
+              <Icon
+                name={icons.IN_CINEMAS}
+              /> {getRelativeDate(
+                inCinemas,
+                shortDateFormat,
+                showRelativeDates,
+                {
+                  timeFormat,
+                  timeForToday: false
+                }
+              )}
+            </div>
+        }
+
+        {
+          showReleaseDate && releaseDateType === 'Released' &&
+            <div className={styles.title}>
+              <Icon
+                name={icons.DISC}
+              /> {getRelativeDate(
+                releaseDate,
+                shortDateFormat,
+                showRelativeDates,
+                {
+                  timeFormat,
+                  timeForToday: false
+                }
+              )}
+            </div>
+        }
+
+        {
+          showReleaseDate && releaseDateType === 'Digital' &&
+            <div className={styles.title}>
+              <Icon
+                name={icons.MOVIE_FILE}
+              /> {getRelativeDate(
+                releaseDate,
+                shortDateFormat,
+                showRelativeDates,
+                {
+                  timeFormat,
+                  timeForToday: false
+                }
+              )}
+            </div>
+        }
+
         <MovieIndexPosterInfo
           qualityProfile={qualityProfile}
           showQualityProfile={showQualityProfile}
+          showReleaseDate={showReleaseDate}
           showRelativeDates={showRelativeDates}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
+          inCinemas={inCinemas}
+          physicalRelease={physicalRelease}
+          digitalRelease={digitalRelease}
           {...otherProps}
         />
 
@@ -298,6 +372,11 @@ MovieIndexPoster.propTypes = {
   showSearchAction: PropTypes.bool.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
+  showCinemaRelease: PropTypes.bool.isRequired,
+  showReleaseDate: PropTypes.bool.isRequired,
+  inCinemas: PropTypes.string,
+  physicalRelease: PropTypes.string,
+  digitalRelease: PropTypes.string,
   timeFormat: PropTypes.string.isRequired,
   isRefreshingMovie: PropTypes.bool.isRequired,
   isSearchingMovie: PropTypes.bool.isRequired,

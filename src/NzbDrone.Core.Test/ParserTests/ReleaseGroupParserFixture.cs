@@ -37,7 +37,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("NCIS.S16E04.Third.Wheel.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb-GEROV", "NTb")]
         [TestCase("Will.and.Grace.S10E06.Kid.n.Play.1080p.AMZN.WEB-DL.DDP5.1.H.264-NTb-Z0iDS3N", "NTb")]
         [TestCase("Absolute.Power.S02E06.The.House.of.Lords.DVDRip.x264-MaG-Chamele0n", "MaG")]
-        [TestCase("The.Nightingale.2018.1080p.Blu-ray.Remux.AVC.DTS-HD.MA.5.1.KRaLiMaRKo", null)]
         [TestCase("Kai.Po.Che.2013.1080p.BluRay.REMUX.AVC.DTS-X.MA.5.1", null)]
         [TestCase("Kai.Po.Che.2013.1080p.BluRay.REMUX.AVC.DTS-MA.5.1", null)]
         [TestCase("Kai.Po.Che.2013.1080p.BluRay.REMUX.AVC.DTS-ES.MA.5.1", null)]
@@ -48,6 +47,23 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("SomeMovie.1080p.BluRay.DTS.x264.-VH-PROD.mkv", "VH-PROD")]
 
         //[TestCase("", "")]
+
+        //Exception Cases
+        public void should_parse_exception_release_group(string title, string expected)
+        {
+            Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
+        }
+
+        [TestCase("Stargirl (2020) [2160p x265 10bit S82 Joy]", "Joy")]
+        [TestCase("The Matrix Revolutions (2003) (2160p BluRay X265 HEVC 10bit HDR AAC 7.1 Tigole) [QxR]", "Tigole")]
+        [TestCase("Ode To Joy (2009) (2160p BluRay x265 10bit HDR Joy)", "Joy")]
+        [TestCase("Shingeki No Kyojin a.k.a. Attack on Titan S04E03 The Door of Hope 1080p NF WEB-DL DDP2.0 x264-E.N.D", "E.N.D")]
+        [TestCase("The Curse of Audrey Earnshaw (2020) [1080p] [WEBRip] [5.1] [YTS.MX]", "YTS.MX")]
+        [TestCase("The.Nightingale.2018.1080p.Blu-ray.Remux.AVC.DTS-HD.MA.5.1.KRaLiMaRKo", "KRaLiMaRKo")]
+        [TestCase("Ode To Joy (2009) (2160p BluRay x265 10bit HDR FreetheFish)", "FreetheFish")]
+        [TestCase("Ode To Joy (2009) (2160p BluRay x265 10bit HDR afm72)", "afm72")]
+        [TestCase("Ode To Joy (2009) (2160p BluRay x265 10bit HDR)", null)]
+
         public void should_parse_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);

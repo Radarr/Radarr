@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.CustomFilters;
@@ -10,7 +11,7 @@ namespace Radarr.Api.V3.CustomFilters
     {
         public string Type { get; set; }
         public string Label { get; set; }
-        public List<dynamic> Filters { get; set; }
+        public List<ExpandoObject> Filters { get; set; }
     }
 
     public static class CustomFilterResourceMapper
@@ -27,7 +28,7 @@ namespace Radarr.Api.V3.CustomFilters
                 Id = model.Id,
                 Type = model.Type,
                 Label = model.Label,
-                Filters = Json.Deserialize<List<dynamic>>(model.Filters)
+                Filters = STJson.Deserialize<List<ExpandoObject>>(model.Filters)
             };
         }
 
@@ -43,7 +44,7 @@ namespace Radarr.Api.V3.CustomFilters
                 Id = resource.Id,
                 Type = resource.Type,
                 Label = resource.Label,
-                Filters = Json.ToJson(resource.Filters)
+                Filters = STJson.ToJson(resource.Filters)
             };
         }
 

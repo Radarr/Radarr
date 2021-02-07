@@ -1065,5 +1065,11 @@
     "WeekColumnHeader": "Rubrik för veckokolumn",
     "WhitelistedHardcodedSubsHelpText": "Textrubriker som ställts in här kommer inte att betraktas som hårdkodade",
     "MovieExcludedFromAutomaticAdd": "Film exkluderad från automatisk läggning",
-    "SqliteVersionCheckUpgradeRequiredMessage": "För närvarande installerad SQLite-version {0} stöds inte längre. Uppgradera SQLite till minst version {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "För närvarande installerad SQLite-version {0} stöds inte längre. Uppgradera SQLite till minst version {1}.",
+    "NoCinemaRelease": "Ingen filmrelease",
+    "ShowCinemaRelease": "Visa utgivningsdatum för bio",
+    "ReleaseDate": "Lanseringsdatum",
+    "showCinemaReleaseHelpText": "Visa släppdatum för bio under affischen",
+    "ShowReleaseDate": "Visa släppdatum",
+    "ShowReleaseDateHelpText": "Visa släppdatum under affischen"
 }

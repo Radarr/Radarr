@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Nancy;
@@ -27,10 +27,8 @@ namespace Radarr.Http.Extensions
 
         public static object FromJson(this Stream body, Type type)
         {
-            var reader = new StreamReader(body, true);
             body.Position = 0;
-            var value = reader.ReadToEnd();
-            return Json.Deserialize(value, type);
+            return STJson.Deserialize(body, type);
         }
 
         public static JsonResponse<TModel> AsResponse<TModel>(this TModel model, NancyContext context, HttpStatusCode statusCode = HttpStatusCode.OK)

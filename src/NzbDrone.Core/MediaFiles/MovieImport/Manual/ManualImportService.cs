@@ -8,19 +8,21 @@ using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 {
     public interface IManualImportService
     {
         List<ManualImportItem> GetMediaFiles(string path, string downloadId, int? movieId, bool filterExistingFiles);
-        ManualImportItem ReprocessItem(string path, string downloadId, int movieId);
+        ManualImportItem ReprocessItem(string path, string downloadId, int movieId, QualityModel quality, List<Language> languages);
     }
 
     public class ManualImportService : IExecute<ManualImportCommand>, IManualImportService
@@ -90,12 +92,27 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             return ProcessFolder(path, path, downloadId, movieId, filterExistingFiles);
         }
 
-        public ManualImportItem ReprocessItem(string path, string downloadId, int movieId)
+        public ManualImportItem ReprocessItem(string path, string downloadId, int movieId, QualityModel quality, List<Language> languages)
         {
             var rootFolder = Path.GetDirectoryName(path);
             var movie = _movieService.GetMovie(movieId);
 
-            return ProcessFile(rootFolder, rootFolder, path, downloadId, movie);
+            var downloadClientItem = GetTrackedDownload(downloadId)?.DownloadItem;
+
+            var localEpisode = new LocalMovie
+            {
+                Movie = movie,
+                FileMovieInfo = Parser.Parser.ParseMoviePath(path),
+                DownloadClientMovieInfo = downloadClientItem == null ? null : Parser.Parser.ParseMovieTitle(downloadClientItem.Title),
+                Path = path,
+                SceneSource = SceneSource(movie, rootFolder),
+                ExistingFile = movie.Path.IsParentPath(path),
+                Size = _diskProvider.GetFileSize(path),
+                Languages = (languages?.SingleOrDefault() ?? Language.Unknown) == Language.Unknown ? LanguageParser.ParseLanguages(path) : languages,
+                Quality = quality.Quality == Quality.Unknown ? QualityParser.ParseQuality(path) : quality
+            };
+
+            return MapItem(_importDecisionMaker.GetDecision(localEpisode, downloadClientItem), rootFolder, downloadId, null);
         }
 
         private List<ManualImportItem> ProcessFolder(string rootFolder, string baseFolder, string downloadId, int? movieId, bool filterExistingFiles)
@@ -123,7 +140,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 // Filter paths based on the rootFolder, so files in subfolders that should be ignored are ignored.
                 // It will lead to some extra directories being checked for files, but it saves the processing of them and is cleaner than
                 // teaching FilterPaths to know whether it's processing a file or a folder and changing it's filtering based on that.
+                // If the movie is unknown for the directory and there are more than 100 files in the folder don't process the items before returning.
                 var files = _diskScanService.FilterPaths(rootFolder, _diskScanService.GetVideoFiles(baseFolder, false));
+
+                if (files.Count() > 100)
+                {
+                    return ProcessDownloadDirectory(rootFolder, files);
+                }
+
                 var subfolders = _diskScanService.FilterPaths(rootFolder, _diskProvider.GetDirectories(baseFolder));
 
                 var processedFiles = files.Select(file => ProcessFile(rootFolder, baseFolder, file, downloadId));
@@ -141,7 +165,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
         private ManualImportItem ProcessFile(string rootFolder, string baseFolder, string file, string downloadId, Movie movie = null)
         {
-            DownloadClientItem downloadClientItem = null;
+            var trackedDownload = GetTrackedDownload(downloadId);
             var relativeFile = baseFolder.GetRelativePath(file);
 
             if (movie == null)
@@ -154,15 +178,9 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 movie = _parsingService.GetMovie(relativeFile);
             }
 
-            if (downloadId.IsNotNullOrWhiteSpace())
+            if (trackedDownload != null && movie == null)
             {
-                var trackedDownload = _trackedDownloadService.Find(downloadId);
-                downloadClientItem = trackedDownload?.DownloadItem;
-
-                if (movie == null)
-                {
-                    movie = trackedDownload?.RemoteMovie?.Movie;
-                }
+                movie = trackedDownload?.RemoteMovie?.Movie;
             }
 
             if (movie == null)
@@ -186,7 +204,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 return MapItem(new ImportDecision(localMovie, new Rejection("Unknown Movie")), rootFolder, downloadId, null);
             }
 
-            var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> { file }, movie, downloadClientItem, null, SceneSource(movie, baseFolder));
+            var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> { file }, movie, trackedDownload?.DownloadItem, null, SceneSource(movie, baseFolder));
 
             if (importDecisions.Any())
             {
@@ -203,9 +221,39 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             };
         }
 
+        private List<ManualImportItem> ProcessDownloadDirectory(string rootFolder, List<string> videoFiles)
+        {
+            var items = new List<ManualImportItem>();
+
+            foreach (var file in videoFiles)
+            {
+                var localEpisode = new LocalMovie();
+                localEpisode.Path = file;
+                localEpisode.Quality = new QualityModel(Quality.Unknown);
+                localEpisode.Languages = new List<Language> { Language.Unknown };
+                localEpisode.Size = _diskProvider.GetFileSize(file);
+
+                items.Add(MapItem(new ImportDecision(localEpisode), rootFolder, null, null));
+            }
+
+            return items;
+        }
+
         private bool SceneSource(Movie movie, string folder)
         {
             return !(movie.Path.PathEquals(folder) || movie.Path.IsParentPath(folder));
+        }
+
+        private TrackedDownload GetTrackedDownload(string downloadId)
+        {
+            if (downloadId.IsNotNullOrWhiteSpace())
+            {
+                var trackedDownload = _trackedDownloadService.Find(downloadId);
+
+                return trackedDownload;
+            }
+
+            return null;
         }
 
         private ManualImportItem MapItem(ImportDecision decision, string rootFolder, string downloadId, string folderName)

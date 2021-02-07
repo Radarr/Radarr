@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { updateInteractiveImportItems } from 'Store/Actions/interactiveImportActions';
+import { reprocessInteractiveImportItems, updateInteractiveImportItems } from 'Store/Actions/interactiveImportActions';
 import { fetchLanguages } from 'Store/Actions/settingsActions';
 import SelectLanguageModalContent from './SelectLanguageModalContent';
 
@@ -33,6 +33,7 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   dispatchFetchLanguages: fetchLanguages,
+  dispatchReprocessInteractiveImportItems: reprocessInteractiveImportItems,
   dispatchUpdateInteractiveImportItems: updateInteractiveImportItems
 };
 
@@ -51,6 +52,12 @@ class SelectLanguageModalContentConnector extends Component {
   // Listeners
 
   onLanguageSelect = ({ languageIds }) => {
+    const {
+      ids,
+      dispatchUpdateInteractiveImportItems,
+      dispatchReprocessInteractiveImportItems
+    } = this.props;
+
     const languages = [];
 
     languageIds.forEach((languageId) => {
@@ -62,10 +69,12 @@ class SelectLanguageModalContentConnector extends Component {
       }
     });
 
-    this.props.dispatchUpdateInteractiveImportItems({
-      ids: this.props.ids,
+    dispatchUpdateInteractiveImportItems({
+      ids,
       languages
     });
+
+    dispatchReprocessInteractiveImportItems({ ids });
 
     this.props.onModalClose(true);
   }
@@ -91,6 +100,7 @@ SelectLanguageModalContentConnector.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchFetchLanguages: PropTypes.func.isRequired,
   dispatchUpdateInteractiveImportItems: PropTypes.func.isRequired,
+  dispatchReprocessInteractiveImportItems: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 

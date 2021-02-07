@@ -1063,5 +1063,11 @@
     "MovieExcludedFromAutomaticAdd": "Film ekskluderet fra automatisk tilføjelse",
     "ReleaseWillBeProcessedInterp": "Udgivelsen behandles {0}",
     "Search": "Søg",
-    "SqliteVersionCheckUpgradeRequiredMessage": "Aktuelt installeret SQLite-version {0} understøttes ikke længere. Opgrader SQLite til mindst version {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "Aktuelt installeret SQLite-version {0} understøttes ikke længere. Opgrader SQLite til mindst version {1}.",
+    "NoCinemaRelease": "Ingen biografudgivelse",
+    "ReleaseDate": "Slip datoer",
+    "ShowCinemaRelease": "Vis biografens udgivelsesdato",
+    "showCinemaReleaseHelpText": "Vis biografens udgivelsesdato under plakaten",
+    "ShowReleaseDate": "Vis udgivelsesdato",
+    "ShowReleaseDateHelpText": "Vis udgivelsesdato under plakat"
 }

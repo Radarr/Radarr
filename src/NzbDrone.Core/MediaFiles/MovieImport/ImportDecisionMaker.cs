@@ -18,6 +18,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource);
         List<ImportDecision> GetImportDecisions(List<string> videoFiles, Movie movie, DownloadClientItem downloadClientItem, ParsedMovieInfo folderInfo, bool sceneSource, bool filterExistingFiles);
+        ImportDecision GetDecision(LocalMovie localMovie, DownloadClientItem downloadClientItem);
     }
 
     public class ImportDecisionMaker : IMakeImportDecision
@@ -93,6 +94,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             return decisions;
         }
 
+        public ImportDecision GetDecision(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        {
+            var reasons = _specifications.Select(c => EvaluateSpec(c, localMovie, downloadClientItem))
+                                         .Where(c => c != null);
+
+            return new ImportDecision(localMovie, reasons.ToArray());
+        }
+
         private ImportDecision GetDecision(LocalMovie localMovie, DownloadClientItem downloadClientItem, bool otherFiles)
         {
             ImportDecision decision = null;
@@ -145,14 +154,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             }
 
             return decision;
-        }
-
-        private ImportDecision GetDecision(LocalMovie localMovie, DownloadClientItem downloadClientItem)
-        {
-            var reasons = _specifications.Select(c => EvaluateSpec(c, localMovie, downloadClientItem))
-                                         .Where(c => c != null);
-
-            return new ImportDecision(localMovie, reasons.ToArray());
         }
 
         private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalMovie localMovie, DownloadClientItem downloadClientItem)

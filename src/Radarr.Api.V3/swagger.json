@@ -3291,6 +3291,408 @@
           }
         }
       }
+    },
+    "/queue/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "delete": {
+        "summary": "Remove Item from Queue",
+        "operationId": "delete-queue-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "description": "Remove an item from the queue and optionally blacklist it",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "removeFromClient"
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "blacklist"
+          }
+        ],
+        "tags": [
+          "Queue"
+        ]
+      }
+    },
+    "/queue/bulk": {
+      "delete": {
+        "summary": "Remove Items from Queue",
+        "operationId": "delete-queue-bulk",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "removeFromClient"
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "blacklist"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                  "ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "required": [
+                  "ids"
+                ]
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Queue"
+        ],
+        "description": "Remove multiple items from queue by their ids"
+      }
+    },
+    "/queue/details": {
+      "get": {
+        "summary": "Get Queue Item Details",
+        "tags": [
+          "Queue"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "languages": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "minItems": 1,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string",
+                              "minLength": 1
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ]
+                        }
+                      },
+                      "quality": {
+                        "$ref": "#/components/schemas/Quality"
+                      },
+                      "customFormats": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "minItems": 1,
+                        "items": {
+                          "$ref": "#/components/schemas/CustomFormat"
+                        }
+                      },
+                      "size": {
+                        "type": "number"
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sizeleft": {
+                        "type": "number"
+                      },
+                      "timeleft": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "estimatedCompletionTime": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "status": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "trackedDownloadStatus": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "trackedDownloadState": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "statusMessages": {
+                        "type": "array",
+                        "uniqueItems": true,
+                        "minItems": 1,
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "title": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "messages": {
+                              "type": "array",
+                              "items": {
+                                "type": "object"
+                              }
+                            }
+                          },
+                          "required": [
+                            "title"
+                          ]
+                        }
+                      },
+                      "errorMessage": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "downloadId": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "protocol": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "downloadClient": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "indexer": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "outputPath": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "id": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "languages",
+                      "quality",
+                      "customFormats",
+                      "size",
+                      "title",
+                      "sizeleft",
+                      "timeleft",
+                      "estimatedCompletionTime",
+                      "status",
+                      "trackedDownloadStatus",
+                      "trackedDownloadState",
+                      "statusMessages",
+                      "errorMessage",
+                      "downloadId",
+                      "protocol",
+                      "downloadClient",
+                      "indexer",
+                      "outputPath",
+                      "id"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-queue-details",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "includeMovie",
+            "description": "Include Movie object if linked"
+          }
+        ],
+        "description": "Get details of all items in queue"
+      }
+    },
+    "/queue/status": {
+      "get": {
+        "summary": "Get Queue Status",
+        "tags": [
+          "Queue"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "totalCount": {
+                      "type": "integer"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "unknownCount": {
+                      "type": "integer"
+                    },
+                    "errors": {
+                      "type": "boolean"
+                    },
+                    "warnings": {
+                      "type": "boolean"
+                    },
+                    "unknownErrors": {
+                      "type": "boolean"
+                    },
+                    "unknownWarnings": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "totalCount",
+                    "count",
+                    "unknownCount",
+                    "errors",
+                    "warnings",
+                    "unknownErrors",
+                    "unknownWarnings"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-queue-status",
+        "description": "Stats on items in queue",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ]
+      }
+    },
+    "/queue/grab/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "",
+        "operationId": "post-queue-grab-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "description": "Force grab pending queue item by Id",
+        "tags": [
+          "Queue"
+        ]
+      }
     }
   },
   "components": {

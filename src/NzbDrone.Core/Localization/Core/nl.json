@@ -1076,5 +1076,11 @@
     "Yes": "Ja",
     "YesMoveFiles": "Ja, verplaats de bestanden",
     "Yesterday": "Gisteren",
-    "SqliteVersionCheckUpgradeRequiredMessage": "De momenteel geïnstalleerde SQLite-versie {0} wordt niet langer ondersteund. Upgrade SQLite naar minimaal versie {1}."
+    "SqliteVersionCheckUpgradeRequiredMessage": "De momenteel geïnstalleerde SQLite-versie {0} wordt niet langer ondersteund. Upgrade SQLite naar minimaal versie {1}.",
+    "NoCinemaRelease": "Geen bioscooprelease",
+    "ReleaseDate": "Uitgave Datums",
+    "ShowCinemaRelease": "Show Cinema-releasedatum",
+    "showCinemaReleaseHelpText": "Laat de releasedatum van de bioscoop zien onder poster",
+    "ShowReleaseDate": "Toon releasedatum",
+    "ShowReleaseDateHelpText": "Laat releasedatum zien onder poster"
 }

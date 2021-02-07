@@ -2,6 +2,7 @@ using System.Data;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Dapper;
+using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Core.Datastore.Converters
 {
@@ -22,8 +23,8 @@ namespace NzbDrone.Core.Datastore.Converters
             };
 
             serializerSettings.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, true));
-            serializerSettings.Converters.Add(new TimeSpanConverter());
-            serializerSettings.Converters.Add(new UtcConverter());
+            serializerSettings.Converters.Add(new STJTimeSpanConverter());
+            serializerSettings.Converters.Add(new STJUtcConverter());
 
             SerializerSettings = serializerSettings;
         }
