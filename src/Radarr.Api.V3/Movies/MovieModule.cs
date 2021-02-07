@@ -146,9 +146,9 @@ namespace Radarr.Api.V3.Movies
                     var translation = GetTranslationFromDict(tdict, movie, configLanguage);
                     moviesResources.Add(movie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
                 }
-            }
 
-            MapCoversToLocal(moviesResources, coverFileInfos);
+                MapCoversToLocal(moviesResources, coverFileInfos);
+            }
 
             return moviesResources;
         }
