@@ -10,6 +10,7 @@ function RootFolderSelectInputOption(props) {
     id,
     value,
     freeSpace,
+    isMissing,
     movieFolder,
     isMobile,
     isWindows,
@@ -43,10 +44,19 @@ function RootFolderSelectInputOption(props) {
         </div>
 
         {
-          freeSpace != null &&
+          freeSpace == null ?
+            null :
             <div className={styles.freeSpace}>
               {formatBytes(freeSpace)} Free
             </div>
+        }
+
+        {
+          isMissing ?
+            <div className={styles.isMissing}>
+              Missing
+            </div> :
+            null
         }
       </div>
     </EnhancedSelectInputOption>
@@ -58,6 +68,7 @@ RootFolderSelectInputOption.propTypes = {
   value: PropTypes.string.isRequired,
   freeSpace: PropTypes.number,
   movieFolder: PropTypes.string,
+  isMissing: PropTypes.boolean,
   isMobile: PropTypes.bool.isRequired,
   isWindows: PropTypes.bool
 };

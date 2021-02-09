@@ -164,6 +164,7 @@ function EditImportListModalContent(props) {
                   type={inputTypes.ROOT_FOLDER_SELECT}
                   name="rootFolderPath"
                   {...rootFolderPath}
+                  includeMissingValue={true}
                   onChange={onInputChange}
                 />
               </FormGroup>
