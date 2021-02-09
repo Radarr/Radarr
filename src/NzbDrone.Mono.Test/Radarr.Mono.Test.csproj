@@ -10,7 +10,7 @@
        See https://github.com/xamarin/XamarinComponents/issues/282
   -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <PackageReference Include="Mono.Posix.NETStandard" Version="5.20.1-preview" />
+    <PackageReference Include="Mono.Posix.NETStandard" Version="5.20.1-servarr1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Common.Test\Radarr.Common.Test.csproj" />

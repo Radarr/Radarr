@@ -174,6 +174,14 @@ namespace NzbDrone.Test.Common
             }
         }
 
+        protected void NotBsd()
+        {
+            if (OsInfo.Os == Os.Bsd)
+            {
+                throw new IgnoreException("Ignored on BSD");
+            }
+        }
+
         protected void WithTempAsAppPath()
         {
             Mocker.GetMock<IAppFolderInfo>()
