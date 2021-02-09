@@ -12,27 +12,12 @@ function createMapStateToProps() {
     createHealthCheckSelector(),
     (state) => state.system.health,
     (app, items, health) => {
-      const count = items.length;
-      let errors = false;
-      let warnings = false;
-
-      items.forEach((item) => {
-        if (item.type === 'error') {
-          errors = true;
-        }
-
-        if (item.type === 'warning') {
-          warnings = true;
-        }
-      });
-
       return {
         isConnected: app.isConnected,
         isReconnecting: app.isReconnecting,
         isPopulated: health.isPopulated,
-        count,
-        errors,
-        warnings
+        errors: items.filter((item) => item.type === 'error').length,
+        warnings: items.filter((item) => item.type === 'warning').length
       };
     }
   );

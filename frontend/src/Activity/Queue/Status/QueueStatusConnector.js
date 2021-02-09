@@ -25,7 +25,7 @@ function createMapStateToProps() {
         isReconnecting: app.isReconnecting,
         isPopulated: status.isPopulated,
         ...status.item,
-        count: includeUnknownMovieItems ? totalCount : count,
+        queue: includeUnknownMovieItems ? totalCount : count,
         errors: includeUnknownMovieItems ? errors || unknownErrors : errors,
         warnings: includeUnknownMovieItems ? warnings || unknownWarnings : warnings
       };
