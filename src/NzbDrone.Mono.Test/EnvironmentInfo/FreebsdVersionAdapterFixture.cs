@@ -1,7 +1,7 @@
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Common.Disk;
-using NzbDrone.Mono.Disk;
+using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Processes;
 using NzbDrone.Mono.EnvironmentInfo.VersionAdapters;
 using NzbDrone.Test.Common;
 
@@ -9,14 +9,17 @@ namespace NzbDrone.Mono.Test.EnvironmentInfo
 {
     [TestFixture]
     [Platform("Linux")]
-    public class ReleaseFileVersionAdapterFixture : TestBase<ReleaseFileVersionAdapter>
+    public class FreebsdVersionAdapterFixture : TestBase<FreebsdVersionAdapter>
     {
         [SetUp]
         public void Setup()
         {
-            NotBsd();
+            if (OsInfo.Os != Os.Bsd)
+            {
+                throw new IgnoreException("BSD Only");
+            }
 
-            Mocker.SetConstant<IDiskProvider>(Mocker.Resolve<DiskProvider>());
+            Mocker.SetConstant<IProcessProvider>(Mocker.Resolve<ProcessProvider>());
         }
 
         [Test]

@@ -10,7 +10,7 @@
        See https://github.com/xamarin/XamarinComponents/issues/282
   -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <PackageReference Include="Mono.Posix.NETStandard" Version="5.20.1-preview" />
+    <PackageReference Include="Mono.Posix.NETStandard" Version="5.20.1-servarr1" />
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>

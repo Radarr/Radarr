@@ -8,6 +8,7 @@ using Mono.Unix.Native;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Test.DiskTests;
 using NzbDrone.Mono.Disk;
 
@@ -80,7 +81,11 @@ namespace NzbDrone.Mono.Test.DiskProviderTests
 
             if (stat.st_mode != mode)
             {
-                Syscall.chmod(path, mode);
+                if (Syscall.chmod(path, mode) < 0)
+                {
+                    var error = Stdlib.GetLastError();
+                    throw new LinuxPermissionsException("Error setting group: " + error);
+                }
             }
         }
 
@@ -221,9 +226,13 @@ namespace NzbDrone.Mono.Test.DiskProviderTests
             Syscall.stat(tempFile, out fileStat);
             NativeConvert.ToOctalPermissionString(fileStat.st_mode).Should().Be("0644");
 
-            Subject.SetPermissions(tempFile, "1775", null);
-            Syscall.stat(tempFile, out fileStat);
-            NativeConvert.ToOctalPermissionString(fileStat.st_mode).Should().Be("1664");
+            if (OsInfo.Os != Os.Bsd)
+            {
+                // This is not allowed on BSD
+                Subject.SetPermissions(tempFile, "1775", null);
+                Syscall.stat(tempFile, out fileStat);
+                NativeConvert.ToOctalPermissionString(fileStat.st_mode).Should().Be("1664");
+            }
         }
 
         [Test]
