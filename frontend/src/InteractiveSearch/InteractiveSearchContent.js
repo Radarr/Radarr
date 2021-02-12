@@ -23,6 +23,20 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'releaseWeight',
+    label: React.createElement(Icon, { name: icons.DOWNLOAD }),
+    isSortable: true,
+    fixedSortDirection: sortDirections.ASCENDING,
+    isVisible: true
+  },
+  {
+    name: 'rejections',
+    label: React.createElement(Icon, { name: icons.DANGER }),
+    isSortable: true,
+    fixedSortDirection: sortDirections.ASCENDING,
+    isVisible: true
+  },
+  {
     name: 'title',
     label: translate('Title'),
     isSortable: true,
@@ -84,20 +98,6 @@ const columns = [
     name: 'indexerFlags',
     label: React.createElement(Icon, { name: icons.FLAG }),
     isSortable: true,
-    isVisible: true
-  },
-  {
-    name: 'rejections',
-    label: React.createElement(Icon, { name: icons.DANGER }),
-    isSortable: true,
-    fixedSortDirection: sortDirections.ASCENDING,
-    isVisible: true
-  },
-  {
-    name: 'releaseWeight',
-    label: React.createElement(Icon, { name: icons.DOWNLOAD }),
-    isSortable: true,
-    fixedSortDirection: sortDirections.ASCENDING,
     isVisible: true
   }
 ];
