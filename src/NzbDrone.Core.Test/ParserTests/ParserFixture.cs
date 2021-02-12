@@ -61,6 +61,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("World.Movie.Z.2.EXTENDED.2013.German.DL.1080p.BluRay.AVC-XANOR", "World Movie Z 2")]
         [TestCase("G.I.Movie.Movie.2013.THEATRiCAL.COMPLETE.BLURAY-GLiMMER", "G.I. Movie Movie")]
         [TestCase("www.Torrenting.org - Movie.2008.720p.X264-DIMENSION", "Movie")]
+
+        //Dont think this will ever apply but adding it to keep the regex in line with upstream
+        [TestCase("Movie name: 2013.THEATRiCAL.COMPLETE.BLURAY-GLiMMER", "Movie name")]
         public void should_parse_movie_title(string postTitle, string title)
         {
             Parser.Parser.ParseMovieTitle(postTitle).MovieTitle.Should().Be(title);
