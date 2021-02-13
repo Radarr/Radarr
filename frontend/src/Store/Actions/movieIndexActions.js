@@ -37,6 +37,8 @@ export const defaultState = {
     showTitle: false,
     showMonitored: true,
     showQualityProfile: true,
+    showCinemaRelease: false,
+    showReleaseDate: false,
     showSearchAction: false
   },
 
