@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.ThingiProvider;
 
@@ -9,7 +11,7 @@ namespace NzbDrone.Core.Notifications
 
         void OnGrab(GrabMessage grabMessage);
         void OnDownload(DownloadMessage message);
-        void OnMovieRename(Movie movie);
+        void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles);
         void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage);
         void OnMovieDelete(MovieDeleteMessage deleteMessage);
         void OnHealthIssue(HealthCheck.HealthCheck healthCheck);

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Emby
@@ -38,7 +39,7 @@ namespace NzbDrone.Core.Notifications.Emby
             }
         }
 
-        public override void OnMovieRename(Movie movie)
+        public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
             if (Settings.UpdateLibrary)
             {

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using FluentValidation.Results;
 using NUnit.Framework;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications;
 using NzbDrone.Core.ThingiProvider;
@@ -57,7 +59,7 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnDownload was called");
             }
 
-            public override void OnMovieRename(Movie movie)
+            public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
             {
                 TestLogger.Info("OnRename was called");
             }

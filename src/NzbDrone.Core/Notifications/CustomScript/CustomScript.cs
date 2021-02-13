@@ -9,6 +9,7 @@ using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
 using NzbDrone.Core.HealthCheck;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -100,7 +101,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             ExecuteScript(environmentVariables);
         }
 
-        public override void OnMovieRename(Movie movie)
+        public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
             var environmentVariables = new StringDictionary();
 
@@ -113,6 +114,11 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
             environmentVariables.Add("Radarr_Movie_In_Cinemas_Date", movie.InCinemas.ToString() ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_Physical_Release_Date", movie.PhysicalRelease.ToString() ?? string.Empty);
+            environmentVariables.Add("Radarr_MovieFile_Ids", string.Join(",", renamedFiles.Select(e => e.MovieFile.Id)));
+            environmentVariables.Add("Radarr_MovieFile_RelativePaths", string.Join("|", renamedFiles.Select(e => e.MovieFile.RelativePath)));
+            environmentVariables.Add("Radarr_MovieFile_Paths", string.Join("|", renamedFiles.Select(e => e.MovieFile.Path)));
+            environmentVariables.Add("Radarr_MovieFile_PreviousRelativePaths", string.Join("|", renamedFiles.Select(e => e.PreviousRelativePath)));
+            environmentVariables.Add("Radarr_MovieFile_PreviousPaths", string.Join("|", renamedFiles.Select(e => e.PreviousPath)));
 
             ExecuteScript(environmentVariables);
         }

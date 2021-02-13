@@ -6,6 +6,7 @@ using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications.Plex.PlexTv;
 using NzbDrone.Core.Validation;
@@ -43,7 +44,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             UpdateIfEnabled(message.Movie);
         }
 
-        public override void OnMovieRename(Movie movie)
+        public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
             UpdateIfEnabled(movie);
         }

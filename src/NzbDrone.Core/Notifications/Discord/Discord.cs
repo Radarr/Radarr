@@ -5,6 +5,7 @@ using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaCover;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications.Discord.Payloads;
@@ -209,6 +210,21 @@ namespace NzbDrone.Core.Notifications.Discord
             }
 
             var payload = CreatePayload(null, new List<Embed> { embed });
+
+            _proxy.SendPayload(payload, Settings);
+        }
+
+        public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
+        {
+            var attachments = new List<Embed>
+                              {
+                                  new Embed
+                                  {
+                                      Title = movie.Title,
+                                  }
+                              };
+
+            var payload = CreatePayload("Renamed", attachments);
 
             _proxy.SendPayload(payload, Settings);
         }

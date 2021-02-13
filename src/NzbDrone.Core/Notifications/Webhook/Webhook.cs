@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Validation;
 
@@ -64,12 +65,13 @@ namespace NzbDrone.Core.Notifications.Webhook
             _proxy.SendWebhook(payload, Settings);
         }
 
-        public override void OnMovieRename(Movie movie)
+        public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
             var payload = new WebhookRenamePayload
             {
                 EventType = WebhookEventType.Rename,
-                Movie = new WebhookMovie(movie)
+                Movie = new WebhookMovie(movie),
+                RenamedMovieFiles = renamedFiles.ConvertAll(x => new WebhookRenamedMovieFile(x))
             };
 
             _proxy.SendWebhook(payload, Settings);
