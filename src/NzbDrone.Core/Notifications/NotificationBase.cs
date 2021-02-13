@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.ThingiProvider;
 
@@ -44,7 +45,7 @@ namespace NzbDrone.Core.Notifications
         {
         }
 
-        public virtual void OnMovieRename(Movie movie)
+        public virtual void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
         }
 

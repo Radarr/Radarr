@@ -80,13 +80,14 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-        private void RenameFiles(List<MovieFile> movieFiles, Movie movie)
+        private List<RenamedMovieFile> RenameFiles(List<MovieFile> movieFiles, Movie movie)
         {
-            var renamed = new List<MovieFile>();
+            var renamed = new List<RenamedMovieFile>();
 
             foreach (var movieFile in movieFiles)
             {
-                var movieFilePath = Path.Combine(movie.Path, movieFile.RelativePath);
+                var previousRelativePath = movieFile.RelativePath;
+                var previousPath = Path.Combine(movie.Path, movieFile.RelativePath);
 
                 try
                 {
@@ -95,11 +96,16 @@ namespace NzbDrone.Core.MediaFiles
 
                     _mediaFileService.Update(movieFile);
                     _movieService.UpdateMovie(movie);
-                    renamed.Add(movieFile);
+                    renamed.Add(new RenamedMovieFile
+                                {
+                                    MovieFile = movieFile,
+                                    PreviousRelativePath = previousRelativePath,
+                                    PreviousPath = previousPath
+                                });
 
                     _logger.Debug("Renamed movie file: {0}", movieFile);
 
-                    _eventAggregator.PublishEvent(new MovieFileRenamedEvent(movie, movieFile, movieFilePath));
+                    _eventAggregator.PublishEvent(new MovieFileRenamedEvent(movie, movieFile, previousPath));
                 }
                 catch (SameFilenameException ex)
                 {
@@ -107,7 +113,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Failed to rename file: {0}", movieFilePath);
+                    _logger.Error(ex, "Failed to rename file: {0}", previousPath);
                 }
             }
 
@@ -115,8 +121,10 @@ namespace NzbDrone.Core.MediaFiles
             {
                 _diskProvider.RemoveEmptySubfolders(movie.Path);
 
-                _eventAggregator.PublishEvent(new MovieRenamedEvent(movie));
+                _eventAggregator.PublishEvent(new MovieRenamedEvent(movie, renamed));
             }
+
+            return renamed;
         }
 
         public void Execute(RenameFilesCommand message)

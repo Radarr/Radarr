@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Xbmc
@@ -36,7 +37,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             UpdateAndCleanMovie(message.Movie, message.OldMovieFiles.Any());
         }
 
-        public override void OnMovieRename(Movie movie)
+        public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
             UpdateAndCleanMovie(movie);
         }

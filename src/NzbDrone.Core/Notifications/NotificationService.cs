@@ -152,7 +152,7 @@ namespace NzbDrone.Core.Notifications
                 {
                     if (ShouldHandleMovie(notification.Definition, message.Movie))
                     {
-                        notification.OnMovieRename(message.Movie);
+                        notification.OnMovieRename(message.Movie, message.RenamedFiles);
                     }
                 }
                 catch (Exception ex)
