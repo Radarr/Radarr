@@ -2,23 +2,22 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.ImportLists;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.Events;
-using NzbDrone.Core.RootFolders;
-using NzbDrone.Core.Tv;
-using NzbDrone.Core.Tv.Events;
+using NzbDrone.Core.ThingiProvider.Events;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
-    [CheckOn(typeof(SeriesDeletedEvent))]
-    [CheckOn(typeof(SeriesMovedEvent))]
-    [CheckOn(typeof(EpisodeImportedEvent), CheckOnCondition.FailedOnly)]
-    [CheckOn(typeof(EpisodeImportFailedEvent), CheckOnCondition.SuccessfulOnly)]
+    [CheckOn(typeof(ProviderUpdatedEvent<IImportList>))]
+    [CheckOn(typeof(MovieImportedEvent), CheckOnCondition.FailedOnly)]
+    [CheckOn(typeof(MovieImportFailedEvent), CheckOnCondition.SuccessfulOnly)]
     public class ImportListRootFolderCheck : HealthCheckBase
     {
         private readonly IImportListFactory _importListFactory;
         private readonly IDiskProvider _diskProvider;
 
-        public ImportListRootFolderCheck(IImportListFactory importListFactory, IDiskProvider diskProvider)
+        public ImportListRootFolderCheck(IImportListFactory importListFactory, IDiskProvider diskProvider, ILocalizationService localizationService)
+            : base(localizationService)
         {
             _importListFactory = importListFactory;
             _diskProvider = diskProvider;
