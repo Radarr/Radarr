@@ -3752,6 +3752,9 @@
           "path": {
             "type": "string"
           },
+          "rootFolderPath": {
+            "type": "string"
+          },
           "qualityProfileId": {
             "type": "integer"
           },
