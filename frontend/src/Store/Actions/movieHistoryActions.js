@@ -79,6 +79,7 @@ export const actionHandlers = handleThunks({
     const promise = createAjaxRequest({
       url: '/history/failed',
       method: 'POST',
+      contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
       data: {
         id: historyId
       }
