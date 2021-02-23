@@ -61,6 +61,11 @@ namespace NzbDrone.Core.Parser.Augmenters
                 }
 
                 movieInfo.ExtraInfo["IndexerFlags"] = releaseInfo.IndexerFlags;
+
+                if (releaseInfo.Indexer != null && releaseInfo.Indexer.IsNotNullOrWhiteSpace())
+                {
+                    movieInfo.ExtraInfo["IndexerName"] = releaseInfo.Indexer;
+                }
             }
 
             return movieInfo;
