@@ -155,6 +155,8 @@ namespace NzbDrone.Core.Download
             if (importResults.Empty())
             {
                 trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
+
+                return;
             }
 
             if (importResults.Count == 1)
@@ -176,14 +178,18 @@ namespace NzbDrone.Core.Download
 
             if (importResults.Any(c => c.Result != ImportResultType.Imported))
             {
-                statusMessages.AddRange(importResults
-                    .Where(v => v.Result != ImportResultType.Imported && v.ImportDecision.LocalMovie != null)
-                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalMovie.Path), v.Errors)));
+                statusMessages.AddRange(
+                    importResults
+                        .Where(v => v.Result != ImportResultType.Imported && v.ImportDecision.LocalMovie != null)
+                        .OrderBy(v => v.ImportDecision.LocalMovie.Path)
+                        .Select(v =>
+                            new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalMovie.Path),
+                                v.Errors)));
+            }
 
-                if (statusMessages.Any())
-                {
-                    trackedDownload.Warn(statusMessages.ToArray());
-                }
+            if (statusMessages.Any())
+            {
+                trackedDownload.Warn(statusMessages.ToArray());
             }
         }
 
