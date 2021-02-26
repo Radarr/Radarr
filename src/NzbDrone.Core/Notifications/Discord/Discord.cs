@@ -301,7 +301,7 @@ namespace NzbDrone.Core.Notifications.Discord
 
         private static string GetLinksString(Movie movie)
         {
-            var links = string.Format("[{0}]({1})", "TMDb", $"https://themoviedb.com/movie/{movie.TmdbId}");
+            var links = string.Format("[{0}]({1})", "TMDb", $"https://themoviedb.org/movie/{movie.TmdbId}");
             links += string.Format(" / [{0}]({1})", "Trakt", $"https://trakt.tv/search/tmdb/{movie.TmdbId}?id_type=movie");
             if (movie.ImdbId.IsNotNullOrWhiteSpace())
             {
