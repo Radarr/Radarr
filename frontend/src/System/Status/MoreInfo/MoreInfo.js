@@ -26,7 +26,7 @@ class MoreInfo extends Component {
             {translate('Discord')}
           </DescriptionListItemTitle>
           <DescriptionListItemDescription>
-            <Link to="https://discord.gg/r5wJPt9">discord.gg/r5wJPt9</Link>
+            <Link to="https://radarr.video/discord">radarr.video/discord</Link>
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>
