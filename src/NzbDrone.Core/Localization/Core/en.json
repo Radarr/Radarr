@@ -215,7 +215,7 @@
   "DeleteSelectedMovieFilesMessage": "Are you sure you want to delete the selected movie files?",
   "DeleteTag": "Delete Tag",
   "DeleteTagMessageText": "Are you sure you want to delete the tag '{0}'?",
-  "DeleteTheMovieFolder": "The movie folder '{0}' and all it's content will be deleted.",
+  "DeleteTheMovieFolder": "The movie folder '{0}' and all its content will be deleted.",
   "DestinationPath": "Destination Path",
   "DestinationRelativePath": "Destination Relative Path",
   "DetailedProgressBar": "Detailed Progress Bar",
