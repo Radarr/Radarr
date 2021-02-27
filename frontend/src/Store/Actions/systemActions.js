@@ -5,6 +5,7 @@ import { createThunk, handleThunks } from 'Store/thunks';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
 import translate from 'Utilities/String/translate';
+import { pingServer } from './appActions';
 import { set } from './baseActions';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
@@ -352,6 +353,7 @@ export const actionHandlers = handleThunks({
 
     promise.done(() => {
       dispatch(setAppValue({ isRestarting: true }));
+      dispatch(pingServer());
     });
   },
 
