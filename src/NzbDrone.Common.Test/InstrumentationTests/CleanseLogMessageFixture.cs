@@ -56,6 +56,21 @@ namespace NzbDrone.Common.Test.InstrumentationTests
 
         // Plex
         [TestCase(@" http://localhost:32400/library/metadata/12345/refresh?X-Plex-Client-Identifier=1234530f-422f-4aac-b6b3-01233210aaaa&X-Plex-Product=Sonarr&X-Plex-Platform=Windows&X-Plex-Platform-Version=7&X-Plex-Device-Name=Sonarr&X-Plex-Version=3.0.3.833&X-Plex-Token=mySecret")]
+
+        // Internal
+        [TestCase(@"OutputPath=/home/mySecret/Downloads")]
+        [TestCase("Hardlinking episode file: /home/mySecret/Downloads to /media/abc.mkv")]
+        [TestCase("Hardlink '/home/mySecret/Downloads/abs.mkv' to '/media/abc.mkv' failed.")]
+
+        // Announce URLs (passkeys) Magnet & Tracker
+        [TestCase(@"magnet_uri"":""magnet:?xt=urn:btih:9pr04sgkillroyimaveql2tyu8xyui&dn=&tr=https%3a%2f%2fxxx.yyy%2f9pr04sg601233210imaveql2tyu8xyui%2fannounce""}")]
+        [TestCase(@"magnet_uri"":""magnet:?xt=urn:btih:9pr04sgkillroyimaveql2tyu8xyui&dn=&tr=https%3a%2f%2fxxx.yyy%2ftracker.php%2f9pr04sg601233210imaveql2tyu8xyui%2fannounce""}")]
+        [TestCase(@"magnet_uri"":""magnet:?xt=urn:btih:9pr04sgkillroyimaveql2tyu8xyui&dn=&tr=https%3a%2f%2fxxx.yyy%2fannounce%2f9pr04sg601233210imaveql2tyu8xyui""}")]
+        [TestCase(@"magnet_uri"":""magnet:?xt=urn:btih:9pr04sgkillroyimaveql2tyu8xyui&dn=&tr=https%3a%2f%2fxxx.yyy%2fannounce.php%3fpasskey%3d9pr04sg601233210imaveql2tyu8xyui""}")]
+        [TestCase(@"tracker"":""https://xxx.yyy/9pr04sg601233210imaveql2tyu8xyui/announce""}")]
+        [TestCase(@"tracker"":""https://xxx.yyy/tracker.php/9pr04sg601233210imaveql2tyu8xyui/announce""}")]
+        [TestCase(@"tracker"":""https://xxx.yyy/announce/9pr04sg601233210imaveql2tyu8xyui""}")]
+        [TestCase(@"tracker"":""https://xxx.yyy/announce.php?passkey=9pr04sg601233210imaveql2tyu8xyui""}")]
         public void should_clean_message(string message)
         {
             var cleansedMessage = CleanseLogMessage.Cleanse(message);
