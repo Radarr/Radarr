@@ -32,30 +32,44 @@ namespace NzbDrone.Core.ImportLists.Trakt.Popular
             switch (Settings.TraktListType)
             {
                 case (int)TraktPopularListType.Trending:
-                    link += "movies/trending" + filtersAndLimit;
+                    link += "movies/trending";
                     break;
                 case (int)TraktPopularListType.Popular:
-                    link += "movies/popular" + filtersAndLimit;
+                    link += "movies/popular";
                     break;
                 case (int)TraktPopularListType.Anticipated:
-                    link += "movies/anticipated" + filtersAndLimit;
+                    link += "movies/anticipated";
                     break;
                 case (int)TraktPopularListType.BoxOffice:
-                    link += "movies/boxoffice" + filtersAndLimit;
+                    link += "movies/boxoffice";
                     break;
                 case (int)TraktPopularListType.TopWatchedByWeek:
-                    link += "movies/watched/weekly" + filtersAndLimit;
+                    link += "movies/watched/weekly";
                     break;
                 case (int)TraktPopularListType.TopWatchedByMonth:
-                    link += "movies/watched/monthly" + filtersAndLimit;
+                    link += "movies/watched/monthly";
                     break;
                 case (int)TraktPopularListType.TopWatchedByYear:
-                    link += "movies/watched/yearly" + filtersAndLimit;
+                    link += "movies/watched/yearly";
                     break;
                 case (int)TraktPopularListType.TopWatchedByAllTime:
-                    link += "movies/watched/all" + filtersAndLimit;
+                    link += "movies/watched/all";
+                    break;
+                case (int)TraktPopularListType.RecommendedByWeek:
+                    link += "movies/recommended/weekly";
+                    break;
+                case (int)TraktPopularListType.RecommendedByMonth:
+                    link += "movies/recommended/monthly";
+                    break;
+                case (int)TraktPopularListType.RecommendedByYear:
+                    link += "movies/recommended/yearly";
+                    break;
+                case (int)TraktPopularListType.RecommendedByAllTime:
+                    link += "movies/recommended/yearly";
                     break;
             }
+
+            link += filtersAndLimit;
 
             var request = new ImportListRequest(_traktProxy.BuildTraktRequest(link, HttpMethod.GET, Settings.AccessToken));
 
