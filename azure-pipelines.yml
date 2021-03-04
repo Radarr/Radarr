@@ -59,18 +59,21 @@ stages:
           Linux:
             osName: 'Linux'
             imageName: 'ubuntu-18.04'
+            enableAnalysis: 'true'
           Mac:
             osName: 'Mac'
             imageName: 'macos-10.14'
+            enableAnalysis: 'false'
           Windows:
             osName: 'Windows'
             imageName: 'windows-2019'
+            enableAnalysis: 'false'
 
       pool:
         vmImage: $(imageName)
       variables:
         # Disable stylecop here - linting errors get caught by the analyze task
-        EnableAnalyzers: 'false'
+        EnableAnalyzers: $(enableAnalysis)
       steps:
       - checkout: self
         submodules: true
