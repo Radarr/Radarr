@@ -886,6 +886,7 @@ stages:
 
       variables:
         disable.coverage.autogenerate: 'true'
+        EnableAnalyzers: 'false'
 
       pool:
         vmImage: windows-2019
