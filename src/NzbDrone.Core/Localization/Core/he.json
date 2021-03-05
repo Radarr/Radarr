@@ -1066,5 +1066,12 @@
     "ReleaseDate": "תאריכי שחרור",
     "ShowCinemaRelease": "הצג תאריך יציאה לקולנוע",
     "showCinemaReleaseHelpText": "הצג תאריך יציאה לקולנוע תחת הכרזה",
-    "ShowReleaseDate": "הצגת תאריך פרסום"
+    "ShowReleaseDate": "הצגת תאריך פרסום",
+    "OnMovieFileDelete": "במחיקת קובץ הסרט",
+    "OnMovieFileDeleteHelpText": "במחיקת קובץ הסרט",
+    "OnMovieFileDeleteForUpgrade": "במחיקת קובץ הסרט לצורך שדרוג",
+    "OnMovieFileDeleteForUpgradeHelpText": "במחיקת קובץ הסרט לצורך שדרוג",
+    "OnUpgrade": "בשדרוג",
+    "OnMovieDelete": "במחיקת סרט",
+    "OnMovieDeleteHelpText": "במחיקת סרט"
 }
