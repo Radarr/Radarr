@@ -1066,5 +1066,12 @@
     "ShowCinemaRelease": "Mostrar data de lançamento do cinema",
     "showCinemaReleaseHelpText": "Mostrar data de lançamento do cinema abaixo do pôster",
     "ShowReleaseDate": "Mostrar data de lançamento",
-    "ShowReleaseDateHelpText": "Mostrar data de lançamento abaixo do pôster"
+    "ShowReleaseDateHelpText": "Mostrar data de lançamento abaixo do pôster",
+    "OnMovieDeleteHelpText": "On Movie Delete",
+    "OnMovieFileDelete": "Ao excluir arquivo de filme",
+    "OnMovieFileDeleteHelpText": "Ao excluir arquivo de filme",
+    "OnMovieFileDeleteForUpgrade": "On Movie File Delete For Upgrade",
+    "OnMovieFileDeleteForUpgradeHelpText": "On Movie File Delete For Upgrade",
+    "OnUpgrade": "Ao atualizar",
+    "OnMovieDelete": "On Movie Delete"
 }
