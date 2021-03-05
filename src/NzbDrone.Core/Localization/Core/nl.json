@@ -1082,5 +1082,12 @@
     "ShowCinemaRelease": "Show Cinema-releasedatum",
     "showCinemaReleaseHelpText": "Laat de releasedatum van de bioscoop zien onder poster",
     "ShowReleaseDate": "Toon releasedatum",
-    "ShowReleaseDateHelpText": "Laat releasedatum zien onder poster"
+    "ShowReleaseDateHelpText": "Laat releasedatum zien onder poster",
+    "OnMovieDelete": "Op film verwijderen",
+    "OnMovieDeleteHelpText": "Op film verwijderen",
+    "OnMovieFileDelete": "Op filmbestand verwijderen",
+    "OnMovieFileDeleteHelpText": "Op filmbestand verwijderen",
+    "OnMovieFileDeleteForUpgrade": "Op filmbestand verwijderen voor upgrade",
+    "OnMovieFileDeleteForUpgradeHelpText": "Op filmbestand verwijderen voor upgrade",
+    "OnUpgrade": "Bij Opwaarderen"
 }
