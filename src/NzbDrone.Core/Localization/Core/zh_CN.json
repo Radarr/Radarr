@@ -1066,5 +1066,12 @@
     "ShowCinemaRelease": "电影院上映日期",
     "showCinemaReleaseHelpText": "在海报下显示电影院上映日期",
     "ShowReleaseDate": "显示发布日期",
-    "ShowReleaseDateHelpText": "在海报下显示发布日期"
+    "ShowReleaseDateHelpText": "在海报下显示发布日期",
+    "OnMovieDeleteHelpText": "电影删除时",
+    "OnMovieFileDelete": "关于电影文件删除",
+    "OnMovieFileDeleteHelpText": "关于电影文件删除",
+    "OnMovieFileDeleteForUpgrade": "在电影文件上删除以进行升级",
+    "OnMovieFileDeleteForUpgradeHelpText": "在电影文件上删除以进行升级",
+    "OnUpgrade": "升级中",
+    "OnMovieDelete": "电影删除时"
 }
