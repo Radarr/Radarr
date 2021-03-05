@@ -1071,5 +1071,12 @@
     "ReleaseDate": "Lanseringsdatum",
     "showCinemaReleaseHelpText": "Visa släppdatum för bio under affischen",
     "ShowReleaseDate": "Visa släppdatum",
-    "ShowReleaseDateHelpText": "Visa släppdatum under affischen"
+    "ShowReleaseDateHelpText": "Visa släppdatum under affischen",
+    "OnMovieDelete": "Vid radering av film",
+    "OnMovieDeleteHelpText": "Vid radering av film",
+    "OnMovieFileDelete": "På filmfil Ta bort",
+    "OnMovieFileDeleteHelpText": "På filmfil Ta bort",
+    "OnMovieFileDeleteForUpgrade": "På filmfil Radera för uppgradering",
+    "OnMovieFileDeleteForUpgradeHelpText": "På filmfil Radera för uppgradering",
+    "OnUpgrade": "Vid uppgradering"
 }
