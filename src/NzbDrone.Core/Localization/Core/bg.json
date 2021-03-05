@@ -1066,5 +1066,12 @@
     "NoCinemaRelease": "Няма издание на кино",
     "ReleaseDate": "Дати на издаване",
     "ShowCinemaRelease": "Показване на датата на излизане на киното",
-    "showCinemaReleaseHelpText": "Покажете датата на излизане на киното под плакат"
+    "showCinemaReleaseHelpText": "Покажете датата на излизане на киното под плакат",
+    "OnMovieDelete": "На Изтриване на филм",
+    "OnMovieDeleteHelpText": "На Изтриване на филм",
+    "OnMovieFileDelete": "В Изтриване на файл с филм",
+    "OnMovieFileDeleteHelpText": "В Изтриване на файл с филм",
+    "OnMovieFileDeleteForUpgrade": "Във филмов файл Изтриване за надстройка",
+    "OnMovieFileDeleteForUpgradeHelpText": "Във филмов файл Изтриване за надстройка",
+    "OnUpgrade": "При надстройка"
 }
