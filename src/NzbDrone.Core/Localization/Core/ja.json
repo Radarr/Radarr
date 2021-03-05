@@ -1066,5 +1066,12 @@
     "ShowReleaseDate": "リリース日を表示",
     "ShowReleaseDateHelpText": "ポスターの下にリリース日を表示する",
     "NoCinemaRelease": "シネマリリースなし",
-    "ReleaseDate": "リリース日"
+    "ReleaseDate": "リリース日",
+    "OnMovieFileDeleteHelpText": "ムービーファイルの削除について",
+    "OnMovieFileDeleteForUpgrade": "アップグレードのためのムービーファイルの削除",
+    "OnMovieFileDeleteForUpgradeHelpText": "アップグレードのためのムービーファイルの削除",
+    "OnUpgrade": "アップグレード時",
+    "OnMovieDelete": "映画の削除について",
+    "OnMovieDeleteHelpText": "映画の削除について",
+    "OnMovieFileDelete": "ムービーファイルの削除について"
 }
