@@ -1066,5 +1066,12 @@
     "NoCinemaRelease": "시네마 릴리스 없음",
     "ReleaseDate": "출시일",
     "ShowCinemaRelease": "영화 개봉일 표시",
-    "ShowReleaseDate": "출시일 표시"
+    "ShowReleaseDate": "출시일 표시",
+    "OnMovieFileDeleteForUpgrade": "영화 파일에서 업그레이드를 위해 삭제",
+    "OnMovieFileDeleteForUpgradeHelpText": "영화 파일에서 업그레이드를 위해 삭제",
+    "OnUpgrade": "업그레이드시",
+    "OnMovieDelete": "영화 삭제시",
+    "OnMovieDeleteHelpText": "영화 삭제시",
+    "OnMovieFileDelete": "영화 파일 삭제",
+    "OnMovieFileDeleteHelpText": "영화 파일 삭제"
 }
