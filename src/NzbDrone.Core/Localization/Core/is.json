@@ -1066,5 +1066,12 @@
     "ShowReleaseDate": "Sýna útgáfudag",
     "ShowReleaseDateHelpText": "Sýnið útgáfudagsetningu undir veggspjaldi",
     "NoCinemaRelease": "Engin bíóútgáfa",
-    "ReleaseDate": "Slepptu dagsetningum"
+    "ReleaseDate": "Slepptu dagsetningum",
+    "OnMovieDeleteHelpText": "Í Eyðingu kvikmyndar",
+    "OnMovieFileDelete": "Á Eyða kvikmyndaskrá",
+    "OnMovieFileDeleteHelpText": "Á Eyða kvikmyndaskrá",
+    "OnMovieFileDeleteForUpgrade": "Á kvikmyndaskrá eytt til uppfærslu",
+    "OnMovieFileDeleteForUpgradeHelpText": "Á kvikmyndaskrá eytt til uppfærslu",
+    "OnUpgrade": "Við uppfærslu",
+    "OnMovieDelete": "Í Eyðingu kvikmyndar"
 }
