@@ -1070,5 +1070,12 @@
     "ReleaseDate": "Yayın tarihleri",
     "showCinemaReleaseHelpText": "Sinema çıkış tarihini posterin altında gösterin",
     "ShowReleaseDate": "Çıkış Tarihini Göster",
-    "ShowReleaseDateHelpText": "Posterin altında çıkış tarihini göster"
+    "ShowReleaseDateHelpText": "Posterin altında çıkış tarihini göster",
+    "OnMovieDelete": "Film Silindiğinde",
+    "OnMovieDeleteHelpText": "Film Silindiğinde",
+    "OnMovieFileDelete": "Film Dosyasında Sil",
+    "OnMovieFileDeleteHelpText": "Film Dosyasında Sil",
+    "OnMovieFileDeleteForUpgrade": "Film Dosyasında Yükseltmek İçin Sil",
+    "OnMovieFileDeleteForUpgradeHelpText": "Film Dosyasında Yükseltmek İçin Sil",
+    "OnUpgrade": "Yükseltme sırasında"
 }
