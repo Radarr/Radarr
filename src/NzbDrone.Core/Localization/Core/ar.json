@@ -1066,5 +1066,12 @@
     "Activity": "نشاط",
     "Actions": "أجراءات",
     "AcceptConfirmationModal": "قبول صيغة التأكيد",
-    "About": "حول"
+    "About": "حول",
+    "OnMovieDelete": "عند حذف الفيلم",
+    "OnMovieDeleteHelpText": "عند حذف الفيلم",
+    "OnMovieFileDelete": "عند حذف ملف الفيلم",
+    "OnMovieFileDeleteHelpText": "عند حذف ملف الفيلم",
+    "OnMovieFileDeleteForUpgrade": "عند حذف ملف الفيلم للترقية",
+    "OnMovieFileDeleteForUpgradeHelpText": "عند حذف ملف الفيلم للترقية",
+    "OnUpgrade": "عند الترقية"
 }
