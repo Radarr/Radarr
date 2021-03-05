@@ -1082,5 +1082,12 @@
     "showCinemaReleaseHelpText": "Mostrar la fecha de estreno en el cine debajo del cartel",
     "ShowReleaseDate": "Mostrar fecha de lanzamiento",
     "ShowReleaseDateHelpText": "Mostrar la fecha de lanzamiento debajo del cartel",
-    "NoCinemaRelease": "Sin estreno en el cine"
+    "NoCinemaRelease": "Sin estreno en el cine",
+    "OnMovieDelete": "Al eliminar la película",
+    "OnMovieDeleteHelpText": "Al eliminar la película",
+    "OnMovieFileDelete": "Al eliminar archivo de película",
+    "OnMovieFileDeleteHelpText": "Al eliminar archivo de película",
+    "OnMovieFileDeleteForUpgrade": "En archivo de película Eliminar para actualizar",
+    "OnMovieFileDeleteForUpgradeHelpText": "En archivo de película Eliminar para actualizar",
+    "OnUpgrade": "Al Actualizar"
 }
