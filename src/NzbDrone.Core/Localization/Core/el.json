@@ -1067,5 +1067,12 @@
     "ShowCinemaRelease": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου",
     "showCinemaReleaseHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου κάτω από την αφίσα",
     "ShowReleaseDate": "Εμφάνιση ημερομηνίας κυκλοφορίας",
-    "ShowReleaseDateHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας στην αφίσα"
+    "ShowReleaseDateHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας στην αφίσα",
+    "OnMovieFileDeleteForUpgradeHelpText": "Διαγραφή αρχείου ταινίας για αναβάθμιση",
+    "OnUpgrade": "Κατά την αναβάθμιση",
+    "OnMovieDelete": "Διαγραφή ταινίας",
+    "OnMovieDeleteHelpText": "Διαγραφή ταινίας",
+    "OnMovieFileDelete": "Διαγραφή αρχείου ταινίας",
+    "OnMovieFileDeleteHelpText": "Διαγραφή αρχείου ταινίας",
+    "OnMovieFileDeleteForUpgrade": "Διαγραφή αρχείου ταινίας για αναβάθμιση"
 }
