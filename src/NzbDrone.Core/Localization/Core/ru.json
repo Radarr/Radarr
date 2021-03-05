@@ -1066,5 +1066,12 @@
     "ShowCinemaRelease": "Дата выхода шоу в кинотеатре",
     "showCinemaReleaseHelpText": "Показывать дату выхода кинотеатра под плакатом",
     "ShowReleaseDate": "Показать дату выпуска",
-    "ShowReleaseDateHelpText": "Показать дату выпуска под плакатом"
+    "ShowReleaseDateHelpText": "Показать дату выпуска под плакатом",
+    "OnMovieDelete": "При удалении фильма",
+    "OnMovieDeleteHelpText": "При удалении фильма",
+    "OnMovieFileDelete": "При удалении файла фильма",
+    "OnMovieFileDeleteHelpText": "При удалении файла фильма",
+    "OnMovieFileDeleteForUpgrade": "При удалении файла фильма для обновления",
+    "OnMovieFileDeleteForUpgradeHelpText": "При удалении файла фильма для обновления",
+    "OnUpgrade": "При обновлении"
 }
