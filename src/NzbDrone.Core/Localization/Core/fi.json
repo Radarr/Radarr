@@ -1066,5 +1066,12 @@
     "ShowCinemaRelease": "Näytä elokuvan julkaisupäivä",
     "showCinemaReleaseHelpText": "Näytä elokuvan julkaisupäivä julisteen alla",
     "ShowReleaseDate": "Näytä julkaisupäivä",
-    "ShowReleaseDateHelpText": "Näytä julkaisupäivä julisteen alla"
+    "ShowReleaseDateHelpText": "Näytä julkaisupäivä julisteen alla",
+    "OnMovieDelete": "On Movie Delete",
+    "OnMovieDeleteHelpText": "On Movie Delete",
+    "OnMovieFileDeleteForUpgradeHelpText": "Elokuvatiedoston poisto päivitystä varten",
+    "OnUpgrade": "Päivityksessä",
+    "OnMovieFileDelete": "Elokuvatiedosto Poista",
+    "OnMovieFileDeleteHelpText": "Elokuvatiedosto Poista",
+    "OnMovieFileDeleteForUpgrade": "Elokuvatiedoston poisto päivitystä varten"
 }
