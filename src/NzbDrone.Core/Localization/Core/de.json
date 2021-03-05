@@ -1083,5 +1083,12 @@
     "ShowCinemaRelease": "Erscheinungsdatum des Kinos anzeigen",
     "showCinemaReleaseHelpText": "Erscheinungsdatum des Kinos unter Poster anzeigen",
     "ShowReleaseDate": "Veröffentlichungsdatum anzeigen",
-    "ShowReleaseDateHelpText": "Erscheinungsdatum unter Poster anzeigen"
+    "ShowReleaseDateHelpText": "Erscheinungsdatum unter Poster anzeigen",
+    "OnMovieDelete": "Beim Löschen des Films",
+    "OnMovieDeleteHelpText": "Beim Löschen des Films",
+    "OnMovieFileDelete": "Bei Filmdatei löschen",
+    "OnMovieFileDeleteHelpText": "Bei Filmdatei löschen",
+    "OnMovieFileDeleteForUpgrade": "Bei Filmdatei Zum Upgrade löschen",
+    "OnMovieFileDeleteForUpgradeHelpText": "Bei Filmdatei Zum Upgrade löschen",
+    "OnUpgrade": "Upgrade"
 }
