@@ -1069,5 +1069,12 @@
     "ShowCinemaRelease": "Vis biografens udgivelsesdato",
     "showCinemaReleaseHelpText": "Vis biografens udgivelsesdato under plakaten",
     "ShowReleaseDate": "Vis udgivelsesdato",
-    "ShowReleaseDateHelpText": "Vis udgivelsesdato under plakat"
+    "ShowReleaseDateHelpText": "Vis udgivelsesdato under plakat",
+    "OnMovieDeleteHelpText": "Ved sletning af film",
+    "OnMovieFileDelete": "Slet på filmfil",
+    "OnMovieFileDeleteHelpText": "Slet på filmfil",
+    "OnMovieFileDeleteForUpgrade": "På filmfil Slet til opgradering",
+    "OnMovieFileDeleteForUpgradeHelpText": "På filmfil Slet til opgradering",
+    "OnUpgrade": "Ved opgradering",
+    "OnMovieDelete": "Ved sletning af film"
 }
