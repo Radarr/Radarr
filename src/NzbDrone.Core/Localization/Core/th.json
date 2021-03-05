@@ -1066,5 +1066,12 @@
     "ShowCinemaRelease": "วันฉายภาพยนตร์",
     "showCinemaReleaseHelpText": "ฉายวันที่ฉายในโรงภาพยนตร์ใต้โปสเตอร์",
     "ShowReleaseDate": "แสดงวันที่วางจำหน่าย",
-    "ShowReleaseDateHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์"
+    "ShowReleaseDateHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์",
+    "OnMovieDelete": "บน Movie Delete",
+    "OnMovieDeleteHelpText": "บน Movie Delete",
+    "OnMovieFileDelete": "บน Movie File Delete",
+    "OnMovieFileDeleteHelpText": "บน Movie File Delete",
+    "OnMovieFileDeleteForUpgrade": "ในไฟล์ภาพยนตร์ลบสำหรับการอัปเกรด",
+    "OnMovieFileDeleteForUpgradeHelpText": "ในไฟล์ภาพยนตร์ลบสำหรับการอัปเกรด",
+    "OnUpgrade": "ในการอัพเกรด"
 }
