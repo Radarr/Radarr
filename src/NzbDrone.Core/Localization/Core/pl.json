@@ -1067,5 +1067,12 @@
     "ShowCinemaRelease": "Pokaż datę premiery w kinie",
     "showCinemaReleaseHelpText": "Pokaż datę premiery w kinie pod plakatem",
     "ShowReleaseDate": "Pokaż datę wydania",
-    "ShowReleaseDateHelpText": "Pokaż datę premiery pod plakatem"
+    "ShowReleaseDateHelpText": "Pokaż datę premiery pod plakatem",
+    "OnMovieDelete": "Usuń film",
+    "OnMovieDeleteHelpText": "Usuń film",
+    "OnMovieFileDelete": "Usuń plik filmowy",
+    "OnMovieFileDeleteHelpText": "Usuń plik filmowy",
+    "OnMovieFileDeleteForUpgrade": "W przypadku usunięcia pliku filmowego w celu uaktualnienia",
+    "OnMovieFileDeleteForUpgradeHelpText": "W przypadku usunięcia pliku filmowego w celu uaktualnienia",
+    "OnUpgrade": "Przy aktualizacji"
 }
