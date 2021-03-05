@@ -117,6 +117,55 @@ namespace NzbDrone.Core.Notifications.CustomScript
             ExecuteScript(environmentVariables);
         }
 
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
+        {
+            var movie = deleteMessage.Movie;
+            var movieFile = deleteMessage.MovieFile;
+
+            var environmentVariables = new StringDictionary();
+
+            environmentVariables.Add("Radarr_EventType", "MovieFileDelete");
+            environmentVariables.Add("Radarr_MovieFile_DeleteReason", deleteMessage.Reason.ToString());
+            environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
+            environmentVariables.Add("Radarr_Movie_Title", movie.Title);
+            environmentVariables.Add("Radarr_Movie_Year", movie.Year.ToString());
+            environmentVariables.Add("Radarr_Movie_Path", movie.Path);
+            environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId ?? string.Empty);
+            environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
+            environmentVariables.Add("Radarr_MovieFile_Id", movieFile.Id.ToString());
+            environmentVariables.Add("Radarr_MovieFile_RelativePath", movieFile.RelativePath);
+            environmentVariables.Add("Radarr_MovieFile_Path", Path.Combine(movie.Path, movieFile.RelativePath));
+            environmentVariables.Add("Radarr_MovieFile_Size", movieFile.Size.ToString());
+            environmentVariables.Add("Radarr_MovieFile_Quality", movieFile.Quality.Quality.Name);
+            environmentVariables.Add("Radarr_MovieFile_QualityVersion", movieFile.Quality.Revision.Version.ToString());
+            environmentVariables.Add("Radarr_MovieFile_ReleaseGroup", movieFile.ReleaseGroup ?? string.Empty);
+            environmentVariables.Add("Radarr_MovieFile_SceneName", movieFile.SceneName ?? string.Empty);
+
+            ExecuteScript(environmentVariables);
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            var movie = deleteMessage.Movie;
+            var environmentVariables = new StringDictionary();
+
+            environmentVariables.Add("Radarr_EventType", "MovieDelete");
+            environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
+            environmentVariables.Add("Radarr_Movie_Title", movie.Title);
+            environmentVariables.Add("Radarr_Movie_Year", movie.Year.ToString());
+            environmentVariables.Add("Radarr_Movie_Path", movie.Path);
+            environmentVariables.Add("Radarr_Movie_ImdbId", movie.ImdbId ?? string.Empty);
+            environmentVariables.Add("Radarr_Movie_TmdbId", movie.TmdbId.ToString());
+            environmentVariables.Add("Radarr_Movie_DeletedFiles", deleteMessage.DeletedFiles.ToString());
+
+            if (deleteMessage.DeletedFiles && movie.MovieFile != null)
+            {
+                environmentVariables.Add("Radarr_Movie_Folder_Size", movie.MovieFile.Size.ToString());
+            }
+
+            ExecuteScript(environmentVariables);
+        }
+
         public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
         {
             var environmentVariables = new StringDictionary();

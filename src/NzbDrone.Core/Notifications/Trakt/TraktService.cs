@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Notifications.Trakt
         HttpRequest GetOAuthRequest(string callbackUrl);
         TraktAuthRefreshResource RefreshAuthToken(string refreshToken);
         void AddMovieToCollection(TraktSettings settings, Movie movie, MovieFile movieFile);
-        void RemoveMovieFromCollection(TraktSettings settings, Movie movie, MovieFile movieFile);
+        void RemoveMovieFromCollection(TraktSettings settings, Movie movie);
         string GetUserName(string accessToken);
         ValidationFailure Test(TraktSettings settings);
     }
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Notifications.Trakt
             }
         }
 
-        public void RemoveMovieFromCollection(TraktSettings settings, Movie movie, MovieFile movieFile)
+        public void RemoveMovieFromCollection(TraktSettings settings, Movie movie)
         {
             var payload = new TraktCollectMoviesResource
             {

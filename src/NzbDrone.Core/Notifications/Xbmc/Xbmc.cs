@@ -41,6 +41,25 @@ namespace NzbDrone.Core.Notifications.Xbmc
             UpdateAndCleanMovie(movie);
         }
 
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
+        {
+            const string header = "Radarr - Deleted";
+
+            Notify(Settings, header, deleteMessage.Message);
+            UpdateAndCleanMovie(deleteMessage.Movie, true);
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            if (deleteMessage.DeletedFiles)
+            {
+                const string header = "Radarr - Deleted";
+
+                Notify(Settings, header, deleteMessage.Message);
+                UpdateAndCleanMovie(deleteMessage.Movie, true);
+            }
+        }
+
         public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
         {
             Notify(Settings, HEALTH_ISSUE_TITLE_BRANDED, healthCheck.Message);

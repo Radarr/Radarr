@@ -106,6 +106,9 @@ export default {
         selectedSchema.onDownload = selectedSchema.supportsOnDownload;
         selectedSchema.onUpgrade = selectedSchema.supportsOnUpgrade;
         selectedSchema.onRename = selectedSchema.supportsOnRename;
+        selectedSchema.OnMovieDelete = selectedSchema.supportsOnMovieDelete;
+        selectedSchema.OnMovieFileDelete = selectedSchema.supportsOnMovieFileDelete;
+        selectedSchema.OnMovieFileDeleteForUpgrade = selectedSchema.supportsOnMovieFileDeleteForUpgrade;
 
         return selectedSchema;
       });

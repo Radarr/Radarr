@@ -75,6 +75,31 @@ namespace NzbDrone.Core.Notifications.Webhook
             _proxy.SendWebhook(payload, Settings);
         }
 
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
+        {
+            var payload = new WebhookMovieFileDeletePayload
+            {
+                EventType = WebhookEventType.MovieFileDelete,
+                Movie = new WebhookMovie(deleteMessage.Movie),
+                MovieFile = new WebhookMovieFile(deleteMessage.MovieFile),
+                DeleteReason = deleteMessage.Reason
+            };
+
+            _proxy.SendWebhook(payload, Settings);
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            var payload = new WebhookMovieDeletePayload
+            {
+                EventType = WebhookEventType.MovieDelete,
+                Movie = new WebhookMovie(deleteMessage.Movie),
+                DeletedFiles = deleteMessage.DeletedFiles
+            };
+
+            _proxy.SendWebhook(payload, Settings);
+        }
+
         public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
         {
             var payload = new WebhookHealthPayload

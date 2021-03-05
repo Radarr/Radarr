@@ -7,6 +7,7 @@ using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.ThingiProvider;
 
@@ -16,8 +17,10 @@ namespace NzbDrone.Core.Notifications
         : IHandle<MovieRenamedEvent>,
           IHandle<MovieGrabbedEvent>,
           IHandle<MovieDownloadedEvent>,
-          IHandle<HealthCheckFailedEvent>,
+          IHandle<MoviesDeletedEvent>,
           IHandle<MovieFileDeletedEvent>,
+          IHandle<HealthCheckFailedEvent>,
+          IHandleAsync<DeleteCompletedEvent>,
           IHandleAsync<DownloadsProcessedEvent>,
           IHandleAsync<RenameCompletedEvent>,
           IHandleAsync<HealthCheckCompleteEvent>
@@ -159,6 +162,56 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
+        public void Handle(MovieFileDeletedEvent message)
+        {
+            var deleteMessage = new MovieFileDeleteMessage();
+            deleteMessage.Message = GetMessage(message.MovieFile.Movie, message.MovieFile.Quality);
+            deleteMessage.MovieFile = message.MovieFile;
+            deleteMessage.Movie = message.MovieFile.Movie;
+            deleteMessage.Reason = message.Reason;
+
+            foreach (var notification in _notificationFactory.OnMovieFileDeleteEnabled())
+            {
+                try
+                {
+                    if (message.Reason != MediaFiles.DeleteMediaFileReason.Upgrade || ((NotificationDefinition)notification.Definition).OnMovieFileDeleteForUpgrade)
+                    {
+                        if (ShouldHandleMovie(notification.Definition, message.MovieFile.Movie))
+                        {
+                            notification.OnMovieFileDelete(deleteMessage);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to send OnMovieFileDelete notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(MoviesDeletedEvent message)
+        {
+            foreach (Movie movie in message.Movies)
+            {
+                var deleteMessage = new MovieDeleteMessage(movie, message.DeleteFiles);
+
+                foreach (var notification in _notificationFactory.OnMovieDeleteEnabled())
+                {
+                    try
+                    {
+                        if (ShouldHandleMovie(notification.Definition, deleteMessage.Movie))
+                        {
+                            notification.OnMovieDelete(deleteMessage);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warn(ex, "Unable to send OnMovieDelete notification to: " + notification.Definition.Name);
+                    }
+                }
+            }
+        }
+
         public void Handle(HealthCheckFailedEvent message)
         {
             foreach (var notification in _notificationFactory.OnHealthIssueEnabled())
@@ -177,28 +230,9 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
-        public void Handle(MovieFileDeletedEvent message)
+        public void HandleAsync(DeleteCompletedEvent message)
         {
-            var deleteMessage = new DeleteMessage();
-            deleteMessage.Message = GetMessage(message.MovieFile.Movie, message.MovieFile.Quality);
-            deleteMessage.MovieFile = message.MovieFile;
-            deleteMessage.Movie = message.MovieFile.Movie;
-            deleteMessage.Reason = message.Reason;
-
-            foreach (var notification in _notificationFactory.OnDeleteEnabled())
-            {
-                try
-                {
-                    if (ShouldHandleMovie(notification.Definition, message.MovieFile.Movie))
-                    {
-                        notification.OnDelete(deleteMessage);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.Warn(ex, "Unable to send OnDelete notification to: " + notification.Definition.Name);
-                }
-            }
+            ProcessQueue();
         }
 
         public void HandleAsync(DownloadsProcessedEvent message)

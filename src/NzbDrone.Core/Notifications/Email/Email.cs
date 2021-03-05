@@ -31,6 +31,20 @@ namespace NzbDrone.Core.Notifications.Email
             _emailService.SendEmail(Settings, MOVIE_DOWNLOADED_TITLE_BRANDED, body);
         }
 
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
+        {
+            var body = $"{deleteMessage.Message} deleted.";
+
+            _emailService.SendEmail(Settings, MOVIE_FILE_DELETED_TITLE_BRANDED, body);
+        }
+
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            var body = $"{deleteMessage.Message}";
+
+            _emailService.SendEmail(Settings, MOVIE_DELETED_TITLE_BRANDED, body);
+        }
+
         public override void OnHealthIssue(HealthCheck.HealthCheck message)
         {
             _emailService.SendEmail(Settings, HEALTH_ISSUE_TITLE_BRANDED, message.Message);

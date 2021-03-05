@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using FluentAssertions;
 using FluentValidation.Results;
 using NUnit.Framework;
@@ -62,9 +62,14 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnRename was called");
             }
 
-            public override void OnDelete(DeleteMessage message)
+            public override void OnMovieFileDelete(MovieFileDeleteMessage message)
             {
-                TestLogger.Info("OnDelete was called");
+                TestLogger.Info("OnMovieFileDelete was called");
+            }
+
+            public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+            {
+                TestLogger.Info("OnMovieDelete was called");
             }
 
             public override void OnHealthIssue(NzbDrone.Core.HealthCheck.HealthCheck artist)
@@ -105,7 +110,9 @@ namespace NzbDrone.Core.Test.NotificationTests
             notification.SupportsOnDownload.Should().BeTrue();
             notification.SupportsOnUpgrade.Should().BeTrue();
             notification.SupportsOnRename.Should().BeTrue();
-            notification.SupportsOnDelete.Should().BeTrue();
+            notification.SupportsOnMovieDelete.Should().BeTrue();
+            notification.SupportsOnMovieFileDelete.Should().BeTrue();
+            notification.SupportsOnMovieFileDeleteForUpgrade.Should().BeTrue();
             notification.SupportsOnHealthIssue.Should().BeTrue();
         }
 
@@ -118,7 +125,9 @@ namespace NzbDrone.Core.Test.NotificationTests
             notification.SupportsOnDownload.Should().BeFalse();
             notification.SupportsOnUpgrade.Should().BeFalse();
             notification.SupportsOnRename.Should().BeFalse();
-            notification.SupportsOnDelete.Should().BeFalse();
+            notification.SupportsOnMovieDelete.Should().BeFalse();
+            notification.SupportsOnMovieFileDelete.Should().BeFalse();
+            notification.SupportsOnMovieFileDeleteForUpgrade.Should().BeFalse();
             notification.SupportsOnHealthIssue.Should().BeFalse();
         }
     }

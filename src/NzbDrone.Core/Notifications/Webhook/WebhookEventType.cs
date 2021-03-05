@@ -12,6 +12,8 @@ namespace NzbDrone.Core.Notifications.Webhook
         Grab,
         Download,
         Rename,
+        MovieDelete,
+        MovieFileDelete,
         Health
     }
 }

@@ -10,14 +10,17 @@ namespace NzbDrone.Core.Notifications
         void OnGrab(GrabMessage grabMessage);
         void OnDownload(DownloadMessage message);
         void OnMovieRename(Movie movie);
+        void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage);
+        void OnMovieDelete(MovieDeleteMessage deleteMessage);
         void OnHealthIssue(HealthCheck.HealthCheck healthCheck);
-        void OnDelete(DeleteMessage deleteMessage);
         void ProcessQueue();
         bool SupportsOnGrab { get; }
         bool SupportsOnDownload { get; }
         bool SupportsOnUpgrade { get; }
         bool SupportsOnRename { get; }
+        bool SupportsOnMovieDelete { get; }
+        bool SupportsOnMovieFileDelete { get; }
+        bool SupportsOnMovieFileDeleteForUpgrade { get; }
         bool SupportsOnHealthIssue { get; }
-        bool SupportsOnDelete { get; }
     }
 }
