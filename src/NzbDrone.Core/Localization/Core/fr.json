@@ -922,7 +922,7 @@
     "ExcludeTitle": "Exclure {0} ? Raddar n'importeras plus automatiquement ce film des listes de synchronisation.",
     "FailedToLoadMovieFromAPI": "Erreur lors du chargement du film via l'API",
     "FailedToLoadQueue": "Erreur lors du chargement de la file",
-    "FeatureRequests": "Requêtes de nouvelles fonctionnalités",
+    "FeatureRequests": "Demandes d'évolution",
     "FileNameTokens": "Tokens des noms de fichier",
     "FileWasDeletedByUpgrade": "Le fichier à été supprimé pour importer une version supérieure",
     "FolderMoveRenameWarning": "Ceci va également renommer le dossier du film par le format de dossier défini dans les paramètres.",
