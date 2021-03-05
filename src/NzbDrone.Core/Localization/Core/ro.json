@@ -1070,5 +1070,12 @@
     "ShowReleaseDateHelpText": "Afișați data lansării sub afiș",
     "NoCinemaRelease": "Fără lansare cinematografică",
     "ReleaseDate": "Date de lansare",
-    "ShowCinemaRelease": "Data lansării Show Cinema"
+    "ShowCinemaRelease": "Data lansării Show Cinema",
+    "OnMovieDelete": "Pe Ștergere film",
+    "OnMovieDeleteHelpText": "Pe Ștergere film",
+    "OnMovieFileDelete": "Pe Ștergere fișier film",
+    "OnMovieFileDeleteHelpText": "Pe Ștergere fișier film",
+    "OnMovieFileDeleteForUpgrade": "Ștergeți fișierul de film pentru actualizare",
+    "OnMovieFileDeleteForUpgradeHelpText": "Ștergeți fișierul de film pentru actualizare",
+    "OnUpgrade": "La actualizare"
 }
