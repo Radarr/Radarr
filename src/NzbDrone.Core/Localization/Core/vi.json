@@ -1066,5 +1066,12 @@
     "showCinemaReleaseHelpText": "Hiển thị ngày phát hành rạp chiếu phim dưới áp phích",
     "NoCinemaRelease": "Không phát hành rạp chiếu phim",
     "ShowReleaseDate": "Hiển thị ngày phát hành",
-    "ShowReleaseDateHelpText": "Hiển thị ngày phát hành dưới áp phích"
+    "ShowReleaseDateHelpText": "Hiển thị ngày phát hành dưới áp phích",
+    "OnMovieDelete": "Trên phim Xóa",
+    "OnMovieDeleteHelpText": "Trên phim Xóa",
+    "OnMovieFileDelete": "Trên phim xóa tệp",
+    "OnMovieFileDeleteHelpText": "Trên phim xóa tệp",
+    "OnMovieFileDeleteForUpgrade": "Trên tệp phim, xóa để nâng cấp",
+    "OnMovieFileDeleteForUpgradeHelpText": "Trên tệp phim, xóa để nâng cấp",
+    "OnUpgrade": "Đang nâng cấp"
 }
