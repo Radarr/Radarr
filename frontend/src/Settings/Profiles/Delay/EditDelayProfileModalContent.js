@@ -40,6 +40,7 @@ function EditDelayProfileModalContent(props) {
     enableTorrent,
     usenetDelay,
     torrentDelay,
+    bypassIfHighestQuality,
     tags
   } = item;
 
@@ -108,6 +109,20 @@ function EditDelayProfileModalContent(props) {
                       onChange={onInputChange}
                     />
                   </FormGroup>
+              }
+
+              {
+                <FormGroup>
+                  <FormLabel>{translate('BypassDelayIfHighestQuality')}</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.CHECK}
+                    name="bypassIfHighestQuality"
+                    {...bypassIfHighestQuality}
+                    helpText={translate('BypassDelayIfHighestQualityHelpText')}
+                    onChange={onInputChange}
+                  />
+                </FormGroup>
               }
 
               {

@@ -104,8 +104,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         }
 
         [Test]
-        public void should_be_true_when_quality_is_last_allowed_in_profile()
+        public void should_be_false_when_quality_is_last_allowed_in_profile_and_bypass_disabled()
         {
+            _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray720p);
+
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_be_true_when_quality_is_last_allowed_in_profile_and_bypass_enabled()
+        {
+            _delayProfile.BypassIfHighestQuality = true;
+
             _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray720p);
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();

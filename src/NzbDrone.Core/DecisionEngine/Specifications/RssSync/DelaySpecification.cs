@@ -1,4 +1,3 @@
-using System.Linq;
 using NLog;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Download.Pending;
@@ -78,13 +77,16 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
             }
 
             // If quality meets or exceeds the best allowed quality in the profile accept it immediately
-            var bestQualityInProfile = profile.LastAllowedQuality();
-            var isBestInProfile = comparer.Compare(subject.ParsedMovieInfo.Quality.Quality, bestQualityInProfile) >= 0;
-
-            if (isBestInProfile && isPreferredProtocol)
+            if (delayProfile.BypassIfHighestQuality)
             {
-                _logger.Debug("Quality is highest in profile for preferred protocol, will not delay.");
-                return Decision.Accept();
+                var bestQualityInProfile = profile.LastAllowedQuality();
+                var isBestInProfile = comparer.Compare(subject.ParsedMovieInfo.Quality.Quality, bestQualityInProfile) >= 0;
+
+                if (isBestInProfile && isPreferredProtocol)
+                {
+                    _logger.Debug("Quality is highest in profile for preferred protocol, will not delay.");
+                    return Decision.Accept();
+                }
             }
 
             var oldest = _pendingReleaseService.OldestPendingRelease(subject.Movie.Id);
