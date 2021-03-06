@@ -146,16 +146,24 @@ namespace NzbDrone.Core.Update
             _logger.Info("Preparing client");
             _diskTransferService.TransferFolder(_appFolderInfo.GetUpdateClientFolder(), updateSandboxFolder, TransferMode.Move);
 
+            var updateClientExePath = _appFolderInfo.GetUpdateClientExePath(updatePackage.Runtime);
+
+            if (!_diskProvider.FileExists(updateClientExePath))
+            {
+                _logger.Warn("Update client {0} does not exist, aborting update.", updateClientExePath);
+                return false;
+            }
+
             // Set executable flag on update app
             if (OsInfo.IsOsx || (OsInfo.IsLinux && PlatformInfo.IsNetCore))
             {
-                _diskProvider.SetFilePermissions(_appFolderInfo.GetUpdateClientExePath(updatePackage.Runtime), "755", null);
+                _diskProvider.SetFilePermissions(updateClientExePath, "755", null);
             }
 
-            _logger.Info("Starting update client {0}", _appFolderInfo.GetUpdateClientExePath(updatePackage.Runtime));
+            _logger.Info("Starting update client {0}", updateClientExePath);
             _logger.ProgressInfo("Radarr will restart shortly.");
 
-            _processProvider.Start(_appFolderInfo.GetUpdateClientExePath(updatePackage.Runtime), GetUpdaterArgs(updateSandboxFolder));
+            _processProvider.Start(updateClientExePath, GetUpdaterArgs(updateSandboxFolder));
 
             return true;
         }
