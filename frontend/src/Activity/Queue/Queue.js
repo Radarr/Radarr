@@ -114,8 +114,9 @@ class Queue extends Component {
   }
 
   onRemoveSelectedPress = () => {
-    this._shouldBlockRefresh = true;
-    this.setState({ isConfirmRemoveModalOpen: true });
+    this.setState({ isConfirmRemoveModalOpen: true }, () => {
+      this._shouldBlockRefresh = true;
+    });
   }
 
   onRemoveSelectedConfirmed = (payload) => {
