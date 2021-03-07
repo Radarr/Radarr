@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace NzbDrone.Common.EnvironmentInfo
 {
@@ -25,6 +25,7 @@ namespace NzbDrone.Common.EnvironmentInfo
         public const string RESTART = "restart";
         public const string REGISTER_URL = "registerurl";
         public const string NO_SINGLE_INSTANCE_CHECK = "nosingleinstancecheck";
+        public const string EXIT_IMMEDIATELY = "exitimmediately";
 
         public StartupContext(params string[] args)
         {
@@ -55,6 +56,7 @@ namespace NzbDrone.Common.EnvironmentInfo
         public bool InstallService => Flags.Contains(INSTALL_SERVICE);
         public bool UninstallService => Flags.Contains(UNINSTALL_SERVICE);
         public bool RegisterUrl => Flags.Contains(REGISTER_URL);
+        public bool ExitImmediately => Flags.Contains(EXIT_IMMEDIATELY);
 
         public string PreservedArguments
         {

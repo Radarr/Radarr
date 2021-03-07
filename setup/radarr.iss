@@ -62,9 +62,9 @@ Name: "{userstartup}\{#AppName}"; Filename: "{app}\Radarr.exe"; WorkingDir: "{ap
 Name: "{app}"; Type: filesandordirs
 
 [Run]
-Filename: "{app}\Radarr.Console.exe"; StatusMsg: "Removing previous Windows Service"; Parameters: "/u"; Flags: runhidden waituntilterminated;
-Filename: "{app}\Radarr.Console.exe"; Description: "Enable Access from Other Devices"; StatusMsg: "Enabling Remote access"; Parameters: "/registerurl"; Flags: postinstall runascurrentuser runhidden waituntilterminated; Tasks: startupShortcut none;
-Filename: "{app}\Radarr.Console.exe"; StatusMsg: "Installing Windows Service"; Parameters: "/i"; Flags: runhidden waituntilterminated; Tasks: windowsService
+Filename: "{app}\Radarr.Console.exe"; StatusMsg: "Removing previous Windows Service"; Parameters: "/u /exitimmediately"; Flags: runhidden waituntilterminated;
+Filename: "{app}\Radarr.Console.exe"; Description: "Enable Access from Other Devices"; StatusMsg: "Enabling Remote access"; Parameters: "/registerurl /exitimmediately"; Flags: postinstall runascurrentuser runhidden waituntilterminated; Tasks: startupShortcut none;
+Filename: "{app}\Radarr.Console.exe"; StatusMsg: "Installing Windows Service"; Parameters: "/i /exitimmediately"; Flags: runhidden waituntilterminated; Tasks: windowsService
 Filename: "{app}\Radarr.exe"; Description: "Open Radarr Web UI"; Flags: postinstall skipifsilent nowait; Tasks: windowsService;
 Filename: "{app}\Radarr.exe"; Description: "Start Radarr"; Flags: postinstall skipifsilent nowait; Tasks: startupShortcut none;
 
