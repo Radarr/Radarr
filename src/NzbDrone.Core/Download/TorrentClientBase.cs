@@ -129,6 +129,7 @@ namespace NzbDrone.Core.Download
             try
             {
                 var request = new HttpRequest(torrentUrl);
+                request.RateLimitKey = remoteMovie?.Release?.IndexerId.ToString();
                 request.Headers.Accept = "application/x-bittorrent";
                 request.AllowAutoRedirect = false;
 
