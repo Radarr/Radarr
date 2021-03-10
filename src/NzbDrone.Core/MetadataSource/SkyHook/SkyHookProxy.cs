@@ -421,14 +421,20 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 return httpResponse.Resource.SelectList(MapSearchResult);
             }
-            catch (HttpException)
+            catch (HttpException ex)
             {
-                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with TMDb.", title);
+                _logger.Warn(ex);
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with TMDb.", ex, title);
+            }
+            catch (WebException ex)
+            {
+                _logger.Warn(ex);
+                throw new SkyHookException("Search for '{0}' failed. Unable to communicate with TMDb.", ex, title, ex.Message);
             }
             catch (Exception ex)
             {
-                _logger.Warn(ex, ex.Message);
-                throw new SkyHookException("Search for '{0}' failed. Invalid response received from TMDb.", title);
+                _logger.Warn(ex);
+                throw new SkyHookException("Search for '{0}' failed. Invalid response received from TMDb.", ex, title);
             }
         }
 
