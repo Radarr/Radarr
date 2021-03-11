@@ -37,13 +37,6 @@ class MoreInfo extends Component {
           </DescriptionListItemDescription>
 
           <DescriptionListItemTitle>
-            {translate('Donations')}
-          </DescriptionListItemTitle>
-          <DescriptionListItemDescription>
-            <Link to="https://opencollective.com/radarr">opencollective.com/radarr</Link>
-          </DescriptionListItemDescription>
-
-          <DescriptionListItemTitle>
             {translate('Source')}
           </DescriptionListItemTitle>
           <DescriptionListItemDescription>
