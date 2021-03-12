@@ -1076,5 +1076,8 @@
     "OnMovieFileDeleteForUpgrade": "På filmfil Slet til opgradering",
     "OnMovieFileDeleteForUpgradeHelpText": "På filmfil Slet til opgradering",
     "OnUpgrade": "Ved opgradering",
-    "OnMovieDelete": "Ved sletning af film"
+    "OnMovieDelete": "Ved sletning af film",
+    "Reddit": "Reddit",
+    "More": "Mere",
+    "Download": "Hent"
 }
