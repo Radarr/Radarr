@@ -1073,5 +1073,8 @@
     "OnMovieFileDeleteHelpText": "บน Movie File Delete",
     "OnMovieFileDeleteForUpgrade": "ในไฟล์ภาพยนตร์ลบสำหรับการอัปเกรด",
     "OnMovieFileDeleteForUpgradeHelpText": "ในไฟล์ภาพยนตร์ลบสำหรับการอัปเกรด",
-    "OnUpgrade": "ในการอัพเกรด"
+    "OnUpgrade": "ในการอัพเกรด",
+    "Reddit": "Reddit",
+    "More": "มากกว่า",
+    "Download": "ดาวน์โหลด"
 }
