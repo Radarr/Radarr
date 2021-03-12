@@ -1074,5 +1074,8 @@
     "OnMovieDeleteHelpText": "Διαγραφή ταινίας",
     "OnMovieFileDelete": "Διαγραφή αρχείου ταινίας",
     "OnMovieFileDeleteHelpText": "Διαγραφή αρχείου ταινίας",
-    "OnMovieFileDeleteForUpgrade": "Διαγραφή αρχείου ταινίας για αναβάθμιση"
+    "OnMovieFileDeleteForUpgrade": "Διαγραφή αρχείου ταινίας για αναβάθμιση",
+    "Reddit": "Reddit",
+    "More": "Περισσότερο",
+    "Download": "Κατεβάστε"
 }
