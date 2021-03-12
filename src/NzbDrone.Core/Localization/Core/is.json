@@ -1073,5 +1073,8 @@
     "OnMovieFileDeleteForUpgrade": "Á kvikmyndaskrá eytt til uppfærslu",
     "OnMovieFileDeleteForUpgradeHelpText": "Á kvikmyndaskrá eytt til uppfærslu",
     "OnUpgrade": "Við uppfærslu",
-    "OnMovieDelete": "Í Eyðingu kvikmyndar"
+    "OnMovieDelete": "Í Eyðingu kvikmyndar",
+    "Reddit": "Reddit",
+    "More": "Meira",
+    "Download": "Sækja"
 }
