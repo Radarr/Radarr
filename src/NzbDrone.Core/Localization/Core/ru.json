@@ -1073,5 +1073,8 @@
     "OnMovieFileDeleteHelpText": "При удалении файла фильма",
     "OnMovieFileDeleteForUpgrade": "При удалении файла фильма для обновления",
     "OnMovieFileDeleteForUpgradeHelpText": "При удалении файла фильма для обновления",
-    "OnUpgrade": "При обновлении"
+    "OnUpgrade": "При обновлении",
+    "Reddit": "Reddit",
+    "More": "Более",
+    "Download": "Скачать"
 }
