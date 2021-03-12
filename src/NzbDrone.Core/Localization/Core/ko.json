@@ -1073,5 +1073,8 @@
     "OnMovieDelete": "영화 삭제시",
     "OnMovieDeleteHelpText": "영화 삭제시",
     "OnMovieFileDelete": "영화 파일 삭제",
-    "OnMovieFileDeleteHelpText": "영화 파일 삭제"
+    "OnMovieFileDeleteHelpText": "영화 파일 삭제",
+    "Reddit": "레딧",
+    "More": "더",
+    "Download": "다운로드"
 }
