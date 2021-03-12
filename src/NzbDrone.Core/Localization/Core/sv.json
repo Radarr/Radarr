@@ -1078,5 +1078,8 @@
     "OnMovieFileDeleteHelpText": "På filmfil Ta bort",
     "OnMovieFileDeleteForUpgrade": "På filmfil Radera för uppgradering",
     "OnMovieFileDeleteForUpgradeHelpText": "På filmfil Radera för uppgradering",
-    "OnUpgrade": "Vid uppgradering"
+    "OnUpgrade": "Vid uppgradering",
+    "Reddit": "Reddit",
+    "More": "Mer",
+    "Download": "Ladda ner"
 }
