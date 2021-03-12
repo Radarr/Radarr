@@ -1073,5 +1073,8 @@
     "OnMovieFileDeleteHelpText": "عند حذف ملف الفيلم",
     "OnMovieFileDeleteForUpgrade": "عند حذف ملف الفيلم للترقية",
     "OnMovieFileDeleteForUpgradeHelpText": "عند حذف ملف الفيلم للترقية",
-    "OnUpgrade": "عند الترقية"
+    "OnUpgrade": "عند الترقية",
+    "Reddit": "رديت",
+    "More": "أكثر",
+    "Download": "تحميل"
 }
