@@ -1079,5 +1079,8 @@
     "OnMovieFileDeleteHelpText": "On Movie File Delete",
     "OnMovieFileDeleteForUpgrade": "A filmfájl törlése frissítéshez",
     "OnMovieFileDeleteForUpgradeHelpText": "A filmfájl törlése frissítéshez",
-    "OnUpgrade": "Minőségjavítás alatt"
+    "OnUpgrade": "Minőségjavítás alatt",
+    "Reddit": "Reddit",
+    "More": "Több",
+    "Download": "Letöltés"
 }
