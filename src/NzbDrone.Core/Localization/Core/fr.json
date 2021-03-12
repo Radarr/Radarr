@@ -1086,5 +1086,8 @@
     "OnMovieDeleteHelpText": "Sur la suppression du film",
     "OnMovieFileDelete": "Sur la suppression du fichier vidéo",
     "OnMovieFileDeleteHelpText": "Sur la suppression du fichier vidéo",
-    "OnMovieFileDeleteForUpgrade": "Sur la suppression du fichier vidéo pour la mise à niveau"
+    "OnMovieFileDeleteForUpgrade": "Sur la suppression du fichier vidéo pour la mise à niveau",
+    "Reddit": "Reddit",
+    "More": "Suite",
+    "Download": "Télécharger"
 }
