@@ -1073,5 +1073,8 @@
     "OnMovieFileDeleteHelpText": "В Изтриване на файл с филм",
     "OnMovieFileDeleteForUpgrade": "Във филмов файл Изтриване за надстройка",
     "OnMovieFileDeleteForUpgradeHelpText": "Във филмов файл Изтриване за надстройка",
-    "OnUpgrade": "При надстройка"
+    "OnUpgrade": "При надстройка",
+    "Reddit": "Reddit",
+    "More": "| Повече ▼",
+    "Download": "Изтегли"
 }
