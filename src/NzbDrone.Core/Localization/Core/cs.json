@@ -1073,5 +1073,8 @@
     "OnMovieFileDeleteHelpText": "Při mazání filmových souborů",
     "OnMovieFileDeleteForUpgrade": "Na filmovém souboru Odstranit pro upgrade",
     "OnMovieFileDeleteForUpgradeHelpText": "Na filmovém souboru Odstranit pro upgrade",
-    "OnUpgrade": "Při upgradu"
+    "OnUpgrade": "Při upgradu",
+    "Reddit": "Reddit",
+    "More": "Více",
+    "Download": "Stažení"
 }
