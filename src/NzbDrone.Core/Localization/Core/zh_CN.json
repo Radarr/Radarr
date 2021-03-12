@@ -1073,5 +1073,8 @@
     "OnMovieFileDeleteForUpgrade": "在电影文件上删除以进行升级",
     "OnMovieFileDeleteForUpgradeHelpText": "在电影文件上删除以进行升级",
     "OnUpgrade": "升级中",
-    "OnMovieDelete": "电影删除时"
+    "OnMovieDelete": "电影删除时",
+    "Reddit": "Reddit",
+    "More": "更多的",
+    "Download": "下载"
 }
