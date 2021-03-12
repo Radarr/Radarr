@@ -1077,5 +1077,8 @@
     "OnMovieFileDeleteHelpText": "Pe Ștergere fișier film",
     "OnMovieFileDeleteForUpgrade": "Ștergeți fișierul de film pentru actualizare",
     "OnMovieFileDeleteForUpgradeHelpText": "Ștergeți fișierul de film pentru actualizare",
-    "OnUpgrade": "La actualizare"
+    "OnUpgrade": "La actualizare",
+    "Reddit": "Reddit",
+    "More": "Mai mult",
+    "Download": "Descarca"
 }
