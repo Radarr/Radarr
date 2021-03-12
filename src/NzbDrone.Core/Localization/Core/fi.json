@@ -1073,5 +1073,8 @@
     "OnUpgrade": "Päivityksessä",
     "OnMovieFileDelete": "Elokuvatiedosto Poista",
     "OnMovieFileDeleteHelpText": "Elokuvatiedosto Poista",
-    "OnMovieFileDeleteForUpgrade": "Elokuvatiedoston poisto päivitystä varten"
+    "OnMovieFileDeleteForUpgrade": "Elokuvatiedoston poisto päivitystä varten",
+    "Reddit": "Reddit",
+    "More": "Lisää",
+    "Download": "ladata"
 }
