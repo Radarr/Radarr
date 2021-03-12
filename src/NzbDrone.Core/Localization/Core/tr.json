@@ -1077,5 +1077,8 @@
     "OnMovieFileDeleteHelpText": "Film Dosyasında Sil",
     "OnMovieFileDeleteForUpgrade": "Film Dosyasında Yükseltmek İçin Sil",
     "OnMovieFileDeleteForUpgradeHelpText": "Film Dosyasında Yükseltmek İçin Sil",
-    "OnUpgrade": "Yükseltme sırasında"
+    "OnUpgrade": "Yükseltme sırasında",
+    "Reddit": "Reddit",
+    "More": "Daha",
+    "Download": "İndir"
 }
