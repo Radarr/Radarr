@@ -1090,5 +1090,8 @@
     "OnMovieFileDeleteHelpText": "Bei Filmdatei löschen",
     "OnMovieFileDeleteForUpgrade": "Bei Filmdatei Zum Upgrade löschen",
     "OnMovieFileDeleteForUpgradeHelpText": "Bei Filmdatei Zum Upgrade löschen",
-    "OnUpgrade": "Upgrade"
+    "OnUpgrade": "Upgrade",
+    "Reddit": "Reddit",
+    "More": "Mehr",
+    "Download": "Herunterladen"
 }
