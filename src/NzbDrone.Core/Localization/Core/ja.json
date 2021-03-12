@@ -1073,5 +1073,8 @@
     "OnUpgrade": "アップグレード時",
     "OnMovieDelete": "映画の削除について",
     "OnMovieDeleteHelpText": "映画の削除について",
-    "OnMovieFileDelete": "ムービーファイルの削除について"
+    "OnMovieFileDelete": "ムービーファイルの削除について",
+    "Reddit": "Reddit",
+    "More": "もっと",
+    "Download": "ダウンロード"
 }
