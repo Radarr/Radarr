@@ -1088,5 +1088,8 @@
     "OnMovieFileDeleteHelpText": "Ao excluir arquivo de filme",
     "OnMovieFileDeleteForUpgrade": "Ao apagar o filme para atualização",
     "OnMovieFileDeleteForUpgradeHelpText": "Ao apagar o filme para atualização",
-    "OnUpgrade": "Ao fazer Upgrade"
+    "OnUpgrade": "Ao fazer Upgrade",
+    "Reddit": "Reddit",
+    "More": "Mais",
+    "Download": "Download"
 }
