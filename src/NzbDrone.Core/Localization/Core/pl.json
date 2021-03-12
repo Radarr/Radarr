@@ -1074,5 +1074,8 @@
     "OnMovieFileDeleteHelpText": "Usuń plik filmowy",
     "OnMovieFileDeleteForUpgrade": "W przypadku usunięcia pliku filmowego w celu uaktualnienia",
     "OnMovieFileDeleteForUpgradeHelpText": "W przypadku usunięcia pliku filmowego w celu uaktualnienia",
-    "OnUpgrade": "Przy aktualizacji"
+    "OnUpgrade": "Przy aktualizacji",
+    "Reddit": "Reddit",
+    "More": "Jeszcze",
+    "Download": "Ściągnij"
 }
