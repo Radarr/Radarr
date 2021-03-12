@@ -1089,5 +1089,8 @@
     "OnMovieFileDeleteHelpText": "Op filmbestand verwijderen",
     "OnMovieFileDeleteForUpgrade": "Op filmbestand verwijderen voor upgrade",
     "OnMovieFileDeleteForUpgradeHelpText": "Op filmbestand verwijderen voor upgrade",
-    "OnUpgrade": "Bij Opwaarderen"
+    "OnUpgrade": "Bij Opwaarderen",
+    "Reddit": "Reddit",
+    "More": "Meer",
+    "Download": "Downloaden"
 }
