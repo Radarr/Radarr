@@ -1089,10 +1089,10 @@
     normalize-path "^2.0.1"
     through2 "^2.0.3"
 
-"@microsoft/signalr@5.0.2":
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-5.0.2.tgz#c7ae14f390b54854d317448d473ea3fd99599557"
-  integrity sha512-sIAObG0rj/XCIeKFpQvzIFd7Rnt7yZJn6MW4QfbvE1+XNK173XXYUVy+MQnh1Tw5N4wVQyDcUPZF3sV3K4EASQ==
+"@microsoft/signalr@5.0.4":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-5.0.4.tgz#8adeb8c2ed37f15fee71194a60a32de0a55db54c"
+  integrity sha512-SZ0yeL3feopNBbLdtpJgiMy+ZIG8MlbR5UDqUa9pHZ+9vdYslQEJM4cvZCurCMM4GXhssiNSRVgqcMxdfhhQiQ==
   dependencies:
     abort-controller "^3.0.0"
     eventsource "^1.0.7"
