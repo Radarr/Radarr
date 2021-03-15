@@ -18,8 +18,8 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         QBittorrentTorrentProperties GetTorrentProperties(string hash, QBittorrentSettings settings);
         List<QBittorrentTorrentFile> GetTorrentFiles(string hash, QBittorrentSettings settings);
 
-        void AddTorrentFromUrl(string torrentUrl, QBittorrentSettings settings);
-        void AddTorrentFromFile(string fileName, byte[] fileContent, QBittorrentSettings settings);
+        void AddTorrentFromUrl(string torrentUrl, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings);
+        void AddTorrentFromFile(string fileName, byte[] fileContent, TorrentSeedConfiguration seedConfiguration, QBittorrentSettings settings);
 
         void RemoveTorrent(string hash, bool removeData, QBittorrentSettings settings);
         void SetTorrentLabel(string hash, string label, QBittorrentSettings settings);
@@ -35,12 +35,13 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
     public interface IQBittorrentProxySelector
     {
         IQBittorrentProxy GetProxy(QBittorrentSettings settings, bool force = false);
+        Version GetApiVersion(QBittorrentSettings settings, bool force = false);
     }
 
     public class QBittorrentProxySelector : IQBittorrentProxySelector
     {
         private readonly IHttpClient _httpClient;
-        private readonly ICached<IQBittorrentProxy> _proxyCache;
+        private readonly ICached<Tuple<IQBittorrentProxy, Version>> _proxyCache;
         private readonly Logger _logger;
 
         private readonly IQBittorrentProxy _proxyV1;
@@ -53,7 +54,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                          Logger logger)
         {
             _httpClient = httpClient;
-            _proxyCache = cacheManager.GetCache<IQBittorrentProxy>(GetType());
+            _proxyCache = cacheManager.GetCache<Tuple<IQBittorrentProxy, Version>>(GetType());
             _logger = logger;
 
             _proxyV1 = proxyV1;
@@ -61,6 +62,16 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         }
 
         public IQBittorrentProxy GetProxy(QBittorrentSettings settings, bool force)
+        {
+            return GetProxyCache(settings, force).Item1;
+        }
+
+        public Version GetApiVersion(QBittorrentSettings settings, bool force)
+        {
+            return GetProxyCache(settings, force).Item2;
+        }
+
+        private Tuple<IQBittorrentProxy, Version> GetProxyCache(QBittorrentSettings settings, bool force)
         {
             var proxyKey = $"{settings.Host}_{settings.Port}";
 
@@ -72,18 +83,18 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             return _proxyCache.Get(proxyKey, () => FetchProxy(settings), TimeSpan.FromMinutes(10.0));
         }
 
-        private IQBittorrentProxy FetchProxy(QBittorrentSettings settings)
+        private Tuple<IQBittorrentProxy, Version> FetchProxy(QBittorrentSettings settings)
         {
             if (_proxyV2.IsApiSupported(settings))
             {
                 _logger.Trace("Using qbitTorrent API v2");
-                return _proxyV2;
+                return Tuple.Create(_proxyV2, _proxyV2.GetApiVersion(settings));
             }
 
             if (_proxyV1.IsApiSupported(settings))
             {
                 _logger.Trace("Using qbitTorrent API v1");
-                return _proxyV1;
+                return Tuple.Create(_proxyV1, _proxyV1.GetApiVersion(settings));
             }
 
             throw new DownloadClientException("Unable to determine qBittorrent API version");
