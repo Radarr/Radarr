@@ -32,6 +32,8 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             if (file != null)
             {
                 file.Movie = subject.Movie;
+                _logger.Debug("Comparing file quality with report. Existing file is {0}", file.Quality);
+
                 var customFormats = _formatService.ParseCustomFormat(file);
 
                 if (!_upgradableSpecification.CutoffNotMet(profile,

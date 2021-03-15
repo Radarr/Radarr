@@ -93,7 +93,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public bool CutoffNotMet(Profile profile, QualityModel currentQuality, List<CustomFormat> currentFormats, QualityModel newQuality = null)
         {
-            return QualityCutoffNotMet(profile, currentQuality, newQuality) || CustomFormatCutoffNotMet(profile, currentFormats);
+            if (QualityCutoffNotMet(profile, currentQuality, newQuality))
+            {
+                return true;
+            }
+
+            if (CustomFormatCutoffNotMet(profile, currentFormats))
+            {
+                return true;
+            }
+
+            _logger.Debug("Existing item meets cut-off. skipping.");
+
+            return false;
         }
 
         public bool IsRevisionUpgrade(QualityModel currentQuality, QualityModel newQuality)
