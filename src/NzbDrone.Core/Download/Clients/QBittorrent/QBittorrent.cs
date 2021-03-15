@@ -45,6 +45,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         }
 
         private IQBittorrentProxy Proxy => _proxySelector.GetProxy(Settings);
+        private Version ProxyApiVersion => _proxySelector.GetApiVersion(Settings);
 
         public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
         {
@@ -70,21 +71,49 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 throw new NotSupportedException("Magnet Links without trackers not supported if DHT is disabled");
             }
 
-            Proxy.AddTorrentFromUrl(magnetLink, Settings);
-
+            var setShareLimits = remoteMovie.SeedConfiguration != null && (remoteMovie.SeedConfiguration.Ratio.HasValue || remoteMovie.SeedConfiguration.SeedTime.HasValue);
+            var addHasSetShareLimits = setShareLimits && ProxyApiVersion >= new Version(2, 8, 1);
             var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+            var moveToTop = (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) || (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First);
+            var forceStart = (QBittorrentState)Settings.InitialState == QBittorrentState.ForceStart;
 
-            if ((isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) ||
-                (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First))
+            Proxy.AddTorrentFromUrl(magnetLink, addHasSetShareLimits && setShareLimits ? remoteMovie.SeedConfiguration : null, Settings);
+
+            if ((!addHasSetShareLimits && setShareLimits) || moveToTop || forceStart)
             {
-                Proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
-            }
+                if (!WaitForTorrent(hash))
+                {
+                    return hash;
+                }
 
-            SetInitialState(hash.ToLower());
+                if (!addHasSetShareLimits && setShareLimits)
+                {
+                    Proxy.SetTorrentSeedingConfiguration(hash.ToLower(), remoteMovie.SeedConfiguration, Settings);
+                }
 
-            if (remoteMovie.SeedConfiguration != null && (remoteMovie.SeedConfiguration.Ratio.HasValue || remoteMovie.SeedConfiguration.SeedTime.HasValue))
-            {
-                Proxy.SetTorrentSeedingConfiguration(hash.ToLower(), remoteMovie.SeedConfiguration, Settings);
+                if (moveToTop)
+                {
+                    try
+                    {
+                        Proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warn(ex, "Failed to set the torrent priority for {0}.", hash);
+                    }
+                }
+
+                if (forceStart)
+                {
+                    try
+                    {
+                        Proxy.SetForceStart(hash.ToLower(), true, Settings);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warn(ex, "Failed to set ForceStart for {0}.", hash);
+                    }
+                }
             }
 
             return hash;
@@ -92,31 +121,76 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
-            Proxy.AddTorrentFromFile(filename, fileContent, Settings);
+            var setShareLimits = remoteMovie.SeedConfiguration != null && (remoteMovie.SeedConfiguration.Ratio.HasValue || remoteMovie.SeedConfiguration.SeedTime.HasValue);
+            var addHasSetShareLimits = setShareLimits && ProxyApiVersion >= new Version(2, 8, 1);
+            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+            var moveToTop = (isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) || (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First);
+            var forceStart = (QBittorrentState)Settings.InitialState == QBittorrentState.ForceStart;
 
-            try
+            Proxy.AddTorrentFromFile(filename, fileContent, addHasSetShareLimits ? remoteMovie.SeedConfiguration : null, Settings);
+
+            if ((!addHasSetShareLimits && setShareLimits) || moveToTop || forceStart)
             {
-                var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
-
-                if ((isRecentMovie && Settings.RecentMoviePriority == (int)QBittorrentPriority.First) ||
-                    (!isRecentMovie && Settings.OlderMoviePriority == (int)QBittorrentPriority.First))
+                if (!WaitForTorrent(hash))
                 {
-                    Proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
+                    return hash;
                 }
-            }
-            catch (Exception ex)
-            {
-                _logger.Warn(ex, "Failed to set the torrent priority for {0}.", filename);
-            }
 
-            SetInitialState(hash.ToLower());
+                if (!addHasSetShareLimits && setShareLimits)
+                {
+                    Proxy.SetTorrentSeedingConfiguration(hash.ToLower(), remoteMovie.SeedConfiguration, Settings);
+                }
 
-            if (remoteMovie.SeedConfiguration != null && (remoteMovie.SeedConfiguration.Ratio.HasValue || remoteMovie.SeedConfiguration.SeedTime.HasValue))
-            {
-                Proxy.SetTorrentSeedingConfiguration(hash.ToLower(), remoteMovie.SeedConfiguration, Settings);
+                if (moveToTop)
+                {
+                    try
+                    {
+                        Proxy.MoveTorrentToTopInQueue(hash.ToLower(), Settings);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warn(ex, "Failed to set the torrent priority for {0}.", hash);
+                    }
+                }
+
+                if (forceStart)
+                {
+                    try
+                    {
+                        Proxy.SetForceStart(hash.ToLower(), true, Settings);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Warn(ex, "Failed to set ForceStart for {0}.", hash);
+                    }
+                }
             }
 
             return hash;
+        }
+
+        protected bool WaitForTorrent(string hash)
+        {
+            var count = 5;
+
+            while (count != 0)
+            {
+                try
+                {
+                    Proxy.GetTorrentProperties(hash.ToLower(), Settings);
+                    return true;
+                }
+                catch
+                {
+                }
+
+                _logger.Trace("Torrent '{0}' not yet visible in qbit, waiting 100ms.", hash);
+                System.Threading.Thread.Sleep(100);
+                count--;
+            }
+
+            _logger.Warn("Failed to load torrent '{0}' within 500 ms, skipping additional parameters.", hash);
+            return false;
         }
 
         public override string Name => "qBittorrent";
@@ -486,29 +560,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             }
 
             return null;
-        }
-
-        private void SetInitialState(string hash)
-        {
-            try
-            {
-                switch ((QBittorrentState)Settings.InitialState)
-                {
-                    case QBittorrentState.ForceStart:
-                        Proxy.SetForceStart(hash, true, Settings);
-                        break;
-                    case QBittorrentState.Start:
-                        Proxy.ResumeTorrent(hash, Settings);
-                        break;
-                    case QBittorrentState.Pause:
-                        Proxy.PauseTorrent(hash, Settings);
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Warn(ex, "Failed to set inital state for {0}.", hash);
-            }
         }
 
         protected TimeSpan? GetRemainingTime(QBittorrentTorrent torrent)
