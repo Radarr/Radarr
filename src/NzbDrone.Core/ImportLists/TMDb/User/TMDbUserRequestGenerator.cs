@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common.Http;
 
@@ -15,7 +16,6 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
 
         public TMDbUserRequestGenerator()
         {
-            MaxPages = 3;
         }
 
         public virtual ImportListPageableRequestChain GetMovies()
@@ -55,7 +55,20 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
 
             requestBuilder.Method = HttpMethod.GET;
 
-            yield return new ImportListRequest(requestBuilder.Build());
+            var jsonResponse = JsonConvert.DeserializeObject<MovieSearchResource>(HttpClient.Execute(requestBuilder.Build()).Content);
+
+            MaxPages = jsonResponse.TotalPages;
+
+            for (var pageNumber = 1; pageNumber <= MaxPages; pageNumber++)
+            {
+                requestBuilder.AddQueryParam("page", pageNumber, true);
+
+                var request = requestBuilder.Build();
+
+                Logger.Debug($"Importing TMDb movies from: {request.Url}");
+
+                yield return new ImportListRequest(request);
+            }
         }
     }
 }
