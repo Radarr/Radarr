@@ -24,8 +24,14 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
                 return movies;
             }
 
-            foreach (var movie in jsonResponse.Items)
+            foreach (var movie in jsonResponse.Results)
             {
+                //Media Type is not Movie
+                if (movie.MediaType != "movie")
+                {
+                    continue;
+                }
+
                 // Movies with no Year Fix
                 if (string.IsNullOrWhiteSpace(movie.ReleaseDate))
                 {

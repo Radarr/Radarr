@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common.Http;
 
@@ -10,6 +11,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
         public IHttpClient HttpClient { get; set; }
         public IHttpRequestBuilderFactory RequestBuilder { get; set; }
         public Logger Logger { get; set; }
+        public int MaxPages { get; set; }
 
         public TMDbListRequestGenerator()
         {
@@ -29,13 +31,27 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
             Logger.Info($"Importing TMDb movies from list: {Settings.ListId}");
 
             var requestBuilder = RequestBuilder.Create()
-                                               .SetSegment("api", "3")
+                                               .SetSegment("api", "4")
                                                .SetSegment("route", "list")
                                                .SetSegment("id", Settings.ListId)
                                                .SetSegment("secondaryRoute", "");
 
-            yield return new ImportListRequest(requestBuilder.Accept(HttpAccept.Json)
-                                                            .Build());
+            Logger.Debug($"Getting total pages that TMDb List: {Settings.ListId} consists of");
+
+            var jsonResponse = JsonConvert.DeserializeObject<MovieSearchResource>(HttpClient.Execute(requestBuilder.Build()).Content);
+
+            MaxPages = jsonResponse.TotalPages;
+
+            for (var pageNumber = 1; pageNumber <= MaxPages; pageNumber++)
+            {
+                requestBuilder.AddQueryParam("page", pageNumber, true);
+
+                var request = requestBuilder.Build();
+
+                Logger.Debug($"Importing TMDb movies from: {request.Url}");
+
+                yield return new ImportListRequest(request);
+            }
         }
     }
 }
