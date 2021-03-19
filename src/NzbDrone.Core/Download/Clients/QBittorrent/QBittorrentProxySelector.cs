@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
         string GetVersion(QBittorrentSettings settings);
         QBittorrentPreferences GetConfig(QBittorrentSettings settings);
         List<QBittorrentTorrent> GetTorrents(QBittorrentSettings settings);
+        bool IsTorrentLoaded(string hash, QBittorrentSettings settings);
         QBittorrentTorrentProperties GetTorrentProperties(string hash, QBittorrentSettings settings);
         List<QBittorrentTorrentFile> GetTorrentFiles(string hash, QBittorrentSettings settings);
 
@@ -40,7 +41,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
     public class QBittorrentProxySelector : IQBittorrentProxySelector
     {
-        private readonly IHttpClient _httpClient;
         private readonly ICached<Tuple<IQBittorrentProxy, Version>> _proxyCache;
         private readonly Logger _logger;
 
@@ -53,7 +53,6 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                                          ICacheManager cacheManager,
                                          Logger logger)
         {
-            _httpClient = httpClient;
             _proxyCache = cacheManager.GetCache<Tuple<IQBittorrentProxy, Version>>(GetType());
             _logger = logger;
 
