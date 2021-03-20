@@ -86,17 +86,20 @@ namespace NzbDrone.Core.ImportLists.TMDb
     public class ListResponseResource
     {
         public string Id { get; set; }
-        public ListItemResource[] Items { get; set; }
+        public ListItemResource[] Results { get; set; }
 
-        [JsonProperty("item_count")]
-        public int ItemCount { get; set; }
+        [JsonProperty("total_results")]
+        public int TotalResults { get; set; }
+
+        [JsonProperty("total_pages")]
+        public int TotalPages { get; set; }
 
         [JsonProperty("iso_639_1")]
         public string Iso639 { get; set; }
         public string Name { get; set; }
 
         [JsonProperty("poster_path")]
-        public object PosterPath { get; set; }
+        public string PosterPath { get; set; }
     }
 
     public class CollectionResponseResource
