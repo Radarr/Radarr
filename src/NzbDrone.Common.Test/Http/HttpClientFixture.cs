@@ -196,19 +196,9 @@ namespace NzbDrone.Common.Test.Http
             var request = new HttpRequest($"https://{_httpBinHost}/status/{HttpStatusCode.NotFound}");
             request.SuppressHttpErrorStatusCodes = new[] { HttpStatusCode.NotFound };
 
-            var exception = Assert.Throws<HttpException>(() => Subject.Get<HttpBinResource>(request));
+            Assert.Throws<HttpException>(() => Subject.Get<HttpBinResource>(request));
 
             ExceptionVerification.IgnoreWarns();
-        }
-
-        [Test]
-        public void should_log_unsuccessful_status_codes()
-        {
-            var request = new HttpRequest($"https://{_httpBinHost}/status/{HttpStatusCode.NotFound}");
-
-            var exception = Assert.Throws<HttpException>(() => Subject.Get<HttpBinResource>(request));
-
-            ExceptionVerification.ExpectedWarns(1);
         }
 
         [Test]
@@ -217,7 +207,7 @@ namespace NzbDrone.Common.Test.Http
             var request = new HttpRequest($"https://{_httpBinHost}/status/{HttpStatusCode.NotFound}");
             request.LogHttpError = false;
 
-            var exception = Assert.Throws<HttpException>(() => Subject.Get<HttpBinResource>(request));
+            Assert.Throws<HttpException>(() => Subject.Get<HttpBinResource>(request));
 
             ExceptionVerification.ExpectedWarns(0);
         }
