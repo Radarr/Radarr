@@ -25,7 +25,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
         [Test]
         [Platform("Mono")]
-        public void should_return_ok_if_bsd()
+        public void should_return_ok_if_otherbsd()
         {
             Mocker.GetMock<IProcessProvider>()
                 .Setup(x => x.StartAndCapture("uname", null, null))
@@ -33,10 +33,26 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                     {
                         Lines = new List<ProcessOutputLine>
                         {
-                            new ProcessOutputLine(ProcessOutputLevel.Standard, "FreeBSD")
+                            new ProcessOutputLine(ProcessOutputLevel.Standard, "OpenBSD")
                         }
                     });
             Subject.Check().ShouldBeOk();
+        }
+
+        [Test]
+        [Platform("Mono")]
+        public void should_log_warning_if_freebsd()
+        {
+            Mocker.GetMock<IProcessProvider>()
+                .Setup(x => x.StartAndCapture("uname", null, null))
+                .Returns(new ProcessOutput
+                {
+                    Lines = new List<ProcessOutputLine>
+                    {
+                        new ProcessOutputLine(ProcessOutputLevel.Standard, "FreeBSD")
+                    }
+                });
+            Subject.Check().ShouldBeWarning();
         }
     }
 }
