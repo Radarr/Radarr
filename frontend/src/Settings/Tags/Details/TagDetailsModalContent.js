@@ -22,6 +22,7 @@ function TagDetailsModalContent(props) {
     notifications,
     restrictions,
     importLists,
+    indexers,
     onModalClose,
     onDeleteTagPress
   } = props;
@@ -41,7 +42,7 @@ function TagDetailsModalContent(props) {
         }
 
         {
-          !!movies.length &&
+          movies.length ?
             <FieldSet legend={translate('Movies')}>
               {
                 movies.map((item) => {
@@ -52,11 +53,12 @@ function TagDetailsModalContent(props) {
                   );
                 })
               }
-            </FieldSet>
+            </FieldSet> :
+            null
         }
 
         {
-          !!delayProfiles.length &&
+          delayProfiles.length ?
             <FieldSet legend={translate('DelayProfile')}>
               {
                 delayProfiles.map((item) => {
@@ -81,11 +83,12 @@ function TagDetailsModalContent(props) {
                   );
                 })
               }
-            </FieldSet>
+            </FieldSet> :
+            null
         }
 
         {
-          !!notifications.length &&
+          notifications.length ?
             <FieldSet legend={translate('Connections')}>
               {
                 notifications.map((item) => {
@@ -96,11 +99,12 @@ function TagDetailsModalContent(props) {
                   );
                 })
               }
-            </FieldSet>
+            </FieldSet> :
+            null
         }
 
         {
-          !!restrictions.length &&
+          restrictions.length ?
             <FieldSet legend={translate('Restrictions')}>
               {
                 restrictions.map((item) => {
@@ -142,7 +146,24 @@ function TagDetailsModalContent(props) {
                   );
                 })
               }
-            </FieldSet>
+            </FieldSet> :
+            null
+        }
+
+        {
+          indexers.length ?
+            <FieldSet legend="Indexers">
+              {
+                indexers.map((item) => {
+                  return (
+                    <div key={item.id}>
+                      {item.name}
+                    </div>
+                  );
+                })
+              }
+            </FieldSet> :
+            null
         }
 
         {
@@ -192,6 +213,7 @@ TagDetailsModalContent.propTypes = {
   notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
   restrictions: PropTypes.arrayOf(PropTypes.object).isRequired,
   importLists: PropTypes.arrayOf(PropTypes.object).isRequired,
+  indexers: PropTypes.arrayOf(PropTypes.object).isRequired,
   onModalClose: PropTypes.func.isRequired,
   onDeleteTagPress: PropTypes.func.isRequired
 };

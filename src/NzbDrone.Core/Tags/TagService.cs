@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.ImportLists;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Notifications;
@@ -32,6 +33,7 @@ namespace NzbDrone.Core.Tags
         private readonly INotificationFactory _notificationFactory;
         private readonly IRestrictionService _restrictionService;
         private readonly IMovieService _movieService;
+        private readonly IIndexerFactory _indexerService;
 
         public TagService(ITagRepository repo,
                           IEventAggregator eventAggregator,
@@ -39,7 +41,8 @@ namespace NzbDrone.Core.Tags
                           IImportListFactory importListFactory,
                           INotificationFactory notificationFactory,
                           IRestrictionService restrictionService,
-                          IMovieService movieService)
+                          IMovieService movieService,
+                          IIndexerFactory indexerService)
         {
             _repo = repo;
             _eventAggregator = eventAggregator;
@@ -48,6 +51,7 @@ namespace NzbDrone.Core.Tags
             _notificationFactory = notificationFactory;
             _restrictionService = restrictionService;
             _movieService = movieService;
+            _indexerService = indexerService;
         }
 
         public Tag GetTag(int tagId)
@@ -80,6 +84,7 @@ namespace NzbDrone.Core.Tags
             var notifications = _notificationFactory.AllForTag(tagId);
             var restrictions = _restrictionService.AllForTag(tagId);
             var movies = _movieService.AllMovieTags().Where(x => x.Value.Contains(tagId)).Select(x => x.Key).ToList();
+            var indexers = _indexerService.AllForTag(tagId);
 
             return new TagDetails
             {
@@ -89,7 +94,8 @@ namespace NzbDrone.Core.Tags
                 ImportListIds = importLists.Select(c => c.Id).ToList(),
                 NotificationIds = notifications.Select(c => c.Id).ToList(),
                 RestrictionIds = restrictions.Select(c => c.Id).ToList(),
-                MovieIds = movies
+                MovieIds = movies,
+                IndexerIds = indexers.Select(c => c.Id).ToList()
             };
         }
 
@@ -101,6 +107,7 @@ namespace NzbDrone.Core.Tags
             var notifications = _notificationFactory.All();
             var restrictions = _restrictionService.All();
             var movies = _movieService.AllMovieTags();
+            var indexers = _indexerService.All();
 
             var details = new List<TagDetails>();
 
@@ -114,7 +121,8 @@ namespace NzbDrone.Core.Tags
                     ImportListIds = importLists.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     NotificationIds = notifications.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
-                    MovieIds = movies.Where(c => c.Value.Contains(tag.Id)).Select(c => c.Key).ToList()
+                    MovieIds = movies.Where(c => c.Value.Contains(tag.Id)).Select(c => c.Key).ToList(),
+                    IndexerIds = indexers.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList()
                 });
             }
 

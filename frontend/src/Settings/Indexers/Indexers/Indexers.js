@@ -54,6 +54,7 @@ class Indexers extends Component {
   render() {
     const {
       items,
+      tagList,
       dispatchCloneIndexer,
       onConfirmDeleteIndexer,
       ...otherProps
@@ -79,6 +80,7 @@ class Indexers extends Component {
                   <Indexer
                     key={item.id}
                     {...item}
+                    tagList={tagList}
                     showPriority={showPriority}
                     onCloneIndexerPress={this.onCloneIndexerPress}
                     onConfirmDeleteIndexer={onConfirmDeleteIndexer}
@@ -119,6 +121,7 @@ Indexers.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tagList: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchCloneIndexer: PropTypes.func.isRequired,
   onConfirmDeleteIndexer: PropTypes.func.isRequired
 };
