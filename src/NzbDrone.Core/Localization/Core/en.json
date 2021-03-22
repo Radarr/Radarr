@@ -433,6 +433,7 @@
   "IndexersSettingsSummary": "Indexers and release restrictions",
   "IndexerStatusCheckAllClientMessage": "All indexers are unavailable due to failures",
   "IndexerStatusCheckSingleClientMessage": "Indexers unavailable due to failures: {0}",
+  "IndexerTagHelpText": "Only use this indexer for series with at least one matching tag. Leave blank to use with all movies.",
   "Info": "Info",
   "InstallLatest": "Install Latest",
   "InteractiveImport": "Interactive Import",

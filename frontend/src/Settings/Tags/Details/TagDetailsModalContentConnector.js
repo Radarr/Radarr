@@ -69,6 +69,14 @@ function createMatchingImportListsSelector() {
   );
 }
 
+function createMatchingIndexersSelector() {
+  return createSelector(
+    (state, { indexerIds }) => indexerIds,
+    (state) => state.settings.indexers.items,
+    findMatchingItems
+  );
+}
+
 function createMapStateToProps() {
   return createSelector(
     createMatchingMoviesSelector(),
@@ -76,13 +84,15 @@ function createMapStateToProps() {
     createMatchingNotificationsSelector(),
     createMatchingRestrictionsSelector(),
     createMatchingImportListsSelector(),
-    (movies, delayProfiles, notifications, restrictions, importLists) => {
+    createMatchingIndexersSelector(),
+    (movies, delayProfiles, notifications, restrictions, importLists, indexers) => {
       return {
         movies,
         delayProfiles,
         notifications,
         restrictions,
-        importLists
+        importLists,
+        indexers
       };
     }
   );
