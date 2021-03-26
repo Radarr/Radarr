@@ -237,6 +237,7 @@
   "DotNetVersionCheckOldUnsupportedMessage": "Currently installed .Net Framework {0} is old and unsupported. Please upgrade the .Net Framework to at least {1}.",
   "Download": "Download",
   "DownloadClient": "Download Client",
+  "DownloadClientCheckDownloadingToRoot": "Download client {0} places downloads in the root folder {1}. You should not download to a root folder.",
   "DownloadClientCheckNoneAvailableMessage": "No download client is available",
   "DownloadClientCheckUnableToCommunicateMessage": "Unable to communicate with {0}.",
   "DownloadClients": "Download Clients",
