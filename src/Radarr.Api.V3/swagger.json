@@ -3693,6 +3693,54 @@
           "Queue"
         ]
       }
+    },
+    "/rootfolder": {
+      "get": {
+        "summary": "Gets root folder",
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "examples": {
+                  "Response": {
+                    "value": [
+                      {
+                        "path": "C:\\Downloads\\Movies",
+                        "freeSpace": 282500063232,
+                        "unmappedFolders": [],
+                        "id": 1
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key"
+          }
+        },
+        "operationId": "get-rootfolder",
+        "description": "Query Radarr for root folder information\n\nSettings: Media Management > Root Folders",
+        "security": [
+          {
+            "X-API-Key": []
+          },
+          {
+            "apikey": []
+          }
+        ],
+        "tags": [
+          "Root Folder"
+        ]
+      }
     }
   },
   "components": {
