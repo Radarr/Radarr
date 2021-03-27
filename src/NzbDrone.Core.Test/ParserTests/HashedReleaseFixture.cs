@@ -27,57 +27,57 @@ namespace NzbDrone.Core.Test.ParserTests
             },
             new object[]
             {
-                @"C:\Test\Weeds.2018.DVDRip.XviD-RADARR\AHFMZXGHEWD660.mkv".AsOsAgnostic(),
-                "Weeds",
+                @"C:\Test\Movie.2018.DVDRip.XviD-RADARR\AHFMZXGHEWD660.mkv".AsOsAgnostic(),
+                "Movie",
                 Quality.DVD,
                 "RADARR"
             },
             new object[]
             {
-                @"C:\Test\Deadwood.2018.1080p.BluRay.x264-RADARR\Backup_72023S02-12.mkv".AsOsAgnostic(),
-                "Deadwood",
+                @"C:\Test\Movie.2018.1080p.BluRay.x264-RADARR\Backup_72023S02-12.mkv".AsOsAgnostic(),
+                "Movie",
                 Quality.Bluray1080p,
                 "RADARR"
             },
             new object[]
             {
-                @"C:\Test\Deadwood.2018.1080p.BluRay.x264\Backup_72023S02-12.mkv".AsOsAgnostic(),
-                "Deadwood",
+                @"C:\Test\Movie.2018.1080p.BluRay.x264\Backup_72023S02-12.mkv".AsOsAgnostic(),
+                "Movie",
                 Quality.Bluray1080p,
                 null
             },
             new object[]
             {
-                @"C:\Test\Grimm 2018 720p WEB-DL DD5 1 H 264-ECI\123.mkv".AsOsAgnostic(),
-                "Grimm",
+                @"C:\Test\Movie 2018 720p WEB-DL DD5 1 H 264-ECI\123.mkv".AsOsAgnostic(),
+                "Movie",
                 Quality.WEBDL720p,
                 "ECI"
             },
             new object[]
             {
-                @"C:\Test\Grimm 2018 720p WEB-DL DD5 1 H 264-ECI\abc.mkv".AsOsAgnostic(),
-                "Grimm",
+                @"C:\Test\Movie 2018 720p WEB-DL DD5 1 H 264-ECI\abc.mkv".AsOsAgnostic(),
+                "Movie",
                 Quality.WEBDL720p,
                 "ECI"
             },
             new object[]
             {
-                @"C:\Test\Grimm 2018 720p WEB-DL DD5 1 H 264-ECI\b00bs.mkv".AsOsAgnostic(),
-                "Grimm",
+                @"C:\Test\Movie 2018 720p WEB-DL DD5 1 H 264-ECI\b00bs.mkv".AsOsAgnostic(),
+                "Movie",
                 Quality.WEBDL720p,
                 "ECI"
             },
             new object[]
             {
-                @"C:\Test\The.Good.Wife.2018.720p.HDTV.x264-NZBgeek/cgajsofuejsa501.mkv".AsOsAgnostic(),
-                "The Good Wife",
+                @"C:\Test\Movie.Title.2018.720p.HDTV.x264-NZBgeek/cgajsofuejsa501.mkv".AsOsAgnostic(),
+                "Movie Title",
                 Quality.HDTV720p,
                 "NZBgeek"
             },
             new object[]
             {
-                @"C:\Test\Fargo.2018.1080p.WEB-DL.DD5.1.H264-RARBG\170424_26.mkv".AsOsAgnostic(),
-                "Fargo",
+                @"C:\Test\Movie.2018.1080p.WEB-DL.DD5.1.H264-RARBG\170424_26.mkv".AsOsAgnostic(),
+                "Movie",
                 Quality.WEBDL1080p,
                 "RARBG"
             },

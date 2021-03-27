@@ -89,13 +89,13 @@ namespace NzbDrone.Core.Test.ParserTests
             success.Should().Be(repetitions);
         }
 
-        [TestCase("thebiggestloser1618finale")]
+        [TestCase("thebiggestmovie1618finale")]
         public void should_not_parse_file_name_without_proper_spacing(string fileName)
         {
             Parser.Parser.ParseMovieTitle(fileName).Should().BeNull();
         }
 
-        [TestCase("Big Forest (S01E18) Complete 360p HDTV AAC H.264-NEXT")]
+        [TestCase("Big Movie (S01E18) Complete 360p HDTV AAC H.264-NEXT")]
         public void should_not_parse_invalid_release_name(string fileName)
         {
             Parser.Parser.ParseMovieTitle(fileName).Should().BeNull();
