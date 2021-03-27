@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Test.Common;
 
@@ -76,8 +76,8 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
          TODO: Add quality definition integration tests?
         [TestCase("Movie 2017 Bluray 1080p", "Bluray-1080p")]
         [TestCase("Movie 2017 Bluray Remux 1080p", "Remux-1080p")]
-        [TestCase("27.Dresses.2008.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N", "Remux-1080p")]
-        [TestCase("The.Nightly.Show.2016.03.14.1080p.WEB.h264-spamTV", "WEBDL-1080p")]
+        [TestCase("27.Movie.2008.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N", "Remux-1080p")]
+        [TestCase("The.Movie.Movie.2016.03.14.1080p.WEB.h264-spamTV", "WEBDL-1080p")]
         public void should_correctly_identify_default_definition(string title, string definitionName)
         {
             var result = Subject.ParseMovieInfo(title, new List<object>());
@@ -143,17 +143,17 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Subject.ParseQualityDefinition(CopyWithInfo(webInfo, "Size", largestSize)).Title.Should().Be("WEBDL-1080p");
         }
 
-        [TestCase("Blade.Runner.Directors.Cut.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
+        [TestCase("Movie.Title.Directors.Cut.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
             "Remux-1080p Director")]
-        [TestCase("Blade.Runner.Directors.Edition.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
+        [TestCase("Movie.Title.Directors.Edition.2017.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
             "Remux-1080p Director")]
-        [TestCase("Blade.Runner.2017.Directors.Edition.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
+        [TestCase("Movie.Title.2017.Directors.Edition.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
             "Remux-1080p Director")]
-        [TestCase("Blade.Runner.2017.Extended.Edition.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
+        [TestCase("Movie.Title.2017.Extended.Edition.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N",
             "Remux-1080p")]
-        [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.MULTI.French.English", "Remux-1080p FR")]
-        [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.French", "Remux-1080p FR")]
-        [TestCase("Blade.Runner.2017.BDREMUX.1080p.Bluray.English", "Remux-1080p")]
+        [TestCase("Movie.Title.2017.BDREMUX.1080p.Bluray.MULTI.French.English", "Remux-1080p FR")]
+        [TestCase("Movie.Title.2017.BDREMUX.1080p.Bluray.French", "Remux-1080p FR")]
+        [TestCase("Movie.Title.2017.BDREMUX.1080p.Bluray.English", "Remux-1080p")]
         [Test]
         public void should_correctly_identify_advanced_definitons()
         {
@@ -191,11 +191,11 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
 
         [TestCase("My Movie 2017 German English", Language.English, Language.German)]
-        //[TestCase("Nocturnal.Animals.2016.MULTi.1080p.BluRay.x264-ANONA", Language.English, Language.French)] fails since no mention of french!
-        [TestCase("Nocturnal Animals (2016) MULTi VFQ [1080p] BluRay x264-PopHD", Language.English, Language.French)]
-        [TestCase("Castle.2009.S01E14.Germany.HDTV.XviD-LOL", Language.English)]
-        [TestCase("Castle.2009.S01E14.HDTV.XviD-LOL", Language.English)]
-        [TestCase("The Danish Girl 2015", Language.English)]
+        //[TestCase("Movie.2016.MULTi.1080p.BluRay.x264-ANONA", Language.English, Language.French)] fails since no mention of french!
+        [TestCase("Movie (2016) MULTi VFQ [1080p] BluRay x264-PopHD", Language.English, Language.French)]
+        [TestCase("Movie.2009.S01E14.Germany.HDTV.XviD-LOL", Language.English)]
+        [TestCase("Movie.2009.S01E14.HDTV.XviD-LOL", Language.English)]
+        [TestCase("The Danish Movie 2015", Language.English)]
         public void should_parse_advanced_languages_correctly(string title, params Language[] languages)
         {
             var result = Subject.ParseMovieInfo(title, new List<object>());
