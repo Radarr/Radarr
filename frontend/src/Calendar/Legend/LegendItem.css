@@ -1,74 +1,37 @@
-.legendItemContainer {
-  margin-right: 5px;
-  width: 220px;
-}
-
 .legendItem {
-  display: inline-flex;
-  margin-top: -1px;
-  vertical-align: middle;
-  line-height: 16px;
+  margin: 3px 0;
+  margin-right: 6px;
+  padding-left: 5px;
+  width: 220px;
+  border-left-width: 4px;
+  border-left-style: solid;
+  cursor: default;
 }
 
-.legendItemColor {
-  margin-right: 8px;
-  width: 30px;
-  height: 16px;
-  border-radius: 4px;
+/*
+ * Status
+ */
+
+.downloaded {
+  composes: downloaded from '~Calendar/Events/CalendarEvent.css';
 }
 
 .queue {
-  composes: legendItemColor;
-
-  background-color: var(--queueColor);
+  composes: queue from '~Calendar/Events/CalendarEvent.css';
 }
 
-.continuing {
-  composes: legendItemColor;
-
-  background-color: var(--primaryColor);
-}
-
-.availNotMonitored {
-  composes: legendItemColor;
-
-  background-color: var(--darkGray);
-}
-
-.ended {
-  composes: legendItemColor;
-
-  background-color: var(--successColor);
-}
-
-.missingMonitored {
-  composes: legendItemColor;
-
-  background-color: var(--dangerColor);
-
-  &:global(.colorImpaired) {
-    background: repeating-linear-gradient(90deg, color(var(--dangerColor) shade(5%)), color(var(--dangerColor) shade(5%)) 5px, color(var(--dangerColor) shade(15%)) 5px, color(var(--dangerColor) shade(15%)) 10px);
-  }
+.unmonitored {
+  composes: unmonitored from '~Calendar/Events/CalendarEvent.css';
 }
 
 .missingUnmonitored {
-  composes: legendItemColor;
-
-  background-color: var(--warningColor);
-
-  &:global(.colorImpaired) {
-    background: repeating-linear-gradient(45deg, var(--warningColor), var(--warningColor) 5px, color(var(--warningColor) tint(15%)) 5px, color(var(--warningColor) tint(15%)) 10px);
-  }
+  composes: missingUnmonitored from '~Calendar/Events/CalendarEvent.css';
 }
 
-.missingMonitoredColorImpaired {
-  background: repeating-linear-gradient(90deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
+.missingMonitored {
+  composes: missingMonitored from '~Calendar/Events/CalendarEvent.css';
 }
 
-.missingUnmonitoredColorImpaired {
-  background: repeating-linear-gradient(45deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
-}
-
-.legendItemText {
-  display: inline-block;
+.continuing {
+  composes: continuing from '~Calendar/Events/CalendarEvent.css';
 }

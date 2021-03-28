@@ -86,6 +86,10 @@ module.exports = {
   inputWarningBoxShadowColor: 'rgba(255, 165, 0, 0.6)',
   colorImpairedGradient: '#707070',
   colorImpairedGradientDark: '#424242',
+  colorImpairedDangerGradient: '#d84848',
+  colorImpairedWarningGradient: '#e59400',
+  colorImpairedPrimaryGradient: '#538cd4',
+  colorImpairedGrayGradient: '#9b9b9b',
 
   //
   // Buttons

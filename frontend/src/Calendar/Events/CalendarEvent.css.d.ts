@@ -12,6 +12,7 @@ interface CssExports {
   'movieInfo': string;
   'movieTitle': string;
   'queue': string;
+  'statusContainer': string;
   'statusIcon': string;
   'unmonitored': string;
 }
