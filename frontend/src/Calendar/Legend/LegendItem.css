@@ -1,3 +1,5 @@
+$fullColorGradient: rgba(244, 245, 246, 0.2);
+
 .legendItemContainer {
   margin-right: 5px;
   width: 220px;
@@ -63,10 +65,12 @@
 
 .missingMonitoredColorImpaired {
   background: repeating-linear-gradient(90deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
+  color: var(--white);
 }
 
 .missingUnmonitoredColorImpaired {
   background: repeating-linear-gradient(45deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
+  color: var(--white);
 }
 
 .legendItemText {
