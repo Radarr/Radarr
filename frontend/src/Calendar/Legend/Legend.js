@@ -9,6 +9,7 @@ import styles from './Legend.css';
 function Legend(props) {
   const {
     showCutoffUnmetIcon,
+    fullColorEvents,
     colorImpairedMode
   } = props;
 
@@ -19,7 +20,7 @@ function Legend(props) {
       <LegendIconItem
         name={translate('CutoffUnmet')}
         icon={icons.MOVIE_FILE}
-        kind={kinds.WARNING}
+        kind={fullColorEvents ? kinds.DEFAULT : kinds.WARNING}
         tooltip={translate('QualityOrLangCutoffHasNotBeenMet')}
       />
     );
@@ -31,12 +32,14 @@ function Legend(props) {
         <LegendItem
           style='ended'
           name={translate('DownloadedAndMonitored')}
+          fullColorEvents={fullColorEvents}
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
           style='availNotMonitored'
           name={translate('DownloadedButNotMonitored')}
+          fullColorEvents={fullColorEvents}
           colorImpairedMode={colorImpairedMode}
         />
       </div>
@@ -45,12 +48,14 @@ function Legend(props) {
         <LegendItem
           style='missingMonitored'
           name={translate('MissingMonitoredAndConsideredAvailable')}
+          fullColorEvents={fullColorEvents}
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
           style='missingUnmonitored'
           name={translate('MissingNotMonitored')}
+          fullColorEvents={fullColorEvents}
           colorImpairedMode={colorImpairedMode}
         />
       </div>
@@ -59,12 +64,14 @@ function Legend(props) {
         <LegendItem
           style='queue'
           name={translate('Queued')}
+          fullColorEvents={fullColorEvents}
           colorImpairedMode={colorImpairedMode}
         />
 
         <LegendItem
           style='continuing'
           name={translate('Unreleased')}
+          fullColorEvents={fullColorEvents}
           colorImpairedMode={colorImpairedMode}
         />
       </div>
@@ -79,7 +86,9 @@ function Legend(props) {
 }
 
 Legend.propTypes = {
+  view: PropTypes.string.isRequired,
   showCutoffUnmetIcon: PropTypes.bool.isRequired,
+  fullColorEvents: PropTypes.bool.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired
 };
 

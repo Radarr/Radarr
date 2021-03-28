@@ -363,6 +363,8 @@
   "Formats": "Formats",
   "FreeSpace": "Free Space",
   "From": "from",
+  "FullColorEvents": "Full Color Events",
+  "FullColorEventsHelpText": "Altered style to color the entire event with the status color, instead of just the left edge. Does not apply to Agenda",
   "General": "General",
   "GeneralSettings": "General Settings",
   "GeneralSettingsSummary": "Port, SSL, username/password, proxy, analytics and updates",

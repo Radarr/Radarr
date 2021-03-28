@@ -1,3 +1,5 @@
+$fullColorGradient: rgba(244, 245, 246, 0.2);
+
 .event {
   overflow-x: hidden;
   margin: 4px 2px;
@@ -55,6 +57,10 @@
 .downloaded {
   border-left-color: var(--successColor) !important;
 
+  &:global(.fullColor) {
+    background-color: rgba(39, 194, 76, 0.4) !important;
+  }
+
   &:global(.colorImpaired) {
     border-left-color: color(var(--successColor), saturation(+15%)) !important;
   }
@@ -62,28 +68,72 @@
 
 .queue {
   border-left-color: var(--purple) !important;
+
+  &:global(.fullColor) {
+    background-color: rgba(122, 67, 182, 0.4) !important;
+  }
 }
 
 .unmonitored {
   border-left-color: var(--gray) !important;
+
+  &:global(.fullColor) {
+    background-color: rgba(173, 173, 173, 0.5) !important;
+  }
+
+  &:global(.colorImpaired) {
+    background: repeating-linear-gradient(45deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
+  }
+
+  &:global(.fullColor.colorImpaired) {
+    background: repeating-linear-gradient(45deg, $fullColorGradient, $fullColorGradient 5px, transparent 5px, transparent 10px);
+  }
 }
 
 .missingUnmonitored {
   border-left-color: var(--warningColor) !important;
 
+  &:global(.fullColor) {
+    background-color: rgba(255, 165, 0, 0.6) !important;
+  }
+
   &:global(.colorImpaired) {
     background: repeating-linear-gradient(45deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
+  }
+
+  &:global(.fullColor.colorImpaired) {
+    background: repeating-linear-gradient(45deg, $fullColorGradient, $fullColorGradient 5px, transparent 5px, transparent 10px);
   }
 }
 
 .missingMonitored {
   border-left-color: var(--dangerColor) !important;
 
+  &:global(.fullColor) {
+    background-color: rgba(240, 80, 80, 0.6) !important;
+  }
+
   &:global(.colorImpaired) {
     background: repeating-linear-gradient(90deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
   }
+
+  &:global(.fullColor.colorImpaired) {
+    background: repeating-linear-gradient(90deg, $fullColorGradient, $fullColorGradient 5px, transparent 5px, transparent 10px);
+  }
 }
 
-.continuing {
+.unaired {
   border-left-color: var(--primaryColor) !important;
+
+  &:global(.fullColor) {
+    background-color: rgba(93, 156, 236, 0.4) !important;
+  }
+
+  &:global(.colorImpaired) {
+    background: repeating-linear-gradient(90deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
+  }
+
+  &:global(.fullColor.colorImpaired) {
+    background: repeating-linear-gradient(90deg, $fullColorGradient, $fullColorGradient 5px, transparent 5px, transparent 10px);
+  }
 }

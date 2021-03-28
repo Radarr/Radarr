@@ -32,6 +32,7 @@ class CalendarEvent extends Component {
       queueItem,
       showMovieInformation,
       showCutoffUnmetIcon,
+      fullColorEvents,
       colorImpairedMode,
       date
     } = this.props;
@@ -62,7 +63,8 @@ class CalendarEvent extends Component {
             styles.event,
             styles.link,
             styles[statusStyle],
-            colorImpairedMode && 'colorImpaired'
+            colorImpairedMode && 'colorImpaired',
+            fullColorEvents && 'fullColor'
           )}
           // component="div"
           to={link}
@@ -97,7 +99,7 @@ class CalendarEvent extends Component {
                 <Icon
                   className={styles.statusIcon}
                   name={icons.MOVIE_FILE}
-                  kind={kinds.WARNING}
+                  kind={fullColorEvents ? kinds.DEFAULT : kinds.WARNING}
                   title={translate('QualityCutoffHasNotBeenMet')}
                 />
             }
@@ -142,11 +144,12 @@ CalendarEvent.propTypes = {
   digitalRelease: PropTypes.string,
   monitored: PropTypes.bool.isRequired,
   certification: PropTypes.string,
-  hasFile: PropTypes.bool.isRequired,
+  hasFile: PropTypes.bool,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
   showMovieInformation: PropTypes.bool.isRequired,
   showCutoffUnmetIcon: PropTypes.bool.isRequired,
+  fullColorEvents: PropTypes.bool.isRequired,
   timeFormat: PropTypes.string.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired
