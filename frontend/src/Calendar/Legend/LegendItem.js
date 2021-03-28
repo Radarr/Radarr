@@ -6,29 +6,31 @@ import styles from './LegendItem.css';
 function LegendItem(props) {
   const {
     name,
-    style,
+    status,
+    isAgendaView,
+    fullColorEvents,
     colorImpairedMode
   } = props;
 
   return (
-    <div className={styles.legendItemContainer}>
-      <div
-        className={classNames(
-          styles.legendItem,
-          styles[style],
-          colorImpairedMode && 'colorImpaired'
-        )}
-      />
-      <div className={classNames(styles.legendItemText, colorImpairedMode && styles[`${style}ColorImpaired`])}>
-        {name}
-      </div>
+    <div
+      className={classNames(
+        styles.legendItem,
+        styles[status],
+        colorImpairedMode && 'colorImpaired',
+        fullColorEvents && !isAgendaView && 'fullColor'
+      )}
+    >
+      {name}
     </div>
   );
 }
 
 LegendItem.propTypes = {
   name: PropTypes.string.isRequired,
-  style: PropTypes.string.isRequired,
+  status: PropTypes.string.isRequired,
+  isAgendaView: PropTypes.bool.isRequired,
+  fullColorEvents: PropTypes.bool.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired
 };
 
