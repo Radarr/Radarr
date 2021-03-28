@@ -7,6 +7,7 @@ function LegendItem(props) {
   const {
     name,
     style,
+    fullColorEvents,
     colorImpairedMode
   } = props;
 
@@ -16,7 +17,8 @@ function LegendItem(props) {
         className={classNames(
           styles.legendItem,
           styles[style],
-          colorImpairedMode && 'colorImpaired'
+          colorImpairedMode && 'colorImpaired',
+          fullColorEvents && 'fullColor'
         )}
       />
       <div className={classNames(styles.legendItemText, colorImpairedMode && styles[`${style}ColorImpaired`])}>
@@ -29,6 +31,7 @@ function LegendItem(props) {
 LegendItem.propTypes = {
   name: PropTypes.string.isRequired,
   style: PropTypes.string.isRequired,
+  fullColorEvents: PropTypes.bool.isRequired,
   colorImpairedMode: PropTypes.bool.isRequired
 };
 
