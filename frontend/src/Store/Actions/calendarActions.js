@@ -42,7 +42,8 @@ export const defaultState = {
 
   options: {
     showMovieInformation: true,
-    showCutoffUnmetIcon: false
+    showCutoffUnmetIcon: false,
+    fullColorEvents: false
   },
 
   selectedFilterKey: 'monitored',
