@@ -1,5 +1,6 @@
 using FluentValidation;
 using Newtonsoft.Json;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -10,8 +11,7 @@ namespace NzbDrone.Core.Notifications.Emby
     {
         public MediaBrowserSettingsValidator()
         {
-            RuleFor(c => c.Host).ValidHost();
-            RuleFor(c => c.ApiKey).NotEmpty();
+            RuleFor(c => c.Address).ValidRootUrl();
         }
     }
 
@@ -21,31 +21,22 @@ namespace NzbDrone.Core.Notifications.Emby
 
         public MediaBrowserSettings()
         {
-            Port = 8096;
+            Address = "http://localhost:8096";
         }
 
-        [FieldDefinition(0, Label = "Host")]
-        public string Host { get; set; }
+        [FieldDefinition(0, Label = "Address", HelpText = "Emby address with protocol and port, eg: http://localhost:8096")]
+        public string Address { get; set; }
 
-        [FieldDefinition(1, Label = "Port")]
-        public int Port { get; set; }
-
-        [FieldDefinition(2, Label = "Use SSL", Type = FieldType.Checkbox, HelpText = "Connect to Emby over HTTPS instead of HTTP")]
-        public bool UseSsl { get; set; }
-
-        [FieldDefinition(3, Label = "API Key", Privacy = PrivacyLevel.ApiKey)]
+        [FieldDefinition(1, Label = "API Key", Privacy = PrivacyLevel.ApiKey)]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(4, Label = "Send Notifications", HelpText = "Have MediaBrowser send notfications to configured providers", Type = FieldType.Checkbox)]
+        [FieldDefinition(2, Label = "Send Notifications", HelpText = "Have MediaBrowser send notfications to configured providers", Type = FieldType.Checkbox)]
         public bool Notify { get; set; }
 
-        [FieldDefinition(5, Label = "Update Library", HelpText = "Update Library on Import & Rename?", Type = FieldType.Checkbox)]
+        [FieldDefinition(3, Label = "Update Library", HelpText = "Update Library on Import & Rename?", Type = FieldType.Checkbox)]
         public bool UpdateLibrary { get; set; }
 
-        [JsonIgnore]
-        public string Address => $"{Host}:{Port}";
-
-        public bool IsValid => !string.IsNullOrWhiteSpace(Host) && Port > 0;
+        public bool IsValid => !string.IsNullOrWhiteSpace(Address);
 
         public NzbDroneValidationResult Validate()
         {
