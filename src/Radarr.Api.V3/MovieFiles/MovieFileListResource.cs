@@ -12,6 +12,7 @@ namespace Radarr.Api.V3.MovieFiles
         public QualityModel Quality { get; set; }
         public string Edition { get; set; }
         public string ReleaseGroup { get; set; }
+        public string SceneName { get; set; }
         public int? IndexerFlags { get; set; }
     }
 }
