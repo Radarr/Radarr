@@ -116,6 +116,7 @@ namespace Radarr.Api.V3.MovieFiles
             movieFile.Languages = movieFileResource.Languages;
             movieFile.Edition = movieFileResource.Edition;
             movieFile.ReleaseGroup = movieFileResource.ReleaseGroup;
+            movieFile.SceneName = movieFileResource.SceneName;
             _mediaFileService.Update(movieFile);
         }
 
@@ -150,6 +151,11 @@ namespace Radarr.Api.V3.MovieFiles
                 if (resource.ReleaseGroup != null)
                 {
                     movieFile.ReleaseGroup = resource.ReleaseGroup;
+                }
+
+                if (resource.SceneName != null)
+                {
+                    movieFile.SceneName = resource.SceneName;
                 }
             }
 
