@@ -1079,5 +1079,6 @@
     "OnMovieDelete": "Ved sletning af film",
     "Reddit": "Reddit",
     "More": "Mere",
-    "Download": "Hent"
+    "Download": "Hent",
+    "DownloadClientCheckDownloadingToRoot": "Download klient {0} placerer downloads i rodmappen {1}. Du skal ikke downloade til en rodmappe."
 }
