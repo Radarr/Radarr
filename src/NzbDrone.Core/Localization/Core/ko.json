@@ -1076,5 +1076,6 @@
     "OnMovieFileDeleteHelpText": "영화 파일 삭제",
     "Reddit": "레딧",
     "More": "더",
-    "Download": "다운로드"
+    "Download": "다운로드",
+    "DownloadClientCheckDownloadingToRoot": "다운로드 클라이언트 {0}는 루트 폴더 {1}에 다운로드를 저장합니다. 루트 폴더에 다운로드해서는 안됩니다."
 }
