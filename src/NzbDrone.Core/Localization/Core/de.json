@@ -1093,5 +1093,6 @@
     "OnUpgrade": "Upgrade",
     "Reddit": "Reddit",
     "More": "Mehr",
-    "Download": "Herunterladen"
+    "Download": "Herunterladen",
+    "DownloadClientCheckDownloadingToRoot": "Download-Client {0} legt Downloads im Stammordner {1} ab. Sie sollten nicht in einen Stammordner herunterladen."
 }
