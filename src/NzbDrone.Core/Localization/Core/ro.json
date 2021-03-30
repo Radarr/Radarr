@@ -1080,5 +1080,6 @@
     "OnUpgrade": "La actualizare",
     "Reddit": "Reddit",
     "More": "Mai mult",
-    "Download": "Descarca"
+    "Download": "Descarca",
+    "DownloadClientCheckDownloadingToRoot": "Clientul de descărcare {0} plasează descărcările în folderul rădăcină {1}. Nu trebuie să descărcați într-un folder rădăcină."
 }
