@@ -1089,5 +1089,6 @@
     "OnMovieFileDeleteForUpgrade": "Sur la suppression du fichier vidéo pour la mise à niveau",
     "Reddit": "Reddit",
     "More": "Suite",
-    "Download": "Télécharger"
+    "Download": "Télécharger",
+    "DownloadClientCheckDownloadingToRoot": "Le client de téléchargement {0} place les téléchargements dans le dossier racine {1}. Vous ne devez pas télécharger dans un dossier racine."
 }
