@@ -1080,5 +1080,6 @@
     "OnUpgrade": "Yükseltme sırasında",
     "Reddit": "Reddit",
     "More": "Daha",
-    "Download": "İndir"
+    "Download": "İndir",
+    "DownloadClientCheckDownloadingToRoot": "İndirme istemcisi {0}, indirmeleri kök klasöre yerleştirir {1}. Bir kök klasöre indirmemelisiniz."
 }
