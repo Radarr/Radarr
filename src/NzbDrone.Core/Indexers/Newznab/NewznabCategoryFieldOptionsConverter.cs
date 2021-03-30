@@ -31,6 +31,7 @@ namespace NzbDrone.Core.Indexers.Newznab
                         new NewznabCategory { Id = 2020, Name = "Other" },
                         new NewznabCategory { Id = 2030, Name = "SD" },
                         new NewznabCategory { Id = 2040, Name = "HD" },
+                        new NewznabCategory { Id = 2045, Name = "UHD" },
                         new NewznabCategory { Id = 2050, Name = "BluRay" },
                         new NewznabCategory { Id = 2060, Name = "3D" }
                     }
