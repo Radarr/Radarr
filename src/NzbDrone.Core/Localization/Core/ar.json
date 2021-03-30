@@ -1076,5 +1076,6 @@
     "OnUpgrade": "عند الترقية",
     "Reddit": "رديت",
     "More": "أكثر",
-    "Download": "تحميل"
+    "Download": "تحميل",
+    "DownloadClientCheckDownloadingToRoot": "يقوم برنامج التنزيل {0} بوضع التنزيلات في المجلد الجذر {1}. يجب ألا تقوم بالتنزيل إلى مجلد جذر."
 }
