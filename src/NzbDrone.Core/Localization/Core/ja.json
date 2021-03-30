@@ -1076,5 +1076,6 @@
     "OnMovieFileDelete": "ムービーファイルの削除について",
     "Reddit": "Reddit",
     "More": "もっと",
-    "Download": "ダウンロード"
+    "Download": "ダウンロード",
+    "DownloadClientCheckDownloadingToRoot": "ダウンロードクライアント{0}は、ダウンロードをルートフォルダ{1}に配置します。ルートフォルダにダウンロードしないでください。"
 }
