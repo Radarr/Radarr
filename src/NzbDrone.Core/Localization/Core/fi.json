@@ -1076,5 +1076,6 @@
     "OnMovieFileDeleteForUpgrade": "Elokuvatiedoston poisto päivitystä varten",
     "Reddit": "Reddit",
     "More": "Lisää",
-    "Download": "ladata"
+    "Download": "ladata",
+    "DownloadClientCheckDownloadingToRoot": "Latausohjelma {0} lataa lataukset juurikansioon {1}. Sinun ei pitäisi ladata juurikansioon."
 }
