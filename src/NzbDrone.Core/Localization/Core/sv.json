@@ -1081,5 +1081,6 @@
     "OnUpgrade": "Vid uppgradering",
     "Reddit": "Reddit",
     "More": "Mer",
-    "Download": "Ladda ner"
+    "Download": "Ladda ner",
+    "DownloadClientCheckDownloadingToRoot": "Ladda ner klient {0} placerar nedladdningar i rotmappen {1}. Du bör inte ladda ner till en rotmapp."
 }
