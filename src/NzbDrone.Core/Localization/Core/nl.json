@@ -1092,5 +1092,6 @@
     "OnUpgrade": "Bij Opwaarderen",
     "Reddit": "Reddit",
     "More": "Meer",
-    "Download": "Downloaden"
+    "Download": "Downloaden",
+    "DownloadClientCheckDownloadingToRoot": "Downloadclient {0} plaatst downloads in de hoofdmap {1}. U mag niet naar een hoofdmap downloaden."
 }
