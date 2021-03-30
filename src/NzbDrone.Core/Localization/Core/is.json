@@ -1076,5 +1076,6 @@
     "OnMovieDelete": "Í Eyðingu kvikmyndar",
     "Reddit": "Reddit",
     "More": "Meira",
-    "Download": "Sækja"
+    "Download": "Sækja",
+    "DownloadClientCheckDownloadingToRoot": "Sæktu viðskiptavinur {0} setur niðurhal í rótarmöppuna {1}. Þú ættir ekki að hlaða niður í rótarmöppu."
 }
