@@ -1086,5 +1086,6 @@
     "OnUpgrade": "In aggiornamento",
     "Reddit": "Reddit",
     "More": "Di più",
-    "Download": "Scarica"
+    "Download": "Scarica",
+    "DownloadClientCheckDownloadingToRoot": "Scarica client {0} colloca i download nella cartella principale {1}. Non dovresti scaricare in una cartella principale."
 }
