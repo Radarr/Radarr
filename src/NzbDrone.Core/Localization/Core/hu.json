@@ -1082,5 +1082,6 @@
     "OnUpgrade": "Minőségjavítás alatt",
     "Reddit": "Reddit",
     "More": "Több",
-    "Download": "Letöltés"
+    "Download": "Letöltés",
+    "DownloadClientCheckDownloadingToRoot": "A kliens letöltése {0} a letöltéseket a gyökérmappába helyezi {1}. Nem szabad letölteni egy gyökérmappába."
 }
