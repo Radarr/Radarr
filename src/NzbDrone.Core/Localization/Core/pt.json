@@ -1091,5 +1091,6 @@
     "OnUpgrade": "Ao fazer Upgrade",
     "Reddit": "Reddit",
     "More": "Mais",
-    "Download": "Download"
+    "Download": "Download",
+    "DownloadClientCheckDownloadingToRoot": "O cliente de download {0} coloca os downloads na pasta raiz {1}. Você não deve fazer download para uma pasta raiz."
 }
