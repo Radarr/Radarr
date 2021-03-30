@@ -1076,5 +1076,6 @@
     "OnUpgrade": "अपग्रेड पर",
     "Reddit": "reddit",
     "More": "अधिक",
-    "Download": "डाउनलोड"
+    "Download": "डाउनलोड",
+    "DownloadClientCheckDownloadingToRoot": "डाउनलोड क्लाइंट {0} रूट फ़ोल्डर में डाउनलोड करता है {1}। आपको रूट फ़ोल्डर में डाउनलोड नहीं करना चाहिए।"
 }
