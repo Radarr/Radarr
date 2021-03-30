@@ -1076,5 +1076,6 @@
     "OnUpgrade": "Đang nâng cấp",
     "Reddit": "Reddit",
     "More": "Hơn",
-    "Download": "Tải xuống"
+    "Download": "Tải xuống",
+    "DownloadClientCheckDownloadingToRoot": "Tải xuống ứng dụng khách {0} đặt các bản tải xuống trong thư mục gốc {1}. Bạn không nên tải xuống thư mục gốc."
 }
