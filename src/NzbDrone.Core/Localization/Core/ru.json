@@ -1076,5 +1076,6 @@
     "OnUpgrade": "При обновлении",
     "Reddit": "Reddit",
     "More": "Более",
-    "Download": "Скачать"
+    "Download": "Скачать",
+    "DownloadClientCheckDownloadingToRoot": "Клиент загрузки {0} помещает загрузки в корневую папку {1}. Вы не должны загружать в корневую папку."
 }
