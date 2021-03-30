@@ -1092,5 +1092,6 @@
     "OnUpgrade": "Al Actualizar",
     "Reddit": "Reddit",
     "More": "Más",
-    "Download": "Descargar"
+    "Download": "Descargar",
+    "DownloadClientCheckDownloadingToRoot": "El cliente de descargas {0} coloca las descargas en la carpeta raíz {1}. No debe descargar a una carpeta raíz."
 }
