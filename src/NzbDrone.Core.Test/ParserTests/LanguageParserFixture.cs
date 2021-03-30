@@ -298,6 +298,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Pulp Fiction.eng.sub")]
         [TestCase("Pulp.Fiction.eng.forced.sub")]
         [TestCase("Pulp-Fiction-eng-forced.sub")]
+        [TestCase("2_Eng.srt")]
+        [TestCase("2_English.srt")]
         public void should_parse_subtitle_language(string fileName)
         {
             var result = LanguageParser.ParseSubtitleLanguage(fileName);
