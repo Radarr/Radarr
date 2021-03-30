@@ -195,6 +195,7 @@
   "DeleteEmptyFolders": "Delete empty folders",
   "DeleteEmptyFoldersHelpText": "Delete empty movie folders during disk scan and when movie files are deleted",
   "DeleteFile": "Delete file",
+  "DeleteFileLabel": "Delete {0} Movie File",
   "DeleteFilesHelpText": "Delete the movie files and movie folder",
   "DeleteFilesLabel": "Delete {0} Movie Files",
   "DeleteHeader": "Delete - {0}",
