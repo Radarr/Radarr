@@ -1076,5 +1076,6 @@
     "OnUpgrade": "Při upgradu",
     "Reddit": "Reddit",
     "More": "Více",
-    "Download": "Stažení"
+    "Download": "Stažení",
+    "DownloadClientCheckDownloadingToRoot": "Stahovací klient {0} umístí stažené soubory do kořenové složky {1}. Neměli byste stahovat do kořenové složky."
 }
