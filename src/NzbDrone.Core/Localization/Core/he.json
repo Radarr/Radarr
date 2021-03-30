@@ -1076,5 +1076,6 @@
     "OnMovieDeleteHelpText": "במחיקת סרט",
     "Reddit": "רדיט",
     "More": "יותר",
-    "Download": "הורד"
+    "Download": "הורד",
+    "DownloadClientCheckDownloadingToRoot": "הורד לקוח {0} ממקם הורדות בתיקיית הבסיס {1}. אתה לא צריך להוריד לתיקיית שורש."
 }
