@@ -34,3 +34,4 @@ assignees: ''
 **Trace Logs**
 Turn on Trace logs under Settings -> General and wait for the bug to occur again. 
 **Upload the full log file here (or another site (e.g. pastebin) and link it). Issues will be closed, if they do not include this!**
+<!-- Trace logs are named Radarr.trace.txt or Radarr.trace.#.txt and will contain "trace" in them-->
