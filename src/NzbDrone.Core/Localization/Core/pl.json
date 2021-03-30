@@ -1077,5 +1077,6 @@
     "OnUpgrade": "Przy aktualizacji",
     "Reddit": "Reddit",
     "More": "Jeszcze",
-    "Download": "Ściągnij"
+    "Download": "Ściągnij",
+    "DownloadClientCheckDownloadingToRoot": "Klient pobierania {0} umieszcza pliki do pobrania w folderze głównym {1}. Nie należy pobierać do folderu głównego."
 }
