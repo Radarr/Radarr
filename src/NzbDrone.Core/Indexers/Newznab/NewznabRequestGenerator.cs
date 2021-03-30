@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
                     chain.Add(GetPagedRequests(MaxPages,
                         Settings.Categories,
-                        "movie",
+                        "search",
                         string.Format("&q={0}", NewsnabifyTitle(searchQuery))));
                 }
             }
