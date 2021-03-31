@@ -1093,5 +1093,6 @@
     "Reddit": "Reddit",
     "More": "Más",
     "Download": "Descargar",
-    "DownloadClientCheckDownloadingToRoot": "El cliente de descargas {0} coloca las descargas en la carpeta raíz {1}. No debe descargar a una carpeta raíz."
+    "DownloadClientCheckDownloadingToRoot": "El cliente de descargas {0} coloca las descargas en la carpeta raíz {1}. No debe descargar a una carpeta raíz.",
+    "DeleteFileLabel": "Eliminar {0} archivos de película"
 }
