@@ -1087,5 +1087,6 @@
     "Reddit": "Reddit",
     "More": "Di più",
     "Download": "Scarica",
-    "DownloadClientCheckDownloadingToRoot": "Scarica client {0} colloca i download nella cartella principale {1}. Non dovresti scaricare in una cartella principale."
+    "DownloadClientCheckDownloadingToRoot": "Scarica client {0} colloca i download nella cartella principale {1}. Non dovresti scaricare in una cartella principale.",
+    "DeleteFileLabel": "Elimina {0} file di film"
 }
