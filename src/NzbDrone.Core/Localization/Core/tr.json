@@ -1081,5 +1081,6 @@
     "Reddit": "Reddit",
     "More": "Daha",
     "Download": "İndir",
-    "DownloadClientCheckDownloadingToRoot": "İndirme istemcisi {0}, indirmeleri kök klasöre yerleştirir {1}. Bir kök klasöre indirmemelisiniz."
+    "DownloadClientCheckDownloadingToRoot": "İndirme istemcisi {0}, indirmeleri kök klasöre yerleştirir {1}. Bir kök klasöre indirmemelisiniz.",
+    "DeleteFileLabel": "{0} Film Dosyasını Sil"
 }
