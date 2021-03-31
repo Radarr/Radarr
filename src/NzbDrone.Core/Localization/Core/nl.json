@@ -1093,5 +1093,6 @@
     "Reddit": "Reddit",
     "More": "Meer",
     "Download": "Downloaden",
-    "DownloadClientCheckDownloadingToRoot": "Downloadclient {0} plaatst downloads in de hoofdmap {1}. U mag niet naar een hoofdmap downloaden."
+    "DownloadClientCheckDownloadingToRoot": "Downloadclient {0} plaatst downloads in de hoofdmap {1}. U mag niet naar een hoofdmap downloaden.",
+    "DeleteFileLabel": "Verwijder {0} Film Bestanden"
 }
