@@ -54,22 +54,18 @@ class DeleteMovieModalContent extends Component {
     const {
       title,
       path,
-      statistics,
+      hasFile,
+      sizeOnDisk,
       onModalClose
     } = this.props;
-
-    const {
-      movieFileCount,
-      sizeOnDisk
-    } = statistics;
 
     const deleteFiles = this.state.deleteFiles;
     const addImportExclusion = this.state.addImportExclusion;
 
-    let deleteFilesLabel = translate('DeleteFilesLabel', [movieFileCount]);
+    let deleteFilesLabel = hasFile ? translate('DeleteFileLabel', [1]) : translate('DeleteFilesLabel', [0]);
     let deleteFilesHelpText = translate('DeleteFilesHelpText');
 
-    if (movieFileCount === 0) {
+    if (!hasFile) {
       deleteFilesLabel = translate('DeleteMovieFolderLabel');
       deleteFilesHelpText = translate('DeleteMovieFolderHelpText');
     }
@@ -93,6 +89,21 @@ class DeleteMovieModalContent extends Component {
           </div>
 
           <FormGroup>
+            <FormLabel>
+              {translate('AddListExclusion')}
+            </FormLabel>
+
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="addImportExclusion"
+              value={addImportExclusion}
+              helpText={translate('AddImportExclusionHelpText')}
+              kind={kinds.DANGER}
+              onChange={this.onAddImportExclusionChange}
+            />
+          </FormGroup>
+
+          <FormGroup>
             <FormLabel>{deleteFilesLabel}</FormLabel>
 
             <FormInputGroup
@@ -113,28 +124,13 @@ class DeleteMovieModalContent extends Component {
                 </div>
 
                 {
-                  !!movieFileCount &&
+                  !!hasFile &&
                     <div>
-                      {movieFileCount} {translate('MovieFilesTotaling')} {formatBytes(sizeOnDisk)}
+                      {hasFile} {translate('MovieFilesTotaling')} {formatBytes(sizeOnDisk)}
                     </div>
                 }
               </div>
           }
-
-          <FormGroup>
-            <FormLabel>
-              {translate('AddListExclusion')}
-            </FormLabel>
-
-            <FormInputGroup
-              type={inputTypes.CHECK}
-              name="addImportExclusion"
-              value={addImportExclusion}
-              helpText={translate('AddImportExclusionHelpText')}
-              kind={kinds.DANGER}
-              onChange={this.onAddImportExclusionChange}
-            />
-          </FormGroup>
 
         </ModalBody>
 
@@ -158,15 +154,10 @@ class DeleteMovieModalContent extends Component {
 DeleteMovieModalContent.propTypes = {
   title: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
-  statistics: PropTypes.object.isRequired,
+  hasFile: PropTypes.bool.isRequired,
+  sizeOnDisk: PropTypes.string.isRequired,
   onDeletePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
-};
-
-DeleteMovieModalContent.defaultProps = {
-  statistics: {
-    movieFileCount: 0
-  }
 };
 
 export default DeleteMovieModalContent;
