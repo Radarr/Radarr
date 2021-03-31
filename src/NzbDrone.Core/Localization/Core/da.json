@@ -1080,5 +1080,6 @@
     "Reddit": "Reddit",
     "More": "Mere",
     "Download": "Hent",
-    "DownloadClientCheckDownloadingToRoot": "Download klient {0} placerer downloads i rodmappen {1}. Du skal ikke downloade til en rodmappe."
+    "DownloadClientCheckDownloadingToRoot": "Download klient {0} placerer downloads i rodmappen {1}. Du skal ikke downloade til en rodmappe.",
+    "DeleteFileLabel": "Slet {0} filmfiler"
 }
