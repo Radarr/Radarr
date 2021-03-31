@@ -1081,5 +1081,6 @@
     "Reddit": "Reddit",
     "More": "Mai mult",
     "Download": "Descarca",
-    "DownloadClientCheckDownloadingToRoot": "Clientul de descărcare {0} plasează descărcările în folderul rădăcină {1}. Nu trebuie să descărcați într-un folder rădăcină."
+    "DownloadClientCheckDownloadingToRoot": "Clientul de descărcare {0} plasează descărcările în folderul rădăcină {1}. Nu trebuie să descărcați într-un folder rădăcină.",
+    "DeleteFileLabel": "Ștergeți {0} Fișiere de filme"
 }
