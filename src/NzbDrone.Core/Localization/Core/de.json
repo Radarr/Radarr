@@ -1094,5 +1094,6 @@
     "Reddit": "Reddit",
     "More": "Mehr",
     "Download": "Herunterladen",
-    "DownloadClientCheckDownloadingToRoot": "Download-Client {0} legt Downloads im Stammordner {1} ab. Sie sollten nicht in einen Stammordner herunterladen."
+    "DownloadClientCheckDownloadingToRoot": "Download-Client {0} legt Downloads im Stammordner {1} ab. Sie sollten nicht in einen Stammordner herunterladen.",
+    "DeleteFileLabel": "Lösche {0} Filmdateien"
 }
