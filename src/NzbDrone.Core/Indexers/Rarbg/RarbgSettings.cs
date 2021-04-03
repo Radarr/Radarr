@@ -28,7 +28,19 @@ namespace NzbDrone.Core.Indexers.Rarbg
             BaseUrl = "https://torrentapi.org";
             RankedOnly = false;
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
-            Categories = new[] { 14, 48, 17, 44, 45, 47, 50, 51, 52, 42, 46 };
+            Categories = new int[]
+            {
+                (int)RarbgCategories.Movie_Xvid,
+                (int)RarbgCategories.Movie_Xvid_720p,
+                (int)RarbgCategories.Movie_x264,
+                (int)RarbgCategories.Movie_x264_720p,
+                (int)RarbgCategories.Movie_x264_1080p,
+                (int)RarbgCategories.Movie_x264_4K,
+                (int)RarbgCategories.Movie_x265_1080p,
+                (int)RarbgCategories.Movie_x265_4K,
+                (int)RarbgCategories.Movie_x265_4K_HDR,
+                (int)RarbgCategories.Movie_BD_Remux
+            };
             MultiLanguages = new List<int>();
             RequiredFlags = new List<int>();
         }
@@ -51,7 +63,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
         [FieldDefinition(5, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/Definitions#Indexer_Flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
-        [FieldDefinition(6, Type = FieldType.Textbox, Label = "Categories", HelpText = "Comma Separated list, you can retrieve the ID by checking the URL behind the category on the website (i.e. Movie/x264/1080 = 44)", HelpLink = "https://rarbgmirror.org/torrents.php?category=movies", Advanced = true)]
+        [FieldDefinition(6, Type = FieldType.Select, Label = "Categories", SelectOptions = typeof(RarbgCategories), HelpText = "Categories for use in search and feeds. If unspecified, all options are used.", Advanced = true)]
         public IEnumerable<int> Categories { get; set; }
 
         [FieldDefinition(7)]
@@ -61,5 +73,35 @@ namespace NzbDrone.Core.Indexers.Rarbg
         {
             return new NzbDroneValidationResult(Validator.Validate(this));
         }
+    }
+
+    public enum RarbgCategories
+    {
+        [FieldOption]
+        Movie_Xvid = 14,
+        [FieldOption]
+        Movie_Xvid_720p = 48,
+        [FieldOption]
+        Movie_x264 = 17,
+        [FieldOption]
+        Movie_x264_720p = 45,
+        [FieldOption]
+        Movie_x264_1080p = 44,
+        [FieldOption]
+        Movie_x264_4K = 50,
+        [FieldOption]
+        Movie_x264_3D = 47,
+        [FieldOption]
+        Movie_x265_1080p = 54,
+        [FieldOption]
+        Movie_x265_4K = 51,
+        [FieldOption]
+        Movie_x265_4K_HDR = 52,
+        [FieldOption]
+        Movie_BD_Remux = 46,
+        [FieldOption]
+        Movie_Full_BD = 42,
+        [FieldOption]
+        XXX = 4,
     }
 }
