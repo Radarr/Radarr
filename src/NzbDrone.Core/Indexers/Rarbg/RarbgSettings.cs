@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
             BaseUrl = "https://torrentapi.org";
             RankedOnly = false;
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
-            Categories = new[] { 14, 48, 17, 44, 45, 47, 50, 51, 52, 42, 46 };
+            Categories = new[] { 14, 48, 17, 44, 45, 47, 50, 51, 52, 42, 46, 54 };
             MultiLanguages = new List<int>();
             RequiredFlags = new List<int>();
         }
