@@ -115,8 +115,14 @@ namespace Radarr.Api.V3.MovieFiles
             movieFile.Quality = movieFileResource.Quality;
             movieFile.Languages = movieFileResource.Languages;
             movieFile.Edition = movieFileResource.Edition;
-            movieFile.ReleaseGroup = movieFileResource.ReleaseGroup;
-            movieFile.SceneName = movieFileResource.SceneName;
+            if (movieFileResource.ReleaseGroup != null)
+            {
+                movieFile.ReleaseGroup = movieFileResource.ReleaseGroup;
+            }
+            if (movieFileResource.SceneName != null)
+            {
+                movieFile.SceneName = movieFileResource.SceneName;
+            }
             _mediaFileService.Update(movieFile);
         }
 
