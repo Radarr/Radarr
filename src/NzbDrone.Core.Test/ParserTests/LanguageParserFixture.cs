@@ -34,6 +34,17 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.French);
         }
 
+        [TestCase("Movie 1990 1080p Eng Fra [mkvonly]")]
+        [TestCase("Movie Directory 25 Anniversary 1990 Eng Fre Multi Subs 720p [H264 mp4]")]
+        [TestCase("Foreign-Words-Here-Movie-(1990)-[DVDRip]-H264-Fra-Ac3-2-0-Eng-5-1")]
+        public void should_parse_language_french_english(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().Contain(Language.French);
+            result.Languages.Should().Contain(Language.English);
+        }
+
         [TestCase("Movie.Title.1982.Ger.Eng.AC3.DL.BDRip.x264-iNCEPTiON")]
         public void should_parse_language_english_german(string postTitle)
         {
