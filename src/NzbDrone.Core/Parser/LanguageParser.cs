@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.French);
             }
 
-            if (lowerTitle.Contains("spanish"))
+            if (lowerTitle.Contains("spanish") || lowerTitle.Contains("castellano"))
             {
                 languages.Add(Language.Spanish);
             }
