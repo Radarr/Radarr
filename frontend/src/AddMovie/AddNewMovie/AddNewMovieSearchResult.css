@@ -103,3 +103,10 @@
     overflow: hidden;
   }
 }
+
+.certification {
+  margin-right: 5px;
+  padding: 0 5px;
+  border: 1px solid;
+  border-radius: 5px;
+}

@@ -10,6 +10,7 @@ import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import MovieStatusLabel from 'Movie/Details/MovieStatusLabel';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MoviePoster from 'Movie/MoviePoster';
+import formatRuntime from 'Utilities/Date/formatRuntime';
 import translate from 'Utilities/String/translate';
 import AddNewMovieModal from './AddNewMovieModal';
 import styles from './AddNewMovieSearchResult.css';
@@ -74,7 +75,10 @@ class AddNewMovieSearchResult extends Component {
       hasFile,
       isAvailable,
       queueStatus,
-      queueState
+      queueState,
+      runtime,
+      movieRuntimeFormat,
+      certification
     } = this.props;
 
     const {
@@ -158,6 +162,22 @@ class AddNewMovieSearchResult extends Component {
                     />
                 }
               </div>
+            </div>
+
+            <div>
+              {
+                !!certification &&
+                  <span className={styles.certification}>
+                    {certification}
+                  </span>
+              }
+
+              {
+                !!runtime &&
+                  <span>
+                    {formatRuntime(runtime, movieRuntimeFormat)}
+                  </span>
+              }
             </div>
 
             <div>
@@ -259,7 +279,10 @@ AddNewMovieSearchResult.propTypes = {
   isAvailable: PropTypes.bool.isRequired,
   colorImpairedMode: PropTypes.bool,
   queueStatus: PropTypes.string,
-  queueState: PropTypes.string
+  queueState: PropTypes.string,
+  runtime: PropTypes.number.isRequired,
+  movieRuntimeFormat: PropTypes.string.isRequired,
+  certification: PropTypes.string
 };
 
 export default AddNewMovieSearchResult;
