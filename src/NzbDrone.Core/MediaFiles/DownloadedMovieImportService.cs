@@ -182,7 +182,7 @@ namespace NzbDrone.Core.MediaFiles
         {
             if (_movieService.MoviePathExists(directoryInfo.FullName))
             {
-                _logger.Warn("Unable to process folder that is mapped to an existing show");
+                _logger.Warn("Unable to process folder that is mapped to an existing movie");
                 return new List<ImportResult>();
             }
 

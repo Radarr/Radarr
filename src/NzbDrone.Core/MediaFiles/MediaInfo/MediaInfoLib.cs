@@ -132,7 +132,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     return;
                 }
 
-                throw new NotSupportedException("Unsupported MediaInfoLib encoding, version check responses (may be gibberish, show it to the Sonarr devs): " + responses.Join(", "));
+                throw new NotSupportedException("Unsupported MediaInfoLib encoding, version check responses (may be gibberish, show it to the Radarr devs): " + responses.Join(", "));
             }
         }
 
