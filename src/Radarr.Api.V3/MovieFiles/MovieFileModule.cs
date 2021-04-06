@@ -119,10 +119,12 @@ namespace Radarr.Api.V3.MovieFiles
             {
                 movieFile.ReleaseGroup = movieFileResource.ReleaseGroup;
             }
+
             if (movieFileResource.SceneName != null)
             {
                 movieFile.SceneName = movieFileResource.SceneName;
             }
+
             _mediaFileService.Update(movieFile);
         }
 
