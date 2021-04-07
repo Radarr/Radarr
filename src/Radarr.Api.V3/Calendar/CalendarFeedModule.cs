@@ -94,8 +94,9 @@ namespace Radarr.Api.V3.Calendar
                     continue;
                 }
 
-                CreateEvent(calendar, movie, true);
-                CreateEvent(calendar, movie, false);
+                CreateEvent(calendar, movie, "cinematic");
+                CreateEvent(calendar, movie, "digital");
+                CreateEvent(calendar, movie, "physical");
             }
 
             var serializer = (IStringSerializer)new SerializerFactory().Build(calendar.GetType(), new SerializationContext());
@@ -104,16 +105,32 @@ namespace Radarr.Api.V3.Calendar
             return new TextResponse(icalendar, "text/calendar");
         }
 
-        private void CreateEvent(Ical.Net.Calendar calendar, Movie movie, bool cinemasRelease)
+        private void CreateEvent(Ical.Net.Calendar calendar, Movie movie, string releaseType)
         {
-            var date = cinemasRelease ? movie.InCinemas : movie.PhysicalRelease;
+            var date = movie.InCinemas;
+            string eventType = "_cinemas";
+            string summaryText = "(Theatrical Release)";
+
+            if (releaseType == "digital")
+            {
+                date = movie.DigitalRelease;
+                eventType = "_digital";
+                summaryText = "(Digital Release)";
+            }
+            else if (releaseType == "physical")
+            {
+                date = movie.PhysicalRelease;
+                eventType = "_physical";
+                summaryText = "(Physical Release)";
+            }
+
             if (!date.HasValue)
             {
                 return;
             }
 
             var occurrence = calendar.Create<CalendarEvent>();
-            occurrence.Uid = "Radarr_movie_" + movie.Id + (cinemasRelease ? "_cinemas" : "_physical");
+            occurrence.Uid = "Radarr_movie_" + movie.Id + eventType;
             occurrence.Status = movie.Status == MovieStatusType.Announced ? EventStatus.Tentative : EventStatus.Confirmed;
 
             occurrence.Start = new CalDateTime(date.Value);
@@ -123,8 +140,7 @@ namespace Radarr.Api.V3.Calendar
             occurrence.Description = movie.Overview;
             occurrence.Categories = new List<string>() { movie.Studio };
 
-            var physicalText = "(Physical Release)";
-            occurrence.Summary = $"{movie.Title} " + (cinemasRelease ? "(Theatrical Release)" : physicalText);
+            occurrence.Summary = $"{movie.Title} " + summaryText;
         }
     }
 }
