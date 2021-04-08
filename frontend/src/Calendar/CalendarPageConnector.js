@@ -24,7 +24,7 @@ function createMissingMovieIdsSelector() {
         const inCinemas = movie.inCinemas;
 
         if (
-          !movie.movieFileId &&
+          !movie.hasFile &&
           moment(inCinemas).isAfter(start) &&
           moment(inCinemas).isBefore(end) &&
           isBefore(movie.inCinemas) &&
