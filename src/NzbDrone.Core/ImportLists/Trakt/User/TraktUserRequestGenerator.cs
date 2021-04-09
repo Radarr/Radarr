@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Notifications.Trakt;
 
@@ -26,17 +27,18 @@ namespace NzbDrone.Core.ImportLists.Trakt.User
         private IEnumerable<ImportListRequest> GetMoviesRequest()
         {
             var link = string.Empty;
+            var userName = Settings.Username.IsNotNullOrWhiteSpace() ? Settings.Username.Trim() : Settings.AuthUser.Trim();
 
             switch (Settings.TraktListType)
             {
                 case (int)TraktUserListType.UserWatchList:
-                    link += $"users/{Settings.AuthUser.Trim()}/watchlist/movies?limit={Settings.Limit}";
+                    link += $"users/{userName}/watchlist/movies?limit={Settings.Limit}";
                     break;
                 case (int)TraktUserListType.UserWatchedList:
-                    link += $"users/{Settings.AuthUser.Trim()}/watched/movies?limit={Settings.Limit}";
+                    link += $"users/{userName}/watched/movies?limit={Settings.Limit}";
                     break;
                 case (int)TraktUserListType.UserCollectionList:
-                    link += $"users/{Settings.AuthUser.Trim()}/collection/movies?limit={Settings.Limit}";
+                    link += $"users/{userName}/collection/movies?limit={Settings.Limit}";
                     break;
             }
 
