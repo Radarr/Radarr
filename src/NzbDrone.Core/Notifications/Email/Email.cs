@@ -65,6 +65,23 @@ namespace NzbDrone.Core.Notifications.Email
             return new ValidationResult(failures);
         }
 
+        public ValidationFailure Test(EmailSettings settings)
+        {
+            const string body = "Success! You have properly configured your email notification settings";
+
+            try
+            {
+                SendEmail(settings, "Radarr - Test Notification", body);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Unable to send test email");
+                return new ValidationFailure("Server", "Unable to send test email");
+            }
+
+            return null;
+        }
+
         private void SendEmail(EmailSettings settings, string subject, string body, bool htmlBody = false)
         {
             var email = new MimeMessage();
@@ -101,6 +118,8 @@ namespace NzbDrone.Core.Notifications.Email
         {
             using (var client = new SmtpClient())
             {
+                client.Timeout = 10000;
+
                 var serverOption = SecureSocketOptions.Auto;
 
                 if (settings.RequireEncryption)
@@ -136,23 +155,6 @@ namespace NzbDrone.Core.Notifications.Email
 
                 _logger.Debug("Disconnecting from mail server");
             }
-        }
-
-        public ValidationFailure Test(EmailSettings settings)
-        {
-            const string body = "Success! You have properly configured your email notification settings";
-
-            try
-            {
-                SendEmail(settings, "Radarr - Test Notification", body);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Unable to send test email");
-                return new ValidationFailure("Server", "Unable to send test email");
-            }
-
-            return null;
         }
 
         private MailboxAddress ParseAddress(string type, string address)
