@@ -87,5 +87,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p);
             _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
         }
+
+        [Test]
+        public void should_not_be_upgradable_if_revision_downgrade_if_propers_are_preferred()
+        {
+            _firstFile.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(2));
+            _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p);
+            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+        }
     }
 }
