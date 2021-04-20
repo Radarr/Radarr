@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net;
+using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Http;
@@ -21,6 +22,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         private string _strmFolder;
         private string _nzbPath;
         private RemoteMovie _remoteMovie;
+        private DownloadClientItem _downloadClientItem;
 
         [SetUp]
         public void Setup()
@@ -36,6 +38,10 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
             _remoteMovie.Release.DownloadUrl = _nzbUrl;
 
             _remoteMovie.ParsedMovieInfo = new ParsedMovieInfo();
+
+            _downloadClientItem = Builder<DownloadClientItem>
+                                  .CreateNew().With(d => d.DownloadId = "_Droned.S01E01.Pilot.1080p.WEB-DL-DRONE_0")
+                                  .Build();
 
             Subject.Definition = new DownloadClientDefinition();
             Subject.Definition.Settings = new PneumaticSettings
@@ -69,7 +75,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests
         [Test]
         public void should_throw_item_is_removed()
         {
-            Assert.Throws<NotSupportedException>(() => Subject.RemoveItem("", true));
+            Assert.Throws<NotSupportedException>(() => Subject.RemoveItem(_downloadClientItem, true));
         }
 
         [Test]

@@ -4,7 +4,6 @@ using System.Linq;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Organizer;
@@ -72,20 +71,13 @@ namespace NzbDrone.Core.Download
             return item;
         }
 
-        public abstract void RemoveItem(string downloadId, bool deleteData);
+        public abstract void RemoveItem(DownloadClientItem item, bool deleteData);
         public abstract DownloadClientInfo GetStatus();
 
-        protected virtual void DeleteItemData(string downloadId)
+        protected virtual void DeleteItemData(DownloadClientItem item)
         {
-            if (downloadId.IsNullOrWhiteSpace())
-            {
-                return;
-            }
-
-            var item = GetItems().FirstOrDefault(v => v.DownloadId == downloadId);
             if (item == null)
             {
-                _logger.Trace("DownloadItem {0} in {1} history not found, skipping delete data.", downloadId, Name);
                 return;
             }
 
