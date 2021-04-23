@@ -4,6 +4,7 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.ThingiProvider.Events;
 
 namespace NzbDrone.Core.Indexers
 {
@@ -13,7 +14,7 @@ namespace NzbDrone.Core.Indexers
         TorrentSeedConfiguration GetSeedConfiguration(int indexerId);
     }
 
-    public class SeedConfigProvider : ISeedConfigProvider, IHandle<IndexerSettingUpdatedEvent>
+    public class SeedConfigProvider : ISeedConfigProvider, IHandle<ProviderUpdatedEvent<IIndexer>>
     {
         private readonly IIndexerFactory _indexerFactory;
         private readonly ICached<SeedCriteriaSettings> _cache;
@@ -83,7 +84,7 @@ namespace NzbDrone.Core.Indexers
             }
         }
 
-        public void Handle(IndexerSettingUpdatedEvent message)
+        public void Handle(ProviderUpdatedEvent<IIndexer> message)
         {
             _cache.Clear();
         }
