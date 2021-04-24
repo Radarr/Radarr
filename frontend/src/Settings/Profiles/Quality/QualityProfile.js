@@ -104,7 +104,7 @@ class QualityProfile extends Component {
                 return (
                   <Label
                     key={item.quality.id}
-                    kind={isCutoff ? kinds.INFO : kinds.default}
+                    kind={isCutoff ? kinds.INFO : kinds.DEFAULT}
                     title={isCutoff ? translate('UpgradeUntilThisQualityIsMetOrExceeded') : null}
                   >
                     {item.quality.name}
@@ -120,7 +120,7 @@ class QualityProfile extends Component {
                   className={styles.tooltipLabel}
                   anchor={
                     <Label
-                      kind={isCutoff ? kinds.INFO : kinds.default}
+                      kind={isCutoff ? kinds.INFO : kinds.DEFAULT}
                       title={isCutoff ? translate('Cutoff') : null}
                     >
                       {item.name}
@@ -133,7 +133,7 @@ class QualityProfile extends Component {
                           return (
                             <Label
                               key={groupItem.quality.id}
-                              kind={isCutoff ? kinds.INFO : kinds.default}
+                              kind={isCutoff ? kinds.INFO : kinds.DEFAULT}
                               title={isCutoff ? translate('Cutoff') : null}
                             >
                               {groupItem.quality.name}
