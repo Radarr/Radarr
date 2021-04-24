@@ -32,6 +32,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         {
             var qualityComparer = new QualityModelComparer(profile);
             var qualityCompare = qualityComparer.Compare(newQuality?.Quality, currentQuality.Quality);
+            var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
 
             if (qualityCompare > 0)
             {
@@ -45,16 +46,26 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return false;
             }
 
+            var qualityRevisionCompare = newQuality?.Revision.CompareTo(currentQuality.Revision);
+
             // Accept unless the user doesn't want to prefer propers, optionally they can
             // use preferred words to prefer propers/repacks over non-propers/repacks.
-            if (_configService.DownloadPropersAndRepacks != ProperDownloadTypes.DoNotPrefer &&
-                newQuality?.Revision.CompareTo(currentQuality.Revision) > 0)
+            if (downloadPropersAndRepacks != ProperDownloadTypes.DoNotPrefer &&
+                qualityRevisionCompare > 0)
             {
                 return true;
             }
 
             var currentFormatScore = profile.CalculateCustomFormatScore(currentCustomFormats);
             var newFormatScore = profile.CalculateCustomFormatScore(newCustomFormats);
+
+            // Reject unless the user does not prefer propers/repacks and it's a revision downgrade.
+            if (downloadPropersAndRepacks != ProperDownloadTypes.DoNotPrefer &&
+                qualityRevisionCompare < 0)
+            {
+                _logger.Debug("Existing item has a better quality revision, skipping");
+                return false;
+            }
 
             if (newFormatScore <= currentFormatScore)
             {
