@@ -12,7 +12,7 @@ namespace NzbDrone.Common.Instrumentation
 {
     public static class NzbDroneLogger
     {
-        private const string FILE_LOG_LAYOUT = @"${date:format=yyyy-M-d HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}${exception:format=Data}${newline}}";
+        private const string FILE_LOG_LAYOUT = @"${date:format=yyyy-MM-dd HH\:mm\:ss.f}|${level}|${logger}|${message}${onexception:inner=${newline}${newline}[v${assembly-version}] ${exception:format=ToString}${newline}${exception:format=Data}${newline}}";
 
         private static bool _isConfigured;
 
