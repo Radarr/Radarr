@@ -100,10 +100,10 @@
     "copy-webpack-plugin": "8.1.1",
     "core-js": "3.9.0",
     "css-loader": "5.2.4",
-    "eslint": "7.20.0",
+    "eslint": "7.25.0",
     "eslint-plugin-filenames": "1.3.2",
     "eslint-plugin-import": "2.22.1",
-    "eslint-plugin-react": "7.22.0",
+    "eslint-plugin-react": "7.23.2",
     "eslint-plugin-simple-import-sort": "7.0.0",
     "esprint": "2.0.0",
     "file-loader": "6.2.0",
@@ -126,7 +126,7 @@
     "webpack-cli": "4.6.0",
     "webpack-livereload-plugin": "3.0.1",
     "worker-loader": "3.0.8",
-    "stylelint": "13.10.0",
+    "stylelint": "13.13.0",
     "stylelint-order": "4.1.0"
   }
 }
