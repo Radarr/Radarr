@@ -25,10 +25,10 @@
     "not chrome < 60"
   ],
   "dependencies": {
-    "@fortawesome/fontawesome-free": "5.15.2",
-    "@fortawesome/fontawesome-svg-core": "1.2.34",
-    "@fortawesome/free-regular-svg-icons": "5.15.2",
-    "@fortawesome/free-solid-svg-icons": "5.15.2",
+    "@fortawesome/fontawesome-free": "5.15.3",
+    "@fortawesome/fontawesome-svg-core": "1.2.35",
+    "@fortawesome/free-regular-svg-icons": "5.15.3",
+    "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@microsoft/signalr": "5.0.4",
     "@sentry/browser": "6.2.0",
