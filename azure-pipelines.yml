@@ -651,7 +651,7 @@ stages:
           testResultsFormat: 'NUnit'
           testResultsFiles: '**/TestResult.xml'
           testRunTitle: 'FreeBSD Integration Tests'
-          failTaskOnFailedTests: false
+          failTaskOnFailedTests: true
         displayName: Publish Test Results
 
     - job: Integration_Docker
