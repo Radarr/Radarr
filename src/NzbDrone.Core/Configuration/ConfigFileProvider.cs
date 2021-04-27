@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Configuration
     public interface IConfigFileProvider : IHandleAsync<ApplicationStartedEvent>,
                                            IExecute<ResetApiKeyCommand>
     {
+        XDocument LoadConfigFile();
         Dictionary<string, object> GetConfigDictionary();
         void SaveConfigDictionary(Dictionary<string, object> configValues);
 
@@ -310,7 +311,7 @@ namespace NzbDrone.Core.Configuration
             SaveConfigFile(xDoc);
         }
 
-        private XDocument LoadConfigFile()
+        public XDocument LoadConfigFile()
         {
             try
             {

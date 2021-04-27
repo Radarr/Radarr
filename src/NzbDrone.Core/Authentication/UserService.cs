@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using System.Xml.Linq;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 
@@ -24,12 +24,17 @@ namespace NzbDrone.Core.Authentication
         private readonly IUserRepository _repo;
         private readonly IAppFolderInfo _appFolderInfo;
         private readonly IDiskProvider _diskProvider;
+        private readonly IConfigFileProvider _configFileProvider;
 
-        public UserService(IUserRepository repo, IAppFolderInfo appFolderInfo, IDiskProvider diskProvider)
+        public UserService(IUserRepository repo,
+            IAppFolderInfo appFolderInfo,
+            IDiskProvider diskProvider,
+            IConfigFileProvider configFileProvider)
         {
             _repo = repo;
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;
+            _configFileProvider = configFileProvider;
         }
 
         public User Add(string username, string password)
@@ -105,14 +110,7 @@ namespace NzbDrone.Core.Authentication
                 return;
             }
 
-            var configFile = _appFolderInfo.GetConfigPath();
-
-            if (!_diskProvider.FileExists(configFile))
-            {
-                return;
-            }
-
-            var xDoc = XDocument.Load(configFile);
+            var xDoc = _configFileProvider.LoadConfigFile();
             var config = xDoc.Descendants("Config").Single();
             var usernameElement = config.Descendants("Username").FirstOrDefault();
             var passwordElement = config.Descendants("Password").FirstOrDefault();
