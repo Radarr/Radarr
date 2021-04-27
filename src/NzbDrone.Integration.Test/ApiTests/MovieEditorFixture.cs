@@ -11,6 +11,8 @@ namespace NzbDrone.Integration.Test.ApiTests
     {
         private void GivenExistingMovie()
         {
+            WaitForCompletion(() => Profiles.All().Count > 0);
+
             foreach (var title in new[] { "The Dark Knight", "Pulp Fiction" })
             {
                 var newMovie = Movies.Lookup(title).First();
