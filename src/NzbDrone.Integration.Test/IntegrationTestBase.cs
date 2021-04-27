@@ -25,6 +25,7 @@ using Radarr.Api.V3.MovieFiles;
 using Radarr.Api.V3.Movies;
 using Radarr.Api.V3.Profiles.Quality;
 using Radarr.Api.V3.RootFolders;
+using Radarr.Api.V3.System.Tasks;
 using Radarr.Api.V3.Tags;
 using RestSharp;
 
@@ -37,6 +38,7 @@ namespace NzbDrone.Integration.Test
 
         public ClientBase<BlacklistResource> Blacklist;
         public CommandClient Commands;
+        public ClientBase<TaskResource> Tasks;
         public DownloadClientClient DownloadClients;
         public ClientBase<HistoryResource> History;
         public ClientBase<HostConfigResource> HostConfig;
@@ -98,6 +100,7 @@ namespace NzbDrone.Integration.Test
 
             Blacklist = new ClientBase<BlacklistResource>(RestClient, ApiKey);
             Commands = new CommandClient(RestClient, ApiKey);
+            Tasks = new ClientBase<TaskResource>(RestClient, ApiKey, "system/task");
             DownloadClients = new DownloadClientClient(RestClient, ApiKey);
             History = new ClientBase<HistoryResource>(RestClient, ApiKey);
             HostConfig = new ClientBase<HostConfigResource>(RestClient, ApiKey, "config/host");
