@@ -1,5 +1,6 @@
 export const DANGER = 'danger';
 export const DEFAULT = 'default';
+export const DELETE = 'delete';
 export const DISABLED = 'disabled';
 export const INFO = 'info';
 export const INVERSE = 'inverse';
@@ -13,6 +14,7 @@ export const QUEUE = 'queue';
 export const all = [
   DANGER,
   DEFAULT,
+  DELETE,
   DISABLED,
   INFO,
   INVERSE,

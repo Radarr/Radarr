@@ -6,8 +6,10 @@ const dirs = fs
   .map((dirent) => dirent.name)
   .join('|');
 
+const frontendFolder = __dirname;
+
 module.exports = {
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
 
   env: {
     browser: true,
@@ -25,6 +27,9 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
+    babelOptions: {
+      configFile: `${frontendFolder}/babel.config.js`
+    },
     ecmaFeatures: {
       modules: true,
       impliedStrict: true
@@ -271,7 +276,7 @@ module.exports = {
 
     // ImportSort
 
-    'simple-import-sort/sort': 'error',
+    'simple-import-sort/imports': 'error',
     'import/newline-after-import': 'error',
 
     // React
@@ -309,7 +314,7 @@ module.exports = {
     {
       files: ['*.js'],
       rules: {
-        'simple-import-sort/sort': [
+        'simple-import-sort/imports': [
           'error',
           {
             groups: [

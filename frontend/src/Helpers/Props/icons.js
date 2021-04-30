@@ -184,6 +184,7 @@ export const PAGE_LAST = fasFastForward;
 export const PARENT = fasLevelUpAlt;
 export const PAUSED = fasPause;
 export const PENDING = farClock;
+export const PLAY = fasPlay;
 export const PROFILE = fasUser;
 export const POSTER = fasTh;
 export const QUEUED = fasCloud;
