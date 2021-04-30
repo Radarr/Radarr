@@ -487,7 +487,7 @@
     "PreviewRename": "Előnézet átnevezése",
     "PreferIndexerFlagsHelpText": "Prioritizáld a kiadásokat speciális zászlók segítségével",
     "Original": "Eredeti",
-    "OnGrabHelpText": "Megfogva",
+    "OnGrabHelpText": "Kiválasztás alatt",
     "MoreDetails": "További részletek",
     "Month": "Hónap",
     "MonoVersionCheckUpgradeRecommendedMessage": "A jelenleg telepített Mono {0} verzió támogatott, de ajánlott frissíteni a(z) {1} verzióra.",
