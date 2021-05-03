@@ -7,40 +7,40 @@ using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Http;
 
-namespace NzbDrone.Core.Notifications.DiscordNotifier
+namespace NzbDrone.Core.Notifications.Notifiarr
 {
-    public interface IDiscordNotifierProxy
+    public interface INotifiarrProxy
     {
-        void SendNotification(StringDictionary message, DiscordNotifierSettings settings);
-        ValidationFailure Test(DiscordNotifierSettings settings);
+        void SendNotification(StringDictionary message, NotifiarrSettings settings);
+        ValidationFailure Test(NotifiarrSettings settings);
     }
 
-    public class DiscordNotifierProxy : IDiscordNotifierProxy
+    public class NotifiarrProxy : INotifiarrProxy
     {
-        private const string URL = "https://discordnotifier.com/notifier.php";
+        private const string URL = "https://notifiarr.com/notifier.php";
         private readonly IHttpClient _httpClient;
         private readonly Logger _logger;
 
-        public DiscordNotifierProxy(IHttpClient httpClient, Logger logger)
+        public NotifiarrProxy(IHttpClient httpClient, Logger logger)
         {
             _httpClient = httpClient;
             _logger = logger;
         }
 
-        public void SendNotification(StringDictionary message, DiscordNotifierSettings settings)
+        public void SendNotification(StringDictionary message, NotifiarrSettings settings)
         {
             try
             {
                 ProcessNotification(message, settings);
             }
-            catch (DiscordNotifierException ex)
+            catch (NotifiarrException ex)
             {
                 _logger.Error(ex, "Unable to send notification");
-                throw new DiscordNotifierException("Unable to send notification");
+                throw new NotifiarrException("Unable to send notification");
             }
         }
 
-        public ValidationFailure Test(DiscordNotifierSettings settings)
+        public ValidationFailure Test(NotifiarrSettings settings)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Notifications.DiscordNotifier
             }
         }
 
-        private void ProcessNotification(StringDictionary message, DiscordNotifierSettings settings)
+        private void ProcessNotification(StringDictionary message, NotifiarrSettings settings)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Notifications.DiscordNotifier
                     throw;
                 }
 
-                throw new DiscordNotifierException("Unable to send notification", ex);
+                throw new NotifiarrException("Unable to send notification", ex);
             }
         }
     }

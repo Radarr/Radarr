@@ -6,19 +6,19 @@ using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 
-namespace NzbDrone.Core.Notifications.DiscordNotifier
+namespace NzbDrone.Core.Notifications.Notifiarr
 {
-    public class DiscordNotifier : NotificationBase<DiscordNotifierSettings>
+    public class Notifiarr : NotificationBase<NotifiarrSettings>
     {
-        private readonly IDiscordNotifierProxy _proxy;
+        private readonly INotifiarrProxy _proxy;
 
-        public DiscordNotifier(IDiscordNotifierProxy proxy)
+        public Notifiarr(INotifiarrProxy proxy)
         {
             _proxy = proxy;
         }
 
-        public override string Link => "https://discordnotifier.com";
-        public override string Name => "DiscordNotifier.com";
+        public override string Link => "https://notifiarr.com";
+        public override string Name => "Notifiarr";
 
         public override void OnGrab(GrabMessage message)
         {
