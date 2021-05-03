@@ -274,7 +274,7 @@
     "CustomFormatsSettingsSummary": "Configurações e formatos personalizados",
     "CustomFormatsSettings": "Configurações de formatos personalizados",
     "CustomFormatScore": "Pontuação de formato personalizado",
-    "CustomFormats": "Formatos personalizado",
+    "CustomFormats": "Formatos personalizados",
     "CustomFormatJSON": "JSON de formato personalizado",
     "CustomFormatHelpText": "O Radarr pontua cada lançamento usando a soma das pontuações para formatos personalizados encontrados. Se um novo lançamento tiver melhor pontuação, com a mesma ou melhor qualidade, o Radarr o baixará.",
     "CustomFormat": "Formato personalizado",
