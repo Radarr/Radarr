@@ -731,7 +731,7 @@
     "IndexerPriorityHelpText": "Indexelő prioritás 1-től (legmagasabb) 50-ig (legalacsonyabb). Alapértelmezés: 25.",
     "IndexerPriority": "Indexer Prioritása",
     "IndexerFlags": "Indexer Zászló",
-    "Indexer": "Indexer",
+    "Indexer": "Indexelő",
     "IncludeUnmonitored": "Figyelmen Kívül hagyott Filmeket is Tartalmazza",
     "IncludeUnknownMovieItemsHelpText": "Mutasson tételeket film nélkül a sorban. Ez tartalmazhat eltávolított filmeket vagy bármi mást a Radarr kategóriájából",
     "IncludeRecommendationsHelpText": "Helyezze be a Radarr ajánlásait a felfedező nézetbe",
