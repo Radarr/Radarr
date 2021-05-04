@@ -527,7 +527,7 @@
   "MonitoredOnly": "Monitored Only",
   "MonitoredStatus": "Monitored/Status",
   "MonitorMovie": "Monitor Movie",
-  "MonoNotNetCoreCheckMessage": "Please upgrade to the .NET Core version of Radarr",
+  "MonoNotNetCoreCheckMessage": "Please upgrade to the .NET Core version of Radarr, Mono versions will not be supported in the next release. ",
   "MonoTlsCheckMessage": "Radarr Mono 4.x tls workaround still enabled, consider removing MONO_TLS_PROVIDER=legacy environment option",
   "MonoVersion": "Mono Version",
   "MonoVersionCheckNotSupportedMessage": "Currently installed Mono version {0} is no longer supported. Please upgrade Mono to version {1}.",
