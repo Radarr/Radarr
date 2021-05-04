@@ -18,9 +18,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
         [Test]
         [Platform("Mono")]
-        public void should_log_warning_if_mono()
+        public void should_log_error_if_mono()
         {
-            Subject.Check().ShouldBeWarning();
+            Subject.Check().ShouldBeError();
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
         [Test]
         [Platform("Mono")]
-        public void should_log_warning_if_freebsd()
+        public void should_log_error_if_freebsd()
         {
             Mocker.GetMock<IProcessProvider>()
                 .Setup(x => x.StartAndCapture("uname", null, null))
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                         new ProcessOutputLine(ProcessOutputLevel.Standard, "FreeBSD")
                     }
                 });
-            Subject.Check().ShouldBeWarning();
+            Subject.Check().ShouldBeError();
         }
     }
 }

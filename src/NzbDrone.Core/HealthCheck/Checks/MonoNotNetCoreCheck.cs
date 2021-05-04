@@ -39,7 +39,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             }
 
             return new HealthCheck(GetType(),
-                                   HealthCheckResult.Warning,
+                                   HealthCheckResult.Error,
                                    _localizationService.GetLocalizedString("MonoNotNetCoreCheckMessage"),
                                    "#update_to_net_core_version");
         }
