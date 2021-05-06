@@ -35,7 +35,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                        .WriteSentryDebug("LegacyTlsProvider", monoVersion.ToString())
                        .Write();
 
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("MonoTlsCheckMessage"));
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("MonoTlsCheckMessage"), "#mono_tls_legacy");
             }
 
             return new HealthCheck(GetType());

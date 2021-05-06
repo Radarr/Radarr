@@ -70,7 +70,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (BuildInfo.BuildDateTime < DateTime.UtcNow.AddDays(-14) && _checkUpdateService.AvailableUpdate() != null)
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("UpdateAvailable"));
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("UpdateAvailable"), "#new_update_is_available");
             }
 
             return new HealthCheck(GetType());

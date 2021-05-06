@@ -19,7 +19,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             if (_appFolderInfo.StartUpFolder.IsParentPath(_appFolderInfo.AppDataFolder) ||
                 _appFolderInfo.StartUpFolder.PathEquals(_appFolderInfo.AppDataFolder))
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("AppDataLocationHealthCheckMessage"));
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("AppDataLocationHealthCheckMessage"), "#updating_will_not_be_possible_to_prevent_deleting_appdata_on_update");
             }
 
             return new HealthCheck(GetType());
