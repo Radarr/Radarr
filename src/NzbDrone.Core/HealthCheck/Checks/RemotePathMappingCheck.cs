@@ -136,7 +136,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     {
                         // If the file doesn't exist but MovieInfo is not null then the message is coming from
                         // ImportApprovedMovies and the file must have been removed part way through processing
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckFileRemoved"), moviePath));
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckFileRemoved"), moviePath), "#remote_path_file_removed");
                     }
                 }
 
@@ -152,7 +152,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     // that the user realises something is wrong.
                     if (dlpath.IsNullOrWhiteSpace())
                     {
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("RemotePathMappingCheckImportFailed"));
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("RemotePathMappingCheckImportFailed"), "#remote_path_import_failed");
                     }
 
                     if (!dlpath.IsPathValid())

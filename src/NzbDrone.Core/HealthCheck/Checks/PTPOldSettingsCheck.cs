@@ -25,7 +25,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (ptpIndexerOldSettings.Any())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("PtpOldSettingsCheckMessage"), string.Join(", ", ptpIndexerOldSettings)));
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("PtpOldSettingsCheckMessage"), string.Join(", ", ptpIndexerOldSettings)), "#ptp_settings_old");
             }
 
             return new HealthCheck(GetType());

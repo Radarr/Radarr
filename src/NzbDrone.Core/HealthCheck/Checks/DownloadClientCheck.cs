@@ -29,7 +29,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (!downloadClients.Any())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("DownloadClientCheckNoneAvailableMessage"));
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("DownloadClientCheckNoneAvailableMessage"), "#no_download_client_is_available");
             }
 
             foreach (var downloadClient in downloadClients)
