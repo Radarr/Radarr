@@ -69,15 +69,15 @@ namespace NzbDrone.Core.HealthCheck.Checks
                             {
                                 if (!status.IsLocalhost)
                                 {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} places downloads in {folder.FullPath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#bad_remote_path_mapping");
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckWrongOSPath"), client.Definition.Name, folder.FullPath, _osInfo.Name), "#bad_remote_path_mapping");
                                 }
                                 else if (_osInfo.IsDocker)
                                 {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} places downloads in {folder.FullPath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#docker_bad_remote_path_mapping");
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckBadDockerPath"), client.Definition.Name, folder.FullPath, _osInfo.Name), "#docker_bad_remote_path_mapping");
                                 }
                                 else
                                 {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Local download client {client.Definition.Name} places downloads in {folder.FullPath} but this is not a valid {_osInfo.Name} path.  Review your download client settings.", "#bad_download_client_settings");
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckLocalWrongOSPath"), client.Definition.Name, folder.FullPath, _osInfo.Name), "#bad_download_client_settings");
                                 }
                             }
 
@@ -85,15 +85,15 @@ namespace NzbDrone.Core.HealthCheck.Checks
                             {
                                 if (_osInfo.IsDocker)
                                 {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} places downloads in {folder.FullPath} but this directory does not appear to exist inside the container.  Review your remote path mappings and container volume settings.", "#docker_bad_remote_path_mapping");
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckDockerFolderMissing"), client.Definition.Name, folder.FullPath), "#docker_bad_remote_path_mapping");
                                 }
                                 else if (!status.IsLocalhost)
                                 {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} places downloads in {folder.FullPath} but this directory does not appear to exist.  Likely missing or incorrect remote path mapping.", "#bad_remote_path_mapping");
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckLocalFolderMissing"), client.Definition.Name, folder.FullPath), "#bad_remote_path_mapping");
                                 }
                                 else
                                 {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} places downloads in {folder.FullPath} but Radarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions_error");
+                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckGenericPermissions"), client.Definition.Name, folder.FullPath), "#permissions_error");
                                 }
                             }
                         }
@@ -130,13 +130,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     var moviePath = failureMessage.MovieInfo.Path;
                     if (_diskProvider.FileExists(moviePath))
                     {
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Radarr can see but not access downloaded movie {moviePath}.  Likely permissions error.", "#permissions_error");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckDownloadPermissions"), moviePath), "#permissions_error");
                     }
                     else
                     {
                         // If the file doesn't exist but MovieInfo is not null then the message is coming from
                         // ImportApprovedMovies and the file must have been removed part way through processing
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"File {moviePath} was removed part way though procesing.");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckFileRemoved"), moviePath));
                     }
                 }
 
@@ -152,43 +152,43 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     // that the user realises something is wrong.
                     if (dlpath.IsNullOrWhiteSpace())
                     {
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Radarr failed to import a movie.  Check your logs for details.");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("RemotePathMappingCheckImportFailed"));
                     }
 
                     if (!dlpath.IsPathValid())
                     {
                         if (!status.IsLocalhost)
                         {
-                            return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} reported files in {dlpath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#bad_remote_path_mapping");
+                            return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckFilesWrongOSPath"), client.Definition.Name, dlpath, _osInfo.Name), "#bad_remote_path_mapping");
                         }
                         else if (_osInfo.IsDocker)
                         {
-                            return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} reported files in {dlpath} but this is not a valid {_osInfo.Name} path.  Review your remote path mappings and download client settings.", "#docker_bad_remote_path_mapping");
+                            return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckFilesBadDockerPath"), client.Definition.Name, dlpath, _osInfo.Name), "#docker_bad_remote_path_mapping");
                         }
                         else
                         {
-                            return new HealthCheck(GetType(), HealthCheckResult.Error, $"Local download client {client.Definition.Name} reported files in {dlpath} but this is not a valid {_osInfo.Name} path.  Review your download client settings.", "#bad_download_client_settings");
+                            return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckFilesLocalWrongOSPath"), client.Definition.Name, dlpath, _osInfo.Name), "#bad_download_client_settings");
                         }
                     }
 
                     if (_diskProvider.FolderExists(dlpath))
                     {
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Radarr can see but not access download directory {dlpath}.  Likely permissions error.", "#permissions_error");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckFolderPermissions"), dlpath), "#permissions_error");
                     }
 
                     // if it's a remote client/docker, likely missing path mappings
                     if (_osInfo.IsDocker)
                     {
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"You are using docker; download client {client.Definition.Name} reported files in {dlpath} but this directory does not appear to exist inside the container.  Review your remote path mappings and container volume settings.", "#docker_bad_remote_path_mapping");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckFolderPermissions"), client.Definition.Name, dlpath), "#docker_bad_remote_path_mapping");
                     }
                     else if (!status.IsLocalhost)
                     {
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Remote download client {client.Definition.Name} reported files in {dlpath} but this directory does not appear to exist.  Likely missing remote path mapping.", "#bad_remote_path_mapping");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckRemoteDownloadClient"), client.Definition.Name, dlpath), "#bad_remote_path_mapping");
                     }
                     else
                     {
                         // path mappings shouldn't be needed locally so probably a permissions issue
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, $"Download client {client.Definition.Name} reported files in {dlpath} but Radarr cannot see this directory.  You may need to adjust the folder's permissions.", "#permissions_error");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckFilesGenericPermissions"), client.Definition.Name, dlpath), "#permissions_error");
                     }
                 }
                 catch (DownloadClientException ex)

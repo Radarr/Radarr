@@ -50,10 +50,10 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 if (missingRootFolders.Count == 1)
                 {
                     var missingRootFolder = missingRootFolders.First();
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"Missing root folder for import list(s): {FormatRootFolder(missingRootFolder.Key, missingRootFolder.Value)}", "#import_list_missing_root_folder");
+                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ImportListMissingRoot"), FormatRootFolder(missingRootFolder.Key, missingRootFolder.Value)), "#import_list_missing_root_folder");
                 }
 
-                var message = string.Format("Multiple root folders are missing for import lists: {0}", string.Join(" | ", missingRootFolders.Select(m => FormatRootFolder(m.Key, m.Value))));
+                var message = string.Format(_localizationService.GetLocalizedString("ImportListMultipleMissingRoots"), string.Join(" | ", missingRootFolders.Select(m => FormatRootFolder(m.Key, m.Value))));
                 return new HealthCheck(GetType(), HealthCheckResult.Error, message, "#import_list_missing_root_folder");
             }
 
