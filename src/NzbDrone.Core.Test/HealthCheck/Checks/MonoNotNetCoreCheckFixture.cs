@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Processes;
 using NzbDrone.Core.HealthCheck.Checks;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
@@ -9,6 +11,14 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
     [TestFixture]
     public class MonoNotNetCoreCheckFixture : CoreTest<MonoNotNetCoreCheck>
     {
+        [SetUp]
+        public void setup()
+        {
+            Mocker.GetMock<ILocalizationService>()
+                  .Setup(s => s.GetLocalizedString(It.IsAny<string>()))
+                  .Returns("Some Warning Message");
+        }
+
         [Test]
         [Platform(Exclude = "Mono")]
         public void should_return_ok_if_net_core()

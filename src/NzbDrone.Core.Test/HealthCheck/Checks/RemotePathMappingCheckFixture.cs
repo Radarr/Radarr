@@ -10,6 +10,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.HealthCheck.Checks;
+using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Parser.Model;
@@ -84,6 +85,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                     Ensure.That(path, () => path).IsValidPath();
                     return false;
                 });
+
+            Mocker.GetMock<ILocalizationService>()
+                  .Setup(s => s.GetLocalizedString(It.IsAny<string>()))
+                  .Returns("Some Warning Message");
         }
 
         private void GivenFolderExists(string folder)
