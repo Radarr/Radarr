@@ -28,14 +28,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
             // Don't warn on linux x86 - we don't build x86 net core
             if (OsInfo.IsLinux && RuntimeInformation.ProcessArchitecture == Architecture.X86)
             {
-                return new HealthCheck(GetType());
+                return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("Monox86SupportCheckMessage"), "mono_support_end_of_life");
             }
 
             // Check for BSD
             var output = _processProvider.StartAndCapture("uname");
             if (output?.ExitCode == 0 && MonoUnames.Contains(output?.Lines.First().Content))
             {
-                return new HealthCheck(GetType());
+                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("MonoBSDSupportCheckMessage"), OsInfo.Os), "mono_support_end_of_life");
             }
 
             return new HealthCheck(GetType(),
