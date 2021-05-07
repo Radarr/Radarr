@@ -46,6 +46,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("SomeMovie.1080p.BluRay.DTS.x264.-FTW-HS.mkv", "FTW-HS")]
         [TestCase("SomeMovie.1080p.BluRay.DTS.x264.-VH-PROD.mkv", "VH-PROD")]
         [TestCase("Some.Dead.Movie.2006.1080p.BluRay.DTS.x264.D-Z0N3", "D-Z0N3")]
+        [TestCase("Movie.Title.2010.720p.BluRay.x264.-[YTS.LT]", "YTS.LT")]
 
         //[TestCase("", "")]
 

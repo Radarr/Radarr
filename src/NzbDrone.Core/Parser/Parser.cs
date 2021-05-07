@@ -127,7 +127,7 @@ namespace NzbDrone.Core.Parser
 
         //Handle Exception Release Groups that don't follow -RlsGrp; Manual List
         //First Group is groups whose releases end with RlsGroup) or RlsGroup]  second group (entries after `(?=\]|\))|`) is name only...BE VERY CAREFUL WITH THIS, HIGH CHANCE OF FALSE POSITIVES
-        private static readonly Regex ExceptionReleaseGroupRegex = new Regex(@"(?<releasegroup>(Tigole|Joy|YIFY|YTS.MX|FreetheFish|afm72|Anna|Bandi|Ghost|Kappa|MONOLITH|Qman|RZeroX|SAMPA|Silence|theincognito|t3nzin|Vyndros)(?=\]|\))|KRaLiMaRKo|E\.N\.D|D\-Z0N3)",
+        private static readonly Regex ExceptionReleaseGroupRegex = new Regex(@"(?<releasegroup>(Tigole|Joy|YIFY|YTS.MX|YTS.LT|FreetheFish|afm72|Anna|Bandi|Ghost|Kappa|MONOLITH|Qman|RZeroX|SAMPA|Silence|theincognito|t3nzin|Vyndros)(?=\]|\))|KRaLiMaRKo|E\.N\.D|D\-Z0N3)",
                                                         RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex WordDelimiterRegex = new Regex(@"(\s|\.|,|_|-|=|'|\|)+", RegexOptions.Compiled);
