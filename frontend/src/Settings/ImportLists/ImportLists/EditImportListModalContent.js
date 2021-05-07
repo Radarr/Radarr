@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import Alert from 'Components/Alert';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
@@ -47,7 +48,8 @@ function EditImportListModalContent(props) {
     rootFolderPath,
     searchOnAdd,
     tags,
-    fields
+    fields,
+    message
   } = item;
 
   return (
@@ -74,6 +76,15 @@ function EditImportListModalContent(props) {
             <Form
               {...otherProps}
             >
+              {
+                !!message &&
+                  <Alert
+                    className={styles.message}
+                    kind={message.value.type}
+                  >
+                    {message.value.message}
+                  </Alert>
+              }
               <FormGroup>
                 <FormLabel>{translate('Name')}</FormLabel>
 
