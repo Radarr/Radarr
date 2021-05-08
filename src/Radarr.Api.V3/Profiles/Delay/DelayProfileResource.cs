@@ -13,6 +13,7 @@ namespace Radarr.Api.V3.Profiles.Delay
         public DownloadProtocol PreferredProtocol { get; set; }
         public int UsenetDelay { get; set; }
         public int TorrentDelay { get; set; }
+        public bool BypassIfHighestQuality { get; set; }
         public int Order { get; set; }
         public HashSet<int> Tags { get; set; }
     }
@@ -35,6 +36,7 @@ namespace Radarr.Api.V3.Profiles.Delay
                 PreferredProtocol = model.PreferredProtocol,
                 UsenetDelay = model.UsenetDelay,
                 TorrentDelay = model.TorrentDelay,
+                BypassIfHighestQuality = model.BypassIfHighestQuality,
                 Order = model.Order,
                 Tags = new HashSet<int>(model.Tags)
             };
@@ -56,6 +58,7 @@ namespace Radarr.Api.V3.Profiles.Delay
                 PreferredProtocol = resource.PreferredProtocol,
                 UsenetDelay = resource.UsenetDelay,
                 TorrentDelay = resource.TorrentDelay,
+                BypassIfHighestQuality = resource.BypassIfHighestQuality,
                 Order = resource.Order,
                 Tags = new HashSet<int>(resource.Tags)
             };

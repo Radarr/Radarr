@@ -94,6 +94,8 @@
   "BranchUpdate": "Branch to use to update Radarr",
   "BranchUpdateMechanism": "Branch used by external update mechanism",
   "BuiltIn": "Built In",
+  "BypassDelayIfHighestQuality": "Bypass if Highest Quality",
+  "BypassDelayIfHighestQualityHelpText": "Bypass delay when release has the highest enabled quality in the quality profile",
   "BypassProxyForLocalAddresses": "Bypass Proxy for Local Addresses",
   "Calendar": "Calendar",
   "CalendarOptions": "Calendar Options",
