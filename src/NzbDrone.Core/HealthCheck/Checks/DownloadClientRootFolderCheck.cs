@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
@@ -45,14 +46,11 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 {
                     var status = client.GetStatus();
                     var folders = status.OutputRootFolders;
-                    if (folders != null)
+                    foreach (var folder in folders)
                     {
-                        foreach (var folder in folders)
+                        if (rootFolders.Any(r => r.Path.PathEquals(folder.FullPath)))
                         {
-                            if (rootFolders.Any(r => r.Path == folder.FullPath))
-                            {
-                                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("DownloadClientCheckDownloadingToRoot"), client.Definition.Name, folder.FullPath), "#downloads_in_root_folder");
-                            }
+                            return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("DownloadClientCheckDownloadingToRoot"), client.Definition.Name, folder.FullPath), "#downloads_in_root_folder");
                         }
                     }
                 }
