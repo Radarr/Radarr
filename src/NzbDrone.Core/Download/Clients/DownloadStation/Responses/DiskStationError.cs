@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace NzbDrone.Core.Download.Clients.DownloadStation.Responses
 {
@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Responses
                 return AuthMessages[Code];
             }
 
-            if (api == DiskStationApi.DownloadStationTask && DownloadStationTaskMessages.ContainsKey(Code))
+            if ((api == DiskStationApi.DownloadStationTask || api == DiskStationApi.DownloadStation2Task) && DownloadStationTaskMessages.ContainsKey(Code))
             {
                 return DownloadStationTaskMessages[Code];
             }

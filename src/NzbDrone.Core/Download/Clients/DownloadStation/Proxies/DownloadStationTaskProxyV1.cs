@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
@@ -7,19 +7,16 @@ using NzbDrone.Core.Download.Clients.DownloadStation.Responses;
 
 namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
 {
-    public interface IDownloadStationTaskProxy : IDiskStationProxy
+    public class DownloadStationTaskProxyV1 : DiskStationProxyBase, IDownloadStationTaskProxy
     {
-        IEnumerable<DownloadStationTask> GetTasks(DownloadStationSettings settings);
-        void RemoveTask(string downloadId, DownloadStationSettings settings);
-        void AddTaskFromUrl(string url, string downloadDirectory, DownloadStationSettings settings);
-        void AddTaskFromData(byte[] data, string filename, string downloadDirectory, DownloadStationSettings settings);
-    }
-
-    public class DownloadStationTaskProxy : DiskStationProxyBase, IDownloadStationTaskProxy
-    {
-        public DownloadStationTaskProxy(IHttpClient httpClient, ICacheManager cacheManager, Logger logger)
+        public DownloadStationTaskProxyV1(IHttpClient httpClient, ICacheManager cacheManager, Logger logger)
             : base(DiskStationApi.DownloadStationTask, "SYNO.DownloadStation.Task", httpClient, cacheManager, logger)
         {
+        }
+
+        public bool IsApiSupported(DownloadStationSettings settings)
+        {
+            return GetApiInfo(settings) != null;
         }
 
         public void AddTaskFromData(byte[] data, string filename, string downloadDirectory, DownloadStationSettings settings)
