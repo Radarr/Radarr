@@ -180,7 +180,7 @@ class InteractiveSearchRow extends Component {
                     }
                   </ul>
                 }
-                position={tooltipPositions.LEFT}
+                position={tooltipPositions.BOTTOM}
               />
           }
         </TableRowCell>
@@ -293,7 +293,7 @@ class InteractiveSearchRow extends Component {
                     }
                   </ul>
                 }
-                position={tooltipPositions.LEFT}
+                position={tooltipPositions.BOTTOM}
               />
           }
         </TableRowCell>
