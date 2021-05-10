@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Radarr",
-    "version": "3.0.0",
+    "version": "3",
     "description": "The way users should interact with Radarr programatically. To utilize any of these endpoints you will need a few pieces of information:\n\nex: localhost:7878/api/v3/movies?apiKey={key_here}\n\n* url: localhost, 10.1.0.1, 192.168.1.1, etc\n* port: 7878 (unless you modify it)\n* apiKey: Located in Settings > General > Security"
   },
   "servers": [
@@ -3809,7 +3809,7 @@
           "monitored": {
             "type": "boolean"
           },
-          "minimumAcailability": {
+          "minimumAvailability": {
             "type": "string",
             "enum": [
               "announced",
