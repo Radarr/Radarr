@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 
@@ -23,7 +24,14 @@ namespace NzbDrone.Core.Notifications.Telegram
 
         public override void OnDownload(DownloadMessage message)
         {
-            _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, Settings);
+            if (message.OldMovieFiles.Any())
+            {
+                _proxy.SendNotification(MOVIE_UPGRADED_TITLE, message.Message, Settings);
+            }
+            else
+            {
+                _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, Settings);
+            }
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
