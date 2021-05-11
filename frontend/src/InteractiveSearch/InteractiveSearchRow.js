@@ -189,7 +189,6 @@ class InteractiveSearchRow extends Component {
           <Link
             to={infoUrl}
             title={title}
-            rel='noreferrer'
           >
             <div>
               {title}
