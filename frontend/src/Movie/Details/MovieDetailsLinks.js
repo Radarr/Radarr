@@ -41,6 +41,19 @@ function MovieDetailsLinks(props) {
         </Label>
       </Link>
 
+      <Link
+        className={styles.link}
+        to={`https://letterboxd.com/tmdb/${tmdbId}`}
+      >
+        <Label
+          className={styles.linkLabel}
+          kind={kinds.INFO}
+          size={sizes.LARGE}
+        >
+          {translate('Letterboxd')}
+        </Label>
+      </Link>
+
       {
         !!imdbId &&
           <Link
@@ -61,7 +74,7 @@ function MovieDetailsLinks(props) {
         !!imdbId &&
           <Link
             className={styles.link}
-            to={` https://moviechat.org/${imdbId}/`}
+            to={`https://moviechat.org/${imdbId}/`}
           >
             <Label
               className={styles.linkLabel}
@@ -77,7 +90,7 @@ function MovieDetailsLinks(props) {
         !!youTubeTrailerId &&
           <Link
             className={styles.link}
-            to={` https://www.youtube.com/watch?v=${youTubeTrailerId}/`}
+            to={`https://www.youtube.com/watch?v=${youTubeTrailerId}/`}
           >
             <Label
               className={styles.linkLabel}
