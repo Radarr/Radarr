@@ -174,7 +174,7 @@ class AddNewMovieSearchResult extends Component {
 
               {
                 !!runtime &&
-                  <span>
+                  <span className={styles.runtime}>
                     {formatRuntime(runtime, movieRuntimeFormat)}
                   </span>
               }
