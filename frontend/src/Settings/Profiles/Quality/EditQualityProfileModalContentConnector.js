@@ -96,12 +96,13 @@ function createLanguagesSelector() {
     (state) => state.settings.languages,
     (languages) => {
       const items = languages.items;
+      const filterItems = ['Unknown'];
 
       if (!items) {
         return [];
       }
 
-      const newItems = items.map((item) => {
+      const newItems = items.filter((lang) => !filterItems.includes(lang.name)).map((item) => {
         return {
           key: item.id,
           value: item.name
