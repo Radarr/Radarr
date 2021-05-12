@@ -53,7 +53,13 @@ class PageHeader extends Component {
     return (
       <div className={styles.header}>
         <div className={styles.logoContainer}>
-          <Link to={'/'}>
+          <Link
+            className={styles.logoLink}
+            to={{
+              pathname: '/',
+              state: { restoreScrollPosition: true }
+            }}
+          >
             <img
               className={isSmallScreen ? styles.logo : styles.logoFull}
               src={isSmallScreen ? `${window.Radarr.urlBase}/Content/Images/logo.png` : `${window.Radarr.urlBase}/Content/Images/logo-full.png`}

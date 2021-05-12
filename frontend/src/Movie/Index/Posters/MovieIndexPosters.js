@@ -104,7 +104,8 @@ class MovieIndexPosters extends Component {
       columnCount: 1,
       posterWidth: 162,
       posterHeight: 238,
-      rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {})
+      rowHeight: calculateRowHeight(238, null, props.isSmallScreen, {}),
+      scrollRestored: false
     };
 
     this._isInitialized = false;
@@ -119,14 +120,16 @@ class MovieIndexPosters extends Component {
       posterOptions,
       jumpToCharacter,
       isSmallScreen,
-      isMovieEditorActive
+      isMovieEditorActive,
+      scrollTop
     } = this.props;
 
     const {
       width,
       columnWidth,
       columnCount,
-      rowHeight
+      rowHeight,
+      scrollRestored
     } = this.state;
 
     if (prevProps.sortKey !== sortKey ||
@@ -145,6 +148,11 @@ class MovieIndexPosters extends Component {
       this._grid.recomputeGridSize();
     }
 
+    if (this._grid && scrollTop !== 0 && !scrollRestored) {
+      this.setState({ scrollRestored: true });
+      this._grid.scrollToPosition({ scrollTop });
+    }
+
     if (jumpToCharacter != null && jumpToCharacter !== prevProps.jumpToCharacter) {
       const index = getIndexOfFirstCharacter(items, jumpToCharacter);
 
@@ -156,6 +164,10 @@ class MovieIndexPosters extends Component {
           columnIndex: 0
         });
       }
+    }
+
+    if (this._grid && scrollTop !== 0) {
+      this._grid.scrollToPosition({ scrollTop });
     }
   }
 
@@ -332,6 +344,7 @@ MovieIndexPosters.propTypes = {
   sortKey: PropTypes.string,
   posterOptions: PropTypes.object.isRequired,
   jumpToCharacter: PropTypes.string,
+  scrollTop: PropTypes.number.isRequired,
   scroller: PropTypes.instanceOf(Element).isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
