@@ -23,7 +23,12 @@ trigger:
     - master
 
 pr:
-- develop
+  branches:
+    include:
+    - develop
+  paths:
+    exclude:
+    - src/NzbDrone.Core/Localization/Core
 
 stages:
   - stage: Setup
