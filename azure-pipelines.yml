@@ -23,7 +23,11 @@ trigger:
     - master
 
 pr:
-- develop
+  branches:
+    include:
+    - develop
+    exclude:
+    - weblate-servarr-*
 
 stages:
   - stage: Setup
