@@ -199,8 +199,8 @@ class QueuedTaskRow extends Component {
           </span>
           {
             clientUserAgent &&
-              <span className={styles.userAgent} title="User-Agent provided by the app that called the API">
-                from: {clientUserAgent}
+              <span className={styles.userAgent} title={translate('TaskUserAgentTooltip')}>
+                {translate('from')}: {clientUserAgent}
               </span>
           }
         </TableRowCell>
