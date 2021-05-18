@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using NzbDrone.Common.Http;
 using NzbDrone.Core.Messaging.Commands;
 using Radarr.Http.REST;
 
@@ -20,6 +21,8 @@ namespace NzbDrone.Api.Commands
         public TimeSpan? Duration { get; set; }
         public string Exception { get; set; }
         public CommandTrigger Trigger { get; set; }
+
+        public string ClientUserAgent { get; set; }
 
         [JsonIgnore]
         public string CompletionMessage { get; set; }
@@ -124,6 +127,8 @@ namespace NzbDrone.Api.Commands
                 Duration = model.Duration,
                 Exception = model.Exception,
                 Trigger = model.Trigger,
+
+                ClientUserAgent = UserAgentParser.SimplifyUserAgent(model.Body.ClientUserAgent),
 
                 CompletionMessage = model.Body.CompletionMessage,
                 LastExecutionTime = model.Body.LastExecutionTime

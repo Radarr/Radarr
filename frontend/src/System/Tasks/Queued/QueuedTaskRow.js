@@ -157,6 +157,7 @@ class QueuedTaskRow extends Component {
       status,
       duration,
       message,
+      clientUserAgent,
       longDateFormat,
       timeFormat,
       onCancelPress
@@ -192,7 +193,17 @@ class QueuedTaskRow extends Component {
           </span>
         </TableRowCell>
 
-        <TableRowCell>{commandName}</TableRowCell>
+        <TableRowCell>
+          <span className={styles.commandName}>
+            {commandName}
+          </span>
+          {
+            clientUserAgent &&
+              <span className={styles.userAgent} title={translate('TaskUserAgentTooltip')}>
+                {translate('from')}: {clientUserAgent}
+              </span>
+          }
+        </TableRowCell>
 
         <TableRowCell
           className={styles.queued}
@@ -256,6 +267,7 @@ QueuedTaskRow.propTypes = {
   status: PropTypes.string.isRequired,
   duration: PropTypes.string,
   message: PropTypes.string,
+  clientUserAgent: PropTypes.string,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
   longDateFormat: PropTypes.string.isRequired,
