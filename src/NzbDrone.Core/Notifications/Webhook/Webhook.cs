@@ -136,6 +136,7 @@ namespace NzbDrone.Core.Notifications.Webhook
                     {
                         Id = 1,
                         Title = "Test Title",
+                        Year = 1970,
                         FolderPath = "C:\\testpath",
                         ReleaseDate = "1970-01-01"
                     },

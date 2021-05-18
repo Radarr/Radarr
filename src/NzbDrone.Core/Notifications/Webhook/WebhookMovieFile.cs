@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             QualityVersion = movieFile.Quality.Revision.Version;
             ReleaseGroup = movieFile.ReleaseGroup;
             SceneName = movieFile.SceneName;
+            IndexerFlags = movieFile.IndexerFlags.ToString();
             Size = movieFile.Size;
         }
 
@@ -27,6 +28,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         public int QualityVersion { get; set; }
         public string ReleaseGroup { get; set; }
         public string SceneName { get; set; }
+        public string IndexerFlags { get; set; }
         public long Size { get; set; }
     }
 }
