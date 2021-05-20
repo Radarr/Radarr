@@ -42,7 +42,7 @@ function getInternalLink(source) {
         <IconButton
           name={icons.PLAY}
           title={translate('MovieEditor')}
-          to="/movieeditor"
+          to="/"
         />
       );
     case 'UpdateCheck':
