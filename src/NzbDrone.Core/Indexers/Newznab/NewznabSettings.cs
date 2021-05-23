@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Indexers.Newznab
         [FieldDefinition(2, Label = "API Key", Privacy = PrivacyLevel.ApiKey)]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(3, Label = "Categories", Type = FieldType.Select, SelectOptionsProviderAction = "newznabCategories", HelpText = "Drop down list, leave blank to disable all categories", Advanced = true)]
+        [FieldDefinition(3, Label = "Categories", Type = FieldType.Select, SelectOptionsProviderAction = "newznabCategories", HelpText = "Drop down list, leave blank to disable all categories")]
         public IEnumerable<int> Categories { get; set; }
 
         [FieldDefinition(5, Label = "Additional Parameters", HelpText = "Additional Newznab parameters", Advanced = true)]

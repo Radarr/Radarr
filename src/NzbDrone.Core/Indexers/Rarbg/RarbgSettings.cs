@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
         [FieldDefinition(5, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/Definitions#Indexer_Flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
-        [FieldDefinition(6, Type = FieldType.Select, Label = "Categories", SelectOptions = typeof(RarbgCategories), HelpText = "Categories for use in search and feeds. If unspecified, all options are used.", Advanced = true)]
+        [FieldDefinition(6, Type = FieldType.Select, Label = "Categories", SelectOptions = typeof(RarbgCategories), HelpText = "Categories for use in search and feeds. If unspecified, all options are used.")]
         public IEnumerable<int> Categories { get; set; }
 
         [FieldDefinition(7)]
