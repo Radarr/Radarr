@@ -61,40 +61,37 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 {
                     var status = client.GetStatus();
                     var folders = status.OutputRootFolders;
-                    if (folders != null)
+                    foreach (var folder in folders)
                     {
-                        foreach (var folder in folders)
+                        if (!folder.IsValid)
                         {
-                            if (!folder.IsValid)
+                            if (!status.IsLocalhost)
                             {
-                                if (!status.IsLocalhost)
-                                {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckWrongOSPath"), client.Definition.Name, folder.FullPath, _osInfo.Name), "#bad_remote_path_mapping");
-                                }
-                                else if (_osInfo.IsDocker)
-                                {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckBadDockerPath"), client.Definition.Name, folder.FullPath, _osInfo.Name), "#docker_bad_remote_path_mapping");
-                                }
-                                else
-                                {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckLocalWrongOSPath"), client.Definition.Name, folder.FullPath, _osInfo.Name), "#bad_download_client_settings");
-                                }
+                                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckWrongOSPath"), client.Definition.Name, folder.FullPath, _osInfo.Name), "#bad_remote_path_mapping");
                             }
-
-                            if (!_diskProvider.FolderExists(folder.FullPath))
+                            else if (_osInfo.IsDocker)
                             {
-                                if (_osInfo.IsDocker)
-                                {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckDockerFolderMissing"), client.Definition.Name, folder.FullPath), "#docker_bad_remote_path_mapping");
-                                }
-                                else if (!status.IsLocalhost)
-                                {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckLocalFolderMissing"), client.Definition.Name, folder.FullPath), "#bad_remote_path_mapping");
-                                }
-                                else
-                                {
-                                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckGenericPermissions"), client.Definition.Name, folder.FullPath), "#permissions_error");
-                                }
+                                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckBadDockerPath"), client.Definition.Name, folder.FullPath, _osInfo.Name), "#docker_bad_remote_path_mapping");
+                            }
+                            else
+                            {
+                                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckLocalWrongOSPath"), client.Definition.Name, folder.FullPath, _osInfo.Name), "#bad_download_client_settings");
+                            }
+                        }
+
+                        if (!_diskProvider.FolderExists(folder.FullPath))
+                        {
+                            if (_osInfo.IsDocker)
+                            {
+                                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckDockerFolderMissing"), client.Definition.Name, folder.FullPath), "#docker_bad_remote_path_mapping");
+                            }
+                            else if (!status.IsLocalhost)
+                            {
+                                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckLocalFolderMissing"), client.Definition.Name, folder.FullPath), "#bad_remote_path_mapping");
+                            }
+                            else
+                            {
+                                return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("RemotePathMappingCheckGenericPermissions"), client.Definition.Name, folder.FullPath), "#permissions_error");
                             }
                         }
                     }
