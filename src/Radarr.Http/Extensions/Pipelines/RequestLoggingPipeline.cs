@@ -5,10 +5,8 @@ using Nancy.Bootstrapper;
 using NLog;
 using NzbDrone.Common.Extensions;
 using Radarr.Http.ErrorManagement;
-using Radarr.Http.Extensions;
-using Radarr.Http.Extensions.Pipelines;
 
-namespace NzbDrone.Api.Extensions.Pipelines
+namespace Radarr.Http.Extensions.Pipelines
 {
     public class RequestLoggingPipeline : IRegisterNancyPipeline
     {

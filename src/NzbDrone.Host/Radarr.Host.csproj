@@ -17,7 +17,6 @@
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NzbDrone.Api\Radarr.Api.csproj" />
     <ProjectReference Include="..\NzbDrone.Common\Radarr.Common.csproj" />
     <ProjectReference Include="..\NzbDrone.Core\Radarr.Core.csproj" />
     <ProjectReference Include="..\NzbDrone.SignalR\Radarr.SignalR.csproj" />
