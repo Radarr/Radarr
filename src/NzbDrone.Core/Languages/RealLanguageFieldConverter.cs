@@ -10,8 +10,9 @@ namespace NzbDrone.Core.Languages
         {
             return Language.All
                 .Where(l => l != Language.Unknown && l != Language.Any)
+                .OrderBy(l => l.Id > 0).ThenBy(l => l.Name)
                 .ToList()
-                .ConvertAll(v => new SelectOption { Value = v.Id, Name = v.Name });
+                .ConvertAll(v => new SelectOption { Value = v.Id, Name = v.Name, DividerAfter = v.Id == Language.Original.Id });
         }
     }
 }

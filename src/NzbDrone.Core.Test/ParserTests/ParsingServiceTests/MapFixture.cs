@@ -27,6 +27,8 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         private ParsedMovieInfo _translationTitleInfo;
         private ParsedMovieInfo _umlautInfo;
         private ParsedMovieInfo _umlautAltInfo;
+        private ParsedMovieInfo _multiLanguageInfo;
+        private ParsedMovieInfo _multiLanguageWithOriginalInfo;
         private MovieSearchCriteria _movieSearchCriteria;
 
         [SetUp]
@@ -95,6 +97,18 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
                 MovieTitle = "Fack Ju Goethe 2: Same same",
                 Languages = new List<Language> { Language.English },
                 Year = _movie.Year
+            };
+
+            _multiLanguageInfo = new ParsedMovieInfo
+            {
+                MovieTitle = _movie.Title,
+                Languages = new List<Language> { Language.Original, Language.French }
+            };
+
+            _multiLanguageWithOriginalInfo = new ParsedMovieInfo
+            {
+                MovieTitle = _movie.Title,
+                Languages = new List<Language> { Language.Original, Language.French, Language.English }
             };
 
             _movieSearchCriteria = new MovieSearchCriteria
@@ -179,6 +193,21 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         {
             Subject.Map(_umlautInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
             Subject.Map(_umlautAltInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+        }
+
+        [Test]
+        public void should_convert_original()
+        {
+            Subject.Map(_multiLanguageInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().Contain(Language.English);
+            Subject.Map(_multiLanguageInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().Contain(Language.French);
+        }
+
+        [Test]
+        public void should_remove_original_as_already_exists()
+        {
+            Subject.Map(_multiLanguageWithOriginalInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().Contain(Language.English);
+            Subject.Map(_multiLanguageWithOriginalInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().Contain(Language.French);
+            Subject.Map(_multiLanguageWithOriginalInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().NotContain(Language.Original);
         }
     }
 }

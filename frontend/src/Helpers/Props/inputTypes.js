@@ -12,6 +12,7 @@ export const PATH = 'path';
 export const QUALITY_PROFILE_SELECT = 'qualityProfileSelect';
 export const ROOT_FOLDER_SELECT = 'rootFolderSelect';
 export const INDEXER_FLAGS_SELECT = 'indexerFlagsSelect';
+export const LANGUAGE_SELECT = 'languageSelect';
 export const SELECT = 'select';
 export const DYNAMIC_SELECT = 'dynamicSelect';
 export const TAG = 'tag';
@@ -36,6 +37,7 @@ export const all = [
   QUALITY_PROFILE_SELECT,
   ROOT_FOLDER_SELECT,
   INDEXER_FLAGS_SELECT,
+  LANGUAGE_SELECT,
   SELECT,
   DYNAMIC_SELECT,
   TAG,

@@ -139,6 +139,19 @@ namespace NzbDrone.Core.Parser
                 _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", result.Movie.OriginalLanguage.Name);
             }
 
+            if (parsedMovieInfo.Languages.Contains(Language.Original))
+            {
+                parsedMovieInfo.Languages.Remove(Language.Original);
+                if (!parsedMovieInfo.Languages.Contains(result.Movie.OriginalLanguage) && result.Movie != null)
+                {
+                    parsedMovieInfo.Languages.Add(result.Movie.OriginalLanguage);
+                }
+                else
+                {
+                    parsedMovieInfo.Languages.Add(Language.Unknown);
+                }
+            }
+
             result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
 
             return result;

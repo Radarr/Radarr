@@ -11,6 +11,7 @@ using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.SignalR;
 using Radarr.Api.V3.CustomFormats;
@@ -115,7 +116,16 @@ namespace Radarr.Api.V3.MovieFiles
             movieFile.Quality = movieFileResource.Quality;
             movieFile.Languages = movieFileResource.Languages;
             movieFile.Edition = movieFileResource.Edition;
-            movieFile.ReleaseGroup = movieFileResource.ReleaseGroup;
+            if (movieFileResource.ReleaseGroup != null)
+            {
+                movieFile.ReleaseGroup = movieFileResource.ReleaseGroup;
+            }
+
+            if (movieFileResource.SceneName != null && SceneChecker.IsSceneTitle(movieFileResource.SceneName))
+            {
+                movieFile.SceneName = movieFileResource.SceneName;
+            }
+
             _mediaFileService.Update(movieFile);
         }
 
@@ -150,6 +160,11 @@ namespace Radarr.Api.V3.MovieFiles
                 if (resource.ReleaseGroup != null)
                 {
                     movieFile.ReleaseGroup = resource.ReleaseGroup;
+                }
+
+                if (resource.SceneName != null && SceneChecker.IsSceneTitle(resource.SceneName))
+                {
+                    movieFile.SceneName = resource.SceneName;
                 }
             }
 

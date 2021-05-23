@@ -254,7 +254,7 @@ class EditQualityProfileModalContent extends Component {
                           </FormLabel>
 
                           <FormInputGroup
-                            type={inputTypes.SELECT}
+                            type={inputTypes.LANGUAGE_SELECT}
                             name="language"
                             values={languages}
                             value={languageId}

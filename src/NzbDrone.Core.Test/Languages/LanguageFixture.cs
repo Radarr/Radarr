@@ -10,6 +10,9 @@ namespace NzbDrone.Core.Test.Languages
     {
         public static object[] FromIntCases =
             {
+                new object[] { -2, Language.Original },
+                new object[] { -1, Language.Any },
+                new object[] { 0, Language.Unknown },
                 new object[] { 1, Language.English },
                 new object[] { 2, Language.French },
                 new object[] { 3, Language.Spanish },
@@ -45,6 +48,9 @@ namespace NzbDrone.Core.Test.Languages
 
         public static object[] ToIntCases =
             {
+                new object[] { Language.Original, -2 },
+                new object[] { Language.Any, -1 },
+                new object[] { Language.Unknown, 0 },
                 new object[] { Language.English, 1 },
                 new object[] { Language.French, 2 },
                 new object[] { Language.Spanish, 3 },

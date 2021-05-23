@@ -155,7 +155,7 @@ class FileEditModalContent extends Component {
                   <FormLabel>{translate('Languages')}</FormLabel>
 
                   <FormInputGroup
-                    type={inputTypes.SELECT}
+                    type={inputTypes.LANGUAGE_SELECT}
                     name="languageIds"
                     value={languageIds}
                     values={languageOptions}
