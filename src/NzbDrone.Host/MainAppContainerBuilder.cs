@@ -15,7 +15,6 @@ namespace Radarr.Host
                              {
                                  "Radarr.Host",
                                  "Radarr.Core",
-                                 "Radarr.Api",
                                  "Radarr.SignalR",
                                  "Radarr.Api.V3",
                                  "Radarr.Http"
