@@ -95,7 +95,7 @@
   "BranchUpdateMechanism": "Branch used by external update mechanism",
   "BuiltIn": "Built In",
   "BypassDelayIfHighestQuality": "Bypass if Highest Quality",
-  "BypassDelayIfHighestQualityHelpText": "Bypass delay when release has the highest enabled quality in the quality profile",
+  "BypassDelayIfHighestQualityHelpText": "Bypass delay when release has the highest enabled quality in the quality profile with the preferred protocol",
   "BypassProxyForLocalAddresses": "Bypass Proxy for Local Addresses",
   "Calendar": "Calendar",
   "CalendarOptions": "Calendar Options",
