@@ -1083,7 +1083,7 @@
     "Reddit": "Reddit",
     "More": "Több",
     "Download": "Letöltés",
-    "DownloadClientCheckDownloadingToRoot": "A kliens letöltése {0} a letöltéseket a gyökérmappába helyezi {1}. Nem szabad letölteni egy gyökérmappába.",
+    "DownloadClientCheckDownloadingToRoot": "A Letöltőkliens {0} a letöltéseket a gyökérmappába helyezi {1}. Nem szabad letölteni egy gyökérmappába.",
     "DeleteFileLabel": "{0} Film fájl törlése",
     "UpdateAvailable": "Új frissítés elérhető",
     "RemotePathMappingCheckFilesGenericPermissions": "A letöltőkliens {0} jelentett fájljait a(z) {1} fájlba, de a Radarr nem látja ezt a könyvtárat. Lehet, hogy módosítania kell a mappa engedélyeit.",
@@ -1108,5 +1108,7 @@
     "ImportListMissingRoot": "Hiányzó gyökérmappa az importálási listá(k)hoz: {0}",
     "BypassDelayIfHighestQualityHelpText": "Hagyja figyelmen kívül a késleltetést, ha a kiadás a minőségprofil legmagasabb aktivált minősége",
     "BypassDelayIfHighestQuality": "Kihagyás ha a legjobb minőség elérhető",
-    "Letterboxd": "Letterboxd"
+    "Letterboxd": "Letterboxd",
+    "From": "Től",
+    "TaskUserAgentTooltip": "Az API-t hívó alkalmazás biztosítja a User-Agent szolgáltatást"
 }
