@@ -249,6 +249,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.2011.UHD.BluRay.DD5.1.HDR.x265-CtrlHD/ctrlhd-rotpota-1080p.mkv", false)]
         [TestCase("Movie Name 2005 1080p UHD BluRay DD+7.1 x264-LoRD.mkv", false)]
         [TestCase("Movie.Name.2011.1080p.UHD.BluRay.DD5.1.HDR.x265-CtrlHD.mkv", false)]
+        [TestCase("Movie.Name.2016.German.DTS.DL.1080p.UHDBD.x265-TDO.mkv", false)]
         public void should_parse_bluray1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R1080p);
@@ -264,6 +265,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2016.2018.2160p.MBluRay.x264-CRUELTY.mkv", false)]
         [TestCase("Movie.Title.2019.2160p.MBLURAY.x264-MBLURAYFANS.mkv", false)]
         [TestCase("Movie.Title.2017.2160p.MBluRay.x264-TREBLE.mkv", false)]
+        [TestCase("Movie.Name.2020.German.UHDBD.2160p.HDR10.HEVC.EAC3.DL-pmHD.mkv", false)]
         public void should_parse_bluray2160p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R2160p);
@@ -291,6 +293,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.1980.2160p.UHD.BluRay.Remux.HDR.HEVC.DTS-HD.MA.5.1-PmP.mkv")]
         [TestCase("Movie.Title.2016.T1.UHDRemux.2160p.HEVC.Dual.AC3.5.1-TrueHD.5.1.Sub")]
         [TestCase("[Dolby Vision] Movie.Title.S07.MULTi.UHD.BLURAY.REMUX.DV-NoTag")]
+        [TestCase("Movie.Name.2020.German.UHDBD.2160p.HDR10.HEVC.EAC3.DL.Remux-pmHD.mkv")]
         public void should_parse_remux2160p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R2160p, Modifier.REMUX);
