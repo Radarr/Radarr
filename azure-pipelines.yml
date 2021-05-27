@@ -7,7 +7,7 @@ variables:
   outputFolder: './_output'
   artifactsFolder: './_artifacts'
   testsFolder: './_tests'
-  majorVersion: '3.2.0'
+  majorVersion: '3.2.1'
   minorVersion: $[counter('minorVersion', 2000)]
   radarrVersion: '$(majorVersion).$(minorVersion)'
   buildName: '$(Build.SourceBranchName).$(radarrVersion)'
