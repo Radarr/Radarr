@@ -108,6 +108,8 @@ namespace Radarr.Http.Extensions
                 remoteIP = remoteIP.MapToIPv4();
             }
 
+            remoteAddress = remoteIP.ToString();
+
             // Only check if forwarded by a local network reverse proxy
             if (remoteIP.IsLocalAddress())
             {
