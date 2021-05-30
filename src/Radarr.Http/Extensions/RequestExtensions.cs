@@ -95,10 +95,23 @@ namespace Radarr.Http.Extensions
             }
 
             var remoteAddress = context.Request.UserHostAddress;
-            IPAddress remoteIP;
+
+            IPAddress.TryParse(remoteAddress, out IPAddress remoteIP);
+
+            if (remoteIP == null)
+            {
+                return remoteAddress;
+            }
+
+            if (remoteIP.IsIPv4MappedToIPv6)
+            {
+                remoteIP = remoteIP.MapToIPv4();
+            }
+
+            remoteAddress = remoteIP.ToString();
 
             // Only check if forwarded by a local network reverse proxy
-            if (IPAddress.TryParse(remoteAddress, out remoteIP) && remoteIP.IsLocalAddress())
+            if (remoteIP.IsLocalAddress())
             {
                 var realIPHeader = context.Request.Headers["X-Real-IP"];
                 if (realIPHeader.Any())
