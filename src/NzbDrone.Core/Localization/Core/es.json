@@ -1094,5 +1094,8 @@
     "More": "Más",
     "Download": "Descargar",
     "DownloadClientCheckDownloadingToRoot": "El cliente de descargas {0} coloca las descargas en la carpeta raíz {1}. No debe descargar a una carpeta raíz.",
-    "DeleteFileLabel": "Eliminar {0} archivos de película"
+    "DeleteFileLabel": "Eliminar {0} archivos de película",
+    "ImportListMultipleMissingRoots": "Múltiples carpetas raíz faltan para las listas de importación: {0}",
+    "ImportListMissingRoot": "Falta la capeta raíz para las listas: {0}",
+    "From": "de"
 }

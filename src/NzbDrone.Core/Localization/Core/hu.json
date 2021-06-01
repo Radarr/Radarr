@@ -1106,7 +1106,7 @@
     "Monox86SupportCheckMessage": "A jelenlegi operációs rendszer 32 bites, ezt a Radarr következő kiadása nem fogja támogatni.",
     "ImportListMultipleMissingRoots": "Több gyökérmappa hiányzik az importálási listákhoz: {0}",
     "ImportListMissingRoot": "Hiányzó gyökérmappa az importálási listá(k)hoz: {0}",
-    "BypassDelayIfHighestQualityHelpText": "Hagyja figyelmen kívül a késleltetést, ha a kiadás a minőségprofil legmagasabb aktivált minősége",
+    "BypassDelayIfHighestQualityHelpText": "Bypass késleltetés, ha a kiadásnak a legmagasabb engedélyezett minősége van az előnyben részesített protokollal rendelkező minőségi profilban",
     "BypassDelayIfHighestQuality": "Kihagyás ha a legjobb minőség elérhető",
     "Letterboxd": "Letterboxd",
     "From": "Től",

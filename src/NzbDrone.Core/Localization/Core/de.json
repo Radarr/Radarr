@@ -1117,6 +1117,9 @@
     "Monox86SupportCheckMessage": "Das momentan verwendete Betriebssystem ist 32 Bit und wird mit dem nächsten Release von Radarr nicht mehr unterstützt.",
     "ImportListMultipleMissingRoots": "Mehrere Stammverzeichnisse fehlen für Importlist: {0}",
     "ImportListMissingRoot": "Fehlendes Stammverzeichnis für Importlist(en): {0}",
-    "BypassDelayIfHighestQualityHelpText": "Verzögerung ignorieren wenn das Release die höchte aktivierte Qualität des Qualitätsprofils ist",
-    "BypassDelayIfHighestQuality": "Ignoriere für höchste Qualität"
+    "BypassDelayIfHighestQualityHelpText": "Verzögerung ignorieren wenn das Release die höchste aktivierte Qualität des Qualitätsprofils mit dem bevorzugtem Protokoll ist",
+    "BypassDelayIfHighestQuality": "Ignoriere für höchste Qualität",
+    "TaskUserAgentTooltip": "UserAgent von der App die die API aufgerufen hat",
+    "Letterboxd": "Letterboxd",
+    "From": "Von"
 }
