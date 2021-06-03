@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Notifications.Trakt
     public class TraktProxy : ITraktProxy
     {
         private const string URL = "https://api.trakt.tv";
-        private const string OAuthUrl = "https://api.trakt.tv/oauth/authorize";
+        private const string OAuthUrl = "https://trakt.tv/oauth/authorize";
         private const string RedirectUri = "https://auth.servarr.com/v1/trakt/auth";
         private const string RenewUri = "https://auth.servarr.com/v1/trakt/renew";
         private const string ClientId = "64508a8bf370cee550dde4806469922fd7cd70afb2d5690e3ee7f75ae784b70e";
