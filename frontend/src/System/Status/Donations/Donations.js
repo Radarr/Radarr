@@ -36,6 +36,14 @@ class Donations extends Component {
             />
           </Link>
         </div>
+        <div className={styles.logoContainer} title="Prowlarr">
+          <Link to="https://opencollective.com/prowlarr">
+            <img
+              className={styles.logo}
+              src={`${window.Radarr.urlBase}/Content/Images/Icons/logo-prowlarr.png`}
+            />
+          </Link>
+        </div>
         <div className={styles.logoContainer} title="Sonarr">
           <Link to="https://opencollective.com/sonarr">
             <img
