@@ -48,7 +48,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     return new HealthCheck(GetType(),
                         HealthCheckResult.Error,
                         string.Format(_localizationService.GetLocalizedString("UpdateCheckStartupTranslocationMessage"), startupFolder),
-                        "#cannot_install_update_because_startup_folder_is_in_an_app_translocation_folder.");
+                        "#cannot-install-update-because-startup-folder-is-in-an-app-translocation-folder.");
                 }
 
                 if (!_diskProvider.FolderWritable(startupFolder))
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     return new HealthCheck(GetType(),
                         HealthCheckResult.Error,
                         string.Format(_localizationService.GetLocalizedString("UpdateCheckStartupNotWritableMessage"), startupFolder, Environment.UserName),
-                        "#cannot_install_update_because_startup_folder_is_not_writable_by_the_user");
+                        "#cannot-install-update-because-startup-folder-is-not-writable-by-the-user");
                 }
 
                 if (!_diskProvider.FolderWritable(uiFolder))
@@ -64,13 +64,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     return new HealthCheck(GetType(),
                         HealthCheckResult.Error,
                         string.Format(_localizationService.GetLocalizedString("UpdateCheckUINotWritableMessage"), uiFolder, Environment.UserName),
-                        "#cannot_install_update_because_ui_folder_is_not_writable_by_the_user");
+                        "#cannot-install-update-because-ui-folder-is-not-writable-by-the-user");
                 }
             }
 
             if (BuildInfo.BuildDateTime < DateTime.UtcNow.AddDays(-14) && _checkUpdateService.AvailableUpdate() != null)
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("UpdateAvailable"), "#new_update_is_available");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("UpdateAvailable"), "#new-update-is-available");
             }
 
             return new HealthCheck(GetType());

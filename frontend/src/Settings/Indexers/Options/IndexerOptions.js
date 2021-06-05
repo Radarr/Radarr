@@ -118,7 +118,7 @@ function IndexerOptions(props) {
                 unit="minutes"
                 helpText={translate('HelpText')}
                 helpTextWarning={translate('RSSSyncIntervalHelpTextWarning')}
-                helpLink="https://wiki.servarr.com/Radarr_FAQ#How_does_Radarr_work"
+                helpLink="https://wiki.servarr.com/radarr/faq#how-does-radarr-work"
                 onChange={onInputChange}
                 {...settings.rssSyncInterval}
               />

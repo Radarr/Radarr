@@ -36,7 +36,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             return new HealthCheck(GetType(),
                 HealthCheckResult.Error,
                 string.Format(_localizationService.GetLocalizedString("SqliteVersionCheckUpgradeRequiredMessage"), sqliteVersion, supportedVersion),
-                "#currently_installed_sqlite_version_is_not_supported");
+                "#currently-installed-sqlite-version-is-not-supported");
         }
 
         public override bool CheckOnSchedule => false;

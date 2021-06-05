@@ -25,21 +25,21 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (automaticSearchEnabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("IndexerSearchCheckNoAutomaticMessage"), "#no_indexers_available_with_automatic_search_enabled_radarr_will_not_provide_any_automatic_search_results");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("IndexerSearchCheckNoAutomaticMessage"), "#no-indexers-available-with-automatic-search-enabled-radarr-will-not-provide-any-automatic-search-results");
             }
 
             var interactiveSearchEnabled = _indexerFactory.InteractiveSearchEnabled(false);
 
             if (interactiveSearchEnabled.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("IndexerSearchCheckNoInteractiveMessage"), "#no_indexers_available_with_interactive_search_enabled");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("IndexerSearchCheckNoInteractiveMessage"), "#no-indexers-available-with-interactive-search-enabled");
             }
 
             var active = _indexerFactory.AutomaticSearchEnabled(true);
 
             if (active.Empty())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("IndexerSearchCheckNoAvailableIndexersMessage"), "#indexers_are_unavailable_due_to_failures");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("IndexerSearchCheckNoAvailableIndexersMessage"), "#indexers-are-unavailable-due-to-failures");
             }
 
             return new HealthCheck(GetType());

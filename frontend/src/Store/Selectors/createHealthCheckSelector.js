@@ -13,7 +13,7 @@ function createHealthCheckSelector() {
           source: 'UI',
           type: 'warning',
           message: translate('CouldNotConnectSignalR'),
-          wikiUrl: 'https://wiki.servarr.com/Radarr_System#Could_not_connect_to_signalR'
+          wikiUrl: 'https://wiki.servarr.com/radarr/system#could-not-connect-to-signalr'
         });
       }
 

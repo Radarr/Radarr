@@ -44,14 +44,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Error,
                     _localizationService.GetLocalizedString("IndexerStatusCheckAllClientMessage"),
-                    "#indexers_are_unavailable_due_to_failures");
+                    "#indexers-are-unavailable-due-to-failures");
             }
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Warning,
                 string.Format(_localizationService.GetLocalizedString("IndexerStatusCheckSingleClientMessage"),
                     string.Join(", ", backOffProviders.Select(v => v.Provider.Definition.Name))),
-                "#indexers_are_unavailable_due_to_failures");
+                "#indexers-are-unavailable-due-to-failures");
         }
     }
 }

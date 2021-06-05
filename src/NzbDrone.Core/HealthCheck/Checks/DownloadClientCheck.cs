@@ -29,7 +29,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (!downloadClients.Any())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("DownloadClientCheckNoneAvailableMessage"), "#no_download_client_is_available");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("DownloadClientCheckNoneAvailableMessage"), "#no-download-client-is-available");
             }
 
             foreach (var downloadClient in downloadClients)
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     _logger.Debug(ex, "Unable to communicate with {0}", downloadClient.Definition.Name);
 
                     var message = string.Format(_localizationService.GetLocalizedString("DownloadClientCheckUnableToCommunicateMessage"), downloadClient.Definition.Name);
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"{message} {ex.Message}", "#unable_to_communicate_with_download_client");
+                    return new HealthCheck(GetType(), HealthCheckResult.Error, $"{message} {ex.Message}", "#unable-to-communicate-with-download-client");
                 }
             }
 

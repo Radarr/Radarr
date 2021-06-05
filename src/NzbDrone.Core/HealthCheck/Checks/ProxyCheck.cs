@@ -36,7 +36,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 var addresses = Dns.GetHostAddresses(_configService.ProxyHostname);
                 if (!addresses.Any())
                 {
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckResolveIpMessage"), _configService.ProxyHostname), "#proxy_failed_resolve_ip");
+                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckResolveIpMessage"), _configService.ProxyHostname), "#proxy-failed-resolve-ip");
                 }
 
                 var request = _cloudRequestBuilder.Create()
@@ -51,13 +51,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     if (response.StatusCode == HttpStatusCode.BadRequest)
                     {
                         _logger.Error("Proxy Health Check failed: {0}", response.StatusCode);
-                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckBadRequestMessage"), response.StatusCode), "#proxy_failed_test");
+                        return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckBadRequestMessage"), response.StatusCode), "#proxy-failed-test");
                     }
                 }
                 catch (Exception ex)
                 {
                     _logger.Error(ex, "Proxy Health Check failed");
-                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckFailedToTestMessage"), request.Url), "#proxy_failed_test");
+                    return new HealthCheck(GetType(), HealthCheckResult.Error, string.Format(_localizationService.GetLocalizedString("ProxyCheckFailedToTestMessage"), request.Url), "#proxy-failed-test");
                 }
             }
 

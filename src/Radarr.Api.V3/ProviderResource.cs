@@ -39,7 +39,7 @@ namespace Radarr.Api.V3
                 Fields = SchemaBuilder.ToSchema(definition.Settings),
 
                 //Radarr_Supported_{0} are custom build redirect pages; if passing a new var, create a new redirect
-                InfoLink = string.Format("https://wiki.servarr.com/Radarr_Supported_{0}",
+                InfoLink = string.Format("https://wiki.servarr.com/radarr/supported-{0}",
                     definition.Implementation.ToLower())
             };
         }
