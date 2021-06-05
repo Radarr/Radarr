@@ -43,7 +43,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Notice,
                     string.Format(_localizationService.GetLocalizedString("MonoVersionCheckUpgradeRecommendedMessage"), monoVersion, bestVersion),
-                    "#currently_installed_mono_version_is_supported_but_upgrading_is_recommended");
+                    "#currently-installed-mono-version-is-supported-but-upgrading-is-recommended");
             }
 
             var oldVersion = new Version("5.20");
@@ -52,13 +52,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 return new HealthCheck(GetType(),
                     HealthCheckResult.Error,
                     string.Format(_localizationService.GetLocalizedString("MonoVersionCheckUpgradeRecommendedMessage"), monoVersion, bestVersion),
-                    "#currently_installed_mono_version_is_old_and_unsupported");
+                    "#currently-installed-mono-version-is-old-and-unsupported");
             }
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Error,
                 string.Format(_localizationService.GetLocalizedString("MonoVersionCheckUpgradeRecommendedMessage"), monoVersion, bestVersion),
-                "#currently_installed_mono_version_is_old_and_unsupported");
+                "#currently-installed-mono-version-is-old-and-unsupported");
         }
 
         public override bool CheckOnSchedule => false;

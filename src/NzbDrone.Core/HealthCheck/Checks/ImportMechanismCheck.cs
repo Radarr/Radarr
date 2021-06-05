@@ -23,7 +23,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
         {
             if (!_configService.EnableCompletedDownloadHandling)
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("ImportMechanismHealthCheckMessage"), "#completed_download_handling_is_disabled");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, _localizationService.GetLocalizedString("ImportMechanismHealthCheckMessage"), "#completed-download-handling-is-disabled");
             }
 
             return new HealthCheck(GetType());

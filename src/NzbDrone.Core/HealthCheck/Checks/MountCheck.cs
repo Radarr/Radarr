@@ -29,7 +29,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             if (mounts.Any())
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("MountCheckMessage") + string.Join(", ", mounts.Select(m => m.Name)), "#movie_mount_ro");
+                return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("MountCheckMessage") + string.Join(", ", mounts.Select(m => m.Name)), "#movie-mount-ro");
             }
 
             return new HealthCheck(GetType());

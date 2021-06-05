@@ -21,7 +21,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             }
             catch (Exception e)
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("MediaInfoDllCheckMessage"), e.Message), "#mediainfo_not_loaded");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("MediaInfoDllCheckMessage"), e.Message), "#mediainfo-not-loaded");
             }
 
             return new HealthCheck(GetType());

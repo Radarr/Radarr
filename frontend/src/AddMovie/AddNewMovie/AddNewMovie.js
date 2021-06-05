@@ -161,7 +161,7 @@ class AddNewMovie extends Component {
                   {translate('YouCanAlsoSearch')}
                 </div>
                 <div>
-                  <Link to="https://wiki.servarr.com/Radarr_FAQ#Why_cant_I_add_a_new_movie_to_Radarr">
+                  <Link to="https://wiki.servarr.com/radarr/faq#why-cant-i-add-a-new-movie-to-radarr">
                     {translate('CantFindMovie')}
                   </Link>
                 </div>
