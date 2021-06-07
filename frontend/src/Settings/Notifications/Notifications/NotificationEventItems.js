@@ -39,7 +39,7 @@ function NotificationEventItems(props) {
       <FormLabel>{translate('NotificationTriggers')}</FormLabel>
       <div>
         <FormInputHelpText
-          text={translate('NotifcationTriggersHelpText')}
+          text={translate('NotificationTriggersHelpText')}
           link="https://wiki.servarr.com/Radarr_Settings#Connections"
         />
         <div className={styles.events}>
