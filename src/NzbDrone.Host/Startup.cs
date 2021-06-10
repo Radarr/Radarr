@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -46,6 +47,13 @@ namespace NzbDrone.Host
                 b.AddFilter("Microsoft.AspNetCore", Microsoft.Extensions.Logging.LogLevel.Warning);
                 b.AddFilter("Radarr.Http.Authentication", LogLevel.Information);
                 b.AddNLog();
+            });
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
             });
 
             services.AddRouting(options => options.LowercaseUrls = true);
@@ -144,6 +152,7 @@ namespace NzbDrone.Host
                 firewallAdapter.MakeAccessible();
             }
 
+            app.UseForwardedHeaders();
             app.UseMiddleware<LoggingMiddleware>();
             app.UsePathBase(new PathString(configFileProvider.UrlBase));
             app.UseExceptionHandler(new ExceptionHandlerOptions
