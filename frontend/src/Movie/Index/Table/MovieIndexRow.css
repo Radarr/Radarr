@@ -52,11 +52,16 @@
   flex: 0 0 100px;
 }
 
-.movieStatus,
+.movieStatus {
+  composes: cell;
+
+  flex: 0 0 110px;
+}
+
 .certification {
   composes: cell;
 
-  flex: 0 0 100px;
+  flex: 0 0 90px;
 }
 
 .year {

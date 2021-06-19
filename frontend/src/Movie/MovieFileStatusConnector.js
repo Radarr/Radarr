@@ -3,18 +3,21 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
+import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import MovieFileStatus from './MovieFileStatus';
 
 function createMapStateToProps() {
   return createSelector(
     createMovieSelector(),
-    (movie) => {
+    createUISettingsSelector(),
+    (movie, uiSettings) => {
       return {
         inCinemas: movie.inCinemas,
         isAvailable: movie.isAvailable,
         monitored: movie.monitored,
         grabbed: movie.grabbed,
-        movieFile: movie.movieFile
+        movieFile: movie.movieFile,
+        colorImpairedMode: uiSettings.enableColorImpairedMode
       };
     }
   );

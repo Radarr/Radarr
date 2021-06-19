@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ProgressBar from 'Components/ProgressBar';
 import { sizes } from 'Helpers/Props';
-import getProgressBarKind from 'Utilities/Movie/getProgressBarKind';
 import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
+import getStatusStyle from 'Utilities/Movie/getStatusStyle';
 import translate from 'Utilities/String/translate';
 import styles from './MovieIndexProgressBar.css';
 
@@ -42,7 +42,7 @@ function MovieIndexProgressBar(props) {
       className={styles.progressBar}
       containerClassName={styles.progress}
       progress={progress}
-      kind={getProgressBarKind(status, monitored, hasFile, isAvailable, queueStatusText)}
+      kind={getStatusStyle(status, monitored, hasFile, isAvailable, 'kinds', queueStatusText)}
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
       showText={detailedProgressBar}
       width={posterWidth}
