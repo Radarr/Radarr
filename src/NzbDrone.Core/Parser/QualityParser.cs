@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex SourceRegex = new Regex(@"\b(?:
                                                                 (?<bluray>M?BluRay|Blu-Ray|HDDVD|BD(?!$)|UHDBD|BDISO|BDMux|BD25|BD50|BR.?DISK)|
-                                                                (?<webdl>WEB[-_. ]DL|WEBDL|AmazonHD|iTunesHD|MaxdomeHD|NetflixU?HD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DDP?5[. ]1)|[. ](?-i:WEB)$|\d+0p(?:[-. ]AMZN)?[-. ]WEB[-. ]|WEB-DLMux|\b\s\/\sWEB\s\/\s\b|AMZN[. ]WEB[. ])|
+                                                                (?<webdl>WEB[-_. ]DL(?:mux)?|WEBDL|AmazonHD|iTunesHD|MaxdomeHD|NetflixU?HD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DDP?5[. ]1)|[. ](?-i:WEB)$|(?:\d{3,4}0p)[-. ]WEB[-. ]|[-. ]WEB[-. ]\d{3,4}0p|\b\s\/\sWEB\s\/\s\b|AMZN[. -]WEB[. -])|
                                                                 (?<webrip>WebRip|Web-Rip|WEBMux)|
                                                                 (?<hdtv>HDTV)|
                                                                 (?<bdrip>BDRip)|
