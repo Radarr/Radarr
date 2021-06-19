@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.ParserTests
             new object[] { "2160p Remux", Source.BLURAY, Resolution.R2160p, Modifier.REMUX },
         };
 
-        [TestCase("Despicable.Me.3.2017.720p.TSRip.x264.AAC-Ozlem", false)]
+        [TestCase("Movie.Title.3.2017.720p.TSRip.x264.AAC-Ozlem", false)]
         public void should_parse_ts(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.TELESYNC, proper, Resolution.R720p);
