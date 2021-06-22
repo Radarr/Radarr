@@ -118,6 +118,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Some.Movie.2019.1080p.BDRip.X264.AC3-EVO-4P", "EVO")]
         [TestCase("Some.Movie.2019.1080p.BDRip.X264.AC3-EVO-4Planet", "EVO")]
         [TestCase("Some.Movie.2019.1080p.BDRip.X264.AC3-DON-AlteZachen", "DON")]
+        [TestCase("Some.Movie.2019.1080p.BDRip.X264.AC3-HarrHD-RePACKPOST", "HarrHD")]
 
         public void should_not_include_bad_suffix_in_release_group(string title, string expected)
         {
