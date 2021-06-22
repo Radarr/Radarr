@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
     public class TorrentDownloadStation : TorrentClientBase<DownloadStationSettings>
     {
         protected readonly IDownloadStationInfoProxy _dsInfoProxy;
-        protected readonly IDownloadStationTaskProxy _dsTaskProxy;
+        protected readonly IDownloadStationTaskProxySelector _dsTaskProxySelector;
         protected readonly ISharedFolderResolver _sharedFolderResolver;
         protected readonly ISerialNumberProvider _serialNumberProvider;
         protected readonly IFileStationProxy _fileStationProxy;
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                                       ISerialNumberProvider serialNumberProvider,
                                       IFileStationProxy fileStationProxy,
                                       IDownloadStationInfoProxy dsInfoProxy,
-                                      IDownloadStationTaskProxy dsTaskProxy,
+                                      IDownloadStationTaskProxySelector dsTaskProxySelector,
                                       ITorrentFileInfoReader torrentFileInfoReader,
                                       IHttpClient httpClient,
                                       IConfigService configService,
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             : base(torrentFileInfoReader, httpClient, configService, namingConfigService, diskProvider, remotePathMappingService, logger)
         {
             _dsInfoProxy = dsInfoProxy;
-            _dsTaskProxy = dsTaskProxy;
+            _dsTaskProxySelector = dsTaskProxySelector;
             _fileStationProxy = fileStationProxy;
             _sharedFolderResolver = sharedFolderResolver;
             _serialNumberProvider = serialNumberProvider;
@@ -52,9 +52,11 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
         public override ProviderMessage Message => new ProviderMessage("Radarr is unable to connect to Download Station if 2-Factor Authentication is enabled on your DSM account", ProviderMessageType.Warning);
 
+        private IDownloadStationTaskProxy DsTaskProxy => _dsTaskProxySelector.GetProxy(Settings);
+
         protected IEnumerable<DownloadStationTask> GetTasks()
         {
-            return _dsTaskProxy.GetTasks(Settings).Where(v => v.Type.ToLower() == DownloadStationTaskType.BT.ToString().ToLower());
+            return DsTaskProxy.GetTasks(Settings).Where(v => v.Type.ToLower() == DownloadStationTaskType.BT.ToString().ToLower());
         }
 
         public override IEnumerable<DownloadClientItem> GetItems()
@@ -141,7 +143,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
                 DeleteItemData(item);
             }
 
-            _dsTaskProxy.RemoveTask(ParseDownloadId(item.DownloadId), Settings);
+            DsTaskProxy.RemoveTask(ParseDownloadId(item.DownloadId), Settings);
             _logger.Debug("{0} removed correctly", item.DownloadId);
         }
 
@@ -160,7 +162,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         {
             var hashedSerialNumber = _serialNumberProvider.GetSerialNumber(Settings);
 
-            _dsTaskProxy.AddTaskFromUrl(magnetLink, GetDownloadDirectory(), Settings);
+            DsTaskProxy.AddTaskFromUrl(magnetLink, GetDownloadDirectory(), Settings);
 
             var item = GetTasks().SingleOrDefault(t => t.Additional.Detail["uri"] == magnetLink);
 
@@ -179,7 +181,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
         {
             var hashedSerialNumber = _serialNumberProvider.GetSerialNumber(Settings);
 
-            _dsTaskProxy.AddTaskFromData(fileContent, filename, GetDownloadDirectory(), Settings);
+            DsTaskProxy.AddTaskFromData(fileContent, filename, GetDownloadDirectory(), Settings);
 
             var items = GetTasks().Where(t => t.Additional.Detail["uri"] == Path.GetFileNameWithoutExtension(filename));
 
@@ -399,7 +401,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
 
         protected ValidationFailure ValidateVersion()
         {
-            var info = _dsTaskProxy.GetApiInfo(Settings);
+            var info = DsTaskProxy.GetApiInfo(Settings);
 
             _logger.Debug("Download Station api version information: Min {0} - Max {1}", info.MinVersion, info.MaxVersion);
 
