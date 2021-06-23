@@ -97,6 +97,7 @@ namespace NzbDrone.Core.Parser.Model
         G_Scene = 128, //General, the torrent comes from the "scene"
         G_Freeleech75 = 256, //Currently only used for AHD, signifies a torrent counts towards 75 percent of your download quota.
         G_Freeleech25 = 512, //Currently only used for AHD, signifies a torrent counts towards 25 percent of your download quota.
-        AHD_UserRelease = 1024 // AHD, internal
+        AHD_UserRelease = 1024, // AHD, internal
+        PTP_Other = 2048 // PTP 'Other' Quality Section
     }
 }

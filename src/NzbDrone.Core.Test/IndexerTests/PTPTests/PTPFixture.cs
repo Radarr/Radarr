@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -62,6 +62,9 @@ namespace NzbDrone.Core.Test.IndexerTests.PTPTests
             first.Seeders.Should().Be(26);
 
             torrents.Any(t => t.IndexerFlags.HasFlag(IndexerFlags.G_Freeleech)).Should().Be(true);
+
+            torrents.Any(t => t.IndexerFlags.HasFlag(IndexerFlags.PTP_Other)).Should().Be(true);
+            torrents.Any(t => !t.IndexerFlags.HasFlag(IndexerFlags.PTP_Other)).Should().Be(true);
         }
     }
 }

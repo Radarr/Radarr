@@ -85,6 +85,11 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                         flags |= IndexerFlags.G_Scene;
                     }
 
+                    if (torrent.Quality == "Other")
+                    {
+                        flags |= IndexerFlags.PTP_Other;
+                    }
+
                     // Only add approved torrents
                     try
                     {

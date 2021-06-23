@@ -31,6 +31,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             var title = subject.Release.Title;
             var restrictions = _restrictionService.AllForTags(subject.Movie.Tags);
+            var flags = subject.Release.IndexerFlags;
 
             var required = restrictions.Where(r => r.Required.IsNotNullOrWhiteSpace());
             var ignored = restrictions.Where(r => r.Ignored.IsNotNullOrWhiteSpace());
@@ -39,11 +40,11 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 var requiredTerms = r.Required.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                var foundTerms = ContainsAny(requiredTerms, title);
+                var foundTerms = ContainsAny(requiredTerms, title, flags);
                 if (foundTerms.Empty())
                 {
                     var terms = string.Join(", ", requiredTerms);
-                    _logger.Debug("[{0}] does not contain one of the required terms: {1}", title, terms);
+                    _logger.Debug("Title [{0}] and release flags [{1}] do not contain one of the required terms: {2}", title, flags, terms);
                     return Decision.Reject("Does not contain one of the required terms: {0}", terms);
                 }
             }
@@ -52,12 +53,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 var ignoredTerms = r.Ignored.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                var foundTerms = ContainsAny(ignoredTerms, title);
+                var foundTerms = ContainsAny(ignoredTerms, title, flags);
                 if (foundTerms.Any())
                 {
                     var terms = string.Join(", ", foundTerms);
-                    _logger.Debug("[{0}] contains these ignored terms: {1}", title, terms);
-                    return Decision.Reject("Contains these ignored terms: {0}", terms);
+                    _logger.Debug("Title [{0}] or release flags [{1}] contain these ignored terms: {2}", title, flags, terms);
+                    return Decision.Reject("Contains these ignored terms: {0}", terms); //TODO: Add matched flags
                 }
             }
 
@@ -65,9 +66,28 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             return Decision.Accept();
         }
 
-        private List<string> ContainsAny(List<string> terms, string title)
+        private IEnumerable<string> ContainsAny(List<string> terms, string title, IndexerFlags flags)
+        {
+            return MatchTitle(terms, title).Concat(MatchFlags(terms, flags)).Distinct();
+        }
+
+        private IEnumerable<string> MatchTitle(List<string> terms, string title)
         {
             return terms.Where(t => _termMatcher.IsMatch(t, title)).ToList();
+        }
+
+        private IEnumerable<string> MatchFlags(List<string> terms, IndexerFlags flags)
+        {
+            foreach (IndexerFlags f in Enum.GetValues(typeof(IndexerFlags)))
+            {
+                if (flags.HasFlag(f))
+                {
+                    foreach (var matchedTerm in terms.Where(t => _termMatcher.IsMatch(t, f.ToString())))
+                    {
+                        yield return matchedTerm;
+                    }
+                }
+            }
         }
     }
 }

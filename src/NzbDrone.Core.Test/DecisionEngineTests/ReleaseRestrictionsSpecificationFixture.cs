@@ -26,7 +26,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 },
                 Release = new ReleaseInfo
                 {
-                    Title = "Dexter.S08E01.EDITED.WEBRip.x264-KYR"
+                    Title = "Dexter.S08E01.EDITED.WEBRip.x264-KYR",
+                    IndexerFlags = IndexerFlags.PTP_Other
                 }
             };
 
@@ -135,6 +136,38 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenRestictions(pattern, null);
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().Be(expected);
+        }
+
+        [Test]
+        public void should_be_false_when_indexerflags_contains_ignored_term()
+        {
+            GivenRestictions(null, "other");
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_be_false_when_indexerflags_doesnt_contain_required_term()
+        {
+            GivenRestictions("required", null);
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_be_true_when_indexerflags_contains_required_term()
+        {
+            GivenRestictions("other", null);
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_be_true_when_indexerflags_doesnt_contain_unmatched_ignored_term()
+        {
+            GivenRestictions(null, "unmatched");
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
     }
 }
