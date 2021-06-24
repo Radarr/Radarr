@@ -975,7 +975,7 @@
   "ThisConditionMatchesUsingRegularExpressions": "This condition matches using Regular Expressions. Note that the characters {0} have special meanings and need escaping with a {1}",
   "Time": "Time",
   "TimeFormat": "Time Format",
-  "Timeleft": "Timeleft",
+  "Timeleft": "Time Left",
   "Title": "Title",
   "Titles": "Titles",
   "TMDb": "TMDb",
