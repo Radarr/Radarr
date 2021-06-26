@@ -7,6 +7,7 @@ assignees: ''
 
 ---
 <!-- Support Requests will be closed immediately, if you are unsure go to our Reddit or Discord first. Exceptions do not mean you found a bug! -->
+<!-- Note: Text between <!- and -> will be hidden -->
 **Describe the bug**
 <!-- A clear and concise description of what the bug is. -->
 
