@@ -42,6 +42,12 @@ namespace NzbDrone.Core.Parser
 
             //As a last resort for movies that have ( or [ in their title.
             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            // Year in Title
+            new Regex(@"^(?<title>.+?)(?:\W|_)?(?<year>\d{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+
+            // Maybe the Title is a Year only
+            new Regex(@"^(?<title>.+?)(?:\W|_|\.)?(?<year>\d{4}(?<![ _.]\d{4}))", RegexOptions.IgnoreCase | RegexOptions.Compiled),
         };
 
         private static readonly Regex[] ReportMovieTitleFolderRegex = new[]
@@ -126,9 +132,6 @@ namespace NzbDrone.Core.Parser
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex AnimeReleaseGroupRegex = new Regex(@"^(?:\[(?<subgroup>(?!\s).+?(?<!\s))\](?:_|-|\s|\.)?)",
-                                                                RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private static readonly Regex YearInTitleRegex = new Regex(@"^(?<title>.+?)(?:\W|_)?(?<year>\d{4})",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         //Handle Exception Release Groups that don't follow -RlsGrp; Manual List
