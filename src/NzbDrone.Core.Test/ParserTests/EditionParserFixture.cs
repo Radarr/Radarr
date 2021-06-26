@@ -44,6 +44,11 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("My.Movie.GERMAN.Extended.Cut.2016", "Extended Cut")]
         [TestCase("My.Movie.GERMAN.Extended.Cut", "Extended Cut")]
         [TestCase("My.Movie.Assembly.Cut.1992.REPACK.1080p.BluRay.DD5.1.x264-Group", "Assembly Cut")]
+        [TestCase("Movie.1987.Ultimate.Hunter.Edition.DTS-HD.DTS.MULTISUBS.1080p.BluRay.x264.HQ-TUSAHD", "Ultimate Hunter Edition")]
+        [TestCase("Movie.1950.Diamond.Edition.1080p.BluRay.x264-nikt0", "Diamond Edition")]
+        [TestCase("Movie.Title.1990.Ultimate.Rekall.Edition.NORDiC.REMUX.1080p.BluRay.AVC.DTS-HD.MA5.1-TWA", "Ultimate Rekall Edition")]
+        [TestCase("Movie.Title.1971.Signature.Edition.1080p.BluRay.FLAC.2.0.x264-TDD", "Signature Edition")]
+        [TestCase("Movie.1979.The.Imperial.Edition.BluRay.720p.DTS.x264-CtrlHD", "Imperial Edition")]
         public void should_parse_edition(string postTitle, string edition)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle);
@@ -55,6 +60,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Impossible: Rogue Movie 2012 Bluray")]
         [TestCase("Loving.Movie.2018.TS.FRENCH.MD.x264-DROGUERiE")]
         [TestCase("Uncut.Movie.2019.720p.BluRay.x264-YOL0W")]
+        [TestCase("The.Christmas.Edition.1941.720p.HDTV.x264-CRiMSON")]
         public void should_not_parse_edition(string postTitle)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle);
