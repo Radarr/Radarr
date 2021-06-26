@@ -4,7 +4,8 @@ daysUntilStale: 60
 daysUntilClose: 7
 # Issues with these labels will never be considered stale
 exemptLabels:
-  - feature request
+  - feature request #legacy
+  - 'Type: Feature Request'
   - 'Status: Confirmed'
   - sonarr-pull
   - lidarr-pull
