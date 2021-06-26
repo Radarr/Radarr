@@ -951,7 +951,7 @@ stages:
     - job:
       displayName: Discord Notification
       pool:
-        vmImage: 'windows-2019'
+        vmImage: 'ubuntu-18.04'
       steps:
         - task: DownloadPipelineArtifact@2
           continueOnError: true
@@ -961,7 +961,7 @@ stages:
             artifactName: 'WindowsAutomationScreenshots'
             targetPath: $(Build.SourcesDirectory)
         - checkout: none
-        - powershell: |
+        - pwsh: |
             iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/Servarr/AzureDiscordNotify/master/DiscordNotify.ps1'))
           env:
             SYSTEM_ACCESSTOKEN: $(System.AccessToken)
