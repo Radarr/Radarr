@@ -863,7 +863,7 @@
     "ChmodFolder": "chmod Mappa",
     "Example": "Példa",
     "ErrorRestoringBackup": "Hiba a mentés visszaállítása közben",
-    "Enabled": "Engedélyezett",
+    "Enabled": "Engedélyezve",
     "EditQualityProfile": "Minőség profil szerkesztése",
     "EditListExclusion": "Kivételek listájának szerkesztése",
     "EditGroups": "Csoportok szerkesztése",
@@ -1005,7 +1005,7 @@
     "Qualities": "Minőségek",
     "PrioritySettings": "Prioritás: {0}",
     "PreviewRenameHelpText": "Tipp: Átnevezés előnézetéhez... válassza a 'Visszavonást' majd kattintson a film címére és használja a",
-    "Presets": "Előre beállított",
+    "Presets": "Előbeállítások",
     "PreferUsenet": "Usenet preferálása",
     "PreferTorrent": "Torrent preferálása",
     "PreferAndUpgrade": "Preferálás és frissítés",
@@ -1110,5 +1110,6 @@
     "BypassDelayIfHighestQuality": "Kihagyás ha a legjobb minőség elérhető",
     "Letterboxd": "Letterboxd",
     "From": "Től",
-    "TaskUserAgentTooltip": "Az API-t hívó alkalmazás biztosítja a User-Agent szolgáltatást"
+    "TaskUserAgentTooltip": "Az API-t hívó alkalmazás biztosítja a User-Agent szolgáltatást",
+    "NotificationTriggersHelpText": "Válaszd ki, hogy mely események indítsák el ezt az értesítést"
 }
