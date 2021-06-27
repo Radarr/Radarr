@@ -23,7 +23,6 @@ namespace NzbDrone.Common.EnvironmentInfo
                                serviceProvider.ServiceExist(ServiceProvider.SERVICE_NAME) &&
                                serviceProvider.GetStatus(ServiceProvider.SERVICE_NAME) == ServiceControllerStatus.StartPending;
 
-#if NETCOREAPP
             // net5.0 will return Radarr.dll for entry assembly, we need the actual
             // executable name (Radarr on linux).  On mono this will return the location of
             // the mono executable itself, which is not what we want.
@@ -34,12 +33,6 @@ namespace NzbDrone.Common.EnvironmentInfo
                 ExecutingApplication = entry.FileName;
                 IsWindowsTray = OsInfo.IsWindows && entry.ModuleName == $"{ProcessProvider.RADARR_PROCESS_NAME}.exe";
             }
-#else
-            // On mono we need to get the location of the Radarr assembly, not Mono.
-            // Can't be running tray app in mono.
-            ExecutingApplication = Assembly.GetEntryAssembly()?.Location;
-#endif
-
         }
 
         static RuntimeInfo()

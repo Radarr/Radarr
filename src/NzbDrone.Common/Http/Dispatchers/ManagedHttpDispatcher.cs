@@ -33,19 +33,10 @@ namespace NzbDrone.Common.Http.Dispatchers
         {
             var webRequest = (HttpWebRequest)WebRequest.Create((Uri)request.Url);
 
-            if (PlatformInfo.IsMono)
-            {
-                // On Mono GZipStream/DeflateStream leaks memory if an exception is thrown, use an intermediate buffer in that case.
-                webRequest.AutomaticDecompression = DecompressionMethods.None;
-                webRequest.Headers.Add("Accept-Encoding", "gzip");
-            }
-            else
-            {
-                // Deflate is not a standard and could break depending on implementation.
-                // we should just stick with the more compatible Gzip
-                //http://stackoverflow.com/questions/8490718/how-to-decompress-stream-deflated-with-java-util-zip-deflater-in-net
-                webRequest.AutomaticDecompression = DecompressionMethods.GZip;
-            }
+            // Deflate is not a standard and could break depending on implementation.
+            // we should just stick with the more compatible Gzip
+            //http://stackoverflow.com/questions/8490718/how-to-decompress-stream-deflated-with-java-util-zip-deflater-in-net
+            webRequest.AutomaticDecompression = DecompressionMethods.GZip;
 
             webRequest.Method = request.Method.ToString();
             webRequest.UserAgent = _userAgentBuilder.GetUserAgent(request.UseSimplifiedUserAgent);
@@ -86,9 +77,6 @@ namespace NzbDrone.Common.Http.Dispatchers
 
                 if (httpWebResponse == null)
                 {
-                    // Workaround for mono not closing connections properly in certain situations.
-                    AbortWebRequest(webRequest);
-
                     // The default messages for WebException on mono are pretty horrible.
                     if (e.Status == WebExceptionStatus.NameResolutionFailure)
                     {
@@ -122,19 +110,6 @@ namespace NzbDrone.Common.Http.Dispatchers
                     try
                     {
                         data = responseStream.ToBytes();
-
-                        if (PlatformInfo.IsMono && httpWebResponse.ContentEncoding == "gzip")
-                        {
-                            using (var compressedStream = new MemoryStream(data))
-                            using (var gzip = new GZipStream(compressedStream, CompressionMode.Decompress))
-                            using (var decompressedStream = new MemoryStream())
-                            {
-                                gzip.CopyTo(decompressedStream);
-                                data = decompressedStream.ToArray();
-                            }
-
-                            httpWebResponse.Headers.Remove("Content-Encoding");
-                        }
                     }
                     catch (Exception ex)
                     {
@@ -241,37 +216,6 @@ namespace NzbDrone.Common.Http.Dispatchers
                     default:
                         webRequest.Headers.Add(header.Key, header.Value);
                         break;
-                }
-            }
-        }
-
-        // Workaround for mono not closing connections properly on timeouts
-        private void AbortWebRequest(HttpWebRequest webRequest)
-        {
-            // First affected version was mono 5.16
-            if (OsInfo.IsNotWindows && _platformInfo.Version >= new Version(5, 16))
-            {
-                try
-                {
-                    var currentOperationInfo = webRequest.GetType().GetField("currentOperation", BindingFlags.NonPublic | BindingFlags.Instance);
-                    var currentOperation = currentOperationInfo.GetValue(webRequest);
-
-                    if (currentOperation != null)
-                    {
-                        var responseStreamInfo = currentOperation.GetType().GetField("responseStream", BindingFlags.NonPublic | BindingFlags.Instance);
-                        var responseStream = responseStreamInfo.GetValue(currentOperation) as Stream;
-
-                        // Note that responseStream will likely be null once mono fixes it.
-                        responseStream?.Dispose();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // This can fail randomly on future mono versions that have been changed/fixed. Log to sentry and ignore.
-                    _logger.Trace()
-                           .Exception(ex)
-                           .Message("Unable to dispose responseStream on mono {0}", _platformInfo.Version)
-                           .Write();
                 }
             }
         }

@@ -33,7 +33,6 @@ EnableBsdSupport()
 
     if grep -qv freebsd-x64 src/Directory.Build.props; then
         sed -i'' -e "s^<RuntimeIdentifiers>\(.*\)</RuntimeIdentifiers>^<RuntimeIdentifiers>\1;freebsd-x64</RuntimeIdentifiers>^g" src/Directory.Build.props
-        sed -i'' -e "s^<ExcludedRuntimeFrameworkPairs>\(.*\)</ExcludedRuntimeFrameworkPairs>^<ExcludedRuntimeFrameworkPairs>\1;freebsd-x64:net472</ExcludedRuntimeFrameworkPairs>^g" src/Directory.Build.props
     fi
 }
 
@@ -147,11 +146,6 @@ PackageMacOS()
     local folder=$artifactsFolder/macos/$framework/Radarr
 
     PackageFiles "$folder" "$framework" "osx-x64"
-
-    if [ "$framework" = "net472" ]; then
-        echo "Adding Startup script"
-        cp macOS/Radarr $folder
-    fi
 
     echo "Removing Service helpers"
     rm -f $folder/ServiceUninstall.*
@@ -337,7 +331,6 @@ then
         PackageTests "net5.0" "linux-x64"
         PackageTests "net5.0" "linux-musl-x64"
         PackageTests "net5.0" "osx-x64"
-        PackageTests "net472" "linux-x64"
         if [ "$ENABLE_BSD" = "YES" ];
         then
             PackageTests "net5.0" "freebsd-x64"
@@ -377,7 +370,6 @@ then
         Package "net5.0" "linux-musl-arm64"
         Package "net5.0" "linux-arm"
         Package "net5.0" "osx-x64"
-        Package "net472" "linux-x64"
         if [ "$ENABLE_BSD" = "YES" ];
         then
             Package "net5.0" "freebsd-x64"

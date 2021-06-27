@@ -6,7 +6,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <RuntimeIdentifiers>win-x64;win-x86;osx-x64;linux-x64;linux-musl-x64;linux-arm;linux-arm64;linux-musl-arm64</RuntimeIdentifiers>
-    <ExcludedRuntimeFrameworkPairs>win-x64:net472;win-x86:net472;osx-x64:net472;linux-arm:net472;linux-arm64:net472;linux-musl-x64:net472;linux-musl-arm64:net472</ExcludedRuntimeFrameworkPairs>
 
     <RadarrRootDir>$(MSBuildThisFileDirectory)..\</RadarrRootDir>
 
@@ -98,14 +97,6 @@
 
   <ItemGroup Condition="'$(TestProject)'=='true' and '$(TargetFramework)'=='net5.0'">
     <PackageReference Include="coverlet.collector" Version="3.0.4-preview.27.ge7cb7c3b40" />
-  </ItemGroup>
-
-  <!-- Allow building net framework using mono -->
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(RadarrProject)'=='true' and '$(EnableAnalyzers)'=='false'">

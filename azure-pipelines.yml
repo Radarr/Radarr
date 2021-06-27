@@ -115,10 +115,6 @@ stages:
         artifact: WindowsCoreTests
         displayName: Publish Windows Test Package
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - publish: '$(testsFolder)/net472/linux-x64/publish'
-        artifact: LinuxTests
-        displayName: Publish Linux Mono Test Package
-        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - publish: '$(testsFolder)/net5.0/linux-x64/publish'
         artifact: LinuxCoreTests
         displayName: Publish Linux Test Package
@@ -278,14 +274,6 @@ stages:
           includeRootFolder: false
           rootFolderOrFile: $(artifactsFolder)/macos/net5.0
       - task: ArchiveFiles@2
-        displayName: Create Linux Mono tar
-        inputs:
-          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).linux.tar.gz'
-          archiveType: 'tar'
-          tarCompression: 'gz'
-          includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/linux-x64/net472
-      - task: ArchiveFiles@2
         displayName: Create Linux Core tar
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).linux-core-x64.tar.gz'
@@ -439,14 +427,6 @@ stages:
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
-      - bash: |
-          SYMLINK=6_6_0
-          MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
-          echo "##vso[task.setvariable variable=MONOPREFIX;]$MONOPREFIX"
-          echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
-          echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
-        displayName: Set Mono Version
-        condition: and(succeeded(), eq(variables['osName'], 'Mac'))
       - bash: find ${TESTSFOLDER} -name "Radarr.Test.Dummy" -exec chmod a+x {} \;
         displayName: Make Test Dummy Executable
         condition: and(succeeded(), ne(variables['osName'], 'Windows'))
@@ -470,18 +450,6 @@ stages:
       condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
-          mono520:
-            testName: 'Mono 5.20'
-            artifactName: LinuxTests
-            containerImage: ghcr.io/servarr/testimages:mono-5.20
-          mono610:
-            testName: 'Mono 6.10'
-            artifactName: LinuxTests
-            containerImage: ghcr.io/servarr/testimages:mono-6.10
-          mono612:
-            testName: 'Mono 6.12'
-            artifactName: LinuxTests
-            containerImage: ghcr.io/servarr/testimages:mono-6.12
           alpine:
             testName: 'Musl Net Core'
             artifactName: LinuxMuslCoreTests
@@ -566,14 +534,6 @@ stages:
         vmImage: $(imageName)
         
       steps:
-      - bash: |
-          SYMLINK=6_6_0
-          MONOPREFIX=/Library/Frameworks/Mono.framework/Versions/$SYMLINK
-          echo "##vso[task.setvariable variable=MONOPREFIX;]$MONOPREFIX"
-          echo "##vso[task.setvariable variable=PKG_CONFIG_PATH;]$MONOPREFIX/lib/pkgconfig:$MONOPREFIX/share/pkgconfig:$PKG_CONFIG_PATH"
-          echo "##vso[task.setvariable variable=PATH;]$MONOPREFIX/bin:$PATH"
-        displayName: Set Mono Version
-        condition: and(succeeded(), eq(variables['osName'], 'Mac'))
       - task: UseDotNet@2
         displayName: 'Install .net core'
         inputs:
@@ -665,21 +625,6 @@ stages:
       condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       strategy:
         matrix:
-          mono520:
-            testName: 'Mono 5.20'
-            artifactName: LinuxTests
-            containerImage: ghcr.io/servarr/testimages:mono-5.20
-            pattern: 'Radarr.*.linux.tar.gz'
-          mono610:
-            testName: 'Mono 6.10'
-            artifactName: LinuxTests
-            containerImage: ghcr.io/servarr/testimages:mono-6.10
-            pattern: 'Radarr.*.linux.tar.gz'
-          mono612:
-            testName: 'Mono 6.12'
-            artifactName: LinuxTests
-            containerImage: ghcr.io/servarr/testimages:mono-6.12
-            pattern: 'Radarr.*.linux.tar.gz'
           alpine:
             testName: 'Musl Net Core'
             artifactName: LinuxMuslCoreTests

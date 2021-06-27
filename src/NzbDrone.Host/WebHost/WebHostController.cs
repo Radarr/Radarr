@@ -108,24 +108,14 @@ namespace Radarr.Host
                 {
                     services
                     .AddSignalR()
-#if !NETCOREAPP
-                    .AddJsonProtocol(options =>
-                    {
-                        options.PayloadSerializerSettings = Json.GetSerializerSettings();
-                    });
-#else
                     .AddJsonProtocol(options =>
                     {
                         options.PayloadSerializerOptions = STJson.GetSerializerSettings();
                     });
-#endif
-
                 })
                 .Configure(app =>
                 {
-#if NETCOREAPP
                     app.UseRouting();
-#endif
                     app.Properties["host.AppName"] = BuildInfo.AppName;
                     app.UsePathBase(_configFileProvider.UrlBase);
 

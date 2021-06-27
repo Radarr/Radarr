@@ -1,2 +1,0 @@
-﻿Source: https://github.com/anderly/Expansive
-Microsoft Public License (MS-PL): http://opensource.org/licenses/MS-PL

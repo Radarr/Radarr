@@ -44,11 +44,7 @@ namespace NzbDrone.Common.Processes
 
         public static int GetCurrentProcessId()
         {
-#if NETCOREAPP
             return Environment.ProcessId;
-#else
-            return Process.GetCurrentProcess().Id;
-#endif
         }
 
         public ProcessInfo GetCurrentProcess()
