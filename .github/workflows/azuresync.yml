@@ -1,0 +1,39 @@
+name: Sync issue to Azure DevOps work item
+
+on:
+  issues:
+    types:
+      [opened, edited, deleted, closed, reopened, labeled, unlabeled, assigned]
+
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: danhellem/github-actions-issue-to-work-item@master
+        if: "${{ contains(github.event.issue.labels.*.name, 'Type: Bug') == true }}"
+        env:
+          ado_token: "${{ secrets.ADO_PERSONAL_ACCESS_TOKEN }}"
+          github_token: "${{ github.token }}"
+          ado_organization: "Servarr"
+          ado_project: "Servarr"
+          ado_area_path: "Servarr\\Radarr"
+          ado_wit: "Bug"
+          ado_new_state: "New"
+          ado_active_state: "Active"
+          ado_close_state: "Closed"
+          ado_bypassrules: true
+          log_level: 100
+      - uses: danhellem/github-actions-issue-to-work-item@master
+        if: "${{ contains(github.event.issue.labels.*.name, 'Type: Bug') == false }}"
+        env:
+          ado_token: "${{ secrets.ADO_PERSONAL_ACCESS_TOKEN }}"
+          github_token: "${{ github.token }}"
+          ado_organization: "Servarr"
+          ado_project: "Servarr"
+          ado_area_path: "Servarr\\Radarr"
+          ado_wit: "User Story"
+          ado_new_state: "New"
+          ado_active_state: "Active"
+          ado_close_state: "Closed"
+          ado_bypassrules: true
+          log_level: 100
