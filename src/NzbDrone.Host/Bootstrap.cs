@@ -24,11 +24,7 @@ namespace Radarr.Host
             try
             {
                 Logger.Info("Starting Radarr - {0} - Version {1}",
-#if NETCOREAPP
                             Process.GetCurrentProcess().MainModule.FileName,
-#else
-                            Assembly.GetCallingAssembly().Location,
-#endif
                             Assembly.GetExecutingAssembly().GetName().Version);
 
                 if (!PlatformValidation.IsValidate(userAlert))

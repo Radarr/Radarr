@@ -1,15 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net472</TargetFrameworks>
+    <TargetFrameworks>net5.0</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
-    <PackageReference Include="Mono.Posix-4.5" Version="4.5.0" PrivateAssets="all" />
-  </ItemGroup>
   <!--
        The netstandard veresion here doesn't work in net framework
        See https://github.com/xamarin/XamarinComponents/issues/282
   -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+  <ItemGroup>
     <PackageReference Include="Mono.Posix.NETStandard" Version="5.20.1-servarr1" />
   </ItemGroup>
   <ItemGroup>

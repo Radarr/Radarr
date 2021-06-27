@@ -21,8 +21,6 @@
         <Framework>%(Framework)</Framework>
       </Renamed>
 
-      <Renamed Remove="$(ExcludedRuntimeFrameworkPairs)" />
-
       <!-- Transform RuntimeIdentifierForPublish items to project items to pass to MSBuild task -->
       <ProjectToPublish Include="@(Renamed->'$(MSBuildProjectFullPath)')">
         <AdditionalProperties>RuntimeIdentifier=%(Renamed.Runtime);TargetFramework=%(Renamed.Framework)</AdditionalProperties>

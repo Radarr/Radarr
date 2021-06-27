@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Messaging;
 using TinyIoC;
-
-#if NETCOREAPP
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Runtime.Loader;
-#endif
 
 namespace NzbDrone.Common.Composition
 {
@@ -27,12 +24,6 @@ namespace NzbDrone.Common.Composition
             assemblies.Add(OsInfo.IsWindows ? "Radarr.Windows" : "Radarr.Mono");
             assemblies.Add("Radarr.Common");
 
-#if !NETCOREAPP
-            foreach (var assembly in assemblies)
-            {
-                _loadedTypes.AddRange(Assembly.Load(assembly).GetExportedTypes());
-            }
-#else
             var startupPath = AppDomain.CurrentDomain.BaseDirectory;
 
             foreach (var assemblyName in assemblies)
@@ -44,14 +35,12 @@ namespace NzbDrone.Common.Composition
             toRegisterResolver.AddRange(assemblies.Intersect(new[] { "Radarr.Core" }));
             RegisterNativeResolver(toRegisterResolver);
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(ContainerResolveEventHandler);
-#endif
 
             Container = new Container(new TinyIoCContainer(), _loadedTypes);
             AutoRegisterInterfaces();
             Container.Register(args);
         }
 
-#if  NETCOREAPP
         private static Assembly ContainerResolveEventHandler(object sender, ResolveEventArgs args)
         {
             var resolver = new AssemblyDependencyResolver(args.RequestingAssembly.Location);
@@ -103,7 +92,6 @@ namespace NzbDrone.Common.Composition
 
             return NativeLibrary.Load(mappedName, assembly, dllImportSearchPath);
         }
-#endif
 
         private void AutoRegisterInterfaces()
         {

@@ -57,17 +57,10 @@ namespace Radarr.Host.Middleware
                 }
             });
 
-#if NETCOREAPP
             appBuilder.UseEndpoints(x =>
             {
                 x.MapHub<MessageHub>(URL_BASE + "/signalr/messages");
             });
-#else
-            appBuilder.UseSignalR(x =>
-            {
-                x.MapHub<MessageHub>("/signalr/messages");
-            });
-#endif
 
             // This is a side effect of haing multiple IoC containers, TinyIoC and whatever
             // Kestrel/SignalR is using. Ideally we'd have one IoC container, but that's non-trivial with TinyIoC

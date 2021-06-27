@@ -1,11 +1,4 @@
 <Project>
-  <!-- below net4.7.1 the new portable pdb format has no line numbers, pdb to mdb probably doesn't like it either -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net472'">
-    <DebugType>full</DebugType>
-  </PropertyGroup>
-
   <Import Project="Targets/PublishAllRids.targets" />
-  <Import Project="Targets/FixBindingRedirects.targets" />
-  <Import Project="Targets/MonoFacades.targets" Condition="'$(TargetFrameworkIdentifier)' == '.NETFramework' and !$(RuntimeIdentifier.StartsWith('win'))" />
   <Import Project="Targets/CopyRuntimes.targets" />
 </Project>
