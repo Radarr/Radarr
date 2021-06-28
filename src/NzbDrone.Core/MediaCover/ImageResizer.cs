@@ -21,12 +21,6 @@ namespace NzbDrone.Core.MediaCover
         {
             _diskProvider = diskProvider;
 
-            // Random segfaults on mono 5.0 and 5.4
-            if (PlatformInfo.IsMono && platformInfo.Version < new System.Version(5, 8))
-            {
-                return;
-            }
-
             _enabled = true;
 
             // More conservative memory allocation

@@ -33,8 +33,6 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(0)]
         public void add_movie_without_profileid_should_return_badrequest()
         {
-            IgnoreOnMonoVersions("5.12", "5.14");
-
             EnsureNoMovie(680, "Pulp Fiction");
 
             var movie = Movies.Lookup("imdb:tt0110912").Single();
@@ -48,8 +46,6 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(0)]
         public void add_movie_without_path_should_return_badrequest()
         {
-            IgnoreOnMonoVersions("5.12", "5.14");
-
             EnsureNoMovie(680, "Pulp Fiction");
 
             var movie = Movies.Lookup("imdb:tt0110912").Single();
@@ -126,8 +122,6 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void get_movie_by_unknown_id_should_return_404()
         {
-            IgnoreOnMonoVersions("5.12", "5.14");
-
             var result = Movies.InvalidGet(1000000);
         }
 

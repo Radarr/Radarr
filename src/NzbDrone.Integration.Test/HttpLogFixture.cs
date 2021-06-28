@@ -11,8 +11,6 @@ namespace NzbDrone.Integration.Test
         [Test]
         public void should_log_on_error()
         {
-            IgnoreOnMonoVersions("5.12", "5.14");
-
             var config = HostConfig.Get(1);
             config.LogLevel = "Trace";
             HostConfig.Put(config);

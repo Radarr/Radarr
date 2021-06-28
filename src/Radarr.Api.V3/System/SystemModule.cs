@@ -61,7 +61,6 @@ namespace Radarr.Api.V3.System
                 OsName = _osInfo.Name,
                 OsVersion = _osInfo.Version,
                 IsNetCore = PlatformInfo.IsNetCore,
-                IsMono = PlatformInfo.IsMono,
                 IsLinux = OsInfo.IsLinux,
                 IsOsx = OsInfo.IsOsx,
                 IsWindows = OsInfo.IsWindows,

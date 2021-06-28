@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using FluentAssertions;
 using NUnit.Framework;
 using RestSharp;
@@ -33,8 +33,6 @@ namespace NzbDrone.Integration.Test
         [TestCase("application/junk")]
         public void should_get_unacceptable_with_accept_header(string header)
         {
-            IgnoreOnMonoVersions("5.12", "5.14");
-
             var request = new RestRequest("system/status")
             {
                 RequestFormat = DataFormat.None
