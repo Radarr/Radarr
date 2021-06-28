@@ -155,22 +155,6 @@ namespace NzbDrone.Integration.Test
             }
         }
 
-        protected void IgnoreOnMonoVersions(params string[] version_strings)
-        {
-            if (!PlatformInfo.IsMono)
-            {
-                return;
-            }
-
-            var current = PlatformInfo.GetVersion();
-            var versions = version_strings.Select(x => new Version(x)).ToList();
-
-            if (versions.Any(x => x.Major == current.Major && x.Minor == current.Minor))
-            {
-                throw new IgnoreException($"Ignored on mono {PlatformInfo.GetVersion()}");
-            }
-        }
-
         public string GetTempDirectory(params string[] args)
         {
             var path = Path.Combine(TempDirectory, Path.Combine(args));

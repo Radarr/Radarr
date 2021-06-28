@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using Nancy;
 using Nancy.Bootstrapper;
 using NLog;
-using NzbDrone.Common.EnvironmentInfo;
 
 namespace Radarr.Http.Extensions.Pipelines
 {
@@ -21,8 +20,7 @@ namespace Radarr.Http.Extensions.Pipelines
         {
             _logger = logger;
 
-            // On Mono GZipStream/DeflateStream leaks memory if an exception is thrown, use an intermediate buffer in that case.
-            _writeGZipStream = PlatformInfo.IsMono ? WriteGZipStreamMono : (Action<Action<Stream>, Stream>)WriteGZipStream;
+            _writeGZipStream = (Action<Action<Stream>, Stream>)WriteGZipStream;
         }
 
         public void Register(IPipelines pipelines)

@@ -366,11 +366,6 @@ namespace NzbDrone.Common.Processes
 
         private (string Path, string Args) GetPathAndArgs(string path, string args)
         {
-            if (PlatformInfo.IsMono && path.EndsWith(".exe", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return ("mono", $"--debug {path} {args}");
-            }
-
             if (OsInfo.IsWindows && path.EndsWith(".bat", StringComparison.InvariantCultureIgnoreCase))
             {
                 return ("cmd.exe", $"/c {path} {args}");

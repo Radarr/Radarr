@@ -348,23 +348,6 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_get_relative_path_when_there_is_no_grandparent_mono()
-        {
-            MonoOnly();
-
-            var name = "Transformers.2007.720p.BluRay.x264-Radarr";
-            var outputPath = "/";
-            var localMovie = _approvedDecisions.First().LocalMovie;
-
-            localMovie.FolderMovieInfo = new ParsedMovieInfo { ReleaseTitle = name };
-            localMovie.Path = Path.Combine(outputPath, name + ".mkv");
-
-            Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, null);
-
-            Mocker.GetMock<IMediaFileService>().Verify(v => v.Add(It.Is<MovieFile>(c => c.OriginalFilePath == $"{name}.mkv".AsOsAgnostic())));
-        }
-
-        [Test]
         public void should_get_relative_path_when_there_is_no_grandparent_for_UNC_path()
         {
             WindowsOnly();

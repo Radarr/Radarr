@@ -106,13 +106,6 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                                       o.Debug = false;
                                       o.DiagnosticsLevel = SentryLevel.Debug;
                                       o.Release = BuildInfo.Release;
-                                      if (PlatformInfo.IsMono)
-                                      {
-                                          // Mono 6.0 broke GzipStream.WriteAsync
-                                          // TODO: Check specific version
-                                          o.RequestBodyCompressionLevel = System.IO.Compression.CompressionLevel.NoCompression;
-                                      }
-
                                       o.BeforeSend = x => SentryCleanser.CleanseEvent(x);
                                       o.BeforeBreadcrumb = x => SentryCleanser.CleanseBreadcrumb(x);
                                       o.Environment = BuildInfo.Branch;
@@ -154,14 +147,6 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             SentrySdk.ConfigureScope(scope =>
             {
                 scope.SetTag("is_docker", $"{osInfo.IsDocker}");
-
-                if (osInfo.Name != null && PlatformInfo.IsMono)
-                {
-                    // Sentry auto-detection of non-Windows platforms isn't that accurate on certain devices.
-                    scope.Contexts.OperatingSystem.Name = osInfo.Name.FirstCharToUpper();
-                    scope.Contexts.OperatingSystem.RawDescription = osInfo.FullName;
-                    scope.Contexts.OperatingSystem.Version = osInfo.Version.ToString();
-                }
             });
         }
 

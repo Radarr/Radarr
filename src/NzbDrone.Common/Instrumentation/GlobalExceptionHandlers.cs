@@ -44,16 +44,6 @@ namespace NzbDrone.Common.Instrumentation
                 return;
             }
 
-            if (PlatformInfo.IsMono)
-            {
-                if ((exception is TypeInitializationException && exception.InnerException is DllNotFoundException) ||
-                    exception is DllNotFoundException)
-                {
-                    Logger.Debug(exception, "Minor Fail: " + exception.Message);
-                    return;
-                }
-            }
-
             Console.WriteLine("EPIC FAIL: {0}", exception);
             Logger.Fatal(exception, "EPIC FAIL.");
         }

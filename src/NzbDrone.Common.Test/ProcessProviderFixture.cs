@@ -170,7 +170,7 @@ namespace NzbDrone.Common.Test
             var processStarted = new ManualResetEventSlim();
 
             string suffix;
-            if (OsInfo.IsWindows || PlatformInfo.IsMono)
+            if (OsInfo.IsWindows)
             {
                 suffix = ".exe";
             }

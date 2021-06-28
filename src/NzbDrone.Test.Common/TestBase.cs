@@ -166,14 +166,6 @@ namespace NzbDrone.Test.Common
             }
         }
 
-        protected void MonoOnly()
-        {
-            if (!PlatformInfo.IsMono)
-            {
-                throw new IgnoreException("mono specific test");
-            }
-        }
-
         protected void NotBsd()
         {
             if (OsInfo.Os == Os.Bsd)

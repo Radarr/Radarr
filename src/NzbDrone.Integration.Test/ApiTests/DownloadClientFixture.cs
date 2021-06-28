@@ -11,8 +11,6 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(0)]
         public void add_downloadclient_without_name_should_return_badrequest()
         {
-            IgnoreOnMonoVersions("5.12", "5.14");
-
             EnsureNoDownloadClient();
 
             var schema = DownloadClients.Schema().First(v => v.Implementation == "UsenetBlackhole");
@@ -28,8 +26,6 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(0)]
         public void add_downloadclient_without_nzbfolder_should_return_badrequest()
         {
-            IgnoreOnMonoVersions("5.12", "5.14");
-
             EnsureNoDownloadClient();
 
             var schema = DownloadClients.Schema().First(v => v.Implementation == "UsenetBlackhole");
@@ -45,8 +41,6 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Order(0)]
         public void add_downloadclient_without_watchfolder_should_return_badrequest()
         {
-            IgnoreOnMonoVersions("5.12", "5.14");
-
             EnsureNoDownloadClient();
 
             var schema = DownloadClients.Schema().First(v => v.Implementation == "UsenetBlackhole");
@@ -101,8 +95,6 @@ namespace NzbDrone.Integration.Test.ApiTests
         [Test]
         public void get_downloadclient_by_unknown_id_should_return_404()
         {
-            IgnoreOnMonoVersions("5.12", "5.14");
-
             var result = DownloadClients.InvalidGet(1000000);
         }
 

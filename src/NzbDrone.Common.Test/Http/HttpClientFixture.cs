@@ -251,11 +251,6 @@ namespace NzbDrone.Common.Test.Http
         [Test]
         public void should_follow_redirects_to_https()
         {
-            if (typeof(TDispatcher) == typeof(ManagedHttpDispatcher) && PlatformInfo.IsMono)
-            {
-                Assert.Ignore("Will fail on tls1.2 via managed dispatcher, ignore.");
-            }
-
             var request = new HttpRequestBuilder($"https://{_httpBinHost}/redirect-to")
                 .AddQueryParam("url", $"https://radarr.video/")
                 .Build();

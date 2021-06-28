@@ -44,10 +44,6 @@ namespace NzbDrone.Test.Common
             {
                 consoleExe = "Radarr.Console.exe";
             }
-            else if (PlatformInfo.IsMono)
-            {
-                consoleExe = "Radarr.exe";
-            }
             else
             {
                 consoleExe = "Radarr";
