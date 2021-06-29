@@ -115,10 +115,10 @@ class NamingModal extends Component {
     ];
 
     const movieTokens = [
-      { token: '{Movie Title}', example: 'Movie Title!' },
+      { token: '{Movie Title}', example: 'Movie\'s Title' },
       { token: '{Movie Title:DE}', example: 'Filetitle' },
-      { token: '{Movie CleanTitle}', example: 'Movie Title' },
-      { token: '{Movie TitleThe}', example: 'Movie Title, The' },
+      { token: '{Movie CleanTitle}', example: 'Movies Title' },
+      { token: '{Movie TitleThe}', example: 'Movie\'s Title, The' },
       { token: '{Movie OriginalTitle}', example: 'Τίτλος ταινίας' },
       { token: '{Movie TitleFirstCharacter}', example: 'M' },
       { token: '{Movie Collection}', example: 'The Movie Collection' },
@@ -132,8 +132,8 @@ class NamingModal extends Component {
     ];
 
     const qualityTokens = [
-      { token: '{Quality Full}', example: 'HDTV 720p Proper' },
-      { token: '{Quality Title}', example: 'HDTV 720p' }
+      { token: '{Quality Full}', example: 'HDTV-720p Proper' },
+      { token: '{Quality Title}', example: 'HDTV-720p' }
     ];
 
     const mediaInfoTokens = [
@@ -164,7 +164,7 @@ class NamingModal extends Component {
 
     const originalTokens = [
       { token: '{Original Title}', example: 'Movie.Title.HDTV.x264-EVOLVE' },
-      { token: '{Original Filename}', example: 'Movie.title.hdtv.x264-EVOLVE' }
+      { token: '{Original Filename}', example: 'movie title hdtv.x264-Evolve' }
     ];
 
     return (
