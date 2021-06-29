@@ -65,6 +65,26 @@ namespace NzbDrone.Core.Indexers.Newznab
             }
         }
 
+        private string TextSearchEngine
+        {
+            get
+            {
+                var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
+
+                return capabilities.TextSearchEngine;
+            }
+        }
+
+        private string MovieTextSearchEngine
+        {
+            get
+            {
+                var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
+
+                return capabilities.MovieTextSearchEngine;
+            }
+        }
+
         public virtual IndexerPageableRequestChain GetRecentRequests()
         {
             var pageableRequests = new IndexerPageableRequestChain();
@@ -135,7 +155,8 @@ namespace NzbDrone.Core.Indexers.Newznab
             if (SupportsSearch)
             {
                 chain.AddTier();
-                foreach (var queryTitle in searchCriteria.QueryTitles)
+                var queryTitles = TextSearchEngine == "raw" ? searchCriteria.SceneTitles : searchCriteria.QueryTitles;
+                foreach (var queryTitle in queryTitles)
                 {
                     var searchQuery = queryTitle;
 

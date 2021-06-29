@@ -9,6 +9,8 @@ namespace NzbDrone.Core.Indexers.Newznab
         public string[] SupportedSearchParameters { get; set; }
         public string[] SupportedMovieSearchParameters { get; set; }
         public bool SupportsAggregateIdSearch { get; set; }
+        public string TextSearchEngine { get; set; }
+        public string MovieTextSearchEngine { get; set; }
         public List<NewznabCategory> Categories { get; set; }
 
         public NewznabCapabilities()
@@ -18,6 +20,8 @@ namespace NzbDrone.Core.Indexers.Newznab
             SupportedSearchParameters = new[] { "q" };
             SupportedMovieSearchParameters = new[] { "q", "imdbid", "imdbtitle", "imdbyear" };
             SupportsAggregateIdSearch = false;
+            TextSearchEngine = "sphinx"; // This should remain 'sphinx' for older newznab installs
+            MovieTextSearchEngine = "sphinx"; // This should remain 'sphinx' for older newznab installs
             Categories = new List<NewznabCategory>();
         }
     }
