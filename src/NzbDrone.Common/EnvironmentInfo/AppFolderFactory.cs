@@ -1,8 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Exceptions;
@@ -91,8 +88,7 @@ namespace NzbDrone.Common.EnvironmentInfo
                         return;
                     }
 
-                    _diskProvider.MoveFile(oldDbFile, _appFolderInfo.GetDatabase());
-                    CleanupSqLiteRollbackFiles();
+                    MoveSqliteDatabase(oldDbFile, _appFolderInfo.GetDatabase());
                     RemovePidFile();
                 }
 
@@ -105,11 +101,8 @@ namespace NzbDrone.Common.EnvironmentInfo
                 // Rename the DB file
                 if (_diskProvider.FileExists(oldDbFile))
                 {
-                    _diskProvider.MoveFile(oldDbFile, _appFolderInfo.GetDatabase());
+                    MoveSqliteDatabase(oldDbFile, _appFolderInfo.GetDatabase());
                 }
-
-                // Remove SQLite rollback files
-                CleanupSqLiteRollbackFiles();
 
                 // Remove Old PID file
                 RemovePidFile();
@@ -159,12 +152,37 @@ namespace NzbDrone.Common.EnvironmentInfo
             }
         }
 
-        private void CleanupSqLiteRollbackFiles()
+        private void MoveSqliteDatabase(string source, string destination)
         {
-            _diskProvider.GetFiles(_appFolderInfo.AppDataFolder, SearchOption.TopDirectoryOnly)
-                         .Where(f => Path.GetFileName(f).StartsWith("nzbdrone.db"))
-                         .ToList()
-                         .ForEach(_diskProvider.DeleteFile);
+            _logger.Info("Moving {0}* to {1}*", source, destination);
+
+            var dbSuffixes = new[] { "", "-shm", "-wal", "-journal" };
+
+            foreach (var suffix in dbSuffixes)
+            {
+                var sourceFile = source + suffix;
+                var destFile = destination + suffix;
+
+                if (_diskProvider.FileExists(destFile))
+                {
+                    _diskProvider.DeleteFile(destFile);
+                }
+
+                if (_diskProvider.FileExists(sourceFile))
+                {
+                    _diskProvider.CopyFile(sourceFile, destFile);
+                }
+            }
+
+            foreach (var suffix in dbSuffixes)
+            {
+                var sourceFile = source + suffix;
+
+                if (_diskProvider.FileExists(sourceFile))
+                {
+                    _diskProvider.DeleteFile(sourceFile);
+                }
+            }
         }
 
         private void RemovePidFile()
