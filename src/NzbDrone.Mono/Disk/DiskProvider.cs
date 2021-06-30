@@ -313,9 +313,7 @@ namespace NzbDrone.Mono.Disk
             // Catch the exception and attempt to handle these edgecases
 
             // Mono 6.x till 6.10 doesn't properly try use rename first.
-            if (move &&
-                ((PlatformInfo.Platform == PlatformType.Mono && PlatformInfo.GetVersion() < new Version(6, 10)) ||
-                 (PlatformInfo.Platform == PlatformType.NetCore)))
+            if (move && (PlatformInfo.Platform == PlatformType.NetCore))
             {
                 if (Syscall.lstat(source, out var sourcestat) == 0 &&
                     Syscall.lstat(destination, out var deststat) != 0 &&
@@ -343,32 +341,7 @@ namespace NzbDrone.Mono.Disk
                 var dstInfo = new FileInfo(destination);
                 var exists = dstInfo.Exists && srcInfo.Exists;
 
-                if (PlatformInfo.Platform == PlatformType.Mono && PlatformInfo.GetVersion() >= new Version(6, 6) &&
-                    exists && dstInfo.Length == 0 && srcInfo.Length != 0)
-                {
-                    // mono >=6.6 bug: zero length file since chmod happens at the start
-                    _logger.Debug("{3} failed to {2} file likely due to known {3} bug, attempting to {2} directly. '{0}' -> '{1}'", source, destination, move ? "move" : "copy", PlatformInfo.PlatformName);
-
-                    try
-                    {
-                        _logger.Trace("Copying content from {0} to {1} ({2} bytes)", source, destination, srcInfo.Length);
-                        using (var srcStream = new FileStream(source, FileMode.Open, FileAccess.Read))
-                        using (var dstStream = new FileStream(destination, FileMode.Create, FileAccess.Write))
-                        {
-                            srcStream.CopyTo(dstStream);
-                        }
-                    }
-                    catch
-                    {
-                        // If it fails again then bail
-                        throw;
-                    }
-                }
-                else if (((PlatformInfo.Platform == PlatformType.Mono &&
-                           PlatformInfo.GetVersion() >= new Version(6, 0) &&
-                           PlatformInfo.GetVersion() < new Version(6, 6)) ||
-                          PlatformInfo.Platform == PlatformType.NetCore) &&
-                         exists && dstInfo.Length == srcInfo.Length)
+                if (PlatformInfo.Platform == PlatformType.NetCore && exists && dstInfo.Length == srcInfo.Length)
                 {
                     // mono 6.0, mono 6.4 and netcore 3.1 bug: full length file since utime and chmod happens at the end
                     _logger.Debug("{3} failed to {2} file likely due to known {3} bug, attempting to {2} directly. '{0}' -> '{1}'", source, destination, move ? "move" : "copy", PlatformInfo.PlatformName);
