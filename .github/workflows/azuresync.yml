@@ -5,6 +5,8 @@ on:
     types:
       [opened, edited, deleted, closed, reopened, labeled, unlabeled, assigned]
 
+concurrency: azuresync
+
 jobs:
   alert:
     runs-on: ubuntu-latest
