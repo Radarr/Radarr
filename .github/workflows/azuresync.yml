@@ -5,7 +5,7 @@ on:
     types:
       [opened, edited, deleted, closed, reopened, labeled, unlabeled, assigned]
 
-concurrency: azuresync
+concurrency: azuresync-${{ github.event.issue.number }}
 
 jobs:
   alert:
