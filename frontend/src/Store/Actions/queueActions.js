@@ -119,6 +119,12 @@ export const defaultState = {
         isVisible: false
       },
       {
+        name: 'size',
+        label: 'Size',
+        isSortable: true,
+        isVisibile: false
+      },
+      {
         name: 'outputPath',
         label: translate('OutputPath'),
         isSortable: false,
