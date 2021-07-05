@@ -13,6 +13,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds } from 'Helpers/Props';
+import AdvancedSettingsButton from 'Settings/AdvancedSettingsButton';
 import translate from 'Utilities/String/translate';
 import styles from './EditIndexerModalContent.css';
 
@@ -31,6 +32,7 @@ function EditIndexerModalContent(props) {
     onSavePress,
     onTestPress,
     onDeleteIndexerPress,
+    onAdvancedSettingsPress,
     ...otherProps
   } = props;
 
@@ -200,6 +202,12 @@ function EditIndexerModalContent(props) {
             </Button>
         }
 
+        <AdvancedSettingsButton
+          advancedSettings={advancedSettings}
+          onAdvancedSettingsPress={onAdvancedSettingsPress}
+          showLabel={false}
+        />
+
         <SpinnerErrorButton
           isSpinning={isTesting}
           error={saveError}
@@ -239,6 +247,7 @@ EditIndexerModalContent.propTypes = {
   onModalClose: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onTestPress: PropTypes.func.isRequired,
+  onAdvancedSettingsPress: PropTypes.func.isRequired,
   onDeleteIndexerPress: PropTypes.func
 };
 
