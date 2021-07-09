@@ -144,7 +144,7 @@
   "Connection": "Connection",
   "ConnectionLost": "Connection Lost",
   "ConnectionLostAutomaticMessage": "Radarr will try to connect automatically, or you can click reload below.",
-  "ConnectionLostMessage": "Radarr has lost it's connection to the backend and will need to be reloaded to restore functionality.",
+  "ConnectionLostMessage": "Radarr has lost its connection to the backend and will need to be reloaded to restore functionality.",
   "Connections": "Connections",
   "ConnectSettings": "Connect Settings",
   "ConnectSettingsSummary": "Notifications, connections to media servers/players, and custom scripts",
