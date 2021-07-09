@@ -136,7 +136,7 @@
         "parameters": [
           {
             "in": "query",
-            "name": "movieFiles",
+            "name": "moveFiles",
             "schema": {
               "type": "boolean"
             },
