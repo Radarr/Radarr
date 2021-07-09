@@ -47,11 +47,12 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("SomeMovie.1080p.BluRay.DTS.x264.-VH-PROD.mkv", "VH-PROD")]
         [TestCase("Some.Dead.Movie.2006.1080p.BluRay.DTS.x264.D-Z0N3", "D-Z0N3")]
         [TestCase("Movie.Title.2010.720p.BluRay.x264.-[YTS.LT]", "YTS.LT")]
+        [TestCase("The.Movie.Title.2013.720p.BluRay.x264-ROUGH [PublicHD]", "ROUGH")]
 
         //[TestCase("", "")]
 
         //Exception Cases
-        public void should_parse_exception_release_group(string title, string expected)
+        public void should_parse_expected_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
         }
@@ -83,7 +84,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name - A History of Movie (2017) (1080p AMZN WEB-DL x265 HEVC 10bit EAC3 2.0 t3nzin)", "t3nzin")]
         [TestCase("Movie Name (2019) (1080p BluRay x265 HEVC 10bit AAC 7.1 Vyndros)", "Vyndros")]
 
-        public void should_parse_release_group(string title, string expected)
+        public void should_parse_exception_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
         }
@@ -121,7 +122,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Some.Movie.2019.1080p.BDRip.X264.AC3-EVO-4P", "EVO")]
         [TestCase("Some.Movie.2019.1080p.BDRip.X264.AC3-EVO-4Planet", "EVO")]
         [TestCase("Some.Movie.2019.1080p.BDRip.X264.AC3-DON-AlteZachen", "DON")]
-        public void should_not_include_repost_in_release_group(string title, string expected)
+        public void should_not_include_bad_suffix_in_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
         }
