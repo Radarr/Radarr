@@ -3688,7 +3688,7 @@
             "apikey": []
           }
         ],
-        "description": "Force grab pending queue item by Id",
+        "description": "Perform a Radarr \"force grab\" on a pending queue item by its ID.",
         "tags": [
           "Queue"
         ]
