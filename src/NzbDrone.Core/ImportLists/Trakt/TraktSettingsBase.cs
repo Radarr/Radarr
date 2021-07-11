@@ -69,7 +69,7 @@ namespace NzbDrone.Core.ImportLists.Trakt
             Limit = 100;
         }
 
-        public string Link => "https://api.trakt.tv";
+        public string Link => "https://trakt.tv";
         public virtual string Scope => "";
 
         [FieldDefinition(0, Label = "Access Token", Type = FieldType.Textbox, Hidden = HiddenType.Hidden)]
