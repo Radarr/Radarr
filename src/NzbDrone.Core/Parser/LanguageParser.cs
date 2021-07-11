@@ -169,7 +169,7 @@ namespace NzbDrone.Core.Parser
             {
                 languages.Add(Language.Bulgarian);
             }
-            
+
             var matches = LanguageRegex.Matches(title);
 
             foreach (Match match in matches)
