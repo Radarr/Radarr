@@ -125,7 +125,7 @@ namespace NzbDrone.Common.EnsureThat
 
             if (OsInfo.IsWindows)
             {
-                throw ExceptionFactory.CreateForParamValidation(param.Name, string.Format("value [{0}]  is not a valid Windows path. paths must be a full path eg. C:\\Windows", param.Value));
+                throw ExceptionFactory.CreateForParamValidation(param.Name, string.Format("value [{0}]  is not a valid Windows path. paths must be a full path e.g. C:\\Windows", param.Value));
             }
 
             throw ExceptionFactory.CreateForParamValidation(param.Name, string.Format("value [{0}]  is not a valid *nix path. paths must start with /", param.Value));
