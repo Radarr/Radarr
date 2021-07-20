@@ -10,6 +10,8 @@ export const LESS_THAN = 'lessThan';
 export const LESS_THAN_OR_EQUAL = 'lessThanOrEqual';
 export const NOT_CONTAINS = 'notContains';
 export const NOT_EQUAL = 'notEqual';
+export const IN_FUTURE = 'inFuture';
+export const IN_PAST = 'inPast';
 
 export const all = [
   CONTAINS,
@@ -23,5 +25,7 @@ export const all = [
   IN_LAST,
   NOT_IN_LAST,
   IN_NEXT,
-  NOT_IN_NEXT
+  NOT_IN_NEXT,
+  IN_FUTURE,
+  IN_PAST
 ];

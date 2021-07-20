@@ -3,6 +3,7 @@ import React from 'react';
 import Label from 'Components/Label';
 import { kinds } from 'Helpers/Props';
 import MovieQuality from 'Movie/MovieQuality';
+import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
 import translate from 'Utilities/String/translate';
 import styles from './MovieFileStatus.css';
@@ -10,14 +11,27 @@ import styles from './MovieFileStatus.css';
 function MovieFileStatus(props) {
   const {
     isAvailable,
+    isAvailableDate,
     monitored,
     movieFile,
     queueStatus,
-    queueState
+    queueState,
+    shortDateFormat,
+    showRelativeDates,
+    timeFormat
   } = props;
 
   const hasMovieFile = !!movieFile;
   const hasReleased = isAvailable;
+  const DateConsideredAvailable = getRelativeDate(
+    isAvailableDate,
+    shortDateFormat,
+    showRelativeDates,
+    {
+      timeFormat,
+      timeForToday: false
+    }
+  );
 
   if (queueStatus) {
     const queueStatusText = getQueueStatusText(queueStatus, queueState);
@@ -79,7 +93,7 @@ function MovieFileStatus(props) {
   return (
     <div className={styles.center}>
       <Label
-        title={translate('NotAvailable')}
+        title={DateConsideredAvailable}
         kind={kinds.INFO}
       >
         {translate('NotAvailable')}
@@ -90,10 +104,14 @@ function MovieFileStatus(props) {
 
 MovieFileStatus.propTypes = {
   isAvailable: PropTypes.bool,
+  isAvailableDate: PropTypes.string,
   monitored: PropTypes.bool.isRequired,
   movieFile: PropTypes.object,
   queueStatus: PropTypes.string,
-  queueState: PropTypes.string
+  queueState: PropTypes.string,
+  showRelativeDates: PropTypes.bool.isRequired,
+  shortDateFormat: PropTypes.string.isRequired,
+  timeFormat: PropTypes.string.isRequired
 };
 
 export default MovieFileStatus;

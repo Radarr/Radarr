@@ -324,10 +324,22 @@ export const defaultState = {
       valueType: filterBuilderValueTypes.BOOL
     },
     {
+      name: 'isAvailableDate',
+      label: translate('DateConsideredAvailable'),
+      type: filterBuilderTypes.DATE,
+      valueType: filterBuilderValueTypes.DATE
+    },
+    {
       name: 'minimumAvailability',
       label: translate('MinimumAvailability'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.MINIMUM_AVAILABILITY
+    },
+    {
+      name: 'minimumAvailabilityDate',
+      label: translate('MinimumAvailabilityDate'),
+      type: filterBuilderTypes.DATE,
+      valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'ratings',
