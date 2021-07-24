@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         [FieldDefinition(5)]
         public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
 
-        [FieldDefinition(6, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/Definitions#Indexer_Flags", Advanced = true)]
+        [FieldDefinition(6, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#torrent-tracker-configuration", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
 
         public NzbDroneValidationResult Validate()
