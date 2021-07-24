@@ -81,7 +81,7 @@
     "BranchUpdate": "更新Radarr的分支",
     "Branch": "分支",
     "Calendar": "日历",
-    "BlacklistHelpText": "不再自动刮削这个电影",
+    "BlacklistHelpText": "不再自动刮削这个版本",
     "BindAddressHelpText": "有效的IPV4地址或以“*”代表所以地址",
     "Blacklist": "黑名单",
     "BackupRetentionHelpText": "早于保留周期的自动备份将被自动清除",
@@ -590,7 +590,7 @@
     "AddExclusion": "添加例外",
     "AddedToDownloadQueue": "已添加到已下载队列",
     "Added": "已添加",
-    "Actions": "动作",
+    "Actions": "操作",
     "ImportListSyncIntervalHelpText": "多久Radarr同步一次您的影片列表，最小值为6小时",
     "IMDb": "IMDb",
     "PendingChangesDiscardChanges": "舍弃修改并退出",
@@ -1082,5 +1082,6 @@
     "ImportListMultipleMissingRoots": "导入列表中缺失多个根目录文件夹",
     "ImportListMissingRoot": "在导入列表中缺少根目录文件夹",
     "BypassDelayIfHighestQuality": "跳过最高质量",
-    "NotificationTriggersHelpText": "选择触发此通知的事件"
+    "NotificationTriggersHelpText": "选择触发此通知的事件",
+    "From": "来自"
 }
