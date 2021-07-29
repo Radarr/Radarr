@@ -36,10 +36,6 @@ Note: GitHub Issues are for Bugs and Feature Requests Only
 [![GitHub - Bugs and Feature Requests Only](https://img.shields.io/badge/github-issues-red.svg?maxAge=60)](https://github.com/Radarr/Radarr/issues)
 [![Wiki](https://img.shields.io/badge/servarr-wiki-181717.svg?maxAge=60)](https://wiki.servarr.com/radarr)
 
-## Feature Requests
-
-[Feature Requests](https://github.com/Radarr/Radarr/issues/new?assignees=&labels=Type%3A+Enhancement&template=feature_request.md&title=)
-
 ## Contributors & Developers
 [API Documentation](https://radarr.video/docs/api/)
 
