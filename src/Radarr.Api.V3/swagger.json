@@ -3883,13 +3883,18 @@
         "properties": {
           "coverType": {
             "type": "string",
-            "enum": [
-              "poster",
-              "fanart"
-            ]
+            "enum": ["poster", "fanart"],
+            "example": "poster"
           },
           "url": {
-            "type": "string"
+            "type": "string",
+            "summary": "A path that can be used together with the host to find the image - requires API key",
+            "example": "/radarr/MediaCover/39/poster.jpg?lastWrite=637618111851086964"
+          },
+          "remoteUrl": {
+            "type": "string",
+            "summary": "A full URL of the TMDB source",
+            "example": "https://image.tmdb.org/t/p/original/i0FHyNF9VvQTXOi4yKnZJ1zql1.jpg"
           }
         },
         "xml": {
