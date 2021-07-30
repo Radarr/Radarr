@@ -80,6 +80,13 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name 2016 (1080p BluRay x265 HEVC 10bit DDP 5.1 theincognito)", "theincognito")]
         [TestCase("Movie Name - A History of Movie (2017) (1080p AMZN WEB-DL x265 HEVC 10bit EAC3 2.0 t3nzin)", "t3nzin")]
         [TestCase("Movie Name (2019) (1080p BluRay x265 HEVC 10bit AAC 7.1 Vyndros)", "Vyndros")]
+        [TestCase("Movie Name (2015) [BDRemux 1080p AVC ES-CAT-EN DTS-HD MA 5.1 Subs][HDO]", "HDO")]
+        [TestCase("Movie Name (2015) [BDRemux 1080p AVC EN-CAT-ES DTS-HD MA 5.1 Subs][HDO]", "HDO")]
+        [TestCase("Movie Name (2017) [BDRemux 1080p AVC ES DTS 5.1 - EN DTS-HD MA 7.1 Subs][HDO]", "HDO")]
+        [TestCase("Movie Name (2006) [BDRemux 1080p AVC ES DTS-HD MA 2.0 - EN DTS-HD MA 5.1 Sub][HDO]", "HDO")]
+        [TestCase("Movie Name (2015) [BDRemux 1080p AVC ES-CAT-EN DTS-HD MA 5.1 Subs]", null)]
+        [TestCase("Movie Name (2015) [BDRemux 1080p AVC EN-CAT-ES DTS-HD MA 5.1 Subs]", null)]
+        [TestCase("Movie Name (2015) [BDRemux 1080p AVC EN-ES-CAT DTS-HD MA 5.1 Subs]", null)]
 
         public void should_parse_exception_release_group(string title, string expected)
         {
