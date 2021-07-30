@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Parser
                                                                 string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly RegexReplace CleanTorrentSuffixRegex = new RegexReplace(@"\[(?:ettv|rartv|rarbg|cttv)\]$",
+        private static readonly RegexReplace CleanTorrentSuffixRegex = new RegexReplace(@"\[(?:ettv|rartv|rarbg|cttv|publichd)\]$",
                                                                 string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -445,6 +445,7 @@ namespace NzbDrone.Core.Parser
             title = title.Trim();
             title = RemoveFileExtension(title);
             title = WebsitePrefixRegex.Replace(title);
+            title = CleanTorrentSuffixRegex.Replace(title);
 
             var animeMatch = AnimeReleaseGroupRegex.Match(title);
 
