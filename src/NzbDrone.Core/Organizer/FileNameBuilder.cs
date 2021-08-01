@@ -67,6 +67,8 @@ namespace NzbDrone.Core.Organizer
 
         private static readonly Regex TitlePrefixRegex = new Regex(@"^(The|An|A) (.*?)((?: *\([^)]+\))*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private static readonly Regex ReservedDeviceNamesRegex = new Regex(@"^(?:aux|com1|com2|com3|com4|com5|com6|com7|com8|com9|con|lpt1|lpt2|lpt3|lpt4|lpt5|lpt6|lpt7|lpt8|lpt9|nul|prn)\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         public FileNameBuilder(INamingConfigService namingConfigService,
                                IQualityDefinitionService qualityDefinitionService,
                                IUpdateMediaInfo mediaInfoUpdater,
@@ -119,6 +121,7 @@ namespace NzbDrone.Core.Organizer
 
                 component = FileNameCleanupRegex.Replace(component, match => match.Captures[0].Value[0].ToString());
                 component = TrimSeparatorsRegex.Replace(component, string.Empty);
+                component = ReplaceReservedDeviceNames(component);
 
                 if (component.IsNotNullOrWhiteSpace())
                 {
@@ -180,6 +183,7 @@ namespace NzbDrone.Core.Organizer
 
                 var component = ReplaceTokens(splitPattern, tokenHandlers, namingConfig);
                 component = CleanFolderName(component);
+                component = ReplaceReservedDeviceNames(component);
 
                 if (component.IsNotNullOrWhiteSpace())
                 {
@@ -565,6 +569,12 @@ namespace NzbDrone.Core.Organizer
             }
 
             return Path.GetFileNameWithoutExtension(movieFile.RelativePath);
+        }
+
+        private string ReplaceReservedDeviceNames(string input)
+        {
+            // Replace reserved windows device names with an alternative
+            return ReservedDeviceNamesRegex.Replace(input, match => match.Value.Replace(".", "_"));
         }
     }
 
