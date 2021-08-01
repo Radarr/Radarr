@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Blocklisting
         bool Blocklisted(int movieId, ReleaseInfo release);
         PagingSpec<Blocklist> Paged(PagingSpec<Blocklist> pagingSpec);
         List<Blocklist> GetByMovieId(int movieId);
+        void Block(RemoteMovie remoteMovie, string message);
         void Delete(int id);
         void Delete(List<int> ids);
     }
@@ -70,6 +71,29 @@ namespace NzbDrone.Core.Blocklisting
         public List<Blocklist> GetByMovieId(int movieId)
         {
             return _blocklistRepository.BlocklistedByMovie(movieId);
+        }
+
+        public void Block(RemoteMovie remoteMovie, string message)
+        {
+            var blocklist = new Blocklist
+                            {
+                                MovieId = remoteMovie.Movie.Id,
+                                SourceTitle =  remoteMovie.Release.Title,
+                                Quality = remoteMovie.ParsedMovieInfo.Quality,
+                                Date = DateTime.UtcNow,
+                                PublishedDate = remoteMovie.Release.PublishDate,
+                                Size = remoteMovie.Release.Size,
+                                Indexer = remoteMovie.Release.Indexer,
+                                Protocol = remoteMovie.Release.DownloadProtocol,
+                                Message = message
+                            };
+
+            if (remoteMovie.Release is TorrentInfo torrentRelease)
+            {
+                blocklist.TorrentInfoHash = torrentRelease.InfoHash;
+            }
+
+            _blocklistRepository.Insert(blocklist);
         }
 
         public void Delete(int id)

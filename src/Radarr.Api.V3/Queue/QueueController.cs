@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download;
@@ -33,6 +34,7 @@ namespace Radarr.Api.V3.Queue
         private readonly IFailedDownloadService _failedDownloadService;
         private readonly IIgnoredDownloadService _ignoredDownloadService;
         private readonly IProvideDownloadClient _downloadClientProvider;
+        private readonly IBlocklistService _blocklistService;
 
         public QueueController(IBroadcastSignalRMessage broadcastSignalRMessage,
                            IQueueService queueService,
@@ -41,7 +43,8 @@ namespace Radarr.Api.V3.Queue
                            ITrackedDownloadService trackedDownloadService,
                            IFailedDownloadService failedDownloadService,
                            IIgnoredDownloadService ignoredDownloadService,
-                           IProvideDownloadClient downloadClientProvider)
+                           IProvideDownloadClient downloadClientProvider,
+                           IBlocklistService blocklistService)
             : base(broadcastSignalRMessage)
         {
             _queueService = queueService;
@@ -50,6 +53,7 @@ namespace Radarr.Api.V3.Queue
             _failedDownloadService = failedDownloadService;
             _ignoredDownloadService = ignoredDownloadService;
             _downloadClientProvider = downloadClientProvider;
+            _blocklistService = blocklistService;
 
             _qualityComparer = new QualityModelComparer(qualityProfileService.GetDefaultProfile(string.Empty));
         }
@@ -200,6 +204,7 @@ namespace Radarr.Api.V3.Queue
 
             if (pendingRelease != null)
             {
+                _blocklistService.Block(pendingRelease.RemoteMovie, "Pending release manually blocklisted");
                 _pendingReleaseService.RemovePendingQueueItems(pendingRelease.Id);
 
                 return null;
