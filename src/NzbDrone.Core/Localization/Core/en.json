@@ -1010,6 +1010,7 @@
   "UnableToAddANewNotificationPleaseTryAgain": "Unable to add a new notification, please try again.",
   "UnableToAddANewQualityProfilePleaseTryAgain": "Unable to add a new quality profile, please try again.",
   "UnableToAddANewRemotePathMappingPleaseTryAgain": "Unable to add a new remote path mapping, please try again.",
+  "UnableToAddRootFolder": "Unable to add root folder",
   "UnableToImportCheckLogs": "Downloaded - Unable to Import: check logs for details",
   "UnableToLoadAltTitle": "Unable to load alternative titles.",
   "UnableToLoadBackups": "Unable to load backups",
