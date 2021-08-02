@@ -203,6 +203,25 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Unknown);
         }
 
+        [TestCase("Movie.Title [1989, BDRip] MVO + DVO + UKR (MVO) + Sub")]
+        [TestCase("Movie.Title (2006) BDRemux 1080p 2xUkr | Sub Ukr")]
+        [TestCase("Movie.Title [1984, BDRip 720p] MVO + MVO + Dub + AVO + 3xUkr")]
+        public void should_parse_language_ukrainian(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.Ukrainian);
+        }
+
+        [TestCase("Movie.Title [1937, BDRip 1080p] Dub UKR/Eng + Sub rus")]
+        [TestCase("Movie.Title.[2003.BDRemux.1080p].Dub.MVO.(2xUkr/Fra).Sub.(Rus/Fra)")]
+        public void should_parse_language_ukrainian_multi(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().Contain(Language.Ukrainian);
+        }
+
         [TestCase("Movie.Title.1994.Vietnamese.1080p.XviD-LOL")]
         public void should_parse_language_vietnamese(string postTitle)
         {
