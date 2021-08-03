@@ -122,6 +122,22 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Chinese);
         }
 
+        [TestCase("Movie.Title.1994.Cantonese.1080p.XviD-LOL")]
+        public void should_parse_language_cantonese(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.Cantonese);
+        }
+
+        [TestCase("Movie.Title.1994.Mandarin.1080p.XviD-LOL")]
+        public void should_parse_language_mandarin(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.Mandarin);
+        }
+
         [TestCase("Movie.Title.1994.Russian.1080p.XviD-LOL")]
         public void should_parse_language_russian(string postTitle)
         {

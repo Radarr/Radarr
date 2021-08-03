@@ -18,6 +18,8 @@ namespace NzbDrone.Core.Parser
                                                                new IsoLanguage("ja", "", "jpn", "Japanese", Language.Japanese),
                                                                new IsoLanguage("is", "", "isl", "Icelandic", Language.Icelandic),
                                                                new IsoLanguage("zh", "cn", "zho", "Chinese", Language.Chinese),
+                                                               new IsoLanguage("cn", "hk", "yue", "Cantonese", Language.Cantonese),
+                                                               new IsoLanguage("zh", "cn", "cmn", "Mandarin", Language.Mandarin),
                                                                new IsoLanguage("ru", "", "rus", "Russian", Language.Russian),
                                                                new IsoLanguage("pl", "", "pol", "Polish", Language.Polish),
                                                                new IsoLanguage("vi", "", "vie", "Vietnamese", Language.Vietnamese),
