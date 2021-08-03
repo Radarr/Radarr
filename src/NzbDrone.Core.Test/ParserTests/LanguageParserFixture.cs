@@ -166,6 +166,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.1994.Dublado.1080p.XviD-LOL")]
         [TestCase("Movie.Title.2.2019.1080p.Bluray.Dublado.WWW.TPF.GRATIS")]
         [TestCase("Movie.Title.3.2021.1080p.Bluray.Brazilian.WWW.TPF.COM.BR")]
+        [TestCase("Movie.Title.2009.2160p.UHD.BluRay.x265-LOL.Brazilian-LOL")]
+        [TestCase("Movie.Title.2021.2160p.WEB-DL.AAC.2.0.H264.Brazilian-LOL")]
         public void should_parse_language_brazilian_portuguese(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
