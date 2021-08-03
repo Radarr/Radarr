@@ -34,7 +34,10 @@ namespace Radarr.Api.V3.Parse
 
             if (parsedMovieInfo == null)
             {
-                return null;
+                return new ParseResource
+                {
+                    Title = title
+                };
             }
 
             var remoteMovie = _parsingService.Map(parsedMovieInfo, "");
