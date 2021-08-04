@@ -62,7 +62,7 @@ class AddDownloadClientModalContent extends Component {
                   </div>
                 </Alert>
 
-                <FieldSet legend="DirectConnect">
+                <FieldSet legend={translate('DirectConnect')}>
                   <div className={styles.downloadClients}>
                     {
                       directConnectDownloadClients.map((downloadClient) => {

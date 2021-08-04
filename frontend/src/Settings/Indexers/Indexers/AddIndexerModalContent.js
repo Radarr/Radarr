@@ -62,7 +62,7 @@ class AddIndexerModalContent extends Component {
                   </div>
                 </Alert>
 
-                <FieldSet legend="DirectConnect">
+                <FieldSet legend={translate('DirectConnect')}>
                   <div className={styles.indexers}>
                     {
                       directConnectIndexers.map((indexer) => {
