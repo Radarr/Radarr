@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Download.Clients.Aria2
                 return hash;
             }
 
-            _logger.Debug($"Äria2 AddFromMagnetLink '{hash}' -> '{gid}'");
+            _logger.Debug($"Aria2 AddFromMagnetLink '{hash}' -> '{gid}'");
 
             return hash;
         }
