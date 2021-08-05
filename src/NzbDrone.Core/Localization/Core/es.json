@@ -1097,5 +1097,6 @@
     "DeleteFileLabel": "Eliminar {0} archivos de película",
     "ImportListMultipleMissingRoots": "Múltiples carpetas raíz faltan para las listas de importación: {0}",
     "ImportListMissingRoot": "Falta la capeta raíz para las listas: {0}",
-    "From": "de"
+    "From": "de",
+    "BypassDelayIfHighestQuality": "Pasar sí es la calidad más alta"
 }
