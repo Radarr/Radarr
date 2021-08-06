@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'Components/Alert';
 import FieldSet from 'Components/FieldSet';
 import FileBrowserModal from 'Components/FileBrowser/FileBrowserModal';
 import Icon from 'Components/Icon';
@@ -72,23 +73,29 @@ class ImportMovieSelectFolder extends Component {
       isWindows,
       isFetching,
       isPopulated,
+      isSaving,
       error,
+      saveError,
       items
     } = this.props;
+
+    const hasRootFolders = items.length > 0;
 
     return (
       <PageContent title={translate('ImportMovies')}>
         <PageContentBody>
           {
-            isFetching && !isPopulated &&
-              <LoadingIndicator />
+            isFetching && !isPopulated ?
+              <LoadingIndicator /> :
+              null
           }
 
           {
-            !isFetching && !!error &&
+            !isFetching && error ?
               <div>
                 {translate('UnableToLoadRootFolders')}
-              </div>
+              </div> :
+              null
           }
 
           {
@@ -108,7 +115,7 @@ class ImportMovieSelectFolder extends Component {
                 </div>
 
                 {
-                  items.length > 0 ?
+                  hasRootFolders ?
                     <div className={styles.recentFolders}>
                       <FieldSet legend={translate('RecentFolders')}>
                         <Table
@@ -131,34 +138,50 @@ class ImportMovieSelectFolder extends Component {
                           </TableBody>
                         </Table>
                       </FieldSet>
-
-                      <Button
-                        kind={kinds.PRIMARY}
-                        size={sizes.LARGE}
-                        onPress={this.onAddNewRootFolderPress}
-                      >
-                        <Icon
-                          className={styles.importButtonIcon}
-                          name={icons.DRIVE}
-                        />
-                        {translate('ChooseAnotherFolder')}
-                      </Button>
                     </div> :
-
-                    <div className={styles.startImport}>
-                      <Button
-                        kind={kinds.PRIMARY}
-                        size={sizes.LARGE}
-                        onPress={this.onAddNewRootFolderPress}
-                      >
-                        <Icon
-                          className={styles.importButtonIcon}
-                          name={icons.DRIVE}
-                        />
-                        {translate('StartImport')}
-                      </Button>
-                    </div>
+                    null
                 }
+
+                {
+                  !isSaving && saveError ?
+                    <Alert
+                      className={styles.addErrorAlert}
+                      kind={kinds.DANGER}
+                    >
+                      {translate('UnableToAddRootFolder')}
+
+                      <ul>
+                        {
+                          saveError.responseJSON.map((e, index) => {
+                            return (
+                              <li key={index}>
+                                {e.errorMessage}
+                              </li>
+                            );
+                          })
+                        }
+                      </ul>
+                    </Alert> :
+                    null
+                }
+
+                <div className={hasRootFolders ? undefined : styles.startImport}>
+                  <Button
+                    kind={kinds.PRIMARY}
+                    size={sizes.LARGE}
+                    onPress={this.onAddNewRootFolderPress}
+                  >
+                    <Icon
+                      className={styles.importButtonIcon}
+                      name={icons.DRIVE}
+                    />
+                    {
+                      hasRootFolders ?
+                        translate('ChooseAnotherFolder') :
+                        translate('StartImport')
+                    }
+                  </Button>
+                </div>
 
                 <FileBrowserModal
                   isOpen={this.state.isAddNewRootFolderModalOpen}
@@ -179,7 +202,9 @@ ImportMovieSelectFolder.propTypes = {
   isWindows: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
+  isSaving: PropTypes.bool.isRequired,
   error: PropTypes.object,
+  saveError: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   onNewRootFolderSelect: PropTypes.func.isRequired,
   onDeleteRootFolderPress: PropTypes.func.isRequired
