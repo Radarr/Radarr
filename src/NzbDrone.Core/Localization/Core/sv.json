@@ -287,7 +287,7 @@
     "GrabRelease": "Hämta utgåva",
     "GrabID": "Hämta ID",
     "Grab": "Hämta",
-    "BlacklistHelpText": "Förhindra Radarr att automatiskt hämta denna film igen",
+    "BlacklistHelpText": "Förhindra Radarr att automatiskt hämta denna utgåva igen",
     "AgeWhenGrabbed": "Ålder (när den hämtades)",
     "Hostname": "Värdnamn",
     "StartTypingOrSelectAPathBelow": "Börja skriva eller välj en sökväg nedan",
