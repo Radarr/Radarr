@@ -200,6 +200,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.2016.03.14.2160p.WEB.h264-spamTV", false)]
         [TestCase("Movie.Name.2016.03.14.2160p.WEB.PROPER.h264-spamTV", true)]
         [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][2160p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
+        [TestCase("Movie Name 2020 WEB-DL 4K H265 10bit HDR DDP5.1 Atmos-PTerWEB", false)]
         public void should_parse_webdl2160p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R2160p);
