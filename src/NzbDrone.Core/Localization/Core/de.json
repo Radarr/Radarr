@@ -718,7 +718,7 @@
     "CheckDownloadClientForDetails": "prüfe den Downloader für mehr Details",
     "CancelPendingTask": "Diese laufende Aufgabe wirklich abbrechen?",
     "BranchUpdateMechanism": "Branch für den externen Updateablauf",
-    "BranchUpdate": "Branch zum updaten von Radarr",
+    "BranchUpdate": "Kanal zum updaten von Radarr",
     "BeforeUpdate": "Vor dem Update",
     "AllowMovieChangeClickToChangeMovie": "Klicken um den Film zu bearbeiten",
     "AddingTag": "Tag hinzufügen",
@@ -1122,5 +1122,6 @@
     "TaskUserAgentTooltip": "UserAgent von der App die die API aufgerufen hat",
     "Letterboxd": "Letterboxd",
     "From": "Von",
-    "NotificationTriggersHelpText": "Auslöser für diese Benachrichtigung auswählen"
+    "NotificationTriggersHelpText": "Auslöser für diese Benachrichtigung auswählen",
+    "UnableToAddRootFolder": "Stammverzeichnis konnte nicht hinzugefügt werden"
 }

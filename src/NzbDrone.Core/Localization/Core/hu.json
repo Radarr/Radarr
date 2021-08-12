@@ -1111,5 +1111,6 @@
     "Letterboxd": "Letterboxd",
     "From": "Től",
     "TaskUserAgentTooltip": "Az API-t hívó alkalmazás biztosítja a User-Agent szolgáltatást",
-    "NotificationTriggersHelpText": "Válaszd ki, hogy mely események indítsák el ezt az értesítést"
+    "NotificationTriggersHelpText": "Válaszd ki, hogy mely események indítsák el ezt az értesítést",
+    "UnableToAddRootFolder": "Nem sikerült hozzáadni a gyökérmappát"
 }
