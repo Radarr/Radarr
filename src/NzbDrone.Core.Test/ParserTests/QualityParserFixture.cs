@@ -429,6 +429,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2016.1080p.KORSUBS.WEBRip.x264.AAC2.0-RADARR", "KORSUBS")]
         [TestCase("Movie Title 2017 HC 720p HDRiP DD5 1 x264-LEGi0N", "Generic Hardcoded Subs")]
         [TestCase("Movie.Title.2017.720p.SUBBED.HDRip.V2.XViD-26k.avi", "Generic Hardcoded Subs")]
+        [TestCase("Movie Title! 2018 [Web][MKV][h264][480p][AAC 2.0][Softsubs]", null)]
+        [TestCase("Movie Title! 2019 [HorribleSubs][Web][MKV][h264][848x480][AAC 2.0][Softsubs(HorribleSubs)]", null)]
         public void should_parse_hardcoded_subs(string postTitle, string sub)
         {
             QualityParser.ParseQuality(postTitle).HardcodedSubs.Should().Be(sub);
