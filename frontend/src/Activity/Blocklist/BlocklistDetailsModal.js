@@ -10,7 +10,7 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import translate from 'Utilities/String/translate';
 
-class BlacklistDetailsModal extends Component {
+class BlocklistDetailsModal extends Component {
 
   //
   // Render
@@ -78,7 +78,7 @@ class BlacklistDetailsModal extends Component {
   }
 }
 
-BlacklistDetailsModal.propTypes = {
+BlocklistDetailsModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   sourceTitle: PropTypes.string.isRequired,
   protocol: PropTypes.string.isRequired,
@@ -87,4 +87,4 @@ BlacklistDetailsModal.propTypes = {
   onModalClose: PropTypes.func.isRequired
 };
 
-export default BlacklistDetailsModal;
+export default BlocklistDetailsModal;

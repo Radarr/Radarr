@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import persistState from 'redux-localstorage';
 import actions from 'Store/Actions';
+import migrate from 'Store/Migrators/migrate';
 
 const columnPaths = [];
 
@@ -98,6 +99,7 @@ const config = {
 export default function createPersistState() {
   // Migrate existing local storage before proceeding
   const persistedState = JSON.parse(localStorage.getItem(config.key));
+  migrate(persistedState);
   localStorage.setItem(config.key, serialize(persistedState));
 
   return persistState(paths, config);

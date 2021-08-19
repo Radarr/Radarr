@@ -17,7 +17,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common.Categories;
-using Radarr.Api.V3.Blacklist;
+using Radarr.Api.V3.Blocklist;
 using Radarr.Api.V3.Config;
 using Radarr.Api.V3.DownloadClient;
 using Radarr.Api.V3.History;
@@ -36,7 +36,7 @@ namespace NzbDrone.Integration.Test
     {
         protected RestClient RestClient { get; private set; }
 
-        public ClientBase<BlacklistResource> Blacklist;
+        public ClientBase<BlocklistResource> Blocklist;
         public CommandClient Commands;
         public ClientBase<TaskResource> Tasks;
         public DownloadClientClient DownloadClients;
@@ -98,7 +98,7 @@ namespace NzbDrone.Integration.Test
             RestClient.AddDefaultHeader("Authentication", ApiKey);
             RestClient.AddDefaultHeader("X-Api-Key", ApiKey);
 
-            Blacklist = new ClientBase<BlacklistResource>(RestClient, ApiKey);
+            Blocklist = new ClientBase<BlocklistResource>(RestClient, ApiKey);
             Commands = new CommandClient(RestClient, ApiKey);
             Tasks = new ClientBase<TaskResource>(RestClient, ApiKey, "system/task");
             DownloadClients = new DownloadClientClient(RestClient, ApiKey);

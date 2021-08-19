@@ -8,7 +8,7 @@ import createHandleActions from './Creators/createHandleActions';
 //
 // Variables
 
-export const section = 'movieBlacklist';
+export const section = 'movieBlocklist';
 
 //
 // State
@@ -23,25 +23,25 @@ export const defaultState = {
 //
 // Actions Types
 
-export const FETCH_MOVIE_BLACKLIST = 'movieBlacklist/fetchMovieBlacklist';
-export const CLEAR_MOVIE_BLACKLIST = 'movieBlacklist/clearMovieBlacklist';
+export const FETCH_MOVIE_BLOCKLIST = 'movieBlocklist/fetchMovieBlocklist';
+export const CLEAR_MOVIE_BLOCKLIST = 'movieBlocklist/clearMovieBlocklist';
 
 //
 // Action Creators
 
-export const fetchMovieBlacklist = createThunk(FETCH_MOVIE_BLACKLIST);
-export const clearMovieBlacklist = createAction(CLEAR_MOVIE_BLACKLIST);
+export const fetchMovieBlocklist = createThunk(FETCH_MOVIE_BLOCKLIST);
+export const clearMovieBlocklist = createAction(CLEAR_MOVIE_BLOCKLIST);
 
 //
 // Action Handlers
 
 export const actionHandlers = handleThunks({
 
-  [FETCH_MOVIE_BLACKLIST]: function(getState, payload, dispatch) {
+  [FETCH_MOVIE_BLOCKLIST]: function(getState, payload, dispatch) {
     dispatch(set({ section, isFetching: true }));
 
     const promise = createAjaxRequest({
-      url: '/blacklist/movie',
+      url: '/blocklist/movie',
       data: payload
     }).request;
 
@@ -74,7 +74,7 @@ export const actionHandlers = handleThunks({
 
 export const reducers = createHandleActions({
 
-  [CLEAR_MOVIE_BLACKLIST]: (state) => {
+  [CLEAR_MOVIE_BLOCKLIST]: (state) => {
     return Object.assign({}, state, defaultState);
   }
 

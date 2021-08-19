@@ -3,11 +3,11 @@ using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
 {
-    public class CleanupOrphanedBlacklist : IHousekeepingTask
+    public class CleanupOrphanedBlocklist : IHousekeepingTask
     {
         private readonly IMainDatabase _database;
 
-        public CleanupOrphanedBlacklist(IMainDatabase database)
+        public CleanupOrphanedBlocklist(IMainDatabase database)
         {
             _database = database;
         }
@@ -16,11 +16,11 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
         {
             using (var mapper = _database.OpenConnection())
             {
-                mapper.Execute(@"DELETE FROM Blacklist
+                mapper.Execute(@"DELETE FROM Blocklist
                                      WHERE Id IN (
-                                     SELECT Blacklist.Id FROM Blacklist
+                                     SELECT Blocklist.Id FROM Blocklist
                                      LEFT OUTER JOIN Movies
-                                     ON Blacklist.MovieId = Movies.Id
+                                     ON Blocklist.MovieId = Movies.Id
                                      WHERE Movies.Id IS NULL)");
             }
         }

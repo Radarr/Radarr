@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
@@ -16,7 +16,7 @@ namespace NzbDrone.Core.CustomFormats
     {
         List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo);
         List<CustomFormat> ParseCustomFormat(MovieFile movieFile);
-        List<CustomFormat> ParseCustomFormat(Blacklist blacklist);
+        List<CustomFormat> ParseCustomFormat(Blocklist blocklist);
         List<CustomFormat> ParseCustomFormat(MovieHistory history);
     }
 
@@ -105,25 +105,25 @@ namespace NzbDrone.Core.CustomFormats
             return ParseCustomFormat(movieFile, _formatService.All());
         }
 
-        public List<CustomFormat> ParseCustomFormat(Blacklist blacklist)
+        public List<CustomFormat> ParseCustomFormat(Blocklist blocklist)
         {
-            var movie = _movieService.GetMovie(blacklist.MovieId);
-            var parsed = _parsingService.ParseMovieInfo(blacklist.SourceTitle, null);
+            var movie = _movieService.GetMovie(blocklist.MovieId);
+            var parsed = _parsingService.ParseMovieInfo(blocklist.SourceTitle, null);
 
             var info = new ParsedMovieInfo
             {
                 MovieTitle = movie.Title,
-                SimpleReleaseTitle = parsed?.SimpleReleaseTitle ?? blacklist.SourceTitle.SimplifyReleaseTitle(),
-                Quality = blacklist.Quality,
-                Languages = blacklist.Languages,
+                SimpleReleaseTitle = parsed?.SimpleReleaseTitle ?? blocklist.SourceTitle.SimplifyReleaseTitle(),
+                Quality = blocklist.Quality,
+                Languages = blocklist.Languages,
                 ReleaseGroup = parsed?.ReleaseGroup,
                 Edition = parsed?.Edition,
                 Year = movie.Year,
                 ImdbId = movie.ImdbId,
                 ExtraInfo = new Dictionary<string, object>
                 {
-                    { "IndexerFlags", blacklist.IndexerFlags },
-                    { "Size", blacklist.Size }
+                    { "IndexerFlags", blocklist.IndexerFlags },
+                    { "Size", blocklist.Size }
                 }
             };
 

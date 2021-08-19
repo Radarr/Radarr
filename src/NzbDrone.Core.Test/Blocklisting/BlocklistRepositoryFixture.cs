@@ -4,25 +4,25 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
-using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.Blacklisting
+namespace NzbDrone.Core.Test.Blocklisting
 {
     [TestFixture]
-    public class BlacklistRepositoryFixture : DbTest<BlacklistRepository, Blacklist>
+    public class BlocklistRepositoryFixture : DbTest<BlocklistRepository, Blocklist>
     {
-        private Blacklist _blacklist;
+        private Blocklist _blocklist;
         private Movie _movie1;
         private Movie _movie2;
 
         [SetUp]
         public void Setup()
         {
-            _blacklist = new Blacklist
+            _blocklist = new Blocklist
             {
                 MovieId = 1234,
                 Quality = new QualityModel(),
@@ -43,30 +43,30 @@ namespace NzbDrone.Core.Test.Blacklisting
         [Test]
         public void should_be_able_to_write_to_database()
         {
-            Subject.Insert(_blacklist);
+            Subject.Insert(_blocklist);
             Subject.All().Should().HaveCount(1);
         }
 
         [Test]
         public void should_should_have_movie_id()
         {
-            Subject.Insert(_blacklist);
+            Subject.Insert(_blocklist);
 
-            Subject.All().First().MovieId.Should().Be(_blacklist.MovieId);
+            Subject.All().First().MovieId.Should().Be(_blocklist.MovieId);
         }
 
         [Test]
-        public void should_check_for_blacklisted_title_case_insensative()
+        public void should_check_for_blocklisted_title_case_insensative()
         {
-            Subject.Insert(_blacklist);
+            Subject.Insert(_blocklist);
 
-            Subject.BlacklistedByTitle(_blacklist.MovieId, _blacklist.SourceTitle.ToUpperInvariant()).Should().HaveCount(1);
+            Subject.BlocklistedByTitle(_blocklist.MovieId, _blocklist.SourceTitle.ToUpperInvariant()).Should().HaveCount(1);
         }
 
         [Test]
-        public void should_delete_blacklists_by_movieId()
+        public void should_delete_blocklists_by_movieId()
         {
-            var blacklistItems = Builder<Blacklist>.CreateListOfSize(5)
+            var blocklistItems = Builder<Blocklist>.CreateListOfSize(5)
                 .TheFirst(1)
                 .With(c => c.MovieId = _movie2.Id)
                 .TheRest()
@@ -77,15 +77,15 @@ namespace NzbDrone.Core.Test.Blacklisting
                 .With(c => c.Id = 0)
                 .BuildListOfNew();
 
-            Db.InsertMany(blacklistItems);
+            Db.InsertMany(blocklistItems);
 
             Subject.DeleteForMovies(new List<int> { _movie1.Id });
 
-            var removedMovieBlacklists = Subject.BlacklistedByMovie(_movie1.Id);
-            var nonRemovedMovieBlacklists = Subject.BlacklistedByMovie(_movie2.Id);
+            var removedMovieBlocklists = Subject.BlocklistedByMovie(_movie1.Id);
+            var nonRemovedMovieBlocklists = Subject.BlocklistedByMovie(_movie2.Id);
 
-            removedMovieBlacklists.Should().HaveCount(0);
-            nonRemovedMovieBlacklists.Should().HaveCount(1);
+            removedMovieBlocklists.Should().HaveCount(0);
+            nonRemovedMovieBlocklists.Should().HaveCount(1);
         }
     }
 }
