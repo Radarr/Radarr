@@ -8,9 +8,9 @@ using Radarr.Api.V3.CustomFormats;
 using Radarr.Api.V3.Movies;
 using Radarr.Http.REST;
 
-namespace Radarr.Api.V3.Blacklist
+namespace Radarr.Api.V3.Blocklist
 {
-    public class BlacklistResource : RestResource
+    public class BlocklistResource : RestResource
     {
         public int MovieId { get; set; }
         public string SourceTitle { get; set; }
@@ -25,16 +25,16 @@ namespace Radarr.Api.V3.Blacklist
         public MovieResource Movie { get; set; }
     }
 
-    public static class BlacklistResourceMapper
+    public static class BlocklistResourceMapper
     {
-        public static BlacklistResource MapToResource(this NzbDrone.Core.Blacklisting.Blacklist model, ICustomFormatCalculationService formatCalculator)
+        public static BlocklistResource MapToResource(this NzbDrone.Core.Blocklisting.Blocklist model, ICustomFormatCalculationService formatCalculator)
         {
             if (model == null)
             {
                 return null;
             }
 
-            return new BlacklistResource
+            return new BlocklistResource
             {
                 Id = model.Id,
 

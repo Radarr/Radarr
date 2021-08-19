@@ -8,7 +8,7 @@ import * as commandNames from 'Commands/commandNames';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { clearExtraFiles, fetchExtraFiles } from 'Store/Actions/extraFileActions';
 import { toggleMovieMonitored } from 'Store/Actions/movieActions';
-import { clearMovieBlacklist, fetchMovieBlacklist } from 'Store/Actions/movieBlacklistActions';
+import { clearMovieBlocklist, fetchMovieBlocklist } from 'Store/Actions/movieBlocklistActions';
 import { clearMovieCredits, fetchMovieCredits } from 'Store/Actions/movieCreditsActions';
 import { clearMovieFiles, fetchMovieFiles } from 'Store/Actions/movieFileActions';
 import { clearMovieHistory, fetchMovieHistory } from 'Store/Actions/movieHistoryActions';
@@ -222,11 +222,11 @@ function createMapDispatchToProps(dispatch, props) {
     onGoToMovie(titleSlug) {
       dispatch(push(`${window.Radarr.urlBase}/movie/${titleSlug}`));
     },
-    dispatchFetchMovieBlacklist({ movieId }) {
-      dispatch(fetchMovieBlacklist({ movieId }));
+    dispatchFetchMovieBlocklist({ movieId }) {
+      dispatch(fetchMovieBlocklist({ movieId }));
     },
-    dispatchClearMovieBlacklist() {
-      dispatch(clearMovieBlacklist());
+    dispatchClearMovieBlocklist() {
+      dispatch(clearMovieBlocklist());
     }
   };
 }
@@ -280,7 +280,7 @@ class MovieDetailsConnector extends Component {
     const movieId = this.props.id;
 
     this.props.dispatchFetchMovieFiles({ movieId });
-    this.props.dispatchFetchMovieBlacklist({ movieId });
+    this.props.dispatchFetchMovieBlocklist({ movieId });
     this.props.dispatchFetchMovieHistory({ movieId });
     this.props.dispatchFetchExtraFiles({ movieId });
     this.props.dispatchFetchMovieCredits({ movieId });
@@ -290,7 +290,7 @@ class MovieDetailsConnector extends Component {
 
   unpopulate = () => {
     this.props.dispatchCancelFetchReleases();
-    this.props.dispatchClearMovieBlacklist();
+    this.props.dispatchClearMovieBlocklist();
     this.props.dispatchClearMovieFiles();
     this.props.dispatchClearMovieHistory();
     this.props.dispatchClearExtraFiles();
@@ -362,8 +362,8 @@ MovieDetailsConnector.propTypes = {
   dispatchClearQueueDetails: PropTypes.func.isRequired,
   dispatchFetchImportListSchema: PropTypes.func.isRequired,
   dispatchExecuteCommand: PropTypes.func.isRequired,
-  dispatchFetchMovieBlacklist: PropTypes.func.isRequired,
-  dispatchClearMovieBlacklist: PropTypes.func.isRequired,
+  dispatchFetchMovieBlocklist: PropTypes.func.isRequired,
+  dispatchClearMovieBlocklist: PropTypes.func.isRequired,
   onGoToMovie: PropTypes.func.isRequired
 };
 

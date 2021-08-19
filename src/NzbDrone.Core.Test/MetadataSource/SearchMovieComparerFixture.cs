@@ -47,25 +47,25 @@ namespace NzbDrone.Core.Test.MetadataSource
         }
 
         [Test]
-        public void should_prefer_blacklist_over_the_blacklist_when_searching_for_blacklist()
+        public void should_prefer_blocklist_over_the_blocklist_when_searching_for_blocklist()
         {
-            WithSeries("The Blacklist");
-            WithSeries("Blacklist");
+            WithSeries("The Blocklist");
+            WithSeries("Blocklist");
 
-            _series.Sort(new SearchMovieComparer("blacklist"));
+            _series.Sort(new SearchMovieComparer("blocklist"));
 
-            _series.First().Title.Should().Be("Blacklist");
+            _series.First().Title.Should().Be("Blocklist");
         }
 
         [Test]
-        public void should_prefer_the_blacklist_over_blacklist_when_searching_for_the_blacklist()
+        public void should_prefer_the_blocklist_over_blocklist_when_searching_for_the_blocklist()
         {
-            WithSeries("Blacklist");
-            WithSeries("The Blacklist");
+            WithSeries("Blocklist");
+            WithSeries("The Blocklist");
 
-            _series.Sort(new SearchMovieComparer("the blacklist"));
+            _series.Sort(new SearchMovieComparer("the blocklist"));
 
-            _series.First().Title.Should().Be("The Blacklist");
+            _series.First().Title.Should().Be("The Blocklist");
         }
     }
 }

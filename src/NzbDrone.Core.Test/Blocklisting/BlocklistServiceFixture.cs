@@ -1,15 +1,15 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using NzbDrone.Core.Blacklisting;
+using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.Blacklisting
+namespace NzbDrone.Core.Test.Blocklisting
 {
     [TestFixture]
-    public class BlacklistServiceFixture : CoreTest<BlacklistService>
+    public class BlocklistServiceFixture : CoreTest<BlocklistService>
     {
         private DownloadFailedEvent _event;
 
@@ -37,8 +37,8 @@ namespace NzbDrone.Core.Test.Blacklisting
         {
             Subject.Handle(_event);
 
-            Mocker.GetMock<IBlacklistRepository>()
-                .Verify(v => v.Insert(It.Is<Blacklist>(b => b.MovieId == _event.MovieId)), Times.Once());
+            Mocker.GetMock<IBlocklistRepository>()
+                .Verify(v => v.Insert(It.Is<Blocklist>(b => b.MovieId == _event.MovieId)), Times.Once());
         }
 
         [Test]
@@ -49,8 +49,8 @@ namespace NzbDrone.Core.Test.Blacklisting
             _event.Data.Remove("size");
             _event.Data.Remove("protocol");
 
-            Mocker.GetMock<IBlacklistRepository>()
-                .Verify(v => v.Insert(It.Is<Blacklist>(b => b.MovieId == _event.MovieId)), Times.Once());
+            Mocker.GetMock<IBlocklistRepository>()
+                .Verify(v => v.Insert(It.Is<Blocklist>(b => b.MovieId == _event.MovieId)), Times.Once());
         }
     }
 }

@@ -817,7 +817,7 @@
             "description": "Invalid API Key"
           }
         },
-        "description": "Pushes commands to Radarr using a key:value pair. The main key is \"name\" and below are acceptable values but it can also accept other key:value pairs (listed under each command):\n\n* ApplicationUpdate - Trigger an update of Radarr\n* Backup - Trigger a backup routine\n* CheckHealth - Trigger a system health check\n* ClearBlacklist - Triggers the removal of all blacklisted movies\n* CleanUpRecycleBin - Trigger a recycle bin cleanup check\n* DeleteLogFiles - Triggers the removal of all Info/Debug/Trace log files\n* DeleteUpdateLogFiles - Triggers the removal of all Update log files\n* DownloadedMoviesScan - Triggers the scan of downloaded movies\n* MissingMoviesSearch - Triggers a search of all missing movies\n* RefreshMonitoredDownloads - Triggers the scan of monitored downloads\n* RefreshMovie - Trigger a refresh / scan of library\n    * movieIds:int[] - Specify a list of ids (comma separated) for individual movies to refresh",
+        "description": "Pushes commands to Radarr using a key:value pair. The main key is \"name\" and below are acceptable values but it can also accept other key:value pairs (listed under each command):\n\n* ApplicationUpdate - Trigger an update of Radarr\n* Backup - Trigger a backup routine\n* CheckHealth - Trigger a system health check\n* ClearBlocklist - Triggers the removal of all blocklisted movies\n* CleanUpRecycleBin - Trigger a recycle bin cleanup check\n* DeleteLogFiles - Triggers the removal of all Info/Debug/Trace log files\n* DeleteUpdateLogFiles - Triggers the removal of all Update log files\n* DownloadedMoviesScan - Triggers the scan of downloaded movies\n* MissingMoviesSearch - Triggers a search of all missing movies\n* RefreshMonitoredDownloads - Triggers the scan of monitored downloads\n* RefreshMovie - Trigger a refresh / scan of library\n    * movieIds:int[] - Specify a list of ids (comma separated) for individual movies to refresh",
         "security": [
           {
             "X-API-Key": []
@@ -1650,11 +1650,11 @@
       },
       "parameters": []
     },
-    "/blacklist": {
+    "/blocklist": {
       "get": {
-        "summary": "Get Blacklisted Releases",
+        "summary": "Get Blocklisted Releases",
         "tags": [
-          "Blacklist"
+          "Blocklist"
         ],
         "responses": {
           "200": {
@@ -1686,7 +1686,7 @@
                     "records": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/Blacklist"
+                        "$ref": "#/components/schemas/Blocklist"
                       }
                     }
                   },
@@ -1704,8 +1704,8 @@
             "description": "Invalid API Key"
           }
         },
-        "operationId": "get-blackList",
-        "description": "Returns blacklisted releases",
+        "operationId": "get-blockList",
+        "description": "Returns blocklisted releases",
         "security": [
           {
             "X-API-Key": []
@@ -1751,8 +1751,8 @@
         ]
       },
       "delete": {
-        "summary": "Delete a Blacklisted Release",
-        "operationId": "delete-blackList",
+        "summary": "Delete a Blocklisted Release",
+        "operationId": "delete-blockList",
         "responses": {
           "200": {
             "description": "Successful request"
@@ -1761,7 +1761,7 @@
             "description": "Invalid API Key"
           }
         },
-        "description": "Removes a specific release (the id provided) from the blacklist",
+        "description": "Removes a specific release (the id provided) from the blocklist",
         "security": [
           {
             "X-API-Key": []
@@ -1781,16 +1781,16 @@
           }
         ],
         "tags": [
-          "Blacklist"
+          "Blocklist"
         ]
       },
       "parameters": []
     },
-    "/blacklist/movie": {
+    "/blocklist/movie": {
       "get": {
-        "summary": "Get Blacklisted Releases for a Movie",
+        "summary": "Get Blocklisted Releases for a Movie",
         "tags": [
-          "Blacklist"
+          "Blocklist"
         ],
         "responses": {
           "200": {
@@ -1800,7 +1800,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Blacklist"
+                    "$ref": "#/components/schemas/Blocklist"
                   }
                 }
               }
@@ -1810,8 +1810,8 @@
             "description": "Unauthorized"
           }
         },
-        "operationId": "get-blacklist-movie",
-        "description": "Retrieves blacklisted releases that are tied to a given movie in the database",
+        "operationId": "get-blocklist-movie",
+        "description": "Retrieves blocklisted releases that are tied to a given movie in the database",
         "parameters": [
           {
             "schema": {
@@ -1833,16 +1833,16 @@
         ]
       }
     },
-    "/blacklist/bulk": {
+    "/blocklist/bulk": {
       "delete": {
-        "summary": "Delete Blacklisted Releases",
-        "operationId": "delete-blacklist-bulk",
+        "summary": "Delete Blocklisted Releases",
+        "operationId": "delete-blocklist-bulk",
         "responses": {
           "200": {
             "description": "OK"
           }
         },
-        "description": "Delete blacklisted releases in bulk",
+        "description": "Delete blocklisted releases in bulk",
         "security": [
           {
             "X-API-Key": []
@@ -1857,7 +1857,7 @@
                 "properties": {
                   "ids": {
                     "type": "array",
-                    "description": "Database ids of the blacklist items to delete",
+                    "description": "Database ids of the blocklist items to delete",
                     "items": {
                       "type": "integer"
                     }
@@ -1872,7 +1872,7 @@
           }
         },
         "tags": [
-          "Blacklist"
+          "Blocklist"
         ]
       }
     },
@@ -3314,7 +3314,7 @@
             "description": "Invalid API Key"
           }
         },
-        "description": "Remove an item from the queue and optionally blacklist it",
+        "description": "Remove an item from the queue and optionally blocklist it",
         "security": [
           {
             "X-API-Key": []
@@ -3336,7 +3336,7 @@
               "type": "boolean"
             },
             "in": "query",
-            "name": "blacklist"
+            "name": "blocklist"
           }
         ],
         "tags": [
@@ -3377,7 +3377,7 @@
               "type": "boolean"
             },
             "in": "query",
-            "name": "blacklist"
+            "name": "blocklist"
           }
         ],
         "requestBody": {
@@ -4732,7 +4732,7 @@
           "id"
         ]
       },
-      "Blacklist": {
+      "Blocklist": {
         "description": "",
         "type": "object",
         "properties": {
@@ -4976,7 +4976,7 @@
       "name": "History"
     },
     {
-      "name": "Blacklist"
+      "name": "Blocklist"
     },
     {
       "name": "Queue"

@@ -127,7 +127,7 @@ class InteractiveSearchRow extends Component {
       grabError,
       historyGrabbedData,
       historyFailedData,
-      blacklistData
+      blocklistData
     } = this.props;
 
     return (
@@ -221,12 +221,12 @@ class InteractiveSearchRow extends Component {
           }
 
           {
-            blacklistData?.date &&
+            blocklistData?.date &&
               <Icon
-                className={historyGrabbedData || historyFailedData ? styles.blacklist : ''}
-                name={icons.BLACKLIST}
+                className={historyGrabbedData || historyFailedData ? styles.blocklist : ''}
+                name={icons.BLOCKLIST}
                 kind={kinds.DANGER}
-                title={`${translate('Blacklisted')}: ${formatDateTime(blacklistData.date, longDateFormat, timeFormat, { includeSeconds: true })}`}
+                title={`${translate('Blocklisted')}: ${formatDateTime(blocklistData.date, longDateFormat, timeFormat, { includeSeconds: true })}`}
               />
           }
         </TableRowCell>
@@ -341,7 +341,7 @@ InteractiveSearchRow.propTypes = {
   onGrabPress: PropTypes.func.isRequired,
   historyFailedData: PropTypes.object,
   historyGrabbedData: PropTypes.object,
-  blacklistData: PropTypes.object
+  blocklistData: PropTypes.object
 };
 
 InteractiveSearchRow.defaultProps = {

@@ -7,9 +7,9 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 
-namespace NzbDrone.Core.Blacklisting
+namespace NzbDrone.Core.Blocklisting
 {
-    public class Blacklist : ModelBase
+    public class Blocklist : ModelBase
     {
         public int MovieId { get; set; }
         public Movie Movie { get; set; }

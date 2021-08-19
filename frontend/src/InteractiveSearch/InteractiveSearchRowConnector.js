@@ -8,22 +8,22 @@ function createMapStateToProps() {
   return createSelector(
     (state, { guid }) => guid,
     (state) => state.movieHistory.items,
-    (state) => state.movieBlacklist.items,
-    (guid, movieHistory, movieBlacklist) => {
+    (state) => state.movieBlocklist.items,
+    (guid, movieHistory, movieBlocklist) => {
 
-      let blacklistData = {};
+      let blocklistData = {};
       let historyFailedData = {};
 
       const historyGrabbedData = movieHistory.find((movie) => movie.eventType === 'grabbed' && movie.data.guid === guid);
       if (historyGrabbedData) {
         historyFailedData = movieHistory.find((movie) => movie.eventType === 'downloadFailed' && movie.sourceTitle === historyGrabbedData.sourceTitle);
-        blacklistData = movieBlacklist.find((item) => item.sourceTitle === historyGrabbedData.sourceTitle);
+        blocklistData = movieBlocklist.find((item) => item.sourceTitle === historyGrabbedData.sourceTitle);
       }
 
       return {
         historyGrabbedData,
         historyFailedData,
-        blacklistData
+        blocklistData
       };
     }
   );
@@ -38,7 +38,7 @@ class InteractiveSearchRowConnector extends Component {
     const {
       historyGrabbedData,
       historyFailedData,
-      blacklistData,
+      blocklistData,
       ...otherProps
     } = this.props;
 
@@ -46,7 +46,7 @@ class InteractiveSearchRowConnector extends Component {
       <InteractiveSearchRow
         historyGrabbedData={historyGrabbedData}
         historyFailedData={historyFailedData}
-        blacklistData={blacklistData}
+        blocklistData={blocklistData}
         {...otherProps}
       />
     );
@@ -56,7 +56,7 @@ class InteractiveSearchRowConnector extends Component {
 InteractiveSearchRowConnector.propTypes = {
   historyGrabbedData: PropTypes.object,
   historyFailedData: PropTypes.object,
-  blacklistData: PropTypes.object
+  blocklistData: PropTypes.object
 };
 
 export default connect(createMapStateToProps)(InteractiveSearchRowConnector);

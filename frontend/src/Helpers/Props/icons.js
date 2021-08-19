@@ -225,4 +225,4 @@ export const UNSAVED_SETTING = farDotCircle;
 export const VIEW = fasEye;
 export const WARNING = fasExclamationTriangle;
 export const WIKI = fasBookReader;
-export const BLACKLIST = fasBan;
+export const BLOCKLIST = fasBan;

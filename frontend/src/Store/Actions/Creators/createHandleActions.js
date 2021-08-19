@@ -10,7 +10,7 @@ import {
 import getSectionState from 'Utilities/State/getSectionState';
 import updateSectionState from 'Utilities/State/updateSectionState';
 
-const blacklistedProperties = [
+const omittedProperties = [
   'section',
   'id'
 ];
@@ -31,7 +31,7 @@ export default function createHandleActions(handlers, defaultState, section) {
 
       if (section === baseSection) {
         const newState = Object.assign(getSectionState(state, payloadSection),
-          _.omit(payload, blacklistedProperties));
+          _.omit(payload, omittedProperties));
 
         return updateSectionState(state, payloadSection, newState);
       }

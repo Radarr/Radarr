@@ -61,8 +61,8 @@ const links = [
         to: '/activity/history'
       },
       {
-        title: translate('Blacklist'),
-        to: '/activity/blacklist'
+        title: translate('Blocklist'),
+        to: '/activity/blocklist'
       }
     ]
   },

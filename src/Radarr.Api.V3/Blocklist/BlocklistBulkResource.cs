@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace Radarr.Api.V3.Blacklist
+namespace Radarr.Api.V3.Blocklist
 {
-    public class BlacklistBulkResource
+    public class BlocklistBulkResource
     {
         public List<int> Ids { get; set; }
     }
