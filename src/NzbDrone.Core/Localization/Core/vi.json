@@ -395,7 +395,7 @@
     "BeforeUpdate": "Trước khi cập nhật",
     "BindAddress": "Địa chỉ ràng buộc",
     "BindAddressHelpText": "Địa chỉ IP4 hợp lệ hoặc '*' cho tất cả các giao diện",
-    "BlacklistHelpText": "Ngăn Radarr tự động lấy lại phim này",
+    "BlacklistHelpText": "Ngăn Radarr tự động lấy lại bản phát hành này",
     "BlacklistRelease": "Phát hành danh sách đen",
     "BuiltIn": "Được xây dựng trong",
     "CalendarOptions": "Tùy chọn lịch",
