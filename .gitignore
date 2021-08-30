@@ -187,6 +187,10 @@ packages.config.md5sum
 **/.idea/**/*.iml
 **/.idea/**/contentModel.xml
 **/.idea/**/modules.xml
+
 # ignore node_modules symlink
 node_modules
 node_modules.nosync
+
+# API doc generation
+.config/

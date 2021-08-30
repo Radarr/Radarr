@@ -31,6 +31,7 @@ pr:
   paths:
     exclude:
     - src/NzbDrone.Core/Localization/Core
+    - src/Radarr.Api.*/openapi.json
 
 stages:
   - stage: Setup
@@ -849,6 +850,59 @@ stages:
           cliProjectVersion: '$(radarrVersion)'
           cliSources: './frontend'
       - task: SonarCloudAnalyze@1
+      
+    - job: Api_Docs
+      displayName: API Docs
+      dependsOn: Prepare
+      condition: |
+        and
+        (
+          and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop')),
+          and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
+        )
+
+      pool:
+        vmImage: windows-2019
+
+      steps:
+      - task: UseDotNet@2
+        displayName: 'Install .net core'
+        inputs:
+          version: $(dotnetVersion)
+      - checkout: self
+        submodules: true
+        persistCredentials: true
+        fetchDepth: 1    
+      - bash: ./docs.sh Windows
+        displayName: Create openapi.json
+      - bash: |
+          git config --global user.email "development@lidarr.audio"
+          git config --global user.name "Servarr"
+          git checkout -b api-docs
+          git add .
+          if git status | grep -q modified
+          then
+            git commit -am 'Automated API Docs update'
+            git push -f --set-upstream origin api-docs
+            curl -X POST -H "Authorization: token ${GITHUBTOKEN}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/radarr/radarr/pulls -d '{"head":"api-docs","base":"develop","title":"Update API docs"}'
+          else
+            echo "No changes since last run"
+          fi
+        displayName: Commit API Doc Change
+        continueOnError: true
+        env:
+          GITHUBTOKEN: $(githubToken)
+      - task: CopyFiles@2
+        displayName: 'Copy openapi.json to: $(Build.ArtifactStagingDirectory)'
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)'
+          Contents: |
+            **/*openapi.json
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/api_docs'
+      - publish: $(Build.ArtifactStagingDirectory)/api_docs
+        artifact: 'APIDocs'
+        displayName: Publish API Docs Bundle
+        condition: and(succeeded(), eq(variables['System.JobAttempt'], '1'))
 
     - job: Analyze_Backend
       displayName: Backend
