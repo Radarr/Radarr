@@ -57,6 +57,9 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         // Plex
         [TestCase(@" http://localhost:32400/library/metadata/12345/refresh?X-Plex-Client-Identifier=1234530f-422f-4aac-b6b3-01233210aaaa&X-Plex-Product=Sonarr&X-Plex-Platform=Windows&X-Plex-Platform-Version=7&X-Plex-Device-Name=Sonarr&X-Plex-Version=3.0.3.833&X-Plex-Token=mySecret")]
 
+        // TMDB
+        [TestCase(@"https://api.themoviedb.org/3/discover/movie?api_key=1234530f-422f-4aac-b6b3-01233210&primary_release_date.gte=2020-01-01&primary_release_date.lte=2050-01-01&without_genres=878%2C12%2C16%2C35%2C99%2C18%2C10751%2C14%2C36%2C27%2C10402%2C9648%2C10749%2C10770%2C10752%2C37&with_original_language=en")]
+
         // Internal
         [TestCase(@"OutputPath=/home/mySecret/Downloads")]
         [TestCase("Hardlinking episode file: /home/mySecret/Downloads to /media/abc.mkv")]
