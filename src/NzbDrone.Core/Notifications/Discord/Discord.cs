@@ -216,13 +216,16 @@ namespace NzbDrone.Core.Notifications.Discord
 
         public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
-            var attachments = new List<Embed>
-                              {
-                                  new Embed
-                                  {
-                                      Title = movie.Title,
-                                  }
-                              };
+            var attachments = new List<Embed>();
+
+            foreach (RenamedMovieFile renamedFile in renamedFiles)
+            {
+                attachments.Add(new Embed
+                {
+                    Title = movie.Title,
+                    Description = renamedFile.PreviousRelativePath + " renamed to " + renamedFile.MovieFile.RelativePath,
+                });
+            }
 
             var payload = CreatePayload("Renamed", attachments);
 
