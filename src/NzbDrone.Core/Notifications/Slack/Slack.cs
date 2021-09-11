@@ -59,13 +59,16 @@ namespace NzbDrone.Core.Notifications.Slack
 
         public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
-            var attachments = new List<Attachment>
-                                {
-                                    new Attachment
-                                    {
-                                        Title = movie.Title,
-                                    }
-                                };
+            var attachments = new List<Attachment>();
+
+            foreach (RenamedMovieFile renamedFile in renamedFiles)
+            {
+                attachments.Add(new Attachment
+                {
+                    Title = movie.Title,
+                    Text = renamedFile.PreviousRelativePath + " renamed to " + renamedFile.MovieFile.RelativePath,
+                });
+            }
 
             var payload = CreatePayload("Renamed", attachments);
 
