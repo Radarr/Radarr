@@ -1094,5 +1094,7 @@
     "RemotePathMappingCheckDownloadPermissions": "Radarr видит загруженный фильм {0}, но не может получить доступ к нему.  Возможно, ошибка в правах доступа.",
     "MonoBSDSupportCheckMessage": "Операционная система {0} не будет поддерживаться в следующей версии Radarr.",
     "Monox86SupportCheckMessage": "Текущая операционная система 32-битная, она не будет поддерживаться в следующей версии Radarr.",
-    "Letterboxd": "Letterboxd"
+    "Letterboxd": "Letterboxd",
+    "UnableToAddRootFolder": "Невозможно загрузить корневые папки",
+    "RemotePathMappingCheckBadDockerPath": "Вы используете docker; клиент загрузки {0} сообщил о файлах в {1}, но это не корректный путь {2}.  Проверьте правильность указанного пути и настройки клиента загрузки."
 }

@@ -1081,5 +1081,6 @@
     "More": "Mere",
     "Download": "Hent",
     "DownloadClientCheckDownloadingToRoot": "Download klient {0} placerer downloads i rodmappen {1}. Du skal ikke downloade til en rodmappe.",
-    "DeleteFileLabel": "Slet {0} filmfiler"
+    "DeleteFileLabel": "Slet {0} filmfiler",
+    "UnableToAddRootFolder": "Kan ikke indlæse rodmapper"
 }

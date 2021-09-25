@@ -538,7 +538,7 @@
     "ApplyTagsHelpTexts2": "Adicionar: agregar as etiquetas à lista existente de etiquetas",
     "ApplyTagsHelpTexts1": "Como aplicar etiquetas aos filmes selecionados",
     "AllowMovieChangeClickToChangeMovie": "Clique para mudar o filme",
-    "AddingTag": "Adicionando etiqueta",
+    "AddingTag": "A adicionar etiqueta",
     "AddImportExclusionHelpText": "Impedir a adição do filme ao Radarr por listas",
     "DelayingDownloadUntilInterp": "Atrasando a transferência até {0} às {1}",
     "CopyToClipboard": "Copiar à área de transferência",
@@ -1120,5 +1120,6 @@
     "From": "De",
     "BypassDelayIfHighestQualityHelpText": "Ignorar o atraso quando a versão tiver a qualidade mais alta ativada no perfil de qualidade com o protocolo preferido",
     "BypassDelayIfHighestQuality": "Ignorar se for a qualidade mais alta",
-    "NotificationTriggersHelpText": "Seleciona quais eventos acionam esta notificação"
+    "NotificationTriggersHelpText": "Seleciona quais eventos acionam esta notificação",
+    "UnableToAddRootFolder": "Não foi possível carregar as pastas raiz"
 }

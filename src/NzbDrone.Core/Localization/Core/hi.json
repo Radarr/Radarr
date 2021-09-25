@@ -1078,5 +1078,6 @@
     "More": "अधिक",
     "Download": "डाउनलोड",
     "DownloadClientCheckDownloadingToRoot": "डाउनलोड क्लाइंट {0} रूट फ़ोल्डर में डाउनलोड करता है {1}। आपको रूट फ़ोल्डर में डाउनलोड नहीं करना चाहिए।",
-    "DeleteFileLabel": "{0} मूवी फ़ाइलें हटाएं"
+    "DeleteFileLabel": "{0} मूवी फ़ाइलें हटाएं",
+    "UnableToAddRootFolder": "रूट फ़ोल्डर लोड करने में असमर्थ"
 }

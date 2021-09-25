@@ -1079,5 +1079,6 @@
     "More": "Jeszcze",
     "Download": "Ściągnij",
     "DownloadClientCheckDownloadingToRoot": "Klient pobierania {0} umieszcza pliki do pobrania w folderze głównym {1}. Nie należy pobierać do folderu głównego.",
-    "DeleteFileLabel": "Usuń {0} pliki filmowe"
+    "DeleteFileLabel": "Usuń {0} pliki filmowe",
+    "UnableToAddRootFolder": "Nie można załadować folderów głównych"
 }

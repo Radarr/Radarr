@@ -126,7 +126,7 @@
     "ConnectionLostMessage": "A Radarr elvesztette kapcsolatát a háttérrendszerrel, a funkciók helyreállításához frissíts.",
     "ConnectionLostAutomaticMessage": "A Radarr megpróbál automatikusan csatlakozni, vagy kattints a frissítés gombra.",
     "ConnectionLost": "Kapcsolódás Elveszett",
-    "Connect": "Kapcsolódás",
+    "Connect": "Csatlakozás",
     "Conditions": "Állapot",
     "Component": "Komponens",
     "CompletedDownloadHandling": "Kész Letöltések Kezelése",

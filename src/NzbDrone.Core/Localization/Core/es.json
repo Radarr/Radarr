@@ -53,7 +53,7 @@
     "Cast": "Reparto",
     "Calendar": "Calendario",
     "Blacklist": "Bloqueadas",
-    "BackupNow": "Backup Ahora",
+    "BackupNow": "Hacer copia de seguridad",
     "Backup": "Backup",
     "AppDataLocationHealthCheckMessage": "No será posible actualizar para prevenir que AppData se borre durante la actualización",
     "AndNot": "y no",
@@ -1098,5 +1098,6 @@
     "ImportListMultipleMissingRoots": "Múltiples carpetas raíz faltan para las listas de importación: {0}",
     "ImportListMissingRoot": "Falta la capeta raíz para las listas: {0}",
     "From": "de",
-    "BypassDelayIfHighestQuality": "Pasar sí es la calidad más alta"
+    "BypassDelayIfHighestQuality": "Pasar sí es la calidad más alta",
+    "UnableToAddRootFolder": "No se han podido cargar las carpetas raiz"
 }
