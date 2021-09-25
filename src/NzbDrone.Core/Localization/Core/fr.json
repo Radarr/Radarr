@@ -1105,5 +1105,6 @@
     "BypassDelayIfHighestQuality": "Contournement si la qualité est la plus élevée",
     "TaskUserAgentTooltip": "User-Agent fourni par l'application qui a appelé l'API",
     "RemotePathMappingCheckFolderPermissions": "Radarr peut voir mais pas accéder au répertoire de téléchargement {0}. Erreur d'autorisations probable.",
-    "RemotePathMappingCheckFileRemoved": "Le fichier {0} a été supprimé pendant le processus."
+    "RemotePathMappingCheckFileRemoved": "Le fichier {0} a été supprimé pendant le processus.",
+    "UnableToAddRootFolder": "Impossible de charger les dossiers racine"
 }

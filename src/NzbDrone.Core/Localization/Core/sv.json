@@ -1083,5 +1083,6 @@
     "More": "Mer",
     "Download": "Ladda ner",
     "DownloadClientCheckDownloadingToRoot": "Ladda ner klient {0} placerar nedladdningar i rotmappen {1}. Du bör inte ladda ner till en rotmapp.",
-    "DeleteFileLabel": "Ta bort {0} filmfiler"
+    "DeleteFileLabel": "Ta bort {0} filmfiler",
+    "UnableToAddRootFolder": "Det gick inte att ladda rotmappar"
 }

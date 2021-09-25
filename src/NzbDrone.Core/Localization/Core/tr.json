@@ -1082,5 +1082,6 @@
     "More": "Daha",
     "Download": "İndir",
     "DownloadClientCheckDownloadingToRoot": "İndirme istemcisi {0}, indirmeleri kök klasöre yerleştirir {1}. Bir kök klasöre indirmemelisiniz.",
-    "DeleteFileLabel": "{0} Film Dosyasını Sil"
+    "DeleteFileLabel": "{0} Film Dosyasını Sil",
+    "UnableToAddRootFolder": "Kök klasörler yüklenemiyor"
 }

@@ -1078,5 +1078,6 @@
     "More": "Hơn",
     "Download": "Tải xuống",
     "DownloadClientCheckDownloadingToRoot": "Tải xuống ứng dụng khách {0} đặt các bản tải xuống trong thư mục gốc {1}. Bạn không nên tải xuống thư mục gốc.",
-    "DeleteFileLabel": "Xóa {0} Tệp Phim"
+    "DeleteFileLabel": "Xóa {0} Tệp Phim",
+    "UnableToAddRootFolder": "Không thể tải các thư mục gốc"
 }
