@@ -2,6 +2,8 @@
 using System.Linq;
 using NLog;
 using NLog.Config;
+using NLog.Targets.Syslog;
+using NLog.Targets.Syslog.Settings;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
@@ -38,6 +40,11 @@ namespace NzbDrone.Core.Instrumentation
             else
             {
                 minimumConsoleLogLevel = LogLevel.Info;
+            }
+
+            if (_configFileProvider.SyslogServer.IsNotNullOrWhiteSpace())
+            {
+                SetSyslogParameters(_configFileProvider.SyslogServer, _configFileProvider.SyslogPort, minimumLogLevel);
             }
 
             var rules = LogManager.Configuration.LoggingRules;
@@ -99,6 +106,24 @@ namespace NzbDrone.Core.Instrumentation
                 sentryTarget.SentryEnabled = (RuntimeInfo.IsProduction && _configFileProvider.AnalyticsEnabled) || RuntimeInfo.IsDevelopment;
                 sentryTarget.FilterEvents = _configFileProvider.FilterSentryEvents;
             }
+        }
+
+        private void SetSyslogParameters(string syslogServer, int syslogPort, LogLevel minimumLogLevel)
+        {
+            var syslogTarget = new SyslogTarget();
+
+            syslogTarget.Name = "syslogTarget";
+            syslogTarget.MessageSend.Protocol = ProtocolType.Udp;
+            syslogTarget.MessageSend.Udp.Port = syslogPort;
+            syslogTarget.MessageSend.Udp.Server = syslogServer;
+            syslogTarget.MessageSend.Udp.ReconnectInterval = 500;
+            syslogTarget.MessageCreation.Rfc = RfcNumber.Rfc5424;
+            syslogTarget.MessageCreation.Rfc5424.AppName = BuildInfo.AppName;
+
+            var loggingRule = new LoggingRule("*", minimumLogLevel, syslogTarget);
+
+            LogManager.Configuration.AddTarget("syslogTarget", syslogTarget);
+            LogManager.Configuration.LoggingRules.Add(loggingRule);
         }
 
         private List<LogLevel> GetLogLevels()
