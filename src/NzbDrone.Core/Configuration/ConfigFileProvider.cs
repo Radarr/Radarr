@@ -46,6 +46,8 @@ namespace NzbDrone.Core.Configuration
         bool UpdateAutomatically { get; }
         UpdateMechanism UpdateMechanism { get; }
         string UpdateScriptPath { get; }
+        string SyslogServer { get; }
+        int SyslogPort { get; }
     }
 
     public class ConfigFileProvider : IConfigFileProvider
@@ -210,6 +212,9 @@ namespace NzbDrone.Core.Configuration
         public UpdateMechanism UpdateMechanism => GetValueEnum("UpdateMechanism", UpdateMechanism.BuiltIn, false);
 
         public string UpdateScriptPath => GetValue("UpdateScriptPath", "", false);
+
+        public string SyslogServer => GetValue("SyslogServer", "", persist: false);
+        public int SyslogPort => GetValueInt("SyslogPort", 514, persist: false);
 
         public int GetValueInt(string key, int defaultValue, bool persist = true)
         {
