@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
@@ -22,9 +23,9 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 var usedTags = new[] { "Movies", "Notifications", "DelayProfiles", "Restrictions", "ImportLists" }
                     .SelectMany(v => GetUsedTags(v, mapper))
                     .Distinct()
-                    .ToArray();
+                    .ToList();
 
-                var usedTagsList = string.Join(",", usedTags.Select(d => d.ToString()).ToArray());
+                var usedTagsList = usedTags.Select(d => d.ToString()).Join(",");
 
                 mapper.Execute($"DELETE FROM Tags WHERE NOT Id IN ({usedTagsList})");
             }
@@ -32,7 +33,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         private int[] GetUsedTags(string table, IDbConnection mapper)
         {
-            return mapper.Query<List<int>>($"SELECT DISTINCT Tags FROM {table} WHERE NOT Tags = '[]'")
+            return mapper.Query<List<int>>($"SELECT DISTINCT Tags FROM {table} WHERE NOT Tags = '[]' AND NOT Tags IS NULL")
                 .SelectMany(x => x)
                 .Distinct()
                 .ToArray();
