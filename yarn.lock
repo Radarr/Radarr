@@ -1081,10 +1081,10 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@microsoft/signalr@5.0.5":
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-5.0.5.tgz#817d577d76aab33548f1354c72d779a18cc770e2"
-  integrity sha512-1aIr9LfuVHkJA6YHvJ9+V2GPUOlVtH94babg4LmBHk3tO7bI9YDHz3axYsp/GI5MVMqCKg/7BzEorr6zs/w2XA==
+"@microsoft/signalr@5.0.10":
+  version "5.0.10"
+  resolved "https://registry.yarnpkg.com/@microsoft/signalr/-/signalr-5.0.10.tgz#4d216dabbf720379bc7932680ed6c299b1475f6e"
+  integrity sha512-7jg6s/cmULyeVvt5/bTB4N9T30HvAF1S06hL+nPcQMODXcclRo34Zcli/dfTLR8lCX31/cVEOmVgxXBOVRQ+Dw==
   dependencies:
     abort-controller "^3.0.0"
     eventsource "^1.0.7"
