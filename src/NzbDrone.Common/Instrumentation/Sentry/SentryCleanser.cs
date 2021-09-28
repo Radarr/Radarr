@@ -11,7 +11,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
         {
             try
             {
-                sentryEvent.Message = CleanseLogMessage.Cleanse(sentryEvent.Message);
+                sentryEvent.Message.Message = CleanseLogMessage.Cleanse(sentryEvent.Message.Message);
 
                 if (sentryEvent.Fingerprint != null)
                 {

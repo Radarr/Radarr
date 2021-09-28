@@ -99,12 +99,12 @@ namespace NzbDrone.Common.Instrumentation.Sentry
         {
             _sdk = SentrySdk.Init(o =>
                                   {
-                                      o.Dsn = new Dsn(dsn);
+                                      o.Dsn = dsn;
                                       o.AttachStacktrace = true;
                                       o.MaxBreadcrumbs = 200;
                                       o.SendDefaultPii = false;
                                       o.Debug = false;
-                                      o.DiagnosticsLevel = SentryLevel.Debug;
+                                      o.DiagnosticLevel = SentryLevel.Debug;
                                       o.Release = BuildInfo.Release;
                                       o.BeforeSend = x => SentryCleanser.CleanseEvent(x);
                                       o.BeforeBreadcrumb = x => SentryCleanser.CleanseBreadcrumb(x);
