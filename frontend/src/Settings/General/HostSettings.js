@@ -53,6 +53,7 @@ function HostSettings(props) {
           name="port"
           min={1}
           max={65535}
+          autocomplete="off"
           helpTextWarning={translate('RestartRequiredHelpTextWarning')}
           onChange={onInputChange}
           {...port}
