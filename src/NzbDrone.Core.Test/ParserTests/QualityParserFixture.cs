@@ -119,6 +119,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.S01E08.Tourmaline.Nepal.720p.HDTV.x264-DHD", false)]
         [TestCase("Movie.Name.US.S12E17.HR.WS.PDTV.X264-DIMENSION", false)]
         [TestCase("Movie.Name.The.Lost.Pilots.Movie.HR.WS.PDTV.x264-DHD", false)]
+        [TestCase("Movie.Name.The.Lost.Pilots.Movie.HR.WS.PDTV.x264-DHD-Remux.mkv", false)]
         public void should_parse_hdtv720p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.TV, proper, Resolution.R720p);
