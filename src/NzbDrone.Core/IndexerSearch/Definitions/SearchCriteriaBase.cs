@@ -19,9 +19,9 @@ namespace NzbDrone.Core.IndexerSearch.Definitions
         public virtual bool UserInvokedSearch { get; set; }
         public virtual bool InteractiveSearch { get; set; }
 
-        public List<string> QueryTitles => SceneTitles.Select(GetQueryTitle).ToList();
+        public List<string> CleanSceneTitles => SceneTitles.Select(GetCleanSceneTitle).Distinct().ToList();
 
-        public static string GetQueryTitle(string title)
+        public static string GetCleanSceneTitle(string title)
         {
             Ensure.That(title, () => title).IsNotNullOrWhiteSpace();
 
