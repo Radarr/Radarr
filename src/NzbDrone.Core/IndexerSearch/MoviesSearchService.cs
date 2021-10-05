@@ -16,21 +16,21 @@ namespace NzbDrone.Core.IndexerSearch
     {
         private readonly IMovieService _movieService;
         private readonly IMovieCutoffService _movieCutoffService;
-        private readonly ISearchForNzb _nzbSearchService;
+        private readonly ISearchForReleases _releaseSearchService;
         private readonly IProcessDownloadDecisions _processDownloadDecisions;
         private readonly IQueueService _queueService;
         private readonly Logger _logger;
 
         public MovieSearchService(IMovieService movieService,
                                    IMovieCutoffService movieCutoffService,
-                                   ISearchForNzb nzbSearchService,
+                                   ISearchForReleases releaseSearchService,
                                    IProcessDownloadDecisions processDownloadDecisions,
                                    IQueueService queueService,
                                    Logger logger)
         {
             _movieService = movieService;
             _movieCutoffService = movieCutoffService;
-            _nzbSearchService = nzbSearchService;
+            _releaseSearchService = releaseSearchService;
             _processDownloadDecisions = processDownloadDecisions;
             _queueService = queueService;
             _logger = logger;
@@ -49,7 +49,7 @@ namespace NzbDrone.Core.IndexerSearch
                     continue;
                 }
 
-                var decisions = _nzbSearchService.MovieSearch(movieId, false, false);
+                var decisions = _releaseSearchService.MovieSearch(movieId, false, false);
                 downloadedCount += _processDownloadDecisions.ProcessDecisions(decisions).Grabbed.Count;
             }
 
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.IndexerSearch
 
                 try
                 {
-                    decisions = _nzbSearchService.MovieSearch(movieId.Key, userInvokedSearch, false);
+                    decisions = _releaseSearchService.MovieSearch(movieId.Key, userInvokedSearch, false);
                 }
                 catch (Exception ex)
                 {

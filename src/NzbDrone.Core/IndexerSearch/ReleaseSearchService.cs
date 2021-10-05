@@ -16,13 +16,13 @@ using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.IndexerSearch
 {
-    public interface ISearchForNzb
+    public interface ISearchForReleases
     {
         List<DownloadDecision> MovieSearch(int movieId, bool userInvokedSearch, bool interactiveSearch);
         List<DownloadDecision> MovieSearch(Movie movie, bool userInvokedSearch, bool interactiveSearch);
     }
 
-    public class NzbSearchService : ISearchForNzb
+    public class ReleaseSearchService : ISearchForReleases
     {
         private readonly IIndexerFactory _indexerFactory;
         private readonly IMakeDownloadDecision _makeDownloadDecision;
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.IndexerSearch
         private readonly IProfileService _profileService;
         private readonly Logger _logger;
 
-        public NzbSearchService(IIndexerFactory indexerFactory,
+        public ReleaseSearchService(IIndexerFactory indexerFactory,
                                 IMakeDownloadDecision makeDownloadDecision,
                                 IMovieService movieService,
                                 IMovieTranslationService movieTranslationService,

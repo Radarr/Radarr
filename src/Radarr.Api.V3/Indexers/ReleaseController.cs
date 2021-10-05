@@ -22,7 +22,7 @@ namespace Radarr.Api.V3.Indexers
     public class ReleaseController : ReleaseControllerBase
     {
         private readonly IFetchAndParseRss _rssFetcherAndParser;
-        private readonly ISearchForNzb _nzbSearchService;
+        private readonly ISearchForReleases _releaseSearchService;
         private readonly IMakeDownloadDecision _downloadDecisionMaker;
         private readonly IPrioritizeDownloadDecision _prioritizeDownloadDecision;
         private readonly IDownloadService _downloadService;
@@ -32,7 +32,7 @@ namespace Radarr.Api.V3.Indexers
         private readonly ICached<RemoteMovie> _remoteMovieCache;
 
         public ReleaseController(IFetchAndParseRss rssFetcherAndParser,
-                             ISearchForNzb nzbSearchService,
+                             ISearchForReleases releaseSearchService,
                              IMakeDownloadDecision downloadDecisionMaker,
                              IPrioritizeDownloadDecision prioritizeDownloadDecision,
                              IDownloadService downloadService,
@@ -43,7 +43,7 @@ namespace Radarr.Api.V3.Indexers
             : base(qualityProfileService)
         {
             _rssFetcherAndParser = rssFetcherAndParser;
-            _nzbSearchService = nzbSearchService;
+            _releaseSearchService = releaseSearchService;
             _downloadDecisionMaker = downloadDecisionMaker;
             _prioritizeDownloadDecision = prioritizeDownloadDecision;
             _downloadService = downloadService;
@@ -110,7 +110,7 @@ namespace Radarr.Api.V3.Indexers
         {
             try
             {
-                var decisions = _nzbSearchService.MovieSearch(movieId, true, true);
+                var decisions = _releaseSearchService.MovieSearch(movieId, true, true);
                 var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(decisions);
 
                 return MapDecisions(prioritizedDecisions);
