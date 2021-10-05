@@ -40,6 +40,11 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'releaseGroup',
+    label: translate('ReleaseGroup'),
+    isVisible: true
+  },
+  {
     name: 'quality.customFormats',
     label: translate('Formats'),
     isVisible: true
