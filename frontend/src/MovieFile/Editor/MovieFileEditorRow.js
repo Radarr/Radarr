@@ -74,6 +74,7 @@ class MovieFileEditorRow extends Component {
       mediaInfo,
       relativePath,
       size,
+      releaseGroup,
       quality,
       qualityCutoffNotMet,
       customFormats,
@@ -156,6 +157,12 @@ class MovieFileEditorRow extends Component {
         </TableRowCell>
 
         <TableRowCell
+          className={styles.releaseGroup}
+        >
+          {releaseGroup}
+        </TableRowCell>
+
+        <TableRowCell
           className={styles.formats}
         >
           <MovieFormats
@@ -216,6 +223,7 @@ MovieFileEditorRow.propTypes = {
   size: PropTypes.number.isRequired,
   relativePath: PropTypes.string.isRequired,
   quality: PropTypes.object.isRequired,
+  releaseGroup: PropTypes.string,
   customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
