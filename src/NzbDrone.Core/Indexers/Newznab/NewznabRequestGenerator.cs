@@ -155,7 +155,7 @@ namespace NzbDrone.Core.Indexers.Newznab
             if (SupportsSearch)
             {
                 chain.AddTier();
-                var queryTitles = TextSearchEngine == "raw" ? searchCriteria.SceneTitles : searchCriteria.QueryTitles;
+                var queryTitles = TextSearchEngine == "raw" ? searchCriteria.SceneTitles : searchCriteria.CleanSceneTitles;
                 foreach (var queryTitle in queryTitles)
                 {
                     var searchQuery = queryTitle;

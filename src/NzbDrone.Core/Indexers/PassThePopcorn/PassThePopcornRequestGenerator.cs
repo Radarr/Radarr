@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
             }
             else if (searchCriteria.Movie.Year > 0)
             {
-                foreach (var queryTitle in searchCriteria.QueryTitles)
+                foreach (var queryTitle in searchCriteria.CleanSceneTitles)
                 {
                     pageableRequests.Add(GetRequest(string.Format("{0}&year={1}", queryTitle, searchCriteria.Movie.Year)));
                 }
