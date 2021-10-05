@@ -5,30 +5,33 @@ We're always looking for people to help make Radarr even better, there are a num
 This file is updated on an ad-hoc basis, for the latest details please see the [contributing wiki page](https://wiki.servarr.com/radarr/contributing).
 
 ## Documentation ##
-Setup guides, FAQ, the more information we have on the [wiki](https://wiki.servarr.com/radarr) the better.
+Setup guides, [FAQ](https://wiki.servarr.com/radarr/faq), the more information we have on the [wiki](https://wiki.servarr.com/radarr) the better.
 
 ## Development ##
 
 ### Tools required ###
-- Visual Studio 2019 or higher (https://www.visualstudio.com/vs/).  The community version is free and works (https://www.visualstudio.com/downloads/).
+- Visual Studio 2019 or higher (https://www.visualstudio.com/vs/).  The community version is free and works fine. [Download it here](https://www.visualstudio.com/downloads/).
 - HTML/Javascript editor of choice (VS Code/Sublime Text/Webstorm/Atom/etc)
 - [Git](https://git-scm.com/downloads)
 - [NodeJS](https://nodejs.org/en/download/) (Node 12.X.X or higher)
 - [Yarn](https://yarnpkg.com/)
-- .NET Core 5.0. 
+- .NET 5.0. 
 
 ### Getting started ###
 
 1. Fork Radarr
-2. Clone the repository into your development machine. [*info*](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github)
+2. Clone the repository into your development machine. [*info*](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
 3. Install the required Node Packages `yarn install`
-4. Start gulp to monitor your dev environment for any changes that need post processing using `yarn start` command.
+4. Start webpack to monitor your dev environment for any changes that need post processing using `yarn start` command.
 5. Build the project in Visual Studio, Setting startup project to `Radarr.Console` and framework to `net5.0`
 6. Debug the project in Visual Studio
 7. Open http://localhost:7878
 
+Be sure to run lint `yarn lint --fix` on your code for any front end changes before comitting.
+For css changes `yarn stylelint-windows --fix`
+
 ### Contributing Code ###
-- If you're adding a new, already requested feature, please comment on [Github Issues](https://github.com/Radarr/Radarr/issues "Github Issues") so work is not duplicated (If you want to add something not already on there, please talk to us first)
+- If you're adding a new, already requested feature, please comment on [Github Issues](https://github.com/radarr/Radarr/issues "Github Issues") so work is not duplicated (If you want to add something not already on there, please talk to us first)
 - Rebase from Radarr's develop branch, don't merge
 - Make meaningful commits, or squash them
 - Feel free to make a pull request before work is complete, this will let us see where its at and make comments/suggest improvements
