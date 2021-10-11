@@ -10,6 +10,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook.Resource
         GB, //Great Britain
         IT, //Italy
         ES, //Spain
-        US //United States
+        US, //United States
+        NZ //New Zealand
     }
 }
