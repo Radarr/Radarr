@@ -20,7 +20,8 @@ export const certificationCountryOptions = [
   { key: 'gb', value: 'Great Britain' },
   { key: 'it', value: 'Italy' },
   { key: 'es', value: 'Spain' },
-  { key: 'us', value: 'United States' }
+  { key: 'us', value: 'United States' },
+  { key: 'nz', value: 'New Zealand' }
 ];
 
 function MetadataOptions(props) {
