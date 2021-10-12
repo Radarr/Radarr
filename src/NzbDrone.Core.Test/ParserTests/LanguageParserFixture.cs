@@ -28,6 +28,11 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.French.1080p.XviD-LOL")]
+        [TestCase("Movie Title : Other Title 2011 AVC.1080p.Blu-ray HD.VOSTFR.VFF")]
+        [TestCase("Movie Title - Other Title 2011 Bluray 4k HDR HEVC AC3 VFF")]
+        [TestCase("Movie Title  2019 AVC.1080p.Blu-ray Remux HD.VOSTFR.VFF")]
+        [TestCase("Movie Title  : Other Title 2010 x264.720p.Blu-ray Rip HD.VOSTFR.VFF. ONLY")]
+        [TestCase("Movie Title  2019 HEVC.2160p.Blu-ray 4K.VOSTFR.VFF. JATO")]
         public void should_parse_language_french(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
