@@ -25,6 +25,7 @@ namespace NzbDrone.Core.HealthCheck
         private readonly IProvideHealthCheck[] _startupHealthChecks;
         private readonly IProvideHealthCheck[] _scheduledHealthChecks;
         private readonly Dictionary<Type, IEventDrivenHealthCheck[]> _eventDrivenHealthChecks;
+        private readonly IServerSideNotificationService _serverSideNotificationService;
         private readonly IEventAggregator _eventAggregator;
         private readonly ICacheManager _cacheManager;
         private readonly Logger _logger;
@@ -32,11 +33,13 @@ namespace NzbDrone.Core.HealthCheck
         private readonly ICached<HealthCheck> _healthCheckResults;
 
         public HealthCheckService(IEnumerable<IProvideHealthCheck> healthChecks,
+                                  IServerSideNotificationService serverSideNotificationService,
                                   IEventAggregator eventAggregator,
                                   ICacheManager cacheManager,
                                   Logger logger)
         {
             _healthChecks = healthChecks.ToArray();
+            _serverSideNotificationService = serverSideNotificationService;
             _eventAggregator = eventAggregator;
             _cacheManager = cacheManager;
             _logger = logger;
@@ -71,6 +74,8 @@ namespace NzbDrone.Core.HealthCheck
         {
             var results = healthChecks.Select(c => c.Check())
                                        .ToList();
+
+            results.AddRange(_serverSideNotificationService.GetServerChecks());
 
             foreach (var result in results)
             {
