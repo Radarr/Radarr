@@ -18,17 +18,16 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            using (var mapper = _database.OpenConnection())
-            {
-                var usedTags = new[] { "Movies", "Notifications", "DelayProfiles", "Restrictions", "ImportLists", "Indexers" }
-                    .SelectMany(v => GetUsedTags(v, mapper))
-                    .Distinct()
-                    .ToList();
+            var mapper = _database.OpenConnection();
 
-                var usedTagsList = usedTags.Select(d => d.ToString()).Join(",");
+            var usedTags = new[] { "Movies", "Notifications", "DelayProfiles", "Restrictions", "ImportLists", "Indexers" }
+                .SelectMany(v => GetUsedTags(v, mapper))
+                .Distinct()
+                .ToList();
 
-                mapper.Execute($"DELETE FROM Tags WHERE NOT Id IN ({usedTagsList})");
-            }
+            var usedTagsList = usedTags.Select(d => d.ToString()).Join(",");
+
+            mapper.Execute($"DELETE FROM Tags WHERE NOT Id IN ({usedTagsList})");
         }
 
         private int[] GetUsedTags(string table, IDbConnection mapper)
