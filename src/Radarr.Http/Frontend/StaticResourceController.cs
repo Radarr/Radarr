@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -16,29 +15,21 @@ namespace Radarr.Http.Frontend
     [ApiController]
     public class StaticResourceController : Controller
     {
-        private readonly string _urlBase;
-        private readonly string _loginPath;
         private readonly IEnumerable<IMapHttpRequestsToDisk> _requestMappers;
         private readonly Logger _logger;
 
-        public StaticResourceController(IConfigFileProvider configFileProvider,
-            IAppFolderInfo appFolderInfo,
-            IEnumerable<IMapHttpRequestsToDisk> requestMappers,
+        public StaticResourceController(IEnumerable<IMapHttpRequestsToDisk> requestMappers,
             Logger logger)
         {
-            _urlBase = configFileProvider.UrlBase.Trim('/');
             _requestMappers = requestMappers;
             _logger = logger;
-
-            _loginPath = Path.Combine(appFolderInfo.StartUpFolder, configFileProvider.UiFolder, "login.html");
         }
 
         [AllowAnonymous]
         [HttpGet("login")]
         public IActionResult LoginPage()
         {
-            Response.Headers.DisableCache();
-            return PhysicalFile(_loginPath, "text/html");
+            return MapResource("login");
         }
 
         [EnableCors("AllowGet")]
