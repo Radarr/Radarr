@@ -14,12 +14,10 @@ namespace Radarr.Http.Authentication
     public class AuthenticationController : Controller
     {
         private readonly IAuthenticationService _authService;
-        private readonly IConfigFileProvider _configFileProvider;
 
-        public AuthenticationController(IAuthenticationService authService, IConfigFileProvider configFileProvider)
+        public AuthenticationController(IAuthenticationService authService)
         {
             _authService = authService;
-            _configFileProvider = configFileProvider;
         }
 
         [HttpPost("login")]
@@ -43,6 +41,7 @@ namespace Radarr.Http.Authentication
             {
                 IsPersistent = resource.RememberMe == "on"
             };
+
             await HttpContext.SignInAsync(AuthenticationType.Forms.ToString(), new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "identifier")), authProperties);
 
             return Redirect("/");

@@ -39,12 +39,12 @@ namespace Radarr.Http.Middleware
                 return false;
             }
 
-            if (context.Request.Path.Equals("/index.js"))
+            if (context.Request.Path.Value?.EndsWith("/index.js") ?? false)
             {
                 return false;
             }
 
-            if (context.Request.Path.Equals("/initialize.js"))
+            if (context.Request.Path.Value?.EndsWith("/initialize.js") ?? false)
             {
                 return false;
             }
@@ -55,7 +55,7 @@ namespace Radarr.Http.Middleware
             }
 
             if (context.Request.Path.StartsWithSegments("/log", StringComparison.CurrentCultureIgnoreCase) &&
-                context.Request.Path.ToString().EndsWith(".txt", StringComparison.CurrentCultureIgnoreCase))
+                (context.Request.Path.Value?.EndsWith(".txt", StringComparison.CurrentCultureIgnoreCase) ?? false))
             {
                 return false;
             }
