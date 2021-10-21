@@ -28,6 +28,10 @@ namespace NzbDrone.Common.Composition.Extensions
                 serviceTypeCondition: type => type.IsInterface && !string.IsNullOrWhiteSpace(type.FullName) && !type.FullName.StartsWith("System"),
                 reuse: Reuse.Singleton);
 
+            container.RegisterMany(assemblies,
+                serviceTypeCondition: type => !type.IsInterface && !string.IsNullOrWhiteSpace(type.FullName) && !type.FullName.StartsWith("System"),
+                reuse: Reuse.Transient);
+
             var knownTypes = new KnownTypes(assemblies.SelectMany(x => x.GetTypes()).ToList());
             container.RegisterInstance(knownTypes);
 
