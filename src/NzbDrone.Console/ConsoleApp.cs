@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using Microsoft.AspNetCore.Connections;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
@@ -15,7 +17,7 @@ namespace NzbDrone.Console
     {
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(ConsoleApp));
 
-        private enum ExitCodes : int
+        private enum ExitCodes
         {
             Normal = 0,
             UnknownFailure = 1,
@@ -40,7 +42,7 @@ namespace NzbDrone.Console
                     throw;
                 }
 
-                Bootstrap.Start(startupArgs, new ConsoleAlerts());
+                Bootstrap.Start(args);
             }
             catch (RadarrStartupException ex)
             {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -20,7 +21,7 @@ namespace NzbDrone.Core.ImportLists
 
         public ImportListFactory(IImportListRepository providerRepository,
                               IEnumerable<IImportList> providers,
-                              IContainer container,
+                              IServiceProvider container,
                               IEventAggregator eventAggregator,
                               Logger logger)
             : base(providerRepository, providers, container, eventAggregator, logger)

@@ -7,10 +7,13 @@ using IServiceProvider = NzbDrone.Common.IServiceProvider;
 
 namespace Radarr.Host
 {
-    public class Router
+    public interface IUtilityModeRouter
     {
-        private readonly INzbDroneConsoleFactory _nzbDroneConsoleFactory;
-        private readonly INzbDroneServiceFactory _nzbDroneServiceFactory;
+        void Route(ApplicationModes applicationModes);
+    }
+
+    public class UtilityModeRouter : IUtilityModeRouter
+    {
         private readonly IServiceProvider _serviceProvider;
         private readonly IConsoleService _consoleService;
         private readonly IRuntimeInfo _runtimeInfo;
@@ -18,17 +21,13 @@ namespace Radarr.Host
         private readonly IRemoteAccessAdapter _remoteAccessAdapter;
         private readonly Logger _logger;
 
-        public Router(INzbDroneConsoleFactory nzbDroneConsoleFactory,
-                      INzbDroneServiceFactory nzbDroneServiceFactory,
-                      IServiceProvider serviceProvider,
+        public UtilityModeRouter(IServiceProvider serviceProvider,
                       IConsoleService consoleService,
                       IRuntimeInfo runtimeInfo,
                       IProcessProvider processProvider,
                       IRemoteAccessAdapter remoteAccessAdapter,
                       Logger logger)
         {
-            _nzbDroneConsoleFactory = nzbDroneConsoleFactory;
-            _nzbDroneServiceFactory = nzbDroneServiceFactory;
             _serviceProvider = serviceProvider;
             _consoleService = consoleService;
             _runtimeInfo = runtimeInfo;
@@ -43,20 +42,6 @@ namespace Radarr.Host
 
             switch (applicationModes)
             {
-                case ApplicationModes.Service:
-                    {
-                        _logger.Debug("Service selected");
-                        _serviceProvider.Run(_nzbDroneServiceFactory.Build());
-                        break;
-                    }
-
-                case ApplicationModes.Interactive:
-                    {
-                        _logger.Debug(_runtimeInfo.IsWindowsTray ? "Tray selected" : "Console selected");
-                        _nzbDroneConsoleFactory.Start();
-                        break;
-                    }
-
                 case ApplicationModes.InstallService:
                     {
                         _logger.Debug("Install Service selected");

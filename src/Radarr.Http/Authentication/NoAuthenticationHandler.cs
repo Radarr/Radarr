@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NzbDrone.Core.Authentication;
 
 namespace Radarr.Http.Authentication
 {
     public class NoAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        public NoAuthenticationHandler(IAuthenticationService authService,
-            IOptionsMonitor<AuthenticationSchemeOptions> options,
+        public NoAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock)
@@ -24,7 +24,7 @@ namespace Radarr.Http.Authentication
             var claims = new List<Claim>
             {
                 new Claim("user", "Anonymous"),
-                new Claim("UiAuth", "true")
+                new Claim("AuthType", AuthenticationType.None.ToString())
             };
 
             var identity = new ClaimsIdentity(claims, "NoAuth", "user", "identifier");

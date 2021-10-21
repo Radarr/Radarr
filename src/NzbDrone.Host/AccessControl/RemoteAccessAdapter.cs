@@ -2,6 +2,11 @@ using NzbDrone.Common.EnvironmentInfo;
 
 namespace Radarr.Host.AccessControl
 {
+    public interface IRemoteAccessAdapter
+    {
+        void MakeAccessible(bool passive);
+    }
+
     public class RemoteAccessAdapter : IRemoteAccessAdapter
     {
         private readonly IRuntimeInfo _runtimeInfo;

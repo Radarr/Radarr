@@ -2,7 +2,6 @@ using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using NzbDrone.Core.Authentication;
-using NzbDrone.Core.Configuration;
 
 namespace Radarr.Http.Authentication
 {
@@ -13,53 +12,37 @@ namespace Radarr.Http.Authentication
             return authenticationBuilder.AddScheme<ApiKeyAuthenticationOptions, ApiKeyAuthenticationHandler>(name, options);
         }
 
-        public static AuthenticationBuilder AddBasicAuthentication(this AuthenticationBuilder authenticationBuilder)
+        public static AuthenticationBuilder AddBasic(this AuthenticationBuilder authenticationBuilder, string name)
         {
-            return authenticationBuilder.AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(AuthenticationType.Basic.ToString(), options => { });
+            return authenticationBuilder.AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(name, options => { });
         }
 
-        public static AuthenticationBuilder AddNoAuthentication(this AuthenticationBuilder authenticationBuilder)
+        public static AuthenticationBuilder AddNone(this AuthenticationBuilder authenticationBuilder, string name)
         {
-            return authenticationBuilder.AddScheme<AuthenticationSchemeOptions, NoAuthenticationHandler>(AuthenticationType.None.ToString(), options => { });
+            return authenticationBuilder.AddScheme<AuthenticationSchemeOptions, NoAuthenticationHandler>(name, options => { });
         }
 
-        public static AuthenticationBuilder AddAppAuthentication(this IServiceCollection services, IConfigFileProvider config)
+        public static AuthenticationBuilder AddAppAuthentication(this IServiceCollection services)
         {
-            var authBuilder = services.AddAuthentication(config.AuthenticationMethod.ToString());
-
-            if (config.AuthenticationMethod == AuthenticationType.Basic)
-            {
-                authBuilder.AddBasicAuthentication();
-            }
-            else if (config.AuthenticationMethod == AuthenticationType.Forms)
-            {
-                authBuilder.AddCookie(AuthenticationType.Forms.ToString(), options =>
+            return services.AddAuthentication()
+                .AddNone(AuthenticationType.None.ToString())
+                .AddBasic(AuthenticationType.Basic.ToString())
+                .AddCookie(AuthenticationType.Forms.ToString(), options =>
                 {
                     options.AccessDeniedPath = "/login?loginFailed=true";
                     options.LoginPath = "/login";
                     options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                })
+                .AddApiKey("API", options =>
+                {
+                    options.HeaderName = "X-Api-Key";
+                    options.QueryName = "apikey";
+                })
+                .AddApiKey("SignalR", options =>
+                {
+                    options.HeaderName = "X-Api-Key";
+                    options.QueryName = "access_token";
                 });
-            }
-            else
-            {
-                authBuilder.AddNoAuthentication();
-            }
-
-            authBuilder.AddApiKey("API", options =>
-            {
-                options.HeaderName = "X-Api-Key";
-                options.QueryName = "apikey";
-                options.ApiKey = config.ApiKey;
-            });
-
-            authBuilder.AddApiKey("SignalR", options =>
-            {
-                options.HeaderName = "X-Api-Key";
-                options.QueryName = "access_token";
-                options.ApiKey = config.ApiKey;
-            });
-
-            return authBuilder;
         }
     }
 }

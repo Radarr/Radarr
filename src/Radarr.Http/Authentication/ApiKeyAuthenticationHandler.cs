@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NzbDrone.Core.Configuration;
 
 namespace Radarr.Http.Authentication
 {
@@ -17,17 +18,20 @@ namespace Radarr.Http.Authentication
 
         public string HeaderName { get; set; }
         public string QueryName { get; set; }
-        public string ApiKey { get; set; }
     }
 
     public class ApiKeyAuthenticationHandler : AuthenticationHandler<ApiKeyAuthenticationOptions>
     {
+        private readonly string _apiKey;
+
         public ApiKeyAuthenticationHandler(IOptionsMonitor<ApiKeyAuthenticationOptions> options,
             ILoggerFactory logger,
             UrlEncoder encoder,
-            ISystemClock clock)
+            ISystemClock clock,
+            IConfigFileProvider config)
             : base(options, logger, encoder, clock)
         {
+            _apiKey = config.ApiKey;
         }
 
         private string ParseApiKey()
@@ -56,7 +60,7 @@ namespace Radarr.Http.Authentication
                 return Task.FromResult(AuthenticateResult.NoResult());
             }
 
-            if (Options.ApiKey == providedApiKey)
+            if (_apiKey == providedApiKey)
             {
                 var claims = new List<Claim>
                 {

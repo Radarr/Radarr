@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
 
 namespace Radarr.Http.Authentication
@@ -35,14 +36,14 @@ namespace Radarr.Http.Authentication
             {
                 new Claim("user", user.Username),
                 new Claim("identifier", user.Identifier.ToString()),
-                new Claim("UiAuth", "true")
+                new Claim("AuthType", AuthenticationType.Forms.ToString())
             };
 
             var authProperties = new AuthenticationProperties
             {
                 IsPersistent = resource.RememberMe == "on"
             };
-            await HttpContext.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "identifier")), authProperties);
+            await HttpContext.SignInAsync(AuthenticationType.Forms.ToString(), new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "identifier")), authProperties);
 
             return Redirect("/");
         }
@@ -51,7 +52,7 @@ namespace Radarr.Http.Authentication
         public async Task<IActionResult> Logout()
         {
             _authService.Logout(HttpContext);
-            await HttpContext.SignOutAsync();
+            await HttpContext.SignOutAsync(AuthenticationType.Forms.ToString());
             return Redirect("/");
         }
     }

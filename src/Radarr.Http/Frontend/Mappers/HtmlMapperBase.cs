@@ -10,13 +10,13 @@ namespace Radarr.Http.Frontend.Mappers
     public abstract class HtmlMapperBase : StaticResourceMapperBase
     {
         private readonly IDiskProvider _diskProvider;
-        private readonly Func<ICacheBreakerProvider> _cacheBreakProviderFactory;
+        private readonly Lazy<ICacheBreakerProvider> _cacheBreakProviderFactory;
         private static readonly Regex ReplaceRegex = new Regex(@"(?:(?<attribute>href|src)=\"")(?<path>.*?(?<extension>css|js|png|ico|ics|svg|json))(?:\"")(?:\s(?<nohash>data-no-hash))?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private string _generatedContent;
 
         protected HtmlMapperBase(IDiskProvider diskProvider,
-                                 Func<ICacheBreakerProvider> cacheBreakProviderFactory,
+                                 Lazy<ICacheBreakerProvider> cacheBreakProviderFactory,
                                  Logger logger)
             : base(diskProvider, logger)
         {
@@ -47,7 +47,7 @@ namespace Radarr.Http.Frontend.Mappers
             }
 
             var text = _diskProvider.ReadAllText(HtmlPath);
-            var cacheBreakProvider = _cacheBreakProviderFactory();
+            var cacheBreakProvider = _cacheBreakProviderFactory.Value;
 
             text = ReplaceRegex.Replace(text, match =>
             {

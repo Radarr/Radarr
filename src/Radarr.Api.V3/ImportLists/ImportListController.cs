@@ -11,7 +11,7 @@ namespace Radarr.Api.V3.ImportLists
     {
         public static readonly ImportListResourceMapper ResourceMapper = new ImportListResourceMapper();
 
-        public ImportListController(ImportListFactory importListFactory,
+        public ImportListController(IImportListFactory importListFactory,
                                 ProfileExistsValidator profileExistsValidator)
             : base(importListFactory, "importlist", ResourceMapper)
         {

@@ -86,7 +86,6 @@ class SecuritySettings extends Component {
             name="authenticationMethod"
             values={authenticationMethodOptions}
             helpText={translate('AuthenticationMethodHelpText')}
-            helpTextWarning={translate('RestartRequiredHelpTextWarning')}
             onChange={onInputChange}
             {...authenticationMethod}
           />
@@ -100,7 +99,6 @@ class SecuritySettings extends Component {
               <FormInputGroup
                 type={inputTypes.TEXT}
                 name="username"
-                helpTextWarning={translate('RestartRequiredHelpTextWarning')}
                 onChange={onInputChange}
                 {...username}
               />
@@ -115,7 +113,6 @@ class SecuritySettings extends Component {
               <FormInputGroup
                 type={inputTypes.PASSWORD}
                 name="password"
-                helpTextWarning={translate('RestartRequiredHelpTextWarning')}
                 onChange={onInputChange}
                 {...password}
               />
