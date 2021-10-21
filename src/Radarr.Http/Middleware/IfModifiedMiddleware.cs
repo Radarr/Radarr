@@ -22,7 +22,7 @@ namespace Radarr.Http.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (_cacheableSpecification.IsCacheable(context) && context.Request.Headers["IfModifiedSince"].Any())
+            if (_cacheableSpecification.IsCacheable(context.Request) && context.Request.Headers["IfModifiedSince"].Any())
             {
                 context.Response.StatusCode = 304;
                 context.Response.Headers.EnableCache();
