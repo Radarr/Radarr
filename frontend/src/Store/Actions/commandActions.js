@@ -139,7 +139,8 @@ export function executeCommandHelper( payload, dispatch) {
   const promise = createAjaxRequest({
     url: '/command',
     method: 'POST',
-    data: JSON.stringify(payload)
+    data: JSON.stringify(payload),
+    dataType: 'json'
   }).request;
 
   return promise.then((data) => {

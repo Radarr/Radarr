@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Nancy.Bootstrapper;
 using NzbDrone.Common.Composition;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.SignalR;
@@ -27,8 +26,6 @@ namespace Radarr.Host
             : base(args, assemblies)
         {
             AutoRegisterImplementations<MessageHub>();
-
-            Container.Register<INancyBootstrapper, RadarrBootstrapper>();
 
             if (OsInfo.IsWindows)
             {

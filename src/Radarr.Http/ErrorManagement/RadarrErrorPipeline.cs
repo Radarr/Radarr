@@ -1,16 +1,14 @@
-﻿using System;
 using System.Data.SQLite;
-using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using FluentValidation;
-using Nancy;
-using Nancy.Extensions;
-using Nancy.IO;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using NLog;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Exceptions;
 using Radarr.Http.Exceptions;
-using Radarr.Http.Extensions;
-using HttpStatusCode = Nancy.HttpStatusCode;
 
 namespace Radarr.Http.ErrorManagement
 {
@@ -23,63 +21,81 @@ namespace Radarr.Http.ErrorManagement
             _logger = logger;
         }
 
-        public Response HandleException(NancyContext context, Exception exception)
+        public async Task HandleException(HttpContext context)
         {
             _logger.Trace("Handling Exception");
+
+            var response = context.Response;
+            var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+            var exception = exceptionHandlerPathFeature?.Error;
+
+            _logger.Warn(exception);
+
+            var statusCode = HttpStatusCode.InternalServerError;
+            var errorModel = new ErrorModel
+            {
+                Message = exception.Message,
+                Description = exception.ToString()
+            };
 
             if (exception is ApiException apiException)
             {
                 _logger.Warn(apiException, "API Error:\n{0}", apiException.Message);
-                var body = RequestStream.FromStream(context.Request.Body).AsString();
-                _logger.Trace("Request body:\n{0}", body);
 
-                return apiException.ToErrorResponse(context);
+                /* var body = RequestStream.FromStream(context.Request.Body).AsString();
+                 _logger.Trace("Request body:\n{0}", body);*/
+
+                errorModel = new ErrorModel(apiException);
+                statusCode = apiException.StatusCode;
             }
-
-            if (exception is ValidationException validationException)
+            else if (exception is ValidationException validationException)
             {
                 _logger.Warn("Invalid request {0}", validationException.Message);
 
-                return validationException.Errors.AsResponse(context, HttpStatusCode.BadRequest);
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+                response.ContentType = "application/json";
+                await response.WriteAsync(STJson.ToJson(validationException.Errors));
+                return;
             }
-
-            if (exception is NzbDroneClientException clientException)
+            else if (exception is NzbDroneClientException clientException)
             {
-                return new ErrorModel
+                errorModel = new ErrorModel
                 {
                     Message = exception.Message,
                     Description = exception.ToString()
-                }.AsResponse(context, (HttpStatusCode)clientException.StatusCode);
+                };
+                statusCode = clientException.StatusCode;
             }
-
-            if (exception is ModelNotFoundException notFoundException)
+            else if (exception is ModelNotFoundException notFoundException)
             {
-                return new ErrorModel
+                errorModel = new ErrorModel
                 {
                     Message = exception.Message,
                     Description = exception.ToString()
-                }.AsResponse(context, HttpStatusCode.NotFound);
+                };
+                statusCode = HttpStatusCode.NotFound;
             }
-
-            if (exception is ModelConflictException conflictException)
+            else if (exception is ModelConflictException conflictException)
             {
-                return new ErrorModel
+                _logger.Error(exception, "DB error");
+                errorModel = new ErrorModel
                 {
                     Message = exception.Message,
                     Description = exception.ToString()
-                }.AsResponse(context, HttpStatusCode.Conflict);
+                };
+                statusCode = HttpStatusCode.Conflict;
             }
-
-            if (exception is SQLiteException sqLiteException)
+            else if (exception is SQLiteException sqLiteException)
             {
                 if (context.Request.Method == "PUT" || context.Request.Method == "POST")
                 {
                     if (sqLiteException.Message.Contains("constraint failed"))
                     {
-                        return new ErrorModel
+                        errorModel = new ErrorModel
                         {
                             Message = exception.Message,
-                        }.AsResponse(context, HttpStatusCode.Conflict);
+                        };
+                        statusCode = HttpStatusCode.Conflict;
                     }
                 }
 
@@ -88,11 +104,7 @@ namespace Radarr.Http.ErrorManagement
 
             _logger.Fatal(exception, "Request Failed. {0} {1}", context.Request.Method, context.Request.Path);
 
-            return new ErrorModel
-            {
-                Message = exception.Message,
-                Description = exception.ToString()
-            }.AsResponse(context, HttpStatusCode.InternalServerError);
+            await errorModel.WriteToResponse(response, statusCode);
         }
     }
 }

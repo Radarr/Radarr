@@ -11,6 +11,7 @@ namespace NzbDrone.Integration.Test
         private RestRequest BuildGet(string route = "movie")
         {
             var request = new RestRequest(route, Method.GET);
+            request.AddHeader("Origin", "http://a.different.domain");
             request.AddHeader(AccessControlHeaders.RequestMethod, "POST");
 
             return request;
@@ -19,6 +20,8 @@ namespace NzbDrone.Integration.Test
         private RestRequest BuildOptions(string route = "movie")
         {
             var request = new RestRequest(route, Method.OPTIONS);
+            request.AddHeader("Origin", "http://a.different.domain");
+            request.AddHeader(AccessControlHeaders.RequestMethod, "POST");
 
             return request;
         }

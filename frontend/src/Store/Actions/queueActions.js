@@ -396,6 +396,7 @@ export const actionHandlers = handleThunks({
       url: `/queue/bulk?removeFromClient=${remove}&blocklist=${blocklist}`,
       method: 'DELETE',
       dataType: 'json',
+      contentType: 'application/json',
       data: JSON.stringify({ ids })
     }).request;
 
@@ -453,4 +454,3 @@ export const reducers = createHandleActions({
   })
 
 }, defaultState, section);
-

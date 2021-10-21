@@ -1,8 +1,6 @@
 using System;
-using System.Text;
+using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Nancy;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
@@ -29,19 +27,16 @@ namespace Radarr.Http.Frontend.Mappers
         protected string HtmlPath;
         protected string UrlBase;
 
-        protected override Task<byte[]> GetContent(string filePath)
+        protected override Stream GetContentStream(string filePath)
         {
             var text = GetHtmlText();
-            var data = Encoding.UTF8.GetBytes(text);
-            return Task.FromResult(data);
-        }
 
-        public async override Task<Response> GetResponse(string resourceUrl)
-        {
-            var response = await base.GetResponse(resourceUrl);
-            response.Headers["X-UA-Compatible"] = "IE=edge";
-
-            return response;
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(text);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
         }
 
         protected string GetHtmlText()
