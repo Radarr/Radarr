@@ -1,21 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.History;
-using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Parser.Augmenters
 {
     public class AugmentWithHistory : IAugmentParsedMovieInfo
     {
-        private readonly IIndexerFactory _indexerFactory;
-        private readonly IEnumerable<IAugmentParsedMovieInfo> _augmenters;
+        private readonly IEnumerable<Lazy<IAugmentParsedMovieInfo>> _augmenters;
 
-        public AugmentWithHistory(IIndexerFactory indexerFactory, IEnumerable<IAugmentParsedMovieInfo> augmenters)
+        public AugmentWithHistory(IEnumerable<Lazy<IAugmentParsedMovieInfo>> augmenters)
         {
-            _indexerFactory = indexerFactory;
             _augmenters = augmenters;
         }
 
@@ -36,7 +32,6 @@ namespace NzbDrone.Core.Parser.Augmenters
 
                 if (int.TryParse(history.Data.GetValueOrDefault("indexerId"), out var indexerId))
                 {
-                    //var indexerSettings = _indexerFactory.Get(indexerId).Settings as IIndexerSettings;
                     releaseInfo.IndexerId = indexerId;
                 }
 
@@ -51,10 +46,10 @@ namespace NzbDrone.Core.Parser.Augmenters
                 }
 
                 //Now we run the release info augmenters from the history release info. TODO: Add setting to only do that if you trust your indexer!
-                var releaseInfoAugmenters = _augmenters.Where(a => a.HelperType.IsInstanceOfType(releaseInfo));
+                var releaseInfoAugmenters = _augmenters.Where(a => a.Value.HelperType.IsInstanceOfType(releaseInfo));
                 foreach (var augmenter in releaseInfoAugmenters)
                 {
-                    movieInfo = augmenter.AugmentMovieInfo(movieInfo, releaseInfo);
+                    movieInfo = augmenter.Value.AugmentMovieInfo(movieInfo, releaseInfo);
                 }
             }
 

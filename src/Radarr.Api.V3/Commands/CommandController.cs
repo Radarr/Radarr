@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common;
+using NzbDrone.Common.Composition;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Common.TPL;
 using NzbDrone.Core.Datastore.Events;
@@ -22,17 +23,17 @@ namespace Radarr.Api.V3.Commands
     public class CommandController : RestControllerWithSignalR<CommandResource, CommandModel>, IHandle<CommandUpdatedEvent>
     {
         private readonly IManageCommandQueue _commandQueueManager;
-        private readonly IServiceFactory _serviceFactory;
+        private readonly KnownTypes _knownTypes;
         private readonly Debouncer _debouncer;
         private readonly Dictionary<int, CommandResource> _pendingUpdates;
 
         public CommandController(IManageCommandQueue commandQueueManager,
                              IBroadcastSignalRMessage signalRBroadcaster,
-                             IServiceFactory serviceFactory)
+                             KnownTypes knownTypes)
             : base(signalRBroadcaster)
         {
             _commandQueueManager = commandQueueManager;
-            _serviceFactory = serviceFactory;
+            _knownTypes = knownTypes;
 
             _debouncer = new Debouncer(SendUpdates, TimeSpan.FromSeconds(0.1));
             _pendingUpdates = new Dictionary<int, CommandResource>();
@@ -49,7 +50,7 @@ namespace Radarr.Api.V3.Commands
         public ActionResult<CommandResource> StartCommand(CommandResource commandResource)
         {
             var commandType =
-                _serviceFactory.GetImplementations(typeof(Command))
+                _knownTypes.GetImplementations(typeof(Command))
                                .Single(c => c.Name.Replace("Command", "")
                                              .Equals(commandResource.Name, StringComparison.InvariantCultureIgnoreCase));
 

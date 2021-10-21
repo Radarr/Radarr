@@ -6,14 +6,15 @@
     <PackageReference Include="Dapper" Version="2.0.90" />
     <PackageReference Include="MailKit" Version="2.15.0" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
-    <PackageReference Include="System.ServiceModel.Syndication" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     <PackageReference Include="FluentMigrator.Runner" Version="4.0.0-alpha.268" />
     <PackageReference Include="FluentMigrator.Runner.SQLite" Version="4.0.0-alpha.268" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NLog" Version="4.7.0" />
-    <PackageReference Include="TinyTwitter" Version="1.1.2" />
+    <PackageReference Include="NLog" Version="4.7.11" />
     <PackageReference Include="Kveer.XmlRPC" Version="1.1.1" />
     <PackageReference Include="System.Data.SQLite.Core.Servarr" Version="1.0.113.0-0" />
     <PackageReference Include="System.Text.Json" Version="5.0.2" />

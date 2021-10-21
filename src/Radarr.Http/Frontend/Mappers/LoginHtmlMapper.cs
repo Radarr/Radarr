@@ -11,7 +11,7 @@ namespace Radarr.Http.Frontend.Mappers
     {
         public LoginHtmlMapper(IAppFolderInfo appFolderInfo,
                                IDiskProvider diskProvider,
-                               Func<ICacheBreakerProvider> cacheBreakProviderFactory,
+                               Lazy<ICacheBreakerProvider> cacheBreakProviderFactory,
                                IConfigFileProvider configFileProvider,
                                Logger logger)
             : base(diskProvider, cacheBreakProviderFactory, logger)

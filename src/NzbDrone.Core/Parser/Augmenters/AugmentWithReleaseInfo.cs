@@ -9,9 +9,9 @@ namespace NzbDrone.Core.Parser.Augmenters
 {
     public class AugmentWithReleaseInfo : IAugmentParsedMovieInfo
     {
-        private readonly IIndexerFactory _indexerFactory;
+        private readonly Lazy<IIndexerFactory> _indexerFactory;
 
-        public AugmentWithReleaseInfo(IIndexerFactory indexerFactory)
+        public AugmentWithReleaseInfo(Lazy<IIndexerFactory> indexerFactory)
         {
             _indexerFactory = indexerFactory;
         }
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Parser.Augmenters
                 IIndexerSettings indexerSettings = null;
                 try
                 {
-                    indexerSettings = _indexerFactory.Get(releaseInfo.IndexerId)?.Settings as IIndexerSettings;
+                    indexerSettings = _indexerFactory.Value.Get(releaseInfo.IndexerId)?.Settings as IIndexerSettings;
                 }
                 catch (Exception)
                 {

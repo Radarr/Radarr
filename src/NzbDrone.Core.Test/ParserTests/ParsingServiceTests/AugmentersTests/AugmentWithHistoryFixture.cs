@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
             {
                 if (_customSubject == null)
                 {
-                    _customSubject = new AugmentWithHistory(Mocker.GetMock<IIndexerFactory>().Object, new List<IAugmentParsedMovieInfo> { Mocker.Resolve<AugmentWithReleaseInfo>() });
+                    _customSubject = new AugmentWithHistory(new List<Lazy<IAugmentParsedMovieInfo>> { new (Mocker.Resolve<AugmentWithReleaseInfo>()) });
                 }
 
                 return _customSubject;

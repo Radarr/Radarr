@@ -24,10 +24,7 @@ const requiresRestartKeys = [
   'enableSsl',
   'sslPort',
   'sslCertPath',
-  'sslCertPassword',
-  'authenticationMethod',
-  'username',
-  'password'
+  'sslCertPassword'
 ];
 
 class GeneralSettings extends Component {

@@ -1,11 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using DryIoc;
 using NLog;
-using NzbDrone.Common.Composition;
+using NzbDrone.Common.Composition.Extensions;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
+using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Common.Processes;
 using NzbDrone.Update.UpdateEngine;
 
@@ -16,8 +19,6 @@ namespace NzbDrone.Update
         private readonly IInstallUpdateService _installUpdateService;
         private readonly IProcessProvider _processProvider;
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(UpdateApp));
-
-        private static IContainer _container;
 
         public UpdateApp(IInstallUpdateService installUpdateService, IProcessProvider processProvider)
         {
@@ -34,9 +35,13 @@ namespace NzbDrone.Update
 
                 Logger.Info("Starting Radarr Update Client");
 
-                _container = UpdateContainerBuilder.Build(startupArgument);
-                _container.Resolve<InitializeLogger>().Initialize();
-                _container.Resolve<UpdateApp>().Start(args);
+                var container = new Container(rules => rules.WithNzbDroneRules())
+                    .AutoAddServices(new List<string> { "Radarr.Update" })
+                    .AddNzbDroneLogger()
+                    .AddStartupContext(startupArgument);
+
+                container.Resolve<InitializeLogger>().Initialize();
+                container.Resolve<UpdateApp>().Start(args);
 
                 Logger.Info("Update completed successfully");
             }

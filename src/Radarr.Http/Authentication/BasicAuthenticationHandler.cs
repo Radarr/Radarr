@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Authentication;
 
 namespace Radarr.Http.Authentication
 {
@@ -58,7 +59,7 @@ namespace Radarr.Http.Authentication
             {
                 new Claim("user", user.Username),
                 new Claim("identifier", user.Identifier.ToString()),
-                new Claim("UiAuth", "true")
+                new Claim("AuthType", AuthenticationType.Basic.ToString())
             };
 
             var identity = new ClaimsIdentity(claims, "Basic", "user", "identifier");
