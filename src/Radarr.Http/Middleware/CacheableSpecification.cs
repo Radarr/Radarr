@@ -39,23 +39,26 @@ namespace Radarr.Http.Middleware
                 return false;
             }
 
-            if (request.Path.Value?.EndsWith("/index.js") ?? false)
+            var path = request.Path.Value ?? "";
+
+            if (path.EndsWith("/index.js"))
             {
                 return false;
             }
 
-            if (request.Path.Value?.EndsWith("/initialize.js") ?? false)
+            if (path.EndsWith("/initialize.js"))
             {
                 return false;
             }
 
-            if (request.Path.StartsWithSegments("/feed", StringComparison.CurrentCultureIgnoreCase))
+            if (path.StartsWith("/feed", StringComparison.CurrentCultureIgnoreCase))
             {
                 return false;
             }
 
-            if (request.Path.StartsWithSegments("/log", StringComparison.CurrentCultureIgnoreCase) &&
-                (request.Path.Value?.EndsWith(".txt", StringComparison.CurrentCultureIgnoreCase) ?? false))
+            if ((path.StartsWith("/logfile", StringComparison.CurrentCultureIgnoreCase) ||
+                path.StartsWith("/updatelogfile", StringComparison.CurrentCultureIgnoreCase)) &&
+                path.EndsWith(".txt", StringComparison.CurrentCultureIgnoreCase))
             {
                 return false;
             }
