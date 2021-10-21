@@ -7,26 +7,26 @@ namespace Radarr.Http.Middleware
 {
     public interface ICacheableSpecification
     {
-        bool IsCacheable(HttpContext context);
+        bool IsCacheable(HttpRequest request);
     }
 
     public class CacheableSpecification : ICacheableSpecification
     {
-        public bool IsCacheable(HttpContext context)
+        public bool IsCacheable(HttpRequest request)
         {
             if (!RuntimeInfo.IsProduction)
             {
                 return false;
             }
 
-            if (context.Request.Query.ContainsKey("h"))
+            if (request.Query.ContainsKey("h"))
             {
                 return true;
             }
 
-            if (context.Request.Path.StartsWithSegments("/api", StringComparison.CurrentCultureIgnoreCase))
+            if (request.Path.StartsWithSegments("/api", StringComparison.CurrentCultureIgnoreCase))
             {
-                if (context.Request.Path.ToString().ContainsIgnoreCase("/MediaCover"))
+                if (request.Path.ToString().ContainsIgnoreCase("/MediaCover"))
                 {
                     return true;
                 }
@@ -34,38 +34,30 @@ namespace Radarr.Http.Middleware
                 return false;
             }
 
-            if (context.Request.Path.StartsWithSegments("/signalr", StringComparison.CurrentCultureIgnoreCase))
+            if (request.Path.StartsWithSegments("/signalr", StringComparison.CurrentCultureIgnoreCase))
             {
                 return false;
             }
 
-            if (context.Request.Path.Value?.EndsWith("/index.js") ?? false)
+            if (request.Path.Value?.EndsWith("/index.js") ?? false)
             {
                 return false;
             }
 
-            if (context.Request.Path.Value?.EndsWith("/initialize.js") ?? false)
+            if (request.Path.Value?.EndsWith("/initialize.js") ?? false)
             {
                 return false;
             }
 
-            if (context.Request.Path.StartsWithSegments("/feed", StringComparison.CurrentCultureIgnoreCase))
+            if (request.Path.StartsWithSegments("/feed", StringComparison.CurrentCultureIgnoreCase))
             {
                 return false;
             }
 
-            if (context.Request.Path.StartsWithSegments("/log", StringComparison.CurrentCultureIgnoreCase) &&
-                (context.Request.Path.Value?.EndsWith(".txt", StringComparison.CurrentCultureIgnoreCase) ?? false))
+            if (request.Path.StartsWithSegments("/log", StringComparison.CurrentCultureIgnoreCase) &&
+                (request.Path.Value?.EndsWith(".txt", StringComparison.CurrentCultureIgnoreCase) ?? false))
             {
                 return false;
-            }
-
-            if (context.Response != null)
-            {
-                if (context.Response.ContentType?.Contains("text/html") ?? false || context.Response.StatusCode >= 400)
-                {
-                    return false;
-                }
             }
 
             return true;

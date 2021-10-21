@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
+using Radarr.Http.Extensions;
 using Radarr.Http.Frontend.Mappers;
 
 namespace Radarr.Http.Frontend
@@ -36,6 +37,7 @@ namespace Radarr.Http.Frontend
         [HttpGet("login")]
         public IActionResult LoginPage()
         {
+            Response.Headers.DisableCache();
             return PhysicalFile(_loginPath, "text/html");
         }
 
@@ -62,7 +64,19 @@ namespace Radarr.Http.Frontend
 
             if (mapper != null)
             {
-                return mapper.GetResponse(path) ?? NotFound();
+                var result = mapper.GetResponse(path);
+
+                if (result != null)
+                {
+                    if ((result as FileResult)?.ContentType == "text/html")
+                    {
+                        Response.Headers.DisableCache();
+                    }
+
+                    return result;
+                }
+
+                return NotFound();
             }
 
             _logger.Warn("Couldn't find handler for {0}", path);

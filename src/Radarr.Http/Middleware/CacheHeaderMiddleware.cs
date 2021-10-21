@@ -19,7 +19,7 @@ namespace Radarr.Http.Middleware
         {
             if (context.Request.Method != "OPTIONS")
             {
-                if (_cacheableSpecification.IsCacheable(context))
+                if (_cacheableSpecification.IsCacheable(context.Request))
                 {
                     context.Response.Headers.EnableCache();
                 }
