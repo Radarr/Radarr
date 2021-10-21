@@ -78,7 +78,8 @@ export const actionHandlers = handleThunks({
 
     const promise = createAjaxRequest({
       url: `/history/failed/${historyId}`,
-      method: 'POST'
+      method: 'POST',
+      dataType: 'json'
     }).request;
 
     promise.done(() => {
@@ -97,4 +98,3 @@ export const reducers = createHandleActions({
   }
 
 }, defaultState, section);
-

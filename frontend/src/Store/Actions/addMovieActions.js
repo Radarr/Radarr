@@ -123,6 +123,7 @@ export const actionHandlers = handleThunks({
     const promise = createAjaxRequest({
       url: '/movie',
       method: 'POST',
+      dataType: 'json',
       contentType: 'application/json',
       data: JSON.stringify(newMovie)
     }).request;
