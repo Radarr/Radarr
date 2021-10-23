@@ -26,7 +26,7 @@ namespace NzbDrone.Core.Notifications.Mailgun
 
         public override void OnDownload(DownloadMessage downloadMessage)
         {
-            _proxy.SendNotification(MOVIE_GRABBED_TITLE, downloadMessage.Message, Settings);
+            _proxy.SendNotification(downloadMessage.OldMovieFiles.Count > 0 ? MOVIE_UPGRADED_TITLE : MOVIE_DOWNLOADED_TITLE, downloadMessage.Message, Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
