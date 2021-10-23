@@ -88,6 +88,13 @@ export const defaultState = {
         isModifiable: false
       },
       {
+        name: 'time',
+        label: translate('Time'),
+        isSortable: true,
+        isVisible: true,
+        isModifiable: false
+      },
+      {
         name: 'logger',
         label: translate('Component'),
         isSortable: false,
@@ -97,13 +104,6 @@ export const defaultState = {
       {
         name: 'message',
         label: translate('Message'),
-        isVisible: true,
-        isModifiable: false
-      },
-      {
-        name: 'time',
-        label: translate('Time'),
-        isSortable: true,
         isVisible: true,
         isModifiable: false
       },
