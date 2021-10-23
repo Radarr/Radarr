@@ -266,6 +266,7 @@ class MovieDetails extends Component {
       qualityProfileId,
       monitored,
       studio,
+      genres,
       collection,
       overview,
       youTubeTrailerId,
@@ -582,6 +583,19 @@ class MovieDetails extends Component {
                         </span>
                       </InfoLabel>
                   }
+
+                  {
+                    !!genres.length && !isSmallScreen &&
+                      <InfoLabel
+                        className={styles.detailsInfoLabel}
+                        title={translate('Genres')}
+                        size={sizes.LARGE}
+                      >
+                        <span className={styles.genres}>
+                          {genres.join(', ')}
+                        </span>
+                      </InfoLabel>
+                  }
                 </div>
 
                 <Measure onMeasure={this.onMeasure}>
@@ -766,6 +780,7 @@ MovieDetails.propTypes = {
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   studio: PropTypes.string,
+  genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   collection: PropTypes.object,
   youTubeTrailerId: PropTypes.string,
   isAvailable: PropTypes.bool.isRequired,
@@ -798,6 +813,7 @@ MovieDetails.propTypes = {
 };
 
 MovieDetails.defaultProps = {
+  genres: [],
   tags: [],
   isSaving: false,
   sizeOnDisk: 0

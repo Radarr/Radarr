@@ -151,7 +151,8 @@
 .qualityProfileName,
 .statusName,
 .studio,
-.collection {
+.collection,
+.genres {
   font-weight: 300;
   font-size: 17px;
 }
