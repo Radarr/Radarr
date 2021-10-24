@@ -33,7 +33,7 @@ namespace Radarr.Api.V3.Config
             SharedValidator.RuleFor(c => c.MovieFolderFormat).ValidMovieFolderFormat();
         }
 
-        public override NamingConfigResource GetResourceById(int id)
+        protected override NamingConfigResource GetResourceById(int id)
         {
             return GetNamingConfig();
         }

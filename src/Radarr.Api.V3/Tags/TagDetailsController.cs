@@ -16,7 +16,7 @@ namespace Radarr.Api.V3.Tags
             _tagService = tagService;
         }
 
-        public override TagDetailsResource GetResourceById(int id)
+        protected override TagDetailsResource GetResourceById(int id)
         {
             return _tagService.Details(id).ToResource();
         }

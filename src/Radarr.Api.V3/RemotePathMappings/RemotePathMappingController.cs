@@ -34,7 +34,7 @@ namespace Radarr.Api.V3.RemotePathMappings
                            .SetValidator(pathExistsValidator);
         }
 
-        public override RemotePathMappingResource GetResourceById(int id)
+        protected override RemotePathMappingResource GetResourceById(int id)
         {
             return _remotePathMappingService.Get(id).ToResource();
         }

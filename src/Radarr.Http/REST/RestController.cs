@@ -39,7 +39,19 @@ namespace Radarr.Http.REST
         }
 
         [RestGetById]
-        public abstract TResource GetResourceById(int id);
+        public ActionResult<TResource> GetResourceByIdWithErrorHandler(int id)
+        {
+            try
+            {
+                return GetResourceById(id);
+            }
+            catch (ModelNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        protected abstract TResource GetResourceById(int id);
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -71,19 +83,6 @@ namespace Radarr.Http.REST
             }
 
             base.OnActionExecuting(context);
-        }
-
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
-            var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
-
-            var attributes = descriptor.MethodInfo.CustomAttributes;
-
-            if (context.Exception?.GetType() == typeof(ModelNotFoundException) &&
-                attributes.Any(x => x.AttributeType == typeof(RestGetByIdAttribute)))
-            {
-                context.Result = new NotFoundResult();
-            }
         }
 
         protected void ValidateResource(TResource resource, bool skipValidate = false, bool skipSharedValidate = false)
@@ -118,13 +117,13 @@ namespace Radarr.Http.REST
         protected ActionResult<TResource> Accepted(int id)
         {
             var result = GetResourceById(id);
-            return AcceptedAtAction(nameof(GetResourceById), new { id = id }, result);
+            return AcceptedAtAction(nameof(GetResourceByIdWithErrorHandler), new { id = id }, result);
         }
 
         protected ActionResult<TResource> Created(int id)
         {
             var result = GetResourceById(id);
-            return CreatedAtAction(nameof(GetResourceById), new { id = id }, result);
+            return CreatedAtAction(nameof(GetResourceByIdWithErrorHandler), new { id = id }, result);
         }
     }
 }

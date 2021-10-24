@@ -17,7 +17,7 @@ namespace Radarr.Api.V3.Movies
             _addMovieService = addMovieService;
         }
 
-        public override MovieResource GetResourceById(int id)
+        protected override MovieResource GetResourceById(int id)
         {
             throw new NotImplementedException();
         }

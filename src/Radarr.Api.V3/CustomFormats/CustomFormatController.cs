@@ -27,7 +27,7 @@ namespace Radarr.Api.V3.CustomFormats
             SharedValidator.RuleFor(c => c.Specifications).NotEmpty();
         }
 
-        public override CustomFormatResource GetResourceById(int id)
+        protected override CustomFormatResource GetResourceById(int id)
         {
             return _formatService.GetById(id).ToResource();
         }

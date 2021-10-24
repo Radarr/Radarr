@@ -10,7 +10,7 @@ namespace Radarr.Api.V3.Profiles.Languages
     [V3ApiController]
     public class LanguageController : RestController<LanguageResource>
     {
-        public override LanguageResource GetResourceById(int id)
+        protected override LanguageResource GetResourceById(int id)
         {
             var language = (Language)id;
 

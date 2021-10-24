@@ -16,7 +16,7 @@ namespace Radarr.Api.V3.Credits
             _creditService = creditService;
         }
 
-        public override CreditResource GetResourceById(int id)
+        protected override CreditResource GetResourceById(int id)
         {
             return _creditService.GetById(id).ToResource();
         }

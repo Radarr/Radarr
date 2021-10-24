@@ -15,7 +15,7 @@ namespace Radarr.Api.V3.Indexers
             _qualityProfile = qualityProfileService.GetDefaultProfile(string.Empty);
         }
 
-        public override ReleaseResource GetResourceById(int id)
+        protected override ReleaseResource GetResourceById(int id)
         {
             throw new NotImplementedException();
         }

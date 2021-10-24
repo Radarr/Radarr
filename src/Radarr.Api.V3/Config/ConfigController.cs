@@ -17,7 +17,7 @@ namespace Radarr.Api.V3.Config
             _configService = configService;
         }
 
-        public override TResource GetResourceById(int id)
+        protected override TResource GetResourceById(int id)
         {
             return GetConfig();
         }

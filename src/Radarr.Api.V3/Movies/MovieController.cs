@@ -150,7 +150,7 @@ namespace Radarr.Api.V3.Movies
             return moviesResources;
         }
 
-        public override MovieResource GetResourceById(int id)
+        protected override MovieResource GetResourceById(int id)
         {
             var movie = _moviesService.GetMovie(id);
             return MapToResource(movie);

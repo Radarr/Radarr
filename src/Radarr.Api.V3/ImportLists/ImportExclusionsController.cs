@@ -28,7 +28,7 @@ namespace Radarr.Api.V3.ImportLists
             return _exclusionService.GetAllExclusions().ToResource();
         }
 
-        public override ImportExclusionsResource GetResourceById(int id)
+        protected override ImportExclusionsResource GetResourceById(int id)
         {
             return _exclusionService.GetById(id).ToResource();
         }
