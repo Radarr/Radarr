@@ -33,7 +33,7 @@ namespace Radarr.Api.V3
             PostValidator.RuleFor(c => c.Fields).NotNull();
         }
 
-        public override TProviderResource GetResourceById(int id)
+        protected override TProviderResource GetResourceById(int id)
         {
             var definition = _providerFactory.Get(id);
             _providerFactory.SetProviderCharacteristics(definition);

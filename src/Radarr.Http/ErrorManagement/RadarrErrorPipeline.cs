@@ -29,21 +29,16 @@ namespace Radarr.Http.ErrorManagement
             var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
             var exception = exceptionHandlerPathFeature?.Error;
 
-            _logger.Warn(exception);
-
             var statusCode = HttpStatusCode.InternalServerError;
             var errorModel = new ErrorModel
             {
-                Message = exception.Message,
-                Description = exception.ToString()
+                Message = exception?.Message,
+                Description = exception?.ToString()
             };
 
             if (exception is ApiException apiException)
             {
                 _logger.Warn(apiException, "API Error:\n{0}", apiException.Message);
-
-                /* var body = RequestStream.FromStream(context.Request.Body).AsString();
-                 _logger.Trace("Request body:\n{0}", body);*/
 
                 errorModel = new ErrorModel(apiException);
                 statusCode = apiException.StatusCode;
@@ -59,30 +54,14 @@ namespace Radarr.Http.ErrorManagement
             }
             else if (exception is NzbDroneClientException clientException)
             {
-                errorModel = new ErrorModel
-                {
-                    Message = exception.Message,
-                    Description = exception.ToString()
-                };
                 statusCode = clientException.StatusCode;
             }
-            else if (exception is ModelNotFoundException notFoundException)
+            else if (exception is ModelNotFoundException)
             {
-                errorModel = new ErrorModel
-                {
-                    Message = exception.Message,
-                    Description = exception.ToString()
-                };
                 statusCode = HttpStatusCode.NotFound;
             }
-            else if (exception is ModelConflictException conflictException)
+            else if (exception is ModelConflictException)
             {
-                _logger.Error(exception, "DB error");
-                errorModel = new ErrorModel
-                {
-                    Message = exception.Message,
-                    Description = exception.ToString()
-                };
                 statusCode = HttpStatusCode.Conflict;
             }
             else if (exception is SQLiteException sqLiteException)
@@ -91,18 +70,16 @@ namespace Radarr.Http.ErrorManagement
                 {
                     if (sqLiteException.Message.Contains("constraint failed"))
                     {
-                        errorModel = new ErrorModel
-                        {
-                            Message = exception.Message,
-                        };
                         statusCode = HttpStatusCode.Conflict;
                     }
                 }
 
                 _logger.Error(sqLiteException, "[{0} {1}]", context.Request.Method, context.Request.Path);
             }
-
-            _logger.Fatal(exception, "Request Failed. {0} {1}", context.Request.Method, context.Request.Path);
+            else
+            {
+                _logger.Fatal(exception, "Request Failed. {0} {1}", context.Request.Method, context.Request.Path);
+            }
 
             await errorModel.WriteToResponse(response, statusCode);
         }

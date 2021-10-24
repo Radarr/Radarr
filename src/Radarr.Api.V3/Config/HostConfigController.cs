@@ -78,7 +78,7 @@ namespace Radarr.Api.V3.Config
             return cert != null;
         }
 
-        public override HostConfigResource GetResourceById(int id)
+        protected override HostConfigResource GetResourceById(int id)
         {
             return GetHostConfig();
         }

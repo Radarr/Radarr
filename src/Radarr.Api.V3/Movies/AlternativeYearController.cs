@@ -14,7 +14,7 @@ namespace Radarr.Api.V3.Movies
             _yearCache = cacheManager.GetCache<int>(GetType(), "altYears");
         }
 
-        public override AlternativeYearResource GetResourceById(int id)
+        protected override AlternativeYearResource GetResourceById(int id)
         {
             return new AlternativeYearResource
             {

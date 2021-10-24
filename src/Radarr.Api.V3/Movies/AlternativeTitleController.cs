@@ -17,7 +17,7 @@ namespace Radarr.Api.V3.Movies
             _altTitleService = altTitleService;
         }
 
-        public override AlternativeTitleResource GetResourceById(int id)
+        protected override AlternativeTitleResource GetResourceById(int id)
         {
             return _altTitleService.GetById(id).ToResource();
         }

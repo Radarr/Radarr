@@ -41,7 +41,7 @@ namespace Radarr.Api.V3.Commands
             PostValidator.RuleFor(c => c.Name).NotBlank();
         }
 
-        public override CommandResource GetResourceById(int id)
+        protected override CommandResource GetResourceById(int id)
         {
             return _commandQueueManager.Get(id).ToResource();
         }

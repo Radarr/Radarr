@@ -30,7 +30,7 @@ namespace Radarr.Api.V3.Queue
             _broadcastDebounce = new Debouncer(BroadcastChange, TimeSpan.FromSeconds(5));
         }
 
-        public override QueueStatusResource GetResourceById(int id)
+        protected override QueueStatusResource GetResourceById(int id)
         {
             throw new NotImplementedException();
         }

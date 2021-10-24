@@ -47,7 +47,7 @@ namespace Radarr.Api.V3.MovieFiles
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
         }
 
-        public override MovieFileResource GetResourceById(int id)
+        protected override MovieFileResource GetResourceById(int id)
         {
             var movieFile = _mediaFileService.GetMovie(id);
             var movie = _movieService.GetMovie(movieFile.MovieId);

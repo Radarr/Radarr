@@ -27,7 +27,7 @@ namespace Radarr.Api.V3.Restrictions
             });
         }
 
-        public override RestrictionResource GetResourceById(int id)
+        protected override RestrictionResource GetResourceById(int id)
         {
             return _restrictionService.Get(id).ToResource();
         }

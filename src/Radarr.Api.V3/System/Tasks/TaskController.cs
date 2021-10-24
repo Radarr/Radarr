@@ -31,7 +31,7 @@ namespace Radarr.Api.V3.System.Tasks
                                .ToList();
         }
 
-        public override TaskResource GetResourceById(int id)
+        protected override TaskResource GetResourceById(int id)
         {
             var task = _taskManager.GetAll()
                                .SingleOrDefault(t => t.Id == id);

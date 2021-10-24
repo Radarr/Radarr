@@ -41,7 +41,7 @@ namespace Radarr.Api.V3.RootFolders
                            .SetValidator(folderWritableValidator);
         }
 
-        public override RootFolderResource GetResourceById(int id)
+        protected override RootFolderResource GetResourceById(int id)
         {
             var timeout = Request?.GetBooleanQueryParameter("timeout", true) ?? true;
 
