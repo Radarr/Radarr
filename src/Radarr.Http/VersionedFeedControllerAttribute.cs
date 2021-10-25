@@ -17,7 +17,7 @@ namespace Radarr.Http
         public int Version { get; private set; }
     }
 
-    public class V3FeedControllerAttribute : VersionedApiControllerAttribute
+    public class V3FeedControllerAttribute : VersionedFeedControllerAttribute
     {
         public V3FeedControllerAttribute(string resource = "[controller]")
             : base(3, resource)
