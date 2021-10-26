@@ -25,7 +25,7 @@ namespace Radarr.Api.V3.MediaCovers
             _mimeTypeProvider = new FileExtensionContentTypeProvider();
         }
 
-        [HttpGet(@"author/{movieId:int}/{filename:regex((.+)\.(jpg|png|gif))}")]
+        [HttpGet(@"{movieId:int}/{filename:regex((.+)\.(jpg|png|gif))}")]
         public IActionResult GetMediaCover(int movieId, string filename)
         {
             var filePath = Path.Combine(_appFolderInfo.GetAppDataPath(), "MediaCover", movieId.ToString(), filename);
