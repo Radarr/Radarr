@@ -3,10 +3,10 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import CalendarEventQueueDetails from 'Calendar/Events/CalendarEventQueueDetails';
-import getStatusStyle from 'Calendar/getStatusStyle';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import { icons, kinds } from 'Helpers/Props';
+import getStatusStyle from 'Utilities/Movie/getStatusStyle';
 import translate from 'Utilities/String/translate';
 import styles from './AgendaEvent.css';
 
@@ -82,7 +82,7 @@ class AgendaEvent extends Component {
     startTime = moment(startTime);
     const downloading = !!(queueItem || grabbed);
     const isMonitored = monitored;
-    const statusStyle = getStatusStyle(hasFile, downloading, isAvailable, isMonitored);
+    const statusStyle = getStatusStyle(null, isMonitored, hasFile, isAvailable, 'style', downloading);
     const joinedGenres = genres.slice(0, 2).join(', ');
     const link = `/movie/${titleSlug}`;
 

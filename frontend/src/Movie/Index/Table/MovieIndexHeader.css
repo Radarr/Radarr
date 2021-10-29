@@ -45,11 +45,16 @@
   flex: 0 0 100px;
 }
 
-.movieStatus,
+.movieStatus {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 110px;
+}
+
 .certification {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
-  flex: 0 0 100px;
+  flex: 0 0 90px;
 }
 
 .year {

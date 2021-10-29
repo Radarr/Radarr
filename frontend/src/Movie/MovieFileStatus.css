@@ -2,3 +2,45 @@
   display: flex;
   justify-content: center;
 }
+
+.missingUnmonitoredBackground {
+  &:global(.colorImpaired) {
+    background: repeating-linear-gradient(45deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+  }
+}
+
+.missingMonitoredBackground {
+  &:global(.colorImpaired) {
+    background: repeating-linear-gradient(90deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+  }
+}
+
+.queue {
+  padding-right: 2px;
+  border-left: 5px solid $queueColor;
+}
+
+.continuing {
+  padding-right: 2px;
+  border-left: 5px solid $primaryColor;
+}
+
+.availNotMonitored {
+  padding-right: 2px;
+  border-left: 5px solid $darkGray;
+}
+
+.ended {
+  padding-right: 2px;
+  border-left: 5px solid $successColor;
+}
+
+.missingMonitored {
+  padding-right: 2px;
+  border-left: 5px solid $dangerColor;
+}
+
+.missingUnmonitored {
+  padding-right: 2px;
+  border-left: 5px solid $warningColor;
+}
