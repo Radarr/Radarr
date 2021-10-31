@@ -66,9 +66,6 @@ class RemotePathMapping extends Component {
           styles.remotePathMapping
         )}
       >
-        <div className={styles.host}>{host}</div>
-        <div className={styles.path}>{remotePath}</div>
-        <div className={styles.path}>{localPath}</div>
 
         <div className={styles.actions}>
           <Link
@@ -77,6 +74,10 @@ class RemotePathMapping extends Component {
             <Icon name={icons.EDIT} />
           </Link>
         </div>
+
+        <div className={styles.host}>{host}</div>
+        <div className={styles.path}>{remotePath}</div>
+        <div className={styles.path}>{localPath}</div>
 
         <EditRemotePathMappingModalConnector
           id={id}

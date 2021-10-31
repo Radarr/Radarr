@@ -4,17 +4,19 @@
   font-weight: bold;
 }
 
+.actions {
+  flex: 0 0 25px;
+}
+
 .host {
-  flex: 0 0 300px;
+  flex: 1 0 300px;
 }
 
 .path {
-  flex: 0 0 400px;
+  flex: 1 0 400px;
 }
 
 .addRemotePathMapping {
-  display: flex;
-  justify-content: flex-end;
   padding-right: 10px;
 }
 
