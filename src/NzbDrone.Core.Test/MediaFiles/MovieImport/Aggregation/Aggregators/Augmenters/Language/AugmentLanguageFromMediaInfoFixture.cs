@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -25,7 +26,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
         public void should_return_language_for_single_known_language()
         {
             var mediaInfo = Builder<MediaInfoModel>.CreateNew()
-                                                   .With(m => m.AudioLanguages = "English")
+                                                   .With(m => m.AudioLanguages = new List<string> { "eng" })
                                                    .Build();
 
             var localMovie = Builder<LocalMovie>.CreateNew()
@@ -42,7 +43,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
         public void should_only_return_one_when_language_duplicated()
         {
             var mediaInfo = Builder<MediaInfoModel>.CreateNew()
-                                                   .With(m => m.AudioLanguages = "English / English")
+                                                   .With(m => m.AudioLanguages = new List<string> { "eng", "eng" })
                                                    .Build();
 
             var localMovie = Builder<LocalMovie>.CreateNew()
@@ -59,7 +60,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
         public void should_return_null_if_all_unknown()
         {
             var mediaInfo = Builder<MediaInfoModel>.CreateNew()
-                                                   .With(m => m.AudioLanguages = "Pirate / Pirate")
+                                                   .With(m => m.AudioLanguages = new List<string> { "pirate", "pirate" })
                                                    .Build();
 
             var localMovie = Builder<LocalMovie>.CreateNew()
@@ -75,7 +76,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
         public void should_return_known_languages_only()
         {
             var mediaInfo = Builder<MediaInfoModel>.CreateNew()
-                                                   .With(m => m.AudioLanguages = "English / Pirate")
+                                                   .With(m => m.AudioLanguages = new List<string> { "eng", "pirate" })
                                                    .Build();
 
             var localMovie = Builder<LocalMovie>.CreateNew()
@@ -92,7 +93,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augm
         public void should_return_multiple_known_languages()
         {
             var mediaInfo = Builder<MediaInfoModel>.CreateNew()
-                                                   .With(m => m.AudioLanguages = "English / German")
+                                                   .With(m => m.AudioLanguages = new List<string> { "eng", "ger" })
                                                    .Build();
 
             var localMovie = Builder<LocalMovie>.CreateNew()

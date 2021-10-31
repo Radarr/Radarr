@@ -241,6 +241,7 @@ stages:
       - bash: ./build.sh --packages --enable-bsd
         displayName: Create Packages
       - bash: |
+          find . -name "ffprobe" -exec chmod a+x {} \;
           find . -name "Radarr" -exec chmod a+x {} \;
           find . -name "Radarr.Update" -exec chmod a+x {} \;
         displayName: Set executable bits
@@ -417,16 +418,13 @@ stages:
           buildType: 'current'
           artifactName: '$(testName)Tests'
           targetPath: $(testsFolder)
-      - bash: |
-          wget https://mediaarea.net/repo/deb/repo-mediaarea_1.0-11_all.deb
-          sudo dpkg -i repo-mediaarea_1.0-11_all.deb
-          sudo apt-get update
-          sudo apt-get install -y --allow-unauthenticated libmediainfo-dev libmediainfo0v5 mediainfo
-        displayName: Install mediainfo
-        condition: and(succeeded(), eq(variables['testName'], 'LinuxCore'))
       - powershell: Set-Service SCardSvr -StartupType Manual
         displayName: Enable Windows Test Service
         condition: and(succeeded(), eq(variables['osName'], 'Windows'))
+      - bash: |
+          chmod a+x _tests/ffprobe
+        displayName: Make ffprobe Executable
+        condition: and(succeeded(), ne(variables['osName'], 'Windows'))
       - bash: find ${TESTSFOLDER} -name "Radarr.Test.Dummy" -exec chmod a+x {} \;
         displayName: Make Test Dummy Executable
         condition: and(succeeded(), ne(variables['osName'], 'Windows'))
@@ -474,6 +472,9 @@ stages:
           buildType: 'current'
           artifactName: $(artifactName)
           targetPath: $(testsFolder)
+      - bash: |
+          chmod a+x _tests/ffprobe
+        displayName: Make ffprobe Executable
       - bash: find ${TESTSFOLDER} -name "Radarr.Test.Dummy" -exec chmod a+x {} \;
         displayName: Make Test Dummy Executable
         condition: and(succeeded(), ne(variables['osName'], 'Windows'))

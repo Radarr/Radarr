@@ -128,10 +128,11 @@ namespace NzbDrone.Update.UpdateEngine
                     _logger.Info("Copying new files to target folder");
                     _diskTransferService.MirrorFolder(_appFolderInfo.GetUpdatePackageFolder(), installationFolder);
 
-                    // Set executable flag on app
+                    // Set executable flag on app and ffprobe
                     if (OsInfo.IsOsx || (OsInfo.IsLinux && PlatformInfo.IsNetCore))
                     {
                         _diskProvider.SetFilePermissions(Path.Combine(installationFolder, "Radarr"), "755", null);
+                        _diskProvider.SetFilePermissions(Path.Combine(installationFolder, "ffprobe"), "755", null);
                     }
                 }
                 catch (Exception e)

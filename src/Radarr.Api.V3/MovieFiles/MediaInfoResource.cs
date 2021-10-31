@@ -1,4 +1,5 @@
 using System;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using Radarr.Http.REST;
 
@@ -6,7 +7,6 @@ namespace Radarr.Api.V3.MovieFiles
 {
     public class MediaInfoResource : RestResource
     {
-        public string AudioAdditionalFeatures { get; set; }
         public int AudioBitrate { get; set; }
         public decimal AudioChannels { get; set; }
         public string AudioCodec { get; set; }
@@ -33,20 +33,19 @@ namespace Radarr.Api.V3.MovieFiles
 
             return new MediaInfoResource
             {
-                AudioAdditionalFeatures = model.AudioAdditionalFeatures,
                 AudioBitrate = model.AudioBitrate,
                 AudioChannels = MediaInfoFormatter.FormatAudioChannels(model),
-                AudioLanguages = model.AudioLanguages,
+                AudioLanguages = model.AudioLanguages.ConcatToString("/"),
                 AudioStreamCount = model.AudioStreamCount,
                 AudioCodec = MediaInfoFormatter.FormatAudioCodec(model, sceneName),
                 VideoBitDepth = model.VideoBitDepth,
                 VideoBitrate = model.VideoBitrate,
                 VideoCodec = MediaInfoFormatter.FormatVideoCodec(model, sceneName),
-                VideoFps = model.VideoFps,
+                VideoFps = Math.Round(model.VideoFps, 3),
                 Resolution = $"{model.Width}x{model.Height}",
                 RunTime = FormatRuntime(model.RunTime),
                 ScanType = model.ScanType,
-                Subtitles = model.Subtitles
+                Subtitles = model.Subtitles.ConcatToString("/")
             };
         }
 

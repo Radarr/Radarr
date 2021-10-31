@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Organizer;
 
 namespace NzbDrone.Core.Parser
 {
@@ -62,6 +64,11 @@ namespace NzbDrone.Core.Parser
             else if (langCode.Length == 3)
             {
                 //Lookup ISO639-2T code
+                if (FileNameBuilder.Iso639BTMap.TryGetValue(langCode, out var mapped))
+                {
+                    langCode = mapped;
+                }
+
                 return All.FirstOrDefault(l => l.ThreeLetterCode == langCode);
             }
 
