@@ -230,7 +230,7 @@
     "CertificationCountry": "Paese di certificazione",
     "CertificateValidationHelpText": "Cambiare il \"grado di severità\" della convalida del certificato HTTPS",
     "CertificateValidation": "Convalida del certificato",
-    "Cancel": "Cancella",
+    "Cancel": "Annulla",
     "BypassProxyForLocalAddresses": "Evita il Proxy per gli indirizzi locali",
     "Branch": "Ramo",
     "BindAddressHelpText": "Indirizzo IPV4 valido o '*' per tutte le interfacce",
