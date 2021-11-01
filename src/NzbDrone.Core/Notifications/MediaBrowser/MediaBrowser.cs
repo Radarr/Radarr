@@ -55,6 +55,35 @@ namespace NzbDrone.Core.Notifications.Emby
             }
         }
 
+        public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
+        {
+            if (deleteMessage.DeletedFiles)
+            {
+                if (Settings.Notify)
+                {
+                    _mediaBrowserService.Notify(Settings, MOVIE_DELETED_TITLE_BRANDED, deleteMessage.Message);
+                }
+
+                if (Settings.UpdateLibrary)
+                {
+                    _mediaBrowserService.UpdateMovies(Settings, deleteMessage.Movie, "Deleted");
+                }
+            }
+        }
+
+        public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
+        {
+            if (Settings.Notify)
+            {
+                _mediaBrowserService.Notify(Settings, MOVIE_FILE_DELETED_TITLE_BRANDED, deleteMessage.Message);
+            }
+
+            if (Settings.UpdateLibrary)
+            {
+                _mediaBrowserService.UpdateMovies(Settings, deleteMessage.Movie, "Deleted");
+            }
+        }
+
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();
