@@ -11,10 +11,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
     public static class MediaInfoFormatter
     {
-        private const string ValidHdrColourPrimaries = "bt2020";
         private const string VideoDynamicRangeHdr = "HDR";
-        private static readonly string[] ValidHdrTransferFunctions = { "PQ", "HLG", "smpte2084" };
-        private static readonly string[] DolbyVisionCodecIds = { "dvhe", "dvh1" };
 
         private static readonly Regex PositionRegex = new Regex(@"(?<position>^\d\.\d)", RegexOptions.Compiled);
 
@@ -156,7 +153,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             Logger.Debug()
-                  .Message("Unknown audio format: '{0}' in '{1}'.", mediaInfo.RawData, sceneName)
+                  .Message("Unknown audio format: '{0}' in '{1}'.", mediaInfo.RawStreamData, sceneName)
                   .WriteSentryWarn("UnknownAudioFormatFFProbe", mediaInfo.ContainerFormat, mediaInfo.AudioFormat, audioCodecID)
                   .Write();
 
@@ -263,7 +260,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             Logger.Debug()
-                  .Message("Unknown video format: '{0}' in '{1}'.", mediaInfo.RawData, sceneName)
+                  .Message("Unknown video format: '{0}' in '{1}'.", mediaInfo.RawStreamData, sceneName)
                   .WriteSentryWarn("UnknownVideoFormatFFProbe", mediaInfo.ContainerFormat, videoFormat, videoCodecID)
                   .Write();
 
@@ -304,25 +301,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
         public static string FormatVideoDynamicRange(MediaInfoModel mediaInfo)
         {
-            if (DolbyVisionCodecIds.ContainsIgnoreCase(mediaInfo.VideoCodecID))
-            {
-                // Dolby vision
-                return VideoDynamicRangeHdr;
-            }
-
-            if (mediaInfo.VideoBitDepth >= 10 &&
-                mediaInfo.VideoColourPrimaries.IsNotNullOrWhiteSpace() &&
-                mediaInfo.VideoTransferCharacteristics.IsNotNullOrWhiteSpace())
-            {
-                // Other HDR
-                if (mediaInfo.VideoColourPrimaries.EqualsIgnoreCase(ValidHdrColourPrimaries) &&
-                    ValidHdrTransferFunctions.Any(mediaInfo.VideoTransferCharacteristics.Contains))
-                {
-                    return VideoDynamicRangeHdr;
-                }
-            }
-
-            return "";
+            return mediaInfo.VideoHdrFormat != HdrFormat.None ? VideoDynamicRangeHdr : "";
         }
     }
 }

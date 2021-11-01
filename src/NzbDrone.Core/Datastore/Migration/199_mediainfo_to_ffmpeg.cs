@@ -12,6 +12,7 @@ using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Datastore.Migration.Framework;
+using NzbDrone.Core.MediaFiles.MediaInfo;
 
 namespace NzbDrone.Core.Datastore.Migration
 {
@@ -90,7 +91,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 VideoBitDepth = old.VideoBitDepth,
                 VideoMultiViewCount = old.VideoMultiViewCount,
                 VideoColourPrimaries = MigratePrimaries(old.VideoColourPrimaries),
-                VideoTransferCharacteristics = old.VideoTransferCharacteristics,
+                VideoTransferCharacteristics = MigrateTransferCharacteristics(old.VideoTransferCharacteristics),
                 Height = old.Height,
                 Width = old.Width,
                 AudioBitrate = old.AudioBitrate,
@@ -101,6 +102,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 AudioLanguages = MigrateLanguages(old.AudioLanguages),
                 Subtitles = MigrateLanguages(old.Subtitles)
             };
+
+            m.VideoHdrFormat = MigrateHdrFormat(old);
 
             MigrateVideoCodec(old, m, sceneName);
             MigrateAudioCodec(old, m);
@@ -327,6 +330,39 @@ namespace NzbDrone.Core.Datastore.Migration
             {
                 m.VideoFormat = "vc1";
             }
+        }
+
+        private HdrFormat MigrateHdrFormat(MediaInfo198 mediaInfo)
+        {
+            if (mediaInfo.VideoHdrFormatCompatibility.IsNotNullOrWhiteSpace())
+            {
+                if (mediaInfo.VideoHdrFormatCompatibility.ContainsIgnoreCase("HLG"))
+                {
+                    return HdrFormat.Hlg10;
+                }
+
+                if (mediaInfo.VideoHdrFormatCompatibility.ContainsIgnoreCase("dolby"))
+                {
+                    return HdrFormat.DolbyVision;
+                }
+
+                if (mediaInfo.VideoHdrFormatCompatibility.ContainsIgnoreCase("dolby"))
+                {
+                    return HdrFormat.DolbyVision;
+                }
+
+                if (mediaInfo.VideoHdrFormatCompatibility.ContainsIgnoreCase("hdr10+"))
+                {
+                    return HdrFormat.Hdr10Plus;
+                }
+
+                if (mediaInfo.VideoHdrFormatCompatibility.ContainsIgnoreCase("hdr10"))
+                {
+                    return HdrFormat.Hdr10;
+                }
+            }
+
+            return VideoFileInfoReader.GetHdrFormat(mediaInfo.VideoBitDepth, mediaInfo.VideoColourPrimaries, mediaInfo.VideoTransferCharacteristics, new ());
         }
 
         private void MigrateAudioCodec(MediaInfo198 mediaInfo, MediaInfo199 m)
@@ -754,6 +790,21 @@ namespace NzbDrone.Core.Datastore.Migration
             return primary.Replace("BT.", "bt");
         }
 
+        private string MigrateTransferCharacteristics(string transferCharacteristics)
+        {
+            if (transferCharacteristics == "PQ")
+            {
+                return "smpte2084";
+            }
+
+            if (transferCharacteristics == "HLG")
+            {
+                return "arib-std-b67";
+            }
+
+            return "bt709";
+        }
+
         private static string GetSceneNameMatch(string sceneName, params string[] tokens)
         {
             sceneName = sceneName.IsNotNullOrWhiteSpace() ? Parser.Parser.RemoveFileExtension(sceneName) : string.Empty;
@@ -827,6 +878,7 @@ namespace NzbDrone.Core.Datastore.Migration
             public int VideoMultiViewCount { get; set; }
             public string VideoColourPrimaries { get; set; }
             public string VideoTransferCharacteristics { get; set; }
+            public HdrFormat VideoHdrFormat { get; set; }
             public int Height { get; set; }
             public int Width { get; set; }
             public string AudioFormat { get; set; }

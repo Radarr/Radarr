@@ -24,6 +24,11 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 8;
         public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 8;
 
+        private static readonly string[] ValidHdrColourPrimaries = { "bt2020" };
+        private static readonly string[] HlgTransferFunctions = { "bt2020-10", "arib-std-b67" };
+        private static readonly string[] PqTransferFunctions = { "smpte2084" };
+        private static readonly string[] ValidHdrTransferFunctions = HlgTransferFunctions.Concat(PqTransferFunctions).ToArray();
+
         public VideoFileInfoReader(IDiskProvider diskProvider, Logger logger)
         {
             _diskProvider = diskProvider;
@@ -54,13 +59,14 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             try
             {
                 _logger.Debug("Getting media info from {0}", filename);
-                var ffprobeOutput = FFProbe.GetJson(filename, ffOptions: new FFOptions { ExtraArguments = "-probesize 50000000" });
-                var analysis = FFProbe.AnalyseJson(ffprobeOutput);
+                var ffprobeOutput = FFProbe.GetStreamJson(filename, ffOptions: new FFOptions { ExtraArguments = "-probesize 50000000" });
+
+                var analysis = FFProbe.AnalyseStreamJson(ffprobeOutput);
 
                 if (analysis.PrimaryAudioStream.ChannelLayout.IsNullOrWhiteSpace())
                 {
-                    ffprobeOutput = FFProbe.GetJson(filename, ffOptions: new FFOptions { ExtraArguments = "-probesize 150000000 -analyzeduration 150000000" });
-                    analysis = FFProbe.AnalyseJson(ffprobeOutput);
+                    ffprobeOutput = FFProbe.GetStreamJson(filename, ffOptions: new FFOptions { ExtraArguments = "-probesize 150000000 -analyzeduration 150000000" });
+                    analysis = FFProbe.AnalyseStreamJson(ffprobeOutput);
                 }
 
                 var mediaInfoModel = new MediaInfoModel
@@ -93,9 +99,26 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                             .Where(l => l.IsNotNullOrWhiteSpace())
                             .ToList(),
                     ScanType = "Progressive",
-                    RawData = ffprobeOutput,
+                    RawStreamData = ffprobeOutput,
                     SchemaRevision = CURRENT_MEDIA_INFO_SCHEMA_REVISION
                 };
+
+                FFProbeFrames frames = null;
+
+                // if it looks like PQ10 or similar HDR, do a frame analysis to figure out which type it is
+                if (PqTransferFunctions.Contains(mediaInfoModel.VideoTransferCharacteristics))
+                {
+                    var frameOutput = FFProbe.GetFrameJson(filename, ffOptions: new () { ExtraArguments = "-read_intervals \"%+#1\" -select_streams v" });
+                    mediaInfoModel.RawFrameData = frameOutput;
+
+                    frames = FFProbe.AnalyseFrameJson(frameOutput);
+                }
+
+                var streamSideData = analysis.PrimaryVideoStream?.SideDataList ?? new ();
+                var framesSideData = frames?.Frames[0]?.SideDataList ?? new ();
+
+                var sideData = streamSideData.Concat(framesSideData).ToList();
+                mediaInfoModel.VideoHdrFormat = GetHdrFormat(mediaInfoModel.VideoBitDepth, mediaInfoModel.VideoColourPrimaries, mediaInfoModel.VideoTransferCharacteristics, sideData);
 
                 return mediaInfoModel;
             }
@@ -132,6 +155,52 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         private FFProbePixelFormat GetPixelFormat(string format)
         {
             return _pixelFormats.Find(x => x.Name == format);
+        }
+
+        public static HdrFormat GetHdrFormat(int bitDepth, string colorPrimaries, string transferFunction, List<SideData> sideData)
+        {
+            if (bitDepth < 10)
+            {
+                return HdrFormat.None;
+            }
+
+            if (TryFindSideData(sideData, nameof(DoviConfigurationRecordSideData)))
+            {
+                return HdrFormat.DolbyVision;
+            }
+
+            if (!ValidHdrColourPrimaries.Contains(colorPrimaries) || !ValidHdrTransferFunctions.Contains(transferFunction))
+            {
+                return HdrFormat.None;
+            }
+
+            if (HlgTransferFunctions.Contains(transferFunction))
+            {
+                return HdrFormat.Hlg10;
+            }
+
+            if (PqTransferFunctions.Contains(transferFunction))
+            {
+                if (TryFindSideData(sideData, nameof(HdrDynamicMetadataSpmte2094)))
+                {
+                    return HdrFormat.Hdr10Plus;
+                }
+
+                if (TryFindSideData(sideData, nameof(MasteringDisplayMetadata)) ||
+                    TryFindSideData(sideData, nameof(ContentLightLevelMetadata)))
+                {
+                    return HdrFormat.Hdr10;
+                }
+
+                return HdrFormat.Pq10;
+            }
+
+            return HdrFormat.None;
+        }
+
+        private static bool TryFindSideData(List<SideData> list, string typeName)
+        {
+            return list?.Find(x => x.GetType().Name == typeName) != null;
         }
     }
 }

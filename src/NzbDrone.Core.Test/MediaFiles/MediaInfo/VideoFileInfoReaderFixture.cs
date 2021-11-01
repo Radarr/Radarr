@@ -1,8 +1,13 @@
+using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using FFMpegCore;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common.Categories;
@@ -95,6 +100,29 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.Width.Should().Be(480);
             info.VideoColourPrimaries.Should().Be("smpte170m");
             info.VideoTransferCharacteristics.Should().Be("bt709");
+        }
+
+        [TestCase(8, "", "", "", HdrFormat.None)]
+        [TestCase(10, "", "", "", HdrFormat.None)]
+        [TestCase(10, "bt709", "bt709", "", HdrFormat.None)]
+        [TestCase(8, "bt2020", "smpte2084", "", HdrFormat.None)]
+        [TestCase(10, "bt2020", "bt2020-10", "", HdrFormat.Hlg10)]
+        [TestCase(10, "bt2020", "arib-std-b67", "", HdrFormat.Hlg10)]
+        [TestCase(10, "bt2020", "smpte2084", "", HdrFormat.Pq10)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.SideData", HdrFormat.Pq10)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.MasteringDisplayMetadata", HdrFormat.Hdr10)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.ContentLightLevelMetadata", HdrFormat.Hdr10)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.HdrDynamicMetadataSpmte2094", HdrFormat.Hdr10Plus)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.DoviConfigurationRecordSideData", HdrFormat.DolbyVision)]
+        public void should_detect_hdr_correctly(int bitDepth, string colourPrimaries, string transferFunction, string sideDataTypes, HdrFormat expected)
+        {
+            var assembly = Assembly.GetAssembly(typeof(FFProbe));
+            var types = sideDataTypes.Split(",").Select(x => x.Trim()).ToList();
+            var sideData = types.Where(x => x.IsNotNullOrWhiteSpace()).Select(x => assembly.CreateInstance(x)).Cast<SideData>().ToList();
+
+            var result = VideoFileInfoReader.GetHdrFormat(bitDepth, colourPrimaries, transferFunction, sideData);
+
+            result.Should().Be(expected);
         }
     }
 }

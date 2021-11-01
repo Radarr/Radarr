@@ -8,20 +8,15 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
     public class MediaInfoModel : IEmbeddedDocument
     {
-        private IMediaAnalysis _analysis;
-
-        public string RawData { get; set; }
+        public string RawStreamData { get; set; }
+        public string RawFrameData { get; set; }
         public int SchemaRevision { get; set; }
 
         [JsonIgnore]
-        public IMediaAnalysis Analysis
-        {
-            get
-            {
-                _analysis = FFProbe.Analyse(RawData);
-                return _analysis;
-            }
-        }
+        public IMediaAnalysis Analysis => FFProbe.Analyse(RawStreamData);
+
+        [JsonIgnore]
+        public IMediaAnalysis Frames => FFProbe.Analyse(RawFrameData);
 
         public string ContainerFormat { get; set; }
         public string VideoFormat { get; set; }
@@ -39,7 +34,10 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public string VideoColourPrimaries { get; set; }
 
         public string VideoTransferCharacteristics { get; set; }
+
         public DoviConfigurationRecordSideData DoviConfigurationRecord { get; set; }
+
+        public HdrFormat VideoHdrFormat { get; set; }
 
         public int Height { get; set; }
 

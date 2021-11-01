@@ -670,19 +670,15 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be(expected);
         }
 
-        [TestCase(8, "bt601 NTSC", "BT.709", "South.Park")]
-        [TestCase(10, "bt2020", "PQ", "South.Park.HDR")]
-        [TestCase(10, "bt2020", "HLG", "South.Park.HDR")]
-        [TestCase(0, null, null, "South.Park")]
-        public void should_include_hdr_for_mediainfo_videodynamicrange_with_valid_properties(int bitDepth,
-            string colourPrimaries,
-            string transferCharacteristics,
-            string expectedName)
+        [TestCase(HdrFormat.None, "South.Park")]
+        [TestCase(HdrFormat.Hlg10, "South.Park.HDR")]
+        [TestCase(HdrFormat.Hdr10, "South.Park.HDR")]
+        public void should_include_hdr_for_mediainfo_videodynamicrange_with_valid_properties(HdrFormat hdrFormat, string expectedName)
         {
             _namingConfig.StandardMovieFormat =
                 "{Movie.Title}.{MediaInfo VideoDynamicRange}";
 
-            GivenMediaInfoModel(videoBitDepth: bitDepth, videoColourPrimaries: colourPrimaries, videoTransferCharacteristics: transferCharacteristics);
+            GivenMediaInfoModel(hdrFormat: hdrFormat);
 
             Subject.BuildFileName(_movie, _movieFile)
                 .Should().Be(expectedName);
@@ -758,8 +754,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             string audioCodec = "dts",
             int audioChannels = 6,
             int videoBitDepth = 8,
-            string videoColourPrimaries = "",
-            string videoTransferCharacteristics = "",
+            HdrFormat hdrFormat = HdrFormat.None,
             string audioLanguages = "eng",
             string subtitles = "eng/spa/ita",
             int schemaRevision = 5)
@@ -772,8 +767,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                 AudioLanguages = audioLanguages.Split("/").ToList(),
                 Subtitles = subtitles.Split("/").ToList(),
                 VideoBitDepth = videoBitDepth,
-                VideoColourPrimaries = videoColourPrimaries,
-                VideoTransferCharacteristics = videoTransferCharacteristics,
+                VideoHdrFormat = hdrFormat,
                 SchemaRevision = schemaRevision
             };
         }
