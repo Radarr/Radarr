@@ -287,6 +287,11 @@ namespace NzbDrone.Common.Extensions
             return appFolderInfo.AppDataFolder;
         }
 
+        public static string GetDataProtectionPath(this IAppFolderInfo appFolderInfo)
+        {
+            return Path.Combine(GetAppDataPath(appFolderInfo), "asp");
+        }
+
         public static string GetLogFolder(this IAppFolderInfo appFolderInfo)
         {
             return Path.Combine(GetAppDataPath(appFolderInfo), "logs");
