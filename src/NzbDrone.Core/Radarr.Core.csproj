@@ -9,8 +9,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-    <PackageReference Include="FluentMigrator.Runner" Version="4.0.0-alpha.268" />
-    <PackageReference Include="FluentMigrator.Runner.SQLite" Version="4.0.0-alpha.268" />
+    <PackageReference Include="FluentMigrator.Runner" Version="3.3.1" />
+    <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.3.1" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,8 +20,9 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                                        ILogger<NzbDroneSQLiteProcessor> logger,
                                        IOptionsSnapshot<ProcessorOptions> options,
                                        IConnectionStringAccessor connectionStringAccessor,
-                                       IServiceProvider serviceProvider)
-        : base(factory, generator, logger, options, connectionStringAccessor, serviceProvider)
+                                       IServiceProvider serviceProvider,
+                                       SQLiteQuoter quoter)
+        : base(factory, generator, logger, options, connectionStringAccessor, serviceProvider, quoter)
         {
         }
 
