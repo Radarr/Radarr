@@ -58,14 +58,16 @@ namespace NzbDrone.Core.Datastore.Migration
                     continue;
                 }
 
-                // parse and migrate
-                var mediaInfo = JsonSerializer.Deserialize<MediaInfo198>(row.MediaInfo, _serializerSettings);
-
+                // basic parse to check schema revision
                 // in case user already tested ffmpeg branch
-                if (mediaInfo.SchemaRevision >= 8)
+                var mediaInfoVersion = JsonSerializer.Deserialize<MediaInfoBase>(row.MediaInfo, _serializerSettings);
+                if (mediaInfoVersion.SchemaRevision >= 8)
                 {
                     continue;
                 }
+
+                // parse and migrate
+                var mediaInfo = JsonSerializer.Deserialize<MediaInfo198>(row.MediaInfo, _serializerSettings);
 
                 var ffprobe = MigrateMediaInfo(mediaInfo, row.SceneName);
 
@@ -827,7 +829,12 @@ namespace NzbDrone.Core.Datastore.Migration
             public string SceneName { get; set; }
         }
 
-        public class MediaInfo198
+        public class MediaInfoBase
+        {
+            public int SchemaRevision { get; set; }
+        }
+
+        public class MediaInfo198 : MediaInfoBase
         {
             public string ContainerFormat { get; set; }
 
@@ -863,12 +870,10 @@ namespace NzbDrone.Core.Datastore.Migration
             public string AudioLanguages { get; set; }
             public string Subtitles { get; set; }
             public string ScanType { get; set; }
-            public int SchemaRevision { get; set; }
         }
 
-        public class MediaInfo199
+        public class MediaInfo199 : MediaInfoBase
         {
-            public int SchemaRevision { get; set; }
             public string ContainerFormat { get; set; }
             public string VideoFormat { get; set; }
             public string VideoCodecID { get; set; }
