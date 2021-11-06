@@ -94,9 +94,8 @@ namespace Radarr.Api.V3.History
             return _historyService.GetByMovieId(movieId, eventType).Select(h => MapToResource(h, includeMovie)).ToList();
         }
 
-        // v4 TODO: Getting the ID from the form is atypical, consider removing.
-        [HttpPost("failed")]
-        public object MarkAsFailed([FromBody] int id)
+        [HttpPost("failed/{id}")]
+        public object MarkAsFailed([FromRoute] int id)
         {
             _failedDownloadService.MarkAsFailed(id);
             return new object();
