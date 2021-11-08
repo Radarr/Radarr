@@ -147,6 +147,11 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Hebrew);
             }
 
+            if (lowerTitle.Contains("persian"))
+            {
+                languages.Add(Language.Persian);
+            }
+
             // Case sensitive
             var caseSensitiveMatch = CaseSensitiveLanguageRegex.Match(title);
 
@@ -237,6 +242,11 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["chinese"].Success)
                 {
                     languages.Add(Language.Chinese);
+                }
+
+                if (match.Groups["persian"].Success)
+                {
+                    languages.Add(Language.Persian);
                 }
             }
 
