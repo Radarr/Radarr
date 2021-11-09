@@ -53,7 +53,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             if (!runTime.HasValue)
             {
-                _logger.Error("Failed to get runtime from the file, make sure mediainfo is available");
+                _logger.Error("Failed to get runtime from the file, make sure ffprobe is available");
                 return DetectSampleResult.Indeterminate;
             }
 
