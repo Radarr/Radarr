@@ -30,13 +30,13 @@ namespace NzbDrone.Core.Organizer
                 VideoFormat = "AVC",
                 VideoBitDepth = 10,
                 VideoMultiViewCount = 2,
-                VideoColourPrimaries = "BT.2020",
+                VideoColourPrimaries = "bt2020",
                 VideoTransferCharacteristics = "HLG",
                 AudioFormat = "DTS",
-                AudioChannelsContainer = 6,
-                AudioChannelPositions = "3/2/0.1",
-                AudioLanguages = "German",
-                Subtitles = "English/German"
+                AudioChannels = 6,
+                AudioChannelPositions = "5.1",
+                AudioLanguages = new List<string> { "ger" },
+                Subtitles = new List<string> { "eng", "ger" }
             };
 
             _movieFile = new MovieFile

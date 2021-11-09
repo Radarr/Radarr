@@ -19,6 +19,7 @@ using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 {
+    [Platform(Exclude = "Win")]
     [TestFixture]
 
     public class FileNameBuilderFixture : CoreTest<FileNameBuilder>
@@ -368,35 +369,44 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _movieFile.MediaInfo = new MediaInfoModel()
             {
-                VideoFormat = "AVC",
-                AudioFormat = "DTS",
-                AudioLanguages = "English/Spanish",
-                Subtitles = "English/Spanish/Italian"
+                VideoFormat = "h264",
+                AudioFormat = "dts",
+                AudioLanguages = new List<string> { "eng", "spa" },
+                Subtitles = new List<string> { "eng", "spa", "ita" }
             };
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("South.Park.H264.DTS[EN+ES].[EN+ES+IT]");
         }
 
-        [TestCase("Norwegian Bokmal", "NB")]
-        [TestCase("Swedis", "SV")]
-        [TestCase("Chinese", "ZH")]
+        [TestCase("nob", "NB")]
+        [TestCase("swe", "SV")]
+        [TestCase("zho", "ZH")]
+        [TestCase("chi", "ZH")]
+        [TestCase("fre", "FR")]
+        [TestCase("rum", "RO")]
+        [TestCase("per", "FA")]
+        [TestCase("ger", "DE")]
+        [TestCase("cze", "CS")]
+        [TestCase("ice", "IS")]
+        [TestCase("dut", "NL")]
+        [TestCase("nor", "NO")]
         public void should_format_languagecodes_properly(string language, string code)
         {
             _namingConfig.StandardMovieFormat = "{Movie.Title}.{MEDIAINFO.FULL}";
 
             _movieFile.MediaInfo = new MediaInfoModel()
             {
-                VideoCodec = "AVC",
-                AudioFormat = "DTS",
-                AudioChannelsContainer = 6,
-                AudioLanguages = "English",
-                Subtitles = language,
+                VideoFormat = "h264",
+                AudioFormat = "dts",
+                AudioChannels = 6,
+                AudioLanguages = new List<string> { "eng" },
+                Subtitles = new List<string> { language },
                 SchemaRevision = 3
             };
 
             Subject.BuildFileName(_movie, _movieFile)
-                   .Should().Be($"South.Park.X264.DTS.[{code}]");
+                   .Should().Be($"South.Park.H264.DTS.[{code}]");
         }
 
         [Test]
@@ -406,16 +416,17 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _movieFile.MediaInfo = new MediaInfoModel()
             {
-                VideoFormat = "AVC",
-                AudioFormat = "DTS",
-                AudioLanguages = "English",
-                Subtitles = "English/Spanish/Italian"
+                VideoFormat = "h264",
+                AudioFormat = "dts",
+                AudioLanguages = new List<string> { "eng" },
+                Subtitles = new List<string> { "eng", "spa", "ita" }
             };
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("South.Park.H264.DTS.[EN+ES+IT]");
         }
 
+        [Ignore("not currently supported")]
         [Test]
         public void should_format_mediainfo_3d_properly()
         {
@@ -423,11 +434,11 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 
             _movieFile.MediaInfo = new MediaInfoModel()
             {
-                VideoFormat = "AVC",
+                VideoFormat = "h264",
                 VideoMultiViewCount = 2,
-                AudioFormat = "DTS",
-                AudioLanguages = "English",
-                Subtitles = "English/Spanish/Italian"
+                AudioFormat = "dts",
+                AudioLanguages = new List<string> { "eng" },
+                Subtitles = new List<string> { "eng", "spa", "ita" }
             };
 
             Subject.BuildFileName(_movie, _movieFile)
@@ -631,8 +642,8 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be(releaseGroup);
         }
 
-        [TestCase("English", "")]
-        [TestCase("English/German", "[EN+DE]")]
+        [TestCase("eng", "")]
+        [TestCase("eng/deu", "[EN+DE]")]
         public void should_format_audio_languages(string audioLanguages, string expected)
         {
             _movieFile.ReleaseGroup = null;
@@ -645,8 +656,8 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be(expected);
         }
 
-        [TestCase("English", "[EN]")]
-        [TestCase("English/German", "[EN+DE]")]
+        [TestCase("eng", "[EN]")]
+        [TestCase("eng/deu", "[EN+DE]")]
         public void should_format_audio_languages_all(string audioLanguages, string expected)
         {
             _movieFile.ReleaseGroup = null;
@@ -659,19 +670,15 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be(expected);
         }
 
-        [TestCase(8, "BT.601 NTSC", "BT.709", "South.Park")]
-        [TestCase(10, "BT.2020", "PQ", "South.Park.HDR")]
-        [TestCase(10, "BT.2020", "HLG", "South.Park.HDR")]
-        [TestCase(0, null, null, "South.Park")]
-        public void should_include_hdr_for_mediainfo_videodynamicrange_with_valid_properties(int bitDepth,
-            string colourPrimaries,
-            string transferCharacteristics,
-            string expectedName)
+        [TestCase(HdrFormat.None, "South.Park")]
+        [TestCase(HdrFormat.Hlg10, "South.Park.HDR")]
+        [TestCase(HdrFormat.Hdr10, "South.Park.HDR")]
+        public void should_include_hdr_for_mediainfo_videodynamicrange_with_valid_properties(HdrFormat hdrFormat, string expectedName)
         {
             _namingConfig.StandardMovieFormat =
                 "{Movie.Title}.{MediaInfo VideoDynamicRange}";
 
-            GivenMediaInfoModel(videoBitDepth: bitDepth, videoColourPrimaries: colourPrimaries, videoTransferCharacteristics: transferCharacteristics);
+            GivenMediaInfoModel(hdrFormat: hdrFormat);
 
             Subject.BuildFileName(_movie, _movieFile)
                 .Should().Be(expectedName);
@@ -743,26 +750,24 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             Mocker.GetMock<IUpdateMediaInfo>().Verify(v => v.Update(_movieFile, _movie), Times.Never());
         }
 
-        private void GivenMediaInfoModel(string videoCodec = "AVC",
-            string audioCodec = "DTS",
+        private void GivenMediaInfoModel(string videoCodec = "h264",
+            string audioCodec = "dts",
             int audioChannels = 6,
             int videoBitDepth = 8,
-            string videoColourPrimaries = "",
-            string videoTransferCharacteristics = "",
-            string audioLanguages = "English",
-            string subtitles = "English/Spanish/Italian",
+            HdrFormat hdrFormat = HdrFormat.None,
+            string audioLanguages = "eng",
+            string subtitles = "eng/spa/ita",
             int schemaRevision = 5)
         {
             _movieFile.MediaInfo = new MediaInfoModel
             {
-                VideoCodec = videoCodec,
+                VideoFormat = videoCodec,
                 AudioFormat = audioCodec,
-                AudioChannelsContainer = audioChannels,
-                AudioLanguages = audioLanguages,
-                Subtitles = subtitles,
+                AudioChannels = audioChannels,
+                AudioLanguages = audioLanguages.Split("/").ToList(),
+                Subtitles = subtitles.Split("/").ToList(),
                 VideoBitDepth = videoBitDepth,
-                VideoColourPrimaries = videoColourPrimaries,
-                VideoTransferCharacteristics = videoTransferCharacteristics,
+                VideoHdrFormat = hdrFormat,
                 SchemaRevision = schemaRevision
             };
         }

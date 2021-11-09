@@ -187,11 +187,11 @@ namespace NzbDrone.Core.Notifications.Discord
                         break;
                     case DiscordImportFieldType.Languages:
                         discordField.Name = "Languages";
-                        discordField.Value = message.MovieFile.MediaInfo.AudioLanguages;
+                        discordField.Value = message.MovieFile.MediaInfo.AudioLanguages.ConcatToString("/");
                         break;
                     case DiscordImportFieldType.Subtitles:
                         discordField.Name = "Subtitles";
-                        discordField.Value = message.MovieFile.MediaInfo.Subtitles;
+                        discordField.Value = message.MovieFile.MediaInfo.Subtitles.ConcatToString("/");
                         break;
                     case DiscordImportFieldType.Release:
                         discordField.Name = "Release";
