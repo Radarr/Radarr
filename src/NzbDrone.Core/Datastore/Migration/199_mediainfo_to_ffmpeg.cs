@@ -789,7 +789,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private string MigratePrimaries(string primary)
         {
-            return primary.Replace("BT.", "bt");
+            return primary.IsNotNullOrWhiteSpace() ? primary.Replace("BT.", "bt") : primary;
         }
 
         private string MigrateTransferCharacteristics(string transferCharacteristics)
