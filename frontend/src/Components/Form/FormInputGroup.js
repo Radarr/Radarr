@@ -113,6 +113,8 @@ function FormInputGroup(props) {
     helpTexts,
     helpTextWarning,
     helpLink,
+    inlineLink,
+    tooltip,
     pending,
     errors,
     warnings,
@@ -182,6 +184,9 @@ function FormInputGroup(props) {
         !checkInput && helpText &&
           <FormInputHelpText
             text={helpText}
+            link={inlineLink}
+            tooltip={tooltip}
+            isWarning={!!inlineLink}
           />
       }
 
@@ -263,6 +268,8 @@ FormInputGroup.propTypes = {
   helpTexts: PropTypes.arrayOf(PropTypes.string),
   helpTextWarning: PropTypes.string,
   helpLink: PropTypes.string,
+  inlineLink: PropTypes.string,
+  tooltip: PropTypes.string,
   pending: PropTypes.bool,
   errors: PropTypes.arrayOf(PropTypes.object),
   warnings: PropTypes.arrayOf(PropTypes.object)

@@ -48,6 +48,21 @@ export const movieRuntimeFormatOptions = [
   { key: 'minutes', value: '75 mins' }
 ];
 
+export const themeOptions = [
+  { key: 'default', value: 'Default' },
+  { key: 'aquamarine', value: 'Aquamarine' },
+  { key: 'dark', value: 'Dark' },
+  { key: 'dracula', value: 'Dracula' },
+  { key: 'hotline', value: 'Hotline' },
+  { key: 'hotpink', value: 'Hotpink' },
+  { key: 'nord', value: 'Nord' },
+  { key: 'organizr', value: 'Organizr' },
+  { key: 'overseerr', value: 'Overseerr' },
+  { key: 'plex', value: 'Plex' },
+  { key: 'radarr-darker', value: 'Radarr Darker' },
+  { key: 'space-gray', value: 'Space Gray' }
+];
+
 class UISettings extends Component {
 
   //
@@ -184,6 +199,21 @@ class UISettings extends Component {
                 </FieldSet>
 
                 <FieldSet legend={translate('Style')}>
+                  <FormGroup>
+                    <FormLabel>{translate('Theme')}</FormLabel>
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="theme"
+                      helpText={translate('ThemeHelpText', ['Theme.Park'])}
+                      inlineLink="https://github.com/GilbN/theme.park"
+                      tooltip="Theme.Park Github"
+                      helpTextWarning={translate('ThemeHelpTextWarning')}
+                      values={themeOptions}
+                      onChange={onInputChange}
+                      {...settings.theme}
+                    />
+                  </FormGroup>
+
                   <FormGroup>
                     <FormLabel>{translate('SettingsEnableColorImpairedMode')}</FormLabel>
                     <FormInputGroup

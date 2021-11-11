@@ -1,0 +1,30 @@
+:root {
+  --main-bg-color: radial-gradient(ellipse at center, #47918a 0%, #0b3161 100%) center center/cover no-repeat fixed;
+  
+  --modal-bg-color: radial-gradient(ellipse at top, #47918a 0%, #0b3161 100%) center center/cover no-repeat fixed;
+  --modal-header-color: radial-gradient(ellipse at top, #47918a 0%, #0b3161 100%) center center/cover no-repeat fixed;
+  --modal-footer-color: radial-gradient(ellipse at top, #47918a 0%, #0b3161 100%) center center/cover no-repeat fixed;
+
+  --drop-down-menu-bg: radial-gradient(ellipse at top, #47918a 0%, #0b3161 100%) center center/cover no-repeat fixed;
+
+  --button-color: #009688;
+  --button-color-hover: #12afa0;
+  --button-text: #eee;
+  --button-text-hover: #FFF;
+
+  --accent-color:  18, 175, 160;
+  --accent-color-hover: rgb(var(--accent-color),.8);
+  --link-color: #0ed2bf;
+  --link-color-hover: #36e7d6;
+  --label-text-color: #fff;
+
+  --text:#ddd;
+  --text-hover: #fff;
+  --text-muted: #999;
+
+  /*Specials*/
+  --arr-queue-color: #009688; /* Servarr apps + Bazarr*/
+  --plex-poster-unwatched: rgb(21, 213, 194);
+  --petio-spinner: invert(39%) sepia(98%) saturate(527%) hue-rotate(129deg) brightness(94%) contrast(101%); /* Made with https://codepen.io/jsm91/embed/ZEEawyZ */
+  --gitea-color-primary-dark-4: 18, 175, 160;
+}

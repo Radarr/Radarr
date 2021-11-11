@@ -1,0 +1,28 @@
+:root {
+  --main-bg-color: url("Resources/blur-noise.png") repeat scroll 0% 0%, radial-gradient(circle at 0% 100%, rgba(54, 66, 84, 0.55) 0%, rgba(54, 66, 84, 0.043) 70%, rgba(54, 66, 84, 0) 80%), radial-gradient(circle at 100% 100%, rgba(113, 135, 153, 0.55) 0%, rgba(113, 135, 153, 0.043) 70%, rgba(113, 135, 153, 0) 80%), radial-gradient(circle at 100% 0%, rgba(54, 66, 84, 0.55) 0%, rgba(54, 66, 84, 0.043) 70%, rgba(54, 66, 84, 0) 80%), radial-gradient(circle at 0% 0%, rgba(91, 114, 135, 0.55) 0%, rgba(91, 114, 135, 0.043) 70%, rgba(91, 114, 135, 0) 80%), rgb(0, 0, 0) center center/cover no-repeat fixed;
+
+  --modal-bg-color: #1f2326;
+  --modal-header-color: #1f2326;
+  --modal-footer-color: #323232;
+
+  --drop-down-menu-bg: #191a1c;
+
+  --button-color: #cc7b19;
+  --button-color-hover: #e59029;
+  --button-text: #eee;
+  --button-text-hover: #fff;
+
+  --accent-color: 229, 160, 13;
+  --accent-color-hover: #ffc107;
+  --link-color: #e5a00d;
+  --link-color-hover: #fff;
+  --label-text-color: #fff;
+
+  --text:#ddd;
+  --text-hover: #fff;
+  --text-muted: #999;
+
+  --arr-queue-color: #27c24c;
+  --petio-spinner: invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%);
+  --gitea-color-primary-dark-4: 255, 193, 7;
+}

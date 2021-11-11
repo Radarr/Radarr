@@ -21,27 +21,29 @@ namespace Radarr.Api.V3.Config
         public bool EnableColorImpairedMode { get; set; }
         public int MovieInfoLanguage { get; set; }
         public int UILanguage { get; set; }
+        public string Theme { get; set; }
     }
 
     public static class UiConfigResourceMapper
     {
-        public static UiConfigResource ToResource(IConfigService model)
+        public static UiConfigResource ToResource(this IConfigFileProvider model, IConfigService configService)
         {
             return new UiConfigResource
             {
-                FirstDayOfWeek = model.FirstDayOfWeek,
-                CalendarWeekColumnHeader = model.CalendarWeekColumnHeader,
+                FirstDayOfWeek = configService.FirstDayOfWeek,
+                CalendarWeekColumnHeader = configService.CalendarWeekColumnHeader,
 
-                MovieRuntimeFormat = model.MovieRuntimeFormat,
+                MovieRuntimeFormat = configService.MovieRuntimeFormat,
 
-                ShortDateFormat = model.ShortDateFormat,
-                LongDateFormat = model.LongDateFormat,
-                TimeFormat = model.TimeFormat,
-                ShowRelativeDates = model.ShowRelativeDates,
+                ShortDateFormat = configService.ShortDateFormat,
+                LongDateFormat = configService.LongDateFormat,
+                TimeFormat = configService.TimeFormat,
+                ShowRelativeDates = configService.ShowRelativeDates,
 
-                EnableColorImpairedMode = model.EnableColorImpairedMode,
-                MovieInfoLanguage = model.MovieInfoLanguage,
-                UILanguage = model.UILanguage
+                EnableColorImpairedMode = configService.EnableColorImpairedMode,
+                MovieInfoLanguage = configService.MovieInfoLanguage,
+                UILanguage = configService.UILanguage,
+                Theme = model.Theme
             };
         }
     }

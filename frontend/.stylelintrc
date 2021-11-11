@@ -4,6 +4,7 @@
 ],
 "ignoreFiles": [
   "frontend/src/Styles/scaffolding.css",
+  "**/Theme.Park/**/*.css",
   "**/*.js"
 ],
 "rules": {

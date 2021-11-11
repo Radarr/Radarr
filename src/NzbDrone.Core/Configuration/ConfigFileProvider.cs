@@ -43,6 +43,7 @@ namespace NzbDrone.Core.Configuration
         string SslCertPassword { get; }
         string UrlBase { get; }
         string UiFolder { get; }
+        string Theme { get; }
         bool UpdateAutomatically { get; }
         UpdateMechanism UpdateMechanism { get; }
         string UpdateScriptPath { get; }
@@ -139,6 +140,8 @@ namespace NzbDrone.Core.Configuration
         public int Port => GetValueInt("Port", 7878);
 
         public int SslPort => GetValueInt("SslPort", 9898);
+
+        public string Theme => GetValue("Theme", "default");
 
         public bool EnableSsl => GetValueBoolean("EnableSsl", false);
 

@@ -46,6 +46,7 @@ namespace Radarr.Http.Frontend
             builder.AppendLine("window.Radarr = {");
             builder.AppendLine($"  apiRoot: '{_urlBase}/api/v3',");
             builder.AppendLine($"  apiKey: '{_apiKey}',");
+            builder.AppendLine($"  theme: '{_configFileProvider.Theme}',");
             builder.AppendLine($"  release: '{BuildInfo.Release}',");
             builder.AppendLine($"  version: '{BuildInfo.Version.ToString()}',");
             builder.AppendLine($"  branch: '{_configFileProvider.Branch.ToLower()}',");

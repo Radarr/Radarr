@@ -1,0 +1,30 @@
+:root {
+  --main-bg-color: radial-gradient(circle, #3a3a3a, #2d2d2d, #202020, #141414, #000000) center center/cover no-repeat fixed;
+  
+  --modal-bg-color: radial-gradient(circle , #3a3a3a, #2d2d2d, #202020, #141414, #000000) center center/cover no-repeat fixed;
+  --modal-header-color: radial-gradient(circle , #3a3a3a, #2d2d2d, #202020, #141414, #000000) center center/cover no-repeat fixed;
+  --modal-footer-color: radial-gradient(circle , #3a3a3a, #2d2d2d, #202020, #141414, #000000) center center/cover no-repeat fixed;
+
+  --drop-down-menu-bg: #2d2d2d;
+
+  --button-color: #7a7a7a;
+  --button-color-hover: #9b9b9b;
+  --button-text: #eee;
+  --button-text-hover: #FFF;
+
+  --accent-color: 170, 170, 170;
+  --accent-color-hover: rgba(255, 255, 255, 0.45);
+  --link-color: #7a7a7a;
+  --link-color-hover: #fff;
+  --label-text-color: black;
+    
+  --text:#ddd;
+  --text-hover: #fff;
+  --text-muted: #999;
+
+  /*Specials*/
+  --arr-queue-color: #6b5; /* Servarr apps + Bazarr*/
+  --plex-poster-unwatched: #e5a00d;
+  --petio-spinner: invert(35%) sepia(12%) saturate(4%) hue-rotate(2deg) brightness(104%) contrast(86%);/* Made with https://codepen.io/jsm91/embed/ZEEawyZ */
+  --gitea-color-primary-dark-4: 255, 255, 255;
+}

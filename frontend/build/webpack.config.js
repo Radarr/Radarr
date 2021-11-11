@@ -124,6 +124,20 @@ module.exports = (env) => {
               {
                 source: 'frontend/src/Content/robots.txt',
                 destination: path.join(distFolder, 'Content/robots.txt')
+              },
+
+              // Theme.Park
+              {
+                source: 'frontend/src/Content/Theme.Park/*',
+                destination: path.join(distFolder, 'Content/Theme.Park')
+              },
+              {
+                source: 'frontend/src/Content/Theme.Park/Themes/*',
+                destination: path.join(distFolder, 'Content/Theme.Park/Themes')
+              },
+              {
+                source: 'frontend/src/Content/Theme.Park/Resources/*',
+                destination: path.join(distFolder, 'Content/Theme.Park/Resources')
               }
             ]
           }
@@ -240,6 +254,19 @@ module.exports = (env) => {
               options: {
                 emitFile: false,
                 name: 'Content/Fonts/[name].[ext]'
+              }
+            }
+          ]
+        },
+
+        {
+          test: /\.(png)?$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                emitFile: false,
+                name: 'Content/Theme.Park/Resources/[name].[ext]'
               }
             }
           ]
