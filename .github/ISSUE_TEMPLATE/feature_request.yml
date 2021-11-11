@@ -1,5 +1,4 @@
 name: Feature Request
-title: "[FEAT]: "
 description: 'Suggest an idea for Radarr'
 labels: ['Type: Feature Request', 'Status: Needs Triage']
 body:
