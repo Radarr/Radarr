@@ -260,20 +260,35 @@ stages:
           includeRootFolder: false
           rootFolderOrFile: $(artifactsFolder)/win-x86/net6.0
       - task: ArchiveFiles@2
-        displayName: Create MacOS Core app
+        displayName: Create MacOS x64 Core app
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-app-core-x64.zip'
           archiveType: 'zip'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos-app/net6.0
+          rootFolderOrFile: $(artifactsFolder)/osx-x64-app/net6.0
       - task: ArchiveFiles@2
-        displayName: Create MacOS Core tar
+        displayName: Create MacOS x64 Core tar
         inputs:
           archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-core-x64.tar.gz'
           archiveType: 'tar'
           tarCompression: 'gz'
           includeRootFolder: false
-          rootFolderOrFile: $(artifactsFolder)/macos/net6.0
+          rootFolderOrFile: $(artifactsFolder)/osx-x64/net6.0
+      - task: ArchiveFiles@2
+        displayName: Create MacOS arm64 Core app
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-app-core-arm64.zip'
+          archiveType: 'zip'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/osx-arm64-app/net6.0
+      - task: ArchiveFiles@2
+        displayName: Create MacOS arm64 Core tar
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).osx-core-arm64.tar.gz'
+          archiveType: 'tar'
+          tarCompression: 'gz'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/osx-arm64/net6.0
       - task: ArchiveFiles@2
         displayName: Create Linux Core tar
         inputs:
@@ -298,6 +313,14 @@ stages:
           tarCompression: 'gz'
           includeRootFolder: false
           rootFolderOrFile: $(artifactsFolder)/linux-arm/net6.0
+      - task: ArchiveFiles@2
+        displayName: Create ARM32 Linux Musl Core tar
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).linux-musl-core-arm.tar.gz'
+          archiveType: 'tar'
+          tarCompression: 'gz'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/linux-musl-arm/net6.0
       - task: ArchiveFiles@2
         displayName: Create ARM64 Linux Core tar
         inputs:
