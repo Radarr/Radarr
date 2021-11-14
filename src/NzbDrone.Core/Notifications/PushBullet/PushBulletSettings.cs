@@ -28,10 +28,10 @@ namespace NzbDrone.Core.Notifications.PushBullet
         [FieldDefinition(0, Label = "Access Token", Privacy = PrivacyLevel.ApiKey, HelpLink = "https://www.pushbullet.com/#settings/account")]
         public string ApiKey { get; set; }
 
-        [FieldDefinition(1, Label = "Device IDs", HelpText = "List of device IDs (leave blank to send to all devices)", Type = FieldType.Device)]
+        [FieldDefinition(1, Label = "Device IDs", HelpText = "List of device IDs (leave blank to send to all devices)", Type = FieldType.Device, Placeholder = "123456789,987654321")]
         public IEnumerable<string> DeviceIds { get; set; }
 
-        [FieldDefinition(2, Label = "Channel Tags", HelpText = "List of Channel Tags to send notifications to", Type = FieldType.Tag)]
+        [FieldDefinition(2, Label = "Channel Tags", HelpText = "List of Channel Tags to send notifications to", Type = FieldType.Tag, Placeholder = "Channel1234,Channel4321")]
         public IEnumerable<string> ChannelTags { get; set; }
 
         [FieldDefinition(3, Label = "Sender ID", HelpText = "The device ID to send notifications from, use device_iden in the device's URL on pushbullet.com (leave blank to send from yourself)")]

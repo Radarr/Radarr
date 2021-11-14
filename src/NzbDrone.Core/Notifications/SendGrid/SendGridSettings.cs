@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Notifications.SendGrid
         [FieldDefinition(2, Label = "From Address")]
         public string From { get; set; }
 
-        [FieldDefinition(3, Label = "Recipient Address(es)", Type = FieldType.Tag)]
+        [FieldDefinition(3, Label = "Recipient Address(es)", Type = FieldType.Tag, Placeholder = "example@email.com,example1@email.com")]
         public IEnumerable<string> Recipients { get; set; }
 
         public NzbDroneValidationResult Validate()

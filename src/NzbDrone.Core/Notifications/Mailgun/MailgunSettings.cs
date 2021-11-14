@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
@@ -22,7 +23,7 @@ namespace NzbDrone.Core.Notifications.Mailgun
 
       public MailgunSettings()
       {
-          Recipients = new string[] { };
+          Recipients = Array.Empty<string>();
       }
 
       [FieldDefinition(0, Label = "API Key", HelpText = "The API key generated from MailGun")]
@@ -37,7 +38,7 @@ namespace NzbDrone.Core.Notifications.Mailgun
       [FieldDefinition(3, Label = "Sender Domain")]
       public string SenderDomain { get; set; }
 
-      [FieldDefinition(4, Label = "Recipient Address(es)", Type = FieldType.Tag)]
+      [FieldDefinition(4, Label = "Recipient Address(es)", Type = FieldType.Tag, Placeholder = "example@email.com,example1@email.com")]
       public IEnumerable<string> Recipients { get; set; }
 
       public NzbDroneValidationResult Validate()

@@ -32,15 +32,13 @@ namespace NzbDrone.Core.Notifications.Email
 
         public EmailSettings()
         {
-            Server = "smtp.gmail.com";
-            Port = 587;
-
+            Port = 567;
             To = Array.Empty<string>();
             CC = Array.Empty<string>();
             Bcc = Array.Empty<string>();
         }
 
-        [FieldDefinition(0, Label = "Server", HelpText = "Hostname or IP of Email server")]
+        [FieldDefinition(0, Label = "Server", HelpText = "Hostname or IP of Email server", Placeholder = "smtp.gmail.com")]
         public string Server { get; set; }
 
         [FieldDefinition(1, Label = "Port")]
@@ -55,16 +53,16 @@ namespace NzbDrone.Core.Notifications.Email
         [FieldDefinition(4, Label = "Password", Type = FieldType.Password, Privacy = PrivacyLevel.Password)]
         public string Password { get; set; }
 
-        [FieldDefinition(5, Label = "From Address")]
+        [FieldDefinition(5, Label = "From Address", Placeholder = "example@email.com")]
         public string From { get; set; }
 
-        [FieldDefinition(6, Label = "Recipient Address(es)", HelpText = "Comma separated list of email recipients")]
+        [FieldDefinition(6, Label = "Recipient Address(es)", HelpText = "Comma separated list of email recipients", Placeholder = "example@email.com,example1@email.com")]
         public IEnumerable<string> To { get; set; }
 
-        [FieldDefinition(7, Label = "CC Address(es)", HelpText = "Comma separated list of email cc recipients", Advanced = true)]
+        [FieldDefinition(7, Label = "CC Address(es)", HelpText = "Comma separated list of email cc recipients", Placeholder = "example@email.com,example1@email.com", Advanced = true)]
         public IEnumerable<string> CC { get; set; }
 
-        [FieldDefinition(8, Label = "BCC Address(es)", HelpText = "Comma separated list of email bcc recipients", Advanced = true)]
+        [FieldDefinition(8, Label = "BCC Address(es)", HelpText = "Comma separated list of email bcc recipients", Placeholder = "example@email.com,example1@email.com", Advanced = true)]
         public IEnumerable<string> Bcc { get; set; }
 
         public NzbDroneValidationResult Validate()
