@@ -29,6 +29,7 @@ namespace Radarr.Http.Authentication
                 .AddBasic(AuthenticationType.Basic.ToString())
                 .AddCookie(AuthenticationType.Forms.ToString(), options =>
                 {
+                    options.Cookie.Name = "RadarrAuth";
                     options.AccessDeniedPath = "/login?loginFailed=true";
                     options.LoginPath = "/login";
                     options.ExpireTimeSpan = TimeSpan.FromDays(7);
