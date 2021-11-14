@@ -1095,5 +1095,6 @@
     "BlocklistHelpText": "不再自动刮削这个电影",
     "BlocklistRelease": "黑名单版本",
     "RemoveFromBlocklist": "从黑名单中移除",
-    "UnableToLoadBlocklist": "无法加载黑名单"
+    "UnableToLoadBlocklist": "无法加载黑名单",
+    "Blocklisted": "黑名单"
 }

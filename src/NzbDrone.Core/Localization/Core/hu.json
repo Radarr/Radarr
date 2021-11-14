@@ -163,7 +163,6 @@
     "BranchUpdateMechanism": "A külső frissítési mechanizmus által használt ágazat",
     "BranchUpdate": "Ágazattípus a Radarr frissítéseihez",
     "Branch": "Ágazat",
-    "Blacklist": "Feketelista",
     "BindAddressHelpText": "Érvényes IP4-cím, vagy „*” minden interfészhez",
     "BindAddress": "Kapcsolási Cím",
     "BeforeUpdate": "Alkalmazásfrissítés előtt",

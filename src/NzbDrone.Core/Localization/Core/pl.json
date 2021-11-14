@@ -1074,5 +1074,6 @@
     "Blocklist": "Czarna lista",
     "BlocklistRelease": "Wydanie czarnej listy",
     "RemoveFromBlocklist": "Usuń z czarnej listy",
-    "UnableToLoadBlocklist": "Nie można załadować czarnej listy"
+    "UnableToLoadBlocklist": "Nie można załadować czarnej listy",
+    "Blocklisted": "Czarna lista"
 }

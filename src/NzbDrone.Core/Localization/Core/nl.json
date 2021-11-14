@@ -1100,5 +1100,6 @@
     "BlocklistHelpText": "Voorkom dat Radarr deze release nogmaals automatisch ophaalt",
     "BlocklistRelease": "Uitgave op Zwarte lijst zetten",
     "RemoveFromBlocklist": "Verwijder van zwarte lijst",
-    "UnableToLoadBlocklist": "Kon zwarte lijst niet laden"
+    "UnableToLoadBlocklist": "Kon zwarte lijst niet laden",
+    "Blocklisted": "Zwarte lijst"
 }

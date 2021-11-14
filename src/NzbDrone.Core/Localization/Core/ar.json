@@ -878,7 +878,6 @@
     "BranchUpdateMechanism": "يستخدم الفرع بواسطة آلية التحديث الخارجية",
     "BranchUpdate": "فرع لاستخدامه لتحديث Radarr",
     "Branch": "فرع شجرة",
-    "Blacklist": "القائمة السوداء",
     "BindAddressHelpText": "عنوان IP4 صالح أو \"*\" لجميع الواجهات",
     "BindAddress": "عنوان ملزم",
     "BeforeUpdate": "قبل التحديث",
@@ -1076,5 +1075,6 @@
     "BlocklistHelpText": "يمنع Radarr من الاستيلاء على هذا الإصدار تلقائيًا مرة أخرى",
     "BlocklistRelease": "إصدار القائمة السوداء",
     "RemoveFromBlocklist": "إزالة من القائمة السوداء",
-    "UnableToLoadBlocklist": "تعذر تحميل القائمة السوداء"
+    "UnableToLoadBlocklist": "تعذر تحميل القائمة السوداء",
+    "Blocklisted": "القائمة السوداء"
 }

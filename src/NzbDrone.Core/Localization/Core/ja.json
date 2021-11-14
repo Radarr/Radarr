@@ -1074,5 +1074,6 @@
     "Blocklist": "ブラックリスト",
     "BlocklistRelease": "ブラックリストリリース",
     "RemoveFromBlocklist": "ブラックリストから削除する",
-    "UnableToLoadBlocklist": "ブラックリストを読み込めません"
+    "UnableToLoadBlocklist": "ブラックリストを読み込めません",
+    "Blocklisted": "ブラックリスト"
 }

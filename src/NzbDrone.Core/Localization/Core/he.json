@@ -1074,5 +1074,6 @@
     "Blocklist": "רשימה שחורה",
     "BlocklistRelease": "שחרור הרשימה השחורה",
     "RemoveFromBlocklist": "הסר מהרשימה השחורה",
-    "UnableToLoadBlocklist": "לא ניתן לטעון את הרשימה השחורה"
+    "UnableToLoadBlocklist": "לא ניתן לטעון את הרשימה השחורה",
+    "Blocklisted": "רשימה שחורה"
 }

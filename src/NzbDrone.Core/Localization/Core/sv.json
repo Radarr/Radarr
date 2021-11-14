@@ -1075,5 +1075,6 @@
     "BlocklistHelpText": "Förhindra Radarr att automatiskt hämta denna utgåva igen",
     "BlocklistRelease": "Svartlista utgåva",
     "RemoveFromBlocklist": "Ta bort från svartlistan",
-    "UnableToLoadBlocklist": "Det gick inte att ladda svartlistan"
+    "UnableToLoadBlocklist": "Det gick inte att ladda svartlistan",
+    "Blocklisted": "Svartlista"
 }

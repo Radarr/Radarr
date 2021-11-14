@@ -346,7 +346,6 @@
     "BranchUpdateMechanism": "Ramificação usada pelo mecanismo de atualização externo",
     "BranchUpdate": "Ramificação para atualização do Radarr",
     "Branch": "Ramificação",
-    "Blacklist": "Lista de bloqueio",
     "BindAddressHelpText": "Endereço IP4 válido ou \"*\" para todas as interfaces",
     "BindAddress": "Endereço de vínculo",
     "BeforeUpdate": "Antes da atualização",

@@ -1089,5 +1089,6 @@
     "BlocklistHelpText": "Empêche Radarr de récupérer automatiquement cette version",
     "BlocklistRelease": "Mettre cette release sur la liste noire",
     "RemoveFromBlocklist": "Supprimer de la liste noire",
-    "UnableToLoadBlocklist": "Impossible de charger la liste noire"
+    "UnableToLoadBlocklist": "Impossible de charger la liste noire",
+    "Blocklisted": "Liste noire"
 }

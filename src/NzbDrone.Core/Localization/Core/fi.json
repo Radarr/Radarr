@@ -1074,5 +1074,6 @@
     "Blocklist": "Musta lista",
     "BlocklistRelease": "Mustan listan julkaisu",
     "RemoveFromBlocklist": "Poista mustalta listalta",
-    "UnableToLoadBlocklist": "Mustaa listaa ei voi ladata"
+    "UnableToLoadBlocklist": "Mustaa listaa ei voi ladata",
+    "Blocklisted": "Musta lista"
 }

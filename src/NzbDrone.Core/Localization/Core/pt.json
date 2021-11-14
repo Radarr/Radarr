@@ -1102,5 +1102,6 @@
     "BlocklistHelpText": "Impede o Readarr de capturar automaticamente estes ficheiros novamente",
     "BlocklistRelease": "Bloquear versão",
     "RemoveFromBlocklist": "Remover da lista de bloqueio",
-    "UnableToLoadBlocklist": "Não foi possível carregar a lista de bloqueio"
+    "UnableToLoadBlocklist": "Não foi possível carregar a lista de bloqueio",
+    "Blocklisted": "Lista de bloqueio"
 }

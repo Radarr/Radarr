@@ -1074,5 +1074,6 @@
     "Blocklist": "Černá listina",
     "BlocklistRelease": "Vydání černé listiny",
     "RemoveFromBlocklist": "Odebrat z černé listiny",
-    "UnableToLoadBlocklist": "Nelze načíst černou listinu"
+    "UnableToLoadBlocklist": "Nelze načíst černou listinu",
+    "Blocklisted": "Černá listina"
 }

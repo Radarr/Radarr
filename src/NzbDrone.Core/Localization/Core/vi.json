@@ -1074,5 +1074,6 @@
     "Blocklist": "Danh sách đen",
     "BlocklistRelease": "Phát hành danh sách đen",
     "RemoveFromBlocklist": "Xóa khỏi danh sách đen",
-    "UnableToLoadBlocklist": "Không thể tải danh sách đen"
+    "UnableToLoadBlocklist": "Không thể tải danh sách đen",
+    "Blocklisted": "Danh sách đen"
 }

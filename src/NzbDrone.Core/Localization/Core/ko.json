@@ -1074,5 +1074,6 @@
     "Blocklist": "블랙리스트",
     "BlocklistRelease": "블랙리스트 릴리스",
     "RemoveFromBlocklist": "블랙리스트에서 제거",
-    "UnableToLoadBlocklist": "블랙리스트를로드 할 수 없습니다."
+    "UnableToLoadBlocklist": "블랙리스트를로드 할 수 없습니다.",
+    "Blocklisted": "블랙리스트"
 }

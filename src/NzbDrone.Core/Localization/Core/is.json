@@ -1074,5 +1074,6 @@
     "Blocklist": "Svartur listi",
     "BlocklistRelease": "Útgáfa svartalista",
     "RemoveFromBlocklist": "Fjarlægja af svörtum lista",
-    "UnableToLoadBlocklist": "Ekki er hægt að hlaða svartan lista"
+    "UnableToLoadBlocklist": "Ekki er hægt að hlaða svartan lista",
+    "Blocklisted": "Svartur listi"
 }

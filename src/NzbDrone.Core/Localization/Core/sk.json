@@ -105,5 +105,11 @@
     "EditQualityProfile": "Pridajte profil kvality",
     "ShowQualityProfile": "Pridajte profil kvality",
     "SomeResultsHiddenFilter": "Všetky výsledky sú skryté použitým filtrom",
-    "YouCanAlsoSearch": "Môžete takisto vyhľadávať pomocou TMDb ID filmu. napr. 'tmdb:71663'"
+    "YouCanAlsoSearch": "Môžete takisto vyhľadávať pomocou TMDb ID filmu. napr. 'tmdb:71663'",
+    "DeleteBackupMessageText": "Naozaj chcete zmazať značku formátu {0} ?",
+    "ExportCustomFormat": "Pridať vlastný formát",
+    "DeleteDownloadClientMessageText": "Naozaj chcete zmazať značku formátu {0} ?",
+    "DeleteIndexerMessageText": "Naozaj chcete zmazať značku formátu {0} ?",
+    "DeleteListMessageText": "Naozaj chcete zmazať značku formátu {0} ?",
+    "DeleteNotificationMessageText": "Naozaj chcete zmazať značku formátu {0} ?"
 }

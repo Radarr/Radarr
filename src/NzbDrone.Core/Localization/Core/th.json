@@ -1074,5 +1074,6 @@
     "Blocklist": "บัญชีดำ",
     "BlocklistRelease": "Blacklist Release",
     "RemoveFromBlocklist": "ลบออกจากบัญชีดำ",
-    "UnableToLoadBlocklist": "ไม่สามารถโหลดบัญชีดำ"
+    "UnableToLoadBlocklist": "ไม่สามารถโหลดบัญชีดำ",
+    "Blocklisted": "บัญชีดำ"
 }

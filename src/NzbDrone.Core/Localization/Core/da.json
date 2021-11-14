@@ -1074,5 +1074,6 @@
     "Blocklist": "Blacklist",
     "BlocklistRelease": "Udgivelse af sortliste",
     "RemoveFromBlocklist": "Fjern fra sortlisten",
-    "UnableToLoadBlocklist": "Kunne ikke indlæse sortliste"
+    "UnableToLoadBlocklist": "Kunne ikke indlæse sortliste",
+    "Blocklisted": "Blacklist"
 }

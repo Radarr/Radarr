@@ -1074,5 +1074,6 @@
     "Blocklist": "Αποριφθέντα",
     "BlocklistRelease": "Έκδοση μαύρης λίστας",
     "RemoveFromBlocklist": "Κατάργηση από μαύρη λίστα",
-    "UnableToLoadBlocklist": "Δεν είναι δυνατή η φόρτωση της μαύρης λίστας"
+    "UnableToLoadBlocklist": "Δεν είναι δυνατή η φόρτωση της μαύρης λίστας",
+    "Blocklisted": "Αποριφθέντα"
 }

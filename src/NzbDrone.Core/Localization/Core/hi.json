@@ -1074,5 +1074,6 @@
     "Blocklist": "काला सूची में डालना",
     "BlocklistRelease": "ब्लैकलिस्ट रिलीज़",
     "RemoveFromBlocklist": "ब्लैकलिस्ट से निकालें",
-    "UnableToLoadBlocklist": "ब्लैकलिस्ट लोड करने में असमर्थ"
+    "UnableToLoadBlocklist": "ब्लैकलिस्ट लोड करने में असमर्थ",
+    "Blocklisted": "काला सूची में डालना"
 }

@@ -1074,5 +1074,6 @@
     "Blocklist": "Черен списък",
     "BlocklistRelease": "Освобождаване на черния списък",
     "RemoveFromBlocklist": "Премахване от черния списък",
-    "UnableToLoadBlocklist": "Черният списък не може да се зареди"
+    "UnableToLoadBlocklist": "Черният списък не може да се зареди",
+    "Blocklisted": "Черен списък"
 }

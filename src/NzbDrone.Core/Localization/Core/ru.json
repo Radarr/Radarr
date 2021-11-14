@@ -1091,5 +1091,6 @@
     "Blocklist": "Черный список",
     "BlocklistRelease": "Релиз из черного списка",
     "RemoveFromBlocklist": "Удалить из черного списка",
-    "UnableToLoadBlocklist": "Не удалось загрузить черный список"
+    "UnableToLoadBlocklist": "Не удалось загрузить черный список",
+    "Blocklisted": "Черный список"
 }

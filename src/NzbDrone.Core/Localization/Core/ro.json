@@ -1074,5 +1074,6 @@
     "Blocklist": "Listă Neagră",
     "BlocklistRelease": "Lansare pe lista neagră",
     "RemoveFromBlocklist": "Eliminați de pe lista neagră",
-    "UnableToLoadBlocklist": "Imposibil de încărcat lista neagră"
+    "UnableToLoadBlocklist": "Imposibil de încărcat lista neagră",
+    "Blocklisted": "Listă Neagră"
 }

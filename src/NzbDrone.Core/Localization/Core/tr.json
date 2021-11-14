@@ -1075,5 +1075,6 @@
     "BlocklistHelpText": "Radarr'ın bu sürümü otomatik olarak tekrar yakalamasını engeller",
     "BlocklistRelease": "Kara Liste Yayını",
     "RemoveFromBlocklist": "Kara listeden kaldır",
-    "UnableToLoadBlocklist": "Kara liste yüklenemiyor"
+    "UnableToLoadBlocklist": "Kara liste yüklenemiyor",
+    "Blocklisted": "Kara liste"
 }
