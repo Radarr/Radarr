@@ -85,7 +85,8 @@ namespace NzbDrone.Core.Blocklisting
                                 Size = remoteMovie.Release.Size,
                                 Indexer = remoteMovie.Release.Indexer,
                                 Protocol = remoteMovie.Release.DownloadProtocol,
-                                Message = message
+                                Message = message,
+                                Languages = remoteMovie.ParsedMovieInfo.Languages
                             };
 
             if (remoteMovie.Release is TorrentInfo torrentRelease)
