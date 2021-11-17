@@ -142,5 +142,8 @@
     "YouCanAlsoSearch": "Du kan også søke ved hjelp av TMDb -ID for en film. f.eks. 'tmdb: 71663'",
     "ExportCustomFormat": "Legg til egendefinert format",
     "DeleteDownloadClientMessageText": "Er du sikker på at du vil slette formattaggen {0}?",
-    "Blocklisted": "Svarteliste"
+    "Blocklisted": "Svarteliste",
+    "ImportCustomFormat": "Legg til egendefinert format",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Er du sikker på at du vil fjerne {0} elementet {1} fra køen?",
+    "BlocklistReleases": "Blacklist -utgivelse"
 }

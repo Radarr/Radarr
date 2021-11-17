@@ -1092,5 +1092,7 @@
     "BlocklistRelease": "Релиз из черного списка",
     "RemoveFromBlocklist": "Удалить из черного списка",
     "UnableToLoadBlocklist": "Не удалось загрузить черный список",
-    "Blocklisted": "Черный список"
+    "Blocklisted": "Черный список",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Вы действительно хотите удалить {0} из очереди?",
+    "BlocklistReleases": "Релиз из черного списка"
 }

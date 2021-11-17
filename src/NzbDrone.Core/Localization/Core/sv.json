@@ -1076,5 +1076,8 @@
     "BlocklistRelease": "Svartlista utgåva",
     "RemoveFromBlocklist": "Ta bort från svartlistan",
     "UnableToLoadBlocklist": "Det gick inte att ladda svartlistan",
-    "Blocklisted": "Svartlista"
+    "Blocklisted": "Svartlista",
+    "NotificationTriggersHelpText": "Markera vilka event som ska utlösa den här notifikationen",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Är du säker på vill ta bort {0} föremål{1} från kön?",
+    "BlocklistReleases": "Svartlista Utgåva"
 }

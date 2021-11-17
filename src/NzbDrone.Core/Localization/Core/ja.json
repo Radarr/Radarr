@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "ブラックリストリリース",
     "RemoveFromBlocklist": "ブラックリストから削除する",
     "UnableToLoadBlocklist": "ブラックリストを読み込めません",
-    "Blocklisted": "ブラックリスト"
+    "Blocklisted": "ブラックリスト",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "キューから{0}アイテム{1}を削除してもよろしいですか？",
+    "BlocklistReleases": "ブラックリストリリース"
 }

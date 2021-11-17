@@ -1103,5 +1103,7 @@
     "BlocklistHelpText": "Impede que o Readarr obtenha este lançamento novamente de forma automática",
     "BlocklistRelease": "Adicionar versão à lista de bloqueio",
     "RemoveFromBlocklist": "Remover da lista de bloqueio",
-    "UnableToLoadBlocklist": "Não foi possível carregar a lista de bloqueio"
+    "UnableToLoadBlocklist": "Não foi possível carregar a lista de bloqueio",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Você tem certeza de que deseja remover {0} item{1} da fila?",
+    "BlocklistReleases": "Lançamento na lista de bloqueio"
 }

@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "Udgivelse af sortliste",
     "RemoveFromBlocklist": "Fjern fra sortlisten",
     "UnableToLoadBlocklist": "Kunne ikke indlæse sortliste",
-    "Blocklisted": "Blacklist"
+    "Blocklisted": "Blacklist",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Er du sikker på, at du vil fjerne {0} element {1} fra køen?",
+    "BlocklistReleases": "Udgivelse af sortliste"
 }

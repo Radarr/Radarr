@@ -1103,5 +1103,10 @@
     "BlocklistHelpText": "Megakadályozza, hogy a Radarr automatikusan letöltse újra",
     "BlocklistRelease": "Feketelistás Kiadás",
     "RemoveFromBlocklist": "Eltávolítás a feketelistáról",
-    "UnableToLoadBlocklist": "Nem sikerült betölteni a feketelistát"
+    "UnableToLoadBlocklist": "Nem sikerült betölteni a feketelistát",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Biztosan eltávolítja az {0} elemet {1} a sorból?",
+    "BlocklistReleases": "Feketelistás Kiadás",
+    "IndexerTagHelpText": "Csak olyan filmekhez használja ezt az indexelőt, amelyek legalább egy megfelelő címkével rendelkeznek. Hagyja üresen az összes filmhez való használathoz.",
+    "RemoveSelectedItem": "A kiválasztott elem eltávolítása",
+    "RemoveSelectedItems": "A kijelölt elemek eltávolítása"
 }

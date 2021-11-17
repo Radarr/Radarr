@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "Vydání černé listiny",
     "RemoveFromBlocklist": "Odebrat z černé listiny",
     "UnableToLoadBlocklist": "Nelze načíst černou listinu",
-    "Blocklisted": "Černá listina"
+    "Blocklisted": "Černá listina",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Opravdu chcete odebrat {0} položku {1} z fronty?",
+    "BlocklistReleases": "Vydání černé listiny"
 }

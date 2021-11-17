@@ -1090,5 +1090,7 @@
     "BlocklistRelease": "Mettre cette release sur la liste noire",
     "RemoveFromBlocklist": "Supprimer de la liste noire",
     "UnableToLoadBlocklist": "Impossible de charger la liste noire",
-    "Blocklisted": "Liste noire"
+    "Blocklisted": "Liste noire",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Êtes-vous sûr de vouloir désinstaller {0} objet{1} de la file d'attente ?",
+    "BlocklistReleases": "Mettre cette release sur la liste noire"
 }

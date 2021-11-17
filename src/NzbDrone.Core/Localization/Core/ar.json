@@ -1076,5 +1076,7 @@
     "BlocklistRelease": "إصدار القائمة السوداء",
     "RemoveFromBlocklist": "إزالة من القائمة السوداء",
     "UnableToLoadBlocklist": "تعذر تحميل القائمة السوداء",
-    "Blocklisted": "القائمة السوداء"
+    "Blocklisted": "القائمة السوداء",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "هل تريد بالتأكيد إزالة {0} عنصر {1} من قائمة الانتظار؟",
+    "BlocklistReleases": "إصدار القائمة السوداء"
 }

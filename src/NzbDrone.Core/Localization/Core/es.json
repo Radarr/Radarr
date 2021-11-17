@@ -129,7 +129,7 @@
     "ImportListStatusCheckAllClientMessage": "Las listas no están disponibles debido a errores",
     "Movies": "Películas",
     "MovieNaming": "Renombrar Películas",
-    "MonoNotNetCoreCheckMessage": "Por favor actualiza a la versión .NET Core de Radarr",
+    "MonoNotNetCoreCheckMessage": "Por favor actualiza a la versión .NET Core de Radarr, versiones de Mono no serán soportadas en la siguiente actualización",
     "MovieIndex": "Índice de Películas",
     "MovieEditor": "Editor de Películas",
     "Movie": "Película",
@@ -760,7 +760,7 @@
     "HaveNotAddedMovies": "No has añadido películas todavía, quieres importar alguna o todas tus películas primero?",
     "ForMoreInformationOnTheIndividualIndexers": "Para más información individual sobre los indexers, haz clic en los botones de información.",
     "ForMoreInformationOnTheIndividualImportListsClinkOnTheInfoButtons": "Para más información individual sobre las listas de importación, haz clic en los botones de información.",
-    "ForMoreInformationOnTheIndividualDownloadClients": "Para más información individual de los gestores de descarga, haz clic en los botones de información.",
+    "ForMoreInformationOnTheIndividualDownloadClients": "Para más información individual de los gestores de descarga, haz clic en los botones de más información.",
     "FilterPlaceHolder": "Buscar películas",
     "FailedLoadingSearchResults": "Error al cargar los resultados de la busqueda, prueba otra vez.",
     "ExtraFileExtensionsHelpTexts2": "Ejemplos : '.sub, .nfo' o 'sub,nfo'",
@@ -1029,7 +1029,7 @@
     "TorrentDelayTime": "Retraso de Torrent: {0}",
     "TorrentsDisabled": "Torrents deshabilitados",
     "Trace": "Rastro",
-    "Trailer": "Remolque",
+    "Trailer": "Trailer",
     "Trakt": "Trakt",
     "Trigger": "Desencadenar",
     "Unlimited": "Ilimitado",
@@ -1080,5 +1080,7 @@
     "BlocklistRelease": "Bloquear este Estreno",
     "RemoveFromBlocklist": "Eliminar de lista de bloqueados",
     "UnableToLoadBlocklist": "No se han podido cargar las bloqueadas",
-    "Blocklisted": "Bloqueados"
+    "Blocklisted": "Bloqueados",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "¿Está seguro de que desea eliminar el {0} elemento {1} de la cola?",
+    "BlocklistReleases": "Bloquear este Estreno"
 }

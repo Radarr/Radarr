@@ -1076,5 +1076,7 @@
     "BlocklistRelease": "Kara Liste Yayını",
     "RemoveFromBlocklist": "Kara listeden kaldır",
     "UnableToLoadBlocklist": "Kara liste yüklenemiyor",
-    "Blocklisted": "Kara liste"
+    "Blocklisted": "Kara liste",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Sıradan {0} öğeyi {1} kaldırmak istediğinizden emin misiniz?",
+    "BlocklistReleases": "Kara Liste Yayını"
 }

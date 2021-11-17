@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "Blacklist Release",
     "RemoveFromBlocklist": "ลบออกจากบัญชีดำ",
     "UnableToLoadBlocklist": "ไม่สามารถโหลดบัญชีดำ",
-    "Blocklisted": "บัญชีดำ"
+    "Blocklisted": "บัญชีดำ",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "แน่ใจไหมว่าต้องการลบ {0} รายการ {1} ออกจากคิว",
+    "BlocklistReleases": "Blacklist Release"
 }

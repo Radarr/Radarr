@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "Lansare pe lista neagră",
     "RemoveFromBlocklist": "Eliminați de pe lista neagră",
     "UnableToLoadBlocklist": "Imposibil de încărcat lista neagră",
-    "Blocklisted": "Listă Neagră"
+    "Blocklisted": "Listă Neagră",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Sigur doriți să eliminați {0} elementul {1} din coadă?",
+    "BlocklistReleases": "Lansare pe lista neagră"
 }

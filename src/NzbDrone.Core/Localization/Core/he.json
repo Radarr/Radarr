@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "שחרור הרשימה השחורה",
     "RemoveFromBlocklist": "הסר מהרשימה השחורה",
     "UnableToLoadBlocklist": "לא ניתן לטעון את הרשימה השחורה",
-    "Blocklisted": "רשימה שחורה"
+    "Blocklisted": "רשימה שחורה",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "האם אתה בטוח שברצונך להסיר את {0} פריט {1} מהתור?",
+    "BlocklistReleases": "שחרור הרשימה השחורה"
 }

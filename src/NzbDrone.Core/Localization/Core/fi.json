@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "Mustan listan julkaisu",
     "RemoveFromBlocklist": "Poista mustalta listalta",
     "UnableToLoadBlocklist": "Mustaa listaa ei voi ladata",
-    "Blocklisted": "Musta lista"
+    "Blocklisted": "Musta lista",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Haluatko varmasti poistaa {0} kohteen {1} jonosta?",
+    "BlocklistReleases": "Mustan listan julkaisu"
 }

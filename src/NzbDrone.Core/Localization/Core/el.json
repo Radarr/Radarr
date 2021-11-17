@@ -526,7 +526,7 @@
     "Conditions": "Συνθήκες",
     "Connection": "Συνδέσεις",
     "ConnectionLost": "Η σύνδεση χάθηκε",
-    "ConnectionLostMessage": "Ο Radarr έχασε τη σύνδεσή του με το backend και θα χρειαστεί να επαναφορτωθεί για να αποκαταστήσει τη λειτουργικότητα.",
+    "ConnectionLostMessage": "Το Radarr έχασε τη σύνδεσή του με το backend και θα χρειαστεί να επαναφορτωθεί για να αποκαταστήσει τη λειτουργικότητά του.",
     "ConnectSettings": "Σύνδεση ρυθμίσεων",
     "ConsideredAvailable": "Θεωρείται διαθέσιμο",
     "CopyToClipboard": "Αντιγραφή στο πρόχειρο",
@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "Έκδοση μαύρης λίστας",
     "RemoveFromBlocklist": "Κατάργηση από μαύρη λίστα",
     "UnableToLoadBlocklist": "Δεν είναι δυνατή η φόρτωση της μαύρης λίστας",
-    "Blocklisted": "Αποριφθέντα"
+    "Blocklisted": "Αποριφθέντα",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Είστε βέβαιοι ότι θέλετε να καταργήσετε το {0} στοιχείο {1} από την ουρά;",
+    "BlocklistReleases": "Έκδοση μαύρης λίστας"
 }

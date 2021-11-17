@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "Wydanie czarnej listy",
     "RemoveFromBlocklist": "Usuń z czarnej listy",
     "UnableToLoadBlocklist": "Nie można załadować czarnej listy",
-    "Blocklisted": "Czarna lista"
+    "Blocklisted": "Czarna lista",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Czy na pewno chcesz usunąć {0} element {1} z kolejki?",
+    "BlocklistReleases": "Wydanie czarnej listy"
 }

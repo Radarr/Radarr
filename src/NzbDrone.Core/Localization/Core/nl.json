@@ -1101,5 +1101,7 @@
     "BlocklistRelease": "Uitgave op Zwarte lijst zetten",
     "RemoveFromBlocklist": "Verwijder van zwarte lijst",
     "UnableToLoadBlocklist": "Kon zwarte lijst niet laden",
-    "Blocklisted": "Zwarte lijst"
+    "Blocklisted": "Zwarte lijst",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Ben je zeker dat je {1} item{2} uit de wachtrij wilt verwijderen?",
+    "BlocklistReleases": "Uitgave op Zwarte lijst zetten"
 }

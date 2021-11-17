@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "Освобождаване на черния списък",
     "RemoveFromBlocklist": "Премахване от черния списък",
     "UnableToLoadBlocklist": "Черният списък не може да се зареди",
-    "Blocklisted": "Черен списък"
+    "Blocklisted": "Черен списък",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Наистина ли искате да премахнете {0} елемент {1} от опашката?",
+    "BlocklistReleases": "Освобождаване на черния списък"
 }

@@ -1103,5 +1103,7 @@
     "BlocklistRelease": "Bloquear versão",
     "RemoveFromBlocklist": "Remover da lista de bloqueio",
     "UnableToLoadBlocklist": "Não foi possível carregar a lista de bloqueio",
-    "Blocklisted": "Lista de bloqueio"
+    "Blocklisted": "Lista de bloqueio",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Tem a certeza que quer remover {0} item{1} da fila?",
+    "BlocklistReleases": "Bloquear versão"
 }

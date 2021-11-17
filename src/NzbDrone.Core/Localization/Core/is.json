@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "Útgáfa svartalista",
     "RemoveFromBlocklist": "Fjarlægja af svörtum lista",
     "UnableToLoadBlocklist": "Ekki er hægt að hlaða svartan lista",
-    "Blocklisted": "Svartur listi"
+    "Blocklisted": "Svartur listi",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Ertu viss um að þú viljir fjarlægja {0} hlut {1} úr biðröðinni?",
+    "BlocklistReleases": "Útgáfa svartalista"
 }

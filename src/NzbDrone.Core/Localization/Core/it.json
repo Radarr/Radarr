@@ -1076,5 +1076,7 @@
     "BlocklistRelease": "Release in blacklist",
     "RemoveFromBlocklist": "Rimuovi della blacklist",
     "UnableToLoadBlocklist": "Non riesco a caricare la BlackList",
-    "Blocklisted": "Lista Nera"
+    "Blocklisted": "Lista Nera",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Sei sicuro di voler cancellare {0} elemento{1} dalla coda?",
+    "BlocklistReleases": "Release in blacklist"
 }

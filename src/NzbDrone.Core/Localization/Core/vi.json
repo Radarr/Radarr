@@ -1075,5 +1075,7 @@
     "BlocklistRelease": "Phát hành danh sách đen",
     "RemoveFromBlocklist": "Xóa khỏi danh sách đen",
     "UnableToLoadBlocklist": "Không thể tải danh sách đen",
-    "Blocklisted": "Danh sách đen"
+    "Blocklisted": "Danh sách đen",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Bạn có chắc chắn muốn xóa {0} mục {1} khỏi hàng đợi không?",
+    "BlocklistReleases": "Phát hành danh sách đen"
 }
