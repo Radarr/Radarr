@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Indexers.FileList
             }
             else
             {
-                foreach (var queryTitle in searchCriteria.QueryTitles)
+                foreach (var queryTitle in searchCriteria.CleanSceneTitles)
                 {
                     var titleYearSearchQuery = string.Format("{0}+{1}", queryTitle, searchCriteria.Movie.Year);
                     pageableRequests.Add(GetRequest("search-torrents", string.Format("&type=name&query={0}", titleYearSearchQuery.Trim())));

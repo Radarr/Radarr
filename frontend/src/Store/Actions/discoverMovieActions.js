@@ -600,6 +600,7 @@ export const actionHandlers = handleThunks({
     const promise = createAjaxRequest({
       url: '/exclusions/bulk',
       method: 'POST',
+      contentType: 'application/json',
       data: JSON.stringify(exclusions)
     }).request;
 
