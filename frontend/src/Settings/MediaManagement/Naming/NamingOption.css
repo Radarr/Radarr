@@ -3,15 +3,15 @@
   align-items: stretch;
   flex-wrap: wrap;
   margin: 3px;
-  border: 1px solid $borderColor;
+  border: 1px solid var(--borderColor);
 
   &:hover {
     .token {
-      background-color: #ddd;
+      background-color: rgba(0, 0, 0, 0.01);
     }
 
     .example {
-      background-color: #ccc;
+      background-color: rgba(0, 0, 0, 0.01);
     }
   }
 }
@@ -27,7 +27,7 @@
 .token {
   flex: 0 0 50%;
   padding: 6px 16px;
-  background-color: #eee;
+  background-color: var(--defaultButtonBackgroundColor);
   font-family: $monoSpaceFontFamily;
 }
 
@@ -37,8 +37,7 @@
   align-self: stretch;
   flex: 0 0 50%;
   padding: 6px 16px;
-  background-color: #ddd;
-}
+  background-color: var(--defaultHoverBackgroundColor);
 
 .lower {
   text-transform: lowercase;

@@ -9,9 +9,9 @@
   width: 50px;
   height: 50px;
   outline: none;
-  border: solid 1px #e6e6e6;
+  border: solid 1px #e5e5e5;
   border-radius: 0.5em;
-  background: #f8f8ff;
+  background: var(--pageBackgroundColor);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }

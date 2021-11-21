@@ -7,22 +7,17 @@ module.exports = {
   dimColor: '#555',
   black: '#000',
   white: '#fff',
-  offWhite: '#f5f7fa',
   primaryColor: '#5d9cec',
   selectedColor: '#f9be03',
   successColor: '#27c24c',
   dangerColor: '#f05050',
   warningColor: '#ffa500',
   infoColor: '#5d9cec',
-  queueColor: '#7a43b6',
   purple: '#7a43b6',
-  pink: '#ff69b4',
   prowlarrOrange,
   helpTextColor: '#909293',
   darkGray: '#888',
   gray: '#adadad',
-  lightGray: '#ddd',
-  disabledInputColor: '#808080',
 
   // Theme Colors
 
@@ -30,14 +25,23 @@ module.exports = {
   themeRed: '#c4273c',
   themeDarkColor: '#595959',
   themeLightColor: '#707070',
+  pageBackground: '#f5f7fa',
+  pageFooterBackgroud: '#f1f1f1',
 
   torrentColor: '#00853d',
   usenetColor: '#17b1d9',
+
+  // Labels
+  inverseLabelColor: '#ddd',
+  inverseLabelTextColor: '#333',
 
   // Links
   defaultLinkHoverColor: '#fff',
   linkColor: '#5d9cec',
   linkHoverColor: '#1b72e2',
+
+  // Header
+  pageHeaderBackgroundColor: prowlarrOrange,
 
   // Sidebar
 
@@ -68,7 +72,8 @@ module.exports = {
   //
   // Buttons
 
-  defaultBackgroundColor: '#fff',
+  defaultButtonTextColor: '#333',
+  defaultButtonBackgroundColor: '#fff',
   defaultBorderColor: '#eaeaea',
   defaultHoverBackgroundColor: '#f5f5f5',
   defaultHoverBorderColor: '#d6d6d6;',
@@ -125,8 +130,10 @@ module.exports = {
   //
   // Card
 
+  cardBackgroundColor: '#fff',
   cardShadowColor: '#e1e1e1',
   cardAlternateBackgroundColor: '#f5f5f5',
+  cardCenterBackgroundColor: '#fff',
 
   //
   // Alert
@@ -148,15 +155,15 @@ module.exports = {
   alertWarningColor: '#8a6d3b',
 
   //
-  // Slider
-
-  sliderAccentColor: '#5d9cec',
-
-  //
   // Form
 
+  inputBackgroundColor: '#fff',
+  inputReadOnlyBackgroundColor: '#eee',
+  inputHoverBackgroundColor: '#f8f8f8',
+  inputSelectedBackgroundColor: '#e2e2e2',
   advancedFormLabelColor: '#ff902b',
   disabledCheckInputColor: '#ddd',
+  disabledInputColor: '#808080',
 
   //
   // Popover
@@ -172,13 +179,6 @@ module.exports = {
   popoverArrowBorderInverseColor: 'rgba(58, 63, 81, 0.75)',
 
   //
-  // Calendar
-
-  calendarTodayBackgroundColor: '#ddd',
-  calendarBorderColor: '#cecece',
-  calendarTextDim: '#666',
-
-  //
   // Table
 
   tableRowHoverBackgroundColor: '#fafbfc',
@@ -187,5 +187,6 @@ module.exports = {
   // Charts
 
   failedColors: ['#ffbeb2', '#feb4a6', '#fdab9b', '#fca290', '#fb9984', '#fa8f79', '#f9856e', '#f77b66', '#f5715d', '#f36754', '#f05c4d', '#ec5049', '#e74545', '#e13b42', '#da323f', '#d3293d', '#ca223c', '#c11a3b', '#b8163a', '#ae123a'],
+  chartColorsDiversified: ['#90caf9', '#f4d166', '#ff8a65', '#ce93d8', '#80cba9', '#ffab91', '#8097ea', '#bcaaa4', '#a57583', '#e4e498', '#9e96af', '#c6ab81', '#6972c6', '#619fc6', '#81ad81', '#f48fb1', '#82afca', '#b5b071', '#8b959b', '#7ec0b4'],
   chartColors: ['#f4d166', '#f6c760', '#f8bc58', '#f8b252', '#f7a84a', '#f69e41', '#f49538', '#f38b2f', '#f28026', '#f0751e', '#eb6c1c', '#e4641e', '#de5d1f', '#d75521', '#cf4f22', '#c64a22', '#bc4623', '#b24223', '#a83e24', '#9e3a26']
 };

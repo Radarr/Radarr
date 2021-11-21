@@ -16,3 +16,20 @@
   margin-left: 10px;
   width: 200px;
 }
+
+.footNote {
+  display: flex;
+  color: var(--helpTextColor);
+
+  .icon {
+    margin-top: 3px;
+    margin-right: 5px;
+    padding: 2px;
+  }
+
+  code {
+    padding: 0 1px;
+    border: 1px solid var(--borderColor);
+    background-color: #f7f7f7;
+  }
+}
