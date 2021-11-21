@@ -142,14 +142,17 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation
             try
             {
                 var serialNumber = _serialNumberProvider.GetSerialNumber(Settings);
-                var sharedFolder = GetDownloadDirectory() ?? GetDefaultDir();
-                var outputPath = new OsPath($"/{sharedFolder.TrimStart('/')}");
-                var path = _sharedFolderResolver.RemapToFullPath(outputPath, Settings, serialNumber);
+
+                // Download station returns the path without the leading `/`, but the leading
+                // slash is required to get the full path back from download station.
+                var path = new OsPath($"/{GetDownloadDirectory()}");
+
+                var fullPath = _sharedFolderResolver.RemapToFullPath(path, Settings, serialNumber);
 
                 return new DownloadClientInfo
                 {
                     IsLocalhost = Settings.Host == "127.0.0.1" || Settings.Host == "localhost",
-                    OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, path) }
+                    OutputRootFolders = new List<OsPath> { _remotePathMappingService.RemapRemoteToLocal(Settings.Host, fullPath) }
                 };
             }
             catch (DownloadClientException e)
