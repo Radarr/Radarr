@@ -1,4 +1,5 @@
-﻿using System.Linq;
+using System.Linq;
+using System.Net.Http;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -34,11 +35,11 @@ namespace NzbDrone.Core.Test.IndexerTests.PTPTests
             var responseJson = ReadAllText(fileName);
 
             Mocker.GetMock<IHttpClient>()
-                  .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.POST)))
+                  .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.Post)))
                   .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), authStream.ToString()));
 
             Mocker.GetMock<IHttpClient>()
-                .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.GET)))
+                .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.Get)))
                   .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader { ContentType = HttpAccept.Json.Value }, responseJson));
 
             var torrents = Subject.FetchRecent();

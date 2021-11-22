@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
@@ -11,6 +13,7 @@ namespace NzbDrone.Common.Http
     {
         public HttpRequest(string url, HttpAccept httpAccept = null)
         {
+            Method = HttpMethod.Get;
             Url = new HttpUri(url);
             Headers = new HttpHeader();
             AllowAutoRedirect = true;
@@ -49,6 +52,7 @@ namespace NzbDrone.Common.Http
         public TimeSpan RequestTimeout { get; set; }
         public TimeSpan RateLimit { get; set; }
         public string RateLimitKey { get; set; }
+        public Stream ResponseStream { get; set; }
 
         public override string ToString()
         {

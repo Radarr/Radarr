@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -37,7 +38,7 @@ namespace TinyTwitter
 
         public void UpdateStatus(string message)
         {
-            new RequestBuilder(_oauth, "POST", "https://api.twitter.com/1.1/statuses/update.json")
+            new RequestBuilder(_oauth, HttpMethod.Post, "https://api.twitter.com/1.1/statuses/update.json")
                 .AddParameter("status", message)
                 .Execute();
         }
@@ -51,7 +52,7 @@ namespace TinyTwitter
          **/
         public void DirectMessage(string message, string screenName)
         {
-            new RequestBuilder(_oauth, "POST", "https://api.twitter.com/1.1/direct_messages/new.json")
+            new RequestBuilder(_oauth, HttpMethod.Post, "https://api.twitter.com/1.1/direct_messages/new.json")
                 .AddParameter("text", message)
                 .AddParameter("screen_name", screenName)
                 .Execute();
@@ -63,16 +64,18 @@ namespace TinyTwitter
             private const string SIGNATURE_METHOD = "HMAC-SHA1";
 
             private readonly OAuthInfo _oauth;
-            private readonly string _method;
+            private readonly HttpMethod _method;
             private readonly IDictionary<string, string> _customParameters;
             private readonly string _url;
+            private readonly HttpClient _httpClient;
 
-            public RequestBuilder(OAuthInfo oauth, string method, string url)
+            public RequestBuilder(OAuthInfo oauth, HttpMethod method, string url)
             {
                 _oauth = oauth;
                 _method = method;
                 _url = url;
                 _customParameters = new Dictionary<string, string>();
+                _httpClient = new ();
             }
 
             public RequestBuilder AddParameter(string name, string value)
@@ -92,61 +95,13 @@ namespace TinyTwitter
                 var signature = GenerateSignature(parameters);
                 var headerValue = GenerateAuthorizationHeaderValue(parameters, signature);
 
-                var request = (HttpWebRequest)WebRequest.Create(GetRequestUrl());
-                request.Method = _method;
-                request.ContentType = "application/x-www-form-urlencoded";
+                var request = new HttpRequestMessage(_method, _url);
+                request.Content = new FormUrlEncodedContent(_customParameters);
 
                 request.Headers.Add("Authorization", headerValue);
 
-                WriteRequestBody(request);
-
-                // It looks like a bug in HttpWebRequest. It throws random TimeoutExceptions
-                // after some requests. Abort the request seems to work. More info:
-                // http://stackoverflow.com/questions/2252762/getrequeststream-throws-timeout-exception-randomly
-                var response = request.GetResponse();
-
-                string content;
-
-                using (var stream = response.GetResponseStream())
-                {
-                    using (var reader = new StreamReader(stream))
-                    {
-                        content = reader.ReadToEnd();
-                    }
-                }
-
-                request.Abort();
-
-                return content;
-            }
-
-            private void WriteRequestBody(HttpWebRequest request)
-            {
-                if (_method == "GET")
-                {
-                    return;
-                }
-
-                var requestBody = Encoding.ASCII.GetBytes(GetCustomParametersString());
-                using (var stream = request.GetRequestStream())
-                {
-                    stream.Write(requestBody, 0, requestBody.Length);
-                }
-            }
-
-            private string GetRequestUrl()
-            {
-                if (_method != "GET" || _customParameters.Count == 0)
-                {
-                    return _url;
-                }
-
-                return string.Format("{0}?{1}", _url, GetCustomParametersString());
-            }
-
-            private string GetCustomParametersString()
-            {
-                return _customParameters.Select(x => string.Format("{0}={1}", x.Key, x.Value)).Join("&");
+                var response = _httpClient.Send(request);
+                return response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             }
 
             private string GenerateAuthorizationHeaderValue(IEnumerable<KeyValuePair<string, string>> parameters, string signature)

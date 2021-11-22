@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
 using FluentAssertions;
 using Moq;
@@ -15,8 +16,11 @@ using NzbDrone.Common.Http;
 using NzbDrone.Common.Http.Dispatchers;
 using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Common.TPL;
+using NzbDrone.Core.Configuration;
+using NzbDrone.Core.Security;
 using NzbDrone.Test.Common;
 using NzbDrone.Test.Common.Categories;
+using HttpClient = NzbDrone.Common.Http.HttpClient;
 
 namespace NzbDrone.Common.Test.Http
 {
@@ -31,6 +35,8 @@ namespace NzbDrone.Common.Test.Http
         private string _httpBinHost;
         private string _httpBinHost2;
 
+        private System.Net.Http.HttpClient _httpClient = new ();
+
         [OneTimeSetUp]
         public void FixtureSetUp()
         {
@@ -38,7 +44,7 @@ namespace NzbDrone.Common.Test.Http
             var mainHost = "httpbin.servarr.com";
 
             // Use mirrors for tests that use two hosts
-            var candidates = new[] { "eu.httpbin.org", /* "httpbin.org", */ "www.httpbin.org" };
+            var candidates = new[] { "httpbin1.servarr.com" };
 
             // httpbin.org is broken right now, occassionally redirecting to https if it's unavailable.
             _httpBinHost = mainHost;
@@ -46,29 +52,20 @@ namespace NzbDrone.Common.Test.Http
 
             TestLogger.Info($"{candidates.Length} TestSites available.");
 
-            _httpBinSleep = _httpBinHosts.Length < 2 ? 100 : 10;
+            _httpBinSleep = 10;
         }
 
         private bool IsTestSiteAvailable(string site)
         {
             try
             {
-                var req = WebRequest.Create($"https://{site}/get") as HttpWebRequest;
-                var res = req.GetResponse() as HttpWebResponse;
+                var res = _httpClient.GetAsync($"https://{site}/get").GetAwaiter().GetResult();
                 if (res.StatusCode != HttpStatusCode.OK)
                 {
                     return false;
                 }
 
-                try
-                {
-                    req = WebRequest.Create($"https://{site}/status/429") as HttpWebRequest;
-                    res = req.GetResponse() as HttpWebResponse;
-                }
-                catch (WebException ex)
-                {
-                    res = ex.Response as HttpWebResponse;
-                }
+                res = _httpClient.GetAsync($"https://{site}/status/429").GetAwaiter().GetResult();
 
                 if (res == null || res.StatusCode != (HttpStatusCode)429)
                 {
@@ -95,10 +92,13 @@ namespace NzbDrone.Common.Test.Http
             Mocker.GetMock<IOsInfo>().Setup(c => c.Name).Returns("TestOS");
             Mocker.GetMock<IOsInfo>().Setup(c => c.Version).Returns("9.0.0");
 
+            Mocker.GetMock<IConfigService>().SetupGet(x => x.CertificateValidation).Returns(CertificateValidationType.Enabled);
+
             Mocker.SetConstant<IUserAgentBuilder>(Mocker.Resolve<UserAgentBuilder>());
 
             Mocker.SetConstant<ICacheManager>(Mocker.Resolve<CacheManager>());
             Mocker.SetConstant<ICreateManagedWebProxy>(Mocker.Resolve<ManagedWebProxyFactory>());
+            Mocker.SetConstant<ICertificateValidationService>(new X509CertificateValidationService(Mocker.GetMock<IConfigService>().Object, TestLogger));
             Mocker.SetConstant<IRateLimitService>(Mocker.Resolve<RateLimitService>());
             Mocker.SetConstant<IEnumerable<IHttpRequestInterceptor>>(Array.Empty<IHttpRequestInterceptor>());
             Mocker.SetConstant<IHttpDispatcher>(Mocker.Resolve<TDispatcher>());
@@ -138,6 +138,28 @@ namespace NzbDrone.Common.Test.Http
             response.Content.Should().NotBeNullOrWhiteSpace();
         }
 
+        [TestCase(CertificateValidationType.Enabled)]
+        [TestCase(CertificateValidationType.DisabledForLocalAddresses)]
+        public void bad_ssl_should_fail_when_remote_validation_enabled(CertificateValidationType validationType)
+        {
+            Mocker.GetMock<IConfigService>().SetupGet(x => x.CertificateValidation).Returns(validationType);
+            var request = new HttpRequest($"https://expired.badssl.com");
+
+            Assert.Throws<HttpRequestException>(() => Subject.Execute(request));
+            ExceptionVerification.ExpectedErrors(2);
+        }
+
+        [Test]
+        public void bad_ssl_should_pass_if_remote_validation_disabled()
+        {
+            Mocker.GetMock<IConfigService>().SetupGet(x => x.CertificateValidation).Returns(CertificateValidationType.Disabled);
+
+            var request = new HttpRequest($"https://expired.badssl.com");
+
+            Subject.Execute(request);
+            ExceptionVerification.ExpectedErrors(0);
+        }
+
         [Test]
         public void should_execute_typed_get()
         {
@@ -162,15 +184,44 @@ namespace NzbDrone.Common.Test.Http
             response.Resource.Data.Should().Be(message);
         }
 
-        [TestCase("gzip")]
-        public void should_execute_get_using_gzip(string compression)
+        [Test]
+        public void should_execute_post_with_content_type()
         {
-            var request = new HttpRequest($"https://{_httpBinHost}/{compression}");
+            var message = "{ my: 1 }";
+
+            var request = new HttpRequest($"https://{_httpBinHost}/post");
+            request.SetContent(message);
+            request.Headers.ContentType = "application/json";
+
+            var response = Subject.Post<HttpBinResource>(request);
+
+            response.Resource.Data.Should().Be(message);
+        }
+
+        [Test]
+        public void should_execute_get_using_gzip()
+        {
+            var request = new HttpRequest($"https://{_httpBinHost}/gzip");
 
             var response = Subject.Get<HttpBinResource>(request);
 
-            response.Resource.Headers["Accept-Encoding"].ToString().Should().Be(compression);
+            response.Resource.Headers["Accept-Encoding"].ToString().Should().Contain("gzip");
+
             response.Resource.Gzipped.Should().BeTrue();
+            response.Resource.Brotli.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_execute_get_using_brotli()
+        {
+            var request = new HttpRequest($"https://{_httpBinHost}/brotli");
+
+            var response = Subject.Get<HttpBinResource>(request);
+
+            response.Resource.Headers["Accept-Encoding"].ToString().Should().Contain("br");
+
+            response.Resource.Gzipped.Should().BeFalse();
+            response.Resource.Brotli.Should().BeTrue();
         }
 
         [TestCase(HttpStatusCode.Unauthorized)]
@@ -337,11 +388,36 @@ namespace NzbDrone.Common.Test.Http
         {
             var file = GetTempFilePath();
 
-            Assert.Throws<WebException>(() => Subject.DownloadFile("https://download.sonarr.tv/wrongpath", file));
+            Assert.Throws<HttpException>(() => Subject.DownloadFile("https://download.sonarr.tv/wrongpath", file));
 
             File.Exists(file).Should().BeFalse();
 
             ExceptionVerification.ExpectedWarns(1);
+        }
+
+        [Test]
+        public void should_not_write_redirect_content_to_stream()
+        {
+            var file = GetTempFilePath();
+
+            using (var fileStream = new FileStream(file, FileMode.Create))
+            {
+                var request = new HttpRequest($"http://{_httpBinHost}/redirect/1");
+                request.AllowAutoRedirect = false;
+                request.ResponseStream = fileStream;
+
+                var response = Subject.Get(request);
+
+                response.StatusCode.Should().Be(HttpStatusCode.Moved);
+            }
+
+            ExceptionVerification.ExpectedErrors(1);
+
+            File.Exists(file).Should().BeTrue();
+
+            var fileInfo = new FileInfo(file);
+
+            fileInfo.Length.Should().Be(0);
         }
 
         [Test]
@@ -773,6 +849,7 @@ namespace NzbDrone.Common.Test.Http
         public string Url { get; set; }
         public string Data { get; set; }
         public bool Gzipped { get; set; }
+        public bool Brotli { get; set; }
     }
 
     public class HttpCookieResource

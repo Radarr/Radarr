@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net.Http;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Notifications.Trakt;
 
@@ -30,7 +31,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.List
             var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim());
             link += $"users/{Settings.Username.Trim()}/lists/{listName}/items/movies?limit={Settings.Limit}";
 
-            var request = new ImportListRequest(_traktProxy.BuildTraktRequest(link, HttpMethod.GET, Settings.AccessToken));
+            var request = new ImportListRequest(_traktProxy.BuildTraktRequest(link, HttpMethod.Get, Settings.AccessToken));
 
             yield return request;
         }

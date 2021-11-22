@@ -4,13 +4,12 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Http.Dispatchers;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Lifecycle;
-using NzbDrone.Core.Messaging.Events;
 
 namespace NzbDrone.Core.Security
 {
-    public class X509CertificateValidationService : IHandle<ApplicationStartedEvent>
+    public class X509CertificateValidationService : ICertificateValidationService
     {
         private readonly IConfigService _configService;
         private readonly Logger _logger;
@@ -21,19 +20,16 @@ namespace NzbDrone.Core.Security
             _logger = logger;
         }
 
-        private bool ShouldByPassValidationError(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        public bool ShouldByPassValidationError(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            var request = sender as HttpWebRequest;
-
-            if (request == null)
+            if (sender is not SslStream request)
             {
                 return true;
             }
 
-            var cert2 = certificate as X509Certificate2;
-            if (cert2 != null && request != null && cert2.SignatureAlgorithm.FriendlyName == "md5RSA")
+            if (certificate is X509Certificate2 cert2 && cert2.SignatureAlgorithm.FriendlyName == "md5RSA")
             {
-                _logger.Error("https://{0} uses the obsolete md5 hash in it's https certificate, if that is your certificate, please (re)create certificate with better algorithm as soon as possible.", request.RequestUri.Authority);
+                _logger.Error("https://{0} uses the obsolete md5 hash in it's https certificate, if that is your certificate, please (re)create certificate with better algorithm as soon as possible.", request.TargetHostName);
             }
 
             if (sslPolicyErrors == SslPolicyErrors.None)
@@ -41,12 +37,12 @@ namespace NzbDrone.Core.Security
                 return true;
             }
 
-            if (request.RequestUri.Host == "localhost" || request.RequestUri.Host == "127.0.0.1")
+            if (request.TargetHostName == "localhost" || request.TargetHostName == "127.0.0.1")
             {
                 return true;
             }
 
-            var ipAddresses = GetIPAddresses(request.RequestUri.Host);
+            var ipAddresses = GetIPAddresses(request.TargetHostName);
             var certificateValidation = _configService.CertificateValidation;
 
             if (certificateValidation == CertificateValidationType.Disabled)
@@ -60,7 +56,7 @@ namespace NzbDrone.Core.Security
                 return true;
             }
 
-            _logger.Error("Certificate validation for {0} failed. {1}", request.Address, sslPolicyErrors);
+            _logger.Error("Certificate validation for {0} failed. {1}", request.TargetHostName, sslPolicyErrors);
 
             return false;
         }
@@ -73,11 +69,6 @@ namespace NzbDrone.Core.Security
             }
 
             return Dns.GetHostEntry(host).AddressList;
-        }
-
-        public void Handle(ApplicationStartedEvent message)
-        {
-            ServicePointManager.ServerCertificateValidationCallback = ShouldByPassValidationError;
         }
     }
 }
