@@ -69,7 +69,7 @@ namespace NzbDrone.Host
 
         private void OnAppStopped()
         {
-            if (_runtimeInfo.RestartPending)
+            if (_runtimeInfo.RestartPending && !_runtimeInfo.IsWindowsService)
             {
                 var restartArgs = GetRestartArgs();
 
