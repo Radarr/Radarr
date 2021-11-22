@@ -4,8 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.6.2" />
-    <PackageReference Include="Ical.Net" Version="4.1.11" />
-    <PackageReference Include="NLog" Version="4.7.11" />
+    <PackageReference Include="Ical.Net" Version="4.2.0" />
+    <PackageReference Include="NLog" Version="4.7.12" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Core\Radarr.Core.csproj" />

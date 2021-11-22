@@ -106,7 +106,7 @@ namespace NzbDrone.Common
             Stream inStream = File.OpenRead(compressedFile);
             Stream gzipStream = new GZipInputStream(inStream);
 
-            TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
+            TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream, null);
             tarArchive.ExtractContents(destination);
             tarArchive.Close();
 

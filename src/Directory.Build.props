@@ -92,8 +92,8 @@
   <ItemGroup Condition="'$(TestProject)'=='true'">
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
-    <PackageReference Include="NunitXml.TestLogger" Version="2.1.62" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
+    <PackageReference Include="NunitXml.TestLogger" Version="3.0.117" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TestProject)'=='true' and '$(TargetFramework)'=='net6.0'">
