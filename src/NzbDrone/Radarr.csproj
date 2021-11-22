@@ -5,7 +5,6 @@
     <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>..\NzbDrone.Host\Radarr.ico</ApplicationIcon>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <ItemGroup>
@@ -13,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Host\Radarr.Host.csproj" />
+    <ProjectReference Include="..\NzbDrone.Windows\Radarr.Windows.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

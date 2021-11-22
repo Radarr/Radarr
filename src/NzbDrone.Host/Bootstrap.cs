@@ -176,7 +176,18 @@ namespace Radarr.Host
                 return ApplicationModes.UninstallService;
             }
 
-            if (OsInfo.IsWindows && WindowsServiceHelpers.IsWindowsService())
+            // IsWindowsService can throw sometimes, so wrap it
+            bool isWindowsService = false;
+            try
+            {
+                isWindowsService = WindowsServiceHelpers.IsWindowsService();
+            }
+            catch
+            {
+                // don't care
+            }
+
+            if (OsInfo.IsWindows && isWindowsService)
             {
                 return ApplicationModes.Service;
             }
