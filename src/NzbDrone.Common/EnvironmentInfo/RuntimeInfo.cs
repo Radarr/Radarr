@@ -23,7 +23,7 @@ namespace NzbDrone.Common.EnvironmentInfo
                                serviceProvider.ServiceExist(ServiceProvider.SERVICE_NAME) &&
                                serviceProvider.GetStatus(ServiceProvider.SERVICE_NAME) == ServiceControllerStatus.StartPending;
 
-            // net5.0 will return Radarr.dll for entry assembly, we need the actual
+            // net6.0 will return Radarr.dll for entry assembly, we need the actual
             // executable name (Radarr on linux).  On mono this will return the location of
             // the mono executable itself, which is not what we want.
             var entry = Process.GetCurrentProcess().MainModule;
