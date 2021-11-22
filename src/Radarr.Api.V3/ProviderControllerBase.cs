@@ -103,10 +103,9 @@ namespace Radarr.Api.V3
         }
 
         [RestDeleteById]
-        public object DeleteProvider(int id)
+        public void DeleteProvider(int id)
         {
             _providerFactory.Delete(id);
-            return new object();
         }
 
         [HttpGet("schema")]

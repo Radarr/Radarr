@@ -819,7 +819,7 @@ namespace NzbDrone.Common.Test.Http
         {
             try
             {
-                string url = $"https://{_httpBinHost}/response-headers?Set-Cookie={Uri.EscapeUriString(malformedCookie)}";
+                string url = $"https://{_httpBinHost}/response-headers?Set-Cookie={Uri.EscapeDataString(malformedCookie)}";
 
                 var requestSet = new HttpRequest(url);
                 requestSet.AllowAutoRedirect = false;
