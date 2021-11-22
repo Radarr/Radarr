@@ -3,7 +3,7 @@
     <TargetFrameworks>net6.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.90" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="MailKit" Version="2.15.0" />
     <PackageReference Include="Servarr.FFprobe" Version="4.4.1.41" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
@@ -13,13 +13,13 @@
     <PackageReference Include="FluentMigrator.Runner" Version="3.3.1" />
     <PackageReference Include="FluentMigrator.Runner.SQLite" Version="3.3.1" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="NLog" Version="4.7.11" />
-    <PackageReference Include="Kveer.XmlRPC" Version="1.1.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NLog" Version="4.7.12" />
+    <PackageReference Include="Kveer.XmlRPC" Version="1.2.0" />
     <PackageReference Include="System.Data.SQLite.Core.Servarr" Version="1.0.113.0-0" />
     <PackageReference Include="System.Text.Json" Version="6.0.0" />
-    <PackageReference Include="MonoTorrent" Version="1.0.29" />
+    <PackageReference Include="MonoTorrent" Version="2.0.1" />
     <PackageReference Include="FFMpegCore" Version="4.6.16" />
   </ItemGroup>
   <ItemGroup>
