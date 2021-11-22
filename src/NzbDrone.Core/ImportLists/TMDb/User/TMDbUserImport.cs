@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net.Http;
 using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.Http;
@@ -53,7 +54,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
                     .SetSegment("secondaryRoute", "request_token")
                     .AddQueryParam("redirect_to", query["callbackUrl"]);
 
-                requestBuilder.Method = HttpMethod.POST;
+                requestBuilder.Method = HttpMethod.Post;
 
                 var request = requestBuilder.Build();
 
@@ -78,7 +79,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
                                                     .SetSegment("secondaryRoute", "access_token")
                                                     .AddQueryParam("request_token", query["requestToken"]);
 
-                requestBuilder.Method = HttpMethod.POST;
+                requestBuilder.Method = HttpMethod.Post;
 
                 var request = requestBuilder.Build();
 

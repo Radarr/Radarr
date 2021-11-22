@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Linq;
+using System.Net.Http;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -41,7 +42,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             var recentFeed = ReadAllText(@"Files/Indexers/Newznab/newznab_nzb_su.xml");
 
             Mocker.GetMock<IHttpClient>()
-                .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.GET)))
+                .Setup(o => o.Execute(It.Is<HttpRequest>(v => v.Method == HttpMethod.Get)))
                 .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), recentFeed));
 
             var releases = Subject.FetchRecent();

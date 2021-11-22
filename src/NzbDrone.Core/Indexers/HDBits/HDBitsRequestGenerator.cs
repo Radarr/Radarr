@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
@@ -60,7 +61,7 @@ namespace NzbDrone.Core.Indexers.HDBits
                 .Resource("/api/torrents")
                 .Build();
 
-            request.Method = HttpMethod.POST;
+            request.Method = HttpMethod.Post;
             const string appJson = "application/json";
             request.Headers.Accept = appJson;
             request.Headers.ContentType = appJson;

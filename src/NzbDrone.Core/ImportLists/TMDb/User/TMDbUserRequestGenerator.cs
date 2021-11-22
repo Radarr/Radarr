@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Net.Http;
 using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common.Http;
@@ -53,7 +54,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.User
 
             requestBuilder.Accept(HttpAccept.Json);
 
-            requestBuilder.Method = HttpMethod.GET;
+            requestBuilder.Method = HttpMethod.Get;
 
             var jsonResponse = JsonConvert.DeserializeObject<MovieSearchResource>(HttpClient.Execute(requestBuilder.Build()).Content);
 

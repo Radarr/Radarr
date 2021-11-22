@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.EnvironmentInfo;
@@ -119,8 +121,6 @@ namespace NzbDrone.Common.Http
 
             var stopWatch = Stopwatch.StartNew();
 
-            PrepareRequestCookies(request, cookieContainer);
-
             var response = _httpDispatcher.GetResponse(request, cookieContainer);
 
             HandleResponseCookies(response, cookieContainer);
@@ -187,27 +187,21 @@ namespace NzbDrone.Common.Http
             }
         }
 
-        private void PrepareRequestCookies(HttpRequest request, CookieContainer cookieContainer)
+        private void HandleResponseCookies(HttpResponse response, CookieContainer container)
         {
-            // Don't collect persistnet cookies for intermediate/redirected urls.
-            /*lock (_cookieContainerCache)
+            foreach (Cookie cookie in container.GetAllCookies())
             {
-                var presistentContainer = _cookieContainerCache.Get("container", () => new CookieContainer());
-                var persistentCookies = presistentContainer.GetCookies((Uri)request.Url);
-                var existingCookies = cookieContainer.GetCookies((Uri)request.Url);
+                cookie.Expired = true;
+            }
 
-                cookieContainer.Add(persistentCookies);
-                cookieContainer.Add(existingCookies);
-            }*/
-        }
-
-        private void HandleResponseCookies(HttpResponse response, CookieContainer cookieContainer)
-        {
             var cookieHeaders = response.GetCookieHeaders();
+
             if (cookieHeaders.Empty())
             {
                 return;
             }
+
+            AddCookiesToContainer(response.Request.Url, cookieHeaders, container);
 
             if (response.Request.StoreResponseCookie)
             {
@@ -215,29 +209,76 @@ namespace NzbDrone.Common.Http
                 {
                     var persistentCookieContainer = _cookieContainerCache.Get("container", () => new CookieContainer());
 
-                    foreach (var cookieHeader in cookieHeaders)
-                    {
-                        try
-                        {
-                            persistentCookieContainer.SetCookies((Uri)response.Request.Url, cookieHeader);
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.Debug(ex, "Invalid cookie in {0}", response.Request.Url);
-                        }
-                    }
+                    AddCookiesToContainer(response.Request.Url, cookieHeaders, persistentCookieContainer);
+                }
+            }
+        }
+
+        private void AddCookiesToContainer(HttpUri url, string[] cookieHeaders, CookieContainer container)
+        {
+            foreach (var cookieHeader in cookieHeaders)
+            {
+                try
+                {
+                    container.SetCookies((Uri)url, cookieHeader);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex, "Invalid cookie in {0}", url);
                 }
             }
         }
 
         public void DownloadFile(string url, string fileName)
         {
-            _httpDispatcher.DownloadFile(url, fileName);
+            var fileNamePart = fileName + ".part";
+
+            try
+            {
+                var fileInfo = new FileInfo(fileName);
+                if (fileInfo.Directory != null && !fileInfo.Directory.Exists)
+                {
+                    fileInfo.Directory.Create();
+                }
+
+                _logger.Debug("Downloading [{0}] to [{1}]", url, fileName);
+
+                var stopWatch = Stopwatch.StartNew();
+                using (var fileStream = new FileStream(fileNamePart, FileMode.Create, FileAccess.ReadWrite))
+                {
+                    var request = new HttpRequest(url);
+                    request.AllowAutoRedirect = true;
+                    request.ResponseStream = fileStream;
+                    var response = Get(request);
+
+                    if (response.Headers.ContentType != null && response.Headers.ContentType.Contains("text/html"))
+                    {
+                        throw new HttpException(request, response, "Site responded with html content.");
+                    }
+                }
+
+                stopWatch.Stop();
+
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+
+                File.Move(fileNamePart, fileName);
+                _logger.Debug("Downloading Completed. took {0:0}s", stopWatch.Elapsed.Seconds);
+            }
+            finally
+            {
+                if (File.Exists(fileNamePart))
+                {
+                    File.Delete(fileNamePart);
+                }
+            }
         }
 
         public HttpResponse Get(HttpRequest request)
         {
-            request.Method = HttpMethod.GET;
+            request.Method = HttpMethod.Get;
             return Execute(request);
         }
 
@@ -251,13 +292,13 @@ namespace NzbDrone.Common.Http
 
         public HttpResponse Head(HttpRequest request)
         {
-            request.Method = HttpMethod.HEAD;
+            request.Method = HttpMethod.Head;
             return Execute(request);
         }
 
         public HttpResponse Post(HttpRequest request)
         {
-            request.Method = HttpMethod.POST;
+            request.Method = HttpMethod.Post;
             return Execute(request);
         }
 
