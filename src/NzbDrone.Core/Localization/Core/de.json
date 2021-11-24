@@ -1108,5 +1108,8 @@
     "BlocklistReleases": "Release sperren",
     "IndexerTagHelpText": "Benutze den Indexer nur für Filme mit mindesens einen zutreffenden Tag. Leer lassen für alle Filme.",
     "RemoveSelectedItem": "Entferne ausgewählten Eintrag",
-    "RemoveSelectedItems": "Entferne ausgewählte Einträge"
+    "RemoveSelectedItems": "Entferne ausgewählte Einträge",
+    "RemoveFailed": "Entfernen fehlgeschlagen",
+    "RemoveCompleted": "Abgeschlossene entfernen",
+    "RemoveDownloadsAlert": "Die Einstellungen zum entfernen wurde in den einzelnen Downloader Einstellungen in der obigen Tabelle verschoben."
 }
