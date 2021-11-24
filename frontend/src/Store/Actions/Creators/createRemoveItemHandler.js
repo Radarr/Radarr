@@ -14,6 +14,7 @@ function createRemoveItemHandler(section, url) {
 
     const ajaxOptions = {
       url: `${url}/${id}?${$.param(queryParams, true)}`,
+      dataType: 'text',
       method: 'DELETE'
     };
 
