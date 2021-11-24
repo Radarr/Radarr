@@ -117,7 +117,11 @@ namespace NzbDrone.Common.Http.Dispatchers
                 }
             }
 
-            return new HttpResponse(request, new HttpHeader(responseMessage.Headers), data, responseMessage.StatusCode);
+            var headers = responseMessage.Headers.ToNameValueCollection();
+
+            headers.Add(responseMessage.Content.Headers.ToNameValueCollection());
+
+            return new HttpResponse(request, new HttpHeader(headers), data, responseMessage.StatusCode);
         }
 
         protected virtual System.Net.Http.HttpClient GetClient(HttpUri uri)
