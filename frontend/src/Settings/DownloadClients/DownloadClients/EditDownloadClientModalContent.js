@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Alert from 'Components/Alert';
+import FieldSet from 'Components/FieldSet';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
@@ -13,7 +14,7 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
-import { inputTypes, kinds } from 'Helpers/Props';
+import { inputTypes, kinds, sizes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import styles from './EditDownloadClientModalContent.css';
 
@@ -45,7 +46,10 @@ class EditDownloadClientModalContent extends Component {
       implementationName,
       name,
       enable,
+      protocol,
       priority,
+      removeCompletedDownloads,
+      removeFailedDownloads,
       fields,
       message
     } = item;
@@ -135,6 +139,38 @@ class EditDownloadClientModalContent extends Component {
                     onChange={onInputChange}
                   />
                 </FormGroup>
+
+                <FieldSet
+                  size={sizes.SMALL}
+                  legend={translate('CompletedDownloadHandling')}
+                >
+                  <FormGroup>
+                    <FormLabel>{translate('RemoveCompleted')}</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.CHECK}
+                      name="removeCompletedDownloads"
+                      helpText={translate('RemoveCompletedDownloadsHelpText')}
+                      {...removeCompletedDownloads}
+                      onChange={onInputChange}
+                    />
+                  </FormGroup>
+
+                  {
+                    protocol.value !== 'torrent' &&
+                      <FormGroup>
+                        <FormLabel>{translate('RemoveFailed')}</FormLabel>
+
+                        <FormInputGroup
+                          type={inputTypes.CHECK}
+                          name="removeFailedDownloads"
+                          helpText={translate('RemoveFailedDownloadsHelpText')}
+                          {...removeFailedDownloads}
+                          onChange={onInputChange}
+                        />
+                      </FormGroup>
+                  }
+                </FieldSet>
 
               </Form>
           }
