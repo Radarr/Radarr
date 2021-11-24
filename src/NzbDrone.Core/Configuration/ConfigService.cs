@@ -192,25 +192,11 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("WhitelistedHardcodedSubs", value); }
         }
 
-        public bool RemoveCompletedDownloads
-        {
-            get { return GetValueBoolean("RemoveCompletedDownloads", false); }
-
-            set { SetValue("RemoveCompletedDownloads", value); }
-        }
-
         public bool AutoRedownloadFailed
         {
             get { return GetValueBoolean("AutoRedownloadFailed", true); }
 
             set { SetValue("AutoRedownloadFailed", value); }
-        }
-
-        public bool RemoveFailedDownloads
-        {
-            get { return GetValueBoolean("RemoveFailedDownloads", true); }
-
-            set { SetValue("RemoveFailedDownloads", value); }
         }
 
         public bool CreateEmptyMovieFolders

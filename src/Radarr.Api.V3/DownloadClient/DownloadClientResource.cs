@@ -8,6 +8,8 @@ namespace Radarr.Api.V3.DownloadClient
         public bool Enable { get; set; }
         public DownloadProtocol Protocol { get; set; }
         public int Priority { get; set; }
+        public bool RemoveCompletedDownloads { get; set; }
+        public bool RemoveFailedDownloads { get; set; }
     }
 
     public class DownloadClientResourceMapper : ProviderResourceMapper<DownloadClientResource, DownloadClientDefinition>
@@ -24,6 +26,8 @@ namespace Radarr.Api.V3.DownloadClient
             resource.Enable = definition.Enable;
             resource.Protocol = definition.Protocol;
             resource.Priority = definition.Priority;
+            resource.RemoveCompletedDownloads = definition.RemoveCompletedDownloads;
+            resource.RemoveFailedDownloads = definition.RemoveFailedDownloads;
 
             return resource;
         }
@@ -40,6 +44,8 @@ namespace Radarr.Api.V3.DownloadClient
             definition.Enable = resource.Enable;
             definition.Protocol = resource.Protocol;
             definition.Priority = resource.Priority;
+            definition.RemoveCompletedDownloads = resource.RemoveCompletedDownloads;
+            definition.RemoveFailedDownloads = resource.RemoveFailedDownloads;
 
             return definition;
         }
