@@ -497,7 +497,7 @@
     "AddMovie": "Adicionar filme",
     "AddListExclusion": "Adicionar exclusão à lista",
     "AddList": "Adicionar lista",
-    "AddingTag": "Adicionando tag",
+    "AddingTag": "Adicionando etiqueta",
     "AddIndexer": "Adicionar indexador",
     "AddImportExclusionHelpText": "Impedir a adição do filme ao Radarr por listas",
     "AddExclusion": "Adicionar exclusão",
@@ -648,7 +648,7 @@
     "Title": "Título",
     "Timeleft": "Tempo restante",
     "TimeFormat": "Formato de hora",
-    "Time": "Hora",
+    "Time": "Tempo",
     "ThisCannotBeCancelled": "Isso não pode ser cancelado se iniciado sem reiniciar o Radarr.",
     "TheLogLevelDefault": "O nível de registro é padronizado como \"Informações\" e pode ser alterado em",
     "TestAllLists": "Testar todas as listas",
@@ -1105,5 +1105,8 @@
     "RemoveFromBlocklist": "Remover da lista de bloqueio",
     "UnableToLoadBlocklist": "Não foi possível carregar a lista de bloqueio",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Você tem certeza de que deseja remover {0} item{1} da fila?",
-    "BlocklistReleases": "Lançamento na lista de bloqueio"
+    "BlocklistReleases": "Lançamento na lista de bloqueio",
+    "RemoveSelectedItems": "Remover Itens Selecionados",
+    "IndexerTagHelpText": "Só use este indexador para filmes com ao menos uma etiqueta correspondente. Deixe em branco para usar com todos os filmes.",
+    "RemoveSelectedItem": "Remover Item Selecionado"
 }
