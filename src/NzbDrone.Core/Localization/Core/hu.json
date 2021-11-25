@@ -1108,5 +1108,8 @@
     "BlocklistReleases": "Feketelistás Kiadás",
     "IndexerTagHelpText": "Csak olyan filmekhez használja ezt az indexelőt, amelyek legalább egy megfelelő címkével rendelkeznek. Hagyja üresen az összes filmhez való használathoz.",
     "RemoveSelectedItem": "A kiválasztott elem eltávolítása",
-    "RemoveSelectedItems": "A kijelölt elemek eltávolítása"
+    "RemoveSelectedItems": "A kijelölt elemek eltávolítása",
+    "RemoveFailed": "Eltávolítás Sikertelen",
+    "RemoveCompleted": "Eltávolítás Kész",
+    "RemoveDownloadsAlert": "Az eltávolításhoz szükséges beállítások átkerültek a fenti táblázatban található egyéni letöltő beállítások közé."
 }
