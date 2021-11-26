@@ -751,7 +751,7 @@
     "RadarrSupportsCustomConditionsAgainstTheReleasePropertiesBelow": "Radarr prend en charge les conditions personnalisées par rapport aux propriétés de publication ci-dessous.",
     "RadarrSupportsAnyRSSMovieListsAsWellAsTheOneStatedBelow": "Radarr prend en charge toutes les listes de films RSS ainsi que celle indiquée ci-dessous.",
     "RadarrSupportsAnyIndexer": "Radarr prend en charge tout indexeur qui utilise le standard Newznab, ainsi que d'autres indexeurs répertoriés ci-dessous.",
-    "RadarrSupportsAnyDownloadClient": "Radarr prend en charge tout client de téléchargement qui utilise le standard Newznab, ainsi que d'autres clients de téléchargement répertoriés ci-dessous.",
+    "RadarrSupportsAnyDownloadClient": "Radarr prend en charge de nombreux clients de téléchargement torrent et usenet.",
     "Radarr": "Radarr",
     "Queued": "En file d'attente",
     "QualitySettings": "Paramètres Qualité",
@@ -1092,5 +1092,7 @@
     "UnableToLoadBlocklist": "Impossible de charger la liste noire",
     "Blocklisted": "Liste noire",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Êtes-vous sûr de vouloir désinstaller {0} objet{1} de la file d'attente ?",
-    "BlocklistReleases": "Mettre cette release sur la liste noire"
+    "BlocklistReleases": "Mettre cette release sur la liste noire",
+    "RemotePathMappingCheckGenericPermissions": "Le client de téléchargement {0} met les téléchargements dans {1} mais Radarr ne peut voir ce répertoire.  Il est possible que vous ayez besoin d'ajuster les permissions de ce dossier.",
+    "RemotePathMappingCheckLocalWrongOSPath": "Le client de téléchargement {0} met les téléchargements dans {1} mais il ne s'agit pas d'un chemin {2} valide.  Vérifiez les paramètres de votre client de téléchargement."
 }
