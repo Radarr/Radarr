@@ -110,5 +110,17 @@ namespace NzbDrone.Core.MediaFiles
         {
             _mediaFileRepository.DeleteForMovies(message.Movies.Select(m => m.Id).ToList());
         }
+
+        public static List<string> FilterExistingFiles(List<string> files, List<MovieFile> movieFiles, Movie movie)
+        {
+            var seriesFilePaths = movieFiles.Select(f => Path.Combine(movie.Path, f.RelativePath)).ToList();
+
+            if (!seriesFilePaths.Any())
+            {
+                return files;
+            }
+
+            return files.Except(seriesFilePaths, PathEqualityComparer.Instance).ToList();
+        }
     }
 }

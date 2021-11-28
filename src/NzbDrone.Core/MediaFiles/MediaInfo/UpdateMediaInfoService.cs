@@ -11,10 +11,10 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 {
     public interface IUpdateMediaInfo
     {
-        void Update(MovieFile movieFile, Movie movie);
+        bool Update(MovieFile movieFile, Movie movie);
     }
 
-    public class UpdateMediaInfoService : IHandle<MovieScannedEvent>, IUpdateMediaInfo
+    public class UpdateMediaInfoService : IUpdateMediaInfo, IHandle<MovieScannedEvent>
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IMediaFileService _mediaFileService;
@@ -54,35 +54,39 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
         }
 
-        public void Update(MovieFile movieFile, Movie movie)
+        public bool Update(MovieFile movieFile, Movie movie)
         {
             if (!_configService.EnableMediaInfo)
             {
                 _logger.Debug("MediaInfo is disabled");
-                return;
+                return false;
             }
 
-            UpdateMediaInfo(movieFile, movie);
+            return UpdateMediaInfo(movieFile, movie);
         }
 
-        private void UpdateMediaInfo(MovieFile movieFile, Movie movie)
+        private bool UpdateMediaInfo(MovieFile movieFile, Movie movie)
         {
             var path = Path.Combine(movie.Path, movieFile.RelativePath);
 
             if (!_diskProvider.FileExists(path))
             {
                 _logger.Debug("Can't update MediaInfo because '{0}' does not exist", path);
-                return;
+                return false;
             }
 
             var updatedMediaInfo = _videoFileInfoReader.GetMediaInfo(path);
 
-            if (updatedMediaInfo != null)
+            if (updatedMediaInfo == null)
             {
-                movieFile.MediaInfo = updatedMediaInfo;
-                _mediaFileService.Update(movieFile);
-                _logger.Debug("Updated MediaInfo for '{0}'", path);
+                return false;
             }
+
+            movieFile.MediaInfo = updatedMediaInfo;
+            _mediaFileService.Update(movieFile);
+            _logger.Debug("Updated MediaInfo for '{0}'", path);
+
+            return true;
         }
     }
 }

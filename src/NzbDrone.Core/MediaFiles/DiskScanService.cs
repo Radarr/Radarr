@@ -11,6 +11,7 @@ using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles.Commands;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -36,8 +37,10 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IImportApprovedMovie _importApprovedMovies;
         private readonly IConfigService _configService;
         private readonly IMovieService _movieService;
+        private readonly IMediaFileService _mediaFileService;
         private readonly IMediaFileTableCleanupService _mediaFileTableCleanupService;
         private readonly IRootFolderService _rootFolderService;
+        private readonly IUpdateMediaInfo _updateMediaInfoService;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
@@ -46,8 +49,10 @@ namespace NzbDrone.Core.MediaFiles
                                IImportApprovedMovie importApprovedMovies,
                                IConfigService configService,
                                IMovieService movieService,
+                               IMediaFileService mediaFileService,
                                IMediaFileTableCleanupService mediaFileTableCleanupService,
                                IRootFolderService rootFolderService,
+                               IUpdateMediaInfo updateMediaInfoService,
                                IEventAggregator eventAggregator,
                                Logger logger)
         {
@@ -56,8 +61,10 @@ namespace NzbDrone.Core.MediaFiles
             _importApprovedMovies = importApprovedMovies;
             _configService = configService;
             _movieService = movieService;
+            _mediaFileService = mediaFileService;
             _mediaFileTableCleanupService = mediaFileTableCleanupService;
             _rootFolderService = rootFolderService;
+            _updateMediaInfoService = updateMediaInfoService;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -126,11 +133,45 @@ namespace NzbDrone.Core.MediaFiles
 
             CleanMediaFiles(movie, mediaFileList);
 
+            var movieFiles = _mediaFileService.GetFilesByMovie(movie.Id);
+            var unmappedFiles = MediaFileService.FilterExistingFiles(mediaFileList, movieFiles, movie);
+
             var decisionsStopwatch = Stopwatch.StartNew();
-            var decisions = _importDecisionMaker.GetImportDecisions(mediaFileList, movie);
+            var decisions = _importDecisionMaker.GetImportDecisions(unmappedFiles, movie, false);
             decisionsStopwatch.Stop();
             _logger.Trace("Import decisions complete for: {0} [{1}]", movie, decisionsStopwatch.Elapsed);
             _importApprovedMovies.Import(decisions, false);
+
+            // Update existing files that have a different file size
+            var fileInfoStopwatch = Stopwatch.StartNew();
+            var filesToUpdate = new List<MovieFile>();
+
+            foreach (var file in movieFiles)
+            {
+                var path = Path.Combine(movie.Path, file.RelativePath);
+                var fileSize = _diskProvider.GetFileSize(path);
+
+                if (file.Size == fileSize)
+                {
+                    continue;
+                }
+
+                file.Size = fileSize;
+
+                if (!_updateMediaInfoService.Update(file, movie))
+                {
+                    filesToUpdate.Add(file);
+                }
+            }
+
+            // Update any files that had a file size change, but didn't get media info updated.
+            if (filesToUpdate.Any())
+            {
+                _mediaFileService.Update(filesToUpdate);
+            }
+
+            fileInfoStopwatch.Stop();
+            _logger.Trace("Reprocessing existing files complete for: {0} [{1}]", movie, decisionsStopwatch.Elapsed);
 
             RemoveEmptyMovieFolder(movie.Path);
             CompletedScanning(movie);
