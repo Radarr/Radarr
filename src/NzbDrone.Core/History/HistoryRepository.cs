@@ -58,14 +58,17 @@ namespace NzbDrone.Core.History
 
         public List<MovieHistory> GetByMovieId(int movieId, MovieHistoryEventType? eventType)
         {
-            var query = Query(x => x.MovieId == movieId);
+            var builder = new SqlBuilder()
+                .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id)
+                .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+                .Where<MovieHistory>(h => h.MovieId == movieId);
 
             if (eventType.HasValue)
             {
-                query = query.Where(h => h.EventType == eventType).ToList();
+                builder.Where<MovieHistory>(h => h.EventType == eventType);
             }
 
-            return query.OrderByDescending(h => h.Date).ToList();
+            return PagedQuery(builder).OrderByDescending(h => h.Date).ToList();
         }
 
         public void DeleteForMovies(List<int> movieIds)
@@ -94,14 +97,17 @@ namespace NzbDrone.Core.History
 
         public List<MovieHistory> Since(DateTime date, MovieHistoryEventType? eventType)
         {
-            var builder = Builder().Where<MovieHistory>(x => x.Date >= date);
+            var builder = new SqlBuilder()
+                .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id)
+                .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+                .Where<MovieHistory>(x => x.Date >= date);
 
             if (eventType.HasValue)
             {
                 builder.Where<MovieHistory>(h => h.EventType == eventType);
             }
 
-            return Query(builder).OrderBy(h => h.Date).ToList();
+            return PagedQuery(builder).OrderBy(h => h.Date).ToList();
         }
     }
 }
