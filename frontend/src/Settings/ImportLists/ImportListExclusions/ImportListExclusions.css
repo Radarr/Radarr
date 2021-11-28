@@ -1,16 +1,16 @@
-.importExclusionsHeader {
+.importListExclusionsHeader {
   display: flex;
   margin-bottom: 10px;
   font-weight: bold;
 }
 
 .title {
-  flex: 0 0 400px;
+  flex: 0 0 600px;
 }
 
 .tmdbId,
 .movieYear {
-  flex: 0 0 200px;
+  flex: 0 0 70px;
 }
 
 .addImportExclusion {

@@ -8,12 +8,14 @@
 }
 
 .movieTitle {
-  flex: 0 0 400px;
+  @add-mixin truncate;
+
+  flex: 0 0 600px;
 }
 
 .tmdbId,
 .movieYear {
-  flex: 0 0 200px;
+  flex: 0 0 70px;
 }
 
 .actions {
