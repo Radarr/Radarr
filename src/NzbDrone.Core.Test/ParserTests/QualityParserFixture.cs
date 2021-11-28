@@ -87,6 +87,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.S06E11.The.Santa.Simulation.480p.WEB-DL.x264-mSD", false)]
         [TestCase("Movie.Name.S02E04.480p.WEB.DL.nSD.x264-NhaNc3", false)]
         [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][480p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
+        [TestCase("[SubsPlease] Movie Title (540p) [AB649D32].mkv", false)]
+        [TestCase("[Erai-raws] Movie Title [540p][Multiple Subtitle].mkv", false)]
         public void should_parse_webdl480p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R480p);
@@ -148,6 +150,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name.S01E01.The.Insanity.Principle.720p.WEB-DL.DD5.1.H.264-BD", false)]
         [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][720p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][AAC 2.0][Softsubs (HorribleSubs)]", false)]
+        [TestCase("Movie.Title.2013.960p.WEB-DL.AAC2.0.H.264-squalor", false)]
         public void should_parse_webdl720p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R720p);
