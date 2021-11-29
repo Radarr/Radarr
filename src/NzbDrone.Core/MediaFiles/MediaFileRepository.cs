@@ -9,6 +9,8 @@ namespace NzbDrone.Core.MediaFiles
         List<MovieFile> GetFilesByMovie(int movieId);
         List<MovieFile> GetFilesWithoutMediaInfo();
         void DeleteForMovies(List<int> movieIds);
+
+        List<MovieFile> GetFilesWithRelativePath(int movieId, string relativePath);
     }
 
     public class MediaFileRepository : BasicRepository<MovieFile>, IMediaFileRepository
@@ -31,6 +33,11 @@ namespace NzbDrone.Core.MediaFiles
         public void DeleteForMovies(List<int> movieIds)
         {
             Delete(x => movieIds.Contains(x.MovieId));
+        }
+
+        public List<MovieFile> GetFilesWithRelativePath(int movieId, string relativePath)
+        {
+            return Query(c => c.MovieId == movieId && c.RelativePath == relativePath);
         }
     }
 }

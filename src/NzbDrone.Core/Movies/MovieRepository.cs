@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Movies
             // the skips the join on profile and alternative title and populates manually
             // to avoid repeatedly deserializing the same profile / movie
             var builder = new SqlBuilder()
-                .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId);
+                .LeftJoin<Movie, MovieFile>((m, f) => m.MovieFileId == f.Id);
 
             var profiles = _profileRepository.All().ToDictionary(x => x.Id);
             var titles = _alternativeTitleRepository.All()

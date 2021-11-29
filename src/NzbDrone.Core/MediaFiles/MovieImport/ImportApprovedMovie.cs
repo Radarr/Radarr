@@ -126,6 +126,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     else
                     {
                         movieFile.RelativePath = localMovie.Movie.Path.GetRelativePath(movieFile.Path);
+
+                        // Delete existing files from the DB mapped to this path
+                        var previousFiles = _mediaFileService.GetFilesWithRelativePath(localMovie.Movie.Id, movieFile.RelativePath);
+
+                        foreach (var previousFile in previousFiles)
+                        {
+                            _mediaFileService.Delete(previousFile, DeleteMediaFileReason.ManualOverride);
+                        }
                     }
 
                     movieFile = _mediaFileService.Add(movieFile);
