@@ -9,7 +9,7 @@ using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 
-namespace NzbDrone.Core.Test.MediaFiles.EpisodeImport.Aggregation.Aggregators.Augmenters.Quality
+namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators.Augmenters.Quality
 {
     [TestFixture]
     public class AugmentQualityFromReleaseNameFixture : CoreTest<AugmentQualityFromReleaseName>

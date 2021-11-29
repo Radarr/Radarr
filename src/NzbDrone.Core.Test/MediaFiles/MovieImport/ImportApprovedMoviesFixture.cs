@@ -20,7 +20,7 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
-namespace NzbDrone.Core.Test.MediaFiles
+namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 {
     [TestFixture]
 
@@ -76,6 +76,13 @@ namespace NzbDrone.Core.Test.MediaFiles
             _approvedDecisions.ForEach(a => a.LocalMovie.Path = Path.Combine(_downloadClientItem.OutputPath.ToString(), Path.GetFileName(a.LocalMovie.Path)));
         }
 
+        private void GivenExistingFileOnDisk()
+        {
+            Mocker.GetMock<IMediaFileService>()
+                  .Setup(s => s.GetFilesWithRelativePath(It.IsAny<int>(), It.IsAny<string>()))
+                  .Returns(new List<MovieFile>());
+        }
+
         [Test]
         public void should_not_import_any_if_there_are_no_approved_decisions()
         {
@@ -87,12 +94,16 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_import_each_approved()
         {
+            GivenExistingFileOnDisk();
+
             Subject.Import(_approvedDecisions, false).Should().HaveCount(1);
         }
 
         [Test]
         public void should_only_import_approved()
         {
+            GivenExistingFileOnDisk();
+
             var all = new List<ImportDecision>();
             all.AddRange(_rejectedDecisions);
             all.AddRange(_approvedDecisions);
@@ -104,8 +115,10 @@ namespace NzbDrone.Core.Test.MediaFiles
         }
 
         [Test]
-        public void should_only_import_each_episode_once()
+        public void should_only_import_each_movie_once()
         {
+            GivenExistingFileOnDisk();
+
             var all = new List<ImportDecision>();
             all.AddRange(_approvedDecisions);
             all.Add(new ImportDecision(_approvedDecisions.First().LocalMovie));
@@ -137,6 +150,8 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_not_move_existing_files()
         {
+            GivenExistingFileOnDisk();
+
             Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, false);
 
             Mocker.GetMock<IUpgradeMediaFiles>()
@@ -225,6 +240,8 @@ namespace NzbDrone.Core.Test.MediaFiles
         [Test]
         public void should_import_larger_files_first()
         {
+            GivenExistingFileOnDisk();
+
             var fileDecision = _approvedDecisions.First();
             fileDecision.LocalMovie.Size = 1.Gigabytes();
 
@@ -321,10 +338,10 @@ namespace NzbDrone.Core.Test.MediaFiles
         {
             var name = "Transformers.2007.720p.BluRay.x264-Radarr";
             var outputPath = Path.Combine(@"C:\Test\Unsorted\movies\".AsOsAgnostic(), name);
-            var localEpisode = _approvedDecisions.First().LocalMovie;
+            var localMovie = _approvedDecisions.First().LocalMovie;
 
-            localEpisode.FolderMovieInfo = new ParsedMovieInfo { OriginalTitle = name };
-            localEpisode.Path = Path.Combine(outputPath, "subfolder", name + ".mkv");
+            localMovie.FolderMovieInfo = new ParsedMovieInfo { OriginalTitle = name };
+            localMovie.Path = Path.Combine(outputPath, "subfolder", name + ".mkv");
 
             Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true, null);
 
