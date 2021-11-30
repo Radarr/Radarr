@@ -358,7 +358,7 @@
     "AvailabilityDelayHelpText": "Quantidade de tempo antes ou depois da data de disponibilidade para pesquisar pelo filme",
     "AvailabilityDelay": "Atraso de disponibilidade",
     "AutoUnmonitorPreviouslyDownloadedMoviesHelpText": "Filmes excluídos do disco automaticamente deixam de ser monitorados no Radarr",
-    "AutoRedownloadFailedHelpText": "Pesquisar automaticamente e tentar baixar uma versão diferente",
+    "AutoRedownloadFailedHelpText": "Procure automaticamente e tente fazer o download de uma versão diferente",
     "AutomaticSearch": "Pesquisa automática",
     "Automatic": "Automático",
     "AuthForm": "Formulários (página de entrada)",
@@ -741,7 +741,7 @@
     "SelectLanguges": "Selecionar idiomas",
     "SelectLanguage": "Selecionar idioma",
     "SelectFolder": "Selecionar pasta",
-    "SelectAll": "Selecionar tudo",
+    "SelectAll": "Selecionar Todos",
     "Seeders": "Semeadores",
     "Security": "Segurança",
     "Seconds": "Segundos",
@@ -991,7 +991,7 @@
     "UpdateCheckStartupNotWritableMessage": "Não é possível instalar a atualização porque a pasta de inicialização \"{0}\" não pode ser acessada pelo usuário \"{1}\".",
     "UpdateAutomaticallyHelpText": "Baixar e instalar atualizações automaticamente. Você ainda poderá instalar a partir de Sistema: Atualizações",
     "UpdateAll": "Atualizar tudo",
-    "UnselectAll": "Desmarcar tudo",
+    "UnselectAll": "Deselecionar Todos",
     "UnsavedChanges": "Alterações não salvas",
     "Unreleased": "Indisponível",
     "UnmonitoredHelpText": "Incluir filmes não monitorados no feed do iCal",
@@ -1108,5 +1108,8 @@
     "BlocklistReleases": "Lançamento na lista de bloqueio",
     "RemoveSelectedItems": "Remover Itens Selecionados",
     "IndexerTagHelpText": "Só use este indexador para filmes com ao menos uma etiqueta correspondente. Deixe em branco para usar com todos os filmes.",
-    "RemoveSelectedItem": "Remover Item Selecionado"
+    "RemoveSelectedItem": "Remover Item Selecionado",
+    "RemoveFailed": "Falha na remoção",
+    "RemoveCompleted": "Remoção Completa",
+    "RemoveDownloadsAlert": "As configurações de remoção foram movidas para as configurações do Cliente de Download na tabela acima."
 }
