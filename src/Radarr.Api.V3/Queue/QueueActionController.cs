@@ -31,7 +31,7 @@ namespace Radarr.Api.V3.Queue
 
             _downloadService.DownloadReport(pendingRelease.RemoteMovie);
 
-            return new object();
+            return new { };
         }
 
         [HttpPost("grab/bulk")]
@@ -49,7 +49,7 @@ namespace Radarr.Api.V3.Queue
                 _downloadService.DownloadReport(pendingRelease.RemoteMovie);
             }
 
-            return new object();
+            return new { };
         }
     }
 }

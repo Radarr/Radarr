@@ -94,7 +94,7 @@ namespace Radarr.Api.V3.Movies
         {
             _movieService.DeleteMovies(resource.MovieIds, resource.DeleteFiles, resource.AddImportExclusion);
 
-            return new object();
+            return new { };
         }
     }
 }
