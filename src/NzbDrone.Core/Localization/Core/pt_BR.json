@@ -351,7 +351,7 @@
     "BeforeUpdate": "Antes da atualização",
     "Backups": "Backups",
     "BackupRetentionHelpText": "Backups automáticos anteriores ao período de retenção serão limpos automaticamente",
-    "BackupNow": "Disparar Backup",
+    "BackupNow": "Fazer Backup",
     "BackupIntervalHelpText": "Intervalo entre backups automáticos",
     "BackupFolderHelpText": "Os caminhos relativos estarão no diretório AppData do Radarr",
     "Backup": "Backup",
