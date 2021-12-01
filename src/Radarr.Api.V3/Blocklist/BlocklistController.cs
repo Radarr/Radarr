@@ -49,7 +49,7 @@ namespace Radarr.Api.V3.Blocklist
         {
             _blocklistService.Delete(resource.Ids);
 
-            return new object();
+            return new { };
         }
     }
 }

@@ -98,7 +98,7 @@ namespace Radarr.Api.V3.History
         public object MarkAsFailed([FromRoute] int id)
         {
             _failedDownloadService.MarkAsFailed(id);
-            return new object();
+            return new { };
         }
     }
 }

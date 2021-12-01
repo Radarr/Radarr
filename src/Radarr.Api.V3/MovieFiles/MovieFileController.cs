@@ -187,7 +187,7 @@ namespace Radarr.Api.V3.MovieFiles
                 _mediaFileDeletionService.DeleteMovieFile(movie, movieFile);
             }
 
-            return new object();
+            return new { };
         }
 
         [NonAction]
