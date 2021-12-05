@@ -9,3 +9,9 @@
   flex-wrap: wrap;
   margin-top: 5px;
 }
+
+.label {
+  composes: label from '~Components/Label.css';
+
+  max-width: 100%;
+}

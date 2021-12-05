@@ -48,20 +48,21 @@ class TagInputTag extends Component {
       kind,
       canEdit
     } = this.props;
+
     return (
       <div
         className={styles.tag}
         tabIndex={-1}
       >
         <Label
+          className={styles.label}
           kind={kind}
         >
           <Link
-            className={styles.link}
+            className={canEdit ? styles.linkWithEdit : styles.link}
             tabIndex={-1}
             onPress={this.onDelete}
           >
-
             {tag.name}
           </Link>
 

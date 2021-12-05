@@ -77,6 +77,7 @@ class Restriction extends Component {
 
               return (
                 <Label
+                  className={styles.label}
                   key={item}
                   kind={kinds.SUCCESS}
                 >
@@ -96,6 +97,7 @@ class Restriction extends Component {
 
               return (
                 <Label
+                  className={styles.label}
                   key={item}
                   kind={kinds.DANGER}
                 >

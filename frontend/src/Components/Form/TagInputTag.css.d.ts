@@ -3,7 +3,9 @@
 interface CssExports {
   'editButton': string;
   'editContainer': string;
+  'label': string;
   'link': string;
+  'linkWithEdit': string;
   'tag': string;
 }
 export const cssExports: CssExports;

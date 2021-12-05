@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'enabled': string;
+  'label': string;
   'restriction': string;
 }
 export const cssExports: CssExports;
