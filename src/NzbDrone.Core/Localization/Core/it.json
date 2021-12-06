@@ -59,7 +59,7 @@
     "Clear": "Cancella",
     "Certification": "Certificazione",
     "AppDataLocationHealthCheckMessage": "Non è possibile effettuare l'aggiornamento per evitare di cancellare AppData",
-    "Analytics": "Statistiche",
+    "Analytics": "Analisi",
     "Added": "Aggiunto",
     "About": "Versione",
     "Year": "Anno",
@@ -259,7 +259,7 @@
     "AnalyticsEnabledHelpText": "Inviare informazioni anonime sull'utilizzo e sugli errori ai server di Radarr. Ciò include informazioni del tuo browser, come le pagine di Radarr che utilizzi, la segnalazione di errori e la versione del sistema operativo e del runtime. Utilizzeremo queste informazioni per dare priorità alle funzioni e alle correzioni di bug.",
     "AnalyseVideoFiles": "Analizza i file video",
     "AlternativeTitle": "Titolo Alternativo",
-    "AlreadyInYourLibrary": "Già presente nella libreria",
+    "AlreadyInYourLibrary": "Già presente nella tua libreria",
     "AllowHardcodedSubsHelpText": "Se verranno rilevati sottotitoli impressi il film verrà comunque scaricato",
     "AllowHardcodedSubs": "Permetti i sottotitoli hardcoded (impressi direttamente nel file)",
     "Warn": "Attenzione",
@@ -602,7 +602,7 @@
     "GeneralSettings": "Impostazioni Generali",
     "ForMoreInformationOnTheIndividualIndexers": "Per maggiori informazioni sui singoli Indexer clicca sul pulsante info.",
     "ForMoreInformationOnTheIndividualImportListsClinkOnTheInfoButtons": "Per maggiori informazioni sulle singole liste di importazione clicca sul pulsante info.",
-    "ForMoreInformationOnTheIndividualDownloadClients": "Per maggiori informazioni sui singoli client di download clicca sul pulsante info.",
+    "ForMoreInformationOnTheIndividualDownloadClients": "Per maggiori informazioni sui singoli download del client clicca sul pulsante info.",
     "FollowPerson": "Segui Persona",
     "Folders": "Cartelle",
     "Fixed": "Fissato",
@@ -1079,5 +1079,8 @@
     "Blocklisted": "Lista Nera",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Sei sicuro di voler cancellare {0} elemento{1} dalla coda?",
     "BlocklistReleases": "Release in blacklist",
-    "BypassDelayIfHighestQuality": "Non considerare se la qualità è massima"
+    "BypassDelayIfHighestQuality": "Non considerare se la qualità è massima",
+    "ImportListMissingRoot": "Persa la cartella principale per l’importazione delle liste : {0}",
+    "ImportListMultipleMissingRoots": "Diverse cartelle principale sono perse per l’importazione: {0}",
+    "From": "Da"
 }
