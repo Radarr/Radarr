@@ -484,7 +484,7 @@
     "Links": "Koppelingen",
     "IconForCutoffUnmet": "Icoon voor Onbereikte Drempel",
     "EnableMediaInfoHelpText": "Video informatie extraheren zoals resolutie, speelduur en codec informatie van bestanden. Dit maakt het noodzakelijk dat Radarr delen van een bestand moet inlezen dewelke hoge schijf- of netwerkactiviteit kan veroorzaken tijdens het scannen.",
-    "BindAddress": "Aanhaak Adres",
+    "BindAddress": "Gebonden Adres",
     "PreferIndexerFlagsHelpText": "Verkies uitgaves met speciale flags",
     "MinimumAgeHelpText": "Enkel Usenet: Minimale leeftijd in minuten voor NZB bestanden alvorens ze worden opgehaald. Gebruik dit om nieuwe uitgaves de tijd te geven om tot bij uw Usenet provider toe te komen.",
     "LanguageHelpText": "Taal voor Uitgaves",
@@ -1096,12 +1096,12 @@
     "RemotePathMappingCheckLocalWrongOSPath": "Lokale downloadclient {0} plaatst downloads in {1}, maar dit is geen geldig {2}-pad.  Controleer de instellingen van uw downloadclient.",
     "TaskUserAgentTooltip": "User-Agent geleverd door de app die de API heeft aangeroepen",
     "AreYouSureYouWantToRemoveTheSelectedItemsFromBlocklist": "Ben je zeker dat je de geselecteerde items wil verwijderen van de uitzonderingslijst?",
-    "Blocklist": "Zwarte lijst",
+    "Blocklist": "Blokkeerlijst",
     "BlocklistHelpText": "Voorkom dat Radarr deze release nogmaals automatisch ophaalt",
-    "BlocklistRelease": "Uitgave op Zwarte lijst zetten",
+    "BlocklistRelease": "Uitgave op blokkeerlijst zetten",
     "RemoveFromBlocklist": "Verwijder van zwarte lijst",
     "UnableToLoadBlocklist": "Kon zwarte lijst niet laden",
-    "Blocklisted": "Zwarte lijst",
+    "Blocklisted": "Blokkeerlijst",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Ben je zeker dat je {1} item{2} uit de wachtrij wilt verwijderen?",
-    "BlocklistReleases": "Uitgave op Zwarte lijst zetten"
+    "BlocklistReleases": "Uitgave op blokkeerlijst zetten"
 }
