@@ -27,7 +27,7 @@ const paged = `${section}.paged`;
 
 export const defaultState = {
   options: {
-    includeUnknownMovieItems: false
+    includeUnknownMovieItems: true
   },
 
   status: {
