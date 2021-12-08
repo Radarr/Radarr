@@ -434,6 +434,7 @@
   "IndexerStatusCheckAllClientMessage": "All indexers are unavailable due to failures",
   "IndexerStatusCheckSingleClientMessage": "Indexers unavailable due to failures: {0}",
   "IndexerTagHelpText": "Only use this indexer for movies with at least one matching tag. Leave blank to use with all movies.",
+  "IndexerJackettAll": "Indexers using the unsupported Jackett 'all' endpoint: {0}",
   "Info": "Info",
   "InstallLatest": "Install Latest",
   "InteractiveImport": "Interactive Import",
