@@ -92,6 +92,7 @@ namespace NzbDrone.Core.Indexers.Torznab
                 return;
             }
 
+            failures.AddIfNotNull(JackettAll());
             failures.AddIfNotNull(TestCapabilities());
         }
 
@@ -147,6 +148,23 @@ namespace NzbDrone.Core.Indexers.Torznab
 
                 return new ValidationFailure(string.Empty, "Unable to connect to indexer, check the log for more details");
             }
+        }
+
+        protected virtual ValidationFailure JackettAll()
+        {
+            if (Settings.ApiPath.Contains("/torznab/all", StringComparison.InvariantCultureIgnoreCase) ||
+                Settings.ApiPath.Contains("/api/v2.0/indexers/all/results/torznab", StringComparison.InvariantCultureIgnoreCase) ||
+                Settings.BaseUrl.Contains("/torznab/all", StringComparison.InvariantCultureIgnoreCase) ||
+                Settings.BaseUrl.Contains("/api/v2.0/indexers/all/results/torznab", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return new NzbDroneValidationFailure("ApiPath", "Jackett's all endpoint is not supported, please add indexers individually")
+                {
+                    IsWarning = true,
+                    DetailedDescription = "Jackett's all endpoint is not supported, please add indexers individually"
+                };
+            }
+
+            return null;
         }
 
         public override object RequestAction(string action, IDictionary<string, string> query)
