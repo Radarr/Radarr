@@ -204,5 +204,48 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             pageTier2.Url.Query.Should().NotContain("imdbid=0076759");
             pageTier2.Url.Query.Should().Contain("q=");
         }
+
+        [Test]
+        public void should_encode_raw_title()
+        {
+            _capabilities.SupportedMovieSearchParameters = new[] { "q" };
+            _capabilities.TextSearchEngine = "raw";
+
+            MovieSearchCriteria movieRawSearchCriteria = new MovieSearchCriteria
+            {
+                Movie = new Movies.Movie { Title = "Some Movie & Title: Words", Year = 2021, TmdbId = 123 },
+                SceneTitles = new List<string> { "Some Movie & Title: Words" }
+            };
+
+            var results = Subject.GetSearchRequests(movieRawSearchCriteria);
+
+            var page = results.GetTier(0).First().First();
+
+            page.Url.Query.Should().Contain("q=Some%20Movie%20%26%20Title%3A%20Words");
+            page.Url.Query.Should().NotContain(" & ");
+            page.Url.Query.Should().Contain("%26");
+        }
+
+        [Test]
+        public void should_use_clean_title_and_encode()
+        {
+            _capabilities.SupportedMovieSearchParameters = new[] { "q" };
+            _capabilities.TextSearchEngine = "sphinx";
+
+            MovieSearchCriteria movieRawSearchCriteria = new MovieSearchCriteria
+            {
+                Movie = new Movies.Movie { Title = "Some Movie & Title: Words", Year = 2021, TmdbId = 123 },
+                SceneTitles = new List<string> { "Some Movie & Title: Words" }
+            };
+
+            var results = Subject.GetSearchRequests(movieRawSearchCriteria);
+
+            var page = results.GetTier(0).First().First();
+
+            page.Url.Query.Should().Contain("q=Some%20Movie%20and%20Title%20Words%202021");
+            page.Url.Query.Should().Contain("and");
+            page.Url.Query.Should().NotContain(" & ");
+            page.Url.Query.Should().NotContain("%26");
+        }
     }
 }
