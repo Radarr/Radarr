@@ -14,7 +14,7 @@ namespace NzbDrone.Common.EnvironmentInfo
         private readonly Logger _logger;
         private readonly DateTime _startTime = DateTime.UtcNow;
 
-        public RuntimeInfo(IHostLifetime hostLifetime, Logger logger)
+        public RuntimeInfo(Logger logger, IHostLifetime hostLifetime = null)
         {
             _logger = logger;
 
