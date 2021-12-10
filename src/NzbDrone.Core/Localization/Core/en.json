@@ -525,7 +525,7 @@
   "MinutesNinety": "90 Minutes: {0}",
   "MinutesSixty": "60 Minutes: {0}",
   "Missing": "Missing",
-  "MissingFromDisk": "Radarr was unable to find the file on disk so it was removed",
+  "MissingFromDisk": "Radarr was unable to find the file on disk so the file was removed from the database",
   "MissingMonitoredAndConsideredAvailable": "Missing (Monitored)",
   "MissingNotMonitored": "Missing (Unmonitored)",
   "Mode": "Mode",
