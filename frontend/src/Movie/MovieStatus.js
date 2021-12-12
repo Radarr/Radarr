@@ -6,7 +6,7 @@ export function getMovieStatusDetails(status) {
   let statusDetails = {
     icon: icons.ANNOUNCED,
     title: translate('Announced'),
-    message: translate('AnnoucedMsg')
+    message: translate('AnnouncedMsg')
   };
 
   if (status === 'deleted') {

@@ -75,14 +75,14 @@ class SelectReleaseGroupModalContent extends Component {
 
         <ModalFooter>
           <Button onPress={onModalClose}>
-            Cancel
+            {translate('Cancel')}
           </Button>
 
           <Button
             kind={kinds.SUCCESS}
             onPress={this.onReleaseGroupSelect}
           >
-            Set Release Group
+            {translate('SetReleaseGroup')}
           </Button>
         </ModalFooter>
       </ModalContent>

@@ -128,7 +128,7 @@ class SelectLanguageModalContent extends Component {
             kind={kinds.SUCCESS}
             onPress={this.onLanguageSelect}
           >
-            {translate('SelectLanguges')}
+            {translate('SelectLanguages')}
           </Button>
         </ModalFooter>
       </ModalContent>

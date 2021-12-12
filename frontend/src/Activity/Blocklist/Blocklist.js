@@ -120,7 +120,7 @@ class Blocklist extends Component {
         <PageToolbar>
           <PageToolbarSection>
             <PageToolbarButton
-              label="Remove Selected"
+              label={translate('RemoveSelected')}
               iconName={icons.REMOVE}
               isDisabled={!selectedIds.length}
               isSpinning={isRemoving}

@@ -174,7 +174,7 @@ function EditIndexerModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>Tags</FormLabel>
+                <FormLabel>{translate('Tags')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.TAG}

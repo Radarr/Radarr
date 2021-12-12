@@ -50,10 +50,16 @@ class ImportListExclusions extends Component {
           errorMessage={translate('UnableToLoadListExclusions')}
           {...otherProps}
         >
-          <div className={styles.importListExclusionsHeader}>
-            <div className={styles.tmdbId}>TMDB Id</div>
-            <div className={styles.title}>Title</div>
-            <div className={styles.movieYear}>Year</div>
+          <div className={styles.importExclusionsHeader}>
+            <div className={styles.tmdbId}>
+              TMDb Id
+            </div>
+            <div className={styles.title}>
+              {translate('Title')}
+            </div>
+            <div className={styles.movieYear}>
+              {translate('Year')}
+            </div>
           </div>
 
           <div>

@@ -166,7 +166,9 @@ class FilterBuilderModalContent extends Component {
             </div>
           </div>
 
-          <div className={styles.label}>Filters</div>
+          <div className={styles.label}>
+            {translate('Filters')}
+          </div>
 
           <div className={styles.rows}>
             {
