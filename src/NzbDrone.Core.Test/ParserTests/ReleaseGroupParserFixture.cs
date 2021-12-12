@@ -88,6 +88,17 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name (2015) [BDRemux 1080p AVC ES-CAT-EN DTS-HD MA 5.1 Subs]", null)]
         [TestCase("Movie Name (2015) [BDRemux 1080p AVC EN-CAT-ES DTS-HD MA 5.1 Subs]", null)]
         [TestCase("Movie Name (2015) [BDRemux 1080p AVC EN-ES-CAT DTS-HD MA 5.1 Subs]", null)]
+        [TestCase("Another Crappy Anime Movie Name 1999 [DusIctv] [Blu-ray][MKV][h264][1080p][DTS-HD MA 5.1][Dual Audio][Softsubs (DusIctv)", "DusIctv")]
+        [TestCase("Another Crappy Anime Movie Name 1999 [DHD] [Blu-ray][MKV][h264][1080p][AAC 5.1][Dual Audio][Softsubs (DHD)]", "DHD")]
+        [TestCase("Another Crappy Anime Movie Name 1999 [SEV] [Blu-ray][MKV][h265 10-bit][1080p][FLAC 5.1][Dual Audio][Softsubs (SEV)]", "SEV")]
+        [TestCase("Another Crappy Anime Movie Name 1999 [CtrlHD] [Blu-ray][MKV][h264][720p][AC3 2.0][Dual Audio][Softsubs (CtrlHD)]", "CtrlHD")]
+        [TestCase("Crappy Anime Movie Name 2017 [-ZR-] [Blu-ray][MKV][h264][1080p][TrueHD 5.1][Dual Audio][Softsubs (-ZR-)]", "-ZR-")]
+        [TestCase("Crappy Anime Movie Name 2017 [XZVN] [Blu-ray][MKV][h264][1080p][TrueHD 5.1][Dual Audio][Softsubs (XZVN)]", "XZVN")]
+        [TestCase("Crappy Anime Movie Name 2017 [ADC] [Blu-ray][M2TS (A)][16:9][h264][1080p][TrueHD 5.1][Dual Audio][Softsubs (ADC)]", "ADC")]
+        [TestCase("Crappy Anime Movie Name 2017 [Koten_Gars] [Blu-ray][MKV][h264][1080p][TrueHD 5.1][Dual Audio][Softsubs (Koten_Gars)]", "Koten_Gars")]
+        [TestCase("Crappy Anime Movie Name 2017 [RH] [Blu-ray][MKV][h264 10-bit][1080p][FLAC 5.1][Dual Audio][Softsubs (RH)]", "RH")]
+        [TestCase("Yet Another Anime Movie 2012 [Kametsu] [Blu-ray][MKV][h264 10-bit][1080p][FLAC 5.1][Dual Audio][Softsubs (Kametsu)]", "Kametsu")]
+        [TestCase("Another.Anime.Film.Name.2016.JPN.Blu-Ray.Remux.AVC.DTS-MA.BluDragon", "BluDragon")]
 
         public void should_parse_exception_release_group(string title, string expected)
         {
