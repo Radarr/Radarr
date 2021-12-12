@@ -152,7 +152,7 @@ function TagDetailsModalContent(props) {
 
         {
           indexers.length ?
-            <FieldSet legend="Indexers">
+            <FieldSet legend={translate('Indexers')}>
               {
                 indexers.map((item) => {
                   return (
