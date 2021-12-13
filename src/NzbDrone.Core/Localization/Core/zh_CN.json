@@ -574,7 +574,7 @@
     "AllMoviesInPathHaveBeenImported": "在 {0} 中的所有电影已被导入",
     "Agenda": "日程表",
     "AfterManualRefresh": "在手动更新之后",
-    "AddToDownloadQueue": "已添加到已下载队列",
+    "AddToDownloadQueue": "添加到下载队列",
     "AddMoviesMonitored": "添加监控中的电影",
     "AddListExclusion": "添加排除列表",
     "AddList": "添加列表",
@@ -1107,5 +1107,9 @@
     "Letterboxd": "信箱",
     "RemoveSelectedItem": "删除所选项目",
     "RemoveSelectedItems": "删除所选项目",
-    "TaskUserAgentTooltip": "User-Agent provided by the app that called the API"
+    "TaskUserAgentTooltip": "由调用API的应用程序提供的User-Agent。",
+    "BypassDelayIfHighestQualityHelpText": "当发布的品质描述档案中具有最高启用质量的首选协议时绕过延迟",
+    "RemoveCompleted": "移除已完成",
+    "RemoveDownloadsAlert": "移除设置被移至上表中的单个下载客户端设置。",
+    "RemoveFailed": "删除失败"
 }
