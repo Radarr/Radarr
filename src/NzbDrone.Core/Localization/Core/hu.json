@@ -1028,7 +1028,7 @@
     "Months": "Hónapok",
     "MonitoredStatus": "Megfigyelt/Státusz",
     "Monday": "Hétfő",
-    "MissingFromDisk": "A Radarr nem találta a megadott fájlt a lemezen, így eltávolitotta azt",
+    "MissingFromDisk": "A Radarr nem találta a fájlt a lemezen, ezért a fájlt eltávolítottuk az adatbázisból",
     "Minutes": "percek",
     "MinimumCustomFormatScore": "Minimum Egyéni Formátum száma",
     "Min": "minimum",
