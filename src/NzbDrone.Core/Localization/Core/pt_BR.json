@@ -401,7 +401,7 @@
     "Mode": "Modo",
     "MissingNotMonitored": "Ausente (não monitorado)",
     "MissingMonitoredAndConsideredAvailable": "Ausente (monitorado)",
-    "MissingFromDisk": "O Radarr não conseguiu encontrar o arquivo no disco, então ele foi removido",
+    "MissingFromDisk": "Radarr não pôde encontrar o arquivo no disco então o arquivo foi removido do banco de dados",
     "Missing": "Ausente",
     "MinutesSixty": "60 minutos: {0}",
     "MinutesNinety": "90 minutos: {0}",
