@@ -8,7 +8,7 @@
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="NLog" Version="4.7.12" />
     <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="RestSharp" Version="106.13.0" />
+    <PackageReference Include="RestSharp" Version="106.15.0" />
     <PackageReference Include="Unity" Version="5.11.10" />
   </ItemGroup>
   <ItemGroup>
