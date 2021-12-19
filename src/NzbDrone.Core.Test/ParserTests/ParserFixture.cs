@@ -23,6 +23,7 @@ namespace NzbDrone.Core.Test.ParserTests
          * Superman.-.The.Man.of.Steel.1994-06.34.hybrid.DreamGirl-Novus-HD
          * Superman.-.The.Man.of.Steel.1994-05.33.hybrid.DreamGirl-Novus-HD
          * Constantine S1-E1-WEB-DL-1080p-NZBgeek
+         * [TestCase("Valana la Movie FRENCH BluRay 720p 2016 kjhlj", "Valana la Movie")]  Removed 2021-12-19 as this / the regex for this was breaking all movies w/ french in title
          */
 
         [Test]
@@ -49,7 +50,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.The.Final.Chapter.2016", "Movie The Final Chapter")]
         [TestCase("Der.Movie.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Movie James")]
         [TestCase("Movie.German.DL.AC3.Dubbed..BluRay.x264-PsO", "Movie")]
-        [TestCase("Valana la Movie FRENCH BluRay 720p 2016 kjhlj", "Valana la Movie")]
         [TestCase("Valana la Movie TRUEFRENCH BluRay 720p 2016 kjhlj", "Valana la Movie")]
         [TestCase("Mission Movie: Rogue Movie (2015)�[XviD - Ita Ac3 - SoftSub Ita]azione, spionaggio, thriller *Prima Visione* Team mulnic Tom Cruise", "Mission Movie Rogue Movie")]
         [TestCase("Movie.Movie.2000.FRENCH..BluRay.-AiRLiNE", "Movie Movie")]
@@ -61,6 +61,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("World.Movie.Z.2.EXTENDED.2013.German.DL.1080p.BluRay.AVC-XANOR", "World Movie Z 2")]
         [TestCase("G.I.Movie.Movie.2013.THEATRiCAL.COMPLETE.BLURAY-GLiMMER", "G.I. Movie Movie")]
         [TestCase("www.Torrenting.org - Movie.2008.720p.X264-DIMENSION", "Movie")]
+        [TestCase("The.French.Movie.2013.720p.BluRay.x264 - ROUGH[PublicHD]", "The French Movie")]
         public void should_parse_movie_title(string postTitle, string title)
         {
             Parser.Parser.ParseMovieTitle(postTitle).PrimaryMovieTitle.Should().Be(title);
@@ -199,6 +200,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("The.Italian.Movie.2025.720p.BluRay.X264-AMIABLE")]
+        [TestCase("The.French.Movie.2013.720p.BluRay.x264 - ROUGH[PublicHD]")]
         public void should_not_parse_wrong_language_in_title(string postTitle)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
