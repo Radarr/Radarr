@@ -51,15 +51,6 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().Contain(Language.English);
         }
 
-        [TestCase("Movie.Title.1982.Ger.Eng.AC3.DL.BDRip.x264-iNCEPTiON")]
-        public void should_parse_language_english_german(string postTitle)
-        {
-            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
-
-            result.Languages.Should().Contain(Language.German);
-            result.Languages.Should().Contain(Language.English);
-        }
-
         [TestCase("Movie.Title.1994.Spanish.1080p.XviD-LOL")]
         [TestCase("Movie Title (2020)[BDRemux AVC 1080p][E-AC3 DD Plus 5.1 Castellano-Inglés Subs]")]
         [TestCase("Movie Title (2020) [UHDRemux2160p HDR][DTS-HD MA 5.1 AC3 5.1 Castellano - True-HD 7.1 Atmos Inglés Subs]")]
@@ -72,6 +63,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.German.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.2016.Ger.Dub.AAC.1080p.WebDL.x264-TKP21")]
         public void should_parse_language_german(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
