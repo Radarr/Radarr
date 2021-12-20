@@ -186,6 +186,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][1080p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         [TestCase("Movie.Title.2020.MULTi.1080p.WEB.H264-ALLDAYiN (S:285/L:11)", false)]
         [TestCase("Movie Title (2020) MULTi WEB 1080p x264-JiHEFF (S:317/L:28)", false)]
+        [TestCase("Movie.Titles.2020.1080p.NF.WEB.DD2.0.x264-SNEAkY", false)]
         public void should_parse_webdl1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R1080p);
