@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Notifications
         List<INotification> OnMovieDeleteEnabled();
         List<INotification> OnMovieFileDeleteEnabled();
         List<INotification> OnHealthIssueEnabled();
+        List<INotification> OnApplicationUpdateEnabled();
     }
 
     public class NotificationFactory : ProviderFactory<INotification, NotificationDefinition>, INotificationFactory
@@ -66,6 +67,11 @@ namespace NzbDrone.Core.Notifications
             return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnHealthIssue).ToList();
         }
 
+        public List<INotification> OnApplicationUpdateEnabled()
+        {
+            return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnApplicationUpdate).ToList();
+        }
+
         public override void SetProviderCharacteristics(INotification provider, NotificationDefinition definition)
         {
             base.SetProviderCharacteristics(provider, definition);
@@ -78,6 +84,7 @@ namespace NzbDrone.Core.Notifications
             definition.SupportsOnMovieFileDelete = provider.SupportsOnMovieFileDelete;
             definition.SupportsOnMovieFileDeleteForUpgrade = provider.SupportsOnMovieFileDeleteForUpgrade;
             definition.SupportsOnHealthIssue = provider.SupportsOnHealthIssue;
+            definition.SupportsOnApplicationUpdate = provider.SupportsOnApplicationUpdate;
         }
     }
 }

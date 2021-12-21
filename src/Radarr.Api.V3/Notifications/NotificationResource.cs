@@ -13,6 +13,7 @@ namespace Radarr.Api.V3.Notifications
         public bool OnMovieFileDelete { get; set; }
         public bool OnMovieFileDeleteForUpgrade { get; set; }
         public bool OnHealthIssue { get; set; }
+        public bool OnApplciationUpdate { get; set; }
         public bool SupportsOnGrab { get; set; }
         public bool SupportsOnDownload { get; set; }
         public bool SupportsOnUpgrade { get; set; }
@@ -21,6 +22,7 @@ namespace Radarr.Api.V3.Notifications
         public bool SupportsOnMovieFileDelete { get; set; }
         public bool SupportsOnMovieFileDeleteForUpgrade { get; set; }
         public bool SupportsOnHealthIssue { get; set; }
+        public bool SupportsOnApplicationUpdate { get; set; }
         public bool IncludeHealthWarnings { get; set; }
         public string TestCommand { get; set; }
     }
@@ -44,6 +46,7 @@ namespace Radarr.Api.V3.Notifications
             resource.OnMovieFileDelete = definition.OnMovieFileDelete;
             resource.OnMovieFileDeleteForUpgrade = definition.OnMovieFileDeleteForUpgrade;
             resource.OnHealthIssue = definition.OnHealthIssue;
+            resource.OnApplciationUpdate = definition.OnApplicationUpdate;
             resource.SupportsOnGrab = definition.SupportsOnGrab;
             resource.SupportsOnDownload = definition.SupportsOnDownload;
             resource.SupportsOnUpgrade = definition.SupportsOnUpgrade;
@@ -53,6 +56,7 @@ namespace Radarr.Api.V3.Notifications
             resource.SupportsOnMovieFileDeleteForUpgrade = definition.SupportsOnMovieFileDeleteForUpgrade;
             resource.SupportsOnHealthIssue = definition.SupportsOnHealthIssue;
             resource.IncludeHealthWarnings = definition.IncludeHealthWarnings;
+            resource.SupportsOnApplicationUpdate = definition.SupportsOnApplicationUpdate;
 
             return resource;
         }
@@ -74,6 +78,7 @@ namespace Radarr.Api.V3.Notifications
             definition.OnMovieFileDelete = resource.OnMovieFileDelete;
             definition.OnMovieFileDeleteForUpgrade = resource.OnMovieFileDeleteForUpgrade;
             definition.OnHealthIssue = resource.OnHealthIssue;
+            definition.OnApplicationUpdate = resource.OnApplciationUpdate;
             definition.SupportsOnGrab = resource.SupportsOnGrab;
             definition.SupportsOnDownload = resource.SupportsOnDownload;
             definition.SupportsOnUpgrade = resource.SupportsOnUpgrade;
@@ -83,6 +88,7 @@ namespace Radarr.Api.V3.Notifications
             definition.SupportsOnMovieFileDeleteForUpgrade = resource.SupportsOnMovieFileDeleteForUpgrade;
             definition.SupportsOnHealthIssue = resource.SupportsOnHealthIssue;
             definition.IncludeHealthWarnings = resource.IncludeHealthWarnings;
+            definition.SupportsOnApplicationUpdate = resource.SupportsOnApplicationUpdate;
 
             return definition;
         }

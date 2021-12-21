@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Notifications
         void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage);
         void OnMovieDelete(MovieDeleteMessage deleteMessage);
         void OnHealthIssue(HealthCheck.HealthCheck healthCheck);
+        void OnApplicationUpdate(ApplicationUpdateMessage updateMessage);
         void ProcessQueue();
         bool SupportsOnGrab { get; }
         bool SupportsOnDownload { get; }
@@ -24,5 +25,6 @@ namespace NzbDrone.Core.Notifications
         bool SupportsOnMovieFileDelete { get; }
         bool SupportsOnMovieFileDeleteForUpgrade { get; }
         bool SupportsOnHealthIssue { get; }
+        bool SupportsOnApplicationUpdate { get; }
     }
 }

@@ -109,6 +109,7 @@ export default {
         selectedSchema.onMovieDelete = selectedSchema.supportsOnMovieDelete;
         selectedSchema.onMovieFileDelete = selectedSchema.supportsOnMovieFileDelete;
         selectedSchema.onMovieFileDeleteForUpgrade = selectedSchema.supportsOnMovieFileDeleteForUpgrade;
+        selectedSchema.onApplicationUpdate = selectedSchema.supportsOnApplicationUpdate;
 
         return selectedSchema;
       });

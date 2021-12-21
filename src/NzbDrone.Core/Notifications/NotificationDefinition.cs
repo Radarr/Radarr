@@ -12,6 +12,7 @@ namespace NzbDrone.Core.Notifications
         public bool OnMovieFileDelete { get; set; }
         public bool OnMovieFileDeleteForUpgrade { get; set; }
         public bool OnHealthIssue { get; set; }
+        public bool OnApplicationUpdate { get; set; }
         public bool SupportsOnGrab { get; set; }
         public bool SupportsOnDownload { get; set; }
         public bool SupportsOnUpgrade { get; set; }
@@ -21,7 +22,8 @@ namespace NzbDrone.Core.Notifications
         public bool SupportsOnMovieFileDeleteForUpgrade { get; set; }
         public bool SupportsOnHealthIssue { get; set; }
         public bool IncludeHealthWarnings { get; set; }
+        public bool SupportsOnApplicationUpdate { get; set; }
 
-        public override bool Enable => OnGrab || OnDownload || (OnDownload && OnUpgrade) || OnMovieDelete || OnMovieFileDelete || OnMovieFileDeleteForUpgrade  || OnHealthIssue;
+        public override bool Enable => OnGrab || OnDownload || (OnDownload && OnUpgrade) || OnMovieDelete || OnMovieFileDelete || OnMovieFileDeleteForUpgrade  || OnHealthIssue || OnApplicationUpdate;
     }
 }

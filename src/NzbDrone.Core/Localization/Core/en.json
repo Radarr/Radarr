@@ -628,6 +628,8 @@
   "NoVideoFilesFoundSelectedFolder": "No video files were found in the selected folder",
   "OAuthPopupMessage": "Pop-ups are being blocked by your browser",
   "Ok": "Ok",
+  "OnApplicationUpdate": "On Application Update",
+  "OnApplicationUpdateHelpText": "On Application Update",
   "OnDownloadHelpText": "On Import",
   "OnGrab": "On Grab",
   "OnGrabHelpText": "On Grab",

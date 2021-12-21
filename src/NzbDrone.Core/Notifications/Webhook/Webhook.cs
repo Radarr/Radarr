@@ -116,6 +116,19 @@ namespace NzbDrone.Core.Notifications.Webhook
             _proxy.SendWebhook(payload, Settings);
         }
 
+        public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)
+        {
+            var payload = new WebhookApplicationUpdatePayload
+            {
+                EventType = WebhookEventType.ApplicationUpdate,
+                Message = updateMessage.Message,
+                PreviousVersion = updateMessage.PreviousVersion.ToString(),
+                NewVersion = updateMessage.NewVersion.ToString()
+            };
+
+            _proxy.SendWebhook(payload, Settings);
+        }
+
         public override string Name => "Webhook";
 
         public override ValidationResult Test()
