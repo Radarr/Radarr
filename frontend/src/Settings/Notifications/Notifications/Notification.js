@@ -63,6 +63,7 @@ class Notification extends Component {
       onMovieFileDelete,
       onMovieFileDeleteForUpgrade,
       onHealthIssue,
+      onApplicationUpdate,
       supportsOnGrab,
       supportsOnDownload,
       supportsOnUpgrade,
@@ -70,7 +71,8 @@ class Notification extends Component {
       supportsOnMovieDelete,
       supportsOnMovieFileDelete,
       supportsOnMovieFileDeleteForUpgrade,
-      supportsOnHealthIssue
+      supportsOnHealthIssue,
+      supportsOnApplicationUpdate
     } = this.props;
 
     return (
@@ -124,6 +126,14 @@ class Notification extends Component {
         }
 
         {
+          supportsOnApplicationUpdate && onApplicationUpdate ?
+            <Label kind={kinds.SUCCESS}>
+              {translate('onApplicationUpdate')}
+            </Label> :
+            null
+        }
+
+        {
           supportsOnMovieDelete && onMovieDelete ?
             <Label kind={kinds.SUCCESS}>
               {translate('OnMovieDelete')}
@@ -148,7 +158,7 @@ class Notification extends Component {
         }
 
         {
-          !onGrab && !onDownload && !onRename && !onHealthIssue && !onMovieDelete && !onMovieFileDelete ?
+          !onGrab && !onDownload && !onRename && !onHealthIssue && !onApplicationUpdate && !onMovieDelete && !onMovieFileDelete ?
             <Label
               kind={kinds.DISABLED}
               outline={true}
@@ -190,6 +200,7 @@ Notification.propTypes = {
   onMovieFileDelete: PropTypes.bool.isRequired,
   onMovieFileDeleteForUpgrade: PropTypes.bool.isRequired,
   onHealthIssue: PropTypes.bool.isRequired,
+  onApplicationUpdate: PropTypes.bool.isRequired,
   supportsOnGrab: PropTypes.bool.isRequired,
   supportsOnDownload: PropTypes.bool.isRequired,
   supportsOnMovieDelete: PropTypes.bool.isRequired,
@@ -198,6 +209,7 @@ Notification.propTypes = {
   supportsOnUpgrade: PropTypes.bool.isRequired,
   supportsOnRename: PropTypes.bool.isRequired,
   supportsOnHealthIssue: PropTypes.bool.isRequired,
+  supportsOnApplicationUpdate: PropTypes.bool.isRequired,
   onConfirmDeleteNotification: PropTypes.func.isRequired
 };
 

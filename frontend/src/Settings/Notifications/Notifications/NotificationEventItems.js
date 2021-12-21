@@ -23,6 +23,7 @@ function NotificationEventItems(props) {
     onMovieFileDelete,
     onMovieFileDeleteForUpgrade,
     onHealthIssue,
+    onApplicationUpdate,
     supportsOnGrab,
     supportsOnDownload,
     supportsOnUpgrade,
@@ -30,6 +31,7 @@ function NotificationEventItems(props) {
     supportsOnMovieDelete,
     supportsOnMovieFileDelete,
     supportsOnMovieFileDeleteForUpgrade,
+    supportsOnApplicationUpdate,
     supportsOnHealthIssue,
     includeHealthWarnings
   } = item;
@@ -150,6 +152,17 @@ function NotificationEventItems(props) {
                 />
               </div>
           }
+
+          <div>
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="onApplicationUpdate"
+              helpText={translate('OnApplicationUpdateHelpText')}
+              isDisabled={!supportsOnApplicationUpdate.value}
+              {...onApplicationUpdate}
+              onChange={onInputChange}
+            />
+          </div>
         </div>
       </div>
     </FormGroup>

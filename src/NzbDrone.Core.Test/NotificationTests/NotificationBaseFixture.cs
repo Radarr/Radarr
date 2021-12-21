@@ -78,6 +78,11 @@ namespace NzbDrone.Core.Test.NotificationTests
             {
                 TestLogger.Info("OnHealthIssue was called");
             }
+
+            public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)
+            {
+                TestLogger.Info("OnApplicationUpdate was called");
+            }
         }
 
         private class TestNotificationWithNoEvents : NotificationBase<TestSetting>
@@ -116,6 +121,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             notification.SupportsOnMovieFileDelete.Should().BeTrue();
             notification.SupportsOnMovieFileDeleteForUpgrade.Should().BeTrue();
             notification.SupportsOnHealthIssue.Should().BeTrue();
+            notification.SupportsOnApplicationUpdate.Should().BeTrue();
         }
 
         [Test]
@@ -131,6 +137,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             notification.SupportsOnMovieFileDelete.Should().BeFalse();
             notification.SupportsOnMovieFileDeleteForUpgrade.Should().BeFalse();
             notification.SupportsOnHealthIssue.Should().BeFalse();
+            notification.SupportsOnApplicationUpdate.Should().BeFalse();
         }
     }
 }
