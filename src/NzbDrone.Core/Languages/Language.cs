@@ -146,6 +146,9 @@ namespace NzbDrone.Core.Languages
                     Bulgarian,
                     PortugueseBR,
                     Arabic,
+                    Ukrainian,
+                    Persian,
+                    Bengali,
                     Any,
                     Original
                 };
