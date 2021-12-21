@@ -128,7 +128,7 @@ class Notification extends Component {
         {
           supportsOnApplicationUpdate && onApplicationUpdate ?
             <Label kind={kinds.SUCCESS}>
-              {translate('onApplicationUpdate')}
+              {translate('OnApplicationUpdate')}
             </Label> :
             null
         }
