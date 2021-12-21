@@ -1,4 +1,4 @@
-﻿using FluentMigrator;
+using FluentMigrator;
 
 //using FluentMigrator.Expressions;
 using NzbDrone.Core.Datastore.Migration.Framework;
@@ -13,12 +13,12 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             if (!Schema.Schema("dbo").Table("NetImport").Column("MinimumAvailability").Exists())
             {
-                Alter.Table("NetImport").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.PreDB);
+                Alter.Table("NetImport").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.Released);
             }
 
             if (!Schema.Schema("dbo").Table("Movies").Column("MinimumAvailability").Exists())
             {
-                Alter.Table("Movies").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.PreDB);
+                Alter.Table("Movies").AddColumn("MinimumAvailability").AsInt32().WithDefaultValue(MovieStatusType.Released);
             }
         }
     }

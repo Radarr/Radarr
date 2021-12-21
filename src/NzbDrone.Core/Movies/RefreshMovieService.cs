@@ -117,7 +117,6 @@ namespace NzbDrone.Core.Movies
             movie.Studio = movieInfo.Studio;
             movie.OriginalTitle = movieInfo.OriginalTitle;
             movie.OriginalLanguage = movieInfo.OriginalLanguage;
-            movie.HasPreDBEntry = movieInfo.HasPreDBEntry;
             movie.Recommendations = movieInfo.Recommendations;
 
             try

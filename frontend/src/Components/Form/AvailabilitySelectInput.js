@@ -6,8 +6,7 @@ import SelectInput from './SelectInput';
 const availabilityOptions = [
   { key: 'announced', value: translate('Announced') },
   { key: 'inCinemas', value: translate('InCinemas') },
-  { key: 'released', value: translate('Released') },
-  { key: 'preDB', value: translate('PreDB') }
+  { key: 'released', value: translate('Released') }
 ];
 
 function AvailabilitySelectInput(props) {

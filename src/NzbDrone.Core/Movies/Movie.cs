@@ -56,7 +56,6 @@ namespace NzbDrone.Core.Movies
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public MovieFile MovieFile { get; set; }
-        public bool HasPreDBEntry { get; set; }
         public int MovieFileId { get; set; }
 
         //Get Loaded via a Join Query
@@ -135,11 +134,6 @@ namespace NzbDrone.Core.Movies
                 {
                     minimumAvailabilityDate = InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue;
                 }
-            }
-
-            if (HasPreDBEntry && MinimumAvailability == MovieStatusType.PreDB)
-            {
-                return true;
             }
 
             if (minimumAvailabilityDate == DateTime.MinValue || minimumAvailabilityDate == DateTime.MaxValue)
