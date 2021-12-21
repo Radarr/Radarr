@@ -150,7 +150,6 @@ namespace NzbDrone.Core.Movies
         {
             //the below line is what was used before delay was implemented, could still be used for cases when delay==0
             //return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
-
             return DateTime.Now >= IsAvailableDate(delay);
         }
 
