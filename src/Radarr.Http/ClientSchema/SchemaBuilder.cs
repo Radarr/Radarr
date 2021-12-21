@@ -47,7 +47,10 @@ namespace Radarr.Http.ClientSchema
                 var propertyType = mapping.PropertyType;
                 var field = fields.Find(f => f.Name == mapping.Field.Name);
 
-                mapping.SetterFunc(target, field.Value);
+                if (field != null)
+                {
+                    mapping.SetterFunc(target, field.Value);
+                }
             }
 
             return target;
