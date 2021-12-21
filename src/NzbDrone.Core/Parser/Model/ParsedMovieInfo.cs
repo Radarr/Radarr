@@ -28,6 +28,8 @@ namespace NzbDrone.Core.Parser.Model
         [JsonIgnore]
         public Dictionary<string, object> ExtraInfo { get; set; } = new Dictionary<string, object>();
 
+        public string MovieTitle => PrimaryMovieTitle;
+
         public string PrimaryMovieTitle
         {
             get
