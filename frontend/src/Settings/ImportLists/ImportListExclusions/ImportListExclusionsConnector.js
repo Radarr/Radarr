@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { deleteImportExclusion, fetchImportExclusions } from 'Store/Actions/settingsActions';
-import ImportExclusions from './ImportExclusions';
+import ImportListExclusions from './ImportListExclusions';
 
 function createMapStateToProps() {
   return createSelector(
@@ -42,7 +42,7 @@ class ImportExclusionsConnector extends Component {
 
   render() {
     return (
-      <ImportExclusions
+      <ImportListExclusions
         {...this.state}
         {...this.props}
         onConfirmDeleteImportExclusion={this.onConfirmDeleteImportExclusion}

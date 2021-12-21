@@ -13,9 +13,9 @@ import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
-import styles from './EditImportExclusionModalContent.css';
+import styles from './EditImportListExclusionModalContent.css';
 
-function EditImportExclusionModalContent(props) {
+function EditImportListExclusionModalContent(props) {
   const {
     id,
     isFetching,
@@ -130,7 +130,7 @@ function EditImportExclusionModalContent(props) {
   );
 }
 
-EditImportExclusionModalContent.propTypes = {
+EditImportListExclusionModalContent.propTypes = {
   id: PropTypes.number,
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.object,
@@ -143,4 +143,4 @@ EditImportExclusionModalContent.propTypes = {
   onDeleteImportExclusionPress: PropTypes.func
 };
 
-export default EditImportExclusionModalContent;
+export default EditImportListExclusionModalContent;

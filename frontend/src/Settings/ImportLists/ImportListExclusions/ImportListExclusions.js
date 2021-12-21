@@ -6,11 +6,11 @@ import Link from 'Components/Link/Link';
 import PageSectionContent from 'Components/Page/PageSectionContent';
 import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
-import EditImportExclusionModalConnector from './EditImportExclusionModalConnector';
-import ImportExclusion from './ImportExclusion';
-import styles from './ImportExclusions.css';
+import EditImportListExclusionModalConnector from './EditImportListExclusionModalConnector';
+import ImportListExclusion from './ImportListExclusion';
+import styles from './ImportListExclusions.css';
 
-class ImportExclusions extends Component {
+class ImportListExclusions extends Component {
 
   //
   // Lifecycle
@@ -60,7 +60,7 @@ class ImportExclusions extends Component {
             {
               items.map((item, index) => {
                 return (
-                  <ImportExclusion
+                  <ImportListExclusion
                     key={item.id}
                     {...item}
                     {...otherProps}
@@ -81,7 +81,7 @@ class ImportExclusions extends Component {
             </Link>
           </div>
 
-          <EditImportExclusionModalConnector
+          <EditImportListExclusionModalConnector
             isOpen={this.state.isAddImportExclusionModalOpen}
             onModalClose={this.onModalClose}
           />
@@ -92,11 +92,11 @@ class ImportExclusions extends Component {
   }
 }
 
-ImportExclusions.propTypes = {
+ImportListExclusions.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   onConfirmDeleteImportExclusion: PropTypes.func.isRequired
 };
 
-export default ImportExclusions;
+export default ImportListExclusions;

@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Modal from 'Components/Modal/Modal';
 import { sizes } from 'Helpers/Props';
-import EditImportExclusionModalContentConnector from './EditImportExclusionModalContentConnector';
+import EditImportListExclusionModalContentConnector from './EditImportListExclusionModalContentConnector';
 
-function EditImportExclusionModal({ isOpen, onModalClose, ...otherProps }) {
+function EditImportListExclusionModal({ isOpen, onModalClose, ...otherProps }) {
   return (
     <Modal
       size={sizes.MEDIUM}
       isOpen={isOpen}
       onModalClose={onModalClose}
     >
-      <EditImportExclusionModalContentConnector
+      <EditImportListExclusionModalContentConnector
         {...otherProps}
         onModalClose={onModalClose}
       />
@@ -19,9 +19,9 @@ function EditImportExclusionModal({ isOpen, onModalClose, ...otherProps }) {
   );
 }
 
-EditImportExclusionModal.propTypes = {
+EditImportListExclusionModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
 
-export default EditImportExclusionModal;
+export default EditImportListExclusionModal;

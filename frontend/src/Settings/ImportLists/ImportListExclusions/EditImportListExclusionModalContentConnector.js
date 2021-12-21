@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { saveImportExclusion, setImportExclusionValue } from 'Store/Actions/settingsActions';
 import selectSettings from 'Store/Selectors/selectSettings';
-import EditImportExclusionModalContent from './EditImportExclusionModalContent';
+import EditImportListExclusionModalContent from './EditImportListExclusionModalContent';
 
 const newImportExclusion = {
   movieTitle: '',
@@ -97,7 +97,7 @@ class EditImportExclusionModalContentConnector extends Component {
 
   render() {
     return (
-      <EditImportExclusionModalContent
+      <EditImportListExclusionModalContent
         {...this.props}
         onSavePress={this.onSavePress}
         onInputChange={this.onInputChange}

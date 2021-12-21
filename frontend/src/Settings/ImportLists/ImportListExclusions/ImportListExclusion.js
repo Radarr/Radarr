@@ -6,10 +6,10 @@ import Link from 'Components/Link/Link';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
 import { icons, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
-import EditImportExclusionModalConnector from './EditImportExclusionModalConnector';
-import styles from './ImportExclusion.css';
+import EditImportListExclusionModalConnector from './EditImportListExclusionModalConnector';
+import styles from './ImportListExclusion.css';
 
-class ImportExclusion extends Component {
+class ImportListExclusion extends Component {
 
   //
   // Lifecycle
@@ -78,7 +78,7 @@ class ImportExclusion extends Component {
           </Link>
         </div>
 
-        <EditImportExclusionModalConnector
+        <EditImportListExclusionModalConnector
           id={id}
           isOpen={this.state.isEditImportExclusionModalOpen}
           onModalClose={this.onEditImportExclusionModalClose}
@@ -99,7 +99,7 @@ class ImportExclusion extends Component {
   }
 }
 
-ImportExclusion.propTypes = {
+ImportListExclusion.propTypes = {
   id: PropTypes.number.isRequired,
   movieTitle: PropTypes.string.isRequired,
   tmdbId: PropTypes.number.isRequired,
@@ -107,9 +107,9 @@ ImportExclusion.propTypes = {
   onConfirmDeleteImportExclusion: PropTypes.func.isRequired
 };
 
-ImportExclusion.defaultProps = {
+ImportListExclusion.defaultProps = {
   // The drag preview will not connect the drag handle.
   connectDragSource: (node) => node
 };
 
-export default ImportExclusion;
+export default ImportListExclusion;
