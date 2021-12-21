@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Indexers.Nyaa
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            foreach (var queryTitle in searchCriteria.CleanSceneTitles)
+            foreach (var queryTitle in searchCriteria.SceneTitles)
             {
                 pageableRequests.Add(GetPagedRequests(MaxPages, PrepareQuery(string.Format("{0} {1}", queryTitle, searchCriteria.Movie.Year))));
             }
