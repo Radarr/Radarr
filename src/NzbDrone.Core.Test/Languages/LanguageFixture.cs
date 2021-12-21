@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.Languages
                 new object[] { Language.Arabic, 31 },
                 new object[] { Language.Ukrainian, 32 },
                 new object[] { Language.Persian, 33 },
-                new object[] { Language.Bengali, 34 },
+                new object[] { Language.Bengali, 34 }
             };
 
         [Test]
