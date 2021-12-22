@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             //Manual SQL, Fluent Migrator doesn't support multi-column unique contraint on table creation, SQLite doesn't support adding it after creation
             Execute.Sql("CREATE TABLE MovieTranslations(" +
-                "Id INTEGER PRIMARY KEY, " +
+                "Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "MovieId INTEGER NOT NULL, " +
                 "Title TEXT, " +
                 "CleanTitle TEXT, " +
