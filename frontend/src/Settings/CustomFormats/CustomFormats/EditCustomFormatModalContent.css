@@ -4,6 +4,11 @@
   margin-right: auto;
 }
 
+.rightButtons {
+  justify-content: flex-end;
+  margin-right: auto;
+}
+
 .addSpecification {
   composes: customFormat from '~./CustomFormat.css';
 

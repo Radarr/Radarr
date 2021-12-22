@@ -198,26 +198,25 @@ class EditCustomFormatModalContent extends Component {
           </div>
         </ModalBody>
         <ModalFooter>
-          {
-            id &&
-              <Button
-                className={styles.deleteButton}
-                kind={kinds.DANGER}
-                onPress={onDeleteCustomFormatPress}
-              >
-                {translate('Delete')}
-              </Button>
-          }
+          <div className={styles.rightButtons}>
+            {
+              id &&
+                <Button
+                  className={styles.deleteButton}
+                  kind={kinds.DANGER}
+                  onPress={onDeleteCustomFormatPress}
+                >
+                  {translate('Delete')}
+                </Button>
+            }
 
-          {
-            !id &&
-              <Button
-                className={styles.deleteButton}
-                onPress={this.onImportPress}
-              >
-                {translate('Import')}
-              </Button>
-          }
+            <Button
+              className={styles.deleteButton}
+              onPress={this.onImportPress}
+            >
+              {translate('Import')}
+            </Button>
+          </div>
 
           <Button
             onPress={onModalClose}
