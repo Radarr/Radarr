@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Download
             Ensure.That(remoteMovie.Movie, () => remoteMovie.Movie).IsNotNull();
 
             var downloadTitle = remoteMovie.Release.Title;
-            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteMovie.Release.DownloadProtocol);
+            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteMovie.Release.DownloadProtocol, remoteMovie.Release.IndexerId);
 
             if (downloadClient == null)
             {
