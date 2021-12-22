@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
+using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Indexers;
 
 namespace NzbDrone.Core.Download
 {
     public interface IProvideDownloadClient
     {
-        IDownloadClient GetDownloadClient(DownloadProtocol downloadProtocol);
+        IDownloadClient GetDownloadClient(DownloadProtocol downloadProtocol, int indexerId = 0);
         IEnumerable<IDownloadClient> GetDownloadClients();
         IDownloadClient Get(int id);
     }
@@ -18,23 +19,41 @@ namespace NzbDrone.Core.Download
         private readonly Logger _logger;
         private readonly IDownloadClientFactory _downloadClientFactory;
         private readonly IDownloadClientStatusService _downloadClientStatusService;
+        private readonly IIndexerFactory _indexerFactory;
         private readonly ICached<int> _lastUsedDownloadClient;
 
-        public DownloadClientProvider(IDownloadClientStatusService downloadClientStatusService, IDownloadClientFactory downloadClientFactory, ICacheManager cacheManager, Logger logger)
+        public DownloadClientProvider(IDownloadClientStatusService downloadClientStatusService,
+                                      IDownloadClientFactory downloadClientFactory,
+                                      IIndexerFactory indexerFactory,
+                                      ICacheManager cacheManager,
+                                      Logger logger)
         {
             _logger = logger;
             _downloadClientFactory = downloadClientFactory;
             _downloadClientStatusService = downloadClientStatusService;
+            _indexerFactory = indexerFactory;
             _lastUsedDownloadClient = cacheManager.GetCache<int>(GetType(), "lastDownloadClientId");
         }
 
-        public IDownloadClient GetDownloadClient(DownloadProtocol downloadProtocol)
+        public IDownloadClient GetDownloadClient(DownloadProtocol downloadProtocol, int indexerId = 0)
         {
             var availableProviders = _downloadClientFactory.GetAvailableProviders().Where(v => v.Protocol == downloadProtocol).ToList();
 
             if (!availableProviders.Any())
             {
                 return null;
+            }
+
+            if (indexerId > 0)
+            {
+                var indexer = _indexerFactory.Find(indexerId);
+
+                if (indexer != null && indexer.DownloadClientId > 0)
+                {
+                    var client = availableProviders.SingleOrDefault(d => d.Definition.Id == indexer.DownloadClientId);
+
+                    return client ?? throw new DownloadClientUnavailableException($"Indexer specified download client is not available");
+                }
             }
 
             var blockedProviders = new HashSet<int>(_downloadClientStatusService.GetBlockedProviders().Select(v => v.ProviderId));

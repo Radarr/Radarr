@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Datastore
         IEnumerable<TModel> All();
         int Count();
         TModel Get(int id);
+        TModel Find(int id);
         TModel Insert(TModel model);
         TModel Update(TModel model);
         TModel Upsert(TModel model);
@@ -95,6 +96,13 @@ namespace NzbDrone.Core.Datastore
             {
                 throw new ModelNotFoundException(typeof(TModel), id);
             }
+
+            return model;
+        }
+
+        public TModel Find(int id)
+        {
+            var model = Query(c => c.Id == id).SingleOrDefault();
 
             return model;
         }
