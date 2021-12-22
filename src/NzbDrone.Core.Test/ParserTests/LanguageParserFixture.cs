@@ -189,6 +189,19 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.PortugueseBR);
         }
 
+        [TestCase("Movie.Title.1994.LAT.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.2.2019.1080p.Bluray.latino.WWW.TPF.GRATIS")]
+        [TestCase("Movie Title (2020)[BDRemux AVC 1080p][E-AC3 DD Plus 5.1 Latino-Inglés Subs]")]
+        [TestCase("Movie Title (2020) [UHDRemux2160p HDR][DTS-HD MA 5.1 AC3 5.1 LAT - True-HD 7.1 Atmos Inglés Subs]")]
+        [TestCase("Movie Title (2016) [UHDRemux 2160p SDR] [Latino DD 5.1 - Inglés DTS-HD MA 5.1 Subs]")]
+        [TestCase("Movie Title (2016) [UHDRemux 2160p SDR] [Latin DD 5.1 - Inglés DTS-HD MA 5.1 Subs]")]
+        public void should_parse_language_spanish_latino(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.SpanishLat);
+        }
+
         [TestCase("Movie.Title.1994.Polish.1080p.XviD-LOL")]
         [TestCase("Movie.Title.1994.PL.1080p.XviD-LOL")]
         [TestCase("Movie.Title.1994.PLDUB.1080p.XviD-LOL")]
