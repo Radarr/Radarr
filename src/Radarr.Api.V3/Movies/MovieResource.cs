@@ -16,6 +16,7 @@ namespace Radarr.Api.V3.Movies
         public MovieResource()
         {
             Monitored = true;
+            MinimumAvailability = MovieStatusType.Released;
         }
 
         //Todo: Sorters should be done completely on the client
