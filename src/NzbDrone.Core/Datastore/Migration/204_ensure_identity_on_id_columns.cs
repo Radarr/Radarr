@@ -8,6 +8,9 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
+            //Purge Commands before reworking tables
+            Delete.FromTable("Commands").AllRows();
+
             Alter.Column("Id").OnTable("Movies").AsInt32().PrimaryKey().Identity();
             Alter.Column("Id").OnTable("MovieTranslations").AsInt32().PrimaryKey().Identity();
             Alter.Column("Id").OnTable("Commands").AsInt32().PrimaryKey().Identity();
