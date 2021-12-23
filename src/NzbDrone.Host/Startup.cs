@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -117,6 +118,21 @@ namespace NzbDrone.Host
             });
 
             services.AddAppAuthentication();
+
+            services.PostConfigure<ApiBehaviorOptions>(options =>
+            {
+                var builtInFactory = options.InvalidModelStateResponseFactory;
+
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var loggerFactory = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
+                    var logger = loggerFactory.CreateLogger(context.ActionDescriptor.DisplayName);
+
+                    logger.LogError(STJson.ToJson(context.ModelState));
+
+                    return builtInFactory(context);
+                };
+            });
         }
 
         public void Configure(IApplicationBuilder app,
