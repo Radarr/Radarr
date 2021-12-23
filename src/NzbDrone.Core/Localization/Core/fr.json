@@ -1094,5 +1094,7 @@
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Êtes-vous sûr de vouloir désinstaller {0} objet{1} de la file d'attente ?",
     "BlocklistReleases": "Mettre cette release sur la liste noire",
     "RemotePathMappingCheckGenericPermissions": "Le client de téléchargement {0} met les téléchargements dans {1} mais Radarr ne peut voir ce répertoire.  Il est possible que vous ayez besoin d'ajuster les permissions de ce dossier.",
-    "RemotePathMappingCheckLocalWrongOSPath": "Le client de téléchargement {0} met les téléchargements dans {1} mais il ne s'agit pas d'un chemin {2} valide.  Vérifiez les paramètres de votre client de téléchargement."
+    "RemotePathMappingCheckLocalWrongOSPath": "Le client de téléchargement {0} met les téléchargements dans {1} mais il ne s'agit pas d'un chemin {2} valide.  Vérifiez les paramètres de votre client de téléchargement.",
+    "RemotePathMappingCheckFilesGenericPermissions": "Le client de téléchargement {0} met les téléchargements dans {1} mais Radarr ne peut voir ce répertoire.  Il est possible que vous ayez besoin d'ajuster les permissions de ce dossier.",
+    "RemotePathMappingCheckFilesLocalWrongOSPath": "Le client de téléchargement {0} met les téléchargements dans {1} mais il ne s'agit pas d'un chemin {2} valide.  Vérifiez les paramètres de votre client de téléchargement."
 }

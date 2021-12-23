@@ -222,7 +222,7 @@
     "MinimumFreeSpace": "Vapaan tallennustilan vähimmäismäärä",
     "MinimumLimits": "Vähimmäismäärät",
     "Minutes": "Minuuttia",
-    "MissingFromDisk": "Radarr ei löytänyt tiedostoa levyltä, joten se poistettiin",
+    "MissingFromDisk": "Radarr ei löytänyt tiedostoa levyltä, joten sen kytkös kirjaston elokuvaan poistettiin",
     "Monday": "maanantai",
     "MonoVersion": "Mono-versio",
     "MonoVersionCheckNotSupportedMessage": "Tällä hetkellä asennettua mono-versiota {0} ei enää tueta. Päivitä Mono versioon {1}.",
@@ -1111,5 +1111,8 @@
     "BypassDelayIfHighestQuality": "Ohita, jos korkein laatu",
     "RemoveFailed": "Poisto epäonnistui",
     "RemoveCompleted": "Poista valmistuneet",
-    "RemoveDownloadsAlert": "Poistoasetukset on siirretty yllä olevassa taulukossa yksittäisten lataustyökalujen alle."
+    "RemoveDownloadsAlert": "Poistoasetukset on siirretty yllä olevassa taulukossa yksittäisten lataustyökalujen alle.",
+    "OnApplicationUpdate": "Kun sovellus päivittyy",
+    "OnApplicationUpdateHelpText": "Kun sovellus päivittyy",
+    "DiscordUrlInSlackNotification": "Olet määrittänyt Discord-ilmoituksen Slack-ilmoitukseksi. Määritä se Discord-ilmoitukseksi parempaa toiminnallisuutta varten. Koskee seuraavia ilmoituksia: {0}"
 }
