@@ -155,7 +155,7 @@ DeleteMovieModalContent.propTypes = {
   title: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
   hasFile: PropTypes.bool.isRequired,
-  sizeOnDisk: PropTypes.string.isRequired,
+  sizeOnDisk: PropTypes.number.isRequired,
   onDeletePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
