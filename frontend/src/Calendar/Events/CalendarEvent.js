@@ -43,15 +43,15 @@ class CalendarEvent extends Component {
     const link = `/movie/${titleSlug}`;
     const eventType = [];
 
-    if (moment(date).isSame(moment(inCinemas), 'day')) {
+    if (inCinemas && moment(date).isSame(moment(inCinemas), 'day')) {
       eventType.push('Cinemas');
     }
 
-    if (moment(date).isSame(moment(physicalRelease), 'day')) {
+    if (physicalRelease && moment(date).isSame(moment(physicalRelease), 'day')) {
       eventType.push('Physical');
     }
 
-    if (moment(date).isSame(moment(digitalRelease), 'day')) {
+    if (digitalRelease && moment(date).isSame(moment(digitalRelease), 'day')) {
       eventType.push('Digital');
     }
 
