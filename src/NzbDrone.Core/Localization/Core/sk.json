@@ -110,5 +110,8 @@
     "DeleteDownloadClientMessageText": "Naozaj chcete zmazať značku formátu {0} ?",
     "DeleteIndexerMessageText": "Naozaj chcete zmazať značku formátu {0} ?",
     "DeleteListMessageText": "Naozaj chcete zmazať značku formátu {0} ?",
-    "DeleteNotificationMessageText": "Naozaj chcete zmazať značku formátu {0} ?"
+    "DeleteNotificationMessageText": "Naozaj chcete zmazať značku formátu {0} ?",
+    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Naozaj chcete odobrať {0} položku {1} z fronty?",
+    "ImportCustomFormat": "Pridať vlastný formát",
+    "DeleteRestrictionHelpText": "Naozaj chcete zmazať tento profil oneskorenia?"
 }

@@ -244,7 +244,7 @@
     "DeleteFilesLabel": "Excluir {0} arquivos do filme",
     "DeleteFilesHelpText": "Excluir os arquivos e a pasta do filme",
     "DeleteFile": "Excluir arquivo",
-    "DeleteEmptyFoldersHelpText": "Excluir pastas de filmes vazias durante a verificação do disco e quando os arquivos de filmes forem excluídos",
+    "DeleteEmptyFoldersHelpText": "Excluir pastas de filmes vazias durante a verificação do disco e quando os arquivos do filme forem excluídos",
     "DeleteEmptyFolders": "Excluir pastas vazias",
     "DeleteDownloadClientMessageText": "Tem certeza que deseja excluir o cliente de download \"{0}\"?",
     "DeleteDownloadClient": "Excluir cliente de download",
@@ -401,7 +401,7 @@
     "Mode": "Modo",
     "MissingNotMonitored": "Ausente (não monitorado)",
     "MissingMonitoredAndConsideredAvailable": "Ausente (monitorado)",
-    "MissingFromDisk": "Radarr não pôde encontrar o arquivo no disco então o arquivo foi removido do banco de dados",
+    "MissingFromDisk": "Radarr não conseguiu encontrar o arquivo no disco, então o arquivo foi desvinculado do filme no banco de dados",
     "Missing": "Ausente",
     "MinutesSixty": "60 minutos: {0}",
     "MinutesNinety": "90 minutos: {0}",
@@ -1111,5 +1111,8 @@
     "RemoveSelectedItem": "Remover Item Selecionado",
     "RemoveFailed": "Falha na remoção",
     "RemoveCompleted": "Remoção Completa",
-    "RemoveDownloadsAlert": "As configurações de remoção foram movidas para as configurações do Cliente de Download na tabela acima."
+    "RemoveDownloadsAlert": "As configurações de remoção foram movidas para as configurações do Cliente de Download na tabela acima.",
+    "OnApplicationUpdate": "Na Atualização do Aplicativo",
+    "OnApplicationUpdateHelpText": "Na Atualização do Aplicativo",
+    "DiscordUrlInSlackNotification": "Você tem uma notificação do Discord configurado como uma notificação do Slack. Definir isso como uma notificação do Discord para melhor funcionalidade. Com efeito, notificações são: {0}"
 }
