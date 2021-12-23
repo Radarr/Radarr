@@ -63,45 +63,43 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
                 var analysis = FFProbe.AnalyseStreamJson(ffprobeOutput);
 
-                if (analysis.PrimaryAudioStream.ChannelLayout.IsNullOrWhiteSpace())
+                if (analysis.PrimaryAudioStream?.ChannelLayout.IsNullOrWhiteSpace() ?? false)
                 {
                     ffprobeOutput = FFProbe.GetStreamJson(filename, ffOptions: new FFOptions { ExtraArguments = "-probesize 150000000 -analyzeduration 150000000" });
                     analysis = FFProbe.AnalyseStreamJson(ffprobeOutput);
                 }
 
-                var mediaInfoModel = new MediaInfoModel
-                {
-                    ContainerFormat = analysis.Format.FormatName,
-                    VideoFormat = analysis.PrimaryVideoStream?.CodecName,
-                    VideoCodecID = analysis.PrimaryVideoStream?.CodecTagString,
-                    VideoProfile = analysis.PrimaryVideoStream?.Profile,
-                    VideoBitrate = analysis.PrimaryVideoStream?.BitRate ?? 0,
-                    VideoMultiViewCount = 1,
-                    VideoBitDepth = GetPixelFormat(analysis.PrimaryVideoStream?.PixelFormat)?.Components.Min(x => x.BitDepth) ?? 8,
-                    VideoColourPrimaries = analysis.PrimaryVideoStream?.ColorPrimaries,
-                    VideoTransferCharacteristics = analysis.PrimaryVideoStream?.ColorTransfer,
-                    DoviConfigurationRecord = analysis.PrimaryVideoStream?.SideDataList?.Find(x => x.GetType().Name == nameof(DoviConfigurationRecordSideData)) as DoviConfigurationRecordSideData,
-                    Height = analysis.PrimaryVideoStream?.Height ?? 0,
-                    Width = analysis.PrimaryVideoStream?.Width ?? 0,
-                    AudioFormat = analysis.PrimaryAudioStream?.CodecName,
-                    AudioCodecID = analysis.PrimaryAudioStream?.CodecTagString,
-                    AudioProfile = analysis.PrimaryAudioStream?.Profile,
-                    AudioBitrate = analysis.PrimaryAudioStream?.BitRate ?? 0,
-                    RunTime = GetBestRuntime(analysis.PrimaryAudioStream?.Duration, analysis.PrimaryVideoStream?.Duration, analysis.Format.Duration),
-                    AudioStreamCount = analysis.AudioStreams.Count,
-                    AudioChannels = analysis.PrimaryAudioStream?.Channels ?? 0,
-                    AudioChannelPositions = analysis.PrimaryAudioStream?.ChannelLayout,
-                    VideoFps = analysis.PrimaryVideoStream?.FrameRate ?? 0,
-                    AudioLanguages = analysis.AudioStreams?.Select(x => x.Language)
-                            .Where(l => l.IsNotNullOrWhiteSpace())
-                            .ToList(),
-                    Subtitles = analysis.SubtitleStreams?.Select(x => x.Language)
-                            .Where(l => l.IsNotNullOrWhiteSpace())
-                            .ToList(),
-                    ScanType = "Progressive",
-                    RawStreamData = ffprobeOutput,
-                    SchemaRevision = CURRENT_MEDIA_INFO_SCHEMA_REVISION
-                };
+                var mediaInfoModel = new MediaInfoModel();
+                mediaInfoModel.ContainerFormat = analysis.Format.FormatName;
+                mediaInfoModel.VideoFormat = analysis.PrimaryVideoStream?.CodecName;
+                mediaInfoModel.VideoCodecID = analysis.PrimaryVideoStream?.CodecTagString;
+                mediaInfoModel.VideoProfile = analysis.PrimaryVideoStream?.Profile;
+                mediaInfoModel.VideoBitrate = analysis.PrimaryVideoStream?.BitRate ?? 0;
+                mediaInfoModel.VideoMultiViewCount = 1;
+                mediaInfoModel.VideoBitDepth = GetPixelFormat(analysis.PrimaryVideoStream?.PixelFormat)?.Components.Min(x => x.BitDepth) ?? 8;
+                mediaInfoModel.VideoColourPrimaries = analysis.PrimaryVideoStream?.ColorPrimaries;
+                mediaInfoModel.VideoTransferCharacteristics = analysis.PrimaryVideoStream?.ColorTransfer;
+                mediaInfoModel.DoviConfigurationRecord = analysis.PrimaryVideoStream?.SideDataList?.Find(x => x.GetType().Name == nameof(DoviConfigurationRecordSideData)) as DoviConfigurationRecordSideData;
+                mediaInfoModel.Height = analysis.PrimaryVideoStream?.Height ?? 0;
+                mediaInfoModel.Width = analysis.PrimaryVideoStream?.Width ?? 0;
+                mediaInfoModel.AudioFormat = analysis.PrimaryAudioStream?.CodecName;
+                mediaInfoModel.AudioCodecID = analysis.PrimaryAudioStream?.CodecTagString;
+                mediaInfoModel.AudioProfile = analysis.PrimaryAudioStream?.Profile;
+                mediaInfoModel.AudioBitrate = analysis.PrimaryAudioStream?.BitRate ?? 0;
+                mediaInfoModel.RunTime = GetBestRuntime(analysis.PrimaryAudioStream?.Duration, analysis.PrimaryVideoStream?.Duration, analysis.Format.Duration);
+                mediaInfoModel.AudioStreamCount = analysis.AudioStreams.Count;
+                mediaInfoModel.AudioChannels = analysis.PrimaryAudioStream?.Channels ?? 0;
+                mediaInfoModel.AudioChannelPositions = analysis.PrimaryAudioStream?.ChannelLayout;
+                mediaInfoModel.VideoFps = analysis.PrimaryVideoStream?.FrameRate ?? 0;
+                mediaInfoModel.AudioLanguages = analysis.AudioStreams?.Select(x => x.Language)
+                    .Where(l => l.IsNotNullOrWhiteSpace())
+                    .ToList();
+                mediaInfoModel.Subtitles = analysis.SubtitleStreams?.Select(x => x.Language)
+                    .Where(l => l.IsNotNullOrWhiteSpace())
+                    .ToList();
+                mediaInfoModel.ScanType = "Progressive";
+                mediaInfoModel.RawStreamData = ffprobeOutput;
+                mediaInfoModel.SchemaRevision = CURRENT_MEDIA_INFO_SCHEMA_REVISION;
 
                 FFProbeFrames frames = null;
 
