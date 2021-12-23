@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using Dapper;
 using NLog;
@@ -11,6 +11,7 @@ namespace NzbDrone.Core.Datastore
         IDbConnection OpenConnection();
         Version Version { get; }
         int Migration { get; }
+        bool IsValid { get; }
         void Vacuum();
     }
 
@@ -51,6 +52,24 @@ namespace NzbDrone.Core.Datastore
                 using (var db = _datamapperFactory())
                 {
                     return db.QueryFirstOrDefault<int>("SELECT version from VersionInfo ORDER BY version DESC LIMIT 1");
+                }
+            }
+        }
+
+        public bool IsValid
+        {
+            get
+            {
+                using (var db = _datamapperFactory())
+                {
+                    var dbIntegrity = db.QueryFirstOrDefault<string>("PRAGMA INTEGRITY_CHECK");
+
+                    if (dbIntegrity != null && dbIntegrity.ToLowerInvariant() != "ok")
+                    {
+                        _logger.Info("Database integrity failed for {0}: {1}", _databaseName, dbIntegrity);
+                    }
+
+                    return dbIntegrity.ToLowerInvariant() == "ok";
                 }
             }
         }

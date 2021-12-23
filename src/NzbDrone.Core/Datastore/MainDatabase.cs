@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 
 namespace NzbDrone.Core.Datastore
@@ -24,6 +24,8 @@ namespace NzbDrone.Core.Datastore
         public Version Version => _database.Version;
 
         public int Migration => _database.Migration;
+
+        public bool IsValid => _database.IsValid;
 
         public void Vacuum()
         {
