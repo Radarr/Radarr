@@ -147,7 +147,8 @@ class NamingModal extends Component {
 
       { token: '{MediaInfo VideoCodec}', example: 'x264' },
       { token: '{MediaInfo VideoBitDepth}', example: '10' },
-      { token: '{MediaInfo VideoDynamicRange}', example: 'HDR' }
+      { token: '{MediaInfo VideoDynamicRange}', example: 'HDR' },
+      { token: '{MediaInfo VideoDynamicRangeType}', example: 'DV HDR10' }
     ];
 
     const releaseGroupTokens = [
