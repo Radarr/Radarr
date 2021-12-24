@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Organizer
     public class FileNameBuilder : IBuildFileNames
     {
         private const string MediaInfoVideoDynamicRangeToken = "{MediaInfo VideoDynamicRange}";
+        private const string MediaInfoVideoDynamicRangeTypeToken = "{MediaInfo VideoDynamicRangeType}";
 
         private readonly INamingConfigService _namingConfigService;
         private readonly IQualityDefinitionService _qualityDefinitionService;
@@ -353,7 +354,8 @@ namespace NzbDrone.Core.Organizer
         private static readonly IReadOnlyDictionary<string, int> MinimumMediaInfoSchemaRevisions =
             new Dictionary<string, int>(FileNameBuilderTokenEqualityComparer.Instance)
         {
-            { MediaInfoVideoDynamicRangeToken, 5 }
+            { MediaInfoVideoDynamicRangeToken, 5 },
+            { MediaInfoVideoDynamicRangeTypeToken, 9 }
         };
 
         private void AddMediaInfoTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
@@ -418,6 +420,8 @@ namespace NzbDrone.Core.Organizer
 
             tokenHandlers[MediaInfoVideoDynamicRangeToken] =
                 m => MediaInfoFormatter.FormatVideoDynamicRange(movieFile.MediaInfo);
+            tokenHandlers[MediaInfoVideoDynamicRangeTypeToken] =
+                m => MediaInfoFormatter.FormatVideoDynamicRangeType(movieFile.MediaInfo);
         }
 
         private void AddCustomFormats(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie, MovieFile movieFile, List<CustomFormat> customFormats = null)

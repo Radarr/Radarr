@@ -102,23 +102,37 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo
             info.VideoTransferCharacteristics.Should().Be("bt709");
         }
 
-        [TestCase(8, "", "", "", HdrFormat.None)]
-        [TestCase(10, "", "", "", HdrFormat.None)]
-        [TestCase(10, "bt709", "bt709", "", HdrFormat.None)]
-        [TestCase(8, "bt2020", "smpte2084", "", HdrFormat.None)]
-        [TestCase(10, "bt2020", "bt2020-10", "", HdrFormat.Hlg10)]
-        [TestCase(10, "bt2020", "arib-std-b67", "", HdrFormat.Hlg10)]
-        [TestCase(10, "bt2020", "smpte2084", "", HdrFormat.Pq10)]
-        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.SideData", HdrFormat.Pq10)]
-        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.MasteringDisplayMetadata", HdrFormat.Hdr10)]
-        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.ContentLightLevelMetadata", HdrFormat.Hdr10)]
-        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.HdrDynamicMetadataSpmte2094", HdrFormat.Hdr10Plus)]
-        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.DoviConfigurationRecordSideData", HdrFormat.DolbyVision)]
-        public void should_detect_hdr_correctly(int bitDepth, string colourPrimaries, string transferFunction, string sideDataTypes, HdrFormat expected)
+        [TestCase(8, "", "", "", null, HdrFormat.None)]
+        [TestCase(10, "", "", "", null, HdrFormat.None)]
+        [TestCase(10, "bt709", "bt709", "", null, HdrFormat.None)]
+        [TestCase(8, "bt2020", "smpte2084", "", null, HdrFormat.None)]
+        [TestCase(10, "bt2020", "bt2020-10", "", null, HdrFormat.Hlg10)]
+        [TestCase(10, "bt2020", "arib-std-b67", "", null, HdrFormat.Hlg10)]
+        [TestCase(10, "bt2020", "smpte2084", "", null, HdrFormat.Pq10)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.SideData", null, HdrFormat.Pq10)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.MasteringDisplayMetadata", null, HdrFormat.Hdr10)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.ContentLightLevelMetadata", null, HdrFormat.Hdr10)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.HdrDynamicMetadataSpmte2094", null, HdrFormat.Hdr10Plus)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.DoviConfigurationRecordSideData", null, HdrFormat.DolbyVision)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.DoviConfigurationRecordSideData", 1, HdrFormat.DolbyVisionHdr10)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.DoviConfigurationRecordSideData", 2, HdrFormat.DolbyVisionSdr)]
+        [TestCase(10, "bt2020", "smpte2084", "FFMpegCore.DoviConfigurationRecordSideData", 4, HdrFormat.DolbyVisionHlg)]
+        public void should_detect_hdr_correctly(int bitDepth, string colourPrimaries, string transferFunction, string sideDataTypes, int? doviConfigId, HdrFormat expected)
         {
             var assembly = Assembly.GetAssembly(typeof(FFProbe));
             var types = sideDataTypes.Split(",").Select(x => x.Trim()).ToList();
             var sideData = types.Where(x => x.IsNotNullOrWhiteSpace()).Select(x => assembly.CreateInstance(x)).Cast<SideData>().ToList();
+
+            if (doviConfigId.HasValue)
+            {
+                sideData.ForEach(x =>
+                {
+                    if (x.GetType().Name == "DoviConfigurationRecordSideData")
+                    {
+                        ((DoviConfigurationRecordSideData)x).DvBlSignalCompatibilityId = doviConfigId.Value;
+                    }
+                });
+            }
 
             var result = VideoFileInfoReader.GetHdrFormat(bitDepth, colourPrimaries, transferFunction, sideData);
 

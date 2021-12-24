@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         private readonly List<FFProbePixelFormat> _pixelFormats;
 
         public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 8;
-        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 8;
+        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 9;
 
         private static readonly string[] ValidHdrColourPrimaries = { "bt2020" };
         private static readonly string[] HlgTransferFunctions = { "bt2020-10", "arib-std-b67" };
@@ -162,9 +162,15 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 return HdrFormat.None;
             }
 
-            if (TryFindSideData(sideData, nameof(DoviConfigurationRecordSideData)))
+            if (TryGetSideData<DoviConfigurationRecordSideData>(sideData, out var dovi))
             {
-                return HdrFormat.DolbyVision;
+                return dovi.DvBlSignalCompatibilityId switch
+                {
+                    1 => HdrFormat.DolbyVisionHdr10,
+                    2 => HdrFormat.DolbyVisionSdr,
+                    4 => HdrFormat.DolbyVisionHlg,
+                    _ => HdrFormat.DolbyVision
+                };
             }
 
             if (!ValidHdrColourPrimaries.Contains(colorPrimaries) || !ValidHdrTransferFunctions.Contains(transferFunction))
@@ -179,13 +185,13 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
             if (PqTransferFunctions.Contains(transferFunction))
             {
-                if (TryFindSideData(sideData, nameof(HdrDynamicMetadataSpmte2094)))
+                if (TryGetSideData<HdrDynamicMetadataSpmte2094>(sideData, out _))
                 {
                     return HdrFormat.Hdr10Plus;
                 }
 
-                if (TryFindSideData(sideData, nameof(MasteringDisplayMetadata)) ||
-                    TryFindSideData(sideData, nameof(ContentLightLevelMetadata)))
+                if (TryGetSideData<MasteringDisplayMetadata>(sideData, out _) ||
+                    TryGetSideData<ContentLightLevelMetadata>(sideData, out _))
                 {
                     return HdrFormat.Hdr10;
                 }
@@ -196,9 +202,12 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             return HdrFormat.None;
         }
 
-        private static bool TryFindSideData(List<SideData> list, string typeName)
+        private static bool TryGetSideData<T>(List<SideData> list, out T result)
+        where T : SideData
         {
-            return list?.Find(x => x.GetType().Name == typeName) != null;
+            result = (T)list?.FirstOrDefault(x => x.GetType().Name == typeof(T).Name);
+
+            return result != null;
         }
     }
 }
