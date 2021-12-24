@@ -63,7 +63,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
                 var analysis = FFProbe.AnalyseStreamJson(ffprobeOutput);
 
-                if (analysis.PrimaryAudioStream?.ChannelLayout.IsNullOrWhiteSpace() ?? false)
+                if (analysis.PrimaryAudioStream?.ChannelLayout.IsNullOrWhiteSpace() ?? true)
                 {
                     ffprobeOutput = FFProbe.GetStreamJson(filename, ffOptions: new FFOptions { ExtraArguments = "-probesize 150000000 -analyzeduration 150000000" });
                     analysis = FFProbe.AnalyseStreamJson(ffprobeOutput);
