@@ -148,9 +148,10 @@ export const actionHandlers = handleThunks({
       return {
         id,
         path: item.path,
-        movieId: item.movie.id,
+        movieId: item.movie ? item.movie.id : undefined,
         quality: item.quality,
         languages: item.languages,
+        releaseGroup: item.releaseGroup,
         downloadId: item.downloadId
       };
     });

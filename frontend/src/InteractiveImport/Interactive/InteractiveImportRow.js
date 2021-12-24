@@ -11,6 +11,7 @@ import { icons, kinds, tooltipPositions } from 'Helpers/Props';
 import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
 import SelectMovieModal from 'InteractiveImport/Movie/SelectMovieModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
+import SelectReleaseGroupModal from 'InteractiveImport/ReleaseGroup/SelectReleaseGroupModal';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
 import formatBytes from 'Utilities/Number/formatBytes';
@@ -28,6 +29,7 @@ class InteractiveImportRow extends Component {
 
     this.state = {
       isSelectMovieModalOpen: false,
+      isSelectReleaseGroupModalOpen: false,
       isSelectQualityModalOpen: false,
       isSelectLanguageModalOpen: false
     };
@@ -103,6 +105,10 @@ class InteractiveImportRow extends Component {
     this.setState({ isSelectMovieModalOpen: true });
   }
 
+  onSelectReleaseGroupPress = () => {
+    this.setState({ isSelectReleaseGroupModalOpen: true });
+  }
+
   onSelectQualityPress = () => {
     this.setState({ isSelectQualityModalOpen: true });
   }
@@ -113,6 +119,11 @@ class InteractiveImportRow extends Component {
 
   onSelectMovieModalClose = (changed) => {
     this.setState({ isSelectMovieModalOpen: false });
+    this.selectRowAfterChange(changed);
+  }
+
+  onSelectReleaseGroupModalClose = (changed) => {
+    this.setState({ isSelectReleaseGroupModalOpen: false });
     this.selectRowAfterChange(changed);
   }
 
@@ -137,6 +148,7 @@ class InteractiveImportRow extends Component {
       movie,
       quality,
       languages,
+      releaseGroup,
       size,
       rejections,
       isReprocessing,
@@ -147,7 +159,8 @@ class InteractiveImportRow extends Component {
     const {
       isSelectMovieModalOpen,
       isSelectQualityModalOpen,
-      isSelectLanguageModalOpen
+      isSelectLanguageModalOpen,
+      isSelectReleaseGroupModalOpen
     } = this.state;
 
     const movieTitle = movie ? movie.title + ( movie.year > 0 ? ` (${movie.year})` : '') : '';
@@ -155,6 +168,7 @@ class InteractiveImportRow extends Component {
     const showMoviePlaceholder = isSelected && !movie;
     const showQualityPlaceholder = isSelected && !quality;
     const showLanguagePlaceholder = isSelected && !languages && !isReprocessing;
+    const showReleaseGroupPlaceholder = isSelected && !releaseGroup;
 
     return (
       <TableRow>
@@ -178,6 +192,17 @@ class InteractiveImportRow extends Component {
         >
           {
             showMoviePlaceholder ? <InteractiveImportRowCellPlaceholder /> : movieTitle
+          }
+        </TableRowCellButton>
+
+        <TableRowCellButton
+          title={translate('ClickToChangeReleaseGroup')}
+          onPress={this.onSelectReleaseGroupPress}
+        >
+          {
+            showReleaseGroupPlaceholder ?
+              <InteractiveImportRowCellPlaceholder /> :
+              releaseGroup
           }
         </TableRowCellButton>
 
@@ -268,6 +293,13 @@ class InteractiveImportRow extends Component {
           onModalClose={this.onSelectMovieModalClose}
         />
 
+        <SelectReleaseGroupModal
+          isOpen={isSelectReleaseGroupModalOpen}
+          ids={[id]}
+          releaseGroup={releaseGroup ?? ''}
+          onModalClose={this.onSelectReleaseGroupModalClose}
+        />
+
         <SelectQualityModal
           isOpen={isSelectQualityModalOpen}
           ids={[id]}
@@ -296,6 +328,7 @@ InteractiveImportRow.propTypes = {
   movie: PropTypes.object,
   quality: PropTypes.object,
   languages: PropTypes.arrayOf(PropTypes.object),
+  releaseGroup: PropTypes.string,
   size: PropTypes.number.isRequired,
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
   isReprocessing: PropTypes.bool,
