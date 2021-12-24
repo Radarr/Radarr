@@ -110,7 +110,8 @@ class InteractiveImportModalContentConnector extends Component {
         const {
           movie,
           quality,
-          languages
+          languages,
+          releaseGroup
         } = item;
 
         if (!movie) {
@@ -132,6 +133,7 @@ class InteractiveImportModalContentConnector extends Component {
           path: item.path,
           folderName: item.folderName,
           movieId: movie.id,
+          releaseGroup,
           quality,
           languages,
           downloadId: this.props.downloadId

@@ -20,6 +20,7 @@ namespace Radarr.Api.V3.ManualImport
         public MovieResource Movie { get; set; }
         public QualityModel Quality { get; set; }
         public List<Language> Languages { get; set; }
+        public string ReleaseGroup { get; set; }
         public int QualityWeight { get; set; }
         public string DownloadId { get; set; }
         public IEnumerable<Rejection> Rejections { get; set; }
@@ -45,6 +46,7 @@ namespace Radarr.Api.V3.ManualImport
                 Movie = model.Movie.ToResource(0),
                 Quality = model.Quality,
                 Languages = model.Languages,
+                ReleaseGroup = model.ReleaseGroup,
 
                 //QualityWeight
                 DownloadId = model.DownloadId,

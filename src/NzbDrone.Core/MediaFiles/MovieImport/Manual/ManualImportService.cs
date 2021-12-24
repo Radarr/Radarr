@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
     public interface IManualImportService
     {
         List<ManualImportItem> GetMediaFiles(string path, string downloadId, int? movieId, bool filterExistingFiles);
-        ManualImportItem ReprocessItem(string path, string downloadId, int movieId, QualityModel quality, List<Language> languages);
+        ManualImportItem ReprocessItem(string path, string downloadId, int movieId, string releaseGroup, QualityModel quality, List<Language> languages);
     }
 
     public class ManualImportService : IExecute<ManualImportCommand>, IManualImportService
@@ -92,12 +93,20 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             return ProcessFolder(path, path, downloadId, movieId, filterExistingFiles);
         }
 
-        public ManualImportItem ReprocessItem(string path, string downloadId, int movieId, QualityModel quality, List<Language> languages)
+        public ManualImportItem ReprocessItem(string path, string downloadId, int movieId, string releaseGroup, QualityModel quality, List<Language> languages)
         {
             var rootFolder = Path.GetDirectoryName(path);
             var movie = _movieService.GetMovie(movieId);
 
             var downloadClientItem = GetTrackedDownload(downloadId)?.DownloadItem;
+
+            var languageParse = LanguageParser.ParseLanguages(path);
+
+            if (languageParse.Count <= 1 && languageParse.First() == Language.Unknown && movie != null)
+            {
+                languageParse = new List<Language> { movie.OriginalLanguage };
+                _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", movie.OriginalLanguage.Name);
+            }
 
             var localEpisode = new LocalMovie
             {
@@ -108,8 +117,9 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 SceneSource = SceneSource(movie, rootFolder),
                 ExistingFile = movie.Path.IsParentPath(path),
                 Size = _diskProvider.GetFileSize(path),
-                Languages = (languages?.SingleOrDefault() ?? Language.Unknown) == Language.Unknown ? LanguageParser.ParseLanguages(path) : languages,
-                Quality = quality.Quality == Quality.Unknown ? QualityParser.ParseQuality(path) : quality
+                Languages = (languages?.SingleOrDefault() ?? Language.Unknown) == Language.Unknown ? languageParse : languages,
+                Quality = quality.Quality == Quality.Unknown ? QualityParser.ParseQuality(path) : quality,
+                ReleaseGroup = releaseGroup.IsNullOrWhiteSpace() ? Parser.Parser.ParseReleaseGroup(path) : releaseGroup,
             };
 
             return MapItem(_importDecisionMaker.GetDecision(localEpisode, downloadClientItem), rootFolder, downloadId, null);
@@ -118,6 +128,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         private List<ManualImportItem> ProcessFolder(string rootFolder, string baseFolder, string downloadId, int? movieId, bool filterExistingFiles)
         {
             DownloadClientItem downloadClientItem = null;
+
             var directoryInfo = new DirectoryInfo(baseFolder);
 
             var movie = movieId.HasValue ?
@@ -165,50 +176,58 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
         private ManualImportItem ProcessFile(string rootFolder, string baseFolder, string file, string downloadId, Movie movie = null)
         {
-            var trackedDownload = GetTrackedDownload(downloadId);
-            var relativeFile = baseFolder.GetRelativePath(file);
-
-            if (movie == null)
+            try
             {
-                movie = _parsingService.GetMovie(relativeFile.Split('\\', '/')[0]);
-            }
+                var trackedDownload = GetTrackedDownload(downloadId);
+                var relativeFile = baseFolder.GetRelativePath(file);
 
-            if (movie == null)
-            {
-                movie = _parsingService.GetMovie(relativeFile);
-            }
-
-            if (trackedDownload != null && movie == null)
-            {
-                movie = trackedDownload?.RemoteMovie?.Movie;
-            }
-
-            if (movie == null)
-            {
-                var relativeParseInfo = Parser.Parser.ParseMoviePath(relativeFile);
-
-                if (relativeParseInfo != null)
+                if (movie == null)
                 {
-                    movie = _movieService.FindByTitle(relativeParseInfo.PrimaryMovieTitle, relativeParseInfo.Year);
+                    movie = _parsingService.GetMovie(relativeFile.Split('\\', '/')[0]);
+                }
+
+                if (movie == null)
+                {
+                    movie = _parsingService.GetMovie(relativeFile);
+                }
+
+                if (trackedDownload != null && movie == null)
+                {
+                    movie = trackedDownload?.RemoteMovie?.Movie;
+                }
+
+                if (movie == null)
+                {
+                    var relativeParseInfo = Parser.Parser.ParseMoviePath(relativeFile);
+
+                    if (relativeParseInfo != null)
+                    {
+                        movie = _movieService.FindByTitle(relativeParseInfo.PrimaryMovieTitle, relativeParseInfo.Year);
+                    }
+                }
+
+                if (movie == null)
+                {
+                    var localMovie = new LocalMovie();
+                    localMovie.Path = file;
+                    localMovie.FileMovieInfo = Parser.Parser.ParseMoviePath(file);
+                    localMovie.DownloadClientMovieInfo = trackedDownload?.RemoteMovie?.ParsedMovieInfo;
+
+                    localMovie = _aggregationService.Augment(localMovie, null, false);
+
+                    return MapItem(new ImportDecision(localMovie, new Rejection("Unknown Movie")), rootFolder, downloadId, null);
+                }
+
+                var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> { file }, movie, trackedDownload?.DownloadItem, null, SceneSource(movie, baseFolder));
+
+                if (importDecisions.Any())
+                {
+                    return MapItem(importDecisions.First(), rootFolder, downloadId, null);
                 }
             }
-
-            if (movie == null)
+            catch (Exception ex)
             {
-                var localMovie = new LocalMovie();
-                localMovie.Path = file;
-                localMovie.Quality = QualityParser.ParseQuality(file);
-                localMovie.Languages = LanguageParser.ParseLanguages(file);
-                localMovie.Size = _diskProvider.GetFileSize(file);
-
-                return MapItem(new ImportDecision(localMovie, new Rejection("Unknown Movie")), rootFolder, downloadId, null);
-            }
-
-            var importDecisions = _importDecisionMaker.GetImportDecisions(new List<string> { file }, movie, trackedDownload?.DownloadItem, null, SceneSource(movie, baseFolder));
-
-            if (importDecisions.Any())
-            {
-                return MapItem(importDecisions.First(), rootFolder, downloadId, null);
+                _logger.Warn(ex, "Failed to process file: {0}", file);
             }
 
             return new ManualImportItem
@@ -231,6 +250,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 localEpisode.Path = file;
                 localEpisode.Quality = new QualityModel(Quality.Unknown);
                 localEpisode.Languages = new List<Language> { Language.Unknown };
+                localEpisode.ReleaseGroup = Parser.Parser.ParseReleaseGroup(file);
                 localEpisode.Size = _diskProvider.GetFileSize(file);
 
                 items.Add(MapItem(new ImportDecision(localEpisode), rootFolder, null, null));
@@ -274,6 +294,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
             item.Quality = decision.LocalMovie.Quality;
             item.Size = _diskProvider.GetFileSize(decision.LocalMovie.Path);
             item.Languages = decision.LocalMovie.Languages;
+            item.ReleaseGroup = decision.LocalMovie.ReleaseGroup;
             item.Rejections = decision.Rejections;
 
             return item;
@@ -303,6 +324,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                     Path = file.Path,
                     Quality = file.Quality,
                     Languages = file.Languages,
+                    ReleaseGroup = file.ReleaseGroup,
                     Movie = movie,
                     Size = 0
                 };
@@ -325,6 +347,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 localMovie.Movie = movie;
                 localMovie.Quality = file.Quality;
                 localMovie.Languages = file.Languages;
+                localMovie.ReleaseGroup = file.ReleaseGroup;
 
                 //TODO: Cleanup non-tracked downloads
                 var importDecision = new ImportDecision(localMovie);

@@ -19,6 +19,7 @@ import { align, icons, kinds, scrollDirections } from 'Helpers/Props';
 import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal';
 import SelectMovieModal from 'InteractiveImport/Movie/SelectMovieModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
+import SelectReleaseGroupModal from 'InteractiveImport/ReleaseGroup/SelectReleaseGroupModal';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import translate from 'Utilities/String/translate';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
@@ -38,6 +39,11 @@ const columns = [
     name: 'movie',
     label: translate('Movie'),
     isSortable: true,
+    isVisible: true
+  },
+  {
+    name: 'releaseGroup',
+    label: translate('ReleaseGroup'),
     isVisible: true
   },
   {
@@ -83,6 +89,7 @@ const SELECT = 'select';
 const MOVIE = 'movie';
 const LANGUAGE = 'language';
 const QUALITY = 'quality';
+const RELEASE_GROUP = 'releaseGroup';
 
 class InteractiveImportModalContent extends Component {
 
@@ -202,10 +209,11 @@ class InteractiveImportModalContent extends Component {
     const errorMessage = getErrorMessage(error, translate('UnableToLoadManualImportItems'));
 
     const bulkSelectOptions = [
-      {
-        key: SELECT, value: translate('SelectDotDot'), disabled: true },
+      { key: SELECT, value: translate('SelectDotDot'), disabled: true },
       { key: LANGUAGE, value: translate('SelectLanguage') },
-      { key: QUALITY, value: translate('SelectQuality') }];
+      { key: QUALITY, value: translate('SelectQuality') },
+      { key: RELEASE_GROUP, value: translate('SelectReleaseGroup') }
+    ];
 
     if (allowMovieChange) {
       bulkSelectOptions.splice(1, 0, {
@@ -370,6 +378,13 @@ class InteractiveImportModalContent extends Component {
           qualityId={0}
           proper={false}
           real={false}
+          onModalClose={this.onSelectModalClose}
+        />
+
+        <SelectReleaseGroupModal
+          isOpen={selectModalOpen === RELEASE_GROUP}
+          ids={selectedIds}
+          releaseGroup=""
           onModalClose={this.onSelectModalClose}
         />
       </ModalContent>

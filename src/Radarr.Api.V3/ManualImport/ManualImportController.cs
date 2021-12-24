@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.MovieImport.Manual;
 using NzbDrone.Core.Qualities;
@@ -30,7 +31,7 @@ namespace Radarr.Api.V3.ManualImport
         {
             foreach (var item in items)
             {
-                var processedItem = _manualImportService.ReprocessItem(item.Path, item.DownloadId, item.MovieId, item.Quality, item.Languages);
+                var processedItem = _manualImportService.ReprocessItem(item.Path, item.DownloadId, item.MovieId, item.ReleaseGroup, item.Quality, item.Languages);
 
                 item.Movie = processedItem.Movie.ToResource(0);
                 item.Rejections = processedItem.Rejections;
@@ -42,6 +43,11 @@ namespace Radarr.Api.V3.ManualImport
                 if (item.Quality?.Quality == Quality.Unknown)
                 {
                     item.Quality = processedItem.Quality;
+                }
+
+                if (item.ReleaseGroup.IsNotNullOrWhiteSpace())
+                {
+                    item.ReleaseGroup = processedItem.ReleaseGroup;
                 }
             }
 
