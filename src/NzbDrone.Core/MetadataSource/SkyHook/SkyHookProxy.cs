@@ -419,7 +419,20 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 var httpResponse = _httpClient.Get<List<MovieResource>>(request);
 
-                return httpResponse.Resource.SelectList(MapSearchResult);
+                var result_list = httpResponse.Resource.SelectList(MapSearchResult);
+
+                if (parserResult != null && parserResult.PrimaryMovieTitle != title)
+                {
+                    // check if any result is an EXACT match (title and year), and move it up to the top
+                    var exactMatch = result_list.FindIndex(candidate => candidate.Title == parserResult.PrimaryMovieTitle && candidate.Year == parserResult.Year);
+                    if (exactMatch > 0)
+                    {
+                        result_list.Insert(0, result_list[exactMatch]);
+                        result_list.RemoveAt(exactMatch + 1);
+                    }
+                }
+
+                return result_list;
             }
             catch (HttpException ex)
             {
