@@ -68,12 +68,12 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             {
                 Movie = _movie,
                 Quality = _quality,
-                Path = @"C:\Test\Unsorted\The.Office.2018.DVDRip.XviD-OSiTV.avi"
+                Path = @"C:\Test\Unsorted\The.Movie.2018.DVDRip.XviD-OSiTV.avi"
             };
 
             _fileInfo = new ParsedMovieInfo
             {
-                MovieTitles = new List<string> { "The Office" },
+                MovieTitles = new List<string> { "The Movie" },
                 Year = 2018,
                 Quality = _quality
             };
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
                 .Setup(c => c.ParseMinimalPathMovieInfo(It.IsAny<string>()))
                 .Returns(_fileInfo);
 
-            GivenVideoFiles(new List<string> { @"C:\Test\Unsorted\The.Office.2018.DVDRip.XviD-OSiTV.avi".AsOsAgnostic() });
+            GivenVideoFiles(new List<string> { @"C:\Test\Unsorted\The.Movie.2018.DVDRip.XviD-OSiTV.avi".AsOsAgnostic() });
         }
 
         private void GivenSpecifications(params Mock<IImportDecisionEngineSpecification>[] mocks)
@@ -178,9 +178,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             _videoFiles = new List<string>
                 {
-                    "The.Office.S03E115.DVDRip.XviD-OSiTV",
-                    "The.Office.S03E115.DVDRip.XviD-OSiTV",
-                    "The.Office.S03E115.DVDRip.XviD-OSiTV"
+                    "The.Movie.2021.DVDRip.XviD-OSiTV",
+                    "The.Movie.2021.DVDRip.XviD-OSiTV",
+                    "The.Movie.2021.DVDRip.XviD-OSiTV"
                 };
 
             GivenVideoFiles(_videoFiles);
@@ -222,7 +222,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
             _videoFiles = new List<string>
                 {
-                    "The.Office.S03E115.DVDRip.XviD-OSiTV"
+                    "The.Movie.2021.DVDRip.XviD-OSiTV"
                 };
 
             GivenVideoFiles(_videoFiles);

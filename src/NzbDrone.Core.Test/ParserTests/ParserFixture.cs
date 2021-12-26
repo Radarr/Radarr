@@ -106,62 +106,62 @@ namespace NzbDrone.Core.Test.ParserTests
             }
         }
 
-        [TestCase("L'hypothèse.du.tableau.volé.AKA.The.Hypothesis.of.the.Stolen.Painting.1978.1080p.CINET.WEB-DL.AAC2.0.x264-Cinefeel.mkv",
+        [TestCase("L'hypothèse.du.movie.volé.AKA.The.Hypothesis.of.the.Movie.Title.1978.1080p.CINET.WEB-DL.AAC2.0.x264-Cinefeel.mkv",
             new string[]
             {
-                "L'hypothèse du tableau volé AKA The Hypothesis of the Stolen Painting",
-                "L'hypothèse du tableau volé",
-                "The Hypothesis of the Stolen Painting"
+                "L'hypothèse du movie volé AKA The Hypothesis of the Movie Title",
+                "L'hypothèse du movie volé",
+                "The Hypothesis of the Movie Title"
             })]
-        [TestCase("Akahige.AKA.Red.Beard.1965.CD1.CRiTERiON.DVDRip.XviD-KG.avi",
+        [TestCase("Skjegg.AKA.Rox.Beard.1965.CD1.CRiTERiON.DVDRip.XviD-KG.avi",
             new string[]
             {
-                "Akahige AKA Red Beard",
-                "Akahige",
-                "Red Beard"
+                "Skjegg AKA Rox Beard",
+                "Skjegg",
+                "Rox Beard"
             })]
-        [TestCase("Akasen.chitai.AKA.Street.of.Shame.1956.1080p.BluRay.x264.FLAC.1.0.mkv",
+        [TestCase("Kjeller.chitai.AKA.Basement.of.Shame.1956.1080p.BluRay.x264.FLAC.1.0.mkv",
             new string[]
             {
-                "Akasen chitai AKA Street of Shame",
-                "Akasen chitai",
-                "Street of Shame"
+                "Kjeller chitai AKA Basement of Shame",
+                "Kjeller chitai",
+                "Basement of Shame"
             })]
-        [TestCase("Time.Under.Fire.(aka.Beneath.the.Bermuda.Triangle).1997.DVDRip.x264.CG-Grzechsin.mkv",
+        [TestCase("Radarr.Under.Water.(aka.Beneath.the.Code.Freeze).1997.DVDRip.x264.CG-Grzechsin.mkv",
             new string[]
             {
-                "Time Under Fire (aka Beneath the Bermuda Triangle)",
-                "Time Under Fire",
-                "Beneath the Bermuda Triangle"
+                "Radarr Under Water (aka Beneath the Code Freeze)",
+                "Radarr Under Water",
+                "Beneath the Code Freeze"
             })]
-        [TestCase("Nochnoy.prodavet. AKA.Graveyard.Shift.2005.DVDRip.x264-HANDJOB.mkv",
+        [TestCase("Radarr.prodavet. AKA.Radarr.Shift.2005.DVDRip.x264-HANDJOB.mkv",
             new string[]
             {
-                "Nochnoy prodavet  AKA Graveyard Shift",
-                "Nochnoy prodavet",
-                "Graveyard Shift"
+                "Radarr prodavet  AKA Radarr Shift",
+                "Radarr prodavet",
+                "Radarr Shift"
             })]
         [TestCase("AKA.2002.DVDRip.x264-HANDJOB.mkv",
             new string[]
             {
                 "AKA"
             })]
-        [TestCase("Unbreakable.2000.BluRay.1080p.DTS.x264.dxva-EuReKA.mkv",
+        [TestCase("KillRoyWasHere.2000.BluRay.1080p.DTS.x264.dxva-EuReKA.mkv",
             new string[]
             {
-                "Unbreakable"
+                "KillRoyWasHere"
             })]
-        [TestCase("Aka Ana (2008).avi",
+        [TestCase("Aka Rox (2008).avi",
             new string[]
             {
-                "Aka Ana"
+                "Aka Rox"
             })]
-        [TestCase("Return to Return to Nuke 'em High aka Volume 2 (2018) 1080p.mp4",
+        [TestCase("Return Earth to Normal 'em High aka World 2 (2022) 1080p.mp4",
             new string[]
             {
-                "Return to Return to Nuke 'em High aka Volume 2",
-                "Return to Return to Nuke 'em High",
-                "Volume 2"
+                "Return Earth to Normal 'em High aka World 2",
+                "Return Earth to Normal 'em High",
+                "World 2"
             })]
         public void should_parse_movie_alternative_titles(string postTitle, string[] parsedTitles)
         {
@@ -225,8 +225,8 @@ namespace NzbDrone.Core.Test.ParserTests
             parsed.Languages.Should().Contain(Language.English, "Added by the multi tag in the release name");
         }
 
-        [TestCase("The Italian Job 2008 [tt1234567] 720p BluRay X264", "tt1234567")]
-        [TestCase("The Italian Job 2008 [tt12345678] 720p BluRay X264", "tt12345678")]
+        [TestCase("That Italian Movie 2008 [tt1234567] 720p BluRay X264", "tt1234567")]
+        [TestCase("That Italian Movie 2008 [tt12345678] 720p BluRay X264", "tt12345678")]
         public void should_parse_imdb_in_title(string postTitle, string imdb)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
