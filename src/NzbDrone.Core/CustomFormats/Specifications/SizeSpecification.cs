@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.CustomFormats
@@ -16,7 +17,7 @@ namespace NzbDrone.Core.CustomFormats
         [FieldDefinition(1, Label = "Maximum Size", HelpText = "Release must be less than or equal to this size", Unit = "GB", Type = FieldType.Number)]
         public double Max { get; set; }
 
-        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo)
+        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo, Movie movie)
         {
             var size = (movieInfo?.ExtraInfo?.GetValueOrDefault("Size", 0.0) as long?) ?? 0;
 

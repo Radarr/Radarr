@@ -1,3 +1,4 @@
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.CustomFormats
@@ -12,6 +13,6 @@ namespace NzbDrone.Core.CustomFormats
         bool Required { get; set; }
 
         ICustomFormatSpecification Clone();
-        bool IsSatisfiedBy(ParsedMovieInfo movieInfo);
+        bool IsSatisfiedBy(ParsedMovieInfo movieInfo, Movie movie);
     }
 }

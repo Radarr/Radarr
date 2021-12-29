@@ -1,3 +1,4 @@
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.CustomFormats
@@ -18,9 +19,9 @@ namespace NzbDrone.Core.CustomFormats
             return (ICustomFormatSpecification)MemberwiseClone();
         }
 
-        public bool IsSatisfiedBy(ParsedMovieInfo movieInfo)
+        public bool IsSatisfiedBy(ParsedMovieInfo movieInfo, Movie movie)
         {
-            var match = IsSatisfiedByWithoutNegate(movieInfo);
+            var match = IsSatisfiedByWithoutNegate(movieInfo, movie);
             if (Negate)
             {
                 match = !match;
@@ -29,6 +30,6 @@ namespace NzbDrone.Core.CustomFormats
             return match;
         }
 
-        protected abstract bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo);
+        protected abstract bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo, Movie movie);
     }
 }

@@ -1,3 +1,4 @@
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.CustomFormats
@@ -8,7 +9,7 @@ namespace NzbDrone.Core.CustomFormats
         public override string ImplementationName => "Edition";
         public override string InfoLink => "https://wiki.servarr.com/radarr/settings#custom-formats-2";
 
-        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo)
+        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo, Movie movie)
         {
             return MatchString(movieInfo.Edition);
         }

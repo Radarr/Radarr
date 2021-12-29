@@ -1,5 +1,6 @@
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Languages;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.CustomFormats
@@ -12,9 +13,19 @@ namespace NzbDrone.Core.CustomFormats
         [FieldDefinition(1, Label = "Language", Type = FieldType.Select, SelectOptions = typeof(LanguageFieldConverter))]
         public int Value { get; set; }
 
-        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo)
+        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo, Movie movie)
         {
-            return movieInfo?.Languages?.Contains((Language)Value) ?? false;
+            Language comparedTitle;
+            if (this.Name == "Original")
+            {
+                comparedTitle = movie.OriginalLanguage;
+            }
+            else
+            {
+                comparedTitle = (Language)Value;
+            }
+
+            return movieInfo?.Languages?.Contains(comparedTitle) ?? false;
         }
     }
 }

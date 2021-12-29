@@ -14,7 +14,7 @@ namespace NzbDrone.Core.CustomFormats
 {
     public interface ICustomFormatCalculationService
     {
-        List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo);
+        List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo, Movie movie);
         List<CustomFormat> ParseCustomFormat(MovieFile movieFile);
         List<CustomFormat> ParseCustomFormat(Blocklist blocklist);
         List<CustomFormat> ParseCustomFormat(MovieHistory history);
@@ -35,7 +35,7 @@ namespace NzbDrone.Core.CustomFormats
             _movieService = movieService;
         }
 
-        public static List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo, List<CustomFormat> allCustomFormats)
+        public static List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo, List<CustomFormat> allCustomFormats, Movie movie)
         {
             var matches = new List<CustomFormat>();
 
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.CustomFormats
                     .GroupBy(t => t.GetType())
                     .Select(g => new SpecificationMatchesGroup
                     {
-                        Matches = g.ToDictionary(t => t, t => t.IsSatisfiedBy(movieInfo))
+                        Matches = g.ToDictionary(t => t, t => t.IsSatisfiedBy(movieInfo, movie))
                     })
                     .ToList();
 
@@ -92,12 +92,12 @@ namespace NzbDrone.Core.CustomFormats
                 }
             };
 
-            return ParseCustomFormat(info, allCustomFormats);
+            return ParseCustomFormat(info, allCustomFormats, movieFile.Movie);
         }
 
-        public List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo)
+        public List<CustomFormat> ParseCustomFormat(ParsedMovieInfo movieInfo, Movie movie)
         {
-            return ParseCustomFormat(movieInfo, _formatService.All());
+            return ParseCustomFormat(movieInfo, _formatService.All(), movie);
         }
 
         public List<CustomFormat> ParseCustomFormat(MovieFile movieFile)
@@ -127,7 +127,7 @@ namespace NzbDrone.Core.CustomFormats
                 }
             };
 
-            return ParseCustomFormat(info);
+            return ParseCustomFormat(info, movie);
         }
 
         public List<CustomFormat> ParseCustomFormat(MovieHistory history)
@@ -155,7 +155,7 @@ namespace NzbDrone.Core.CustomFormats
                 }
             };
 
-            return ParseCustomFormat(info);
+            return ParseCustomFormat(info, movie);
         }
     }
 }

@@ -1,4 +1,5 @@
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 
@@ -12,7 +13,7 @@ namespace NzbDrone.Core.CustomFormats
         [FieldDefinition(1, Label = "Resolution", Type = FieldType.Select, SelectOptions = typeof(Resolution))]
         public int Value { get; set; }
 
-        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo)
+        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo, Movie movie)
         {
             return (movieInfo?.Quality?.Quality?.Resolution ?? (int)Resolution.Unknown) == Value;
         }

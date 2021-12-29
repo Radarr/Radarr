@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.CustomFormats
@@ -13,7 +14,7 @@ namespace NzbDrone.Core.CustomFormats
         [FieldDefinition(1, Label = "Flag", Type = FieldType.Select, SelectOptions = typeof(IndexerFlags))]
         public int Value { get; set; }
 
-        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo)
+        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo, Movie movie)
         {
             var flags = movieInfo?.ExtraInfo?.GetValueOrDefault("IndexerFlags") as IndexerFlags?;
             return flags?.HasFlag((IndexerFlags)Value) == true;

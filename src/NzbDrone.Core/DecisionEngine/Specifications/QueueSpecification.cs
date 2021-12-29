@@ -50,7 +50,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     continue;
                 }
 
-                var customFormats = _formatService.ParseCustomFormat(remoteMovie.ParsedMovieInfo);
+                var customFormats = _formatService.ParseCustomFormat(remoteMovie.ParsedMovieInfo, subject.Movie);
 
                 _logger.Debug("Checking if existing release in queue meets cutoff. Queued quality is: {0} - {1}",
                               remoteMovie.ParsedMovieInfo.Quality,
