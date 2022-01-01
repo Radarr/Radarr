@@ -516,7 +516,7 @@
     "ShowTitleHelpText": "Filmtitel unter dem Plakat anzeigen",
     "ShowUnknownMovieItems": "Unzugeordente Filmeinträge anzeigen",
     "SkipFreeSpaceCheck": "Pürfung des freien Speichers überspringen",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "Aktiviere dies, wenn es nicht möglich ist, den freien Speicherplatz vom Stammverzeichnis zu ermitteln",
+    "SkipFreeSpaceCheckWhenImportingHelpText": "Aktiviere dies, wenn es nicht möglich ist, den freien Speicherplatz des Stammverzeichnisses zu ermitteln",
     "SorryThatMovieCannotBeFound": "Schade, dieser Film kann nicht gefunden werden.",
     "SourcePath": "Quellpfad",
     "SourceRelativePath": "Relativer Quellpfad",
@@ -816,7 +816,7 @@
     "Tomorrow": "Morgen",
     "Today": "Heute",
     "ListTagsHelpText": "Tags Liseneinträge werden hinzugefügt mit",
-    "IndexerLongTermStatusCheckSingleClientMessage": "Indexer wegen über 6 Stunden langen bestehenden Fehlern nicht verfügbar: {0}",
+    "IndexerLongTermStatusCheckSingleClientMessage": "Indexer ist seit über 6 Stunden wegen bestehenden Fehlern nicht verfügbar: {0}",
     "IndexerLongTermStatusCheckAllClientMessage": "Alle Indexer sind wegen über 6 Stunden langen bestehender Fehler nicht verfügbar",
     "EditMovieFile": "Filmdatei bearbeiten",
     "MovieIsRecommend": "Film wird aufgrund der jüngsten Hinzufügungen empfohlen",
@@ -1086,5 +1086,9 @@
     "RemoveSelectedItems": "Entferne ausgewählte Einträge",
     "RemoveFailed": "Entfernen fehlgeschlagen",
     "RemoveCompleted": "Abgeschlossene entfernen",
-    "RemoveDownloadsAlert": "Die Einstellungen zum entfernen wurde in den einzelnen Downloader Einstellungen in der obigen Tabelle verschoben."
+    "RemoveDownloadsAlert": "Die Einstellungen zum entfernen wurde in den einzelnen Downloader Einstellungen in der obigen Tabelle verschoben.",
+    "LocalPath": "Lokaler Pfad",
+    "AnnouncedMsg": "Film ist angekündigt",
+    "ClickToChangeReleaseGroup": "Releasegruppe ändern",
+    "Filters": "Filter"
 }

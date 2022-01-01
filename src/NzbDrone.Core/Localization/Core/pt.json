@@ -164,7 +164,6 @@
     "MountCheckMessage": "O volume que contém um caminho de filme é somente leitura: ",
     "MoreInfo": "Mais informações",
     "Month": "Mês",
-    "MonoTlsCheckMessage": "Uma solução para o Radarr Mono 4.x tls ainda está ativa, considere remover a opção de ambiente MONO_TLS_PROVIDER=legacy",
     "MonitorMovie": "Monitorar filme",
     "MonitoredOnly": "Apenas monitorado",
     "Monitored": "Monitorado",
