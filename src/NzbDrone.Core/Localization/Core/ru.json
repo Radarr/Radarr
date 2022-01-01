@@ -582,7 +582,6 @@
     "MoreControlCFText": "Хотите контролировать приоритет скачивания? Добавьте",
     "Months": "Месяцы",
     "Month": "Месяц",
-    "MonoVersion": "Моно версия",
     "MonitorMovie": "Отслеживать фильм",
     "MonitoredStatus": "Отслеживаемые/Статус",
     "MonitoredOnly": "Только отслеживаемые",
@@ -1089,5 +1088,16 @@
     "IndexerTagHelpText": "Используйте этот индексатор только для фильмов с хотя бы одним совпадающим тегом. Оставьте пустым, чтобы использовать для всех фильмов.",
     "DiscordUrlInSlackNotification": "У вас уведомление Discord настроено как уведомление Slack. Настройте это как уведомление Discord для лучшей функциональности. Затронуты следующие уведомления: {0}",
     "OnApplicationUpdate": "О обновлении приложения",
-    "OnApplicationUpdateHelpText": "О обновлении приложения"
+    "OnApplicationUpdateHelpText": "О обновлении приложения",
+    "IndexerDownloadClientHelpText": "Укажите, какой клиент загрузки используется для захвата из этого индексатора",
+    "LocalPath": "Локальный путь",
+    "ManualImportSetReleaseGroup": "Ручной импорт - Установить релиз-группу",
+    "SelectLanguages": "Выбрать языки",
+    "SelectReleaseGroup": "Выберите релиз-группу",
+    "SizeLimit": "Ограничение по размеру",
+    "ClickToChangeReleaseGroup": "Нажмите, чтобы изменить релиз-группу",
+    "AnnouncedMsg": "Фильм анонсирован",
+    "Filters": "Фильтры",
+    "RemotePath": "Удалённый путь",
+    "SetReleaseGroup": "Установить релиз-группу"
 }

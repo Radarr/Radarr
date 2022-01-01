@@ -1072,5 +1072,10 @@
     "RemotePathMappingCheckGenericPermissions": "Le client de téléchargement {0} met les téléchargements dans {1} mais Radarr ne peut voir ce répertoire.  Il est possible que vous ayez besoin d'ajuster les permissions de ce dossier.",
     "RemotePathMappingCheckLocalWrongOSPath": "Le client de téléchargement {0} met les téléchargements dans {1} mais il ne s'agit pas d'un chemin {2} valide.  Vérifiez les paramètres de votre client de téléchargement.",
     "RemotePathMappingCheckFilesGenericPermissions": "Le client de téléchargement {0} met les téléchargements dans {1} mais Radarr ne peut voir ce répertoire.  Il est possible que vous ayez besoin d'ajuster les permissions de ce dossier.",
-    "RemotePathMappingCheckFilesLocalWrongOSPath": "Le client de téléchargement {0} met les téléchargements dans {1} mais il ne s'agit pas d'un chemin {2} valide.  Vérifiez les paramètres de votre client de téléchargement."
+    "RemotePathMappingCheckFilesLocalWrongOSPath": "Le client de téléchargement {0} met les téléchargements dans {1} mais il ne s'agit pas d'un chemin {2} valide.  Vérifiez les paramètres de votre client de téléchargement.",
+    "BypassDelayIfHighestQualityHelpText": "Outrepasser le délai quand la version a la plus haute qualité activée dans le profil de qualité avec le protocole préféré",
+    "ClickToChangeReleaseGroup": "Cliquez pour changer de release group",
+    "AnnouncedMsg": "Le film est annoncé",
+    "Filters": "Filtres",
+    "IndexerDownloadClientHelpText": "Précisez quel client de téléchargement est utilisé pour cet indexer"
 }
