@@ -113,7 +113,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 }
 
                 var streamSideData = analysis.PrimaryVideoStream?.SideDataList ?? new ();
-                var framesSideData = frames?.Frames[0]?.SideDataList ?? new ();
+                var framesSideData = frames?.Frames?.Count > 0 ? frames?.Frames[0]?.SideDataList ?? new () : new ();
 
                 var sideData = streamSideData.Concat(framesSideData).ToList();
                 mediaInfoModel.VideoHdrFormat = GetHdrFormat(mediaInfoModel.VideoBitDepth, mediaInfoModel.VideoColourPrimaries, mediaInfoModel.VideoTransferCharacteristics, sideData);
