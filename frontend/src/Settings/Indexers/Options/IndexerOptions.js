@@ -85,7 +85,7 @@ function IndexerOptions(props) {
                 type={inputTypes.CHECK}
                 name="preferIndexerFlags"
                 helpText={translate('PreferIndexerFlagsHelpText')}
-                helpLink="https://wiki.servarr.com/Definitions#Indexer_Flags"
+                helpLink="https://wiki.servarr.com/en/radarr/settings#options"
                 onChange={onInputChange}
                 {...settings.preferIndexerFlags}
               />
