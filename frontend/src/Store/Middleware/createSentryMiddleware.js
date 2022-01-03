@@ -100,7 +100,7 @@ export default function createSentryMiddleware() {
     return;
   }
 
-  const dsn = isProduction ? 'https://b0fb75c38ef4487dbf742f79c4ba62d2@sentry.servarr.com/12' :
+  const dsn = isProduction ? 'https://7794f2858478485ea337fb5535624fbd@sentry.servarr.com/12' :
     'https://da610619280249f891ec3ee306906793@sentry.servarr.com/13';
 
   sentry.init({
