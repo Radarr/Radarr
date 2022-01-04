@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         private readonly List<FFProbePixelFormat> _pixelFormats;
 
         public const int MINIMUM_MEDIA_INFO_SCHEMA_REVISION = 8;
-        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 9;
+        public const int CURRENT_MEDIA_INFO_SCHEMA_REVISION = 10;
 
         private static readonly string[] ValidHdrColourPrimaries = { "bt2020" };
         private static readonly string[] HlgTransferFunctions = { "bt2020-10", "arib-std-b67" };
@@ -169,6 +169,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                     1 => HdrFormat.DolbyVisionHdr10,
                     2 => HdrFormat.DolbyVisionSdr,
                     4 => HdrFormat.DolbyVisionHlg,
+                    6 => HdrFormat.DolbyVisionHdr10,
                     _ => HdrFormat.DolbyVision
                 };
             }
