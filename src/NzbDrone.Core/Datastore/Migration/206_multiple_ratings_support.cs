@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Datastore.Migration
             _serializerSettings = new JsonSerializerOptions
             {
                 AllowTrailingCommas = true,
-                DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 PropertyNameCaseInsensitive = true,
                 DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -43,17 +43,23 @@ namespace NzbDrone.Core.Datastore.Migration
 
             foreach (var row in rows)
             {
-                var oldRatings = JsonSerializer.Deserialize<Ratings205>(row.Ratings, _serializerSettings);
-
                 var newRatings = new Ratings206
                 {
                     Tmdb = new RatingChild206
                     {
-                        Votes = oldRatings.Votes,
-                        Value = oldRatings.Value,
+                        Votes = 0,
+                        Value = 0,
                         Type = RatingType206.User
                     }
                 };
+
+                if (row.Ratings != null)
+                {
+                    var oldRatings = JsonSerializer.Deserialize<Ratings205>(row.Ratings, _serializerSettings);
+
+                    newRatings.Tmdb.Votes = oldRatings.Votes;
+                    newRatings.Tmdb.Value = oldRatings.Value;
+                }
 
                 corrected.Add(new Movie206
                 {
