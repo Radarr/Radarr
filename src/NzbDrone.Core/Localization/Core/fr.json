@@ -59,7 +59,7 @@
     "Activity": "Activité",
     "About": "À propos",
     "CustomFormatsSettingsSummary": "Paramètres et Formats personnalisés",
-    "IndexerStatusCheckSingleClientMessage": "Indexeurs indisponibles en raison d'échecs : {0}",
+    "IndexerStatusCheckSingleClientMessage": "Indexeurs indisponibles en raison d'échecs: {0}",
     "DownloadClientStatusCheckSingleClientMessage": "Clients de Téléchargement indisponibles en raison d'échecs : {0}",
     "SetTags": "Définir Tags",
     "ReleaseTitle": "Titre de la version",
@@ -1077,5 +1077,14 @@
     "ClickToChangeReleaseGroup": "Cliquez pour changer de release group",
     "AnnouncedMsg": "Le film est annoncé",
     "Filters": "Filtres",
-    "IndexerDownloadClientHelpText": "Précisez quel client de téléchargement est utilisé pour cet indexer"
+    "IndexerDownloadClientHelpText": "Précisez quel client de téléchargement est utilisé pour cet indexer",
+    "TmdbRating": "Note TMDb",
+    "IndexerTagHelpText": "Utiliser seulement cet indexeur pour les films avec au moins un tag correspondant. Laissez vide pour l'utiliser avec tous les films.",
+    "IndexerJackettAll": "Les indexeurs utilisant le endpoint 'all' de Jackett: {0}",
+    "ManualImportSetReleaseGroup": "Import manuel - Spécifier le groupe de Release",
+    "TmdbVotes": "Votes TMDb",
+    "ImdbRating": "Note IMDb",
+    "ImdbVotes": "Votes IMDb",
+    "LocalPath": "Chemin local",
+    "DiscordUrlInSlackNotification": "Vous avez une configuration de notification Discord en tant que notification Slack. Configurez cela comme une notification Discord pour une meilleure fonctionnalité. Les notifications affectées sont: {0}"
 }
