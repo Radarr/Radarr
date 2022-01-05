@@ -1086,5 +1086,14 @@
     "RemoveSelectedItems": "A kijelölt elemek eltávolítása",
     "RemoveFailed": "Eltávolítás Sikertelen",
     "RemoveCompleted": "Eltávolítás Kész",
-    "RemoveDownloadsAlert": "Az eltávolításhoz szükséges beállítások átkerültek a fenti táblázatban található egyéni letöltő beállítások közé."
+    "RemoveDownloadsAlert": "Az eltávolításhoz szükséges beállítások átkerültek a fenti táblázatban található egyéni letöltő beállítások közé.",
+    "ImdbVotes": "IMDb Szavazatok",
+    "DiscordUrlInSlackNotification": "A Discord-értesítést Slack-értesítésként állította be. Állítsa be ezt Discord-értesítésként a jobb működés érdekében. A végrehajtott értesítések a következők: {0}",
+    "Filters": "Szűrők",
+    "IndexerDownloadClientHelpText": "Adja meg, hogy melyik letöltési kliens használja az indexelőből történő megfogásokat",
+    "AnnouncedMsg": "A filmet bejelentették",
+    "ClickToChangeReleaseGroup": "Kiadási csoport módosítása",
+    "TmdbRating": "TMDb Értékelés",
+    "TmdbVotes": "TMDb Szavazatok",
+    "ImdbRating": "IMDb Értékelés"
 }

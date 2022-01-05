@@ -1100,5 +1100,10 @@
     "ClickToChangeReleaseGroup": "Clique para mudar o grupo do lançamento",
     "Filters": "Filtros",
     "RemotePath": "Caminho Remoto",
-    "SizeLimit": "Limite de Tamanho"
+    "SizeLimit": "Limite de Tamanho",
+    "ImdbRating": "Avaliação no IMDb",
+    "TmdbRating": "Avaliação no TMDb",
+    "TmdbVotes": "Votos no TMDb",
+    "ImdbVotes": "Votos no IMDb",
+    "IndexerJackettAll": "Indexadores que usam o não suportado Jackett 'all' endpoint: {0}"
 }

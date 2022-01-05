@@ -385,7 +385,7 @@
     "ReleaseTitle": "Название релиза",
     "ReleaseStatus": "Статус релиза",
     "ReleaseRejected": "Релиз отклонен",
-    "ReleaseGroup": "Группа выпуска",
+    "ReleaseGroup": "Релиз группа",
     "ReleasedMsg": "Фильм выпущен",
     "ReleaseDates": "Дата выпуска",
     "Released": "Выпущен",
@@ -1046,7 +1046,7 @@
     "More": "Более",
     "Download": "Скачать",
     "DownloadClientCheckDownloadingToRoot": "Клиент загрузки {0} помещает загрузки в корневую папку {1}. Вы не должны загружать в корневую папку.",
-    "DeleteFileLabel": "Удалить {0} фалйлов фильма",
+    "DeleteFileLabel": "Удалить {0} файл фильма",
     "RemotePathMappingCheckWrongOSPath": "Удалённый клиент загрузки {0} загружает файлы в {1}, но это не действительный путь {2}.  Проверьте соответствие удаленных путей и настройки клиента загрузки.",
     "RemotePathMappingCheckRemoteDownloadClient": "Удалённый клиент загрузки {0} сообщил о файлах в {1}, но эта директория, похоже, не существует.  Вероятно, отсутствует сопоставление удаленных путей.",
     "RemotePathMappingCheckLocalWrongOSPath": "Локальный клиент загрузки {0} загружает файлы в {1}, но это не правильный путь {2}.  Проверьте настройки клиента загрузки.",
@@ -1099,5 +1099,10 @@
     "AnnouncedMsg": "Фильм анонсирован",
     "Filters": "Фильтры",
     "RemotePath": "Удалённый путь",
-    "SetReleaseGroup": "Установить релиз-группу"
+    "SetReleaseGroup": "Установить релиз-группу",
+    "IndexerJackettAll": "Используется не поддерживаемый в Jackett конечный параметр 'all' в индексаторе: {0}",
+    "TmdbRating": "TMDb рейтинг",
+    "ImdbRating": "IMDb рейтинг",
+    "TmdbVotes": "TMDb оценок",
+    "ImdbVotes": "IMDb оценок"
 }

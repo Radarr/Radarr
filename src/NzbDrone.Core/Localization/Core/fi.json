@@ -1089,5 +1089,21 @@
     "RemoveDownloadsAlert": "Poistoasetukset on siirretty yllä olevassa taulukossa yksittäisten lataustyökalujen alle.",
     "OnApplicationUpdate": "Kun sovellus päivittyy",
     "OnApplicationUpdateHelpText": "Kun sovellus päivittyy",
-    "DiscordUrlInSlackNotification": "Olet määrittänyt Discord-ilmoituksen Slack-ilmoitukseksi. Määritä se Discord-ilmoitukseksi parempaa toiminnallisuutta varten. Koskee seuraavia ilmoituksia: {0}"
+    "DiscordUrlInSlackNotification": "Olet määrittänyt Discord-ilmoituksen Slack-ilmoitukseksi. Määritä se Discord-ilmoitukseksi parempaa toiminnallisuutta varten. Koskee seuraavia ilmoituksia: {0}",
+    "LocalPath": "Paikallinen sijainti",
+    "ManualImportSetReleaseGroup": "Manuaalinen tuonti - Määritä julkaisuryhmä",
+    "AnnouncedMsg": "Elokuva on julkistettu",
+    "IndexerDownloadClientHelpText": "Määritä tämän tietolähteen kanssa käytettävä lataustyökalu",
+    "RemotePath": "Etäsijainti",
+    "SelectLanguages": "Valitse kielet",
+    "SelectReleaseGroup": "Valitse julkaisuryhmä",
+    "SetReleaseGroup": "Määritä julkaisuryhmä",
+    "SizeLimit": "Kokorajoitus",
+    "ClickToChangeReleaseGroup": "Paina vaihtaaksesi julkaisuryhmää",
+    "Filters": "Suodattimet",
+    "TmdbRating": "TMDb-arvio",
+    "IndexerJackettAll": "Jackettin ei-tuettua 'all'-päätettä käyttävät tietolähteet: {0}",
+    "TmdbVotes": "TMDb-äänet",
+    "ImdbRating": "IMDb-arvio",
+    "ImdbVotes": "IMDb-äänet"
 }
