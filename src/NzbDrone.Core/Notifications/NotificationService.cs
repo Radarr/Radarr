@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Notifications
     public class NotificationService
         : IHandle<MovieRenamedEvent>,
           IHandle<MovieGrabbedEvent>,
-          IHandle<MovieDownloadedEvent>,
+          IHandle<MovieImportedEvent>,
           IHandle<MoviesDeletedEvent>,
           IHandle<MovieFileDeletedEvent>,
           IHandle<HealthCheckFailedEvent>,
@@ -117,21 +117,29 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
-        public void Handle(MovieDownloadedEvent message)
+        public void Handle(MovieImportedEvent message)
         {
-            var downloadMessage = new DownloadMessage();
-            downloadMessage.Message = GetMessage(message.Movie.Movie, message.Movie.Quality);
-            downloadMessage.MovieFile = message.MovieFile;
-            downloadMessage.Movie = message.Movie.Movie;
-            downloadMessage.OldMovieFiles = message.OldFiles;
-            downloadMessage.SourcePath = message.Movie.Path;
-            downloadMessage.DownloadId = message.DownloadId;
+            if (!message.NewDownload)
+            {
+                return;
+            }
+
+            var downloadMessage = new DownloadMessage
+            {
+                Message = GetMessage(message.MovieInfo.Movie, message.MovieInfo.Quality),
+                MovieFile = message.ImportedMovie,
+                Movie = message.MovieInfo.Movie,
+                OldMovieFiles = message.OldFiles,
+                SourcePath = message.MovieInfo.Path,
+                DownloadClient = message.DownloadClientInfo?.Name,
+                DownloadId = message.DownloadId
+            };
 
             foreach (var notification in _notificationFactory.OnDownloadEnabled())
             {
                 try
                 {
-                    if (ShouldHandleMovie(notification.Definition, message.Movie.Movie))
+                    if (ShouldHandleMovie(notification.Definition, message.MovieInfo.Movie))
                     {
                         if (downloadMessage.OldMovieFiles.Empty() || ((NotificationDefinition)notification.Definition).OnUpgrade)
                         {
