@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Test.HistoryTests
                 DownloadId = "abcd"
             };
 
-            Subject.Handle(new MovieImportedEvent(localMovie, movieFile, true, downloadClientItem, "abcd"));
+            Subject.Handle(new MovieImportedEvent(localMovie, movieFile, new List<MovieFile>(), true, downloadClientItem));
 
             Mocker.GetMock<IHistoryRepository>()
                 .Verify(v => v.Insert(It.Is<MovieHistory>(h => h.SourceTitle == Path.GetFileNameWithoutExtension(localMovie.Path))));
