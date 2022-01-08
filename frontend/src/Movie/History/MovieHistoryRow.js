@@ -67,8 +67,7 @@ class MovieHistoryRow extends Component {
       data,
       isMarkingAsFailed,
       shortDateFormat,
-      timeFormat,
-      onMarkAsFailedPress
+      timeFormat
     } = this.props;
 
     const {
