@@ -147,7 +147,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             if (audioFormat == "wmav1" ||
-                audioFormat == "wmav2")
+                audioFormat == "wmav2" ||
+                audioFormat == "wmapro")
             {
                 return "WMA";
             }
@@ -244,7 +245,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             }
 
             if (videoFormat == "wmv1" ||
-                videoFormat == "wmv2")
+                videoFormat == "wmv2" ||
+                videoFormat == "wmv3")
             {
                 return "WMV";
             }
