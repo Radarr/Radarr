@@ -143,7 +143,7 @@ class MovieHistoryRow extends Component {
           isMarkingAsFailed={isMarkingAsFailed}
           shortDateFormat={shortDateFormat}
           timeFormat={timeFormat}
-          onMarkAsFailedPress={onMarkAsFailedPress}
+          onMarkAsFailedPress={this.onMarkAsFailedPress}
           onModalClose={this.onDetailsModalClose}
         />
       </TableRow>
