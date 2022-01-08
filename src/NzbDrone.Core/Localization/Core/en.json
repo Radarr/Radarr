@@ -427,7 +427,7 @@
   "IndexerLongTermStatusCheckAllClientMessage": "All indexers are unavailable due to failures for more than 6 hours",
   "IndexerLongTermStatusCheckSingleClientMessage": "Indexers unavailable due to failures for more than 6 hours: {0}",
   "IndexerPriority": "Indexer Priority",
-  "IndexerPriorityHelpText": "Indexer Priority from 1 (Highest) to 50 (Lowest). Default: 25.",
+  "IndexerPriorityHelpText": "Indexer Priority from 1 (Highest) to 50 (Lowest). Default: 25. Used when grabbing releases as a tiebreaker for otherwise equal releases, Radarr will still use all enabled indexers for RSS Sync and Searching",
   "IndexerRssHealthCheckNoAvailableIndexers": "All rss-capable indexers are temporarily unavailable due to recent indexer errors",
   "IndexerRssHealthCheckNoIndexers": "No indexers available with RSS sync enabled, Radarr will not grab new releases automatically",
   "Indexers": "Indexers",
