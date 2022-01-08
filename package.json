@@ -113,7 +113,7 @@
     "html-webpack-plugin": "5.3.1",
     "loader-utils": "^2.0.0",
     "mini-css-extract-plugin": "1.5.0",
-    "postcss": "8.2.12",
+    "postcss": "8.2.13",
     "postcss-color-function": "4.1.0",
     "postcss-loader": "5.2.0",
     "postcss-mixins": "7.0.3",
