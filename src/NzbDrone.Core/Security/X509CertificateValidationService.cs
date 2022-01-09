@@ -22,14 +22,27 @@ namespace NzbDrone.Core.Security
 
         public bool ShouldByPassValidationError(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
-            if (sender is not SslStream request)
+            var targetHostName = string.Empty;
+
+            if (sender is not SslStream && sender is not string)
             {
                 return true;
             }
 
+            if (sender is SslStream request)
+            {
+                targetHostName = request.TargetHostName;
+            }
+
+            // Mailkit passes host in sender as string
+            if (sender is string stringHost)
+            {
+                targetHostName = stringHost;
+            }
+
             if (certificate is X509Certificate2 cert2 && cert2.SignatureAlgorithm.FriendlyName == "md5RSA")
             {
-                _logger.Error("https://{0} uses the obsolete md5 hash in it's https certificate, if that is your certificate, please (re)create certificate with better algorithm as soon as possible.", request.TargetHostName);
+                _logger.Error("https://{0} uses the obsolete md5 hash in it's https certificate, if that is your certificate, please (re)create certificate with better algorithm as soon as possible.", targetHostName);
             }
 
             if (sslPolicyErrors == SslPolicyErrors.None)
@@ -37,12 +50,12 @@ namespace NzbDrone.Core.Security
                 return true;
             }
 
-            if (request.TargetHostName == "localhost" || request.TargetHostName == "127.0.0.1")
+            if (targetHostName == "localhost" || targetHostName == "127.0.0.1")
             {
                 return true;
             }
 
-            var ipAddresses = GetIPAddresses(request.TargetHostName);
+            var ipAddresses = GetIPAddresses(targetHostName);
             var certificateValidation = _configService.CertificateValidation;
 
             if (certificateValidation == CertificateValidationType.Disabled)
@@ -56,7 +69,7 @@ namespace NzbDrone.Core.Security
                 return true;
             }
 
-            _logger.Error("Certificate validation for {0} failed. {1}", request.TargetHostName, sslPolicyErrors);
+            _logger.Error("Certificate validation for {0} failed. {1}", targetHostName, sslPolicyErrors);
 
             return false;
         }
