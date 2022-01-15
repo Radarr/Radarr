@@ -973,7 +973,7 @@
   "TestAllIndexers": "Test All Indexers",
   "TestAllLists": "Test All Lists",
   "TheLogLevelDefault": "The log level defaults to 'Info' and can be changed in",
-  "ThisCannotBeCancelled": "This cannot be cancelled once started without restarting Radarr.",
+  "ThisCannotBeCancelled": "This cannot be cancelled once started without disabling all of your indexers.",
   "ThisConditionMatchesUsingRegularExpressions": "This condition matches using Regular Expressions. Note that the characters {0} have special meanings and need escaping with a {1}",
   "Time": "Time",
   "TimeFormat": "Time Format",
