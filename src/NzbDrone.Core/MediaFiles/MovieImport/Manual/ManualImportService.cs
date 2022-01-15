@@ -108,7 +108,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", movie.OriginalLanguage.Name);
             }
 
-            var localEpisode = new LocalMovie
+            var localMovie = new LocalMovie
             {
                 Movie = movie,
                 FileMovieInfo = Parser.Parser.ParseMoviePath(path),
@@ -122,7 +122,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 ReleaseGroup = releaseGroup.IsNullOrWhiteSpace() ? Parser.Parser.ParseReleaseGroup(path) : releaseGroup,
             };
 
-            return MapItem(_importDecisionMaker.GetDecision(localEpisode, downloadClientItem), rootFolder, downloadId, null);
+            return MapItem(_importDecisionMaker.GetDecision(localMovie, downloadClientItem), rootFolder, downloadId, null);
         }
 
         private List<ManualImportItem> ProcessFolder(string rootFolder, string baseFolder, string downloadId, int? movieId, bool filterExistingFiles)
@@ -210,10 +210,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 {
                     var localMovie = new LocalMovie();
                     localMovie.Path = file;
-                    localMovie.FileMovieInfo = Parser.Parser.ParseMoviePath(file);
-                    localMovie.DownloadClientMovieInfo = trackedDownload?.RemoteMovie?.ParsedMovieInfo;
-
-                    localMovie = _aggregationService.Augment(localMovie, null, false);
+                    localMovie.ReleaseGroup = Parser.Parser.ParseReleaseGroup(file);
+                    localMovie.Quality = QualityParser.ParseQuality(file);
+                    localMovie.Languages = LanguageParser.ParseLanguages(file);
+                    localMovie.Size = _diskProvider.GetFileSize(file);
 
                     return MapItem(new ImportDecision(localMovie, new Rejection("Unknown Movie")), rootFolder, downloadId, null);
                 }
@@ -246,14 +246,14 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
             foreach (var file in videoFiles)
             {
-                var localEpisode = new LocalMovie();
-                localEpisode.Path = file;
-                localEpisode.Quality = new QualityModel(Quality.Unknown);
-                localEpisode.Languages = new List<Language> { Language.Unknown };
-                localEpisode.ReleaseGroup = Parser.Parser.ParseReleaseGroup(file);
-                localEpisode.Size = _diskProvider.GetFileSize(file);
+                var localMovie = new LocalMovie();
+                localMovie.Path = file;
+                localMovie.Quality = new QualityModel(Quality.Unknown);
+                localMovie.Languages = new List<Language> { Language.Unknown };
+                localMovie.ReleaseGroup = Parser.Parser.ParseReleaseGroup(file);
+                localMovie.Size = _diskProvider.GetFileSize(file);
 
-                items.Add(MapItem(new ImportDecision(localEpisode), rootFolder, null, null));
+                items.Add(MapItem(new ImportDecision(localMovie), rootFolder, null, null));
             }
 
             return items;
