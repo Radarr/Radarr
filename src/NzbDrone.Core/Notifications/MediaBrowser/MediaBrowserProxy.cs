@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Notifications.Emby
 
         private string ProcessRequest(HttpRequest request, MediaBrowserSettings settings)
         {
-            request.Headers.Add("X-MediaBrowser-Token", settings.ApiKey);
+            request.Headers.Add("X-Emby-Token", settings.ApiKey);
 
             var response = _httpClient.Post(request);
             _logger.Trace("Response: {0}", response.Content);
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Notifications.Emby
         private HttpRequest BuildRequest(string path, MediaBrowserSettings settings)
         {
             var scheme = settings.UseSsl ? "https" : "http";
-            var url = $@"{scheme}://{settings.Address}/mediabrowser";
+            var url = $@"{scheme}://{settings.Address}/emby";
 
             return new HttpRequestBuilder(url).Resource(path).Build();
         }
