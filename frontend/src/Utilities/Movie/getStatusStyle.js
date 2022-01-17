@@ -2,7 +2,7 @@ import { kinds } from 'Helpers/Props';
 
 function getStatusStyle(status, monitored, hasFile, isAvailable, returnType, queue = false) {
   if (queue) {
-    return returnType === 'kinds' ? kinds.SUCCESS : 'queue';
+    return returnType === 'kinds' ? kinds.QUEUE : 'queue';
   }
 
   if (hasFile && monitored) {
