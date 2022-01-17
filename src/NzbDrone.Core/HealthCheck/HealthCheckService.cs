@@ -70,12 +70,22 @@ namespace NzbDrone.Core.HealthCheck
                 .ToDictionary(g => g.Key, g => g.ToArray());
         }
 
-        private void PerformHealthCheck(IProvideHealthCheck[] healthChecks)
+        private void PerformHealthCheck(IProvideHealthCheck[] healthChecks, IEvent message = null)
         {
-            var results = healthChecks.Select(c => c.Check())
-                                       .ToList();
+            var results = new List<HealthCheck>();
 
             results.AddRange(_serverSideNotificationService.GetServerChecks());
+            foreach (var healthCheck in healthChecks)
+            {
+                if (healthCheck is IProvideHealthCheckWithMessage && message != null)
+                {
+                    results.Add(((IProvideHealthCheckWithMessage)healthCheck).Check(message));
+                }
+                else
+                {
+                    results.Add(healthCheck.Check());
+                }
+            }
 
             foreach (var result in results)
             {
@@ -138,11 +148,12 @@ namespace NzbDrone.Core.HealthCheck
                 if (eventDrivenHealthCheck.ShouldExecute(message, previouslyFailed))
                 {
                     filteredChecks.Add(eventDrivenHealthCheck.HealthCheck);
+                    continue;
                 }
             }
 
             // TODO: Add debounce
-            PerformHealthCheck(filteredChecks.ToArray());
+            PerformHealthCheck(filteredChecks.ToArray(), message);
         }
     }
 }
