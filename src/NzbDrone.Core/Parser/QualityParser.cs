@@ -74,6 +74,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex HighDefPdtvRegex = new Regex(@"hr[-_. ]ws", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex RemuxRegex = new Regex(@"(?:[_. \[]|\d{4}p-)(?<remux>(?:(BD|UHD)[-_. ]?)?Remux)\b|(?<remux>(?:(BD|UHD)[-_. ]?)?Remux[_. ]\d{4}p)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex GermanRemuxRegex = new Regex(@"^(?=.*\b(German|videomann|ger[. ]dub)\b)(?=.*(Blu[-_. ]?ray|HD[-_. ]?DVD)\b)(?=.*\b(AVC|HEVC|VC[-_. ]?1|MVC|MPEG[-_. ]?2))", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex HardcodedSubsRegex = new Regex(@"\b((?<hcsub>(\w+(?<!SOFT|HORRIBLE)SUBS?))|(?<hc>(HC|SUBBED)))\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
@@ -128,7 +129,7 @@ namespace NzbDrone.Core.Parser
             var sourceMatch = sourceMatches.OfType<Match>().LastOrDefault();
             var resolution = ParseResolution(normalizedName);
             var codecRegex = CodecRegex.Match(normalizedName);
-            var remuxMatch = RemuxRegex.IsMatch(normalizedName);
+            var remuxMatch = RemuxRegex.IsMatch(normalizedName) || GermanRemuxRegex.IsMatch(normalizedName);
             var brDiskMatch = BRDISKRegex.IsMatch(normalizedName);
 
             if (RawHDRegex.IsMatch(normalizedName) && !brDiskMatch)

@@ -161,6 +161,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[HorribleSubs] Movie Title! 2018 [Web][MKV][h264][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         [TestCase("Movie.Title.2013.960p.WEB-DL.AAC2.0.H.264-squalor", false)]
         [TestCase("Movie.Title.2021.DP.WEB.720p.DDP.5.1.H.264.PLEX", false)]
+        [TestCase("Movie.Title.REPACK.German.DD20.Dubbed.DL.720p.iTunesHD.AVC-TVS", true)]
         public void should_parse_webdl720p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R720p);
@@ -319,6 +320,11 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.II.2003.4K.BluRay.Remux.1080p.AVC.DTS-HD.MA.5.1-BMF")]
         [TestCase("Movie Title 2022 (BDRemux 1080p HEVC FLAC) [Netaro]")]
         [TestCase("[Vodes] Movie Title - Other Title (2020) [BDRemux 1080p HEVC Dual-Audio]")]
+        [TestCase("Movie.Title.2021.German.DL.1080p.BluRay.AVC-UNTAVC")]
+        [TestCase("German.Only.Movie.2021.German.1080p.BluRay.AVC-UNTAVC")]
+        [TestCase("German.Only.Movie.2021.Ger.1080p.BluRay.AVC-UNTAVC")]
+        [TestCase("Movie.Title.1998.German.DL.1080p.BluRay.VC1-SAViOURHD")]
+        [TestCase("Movie.Title.1999.German.1080p.DL.AC3.BluRay.VC-1.Remux-pmHD")]
         public void should_parse_remux1080p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080p, Modifier.REMUX);
@@ -331,6 +337,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[Dolby Vision] Movie.Title.S07.MULTi.UHD.BLURAY.REMUX.DV-NoTag")]
         [TestCase("Movie.Name.2020.German.UHDBD.2160p.HDR10.HEVC.EAC3.DL.Remux-pmHD.mkv")]
         [TestCase("Movie Name (2021) [Remux-2160p x265 HDR 10-BIT DTS-HD MA 7.1]-FraMeSToR.mkv")]
+        [TestCase("Movie.Title.2021.German.DL.2160p.UHD.BluRay.HEVC-GMA")]
         public void should_parse_remux2160p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R2160p, Modifier.REMUX);
