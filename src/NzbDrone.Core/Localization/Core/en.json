@@ -397,7 +397,7 @@
   "ImportFailed": "Import failed: {0}",
   "ImportFailedInterp": "Import failed: {0}",
   "ImportHeader": "Import an existing organized library to add movies to Radarr",
-  "ImportIncludeQuality": "Make sure that your files include the quality in their filenames. e.g. {0}",
+  "ImportIncludeQuality": "Year is required in file names. For optimal results ensure that your files include the quality in their filenames. e.g. {0}",
   "Importing": "Importing",
   "ImportLibrary": "Library Import",
   "ImportListMissingRoot": "Missing root folder for import list(s): {0}",
