@@ -157,6 +157,16 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
                 request.AddFormParameter("paused", true);
             }
 
+            if (settings.SequentialOrder)
+            {
+                request.AddFormParameter("sequentialDownload", true);
+            }
+
+            if (settings.FirstAndLast)
+            {
+                request.AddFormParameter("firstLastPiecePrio", true);
+            }
+
             if (seedConfiguration != null)
             {
                 AddTorrentSeedingFormParameters(request, seedConfiguration);
@@ -190,6 +200,16 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
             else if ((QBittorrentState)settings.InitialState == QBittorrentState.Pause)
             {
                 request.AddFormParameter("paused", true);
+            }
+
+            if (settings.SequentialOrder)
+            {
+                request.AddFormParameter("sequentialDownload", true);
+            }
+
+            if (settings.FirstAndLast)
+            {
+                request.AddFormParameter("firstLastPiecePrio", true);
             }
 
             if (seedConfiguration != null)
