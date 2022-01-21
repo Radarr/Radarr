@@ -86,6 +86,13 @@ class AddNewMovieSearchResult extends Component {
     } = this.state;
 
     const linkProps = isExistingMovie ? { to: `/movie/${titleSlug}` } : { onPress: this.onPress };
+    const posterWidth = 167;
+    const posterHeight = 250;
+
+    const elementStyle = {
+      width: `${posterWidth}px`,
+      height: `${posterHeight}px`
+    };
 
     return (
       <div className={styles.searchResult}>
@@ -102,6 +109,7 @@ class AddNewMovieSearchResult extends Component {
                 <div className={styles.posterContainer}>
                   <MoviePoster
                     className={styles.poster}
+                    style={elementStyle}
                     images={images}
                     size={250}
                     overflow={true}
@@ -114,7 +122,7 @@ class AddNewMovieSearchResult extends Component {
                       monitored={monitored}
                       hasFile={hasFile}
                       status={status}
-                      posterWidth={167}
+                      posterWidth={posterWidth}
                       detailedProgressBar={true}
                       queueStatus={queueStatus}
                       queueState={queueState}
