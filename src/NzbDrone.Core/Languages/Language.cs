@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Languages
         public static Language Bulgarian => new Language(29, "Bulgarian");
         public static Language PortugueseBR => new Language(30, "Portuguese (Brazil)");
         public static Language Arabic => new Language(31, "Arabic");
-        public static Language Ukrainian => new Language(32, "Unkrainian");
+        public static Language Ukrainian => new Language(32, "Ukrainian");
         public static Language Persian => new Language(33, "Persian");
         public static Language Bengali => new Language(34, "Bengali");
         public static Language Any => new Language(-1, "Any");
