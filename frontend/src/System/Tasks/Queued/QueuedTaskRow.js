@@ -200,7 +200,7 @@ class QueuedTaskRow extends Component {
           {
             clientUserAgent ?
               <span className={styles.userAgent} title={translate('TaskUserAgentTooltip')}>
-                {translate('from')}: {clientUserAgent}
+                {translate('From')}: {clientUserAgent}
               </span> :
               null
           }
