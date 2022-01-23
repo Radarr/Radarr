@@ -34,8 +34,9 @@ namespace NzbDrone.Core.Parser
             // Anime [Subgroup] no year, info in parentheses or brackets, hash
             new Regex(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+)(?:[\[(][^])]).*?(?<hash>\[\w{8}\])(?:$|\.)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            // Some german or french tracker formats (missing year, ...) (Only applies to german and TrueFrench releases) - see ParserFixture for examples and tests - french removed as it broke all movies w/ french titles
-            new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(" + EditionRegex + @".{1,3})?(?:(?<!(19|20)\d{2}.*?)(German|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
+            // Some german or french tracker formats (language tag before year or before common scene word, missing year) (Only applies to german, french and TrueFrench releases) - needs to be very strict to avoid false positives - see ParserFixture for examples and tests
+            new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(" + EditionRegex +
+                      @".{1,3})?(?:(?<!(19|20)\d{2}.*?|((The([-_. ]Good)?)|La|Aleksei)[-_. ])(German|French|TrueFrench))(?!.*?(German|French|TrueFrench|[-_. ].+?(19|20)\d{2}))[-_. ](?=((19|20)\d{2}|$|(DL|BluRay|WEB|WebHD|WebRip|720p|1080p|2160p|E?AC3D?|Subbed|DTS(-HD)?|COMPLETE|DVDR|HDTV|HDTVRip|PAL|DVD9|ML|MULTi|READNFO|UHD|BDRIP|DOKU|DD|SUBBED|DUBBED|DV|INTERNAL|iNT|BDRiP|HEVC|AVC|3D|DVD|S?VCD|DVDRiP|TS|LD|CAM|" + EditionRegex + @")))(?<year>(19|20)\d{2})?(.*?)(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
             // Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*" + EditionRegex + @".{1,3}(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",

@@ -42,6 +42,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Fake Movie 2016 Final Cut ", "Final Cut")]
         [TestCase("My Movie GERMAN Extended Cut 2016", "Extended Cut")]
         [TestCase("My.Movie.GERMAN.Extended.Cut.2016", "Extended Cut")]
+        [TestCase("My.Movie.Extended.Cut.GERMAN.2016", "Extended Cut")]
         [TestCase("My.Movie.GERMAN.Extended.Cut", "Extended Cut")]
         [TestCase("My.Movie.Assembly.Cut.1992.REPACK.1080p.BluRay.DD5.1.x264-Group", "Assembly Cut")]
         [TestCase("Movie.1987.Ultimate.Hunter.Edition.DTS-HD.DTS.MULTISUBS.1080p.BluRay.x264.HQ-TUSAHD", "Ultimate Hunter Edition")]

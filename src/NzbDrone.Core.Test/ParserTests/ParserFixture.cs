@@ -23,7 +23,9 @@ namespace NzbDrone.Core.Test.ParserTests
          * Superman.-.The.Man.of.Steel.1994-06.34.hybrid.DreamGirl-Novus-HD
          * Superman.-.The.Man.of.Steel.1994-05.33.hybrid.DreamGirl-Novus-HD
          * Constantine S1-E1-WEB-DL-1080p-NZBgeek
-         * [TestCase("Valana la Movie FRENCH BluRay 720p 2016 kjhlj", "Valana la Movie")]  Removed 2021-12-19 as this / the regex for this was breaking all movies w/ french in title
+         * Valana la Movie FRENCH BluRay 720p 2016 kjhlj
+         * Valana la Movie TRUEFRENCH BluRay 720p 2016 kjhlj
+         * Der.Movie.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998
          */
 
         [Test]
@@ -49,9 +51,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("www.5MovieRulz.tc - Movie (2000) Malayalam HQ HDRip - x264 - AAC - 700MB.mkv", "Movie")]
         [TestCase("Movie: The Movie World 2013", "Movie: The Movie World")]
         [TestCase("Movie.The.Final.Chapter.2016", "Movie The Final Chapter")]
-        [TestCase("Der.Movie.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Movie James")]
         [TestCase("Movie.German.DL.AC3.Dubbed..BluRay.x264-PsO", "Movie")]
-        [TestCase("Valana la Movie TRUEFRENCH BluRay 720p 2016 kjhlj", "Valana la Movie")]
         [TestCase("Mission Movie: Rogue Movie (2015)�[XviD - Ita Ac3 - SoftSub Ita]azione, spionaggio, thriller *Prima Visione* Team mulnic Tom Cruise", "Mission Movie: Rogue Movie")]
         [TestCase("Movie.Movie.2000.FRENCH..BluRay.-AiRLiNE", "Movie Movie")]
         [TestCase("My Movie 1999 German Bluray", "My Movie")]
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Klasse.von.1999.1990.German.720p.HDTV.x264-NORETAiL", "Movie Klasse von 1999", "", 1990, Description = "year in the title")]
         [TestCase("Movie.Squad.2016.EXTENDED.German.DL.AC3.BDRip.x264-hqc", "Movie Squad", "EXTENDED", 2016, Description = "edition after year")]
         [TestCase("Movie.and.Movie.2010.Extended.Cut.German.DTS.DL.720p.BluRay.x264-HDS", "Movie and Movie", "Extended Cut", 2010, Description = "edition after year")]
-        [TestCase("Der.Movie.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Movie James", "", 1998, Description = "year at the end")]
+
         [TestCase("Der.Movie.Eine.Unerwartete.Reise.Extended.German.720p.BluRay.x264-EXQUiSiTE", "Der Movie Eine Unerwartete Reise", "Extended", 0, Description = "no year & edition")]
         [TestCase("Movie.Weg.des.Kriegers.EXTENDED.German.720p.BluRay.x264-EXQUiSiTE", "Movie Weg des Kriegers", "EXTENDED", 0, Description = "no year & edition")]
         [TestCase("Die.Unfassbaren.Movie.Name.EXTENDED.German.DTS.720p.BluRay.x264-RHD", "Die Unfassbaren Movie Name", "EXTENDED", 0, Description = "no year & edition")]
@@ -243,10 +243,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Italian.Movie.2025.720p.BluRay.X264-AMIABLE")]
         [TestCase("The.French.Movie.2013.720p.BluRay.x264 - ROUGH[PublicHD]")]
         [TestCase("Wakolda.German.Subbed.2013.AC3.DVDRiP.x264-ETM")]
-        [TestCase("The.German.Doctor.2013.LIMITED.DVDRip.x264-RedBlade")] // When German is not followed by a year or a SCENE word it is not matched
-        [TestCase("The.Good.German.2006.720p.HDTV.x264-TVP")] // The Good German is hardcoded not to match
-        [TestCase("German.Lancers.2019.720p.BluRay.x264-UNiVERSUM")] // German at the beginning is never matched
-        [TestCase("The.German.2019.720p.BluRay.x264-UNiVERSUM")] // The German is hardcoded not to match
+        [TestCase("The.German.Doctor.2013.LIMITED.DVDRip.x264-RedBlade", Description = "When German is not followed by a year or a SCENE word it is not matched")]
+        [TestCase("The.Good.German.2006.720p.HDTV.x264-TVP", Description = "The Good German is hardcoded not to match")]
+        [TestCase("German.Lancers.2019.720p.BluRay.x264-UNiVERSUM", Description = "German at the beginning is never matched")]
+        [TestCase("The.German.2019.720p.BluRay.x264-UNiVERSUM", Description = "The German is hardcoded not to match")]
         public void should_not_parse_wrong_language_in_title(string postTitle)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
