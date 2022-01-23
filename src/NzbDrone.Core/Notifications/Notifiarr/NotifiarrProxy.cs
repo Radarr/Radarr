@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Collections.Specialized;
 using System.Net;
 using FluentValidation.Results;
 using NLog;
-using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.Notifications.Notifiarr
