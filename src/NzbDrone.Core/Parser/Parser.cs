@@ -125,6 +125,8 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex ReleaseGroupRegex = new Regex(@"-(?<releasegroup>[a-z0-9]+(?<part2>-[a-z0-9]+)?(?!.+?(?:480p|720p|1080p|2160p)))(?<!(?:WEB-DL|Blu-Ray|480p|720p|1080p|2160p|DTS-HD|DTS-X|DTS-MA|DTS-ES|-ES|-EN|-CAT|-HDRip|[ ._]\d{4}-\d{2}|-\d{2}|tmdb(id)?-(?<tmdbid>\d+)|(?<imdbid>tt\d{7,8}))(?:\k<part2>)?)(?:\b|[-._ ]|$)|[-._ ]\[(?<releasegroup>[a-z0-9]+)\]$",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        private static readonly Regex InvalidReleaseGroupRegex = new Regex(@"^([se]\d+|[0-9a-f]{8})$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private static readonly Regex AnimeReleaseGroupRegex = new Regex(@"^(?:\[(?<subgroup>(?!\s).+?(?<!\s))\](?:_|-|\s|\.)?)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -465,11 +467,11 @@ namespace NzbDrone.Core.Parser
 
             title = CleanReleaseGroupRegex.Replace(title);
 
-            var exceptionMatch = ExceptionReleaseGroupRegex.Matches(title);
+            var exceptionReleaseGroupRegex = ExceptionReleaseGroupRegex.Matches(title);
 
-            if (exceptionMatch.Count != 0)
+            if (exceptionReleaseGroupRegex.Count != 0)
             {
-                return exceptionMatch.OfType<Match>().Last().Groups["releasegroup"].Value;
+                return exceptionReleaseGroupRegex.OfType<Match>().Last().Groups["releasegroup"].Value;
             }
 
             var exceptionExactMatch = ExceptionReleaseGroupRegexExact.Matches(title);
@@ -487,6 +489,11 @@ namespace NzbDrone.Core.Parser
                 int groupIsNumeric;
 
                 if (int.TryParse(group, out groupIsNumeric))
+                {
+                    return null;
+                }
+
+                if (InvalidReleaseGroupRegex.IsMatch(group))
                 {
                     return null;
                 }
