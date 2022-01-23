@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using FFMpegCore;
 using NzbDrone.Core.Datastore;
 
@@ -11,12 +10,6 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
         public string RawStreamData { get; set; }
         public string RawFrameData { get; set; }
         public int SchemaRevision { get; set; }
-
-        [JsonIgnore]
-        public IMediaAnalysis Analysis => FFProbe.Analyse(RawStreamData);
-
-        [JsonIgnore]
-        public IMediaAnalysis Frames => FFProbe.Analyse(RawFrameData);
 
         public string ContainerFormat { get; set; }
         public string VideoFormat { get; set; }
