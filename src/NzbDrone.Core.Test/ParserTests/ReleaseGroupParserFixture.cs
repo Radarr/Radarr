@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.2010.720p.BluRay.x264.-[YTS.LT]", "YTS.LT")]
         [TestCase("The.Movie.Title.2013.720p.BluRay.x264-ROUGH [PublicHD]", "ROUGH")]
         [TestCase("Some.Really.Bad.Movie.Title.[2021].1080p.WEB-HDRip.Dual.Audio.[Hindi.[Clean]. .English].x264.AAC.DD.2.0.By.Full4Movies.mkv-xpost", null)]
-
+        [TestCase("The.Movie.Title.2013.1080p.10bit.AMZN.WEB-DL.DDP5.1.HEVC-Vyndros", "Vyndros")]
         public void should_parse_expected_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
@@ -99,8 +99,13 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Crappy Anime Movie Name 2017 [RH] [Blu-ray][MKV][h264 10-bit][1080p][FLAC 5.1][Dual Audio][Softsubs (RH)]", "RH")]
         [TestCase("Yet Another Anime Movie 2012 [Kametsu] [Blu-ray][MKV][h264 10-bit][1080p][FLAC 5.1][Dual Audio][Softsubs (Kametsu)]", "Kametsu")]
         [TestCase("Another.Anime.Film.Name.2016.JPN.Blu-Ray.Remux.AVC.DTS-MA.BluDragon", "BluDragon")]
-
         public void should_parse_exception_release_group(string title, string expected)
+        {
+            Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
+        }
+
+        [TestCase(@"C:\Test\Doctor.Series.2005.s01e01.internal.bdrip.x264-archivist.mkv", "archivist")]
+        public void should_not_include_extension_in_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
         }
@@ -153,6 +158,12 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_anime_release_groups(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
+        }
+
+        [TestCase("Terrible.Anime.Title.2020.DBOX.480p.x264-iKaos [v3] [6AFFEF6B]")]
+        public void should_not_parse_anime_hash_as_release_group(string title)
+        {
+            Parser.Parser.ParseReleaseGroup(title).Should().BeNull();
         }
     }
 }
