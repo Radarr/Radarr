@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex MPEG2Regex = new Regex(@"\b(?<mpeg2>MPEG[-_. ]?2)\b");
 
-        private static readonly Regex BRDISKRegex = new Regex(@"\b(COMPLETE|ISO|BDISO|BD25|BD50|BR.?DISK)\b",
+        private static readonly Regex BRDISKRegex = new Regex(@"^(?!.*((?<!HD[._ -]|HD)DVD|BDRip|720p|MKV|XviD|WMV|REMUX|[xh][-_. ]?26[45]|\b(German|videomann|ger[. ]dub)\b))(((?=.*(Blu[-_. ]?ray|HD[-_. ]?DVD)\b)(?=.*\b(ISO|AVC|HEVC|VC[-_. ]?1|MVC|MPEG[-_. ]?2)\b))|^((?=.*\b(^((?=.*COMPLETE)(?=.*Blu[-_. ]?ray|HD[-_. ]?DVD))|3D[-_. ]?BD|BR[-_. ]?DISK|BDISO|^((?=.*((BD|UHD)[-_. ]?(25|50|66)))(?=.*ISO)?)))))",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex ProperRegex = new Regex(@"\b(?<proper>proper)\b",
