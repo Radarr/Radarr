@@ -368,9 +368,7 @@ namespace NzbDrone.Core.Download.Clients.QBittorrent
 
             if (Settings.MovieCategory.IsNotNullOrWhiteSpace() && version >= Version.Parse("2.0"))
             {
-                var label = Proxy.GetLabels(Settings)[Settings.MovieCategory];
-
-                if (label.SavePath.IsNotNullOrWhiteSpace())
+                if (Proxy.GetLabels(Settings).TryGetValue(Settings.MovieCategory, out var label) && label.SavePath.IsNotNullOrWhiteSpace())
                 {
                     var labelDir = new OsPath(label.SavePath);
 
