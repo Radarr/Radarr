@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Parser
                                                                 (?<hdtv>HDTV)|
                                                                 (?<bdrip>BDRip|BDLight)|
                                                                 (?<brrip>BRRip)|
-                                                                (?<dvdr>DVD-R|DVDR|DVD5|DVD9)|
+                                                                (?<dvdr>\d?x?M?DVD-R|\d?x?M?DVDR|\d?x?DVD5|\d?x?DVD9)|
                                                                 (?<dvd>DVD(?!-R)|DVDRip|xvidvd)|
                                                                 (?<dsr>WS[-_. ]DSR|DSR)|
                                                                 (?<regional>R[0-9]{1}|REGIONAL)|
