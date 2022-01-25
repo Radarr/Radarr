@@ -22,7 +22,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
     [CheckOn(typeof(ModelEvent<RemotePathMapping>))]
     [CheckOn(typeof(MovieImportedEvent), CheckOnCondition.FailedOnly)]
     [CheckOn(typeof(MovieImportFailedEvent), CheckOnCondition.SuccessfulOnly)]
-    public class RemotePathMappingCheck : HealthCheckBase, IProvideHealthCheck
+    public class RemotePathMappingCheck : HealthCheckBase, IProvideHealthCheckWithMessage
     {
         private readonly IDiskProvider _diskProvider;
         private readonly IProvideDownloadClient _downloadClientProvider;
