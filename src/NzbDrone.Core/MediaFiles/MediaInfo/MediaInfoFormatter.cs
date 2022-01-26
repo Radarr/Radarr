@@ -217,8 +217,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 }
 
                 if (videoCodecID == "DIV3" ||
-                    videoCodecID == "DIVX" ||
-                    videoCodecID == "DX50")
+                    videoCodecID == "DX50" ||
+                    videoCodecID.ToUpperInvariant() == "DIVX")
                 {
                     return "DivX";
                 }
@@ -256,7 +256,8 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 videoFormat == "rv10" ||
                 videoFormat == "rv20" ||
                 videoFormat == "rv30" ||
-                videoFormat == "rv40")
+                videoFormat == "rv40" ||
+                videoFormat == "cinepak")
             {
                 return "";
             }

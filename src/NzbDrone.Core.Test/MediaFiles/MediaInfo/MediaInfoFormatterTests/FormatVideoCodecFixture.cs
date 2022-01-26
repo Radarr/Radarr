@@ -19,6 +19,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [TestCase("wmv1, WMV1", "Droned.wmv", "WMV")]
         [TestCase("wmv2, WMV2", "Droned.wmv", "WMV")]
         [TestCase("mpeg4, XVID", "", "XviD")]
+        [TestCase("mpeg4, DIVX", "", "DivX")]
+        [TestCase("mpeg4, divx", "", "DivX")]
         [TestCase("mpeg4, DIV3", "spsm.dvdrip.divx.avi'.", "DivX")]
         [TestCase("msmpeg4, DIV3", "Exit the Dragon, Enter the Tiger (1976) 360p MPEG Audio.avi", "DivX")]
         [TestCase("msmpeg4v2, DIV3", "Exit the Dragon, Enter the Tiger (1976) 360p MPEG Audio.avi", "DivX")]
