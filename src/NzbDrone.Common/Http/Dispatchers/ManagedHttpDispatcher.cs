@@ -7,17 +7,21 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http.Proxy;
+using NzbDrone.Common.Instrumentation;
 
 namespace NzbDrone.Common.Http.Dispatchers
 {
     public class ManagedHttpDispatcher : IHttpDispatcher
     {
         private const string NO_PROXY_KEY = "no-proxy";
-
         private const int connection_establish_timeout = 2000;
+
+        private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(ManagedHttpDispatcher));
+
         private static bool useIPv6 = Socket.OSSupportsIPv6;
         private static bool hasResolvedIPv6Availability;
 
@@ -29,10 +33,10 @@ namespace NzbDrone.Common.Http.Dispatchers
         private readonly ICached<CredentialCache> _credentialCache;
 
         public ManagedHttpDispatcher(IHttpProxySettingsProvider proxySettingsProvider,
-            ICreateManagedWebProxy createManagedWebProxy,
-            ICertificateValidationService certificateValidationService,
-            IUserAgentBuilder userAgentBuilder,
-            ICacheManager cacheManager)
+                                     ICreateManagedWebProxy createManagedWebProxy,
+                                     ICertificateValidationService certificateValidationService,
+                                     IUserAgentBuilder userAgentBuilder,
+                                     ICacheManager cacheManager)
         {
             _proxySettingsProvider = proxySettingsProvider;
             _createManagedWebProxy = createManagedWebProxy;
@@ -235,16 +239,21 @@ namespace NzbDrone.Common.Http.Dispatchers
 
         private static async ValueTask<Stream> onConnect(SocketsHttpConnectionContext context, CancellationToken cancellationToken)
         {
+            Logger.Trace($"useIPv6: {useIPv6} hasResolvedipv6availability: {hasResolvedIPv6Availability}");
+
             // Until .NET supports an implementation of Happy Eyeballs (https://tools.ietf.org/html/rfc8305#section-2), let's make IPv4 fallback work in a simple way.
             // This issue is being tracked at https://github.com/dotnet/runtime/issues/26177 and expected to be fixed in .NET 6.
             if (useIPv6)
             {
+                Logger.Trace("Trying Ipv6");
                 try
                 {
                     var localToken = cancellationToken;
 
                     if (!hasResolvedIPv6Availability)
                     {
+                        Logger.Trace($"Using fast timeout {connection_establish_timeout}");
+
                         // to make things move fast, use a very low timeout for the initial ipv6 attempt.
                         var quickFailCts = new CancellationTokenSource(connection_establish_timeout);
                         var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, quickFailCts.Token);
@@ -254,8 +263,10 @@ namespace NzbDrone.Common.Http.Dispatchers
 
                     return await attemptConnection(AddressFamily.InterNetworkV6, context, localToken);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Logger.Trace(e, "Error in ipv6 attempt");
+
                     // very naively fallback to ipv4 permanently for this execution based on the response of the first connection attempt.
                     // note that this may cause users to eventually get switched to ipv4 (on a random failure when they are switching networks, for instance)
                     // but in the interest of keeping this implementation simple, this is acceptable.
@@ -266,6 +277,8 @@ namespace NzbDrone.Common.Http.Dispatchers
                     hasResolvedIPv6Availability = true;
                 }
             }
+
+            Logger.Trace("Falling back to ipv4");
 
             // fallback to IPv4.
             return await attemptConnection(AddressFamily.InterNetwork, context, cancellationToken);
