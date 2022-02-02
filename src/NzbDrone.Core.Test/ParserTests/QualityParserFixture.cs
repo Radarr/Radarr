@@ -290,6 +290,12 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R576p);
         }
 
+        [TestCase("Movie.1993.720p.BluRay.REMUX.AVC.FLAC.2.0-BLURANiUM")]
+        public void should_parse_remux720p_as_bluray720p_quality(string title)
+        {
+            ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R720p);
+        }
+
         [TestCase("Movie.Title.2016.REMUX.1080p.BluRay.AVC.DTS-HD.MA.5.1-iFT")]
         [TestCase("Movie.Name.2008.REMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]
         [TestCase("Movie.Name.2008.BDREMUX.1080p.Bluray.AVC.DTS-HR.MA.5.1-LEGi0N")]

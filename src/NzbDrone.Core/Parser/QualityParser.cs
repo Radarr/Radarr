@@ -178,6 +178,12 @@ namespace NzbDrone.Core.Parser
                         return result;
                     }
 
+                    if (resolution == Resolution.R720p)
+                    {
+                        result.Quality = Quality.Bluray720p;
+                        return result;
+                    }
+
                     if (resolution == Resolution.R576p)
                     {
                         result.Quality = Quality.Bluray576p;
