@@ -97,7 +97,7 @@ function IndexerOptions(props) {
               <FormInputGroup
                 type={inputTypes.NUMBER}
                 name="availabilityDelay"
-                unit="Days"
+                unit="days"
                 helpText={translate('AvailabilityDelayHelpText')}
                 onChange={onInputChange}
                 {...settings.availabilityDelay}
