@@ -105,7 +105,7 @@ namespace NzbDrone.Update
                 throw new ArgumentOutOfRangeException("arg", "Invalid process ID");
             }
 
-            Logger.Debug("NzbDrone process ID: {0}", id);
+            Logger.Debug("Radarr process ID: {0}", id);
             return id;
         }
 
