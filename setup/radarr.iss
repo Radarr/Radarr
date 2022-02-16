@@ -9,7 +9,6 @@
 #define BaseVersion GetEnv('MAJORVERSION')
 #define BuildNumber GetEnv('MINORVERSION')
 #define BuildVersion GetEnv('RADARRVERSION')
-#define BranchName GetEnv('BUILD_SOURCEBRANCHNAME')
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -26,7 +25,7 @@ DefaultDirName={commonappdata}\Radarr\bin
 DisableDirPage=yes
 DefaultGroupName={#AppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=Radarr.{#BranchName}.{#BuildVersion}.windows.{#Framework}
+OutputBaseFilename=Radarr.{#BuildVersion}.{#Runtime}
 SolidCompression=yes
 AppCopyright=Creative Commons 3.0 License
 AllowUNCPath=False
@@ -38,6 +37,7 @@ AppContact={#ForumsURL}
 VersionInfoVersion={#BaseVersion}.{#BuildNumber}
 SetupLogging=yes
 OutputDir=output
+WizardStyle=modern
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
