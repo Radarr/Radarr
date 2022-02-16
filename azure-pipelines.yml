@@ -14,6 +14,7 @@ variables:
   sentryOrg: 'servarr'
   sentryUrl: 'https://sentry.servarr.com'
   dotnetVersion: '6.0.101'
+  innoVersion: '6.2.0'
   yarnCacheFolder: $(Pipeline.Workspace)/.yarn
 
 trigger:
@@ -200,16 +201,11 @@ stages:
           artifactName: WindowsFrontend
           targetPath: _output
         displayName: Fetch Frontend
-      - bash: ./build.sh --packages
-        displayName: Create Packages
       - bash: |
-          setup/inno/ISCC.exe setup/radarr.iss //DFramework=net6.0 //DRuntime=win-x86
-          cp setup/output/Radarr.*windows.net6.0.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x86-installer.exe
-        displayName: Create .NET Core Windows installer
-      - bash: |
-          setup/inno/ISCC.exe setup/radarr.iss //DFramework=net6.0 //DRuntime=win-x64
-          cp setup/output/Radarr.*windows.net6.0.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x64-installer.exe
-        displayName: Create .NET Core Windows installer
+          ./build.sh --packages --installer
+          cp setup/output/Radarr.*win-x64.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x64-installer.exe
+          cp setup/output/Radarr.*win-x86.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x86-installer.exe
+        displayName: Create Installers
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'WindowsInstaller'
         displayName: Publish Installer

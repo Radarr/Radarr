@@ -233,6 +233,32 @@ Package()
     esac
 }
 
+BuildInstaller()
+{
+    local framework="$1"
+    local runtime="$2"
+    
+    ./_inno/ISCC.exe setup/radarr.iss "//DFramework=$framework" "//DRuntime=$runtime"
+}
+
+InstallInno()
+{
+    ProgressStart "Installing portable Inno Setup"
+    
+    rm -rf _inno
+    curl -s --output innosetup.exe "https://files.jrsoftware.org/is/6/innosetup-${INNOVERSION:-6.2.0}.exe"
+    mkdir _inno
+    ./innosetup.exe //portable=1 //silent //currentuser //dir=.\\_inno
+    rm innosetup.exe
+    
+    ProgressEnd "Installed portable Inno Setup"
+}
+
+RemoveInno()
+{
+    rm -rf _inno
+}
+
 PackageTests()
 {
     local framework="$1"
@@ -264,6 +290,7 @@ if [ $# -eq 0 ]; then
     BACKEND=YES
     FRONTEND=YES
     PACKAGES=YES
+    INSTALLER=NO
     LINT=YES
     ENABLE_BSD=NO
 fi
@@ -297,6 +324,10 @@ case $key in
         ;;
     --packages)
         PACKAGES=YES
+        shift # past argument
+        ;;
+    --installer)
+        INSTALLER=YES
         shift # past argument
         ;;
     --lint)
@@ -381,4 +412,12 @@ then
     else
         Package "$FRAMEWORK" "$RID"
     fi
+fi
+
+if [ "$INSTALLER" = "YES" ];
+then
+    InstallInno
+    BuildInstaller "net6.0" "win-x64"
+    BuildInstaller "net6.0" "win-x86"
+    RemoveInno
 fi
