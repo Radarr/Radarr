@@ -233,7 +233,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Title = resource.Title;
             movie.OriginalTitle = resource.OriginalTitle;
             movie.CleanTitle = resource.Title.CleanMovieTitle();
-            movie.SortTitle = Parser.Parser.NormalizeTitle(resource.Title);
+            movie.SortTitle = MovieTitleNormalizer.Normalize(resource.Title, resource.TmdbId);
             movie.CleanOriginalTitle = resource.OriginalTitle.CleanMovieTitle();
             movie.Overview = resource.Overview;
 

@@ -161,10 +161,9 @@ namespace NzbDrone.Core.Parser
         // name only...BE VERY CAREFUL WITH THIS, HIGH CHANCE OF FALSE POSITIVES
         private static readonly Regex ExceptionReleaseGroupRegexExact = new Regex(@"\b(?<releasegroup>KRaLiMaRKo|E\.N\.D|D\-Z0N3|Koten_Gars|BluDragon|ZØNEHD|Tigole|HQMUX|VARYG|YIFY|YTS(.(MX|LT|AG))?|TMd|Eml HDTeam|LMain|DarQ|BEN THE MEN)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex WordDelimiterRegex = new Regex(@"(\s|\.|,|_|-|=|'|\|)+", RegexOptions.Compiled);
         private static readonly Regex SpecialCharRegex = new Regex(@"(\&|\:|\\|\/)+", RegexOptions.Compiled);
         private static readonly Regex PunctuationRegex = new Regex(@"[^\w\s]", RegexOptions.Compiled);
-        private static readonly Regex CommonWordRegex = new Regex(@"\b(a|an|the|and|or|of)\b\s?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex ArticleWordRegex = new Regex(@"^(a|an|the)\s", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SpecialEpisodeWordRegex = new Regex(@"\b(part|special|edition|christmas)\b\s?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex DuplicateSpacesRegex = new Regex(@"\s{2,}", RegexOptions.Compiled);
 
@@ -479,21 +478,19 @@ namespace NzbDrone.Core.Parser
             return ReplaceGermanUmlauts(NormalizeRegex.Replace(title, string.Empty).ToLowerInvariant()).RemoveAccent();
         }
 
-        public static string NormalizeEpisodeTitle(this string title)
+        public static string NormalizeMovieTitle(string title)
         {
             title = SpecialEpisodeWordRegex.Replace(title, string.Empty);
             title = PunctuationRegex.Replace(title, " ");
             title = DuplicateSpacesRegex.Replace(title, " ");
 
-            return title.Trim()
-                        .ToLower();
+            return title.Trim().ToLower();
         }
 
-        public static string NormalizeTitle(this string title)
+        public static string NormalizeTitle(string title)
         {
-            title = WordDelimiterRegex.Replace(title, " ");
             title = PunctuationRegex.Replace(title, string.Empty);
-            title = CommonWordRegex.Replace(title, string.Empty);
+            title = ArticleWordRegex.Replace(title, string.Empty);
             title = DuplicateSpacesRegex.Replace(title, " ");
             title = SpecialCharRegex.Replace(title, string.Empty);
 

@@ -9,7 +9,6 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
-using NzbDrone.Core.Parser;
 using Radarr.Api.V3.MovieFiles;
 using Radarr.Http.REST;
 using Swashbuckle.AspNetCore.Annotations;
@@ -121,7 +120,7 @@ namespace Radarr.Api.V3.Movies
                 Title = translatedTitle,
                 OriginalTitle = model.MovieMetadata.Value.OriginalTitle,
                 OriginalLanguage = model.MovieMetadata.Value.OriginalLanguage,
-                SortTitle = translatedTitle.NormalizeTitle(),
+                SortTitle = MovieTitleNormalizer.Normalize(translatedTitle, model.TmdbId),
                 InCinemas = model.MovieMetadata.Value.InCinemas,
                 PhysicalRelease = model.MovieMetadata.Value.PhysicalRelease,
                 DigitalRelease = model.MovieMetadata.Value.DigitalRelease,
