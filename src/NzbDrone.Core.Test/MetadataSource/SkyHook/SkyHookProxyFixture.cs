@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
         [TestCase(11, "Star Wars")]
         [TestCase(2, "Ariel")]
         [TestCase(70981, "Prometheus")]
+        [TestCase(238, "The Godfather")]
         public void should_be_able_to_get_movie_detail(int tmdbId, string title)
         {
             var details = Subject.GetMovieInfo(tmdbId).Item1;
@@ -41,8 +42,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             movie.ImdbId.Should().NotBeNullOrWhiteSpace();
             movie.Studio.Should().NotBeNullOrWhiteSpace();
             movie.Runtime.Should().BeGreaterThan(0);
-
-            // series.TvRageId.Should().BeGreaterThan(0);
             movie.TmdbId.Should().BeGreaterThan(0);
         }
     }
