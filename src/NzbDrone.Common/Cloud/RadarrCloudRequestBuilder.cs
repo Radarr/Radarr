@@ -20,7 +20,7 @@ namespace NzbDrone.Common.Cloud
                 .SetHeader("Authorization", $"Bearer {AuthToken}")
                 .CreateFactory();
 
-            RadarrMetadata = new HttpRequestBuilder("https://radarrapi.servarr.com/v1/{route}")
+            RadarrMetadata = new HttpRequestBuilder("https://api.radarr.video/v1/{route}")
                 .CreateFactory();
         }
 
