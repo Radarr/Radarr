@@ -136,6 +136,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
 
                 scope.SetTag("culture", Thread.CurrentThread.CurrentCulture.Name);
                 scope.SetTag("branch", BuildInfo.Branch);
+                scope.SetTag("runtime_identifier", System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier);
             });
         }
 
