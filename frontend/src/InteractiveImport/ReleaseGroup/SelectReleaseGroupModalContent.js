@@ -9,8 +9,9 @@ import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
-import { inputTypes, kinds } from 'Helpers/Props';
+import { inputTypes, kinds, scrollDirections } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import styles from './SelectReleaseGroupModalContent.css';
 
 class SelectReleaseGroupModalContent extends Component {
 
@@ -58,7 +59,10 @@ class SelectReleaseGroupModalContent extends Component {
           {translate('ManualImportSetReleaseGroup')}
         </ModalHeader>
 
-        <ModalBody>
+        <ModalBody
+          className={styles.modalBody}
+          scrollDirection={scrollDirections.NONE}
+        >
           <Form>
             <FormGroup>
               <FormLabel>{translate('ReleaseGroup')}</FormLabel>
@@ -67,6 +71,7 @@ class SelectReleaseGroupModalContent extends Component {
                 type={inputTypes.TEXT}
                 name="releaseGroup"
                 value={releaseGroup}
+                autoFocus={true}
                 onChange={this.onReleaseGroupChange}
               />
             </FormGroup>
