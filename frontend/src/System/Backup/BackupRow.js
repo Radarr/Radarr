@@ -8,6 +8,7 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
 import { icons, kinds } from 'Helpers/Props';
+import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
 import RestoreBackupModalConnector from './RestoreBackupModalConnector';
 import styles from './BackupRow.css';
@@ -65,6 +66,7 @@ class BackupRow extends Component {
       type,
       name,
       path,
+      size,
       time
     } = this.props;
 
@@ -102,6 +104,10 @@ class BackupRow extends Component {
           >
             {name}
           </Link>
+        </TableRowCell>
+
+        <TableRowCell>
+          {formatBytes(size)}
         </TableRowCell>
 
         <RelativeDateCellConnector
@@ -147,6 +153,7 @@ BackupRow.propTypes = {
   type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
   time: PropTypes.string.isRequired,
   onDeleteBackupPress: PropTypes.func.isRequired
 };
