@@ -86,7 +86,7 @@
   "Backups": "Backups",
   "BeforeUpdate": "Before update",
   "BindAddress": "Bind Address",
-  "BindAddressHelpText": "Valid IP4 address or '*' for all interfaces",
+  "BindAddressHelpText": "Valid IPv4 address or '*' for all interfaces",
   "Blocklist": "Blocklist",
   "Blocklisted": "Blocklisted",
   "BlocklistHelpText": "Prevents Radarr from automatically grabbing this release again",
