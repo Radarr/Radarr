@@ -342,8 +342,8 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
                     return null;
                 }
 
-                major = 1;
-                minor = 1;
+                major = 3;
+                minor = 0;
                 patch = 0;
             }
 
@@ -364,7 +364,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
                 if (rawVersion.Equals("develop", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return new NzbDroneValidationFailure("Version", "SABnzbd develop version, assuming version 1.1.0 or higher.")
+                    return new NzbDroneValidationFailure("Version", "SABnzbd develop version, assuming version 3.0.0 or higher.")
                     {
                         IsWarning = true,
                         DetailedDescription = "Radarr may not be able to support new features added to SABnzbd when running develop versions."
