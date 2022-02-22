@@ -31,7 +31,8 @@ namespace NzbDrone.Core.Notifications.Webhook
                 Movie = new WebhookMovie(message.Movie),
                 RemoteMovie = new WebhookRemoteMovie(remoteMovie),
                 Release = new WebhookRelease(quality, remoteMovie),
-                DownloadClient = message.DownloadClient,
+                DownloadClient = message.DownloadClientName,
+                DownloadClientType = message.DownloadClientType,
                 DownloadId = message.DownloadId
             };
 
@@ -49,7 +50,8 @@ namespace NzbDrone.Core.Notifications.Webhook
                 RemoteMovie = new WebhookRemoteMovie(message.Movie),
                 MovieFile = new WebhookMovieFile(movieFile),
                 IsUpgrade = message.OldMovieFiles.Any(),
-                DownloadClient = message.DownloadClient,
+                DownloadClient = message.DownloadClientInfo.Name,
+                DownloadClientType = message.DownloadClientInfo.Type,
                 DownloadId = message.DownloadId
             };
 

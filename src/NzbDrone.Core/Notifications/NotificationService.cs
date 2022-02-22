@@ -95,7 +95,8 @@ namespace NzbDrone.Core.Notifications
                 Quality = message.Movie.ParsedMovieInfo.Quality,
                 Movie = message.Movie.Movie,
                 RemoteMovie = message.Movie,
-                DownloadClient = message.DownloadClient,
+                DownloadClientType = message.DownloadClient,
+                DownloadClientName = message.DownloadClientName,
                 DownloadId = message.DownloadId
             };
 
@@ -131,7 +132,7 @@ namespace NzbDrone.Core.Notifications
                 Movie = message.MovieInfo.Movie,
                 OldMovieFiles = message.OldFiles,
                 SourcePath = message.MovieInfo.Path,
-                DownloadClient = message.DownloadClientInfo?.Name,
+                DownloadClientInfo = message.DownloadClientInfo,
                 DownloadId = message.DownloadId
             };
 

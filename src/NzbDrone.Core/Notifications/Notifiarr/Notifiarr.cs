@@ -43,7 +43,8 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             variables.Add("Radarr_Release_Quality", quality.Quality.Name);
             variables.Add("Radarr_Release_QualityVersion", quality.Revision.Version.ToString());
             variables.Add("Radarr_IndexerFlags", remoteMovie.Release.IndexerFlags.ToString());
-            variables.Add("Radarr_Download_Client", message.DownloadClient ?? string.Empty);
+            variables.Add("Radarr_Download_Client", message.DownloadClientName ?? string.Empty);
+            variables.Add("Radarr_Download_Client_Type", message.DownloadClientType ?? string.Empty);
             variables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
 
             _proxy.SendNotification(variables, Settings);
@@ -76,7 +77,8 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             variables.Add("Radarr_MovieFile_SourcePath", sourcePath);
             variables.Add("Radarr_MovieFile_SourceFolder", Path.GetDirectoryName(sourcePath));
             variables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
-            variables.Add("Radarr_Download_Client", message.DownloadClient ?? string.Empty);
+            variables.Add("Radarr_Download_Client", message.DownloadClientInfo?.Name ?? string.Empty);
+            variables.Add("Radarr_Download_Client_Type", message.DownloadClientInfo?.Type ?? string.Empty);
 
             if (message.OldMovieFiles.Any())
             {

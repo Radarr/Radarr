@@ -57,7 +57,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Release_Quality", quality.Quality.Name);
             environmentVariables.Add("Radarr_Release_QualityVersion", quality.Revision.Version.ToString());
             environmentVariables.Add("Radarr_IndexerFlags", remoteMovie.Release.IndexerFlags.ToString());
-            environmentVariables.Add("Radarr_Download_Client", message.DownloadClient ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Client", message.DownloadClientName ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Client_Type", message.DownloadClientType ?? string.Empty);
             environmentVariables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
 
             ExecuteScript(environmentVariables);
@@ -89,8 +90,9 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_MovieFile_SceneName", movieFile.SceneName ?? string.Empty);
             environmentVariables.Add("Radarr_MovieFile_SourcePath", sourcePath);
             environmentVariables.Add("Radarr_MovieFile_SourceFolder", Path.GetDirectoryName(sourcePath));
+            environmentVariables.Add("Radarr_Download_Client", message.DownloadClientInfo?.Name ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Client_Type", message.DownloadClientInfo?.Type ?? string.Empty);
             environmentVariables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
-            environmentVariables.Add("Radarr_Download_Client", message.DownloadClient ?? string.Empty);
 
             if (message.OldMovieFiles.Any())
             {
