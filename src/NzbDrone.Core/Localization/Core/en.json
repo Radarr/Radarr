@@ -107,7 +107,7 @@
   "CantFindMovie": "Why can't I find my movie?",
   "Cast": "Cast",
   "CertificateValidation": "Certificate Validation",
-  "CertificateValidationHelpText": "Change how strict HTTPS certification validation is",
+  "CertificateValidationHelpText": "Change how strict HTTPS certification validation is. Do not change unless you understand the risks.",
   "Certification": "Certification",
   "CertificationCountry": "Certification Country",
   "CertificationCountryHelpText": "Select Country for Movie Certifications",
