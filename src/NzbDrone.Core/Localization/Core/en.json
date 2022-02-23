@@ -62,7 +62,7 @@
   "AreYouSureYouWantToDeleteThisImportListExclusion": "Are you sure you want to delete this import list exclusion?",
   "AreYouSureYouWantToDeleteThisRemotePathMapping": "Are you sure you want to delete this remote path mapping?",
   "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Are you sure you want to remove 1 item from the queue?",
-  "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Are you sure you want to remove {0} item{1} from the queue?",
+  "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Are you sure you want to remove {0} items from the queue?",
   "AreYouSureYouWantToRemoveTheSelectedItemsFromBlocklist": "Are you sure you want to remove the selected items from the blocklist?",
   "AreYouSureYouWantToResetYourAPIKey": "Are you sure you want to reset your API Key?",
   "AsAllDayHelpText": "Events will appear as all-day events in your calendar",
