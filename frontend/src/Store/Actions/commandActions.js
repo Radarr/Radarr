@@ -17,6 +17,7 @@ export const section = 'commands';
 let lastCommand = null;
 let lastCommandTimeout = null;
 const removeCommandTimeoutIds = {};
+const commandFinishedCallbacks = {};
 
 //
 // State
@@ -119,7 +120,7 @@ function scheduleRemoveCommand(command, dispatch) {
   }, 60000 * 5);
 }
 
-export function executeCommandHelper( payload, dispatch) {
+export function executeCommandHelper(payload, dispatch) {
   // TODO: show a message for the user
   if (lastCommand && isSameCommand(lastCommand, payload)) {
     console.warn('Please wait at least 5 seconds before running this command again');
@@ -136,14 +137,23 @@ export function executeCommandHelper( payload, dispatch) {
     lastCommand = null;
   }, 5000);
 
+  const {
+    commandFinished,
+    ...requestPayload
+  } = payload;
+
   const promise = createAjaxRequest({
     url: '/command',
     method: 'POST',
-    data: JSON.stringify(payload),
+    data: JSON.stringify(requestPayload),
     dataType: 'json'
   }).request;
 
   return promise.then((data) => {
+    if (commandFinished) {
+      commandFinishedCallbacks[data.id] = commandFinished;
+    }
+
     dispatch(addCommand(data));
   });
 }
@@ -183,12 +193,20 @@ export const actionHandlers = handleThunks({
       }
     });
 
+    const commandFinished = commandFinishedCallbacks[payload.id];
+
+    if (commandFinished) {
+      commandFinished(payload);
+    }
+
+    delete commandFinishedCallbacks[payload.id];
+
     dispatch(updateItem({ section: 'commands', ...payload }));
     scheduleRemoveCommand(payload, dispatch);
     showCommandMessage(payload, dispatch);
   },
 
-  [ADD_COMMAND]: function(getState, payload, dispatch) {
+  [REMOVE_COMMAND]: function(getState, payload, dispatch) {
     dispatch(removeItem({ section: 'commands', ...payload }));
   }
 

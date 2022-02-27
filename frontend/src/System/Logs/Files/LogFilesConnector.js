@@ -51,12 +51,6 @@ class LogFilesConnector extends Component {
     this.props.fetchLogFiles();
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.deleteFilesExecuting && !this.props.deleteFilesExecuting) {
-      this.props.fetchLogFiles();
-    }
-  }
-
   //
   // Listeners
 
@@ -65,7 +59,14 @@ class LogFilesConnector extends Component {
   }
 
   onDeleteFilesPress = () => {
-    this.props.executeCommand({ name: commandNames.DELETE_LOG_FILES });
+    this.props.executeCommand({
+      name: commandNames.DELETE_LOG_FILES,
+      commandFinished: this.onCommandFinished
+    });
+  }
+
+  onCommandFinished = () => {
+    this.props.fetchLogFiles();
   }
 
   //
