@@ -1,0 +1,17 @@
+- **Due to undocumented and breaking API changes Qbit v4.4.0 is not supported.  It is generally recommended to avoid Qbit .0 releases.** Qbit v4.3.9 is the most recent working version. Qbit v4.4.1 may have issues as well.
+- **Radarr v4 no longer supports Linux x86 (x32 bit) systems**
+  - x32 Arm is still supported; armv7 is the minimum required architecture
+  - Impacted users have been receiving a healthcheck since May 2021 with 3.2.0
+- **Radarr v4 no longer builds for mono and mono support has ceased**
+  - Impacted users have been receiving a healthcheck since May 2021 with 3.2.0
+- **Radarr Breaking API Changes**
+  - Radarr v4 no longer supports the legacy (v0.2) API
+  - Native ASPCore API Controllers (stricter typing and other small API changes)
+  - The json you post needs to actually be strictly valid json now
+- **FFProbe has replaced MediaInfo**
+- Similarly MediaInfo is no longer a required dependency
+- [Jackett `/all` is deprecated and no longer supported. The FAQ has warned about this since May 2021.](https://wiki.servarr.com/radarr/faq#jacketts-all-endpoint)
+- Radarr is now on .Net6
+- New builds for OSX Arm64 and Linux Musl Arm32
+- IMDb Ratings
+- **Users who do not wish to be on the alpha `nightly` testing branch should take advantage of this parity and switch to `develop`
