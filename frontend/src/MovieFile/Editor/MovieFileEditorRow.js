@@ -118,6 +118,24 @@ class MovieFileEditorRow extends Component {
         </TableRowCell>
 
         <TableRowCell
+          className={styles.audioLanguages}
+        >
+          <MediaInfoConnector
+            type={mediaInfoTypes.AUDIO_LANGUAGES}
+            movieFileId={id}
+          />
+        </TableRowCell>
+
+        <TableRowCell
+          className={styles.subtitles}
+        >
+          <MediaInfoConnector
+            type={mediaInfoTypes.SUBTITLES}
+            movieFileId={id}
+          />
+        </TableRowCell>
+
+        <TableRowCell
           className={styles.size}
           title={size}
         >

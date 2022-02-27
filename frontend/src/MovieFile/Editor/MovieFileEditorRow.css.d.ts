@@ -3,6 +3,7 @@
 interface CssExports {
   'actions': string;
   'age': string;
+  'audioLanguages': string;
   'customFormatScore': string;
   'download': string;
   'formats': string;
@@ -12,6 +13,7 @@ interface CssExports {
   'relativePath': string;
   'releaseGroup': string;
   'size': string;
+  'subtitles': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
