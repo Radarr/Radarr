@@ -26,6 +26,16 @@ const columns = [
     isVisible: true
   },
   {
+    name: 'audioLanguages',
+    label: () => translate('AudioLanguages'),
+    isVisible: true
+  },
+  {
+    name: 'subtitleLanguages',
+    label: () => translate('SubtitleLanguages'),
+    isVisible: true
+  },
+  {
     name: 'size',
     label: () => translate('Size'),
     isVisible: true
