@@ -31,7 +31,6 @@ namespace NzbDrone.Core.Extras
         private readonly IDiskProvider _diskProvider;
         private readonly IConfigService _configService;
         private readonly List<IManageExtraFiles> _extraFileManagers;
-        private readonly Logger _logger;
 
         public ExtraService(IMediaFileService mediaFileService,
                             IMovieService movieService,
@@ -45,7 +44,6 @@ namespace NzbDrone.Core.Extras
             _diskProvider = diskProvider;
             _configService = configService;
             _extraFileManagers = extraFileManagers.OrderBy(e => e.Order).ToList();
-            _logger = logger;
         }
 
         public void ImportMovie(LocalMovie localMovie, MovieFile movieFile, bool isReadOnly)
@@ -62,61 +60,42 @@ namespace NzbDrone.Core.Extras
                 return;
             }
 
-            var sourcePath = localMovie.Path;
-            var sourceFolder = _diskProvider.GetParentFolder(sourcePath);
-            var sourceFileName = Path.GetFileNameWithoutExtension(sourcePath);
-            var files = _diskProvider.GetFiles(sourceFolder, SearchOption.AllDirectories).Where(f => f != localMovie.Path);
+            var folderSearchOption = localMovie.FolderMovieInfo == null
+                ? SearchOption.TopDirectoryOnly
+                : SearchOption.AllDirectories;
 
             var wantedExtensions = _configService.ExtraFileExtensions.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                                                     .Select(e => e.Trim(' ', '.'))
+                                                                     .Select(e => e.Trim(' ', '.')
+                                                                     .Insert(0, "."))
                                                                      .ToList();
 
-            var matchingFilenames = files.Where(f => Path.GetFileNameWithoutExtension(f).StartsWith(sourceFileName, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            var filteredFilenames = new List<string>();
-            var hasNfo = false;
+            var sourceFolder = _diskProvider.GetParentFolder(localMovie.Path);
+            var files = _diskProvider.GetFiles(sourceFolder, folderSearchOption);
+            var managedFiles = _extraFileManagers.Select((i) => new List<string>()).ToArray();
 
-            foreach (var matchingFilename in matchingFilenames)
+            foreach (var file in files)
             {
-                // Filter out duplicate NFO files
-                if (matchingFilename.EndsWith(".nfo", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (hasNfo)
-                    {
-                        continue;
-                    }
-
-                    hasNfo = true;
-                }
-
-                filteredFilenames.Add(matchingFilename);
-            }
-
-            foreach (var matchingFilename in filteredFilenames)
-            {
-                var matchingExtension = wantedExtensions.FirstOrDefault(e => matchingFilename.EndsWith(e));
+                var extension = Path.GetExtension(file);
+                var matchingExtension = wantedExtensions.FirstOrDefault(e => e.Equals(extension));
 
                 if (matchingExtension == null)
                 {
                     continue;
                 }
 
-                try
+                for (int i = 0; i < _extraFileManagers.Count; i++)
                 {
-                    foreach (var extraFileManager in _extraFileManagers)
+                    if (_extraFileManagers[i].CanImportFile(localMovie, movieFile, file, extension, isReadOnly))
                     {
-                        var extension = Path.GetExtension(matchingFilename);
-                        var extraFile = extraFileManager.Import(localMovie.Movie, movieFile, matchingFilename, extension, isReadOnly);
-
-                        if (extraFile != null)
-                        {
-                            break;
-                        }
+                        managedFiles[i].Add(file);
+                        break;
                     }
                 }
-                catch (Exception ex)
-                {
-                    _logger.Warn(ex, "Failed to import extra file: {0}", matchingFilename);
-                }
+            }
+
+            for (int i = 0; i < _extraFileManagers.Count; i++)
+            {
+                _extraFileManagers[i].ImportFiles(localMovie, movieFile, managedFiles[i], isReadOnly);
             }
         }
 
