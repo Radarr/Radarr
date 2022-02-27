@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Parser
                                                                                                           (?<slovak>\bSK\b)",
                                                                 RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})(?:[-_. ]forced)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})([-_. ](?<tags>full|forced|foreign|default|cc|psdh|sdh))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static List<Language> ParseLanguages(string title)
         {
@@ -316,9 +316,17 @@ namespace NzbDrone.Core.Parser
                 if (languageMatch.Success)
                 {
                     var isoCode = languageMatch.Groups["iso_code"].Value;
-                    var isoLanguage = IsoLanguages.Find(isoCode);
+                    var isoLanguage = IsoLanguages.Find(isoCode.ToLower());
 
                     return isoLanguage?.Language ?? Language.Unknown;
+                }
+
+                foreach (Language language in Language.All)
+                {
+                    if (simpleFilename.EndsWith(language.ToString(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        return language;
+                    }
                 }
 
                 Logger.Debug("Unable to parse langauge from subtitle file: {0}", fileName);

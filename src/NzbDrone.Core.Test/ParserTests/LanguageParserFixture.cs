@@ -27,6 +27,22 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Unknown);
         }
 
+        [TestCase("Movie Title - 2022.en.sub")]
+        [TestCase("Movie Title - 2022.EN.sub")]
+        [TestCase("Movie Title - 2022.eng.sub")]
+        [TestCase("Movie Title - 2022.ENG.sub")]
+        [TestCase("Movie Title - 2022.English.sub")]
+        [TestCase("Movie Title - 2022.english.sub")]
+        [TestCase("Movie Title - 2022.en.cc.sub")]
+        [TestCase("Movie Title - 2022.en.sdh.sub")]
+        [TestCase("Movie Title - 2022.en.forced.sub")]
+        [TestCase("Movie Title - 2022.en.sdh.forced.sub")]
+        public void should_parse_subtitle_language_english(string fileName)
+        {
+            var result = LanguageParser.ParseSubtitleLanguage(fileName);
+            result.Should().Be(Language.English);
+        }
+
         [TestCase("Movie.Title.1994.French.1080p.XviD-LOL")]
         [TestCase("Movie Title : Other Title 2011 AVC.1080p.Blu-ray HD.VOSTFR.VFF")]
         [TestCase("Movie Title - Other Title 2011 Bluray 4k HDR HEVC AC3 VFF")]
