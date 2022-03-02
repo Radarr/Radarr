@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using NLog;
+using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Update.UpdateEngine
 {
@@ -22,7 +24,7 @@ namespace NzbDrone.Update.UpdateEngine
         {
             try
             {
-                var targetExecutable = Path.Combine(targetFolder, "Radarr.exe");
+                var targetExecutable = Path.Combine(targetFolder, BuildInfo.AppName.ProcessNameToExe());
 
                 if (File.Exists(targetExecutable))
                 {
