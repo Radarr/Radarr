@@ -1104,5 +1104,7 @@
     "TmdbRating": "TMDb рейтинг",
     "ImdbRating": "IMDb рейтинг",
     "TmdbVotes": "TMDb оценок",
-    "ImdbVotes": "IMDb оценок"
+    "ImdbVotes": "IMDb оценок",
+    "Duration": "Длительность",
+    "Rating": "Рейтинг"
 }

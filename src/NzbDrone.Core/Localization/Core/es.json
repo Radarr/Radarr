@@ -816,7 +816,7 @@
     "IndexerLongTermStatusCheckAllClientMessage": "Ningún indexer está disponible por errores durando más de 6 horas",
     "EditMovieFile": "Editar Archivo de Película",
     "ListTagsHelpText": "Etiquetas con las que se añadirán los elementos",
-    "AddToDownloadQueue": "Añadida a la cola de descarga",
+    "AddToDownloadQueue": "Añadida a cola de descarga",
     "Add": "Añadir",
     "AddCustomFormat": "Añadir Formato Personalizado",
     "AddDelayProfile": "Añadir Perfil de Retardo",
