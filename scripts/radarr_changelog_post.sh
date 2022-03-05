@@ -2,10 +2,10 @@
 # Generate a Markdown change log of pull requests from commits between two tags
 scriptDir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 ghRepo="Radarr"
-branch="develop"
+#branch="develop"
 #read -r -p "What Repo?: " ghRepo
 #read -r -p "What Org?: [Default:$ghRepo]" ghOrg
-#read -r -p "What Branch?:" branch
+read -r -p "What Branch? [master|develop|nightly]:" branch
 ghOrg=${ghOrg:-$ghRepo}
 ghRepoUrl=https://github.com/$ghOrg/$ghRepo
 
@@ -83,7 +83,7 @@ markdown+="## NAS Packages"
 markdown+="\n\n"
 markdown+="- Synology - Please ask the SynoCommunity to update the base package; however, you can update in-app normally"
 markdown+="\n\n"
-markdown+="- QNAP - Please ask the SynoCommunity to update the base package; however, you should be able to update in-app normally"
+markdown+="- QNAP - Please ask the QNAP to update the base package; however, you should be able to update in-app normally"
 markdown+="\n\n"
 markdown+="------------"
 markdown+="\n\n"
@@ -93,7 +93,7 @@ markdown+="## $latestTag (changes since $previousTag)"
 markdown+="\n\n"
 markdown+="$commits"
 markdown+="\n\n"
-markdown+="- Other bug fixes and improvements, see GitHub history"
+markdown+=" - Other bug fixes and improvements, see GitHub history"
 # Loop over each commit and look for merged pull requests
 #for COMMIT in $COMMITS; do
 

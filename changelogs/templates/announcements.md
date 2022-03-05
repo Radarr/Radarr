@@ -14,4 +14,3 @@
 - Radarr is now on .Net6
 - New builds for OSX Arm64 and Linux Musl Arm32
 - IMDb Ratings
-- **Users who do not wish to be on the alpha `nightly` testing branch should take advantage of this parity and switch to `develop`
