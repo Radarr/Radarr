@@ -90,7 +90,7 @@
 
   <!-- Standard testing packages -->
   <ItemGroup Condition="'$(TestProject)'=='true'">
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
     <PackageReference Include="NunitXml.TestLogger" Version="3.0.117" />

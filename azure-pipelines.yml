@@ -13,7 +13,7 @@ variables:
   buildName: '$(Build.SourceBranchName).$(radarrVersion)'
   sentryOrg: 'servarr'
   sentryUrl: 'https://sentry.servarr.com'
-  dotnetVersion: '6.0.101'
+  dotnetVersion: '6.0.200'
   innoVersion: '6.2.0'
   yarnCacheFolder: $(Pipeline.Workspace)/.yarn
 
