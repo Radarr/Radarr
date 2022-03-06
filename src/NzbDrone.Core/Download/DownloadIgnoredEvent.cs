@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NzbDrone.Common.Messaging;
+using NzbDrone.Core.Download.TrackedDownloads;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 
@@ -13,6 +14,7 @@ namespace NzbDrone.Core.Download
         public string SourceTitle { get; set; }
         public DownloadClientItemClientInfo DownloadClientInfo { get; set; }
         public string DownloadId { get; set; }
+        public TrackedDownload TrackedDownload { get; set; }
         public string Message { get; set; }
     }
 }

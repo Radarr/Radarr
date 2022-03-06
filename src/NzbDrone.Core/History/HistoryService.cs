@@ -201,6 +201,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("ImportedPath", Path.Combine(movie.Path, message.ImportedMovie.RelativePath));
             history.Data.Add("DownloadClient", message.DownloadClientInfo?.Type);
             history.Data.Add("DownloadClientName", message.DownloadClientInfo?.Name);
+            history.Data.Add("ReleaseGroup", message.MovieInfo.ReleaseGroup);
 
             _historyRepository.Insert(history);
         }
@@ -224,6 +225,7 @@ namespace NzbDrone.Core.History
             };
 
             history.Data.Add("Reason", message.Reason.ToString());
+            history.Data.Add("ReleaseGroup", message.MovieFile.ReleaseGroup);
 
             _historyRepository.Insert(history);
         }
@@ -249,6 +251,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("SourceRelativePath", sourceRelativePath);
             history.Data.Add("Path", path);
             history.Data.Add("RelativePath", relativePath);
+            history.Data.Add("ReleaseGroup", message.MovieFile.ReleaseGroup);
 
             _historyRepository.Insert(history);
         }
@@ -269,6 +272,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("DownloadClient", message.DownloadClientInfo.Type);
             history.Data.Add("DownloadClientName", message.DownloadClientInfo.Name);
             history.Data.Add("Message", message.Message);
+            history.Data.Add("ReleaseGroup", message.TrackedDownload?.RemoteMovie?.ParsedMovieInfo?.ReleaseGroup);
 
             _historyRepository.Insert(history);
         }
@@ -294,6 +298,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("DownloadClient", message.DownloadClient);
             history.Data.Add("DownloadClientName", message.TrackedDownload?.DownloadItem.DownloadClientInfo.Name);
             history.Data.Add("Message", message.Message);
+            history.Data.Add("ReleaseGroup", message.TrackedDownload?.RemoteMovie?.ParsedMovieInfo?.ReleaseGroup);
 
             _historyRepository.Insert(history);
         }

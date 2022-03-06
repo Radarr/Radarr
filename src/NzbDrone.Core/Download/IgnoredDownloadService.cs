@@ -39,6 +39,7 @@ namespace NzbDrone.Core.Download
                 SourceTitle = trackedDownload.DownloadItem.Title,
                 DownloadClientInfo = trackedDownload.DownloadItem.DownloadClientInfo,
                 DownloadId = trackedDownload.DownloadItem.DownloadId,
+                TrackedDownload = trackedDownload,
                 Message = "Manually ignored"
             };
 
