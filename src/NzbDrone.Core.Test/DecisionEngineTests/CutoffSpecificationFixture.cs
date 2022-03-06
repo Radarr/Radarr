@@ -80,7 +80,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_current_episode_is_less_than_cutoff()
         {
-            GivenProfile(new Profile { Cutoff = Quality.Bluray1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() });
+            GivenProfile(new Profile
+            {
+                Cutoff = Quality.Bluray1080p.Id,
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                UpgradeAllowed = true
+            });
+
             GivenFileQuality(new QualityModel(Quality.DVD, new Revision(version: 2)));
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
@@ -88,7 +94,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_current_episode_is_equal_to_cutoff()
         {
-            GivenProfile(new Profile { Cutoff = Quality.HDTV720p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() });
+            GivenProfile(new Profile
+            {
+                Cutoff = Quality.HDTV720p.Id,
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                UpgradeAllowed = true
+            });
+
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
@@ -96,7 +108,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_current_episode_is_greater_than_cutoff()
         {
-            GivenProfile(new Profile { Cutoff = Quality.HDTV720p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() });
+            GivenProfile(new Profile
+            {
+                Cutoff = Quality.HDTV720p.Id,
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                UpgradeAllowed = true
+            });
+
             GivenFileQuality(new QualityModel(Quality.Bluray1080p, new Revision(version: 2)));
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
@@ -104,7 +122,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_when_new_episode_is_proper_but_existing_is_not()
         {
-            GivenProfile(new Profile { Cutoff = Quality.HDTV720p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() });
+            GivenProfile(new Profile
+            {
+                Cutoff = Quality.HDTV720p.Id,
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                UpgradeAllowed = true
+            });
+
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 1)));
             GivenNewQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
@@ -113,7 +137,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_false_if_cutoff_is_met_and_quality_is_higher()
         {
-            GivenProfile(new Profile { Cutoff = Quality.HDTV720p.Id, Items = Qualities.QualityFixture.GetDefaultQualities() });
+            GivenProfile(new Profile
+            {
+                Cutoff = Quality.HDTV720p.Id,
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                UpgradeAllowed = true
+            });
+
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
             GivenNewQuality(new QualityModel(Quality.Bluray1080p, new Revision(version: 2)));
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
@@ -127,7 +157,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 Cutoff = Quality.HDTV720p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 MinFormatScore = 0,
-                FormatItems = CustomFormatsFixture.GetSampleFormatItems("My Format")
+                FormatItems = CustomFormatsFixture.GetSampleFormatItems("My Format"),
+                UpgradeAllowed = true
             });
 
             GivenFileQuality(new QualityModel(Quality.HDTV720p));
@@ -148,12 +179,29 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 Cutoff = Quality.HDTV1080p.Id,
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
+                UpgradeAllowed = true
             });
 
             GivenFileQuality(new QualityModel(Quality.WEBDL1080p, new Revision(version: 1)));
             GivenNewQuality(new QualityModel(Quality.WEBDL1080p, new Revision(version: 2)));
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_return_false_if_quality_profile_does_not_allow_upgrades_but_cutoff_is_set_to_highest_quality()
+        {
+            GivenProfile(new Profile
+            {
+                Cutoff = Quality.RAWHD.Id,
+                Items = Qualities.QualityFixture.GetDefaultQualities(),
+                UpgradeAllowed = false
+            });
+
+            GivenFileQuality(new QualityModel(Quality.WEBDL1080p));
+            GivenNewQuality(new QualityModel(Quality.Bluray1080p));
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
     }
 }

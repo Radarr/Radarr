@@ -23,6 +23,20 @@ namespace NzbDrone.Core.Profiles
         public Language Language { get; set; }
         public bool UpgradeAllowed { get; set; }
 
+        public Quality FirststAllowedQuality()
+        {
+            var firstAllowed = Items.First(q => q.Allowed);
+
+            if (firstAllowed.Quality != null)
+            {
+                return firstAllowed.Quality;
+            }
+
+            // Returning any item from the group will work,
+            // returning the first because it's the true first quality.
+            return firstAllowed.Items.First().Quality;
+        }
+
         public Quality LastAllowedQuality()
         {
             var lastAllowed = Items.Last(q => q.Allowed);
