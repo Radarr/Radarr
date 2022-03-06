@@ -24,13 +24,13 @@ namespace NzbDrone.Update.UpdateEngine
         {
             try
             {
-                var targetExecutable = Path.Combine(targetFolder, BuildInfo.AppName.ProcessNameToExe());
+                var targetExecutable = Path.Combine(targetFolder, "Radarr.dll");
 
                 if (File.Exists(targetExecutable))
                 {
                     var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(targetExecutable);
 
-                    return versionInfo.FileVersion;
+                    return versionInfo.ProductVersion;
                 }
             }
             catch (Exception ex)
