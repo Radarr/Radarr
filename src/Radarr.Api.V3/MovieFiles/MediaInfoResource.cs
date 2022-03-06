@@ -7,13 +7,13 @@ namespace Radarr.Api.V3.MovieFiles
 {
     public class MediaInfoResource : RestResource
     {
-        public int AudioBitrate { get; set; }
+        public long AudioBitrate { get; set; }
         public decimal AudioChannels { get; set; }
         public string AudioCodec { get; set; }
         public string AudioLanguages { get; set; }
         public int AudioStreamCount { get; set; }
         public int VideoBitDepth { get; set; }
-        public int VideoBitrate { get; set; }
+        public long VideoBitrate { get; set; }
         public string VideoCodec { get; set; }
         public string VideoDynamicRangeType { get; set; }
         public decimal VideoFps { get; set; }

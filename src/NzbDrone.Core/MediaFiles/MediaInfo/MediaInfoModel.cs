@@ -18,7 +18,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
         public string VideoProfile { get; set; }
 
-        public int VideoBitrate { get; set; }
+        public long VideoBitrate { get; set; }
 
         public int VideoBitDepth { get; set; }
 
@@ -42,7 +42,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
 
         public string AudioProfile { get; set; }
 
-        public int AudioBitrate { get; set; }
+        public long AudioBitrate { get; set; }
 
         public TimeSpan RunTime { get; set; }
 
