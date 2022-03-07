@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Messaging;
 using NzbDrone.Common.Reflection;
 using NzbDrone.Core.Lifecycle;
@@ -21,6 +22,7 @@ namespace NzbDrone.Core.HealthCheck
                                       IHandleAsync<ApplicationStartedEvent>,
                                       IHandleAsync<IEvent>
     {
+        private readonly DateTime _startupGracePeriodEndTime;
         private readonly IProvideHealthCheck[] _healthChecks;
         private readonly IProvideHealthCheck[] _startupHealthChecks;
         private readonly IProvideHealthCheck[] _scheduledHealthChecks;
@@ -32,10 +34,14 @@ namespace NzbDrone.Core.HealthCheck
 
         private readonly ICached<HealthCheck> _healthCheckResults;
 
+        private bool _hasRunHealthChecksAfterGracePeriod = false;
+        private bool _isRunningHealthChecksAfterGracePeriod = false;
+
         public HealthCheckService(IEnumerable<IProvideHealthCheck> healthChecks,
                                   IServerSideNotificationService serverSideNotificationService,
                                   IEventAggregator eventAggregator,
                                   ICacheManager cacheManager,
+                                  IRuntimeInfo runtimeInfo,
                                   Logger logger)
         {
             _healthChecks = healthChecks.ToArray();
@@ -49,6 +55,7 @@ namespace NzbDrone.Core.HealthCheck
             _startupHealthChecks = _healthChecks.Where(v => v.CheckOnStartup).ToArray();
             _scheduledHealthChecks = _healthChecks.Where(v => v.CheckOnSchedule).ToArray();
             _eventDrivenHealthChecks = GetEventDrivenHealthChecks();
+            _startupGracePeriodEndTime = runtimeInfo.StartTime + TimeSpan.FromMinutes(15);
         }
 
         public List<HealthCheck> Results()
@@ -87,7 +94,7 @@ namespace NzbDrone.Core.HealthCheck
                 {
                     if (_healthCheckResults.Find(result.Source.Name) == null)
                     {
-                        _eventAggregator.PublishEvent(new HealthCheckFailedEvent(result));
+                        _eventAggregator.PublishEvent(new HealthCheckFailedEvent(result, !_hasRunHealthChecksAfterGracePeriod));
                     }
 
                     _healthCheckResults.Set(result.Source.Name, result);
@@ -118,6 +125,30 @@ namespace NzbDrone.Core.HealthCheck
         {
             if (message is HealthCheckCompleteEvent)
             {
+                return;
+            }
+
+            // If we haven't previously re-run health checks after startup grace period run startup checks again and track so they aren't run again.
+            // Return early after re-running checks to avoid triggering checks multiple times.
+            if (!_hasRunHealthChecksAfterGracePeriod && !_isRunningHealthChecksAfterGracePeriod && DateTime.UtcNow > _startupGracePeriodEndTime)
+            {
+                _isRunningHealthChecksAfterGracePeriod = true;
+
+                PerformHealthCheck(_startupHealthChecks);
+
+                // Update after running health checks so new failure notifications aren't sent 2x.
+                _hasRunHealthChecksAfterGracePeriod = true;
+
+                // Explicitly notify for any failed checks since existing failed results would not have sent events.
+                var results = _healthCheckResults.Values.ToList();
+
+                foreach (var result in results)
+                {
+                    _eventAggregator.PublishEvent(new HealthCheckFailedEvent(result, false));
+                }
+
+                _isRunningHealthChecksAfterGracePeriod = false;
+
                 return;
             }
 
