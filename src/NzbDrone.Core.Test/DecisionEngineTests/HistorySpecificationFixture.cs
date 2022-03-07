@@ -46,7 +46,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     Items = Qualities.QualityFixture.GetDefaultQualities(),
                     Cutoff = Quality.Bluray1080p.Id,
                     FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
-                    MinFormatScore = 0
+                    MinFormatScore = 0,
+                    UpgradeAllowed = true
                 })
                 .Build();
 
