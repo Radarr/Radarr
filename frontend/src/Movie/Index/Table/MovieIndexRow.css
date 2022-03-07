@@ -12,6 +12,7 @@
 }
 
 .collection,
+.originalTitle,
 .sortTitle {
   composes: cell;
 
@@ -30,6 +31,7 @@
   flex: 2 0 90px;
 }
 
+.originalLanguage,
 .qualityProfileId {
   composes: cell;
 

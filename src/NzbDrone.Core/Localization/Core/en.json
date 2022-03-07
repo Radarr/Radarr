@@ -645,6 +645,8 @@
   "OpenThisModal": "Open This Modal",
   "Options": "Options",
   "Organize": "Organize",
+  "OriginalTitle": "Original Title",
+  "OriginalLanguage": "Original Language",
   "OrganizeAndRename": "Organize & Rename",
   "OrganizeConfirm": "Are you sure you want to organize all files in the {0} selected movie(s)?",
   "OrganizeModalAllPathsRelative": "All paths are relative to:",

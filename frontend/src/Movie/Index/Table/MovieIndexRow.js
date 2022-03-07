@@ -80,6 +80,8 @@ class MovieIndexRow extends Component {
       year,
       inCinemas,
       physicalRelease,
+      originalLanguage,
+      originalTitle,
       digitalRelease,
       runtime,
       minimumAvailability,
@@ -180,6 +182,28 @@ class MovieIndexRow extends Component {
                   className={styles[name]}
                 >
                   {studio}
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'originalLanguage') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {originalLanguage.name}
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'originalTitle') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  {originalTitle}
                 </VirtualTableRowCell>
               );
             }
@@ -442,6 +466,8 @@ MovieIndexRow.propTypes = {
   status: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
+  originalTitle: PropTypes.string.isRequired,
+  originalLanguage: PropTypes.object.isRequired,
   studio: PropTypes.string,
   collection: PropTypes.object,
   qualityProfile: PropTypes.object.isRequired,

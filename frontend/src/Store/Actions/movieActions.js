@@ -119,6 +119,13 @@ export const filterPredicates = {
     return predicate(collection ? collection.name : '', filterValue);
   },
 
+  originalLanguage: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+    const { originalLanguage } = item;
+
+    return predicate(originalLanguage ? originalLanguage.name : '', filterValue);
+  },
+
   inCinemas: function(item, filterValue, type) {
     return dateFilterPredicate(item.inCinemas, filterValue, type);
   },

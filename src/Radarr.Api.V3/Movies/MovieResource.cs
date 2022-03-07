@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.DecisionEngine.Specifications;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Translations;
@@ -26,6 +27,7 @@ namespace Radarr.Api.V3.Movies
         //View Only
         public string Title { get; set; }
         public string OriginalTitle { get; set; }
+        public Language OriginalLanguage { get; set; }
         public List<AlternativeTitleResource> AlternateTitles { get; set; }
         public int? SecondaryYear { get; set; }
         public int SecondaryYearSourceId { get; set; }
@@ -96,6 +98,7 @@ namespace Radarr.Api.V3.Movies
                 TmdbId = model.TmdbId,
                 Title = translatedTitle,
                 OriginalTitle = model.OriginalTitle,
+                OriginalLanguage = model.OriginalLanguage,
                 SortTitle = translatedTitle.NormalizeTitle(),
                 InCinemas = model.InCinemas,
                 PhysicalRelease = model.PhysicalRelease,

@@ -136,6 +136,24 @@ function MovieIndexSortMenu(props) {
         >
           {translate('Certification')}
         </SortMenuItem>
+
+        <SortMenuItem
+          name="originalTitle"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('OriginalTitle')}
+        </SortMenuItem>
+
+        <SortMenuItem
+          name="originalLanguage"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('OriginalLanguage')}
+        </SortMenuItem>
       </MenuContent>
     </SortMenu>
   );

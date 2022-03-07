@@ -82,6 +82,12 @@ export const defaultState = {
       isModifiable: false
     },
     {
+      name: 'originalTitle',
+      label: translate('OriginalTitle'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'collection',
       label: translate('Collection'),
       isSortable: true,
@@ -98,6 +104,12 @@ export const defaultState = {
       label: translate('QualityProfile'),
       isSortable: true,
       isVisible: true
+    },
+    {
+      name: 'originalLanguage',
+      label: translate('OriginalLanguage'),
+      isSortable: true,
+      isVisible: false
     },
     {
       name: 'added',
@@ -206,6 +218,12 @@ export const defaultState = {
       return collection.name;
     },
 
+    originalLanguage: function(item) {
+      const { originalLanguage ={} } = item;
+
+      return originalLanguage.name;
+    },
+
     ratings: function(item) {
       const { ratings = {} } = item;
 
@@ -241,6 +259,30 @@ export const defaultState = {
       name: 'title',
       label: translate('Title'),
       type: filterBuilderTypes.STRING
+    },
+    {
+      name: 'originalTitle',
+      label: translate('OriginalTitle'),
+      type: filterBuilderTypes.STRING
+    },
+    {
+      name: 'originalLanguage',
+      label: translate('OriginalLanguage'),
+      type: filterBuilderTypes.EXACT,
+      optionsSelector: function(items) {
+        const collectionList = items.reduce((acc, movie) => {
+          if (movie.originalLanguage) {
+            acc.push({
+              id: movie.originalLanguage.name,
+              name: movie.originalLanguage.name
+            });
+          }
+
+          return acc;
+        }, []);
+
+        return collectionList.sort(sortByName);
+      }
     },
     {
       name: 'status',
