@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { filterBuilderTypes, filterBuilderValueTypes, filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
+import sortByName from 'Utilities/Array/sortByName';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import translate from 'Utilities/String/translate';
 import createFetchHandler from './Creators/createFetchHandler';
@@ -92,6 +93,14 @@ export const defaultState = {
       return false;
     },
 
+    languages: function(item, filterValue, type) {
+      const predicate = filterTypePredicates[type];
+
+      const languages = item.languages.map((language) => language.name);
+
+      return predicate(languages, filterValue);
+    },
+
     peers: function(item, value, type) {
       const predicate = filterTypePredicates[type];
       const seeders = item.seeders || 0;
@@ -172,6 +181,25 @@ export const defaultState = {
       label: translate('Quality'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.QUALITY
+    },
+    {
+      name: 'languages',
+      label: translate('Languages'),
+      type: filterBuilderTypes.ARRAY,
+      optionsSelector: function(items) {
+        const genreList = items.reduce((acc, release) => {
+          release.languages.forEach((language) => {
+            acc.push({
+              id: language.name,
+              name: language.name
+            });
+          });
+
+          return acc;
+        }, []);
+
+        return genreList.sort(sortByName);
+      }
     },
     {
       name: 'rejectionCount',
