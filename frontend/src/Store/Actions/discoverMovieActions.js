@@ -46,7 +46,7 @@ export const defaultState = {
 
   defaults: {
     rootFolderPath: '',
-    monitor: 'true',
+    monitor: 'movieOnly',
     qualityProfileId: 0,
     minimumAvailability: 'announced',
     searchForMovie: true,
@@ -188,7 +188,7 @@ export const defaultState = {
     collection: function(item) {
       const { collection ={} } = item;
 
-      return collection.name;
+      return collection.title;
     },
 
     studio: function(item) {

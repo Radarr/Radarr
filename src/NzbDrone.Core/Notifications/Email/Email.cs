@@ -8,7 +8,6 @@ using MimeKit;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http.Dispatchers;
-using NzbDrone.Core.Security;
 
 namespace NzbDrone.Core.Notifications.Email
 {

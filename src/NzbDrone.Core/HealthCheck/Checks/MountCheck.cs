@@ -1,6 +1,5 @@
 using System.Linq;
 using NzbDrone.Common.Disk;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.Movies;
 

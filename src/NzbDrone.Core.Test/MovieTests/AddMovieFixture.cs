@@ -27,6 +27,8 @@ namespace NzbDrone.Core.Test.MovieTests
         {
             _fakeMovie = Builder<MovieMetadata>
                 .CreateNew()
+                .With(x => x.CollectionTitle = null)
+                .With(x => x.CollectionTmdbId = 0)
                 .Build();
         }
 

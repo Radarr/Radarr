@@ -1,0 +1,117 @@
+$hoverScale: 1.05;
+
+.content {
+  border-radius: 5px;
+  transition: all 200ms ease-in;
+
+  &:hover {
+    z-index: 2;
+    box-shadow: 0 0 10px $black;
+    transition: all 200ms ease-in;
+
+    .poster {
+      opacity: 0.5;
+      transition: opacity 100ms linear 100ms;
+    }
+
+    .overlayTitle {
+      opacity: 1;
+      transition: opacity 100ms linear 100ms;
+    }
+  }
+}
+
+.posterContainer {
+  position: relative;
+}
+
+.poster {
+  position: relative;
+  display: block;
+  background-color: $defaultColor;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.overlayTitle {
+  padding: 5px;
+  color: $offWhite;
+  text-align: left;
+  font-weight: bold;
+  font-size: 15px;
+  opacity: 0;
+  transition: opacity 0;
+}
+
+.title {
+  @add-mixin truncate;
+
+  background-color: #fafbfc;
+  text-align: center;
+  font-size: $smallFontSize;
+}
+
+.controls {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 3;
+  border-radius: 4px;
+  background-color: #707070;
+  color: $white;
+  font-size: $smallFontSize;
+  opacity: 0;
+  transition: opacity 0;
+}
+
+.action {
+  composes: button from '~Components/Link/IconButton.css';
+
+  &:hover {
+    color: $radarrYellow;
+  }
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .container {
+    padding: 5px;
+  }
+}
+
+.editorSelect {
+  position: absolute;
+  top: 10px;
+  z-index: 3;
+}
+
+.externalLinks {
+  margin-left: 0.5em;
+}
+
+.link {
+  composes: link from '~Components/Link/Link.css';
+
+  position: relative;
+  display: block;
+  background-color: $defaultColor;
+}
+
+.monitorToggleButton {
+  composes: toggleButton from '~Components/MonitorToggleButton.css';
+
+  width: 25px;
+  color: $white;
+
+  &:hover {
+    color: $iconButtonHoverLightColor;
+  }
+}

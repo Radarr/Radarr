@@ -34,6 +34,10 @@ const links = [
         to: '/add/import'
       },
       {
+        title: translate('Collections'),
+        to: '/collections'
+      },
+      {
         title: translate('Discover'),
         to: '/add/discover'
       }

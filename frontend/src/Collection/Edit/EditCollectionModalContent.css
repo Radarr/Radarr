@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+}
+
+.poster {
+  flex: 0 0 170px;
+  margin-right: 20px;
+  height: 250px;
+}
+
+.info {
+  flex-grow: 1;
+}
+
+.overview {
+  margin-bottom: 30px;
+}

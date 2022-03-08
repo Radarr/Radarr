@@ -30,7 +30,7 @@ export const defaultState = {
 
   defaults: {
     rootFolderPath: '',
-    monitor: 'true',
+    monitor: 'movieOnly',
     qualityProfileId: 0,
     minimumAvailability: 'announced',
     searchForMovie: true,

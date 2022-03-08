@@ -65,6 +65,7 @@ class MovieIndexTable extends Component {
           component={MovieIndexRow}
           columns={columns}
           movieId={movie.id}
+          collectionId={movie.collectionId}
           qualityProfileId={movie.qualityProfileId}
           isSelected={selectedState[movie.id]}
           onSelectedChange={onSelectedChange}

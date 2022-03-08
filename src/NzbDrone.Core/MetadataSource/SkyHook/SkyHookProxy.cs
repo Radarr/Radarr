@@ -14,6 +14,7 @@ using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Parser;
@@ -99,6 +100,35 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             var movie = MapMovie(httpResponse.Resource);
 
             return new Tuple<MovieMetadata, List<Credit>>(movie, credits.ToList());
+        }
+
+        public MovieCollection GetCollectionInfo(int tmdbId)
+        {
+            var httpRequest = _radarrMetadata.Create()
+                                             .SetSegment("route", "movie/collection")
+                                             .Resource(tmdbId.ToString())
+                                             .Build();
+
+            httpRequest.AllowAutoRedirect = true;
+            httpRequest.SuppressHttpError = true;
+
+            var httpResponse = _httpClient.Get<CollectionResource>(httpRequest);
+
+            if (httpResponse.HasHttpError)
+            {
+                if (httpResponse.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new MovieNotFoundException(tmdbId);
+                }
+                else
+                {
+                    throw new HttpException(httpRequest, httpResponse);
+                }
+            }
+
+            var collection = MapCollection(httpResponse.Resource);
+
+            return collection;
         }
 
         public List<MovieMetadata> GetBulkMovieInfo(List<int> tmdbIds)
@@ -257,7 +287,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             if (resource.Collection != null)
             {
-                movie.Collection = new MovieCollection { Name = resource.Collection.Name, TmdbId = resource.Collection.TmdbId };
+                movie.CollectionTmdbId = resource.Collection.TmdbId;
+                movie.CollectionTitle = resource.Collection.Name;
             }
 
             return movie;
@@ -468,6 +499,22 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
 
             return movie;
+        }
+
+        private MovieCollection MapCollection(CollectionResource arg)
+        {
+            var collection = new MovieCollection
+            {
+                TmdbId = arg.TmdbId,
+                Title = arg.Name,
+                Overview = arg.Overview,
+                CleanTitle = arg.Name.CleanMovieTitle(),
+                SortTitle = Parser.Parser.NormalizeTitle(arg.Name),
+                Images = arg.Images?.Select(MapImage).ToList() ?? new List<MediaCover.MediaCover>(),
+                Movies = arg.Parts?.Select(x => MapMovie(x)).ToList() ?? new List<MovieMetadata>()
+            };
+
+            return collection;
         }
 
         private static Credit MapCast(CastResource arg)

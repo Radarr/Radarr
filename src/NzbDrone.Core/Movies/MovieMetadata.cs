@@ -31,7 +31,8 @@ namespace NzbDrone.Core.Movies
         public int Year { get; set; }
         public Ratings Ratings { get; set; }
 
-        public MovieCollection Collection { get; set; }
+        public int CollectionTmdbId { get; set; }
+        public string CollectionTitle { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public int Runtime { get; set; }
         public string Website { get; set; }

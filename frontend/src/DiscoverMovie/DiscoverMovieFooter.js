@@ -9,6 +9,7 @@ import SelectInput from 'Components/Form/SelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
 import { kinds } from 'Helpers/Props';
+import monitorOptions from 'Utilities/Movie/monitorOptions';
 import translate from 'Utilities/String/translate';
 import DiscoverMovieFooterLabel from './DiscoverMovieFooterLabel';
 import ExcludeMovieModal from './Exclusion/ExcludeMovieModal';
@@ -137,11 +138,6 @@ class DiscoverMovieFooter extends Component {
       isExcludeMovieModalOpen
     } = this.state;
 
-    const monitoredOptions = [
-      { key: true, value: translate('Monitored') },
-      { key: false, value: translate('Unmonitored') }
-    ];
-
     return (
       <PageContentFooter>
         <div className={styles.inputContainer}>
@@ -153,7 +149,7 @@ class DiscoverMovieFooter extends Component {
           <SelectInput
             name="monitor"
             value={monitor}
-            values={monitoredOptions}
+            values={monitorOptions}
             isDisabled={!selectedCount}
             onChange={onInputChange}
           />

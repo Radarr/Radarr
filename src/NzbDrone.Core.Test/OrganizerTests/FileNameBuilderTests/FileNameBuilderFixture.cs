@@ -12,6 +12,7 @@ using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Qualities;
@@ -226,7 +227,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         public void should_replace_movie_collection()
         {
             _namingConfig.StandardMovieFormat = "{Movie Collection}";
-            _movie.MovieMetadata.Value.Collection = new MovieCollection { Name = "South Part Collection" };
+            _movie.MovieMetadata.Value.CollectionTitle = "South Part Collection";
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("South Part Collection");

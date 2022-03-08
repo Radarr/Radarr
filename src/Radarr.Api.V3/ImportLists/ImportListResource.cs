@@ -7,7 +7,7 @@ namespace Radarr.Api.V3.ImportLists
     {
         public bool Enabled { get; set; }
         public bool EnableAuto { get; set; }
-        public bool ShouldMonitor { get; set; }
+        public MonitorTypes Monitor { get; set; }
         public string RootFolderPath { get; set; }
         public int QualityProfileId { get; set; }
         public bool SearchOnAdd { get; set; }
@@ -29,7 +29,7 @@ namespace Radarr.Api.V3.ImportLists
 
             resource.Enabled = definition.Enabled;
             resource.EnableAuto = definition.EnableAuto;
-            resource.ShouldMonitor = definition.ShouldMonitor;
+            resource.Monitor = definition.Monitor;
             resource.SearchOnAdd = definition.SearchOnAdd;
             resource.RootFolderPath = definition.RootFolderPath;
             resource.QualityProfileId = definition.ProfileId;
@@ -51,7 +51,7 @@ namespace Radarr.Api.V3.ImportLists
 
             definition.Enabled = resource.Enabled;
             definition.EnableAuto = resource.EnableAuto;
-            definition.ShouldMonitor = resource.ShouldMonitor;
+            definition.Monitor = resource.Monitor;
             definition.SearchOnAdd = resource.SearchOnAdd;
             definition.RootFolderPath = resource.RootFolderPath;
             definition.ProfileId = resource.QualityProfileId;

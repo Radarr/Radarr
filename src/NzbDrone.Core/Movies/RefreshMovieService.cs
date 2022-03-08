@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Exceptions;
@@ -12,10 +10,12 @@ using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Credits;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.Movies
 {
@@ -23,7 +23,9 @@ namespace NzbDrone.Core.Movies
     {
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IMovieService _movieService;
+        private readonly IAddMovieCollectionService _movieCollectionService;
         private readonly IMovieMetadataService _movieMetadataService;
+        private readonly IRootFolderService _folderService;
         private readonly IMovieTranslationService _movieTranslationService;
         private readonly IAlternativeTitleService _titleService;
         private readonly ICreditService _creditService;
@@ -36,7 +38,9 @@ namespace NzbDrone.Core.Movies
 
         public RefreshMovieService(IProvideMovieInfo movieInfo,
                                     IMovieService movieService,
+                                    IAddMovieCollectionService movieCollectionService,
                                     IMovieMetadataService movieMetadataService,
+                                    IRootFolderService folderService,
                                     IMovieTranslationService movieTranslationService,
                                     IAlternativeTitleService titleService,
                                     ICreditService creditService,
@@ -48,7 +52,9 @@ namespace NzbDrone.Core.Movies
         {
             _movieInfo = movieInfo;
             _movieService = movieService;
+            _movieCollectionService = movieCollectionService;
             _movieMetadataService = movieMetadataService;
+            _folderService = folderService;
             _movieTranslationService = movieTranslationService;
             _titleService = titleService;
             _creditService = creditService;
@@ -105,7 +111,6 @@ namespace NzbDrone.Core.Movies
             movieMetadata.LastInfoSync = DateTime.UtcNow;
             movieMetadata.Runtime = movieInfo.Runtime;
             movieMetadata.Ratings = movieInfo.Ratings;
-            movieMetadata.Collection = movieInfo.Collection;
 
             //movie.Genres = movieInfo.Genres;
             movieMetadata.Certification = movieInfo.Certification;
@@ -123,6 +128,24 @@ namespace NzbDrone.Core.Movies
             movieMetadata.OriginalLanguage = movieInfo.OriginalLanguage;
             movieMetadata.Recommendations = movieInfo.Recommendations;
             movieMetadata.Popularity = movieInfo.Popularity;
+
+            // add collection
+            if (movieInfo.CollectionTmdbId > 0)
+            {
+                var newCollection = _movieCollectionService.AddMovieCollection(new MovieCollection
+                {
+                    TmdbId = movieInfo.CollectionTmdbId,
+                    Title = movieInfo.CollectionTitle,
+                    Monitored = movie.AddOptions?.Monitor == MonitorTypes.MovieAndCollection,
+                    SearchOnAdd = movie.AddOptions?.SearchForMovie ?? false,
+                    QualityProfileId = movie.ProfileId,
+                    MinimumAvailability = movie.MinimumAvailability,
+                    RootFolderPath = _folderService.GetBestRootFolderPath(movie.Path)
+                });
+
+                movieMetadata.CollectionTmdbId = newCollection.TmdbId;
+                movieMetadata.CollectionTitle = newCollection.Title;
+            }
 
             movieMetadata.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movieMetadata);
             _movieTranslationService.UpdateTranslations(movieInfo.Translations, movieMetadata);

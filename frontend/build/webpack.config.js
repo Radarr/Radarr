@@ -223,7 +223,7 @@ module.exports = (env) => {
             {
               loader: 'url-loader',
               options: {
-                limit: 10240,
+                limit: 24096,
                 mimetype: 'application/font-woff',
                 emitFile: false,
                 name: 'Content/Fonts/[name].[ext]'
@@ -233,11 +233,12 @@ module.exports = (env) => {
         },
 
         {
-          test: /\.(ttf|eot|eot?#iefix|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          test: /\.(ttf|eot|eot?#iefix|gif|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
           use: [
             {
               loader: 'file-loader',
               options: {
+                limit: 24096,
                 emitFile: false,
                 name: 'Content/Fonts/[name].[ext]'
               }

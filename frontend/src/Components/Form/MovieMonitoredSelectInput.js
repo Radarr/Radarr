@@ -1,15 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import translate from 'Utilities/String/translate';
+import monitorOptions from 'Utilities/Movie/monitorOptions';
 import SelectInput from './SelectInput';
 
-const monitorTypesOptions = [
-  { key: 'true', value: translate('Yes') },
-  { key: 'false', value: translate('No') }
-];
-
 function MovieMonitoredSelectInput(props) {
-  const values = [...monitorTypesOptions];
+  const values = [...monitorOptions];
 
   const {
     includeNoChange,

@@ -1,4 +1,3 @@
-using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications
