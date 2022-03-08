@@ -7,6 +7,7 @@ import QueueConnector from 'Activity/Queue/QueueConnector';
 import AddNewMovieConnector from 'AddMovie/AddNewMovie/AddNewMovieConnector';
 import ImportMovies from 'AddMovie/ImportMovie/ImportMovies';
 import CalendarPageConnector from 'Calendar/CalendarPageConnector';
+import CollectionConnector from 'Collection/CollectionConnector';
 import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
 import DiscoverMovieConnector from 'DiscoverMovie/DiscoverMovieConnector';
@@ -70,6 +71,11 @@ function AppRoutes(props) {
       <Route
         path="/add/new"
         component={AddNewMovieConnector}
+      />
+
+      <Route
+        path="/collections"
+        component={CollectionConnector}
       />
 
       <Route

@@ -34,6 +34,7 @@ namespace NzbDrone.Core.Movies
         List<int> AllMovieTmdbIds();
         bool MovieExists(Movie movie);
         List<Movie> GetMoviesByFileId(int fileId);
+        List<Movie> GetMoviesByCollectionTmdbId(int collectionId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         void SetFileId(Movie movie, MovieFile movieFile);
@@ -88,15 +89,17 @@ namespace NzbDrone.Core.Movies
 
         public Movie AddMovie(Movie newMovie)
         {
-            _movieRepository.Insert(newMovie);
-            _eventAggregator.PublishEvent(new MovieAddedEvent(GetMovie(newMovie.Id)));
+            var movie = _movieRepository.Insert(newMovie);
 
-            return newMovie;
+            _eventAggregator.PublishEvent(new MovieAddedEvent(GetMovie(movie.Id)));
+
+            return movie;
         }
 
         public List<Movie> AddMovies(List<Movie> newMovies)
         {
             _movieRepository.InsertMany(newMovies);
+
             _eventAggregator.PublishEvent(new MoviesImportedEvent(newMovies.Select(s => s.Id).ToList()));
 
             return newMovies;
@@ -291,6 +294,11 @@ namespace NzbDrone.Core.Movies
         public List<Movie> GetMoviesByFileId(int fileId)
         {
             return _movieRepository.GetMoviesByFileId(fileId);
+        }
+
+        public List<Movie> GetMoviesByCollectionTmdbId(int collectionId)
+        {
+            return _movieRepository.GetMoviesByCollectionTmdbId(collectionId);
         }
 
         public List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)

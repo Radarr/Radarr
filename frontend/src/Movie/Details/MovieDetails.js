@@ -39,7 +39,7 @@ import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
-import MovieCollectionConnector from './../MovieCollectionConnector';
+import MovieCollectionLabelConnector from './../MovieCollectionLabelConnector';
 import MovieCastPostersConnector from './Credits/Cast/MovieCastPostersConnector';
 import MovieCrewPostersConnector from './Credits/Crew/MovieCrewPostersConnector';
 import MovieDetailsLinks from './MovieDetailsLinks';
@@ -583,10 +583,8 @@ class MovieDetails extends Component {
                         size={sizes.LARGE}
                       >
                         <div className={styles.collection}>
-                          <MovieCollectionConnector
+                          <MovieCollectionLabelConnector
                             tmdbId={collection.tmdbId}
-                            name={collection.name}
-                            movieId={id}
                           />
                         </div>
                       </InfoLabel>

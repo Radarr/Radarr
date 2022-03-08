@@ -10,6 +10,7 @@ namespace NzbDrone.Core.Movies
     {
         MovieMetadata FindByTmdbId(int tmdbId);
         List<MovieMetadata> FindById(List<int> tmdbIds);
+        List<MovieMetadata> GetMoviesByCollectionTmdbId(int collectionId);
         bool UpsertMany(List<MovieMetadata> data);
     }
 
@@ -31,6 +32,11 @@ namespace NzbDrone.Core.Movies
         public List<MovieMetadata> FindById(List<int> tmdbIds)
         {
             return Query(x => Enumerable.Contains(tmdbIds, x.TmdbId));
+        }
+
+        public List<MovieMetadata> GetMoviesByCollectionTmdbId(int collectionId)
+        {
+            return Query(x => x.CollectionTmdbId == collectionId);
         }
 
         public bool UpsertMany(List<MovieMetadata> data)

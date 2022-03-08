@@ -170,7 +170,7 @@ class MovieIndexRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
-                  {collection ? collection.name : null }
+                  {collection ? collection.title : null }
                 </VirtualTableRowCell>
               );
             }

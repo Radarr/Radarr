@@ -91,11 +91,11 @@ namespace NzbDrone.Core.ImportLists
             // Append Artist if not already in DB or already on add list
             if (moviesToAdd.All(s => s.TmdbId != report.TmdbId))
             {
-                var monitored = importList.ShouldMonitor;
+                var monitorType = importList.Monitor;
 
                 moviesToAdd.Add(new Movie
                 {
-                    Monitored = monitored,
+                    Monitored = monitorType != MonitorTypes.None,
                     RootFolderPath = importList.RootFolderPath,
                     ProfileId = importList.ProfileId,
                     MinimumAvailability = importList.MinimumAvailability,
@@ -106,7 +106,8 @@ namespace NzbDrone.Core.ImportLists
                     ImdbId = report.ImdbId,
                     AddOptions = new AddMovieOptions
                     {
-                        SearchForMovie = monitored && importList.SearchOnAdd,
+                        SearchForMovie = monitorType != MonitorTypes.None && importList.SearchOnAdd,
+                        Monitor = monitorType
                     }
                 });
             }

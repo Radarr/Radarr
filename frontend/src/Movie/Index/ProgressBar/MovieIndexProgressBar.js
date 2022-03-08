@@ -15,6 +15,7 @@ function MovieIndexProgressBar(props) {
     isAvailable,
     posterWidth,
     detailedProgressBar,
+    bottomRadius,
     queueStatus,
     queueState
   } = props;
@@ -40,7 +41,7 @@ function MovieIndexProgressBar(props) {
   return (
     <ProgressBar
       className={styles.progressBar}
-      containerClassName={styles.progress}
+      containerClassName={bottomRadius ? styles.progressRadius : styles.progress}
       progress={progress}
       kind={getStatusStyle(status, monitored, hasFile, isAvailable, 'kinds', queueStatusText)}
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
@@ -54,12 +55,17 @@ function MovieIndexProgressBar(props) {
 MovieIndexProgressBar.propTypes = {
   monitored: PropTypes.bool.isRequired,
   hasFile: PropTypes.bool.isRequired,
+  bottomRadius: PropTypes.bool,
   isAvailable: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   posterWidth: PropTypes.number.isRequired,
   detailedProgressBar: PropTypes.bool.isRequired,
   queueStatus: PropTypes.string,
   queueState: PropTypes.string
+};
+
+MovieIndexProgressBar.defaultProps = {
+  bottomRadius: false
 };
 
 export default MovieIndexProgressBar;

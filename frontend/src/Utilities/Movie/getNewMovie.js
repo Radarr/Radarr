@@ -10,11 +10,12 @@ function getNewMovie(movie, payload) {
   } = payload;
 
   const addOptions = {
+    monitor,
     searchForMovie
   };
 
   movie.addOptions = addOptions;
-  movie.monitored = monitor === 'true';
+  movie.monitored = monitor !== 'none';
   movie.qualityProfileId = qualityProfileId;
   movie.minimumAvailability = minimumAvailability;
   movie.rootFolderPath = rootFolderPath;

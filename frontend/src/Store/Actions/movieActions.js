@@ -157,8 +157,6 @@ export const filterPredicates = {
   imdbRating: function(item, filterValue, type) {
     const predicate = filterTypePredicates[type];
 
-    console.log(item.ratings);
-
     const rating = item.ratings.imdb ? item.ratings.imdb.value : 0;
 
     return predicate(rating, filterValue);

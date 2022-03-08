@@ -1,0 +1,56 @@
+.inputContainer {
+  margin-right: 20px;
+  min-width: 150px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.buttonContainerContent {
+  flex-grow: 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.addSelectedButton {
+  composes: button from '~Components/Link/SpinnerButton.css';
+
+  margin-right: 10px;
+  height: 35px;
+}
+
+.excludeSelectedButton {
+  composes: button from '~Components/Link/SpinnerButton.css';
+
+  margin-left: 25px;
+  height: 35px;
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .inputContainer {
+    margin-right: 0;
+  }
+
+  .buttonContainer {
+    justify-content: flex-start;
+  }
+
+  .buttonContainerContent {
+    flex-grow: 1;
+  }
+
+  .buttons {
+    justify-content: space-between;
+  }
+
+  .selectedMovieLabel {
+    text-align: left;
+  }
+}
