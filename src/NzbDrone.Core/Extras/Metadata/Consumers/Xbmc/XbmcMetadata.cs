@@ -255,7 +255,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     {
                         var setElement = new XElement("set");
 
-                        setElement.Add(new XElement("name", movie.MovieMetadata.Value.Collection.Name));
+                        setElement.Add(new XElement("name", movie.MovieMetadata.Value.Collection.Value.Title));
                         setElement.Add(new XElement("overview"));
 
                         details.Add(setElement);

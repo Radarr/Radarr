@@ -39,7 +39,7 @@ import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
-import MovieCollectionConnector from './../MovieCollectionConnector';
+import MovieCollectionLabelConnector from './../MovieCollectionLabelConnector';
 import MovieCastPostersConnector from './Credits/Cast/MovieCastPostersConnector';
 import MovieCrewPostersConnector from './Credits/Crew/MovieCrewPostersConnector';
 import MovieDetailsLinks from './MovieDetailsLinks';
@@ -269,7 +269,7 @@ class MovieDetails extends Component {
       monitored,
       studio,
       genres,
-      collection,
+      collectionId,
       overview,
       youTubeTrailerId,
       isAvailable,
@@ -576,17 +576,15 @@ class MovieDetails extends Component {
                   </InfoLabel>
 
                   {
-                    !!collection &&
+                    !!collectionId &&
                       <InfoLabel
                         className={styles.detailsInfoLabel}
                         title={translate('Collection')}
                         size={sizes.LARGE}
                       >
                         <div className={styles.collection}>
-                          <MovieCollectionConnector
-                            tmdbId={collection.tmdbId}
-                            name={collection.name}
-                            movieId={id}
+                          <MovieCollectionLabelConnector
+                            collectionId={collectionId}
                           />
                         </div>
                       </InfoLabel>
@@ -802,7 +800,7 @@ MovieDetails.propTypes = {
   status: PropTypes.string.isRequired,
   studio: PropTypes.string,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
-  collection: PropTypes.object,
+  collectionId: PropTypes.number,
   youTubeTrailerId: PropTypes.string,
   isAvailable: PropTypes.bool.isRequired,
   inCinemas: PropTypes.string,

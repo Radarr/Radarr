@@ -7,6 +7,15 @@
   transition: width 200ms ease;
 }
 
+.progressRadius {
+  composes: container from '~Components/ProgressBar.css';
+
+  border-radius: 0 0 5px 5px;
+  background-color: #5b5b5b;
+  color: $white;
+  transition: width 200ms ease;
+}
+
 .progressBar {
   composes: progressBar from '~Components/ProgressBar.css';
 

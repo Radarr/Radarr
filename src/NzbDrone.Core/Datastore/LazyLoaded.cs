@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Text.Json.Serialization;
 using NLog;
 using NzbDrone.Common.Instrumentation;
 
@@ -15,6 +16,7 @@ namespace NzbDrone.Core.Datastore
     /// Allows a field to be lazy loaded.
     /// </summary>
     /// <typeparam name="TChild"></typeparam>
+    [JsonConverter(typeof(LazyLoadedConverterFactory))]
     public class LazyLoaded<TChild> : ILazyLoaded
     {
         protected TChild _value;
@@ -61,11 +63,6 @@ namespace NzbDrone.Core.Datastore
         public object Clone()
         {
             return MemberwiseClone();
-        }
-
-        public bool ShouldSerializeValue()
-        {
-            return IsLoaded;
         }
     }
 

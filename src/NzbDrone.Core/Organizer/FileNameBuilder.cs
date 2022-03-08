@@ -268,7 +268,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie CleanOriginalTitle}"] = m => CleanTitle(movie.MovieMetadata.Value.OriginalTitle) ?? string.Empty;
 
             tokenHandlers["{Movie Certification}"] = m => movie.MovieMetadata.Value.Certification ?? string.Empty;
-            tokenHandlers["{Movie Collection}"] = m => movie.MovieMetadata.Value.Collection?.Name ?? string.Empty;
+            tokenHandlers["{Movie Collection}"] = m => movie.MovieMetadata.Value.Collection?.Value.Title ?? string.Empty;
         }
 
         private string GetLanguageTitle(Movie movie, string isoCodes)

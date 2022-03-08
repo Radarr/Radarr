@@ -3,6 +3,7 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.Organizer
@@ -54,7 +55,7 @@ namespace NzbDrone.Core.Organizer
             {
                 Title = "The Movie: Title",
                 OriginalTitle = "The Original Movie Title",
-                Collection = new MovieCollection { Name = "The Movie Collection", TmdbId = 123654 },
+                Collection = new MovieCollection { Title = "The Movie Collection", TmdbId = 123654 },
                 Certification = "R",
                 Year = 2010,
                 ImdbId = "tt0066921",

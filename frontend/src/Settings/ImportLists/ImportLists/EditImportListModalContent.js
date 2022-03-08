@@ -42,7 +42,7 @@ function EditImportListModalContent(props) {
     name,
     enabled,
     enableAuto,
-    shouldMonitor,
+    monitor,
     minimumAvailability,
     qualityProfileId,
     rootFolderPath,
@@ -121,31 +121,28 @@ function EditImportListModalContent(props) {
               </FormGroup>
 
               <FormGroup>
-                <FormLabel>{translate('AddMoviesMonitored')}</FormLabel>
+                <FormLabel>{translate('Monitor')}</FormLabel>
 
                 <FormInputGroup
-                  type={inputTypes.CHECK}
-                  name="shouldMonitor"
+                  type={inputTypes.MOVIE_MONITORED_SELECT}
+                  name="monitor"
                   helpText={translate('ShouldMonitorHelpText')}
-                  {...shouldMonitor}
+                  {...monitor}
                   onChange={onInputChange}
                 />
               </FormGroup>
 
-              {
-                shouldMonitor &&
-                  <FormGroup>
-                    <FormLabel>{translate('SearchOnAdd')}</FormLabel>
+              <FormGroup>
+                <FormLabel>{translate('SearchOnAdd')}</FormLabel>
 
-                    <FormInputGroup
-                      type={inputTypes.CHECK}
-                      name="searchOnAdd"
-                      helpText={translate('SearchOnAddHelpText')}
-                      {...searchOnAdd}
-                      onChange={onInputChange}
-                    />
-                  </FormGroup>
-              }
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="searchOnAdd"
+                  helpText={translate('SearchOnAddHelpText')}
+                  {...searchOnAdd}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
 
               <FormGroup>
                 <FormLabel>{translate('MinimumAvailability')}</FormLabel>

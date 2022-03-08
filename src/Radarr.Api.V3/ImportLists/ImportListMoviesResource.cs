@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NzbDrone.Core.ImportLists.ImportListMovies;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
+using NzbDrone.Core.Movies.Collections;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.ImportLists
@@ -76,7 +77,7 @@ namespace Radarr.Api.V3.ImportLists
                 Ratings = model.MovieMetadata.Value.Ratings,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
-                Collection = model.MovieMetadata.Value.Collection
+                Collection = model.MovieMetadata.Value.CollectionId
             };
         }
 

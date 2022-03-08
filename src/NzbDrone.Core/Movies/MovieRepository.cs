@@ -7,6 +7,7 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
@@ -23,6 +24,7 @@ namespace NzbDrone.Core.Movies
         List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         List<Movie> GetMoviesByFileId(int fileId);
+        List<Movie> GetMoviesByCollectionId(int collectionId);
         void SetFileId(int fileId, int movieId);
         PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff);
         Movie FindByPath(string path);
@@ -219,6 +221,11 @@ namespace NzbDrone.Core.Movies
         public List<Movie> GetMoviesByFileId(int fileId)
         {
             return Query(x => x.MovieFileId == fileId);
+        }
+
+        public List<Movie> GetMoviesByCollectionId(int collectionId)
+        {
+            return Query(x => x.CollectionId == collectionId);
         }
 
         public void SetFileId(int fileId, int movieId)

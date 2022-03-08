@@ -10,6 +10,7 @@ export const DOWNLOADED_MOVIES_SCAN = 'DownloadedMoviesScan';
 export const INTERACTIVE_IMPORT = 'ManualImport';
 export const MISSING_MOVIES_SEARCH = 'MissingMoviesSearch';
 export const MOVE_MOVIE = 'MoveMovie';
+export const REFRESH_COLLECTIONS = 'RefreshCollections';
 export const REFRESH_MOVIE = 'RefreshMovie';
 export const RENAME_FILES = 'RenameFiles';
 export const RENAME_MOVIE = 'RenameMovie';

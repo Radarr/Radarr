@@ -164,7 +164,7 @@ class DiscoverMovieRow extends Component {
                   key={name}
                   className={styles[name]}
                 >
-                  {collection ? collection.name : null }
+                  {collection ? collection.title : null }
                 </VirtualTableRowCell>
               );
             }
@@ -373,7 +373,7 @@ DiscoverMovieRow.propTypes = {
   digitalRelease: PropTypes.string,
   runtime: PropTypes.number,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
-  ratings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  ratings: PropTypes.object.isRequired,
   certification: PropTypes.string,
   collection: PropTypes.object,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,

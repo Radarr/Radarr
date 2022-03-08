@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
 import { executeCommand } from 'Store/Actions/commandActions';
+import createCollectionSelector from 'Store/Selectors/createCollectionSelector';
 import createExecutingCommandsSelector from 'Store/Selectors/createExecutingCommandsSelector';
 import createMovieQualityProfileSelector from 'Store/Selectors/createMovieQualityProfileSelector';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
@@ -29,12 +30,14 @@ function selectShowSearchAction() {
 function createMapStateToProps() {
   return createSelector(
     createMovieSelector(),
+    createCollectionSelector(),
     createMovieQualityProfileSelector(),
     selectShowSearchAction(),
     createExecutingCommandsSelector(),
     (state) => state.queue.details.items,
     (
       movie,
+      collection,
       qualityProfile,
       showSearchAction,
       executingCommands,
@@ -68,6 +71,7 @@ function createMapStateToProps() {
 
       return {
         ...movie,
+        collection,
         qualityProfile,
         showSearchAction,
         isRefreshingMovie,

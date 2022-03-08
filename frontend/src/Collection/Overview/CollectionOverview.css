@@ -1,0 +1,132 @@
+$hoverScale: 1.05;
+
+.content {
+  display: flex;
+  flex-grow: 1;
+}
+
+.editorSelect {
+  position: relative;
+  top: 0;
+  left: 5px;
+}
+
+.titleRow {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex: 0 0 auto;
+}
+
+.toggleMonitoredContainer {
+  align-self: center;
+  margin-right: 10px;
+}
+
+.titleContainer {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.sliderContainer {
+  display: block;
+}
+
+.moviesContainer {
+  margin-bottom: 5px;
+}
+
+.movie {
+  padding: 7px;
+}
+
+.info {
+  display: flex;
+  flex: 1 0 1px;
+  flex-direction: column;
+  overflow: hidden;
+  padding-left: 10px;
+}
+
+.title {
+  @add-mixin truncate;
+
+  font-weight: 300;
+  font-size: 30px;
+  line-height: 40px;
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  flex: 1 0 auto;
+  margin-bottom: 5px;
+}
+
+.defaults {
+  margin-bottom: 5px;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.detailsLabel {
+  composes: label from '~Components/Label.css';
+
+  margin: 5px 10px 5px 0;
+}
+
+.path,
+.status,
+.genres,
+.qualityProfileName {
+  margin-left: 8px;
+  font-weight: 300;
+  font-size: 15px;
+}
+
+.overview {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.monitorToggleButton {
+  composes: toggleButton from '~Components/MonitorToggleButton.css';
+
+  width: 25px;
+
+  &:hover {
+    color: $iconButtonHoverLightColor;
+  }
+}
+
+@media only screen and (max-width: $breakpointSmall) {
+  .navigationButtons {
+    display: none;
+  }
+
+  .title {
+    @add-mixin truncate;
+
+    font-weight: 300;
+    font-size: 22px;
+  }
+
+  .toggleMonitoredContainer {
+    align-self: center;
+    margin-right: 5px;
+  }
+
+  .monitorToggleButton {
+    composes: toggleButton from '~Components/MonitorToggleButton.css';
+
+    width: 20px;
+
+    &:hover {
+      color: $iconButtonHoverLightColor;
+    }
+  }
+}

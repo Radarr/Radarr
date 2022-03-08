@@ -13,7 +13,7 @@ namespace NzbDrone.Core.ImportLists
 
         public bool Enabled { get; set; }
         public bool EnableAuto { get; set; }
-        public bool ShouldMonitor { get; set; }
+        public MonitorTypes Monitor { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
         public int ProfileId { get; set; }
         public string RootFolderPath { get; set; }

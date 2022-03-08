@@ -129,7 +129,7 @@ DiscoverMoviePosterInfo.propTypes = {
   digitalRelease: PropTypes.string,
   physicalRelease: PropTypes.string,
   runtime: PropTypes.number,
-  ratings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  ratings: PropTypes.object.isRequired,
   sortKey: PropTypes.string.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,

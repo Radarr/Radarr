@@ -8,6 +8,7 @@ using NLog;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
+using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.RootFolders;
@@ -24,6 +25,7 @@ namespace NzbDrone.Core.Movies
     {
         private readonly IMovieService _movieService;
         private readonly IMovieMetadataService _movieMetadataService;
+        private readonly IAddMovieCollectionService _collectionService;
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly IAddMovieValidator _addMovieValidator;
@@ -31,6 +33,7 @@ namespace NzbDrone.Core.Movies
 
         public AddMovieService(IMovieService movieService,
                                 IMovieMetadataService movieMetadataService,
+                                IAddMovieCollectionService collectionService,
                                 IProvideMovieInfo movieInfo,
                                 IBuildFileNames fileNameBuilder,
                                 IAddMovieValidator addMovieValidator,
@@ -38,6 +41,7 @@ namespace NzbDrone.Core.Movies
         {
             _movieService = movieService;
             _movieMetadataService = movieMetadataService;
+            _collectionService = collectionService;
             _movieInfo = movieInfo;
             _fileNameBuilder = fileNameBuilder;
             _addMovieValidator = addMovieValidator;
@@ -55,6 +59,13 @@ namespace NzbDrone.Core.Movies
 
             _movieMetadataService.Upsert(newMovie.MovieMetadata.Value);
             newMovie.MovieMetadataId = newMovie.MovieMetadata.Value.Id;
+            
+            // add collection
+            if (newMovie.Collection != null)
+            {
+                var newCollection = _collectionService.AddMovieCollection(BuildCollection(newMovie));
+                newMovie.CollectionId = newCollection.Id;
+            }
 
             _movieService.AddMovie(newMovie);
 
@@ -76,6 +87,14 @@ namespace NzbDrone.Core.Movies
                     movie = SetPropertiesAndValidate(movie);
 
                     movie.Added = added;
+
+                    // add collection
+                    if (movie.Collection != null)
+                    {
+                        var newCollection = _collectionService.AddMovieCollection(BuildCollection(movie));
+                        movie.CollectionId = newCollection.Id;
+                    }
+
                     moviesToAdd.Add(movie);
                 }
                 catch (ValidationException ex)
@@ -116,6 +135,23 @@ namespace NzbDrone.Core.Movies
             movie.ApplyChanges(newMovie);
 
             return movie;
+        }
+
+        private MovieCollection BuildCollection(Movie newMovie)
+        {
+            var collection = newMovie.Collection.Value;
+            collection.Monitored = newMovie.AddOptions?.Monitor == MonitorTypes.MovieAndCollection;
+            collection.SearchOnAdd = newMovie.AddOptions?.SearchForMovie ?? false;
+            collection.QualityProfileId = newMovie.ProfileId;
+            collection.MinimumAvailability = newMovie.MinimumAvailability;
+            collection.RootFolderPath = newMovie.RootFolderPath;
+
+            if (newMovie.RootFolderPath == null)
+            {
+                collection.RootFolderPath = _folderService.GetBestRootFolderPath(newMovie.Path);
+            }
+
+            return collection;
         }
 
         private Movie SetPropertiesAndValidate(Movie newMovie)
