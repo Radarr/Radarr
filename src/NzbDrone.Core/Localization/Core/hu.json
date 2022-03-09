@@ -1112,5 +1112,7 @@
     "Started": "Elindult",
     "Waiting": "Várakozás",
     "OnApplicationUpdateHelpText": "Alkalmazásfrissítésről",
-    "SizeLimit": "Méretkorlát"
+    "SizeLimit": "Méretkorlát",
+    "OriginalTitle": "Eredeti Cím",
+    "OriginalLanguage": "Eredeti nyelv"
 }
