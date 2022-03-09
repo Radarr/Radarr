@@ -1112,5 +1112,7 @@
     "Never": "Ei koskaan",
     "Rating": "Arvio",
     "Started": "Alkoi",
-    "Waiting": "Odottaa"
+    "Waiting": "Odottaa",
+    "OriginalTitle": "Alkuperäinen nimi",
+    "OriginalLanguage": "Alkuperäinen kieli"
 }
