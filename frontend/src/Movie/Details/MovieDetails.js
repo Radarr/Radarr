@@ -290,7 +290,8 @@ class MovieDetails extends Component {
       onRefreshPress,
       onSearchPress,
       queueItems,
-      movieRuntimeFormat
+      movieRuntimeFormat,
+      status
     } = this.props;
 
     const {
@@ -548,6 +549,24 @@ class MovieDetails extends Component {
                       />
                     </span>
                   </InfoLabel>
+
+                  {
+                    status === 'deleted' &&
+                      <InfoLabel
+                        className={styles.detailsInfoLabel}
+                        title="TMDb"
+                        size={sizes.LARGE}
+                      >
+                        <span className={styles.deletedLabel}>
+                          <Icon
+                            className={styles.deletedIcon}
+                            name={icons.WARNING}
+                            size={12}
+                          />
+                          {translate('Deleted')}
+                        </span>
+                      </InfoLabel>
+                  }
 
                   <InfoLabel
                     className={styles.detailsInfoLabel}
