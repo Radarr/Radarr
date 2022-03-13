@@ -281,7 +281,7 @@
         ],
         "summary": "Get a Tag Details",
         "description": "Returns the id of all items in the database which use the specified tag",
-        "operationId": "",
+        "operationId": "tag-detail-id",
         "responses": {
           "200": {
             "description": "Successful request",
@@ -325,7 +325,7 @@
         ],
         "summary": "Get All Tag Details",
         "description": "Returns a list of tag detail objects for all tags in the database.",
-        "operationId": "",
+        "operationId": "tag-detail",
         "responses": {
           "200": {
             "description": "Successful request",
@@ -362,7 +362,7 @@
         ],
         "summary": "Get a Tag",
         "description": "Return a given tag and its label by the database id.",
-        "operationId": "",
+        "operationId": "get-tag-id",
         "responses": {
           "200": {
             "description": "Successful request",
@@ -393,7 +393,7 @@
         ],
         "summary": "Delete a Tag",
         "description": "Delete a tag",
-        "operationId": "",
+        "operationId": "delete-tag-id",
         "responses": {
           "200": {
             "description": "Successful request"
@@ -457,7 +457,7 @@
       "get": {
         "summary": "Get All Tags",
         "description": "Get all tags in the database",
-        "operationId": "",
+        "operationId": "get-tags",
         "responses": {
           "200": {
             "description": "Successful request",
@@ -494,7 +494,7 @@
         ],
         "summary": "Create a Tag",
         "description": "Create a new tag that can be assigned to a movie, list, delay profile, notification, or restriction",
-        "operationId": "",
+        "operationId": "put-tag",
         "requestBody": {
           "description": "Tag object that needs to be added",
           "required": true,
@@ -2612,7 +2612,10 @@
         "parameters": [
           {
             "schema": {
-              "type": "array"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "in": "query",
             "name": "moviefileids",
@@ -3888,12 +3891,12 @@
           },
           "url": {
             "type": "string",
-            "summary": "A path that can be used together with the host to find the image - requires API key",
+            "description": "A path that can be used together with the host to find the image - requires API key",
             "example": "/radarr/MediaCover/39/poster.jpg?lastWrite=637618111851086964"
           },
           "remoteUrl": {
             "type": "string",
-            "summary": "A full URL of the TMDB source",
+            "description": "A full URL of the TMDB source",
             "example": "https://image.tmdb.org/t/p/original/i0FHyNF9VvQTXOi4yKnZJ1zql1.jpg"
           }
         },
