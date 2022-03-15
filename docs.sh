@@ -31,7 +31,7 @@ dotnet tool install --version 6.3.0 Swashbuckle.AspNetCore.Cli
 
 dotnet tool run swagger tofile --output ./src/Radarr.Api.V3/openapi.json "$outputFolder/net6.0/$RUNTIME/radarr.console.dll" v3 &
 
-sleep 10
+sleep 45
 
 kill %1
 
