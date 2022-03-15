@@ -880,7 +880,8 @@ stages:
           git config --global user.name "Servarr"
           git checkout -b api-docs
           git add .
-          if git status | grep -q modified
+          git status
+          if git status | grep modified
           then
             git commit -am 'Automated API Docs update'
             git push -f --set-upstream origin api-docs
