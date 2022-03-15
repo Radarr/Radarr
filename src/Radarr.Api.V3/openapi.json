@@ -115,46 +115,6 @@
         }
       }
     },
-    "/api/v3/altyear/{id}": {
-      "get": {
-        "tags": [
-          "AlternativeYear"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AlternativeYearResource"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AlternativeYearResource"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AlternativeYearResource"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/login": {
       "post": {
         "tags": [
@@ -3861,6 +3821,7 @@
             "in": "path",
             "required": true,
             "schema": {
+              "pattern": "[-.a-zA-Z0-9]+?\\.txt",
               "type": "string"
             }
           }
@@ -4000,6 +3961,7 @@
             "in": "path",
             "required": true,
             "schema": {
+              "pattern": "(.+)\\.(jpg|png|gif)",
               "type": "string"
             }
           }
@@ -7471,6 +7433,7 @@
             "in": "path",
             "required": true,
             "schema": {
+              "pattern": "^(?!api/).*",
               "type": "string"
             }
           }
@@ -7515,6 +7478,7 @@
             "in": "path",
             "required": true,
             "schema": {
+              "pattern": "^(?!(api|feed)/).*",
               "type": "string"
             }
           }
@@ -8155,6 +8119,7 @@
             "in": "path",
             "required": true,
             "schema": {
+              "pattern": "[-.a-zA-Z0-9]+?\\.txt",
               "type": "string"
             }
           }
@@ -8220,24 +8185,6 @@
           },
           "language": {
             "$ref": "#/components/schemas/Language"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AlternativeYearResource": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "movieId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "year": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -9095,7 +9042,8 @@
           "data": {
             "type": "object",
             "additionalProperties": {
-              "type": "string"
+              "type": "string",
+              "nullable": true
             },
             "nullable": true
           },
@@ -9278,28 +9226,34 @@
           },
           "scheme": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "host": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "port": {
             "type": "integer",
             "format": "int32",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "path": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "query": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "fragment": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -10703,6 +10657,26 @@
         },
         "additionalProperties": false
       },
+      "ParseResource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "parsedMovieInfo": {
+            "$ref": "#/components/schemas/ParsedMovieInfo"
+          },
+          "movie": {
+            "$ref": "#/components/schemas/MovieResource"
+          }
+        },
+        "additionalProperties": false
+      },
       "ParsedMovieInfo": {
         "type": "object",
         "properties": {
@@ -10761,7 +10735,9 @@
           },
           "extraInfo": {
             "type": "object",
-            "additionalProperties": { },
+            "additionalProperties": {
+              "nullable": true
+            },
             "nullable": true
           },
           "movieTitle": {
@@ -10773,26 +10749,6 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ParseResource": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "parsedMovieInfo": {
-            "$ref": "#/components/schemas/ParsedMovieInfo"
-          },
-          "movie": {
-            "$ref": "#/components/schemas/MovieResource"
           }
         },
         "additionalProperties": false
@@ -11204,6 +11160,13 @@
         },
         "additionalProperties": false
       },
+      "RatingType": {
+        "enum": [
+          "user",
+          "critic"
+        ],
+        "type": "string"
+      },
       "Ratings": {
         "type": "object",
         "properties": {
@@ -11221,13 +11184,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "RatingType": {
-        "enum": [
-          "user",
-          "critic"
-        ],
-        "type": "string"
       },
       "Rejection": {
         "type": "object",
@@ -11612,6 +11568,21 @@
         ],
         "type": "string"
       },
+      "TMDbCountryCode": {
+        "enum": [
+          "au",
+          "br",
+          "ca",
+          "fr",
+          "de",
+          "gb",
+          "it",
+          "es",
+          "us",
+          "nz"
+        ],
+        "type": "string"
+      },
       "TagDetailsResource": {
         "type": "object",
         "properties": {
@@ -11734,23 +11705,28 @@
           },
           "days": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "readOnly": true
           },
           "hours": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "readOnly": true
           },
           "milliseconds": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "readOnly": true
           },
           "minutes": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "readOnly": true
           },
           "seconds": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "readOnly": true
           },
           "totalDays": {
             "type": "number",
@@ -11779,21 +11755,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "TMDbCountryCode": {
-        "enum": [
-          "au",
-          "br",
-          "ca",
-          "fr",
-          "de",
-          "gb",
-          "it",
-          "es",
-          "us",
-          "nz"
-        ],
-        "type": "string"
       },
       "TrackedDownloadState": {
         "enum": [
@@ -11978,19 +11939,23 @@
         "properties": {
           "major": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "readOnly": true
           },
           "minor": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "readOnly": true
           },
           "build": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "readOnly": true
           },
           "revision": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "readOnly": true
           },
           "majorRevision": {
             "type": "integer",
