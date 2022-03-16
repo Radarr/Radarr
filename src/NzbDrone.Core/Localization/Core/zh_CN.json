@@ -79,7 +79,7 @@
     "BranchUpdate": "更新Radarr的分支",
     "Branch": "分支",
     "Calendar": "日历",
-    "BindAddressHelpText": "有效的IPV4地址或以'*'代表所有地址",
+    "BindAddressHelpText": "192.168.50.189:7878",
     "BackupRetentionHelpText": "早于保留周期的自动备份将被自动清除",
     "BackupNow": "马上备份",
     "BackupIntervalHelpText": "自动备份时间间隔",
@@ -1086,5 +1086,6 @@
     "BypassDelayIfHighestQualityHelpText": "当发布的品质描述档案中具有最高启用质量的首选协议时绕过延迟",
     "RemoveCompleted": "移除已完成",
     "RemoveDownloadsAlert": "移除设置被移至上表中的单个下载客户端设置。",
-    "RemoveFailed": "删除失败"
+    "RemoveFailed": "删除失败",
+    "AnnouncedMsg": "电影已公布"
 }
