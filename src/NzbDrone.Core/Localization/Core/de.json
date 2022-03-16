@@ -1112,5 +1112,7 @@
     "Started": "gestartet",
     "TmdbRating": "TMDb Bewertung",
     "TmdbVotes": "TMDb Stimmen",
-    "Waiting": "warten"
+    "Waiting": "warten",
+    "OriginalTitle": "Originaler Titel",
+    "OriginalLanguage": "Originale Sprache"
 }
