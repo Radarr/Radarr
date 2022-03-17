@@ -1,11 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Grid, WindowScroller } from 'react-virtualized';
-import Measure from 'Components/Measure';
+import { Navigation } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import dimensions from 'Styles/Variables/dimensions';
 import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import MovieCreditPosterConnector from './MovieCreditPosterConnector';
 import styles from './MovieCreditPosters.css';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 // Poster container dimensions
 const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
@@ -169,56 +173,50 @@ class MovieCreditPosters extends Component {
 
   render() {
     const {
-      items
+      items,
+      itemComponent
     } = this.props;
 
     const {
-      width,
-      columnWidth,
-      columnCount,
-      rowHeight
+      posterWidth,
+      posterHeight
     } = this.state;
 
-    const rowCount = Math.ceil(items.length / columnCount);
-
     return (
-      <Measure
-        whitelist={['width']}
-        onMeasure={this.onMeasure}
-      >
-        <WindowScroller
-          scrollElement={undefined}
-        >
-          {({ height, registerChild, onChildScroll, scrollTop }) => {
-            if (!height) {
-              return <div />;
-            }
 
-            return (
-              <div ref={registerChild}>
-                <Grid
-                  ref={this.setGridRef}
-                  className={styles.grid}
-                  autoHeight={true}
-                  height={height}
-                  columnCount={columnCount}
-                  columnWidth={columnWidth}
-                  rowCount={rowCount}
-                  rowHeight={rowHeight}
-                  width={width}
-                  onScroll={onChildScroll}
-                  scrollTop={scrollTop}
-                  overscanRowCount={2}
-                  cellRenderer={this.cellRenderer}
-                  scrollToAlignment={'start'}
-                  isScrollingOptOut={true}
-                />
-              </div>
-            );
-          }
-          }
-        </WindowScroller>
-      </Measure>
+      <div className={styles.sliderContainer}>
+        <Swiper
+          slidesPerView='auto'
+          spaceBetween={10}
+          slidesPerGroup={3}
+          loop={false}
+          loopFillGroupWithBlank={true}
+          className="mySwiper"
+          modules={[Navigation]}
+          onInit={(swiper) => {
+            swiper.params.navigation.prevEl = this._swiperPrevRef;
+            swiper.params.navigation.nextEl = this._swiperNextRef;
+            swiper.navigation.init();
+            swiper.navigation.update();
+          }}
+        >
+          {items.map((credit) => (
+            <SwiperSlide key={credit.tmdbId} style={{ width: posterWidth }}>
+              <MovieCreditPosterConnector
+                key={credit.order}
+                component={itemComponent}
+                posterWidth={posterWidth}
+                posterHeight={posterHeight}
+                tmdbId={credit.personTmdbId}
+                personName={credit.personName}
+                job={credit.job}
+                character={credit.character}
+                images={credit.images}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     );
   }
 }

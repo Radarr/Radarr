@@ -2,12 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from 'Components/Icon';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import FilterMenu from 'Components/Menu/FilterMenu';
+import PageMenuButton from 'Components/Menu/PageMenuButton';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import { icons, sortDirections } from 'Helpers/Props';
+import { align, icons, sortDirections } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import InteractiveSearchFilterModalConnector from './InteractiveSearchFilterModalConnector';
 import InteractiveSearchRowConnector from './InteractiveSearchRowConnector';
-import styles from './InteractiveSearchContent.css';
+import styles from './InteractiveSearch.css';
 
 const columns = [
   {
@@ -20,20 +23,6 @@ const columns = [
     name: 'age',
     label: translate('Age'),
     isSortable: true,
-    isVisible: true
-  },
-  {
-    name: 'releaseWeight',
-    label: React.createElement(Icon, { name: icons.DOWNLOAD }),
-    isSortable: true,
-    fixedSortDirection: sortDirections.ASCENDING,
-    isVisible: true
-  },
-  {
-    name: 'rejections',
-    label: React.createElement(Icon, { name: icons.DANGER }),
-    isSortable: true,
-    fixedSortDirection: sortDirections.ASCENDING,
     isVisible: true
   },
   {
@@ -99,10 +88,24 @@ const columns = [
     label: React.createElement(Icon, { name: icons.FLAG }),
     isSortable: true,
     isVisible: true
+  },
+  {
+    name: 'rejections',
+    label: React.createElement(Icon, { name: icons.DANGER }),
+    isSortable: true,
+    fixedSortDirection: sortDirections.ASCENDING,
+    isVisible: true
+  },
+  {
+    name: 'releaseWeight',
+    label: React.createElement(Icon, { name: icons.DOWNLOAD }),
+    isSortable: true,
+    fixedSortDirection: sortDirections.ASCENDING,
+    isVisible: true
   }
 ];
 
-function InteractiveSearchContent(props) {
+function InteractiveSearch(props) {
   const {
     searchPayload,
     isFetching,
@@ -110,44 +113,63 @@ function InteractiveSearchContent(props) {
     error,
     totalReleasesCount,
     items,
+    selectedFilterKey,
+    filters,
+    customFilters,
     sortKey,
     sortDirection,
     longDateFormat,
     timeFormat,
     onSortPress,
+    onFilterSelect,
     onGrabPress
   } = props;
 
   return (
     <div>
+      <div className={styles.filterMenuContainer}>
+        <FilterMenu
+          alignMenu={align.RIGHT}
+          selectedFilterKey={selectedFilterKey}
+          filters={filters}
+          customFilters={customFilters}
+          buttonComponent={PageMenuButton}
+          filterModalConnectorComponent={InteractiveSearchFilterModalConnector}
+          filterModalConnectorComponentProps={'movies'}
+          onFilterSelect={onFilterSelect}
+        />
+      </div>
+
       {
-        isFetching &&
-          <LoadingIndicator />
+        isFetching ? <LoadingIndicator /> : null
       }
 
       {
-        !isFetching && !!error &&
-          <div className={styles.blankpad}>
+        !isFetching && error ?
+          <div>
             {translate('UnableToLoadResultsIntSearch')}
-          </div>
+          </div> :
+          null
       }
 
       {
-        !isFetching && isPopulated && !totalReleasesCount &&
-          <div className={styles.blankpad}>
+        !isFetching && isPopulated && !totalReleasesCount ?
+          <div>
             {translate('NoResultsFound')}
-          </div>
+          </div> :
+          null
       }
 
       {
-        !!totalReleasesCount && isPopulated && !items.length &&
-          <div className={styles.blankpad}>
+        !!totalReleasesCount && isPopulated && !items.length ?
+          <div>
             {translate('AllResultsHiddenFilter')}
-          </div>
+          </div> :
+          null
       }
 
       {
-        isPopulated && !!items.length &&
+        isPopulated && !!items.length ?
           <Table
             columns={columns}
             sortKey={sortKey}
@@ -170,32 +192,38 @@ function InteractiveSearchContent(props) {
                 })
               }
             </TableBody>
-          </Table>
+          </Table> :
+          null
       }
 
       {
-        totalReleasesCount !== items.length && !!items.length &&
+        totalReleasesCount !== items.length && !!items.length ?
           <div className={styles.filteredMessage}>
             {translate('SomeResultsHiddenFilter')}
-          </div>
+          </div> :
+          null
       }
     </div>
   );
 }
 
-InteractiveSearchContent.propTypes = {
+InteractiveSearch.propTypes = {
   searchPayload: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   totalReleasesCount: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  filters: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   sortKey: PropTypes.string,
   sortDirection: PropTypes.string,
   longDateFormat: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   onSortPress: PropTypes.func.isRequired,
+  onFilterSelect: PropTypes.func.isRequired,
   onGrabPress: PropTypes.func.isRequired
 };
 
-export default InteractiveSearchContent;
+export default InteractiveSearch;
