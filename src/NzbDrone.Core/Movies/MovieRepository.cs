@@ -35,13 +35,16 @@ namespace NzbDrone.Core.Movies
     public class MovieRepository : BasicRepository<Movie>, IMovieRepository
     {
         private readonly IAlternativeTitleRepository _alternativeTitleRepository;
+        private readonly IMovieTranslationRepository _movieTranslationRepository;
 
         public MovieRepository(IMainDatabase database,
                                IAlternativeTitleRepository alternativeTitleRepository,
+                               IMovieTranslationRepository movieTranslationRepository,
                                IEventAggregator eventAggregator)
             : base(database, eventAggregator)
         {
             _alternativeTitleRepository = alternativeTitleRepository;
+            _movieTranslationRepository = movieTranslationRepository;
         }
 
         protected override SqlBuilder Builder() => new SqlBuilder(_database.DatabaseType)
@@ -94,6 +97,10 @@ namespace NzbDrone.Core.Movies
                 .GroupBy(x => x.MovieMetadataId)
                 .ToDictionary(x => x.Key, y => y.ToList());
 
+            var translations = _movieTranslationRepository.All()
+                .GroupBy(x => x.MovieMetadataId)
+                .ToDictionary(x => x.Key, y => y.ToList());
+
             return _database.QueryJoined<Movie, MovieMetadata>(
                 builder,
                 (movie, metadata) =>
@@ -103,6 +110,11 @@ namespace NzbDrone.Core.Movies
                     if (titles.TryGetValue(movie.MovieMetadataId, out var altTitles))
                     {
                         movie.MovieMetadata.Value.AlternativeTitles = altTitles;
+                    }
+
+                    if (translations.TryGetValue(movie.MovieMetadataId, out var trans))
+                    {
+                        movie.MovieMetadata.Value.Translations = trans;
                     }
 
                     return movie;

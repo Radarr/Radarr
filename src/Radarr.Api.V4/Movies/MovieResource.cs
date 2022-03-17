@@ -30,6 +30,7 @@ namespace Radarr.Api.V4.Movies
         public string OriginalTitle { get; set; }
         public Language OriginalLanguage { get; set; }
         public List<AlternativeTitleResource> AlternateTitles { get; set; }
+        public List<MovieTranslationResource> Translations { get; set; }
         public int? SecondaryYear { get; set; }
         public int SecondaryYearSourceId { get; set; }
         public string SortTitle { get; set; }
@@ -135,6 +136,7 @@ namespace Radarr.Api.V4.Movies
                 Added = model.Added,
                 AddOptions = model.AddOptions,
                 AlternateTitles = model.MovieMetadata.Value.AlternativeTitles.ToResource(),
+                Translations = model.MovieMetadata.Value.Translations.ToResource(),
                 Ratings = model.MovieMetadata.Value.Ratings,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
