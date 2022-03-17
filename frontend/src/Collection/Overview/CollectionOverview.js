@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Slider from 'react-slick';
 import TextTruncate from 'react-text-truncate';
 import EditCollectionModalConnector from 'Collection/Edit/EditCollectionModalConnector';
+import Carousel from 'Components/Carousel';
 import CheckInput from 'Components/Form/CheckInput';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
@@ -15,9 +15,6 @@ import fonts from 'Styles/Variables/fonts';
 import translate from 'Utilities/String/translate';
 import CollectionMovieConnector from './CollectionMovieConnector';
 import styles from './CollectionOverview.css';
-
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
 const columnPaddingSmallScreen = parseInt(dimensions.movieIndexColumnPaddingSmallScreen);
@@ -117,15 +114,6 @@ class CollectionOverview extends Component {
 
     const contentHeight = getContentHeight(rowHeight, isSmallScreen);
     const overviewHeight = contentHeight - titleRowHeight - posterHeight;
-
-    const sliderSettings = {
-      arrows: false,
-      dots: false,
-      infinite: false,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      variableWidth: true
-    };
 
     return (
       <div className={styles.container}>
@@ -262,7 +250,7 @@ class CollectionOverview extends Component {
             }
 
             <div className={styles.sliderContainer}>
-              <Slider ref={this.setSliderRef} {...sliderSettings}>
+              <Carousel setRef={this.setSliderRef}>
                 {movies.map((movie) => (
                   <div className={styles.movie} key={movie.tmdbId}>
                     <CollectionMovieConnector
@@ -275,7 +263,7 @@ class CollectionOverview extends Component {
                     />
                   </div>
                 ))}
-              </Slider>
+              </Carousel>
             </div>
           </div>
         </div>

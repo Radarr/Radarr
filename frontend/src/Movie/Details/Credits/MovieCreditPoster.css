@@ -1,6 +1,7 @@
 $hoverScale: 1.05;
 
 .content {
+  border-radius: 5px;
   transition: all 200ms ease-in;
 
   &:hover {
