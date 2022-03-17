@@ -2,13 +2,40 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import createMovieSelector from 'Store/Selectors/createMovieSelector';
 import MovieTitlesTableContent from './MovieTitlesTableContent';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.movies,
-    (movies) => {
-      return movies;
+    createMovieSelector(),
+    (movie) => {
+      let titles = [];
+
+      if (movie.alternateTitles) {
+        titles = movie.alternateTitles.map((title) => {
+          return {
+            id: `title_${title.id}`,
+            title: title.title,
+            language: title.language || 'Unknown',
+            sourceType: 'Alternative Title'
+          };
+        });
+      }
+
+      if (movie.translations) {
+        titles = titles.concat(movie.translations.map((title) => {
+          return {
+            id: `translation_${title.id}`,
+            title: title.title,
+            language: title.language || 'Unknown',
+            sourceType: 'Translation'
+          };
+        }));
+      }
+
+      return {
+        titles
+      };
     }
   );
 }
@@ -23,14 +50,14 @@ class MovieTitlesTableContentConnector extends Component {
   // Render
 
   render() {
-    const movie = this.props.items.filter((obj) => {
-      return obj.id === this.props.movieId;
-    });
+    const {
+      titles
+    } = this.props;
 
     return (
       <MovieTitlesTableContent
         {...this.props}
-        items={movie[0].alternateTitles}
+        titles={titles}
       />
     );
   }
@@ -38,7 +65,7 @@ class MovieTitlesTableContentConnector extends Component {
 
 MovieTitlesTableContentConnector.propTypes = {
   movieId: PropTypes.number.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired
+  titles: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(MovieTitlesTableContentConnector);

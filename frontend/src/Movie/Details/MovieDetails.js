@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 import TextTruncate from 'react-text-truncate';
+import FieldSet from 'Components/FieldSet';
 import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
 import InfoLabel from 'Components/InfoLabel';
@@ -22,12 +22,11 @@ import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
-import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
-import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieHistoryTable from 'Movie/History/MovieHistoryTable';
 import MoviePoster from 'Movie/MoviePoster';
+import MovieInteractiveSearchModalConnector from 'Movie/Search/MovieInteractiveSearchModalConnector';
 import MovieFileEditorTable from 'MovieFile/Editor/MovieFileEditorTable';
 import ExtraFileTable from 'MovieFile/Extras/ExtraFileTable';
 import OrganizePreviewModalConnector from 'Organize/OrganizePreviewModalConnector';
@@ -81,10 +80,10 @@ class MovieDetails extends Component {
       isEditMovieModalOpen: false,
       isDeleteMovieModalOpen: false,
       isInteractiveImportModalOpen: false,
+      isInteractiveSearchModalOpen: false,
       allExpanded: false,
       allCollapsed: false,
       expandedState: {},
-      selectedTabIndex: 0,
       overviewHeight: 0,
       titleWidth: 0
     };
@@ -135,6 +134,14 @@ class MovieDetails extends Component {
 
   onEditMovieModalClose = () => {
     this.setState({ isEditMovieModalOpen: false });
+  };
+
+  onInteractiveSearchPress = () => {
+    this.setState({ isInteractiveSearchModalOpen: true });
+  };
+
+  onInteractiveSearchModalClose = () => {
+    this.setState({ isInteractiveSearchModalOpen: false });
   };
 
   onDeleteMoviePress = () => {
@@ -298,9 +305,9 @@ class MovieDetails extends Component {
       isEditMovieModalOpen,
       isDeleteMovieModalOpen,
       isInteractiveImportModalOpen,
+      isInteractiveSearchModalOpen,
       overviewHeight,
-      titleWidth,
-      selectedTabIndex
+      titleWidth
     } = this.state;
 
     const marqueeWidth = isSmallScreen ? titleWidth : (titleWidth - 150);
@@ -324,6 +331,14 @@ class MovieDetails extends Component {
               isSpinning={isSearching}
               title={undefined}
               onPress={onSearchPress}
+            />
+
+            <PageToolbarButton
+              label={translate('InteractiveSearch')}
+              iconName={icons.INTERACTIVE}
+              isSpinning={isSearching}
+              title={undefined}
+              onPress={this.onInteractiveSearchPress}
             />
 
             <PageToolbarSeparator />
@@ -651,101 +666,39 @@ class MovieDetails extends Component {
                 </div>
             }
 
-            <Tabs selectedIndex={this.state.tabIndex} onSelect={this.onTabSelect}>
-              <TabList
-                className={styles.tabList}
-              >
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('History')}
-                </Tab>
+            <FieldSet legend={translate('History')}>
+              <MovieHistoryTable
+                movieId={id}
+              />
+            </FieldSet>
 
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('Search')}
-                </Tab>
+            <FieldSet legend={translate('Files')}>
+              <MovieFileEditorTable
+                movieId={id}
+              />
 
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('Files')}
-                </Tab>
+              <ExtraFileTable
+                movieId={id}
+              />
+            </FieldSet>
 
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('Titles')}
-                </Tab>
+            <FieldSet legend={translate('Cast')}>
+              <MovieCastPostersConnector
+                isSmallScreen={isSmallScreen}
+              />
+            </FieldSet>
 
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('Cast')}
-                </Tab>
+            <FieldSet legend={translate('Crew')}>
+              <MovieCrewPostersConnector
+                isSmallScreen={isSmallScreen}
+              />
+            </FieldSet>
 
-                <Tab
-                  className={styles.tab}
-                  selectedClassName={styles.selectedTab}
-                >
-                  {translate('Crew')}
-                </Tab>
-
-                {
-                  selectedTabIndex === 1 &&
-                    <div className={styles.filterIcon}>
-                      <InteractiveSearchFilterMenuConnector />
-                    </div>
-                }
-
-              </TabList>
-
-              <TabPanel>
-                <MovieHistoryTable
-                  movieId={id}
-                />
-              </TabPanel>
-
-              <TabPanel>
-                <InteractiveSearchTable
-                  movieId={id}
-                />
-              </TabPanel>
-
-              <TabPanel>
-                <MovieFileEditorTable
-                  movieId={id}
-                />
-                <ExtraFileTable
-                  movieId={id}
-                />
-              </TabPanel>
-
-              <TabPanel>
-                <MovieTitlesTable
-                  movieId={id}
-                />
-              </TabPanel>
-
-              <TabPanel>
-                <MovieCastPostersConnector
-                  isSmallScreen={isSmallScreen}
-                />
-              </TabPanel>
-
-              <TabPanel>
-                <MovieCrewPostersConnector
-                  isSmallScreen={isSmallScreen}
-                />
-              </TabPanel>
-            </Tabs>
-
+            <FieldSet legend={translate('TitlesAndTranslations')}>
+              <MovieTitlesTable
+                movieId={id}
+              />
+            </FieldSet>
           </div>
 
           <OrganizePreviewModalConnector
@@ -776,6 +729,12 @@ class MovieDetails extends Component {
             showFilterExistingFiles={true}
             showImportMode={false}
             onModalClose={this.onInteractiveImportModalClose}
+          />
+
+          <MovieInteractiveSearchModalConnector
+            isOpen={isInteractiveSearchModalOpen}
+            movieId={id}
+            onModalClose={this.onInteractiveSearchModalClose}
           />
         </PageContentBody>
       </PageContent>

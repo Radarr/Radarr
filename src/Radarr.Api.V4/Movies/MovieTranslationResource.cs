@@ -1,34 +1,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Core.Languages;
-using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Movies.Translations;
 using Radarr.Http.REST;
 
-namespace Radarr.Api.V3.Movies
+namespace Radarr.Api.V4.Movies
 {
-    public class AlternativeTitleResource : RestResource
+    public class MovieTranslationResource : RestResource
     {
-        // Todo: Sorters should be done completely on the client
-        // Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
-        // Todo: We should get the entire Profile instead of ID and Name separately
         public int MovieMetadataId { get; set; }
         public string Title { get; set; }
         public string CleanTitle { get; set; }
         public Language Language { get; set; }
-
-        // TODO: Add series statistics as a property of the series (instead of individual properties)
     }
 
-    public static class AlternativeTitleResourceMapper
+    public static class MovieTranslationResourceMapper
     {
-        public static AlternativeTitleResource ToResource(this AlternativeTitle model)
+        public static MovieTranslationResource ToResource(this MovieTranslation model)
         {
             if (model == null)
             {
                 return null;
             }
 
-            return new AlternativeTitleResource
+            return new MovieTranslationResource
             {
                 Id = model.Id,
                 MovieMetadataId = model.MovieMetadataId,
@@ -37,14 +32,14 @@ namespace Radarr.Api.V3.Movies
             };
         }
 
-        public static AlternativeTitle ToModel(this AlternativeTitleResource resource)
+        public static MovieTranslation ToModel(this MovieTranslationResource resource)
         {
             if (resource == null)
             {
                 return null;
             }
 
-            return new AlternativeTitle
+            return new MovieTranslation
             {
                 Id = resource.Id,
                 MovieMetadataId = resource.MovieMetadataId,
@@ -53,7 +48,7 @@ namespace Radarr.Api.V3.Movies
             };
         }
 
-        public static List<AlternativeTitleResource> ToResource(this IEnumerable<AlternativeTitle> movies)
+        public static List<MovieTranslationResource> ToResource(this IEnumerable<MovieTranslation> movies)
         {
             return movies.Select(ToResource).ToList();
         }

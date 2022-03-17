@@ -2,6 +2,10 @@
   flex: 1 0 auto;
 }
 
+.movie {
+  padding: 10px;
+}
+
 .container {
   padding: 10px;
 }
