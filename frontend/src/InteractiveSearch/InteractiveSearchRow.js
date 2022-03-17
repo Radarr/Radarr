@@ -145,46 +145,6 @@ class InteractiveSearchRow extends Component {
           {formatAge(age, ageHours, ageMinutes)}
         </TableRowCell>
 
-        <TableRowCell className={styles.download}>
-          <SpinnerIconButton
-            name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
-            kind={grabError ? kinds.DANGER : kinds.DEFAULT}
-            title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
-            isDisabled={isGrabbed}
-            isSpinning={isGrabbing}
-            onPress={downloadAllowed ? this.onGrabPress : this.onConfirmGrabPress}
-          />
-        </TableRowCell>
-
-        <TableRowCell className={styles.rejected}>
-          {
-            !!rejections.length &&
-              <Popover
-                anchor={
-                  <Icon
-                    name={icons.DANGER}
-                    kind={kinds.DANGER}
-                  />
-                }
-                title={translate('ReleaseRejected')}
-                body={
-                  <ul>
-                    {
-                      rejections.map((rejection, index) => {
-                        return (
-                          <li key={index}>
-                            {rejection}
-                          </li>
-                        );
-                      })
-                    }
-                  </ul>
-                }
-                position={tooltipPositions.BOTTOM}
-              />
-          }
-        </TableRowCell>
-
         <TableRowCell className={styles.title}>
           <Link
             to={infoUrl}
@@ -295,6 +255,46 @@ class InteractiveSearchRow extends Component {
                 position={tooltipPositions.BOTTOM}
               />
           }
+        </TableRowCell>
+
+        <TableRowCell className={styles.rejected}>
+          {
+            !!rejections.length &&
+              <Popover
+                anchor={
+                  <Icon
+                    name={icons.DANGER}
+                    kind={kinds.DANGER}
+                  />
+                }
+                title={translate('ReleaseRejected')}
+                body={
+                  <ul>
+                    {
+                      rejections.map((rejection, index) => {
+                        return (
+                          <li key={index}>
+                            {rejection}
+                          </li>
+                        );
+                      })
+                    }
+                  </ul>
+                }
+                position={tooltipPositions.LEFT}
+              />
+          }
+        </TableRowCell>
+
+        <TableRowCell className={styles.download}>
+          <SpinnerIconButton
+            name={getDownloadIcon(isGrabbing, isGrabbed, grabError)}
+            kind={grabError ? kinds.DANGER : kinds.DEFAULT}
+            title={getDownloadTooltip(isGrabbing, isGrabbed, grabError)}
+            isDisabled={isGrabbed}
+            isSpinning={isGrabbing}
+            onPress={downloadAllowed ? this.onGrabPress : this.onConfirmGrabPress}
+          />
         </TableRowCell>
 
         <ConfirmModal

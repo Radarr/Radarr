@@ -1,5 +1,6 @@
 import React from 'react';
 import MovieHistoryTableContentConnector from './MovieHistoryTableContentConnector';
+import styles from './MovieHistoryTable.css';
 
 function MovieHistoryTable(props) {
   const {
@@ -7,9 +8,11 @@ function MovieHistoryTable(props) {
   } = props;
 
   return (
-    <MovieHistoryTableContentConnector
-      {...otherProps}
-    />
+    <div className={styles.container}>
+      <MovieHistoryTableContentConnector
+        {...otherProps}
+      />
+    </div>
   );
 }
 

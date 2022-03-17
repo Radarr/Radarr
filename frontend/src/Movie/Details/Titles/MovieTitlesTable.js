@@ -1,5 +1,6 @@
 import React from 'react';
 import MovieTitlesTableContentConnector from './MovieTitlesTableContentConnector';
+import styles from './MovieTitlesTable.css';
 
 function MovieTitlesTable(props) {
   const {
@@ -7,9 +8,11 @@ function MovieTitlesTable(props) {
   } = props;
 
   return (
-    <MovieTitlesTableContentConnector
-      {...otherProps}
-    />
+    <div className={styles.container}>
+      <MovieTitlesTableContentConnector
+        {...otherProps}
+      />
+    </div>
   );
 }
 

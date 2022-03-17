@@ -4,6 +4,7 @@ import TextTruncate from 'react-text-truncate';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import EditCollectionModalConnector from 'Collection/Edit/EditCollectionModalConnector';
+import Carousel from 'Components/Carousel';
 import CheckInput from 'Components/Form/CheckInput';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';

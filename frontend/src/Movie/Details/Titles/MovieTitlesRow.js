@@ -43,7 +43,7 @@ class MovieTitlesRow extends Component {
 }
 
 MovieTitlesRow.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   language: PropTypes.object.isRequired,
   sourceType: PropTypes.string.isRequired
