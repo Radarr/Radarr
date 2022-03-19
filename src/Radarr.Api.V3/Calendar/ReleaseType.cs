@@ -4,7 +4,7 @@
     {
         public const string Digital = "digital";
         public const string Physical = "physical";
-        public const string InCinemas = "inCinemas";
+        public const string InCinemas = "cinemas";
         public const string MeetsMinimumAvailability = "meetsMinimumAvailability";
     }
 }

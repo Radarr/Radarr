@@ -10,4 +10,7 @@
     <ProjectReference Include="..\NzbDrone.Test.Common\Radarr.Test.Common.csproj" />
     <ProjectReference Include="..\Radarr.Api.V3\Radarr.Api.V3.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Client\CalendarFeedClient.cs" />
+  </ItemGroup>
 </Project>

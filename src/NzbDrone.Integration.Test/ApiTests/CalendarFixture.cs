@@ -4,6 +4,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Integration.Test.Client;
+using Radarr.Api.V3.Calendar;
 using Radarr.Api.V3.Movies;
 
 namespace NzbDrone.Integration.Test.ApiTests
@@ -12,6 +13,11 @@ namespace NzbDrone.Integration.Test.ApiTests
     public class CalendarFixture : IntegrationTest
     {
         public ClientBase<MovieResource> Calendar;
+
+        private static string[] ReleaseTypes =
+        {
+            ReleaseType.Digital, ReleaseType.Physical, ReleaseType.InCinemas, null
+        };
 
         protected override void InitRestClients()
         {
@@ -70,44 +76,53 @@ namespace NzbDrone.Integration.Test.ApiTests
         }
 
         [Test]
-        public void with_hideMinAvailabilityUnmet_and_when_minimum_availability_not_met_should_not_get_cinematic_release_date()
+        [Pairwise]
+        public void with_releaseTypes_filter_should_filter_by_release_type(
+            [ValueSource(nameof(ReleaseTypes))] string first,
+            [ValueSource(nameof(ReleaseTypes))] string second,
+            [ValueSource(nameof(ReleaseTypes))] string third)
         {
             var movie = EnsureMovie(680, "Pulp Fiction", true, movie =>
             {
                 movie.MinimumAvailability = Core.Movies.MovieStatusType.Released;
             });
 
+            var releaseTypes = new[] { first, second, third }.Where(item => item != null).ToList();
+
             var request = Calendar.BuildRequest();
             request.AddParameter("start", new DateTime(1993, 10, 1).ToString("s") + "Z");
             request.AddParameter("end", new DateTime(1995, 10, 3).ToString("s") + "Z");
-            request.AddParameter("hideMinAvailabilityUnmet", "true");
+            request.AddParameter("releaseTypes[]", string.Join(',', releaseTypes));
             var items = Calendar.Get<List<MovieResource>>(request);
 
             items = items.Where(v => v.Id == movie.Id).ToList();
 
-            items.First().InCinemas.Should().BeNull();
-        }
-
-        [Test]
-        public void without_hideMinAvailabilityUnmet_and_when_minimum_availability_not_met_should_get_cinematic_release_date()
-        {
-            var movie = EnsureMovie(680, "Pulp Fiction", true, movie =>
+            if (!releaseTypes.Any())
             {
-                movie.MinimumAvailability = Core.Movies.MovieStatusType.Released;
-            });
+                items.First().DigitalRelease.Should().NotBeNull();
+                items.First().PhysicalRelease.Should().NotBeNull();
+                items.First().InCinemas.Should().NotBeNull();
+                return;
+            }
 
-            var request = Calendar.BuildRequest();
-            request.AddParameter("start", new DateTime(1993, 10, 1).ToString("s") + "Z");
-            request.AddParameter("end", new DateTime(1995, 10, 3).ToString("s") + "Z");
-            var items = Calendar.Get<List<MovieResource>>(request);
+            if (releaseTypes.Contains(ReleaseType.Digital))
+            {
+                items.First().DigitalRelease.Should().NotBeNull();
+            }
 
-            items = items.Where(v => v.Id == movie.Id).ToList();
+            if (releaseTypes.Contains(ReleaseType.InCinemas))
+            {
+                items.First().InCinemas.Should().NotBeNull();
+            }
 
-            items.First().InCinemas.Should().NotBeNull();
+            if (releaseTypes.Contains(ReleaseType.Physical))
+            {
+                items.First().PhysicalRelease.Should().NotBeNull();
+            }
         }
 
         [Test]
-        public void with_hideMinAvailabilityUnmet_and_when_minimum_availability_met_should_get_cinematic_release_date()
+        public void with_meetsMinimumAvailability_filter_and_when_minimum_availability_met_should_get_cinematic_release_date()
         {
             var movie = EnsureMovie(680, "Pulp Fiction", true, movie =>
             {
@@ -117,12 +132,31 @@ namespace NzbDrone.Integration.Test.ApiTests
             var request = Calendar.BuildRequest();
             request.AddParameter("start", new DateTime(1993, 10, 1).ToString("s") + "Z");
             request.AddParameter("end", new DateTime(1995, 10, 3).ToString("s") + "Z");
-            request.AddParameter("hideMinAvailabilityUnmet", "true");
+            request.AddParameter("releaseType[]", ReleaseType.MeetsMinimumAvailability);
             var items = Calendar.Get<List<MovieResource>>(request);
 
             items = items.Where(v => v.Id == movie.Id).ToList();
 
             items.First().InCinemas.Should().NotBeNull();
+        }
+
+        [Test]
+        public void with_meetsMinimumAvailability_filter_and_when_minimum_availability_unmet_should_not_get_cinematic_release_date()
+        {
+            var movie = EnsureMovie(680, "Pulp Fiction", true, movie =>
+            {
+                movie.MinimumAvailability = Core.Movies.MovieStatusType.Released;
+            });
+
+            var request = Calendar.BuildRequest();
+            request.AddParameter("start", new DateTime(1993, 10, 1).ToString("s") + "Z");
+            request.AddParameter("end", new DateTime(1995, 10, 3).ToString("s") + "Z");
+            request.AddParameter("releaseType[]", ReleaseType.MeetsMinimumAvailability);
+            var items = Calendar.Get<List<MovieResource>>(request);
+
+            items = items.Where(v => v.Id == movie.Id).ToList();
+
+            items.First().InCinemas.Should().BeNull();
         }
 
         public override MovieResource EnsureMovie(int tmdbid, string movieTitle, bool? monitored = null, Action<MovieResource> options = null)
