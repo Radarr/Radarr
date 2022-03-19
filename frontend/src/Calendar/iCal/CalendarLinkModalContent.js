@@ -192,7 +192,7 @@ class CalendarLinkModalContent extends Component {
                 buttons={[
                   <ClipboardButton
                     key="copy"
-                    value={.iCalHttpUrl}
+                    value={iCalHttpUrl}
                     kind={kinds.DEFAULT}
                   />,
 
