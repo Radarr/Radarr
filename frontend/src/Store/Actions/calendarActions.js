@@ -218,7 +218,7 @@ export const actionHandlers = handleThunks({
     const state = getState();
     const calendar = state.calendar;
     const unmonitored = calendar.selectedFilterKeys.includes('unmonitored');
-    const releaseType = _.intersection(calendar.selectedFilterKeys, ['cinemas', 'digital', 'physical', 'meetsMinimumAvailability']);
+    const releaseTypes = _.intersection(calendar.selectedFilterKeys, ['cinemas', 'digital', 'physical', 'meetsMinimumAvailability']).toString();
 
     const {
       time = calendar.time,
@@ -249,7 +249,7 @@ export const actionHandlers = handleThunks({
       url: '/calendar',
       data: {
         unmonitored,
-        releaseType,
+        releaseTypes,
         start,
         end
       }

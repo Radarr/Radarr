@@ -92,7 +92,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var request = Calendar.BuildRequest();
             request.AddParameter("start", new DateTime(1993, 10, 1).ToString("s") + "Z");
             request.AddParameter("end", new DateTime(1995, 10, 3).ToString("s") + "Z");
-            request.AddParameter("releaseTypes[]", string.Join(',', releaseTypes));
+            request.AddParameter("releaseTypes", string.Join(',', releaseTypes));
             var items = Calendar.Get<List<MovieResource>>(request);
 
             items = items.Where(v => v.Id == movie.Id).ToList();
@@ -132,7 +132,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var request = Calendar.BuildRequest();
             request.AddParameter("start", new DateTime(1993, 10, 1).ToString("s") + "Z");
             request.AddParameter("end", new DateTime(1995, 10, 3).ToString("s") + "Z");
-            request.AddParameter("releaseType[]", ReleaseType.MeetsMinimumAvailability);
+            request.AddParameter("releaseTypes", ReleaseType.MeetsMinimumAvailability);
             var items = Calendar.Get<List<MovieResource>>(request);
 
             items = items.Where(v => v.Id == movie.Id).ToList();
@@ -151,7 +151,7 @@ namespace NzbDrone.Integration.Test.ApiTests
             var request = Calendar.BuildRequest();
             request.AddParameter("start", new DateTime(1993, 10, 1).ToString("s") + "Z");
             request.AddParameter("end", new DateTime(1995, 10, 3).ToString("s") + "Z");
-            request.AddParameter("releaseType[]", ReleaseType.MeetsMinimumAvailability);
+            request.AddParameter("releaseTypes", ReleaseType.MeetsMinimumAvailability);
             var items = Calendar.Get<List<MovieResource>>(request);
 
             items = items.Where(v => v.Id == movie.Id).ToList();

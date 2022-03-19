@@ -55,7 +55,7 @@ class CalendarLinkModalContent extends Component {
     }
 
     if (selectedReleaseTypes?.length !== 0 && selectedReleaseTypes[0] !== 'all') {
-      icalUrl += `releaseType[]=${selectedReleaseTypes.join()}&`;
+      icalUrl += `releaseTypes=${selectedReleaseTypes.toString()}&`;
     }
 
     if (tags.length) {

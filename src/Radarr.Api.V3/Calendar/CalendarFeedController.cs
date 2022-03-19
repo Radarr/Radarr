@@ -27,18 +27,17 @@ namespace Radarr.Api.V3.Calendar
 
         [HttpGet("Radarr.ics")]
         public IActionResult GetCalendarFeed(
-            string[] releaseTypes,
             int pastDays = 7,
             int futureDays = 28,
             string tagList = "",
             bool unmonitored = false,
-            bool hideMinAvailabilityUnmet = false)
+            string releaseTypes = "")
         {
             var start = DateTime.Today.AddDays(-pastDays);
             var end = DateTime.Today.AddDays(futureDays);
             var tags = new List<int>();
             var filteredReleaseTypes = releaseTypes
-                .Where(t => !string.IsNullOrWhiteSpace(t))
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
                 .ToArray();
             if (filteredReleaseTypes.Length == 0)
             {

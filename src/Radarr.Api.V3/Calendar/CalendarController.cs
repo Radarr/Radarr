@@ -44,13 +44,13 @@ namespace Radarr.Api.V3.Calendar
         public List<MovieResource> GetCalendar(
             DateTime? start,
             DateTime? end,
-            string[] releaseTypes,
-            bool unmonitored = false)
+            bool unmonitored = false,
+            string releaseTypes = "")
         {
             var startUse = start ?? DateTime.Today;
             var endUse = end ?? DateTime.Today.AddDays(2);
             var filteredReleaseTypes = releaseTypes
-                .Where(t => !string.IsNullOrWhiteSpace(t))
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
                 .ToArray();
 
             var resources = _moviesService.GetMoviesBetweenDates(startUse, endUse, unmonitored)
