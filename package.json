@@ -80,7 +80,8 @@
     "redux-batched-actions": "0.5.0",
     "redux-localstorage": "0.4.1",
     "redux-thunk": "2.3.0",
-    "reselect": "4.0.0"
+    "reselect": "4.0.0",
+    "underscore": "1.13.1"
   },
   "devDependencies": {
     "@babel/core": "7.17.8",
