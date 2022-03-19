@@ -44,20 +44,22 @@ namespace Radarr.Api.V3.Calendar
         public List<MovieResource> GetCalendar(
             DateTime? start,
             DateTime? end,
-            bool unmonitored = false,
-            bool includeArtist = false,
-            bool hideMinAvailabilityUnmet = false)
+            string[] releaseTypes,
+            bool unmonitored = false)
         {
             var startUse = start ?? DateTime.Today;
             var endUse = end ?? DateTime.Today.AddDays(2);
+            var filteredReleaseTypes = releaseTypes
+                .Where(t => !string.IsNullOrWhiteSpace(t))
+                .ToArray();
 
             var resources = _moviesService.GetMoviesBetweenDates(startUse, endUse, unmonitored)
-                .Select(movie => MapToResource(movie, hideMinAvailabilityUnmet));
+                .Select(movie => MapToResource(movie, filteredReleaseTypes));
 
             return resources.OrderBy(e => e.Title).ToList();
         }
 
-        protected MovieResource MapToResource(Movie movie, bool hideMinAvailabilityUnmet)
+        protected MovieResource MapToResource(Movie movie, string[] releaseTypes)
         {
             if (movie == null)
             {
@@ -68,13 +70,39 @@ namespace Radarr.Api.V3.Calendar
             var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.Id);
             var translation = GetMovieTranslation(translations, movie.MovieMetadata);
             var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
+            ApplyReleaseFilter(resource, releaseTypes);
 
-            if (hideMinAvailabilityUnmet && resource.MinimumAvailability == MovieStatusType.Released)
+            return resource;
+        }
+
+        private void ApplyReleaseFilter(MovieResource resource, string[] releaseTypes)
+        {
+            var meetsMinimumAvailability = releaseTypes.Contains(ReleaseType.MeetsMinimumAvailability);
+            if (meetsMinimumAvailability && resource.MinimumAvailability == MovieStatusType.Released)
+            {
+                resource.InCinemas = null;
+                return;
+            }
+
+            if (meetsMinimumAvailability || releaseTypes.Length == 0)
+            {
+                return;
+            }
+
+            if (!releaseTypes.Contains(ReleaseType.Digital))
+            {
+                resource.DigitalRelease = null;
+            }
+
+            if (!releaseTypes.Contains(ReleaseType.Physical))
+            {
+                resource.PhysicalRelease = null;
+            }
+
+            if (!releaseTypes.Contains(ReleaseType.InCinemas))
             {
                 resource.InCinemas = null;
             }
-
-            return resource;
         }
 
         private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, MovieMetadata movie)

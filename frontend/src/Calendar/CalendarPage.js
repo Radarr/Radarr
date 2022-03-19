@@ -76,7 +76,7 @@ class CalendarPage extends Component {
 
   render() {
     const {
-      selectedFilterKey,
+      selectedFilterKeys,
       filters,
       hasMovie,
       movieError,
@@ -135,7 +135,7 @@ class CalendarPage extends Component {
             <FilterMenu
               alignMenu={align.RIGHT}
               isDisabled={!hasMovie}
-              selectedFilterKey={selectedFilterKey}
+              selectedFilterKey={selectedFilterKeys}
               filters={filters}
               customFilters={[]}
               onFilterSelect={onFilterSelect}
@@ -201,7 +201,7 @@ class CalendarPage extends Component {
 }
 
 CalendarPage.propTypes = {
-  selectedFilterKey: PropTypes.string.isRequired,
+  selectedFilterKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   hasMovie: PropTypes.bool.isRequired,
   movieError: PropTypes.object,

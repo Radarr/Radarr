@@ -23,12 +23,15 @@ class FilterMenuItem extends Component {
     const {
       filterKey,
       selectedFilterKey,
+      multipleSelection,
       ...otherProps
     } = this.props;
 
+    const isSelected = multipleSelection ? selectedFilterKey.includes(filterKey) : selectedFilterKey === filterKey;
+
     return (
       <SelectedMenuItem
-        isSelected={filterKey === selectedFilterKey}
+        isSelected={isSelected}
         {...otherProps}
         onPress={this.onPress}
       />
@@ -38,7 +41,7 @@ class FilterMenuItem extends Component {
 
 FilterMenuItem.propTypes = {
   filterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)]).isRequired,
   onPress: PropTypes.func.isRequired
 };
 

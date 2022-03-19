@@ -15,43 +15,6 @@ import ModalHeader from 'Components/Modal/ModalHeader';
 import { icons, inputTypes, kinds, sizes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
-function getUrls(state) {
-  const {
-    unmonitored,
-    asAllDay,
-    hideMinAvailabilityUnmet,
-    tags
-  } = state;
-
-  let icalUrl = `${window.location.host}${window.Radarr.urlBase}/feed/v3/calendar/Radarr.ics?`;
-
-  if (unmonitored) {
-    icalUrl += 'unmonitored=true&';
-  }
-
-  if (asAllDay) {
-    icalUrl += 'asAllDay=true&';
-  }
-
-  if (hideMinAvailabilityUnmet) {
-    icalUrl += 'hideMinAvailabilityUnmet=true&';
-  }
-
-  if (tags.length) {
-    icalUrl += `tags=${tags.toString()}&`;
-  }
-
-  icalUrl += `apikey=${window.Radarr.apiKey}`;
-
-  const iCalHttpUrl = `${window.location.protocol}//${icalUrl}`;
-  const iCalWebCalUrl = `webcal://${icalUrl}`;
-
-  return {
-    iCalHttpUrl,
-    iCalWebCalUrl
-  };
-}
-
 class CalendarLinkModalContent extends Component {
 
   //
@@ -63,15 +26,49 @@ class CalendarLinkModalContent extends Component {
     const defaultState = {
       unmonitored: false,
       asAllDay: false,
-      hideMinAvailabilityUnmet: false,
-      tags: []
+      tags: [],
+      selectedReleaseTypes: ['all']
     };
 
-    const urls = getUrls(defaultState);
-
     this.state = {
-      ...defaultState,
-      ...urls
+      ...defaultState
+    };
+  }
+
+  getUrls = () => {
+    const {
+      unmonitored,
+      asAllDay,
+      selectedReleaseTypes,
+      tags
+    } = this.state;
+  
+    let icalUrl = `${window.location.host}${window.Radarr.urlBase}/feed/v3/calendar/Radarr.ics?`;
+  
+    if (unmonitored) {
+      icalUrl += 'unmonitored=true&';
+    }
+  
+    if (asAllDay) {
+      icalUrl += 'asAllDay=true&';
+    }
+  
+    if (selectedReleaseTypes?.length !== 0 && selectedReleaseTypes[0] !== 'all') {
+      icalUrl += `releaseType[]=${selectedReleaseTypes.join()}&`;
+    }
+  
+    if (tags.length) {
+      icalUrl += `tags=${tags.toString()}&`;
+    }
+  
+    icalUrl += `apikey=${window.Radarr.apiKey}`;
+  
+    const iCalHttpUrl = `${window.location.protocol}//${icalUrl}`;
+    const iCalWebCalUrl = `webcal://${icalUrl}`;
+  
+    return {
+      iCalHttpUrl,
+      iCalWebCalUrl
     };
   }
 
@@ -79,16 +76,8 @@ class CalendarLinkModalContent extends Component {
   // Listeners
 
   onInputChange = ({ name, value }) => {
-    const state = {
-      ...this.state,
-      [name]: value
-    };
-
-    const urls = getUrls(state);
-
     this.setState({
-      [name]: value,
-      ...urls
+      [name]: value
     });
   };
 
@@ -96,21 +85,39 @@ class CalendarLinkModalContent extends Component {
     event.target.select();
   };
 
+  onReleaseTypeInputChange = ({name, value}) => {
+    const {releaseTypes} = this.props;
+    const {selectedReleaseTypes} = this.state;
+
+    let newSelectedReleaseTypes = value;
+    if (value.length === 0) {
+      newSelectedReleaseTypes = ['all'];
+    }
+    else if (value.length > selectedReleaseTypes.length) {
+      const selectedReleaseType = releaseTypes.find(releaseType => releaseType.key === _.without(value, ...selectedReleaseTypes)[0]);
+      const unselectedReleaseTypes = selectedReleaseType?.unselectValues || [];
+      newSelectedReleaseTypes = _.without([selectedReleaseType.key, ...selectedReleaseTypes], ...unselectedReleaseTypes);
+    }
+
+    this.setState({
+      selectedReleaseTypes: newSelectedReleaseTypes
+    });
+  } 
+
   //
   // Render
 
   render() {
     const {
-      onModalClose
+      onModalClose,
+      releaseTypes
     } = this.props;
 
     const {
       unmonitored,
       asAllDay,
-      hideMinAvailabilityUnmet,
       tags,
-      iCalHttpUrl,
-      iCalWebCalUrl
+      selectedReleaseTypes
     } = this.state;
 
     return (
@@ -146,18 +153,6 @@ class CalendarLinkModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>{translate('HideMinAvailabilityUnmet')}</FormLabel>
-
-              <FormInputGroup
-                type={inputTypes.CHECK}
-                name="hideMinAvailabilityUnmet"
-                value={hideMinAvailabilityUnmet}
-                helpText={translate('HideMinAvailabilityUnmetHelpText')}
-                onChange={this.onInputChange}
-              />
-            </FormGroup>
-
-            <FormGroup>
               <FormLabel>{translate('Tags')}</FormLabel>
 
               <FormInputGroup
@@ -169,6 +164,18 @@ class CalendarLinkModalContent extends Component {
               />
             </FormGroup>
 
+            <FormGroup>
+              <FormLabel>{translate('ReleaseType')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.SELECT}
+                name="releaseType"
+                values={releaseTypes}
+                value={selectedReleaseTypes}
+                onChange={this.onReleaseTypeInputChange}
+              />
+            </FormGroup>
+
             <FormGroup
               size={sizes.LARGE}
             >
@@ -177,20 +184,20 @@ class CalendarLinkModalContent extends Component {
               <FormInputGroup
                 type={inputTypes.TEXT}
                 name="iCalHttpUrl"
-                value={iCalHttpUrl}
+                value={this.getUrls().iCalHttpUrl}
                 readOnly={true}
                 helpText={translate('ICalHttpUrlHelpText')}
                 buttons={[
                   <ClipboardButton
                     key="copy"
-                    value={iCalHttpUrl}
+                    value={this.getUrls().iCalHttpUrl}
                     kind={kinds.DEFAULT}
                   />,
 
                   <FormInputButton
                     key="webcal"
                     kind={kinds.DEFAULT}
-                    to={iCalWebCalUrl}
+                    to={this.getUrls().iCalWebCalUrl}
                     target="_blank"
                     noRouter={true}
                   >
@@ -217,7 +224,7 @@ class CalendarLinkModalContent extends Component {
 CalendarLinkModalContent.propTypes = {
   tagList: PropTypes.arrayOf(PropTypes.object).isRequired,
   onModalClose: PropTypes.func.isRequired,
-  hideMinAvailabilityUnmet: PropTypes.bool.isRequired
+  releaseTypes: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export default CalendarLinkModalContent;

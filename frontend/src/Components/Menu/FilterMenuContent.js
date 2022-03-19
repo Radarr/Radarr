@@ -19,6 +19,7 @@ class FilterMenuContent extends Component {
       showCustomFilters,
       onFilterSelect,
       onCustomFiltersPress,
+      multipleSelection,
       ...otherProps
     } = this.props;
 
@@ -32,6 +33,7 @@ class FilterMenuContent extends Component {
                 filterKey={filter.key}
                 selectedFilterKey={selectedFilterKey}
                 onPress={onFilterSelect}
+                multipleSelection={multipleSelection}
               >
                 {filter.label}
               </FilterMenuItem>
@@ -47,6 +49,7 @@ class FilterMenuContent extends Component {
                 filterKey={filter.id}
                 selectedFilterKey={selectedFilterKey}
                 onPress={onFilterSelect}
+                multipleSelection={multipleSelection}
               >
                 {filter.label}
               </FilterMenuItem>
@@ -71,7 +74,7 @@ class FilterMenuContent extends Component {
 }
 
 FilterMenuContent.propTypes = {
-  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   showCustomFilters: PropTypes.bool.isRequired,

@@ -57,7 +57,7 @@ function createIsSearchingSelector() {
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.calendar.selectedFilterKey,
+    (state) => state.calendar.selectedFilterKeys,
     (state) => state.calendar.filters,
     createMovieCountSelector(),
     createUISettingsSelector(),
@@ -65,7 +65,7 @@ function createMapStateToProps() {
     createCommandExecutingSelector(commandNames.RSS_SYNC),
     createIsSearchingSelector(),
     (
-      selectedFilterKey,
+      selectedFilterKeys,
       filters,
       movieCount,
       uiSettings,
@@ -74,7 +74,7 @@ function createMapStateToProps() {
       isSearchingForMissing
     ) => {
       return {
-        selectedFilterKey,
+        selectedFilterKeys,
         filters,
         colorImpairedMode: uiSettings.enableColorImpairedMode,
         hasMovie: !!movieCount.count,
@@ -105,8 +105,8 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(setCalendarDaysCount({ dayCount }));
     },
 
-    onFilterSelect(selectedFilterKey) {
-      dispatch(setCalendarFilter({ selectedFilterKey }));
+    onFilterSelect(selectedFilterKeys) {
+      dispatch(setCalendarFilter({ selectedFilterKeys }));
     }
   };
 }

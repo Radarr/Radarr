@@ -42,34 +42,41 @@ export const defaultState = {
 
   options: {
     showMovieInformation: true,
-    showCutoffUnmetIcon: false,
-    hideMinAvailabilityUnmet: false
+    showCutoffUnmetIcon: false
   },
 
-  selectedFilterKey: 'monitored',
+  selectedFilterKeys: ['monitored'],
 
   filters: [
     {
       key: 'all',
       label: translate('All'),
-      filters: [
-        {
-          key: 'monitored',
-          value: false,
-          type: filterTypes.EQUAL
-        }
-      ]
+      unselectFilters: ['monitored', 'meetsMinimumAvailability', 'cinemas', 'digital', 'physical']
     },
     {
       key: 'monitored',
       label: translate('MonitoredOnly'),
-      filters: [
-        {
-          key: 'monitored',
-          value: true,
-          type: filterTypes.EQUAL
-        }
-      ]
+      unselectFilters: ['all']
+    },
+    {
+      key: 'cinemas',
+      label: translate('Cinemas'),
+      unselectFilters: ['meetsMinimumAvailability', 'all']
+    },
+    {
+      key: 'digital',
+      label: translate('Digital'),
+      unselectFilters: ['meetsMinimumAvailability', 'all']
+    },
+    {
+      key: 'physical',
+      label: translate('Physical'),
+      unselectFilters: ['meetsMinimumAvailability', 'all']
+    },
+    {
+      key: 'meetsMinimumAvailability',
+      label: translate('MeetsMinimumAvailability'),
+      unselectFilters: ['cinemas', 'digital', 'physical', 'all']
     }
 
   ]
@@ -77,7 +84,7 @@ export const defaultState = {
 
 export const persistState = [
   'calendar.view',
-  'calendar.selectedFilterKey',
+  'calendar.selectedFilterKeys',
   'calendar.options'
 ];
 
@@ -211,8 +218,8 @@ export const actionHandlers = handleThunks({
   [FETCH_CALENDAR]: function(getState, payload, dispatch) {
     const state = getState();
     const calendar = state.calendar;
-    const unmonitored = calendar.selectedFilterKey === 'all';
-    const hideMinAvailabilityUnmet = calendar.options.hideMinAvailabilityUnmet;
+    const unmonitored = calendar.selectedFilterKeys.includes('unmonitored');
+    const releaseType = _.intersection(calendar.selectedFilterKeys, ['cinemas', 'digital', 'physical', 'meetsMinimumAvailability']);
 
     const {
       time = calendar.time,
@@ -243,7 +250,7 @@ export const actionHandlers = handleThunks({
       url: '/calendar',
       data: {
         unmonitored,
-        hideMinAvailabilityUnmet,
+        releaseType,
         start,
         end
       }
@@ -293,7 +300,7 @@ export const actionHandlers = handleThunks({
   [SET_CALENDAR_FILTER]: function(getState, payload, dispatch) {
     dispatch(set({
       section,
-      selectedFilterKey: payload.selectedFilterKey
+      selectedFilterKeys: [...payload.selectedFilterKeys]
     }));
 
     const state = getState();

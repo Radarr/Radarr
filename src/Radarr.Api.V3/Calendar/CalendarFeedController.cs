@@ -27,6 +27,7 @@ namespace Radarr.Api.V3.Calendar
 
         [HttpGet("Radarr.ics")]
         public IActionResult GetCalendarFeed(
+            string[] releaseTypes,
             int pastDays = 7,
             int futureDays = 28,
             string tagList = "",
@@ -36,6 +37,13 @@ namespace Radarr.Api.V3.Calendar
             var start = DateTime.Today.AddDays(-pastDays);
             var end = DateTime.Today.AddDays(futureDays);
             var tags = new List<int>();
+            var filteredReleaseTypes = releaseTypes
+                .Where(t => !string.IsNullOrWhiteSpace(t))
+                .ToArray();
+            if (filteredReleaseTypes.Length == 0)
+            {
+                filteredReleaseTypes = new[] { ReleaseType.InCinemas, ReleaseType.Digital, ReleaseType.Physical };
+            }
 
             if (tagList.IsNotNullOrWhiteSpace())
             {
@@ -59,19 +67,36 @@ namespace Radarr.Api.V3.Calendar
                     continue;
                 }
 
-                if (!hideMinAvailabilityUnmet || movie.MinimumAvailability != MovieStatusType.Released)
-                {
-                    CreateEvent(calendar, movie.MovieMetadata, "cinematic");
-                }
-
-                CreateEvent(calendar, movie.MovieMetadata, "digital");
-                CreateEvent(calendar, movie.MovieMetadata, "physical");
+                CreateEventsByReleaseType(calendar, movie, filteredReleaseTypes);
             }
 
             var serializer = (IStringSerializer)new SerializerFactory().Build(calendar.GetType(), new SerializationContext());
             var icalendar = serializer.SerializeToString(calendar);
 
             return Content(icalendar, "text/calendar");
+        }
+
+        private void CreateEventsByReleaseType(Ical.Net.Calendar calendar, Movie movie, string[] releaseTypes)
+        {
+            var meetsMinimumAvailability = releaseTypes.Contains(ReleaseType.MeetsMinimumAvailability);
+            if (meetsMinimumAvailability && movie.MinimumAvailability == MovieStatusType.Released)
+            {
+                CreateEvent(calendar, movie.MovieMetadata, ReleaseType.Digital);
+                CreateEvent(calendar, movie.MovieMetadata, ReleaseType.Physical);
+            }
+            else if (meetsMinimumAvailability || releaseTypes.Empty())
+            {
+                CreateEvent(calendar, movie.MovieMetadata, ReleaseType.InCinemas);
+                CreateEvent(calendar, movie.MovieMetadata, ReleaseType.Digital);
+                CreateEvent(calendar, movie.MovieMetadata, ReleaseType.Physical);
+            }
+            else
+            {
+                foreach (var releaseType in releaseTypes)
+                {
+                    CreateEvent(calendar, movie.MovieMetadata, releaseType);
+                }
+            }
         }
 
         private void CreateEvent(Ical.Net.Calendar calendar, MovieMetadata movie, string releaseType)
@@ -100,9 +125,9 @@ namespace Radarr.Api.V3.Calendar
         private (DateTime? date, string eventType, string summaryText) GetEventInfo(MovieMetadata movie, string releaseType)
             => releaseType switch
             {
-                "cinematic" => (movie.InCinemas, "_cinemas", "(Theatrical Release)"),
-                "digital" => (movie.DigitalRelease, "_digital", "(Digital Release)"),
-                "physical" => (movie.PhysicalRelease, "_physical", "(Physical Release)"),
+                ReleaseType.InCinemas => (movie.InCinemas, "_cinemas", "(Theatrical Release)"),
+                ReleaseType.Digital => (movie.DigitalRelease, "_digital", "(Digital Release)"),
+                ReleaseType.Physical => (movie.PhysicalRelease, "_physical", "(Physical Release)"),
                 _ => default
             };
     }

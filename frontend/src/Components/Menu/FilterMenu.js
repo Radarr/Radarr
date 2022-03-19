@@ -31,6 +31,40 @@ class FilterMenu extends Component {
     this.setState({ isFilterModalOpen: false });
   };
 
+  onFilterSelect = (multipleSelection) => (key) => {
+    const { onFilterSelect } = this.props;
+    
+    const newSelection = multipleSelection ? this.getNewSelections(key) : key;
+    onFilterSelect(newSelection);
+  }
+
+  getNewSelections(key) {
+    const { selectedFilterKey } = this.props;
+
+    if (selectedFilterKey.find(selectedKey => selectedKey === key)) {
+      return this.processUnselection(key);
+    }
+
+    return this.processSelection(key);
+  }
+
+  processSelection(key) {
+    const { filters, selectedFilterKey } = this.props;
+
+    const selectedFilter = filters.find(filter => filter.key === key || filter.id === key);
+    const unselectedFilters = selectedFilter?.unselectFilters || [];
+    
+    return _.without([selectedFilter.key, ...selectedFilterKey], ...unselectedFilters);
+  }
+
+  processUnselection(key) {
+    const { selectedFilterKey } = this.props;
+
+    const newSelections = _.without(selectedFilterKey, key);
+
+    return newSelections.length === 0 ? ['all'] : newSelections;
+  }
+
   //
   // Render
 
@@ -44,11 +78,12 @@ class FilterMenu extends Component {
       buttonComponent: ButtonComponent,
       filterModalConnectorComponent: FilterModalConnectorComponent,
       filterModalConnectorComponentProps,
-      onFilterSelect,
       ...otherProps
     } = this.props;
 
     const showCustomFilters = !!FilterModalConnectorComponent;
+    const multipleSelection = Array.isArray(selectedFilterKey)
+    const indicator = multipleSelection ? !selectedFilterKey.includes('all') : selectedFilterKey !== 'all';
 
     return (
       <div>
@@ -60,7 +95,7 @@ class FilterMenu extends Component {
             iconName={icons.FILTER}
             text={translate('Filter')}
             isDisabled={isDisabled}
-            indicator={selectedFilterKey !== 'all'}
+            indicator={indicator}
           />
 
           <FilterMenuContent
@@ -68,8 +103,9 @@ class FilterMenu extends Component {
             filters={filters}
             customFilters={customFilters}
             showCustomFilters={showCustomFilters}
-            onFilterSelect={onFilterSelect}
+            onFilterSelect={this.onFilterSelect(multipleSelection)}
             onCustomFiltersPress={this.onCustomFiltersPress}
+            multipleSelection={multipleSelection}
           />
 
         </Menu>
@@ -82,7 +118,7 @@ class FilterMenu extends Component {
               selectedFilterKey={selectedFilterKey}
               filters={filters}
               customFilters={customFilters}
-              onFilterSelect={onFilterSelect}
+              onFilterSelect={this.onFilterSelect(multipleSelection)}
               onModalClose={this.onFiltersModalClose}
             />
         }
@@ -94,7 +130,7 @@ class FilterMenu extends Component {
 FilterMenu.propTypes = {
   className: PropTypes.string,
   isDisabled: PropTypes.bool.isRequired,
-  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   buttonComponent: PropTypes.elementType.isRequired,
