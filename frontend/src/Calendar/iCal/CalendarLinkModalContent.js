@@ -120,6 +120,8 @@ class CalendarLinkModalContent extends Component {
       selectedReleaseTypes
     } = this.state;
 
+    const { iCalHttpUrl, iCalWebCalUrl } = this.getUrls();
+
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
@@ -184,20 +186,20 @@ class CalendarLinkModalContent extends Component {
               <FormInputGroup
                 type={inputTypes.TEXT}
                 name="iCalHttpUrl"
-                value={this.getUrls().iCalHttpUrl}
+                value={iCalHttpUrl}
                 readOnly={true}
                 helpText={translate('ICalHttpUrlHelpText')}
                 buttons={[
                   <ClipboardButton
                     key="copy"
-                    value={this.getUrls().iCalHttpUrl}
+                    value={.iCalHttpUrl}
                     kind={kinds.DEFAULT}
                   />,
 
                   <FormInputButton
                     key="webcal"
                     kind={kinds.DEFAULT}
-                    to={this.getUrls().iCalWebCalUrl}
+                    to={iCalWebCalUrl}
                     target="_blank"
                     noRouter={true}
                   >
