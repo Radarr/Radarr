@@ -19,6 +19,7 @@ function getUrls(state) {
   const {
     unmonitored,
     asAllDay,
+    hideMinAvailabilityUnmet,
     tags
   } = state;
 
@@ -30,6 +31,10 @@ function getUrls(state) {
 
   if (asAllDay) {
     icalUrl += 'asAllDay=true&';
+  }
+
+  if (hideMinAvailabilityUnmet) {
+    icalUrl += 'hideMinAvailabilityUnmet=true&';
   }
 
   if (tags.length) {
@@ -58,6 +63,7 @@ class CalendarLinkModalContent extends Component {
     const defaultState = {
       unmonitored: false,
       asAllDay: false,
+      hideMinAvailabilityUnmet: false,
       tags: []
     };
 
@@ -101,6 +107,7 @@ class CalendarLinkModalContent extends Component {
     const {
       unmonitored,
       asAllDay,
+      hideMinAvailabilityUnmet,
       tags,
       iCalHttpUrl,
       iCalWebCalUrl
@@ -134,6 +141,18 @@ class CalendarLinkModalContent extends Component {
                 name="asAllDay"
                 value={asAllDay}
                 helpText={translate('AsAllDayHelpText')}
+                onChange={this.onInputChange}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('HideMinAvailabilityUnmet')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="hideMinAvailabilityUnmet"
+                value={hideMinAvailabilityUnmet}
+                helpText={translate('HideMinAvailabilityUnmetHelpText')}
                 onChange={this.onInputChange}
               />
             </FormGroup>
@@ -197,7 +216,8 @@ class CalendarLinkModalContent extends Component {
 
 CalendarLinkModalContent.propTypes = {
   tagList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onModalClose: PropTypes.func.isRequired
+  onModalClose: PropTypes.func.isRequired,
+  hideMinAvailabilityUnmet: PropTypes.bool.isRequired
 };
 
 export default CalendarLinkModalContent;

@@ -229,7 +229,7 @@ namespace NzbDrone.Integration.Test
             Assert.Fail("Timed on wait");
         }
 
-        public MovieResource EnsureMovie(int tmdbid, string movieTitle, bool? monitored = null)
+        public virtual MovieResource EnsureMovie(int tmdbid, string movieTitle, bool? monitored = null, Action<MovieResource> options = null)
         {
             var result = Movies.All().FirstOrDefault(v => v.TmdbId == tmdbid);
 
@@ -241,6 +241,7 @@ namespace NzbDrone.Integration.Test
                 movie.Path = Path.Combine(MovieRootFolder, movie.Title);
                 movie.Monitored = true;
                 movie.AddOptions = new Core.Movies.AddMovieOptions();
+                options?.Invoke(movie);
                 Directory.CreateDirectory(movie.Path);
 
                 result = Movies.Post(movie);

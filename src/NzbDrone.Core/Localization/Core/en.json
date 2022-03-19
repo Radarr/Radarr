@@ -374,6 +374,8 @@
   "HealthNoIssues": "No issues with your configuration",
   "HiddenClickToShow": "Hidden, click to show",
   "HideAdvanced": "Hide Advanced",
+  "HideMinAvailabilityUnmet": "Hide Unmet Minimum Availability",
+  "HideMinAvailabilityUnmetHelpText": "Do not show events for which the minimum availability hasn't been met",
   "History": "History",
   "HomePage": "Home Page",
   "Host": "Host",

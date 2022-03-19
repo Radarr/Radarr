@@ -26,7 +26,12 @@ namespace Radarr.Api.V3.Calendar
         }
 
         [HttpGet("Radarr.ics")]
-        public IActionResult GetCalendarFeed(int pastDays = 7, int futureDays = 28, string tagList = "", bool unmonitored = false)
+        public IActionResult GetCalendarFeed(
+            int pastDays = 7,
+            int futureDays = 28,
+            string tagList = "",
+            bool unmonitored = false,
+            bool hideMinAvailabilityUnmet = false)
         {
             var start = DateTime.Today.AddDays(-pastDays);
             var end = DateTime.Today.AddDays(futureDays);
@@ -54,7 +59,11 @@ namespace Radarr.Api.V3.Calendar
                     continue;
                 }
 
-                CreateEvent(calendar, movie.MovieMetadata, "cinematic");
+                if (!hideMinAvailabilityUnmet || movie.MinimumAvailability != MovieStatusType.Released)
+                {
+                    CreateEvent(calendar, movie.MovieMetadata, "cinematic");
+                }
+
                 CreateEvent(calendar, movie.MovieMetadata, "digital");
                 CreateEvent(calendar, movie.MovieMetadata, "physical");
             }
@@ -67,22 +76,7 @@ namespace Radarr.Api.V3.Calendar
 
         private void CreateEvent(Ical.Net.Calendar calendar, MovieMetadata movie, string releaseType)
         {
-            var date = movie.InCinemas;
-            string eventType = "_cinemas";
-            string summaryText = "(Theatrical Release)";
-
-            if (releaseType == "digital")
-            {
-                date = movie.DigitalRelease;
-                eventType = "_digital";
-                summaryText = "(Digital Release)";
-            }
-            else if (releaseType == "physical")
-            {
-                date = movie.PhysicalRelease;
-                eventType = "_physical";
-                summaryText = "(Physical Release)";
-            }
+            var (date, eventType, summaryText) = GetEventInfo(movie, releaseType);
 
             if (!date.HasValue)
             {
@@ -102,5 +96,14 @@ namespace Radarr.Api.V3.Calendar
 
             occurrence.Summary = $"{movie.Title} " + summaryText;
         }
+
+        private (DateTime? date, string eventType, string summaryText) GetEventInfo(MovieMetadata movie, string releaseType)
+            => releaseType switch
+            {
+                "cinematic" => (movie.InCinemas, "_cinemas", "(Theatrical Release)"),
+                "digital" => (movie.DigitalRelease, "_digital", "(Digital Release)"),
+                "physical" => (movie.PhysicalRelease, "_physical", "(Physical Release)"),
+                _ => default
+            };
     }
 }

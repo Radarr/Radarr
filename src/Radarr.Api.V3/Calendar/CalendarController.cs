@@ -41,17 +41,23 @@ namespace Radarr.Api.V3.Calendar
         }
 
         [HttpGet]
-        public List<MovieResource> GetCalendar(DateTime? start, DateTime? end, bool unmonitored = false, bool includeArtist = false)
+        public List<MovieResource> GetCalendar(
+            DateTime? start,
+            DateTime? end,
+            bool unmonitored = false,
+            bool includeArtist = false,
+            bool hideMinAvailabilityUnmet = false)
         {
             var startUse = start ?? DateTime.Today;
             var endUse = end ?? DateTime.Today.AddDays(2);
 
-            var resources = _moviesService.GetMoviesBetweenDates(startUse, endUse, unmonitored).Select(MapToResource);
+            var resources = _moviesService.GetMoviesBetweenDates(startUse, endUse, unmonitored)
+                .Select(movie => MapToResource(movie, hideMinAvailabilityUnmet));
 
-            return resources.OrderBy(e => e.InCinemas).ToList();
+            return resources.OrderBy(e => e.Title).ToList();
         }
 
-        protected MovieResource MapToResource(Movie movie)
+        protected MovieResource MapToResource(Movie movie, bool hideMinAvailabilityUnmet)
         {
             if (movie == null)
             {
@@ -62,6 +68,11 @@ namespace Radarr.Api.V3.Calendar
             var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.Id);
             var translation = GetMovieTranslation(translations, movie.MovieMetadata);
             var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
+
+            if (hideMinAvailabilityUnmet && resource.MinimumAvailability == MovieStatusType.Released)
+            {
+                resource.InCinemas = null;
+            }
 
             return resource;
         }

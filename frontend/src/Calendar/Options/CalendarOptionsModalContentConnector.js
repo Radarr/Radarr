@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { setCalendarOption } from 'Store/Actions/calendarActions';
+import { fetchCalendar, setCalendarOption } from 'Store/Actions/calendarActions';
 import { saveUISettings } from 'Store/Actions/settingsActions';
 import CalendarOptionsModalContent from './CalendarOptionsModalContent';
 
@@ -19,7 +19,8 @@ function createMapStateToProps() {
 
 const mapDispatchToProps = {
   dispatchSetCalendarOption: setCalendarOption,
-  dispatchSaveUISettings: saveUISettings
+  dispatchSaveUISettings: saveUISettings,
+  fetchCalendar
 };
 
 export default connect(createMapStateToProps, mapDispatchToProps)(CalendarOptionsModalContent);

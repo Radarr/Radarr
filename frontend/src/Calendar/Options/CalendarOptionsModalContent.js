@@ -87,6 +87,16 @@ class CalendarOptionsModalContent extends Component {
     event.target.select();
   };
 
+  onModalClose = () => {
+    const {
+      fetchCalendar,
+      onModalClose
+    } = this.props;
+
+    fetchCalendar();
+    onModalClose();
+  }
+
   //
   // Render
 
@@ -94,7 +104,7 @@ class CalendarOptionsModalContent extends Component {
     const {
       showMovieInformation,
       showCutoffUnmetIcon,
-      onModalClose
+      hideMinAvailabilityUnmet
     } = this.props;
 
     const {
@@ -105,7 +115,7 @@ class CalendarOptionsModalContent extends Component {
     } = this.state;
 
     return (
-      <ModalContent onModalClose={onModalClose}>
+      <ModalContent onModalClose={this.onModalClose}>
         <ModalHeader>
           {translate('CalendarOptions')}
         </ModalHeader>
@@ -133,6 +143,18 @@ class CalendarOptionsModalContent extends Component {
                   name="showCutoffUnmetIcon"
                   value={showCutoffUnmetIcon}
                   helpText={translate('ShowCutoffUnmetIconHelpText')}
+                  onChange={this.onOptionInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>{translate('HideMinAvailabilityUnmet')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="hideMinAvailabilityUnmet"
+                  value={hideMinAvailabilityUnmet}
+                  helpText={translate('HideMinAvailabilityUnmetHelpText')}
                   onChange={this.onOptionInputChange}
                 />
               </FormGroup>
@@ -193,7 +215,7 @@ class CalendarOptionsModalContent extends Component {
         </ModalBody>
 
         <ModalFooter>
-          <Button onPress={onModalClose}>
+          <Button onPress={this.onModalClose}>
             {translate('Close')}
           </Button>
         </ModalFooter>
@@ -205,13 +227,15 @@ class CalendarOptionsModalContent extends Component {
 CalendarOptionsModalContent.propTypes = {
   showMovieInformation: PropTypes.bool.isRequired,
   showCutoffUnmetIcon: PropTypes.bool.isRequired,
+  hideMinAvailabilityUnmet: PropTypes.bool.isRequired,
   firstDayOfWeek: PropTypes.number.isRequired,
   calendarWeekColumnHeader: PropTypes.string.isRequired,
   timeFormat: PropTypes.string.isRequired,
   enableColorImpairedMode: PropTypes.bool.isRequired,
   dispatchSetCalendarOption: PropTypes.func.isRequired,
   dispatchSaveUISettings: PropTypes.func.isRequired,
-  onModalClose: PropTypes.func.isRequired
+  onModalClose: PropTypes.func.isRequired,
+  fetchCalendar: PropTypes.func.isRequired
 };
 
 export default CalendarOptionsModalContent;

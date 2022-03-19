@@ -42,7 +42,8 @@ export const defaultState = {
 
   options: {
     showMovieInformation: true,
-    showCutoffUnmetIcon: false
+    showCutoffUnmetIcon: false,
+    hideMinAvailabilityUnmet: false
   },
 
   selectedFilterKey: 'monitored',
@@ -211,6 +212,7 @@ export const actionHandlers = handleThunks({
     const state = getState();
     const calendar = state.calendar;
     const unmonitored = calendar.selectedFilterKey === 'all';
+    const hideMinAvailabilityUnmet = calendar.options.hideMinAvailabilityUnmet;
 
     const {
       time = calendar.time,
@@ -241,6 +243,7 @@ export const actionHandlers = handleThunks({
       url: '/calendar',
       data: {
         unmonitored,
+        hideMinAvailabilityUnmet,
         start,
         end
       }
