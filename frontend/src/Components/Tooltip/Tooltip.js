@@ -5,7 +5,7 @@ import { Manager, Popper, Reference } from 'react-popper';
 import Portal from 'Components/Portal';
 import { kinds, tooltipPositions } from 'Helpers/Props';
 import dimensions from 'Styles/Variables/dimensions';
-import { isMobile as isMobileUtil } from 'Utilities/mobile';
+import { isMobile as isMobileUtil } from 'Utilities/browser';
 import styles from './Tooltip.css';
 
 let maxWidth = null;
