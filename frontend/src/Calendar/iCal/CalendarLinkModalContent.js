@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { without } from 'underscore';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputButton from 'Components/Form/FormInputButton';
@@ -42,30 +43,30 @@ class CalendarLinkModalContent extends Component {
       selectedReleaseTypes,
       tags
     } = this.state;
-  
+
     let icalUrl = `${window.location.host}${window.Radarr.urlBase}/feed/v3/calendar/Radarr.ics?`;
-  
+
     if (unmonitored) {
       icalUrl += 'unmonitored=true&';
     }
-  
+
     if (asAllDay) {
       icalUrl += 'asAllDay=true&';
     }
-  
+
     if (selectedReleaseTypes?.length !== 0 && selectedReleaseTypes[0] !== 'all') {
       icalUrl += `releaseType[]=${selectedReleaseTypes.join()}&`;
     }
-  
+
     if (tags.length) {
       icalUrl += `tags=${tags.toString()}&`;
     }
-  
+
     icalUrl += `apikey=${window.Radarr.apiKey}`;
-  
+
     const iCalHttpUrl = `${window.location.protocol}//${icalUrl}`;
     const iCalWebCalUrl = `webcal://${icalUrl}`;
-  
+
     return {
       iCalHttpUrl,
       iCalWebCalUrl
@@ -85,24 +86,23 @@ class CalendarLinkModalContent extends Component {
     event.target.select();
   };
 
-  onReleaseTypeInputChange = ({name, value}) => {
-    const {releaseTypes} = this.props;
-    const {selectedReleaseTypes} = this.state;
+  onReleaseTypeInputChange = ({ name, value }) => {
+    const { releaseTypes } = this.props;
+    const { selectedReleaseTypes } = this.state;
 
     let newSelectedReleaseTypes = value;
     if (value.length === 0) {
       newSelectedReleaseTypes = ['all'];
-    }
-    else if (value.length > selectedReleaseTypes.length) {
-      const selectedReleaseType = releaseTypes.find(releaseType => releaseType.key === _.without(value, ...selectedReleaseTypes)[0]);
+    } else if (value.length > selectedReleaseTypes.length) {
+      const selectedReleaseType = releaseTypes.find((releaseType) => releaseType.key === without(value, ...selectedReleaseTypes)[0]);
       const unselectedReleaseTypes = selectedReleaseType?.unselectValues || [];
-      newSelectedReleaseTypes = _.without([selectedReleaseType.key, ...selectedReleaseTypes], ...unselectedReleaseTypes);
+      newSelectedReleaseTypes = without([selectedReleaseType.key, ...selectedReleaseTypes], ...unselectedReleaseTypes);
     }
 
     this.setState({
       selectedReleaseTypes: newSelectedReleaseTypes
     });
-  } 
+  }
 
   //
   // Render

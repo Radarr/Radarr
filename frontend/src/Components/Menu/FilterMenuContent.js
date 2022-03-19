@@ -79,7 +79,8 @@ FilterMenuContent.propTypes = {
   customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   showCustomFilters: PropTypes.bool.isRequired,
   onFilterSelect: PropTypes.func.isRequired,
-  onCustomFiltersPress: PropTypes.func.isRequired
+  onCustomFiltersPress: PropTypes.func.isRequired,
+  multipleSelection: PropTypes.bool.isRequired
 };
 
 FilterMenuContent.defaultProps = {

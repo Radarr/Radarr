@@ -42,7 +42,8 @@ class FilterMenuItem extends Component {
 FilterMenuItem.propTypes = {
   filterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.arrayOf(PropTypes.string)]).isRequired,
-  onPress: PropTypes.func.isRequired
+  onPress: PropTypes.func.isRequired,
+  multipleSelection: PropTypes.bool.isRequired
 };
 
 export default FilterMenuItem;

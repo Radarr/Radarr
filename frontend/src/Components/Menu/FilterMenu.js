@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { without } from 'underscore';
 import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import FilterMenuContent from './FilterMenuContent';
@@ -33,7 +34,7 @@ class FilterMenu extends Component {
 
   onFilterSelect = (multipleSelection) => (key) => {
     const { onFilterSelect } = this.props;
-    
+
     const newSelection = multipleSelection ? this.getNewSelections(key) : key;
     onFilterSelect(newSelection);
   }
@@ -41,7 +42,7 @@ class FilterMenu extends Component {
   getNewSelections(key) {
     const { selectedFilterKey } = this.props;
 
-    if (selectedFilterKey.find(selectedKey => selectedKey === key)) {
+    if (selectedFilterKey.find((selectedKey) => selectedKey === key)) {
       return this.processUnselection(key);
     }
 
@@ -51,16 +52,16 @@ class FilterMenu extends Component {
   processSelection(key) {
     const { filters, selectedFilterKey } = this.props;
 
-    const selectedFilter = filters.find(filter => filter.key === key || filter.id === key);
+    const selectedFilter = filters.find((filter) => filter.key === key || filter.id === key);
     const unselectedFilters = selectedFilter?.unselectFilters || [];
-    
-    return _.without([selectedFilter.key, ...selectedFilterKey], ...unselectedFilters);
+
+    return without([selectedFilter.key, ...selectedFilterKey], ...unselectedFilters);
   }
 
   processUnselection(key) {
     const { selectedFilterKey } = this.props;
 
-    const newSelections = _.without(selectedFilterKey, key);
+    const newSelections = without(selectedFilterKey, key);
 
     return newSelections.length === 0 ? ['all'] : newSelections;
   }
@@ -82,7 +83,7 @@ class FilterMenu extends Component {
     } = this.props;
 
     const showCustomFilters = !!FilterModalConnectorComponent;
-    const multipleSelection = Array.isArray(selectedFilterKey)
+    const multipleSelection = Array.isArray(selectedFilterKey);
     const indicator = multipleSelection ? !selectedFilterKey.includes('all') : selectedFilterKey !== 'all';
 
     return (
