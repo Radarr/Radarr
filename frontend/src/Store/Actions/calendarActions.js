@@ -249,9 +249,9 @@ export const actionHandlers = handleThunks({
       url: '/calendar',
       data: {
         unmonitored,
-        releaseTypes,
         start,
-        end
+        end,
+        ...(releaseTypes ? { releaseTypes } : {})
       }
     }).request;
 

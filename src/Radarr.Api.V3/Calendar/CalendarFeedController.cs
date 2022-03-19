@@ -37,12 +37,8 @@ namespace Radarr.Api.V3.Calendar
             var end = DateTime.Today.AddDays(futureDays);
             var tags = new List<int>();
             var filteredReleaseTypes = releaseTypes
-                .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                .ToArray();
-            if (filteredReleaseTypes.Length == 0)
-            {
-                filteredReleaseTypes = new[] { ReleaseType.InCinemas, ReleaseType.Digital, ReleaseType.Physical };
-            }
+                ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                ?.ToArray() ?? Array.Empty<string>();
 
             if (tagList.IsNotNullOrWhiteSpace())
             {

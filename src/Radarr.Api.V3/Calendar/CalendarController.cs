@@ -50,8 +50,8 @@ namespace Radarr.Api.V3.Calendar
             var startUse = start ?? DateTime.Today;
             var endUse = end ?? DateTime.Today.AddDays(2);
             var filteredReleaseTypes = releaseTypes
-                .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                .ToArray();
+                ?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                ?.ToArray() ?? Array.Empty<string>();
 
             var resources = _moviesService.GetMoviesBetweenDates(startUse, endUse, unmonitored)
                 .Select(movie => MapToResource(movie, filteredReleaseTypes));
