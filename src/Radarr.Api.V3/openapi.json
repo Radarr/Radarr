@@ -461,6 +461,16 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "releaseTypes",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
           }
         ],
         "responses": {
