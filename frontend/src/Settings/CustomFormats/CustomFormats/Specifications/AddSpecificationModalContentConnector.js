@@ -46,7 +46,7 @@ class AddSpecificationModalContentConnector extends Component {
   onSpecificationSelect = ({ implementation, name }) => {
     this.props.selectCustomFormatSpecificationSchema({ implementation, presetName: name });
     this.props.onModalClose({ specificationSelected: true });
-  }
+  };
 
   //
   // Render

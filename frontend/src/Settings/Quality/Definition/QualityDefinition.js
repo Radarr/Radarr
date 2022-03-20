@@ -70,7 +70,7 @@ class QualityDefinition extends Component {
       preferredSize: sliderPreferredSize === (slider.max - 3) ? null : roundNumber(Math.pow(sliderPreferredSize, 1.1)),
       maxSize: sliderMaxSize === slider.max ? null : roundNumber(Math.pow(sliderMaxSize, 1.1))
     });
-  }
+  };
 
   onAfterSliderChange = () => {
     const {
@@ -84,7 +84,7 @@ class QualityDefinition extends Component {
       sliderMaxSize: getSliderValue(maxSize, slider.max),
       sliderPreferredSize: getSliderValue(preferredSize, (slider.max - 3)) // fix
     });
-  }
+  };
 
   onMinSizeChange = ({ value }) => {
     const minSize = getValue(value);
@@ -98,7 +98,7 @@ class QualityDefinition extends Component {
       maxSize: this.props.maxSize,
       preferredSize: this.props.preferredSize
     });
-  }
+  };
 
   onPreferredSizeChange = ({ value }) => {
     const preferredSize = value === (MAX - 3) ? null : getValue(value);
@@ -112,7 +112,7 @@ class QualityDefinition extends Component {
       maxSize: this.props.maxSize,
       preferredSize
     });
-  }
+  };
 
   onMaxSizeChange = ({ value }) => {
     const maxSize = value === MAX ? null : getValue(value);
@@ -126,7 +126,7 @@ class QualityDefinition extends Component {
       maxSize,
       preferredSize: this.props.preferredSize
     });
-  }
+  };
 
   //
   // Render

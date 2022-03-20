@@ -32,25 +32,25 @@ class ImportMovie extends Component {
 
   setScrollerRef = (ref) => {
     this.setState({ scroller: ref });
-  }
+  };
 
   //
   // Listeners
 
   getSelectedIds = () => {
     return getSelectedIds(this.state.selectedState, { parseIds: false });
-  }
+  };
 
   onSelectAllChange = ({ value }) => {
     // Only select non-dupes
     this.setState(selectAll(this.state.selectedState, value));
-  }
+  };
 
   onSelectedChange = ({ id, value, shiftKey = false }) => {
     this.setState((state) => {
       return toggleSelected(state, this.props.items, id, value, shiftKey);
     });
-  }
+  };
 
   onRemoveSelectedStateItem = (id) => {
     this.setState((state) => {
@@ -62,15 +62,15 @@ class ImportMovie extends Component {
         selectedState
       };
     });
-  }
+  };
 
   onInputChange = ({ name, value }) => {
     this.props.onInputChange(this.getSelectedIds(), name, value);
-  }
+  };
 
   onImportPress = () => {
     this.props.onImportPress(this.getSelectedIds());
-  }
+  };
 
   //
   // Render

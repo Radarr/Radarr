@@ -52,19 +52,19 @@ class EditImportListModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setImportListValue({ name, value });
-  }
+  };
 
   onFieldChange = ({ name, value }) => {
     this.props.setImportListFieldValue({ name, value });
-  }
+  };
 
   onSavePress = () => {
     this.props.saveImportList({ id: this.props.id });
-  }
+  };
 
   onTestPress = () => {
     this.props.testImportList({ id: this.props.id });
-  }
+  };
 
   //
   // Render

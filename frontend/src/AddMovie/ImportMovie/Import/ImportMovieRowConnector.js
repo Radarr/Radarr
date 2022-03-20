@@ -48,7 +48,7 @@ class ImportMovieRowConnector extends Component {
       id: this.props.id,
       [name]: value
     });
-  }
+  };
 
   //
   // Render

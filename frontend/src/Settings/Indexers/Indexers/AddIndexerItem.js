@@ -20,7 +20,7 @@ class AddIndexerItem extends Component {
     } = this.props;
 
     this.props.onIndexerSelect({ implementation });
-  }
+  };
 
   //
   // Render

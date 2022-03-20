@@ -42,7 +42,7 @@ class QueueOptions extends Component {
         [name]: value
       });
     });
-  }
+  };
 
   //
   // Render

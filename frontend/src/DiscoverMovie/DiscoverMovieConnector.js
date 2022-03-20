@@ -106,19 +106,19 @@ class DiscoverMovieConnector extends Component {
 
   onViewSelect = (view) => {
     this.props.dispatchSetListMovieView(view);
-  }
+  };
 
   onScroll = ({ scrollTop }) => {
     scrollPositions.discoverMovie = scrollTop;
-  }
+  };
 
   onAddMoviesPress = ({ ids, addOptions }) => {
     this.props.dispatchAddMovies(ids, addOptions);
-  }
+  };
 
   onExcludeMoviesPress =({ ids }) => {
     this.props.dispatchAddImportExclusions({ ids });
-  }
+  };
 
   //
   // Render

@@ -16,7 +16,7 @@ class EditRestrictionModalConnector extends Component {
   onModalClose = () => {
     this.props.clearPendingChanges({ section: 'settings.restrictions' });
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

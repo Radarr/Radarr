@@ -47,7 +47,7 @@ class QualityProfileFormatItems extends Component {
 
     onQualityProfileFormatItemScoreChange(formatId, value);
     this.reorderItems();
-  }
+  };
 
   reorderItems = _.debounce(() => this.setState({ order: calcOrder(this.props.profileFormatItems) }), 1000);
 

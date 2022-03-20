@@ -77,34 +77,34 @@ class QueueConnector extends Component {
 
   repopulate = () => {
     this.props.fetchQueue();
-  }
+  };
 
   //
   // Listeners
 
   onFirstPagePress = () => {
     this.props.gotoQueueFirstPage();
-  }
+  };
 
   onPreviousPagePress = () => {
     this.props.gotoQueuePreviousPage();
-  }
+  };
 
   onNextPagePress = () => {
     this.props.gotoQueueNextPage();
-  }
+  };
 
   onLastPagePress = () => {
     this.props.gotoQueueLastPage();
-  }
+  };
 
   onPageSelect = (page) => {
     this.props.gotoQueuePage({ page });
-  }
+  };
 
   onSortPress = (sortKey) => {
     this.props.setQueueSort({ sortKey });
-  }
+  };
 
   onTableOptionChange = (payload) => {
     this.props.setQueueTableOption(payload);
@@ -112,21 +112,21 @@ class QueueConnector extends Component {
     if (payload.pageSize) {
       this.props.gotoQueueFirstPage();
     }
-  }
+  };
 
   onRefreshPress = () => {
     this.props.executeCommand({
       name: commandNames.REFRESH_MONITORED_DOWNLOADS
     });
-  }
+  };
 
   onGrabSelectedPress = (ids) => {
     this.props.grabQueueItems({ ids });
-  }
+  };
 
   onRemoveSelectedPress = (payload) => {
     this.props.removeQueueItems(payload);
-  }
+  };
 
   //
   // Render

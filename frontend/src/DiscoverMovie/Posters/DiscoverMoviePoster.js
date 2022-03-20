@@ -35,31 +35,31 @@ class DiscoverMoviePoster extends Component {
 
   onPress = () => {
     this.setState({ isNewAddMovieModalOpen: true });
-  }
+  };
 
   onAddMovieModalClose = () => {
     this.setState({ isNewAddMovieModalOpen: false });
-  }
+  };
 
   onExcludeMoviePress = () => {
     this.setState({ isExcludeMovieModalOpen: true });
-  }
+  };
 
   onExcludeMovieModalClose = () => {
     this.setState({ isExcludeMovieModalOpen: false });
-  }
+  };
 
   onPosterLoad = () => {
     if (this.state.hasPosterError) {
       this.setState({ hasPosterError: false });
     }
-  }
+  };
 
   onPosterLoadError = () => {
     if (!this.state.hasPosterError) {
       this.setState({ hasPosterError: true });
     }
-  }
+  };
 
   onChange = ({ value, shiftKey }) => {
     const {
@@ -68,7 +68,7 @@ class DiscoverMoviePoster extends Component {
     } = this.props;
 
     onSelectedChange({ id: tmdbId, value, shiftKey });
-  }
+  };
 
   //
   // Render

@@ -20,7 +20,7 @@ class AddNotificationItem extends Component {
     } = this.props;
 
     this.props.onNotificationSelect({ implementation });
-  }
+  };
 
   //
   // Render

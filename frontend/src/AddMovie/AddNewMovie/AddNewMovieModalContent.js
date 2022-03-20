@@ -22,11 +22,11 @@ class AddNewMovieModalContent extends Component {
 
   onQualityProfileIdChange = ({ value }) => {
     this.props.onInputChange({ name: 'qualityProfileId', value: parseInt(value) });
-  }
+  };
 
   onAddMoviePress = () => {
     this.props.onAddMoviePress();
-  }
+  };
 
   //
   // Render

@@ -22,7 +22,7 @@ class EditSpecificationModalConnector extends Component {
   onModalClose = () => {
     this.props.dispatchClearPendingChanges();
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

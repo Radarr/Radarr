@@ -26,26 +26,26 @@ class Tag extends Component {
 
   onShowDetailsPress = () => {
     this.setState({ isDetailsModalOpen: true });
-  }
+  };
 
   onDetailsModalClose = () => {
     this.setState({ isDetailsModalOpen: false });
-  }
+  };
 
   onDeleteTagPress = () => {
     this.setState({
       isDetailsModalOpen: false,
       isDeleteTagModalOpen: true
     });
-  }
+  };
 
   onDeleteTagModalClose= () => {
     this.setState({ isDeleteTagModalOpen: false });
-  }
+  };
 
   onConfirmDeleteTag = () => {
     this.props.onConfirmDeleteTag({ id: this.props.id });
-  }
+  };
 
   //
   // Render

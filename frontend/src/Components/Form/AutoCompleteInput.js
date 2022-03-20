@@ -35,11 +35,11 @@ class AutoCompleteInput extends Component {
       name: this.props.name,
       value: newValue
     });
-  }
+  };
 
   onInputBlur = () => {
     this.setState({ suggestions: [] });
-  }
+  };
 
   onSuggestionsFetchRequested = ({ value }) => {
     const { values } = this.props;
@@ -50,11 +50,11 @@ class AutoCompleteInput extends Component {
     });
 
     this.setState({ suggestions: filteredValues });
-  }
+  };
 
   onSuggestionsClearRequested = () => {
     this.setState({ suggestions: [] });
-  }
+  };
 
   //
   // Render

@@ -25,7 +25,7 @@ class ImportMovieRootFolderRowConnector extends Component {
 
   onDeletePress = () => {
     this.props.deleteRootFolder({ id: this.props.id });
-  }
+  };
 
   //
   // Render

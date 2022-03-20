@@ -16,7 +16,7 @@ class ExcludeMovieModalContent extends Component {
 
   onExcludeMovieConfirmed = () => {
     this.props.onExcludePress();
-  }
+  };
 
   //
   // Render

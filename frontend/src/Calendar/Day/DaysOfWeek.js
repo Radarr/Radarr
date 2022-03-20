@@ -47,13 +47,13 @@ class DaysOfWeek extends Component {
     });
 
     this.updateTimeoutId = setTimeout(this.scheduleUpdate, diff);
-  }
+  };
 
   clearUpdateTimeout = () => {
     if (this.updateTimeoutId) {
       clearTimeout(this.updateTimeoutId);
     }
-  }
+  };
 
   //
   // Render

@@ -53,19 +53,19 @@ class DiscoverMovieOverview extends Component {
 
   onPress = () => {
     this.setState({ isNewAddMovieModalOpen: true });
-  }
+  };
 
   onAddMovieModalClose = () => {
     this.setState({ isNewAddMovieModalOpen: false });
-  }
+  };
 
   onExcludeMoviePress = () => {
     this.setState({ isExcludeMovieModalOpen: true });
-  }
+  };
 
   onExcludeMovieModalClose = () => {
     this.setState({ isExcludeMovieModalOpen: false });
-  }
+  };
 
   onChange = ({ value, shiftKey }) => {
     const {
@@ -74,7 +74,7 @@ class DiscoverMovieOverview extends Component {
     } = this.props;
 
     onSelectedChange({ id: tmdbId, value, shiftKey });
-  }
+  };
 
   //
   // Render

@@ -53,7 +53,7 @@ class FileEditModalContentConnector extends Component {
     if (!this.props.isPopulated) {
       this.props.dispatchFetchQualityProfileSchema();
     }
-  }
+  };
 
   //
   // Listeners
@@ -101,7 +101,7 @@ class FileEditModalContentConnector extends Component {
     });
 
     this.props.onModalClose(true);
-  }
+  };
 
   //
   // Render

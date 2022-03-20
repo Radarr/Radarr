@@ -38,7 +38,7 @@ class VirtualTableHeaderCell extends Component {
     } else {
       this.props.onSortPress(name);
     }
-  }
+  };
 
   //
   // Render

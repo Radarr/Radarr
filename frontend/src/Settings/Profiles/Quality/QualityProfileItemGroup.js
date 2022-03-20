@@ -23,7 +23,7 @@ class QualityProfileItemGroup extends Component {
     } = this.props;
 
     onItemGroupAllowedChange(groupId, value);
-  }
+  };
 
   onNameChange = ({ value }) => {
     const {
@@ -32,7 +32,7 @@ class QualityProfileItemGroup extends Component {
     } = this.props;
 
     onItemGroupNameChange(groupId, value);
-  }
+  };
 
   onDeleteGroupPress = ({ value }) => {
     const {
@@ -41,7 +41,7 @@ class QualityProfileItemGroup extends Component {
     } = this.props;
 
     onDeleteGroupPress(groupId, value);
-  }
+  };
 
   //
   // Render

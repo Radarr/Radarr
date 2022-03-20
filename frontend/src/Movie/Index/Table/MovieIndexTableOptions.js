@@ -43,7 +43,7 @@ class MovieIndexTableOptions extends Component {
         }
       });
     });
-  }
+  };
 
   //
   // Render

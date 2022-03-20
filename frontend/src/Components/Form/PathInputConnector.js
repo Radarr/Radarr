@@ -47,11 +47,11 @@ class PathInputConnector extends Component {
       path,
       includeFiles
     });
-  }
+  };
 
   onClearPaths = () => {
     this.props.dispatchClearPaths();
-  }
+  };
 
   //
   // Render

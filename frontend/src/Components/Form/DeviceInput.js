@@ -23,7 +23,7 @@ class DeviceInput extends Component {
       name,
       value: [...value, deviceId]
     });
-  }
+  };
 
   onTagDelete = ({ index }) => {
     const {
@@ -39,7 +39,7 @@ class DeviceInput extends Component {
       name,
       value: newValue
     });
-  }
+  };
 
   //
   // Render

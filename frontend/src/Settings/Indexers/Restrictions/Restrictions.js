@@ -28,11 +28,11 @@ class Restrictions extends Component {
 
   onAddRestrictionPress = () => {
     this.setState({ isAddRestrictionModalOpen: true });
-  }
+  };
 
   onAddRestrictionModalClose = () => {
     this.setState({ isAddRestrictionModalOpen: false });
-  }
+  };
 
   //
   // Render

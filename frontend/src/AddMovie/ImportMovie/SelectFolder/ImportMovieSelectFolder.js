@@ -55,15 +55,15 @@ class ImportMovieSelectFolder extends Component {
 
   onAddNewRootFolderPress = () => {
     this.setState({ isAddNewRootFolderModalOpen: true });
-  }
+  };
 
   onNewRootFolderSelect = ({ value }) => {
     this.props.onNewRootFolderSelect(value);
-  }
+  };
 
   onAddRootFolderModalClose = () => {
     this.setState({ isAddNewRootFolderModalOpen: false });
-  }
+  };
 
   //
   // Render

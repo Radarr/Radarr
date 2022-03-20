@@ -58,11 +58,11 @@ class ImportMovieSelectFolderConnector extends Component {
 
   onNewRootFolderSelect = (path) => {
     this.props.addRootFolder({ path });
-  }
+  };
 
   onDeleteRootFolderPress = (id) => {
     this.props.deleteRootFolder({ id });
-  }
+  };
 
   //
   // Render

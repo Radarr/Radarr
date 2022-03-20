@@ -103,7 +103,7 @@ class PageJumpBar extends Component {
     if (height > 0) {
       this.setState({ height });
     }
-  }
+  };
 
   //
   // Render

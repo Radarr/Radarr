@@ -34,7 +34,7 @@ class TagsModalContent extends Component {
 
   onInputChange = ({ name, value }) => {
     this.setState({ [name]: value });
-  }
+  };
 
   onApplyTagsPress = () => {
     const {
@@ -43,7 +43,7 @@ class TagsModalContent extends Component {
     } = this.state;
 
     this.props.onApplyTagsPress(tags, applyTags);
-  }
+  };
 
   //
   // Render

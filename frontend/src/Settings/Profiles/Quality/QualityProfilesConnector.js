@@ -34,11 +34,11 @@ class QualityProfilesConnector extends Component {
 
   onConfirmDeleteQualityProfile = (id) => {
     this.props.dispatchDeleteQualityProfile({ id });
-  }
+  };
 
   onCloneQualityProfilePress = (id) => {
     this.props.dispatchCloneQualityProfile({ id });
-  }
+  };
 
   //
   // Render

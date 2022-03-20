@@ -14,7 +14,7 @@ class SearchMenuItem extends Component {
     } = this.props;
 
     onPress(name);
-  }
+  };
 
   //
   // Render

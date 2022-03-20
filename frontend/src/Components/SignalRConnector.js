@@ -144,7 +144,7 @@ class SignalRConnector extends Component {
     }
 
     console.error(`signalR: Unable to find handler for ${name}`);
-  }
+  };
 
   handleCalendar = (body) => {
     if (body.action === 'updated') {
@@ -154,7 +154,7 @@ class SignalRConnector extends Component {
         ...body.resource
       });
     }
-  }
+  };
 
   handleCommand = (body) => {
     if (body.action === 'sync') {
@@ -173,7 +173,7 @@ class SignalRConnector extends Component {
     } else {
       this.props.dispatchUpdateCommand(resource);
     }
-  }
+  };
 
   handleMoviefile = (body) => {
     const section = 'movieFiles';
@@ -186,11 +186,11 @@ class SignalRConnector extends Component {
     } else if (body.action === 'deleted') {
       this.props.dispatchRemoveItem({ section, id: body.resource.id });
     }
-  }
+  };
 
   handleHealth = () => {
     this.props.dispatchFetchHealth();
-  }
+  };
 
   handleMovie = (body) => {
     const action = body.action;
@@ -201,35 +201,35 @@ class SignalRConnector extends Component {
     } else if (action === 'deleted') {
       this.props.dispatchRemoveItem({ section, id: body.resource.id });
     }
-  }
+  };
 
   handleQueue = () => {
     if (this.props.isQueuePopulated) {
       this.props.dispatchFetchQueue();
     }
-  }
+  };
 
   handleQueueDetails = () => {
     this.props.dispatchFetchQueueDetails();
-  }
+  };
 
   handleQueueStatus = (body) => {
     this.props.dispatchUpdate({ section: 'queue.status', data: body.resource });
-  }
+  };
 
   handleVersion = (body) => {
     const version = body.version;
 
     this.props.dispatchSetVersion({ version });
-  }
+  };
 
   handleSystemTask = () => {
     this.props.dispatchFetchCommands();
-  }
+  };
 
   handleRootfolder = () => {
     this.props.dispatchFetchRootFolders();
-  }
+  };
 
   handleTag = (body) => {
     if (body.action === 'sync') {
@@ -237,7 +237,7 @@ class SignalRConnector extends Component {
       this.props.dispatchFetchTagDetails();
       return;
     }
-  }
+  };
 
   //
   // Listeners
@@ -252,7 +252,7 @@ class SignalRConnector extends Component {
       isDisconnected: false,
       isRestarting: false
     });
-  }
+  };
 
   onStart = () => {
     console.debug('[signalR] connected');
@@ -263,11 +263,11 @@ class SignalRConnector extends Component {
       isDisconnected: false,
       isRestarting: false
     });
-  }
+  };
 
   onReconnecting = () => {
     this.props.dispatchSetAppValue({ isReconnecting: true });
-  }
+  };
 
   onReconnected = () => {
 
@@ -289,17 +289,17 @@ class SignalRConnector extends Component {
     dispatchFetchMovies();
     dispatchFetchCommands();
     repopulatePage();
-  }
+  };
 
   onClose = () => {
     console.debug('[signalR] connection closed');
-  }
+  };
 
   onReceiveMessage = (message) => {
     console.debug('[signalR] received', message.name, message.body);
 
     this.handleMessage(message);
-  }
+  };
 
   //
   // Render

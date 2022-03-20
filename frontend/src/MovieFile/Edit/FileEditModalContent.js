@@ -47,15 +47,15 @@ class FileEditModalContent extends Component {
 
   onQualityChange = ({ value }) => {
     this.setState({ qualityId: parseInt(value) });
-  }
+  };
 
   onInputChange = ({ name, value }) => {
     this.setState({ [name]: value });
-  }
+  };
 
   onSaveInputs = () => {
     this.props.onSaveInputs(this.state);
-  }
+  };
 
   //
   // Render

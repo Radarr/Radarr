@@ -54,15 +54,15 @@ class Page extends Component {
       width: window.innerWidth,
       height: window.innerHeight
     });
-  }
+  };
 
   onUpdatedModalClose = () => {
     this.setState({ isUpdatedModalOpen: false });
-  }
+  };
 
   onConnectionLostModalClose = () => {
     this.setState({ isConnectionLostModalOpen: false });
-  }
+  };
 
   //
   // Render

@@ -22,7 +22,7 @@ class TagInputTag extends Component {
       index,
       id: tag.id
     });
-  }
+  };
 
   //
   // Render

@@ -29,26 +29,26 @@ class QualityProfile extends Component {
 
   onEditQualityProfilePress = () => {
     this.setState({ isEditQualityProfileModalOpen: true });
-  }
+  };
 
   onEditQualityProfileModalClose = () => {
     this.setState({ isEditQualityProfileModalOpen: false });
-  }
+  };
 
   onDeleteQualityProfilePress = () => {
     this.setState({
       isEditQualityProfileModalOpen: false,
       isDeleteQualityProfileModalOpen: true
     });
-  }
+  };
 
   onDeleteQualityProfileModalClose = () => {
     this.setState({ isDeleteQualityProfileModalOpen: false });
-  }
+  };
 
   onConfirmDeleteQualityProfile = () => {
     this.props.onConfirmDeleteQualityProfile(this.props.id);
-  }
+  };
 
   onCloneQualityProfilePress = () => {
     const {
@@ -57,7 +57,7 @@ class QualityProfile extends Component {
     } = this.props;
 
     onCloneQualityProfilePress(id);
-  }
+  };
 
   //
   // Render

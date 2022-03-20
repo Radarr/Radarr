@@ -25,11 +25,11 @@ class MovieCollection extends Component {
       this.props.onMonitorTogglePress(monitored);
       this.setState({ isEditImportListModalOpen: true });
     }
-  }
+  };
 
   onEditImportListModalClose = () => {
     this.setState({ isEditImportListModalOpen: false });
-  }
+  };
 
   render() {
     const {

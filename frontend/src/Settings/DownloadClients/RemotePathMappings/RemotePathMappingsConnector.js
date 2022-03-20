@@ -35,7 +35,7 @@ class RemotePathMappingsConnector extends Component {
 
   onConfirmDeleteRemotePathMapping = (id) => {
     this.props.deleteRemotePathMapping({ id });
-  }
+  };
 
   //
   // Render

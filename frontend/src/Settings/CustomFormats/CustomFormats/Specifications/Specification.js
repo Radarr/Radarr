@@ -28,30 +28,30 @@ class Specification extends Component {
 
   onEditSpecificationPress = () => {
     this.setState({ isEditSpecificationModalOpen: true });
-  }
+  };
 
   onEditSpecificationModalClose = () => {
     this.setState({ isEditSpecificationModalOpen: false });
-  }
+  };
 
   onDeleteSpecificationPress = () => {
     this.setState({
       isEditSpecificationModalOpen: false,
       isDeleteSpecificationModalOpen: true
     });
-  }
+  };
 
   onDeleteSpecificationModalClose = () => {
     this.setState({ isDeleteSpecificationModalOpen: false });
-  }
+  };
 
   onCloneSpecificationPress = () => {
     this.props.onCloneSpecificationPress(this.props.id);
-  }
+  };
 
   onConfirmDeleteSpecification = () => {
     this.props.onConfirmDeleteSpecification(this.props.id);
-  }
+  };
 
   //
   // Lifecycle

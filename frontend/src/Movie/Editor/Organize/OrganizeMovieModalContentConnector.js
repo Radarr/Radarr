@@ -43,7 +43,7 @@ class OrganizeMovieModalContentConnector extends Component {
     });
 
     this.props.onModalClose(true);
-  }
+  };
 
   //
   // Render

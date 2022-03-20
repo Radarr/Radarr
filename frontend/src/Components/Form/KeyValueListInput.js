@@ -39,7 +39,7 @@ class KeyValueListInput extends Component {
       name,
       value: newValue
     });
-  }
+  };
 
   onRemoveItem = (index) => {
     const {
@@ -55,13 +55,13 @@ class KeyValueListInput extends Component {
       name,
       value: newValue
     });
-  }
+  };
 
   onFocus = () => {
     this.setState({
       isFocused: true
     });
-  }
+  };
 
   onBlur = () => {
     this.setState({
@@ -88,7 +88,7 @@ class KeyValueListInput extends Component {
         value: newValue
       });
     }
-  }
+  };
 
   //
   // Render

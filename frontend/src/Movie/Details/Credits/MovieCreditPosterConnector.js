@@ -23,7 +23,7 @@ class MovieCreditPosterConnector extends Component {
     this.props.selectImportListSchema({ implementation: 'TMDbPersonImport', presetName: undefined });
     this.props.setImportListFieldValue({ name: 'personId', value: this.props.tmdbId.toString() });
     this.props.setImportListValue({ name: 'name', value: `${this.props.personName} - ${this.props.tmdbId}` });
-  }
+  };
 
   //
   // Render

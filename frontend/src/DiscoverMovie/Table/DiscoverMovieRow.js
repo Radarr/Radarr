@@ -37,19 +37,19 @@ class DiscoverMovieRow extends Component {
 
   onAddMoviePress = () => {
     this.setState({ isNewAddMovieModalOpen: true });
-  }
+  };
 
   onAddMovieModalClose = () => {
     this.setState({ isNewAddMovieModalOpen: false });
-  }
+  };
 
   onExcludeMoviePress = () => {
     this.setState({ isExcludeMovieModalOpen: true });
-  }
+  };
 
   onExcludeMovieModalClose = () => {
     this.setState({ isExcludeMovieModalOpen: false });
-  }
+  };
 
   //
   // Render

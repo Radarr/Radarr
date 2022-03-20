@@ -33,18 +33,18 @@ class CustomFormats extends Component {
       isCustomFormatModalOpen: true,
       tagsFromId: id
     });
-  }
+  };
 
   onEditCustomFormatPress = () => {
     this.setState({ isCustomFormatModalOpen: true });
-  }
+  };
 
   onModalClose = () => {
     this.setState({
       isCustomFormatModalOpen: false,
       tagsFromId: undefined
     });
-  }
+  };
 
   //
   // Render

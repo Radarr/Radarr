@@ -103,7 +103,7 @@ class DateFilterBuilderRowValue extends Component {
       name: NAME,
       value: newValue
     });
-  }
+  };
 
   onTimeChange = ({ value }) => {
     const {
@@ -118,7 +118,7 @@ class DateFilterBuilderRowValue extends Component {
         value: filterValue.value
       }
     });
-  }
+  };
 
   //
   // Render

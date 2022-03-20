@@ -65,37 +65,37 @@ class BlocklistConnector extends Component {
 
   repopulate = () => {
     this.props.fetchBlocklist();
-  }
+  };
   //
   // Listeners
 
   onFirstPagePress = () => {
     this.props.gotoBlocklistFirstPage();
-  }
+  };
 
   onPreviousPagePress = () => {
     this.props.gotoBlocklistPreviousPage();
-  }
+  };
 
   onNextPagePress = () => {
     this.props.gotoBlocklistNextPage();
-  }
+  };
 
   onLastPagePress = () => {
     this.props.gotoBlocklistLastPage();
-  }
+  };
 
   onPageSelect = (page) => {
     this.props.gotoBlocklistPage({ page });
-  }
+  };
 
   onRemoveSelected = (ids) => {
     this.props.removeBlocklistItems({ ids });
-  }
+  };
 
   onSortPress = (sortKey) => {
     this.props.setBlocklistSort({ sortKey });
-  }
+  };
 
   onTableOptionChange = (payload) => {
     this.props.setBlocklistTableOption(payload);
@@ -103,11 +103,11 @@ class BlocklistConnector extends Component {
     if (payload.pageSize) {
       this.props.gotoBlocklistFirstPage();
     }
-  }
+  };
 
   onClearBlocklistPress = () => {
     this.props.executeCommand({ name: commandNames.CLEAR_BLOCKLIST });
-  }
+  };
 
   //
   // Render

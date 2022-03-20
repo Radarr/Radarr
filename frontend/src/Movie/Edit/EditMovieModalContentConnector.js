@@ -79,14 +79,14 @@ class EditMovieModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.dispatchSetMovieValue({ name, value });
-  }
+  };
 
   onSavePress = (moveFiles) => {
     this.props.dispatchSaveMovie({
       id: this.props.movieId,
       moveFiles
     });
-  }
+  };
 
   //
   // Render

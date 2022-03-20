@@ -42,13 +42,13 @@ class ImportCustomFormatModalContent extends Component {
 
   onChange = (event) => {
     this.setState({ json: event.value });
-  }
+  };
 
   onImportPress = () => {
     this.setState({ isSpinning: true });
     // this is a bodge as we need to register a isSpinning: true to get the spinner button to update
     this._importTimeout = setTimeout(this.doImport, 250);
-  }
+  };
 
   doImport = () => {
     const parseError = this.props.onImportPress(this.state.json);
@@ -60,7 +60,7 @@ class ImportCustomFormatModalContent extends Component {
     if (!parseError) {
       this.props.onModalClose();
     }
-  }
+  };
 
   //
   // Render

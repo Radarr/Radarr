@@ -20,7 +20,7 @@ class QualityProfileItem extends Component {
     } = this.props;
 
     onQualityProfileItemAllowedChange(qualityId, value);
-  }
+  };
 
   onCreateGroupPress = () => {
     const {
@@ -29,7 +29,7 @@ class QualityProfileItem extends Component {
     } = this.props;
 
     onCreateGroupPress(qualityId);
-  }
+  };
 
   //
   // Render

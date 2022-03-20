@@ -29,26 +29,26 @@ class Indexer extends Component {
 
   onEditIndexerPress = () => {
     this.setState({ isEditIndexerModalOpen: true });
-  }
+  };
 
   onEditIndexerModalClose = () => {
     this.setState({ isEditIndexerModalOpen: false });
-  }
+  };
 
   onDeleteIndexerPress = () => {
     this.setState({
       isEditIndexerModalOpen: false,
       isDeleteIndexerModalOpen: true
     });
-  }
+  };
 
   onDeleteIndexerModalClose= () => {
     this.setState({ isDeleteIndexerModalOpen: false });
-  }
+  };
 
   onConfirmDeleteIndexer = () => {
     this.props.onConfirmDeleteIndexer(this.props.id);
-  }
+  };
 
   onCloneIndexerPress = () => {
     const {
@@ -57,7 +57,7 @@ class Indexer extends Component {
     } = this.props;
 
     onCloneIndexerPress(id);
-  }
+  };
 
   //
   // Render

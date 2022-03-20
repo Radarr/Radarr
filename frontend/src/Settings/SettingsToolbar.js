@@ -32,7 +32,7 @@ class SettingsToolbar extends Component {
     if (hasPendingChanges) {
       onSavePress();
     }
-  }
+  };
 
   //
   // Render

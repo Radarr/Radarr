@@ -41,7 +41,7 @@ class OAuthInputConnector extends Component {
 
   componentWillUnmount = () => {
     this.props.resetOAuth();
-  }
+  };
 
   //
   // Listeners
@@ -60,7 +60,7 @@ class OAuthInputConnector extends Component {
       providerData,
       section
     });
-  }
+  };
 
   //
   // Render

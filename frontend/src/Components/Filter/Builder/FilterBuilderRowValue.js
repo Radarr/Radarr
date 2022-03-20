@@ -84,7 +84,7 @@ class FilterBuilderRowValue extends Component {
       name: NAME,
       value: [...filterValue, value]
     });
-  }
+  };
 
   onTagDelete = ({ index }) => {
     const {
@@ -98,7 +98,7 @@ class FilterBuilderRowValue extends Component {
       name: NAME,
       value
     });
-  }
+  };
 
   //
   // Render

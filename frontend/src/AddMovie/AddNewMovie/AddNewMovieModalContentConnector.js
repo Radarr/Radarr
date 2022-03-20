@@ -51,7 +51,7 @@ class AddNewMovieModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setAddMovieDefault({ [name]: value });
-  }
+  };
 
   onAddMoviePress = () => {
     const {
@@ -73,7 +73,7 @@ class AddNewMovieModalContentConnector extends Component {
       searchForMovie: searchForMovie.value,
       tags: tags.value
     });
-  }
+  };
 
   //
   // Render

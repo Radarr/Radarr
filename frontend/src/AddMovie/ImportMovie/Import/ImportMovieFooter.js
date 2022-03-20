@@ -83,7 +83,7 @@ class ImportMovieFooter extends Component {
   onInputChange = ({ name, value }) => {
     this.setState({ [name]: value });
     this.props.onInputChange({ name, value });
-  }
+  };
 
   //
   // Render

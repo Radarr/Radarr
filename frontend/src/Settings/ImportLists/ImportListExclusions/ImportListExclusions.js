@@ -28,11 +28,11 @@ class ImportListExclusions extends Component {
 
   onAddImportExclusionPress = () => {
     this.setState({ isAddImportExclusionModalOpen: true });
-  }
+  };
 
   onModalClose = () => {
     this.setState({ isAddImportExclusionModalOpen: false });
-  }
+  };
 
   //
   // Render

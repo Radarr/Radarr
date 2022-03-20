@@ -52,7 +52,7 @@ class DiscoverMovieFooterConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setAddMovieDefault({ [name]: value });
-  }
+  };
 
   //
   // Render

@@ -79,11 +79,11 @@ class AddNewMovieConnector extends Component {
         this.props.lookupMovie({ term });
       }, 300);
     }
-  }
+  };
 
   onClearMovieLookup = () => {
     this.props.clearAddMovie();
-  }
+  };
 
   //
   // Render

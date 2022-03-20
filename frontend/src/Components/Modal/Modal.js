@@ -66,7 +66,7 @@ class Modal extends Component {
 
   _setBackgroundRef = (ref) => {
     this._backgroundRef = ref;
-  }
+  };
 
   _openModal() {
     openModals.push(this._modalId);
@@ -131,7 +131,7 @@ class Modal extends Component {
 
   onBackdropBeginPress = (event) => {
     this._isBackdropPressed = this._isBackdropTarget(event);
-  }
+  };
 
   onBackdropEndPress = (event) => {
     const {
@@ -148,7 +148,7 @@ class Modal extends Component {
     }
 
     this._isBackdropPressed = false;
-  }
+  };
 
   onKeyDown = (event) => {
     const keyCode = event.keyCode;
@@ -161,7 +161,7 @@ class Modal extends Component {
         this.props.onModalClose();
       }
     }
-  }
+  };
 
   //
   // Render

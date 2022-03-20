@@ -112,11 +112,11 @@ class ImportMovieConnector extends Component {
         [name]: value
       });
     });
-  }
+  };
 
   onImportPress = (ids) => {
     this.props.dispatchImportMovie({ ids });
-  }
+  };
 
   //
   // Render

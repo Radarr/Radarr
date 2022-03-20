@@ -68,7 +68,7 @@ class DiscoverMovieTable extends Component {
         />
       </VirtualTableRow>
     );
-  }
+  };
 
   //
   // Render

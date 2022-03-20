@@ -72,7 +72,7 @@ class IndexerOptionsConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.dispatchSetIndexerOptionsValue({ name, value });
-  }
+  };
 
   //
   // Render

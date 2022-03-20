@@ -48,11 +48,11 @@ class DeviceInputConnector extends Component {
 
   componentDidMount = () => {
     this._populate();
-  }
+  };
 
   componentWillUnmount = () => {
     this.props.dispatchClearOptions({ section: 'devices' });
-  }
+  };
 
   //
   // Control
@@ -77,7 +77,7 @@ class DeviceInputConnector extends Component {
 
   onRefreshPress = () => {
     this._populate();
-  }
+  };
 
   //
   // Render

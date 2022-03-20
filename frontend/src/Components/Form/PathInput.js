@@ -62,7 +62,7 @@ class PathInput extends Component {
 
   onInputChange = ({ value }) => {
     this.setState({ value });
-  }
+  };
 
   onInputKeyDown = (event) => {
     if (event.key === 'Tab') {
@@ -80,7 +80,7 @@ class PathInput extends Component {
         }
       }
     }
-  }
+  };
 
   onInputBlur = () => {
     this.props.onChange({
@@ -89,28 +89,28 @@ class PathInput extends Component {
     });
 
     this.props.onClearPaths();
-  }
+  };
 
   onSuggestionsFetchRequested = ({ value }) => {
     this.props.onFetchPaths(value);
-  }
+  };
 
   onSuggestionsClearRequested = () => {
     // Required because props aren't always rendered, but no-op
     // because we don't want to reset the paths after a path is selected.
-  }
+  };
 
   onSuggestionSelected = (event, { suggestionValue }) => {
     this.props.onFetchPaths(suggestionValue);
-  }
+  };
 
   onFileBrowserOpenPress = () => {
     this.setState({ isFileBrowserModalOpen: true });
-  }
+  };
 
   onFileBrowserModalClose = () => {
     this.setState({ isFileBrowserModalOpen: false });
-  }
+  };
 
   //
   // Render

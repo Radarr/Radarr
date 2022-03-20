@@ -44,7 +44,7 @@ class Naming extends Component {
         additional: true
       }
     });
-  }
+  };
 
   onMovieFolderNamingModalOpenClick = () => {
     this.setState({
@@ -53,11 +53,11 @@ class Naming extends Component {
         name: 'movieFolderFormat'
       }
     });
-  }
+  };
 
   onNamingModalClose = () => {
     this.setState({ isNamingModalOpen: false });
-  }
+  };
 
   //
   // Render

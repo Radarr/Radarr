@@ -43,7 +43,7 @@ class QualityFilterBuilderRowValueConnector extends Component {
     if (!this.props.isPopulated) {
       this.props.dispatchFetchQualityProfileSchema();
     }
-  }
+  };
 
   //
   // Render

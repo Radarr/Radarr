@@ -27,28 +27,28 @@ class MovieCastPoster extends Component {
 
   onEditImportListPress = () => {
     this.setState({ isEditImportListModalOpen: true });
-  }
+  };
 
   onAddImportListPress = () => {
     this.props.onImportListSelect();
     this.setState({ isEditImportListModalOpen: true });
-  }
+  };
 
   onEditImportListModalClose = () => {
     this.setState({ isEditImportListModalOpen: false });
-  }
+  };
 
   onPosterLoad = () => {
     if (this.state.hasPosterError) {
       this.setState({ hasPosterError: false });
     }
-  }
+  };
 
   onPosterLoadError = () => {
     if (!this.state.hasPosterError) {
       this.setState({ hasPosterError: true });
     }
-  }
+  };
 
   //
   // Render

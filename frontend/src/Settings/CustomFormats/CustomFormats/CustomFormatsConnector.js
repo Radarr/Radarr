@@ -34,11 +34,11 @@ class CustomFormatsConnector extends Component {
 
   onConfirmDeleteCustomFormat = (id) => {
     this.props.dispatchDeleteCustomFormat({ id });
-  }
+  };
 
   onCloneCustomFormatPress = (id) => {
     this.props.dispatchCloneCustomFormat({ id });
-  }
+  };
 
   //
   // Render

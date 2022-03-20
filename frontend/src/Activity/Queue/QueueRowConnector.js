@@ -37,11 +37,11 @@ class QueueRowConnector extends Component {
 
   onGrabPress = () => {
     this.props.grabQueueItem({ id: this.props.id });
-  }
+  };
 
   onRemoveQueueItemPress = (payload) => {
     this.props.removeQueueItem({ id: this.props.id, ...payload });
-  }
+  };
 
   //
   // Render

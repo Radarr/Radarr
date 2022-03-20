@@ -29,26 +29,26 @@ class Restriction extends Component {
 
   onEditRestrictionPress = () => {
     this.setState({ isEditRestrictionModalOpen: true });
-  }
+  };
 
   onEditRestrictionModalClose = () => {
     this.setState({ isEditRestrictionModalOpen: false });
-  }
+  };
 
   onDeleteRestrictionPress = () => {
     this.setState({
       isEditRestrictionModalOpen: false,
       isDeleteRestrictionModalOpen: true
     });
-  }
+  };
 
   onDeleteRestrictionModalClose= () => {
     this.setState({ isDeleteRestrictionModalOpen: false });
-  }
+  };
 
   onConfirmDeleteRestriction = () => {
     this.props.onConfirmDeleteRestriction(this.props.id);
-  }
+  };
 
   //
   // Render

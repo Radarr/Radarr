@@ -54,19 +54,19 @@ class EditCustomFormatModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setCustomFormatValue({ name, value });
-  }
+  };
 
   onSavePress = () => {
     this.props.saveCustomFormat({ id: this.props.id });
-  }
+  };
 
   onCloneSpecificationPress = (id) => {
     this.props.cloneCustomFormatSpecification({ id });
-  }
+  };
 
   onConfirmDeleteSpecification = (id) => {
     this.props.deleteCustomFormatSpecification({ id });
-  }
+  };
 
   //
   // Render

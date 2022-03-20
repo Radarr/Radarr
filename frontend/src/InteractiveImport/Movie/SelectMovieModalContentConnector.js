@@ -89,7 +89,7 @@ class SelectMovieModalContentConnector extends Component {
     dispatchReprocessInteractiveImportItems({ ids });
 
     onModalClose(true);
-  }
+  };
 
   //
   // Render

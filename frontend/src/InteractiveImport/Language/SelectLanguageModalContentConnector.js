@@ -46,7 +46,7 @@ class SelectLanguageModalContentConnector extends Component {
     if (!this.props.isPopulated) {
       this.props.dispatchFetchLanguages();
     }
-  }
+  };
 
   //
   // Listeners
@@ -77,7 +77,7 @@ class SelectLanguageModalContentConnector extends Component {
     dispatchReprocessInteractiveImportItems({ ids });
 
     this.props.onModalClose(true);
-  }
+  };
 
   //
   // Render

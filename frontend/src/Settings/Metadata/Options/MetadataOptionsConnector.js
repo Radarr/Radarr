@@ -72,7 +72,7 @@ class MetadataOptionsConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.dispatchSetMetadataOptionsValue({ name, value });
-  }
+  };
 
   //
   // Render

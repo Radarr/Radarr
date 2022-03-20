@@ -63,7 +63,7 @@ class FilterBuilderModalContent extends Component {
 
   onLabelChange = ({ value }) => {
     this.setState({ label: value });
-  }
+  };
 
   onFilterChange = (index, filter) => {
     const filters = [...this.state.filters];
@@ -72,7 +72,7 @@ class FilterBuilderModalContent extends Component {
     this.setState({
       filters
     });
-  }
+  };
 
   onAddFilterPress = () => {
     const filters = [...this.state.filters];
@@ -81,7 +81,7 @@ class FilterBuilderModalContent extends Component {
     this.setState({
       filters
     });
-  }
+  };
 
   onRemoveFilterPress = (index) => {
     const filters = [...this.state.filters];
@@ -90,7 +90,7 @@ class FilterBuilderModalContent extends Component {
     this.setState({
       filters
     });
-  }
+  };
 
   onSaveFilterPress = () => {
     const {
@@ -122,7 +122,7 @@ class FilterBuilderModalContent extends Component {
       label,
       filters
     });
-  }
+  };
 
   //
   // Render

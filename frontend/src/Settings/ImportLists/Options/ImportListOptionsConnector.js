@@ -72,7 +72,7 @@ class ImportListOptionsConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.dispatchSetImportListOptionsValue({ name, value });
-  }
+  };
 
   //
   // Render

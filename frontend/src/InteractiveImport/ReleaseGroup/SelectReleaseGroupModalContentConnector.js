@@ -29,7 +29,7 @@ class SelectReleaseGroupModalContentConnector extends Component {
     dispatchReprocessInteractiveImportItems({ ids });
 
     this.props.onModalClose(true);
-  }
+  };
 
   //
   // Render

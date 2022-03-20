@@ -82,20 +82,20 @@ class Tooltip extends Component {
     }
 
     return data;
-  }
+  };
 
   //
   // Listeners
 
   onMeasure = ({ width }) => {
     this.setState({ width });
-  }
+  };
 
   onClick = () => {
     if (isMobileUtil()) {
       this.setState({ isOpen: !this.state.isOpen });
     }
-  }
+  };
 
   onMouseEnter = () => {
     if (this._closeTimeout) {
@@ -103,13 +103,13 @@ class Tooltip extends Component {
     }
 
     this.setState({ isOpen: true });
-  }
+  };
 
   onMouseLeave = () => {
     this._closeTimeout = setTimeout(() => {
       this.setState({ isOpen: false });
     }, 100);
-  }
+  };
 
   //
   // Render

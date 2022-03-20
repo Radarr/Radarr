@@ -86,11 +86,11 @@ class EditImportExclusionModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setImportExclusionValue({ name, value });
-  }
+  };
 
   onSavePress = () => {
     this.props.saveImportExclusion({ id: this.props.id });
-  }
+  };
 
   //
   // Render

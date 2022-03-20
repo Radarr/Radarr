@@ -24,7 +24,7 @@ class EditCustomFormatModal extends Component {
     if (this.state.height === 'auto' || height > this.state.height) {
       this.setState({ height });
     }
-  }
+  };
 
   //
   // Render

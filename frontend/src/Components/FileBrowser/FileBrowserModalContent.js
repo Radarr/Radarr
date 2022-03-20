@@ -70,18 +70,18 @@ class FileBrowserModalContent extends Component {
     } else {
       this._scrollerNode = null;
     }
-  }
+  };
 
   //
   // Listeners
 
   onPathInputChange = ({ value }) => {
     this.setState({ currentPath: value });
-  }
+  };
 
   onRowPress = (path) => {
     this.props.onFetchPaths(path);
-  }
+  };
 
   onOkPress = () => {
     this.props.onChange({
@@ -91,7 +91,7 @@ class FileBrowserModalContent extends Component {
 
     this.props.onClearPaths();
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

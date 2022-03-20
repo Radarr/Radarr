@@ -21,7 +21,7 @@ class PageSidebarItem extends Component {
     if (isChildItem || !isParentItem) {
       onPress();
     }
-  }
+  };
 
   //
   // Render

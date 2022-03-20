@@ -33,7 +33,7 @@ class EditNotificationModalConnector extends Component {
     this.props.dispatchCancelTestNotification();
     this.props.dispatchCancelSaveNotification();
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

@@ -20,7 +20,7 @@ class EditCustomFormatModalConnector extends Component {
   onModalClose = () => {
     this.props.clearPendingChanges({ section: 'settings.customFormats' });
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

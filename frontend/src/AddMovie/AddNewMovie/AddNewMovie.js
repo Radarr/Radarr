@@ -67,12 +67,12 @@ class AddNewMovie extends Component {
         this.props.onClearMovieLookup();
       }
     });
-  }
+  };
 
   onClearMovieLookupPress = () => {
     this.setState({ term: '' });
     this.props.onClearMovieLookup();
-  }
+  };
 
   //
   // Render

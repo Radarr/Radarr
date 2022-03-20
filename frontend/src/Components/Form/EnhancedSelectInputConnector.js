@@ -73,7 +73,7 @@ class EnhancedSelectInputConnector extends Component {
 
   componentDidMount = () => {
     this._populate();
-  }
+  };
 
   componentDidUpdate = (prevProps) => {
     const prevKey = getProviderDataKey(prevProps.providerData);
@@ -82,11 +82,11 @@ class EnhancedSelectInputConnector extends Component {
     if (!_.isEqual(prevKey, nextKey)) {
       this.setState({ refetchRequired: true });
     }
-  }
+  };
 
   componentWillUnmount = () => {
     this._cleanup();
-  }
+  };
 
   //
   // Listeners
@@ -95,7 +95,7 @@ class EnhancedSelectInputConnector extends Component {
     if (this.state.refetchRequired) {
       this._populate();
     }
-  }
+  };
 
   //
   // Control

@@ -54,7 +54,7 @@ class DelayProfilesConnector extends Component {
 
   onConfirmDeleteDelayProfile = (id) => {
     this.props.deleteDelayProfile({ id });
-  }
+  };
 
   onDelayProfileDragMove = (dragIndex, dropIndex) => {
     if (this.state.dragIndex !== dragIndex || this.state.dropIndex !== dropIndex) {
@@ -63,7 +63,7 @@ class DelayProfilesConnector extends Component {
         dropIndex
       });
     }
-  }
+  };
 
   onDelayProfileDragEnd = ({ id }, didDrop) => {
     const {
@@ -78,7 +78,7 @@ class DelayProfilesConnector extends Component {
       dragIndex: null,
       dropIndex: null
     });
-  }
+  };
 
   //
   // Render
