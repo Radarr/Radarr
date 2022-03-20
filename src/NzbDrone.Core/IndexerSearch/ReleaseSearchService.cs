@@ -49,7 +49,7 @@ namespace NzbDrone.Core.IndexerSearch
         public List<DownloadDecision> MovieSearch(int movieId, bool userInvokedSearch, bool interactiveSearch)
         {
             var movie = _movieService.GetMovie(movieId);
-            movie.Translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
+            movie.MovieMetadata.Value.Translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
 
             return MovieSearch(movie, userInvokedSearch, interactiveSearch);
         }
@@ -81,8 +81,8 @@ namespace NzbDrone.Core.IndexerSearch
 
             var queryTranlations = new List<string>
             {
-                movie.Title,
-                movie.OriginalTitle
+                movie.MovieMetadata.Value.Title,
+                movie.MovieMetadata.Value.OriginalTitle
             };
 
             //Add Translation of wanted languages to search query

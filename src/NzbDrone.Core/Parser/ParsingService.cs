@@ -130,17 +130,17 @@ namespace NzbDrone.Core.Parser
             //Use movie language as fallback if we could't parse a language (more accurate than just using English)
             if (parsedMovieInfo.Languages.Count <= 1 && parsedMovieInfo.Languages.First() == Language.Unknown && result.Movie != null)
             {
-                parsedMovieInfo.Languages = new List<Language> { result.Movie.OriginalLanguage };
-                _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", result.Movie.OriginalLanguage.Name);
+                parsedMovieInfo.Languages = new List<Language> { result.Movie.MovieMetadata.Value.OriginalLanguage };
+                _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", result.Movie.MovieMetadata.Value.OriginalLanguage.Name);
             }
 
             if (parsedMovieInfo.Languages.Contains(Language.Original))
             {
                 parsedMovieInfo.Languages.Remove(Language.Original);
 
-                if (result.Movie != null && !parsedMovieInfo.Languages.Contains(result.Movie.OriginalLanguage))
+                if (result.Movie != null && !parsedMovieInfo.Languages.Contains(result.Movie.MovieMetadata.Value.OriginalLanguage))
                 {
-                    parsedMovieInfo.Languages.Add(result.Movie.OriginalLanguage);
+                    parsedMovieInfo.Languages.Add(result.Movie.MovieMetadata.Value.OriginalLanguage);
                 }
                 else
                 {
@@ -190,7 +190,7 @@ namespace NzbDrone.Core.Parser
             var movie = _movieService.FindByImdbId(imdbId);
 
             //Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
-            if (movie != null && parsedMovieInfo.Year > 1800 && (parsedMovieInfo.Year != movie.Year && movie.SecondaryYear != parsedMovieInfo.Year))
+            if (movie != null && parsedMovieInfo.Year > 1800 && (parsedMovieInfo.Year != movie.MovieMetadata.Value.Year && movie.MovieMetadata.Value.SecondaryYear != parsedMovieInfo.Year))
             {
                 result = new MappingResult { Movie = movie, MappingResultType = MappingResultType.WrongYear };
                 return false;
@@ -254,9 +254,9 @@ namespace NzbDrone.Core.Parser
 
             var possibleTitles = new List<string>();
 
-            possibleTitles.Add(searchCriteria.Movie.CleanTitle);
-            possibleTitles.AddRange(searchCriteria.Movie.AlternativeTitles.Select(t => t.CleanTitle));
-            possibleTitles.AddRange(searchCriteria.Movie.Translations.Select(t => t.CleanTitle));
+            possibleTitles.Add(searchCriteria.Movie.MovieMetadata.Value.CleanTitle);
+            possibleTitles.AddRange(searchCriteria.Movie.MovieMetadata.Value.AlternativeTitles.Select(t => t.CleanTitle));
+            possibleTitles.AddRange(searchCriteria.Movie.MovieMetadata.Value.Translations.Select(t => t.CleanTitle));
 
             var cleanTitle = parsedMovieInfo.PrimaryMovieTitle.CleanMovieTitle();
 
@@ -287,7 +287,7 @@ namespace NzbDrone.Core.Parser
 
             if (possibleMovie != null)
             {
-                if (parsedMovieInfo.Year < 1800 || possibleMovie.Year == parsedMovieInfo.Year || possibleMovie.SecondaryYear == parsedMovieInfo.Year)
+                if (parsedMovieInfo.Year < 1800 || possibleMovie.MovieMetadata.Value.Year == parsedMovieInfo.Year || possibleMovie.MovieMetadata.Value.SecondaryYear == parsedMovieInfo.Year)
                 {
                     result = new MappingResult { Movie = possibleMovie, MappingResultType = MappingResultType.Success };
                     return true;
@@ -318,11 +318,11 @@ namespace NzbDrone.Core.Parser
                     case MappingResultType.TitleNotFound:
                         return $"Could not find {RemoteMovie.ParsedMovieInfo.PrimaryMovieTitle}";
                     case MappingResultType.WrongYear:
-                        return $"Failed to map movie, expected year {RemoteMovie.Movie.Year}, but found {RemoteMovie.ParsedMovieInfo.Year}";
+                        return $"Failed to map movie, expected year {RemoteMovie.Movie.MovieMetadata.Value.Year}, but found {RemoteMovie.ParsedMovieInfo.Year}";
                     case MappingResultType.WrongTitle:
-                        var comma = RemoteMovie.Movie.AlternativeTitles.Count > 0 ? ", " : "";
+                        var comma = RemoteMovie.Movie.MovieMetadata.Value.AlternativeTitles.Count > 0 ? ", " : "";
                         return
-                            $"Failed to map movie, found title(s) {string.Join(", ", RemoteMovie.ParsedMovieInfo.MovieTitles)}, expected one of: {RemoteMovie.Movie.Title}{comma}{string.Join(", ", RemoteMovie.Movie.AlternativeTitles)}";
+                            $"Failed to map movie, found title(s) {string.Join(", ", RemoteMovie.ParsedMovieInfo.MovieTitles)}, expected one of: {RemoteMovie.Movie.MovieMetadata.Value.Title}{comma}{string.Join(", ", RemoteMovie.Movie.MovieMetadata.Value.AlternativeTitles)}";
                     default:
                         return $"Failed to map movie for unknown reasons";
                 }

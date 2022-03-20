@@ -16,20 +16,20 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
     [TestFixture]
     public class DetectSampleFixture : CoreTest<DetectSample>
     {
-        private Movie _movie;
+        private MovieMetadata _movie;
         private LocalMovie _localMovie;
 
         [SetUp]
         public void Setup()
         {
-            _movie = Builder<Movie>.CreateNew()
+            _movie = Builder<MovieMetadata>.CreateNew()
                                      .With(s => s.Runtime = 30)
                                      .Build();
 
             _localMovie = new LocalMovie
             {
                 Path = @"C:\Test\30 Rock\30.rock.s01e01.avi",
-                Movie = _movie,
+                Movie = new Movie { MovieMetadata = _movie },
                 Quality = new QualityModel(Quality.HDTV720p)
             };
         }
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         {
             GivenRuntime(120);
 
-            Subject.IsSample(_localMovie.Movie,
+            Subject.IsSample(_localMovie.Movie.MovieMetadata,
                              _localMovie.Path);
 
             Mocker.GetMock<IVideoFileInfoReader>().Verify(v => v.GetRunTime(It.IsAny<string>()), Times.Once());
@@ -152,7 +152,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
                   .Setup(s => s.GetRunTime(It.IsAny<string>()))
                   .Returns((TimeSpan?)null);
 
-            Subject.IsSample(_localMovie.Movie,
+            Subject.IsSample(_localMovie.Movie.MovieMetadata,
                              _localMovie.Path).Should().Be(DetectSampleResult.Indeterminate);
 
             ExceptionVerification.ExpectedErrors(1);
@@ -160,13 +160,13 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 
         private void ShouldBeSample()
         {
-            Subject.IsSample(_localMovie.Movie,
+            Subject.IsSample(_localMovie.Movie.MovieMetadata,
                              _localMovie.Path).Should().Be(DetectSampleResult.Sample);
         }
 
         private void ShouldBeNotSample()
         {
-            Subject.IsSample(_localMovie.Movie,
+            Subject.IsSample(_localMovie.Movie.MovieMetadata,
                              _localMovie.Path).Should().Be(DetectSampleResult.NotSample);
         }
     }

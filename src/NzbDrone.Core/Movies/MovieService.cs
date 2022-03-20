@@ -29,11 +29,9 @@ namespace NzbDrone.Core.Movies
         Movie FindByTitle(string title, int year);
         Movie FindByTitle(List<string> titles, int? year, List<string> otherTitles, List<Movie> candidates);
         List<Movie> FindByTitleCandidates(List<string> titles, out List<string> otherTitles);
-        Movie FindByTitleSlug(string slug);
         Movie FindByPath(string path);
         Dictionary<int, string> AllMoviePaths();
         List<int> AllMovieTmdbIds();
-        Dictionary<int, string> AllMovieTitleSlugs();
         bool MovieExists(Movie movie);
         List<Movie> GetMoviesByFileId(int fileId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
@@ -120,18 +118,18 @@ namespace NzbDrone.Core.Movies
 
         public Movie FindByTitle(List<string> cleanTitles, int? year, List<string> otherTitles, List<Movie> candidates)
         {
-            var result = candidates.Where(x => cleanTitles.Contains(x.CleanTitle)).FirstWithYear(year);
+            var result = candidates.Where(x => cleanTitles.Contains(x.MovieMetadata.Value.CleanTitle)).FirstWithYear(year);
 
             if (result == null)
             {
                 result =
-                    candidates.Where(movie => otherTitles.Contains(movie.CleanTitle)).FirstWithYear(year);
+                    candidates.Where(movie => otherTitles.Contains(movie.MovieMetadata.Value.CleanTitle)).FirstWithYear(year);
             }
 
             if (result == null)
             {
                 result = candidates
-                    .Where(m => m.AlternativeTitles.Any(t => cleanTitles.Contains(t.CleanTitle) ||
+                    .Where(m => m.MovieMetadata.Value.AlternativeTitles.Any(t => cleanTitles.Contains(t.CleanTitle) ||
                                                         otherTitles.Contains(t.CleanTitle)))
                     .FirstWithYear(year);
             }
@@ -139,7 +137,7 @@ namespace NzbDrone.Core.Movies
             if (result == null)
             {
                 result = candidates
-                    .Where(m => m.Translations.Any(t => cleanTitles.Contains(t.CleanTitle) ||
+                    .Where(m => m.MovieMetadata.Value.Translations.Any(t => cleanTitles.Contains(t.CleanTitle) ||
                                                         otherTitles.Contains(t.CleanTitle)))
                     .FirstWithYear(year);
             }
@@ -199,11 +197,6 @@ namespace NzbDrone.Core.Movies
         public Dictionary<int, string> AllMoviePaths()
         {
             return _movieRepository.AllMoviePaths();
-        }
-
-        public Dictionary<int, string> AllMovieTitleSlugs()
-        {
-            return _movieRepository.AllMovieTitleSlugs();
         }
 
         public List<int> AllMovieTmdbIds()
@@ -300,11 +293,6 @@ namespace NzbDrone.Core.Movies
             return _movieRepository.GetMoviesByFileId(fileId);
         }
 
-        public Movie FindByTitleSlug(string slug)
-        {
-            return _movieRepository.FindByTitleSlug(slug);
-        }
-
         public List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored)
         {
             var movies = _movieRepository.MoviesBetweenDates(start.ToUniversalTime(), end.ToUniversalTime(), includeUnmonitored);
@@ -375,7 +363,7 @@ namespace NzbDrone.Core.Movies
 
             var ret = withTmdbid.ExceptBy(m => m.TmdbId, allMovies, m => m.TmdbId, EqualityComparer<int>.Default)
                 .Union(withImdbid.ExceptBy(m => m.ImdbId, allMovies, m => m.ImdbId, EqualityComparer<string>.Default))
-                .Union(rest.ExceptBy(m => m.Title.CleanMovieTitle(), allMovies, m => m.CleanTitle, EqualityComparer<string>.Default)).ToList();
+                .Union(rest.ExceptBy(m => m.Title.CleanMovieTitle(), allMovies, m => m.MovieMetadata.Value.CleanTitle, EqualityComparer<string>.Default)).ToList();
 
             return ret;
         }

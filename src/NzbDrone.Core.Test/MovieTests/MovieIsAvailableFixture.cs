@@ -21,9 +21,9 @@ namespace NzbDrone.Core.Test.MovieTests
 
         private void SetMovieProperties(DateTime? cinema, DateTime? physical, DateTime? digital, MovieStatusType minimumAvailability)
         {
-            _movie.InCinemas = cinema;
-            _movie.PhysicalRelease = physical;
-            _movie.DigitalRelease = digital;
+            _movie.MovieMetadata.Value.InCinemas = cinema;
+            _movie.MovieMetadata.Value.PhysicalRelease = physical;
+            _movie.MovieMetadata.Value.DigitalRelease = digital;
             _movie.MinimumAvailability = minimumAvailability;
         }
 

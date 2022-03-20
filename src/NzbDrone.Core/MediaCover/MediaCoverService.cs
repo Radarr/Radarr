@@ -145,7 +145,7 @@ namespace NzbDrone.Core.MediaCover
             bool updated = false;
             var toResize = new List<Tuple<MediaCover, bool>>();
 
-            foreach (var cover in movie.Images)
+            foreach (var cover in movie.MovieMetadata.Value.Images)
             {
                 var fileName = GetCoverPath(movie.Id, cover.CoverType);
                 var alreadyExists = false;

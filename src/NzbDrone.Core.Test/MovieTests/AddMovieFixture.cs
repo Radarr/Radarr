@@ -20,14 +20,13 @@ namespace NzbDrone.Core.Test.MovieTests
     [TestFixture]
     public class AddMovieFixture : CoreTest<AddMovieService>
     {
-        private Movie _fakeMovie;
+        private MovieMetadata _fakeMovie;
 
         [SetUp]
         public void Setup()
         {
-            _fakeMovie = Builder<Movie>
+            _fakeMovie = Builder<MovieMetadata>
                 .CreateNew()
-                .With(s => s.Path = null)
                 .Build();
         }
 
@@ -35,7 +34,7 @@ namespace NzbDrone.Core.Test.MovieTests
         {
             Mocker.GetMock<IProvideMovieInfo>()
                   .Setup(s => s.GetMovieInfo(tmdbId))
-                  .Returns(new Tuple<Movie, List<Credit>>(_fakeMovie, new List<Credit>()));
+                  .Returns(new Tuple<MovieMetadata, List<Credit>>(_fakeMovie, new List<Credit>()));
         }
 
         private void GivenValidPath()

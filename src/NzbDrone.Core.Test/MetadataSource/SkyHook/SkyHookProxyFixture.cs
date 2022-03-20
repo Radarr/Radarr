@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             details.Title.Should().Be(title);
         }
 
-        private void ValidateMovie(Movie movie)
+        private void ValidateMovie(MovieMetadata movie)
         {
             movie.Should().NotBeNull();
             movie.Title.Should().NotBeNullOrWhiteSpace();
@@ -41,7 +41,6 @@ namespace NzbDrone.Core.Test.MetadataSource.SkyHook
             movie.ImdbId.Should().NotBeNullOrWhiteSpace();
             movie.Studio.Should().NotBeNullOrWhiteSpace();
             movie.Runtime.Should().BeGreaterThan(0);
-            movie.TitleSlug.Should().NotBeNullOrWhiteSpace();
 
             //series.TvRageId.Should().BeGreaterThan(0);
             movie.TmdbId.Should().BeGreaterThan(0);

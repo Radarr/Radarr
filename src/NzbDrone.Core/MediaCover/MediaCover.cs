@@ -1,3 +1,4 @@
+using Equ;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.MediaCover
@@ -12,7 +13,7 @@ namespace NzbDrone.Core.MediaCover
         Headshot = 5
     }
 
-    public class MediaCover : IEmbeddedDocument
+    public class MediaCover : MemberwiseEquatable<MediaCover>, IEmbeddedDocument
     {
         public MediaCoverTypes CoverType { get; set; }
         public string Url { get; set; }

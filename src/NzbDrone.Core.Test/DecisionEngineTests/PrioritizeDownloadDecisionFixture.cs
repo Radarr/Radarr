@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 MinFormatScore = 0
             })
                 .With(m => m.Title = "A Movie")
-                .With(m => m.Runtime = runtime).Build();
+                .With(m => m.MovieMetadata.Value.Runtime = runtime).Build();
 
             remoteMovie.Release = new ReleaseInfo();
             remoteMovie.Release.PublishDate = DateTime.Now.AddDays(-age);

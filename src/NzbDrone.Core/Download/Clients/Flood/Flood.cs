@@ -52,7 +52,7 @@ namespace NzbDrone.Core.Download.Clients.Flood
                     switch (additionalTag)
                     {
                         case (int)AdditionalTags.Collection:
-                            result.Add(remoteMovie.Movie.Collection.Name);
+                            result.Add(remoteMovie.Movie.MovieMetadata.Value.Collection.Name);
                             break;
                         case (int)AdditionalTags.Quality:
                             result.Add(remoteMovie.ParsedMovieInfo.Quality.Quality.ToString());
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Download.Clients.Flood
                             result.Add(remoteMovie.Release.Indexer);
                             break;
                         case (int)AdditionalTags.Studio:
-                            result.Add(remoteMovie.Movie.Studio);
+                            result.Add(remoteMovie.Movie.MovieMetadata.Value.Studio);
                             break;
                         default:
                             throw new DownloadClientException("Unexpected additional tag ID");

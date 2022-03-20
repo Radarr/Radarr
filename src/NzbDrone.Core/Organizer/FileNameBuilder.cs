@@ -264,10 +264,11 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Movie CleanTitle}"] = m => CleanTitle(GetLanguageTitle(movie, m.CustomFormat));
             tokenHandlers["{Movie Title The}"] = m => TitleThe(movie.Title);
             tokenHandlers["{Movie TitleFirstCharacter}"] = m => TitleThe(movie.Title).Substring(0, 1).FirstCharToUpper();
-            tokenHandlers["{Movie OriginalTitle}"] = m => movie.OriginalTitle ?? string.Empty;
+            tokenHandlers["{Movie OriginalTitle}"] = m => movie.MovieMetadata.Value.OriginalTitle ?? string.Empty;
+            tokenHandlers["{Movie CleanOriginalTitle}"] = m => CleanTitle(movie.MovieMetadata.Value.OriginalTitle) ?? string.Empty;
 
-            tokenHandlers["{Movie Certification}"] = m => movie.Certification ?? string.Empty;
-            tokenHandlers["{Movie Collection}"] = m => movie.Collection?.Name ?? string.Empty;
+            tokenHandlers["{Movie Certification}"] = m => movie.MovieMetadata.Value.Certification ?? string.Empty;
+            tokenHandlers["{Movie Collection}"] = m => movie.MovieMetadata.Value.Collection?.Name ?? string.Empty;
         }
 
         private string GetLanguageTitle(Movie movie, string isoCodes)
@@ -283,9 +284,9 @@ namespace NzbDrone.Core.Organizer
                         continue;
                     }
 
-                    var titles = movie.Translations.Where(t => t.Language == language).ToList();
+                    var titles = movie.MovieMetadata.Value.Translations.Where(t => t.Language == language).ToList();
 
-                    if (!movie.Translations.Any())
+                    if (!movie.MovieMetadata.Value.Translations.Any())
                     {
                         titles = _movieTranslationService.GetAllTranslationsForMovie(movie.Id).Where(t => t.Language == language).ToList();
                     }
@@ -318,8 +319,8 @@ namespace NzbDrone.Core.Organizer
 
         private void AddIdTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)
         {
-            tokenHandlers["{ImdbId}"] = m => movie.ImdbId ?? string.Empty;
-            tokenHandlers["{TmdbId}"] = m => movie.TmdbId.ToString();
+            tokenHandlers["{ImdbId}"] = m => movie.MovieMetadata.Value.ImdbId ?? string.Empty;
+            tokenHandlers["{TmdbId}"] = m => movie.MovieMetadata.Value.TmdbId.ToString();
         }
 
         private void AddMovieFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)

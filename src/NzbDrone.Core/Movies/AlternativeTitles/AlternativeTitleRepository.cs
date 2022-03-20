@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
     {
         AlternativeTitle FindBySourceId(int sourceId);
         List<AlternativeTitle> FindBySourceIds(List<int> sourceIds);
-        List<AlternativeTitle> FindByMovieId(int movieId);
+        List<AlternativeTitle> FindByMovieMetadataId(int movieId);
         void DeleteForMovies(List<int> movieIds);
     }
 
@@ -30,14 +30,14 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             return Query(x => sourceIds.Contains(x.SourceId));
         }
 
-        public List<AlternativeTitle> FindByMovieId(int movieId)
+        public List<AlternativeTitle> FindByMovieMetadataId(int movieId)
         {
-            return Query(x => x.MovieId == movieId);
+            return Query(x => x.MovieMetadataId == movieId);
         }
 
         public void DeleteForMovies(List<int> movieIds)
         {
-            Delete(x => movieIds.Contains(x.MovieId));
+            Delete(x => movieIds.Contains(x.MovieMetadataId));
         }
     }
 }

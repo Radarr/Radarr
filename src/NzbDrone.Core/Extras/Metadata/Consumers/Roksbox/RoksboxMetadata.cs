@@ -118,9 +118,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 var details = new XElement("video");
                 details.Add(new XElement("title", movie.Title));
 
-                details.Add(new XElement("genre", string.Join(" / ", movie.Genres)));
-                details.Add(new XElement("description", movie.Overview));
-                details.Add(new XElement("length", movie.Runtime));
+                details.Add(new XElement("genre", string.Join(" / ", movie.MovieMetadata.Value.Genres)));
+                details.Add(new XElement("description", movie.MovieMetadata.Value.Overview));
+                details.Add(new XElement("length", movie.MovieMetadata.Value.Runtime));
 
                 doc.Add(details);
                 doc.Save(xw);
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
                 return new List<ImageFileResult>();
             }
 
-            var image = movie.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? movie.Images.FirstOrDefault();
+            var image = movie.MovieMetadata.Value.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? movie.MovieMetadata.Value.Images.FirstOrDefault();
             if (image == null)
             {
                 _logger.Trace("Failed to find suitable Movie image for movie {0}.", movie.Title);

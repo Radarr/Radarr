@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_delete_orphaned_credit_items()
         {
             var credit = Builder<Credit>.CreateNew()
-                                              .With(h => h.MovieId = default)
+                                              .With(h => h.MovieMetadataId = default)
                                               .With(h => h.Name = "Some Credit")
                                               .BuildNew();
 
@@ -27,14 +27,14 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_not_delete_unorphaned_credit_items()
         {
-            var movie = Builder<Movie>.CreateNew().BuildNew();
+            var movieMetadata = Builder<MovieMetadata>.CreateNew().BuildNew();
 
-            Db.Insert(movie);
+            Db.Insert(movieMetadata);
 
             var credit = Builder<Credit>.CreateNew()
-                                              .With(h => h.MovieId = default)
+                                              .With(h => h.MovieMetadataId = default)
                                               .With(h => h.Name = "Some Credit")
-                                              .With(b => b.MovieId = movie.Id)
+                                              .With(b => b.MovieMetadataId = movieMetadata.Id)
                                               .BuildNew();
 
             Db.Insert(credit);

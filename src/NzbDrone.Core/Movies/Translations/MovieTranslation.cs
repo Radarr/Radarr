@@ -5,7 +5,7 @@ namespace NzbDrone.Core.Movies.Translations
 {
     public class MovieTranslation : ModelBase
     {
-        public int MovieId { get; set; }
+        public int MovieMetadataId { get; set; }
         public string Title { get; set; }
         public string CleanTitle { get; set; }
         public string Overview { get; set; }

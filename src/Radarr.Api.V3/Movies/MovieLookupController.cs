@@ -44,18 +44,18 @@ namespace Radarr.Api.V3.Movies
         public object SearchByTmdbId(int tmdbId)
         {
             var availDelay = _configService.AvailabilityDelay;
-            var result = _movieInfo.GetMovieInfo(tmdbId).Item1;
-            var translation = result.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
+            var result = new Movie { MovieMetadata = _movieInfo.GetMovieInfo(tmdbId).Item1 };
+            var translation = result.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
             return result.ToResource(availDelay, translation);
         }
 
         [HttpGet("imdb")]
         public object SearchByImdbId(string imdbId)
         {
-            var result = _movieInfo.GetMovieByImdbId(imdbId);
+            var result = new Movie { MovieMetadata = _movieInfo.GetMovieByImdbId(imdbId) };
 
             var availDelay = _configService.AvailabilityDelay;
-            var translation = result.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
+            var translation = result.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
             return result.ToResource(availDelay, translation);
         }
 
@@ -72,12 +72,12 @@ namespace Radarr.Api.V3.Movies
             foreach (var currentMovie in movies)
             {
                 var availDelay = _configService.AvailabilityDelay;
-                var translation = currentMovie.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
+                var translation = currentMovie.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage);
                 var resource = currentMovie.ToResource(availDelay, translation);
 
                 _coverMapper.ConvertToLocalUrls(resource.Id, resource.Images);
 
-                var poster = currentMovie.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
+                var poster = currentMovie.MovieMetadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
                     resource.RemotePoster = poster.RemoteUrl;

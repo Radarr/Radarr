@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NzbDrone.Core.Movies
@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Movies
     {
         public static Movie FirstWithYear(this IEnumerable<Movie> query, int? year)
         {
-            return year.HasValue ? query.FirstOrDefault(movie => movie.Year == year || movie.SecondaryYear == year) : query.FirstOrDefault();
+            return year.HasValue ? query.FirstOrDefault(movie => movie.Year == year || movie.MovieMetadata.Value.SecondaryYear == year) : query.FirstOrDefault();
         }
     }
 }

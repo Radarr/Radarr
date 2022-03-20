@@ -16,7 +16,10 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
             var releaseInfo = new ParsedMovieInfo();
             var movie = new Movies.Movie
             {
-                OriginalLanguage = Language.English
+                MovieMetadata = new Movies.MovieMetadata
+                {
+                    OriginalLanguage = Language.English
+                }
             };
             var result = Subject.AugmentMovieInfo(releaseInfo, movie);
             result.ExtraInfo.Should().ContainKey("OriginalLanguage");

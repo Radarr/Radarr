@@ -74,6 +74,7 @@ namespace Radarr.Api.V3.Movies
         public Ratings Ratings { get; set; }
         public MovieFileResource MovieFile { get; set; }
         public MovieCollection Collection { get; set; }
+        public float Popularity { get; set; }
     }
 
     public static class MovieResourceMapper
@@ -90,29 +91,29 @@ namespace Radarr.Api.V3.Movies
             MovieFileResource movieFile = model.MovieFile?.ToResource(model, upgradableSpecification);
 
             var translatedTitle = movieTranslation?.Title ?? model.Title;
-            var translatedOverview = movieTranslation?.Overview ?? model.Overview;
+            var translatedOverview = movieTranslation?.Overview ?? model.MovieMetadata.Value.Overview;
 
             return new MovieResource
             {
                 Id = model.Id,
                 TmdbId = model.TmdbId,
                 Title = translatedTitle,
-                OriginalTitle = model.OriginalTitle,
-                OriginalLanguage = model.OriginalLanguage,
+                OriginalTitle = model.MovieMetadata.Value.OriginalTitle,
+                OriginalLanguage = model.MovieMetadata.Value.OriginalLanguage,
                 SortTitle = translatedTitle.NormalizeTitle(),
-                InCinemas = model.InCinemas,
-                PhysicalRelease = model.PhysicalRelease,
-                DigitalRelease = model.DigitalRelease,
+                InCinemas = model.MovieMetadata.Value.InCinemas,
+                PhysicalRelease = model.MovieMetadata.Value.PhysicalRelease,
+                DigitalRelease = model.MovieMetadata.Value.DigitalRelease,
                 HasFile = model.HasFile,
 
                 SizeOnDisk = size,
-                Status = model.Status,
+                Status = model.MovieMetadata.Value.Status,
                 Overview = translatedOverview,
 
-                Images = model.Images,
+                Images = model.MovieMetadata.Value.Images,
 
                 Year = model.Year,
-                SecondaryYear = model.SecondaryYear,
+                SecondaryYear = model.MovieMetadata.Value.SecondaryYear,
 
                 Path = model.Path,
                 QualityProfileId = model.ProfileId,
@@ -123,23 +124,24 @@ namespace Radarr.Api.V3.Movies
                 IsAvailable = model.IsAvailable(availDelay),
                 FolderName = model.FolderName(),
 
-                Runtime = model.Runtime,
-                CleanTitle = model.CleanTitle,
+                Runtime = model.MovieMetadata.Value.Runtime,
+                CleanTitle = model.MovieMetadata.Value.CleanTitle,
                 ImdbId = model.ImdbId,
-                TitleSlug = model.TitleSlug,
+                TitleSlug = model.MovieMetadata.Value.TmdbId.ToString(),
                 RootFolderPath = model.RootFolderPath,
-                Certification = model.Certification,
-                Website = model.Website,
-                Genres = model.Genres,
+                Certification = model.MovieMetadata.Value.Certification,
+                Website = model.MovieMetadata.Value.Website,
+                Genres = model.MovieMetadata.Value.Genres,
                 Tags = model.Tags,
                 Added = model.Added,
                 AddOptions = model.AddOptions,
-                AlternateTitles = model.AlternativeTitles.ToResource(),
-                Ratings = model.Ratings,
+                AlternateTitles = model.MovieMetadata.Value.AlternativeTitles.ToResource(),
+                Ratings = model.MovieMetadata.Value.Ratings,
                 MovieFile = movieFile,
-                YouTubeTrailerId = model.YouTubeTrailerId,
-                Studio = model.Studio,
-                Collection = model.Collection
+                YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
+                Studio = model.MovieMetadata.Value.Studio,
+                Collection = model.MovieMetadata.Value.Collection,
+                Popularity = model.MovieMetadata.Value.Popularity
             };
         }
 
@@ -153,20 +155,29 @@ namespace Radarr.Api.V3.Movies
             return new Movie
             {
                 Id = resource.Id,
-                TmdbId = resource.TmdbId,
 
-                Title = resource.Title,
-                OriginalTitle = resource.OriginalTitle,
-                SortTitle = resource.SortTitle,
-                InCinemas = resource.InCinemas,
-                PhysicalRelease = resource.PhysicalRelease,
-
-                Overview = resource.Overview,
-
-                Images = resource.Images,
-
-                Year = resource.Year,
-                SecondaryYear = resource.SecondaryYear,
+                MovieMetadata = new MovieMetadata
+                {
+                    TmdbId = resource.TmdbId,
+                    Title = resource.Title,
+                    Genres = resource.Genres,
+                    Images = resource.Images,
+                    OriginalTitle = resource.OriginalTitle,
+                    SortTitle = resource.SortTitle,
+                    InCinemas = resource.InCinemas,
+                    PhysicalRelease = resource.PhysicalRelease,
+                    Year = resource.Year,
+                    SecondaryYear = resource.SecondaryYear,
+                    Overview = resource.Overview,
+                    Certification = resource.Certification,
+                    Website = resource.Website,
+                    Ratings = resource.Ratings,
+                    YouTubeTrailerId = resource.YouTubeTrailerId,
+                    Studio = resource.Studio,
+                    Runtime = resource.Runtime,
+                    CleanTitle = resource.CleanTitle,
+                    ImdbId = resource.ImdbId,
+                },
 
                 Path = resource.Path,
                 ProfileId = resource.QualityProfileId,
@@ -174,20 +185,11 @@ namespace Radarr.Api.V3.Movies
                 Monitored = resource.Monitored,
                 MinimumAvailability = resource.MinimumAvailability,
 
-                Runtime = resource.Runtime,
-                CleanTitle = resource.CleanTitle,
-                ImdbId = resource.ImdbId,
-                TitleSlug = resource.TitleSlug,
                 RootFolderPath = resource.RootFolderPath,
-                Certification = resource.Certification,
-                Website = resource.Website,
-                Genres = resource.Genres,
+
                 Tags = resource.Tags,
                 Added = resource.Added,
-                AddOptions = resource.AddOptions,
-                Ratings = resource.Ratings,
-                YouTubeTrailerId = resource.YouTubeTrailerId,
-                Studio = resource.Studio
+                AddOptions = resource.AddOptions
             };
         }
 

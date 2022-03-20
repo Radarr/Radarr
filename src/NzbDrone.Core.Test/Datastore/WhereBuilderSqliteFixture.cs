@@ -27,6 +27,11 @@ namespace NzbDrone.Core.Test.Datastore
             return new WhereBuilderSqlite(filter, true, 0);
         }
 
+        private WhereBuilderSqlite WhereMeta(Expression<Func<MovieMetadata, bool>> filter)
+        {
+            return new WhereBuilderSqlite(filter, true, 0);
+        }
+
         [Test]
         public void where_equal_const()
         {
@@ -86,36 +91,36 @@ namespace NzbDrone.Core.Test.Datastore
         [Test]
         public void where_string_is_null()
         {
-            _subject = Where(x => x.CleanTitle == null);
+            _subject = WhereMeta(x => x.CleanTitle == null);
 
-            _subject.ToString().Should().Be($"(\"Movies\".\"CleanTitle\" IS NULL)");
+            _subject.ToString().Should().Be($"(\"MovieMetadata\".\"CleanTitle\" IS NULL)");
         }
 
         [Test]
         public void where_string_is_null_value()
         {
             string cleanTitle = null;
-            _subject = Where(x => x.CleanTitle == cleanTitle);
+            _subject = WhereMeta(x => x.CleanTitle == cleanTitle);
 
-            _subject.ToString().Should().Be($"(\"Movies\".\"CleanTitle\" IS NULL)");
+            _subject.ToString().Should().Be($"(\"MovieMetadata\".\"CleanTitle\" IS NULL)");
         }
 
         [Test]
         public void where_equal_null_property()
         {
-            var movie = new Movie { CleanTitle = null };
-            _subject = Where(x => x.CleanTitle == movie.CleanTitle);
+            var movie = new MovieMetadata { CleanTitle = null };
+            _subject = WhereMeta(x => x.CleanTitle == movie.CleanTitle);
 
-            _subject.ToString().Should().Be($"(\"Movies\".\"CleanTitle\" IS NULL)");
+            _subject.ToString().Should().Be($"(\"MovieMetadata\".\"CleanTitle\" IS NULL)");
         }
 
         [Test]
         public void where_column_contains_string()
         {
             var test = "small";
-            _subject = Where(x => x.CleanTitle.Contains(test));
+            _subject = WhereMeta(x => x.CleanTitle.Contains(test));
 
-            _subject.ToString().Should().Be($"(\"Movies\".\"CleanTitle\" LIKE '%' || @Clause1_P1 || '%')");
+            _subject.ToString().Should().Be($"(\"MovieMetadata\".\"CleanTitle\" LIKE '%' || @Clause1_P1 || '%')");
             _subject.Parameters.Get<string>("Clause1_P1").Should().Be(test);
         }
 
@@ -123,9 +128,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void where_string_contains_column()
         {
             var test = "small";
-            _subject = Where(x => test.Contains(x.CleanTitle));
+            _subject = WhereMeta(x => test.Contains(x.CleanTitle));
 
-            _subject.ToString().Should().Be($"(@Clause1_P1 LIKE '%' || \"Movies\".\"CleanTitle\" || '%')");
+            _subject.ToString().Should().Be($"(@Clause1_P1 LIKE '%' || \"MovieMetadata\".\"CleanTitle\" || '%')");
             _subject.Parameters.Get<string>("Clause1_P1").Should().Be(test);
         }
 
@@ -133,9 +138,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void where_column_starts_with_string()
         {
             var test = "small";
-            _subject = Where(x => x.CleanTitle.StartsWith(test));
+            _subject = WhereMeta(x => x.CleanTitle.StartsWith(test));
 
-            _subject.ToString().Should().Be($"(\"Movies\".\"CleanTitle\" LIKE @Clause1_P1 || '%')");
+            _subject.ToString().Should().Be($"(\"MovieMetadata\".\"CleanTitle\" LIKE @Clause1_P1 || '%')");
             _subject.Parameters.Get<string>("Clause1_P1").Should().Be(test);
         }
 
@@ -143,9 +148,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void where_column_ends_with_string()
         {
             var test = "small";
-            _subject = Where(x => x.CleanTitle.EndsWith(test));
+            _subject = WhereMeta(x => x.CleanTitle.EndsWith(test));
 
-            _subject.ToString().Should().Be($"(\"Movies\".\"CleanTitle\" LIKE '%' || @Clause1_P1)");
+            _subject.ToString().Should().Be($"(\"MovieMetadata\".\"CleanTitle\" LIKE '%' || @Clause1_P1)");
             _subject.Parameters.Get<string>("Clause1_P1").Should().Be(test);
         }
 
@@ -164,9 +169,9 @@ namespace NzbDrone.Core.Test.Datastore
         public void where_in_list_2()
         {
             var list = new List<int> { 1, 2, 3 };
-            _subject = Where(x => x.CleanTitle == "test" && list.Contains(x.Id));
+            _subject = WhereMeta(x => x.CleanTitle == "test" && list.Contains(x.Id));
 
-            _subject.ToString().Should().Be($"((\"Movies\".\"CleanTitle\" = @Clause1_P1) AND (\"Movies\".\"Id\" IN (1, 2, 3)))");
+            _subject.ToString().Should().Be($"((\"MovieMetadata\".\"CleanTitle\" = @Clause1_P1) AND (\"MovieMetadata\".\"Id\" IN (1, 2, 3)))");
         }
 
         [Test]
@@ -174,35 +179,35 @@ namespace NzbDrone.Core.Test.Datastore
         {
             var list = new List<string> { "first", "second", "third" };
 
-            _subject = Where(x => list.Contains(x.CleanTitle));
+            _subject = WhereMeta(x => list.Contains(x.CleanTitle));
 
-            _subject.ToString().Should().Be($"(\"Movies\".\"CleanTitle\" IN @Clause1_P1)");
+            _subject.ToString().Should().Be($"(\"MovieMetadata\".\"CleanTitle\" IN @Clause1_P1)");
         }
 
         [Test]
         public void enum_as_int()
         {
-            _subject = Where(x => x.Status == MovieStatusType.Announced);
+            _subject = WhereMeta(x => x.Status == MovieStatusType.Announced);
 
-            _subject.ToString().Should().Be($"(\"Movies\".\"Status\" = @Clause1_P1)");
+            _subject.ToString().Should().Be($"(\"MovieMetadata\".\"Status\" = @Clause1_P1)");
         }
 
         [Test]
         public void enum_in_list()
         {
             var allowed = new List<MovieStatusType> { MovieStatusType.Announced, MovieStatusType.InCinemas };
-            _subject = Where(x => allowed.Contains(x.Status));
+            _subject = WhereMeta(x => allowed.Contains(x.Status));
 
-            _subject.ToString().Should().Be($"(\"Movies\".\"Status\" IN @Clause1_P1)");
+            _subject.ToString().Should().Be($"(\"MovieMetadata\".\"Status\" IN @Clause1_P1)");
         }
 
         [Test]
         public void enum_in_array()
         {
             var allowed = new MovieStatusType[] { MovieStatusType.Announced, MovieStatusType.InCinemas };
-            _subject = Where(x => allowed.Contains(x.Status));
+            _subject = WhereMeta(x => allowed.Contains(x.Status));
 
-            _subject.ToString().Should().Be($"(\"Movies\".\"Status\" IN @Clause1_P1)");
+            _subject.ToString().Should().Be($"(\"MovieMetadata\".\"Status\" IN @Clause1_P1)");
         }
     }
 }

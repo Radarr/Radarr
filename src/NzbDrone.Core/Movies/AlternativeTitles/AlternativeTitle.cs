@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
     public class AlternativeTitle : ModelBase
     {
         public SourceType SourceType { get; set; }
-        public int MovieId { get; set; }
+        public int MovieMetadataId { get; set; }
         public string Title { get; set; }
         public string CleanTitle { get; set; }
         public int SourceId { get; set; }

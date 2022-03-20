@@ -76,20 +76,20 @@ namespace NzbDrone.Core.CustomFormats
 
             var info = new ParsedMovieInfo
             {
-                MovieTitles = new List<string>() { movieFile.Movie.Title },
+                MovieTitles = new List<string>() { movieFile.Movie.MovieMetadata.Value.Title },
                 SimpleReleaseTitle = sceneName.SimplifyReleaseTitle(),
                 Quality = movieFile.Quality,
                 Languages = movieFile.Languages,
                 ReleaseGroup = movieFile.ReleaseGroup,
                 Edition = movieFile.Edition,
-                Year = movieFile.Movie.Year,
-                ImdbId = movieFile.Movie.ImdbId,
+                Year = movieFile.Movie.MovieMetadata.Value.Year,
+                ImdbId = movieFile.Movie.MovieMetadata.Value.ImdbId,
                 ExtraInfo = new Dictionary<string, object>
                 {
                     { "IndexerFlags", movieFile.IndexerFlags },
                     { "Size", movieFile.Size },
                     { "Filename", Path.GetFileName(movieFile.RelativePath) },
-                    { "OriginalLanguage", movieFile.Movie.OriginalLanguage }
+                    { "OriginalLanguage", movieFile.Movie.MovieMetadata.Value.OriginalLanguage }
                 }
             };
 
@@ -114,14 +114,14 @@ namespace NzbDrone.Core.CustomFormats
 
             var info = new ParsedMovieInfo
             {
-                MovieTitles = new List<string>() { movie.Title },
+                MovieTitles = new List<string>() { movie.MovieMetadata.Value.Title },
                 SimpleReleaseTitle = parsed?.SimpleReleaseTitle ?? blocklist.SourceTitle.SimplifyReleaseTitle(),
                 Quality = blocklist.Quality,
                 Languages = blocklist.Languages,
                 ReleaseGroup = parsed?.ReleaseGroup,
                 Edition = parsed?.Edition,
-                Year = movie.Year,
-                ImdbId = movie.ImdbId,
+                Year = movie.MovieMetadata.Value.Year,
+                ImdbId = movie.MovieMetadata.Value.ImdbId,
                 ExtraInfo = new Dictionary<string, object>
                 {
                     { "IndexerFlags", blocklist.IndexerFlags },
@@ -142,14 +142,14 @@ namespace NzbDrone.Core.CustomFormats
 
             var info = new ParsedMovieInfo
             {
-                MovieTitles = new List<string>() { movie.Title },
+                MovieTitles = new List<string>() { movie.MovieMetadata.Value.Title },
                 SimpleReleaseTitle = parsed?.SimpleReleaseTitle ?? history.SourceTitle.SimplifyReleaseTitle(),
                 Quality = history.Quality,
                 Languages = history.Languages,
                 ReleaseGroup = parsed?.ReleaseGroup,
                 Edition = parsed?.Edition,
-                Year = movie.Year,
-                ImdbId = movie.ImdbId,
+                Year = movie.MovieMetadata.Value.Year,
+                ImdbId = movie.MovieMetadata.Value.ImdbId,
                 ExtraInfo = new Dictionary<string, object>
                 {
                     { "IndexerFlags", flags },

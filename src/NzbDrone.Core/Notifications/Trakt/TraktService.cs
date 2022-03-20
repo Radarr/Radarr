@@ -89,8 +89,8 @@ namespace NzbDrone.Core.Notifications.Trakt
                 Year = movie.Year,
                 Ids = new TraktMovieIdsResource
                 {
-                    Tmdb = movie.TmdbId,
-                    Imdb = movie.ImdbId ?? "",
+                    Tmdb = movie.MovieMetadata.Value.TmdbId,
+                    Imdb = movie.MovieMetadata.Value.ImdbId ?? "",
                 }
             });
 
@@ -120,8 +120,8 @@ namespace NzbDrone.Core.Notifications.Trakt
                 Audio = audio,
                 Ids = new TraktMovieIdsResource
                 {
-                    Tmdb = movie.TmdbId,
-                    Imdb = movie.ImdbId ?? "",
+                    Tmdb = movie.MovieMetadata.Value.TmdbId,
+                    Imdb = movie.MovieMetadata.Value.ImdbId ?? "",
                 }
             });
 

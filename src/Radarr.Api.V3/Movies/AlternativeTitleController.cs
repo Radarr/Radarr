@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.AlternativeTitles;
 using Radarr.Http;
 using Radarr.Http.REST;
@@ -11,10 +12,12 @@ namespace Radarr.Api.V3.Movies
     public class AlternativeTitleController : RestController<AlternativeTitleResource>
     {
         private readonly IAlternativeTitleService _altTitleService;
+        private readonly IMovieService _movieService;
 
-        public AlternativeTitleController(IAlternativeTitleService altTitleService)
+        public AlternativeTitleController(IAlternativeTitleService altTitleService, IMovieService movieService)
         {
             _altTitleService = altTitleService;
+            _movieService = movieService;
         }
 
         protected override AlternativeTitleResource GetResourceById(int id)
@@ -23,11 +26,17 @@ namespace Radarr.Api.V3.Movies
         }
 
         [HttpGet]
-        public List<AlternativeTitleResource> GetAltTitles(int? movieId)
+        public List<AlternativeTitleResource> GetAltTitles(int? movieId, int? movieMetadataId)
         {
+            if (movieMetadataId.HasValue)
+            {
+                return _altTitleService.GetAllTitlesForMovie(movieMetadataId.Value).ToResource();
+            }
+
             if (movieId.HasValue)
             {
-                return _altTitleService.GetAllTitlesForMovie(movieId.Value).ToResource();
+                var movie = _movieService.GetMovie(movieId.Value);
+                return _altTitleService.GetAllTitlesForMovie(movie.MovieMetadataId).ToResource();
             }
 
             return _altTitleService.GetAllTitles().ToResource();

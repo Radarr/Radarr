@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
         public void Setup()
         {
             _movie = Builder<Movie>.CreateNew()
-                                   .With(m => m.OriginalLanguage = Language.English)
+                                   .With(m => m.MovieMetadata.Value.OriginalLanguage = Language.English)
                                    .Build();
 
             _localMovie = Builder<LocalMovie>.CreateNew()
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
         {
             var result = Subject.Aggregate(_localMovie, null, false);
 
-            result.Languages.Should().Contain(_movie.OriginalLanguage);
+            result.Languages.Should().Contain(_movie.MovieMetadata.Value.OriginalLanguage);
         }
 
         [Test]

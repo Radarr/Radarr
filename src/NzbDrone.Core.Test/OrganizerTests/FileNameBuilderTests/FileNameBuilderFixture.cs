@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             _movie = Builder<Movie>
                     .CreateNew()
                     .With(s => s.Title = "South Park")
-                    .With(s => s.OriginalTitle = "South of the Park")
+                    .With(s => s.MovieMetadata.Value.OriginalTitle = "South of the Park")
                     .Build();
 
             _namingConfig = NamingConfig.Default;
@@ -206,7 +206,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         public void should_replace_movie_original_title()
         {
             _namingConfig.StandardMovieFormat = "{Movie OriginalTitle}";
-            _movie.OriginalTitle = "South of the Park";
+            _movie.MovieMetadata.Value.OriginalTitle = "South of the Park";
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("South of the Park");
@@ -216,7 +216,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         public void should_replace_movie_certification()
         {
             _namingConfig.StandardMovieFormat = "{Movie Certification}";
-            _movie.Certification = "R";
+            _movie.MovieMetadata.Value.Certification = "R";
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("R");
@@ -226,7 +226,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         public void should_replace_movie_collection()
         {
             _namingConfig.StandardMovieFormat = "{Movie Collection}";
-            _movie.Collection = new MovieCollection { Name = "South Part Collection" };
+            _movie.MovieMetadata.Value.Collection = new MovieCollection { Name = "South Part Collection" };
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("South Part Collection");

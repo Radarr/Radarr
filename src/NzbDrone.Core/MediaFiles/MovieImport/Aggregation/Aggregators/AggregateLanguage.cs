@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
 
         public LocalMovie Aggregate(LocalMovie localMovie, DownloadClientItem downloadClientItem, bool otherFiles)
         {
-            var languages = new List<Language> { localMovie.Movie?.OriginalLanguage ?? Language.Unknown };
+            var languages = new List<Language> { localMovie.Movie?.MovieMetadata.Value.OriginalLanguage ?? Language.Unknown };
             var languagesConfidence = Confidence.Default;
 
             foreach (var augmentLanguage in _augmentLanguages)

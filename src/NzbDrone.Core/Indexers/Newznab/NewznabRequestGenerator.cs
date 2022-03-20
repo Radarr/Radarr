@@ -115,8 +115,8 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         private void AddMovieIdPageableRequests(IndexerPageableRequestChain chain, int maxPages, IEnumerable<int> categories, SearchCriteriaBase searchCriteria)
         {
-            var includeTmdbSearch = SupportsTmdbSearch && searchCriteria.Movie.TmdbId > 0;
-            var includeImdbSearch = SupportsImdbSearch && searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace();
+            var includeTmdbSearch = SupportsTmdbSearch && searchCriteria.Movie.MovieMetadata.Value.TmdbId > 0;
+            var includeImdbSearch = SupportsImdbSearch && searchCriteria.Movie.MovieMetadata.Value.ImdbId.IsNotNullOrWhiteSpace();
 
             if (SupportsAggregatedIdSearch && (includeTmdbSearch || includeImdbSearch))
             {
@@ -124,12 +124,12 @@ namespace NzbDrone.Core.Indexers.Newznab
 
                 if (includeTmdbSearch)
                 {
-                    ids += "&tmdbid=" + searchCriteria.Movie.TmdbId;
+                    ids += "&tmdbid=" + searchCriteria.Movie.MovieMetadata.Value.TmdbId;
                 }
 
                 if (includeImdbSearch)
                 {
-                    ids += "&imdbid=" + searchCriteria.Movie.ImdbId.Substring(2);
+                    ids += "&imdbid=" + searchCriteria.Movie.MovieMetadata.Value.ImdbId.Substring(2);
                 }
 
                 chain.Add(GetPagedRequests(maxPages, categories, "movie", ids));
@@ -141,14 +141,14 @@ namespace NzbDrone.Core.Indexers.Newznab
                     chain.Add(GetPagedRequests(maxPages,
                         categories,
                         "movie",
-                        string.Format("&tmdbid={0}", searchCriteria.Movie.TmdbId)));
+                        string.Format("&tmdbid={0}", searchCriteria.Movie.MovieMetadata.Value.TmdbId)));
                 }
                 else if (includeImdbSearch)
                 {
                     chain.Add(GetPagedRequests(maxPages,
                         categories,
                         "movie",
-                        string.Format("&imdbid={0}", searchCriteria.Movie.ImdbId.Substring(2))));
+                        string.Format("&imdbid={0}", searchCriteria.Movie.MovieMetadata.Value.ImdbId.Substring(2))));
                 }
             }
 

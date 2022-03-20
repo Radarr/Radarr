@@ -194,7 +194,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
 
-            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+            var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
 
             if ((isRecentMovie && Settings.RecentMoviePriority == (int)TransmissionPriority.First) ||
                 (!isRecentMovie && Settings.OlderMoviePriority == (int)TransmissionPriority.First))
@@ -210,7 +210,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
 
-            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+            var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
 
             if ((isRecentMovie && Settings.RecentMoviePriority == (int)TransmissionPriority.First) ||
                 (!isRecentMovie && Settings.OlderMoviePriority == (int)TransmissionPriority.First))

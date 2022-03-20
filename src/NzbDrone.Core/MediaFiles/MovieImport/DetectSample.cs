@@ -9,7 +9,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 {
     public interface IDetectSample
     {
-        DetectSampleResult IsSample(Movie movie, string path);
+        DetectSampleResult IsSample(MovieMetadata movie, string path);
     }
 
     public class DetectSample : IDetectSample
@@ -23,7 +23,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _logger = logger;
         }
 
-        public DetectSampleResult IsSample(Movie movie, string path)
+        public DetectSampleResult IsSample(MovieMetadata movie, string path)
         {
             var extension = Path.GetExtension(path);
 
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             return DetectSampleResult.NotSample;
         }
 
-        private int GetMinimumAllowedRuntime(Movie movie)
+        private int GetMinimumAllowedRuntime(MovieMetadata movie)
         {
             //Anime short - 15 seconds
             if (movie.Runtime <= 3)

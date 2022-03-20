@@ -6,7 +6,7 @@ namespace NzbDrone.Core.Movies.Credits
 {
     public interface ICreditRepository : IBasicRepository<Credit>
     {
-        List<Credit> FindByMovieId(int movieId);
+        List<Credit> FindByMovieMetadataId(int movieId);
         void DeleteForMovies(List<int> movieIds);
     }
 
@@ -17,14 +17,14 @@ namespace NzbDrone.Core.Movies.Credits
         {
         }
 
-        public List<Credit> FindByMovieId(int movieId)
+        public List<Credit> FindByMovieMetadataId(int movieId)
         {
-            return Query(x => x.MovieId == movieId);
+            return Query(x => x.MovieMetadataId == movieId);
         }
 
         public void DeleteForMovies(List<int> movieIds)
         {
-            Delete(x => movieIds.Contains(x.MovieId));
+            Delete(x => movieIds.Contains(x.MovieMetadataId));
         }
     }
 }

@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             Id = movie.Id;
             Title = movie.Title;
             Year = movie.Year;
-            ReleaseDate = movie.PhysicalReleaseDate().ToString("yyyy-MM-dd");
+            ReleaseDate = movie.MovieMetadata.Value.PhysicalReleaseDate().ToString("yyyy-MM-dd");
             FolderPath = movie.Path;
             TmdbId = movie.TmdbId;
             ImdbId = movie.ImdbId;

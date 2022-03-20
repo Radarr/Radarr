@@ -87,11 +87,11 @@ namespace NzbDrone.Core.Indexers.Rarbg
 
             requestBuilder.AddQueryParam("mode", "search");
 
-            if (searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace())
+            if (searchCriteria.Movie.MovieMetadata.Value.ImdbId.IsNotNullOrWhiteSpace())
             {
-                requestBuilder.AddQueryParam("search_imdb", searchCriteria.Movie.ImdbId);
+                requestBuilder.AddQueryParam("search_imdb", searchCriteria.Movie.MovieMetadata.Value.ImdbId);
             }
-            else if (searchCriteria.Movie.TmdbId > 0)
+            else if (searchCriteria.Movie.MovieMetadata.Value.TmdbId > 0)
             {
                 requestBuilder.AddQueryParam("search_themoviedb", searchCriteria.Movie.TmdbId);
             }
