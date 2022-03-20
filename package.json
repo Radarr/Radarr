@@ -49,7 +49,7 @@
     "mousetrap": "1.6.5",
     "normalize.css": "8.0.1",
     "prop-types": "15.7.2",
-    "qs": "6.10.1",
+    "qs": "6.10.3",
     "react": "17.0.2",
     "react-addons-shallow-compare": "15.6.3",
     "react-async-script": "1.2.0",
