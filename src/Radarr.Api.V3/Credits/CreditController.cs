@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Credits;
 using Radarr.Http;
 using Radarr.Http.REST;
@@ -10,10 +11,12 @@ namespace Radarr.Api.V3.Credits
     public class CreditController : RestController<CreditResource>
     {
         private readonly ICreditService _creditService;
+        private readonly IMovieService _movieService;
 
-        public CreditController(ICreditService creditService)
+        public CreditController(ICreditService creditService, IMovieService movieService)
         {
             _creditService = creditService;
+            _movieService = movieService;
         }
 
         protected override CreditResource GetResourceById(int id)
@@ -22,11 +25,17 @@ namespace Radarr.Api.V3.Credits
         }
 
         [HttpGet]
-        public List<CreditResource> GetCredits(int? movieId)
+        public List<CreditResource> GetCredits(int? movieId, int? movieMetadataId)
         {
+            if (movieMetadataId.HasValue)
+            {
+                return _creditService.GetAllCreditsForMovie(movieMetadataId.Value).ToResource();
+            }
+
             if (movieId.HasValue)
             {
-                return _creditService.GetAllCreditsForMovie(movieId.Value).ToResource();
+                var movie = _movieService.GetMovie(movieId.Value);
+                return _creditService.GetAllCreditsForMovie(movie.MovieMetadataId).ToResource();
             }
 
             return _creditService.GetAllCredits().ToResource();

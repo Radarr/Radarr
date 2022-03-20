@@ -174,9 +174,9 @@ namespace NzbDrone.Core.DecisionEngine
                 var preferredSize = _qualityDefinitionService.Get(remoteMovie.ParsedMovieInfo.Quality.Quality).PreferredSize;
 
                 // If no value for preferred it means unlimited so fallback to sort largest is best
-                if (preferredSize.HasValue && remoteMovie.Movie.Runtime > 0)
+                if (preferredSize.HasValue && remoteMovie.Movie.MovieMetadata.Value.Runtime > 0)
                 {
-                    var preferredMovieSize = remoteMovie.Movie.Runtime * preferredSize.Value.Megabytes();
+                    var preferredMovieSize = remoteMovie.Movie.MovieMetadata.Value.Runtime * preferredSize.Value.Megabytes();
 
                     // Calculate closest to the preferred size
                     return Math.Abs((remoteMovie.Release.Size - preferredMovieSize).Round(200.Megabytes())) * (-1);

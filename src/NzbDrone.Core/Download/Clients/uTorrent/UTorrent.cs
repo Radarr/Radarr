@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
             }
 
-            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+            var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
 
             if ((isRecentMovie && Settings.RecentMoviePriority == (int)UTorrentPriority.First) ||
                 (!isRecentMovie && Settings.OlderMoviePriority == (int)UTorrentPriority.First))
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Download.Clients.UTorrent
                 _proxy.SetTorrentLabel(hash, Settings.MovieCategory, Settings);
             }
 
-            var isRecentEpisode = remoteMovie.Movie.IsRecentMovie;
+            var isRecentEpisode = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
 
             if ((isRecentEpisode && Settings.RecentMoviePriority == (int)UTorrentPriority.First) ||
                 (!isRecentEpisode && Settings.OlderMoviePriority == (int)UTorrentPriority.First))

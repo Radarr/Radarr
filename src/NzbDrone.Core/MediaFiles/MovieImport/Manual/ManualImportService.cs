@@ -104,8 +104,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
             if (languageParse.Count <= 1 && languageParse.First() == Language.Unknown && movie != null)
             {
-                languageParse = new List<Language> { movie.OriginalLanguage };
-                _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", movie.OriginalLanguage.Name);
+                languageParse = new List<Language> { movie.MovieMetadata.Value.OriginalLanguage };
+                _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", movie.MovieMetadata.Value.OriginalLanguage.Name);
             }
 
             var localMovie = new LocalMovie

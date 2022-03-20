@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -18,25 +18,25 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
         private Credit _credit2;
         private Credit _credit3;
 
-        private Movie _movie;
+        private MovieMetadata _movie;
 
         [SetUp]
         public void Setup()
         {
             var credits = Builder<Credit>.CreateListOfSize(3)
                                          .All()
-                                         .With(t => t.MovieId = 0).Build();
+                                         .With(t => t.MovieMetadataId = 0).Build();
 
             _credit1 = credits[0];
             _credit2 = credits[1];
             _credit3 = credits[2];
 
-            _movie = Builder<Movie>.CreateNew().With(m => m.Id = 1).Build();
+            _movie = Builder<MovieMetadata>.CreateNew().With(m => m.Id = 1).Build();
         }
 
         private void GivenExistingCredits(params Credit[] credits)
         {
-            Mocker.GetMock<ICreditRepository>().Setup(r => r.FindByMovieId(_movie.Id))
+            Mocker.GetMock<ICreditRepository>().Setup(r => r.FindByMovieMetadataId(_movie.Id))
                 .Returns(credits.ToList());
         }
 
@@ -77,8 +77,8 @@ namespace NzbDrone.Core.Test.MovieTests.AlternativeTitleServiceTests
 
             Subject.UpdateCredits(titles, _movie);
 
-            _credit1.MovieId.Should().Be(_movie.Id);
-            _credit2.MovieId.Should().Be(_movie.Id);
+            _credit1.MovieMetadataId.Should().Be(_movie.Id);
+            _credit2.MovieMetadataId.Should().Be(_movie.Id);
         }
 
         [Test]

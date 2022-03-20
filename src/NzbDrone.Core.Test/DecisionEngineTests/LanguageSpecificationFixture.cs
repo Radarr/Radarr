@@ -31,7 +31,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                              {
                                  Language = Language.English
                              },
-                             OriginalLanguage = Language.French
+                             MovieMetadata = new MovieMetadata
+                             {
+                                 OriginalLanguage = Language.French
+                             }
                          }
             };
         }

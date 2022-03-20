@@ -16,9 +16,9 @@ namespace NzbDrone.Core.Parser.Augmenters
 
         public ParsedMovieInfo AugmentMovieInfo(ParsedMovieInfo movieInfo, object helper)
         {
-            if (helper is Movie movie && movie?.OriginalLanguage != null && movieInfo != null)
+            if (helper is Movie movie && movie?.MovieMetadata.Value.OriginalLanguage != null && movieInfo != null)
             {
-                movieInfo.ExtraInfo["OriginalLanguage"] = movie.OriginalLanguage;
+                movieInfo.ExtraInfo["OriginalLanguage"] = movie.MovieMetadata.Value.OriginalLanguage;
             }
 
             return movieInfo;

@@ -2,10 +2,7 @@ using System;
 using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Movies.AlternativeTitles;
-using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.Movies
@@ -14,79 +11,54 @@ namespace NzbDrone.Core.Movies
     {
         public Movie()
         {
-            Images = new List<MediaCover.MediaCover>();
-            Genres = new List<string>();
             Tags = new HashSet<int>();
-            AlternativeTitles = new List<AlternativeTitle>();
-            Translations = new List<MovieTranslation>();
-            Recommendations = new List<int>();
-            OriginalLanguage = Language.English;
-            Ratings = new Ratings();
+            MovieMetadata = new MovieMetadata();
         }
 
-        public int TmdbId { get; set; }
-        public string ImdbId { get; set; }
-        public string Title { get; set; }
-        public string CleanTitle { get; set; }
-        public string SortTitle { get; set; }
-        public MovieStatusType Status { get; set; }
-        public string Overview { get; set; }
+        public int MovieMetadataId { get; set; }
+
         public bool Monitored { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
         public int ProfileId { get; set; }
-        public DateTime? LastInfoSync { get; set; }
-        public int Runtime { get; set; }
-        public List<MediaCover.MediaCover> Images { get; set; }
-        public string TitleSlug { get; set; }
-        public string Website { get; set; }
+
         public string Path { get; set; }
-        public int Year { get; set; }
-        public Ratings Ratings { get; set; }
-        public List<string> Genres { get; set; }
 
-        public MovieCollection Collection { get; set; }
+        public LazyLoaded<MovieMetadata> MovieMetadata { get; set; }
 
-        public string Certification { get; set; }
         public string RootFolderPath { get; set; }
         public DateTime Added { get; set; }
-        public DateTime? InCinemas { get; set; }
-        public DateTime? PhysicalRelease { get; set; }
-        public DateTime? DigitalRelease { get; set; }
         public Profile Profile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public MovieFile MovieFile { get; set; }
         public int MovieFileId { get; set; }
 
-        //Get Loaded via a Join Query
-        public List<AlternativeTitle> AlternativeTitles { get; set; }
-        public List<MovieTranslation> Translations { get; set; }
-        public int? SecondaryYear { get; set; }
-        public string YouTubeTrailerId { get; set; }
-        public string Studio { get; set; }
-        public string OriginalTitle { get; set; }
-        public Language OriginalLanguage { get; set; }
-        public List<int> Recommendations { get; set; }
+        public bool HasFile => MovieFileId > 0;
 
-        public bool IsRecentMovie
+        //compatibility properties
+        public string Title
         {
-            get
-            {
-                if (PhysicalRelease.HasValue)
-                {
-                    return PhysicalRelease.Value >= DateTime.UtcNow.AddDays(-21);
-                }
-
-                if (InCinemas.HasValue)
-                {
-                    return InCinemas.Value >= DateTime.UtcNow.AddDays(-120);
-                }
-
-                return true;
-            }
+            get { return MovieMetadata.Value.Title; }
+            set { MovieMetadata.Value.Title = value; }
         }
 
-        public bool HasFile => MovieFileId > 0;
+        public int TmdbId
+        {
+            get { return MovieMetadata.Value.TmdbId; }
+            set { MovieMetadata.Value.TmdbId = value; }
+        }
+
+        public string ImdbId
+        {
+            get { return MovieMetadata.Value.ImdbId; }
+            set { MovieMetadata.Value.ImdbId = value; }
+        }
+
+        public int Year
+        {
+            get { return MovieMetadata.Value.Year; }
+            set { MovieMetadata.Value.Year = value; }
+        }
 
         public string FolderName()
         {
@@ -112,27 +84,27 @@ namespace NzbDrone.Core.Movies
             {
                 minimumAvailabilityDate = DateTime.MinValue;
             }
-            else if (MinimumAvailability == MovieStatusType.InCinemas && InCinemas.HasValue)
+            else if (MinimumAvailability == MovieStatusType.InCinemas && MovieMetadata.Value.InCinemas.HasValue)
             {
-                minimumAvailabilityDate = InCinemas.Value;
+                minimumAvailabilityDate = MovieMetadata.Value.InCinemas.Value;
             }
             else
             {
-                if (PhysicalRelease.HasValue && DigitalRelease.HasValue)
+                if (MovieMetadata.Value.PhysicalRelease.HasValue && MovieMetadata.Value.DigitalRelease.HasValue)
                 {
-                    minimumAvailabilityDate = new DateTime(Math.Min(PhysicalRelease.Value.Ticks, DigitalRelease.Value.Ticks));
+                    minimumAvailabilityDate = new DateTime(Math.Min(MovieMetadata.Value.PhysicalRelease.Value.Ticks, MovieMetadata.Value.DigitalRelease.Value.Ticks));
                 }
-                else if (PhysicalRelease.HasValue)
+                else if (MovieMetadata.Value.PhysicalRelease.HasValue)
                 {
-                    minimumAvailabilityDate = PhysicalRelease.Value;
+                    minimumAvailabilityDate = MovieMetadata.Value.PhysicalRelease.Value;
                 }
-                else if (DigitalRelease.HasValue)
+                else if (MovieMetadata.Value.DigitalRelease.HasValue)
                 {
-                    minimumAvailabilityDate = DigitalRelease.Value;
+                    minimumAvailabilityDate = MovieMetadata.Value.DigitalRelease.Value;
                 }
                 else
                 {
-                    minimumAvailabilityDate = InCinemas.HasValue ? InCinemas.Value.AddDays(90) : DateTime.MaxValue;
+                    minimumAvailabilityDate = MovieMetadata.Value.InCinemas.HasValue ? MovieMetadata.Value.InCinemas.Value.AddDays(90) : DateTime.MaxValue;
                 }
             }
 
@@ -144,20 +116,13 @@ namespace NzbDrone.Core.Movies
             return DateTime.Now >= minimumAvailabilityDate.AddDays((double)delay);
         }
 
-        public DateTime PhysicalReleaseDate()
-        {
-            return PhysicalRelease ?? (InCinemas?.AddDays(90) ?? DateTime.MaxValue);
-        }
-
         public override string ToString()
         {
-            return string.Format("[{1} ({2})][{0}, {3}]", ImdbId, Title.NullSafe(), Year.NullSafe(), TmdbId);
+            return string.Format("[{1} ({2})][{0}, {3}]", MovieMetadata.Value.ImdbId, MovieMetadata.Value.Title.NullSafe(), MovieMetadata.Value.Year.NullSafe(), MovieMetadata.Value.TmdbId);
         }
 
         public void ApplyChanges(Movie otherMovie)
         {
-            TmdbId = otherMovie.TmdbId;
-
             Path = otherMovie.Path;
             ProfileId = otherMovie.ProfileId;
 

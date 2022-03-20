@@ -54,9 +54,9 @@ namespace Radarr.Api.V3.Calendar
                     continue;
                 }
 
-                CreateEvent(calendar, movie, "cinematic");
-                CreateEvent(calendar, movie, "digital");
-                CreateEvent(calendar, movie, "physical");
+                CreateEvent(calendar, movie.MovieMetadata, "cinematic");
+                CreateEvent(calendar, movie.MovieMetadata, "digital");
+                CreateEvent(calendar, movie.MovieMetadata, "physical");
             }
 
             var serializer = (IStringSerializer)new SerializerFactory().Build(calendar.GetType(), new SerializationContext());
@@ -65,7 +65,7 @@ namespace Radarr.Api.V3.Calendar
             return Content(icalendar, "text/calendar");
         }
 
-        private void CreateEvent(Ical.Net.Calendar calendar, Movie movie, string releaseType)
+        private void CreateEvent(Ical.Net.Calendar calendar, MovieMetadata movie, string releaseType)
         {
             var date = movie.InCinemas;
             string eventType = "_cinemas";

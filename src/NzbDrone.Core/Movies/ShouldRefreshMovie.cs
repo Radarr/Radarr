@@ -5,7 +5,7 @@ namespace NzbDrone.Core.Movies
 {
     public interface ICheckIfMovieShouldBeRefreshed
     {
-        bool ShouldRefresh(Movie movie);
+        bool ShouldRefresh(MovieMetadata movie);
     }
 
     public class ShouldRefreshMovie : ICheckIfMovieShouldBeRefreshed
@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Movies
             _logger = logger;
         }
 
-        public bool ShouldRefresh(Movie movie)
+        public bool ShouldRefresh(MovieMetadata movie)
         {
             //return false;
             if (movie.LastInfoSync < DateTime.UtcNow.AddDays(-180))

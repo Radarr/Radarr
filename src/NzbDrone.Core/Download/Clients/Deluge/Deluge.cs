@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 _proxy.SetTorrentLabel(actualHash, Settings.MovieCategory, Settings);
             }
 
-            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+            var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
 
             if ((isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First) ||
                 (!isRecentMovie && Settings.OlderMoviePriority == (int)DelugePriority.First))
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Download.Clients.Deluge
                 _proxy.SetTorrentLabel(actualHash, Settings.MovieCategory, Settings);
             }
 
-            var isRecentMovie = remoteMovie.Movie.IsRecentMovie;
+            var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
 
             if ((isRecentMovie && Settings.RecentMoviePriority == (int)DelugePriority.First) ||
                 (!isRecentMovie && Settings.OlderMoviePriority == (int)DelugePriority.First))

@@ -19,9 +19,9 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 mapper.Execute(@"DELETE FROM ""MovieTranslations""
                                      WHERE ""Id"" IN (
                                      SELECT ""MovieTranslations"".""Id"" FROM ""MovieTranslations""
-                                     LEFT OUTER JOIN ""Movies""
-                                     ON ""MovieTranslations"".""MovieId"" = ""Movies"".""Id""
-                                     WHERE ""Movies"".""Id"" IS NULL)");
+                                     LEFT OUTER JOIN ""MovieMetadata""
+                                     ON ""MovieTranslations"".""MovieMetadataId"" = ""MovieMetadata"".""Id""
+                                     WHERE ""MovieMetadata"".""Id"" IS NULL)");
             }
         }
     }

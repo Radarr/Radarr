@@ -11,11 +11,11 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
     public interface IAlternativeTitleService
     {
         List<AlternativeTitle> GetAllTitlesForMovie(int movieId);
-        AlternativeTitle AddAltTitle(AlternativeTitle title, Movie movie);
-        List<AlternativeTitle> AddAltTitles(List<AlternativeTitle> titles, Movie movie);
+        AlternativeTitle AddAltTitle(AlternativeTitle title, MovieMetadata movie);
+        List<AlternativeTitle> AddAltTitles(List<AlternativeTitle> titles, MovieMetadata movie);
         AlternativeTitle GetById(int id);
         List<AlternativeTitle> GetAllTitles();
-        List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, Movie movie);
+        List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, MovieMetadata movie);
     }
 
     public class AlternativeTitleService : IAlternativeTitleService, IHandleAsync<MoviesDeletedEvent>
@@ -38,18 +38,18 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 
         public List<AlternativeTitle> GetAllTitlesForMovie(int movieId)
         {
-            return _titleRepo.FindByMovieId(movieId).ToList();
+            return _titleRepo.FindByMovieMetadataId(movieId).ToList();
         }
 
-        public AlternativeTitle AddAltTitle(AlternativeTitle title, Movie movie)
+        public AlternativeTitle AddAltTitle(AlternativeTitle title, MovieMetadata movie)
         {
-            title.MovieId = movie.Id;
+            title.MovieMetadataId = movie.Id;
             return _titleRepo.Insert(title);
         }
 
-        public List<AlternativeTitle> AddAltTitles(List<AlternativeTitle> titles, Movie movie)
+        public List<AlternativeTitle> AddAltTitles(List<AlternativeTitle> titles, MovieMetadata movie)
         {
-            titles.ForEach(t => t.MovieId = movie.Id);
+            titles.ForEach(t => t.MovieMetadataId = movie.Id);
             _titleRepo.InsertMany(titles);
             return titles;
         }
@@ -69,12 +69,12 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             _titleRepo.Delete(title);
         }
 
-        public List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, Movie movie)
+        public List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, MovieMetadata movie)
         {
             int movieId = movie.Id;
 
             // First update the movie ids so we can correlate them later.
-            titles.ForEach(t => t.MovieId = movieId);
+            titles.ForEach(t => t.MovieMetadataId = movieId);
 
             // Then make sure none of them are the same as the main title.
             titles = titles.Where(t => t.CleanTitle != movie.CleanTitle).ToList();
@@ -83,10 +83,10 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             titles = titles.DistinctBy(t => t.CleanTitle).ToList();
 
             // Make sure we are not adding titles that exist for other movies (until language PR goes in)
-            titles = titles.Where(t => !_titleRepo.All().Any(e => e.CleanTitle == t.CleanTitle && e.MovieId != t.MovieId)).ToList();
+            titles = titles.Where(t => !_titleRepo.All().Any(e => e.CleanTitle == t.CleanTitle && e.MovieMetadataId != t.MovieMetadataId)).ToList();
 
             // Now find titles to delete, update and insert.
-            var existingTitles = _titleRepo.FindByMovieId(movieId);
+            var existingTitles = _titleRepo.FindByMovieMetadataId(movieId);
 
             var insert = titles.Where(t => !existingTitles.Contains(t));
             var update = existingTitles.Where(t => titles.Contains(t));
@@ -101,7 +101,8 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 
         public void HandleAsync(MoviesDeletedEvent message)
         {
-            _titleRepo.DeleteForMovies(message.Movies.Select(m => m.Id).ToList());
+            // TODO hanlde metadata delete instead of movie delete
+            _titleRepo.DeleteForMovies(message.Movies.Select(m => m.MovieMetadataId).ToList());
         }
     }
 }

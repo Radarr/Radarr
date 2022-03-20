@@ -255,7 +255,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Returns(imported.Select(i => new ImportResult(i)).ToList());
 
             Mocker.GetMock<IDetectSample>()
-                  .Setup(s => s.IsSample(It.IsAny<Movie>(),
+                  .Setup(s => s.IsSample(It.IsAny<MovieMetadata>(),
                       It.IsAny<string>()))
                   .Returns(DetectSampleResult.Sample);
 
@@ -324,7 +324,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Returns(imported.Select(i => new ImportResult(i)).ToList());
 
             Mocker.GetMock<IDetectSample>()
-                  .Setup(s => s.IsSample(It.IsAny<Movie>(),
+                  .Setup(s => s.IsSample(It.IsAny<MovieMetadata>(),
                       It.IsAny<string>()))
                   .Returns(DetectSampleResult.Sample);
 
@@ -431,7 +431,7 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Returns(new List<ImportResult>());
 
             Mocker.GetMock<IDetectSample>()
-                  .Setup(s => s.IsSample(It.IsAny<Movie>(),
+                  .Setup(s => s.IsSample(It.IsAny<MovieMetadata>(),
                       It.IsAny<string>()))
                   .Returns(DetectSampleResult.Sample);
 

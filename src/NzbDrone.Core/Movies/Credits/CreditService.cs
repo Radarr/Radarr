@@ -9,11 +9,11 @@ namespace NzbDrone.Core.Movies.Credits
     public interface ICreditService
     {
         List<Credit> GetAllCreditsForMovie(int movieId);
-        Credit AddCredit(Credit credit, Movie movie);
-        List<Credit> AddCredits(List<Credit> credits, Movie movie);
+        Credit AddCredit(Credit credit, MovieMetadata movie);
+        List<Credit> AddCredits(List<Credit> credits, MovieMetadata movie);
         Credit GetById(int id);
         List<Credit> GetAllCredits();
-        List<Credit> UpdateCredits(List<Credit> credits, Movie movie);
+        List<Credit> UpdateCredits(List<Credit> credits, MovieMetadata movie);
     }
 
     public class CreditService : ICreditService, IHandleAsync<MoviesDeletedEvent>
@@ -27,18 +27,18 @@ namespace NzbDrone.Core.Movies.Credits
 
         public List<Credit> GetAllCreditsForMovie(int movieId)
         {
-            return _creditRepo.FindByMovieId(movieId).ToList();
+            return _creditRepo.FindByMovieMetadataId(movieId).ToList();
         }
 
-        public Credit AddCredit(Credit credit, Movie movie)
+        public Credit AddCredit(Credit credit, MovieMetadata movie)
         {
-            credit.MovieId = movie.Id;
+            credit.MovieMetadataId = movie.Id;
             return _creditRepo.Insert(credit);
         }
 
-        public List<Credit> AddCredits(List<Credit> credits, Movie movie)
+        public List<Credit> AddCredits(List<Credit> credits, MovieMetadata movie)
         {
-            credits.ForEach(t => t.MovieId = movie.Id);
+            credits.ForEach(t => t.MovieMetadataId = movie.Id);
             _creditRepo.InsertMany(credits);
             return credits;
         }
@@ -58,15 +58,15 @@ namespace NzbDrone.Core.Movies.Credits
             _creditRepo.Delete(credit);
         }
 
-        public List<Credit> UpdateCredits(List<Credit> credits, Movie movie)
+        public List<Credit> UpdateCredits(List<Credit> credits, MovieMetadata movie)
         {
             int movieId = movie.Id;
 
             // First update the movie ids so we can correlate them later.
-            credits.ForEach(t => t.MovieId = movieId);
+            credits.ForEach(t => t.MovieMetadataId = movieId);
 
             // Now find credits to delete, update and insert.
-            var existingCredits = _creditRepo.FindByMovieId(movieId);
+            var existingCredits = _creditRepo.FindByMovieMetadataId(movieId);
 
             // Should never have multiple credits with same credit_id, but check to ensure incase TMDB is on fritz
             var dupeFreeCredits = credits.DistinctBy(m => m.CreditTmdbId).ToList();
@@ -86,7 +86,8 @@ namespace NzbDrone.Core.Movies.Credits
 
         public void HandleAsync(MoviesDeletedEvent message)
         {
-            _creditRepo.DeleteForMovies(message.Movies.Select(m => m.Id).ToList());
+            // TODO handle metadata deletions and not movie deletions
+            _creditRepo.DeleteForMovies(message.Movies.Select(m => m.MovieMetadataId).ToList());
         }
     }
 }

@@ -38,8 +38,8 @@ namespace NzbDrone.Core.Test.ImportListTests
                 .Build().ToList();
 
             Mocker.GetMock<ISearchForNewMovie>()
-                .Setup(v => v.MapMovieToTmdbMovie(It.IsAny<Movie>()))
-                .Returns<Movie>(m => new Movie { TmdbId = m.TmdbId });
+                .Setup(v => v.MapMovieToTmdbMovie(It.IsAny<MovieMetadata>()))
+                .Returns<MovieMetadata>(m => new MovieMetadata { TmdbId = m.TmdbId });
         }
 
         private void GivenList(int id, bool enabled, bool enabledAuto, ImportListFetchResult fetchResult)

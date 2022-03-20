@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Housekeeping.Housekeepers
@@ -19,9 +19,9 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 mapper.Execute(@"DELETE FROM ""AlternativeTitles""
                                      WHERE ""Id"" IN (
                                      SELECT ""AlternativeTitles"".""Id"" FROM ""AlternativeTitles""
-                                     LEFT OUTER JOIN ""Movies""
-                                     ON ""AlternativeTitles"".""MovieId"" = ""Movies"".""Id""
-                                     WHERE ""Movies"".""Id"" IS NULL)");
+                                     LEFT OUTER JOIN ""MovieMetadata""
+                                     ON ""AlternativeTitles"".""MovieMetadataId"" = ""MovieMetadata"".""Id""
+                                     WHERE ""MovieMetadata"".""Id"" IS NULL)");
             }
         }
     }
