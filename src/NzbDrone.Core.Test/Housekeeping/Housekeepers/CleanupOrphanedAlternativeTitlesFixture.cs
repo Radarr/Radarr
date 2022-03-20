@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         public void should_delete_orphaned_alternative_title_items()
         {
             var altTitle = Builder<AlternativeTitle>.CreateNew()
-                                              .With(h => h.MovieId = default)
+                                              .With(h => h.MovieMetadataId = default)
                                               .With(h => h.Language = Language.English)
                                               .BuildNew();
 
@@ -28,14 +28,14 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_not_delete_unorphaned_alternative_title_items()
         {
-            var movie = Builder<Movie>.CreateNew().BuildNew();
+            var movieMetadata = Builder<MovieMetadata>.CreateNew().BuildNew();
 
-            Db.Insert(movie);
+            Db.Insert(movieMetadata);
 
             var altTitle = Builder<AlternativeTitle>.CreateNew()
-                                              .With(h => h.MovieId = default)
+                                              .With(h => h.MovieMetadataId = default)
                                               .With(h => h.Language = Language.English)
-                                              .With(b => b.MovieId = movie.Id)
+                                              .With(b => b.MovieMetadataId = movieMetadata.Id)
                                               .BuildNew();
 
             Db.Insert(altTitle);

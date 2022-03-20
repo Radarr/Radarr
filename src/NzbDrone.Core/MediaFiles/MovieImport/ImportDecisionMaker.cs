@@ -78,7 +78,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 downloadClientItemInfo = _parsingService.EnhanceMovieInfo(downloadClientItemInfo);
             }
 
-            var nonSampleVideoFileCount = GetNonSampleVideoFileCount(newFiles, movie);
+            var nonSampleVideoFileCount = GetNonSampleVideoFileCount(newFiles, movie.MovieMetadata);
 
             var decisions = new List<ImportDecision>();
 
@@ -187,7 +187,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             return null;
         }
 
-        private int GetNonSampleVideoFileCount(List<string> videoFiles, Movie movie)
+        private int GetNonSampleVideoFileCount(List<string> videoFiles, MovieMetadata movie)
         {
             return videoFiles.Count(file =>
             {

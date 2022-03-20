@@ -116,10 +116,11 @@ class NamingModal extends Component {
 
     const movieTokens = [
       { token: '{Movie Title}', example: 'Movie\'s Title' },
-      { token: '{Movie Title:DE}', example: 'Filetitle' },
+      { token: '{Movie Title:DE}', example: 'Titel des Films' },
       { token: '{Movie CleanTitle}', example: 'Movies Title' },
       { token: '{Movie TitleThe}', example: 'Movie\'s Title, The' },
       { token: '{Movie OriginalTitle}', example: 'Τίτλος ταινίας' },
+      { token: '{Movie CleanOriginalTitle}', example: 'Τίτλος ταινίας' },
       { token: '{Movie TitleFirstCharacter}', example: 'M' },
       { token: '{Movie Collection}', example: 'The Movie Collection' },
       { token: '{Movie Certification}', example: 'R' },

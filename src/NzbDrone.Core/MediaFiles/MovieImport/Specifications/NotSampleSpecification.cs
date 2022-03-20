@@ -25,7 +25,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 return Decision.Accept();
             }
 
-            var sample = _detectSample.IsSample(localMovie.Movie, localMovie.Path);
+            var sample = _detectSample.IsSample(localMovie.Movie.MovieMetadata, localMovie.Path);
 
             if (sample == DetectSampleResult.Sample)
             {

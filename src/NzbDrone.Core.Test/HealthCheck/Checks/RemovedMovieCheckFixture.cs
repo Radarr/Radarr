@@ -32,16 +32,16 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             {
                 movie = Builder<Movie>.CreateListOfSize(amount)
                     .All()
-                    .With(v => v.Status = MovieStatusType.Released)
+                    .With(v => v.MovieMetadata.Value.Status = MovieStatusType.Released)
                     .BuildList();
             }
             else
             {
                 movie = Builder<Movie>.CreateListOfSize(amount)
                     .All()
-                    .With(v => v.Status = MovieStatusType.Released)
+                    .With(v => v.MovieMetadata.Value.Status = MovieStatusType.Released)
                     .Random(deleted)
-                    .With(v => v.Status = MovieStatusType.Deleted)
+                    .With(v => v.MovieMetadata.Value.Status = MovieStatusType.Deleted)
                     .BuildList();
             }
 

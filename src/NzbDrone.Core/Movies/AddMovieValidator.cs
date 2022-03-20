@@ -14,8 +14,7 @@ namespace NzbDrone.Core.Movies
         public AddMovieValidator(RootFolderValidator rootFolderValidator,
                                  RecycleBinValidator recycleBinValidator,
                                  MoviePathValidator moviePathValidator,
-                                 MovieAncestorValidator movieAncestorValidator,
-                                 MovieTitleSlugValidator movieTitleSlugValidator)
+                                 MovieAncestorValidator movieAncestorValidator)
         {
             RuleFor(c => c.Path).Cascade(CascadeMode.StopOnFirstFailure)
                                 .IsValidPath()
@@ -23,8 +22,6 @@ namespace NzbDrone.Core.Movies
                                 .SetValidator(recycleBinValidator)
                                 .SetValidator(moviePathValidator)
                                 .SetValidator(movieAncestorValidator);
-
-            RuleFor(c => c.TitleSlug).SetValidator(movieTitleSlugValidator);
         }
     }
 }

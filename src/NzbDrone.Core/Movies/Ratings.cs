@@ -1,8 +1,9 @@
+using Equ;
 using NzbDrone.Core.Datastore;
 
 namespace NzbDrone.Core.Movies
 {
-    public class Ratings : IEmbeddedDocument
+    public class Ratings : MemberwiseEquatable<Ratings>, IEmbeddedDocument
     {
         public RatingChild Imdb { get; set; }
         public RatingChild Tmdb { get; set; }

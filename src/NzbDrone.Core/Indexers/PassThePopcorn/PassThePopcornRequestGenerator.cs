@@ -29,9 +29,9 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
         {
             var pageableRequests = new IndexerPageableRequestChain();
 
-            if (searchCriteria.Movie.ImdbId.IsNotNullOrWhiteSpace())
+            if (searchCriteria.Movie.MovieMetadata.Value.ImdbId.IsNotNullOrWhiteSpace())
             {
-                pageableRequests.Add(GetRequest(searchCriteria.Movie.ImdbId));
+                pageableRequests.Add(GetRequest(searchCriteria.Movie.MovieMetadata.Value.ImdbId));
             }
             else if (searchCriteria.Movie.Year > 0)
             {

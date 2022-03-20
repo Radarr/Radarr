@@ -32,18 +32,18 @@ namespace NzbDrone.Core.Test.MovieTests.CreditTests
             var credits = Builder<Credit>.CreateListOfSize(5)
                 .TheFirst(1)
                 .With(c => c.Id = 0)
-                .With(c => c.MovieId = _movie2.Id)
+                .With(c => c.MovieMetadataId = _movie2.Id)
                 .TheRest()
                 .With(c => c.Id = 0)
-                .With(c => c.MovieId = _movie1.Id)
+                .With(c => c.MovieMetadataId = _movie1.Id)
                 .BuildListOfNew();
 
             Db.InsertMany(credits);
 
             Subject.DeleteForMovies(new List<int> { _movie1.Id });
 
-            var removedMovieCredits = Subject.FindByMovieId(_movie1.Id);
-            var nonRemovedMovieCredits = Subject.FindByMovieId(_movie2.Id);
+            var removedMovieCredits = Subject.FindByMovieMetadataId(_movie1.Id);
+            var nonRemovedMovieCredits = Subject.FindByMovieMetadataId(_movie2.Id);
 
             removedMovieCredits.Should().HaveCount(0);
             nonRemovedMovieCredits.Should().HaveCount(1);

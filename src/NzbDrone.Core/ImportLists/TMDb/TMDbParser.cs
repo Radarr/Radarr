@@ -36,10 +36,7 @@ namespace NzbDrone.Core.ImportLists.TMDb
             var movie =  new ImportListMovie
             {
                 TmdbId = movieResult.Id,
-                Overview = movieResult.Overview,
                 Title = movieResult.Title,
-                SortTitle = Parser.Parser.NormalizeTitle(movieResult.Title),
-                Images = new List<MediaCover.MediaCover>(),
             };
 
             if (movieResult.ReleaseDate.IsNotNullOrWhiteSpace())
@@ -47,8 +44,6 @@ namespace NzbDrone.Core.ImportLists.TMDb
                 DateTime.TryParse(movieResult.ReleaseDate, out var releaseDate);
                 movie.Year = releaseDate.Year;
             }
-
-            movie.Images.AddIfNotNull(MapPosterImage(movieResult.PosterPath));
 
             return movie;
         }

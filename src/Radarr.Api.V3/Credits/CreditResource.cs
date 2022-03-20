@@ -15,7 +15,7 @@ namespace Radarr.Api.V3.Credits
         public string PersonName { get; set; }
         public string CreditTmdbId { get; set; }
         public int PersonTmdbId { get; set; }
-        public int MovieId { get; set; }
+        public int MovieMetadataId { get; set; }
         public List<MediaCover> Images { get; set; }
         public string Department { get; set; }
         public string Job { get; set; }
@@ -36,7 +36,7 @@ namespace Radarr.Api.V3.Credits
             return new CreditResource
             {
                 Id = model.Id,
-                MovieId = model.MovieId,
+                MovieMetadataId = model.MovieMetadataId,
                 CreditTmdbId = model.CreditTmdbId,
                 PersonTmdbId = model.PersonTmdbId,
                 PersonName = model.Name,
@@ -64,7 +64,7 @@ namespace Radarr.Api.V3.Credits
             return new Credit
             {
                 Id = resource.Id,
-                MovieId = resource.MovieId,
+                MovieMetadataId = resource.MovieMetadataId,
                 Name = resource.PersonName,
                 Order = resource.Order,
                 Character = resource.Character,

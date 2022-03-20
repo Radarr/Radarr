@@ -24,18 +24,21 @@ namespace NzbDrone.Core.ImportLists
         private readonly IImportListStatusService _importListStatusService;
         private readonly IImportListMovieService _listMovieService;
         private readonly ISearchForNewMovie _movieSearch;
+        private readonly IMovieMetadataService _movieMetadataService;
         private readonly Logger _logger;
 
         public FetchAndParseImportListService(IImportListFactory importListFactory,
                                               IImportListStatusService importListStatusService,
                                               IImportListMovieService listMovieService,
                                               ISearchForNewMovie movieSearch,
+                                              IMovieMetadataService movieMetadataService,
                                               Logger logger)
         {
             _importListFactory = importListFactory;
             _importListStatusService = importListStatusService;
             _listMovieService = listMovieService;
             _movieSearch = movieSearch;
+            _movieMetadataService = movieMetadataService;
             _logger = logger;
         }
 
@@ -173,33 +176,16 @@ namespace NzbDrone.Core.ImportLists
 
         private ImportListMovie MapMovieReport(ImportListMovie report)
         {
-            var mappedMovie = _movieSearch.MapMovieToTmdbMovie(new Movie { Title = report.Title, TmdbId = report.TmdbId, ImdbId = report.ImdbId, Year = report.Year });
+            var mappedMovie = _movieSearch.MapMovieToTmdbMovie(new MovieMetadata { Title = report.Title, TmdbId = report.TmdbId, ImdbId = report.ImdbId, Year = report.Year });
+
+            _movieMetadataService.Upsert(mappedMovie);
 
             var mappedListMovie = new ImportListMovie { ListId = report.ListId };
 
             if (mappedMovie != null)
             {
-                mappedListMovie.TmdbId = mappedMovie.TmdbId;
-                mappedListMovie.ImdbId = mappedMovie.ImdbId;
-                mappedListMovie.Title = mappedMovie.Title;
-                mappedListMovie.SortTitle = mappedMovie?.SortTitle;
-                mappedListMovie.Year = mappedMovie.Year;
-                mappedListMovie.Overview = mappedMovie.Overview;
-                mappedListMovie.Ratings = mappedMovie.Ratings;
-                mappedListMovie.Studio = mappedMovie.Studio;
-                mappedListMovie.Certification = mappedMovie.Certification;
-                mappedListMovie.Collection = mappedMovie.Collection;
-                mappedListMovie.Status = mappedMovie.Status;
-                mappedListMovie.Images = mappedMovie.Images;
-                mappedListMovie.Website = mappedMovie.Website;
-                mappedListMovie.YouTubeTrailerId = mappedMovie.YouTubeTrailerId;
-                mappedListMovie.Translations = mappedMovie.Translations;
-                mappedListMovie.InCinemas = mappedMovie.InCinemas;
-                mappedListMovie.PhysicalRelease = mappedMovie.PhysicalRelease;
-                mappedListMovie.DigitalRelease = mappedMovie.DigitalRelease;
-                mappedListMovie.Genres = mappedMovie.Genres;
-                mappedListMovie.Runtime = mappedMovie.Runtime;
-                mappedListMovie.OriginalTitle = mappedMovie.OriginalTitle;
+                mappedListMovie.MovieMetadata = mappedMovie;
+                mappedListMovie.MovieMetadataId = mappedMovie.Id;
             }
 
             return mappedListMovie;

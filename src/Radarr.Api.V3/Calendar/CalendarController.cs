@@ -60,13 +60,13 @@ namespace Radarr.Api.V3.Calendar
 
             var availDelay = _configService.AvailabilityDelay;
             var translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
-            var translation = GetMovieTranslation(translations, movie);
+            var translation = GetMovieTranslation(translations, movie.MovieMetadata);
             var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
 
             return resource;
         }
 
-        private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, Movie movie)
+        private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, MovieMetadata movie)
         {
             if ((Language)_configService.MovieInfoLanguage == Language.Original)
             {
@@ -77,7 +77,7 @@ namespace Radarr.Api.V3.Calendar
                 };
             }
 
-            return translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage && t.MovieId == movie.Id);
+            return translations.FirstOrDefault(t => t.Language == (Language)_configService.MovieInfoLanguage && t.MovieMetadataId == movie.Id);
         }
     }
 }

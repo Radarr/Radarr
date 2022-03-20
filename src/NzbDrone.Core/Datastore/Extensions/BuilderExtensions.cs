@@ -47,13 +47,6 @@ namespace NzbDrone.Core.Datastore
             return builder.Where(wb.ToString(), wb.Parameters);
         }
 
-        public static SqlBuilder WherePostgres<TModel>(this SqlBuilder builder, Expression<Func<TModel, bool>> filter)
-        {
-            var wb = new WhereBuilderPostgres(filter, true, builder.Sequence);
-
-            return builder.Where(wb.ToString(), wb.Parameters);
-        }
-
         public static SqlBuilder OrWhere<TModel>(this SqlBuilder builder, Expression<Func<TModel, bool>> filter)
         {
             var wb = GetWhereBuilder(builder.DatabaseType, filter, true, builder.Sequence);

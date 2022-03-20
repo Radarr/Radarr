@@ -36,11 +36,11 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         {
             _movie = Builder<Movie>.CreateNew()
                                    .With(m => m.Title = "Fack Ju Göthe 2")
-                                   .With(m => m.CleanTitle = "fackjugoethe2")
+                                   .With(m => m.MovieMetadata.Value.CleanTitle = "fackjugoethe2")
                                    .With(m => m.Year = 2015)
-                                   .With(m => m.AlternativeTitles = new List<AlternativeTitle> { new AlternativeTitle("Fack Ju Göthe 2: Same same") })
-                                   .With(m => m.Translations = new List<MovieTranslation> { new MovieTranslation { Title = "Translated Title", CleanTitle = "translatedtitle" } })
-                                   .With(m => m.OriginalLanguage = Language.English)
+                                   .With(m => m.MovieMetadata.Value.AlternativeTitles = new List<AlternativeTitle> { new AlternativeTitle("Fack Ju Göthe 2: Same same") })
+                                   .With(m => m.MovieMetadata.Value.Translations = new List<MovieTranslation> { new MovieTranslation { Title = "Translated Title", CleanTitle = "translatedtitle" } })
+                                   .With(m => m.MovieMetadata.Value.OriginalLanguage = Language.English)
                                    .Build();
 
             _parsedMovieInfo = new ParsedMovieInfo
@@ -66,14 +66,14 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
 
             _alternativeTitleInfo = new ParsedMovieInfo
             {
-                MovieTitles = new List<string> { _movie.AlternativeTitles.First().Title },
+                MovieTitles = new List<string> { _movie.MovieMetadata.Value.AlternativeTitles.First().Title },
                 Languages = new List<Language> { Language.English },
                 Year = _movie.Year,
             };
 
             _translationTitleInfo = new ParsedMovieInfo
             {
-                MovieTitles = new List<string> { _movie.Translations.First().Title },
+                MovieTitles = new List<string> { _movie.MovieMetadata.Value.Translations.First().Title },
                 Languages = new List<Language> { Language.English },
                 Year = _movie.Year,
             };

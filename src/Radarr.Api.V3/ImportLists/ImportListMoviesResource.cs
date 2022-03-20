@@ -56,27 +56,27 @@ namespace Radarr.Api.V3.ImportLists
             {
                 TmdbId = model.TmdbId,
                 Title = model.Title,
-                SortTitle = model.SortTitle,
-                InCinemas = model.InCinemas,
-                PhysicalRelease = model.PhysicalRelease,
-                DigitalRelease = model.DigitalRelease,
+                SortTitle = model.MovieMetadata.Value.SortTitle,
+                InCinemas = model.MovieMetadata.Value.InCinemas,
+                PhysicalRelease = model.MovieMetadata.Value.PhysicalRelease,
+                DigitalRelease = model.MovieMetadata.Value.DigitalRelease,
 
-                Status = model.Status,
-                Overview = model.Overview,
+                Status = model.MovieMetadata.Value.Status,
+                Overview = model.MovieMetadata.Value.Overview,
 
-                Images = model.Images,
+                Images = model.MovieMetadata.Value.Images,
 
                 Year = model.Year,
 
-                Runtime = model.Runtime,
+                Runtime = model.MovieMetadata.Value.Runtime,
                 ImdbId = model.ImdbId,
-                Certification = model.Certification,
-                Website = model.Website,
-                Genres = model.Genres,
-                Ratings = model.Ratings,
-                YouTubeTrailerId = model.YouTubeTrailerId,
-                Studio = model.Studio,
-                Collection = model.Collection
+                Certification = model.MovieMetadata.Value.Certification,
+                Website = model.MovieMetadata.Value.Website,
+                Genres = model.MovieMetadata.Value.Genres,
+                Ratings = model.MovieMetadata.Value.Ratings,
+                YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
+                Studio = model.MovieMetadata.Value.Studio,
+                Collection = model.MovieMetadata.Value.Collection
             };
         }
 
@@ -91,27 +91,27 @@ namespace Radarr.Api.V3.ImportLists
             {
                 TmdbId = model.TmdbId,
                 Title = model.Title,
-                SortTitle = model.SortTitle,
-                InCinemas = model.InCinemas,
-                PhysicalRelease = model.PhysicalRelease,
-                DigitalRelease = model.DigitalRelease,
+                SortTitle = model.MovieMetadata.Value.SortTitle,
+                InCinemas = model.MovieMetadata.Value.InCinemas,
+                PhysicalRelease = model.MovieMetadata.Value.PhysicalRelease,
+                DigitalRelease = model.MovieMetadata.Value.DigitalRelease,
 
-                Status = model.Status,
-                Overview = model.Overview,
+                Status = model.MovieMetadata.Value.Status,
+                Overview = model.MovieMetadata.Value.Overview,
 
-                Images = model.Images,
+                Images = model.MovieMetadata.Value.Images,
 
                 Year = model.Year,
 
-                Runtime = model.Runtime,
+                Runtime = model.MovieMetadata.Value.Runtime,
                 ImdbId = model.ImdbId,
-                Certification = model.Certification,
-                Website = model.Website,
-                Genres = model.Genres,
-                Ratings = model.Ratings,
-                YouTubeTrailerId = model.YouTubeTrailerId,
-                Studio = model.Studio,
-                Collection = model.Collection,
+                Certification = model.MovieMetadata.Value.Certification,
+                Website = model.MovieMetadata.Value.Website,
+                Genres = model.MovieMetadata.Value.Genres,
+                Ratings = model.MovieMetadata.Value.Ratings,
+                YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
+                Studio = model.MovieMetadata.Value.Studio,
+                Collection = model.MovieMetadata.Value.Collection,
                 Lists = new HashSet<int> { model.ListId }
             };
         }

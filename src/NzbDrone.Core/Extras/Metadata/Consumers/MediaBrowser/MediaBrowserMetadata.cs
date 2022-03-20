@@ -67,19 +67,19 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
             {
                 var movieElement = new XElement("Movie");
 
-                movieElement.Add(new XElement("id", movie.ImdbId));
-                movieElement.Add(new XElement("Status", movie.Status));
+                movieElement.Add(new XElement("id", movie.MovieMetadata.Value.ImdbId));
+                movieElement.Add(new XElement("Status", movie.MovieMetadata.Value.Status));
 
                 movieElement.Add(new XElement("Added", movie.Added.ToString("MM/dd/yyyy HH:mm:ss tt")));
                 movieElement.Add(new XElement("LockData", "false"));
-                movieElement.Add(new XElement("Overview", movie.Overview));
+                movieElement.Add(new XElement("Overview", movie.MovieMetadata.Value.Overview));
                 movieElement.Add(new XElement("LocalTitle", movie.Title));
 
-                movieElement.Add(new XElement("Rating", movie.Ratings.Tmdb?.Value ?? 0));
+                movieElement.Add(new XElement("Rating", movie.MovieMetadata.Value.Ratings.Tmdb?.Value ?? 0));
                 movieElement.Add(new XElement("ProductionYear", movie.Year));
-                movieElement.Add(new XElement("RunningTime", movie.Runtime));
-                movieElement.Add(new XElement("IMDB", movie.ImdbId));
-                movieElement.Add(new XElement("Genres", movie.Genres.Select(genre => new XElement("Genre", genre))));
+                movieElement.Add(new XElement("RunningTime", movie.MovieMetadata.Value.Runtime));
+                movieElement.Add(new XElement("IMDB", movie.MovieMetadata.Value.ImdbId));
+                movieElement.Add(new XElement("Genres", movie.MovieMetadata.Value.Genres.Select(genre => new XElement("Genre", genre))));
 
                 var doc = new XDocument(movieElement);
                 doc.Save(xw);

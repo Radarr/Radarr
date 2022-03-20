@@ -16,7 +16,7 @@ namespace Radarr.Api.V3.Movies
         //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
         //Todo: We should get the entire Profile instead of ID and Name separately
         public SourceType SourceType { get; set; }
-        public int MovieId { get; set; }
+        public int MovieMetadataId { get; set; }
         public string Title { get; set; }
         public string CleanTitle { get; set; }
         public int SourceId { get; set; }
@@ -40,7 +40,7 @@ namespace Radarr.Api.V3.Movies
             {
                 Id = model.Id,
                 SourceType = model.SourceType,
-                MovieId = model.MovieId,
+                MovieMetadataId = model.MovieMetadataId,
                 Title = model.Title,
                 SourceId = model.SourceId,
                 Votes = model.Votes,
@@ -60,7 +60,7 @@ namespace Radarr.Api.V3.Movies
             {
                 Id = resource.Id,
                 SourceType = resource.SourceType,
-                MovieId = resource.MovieId,
+                MovieMetadataId = resource.MovieMetadataId,
                 Title = resource.Title,
                 SourceId = resource.SourceId,
                 Votes = resource.Votes,

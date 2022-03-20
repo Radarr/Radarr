@@ -60,7 +60,7 @@ namespace Radarr.Api.V3.ImportLists
 
                 if (results.Count > 0)
                 {
-                    mapped = _movieInfo.GetBulkMovieInfo(results);
+                    mapped = _movieInfo.GetBulkMovieInfo(results).Select(m => new Movie { MovieMetadata = m }).ToList();
                 }
 
                 realResults.AddRange(MapToResource(mapped.Where(x => x != null), movieLanguge));
@@ -94,13 +94,13 @@ namespace Radarr.Api.V3.ImportLists
             foreach (var currentMovie in movies)
             {
                 var resource = DiscoverMoviesResourceMapper.ToResource(currentMovie);
-                var poster = currentMovie.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
+                var poster = currentMovie.MovieMetadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
                     resource.RemotePoster = poster.Url;
                 }
 
-                var translation = currentMovie.Translations.FirstOrDefault(t => t.Language == language);
+                var translation = currentMovie.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == language);
 
                 resource.Title = translation?.Title ?? resource.Title;
                 resource.Overview = translation?.Overview ?? resource.Overview;
@@ -115,17 +115,23 @@ namespace Radarr.Api.V3.ImportLists
             foreach (var currentMovie in movies)
             {
                 var resource = DiscoverMoviesResourceMapper.ToResource(currentMovie);
-                var poster = currentMovie.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
+                var poster = currentMovie.MovieMetadata.Value.Images.FirstOrDefault(c => c.CoverType == MediaCoverTypes.Poster);
                 if (poster != null)
                 {
                     resource.RemotePoster = poster.Url;
                 }
 
-                var translation = currentMovie.Translations.FirstOrDefault(t => t.Language == language);
+                var translation = currentMovie.MovieMetadata.Value.Translations.FirstOrDefault(t => t.Language == language);
 
                 resource.Title = translation?.Title ?? resource.Title;
                 resource.Overview = translation?.Overview ?? resource.Overview;
-                resource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { Title = currentMovie.Title, Year = currentMovie.Year, ImdbId = currentMovie.ImdbId, TmdbId = currentMovie.TmdbId });
+                resource.Folder = _fileNameBuilder.GetMovieFolder(new Movie
+                {
+                    Title = currentMovie.Title,
+                    Year = currentMovie.Year,
+                    ImdbId = currentMovie.ImdbId,
+                    TmdbId = currentMovie.TmdbId
+                });
 
                 yield return resource;
             }

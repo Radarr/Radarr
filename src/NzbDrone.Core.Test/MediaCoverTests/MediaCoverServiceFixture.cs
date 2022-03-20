@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.MediaCoverTests
 
             _movie = Builder<Movie>.CreateNew()
                 .With(v => v.Id = 2)
-                .With(v => v.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Poster, "") })
+                .With(v => v.MovieMetadata.Value.Images = new List<MediaCover.MediaCover> { new MediaCover.MediaCover(MediaCoverTypes.Poster, "") })
                 .Build();
 
             Mocker.GetMock<IMovieService>().Setup(m => m.GetMovie(It.Is<int>(id => id == _movie.Id))).Returns(_movie);

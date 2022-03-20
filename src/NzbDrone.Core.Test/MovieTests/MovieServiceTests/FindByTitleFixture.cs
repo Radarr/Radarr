@@ -19,15 +19,15 @@ namespace NzbDrone.Core.Test.MovieTests.MovieServiceTests
         {
             _candidates = Builder<Movie>.CreateListOfSize(3)
                                         .TheFirst(1)
-                                        .With(x => x.CleanTitle = "batman")
+                                        .With(x => x.MovieMetadata.Value.CleanTitle = "batman")
                                         .With(x => x.Year = 2000)
                                         .TheNext(1)
-                                        .With(x => x.CleanTitle = "batman")
+                                        .With(x => x.MovieMetadata.Value.CleanTitle = "batman")
                                         .With(x => x.Year = 1999)
                                         .TheRest()
-                                        .With(x => x.CleanTitle = "darkknight")
+                                        .With(x => x.MovieMetadata.Value.CleanTitle = "darkknight")
                                         .With(x => x.Year = 2008)
-                                        .With(x => x.AlternativeTitles = new List<AlternativeTitle>
+                                        .With(x => x.MovieMetadata.Value.AlternativeTitles = new List<AlternativeTitle>
                                         {
                                             new AlternativeTitle
                                             {

@@ -34,10 +34,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             var qualityDefinition = _qualityDefinitionService.Get(quality);
 
-            if (subject.Movie.Runtime == 0)
+            if (subject.Movie.MovieMetadata.Value.Runtime == 0)
             {
                 _logger.Warn("{0} has no runtime information using median movie runtime of 110 minutes.", subject.Movie);
-                subject.Movie.Runtime = 110;
+                subject.Movie.MovieMetadata.Value.Runtime = 110;
             }
 
             if (qualityDefinition.MinSize.HasValue)
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 var minSize = qualityDefinition.MinSize.Value.Megabytes();
 
                 //Multiply maxSize by Series.Runtime
-                minSize = minSize * subject.Movie.Runtime;
+                minSize = minSize * subject.Movie.MovieMetadata.Value.Runtime;
 
                 //If the parsed size is smaller than minSize we don't want it
                 if (subject.Release.Size < minSize)
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 _logger.Debug("Max size is unlimited, skipping check");
             }
-            else if (subject.Movie.Runtime == 0)
+            else if (subject.Movie.MovieMetadata.Value.Runtime == 0)
             {
                 _logger.Debug("Movie runtime is 0, unable to validate size until it is available, rejecting");
                 return Decision.Reject("Movie runtime is 0, unable to validate size until it is available");
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 var maxSize = qualityDefinition.MaxSize.Value.Megabytes();
 
                 //Multiply maxSize by Series.Runtime
-                maxSize = maxSize * subject.Movie.Runtime;
+                maxSize = maxSize * subject.Movie.MovieMetadata.Value.Runtime;
 
                 //If the parsed size is greater than maxSize we don't want it
                 if (subject.Release.Size > maxSize)

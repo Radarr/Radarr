@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Organizer
 
         private static MovieFile _movieFile;
         private static Movie _movie;
+        private static MovieMetadata _movieMetadata;
         private static List<CustomFormat> _customFormats;
 
         public FileNameSampleService(IBuildFileNames buildFileNames)
@@ -49,7 +50,7 @@ namespace NzbDrone.Core.Organizer
                 Edition = "Ultimate extended edition",
             };
 
-            _movie = new Movie
+            _movieMetadata = new MovieMetadata
             {
                 Title = "The Movie: Title",
                 OriginalTitle = "The Original Movie Title",
@@ -57,9 +58,15 @@ namespace NzbDrone.Core.Organizer
                 Certification = "R",
                 Year = 2010,
                 ImdbId = "tt0066921",
-                TmdbId = 345691,
+                TmdbId = 345691
+            };
+
+            _movie = new Movie
+            {
                 MovieFile = _movieFile,
                 MovieFileId = 1,
+                MovieMetadata = _movieMetadata,
+                MovieMetadataId = 1
             };
 
             _customFormats = new List<CustomFormat>

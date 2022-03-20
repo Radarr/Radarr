@@ -27,7 +27,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return Decision.Accept();
             }
 
-            var originalLanguage = subject.Movie.OriginalLanguage;
+            var originalLanguage = subject.Movie.MovieMetadata.Value.OriginalLanguage;
 
             if (wantedLanguage == Language.Original)
             {

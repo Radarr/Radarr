@@ -48,11 +48,6 @@ namespace NzbDrone.Core.ImportLists.Radarr
                         {
                             TmdbId = remoteMovie.TmdbId,
                             Title = remoteMovie.Title,
-                            SortTitle = remoteMovie.SortTitle,
-                            Overview = remoteMovie.Overview,
-                            Images = remoteMovie.Images.Select(x => MapImage(x, Settings.BaseUrl)).ToList(),
-                            PhysicalRelease = remoteMovie.PhysicalRelease,
-                            InCinemas = remoteMovie.InCinemas,
                             Year = remoteMovie.Year
                         });
                     }
