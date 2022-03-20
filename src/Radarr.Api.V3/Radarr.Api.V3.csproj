@@ -5,7 +5,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="Ical.Net" Version="4.2.0" />
-    <PackageReference Include="NLog" Version="4.7.12" />
+    <PackageReference Include="NLog" Version="4.7.14" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Core\Radarr.Core.csproj" />

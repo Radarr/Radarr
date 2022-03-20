@@ -3,7 +3,7 @@
     <TargetFrameworks>net6.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.7.12" />
+    <PackageReference Include="NLog" Version="4.7.14" />
     <PackageReference Include="System.IO.FileSystem.AccessControl" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
