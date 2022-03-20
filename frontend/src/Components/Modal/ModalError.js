@@ -37,7 +37,8 @@ function ModalError(props) {
           {translate('Close')}
         </Button>
       </ModalFooter>
-    </ModalContent>);
+    </ModalContent>
+  );
 }
 
 ModalError.propTypes = {
