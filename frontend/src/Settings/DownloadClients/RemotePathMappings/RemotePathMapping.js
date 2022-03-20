@@ -28,26 +28,26 @@ class RemotePathMapping extends Component {
 
   onEditRemotePathMappingPress = () => {
     this.setState({ isEditRemotePathMappingModalOpen: true });
-  }
+  };
 
   onEditRemotePathMappingModalClose = () => {
     this.setState({ isEditRemotePathMappingModalOpen: false });
-  }
+  };
 
   onDeleteRemotePathMappingPress = () => {
     this.setState({
       isEditRemotePathMappingModalOpen: false,
       isDeleteRemotePathMappingModalOpen: true
     });
-  }
+  };
 
   onDeleteRemotePathMappingModalClose = () => {
     this.setState({ isDeleteRemotePathMappingModalOpen: false });
-  }
+  };
 
   onConfirmDeleteRemotePathMapping = () => {
     this.props.onConfirmDeleteRemotePathMapping(this.props.id);
-  }
+  };
 
   //
   // Render

@@ -53,22 +53,22 @@ class MovieIndexOverview extends Component {
 
   onEditMoviePress = () => {
     this.setState({ isEditMovieModalOpen: true });
-  }
+  };
 
   onEditMovieModalClose = () => {
     this.setState({ isEditMovieModalOpen: false });
-  }
+  };
 
   onDeleteMoviePress = () => {
     this.setState({
       isEditMovieModalOpen: false,
       isDeleteMovieModalOpen: true
     });
-  }
+  };
 
   onDeleteMovieModalClose = () => {
     this.setState({ isDeleteMovieModalOpen: false });
-  }
+  };
 
   onChange = ({ value, shiftKey }) => {
     const {
@@ -77,7 +77,7 @@ class MovieIndexOverview extends Component {
     } = this.props;
 
     onSelectedChange({ id, value, shiftKey });
-  }
+  };
 
   //
   // Render

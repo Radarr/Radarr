@@ -14,7 +14,7 @@ class QualityProfileFormatItem extends Component {
     } = this.props;
 
     this.props.onScoreChange(formatId, value);
-  }
+  };
 
   //
   // Render

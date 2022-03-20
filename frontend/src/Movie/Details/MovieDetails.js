@@ -111,42 +111,42 @@ class MovieDetails extends Component {
 
   onOrganizePress = () => {
     this.setState({ isOrganizeModalOpen: true });
-  }
+  };
 
   onOrganizeModalClose = () => {
     this.setState({ isOrganizeModalOpen: false });
-  }
+  };
 
   onManageEpisodesPress = () => {
     this.setState({ isManageEpisodesOpen: true });
-  }
+  };
 
   onInteractiveImportPress = () => {
     this.setState({ isInteractiveImportModalOpen: true });
-  }
+  };
 
   onInteractiveImportModalClose = () => {
     this.setState({ isInteractiveImportModalOpen: false });
-  }
+  };
 
   onEditMoviePress = () => {
     this.setState({ isEditMovieModalOpen: true });
-  }
+  };
 
   onEditMovieModalClose = () => {
     this.setState({ isEditMovieModalOpen: false });
-  }
+  };
 
   onDeleteMoviePress = () => {
     this.setState({
       isEditMovieModalOpen: false,
       isDeleteMovieModalOpen: true
     });
-  }
+  };
 
   onDeleteMovieModalClose = () => {
     this.setState({ isDeleteMovieModalOpen: false });
-  }
+  };
 
   onExpandAllPress = () => {
     const {
@@ -155,7 +155,7 @@ class MovieDetails extends Component {
     } = this.state;
 
     this.setState(getExpandedState(selectAll(expandedState, !allExpanded)));
-  }
+  };
 
   onExpandPress = (seasonNumber, isExpanded) => {
     this.setState((state) => {
@@ -169,15 +169,15 @@ class MovieDetails extends Component {
 
       return getExpandedState(newState);
     });
-  }
+  };
 
   onMeasure = ({ height }) => {
     this.setState({ overviewHeight: height });
-  }
+  };
 
   onTitleMeasure = ({ width }) => {
     this.setState({ titleWidth: width });
-  }
+  };
 
   onKeyUp = (event) => {
     if (event.composedPath && event.composedPath().length === 4) {
@@ -188,7 +188,7 @@ class MovieDetails extends Component {
         this.props.onGoToMovie(this.props.nextMovie.titleSlug);
       }
     }
-  }
+  };
 
   onTouchStart = (event) => {
     const touches = event.touches;
@@ -213,7 +213,7 @@ class MovieDetails extends Component {
     }
 
     this._touchStart = touchStart;
-  }
+  };
 
   onTouchEnd = (event) => {
     const touches = event.changedTouches;
@@ -230,21 +230,21 @@ class MovieDetails extends Component {
     }
 
     this._touchStart = null;
-  }
+  };
 
   onTouchCancel = (event) => {
     this._touchStart = null;
-  }
+  };
 
   onTouchMove = (event) => {
     if (!this._touchStart) {
       return;
     }
-  }
+  };
 
   onTabSelect = (index, lastIndex) => {
     this.setState({ selectedTabIndex: index });
-  }
+  };
 
   //
   // Render

@@ -72,7 +72,7 @@ class DownloadClientOptionsConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.dispatchSetDownloadClientOptionsValue({ name, value });
-  }
+  };
 
   //
   // Render

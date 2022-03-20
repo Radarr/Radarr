@@ -124,7 +124,7 @@ class Menu extends Component {
       this.setState({ isMenuOpen: false });
       this._removeListener();
     }
-  }
+  };
 
   onTouchStart = (event) => {
     const menuButton = document.getElementById(this._menuButtonId);
@@ -148,17 +148,17 @@ class Menu extends Component {
       this.setState({ isMenuOpen: false });
       this._removeListener();
     }
-  }
+  };
 
   onWindowResize = () => {
     this.setMaxHeight();
-  }
+  };
 
   onWindowScroll = (event) => {
     if (this.state.isMenuOpen) {
       this.setMaxHeight();
     }
-  }
+  };
 
   onMenuButtonPress = () => {
     const state = {
@@ -173,7 +173,7 @@ class Menu extends Component {
     }
 
     this.setState(state);
-  }
+  };
 
   //
   // Render

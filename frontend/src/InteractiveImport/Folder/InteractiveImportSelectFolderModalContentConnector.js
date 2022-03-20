@@ -38,16 +38,16 @@ class InteractiveImportSelectFolderModalContentConnector extends Component {
     });
 
     this.props.onModalClose();
-  }
+  };
 
   onInteractiveImportPress = (folder) => {
     this.props.addRecentFolder({ folder });
     this.props.onFolderSelect(folder);
-  }
+  };
 
   onRemoveRecentFolderPress = (folder) => {
     this.props.removeRecentFolder({ folder });
-  }
+  };
 
   //
   // Render

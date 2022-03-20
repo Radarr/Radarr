@@ -99,7 +99,7 @@ class MovieIndexPosterOptionsModalContent extends Component {
     }, () => {
       this.props.onChangePosterOption({ [name]: value });
     });
-  }
+  };
 
   //
   // Render

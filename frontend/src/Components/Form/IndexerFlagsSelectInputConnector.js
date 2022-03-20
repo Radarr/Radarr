@@ -43,7 +43,7 @@ class IndexerFlagsSelectInputConnector extends Component {
     });
 
     this.props.onChange({ name, value: indexerFlags });
-  }
+  };
 
   //
   // Render

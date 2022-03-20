@@ -15,7 +15,7 @@ class RecentFolderRow extends Component {
 
   onPress = () => {
     this.props.onPress(this.props.folder);
-  }
+  };
 
   onRemovePress = (event) => {
     event.stopPropagation();
@@ -26,7 +26,7 @@ class RecentFolderRow extends Component {
     } = this.props;
 
     onRemoveRecentFolderPress(folder);
-  }
+  };
 
   //
   // Render

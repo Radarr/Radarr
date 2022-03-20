@@ -46,11 +46,11 @@ class LogsTableRow extends Component {
     if (!this.state.isDetailsModalOpen) {
       this.setState({ isDetailsModalOpen: true });
     }
-  }
+  };
 
   onModalClose = () => {
     this.setState({ isDetailsModalOpen: false });
-  }
+  };
 
   //
   // Render

@@ -69,7 +69,7 @@ class DiscoverMoviePosterOptionsModalContent extends Component {
     }, () => {
       this.props.onChangePosterOption({ [name]: value });
     });
-  }
+  };
 
   onChangeOption = ({ name, value }) => {
     this.setState({
@@ -79,7 +79,7 @@ class DiscoverMoviePosterOptionsModalContent extends Component {
         [name]: value
       });
     });
-  }
+  };
 
   //
   // Render

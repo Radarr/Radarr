@@ -20,7 +20,7 @@ class AddSpecificationItem extends Component {
     } = this.props;
 
     this.props.onSpecificationSelect({ implementation });
-  }
+  };
 
   //
   // Render

@@ -57,7 +57,7 @@ class MovieCollectionConnector extends Component {
       this.props.setImportListValue({ name: 'monitored', value: this.props.monitored });
       this.props.setImportListValue({ name: 'minimumAvailability', value: this.props.minimumAvailability });
     }
-  }
+  };
 
   //
   // Render

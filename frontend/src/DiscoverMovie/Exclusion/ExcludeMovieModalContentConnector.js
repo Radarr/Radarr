@@ -17,7 +17,7 @@ class ExcludeMovieModalContentConnector extends Component {
     this.props.addImportExclusions({ ids: [this.props.tmdbId] });
 
     this.props.onModalClose(true);
-  }
+  };
 
   //
   // Render

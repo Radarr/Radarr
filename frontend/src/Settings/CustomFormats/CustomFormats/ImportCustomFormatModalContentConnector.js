@@ -53,7 +53,7 @@ class ImportCustomFormatModalContentConnector extends Component {
     this.props.clearPendingChanges({ section: 'settings.customFormats' });
     this.props.clearCustomFormatSpecificationPending();
     this.props.deleteAllCustomFormatSpecification();
-  }
+  };
 
   onImportPress = (payload) => {
 
@@ -71,7 +71,7 @@ class ImportCustomFormatModalContentConnector extends Component {
     }
 
     return null;
-  }
+  };
 
   parseCf = (cf) => {
     for (const [key, value] of Object.entries(cf)) {
@@ -83,7 +83,7 @@ class ImportCustomFormatModalContentConnector extends Component {
         this.props.setCustomFormatValue({ name: key, value });
       }
     }
-  }
+  };
 
   parseSpecification = (spec) => {
     const selectedImplementation = _.find(this.props.specificationSchema, { implementation: spec.implementation });
@@ -103,7 +103,7 @@ class ImportCustomFormatModalContentConnector extends Component {
     }
 
     this.props.saveCustomFormatSpecification();
-  }
+  };
 
   parseFields = (fields, schema) => {
     for (const [key, value] of Object.entries(fields)) {
@@ -114,7 +114,7 @@ class ImportCustomFormatModalContentConnector extends Component {
 
       this.props.setCustomFormatSpecificationFieldValue({ name: key, value });
     }
-  }
+  };
 
   //
   // Render

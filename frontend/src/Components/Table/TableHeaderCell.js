@@ -21,7 +21,7 @@ class TableHeaderCell extends Component {
     } else {
       this.props.onSortPress(name);
     }
-  }
+  };
 
   //
   // Render

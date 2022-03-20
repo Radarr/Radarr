@@ -38,7 +38,7 @@ class RestrictionsConnector extends Component {
 
   onConfirmDeleteRestriction = (id) => {
     this.props.deleteRestriction({ id });
-  }
+  };
 
   //
   // Render

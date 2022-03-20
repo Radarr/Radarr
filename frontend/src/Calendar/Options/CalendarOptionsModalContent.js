@@ -69,7 +69,7 @@ class CalendarOptionsModalContent extends Component {
     } = this.props;
 
     dispatchSetCalendarOption({ [name]: value });
-  }
+  };
 
   onGlobalInputChange = ({ name, value }) => {
     const {
@@ -81,11 +81,11 @@ class CalendarOptionsModalContent extends Component {
     this.setState(setting, () => {
       dispatchSaveUISettings(setting);
     });
-  }
+  };
 
   onLinkFocus = (event) => {
     event.target.select();
-  }
+  };
 
   //
   // Render

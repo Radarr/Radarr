@@ -49,7 +49,7 @@ class AutoSuggestInput extends Component {
         }}
       </Reference>
     );
-  }
+  };
 
   renderSuggestionsContainer = ({ containerProps, children }) => {
     return (
@@ -90,7 +90,7 @@ class AutoSuggestInput extends Component {
         </Popper>
       </Portal>
     );
-  }
+  };
 
   //
   // Listeners
@@ -113,14 +113,14 @@ class AutoSuggestInput extends Component {
     data.styles.width = width;
 
     return data;
-  }
+  };
 
   onInputChange = (event, { newValue }) => {
     this.props.onChange({
       name: this.props.name,
       value: newValue
     });
-  }
+  };
 
   onInputKeyDown = (event) => {
     const {
@@ -144,7 +144,7 @@ class AutoSuggestInput extends Component {
         });
       }
     }
-  }
+  };
 
   //
   // Render

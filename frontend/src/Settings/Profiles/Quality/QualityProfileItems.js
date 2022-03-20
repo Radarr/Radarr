@@ -37,11 +37,11 @@ class QualityProfileItems extends Component {
     } else {
       this.setState({ qualitiesHeight: height });
     }
-  }
+  };
 
   onToggleEditGroupsMode = () => {
     this.props.onToggleEditGroupsMode();
-  }
+  };
 
   //
   // Render

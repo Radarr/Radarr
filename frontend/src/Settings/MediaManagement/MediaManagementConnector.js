@@ -54,12 +54,12 @@ class MediaManagementConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setMediaManagementSettingsValue({ name, value });
-  }
+  };
 
   onSavePress = () => {
     this.props.saveMediaManagementSettings();
     this.props.saveNamingSettings();
-  }
+  };
 
   //
   // Render

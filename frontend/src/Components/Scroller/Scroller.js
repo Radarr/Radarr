@@ -38,7 +38,7 @@ class Scroller extends Component {
     this._scroller = ref;
 
     this.props.registerScroller(ref);
-  }
+  };
 
   //
   // Render

@@ -30,34 +30,34 @@ class CustomFormat extends Component {
 
   onEditCustomFormatPress = () => {
     this.setState({ isEditCustomFormatModalOpen: true });
-  }
+  };
 
   onEditCustomFormatModalClose = () => {
     this.setState({ isEditCustomFormatModalOpen: false });
-  }
+  };
 
   onExportCustomFormatPress = () => {
     this.setState({ isExportCustomFormatModalOpen: true });
-  }
+  };
 
   onExportCustomFormatModalClose = () => {
     this.setState({ isExportCustomFormatModalOpen: false });
-  }
+  };
 
   onDeleteCustomFormatPress = () => {
     this.setState({
       isEditCustomFormatModalOpen: false,
       isDeleteCustomFormatModalOpen: true
     });
-  }
+  };
 
   onDeleteCustomFormatModalClose = () => {
     this.setState({ isDeleteCustomFormatModalOpen: false });
-  }
+  };
 
   onConfirmDeleteCustomFormat = () => {
     this.props.onConfirmDeleteCustomFormat(this.props.id);
-  }
+  };
 
   onCloneCustomFormatPress = () => {
     const {
@@ -66,7 +66,7 @@ class CustomFormat extends Component {
     } = this.props;
 
     onCloneCustomFormatPress(id);
-  }
+  };
 
   //
   // Render

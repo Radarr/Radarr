@@ -90,45 +90,45 @@ class Queue extends Component {
 
   getSelectedIds = () => {
     return getSelectedIds(this.state.selectedState);
-  }
+  };
 
   //
   // Listeners
 
   onQueueRowModalOpenOrClose = (isOpen) => {
     this._shouldBlockRefresh = isOpen;
-  }
+  };
 
   onSelectAllChange = ({ value }) => {
     this.setState(selectAll(this.state.selectedState, value));
-  }
+  };
 
   onSelectedChange = ({ id, value, shiftKey = false }) => {
     this.setState((state) => {
       return toggleSelected(state, this.props.items, id, value, shiftKey);
     });
-  }
+  };
 
   onGrabSelectedPress = () => {
     this.props.onGrabSelectedPress(this.getSelectedIds());
-  }
+  };
 
   onRemoveSelectedPress = () => {
     this.setState({ isConfirmRemoveModalOpen: true }, () => {
       this._shouldBlockRefresh = true;
     });
-  }
+  };
 
   onRemoveSelectedConfirmed = (payload) => {
     this._shouldBlockRefresh = false;
     this.props.onRemoveSelectedPress({ ids: this.getSelectedIds(), ...payload });
     this.setState({ isConfirmRemoveModalOpen: false });
-  }
+  };
 
   onConfirmRemoveModalClose = () => {
     this._shouldBlockRefresh = false;
     this.setState({ isConfirmRemoveModalOpen: false });
-  }
+  };
 
   //
   // Render

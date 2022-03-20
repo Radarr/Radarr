@@ -28,7 +28,7 @@ class InteractiveImportModal extends Component {
 
   onFolderSelect = (folder) => {
     this.setState({ folder });
-  }
+  };
 
   //
   // Render

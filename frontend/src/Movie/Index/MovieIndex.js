@@ -115,14 +115,14 @@ class MovieIndex extends Component {
 
   setScrollerRef = (ref) => {
     this.setState({ scroller: ref });
-  }
+  };
 
   getSelectedIds = () => {
     if (this.state.allUnselected) {
       return [];
     }
     return getSelectedIds(this.state.selectedState);
-  }
+  };
 
   setSelectedState() {
     const {
@@ -208,27 +208,27 @@ class MovieIndex extends Component {
 
   onPosterOptionsPress = () => {
     this.setState({ isPosterOptionsModalOpen: true });
-  }
+  };
 
   onPosterOptionsModalClose = () => {
     this.setState({ isPosterOptionsModalOpen: false });
-  }
+  };
 
   onOverviewOptionsPress = () => {
     this.setState({ isOverviewOptionsModalOpen: true });
-  }
+  };
 
   onOverviewOptionsModalClose = () => {
     this.setState({ isOverviewOptionsModalOpen: false });
-  }
+  };
 
   onInteractiveImportPress = () => {
     this.setState({ isInteractiveImportModalOpen: true });
-  }
+  };
 
   onInteractiveImportModalClose = () => {
     this.setState({ isInteractiveImportModalOpen: false });
-  }
+  };
 
   onMovieEditorTogglePress = () => {
     if (this.state.isMovieEditorActive) {
@@ -238,11 +238,11 @@ class MovieIndex extends Component {
       newState.isMovieEditorActive = true;
       this.setState(newState);
     }
-  }
+  };
 
   onJumpBarItemPress = (jumpToCharacter) => {
     this.setState({ jumpToCharacter });
-  }
+  };
 
   onKeyUp = (event) => {
     const jumpBarItems = this.state.jumpBarItems.order;
@@ -254,32 +254,32 @@ class MovieIndex extends Component {
         this.setState({ jumpToCharacter: jumpBarItems[jumpBarItems.length - 1] });
       }
     }
-  }
+  };
 
   onSelectAllChange = ({ value }) => {
     this.setState(selectAll(this.state.selectedState, value));
-  }
+  };
 
   onSelectAllPress = () => {
     this.onSelectAllChange({ value: !this.state.allSelected });
-  }
+  };
 
   onSelectedChange = ({ id, value, shiftKey = false }) => {
     this.setState((state) => {
       return toggleSelected(state, this.props.items, id, value, shiftKey);
     });
-  }
+  };
 
   onSaveSelected = (changes) => {
     this.props.onSaveSelected({
       movieIds: this.getSelectedIds(),
       ...changes
     });
-  }
+  };
 
   onOrganizeMoviePress = () => {
     this.setState({ isOrganizingMovieModalOpen: true });
-  }
+  };
 
   onOrganizeMovieModalClose = (organized) => {
     this.setState({ isOrganizingMovieModalOpen: false });
@@ -287,18 +287,18 @@ class MovieIndex extends Component {
     if (organized === true) {
       this.onSelectAllChange({ value: false });
     }
-  }
+  };
 
   onSearchPress = () => {
     this.setState({ isConfirmSearchModalOpen: true, searchType: 'moviesSearch' });
-  }
+  };
 
   onRefreshMoviePress = () => {
     const selectedMovieIds = this.getSelectedIds();
     const refreshIds = this.state.isMovieEditorActive && selectedMovieIds.length > 0 ? selectedMovieIds : [];
 
     this.props.onRefreshMoviePress(refreshIds);
-  }
+  };
 
   onSearchConfirmed = () => {
     const selectedMovieIds = this.getSelectedIds();
@@ -306,11 +306,11 @@ class MovieIndex extends Component {
 
     this.props.onSearchPress(this.state.searchType, searchIds);
     this.setState({ isConfirmSearchModalOpen: false });
-  }
+  };
 
   onConfirmSearchModalClose = () => {
     this.setState({ isConfirmSearchModalOpen: false });
-  }
+  };
 
   //
   // Render

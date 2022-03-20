@@ -41,19 +41,19 @@ class CalendarHeaderConnector extends Component {
 
   onViewChange = (view) => {
     this.props.setCalendarView({ view });
-  }
+  };
 
   onTodayPress = () => {
     this.props.gotoCalendarToday();
-  }
+  };
 
   onPreviousPress = () => {
     this.props.gotoCalendarPreviousRange();
-  }
+  };
 
   onNextPress = () => {
     this.props.gotoCalendarNextRange();
-  }
+  };
 
   //
   // Render

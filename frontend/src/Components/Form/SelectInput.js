@@ -13,7 +13,7 @@ class SelectInput extends Component {
       name: this.props.name,
       value: event.target.value
     });
-  }
+  };
 
   //
   // Render

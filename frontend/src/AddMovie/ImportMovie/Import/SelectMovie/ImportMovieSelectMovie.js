@@ -69,7 +69,7 @@ class ImportMovieSelectMovie extends Component {
       this.setState({ isOpen: false });
       this._removeListener();
     }
-  }
+  };
 
   onPress = () => {
     if (this.state.isOpen) {
@@ -79,7 +79,7 @@ class ImportMovieSelectMovie extends Component {
     }
 
     this.setState({ isOpen: !this.state.isOpen });
-  }
+  };
 
   onSearchInputChange = ({ value }) => {
     if (this._movieLookupTimeout) {
@@ -91,17 +91,17 @@ class ImportMovieSelectMovie extends Component {
         this.props.onSearchInputChange(value);
       }, 200);
     });
-  }
+  };
 
   onRefreshPress = () => {
     this.props.onSearchInputChange(this.state.term);
-  }
+  };
 
   onMovieSelect = (tmdbId) => {
     this.setState({ isOpen: false });
 
     this.props.onMovieSelect(tmdbId);
-  }
+  };
 
   //
   // Render

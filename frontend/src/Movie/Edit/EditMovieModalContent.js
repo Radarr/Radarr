@@ -44,13 +44,13 @@ class EditMovieModalContent extends Component {
 
       onSavePress(false);
     }
-  }
+  };
 
   onMoveMoviePress = () => {
     this.setState({ isConfirmMoveModalOpen: false });
 
     this.props.onSavePress(true);
-  }
+  };
 
   //
   // Render

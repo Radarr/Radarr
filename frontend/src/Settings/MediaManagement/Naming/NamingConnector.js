@@ -58,7 +58,7 @@ class NamingConnector extends Component {
 
   _fetchNamingExamples = () => {
     this.props.fetchNamingExamples();
-  }
+  };
 
   //
   // Listeners
@@ -71,7 +71,7 @@ class NamingConnector extends Component {
     }
 
     this._namingExampleTimeout = setTimeout(this._fetchNamingExamples, 1000);
-  }
+  };
 
   //
   // Render

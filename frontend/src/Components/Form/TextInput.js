@@ -35,7 +35,7 @@ class TextInput extends Component {
 
   setInputRef = (ref) => {
     this._input = ref;
-  }
+  };
 
   selectionChange() {
     if (this._selectionTimeout) {
@@ -82,7 +82,7 @@ class TextInput extends Component {
     }
 
     onChange(payload);
-  }
+  };
 
   onFocus = (event) => {
     if (this.props.onFocus) {
@@ -90,19 +90,19 @@ class TextInput extends Component {
     }
 
     this.selectionChange();
-  }
+  };
 
   onKeyUp = () => {
     this.selectionChange();
-  }
+  };
 
   onMouseDown = () => {
     this._isMouseTarget = true;
-  }
+  };
 
   onMouseUp = () => {
     this.selectionChange();
-  }
+  };
 
   onDocumentMouseUp = () => {
     if (this._isMouseTarget) {
@@ -110,7 +110,7 @@ class TextInput extends Component {
     }
 
     this._isMouseTarget = false;
-  }
+  };
 
   //
   // Render

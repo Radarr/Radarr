@@ -26,7 +26,7 @@ class MonitorToggleButton extends Component {
     const shiftKey = event.nativeEvent.shiftKey;
 
     this.props.onPress(!this.props.monitored, { shiftKey });
-  }
+  };
 
   //
   // Render

@@ -27,26 +27,26 @@ class ImportList extends Component {
 
   onEditImportListPress = () => {
     this.setState({ isEditImportListModalOpen: true });
-  }
+  };
 
   onEditImportListModalClose = () => {
     this.setState({ isEditImportListModalOpen: false });
-  }
+  };
 
   onDeleteImportListPress = () => {
     this.setState({
       isEditImportListModalOpen: false,
       isDeleteImportListModalOpen: true
     });
-  }
+  };
 
   onDeleteImportListModalClose= () => {
     this.setState({ isDeleteImportListModalOpen: false });
-  }
+  };
 
   onConfirmDeleteImportList = () => {
     this.props.onConfirmDeleteImportList(this.props.id);
-  }
+  };
 
   //
   // Render

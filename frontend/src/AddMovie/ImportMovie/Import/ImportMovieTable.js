@@ -121,7 +121,7 @@ class ImportMovieTable extends Component {
         />
       </VirtualTableRow>
     );
-  }
+  };
 
   //
   // Render

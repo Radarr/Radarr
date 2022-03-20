@@ -192,14 +192,14 @@ class EditQualityProfileModalContentConnector extends Component {
 
       this.props.setQualityProfileValue({ name: 'cutoff', value: cutoffId });
     }
-  }
+  };
 
   //
   // Listeners
 
   onInputChange = ({ name, value }) => {
     this.props.setQualityProfileValue({ name, value });
-  }
+  };
 
   onCutoffChange = ({ name, value }) => {
     const id = parseInt(value);
@@ -214,7 +214,7 @@ class EditQualityProfileModalContentConnector extends Component {
     const cutoffId = item.quality ? item.quality.id : item.id;
 
     this.props.setQualityProfileValue({ name, value: cutoffId });
-  }
+  };
 
   onLanguageChange = ({ name, value }) => {
 
@@ -223,11 +223,11 @@ class EditQualityProfileModalContentConnector extends Component {
     const language = _.find(this.props.languages, (item) => item.key === id);
 
     this.props.setQualityProfileValue({ name, value: { id: language.key, Name: language.value } });
-  }
+  };
 
   onSavePress = () => {
     this.props.saveQualityProfile({ id: this.props.id });
-  }
+  };
 
   onQualityProfileItemAllowedChange = (id, allowed) => {
     const qualityProfile = _.cloneDeep(this.props.item);
@@ -242,7 +242,7 @@ class EditQualityProfileModalContentConnector extends Component {
     });
 
     this.ensureCutoff(qualityProfile);
-  }
+  };
 
   onQualityProfileFormatItemScoreChange = (id, score) => {
     const qualityProfile = _.cloneDeep(this.props.item);
@@ -255,7 +255,7 @@ class EditQualityProfileModalContentConnector extends Component {
       name: 'formatItems',
       value: formatItems
     });
-  }
+  };
 
   onItemGroupAllowedChange = (id, allowed) => {
     const qualityProfile = _.cloneDeep(this.props.item);
@@ -275,7 +275,7 @@ class EditQualityProfileModalContentConnector extends Component {
     });
 
     this.ensureCutoff(qualityProfile);
-  }
+  };
 
   onItemGroupNameChange = (id, name) => {
     const qualityProfile = _.cloneDeep(this.props.item);
@@ -288,7 +288,7 @@ class EditQualityProfileModalContentConnector extends Component {
       name: 'items',
       value: items
     });
-  }
+  };
 
   onCreateGroupPress = (id) => {
     const qualityProfile = _.cloneDeep(this.props.item);
@@ -315,7 +315,7 @@ class EditQualityProfileModalContentConnector extends Component {
     });
 
     this.ensureCutoff(qualityProfile);
-  }
+  };
 
   onDeleteGroupPress = (id) => {
     const qualityProfile = _.cloneDeep(this.props.item);
@@ -332,7 +332,7 @@ class EditQualityProfileModalContentConnector extends Component {
     });
 
     this.ensureCutoff(qualityProfile);
-  }
+  };
 
   onQualityProfileItemDragMove = (options) => {
     const {
@@ -418,7 +418,7 @@ class EditQualityProfileModalContentConnector extends Component {
         dropPosition
       });
     }
-  }
+  };
 
   onQualityProfileItemDragEnd = (didDrop) => {
     const {
@@ -471,11 +471,11 @@ class EditQualityProfileModalContentConnector extends Component {
       dropQualityIndex: null,
       dropPosition: null
     });
-  }
+  };
 
   onToggleEditGroupsMode = () => {
     this.setState({ editGroups: !this.state.editGroups });
-  }
+  };
 
   //
   // Render

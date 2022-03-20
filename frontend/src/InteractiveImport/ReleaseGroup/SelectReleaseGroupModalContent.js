@@ -34,11 +34,11 @@ class SelectReleaseGroupModalContent extends Component {
 
   onReleaseGroupChange = ({ value }) => {
     this.setState({ releaseGroup: value });
-  }
+  };
 
   onReleaseGroupSelect = () => {
     this.props.onReleaseGroupSelect(this.state);
-  }
+  };
 
   //
   // Render

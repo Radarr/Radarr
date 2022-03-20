@@ -29,15 +29,15 @@ class QualityProfiles extends Component {
   onCloneQualityProfilePress = (id) => {
     this.props.onCloneQualityProfilePress(id);
     this.setState({ isQualityProfileModalOpen: true });
-  }
+  };
 
   onEditQualityProfilePress = () => {
     this.setState({ isQualityProfileModalOpen: true });
-  }
+  };
 
   onModalClose = () => {
     this.setState({ isQualityProfileModalOpen: false });
-  }
+  };
 
   //
   // Render

@@ -33,7 +33,7 @@ class EditDownloadClientModalConnector extends Component {
     this.props.dispatchCancelTestDownloadClient();
     this.props.dispatchCancelSaveDownloadClient();
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

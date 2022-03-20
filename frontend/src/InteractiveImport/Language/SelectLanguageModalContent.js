@@ -52,11 +52,11 @@ class SelectLanguageModalContent extends Component {
     }
 
     this.setState({ languageIds: newLanguages });
-  }
+  };
 
   onLanguageSelect = () => {
     this.props.onLanguageSelect(this.state);
-  }
+  };
 
   //
   // Render

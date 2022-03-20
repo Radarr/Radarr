@@ -28,26 +28,26 @@ class ImportListExclusion extends Component {
 
   onEditImportExclusionPress = () => {
     this.setState({ isEditImportExclusionModalOpen: true });
-  }
+  };
 
   onEditImportExclusionModalClose = () => {
     this.setState({ isEditImportExclusionModalOpen: false });
-  }
+  };
 
   onDeleteImportExclusionPress = () => {
     this.setState({
       isEditImportExclusionModalOpen: false,
       isDeleteImportExclusionModalOpen: true
     });
-  }
+  };
 
   onDeleteImportExclusionModalClose = () => {
     this.setState({ isDeleteImportExclusionModalOpen: false });
-  }
+  };
 
   onConfirmDeleteImportExclusion = () => {
     this.props.onConfirmDeleteImportExclusion(this.props.id);
-  }
+  };
 
   //
   // Render

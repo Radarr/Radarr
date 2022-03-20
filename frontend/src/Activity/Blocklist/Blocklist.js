@@ -61,33 +61,33 @@ class Blocklist extends Component {
 
   getSelectedIds = () => {
     return getSelectedIds(this.state.selectedState);
-  }
+  };
 
   //
   // Listeners
 
   onSelectAllChange = ({ value }) => {
     this.setState(selectAll(this.state.selectedState, value));
-  }
+  };
 
   onSelectedChange = ({ id, value, shiftKey = false }) => {
     this.setState((state) => {
       return toggleSelected(state, this.props.items, id, value, shiftKey);
     });
-  }
+  };
 
   onRemoveSelectedPress = () => {
     this.setState({ isConfirmRemoveModalOpen: true });
-  }
+  };
 
   onRemoveSelectedConfirmed = () => {
     this.props.onRemoveSelected(this.getSelectedIds());
     this.setState({ isConfirmRemoveModalOpen: false });
-  }
+  };
 
   onConfirmRemoveModalClose = () => {
     this.setState({ isConfirmRemoveModalOpen: false });
-  }
+  };
 
   //
   // Render

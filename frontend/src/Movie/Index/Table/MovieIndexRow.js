@@ -38,27 +38,27 @@ class MovieIndexRow extends Component {
 
   onEditMoviePress = () => {
     this.setState({ isEditMovieModalOpen: true });
-  }
+  };
 
   onEditMovieModalClose = () => {
     this.setState({ isEditMovieModalOpen: false });
-  }
+  };
 
   onDeleteMoviePress = () => {
     this.setState({
       isEditMovieModalOpen: false,
       isDeleteMovieModalOpen: true
     });
-  }
+  };
 
   onDeleteMovieModalClose = () => {
     this.setState({ isDeleteMovieModalOpen: false });
-  }
+  };
 
   onUseSceneNumberingChange = () => {
     // Mock handler to satisfy `onChange` being required for `CheckInput`.
     //
-  }
+  };
 
   //
   // Render

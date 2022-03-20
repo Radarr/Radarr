@@ -10,7 +10,7 @@ class SelectMovieRow extends Component {
 
   onPress = () => {
     this.props.onMovieSelect(this.props.id);
-  }
+  };
 
   //
   // Render

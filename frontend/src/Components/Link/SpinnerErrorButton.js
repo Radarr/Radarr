@@ -90,7 +90,7 @@ class SpinnerErrorButton extends Component {
       hasWarning: false,
       hasError: false
     });
-  }
+  };
 
   //
   // Render

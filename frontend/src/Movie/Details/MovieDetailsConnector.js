@@ -286,7 +286,7 @@ class MovieDetailsConnector extends Component {
     this.props.dispatchFetchMovieCredits({ movieId });
     this.props.dispatchFetchQueueDetails({ movieId });
     this.props.dispatchFetchImportListSchema();
-  }
+  };
 
   unpopulate = () => {
     this.props.dispatchCancelFetchReleases();
@@ -297,7 +297,7 @@ class MovieDetailsConnector extends Component {
     this.props.dispatchClearMovieCredits();
     this.props.dispatchClearQueueDetails();
     this.props.dispatchClearReleases();
-  }
+  };
 
   //
   // Listeners
@@ -307,21 +307,21 @@ class MovieDetailsConnector extends Component {
       movieId: this.props.id,
       monitored
     });
-  }
+  };
 
   onRefreshPress = () => {
     this.props.dispatchExecuteCommand({
       name: commandNames.REFRESH_MOVIE,
       movieIds: [this.props.id]
     });
-  }
+  };
 
   onSearchPress = () => {
     this.props.dispatchExecuteCommand({
       name: commandNames.MOVIE_SEARCH,
       movieIds: [this.props.id]
     });
-  }
+  };
 
   //
   // Render

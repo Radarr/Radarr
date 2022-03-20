@@ -21,7 +21,7 @@ class QualityDefinitionConnector extends Component {
 
   onTitleChange = ({ value }) => {
     this.props.setQualityDefinitionValue({ id: this.props.id, name: 'title', value });
-  }
+  };
 
   onSizeChange = ({ minSize, maxSize, preferredSize }) => {
     const {
@@ -42,7 +42,7 @@ class QualityDefinitionConnector extends Component {
     if (preferredSize !== currentPreferredSize) {
       this.props.setQualityDefinitionValue({ id, name: 'preferredSize', value: preferredSize });
     }
-  }
+  };
 
   //
   // Render

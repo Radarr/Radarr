@@ -42,19 +42,19 @@ class EditDownloadClientModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setDownloadClientValue({ name, value });
-  }
+  };
 
   onFieldChange = ({ name, value }) => {
     this.props.setDownloadClientFieldValue({ name, value });
-  }
+  };
 
   onSavePress = () => {
     this.props.saveDownloadClient({ id: this.props.id });
-  }
+  };
 
   onTestPress = () => {
     this.props.testDownloadClient({ id: this.props.id });
-  }
+  };
 
   //
   // Render

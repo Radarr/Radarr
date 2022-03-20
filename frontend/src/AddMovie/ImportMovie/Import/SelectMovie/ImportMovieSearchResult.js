@@ -11,7 +11,7 @@ class ImportMovieSearchResult extends Component {
 
   onPress = () => {
     this.props.onPress(this.props.tmdbId);
-  }
+  };
 
   //
   // Render

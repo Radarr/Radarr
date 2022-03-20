@@ -28,7 +28,7 @@ class FileBrowserRow extends Component {
 
   onPress = () => {
     this.props.onPress(this.props.path);
-  }
+  };
 
   //
   // Render

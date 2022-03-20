@@ -17,7 +17,7 @@ class SelectedMenuItem extends Component {
     } = this.props;
 
     onPress(name);
-  }
+  };
 
   //
   // Render

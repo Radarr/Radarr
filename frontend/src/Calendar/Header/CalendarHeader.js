@@ -71,7 +71,7 @@ class CalendarHeader extends Component {
     this.setState({ view }, () => {
       this.props.onViewChange(view);
     });
-  }
+  };
 
   //
   // Render

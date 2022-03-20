@@ -38,7 +38,7 @@ class DeleteMovieModalContentConnector extends Component {
     if (this.props.nextMovieRelativePath) {
       this.props.push(window.Radarr.urlBase + this.props.nextMovieRelativePath);
     }
-  }
+  };
 
   //
   // Render

@@ -42,26 +42,26 @@ class EditCustomFormatModalContent extends Component {
 
   onAddSpecificationPress = () => {
     this.setState({ isAddSpecificationModalOpen: true });
-  }
+  };
 
   onAddSpecificationModalClose = ({ specificationSelected = false } = {}) => {
     this.setState({
       isAddSpecificationModalOpen: false,
       isEditSpecificationModalOpen: specificationSelected
     });
-  }
+  };
 
   onEditSpecificationModalClose = () => {
     this.setState({ isEditSpecificationModalOpen: false });
-  }
+  };
 
   onImportPress = () => {
     this.setState({ isImportCustomFormatModalOpen: true });
-  }
+  };
 
   onImportCustomFormatModalClose = () => {
     this.setState({ isImportCustomFormatModalOpen: false });
-  }
+  };
 
   //
   // Render

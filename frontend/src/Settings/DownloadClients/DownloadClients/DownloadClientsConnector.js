@@ -33,7 +33,7 @@ class DownloadClientsConnector extends Component {
 
   onConfirmDeleteDownloadClient = (id) => {
     this.props.deleteDownloadClient({ id });
-  }
+  };
 
   //
   // Render

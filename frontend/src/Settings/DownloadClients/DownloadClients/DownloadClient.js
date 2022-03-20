@@ -27,26 +27,26 @@ class DownloadClient extends Component {
 
   onEditDownloadClientPress = () => {
     this.setState({ isEditDownloadClientModalOpen: true });
-  }
+  };
 
   onEditDownloadClientModalClose = () => {
     this.setState({ isEditDownloadClientModalOpen: false });
-  }
+  };
 
   onDeleteDownloadClientPress = () => {
     this.setState({
       isEditDownloadClientModalOpen: false,
       isDeleteDownloadClientModalOpen: true
     });
-  }
+  };
 
   onDeleteDownloadClientModalClose= () => {
     this.setState({ isDeleteDownloadClientModalOpen: false });
-  }
+  };
 
   onConfirmDeleteDownloadClient = () => {
     this.props.onConfirmDeleteDownloadClient(this.props.id);
-  }
+  };
 
   //
   // Render

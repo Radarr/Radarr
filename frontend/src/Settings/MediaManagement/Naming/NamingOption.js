@@ -30,7 +30,7 @@ class NamingOption extends Component {
     }
 
     onPress({ isFullFilename, tokenValue });
-  }
+  };
 
   //
   // Render

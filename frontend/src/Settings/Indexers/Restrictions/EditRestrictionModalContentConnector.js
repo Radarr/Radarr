@@ -75,11 +75,11 @@ class EditRestrictionModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setRestrictionValue({ name, value });
-  }
+  };
 
   onSavePress = () => {
     this.props.saveRestriction({ id: this.props.id });
-  }
+  };
 
   //
   // Render

@@ -98,7 +98,7 @@ class MovieImage extends Component {
     if (this.props.onError) {
       this.props.onError();
     }
-  }
+  };
 
   onLoad = () => {
     this.setState({
@@ -109,7 +109,7 @@ class MovieImage extends Component {
     if (this.props.onLoad) {
       this.props.onLoad();
     }
-  }
+  };
 
   //
   // Render

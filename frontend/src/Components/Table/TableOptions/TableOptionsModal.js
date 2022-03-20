@@ -62,7 +62,7 @@ class TableOptionsModal extends Component {
       pageSize: value,
       pageSizeError
     });
-  }
+  };
 
   onVisibleChange = ({ name, value }) => {
     const columns = _.cloneDeep(this.props.columns);
@@ -71,7 +71,7 @@ class TableOptionsModal extends Component {
     column.isVisible = value;
 
     this.props.onTableOptionChange({ columns });
-  }
+  };
 
   onColumnDragMove = (dragIndex, dropIndex) => {
     if (this.state.dragIndex !== dragIndex || this.state.dropIndex !== dropIndex) {
@@ -80,7 +80,7 @@ class TableOptionsModal extends Component {
         dropIndex
       });
     }
-  }
+  };
 
   onColumnDragEnd = ({ id }, didDrop) => {
     const {
@@ -100,7 +100,7 @@ class TableOptionsModal extends Component {
       dragIndex: null,
       dropIndex: null
     });
-  }
+  };
 
   //
   // Render

@@ -90,11 +90,11 @@ class DiscoverMovieFooter extends Component {
 
   onExcludeSelectedPress = () => {
     this.setState({ isExcludeMovieModalOpen: true });
-  }
+  };
 
   onExcludeMovieModalClose = () => {
     this.setState({ isExcludeMovieModalOpen: false });
-  }
+  };
 
   onAddMoviesPress = () => {
     const {
@@ -114,7 +114,7 @@ class DiscoverMovieFooter extends Component {
     };
 
     this.props.onAddMoviesPress({ addOptions });
-  }
+  };
 
   //
   // Render

@@ -37,33 +37,33 @@ class MovieFileEditorRow extends Component {
 
   onDeletePress = () => {
     this.setState({ isConfirmDeleteModalOpen: true });
-  }
+  };
 
   onConfirmDelete = () => {
     this.setState({ isConfirmDeleteModalOpen: false });
 
     this.props.onDeletePress(this.props.id);
-  }
+  };
 
   onConfirmDeleteModalClose = () => {
     this.setState({ isConfirmDeleteModalOpen: false });
-  }
+  };
 
   onFileDetailsPress = () => {
     this.setState({ isFileDetailsModalOpen: true });
-  }
+  };
 
   onFileDetailsModalClose = () => {
     this.setState({ isFileDetailsModalOpen: false });
-  }
+  };
 
   onFileEditPress = () => {
     this.setState({ isFileEditModalOpen: true });
-  }
+  };
 
   onFileEditModalClose = () => {
     this.setState({ isFileEditModalOpen: false });
-  }
+  };
 
   //
   // Render

@@ -47,26 +47,26 @@ class DelayProfile extends Component {
 
   onEditDelayProfilePress = () => {
     this.setState({ isEditDelayProfileModalOpen: true });
-  }
+  };
 
   onEditDelayProfileModalClose = () => {
     this.setState({ isEditDelayProfileModalOpen: false });
-  }
+  };
 
   onDeleteDelayProfilePress = () => {
     this.setState({
       isEditDelayProfileModalOpen: false,
       isDeleteDelayProfileModalOpen: true
     });
-  }
+  };
 
   onDeleteDelayProfileModalClose = () => {
     this.setState({ isDeleteDelayProfileModalOpen: false });
-  }
+  };
 
   onConfirmDeleteDelayProfile = () => {
     this.props.onConfirmDeleteDelayProfile(this.props.id);
-  }
+  };
 
   //
   // Render

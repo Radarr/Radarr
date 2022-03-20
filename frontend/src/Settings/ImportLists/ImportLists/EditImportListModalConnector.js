@@ -33,7 +33,7 @@ class EditImportListModalConnector extends Component {
     this.props.dispatchCancelTestImportList();
     this.props.dispatchCancelSaveImportList();
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

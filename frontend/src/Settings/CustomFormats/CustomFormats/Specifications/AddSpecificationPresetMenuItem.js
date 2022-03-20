@@ -17,7 +17,7 @@ class AddSpecificationPresetMenuItem extends Component {
       name,
       implementation
     });
-  }
+  };
 
   //
   // Render

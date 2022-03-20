@@ -30,18 +30,18 @@ class DownloadClients extends Component {
 
   onAddDownloadClientPress = () => {
     this.setState({ isAddDownloadClientModalOpen: true });
-  }
+  };
 
   onAddDownloadClientModalClose = ({ downloadClientSelected = false } = {}) => {
     this.setState({
       isAddDownloadClientModalOpen: false,
       isEditDownloadClientModalOpen: downloadClientSelected
     });
-  }
+  };
 
   onEditDownloadClientModalClose = () => {
     this.setState({ isEditDownloadClientModalOpen: false });
-  }
+  };
 
   //
   // Render

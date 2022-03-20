@@ -12,7 +12,7 @@ class CalendarHeaderViewButton extends Component {
 
   onPress = () => {
     this.props.onPress(this.props.view);
-  }
+  };
 
   //
   // Render

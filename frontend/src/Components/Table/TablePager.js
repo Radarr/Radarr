@@ -26,16 +26,16 @@ class TablePager extends Component {
 
   onOpenPageSelectClick = () => {
     this.setState({ isShowingPageSelect: true });
-  }
+  };
 
   onPageSelect = ({ value: page }) => {
     this.setState({ isShowingPageSelect: false });
     this.props.onPageSelect(parseInt(page));
-  }
+  };
 
   onPageSelectBlur = () => {
     this.setState({ isShowingPageSelect: false });
-  }
+  };
 
   //
   // Render

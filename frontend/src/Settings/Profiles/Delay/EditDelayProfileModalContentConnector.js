@@ -118,7 +118,7 @@ class EditDelayProfileModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setDelayProfileValue({ name, value });
-  }
+  };
 
   onProtocolChange = ({ value }) => {
     switch (value) {
@@ -145,11 +145,11 @@ class EditDelayProfileModalContentConnector extends Component {
       default:
         throw Error(`Unknown protocol option: ${value}`);
     }
-  }
+  };
 
   onSavePress = () => {
     this.props.saveDelayProfile({ id: this.props.id });
-  }
+  };
 
   //
   // Render

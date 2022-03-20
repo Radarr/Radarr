@@ -149,7 +149,7 @@ class EnhancedSelectInput extends Component {
     }
 
     return data;
-  }
+  };
 
   onWindowClick = (event) => {
     const button = document.getElementById(this._buttonId);
@@ -168,14 +168,14 @@ class EnhancedSelectInput extends Component {
       this.setState({ isOpen: false });
       this._removeListener();
     }
-  }
+  };
 
   onFocus = () => {
     if (this.state.isOpen) {
       this._removeListener();
       this.setState({ isOpen: false });
     }
-  }
+  };
 
   onBlur = () => {
     if (!this.props.isEditable) {
@@ -186,7 +186,7 @@ class EnhancedSelectInput extends Component {
         this.setState({ selectedIndex: origIndex });
       }
     }
-  }
+  };
 
   onKeyDown = (event) => {
     const {
@@ -253,7 +253,7 @@ class EnhancedSelectInput extends Component {
     if (!_.isEmpty(newState)) {
       this.setState(newState);
     }
-  }
+  };
 
   onPress = () => {
     if (this.state.isOpen) {
@@ -267,7 +267,7 @@ class EnhancedSelectInput extends Component {
     }
 
     this.setState({ isOpen: !this.state.isOpen });
-  }
+  };
 
   onSelect = (value) => {
     if (Array.isArray(this.props.value)) {
@@ -291,15 +291,15 @@ class EnhancedSelectInput extends Component {
         value
       });
     }
-  }
+  };
 
   onMeasure = ({ width }) => {
     this.setState({ width });
-  }
+  };
 
   onOptionsModalClose = () => {
     this.setState({ isOpen: false });
-  }
+  };
 
   //
   // Render

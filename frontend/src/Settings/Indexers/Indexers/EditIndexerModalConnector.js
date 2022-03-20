@@ -33,7 +33,7 @@ class EditIndexerModalConnector extends Component {
     this.props.dispatchCancelTestIndexer();
     this.props.dispatchCancelSaveIndexer();
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

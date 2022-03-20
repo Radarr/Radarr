@@ -55,7 +55,7 @@ class CustomFilter extends Component {
     } = this.props;
 
     onEditPress(id);
-  }
+  };
 
   onRemovePress = () => {
     const {
@@ -67,7 +67,7 @@ class CustomFilter extends Component {
       dispatchDeleteCustomFilter({ id });
     });
 
-  }
+  };
 
   //
   // Render

@@ -176,7 +176,7 @@ class MovieIndexPosters extends Component {
 
   setGridRef = (ref) => {
     this._grid = ref;
-  }
+  };
 
   calculateGrid = (width = this.state.width, isSmallScreen) => {
     const {
@@ -198,7 +198,7 @@ class MovieIndexPosters extends Component {
       posterHeight,
       rowHeight
     });
-  }
+  };
 
   cellRenderer = ({ key, rowIndex, columnIndex, style }) => {
     const {
@@ -267,14 +267,14 @@ class MovieIndexPosters extends Component {
         />
       </div>
     );
-  }
+  };
 
   //
   // Listeners
 
   onMeasure = ({ width }) => {
     this.calculateGrid(width, this.props.isSmallScreen);
-  }
+  };
 
   //
   // Render

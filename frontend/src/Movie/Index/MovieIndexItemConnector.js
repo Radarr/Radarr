@@ -93,14 +93,14 @@ class MovieIndexItemConnector extends Component {
       name: commandNames.REFRESH_MOVIE,
       movieIds: [this.props.id]
     });
-  }
+  };
 
   onSearchPress = () => {
     this.props.dispatchExecuteCommand({
       name: commandNames.MOVIE_SEARCH,
       movieIds: [this.props.id]
     });
-  }
+  };
 
   //
   // Render

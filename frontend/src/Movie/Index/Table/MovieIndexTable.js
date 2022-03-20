@@ -73,7 +73,7 @@ class MovieIndexTable extends Component {
         />
       </VirtualTableRow>
     );
-  }
+  };
 
   //
   // Render

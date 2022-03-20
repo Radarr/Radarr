@@ -67,19 +67,19 @@ class GeneralSettingsConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setGeneralSettingsValue({ name, value });
-  }
+  };
 
   onSavePress = () => {
     this.props.saveGeneralSettings();
-  }
+  };
 
   onConfirmResetApiKey = () => {
     this.props.executeCommand({ name: commandNames.RESET_API_KEY });
-  }
+  };
 
   onConfirmRestart = () => {
     this.props.restart();
-  }
+  };
 
   //
   // Render

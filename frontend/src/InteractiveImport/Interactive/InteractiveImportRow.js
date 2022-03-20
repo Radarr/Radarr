@@ -96,46 +96,46 @@ class InteractiveImportRow extends Component {
     if (!isSelected && value === true) {
       this.props.onSelectedChange({ id, value });
     }
-  }
+  };
 
   //
   // Listeners
 
   onSelectMoviePress = () => {
     this.setState({ isSelectMovieModalOpen: true });
-  }
+  };
 
   onSelectReleaseGroupPress = () => {
     this.setState({ isSelectReleaseGroupModalOpen: true });
-  }
+  };
 
   onSelectQualityPress = () => {
     this.setState({ isSelectQualityModalOpen: true });
-  }
+  };
 
   onSelectLanguagePress = () => {
     this.setState({ isSelectLanguageModalOpen: true });
-  }
+  };
 
   onSelectMovieModalClose = (changed) => {
     this.setState({ isSelectMovieModalOpen: false });
     this.selectRowAfterChange(changed);
-  }
+  };
 
   onSelectReleaseGroupModalClose = (changed) => {
     this.setState({ isSelectReleaseGroupModalOpen: false });
     this.selectRowAfterChange(changed);
-  }
+  };
 
   onSelectQualityModalClose = (changed) => {
     this.setState({ isSelectQualityModalOpen: false });
     this.selectRowAfterChange(changed);
-  }
+  };
 
   onSelectLanguageModalClose = (changed) => {
     this.setState({ isSelectLanguageModalOpen: false });
     this.selectRowAfterChange(changed);
-  }
+  };
 
   //
   // Render

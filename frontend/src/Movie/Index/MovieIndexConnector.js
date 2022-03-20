@@ -118,15 +118,15 @@ class MovieIndexConnector extends Component {
   onViewSelect = (view) => {
     // Reset the scroll position before changing the view
     this.props.dispatchSetMovieView(view);
-  }
+  };
 
   onSaveSelected = (payload) => {
     this.props.dispatchSaveMovieEditor(payload);
-  }
+  };
 
   onScroll = ({ scrollTop }) => {
     scrollPositions.movieIndex = scrollTop;
-  }
+  };
 
   //
   // Render

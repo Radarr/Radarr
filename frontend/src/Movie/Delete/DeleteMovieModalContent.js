@@ -33,11 +33,11 @@ class DeleteMovieModalContent extends Component {
 
   onDeleteFilesChange = ({ value }) => {
     this.setState({ deleteFiles: value });
-  }
+  };
 
   onAddImportExclusionChange = ({ value }) => {
     this.setState({ addImportExclusion: value });
-  }
+  };
 
   onDeleteMovieConfirmed = () => {
     const deleteFiles = this.state.deleteFiles;
@@ -45,7 +45,7 @@ class DeleteMovieModalContent extends Component {
 
     this.setState({ deleteFiles: false, addImportExclusion: false });
     this.props.onDeletePress(deleteFiles, addImportExclusion);
-  }
+  };
 
   //
   // Render

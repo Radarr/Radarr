@@ -18,7 +18,7 @@ class KeyValueListInputItem extends Component {
     } = this.props;
 
     onChange(index, { key: keyValue, value });
-  }
+  };
 
   onValueChange = ({ value }) => {
     // TODO: Validate here or validate at a lower level component
@@ -30,7 +30,7 @@ class KeyValueListInputItem extends Component {
     } = this.props;
 
     onChange(index, { key: keyValue, value });
-  }
+  };
 
   onRemovePress = () => {
     const {
@@ -39,15 +39,15 @@ class KeyValueListInputItem extends Component {
     } = this.props;
 
     onRemove(index);
-  }
+  };
 
   onFocus = () => {
     this.props.onFocus();
-  }
+  };
 
   onBlur = () => {
     this.props.onBlur();
-  }
+  };
 
   //
   // Render

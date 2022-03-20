@@ -57,7 +57,7 @@ class SelectMovieModalContent extends Component {
 
   setScrollerRef = (ref) => {
     this.setState({ scroller: ref });
-  }
+  };
 
   rowRenderer = ({ key, rowIndex, style }) => {
     const item = this.state.suggestions[rowIndex];
@@ -76,7 +76,7 @@ class SelectMovieModalContent extends Component {
         />
       </VirtualTableRow>
     );
-  }
+  };
 
   //
   // Listeners
@@ -96,7 +96,7 @@ class SelectMovieModalContent extends Component {
       });
       this.requestSuggestions.cancel();
     }
-  }
+  };
 
   requestSuggestions = _.debounce((value) => {
     if (!this.state.loading) {
@@ -151,7 +151,7 @@ class SelectMovieModalContent extends Component {
 
       this.getWorker().postMessage(payload);
     }
-  }
+  };
 
   //
   // Render

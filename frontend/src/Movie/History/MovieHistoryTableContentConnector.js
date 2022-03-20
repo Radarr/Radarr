@@ -32,7 +32,7 @@ class MovieHistoryTableContentConnector extends Component {
       historyId,
       movieId
     });
-  }
+  };
 
   //
   // Render

@@ -40,7 +40,7 @@ class DiscoverMovieTableOptions extends Component {
         [name]: value
       });
     });
-  }
+  };
 
   //
   // Render

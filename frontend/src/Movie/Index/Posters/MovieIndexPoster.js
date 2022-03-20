@@ -38,34 +38,34 @@ class MovieIndexPoster extends Component {
 
   onEditMoviePress = () => {
     this.setState({ isEditMovieModalOpen: true });
-  }
+  };
 
   onEditMovieModalClose = () => {
     this.setState({ isEditMovieModalOpen: false });
-  }
+  };
 
   onDeleteMoviePress = () => {
     this.setState({
       isEditMovieModalOpen: false,
       isDeleteMovieModalOpen: true
     });
-  }
+  };
 
   onDeleteMovieModalClose = () => {
     this.setState({ isDeleteMovieModalOpen: false });
-  }
+  };
 
   onPosterLoad = () => {
     if (this.state.hasPosterError) {
       this.setState({ hasPosterError: false });
     }
-  }
+  };
 
   onPosterLoadError = () => {
     if (!this.state.hasPosterError) {
       this.setState({ hasPosterError: true });
     }
-  }
+  };
 
   onChange = ({ value, shiftKey }) => {
     const {
@@ -74,7 +74,7 @@ class MovieIndexPoster extends Component {
     } = this.props;
 
     onSelectedChange({ id, value, shiftKey });
-  }
+  };
 
   //
   // Render

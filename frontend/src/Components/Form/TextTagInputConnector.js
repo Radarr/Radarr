@@ -53,7 +53,7 @@ class TextTagInputConnector extends Component {
     });
 
     onChange({ name, value: newValue.join(',') });
-  }
+  };
 
   onTagDelete = ({ index }) => {
     const {
@@ -69,7 +69,7 @@ class TextTagInputConnector extends Component {
       name,
       value: newValue.join(',')
     });
-  }
+  };
 
   //
   // Render

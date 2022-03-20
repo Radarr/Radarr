@@ -78,16 +78,16 @@ class FileBrowserModalContentConnector extends Component {
       allowFoldersWithoutTrailingSlashes: true,
       includeFiles
     });
-  }
+  };
 
   onClearPaths = () => {
     // this.props.dispatchClearPaths();
-  }
+  };
 
   onModalClose = () => {
     this.props.dispatchClearPaths();
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

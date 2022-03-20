@@ -41,7 +41,7 @@ class IndexersConnector extends Component {
 
   onConfirmDeleteIndexer = (id) => {
     this.props.dispatchDeleteIndexer({ id });
-  }
+  };
 
   //
   // Render

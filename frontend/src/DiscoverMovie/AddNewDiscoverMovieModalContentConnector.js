@@ -51,7 +51,7 @@ class AddNewDiscoverMovieModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setAddMovieDefault({ [name]: value });
-  }
+  };
 
   onAddMoviePress = () => {
     const {
@@ -75,7 +75,7 @@ class AddNewDiscoverMovieModalContentConnector extends Component {
     });
 
     this.props.onModalClose(true);
-  }
+  };
 
   //
   // Render

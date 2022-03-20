@@ -30,35 +30,35 @@ class RemoveQueueItemsModal extends Component {
   //
   // Control
 
-   resetState = function() {
-     this.setState({
-       remove: true,
-       blocklist: false
-     });
-   }
+  resetState = function() {
+    this.setState({
+      remove: true,
+      blocklist: false
+    });
+  };
 
-   //
-   // Listeners
+  //
+  // Listeners
 
-   onRemoveChange = ({ value }) => {
-     this.setState({ remove: value });
-   }
+  onRemoveChange = ({ value }) => {
+    this.setState({ remove: value });
+  };
 
   onBlocklistChange = ({ value }) => {
     this.setState({ blocklist: value });
-  }
+  };
 
   onRemoveConfirmed = () => {
     const state = this.state;
 
     this.resetState();
     this.props.onRemovePress(state);
-  }
+  };
 
   onModalClose = () => {
     this.resetState();
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

@@ -61,7 +61,7 @@ class Marquee extends Component {
     } else if (this.state.overflowWidth > 0) {
       this.startAnimation();
     }
-  }
+  };
 
   onHandleMouseLeave = () => {
     if (this.props.hoverToStop && this.state.overflowWidth > 0) {
@@ -70,7 +70,7 @@ class Marquee extends Component {
       clearTimeout(this.marqueeTimer);
       this.setState({ animatedWidth: 0 });
     }
-  }
+  };
 
   startAnimation = () => {
     clearTimeout(this.marqueeTimer);
@@ -108,7 +108,7 @@ class Marquee extends Component {
     };
 
     this.marqueeTimer = setTimeout(animate, timeout);
-  }
+  };
 
   measureText = () => {
     const container = this.container;
@@ -123,7 +123,7 @@ class Marquee extends Component {
         this.setState({ overflowWidth });
       }
     }
-  }
+  };
 
   render() {
     const style = {

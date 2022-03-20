@@ -33,21 +33,21 @@ class EditSpecificationModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setCustomFormatSpecificationValue({ name, value });
-  }
+  };
 
   onFieldChange = ({ name, value }) => {
     this.props.setCustomFormatSpecificationFieldValue({ name, value });
-  }
+  };
 
   onCancelPress = () => {
     this.props.clearCustomFormatSpecificationPending();
     this.props.onModalClose();
-  }
+  };
 
   onSavePress = () => {
     this.props.saveCustomFormatSpecification({ id: this.props.id });
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

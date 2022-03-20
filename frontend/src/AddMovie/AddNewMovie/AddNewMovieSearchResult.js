@@ -39,15 +39,15 @@ class AddNewMovieSearchResult extends Component {
 
   onPress = () => {
     this.setState({ isNewAddMovieModalOpen: true });
-  }
+  };
 
   onAddMovieModalClose = () => {
     this.setState({ isNewAddMovieModalOpen: false });
-  }
+  };
 
   onExternalLinkPress = (event) => {
     event.stopPropagation();
-  }
+  };
 
   //
   // Render

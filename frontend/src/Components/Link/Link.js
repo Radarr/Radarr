@@ -18,7 +18,7 @@ class Link extends Component {
     if (!isDisabled && onPress) {
       onPress(event);
     }
-  }
+  };
 
   //
   // Render

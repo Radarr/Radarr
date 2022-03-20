@@ -93,7 +93,7 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
     }, () => {
       this.props.onChangeOverviewOption({ [name]: value });
     });
-  }
+  };
 
   onChangeOption = ({ name, value }) => {
     this.setState({
@@ -103,7 +103,7 @@ class DiscoverMovieOverviewOptionsModalContent extends Component {
         [name]: value
       });
     });
-  }
+  };
 
   //
   // Render

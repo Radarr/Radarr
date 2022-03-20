@@ -36,7 +36,7 @@ class ImportMovieSelectMovieConnector extends Component {
       term,
       topOfQueue: true
     });
-  }
+  };
 
   onMovieSelect = (tmdbId) => {
     const {
@@ -48,7 +48,7 @@ class ImportMovieSelectMovieConnector extends Component {
       id,
       selectedMovie: _.find(items, { tmdbId })
     });
-  }
+  };
 
   //
   // Render

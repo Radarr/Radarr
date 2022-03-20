@@ -28,11 +28,11 @@ class RemotePathMappings extends Component {
 
   onAddRemotePathMappingPress = () => {
     this.setState({ isAddRemotePathMappingModalOpen: true });
-  }
+  };
 
   onModalClose = () => {
     this.setState({ isAddRemotePathMappingModalOpen: false });
-  }
+  };
 
   //
   // Render

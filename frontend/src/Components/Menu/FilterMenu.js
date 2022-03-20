@@ -25,11 +25,11 @@ class FilterMenu extends Component {
 
   onCustomFiltersPress = () => {
     this.setState({ isFilterModalOpen: true });
-  }
+  };
 
   onFiltersModalClose = () => {
     this.setState({ isFilterModalOpen: false });
-  }
+  };
 
   //
   // Render
