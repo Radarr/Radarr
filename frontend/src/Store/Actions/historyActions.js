@@ -80,6 +80,11 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'sourceTitle',
+      label: translate('SourceTitle'),
+      isVisible: false
+    },
+    {
       name: 'details',
       columnLabel: translate('Details'),
       isVisible: true,
