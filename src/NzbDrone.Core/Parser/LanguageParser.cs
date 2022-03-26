@@ -281,15 +281,6 @@ namespace NzbDrone.Core.Parser
                 }
             }
 
-            if (title.ToLower().Contains("multi"))
-            {
-                //Let's add english language to multi release as a safe guard.
-                if (!languages.Contains(Language.English) && languages.Count < 2)
-                {
-                    languages.Add(Language.English);
-                }
-            }
-
             if (!languages.Any())
             {
                 languages.Add(Language.Unknown);
