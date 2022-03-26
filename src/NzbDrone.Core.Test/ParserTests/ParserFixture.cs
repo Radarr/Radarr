@@ -220,9 +220,8 @@ namespace NzbDrone.Core.Test.ParserTests
         public void should_parse_multi_language(string postTitle)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
-            parsed.Languages.Count.Should().Be(2);
+            parsed.Languages.Count.Should().Be(1);
             parsed.Languages.Should().Contain(Language.German);
-            parsed.Languages.Should().Contain(Language.English, "Added by the multi tag in the release name");
         }
 
         [TestCase("That Italian Movie 2008 [tt1234567] 720p BluRay X264", "tt1234567")]
