@@ -22,13 +22,19 @@ namespace Radarr.Api.V3.Collections
     {
         private readonly IMovieCollectionService _collectionService;
         private readonly IMovieService _movieService;
+        private readonly IMovieMetadataService _movieMetadataService;
         private readonly IBuildFileNames _fileNameBuilder;
 
-        public CollectionController(IBroadcastSignalRMessage signalRBroadcaster, IMovieCollectionService collectionService, IMovieService movieService, IBuildFileNames fileNameBuilder)
+        public CollectionController(IBroadcastSignalRMessage signalRBroadcaster,
+                                    IMovieCollectionService collectionService,
+                                    IMovieService movieService,
+                                    IMovieMetadataService movieMetadataService,
+                                    IBuildFileNames fileNameBuilder)
             : base(signalRBroadcaster)
         {
             _collectionService = collectionService;
             _movieService = movieService;
+            _movieMetadataService = movieMetadataService;
             _fileNameBuilder = fileNameBuilder;
         }
 
@@ -90,7 +96,7 @@ namespace Radarr.Api.V3.Collections
         {
             var resource = collection.ToResource();
 
-            foreach (var movie in collection.Movies)
+            foreach (var movie in _movieMetadataService.GetMoviesByCollectionId(collection.Id))
             {
                 var movieResource = movie.ToResource();
                 movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { Title = movie.Title, Year = movie.Year, ImdbId = movie.ImdbId, TmdbId = movie.TmdbId });

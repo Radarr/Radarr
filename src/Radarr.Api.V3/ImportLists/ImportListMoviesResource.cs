@@ -77,7 +77,7 @@ namespace Radarr.Api.V3.ImportLists
                 Ratings = model.MovieMetadata.Value.Ratings,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
-                Collection = model.MovieMetadata.Value.CollectionId
+                Collection = model.MovieMetadata.Value.Collection
             };
         }
 

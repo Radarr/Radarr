@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Profiles;
 
 namespace NzbDrone.Core.Movies
@@ -25,9 +24,6 @@ namespace NzbDrone.Core.Movies
         public string Path { get; set; }
 
         public LazyLoaded<MovieMetadata> MovieMetadata { get; set; }
-        
-        public int CollectionId { get; set; }
-        public LazyLoaded<MovieCollection> Collection { get; set; }
 
         public string RootFolderPath { get; set; }
         public DateTime Added { get; set; }

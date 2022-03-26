@@ -5,7 +5,6 @@ using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Parser;
 using Radarr.Api.V3.MovieFiles;
@@ -141,7 +140,7 @@ namespace Radarr.Api.V3.Movies
                 MovieFile = movieFile,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
-                Collection = model.MovieMetadata.Value.CollectionId,
+                CollectionId = model.MovieMetadata.Value.CollectionId,
                 Popularity = model.MovieMetadata.Value.Popularity
             };
         }

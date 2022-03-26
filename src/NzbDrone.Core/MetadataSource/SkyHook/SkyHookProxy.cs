@@ -510,33 +510,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 CleanTitle = arg.Name.CleanMovieTitle(),
                 SortTitle = Parser.Parser.NormalizeTitle(arg.Name),
                 Images = arg.Images?.Select(MapImage).ToList() ?? new List<MediaCover.MediaCover>(),
-                Movies = arg.Parts?.Select(x => MapCollectionMovie(x)).ToList() ?? new List<CollectionMovie>()
+                MovieMetadata = arg.Parts?.Select(x => MapMovie(x)).ToList() ?? new List<MovieMetadata>()
             };
 
             return collection;
-        }
-
-        private static CollectionMovie MapCollectionMovie(MovieResource movieResult)
-        {
-            var movie = new CollectionMovie
-            {
-                TmdbId = movieResult.TmdbId,
-                ImdbId = movieResult.ImdbId,
-                Overview = movieResult.Overview,
-                Title = movieResult.Title,
-                SortTitle = Parser.Parser.NormalizeTitle(movieResult.Title),
-                Images = movieResult.Images.Select(MapImage).ToList(),
-                Year = movieResult.Year,
-                Ratings = MapRatings(movieResult.MovieRatings) ?? new Ratings(),
-                Genres = movieResult.Genres
-            };
-
-            if (movieResult.Runtime != null)
-            {
-                movie.Runtime = movieResult.Runtime.Value;
-            }
-
-            return movie;
         }
 
         private static Credit MapCast(CastResource arg)

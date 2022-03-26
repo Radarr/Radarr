@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Movies.Collections
         public MovieCollection()
         {
             Images = new List<MediaCover.MediaCover>();
-            Movies = new List<CollectionMovie>();
+            MovieMetadataIds = new List<int>();
         }
 
         public string Title { get; set; }
@@ -25,7 +25,8 @@ namespace NzbDrone.Core.Movies.Collections
         public DateTime? LastInfoSync { get; set; }
         public List<MediaCover.MediaCover> Images { get; set; }
         public DateTime Added { get; set; }
-        public List<CollectionMovie> Movies { get; set; }
+        public List<int> MovieMetadataIds { get; set; }
+        public List<MovieMetadata> MovieMetadata { get; set; }
 
         public void ApplyChanges(MovieCollection otherCollection)
         {

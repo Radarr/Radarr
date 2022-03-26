@@ -27,7 +27,7 @@ namespace Radarr.Api.V3.Collections
 
     public static class CollectionMovieResourceMapper
     {
-        public static CollectionMovieResource ToResource(this CollectionMovie model)
+        public static CollectionMovieResource ToResource(this MovieMetadata model)
         {
             if (model == null)
             {

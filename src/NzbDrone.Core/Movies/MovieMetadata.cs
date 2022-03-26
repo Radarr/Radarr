@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Equ;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies.AlternativeTitles;
+using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Translations;
 
 namespace NzbDrone.Core.Movies
@@ -31,7 +32,8 @@ namespace NzbDrone.Core.Movies
         public int Year { get; set; }
         public Ratings Ratings { get; set; }
 
-        public MovieCollection Collection { get; set; }
+        public int CollectionId { get; set; }
+        public LazyLoaded<MovieCollection> Collection { get; set; }
         public DateTime? LastInfoSync { get; set; }
         public int Runtime { get; set; }
         public string Website { get; set; }

@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             Db.Insert(collection);
 
-            var movie = Builder<Movie>.CreateNew().With(m => m.CollectionId = collection.Id).BuildNew();
+            var movie = Builder<MovieMetadata>.CreateNew().With(m => m.CollectionId = collection.Id).BuildNew();
 
             Db.Insert(movie);
 

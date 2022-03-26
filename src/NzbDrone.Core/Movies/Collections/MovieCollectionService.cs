@@ -21,13 +21,13 @@ namespace NzbDrone.Core.Movies.Collections
     public class MovieCollectionService : IMovieCollectionService, IHandleAsync<MoviesDeletedEvent>
     {
         private readonly IMovieCollectionRepository _repo;
-        private readonly IMovieService _movieService;
+        private readonly IMovieMetadataService _movieMetadataService;
         private readonly IEventAggregator _eventAggregator;
 
-        public MovieCollectionService(IMovieCollectionRepository repo, IMovieService movieService, IEventAggregator eventAggregator)
+        public MovieCollectionService(IMovieCollectionRepository repo, IMovieMetadataService movieMetadataService, IEventAggregator eventAggregator)
         {
             _repo = repo;
-            _movieService = movieService;
+            _movieMetadataService = movieMetadataService;
             _eventAggregator = eventAggregator;
         }
 
@@ -92,11 +92,11 @@ namespace NzbDrone.Core.Movies.Collections
 
         public void HandleAsync(MoviesDeletedEvent message)
         {
-            var collections = message.Movies.Select(x => x.CollectionId).Distinct();
+            var collections = message.Movies.Select(x => x.MovieMetadata.Value.CollectionId).Distinct();
 
             foreach (var collectionId in collections)
             {
-                if (collectionId == 0 || _movieService.GetMoviesByCollectionId(collectionId).Any())
+                if (collectionId == 0 || _movieMetadataService.GetMoviesByCollectionId(collectionId).Any())
                 {
                     continue;
                 }

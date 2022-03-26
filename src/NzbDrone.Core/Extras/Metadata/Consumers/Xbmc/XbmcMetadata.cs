@@ -251,7 +251,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                     details.Add(new XElement("country"));
 
-                    if (movie.MovieMetadata.Value.Collection?.Name != null)
+                    if (movie.MovieMetadata.Value.Collection?.Value.Title != null)
                     {
                         var setElement = new XElement("set");
 

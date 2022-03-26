@@ -225,7 +225,7 @@ namespace NzbDrone.Core.Movies
 
         public List<Movie> GetMoviesByCollectionId(int collectionId)
         {
-            return Query(x => x.CollectionId == collectionId);
+            return Query(x => x.MovieMetadata.Value.CollectionId == collectionId);
         }
 
         public void SetFileId(int fileId, int movieId)
