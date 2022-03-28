@@ -59,7 +59,7 @@
     "IndexerRssHealthCheckNoIndexers": "Da keine Indexer mit aktivierter RSS-Synchronisierung verfügbar sind, erfasst Radarr nicht automatisch neue Releases auf",
     "IndexerSearchCheckNoAutomaticMessage": "Keine Indexer mit aktivierter automatischer Suche verfügbar. Radarr liefert keine automatischen Suchergebnisse",
     "IndexerSearchCheckNoAvailableIndexersMessage": "Alle suchfähigen Indexer sind aufgrund der kürzlichen Indexerfehler vorübergehend nicht verfügbar",
-    "IndexerSearchCheckNoInteractiveMessage": "Keine Indexer mit aktivierter interaktiver Suche verfügbar, Radarr liefert keine interaktiven Suchergebnisse",
+    "IndexerSearchCheckNoInteractiveMessage": "Keine Indexer mit interaktiver Suche aktiviert, Radarr liefert keine interaktiven Suchergebnisse",
     "IndexerStatusCheckAllClientMessage": "Alle Indexer sind aufgrund von Fehlern nicht verfügbar",
     "IndexerStatusCheckSingleClientMessage": "Indexer aufgrund von Fehlern nicht verfügbar: {0}",
     "Indexers": "Indexer",
