@@ -12,6 +12,11 @@ import { inputTypes } from 'Helpers/Props';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import translate from 'Utilities/String/translate';
 
+export const movieDetailsNextPrevBehaviorOption = [
+  { key: 'all', value: translate('All') },
+  { key: 'filter', value: translate('Filter') }
+];
+
 export const firstDayOfWeekOptions = [
   { key: 0, value: translate('Sunday') },
   { key: 1, value: translate('Monday') }
@@ -130,6 +135,18 @@ class UISettings extends Component {
                       values={movieRuntimeFormatOptions}
                       onChange={onInputChange}
                       {...settings.movieRuntimeFormat}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>{translate('NextPrevBehavior')}</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="movieDetailsNextPrevBehavior"
+                      values={movieDetailsNextPrevBehaviorOption}
+                      helpText={translate('DetailsNextPrevBehavior')}
+                      onChange={onInputChange}
+                      {...settings.movieDetailsNextPrevBehavior}
                     />
                   </FormGroup>
                 </FieldSet>

@@ -20,7 +20,7 @@ import RottenTomatoRating from 'Components/RottenTomatoRating';
 import TmdbRating from 'Components/TmdbRating';
 import Popover from 'Components/Tooltip/Popover';
 import Tooltip from 'Components/Tooltip/Tooltip';
-import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
+import { align, icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import InteractiveSearchFilterMenuConnector from 'InteractiveSearch/InteractiveSearchFilterMenuConnector';
 import InteractiveSearchTable from 'InteractiveSearch/InteractiveSearchTable';
@@ -36,6 +36,7 @@ import fonts from 'Styles/Variables/fonts';
 import * as keyCodes from 'Utilities/Constants/keyCodes';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import formatBytes from 'Utilities/Number/formatBytes';
+import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
 import selectAll from 'Utilities/Table/selectAll';
 import toggleSelected from 'Utilities/Table/toggleSelected';
@@ -290,7 +291,9 @@ class MovieDetails extends Component {
       onRefreshPress,
       onSearchPress,
       queueItems,
-      movieRuntimeFormat
+      movieRuntimeFormat,
+      indexFilter,
+      nextPrev
     } = this.props;
 
     const {
@@ -355,6 +358,16 @@ class MovieDetails extends Component {
               onPress={this.onDeleteMoviePress}
             />
           </PageToolbarSection>
+
+          <PageToolbarSection
+            alignContent={align.RIGHT}
+            collapseButtons={false}
+          >
+            <PageToolbarButton
+              label={titleCase(indexFilter)}
+              iconName={icons.FILTER}
+            />
+          </PageToolbarSection>
         </PageToolbar>
 
         <PageContentBody innerClassName={styles.innerContentBody}>
@@ -395,23 +408,26 @@ class MovieDetails extends Component {
                       </div>
                     </div>
 
-                    <div className={styles.movieNavigationButtons}>
-                      <IconButton
-                        className={styles.movieNavigationButton}
-                        name={icons.ARROW_LEFT}
-                        size={30}
-                        title={translate('GoToInterp', [previousMovie.title])}
-                        to={`/movie/${previousMovie.titleSlug}`}
-                      />
+                    {
+                      nextPrev &&
+                        <div className={styles.movieNavigationButtons}>
+                          <IconButton
+                            className={styles.movieNavigationButton}
+                            name={icons.ARROW_LEFT}
+                            size={30}
+                            title={translate('GoToInterp', [previousMovie.title])}
+                            to={`/movie/${previousMovie.titleSlug}`}
+                          />
 
-                      <IconButton
-                        className={styles.movieNavigationButton}
-                        name={icons.ARROW_RIGHT}
-                        size={30}
-                        title={translate('GoToInterp', [nextMovie.title])}
-                        to={`/movie/${nextMovie.titleSlug}`}
-                      />
-                    </div>
+                          <IconButton
+                            className={styles.movieNavigationButton}
+                            name={icons.ARROW_RIGHT}
+                            size={30}
+                            title={translate('GoToInterp', [nextMovie.title])}
+                            to={`/movie/${nextMovie.titleSlug}`}
+                          />
+                        </div>
+                    }
                   </div>
                 </Measure>
 
@@ -830,7 +846,9 @@ MovieDetails.propTypes = {
   onSearchPress: PropTypes.func.isRequired,
   onGoToMovie: PropTypes.func.isRequired,
   queueItems: PropTypes.arrayOf(PropTypes.object),
-  movieRuntimeFormat: PropTypes.string.isRequired
+  movieRuntimeFormat: PropTypes.string.isRequired,
+  indexFilter: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  nextPrev: PropTypes.bool.isRequired
 };
 
 MovieDetails.defaultProps = {
