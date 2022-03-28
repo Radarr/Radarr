@@ -81,14 +81,14 @@ namespace NzbDrone.Core.Test.Datastore.Migration
   ""imdbId"": """"
 }",
                         Release = "{}",
-                        Reason = PendingReleaseReason.Delay
+                        Reason = (int)PendingReleaseReason.Delay
                     });
                 });
 
-            var json = db.Query<string>("SELECT ParsedMovieInfo FROM PendingReleases").First();
+            var json = db.Query<string>("SELECT \"ParsedMovieInfo\" FROM \"PendingReleases\"").First();
             json.Should().NotContain("customFormats");
 
-            var pending = db.Query<ParsedMovieInfo>("SELECT ParsedMovieInfo FROM PendingReleases").First();
+            var pending = db.Query<ParsedMovieInfo>("SELECT \"ParsedMovieInfo\" FROM \"PendingReleases\"").First();
             pending.Quality.Quality.Should().Be(Quality.Bluray1080p);
             pending.Languages.Should().BeEmpty();
         }
@@ -129,15 +129,15 @@ namespace NzbDrone.Core.Test.Datastore.Migration
   ""imdbId"": """"
 }",
                         Release = "{}",
-                        Reason = PendingReleaseReason.Delay
+                        Reason = (int)PendingReleaseReason.Delay
                     });
                 });
 
-            var json = db.Query<string>("SELECT ParsedMovieInfo FROM PendingReleases").First();
+            var json = db.Query<string>("SELECT \"ParsedMovieInfo\" FROM \"PendingReleases\"").First();
             json.Should().NotContain("customFormats");
             json.Should().NotContain("resolution");
 
-            var pending = db.Query<ParsedMovieInfo>("SELECT ParsedMovieInfo FROM PendingReleases").First();
+            var pending = db.Query<ParsedMovieInfo>("SELECT \"ParsedMovieInfo\" FROM \"PendingReleases\"").First();
             pending.Quality.Quality.Should().Be(Quality.Bluray1080p);
             pending.Languages.Should().BeEquivalentTo(new List<Language> { Language.English });
         }

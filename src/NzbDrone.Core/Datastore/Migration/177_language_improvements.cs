@@ -41,18 +41,27 @@ namespace NzbDrone.Core.Datastore.Migration
             Delete.Column("PhysicalReleaseNote").FromTable("Movies");
             Delete.Column("SecondaryYearSourceId").FromTable("Movies");
 
-            Alter.Table("NamingConfig").AddColumn("RenameMovies").AsBoolean().WithDefaultValue(0);
-            Execute.Sql("UPDATE NamingConfig SET RenameMovies=RenameEpisodes");
+            Alter.Table("NamingConfig").AddColumn("RenameMovies").AsBoolean().WithDefaultValue(false);
+            Execute.Sql("UPDATE \"NamingConfig\" SET \"RenameMovies\"=\"RenameEpisodes\"");
             Delete.Column("RenameEpisodes").FromTable("NamingConfig");
 
             //Manual SQL, Fluent Migrator doesn't support multi-column unique contraint on table creation, SQLite doesn't support adding it after creation
-            Execute.Sql("CREATE TABLE MovieTranslations(" +
-                "Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                "MovieId INTEGER NOT NULL, " +
-                "Title TEXT, " +
-                "CleanTitle TEXT, " +
-                "Overview TEXT, " +
-                "Language INTEGER NOT NULL, " +
+            IfDatabase("sqlite").Execute.Sql("CREATE TABLE \"MovieTranslations\"(" +
+                "\"Id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "\"MovieId\" INTEGER NOT NULL, " +
+                "\"Title\" TEXT, " +
+                "\"CleanTitle\" TEXT, " +
+                "\"Overview\" TEXT, " +
+                "\"Language\" INTEGER NOT NULL, " +
+                "Unique(\"MovieId\", \"Language\"));");
+
+            IfDatabase("postgres").Execute.Sql("CREATE TABLE \"MovieTranslations\"(" +
+                "\"Id\" SERIAL PRIMARY KEY , " +
+                "\"MovieId\" INTEGER NOT NULL, " +
+                "\"Title\" TEXT, " +
+                "\"CleanTitle\" TEXT, " +
+                "\"Overview\" TEXT, " +
+                "\"Language\" INTEGER NOT NULL, " +
                 "Unique(\"MovieId\", \"Language\"));");
 
             // Prevent failure if two movies have same alt titles
@@ -73,7 +82,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void FixLanguagesMoveFile(IDbConnection conn, IDbTransaction tran)
         {
-            var rows = conn.Query<LanguageEntity177>($"SELECT Id, Languages FROM MovieFiles");
+            var rows = conn.Query<LanguageEntity177>($"SELECT \"Id\", \"Languages\" FROM \"MovieFiles\"");
 
             var corrected = new List<LanguageEntity177>();
 
@@ -90,13 +99,13 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var updateSql = "UPDATE MovieFiles SET Languages = @Languages WHERE Id = @Id";
+            var updateSql = "UPDATE \"MovieFiles\" SET \"Languages\" = @Languages WHERE \"Id\" = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 
         private void FixLanguagesHistory(IDbConnection conn, IDbTransaction tran)
         {
-            var rows = conn.Query<LanguageEntity177>($"SELECT Id, Languages FROM History");
+            var rows = conn.Query<LanguageEntity177>($"SELECT \"Id\", \"Languages\" FROM \"History\"");
 
             var corrected = new List<LanguageEntity177>();
 
@@ -113,7 +122,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var updateSql = "UPDATE History SET Languages = @Languages WHERE Id = @Id";
+            var updateSql = "UPDATE \"History\" SET \"Languages\" = @Languages WHERE \"Id\" = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 

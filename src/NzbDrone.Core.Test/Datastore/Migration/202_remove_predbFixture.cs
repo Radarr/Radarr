@@ -20,12 +20,12 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 c.Insert.IntoTable("ImportLists").Row(new
                 {
-                    Enabled = 1,
-                    EnableAuto = 1,
+                    Enabled = true,
+                    EnableAuto = true,
                     RootFolderPath = "D:\\Movies",
                     ProfileId = 1,
                     MinimumAvailability = 4,
-                    ShouldMonitor = 1,
+                    ShouldMonitor = true,
                     Name = "IMDB List",
                     Implementation = "RadarrLists",
                     Settings = new RadarrListSettings169
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition201>("SELECT Id, MinimumAvailability FROM ImportLists");
+            var items = db.Query<ListDefinition201>("SELECT \"Id\", \"MinimumAvailability\" FROM \"ImportLists\"");
 
             items.Should().HaveCount(1);
             items.First().MinimumAvailability.Should().Be(3);
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<Movie201>("SELECT Id, MinimumAvailability FROM Movies");
+            var items = db.Query<Movie201>("SELECT \"Id\", \"MinimumAvailability\" FROM \"Movies\"");
 
             items.Should().HaveCount(1);
             items.First().MinimumAvailability.Should().Be(3);

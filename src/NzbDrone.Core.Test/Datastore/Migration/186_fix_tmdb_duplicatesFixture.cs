@@ -20,8 +20,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 Monitored = true,
                 Title = movieTitle,
                 CleanTitle = movieTitle,
-                Status = MovieStatusType.Announced,
-                MinimumAvailability = MovieStatusType.Announced,
+                Status = (int)MovieStatusType.Announced,
+                MinimumAvailability = (int)MovieStatusType.Announced,
                 Images = new[] { new { CoverType = "Poster" } }.ToJson(),
                 Recommendations = new[] { 1 }.ToJson(),
                 HasPreDBEntry = false,
@@ -53,7 +53,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovie(c, 4, "movie", "slug3", tmdbId, 0, dateAdded, dateAdded);
             });
 
-            var items = db.Query<Movie185>("SELECT Id, TmdbId, MovieFileId FROM Movies");
+            var items = db.Query<Movie185>("SELECT \"Id\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
 
             items.Should().HaveCount(1);
         }
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovie(c, 5, "movie2", "slug4", 123457, 0, dateAdded, dateAdded);
             });
 
-            var items = db.Query<Movie185>("SELECT Id, TmdbId, MovieFileId FROM Movies");
+            var items = db.Query<Movie185>("SELECT \"Id\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
 
             items.Should().HaveCount(2);
             items.Where(i => i.TmdbId == tmdbId).Should().HaveCount(1);
@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovie(c, 5, "movie5", "slug4", 123457, 0, dateAdded, dateAdded);
             });
 
-            var items = db.Query<Movie185>("SELECT Id, TmdbId, MovieFileId FROM Movies");
+            var items = db.Query<Movie185>("SELECT \"Id\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
 
             items.Should().HaveCount(5);
         }
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovie(c, 4, "movie", "slug3", tmdbId, 0, dateAdded, dateAdded);
             });
 
-            var items = db.Query<Movie185>("SELECT Id, TmdbId, MovieFileId FROM Movies");
+            var items = db.Query<Movie185>("SELECT \"Id\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
 
             items.Should().HaveCount(1);
             items.First().Id.Should().Be(2);
@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovie(c, 4, "movie", "slug3", tmdbId, 2, dateAdded, dateAdded);
             });
 
-            var items = db.Query<Movie185>("SELECT Id, TmdbId, MovieFileId FROM Movies");
+            var items = db.Query<Movie185>("SELECT \"Id\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
 
             items.Should().HaveCount(1);
             items.First().MovieFileId.Should().BeGreaterThan(0);
@@ -153,7 +153,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovie(c, 4, "movie", "slug3", tmdbId, 0, null, dateAdded);
             });
 
-            var items = db.Query<Movie185>("SELECT Id, LastInfoSync, TmdbId, MovieFileId FROM Movies");
+            var items = db.Query<Movie185>("SELECT \"Id\", \"LastInfoSync\", \"TmdbId\", \"MovieFileId\" FROM \"Movies\"");
 
             items.Should().HaveCount(1);
             items.First().LastInfoSync.Should().NotBeNull();

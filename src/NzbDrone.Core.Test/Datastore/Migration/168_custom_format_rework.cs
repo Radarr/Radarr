@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     });
                 });
 
-            var json = db.Query<string>("SELECT Specifications FROM CustomFormats").First();
+            var json = db.Query<string>("SELECT \"Specifications\" FROM \"CustomFormats\"").First();
 
             ValidateFormatTag(json, "ReleaseTitleSpecification", false, false);
             json.Should().Contain($"\"name\": \"Test\"");
@@ -99,7 +99,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     });
                 });
 
-            var json = db.Query<string>("SELECT Specifications FROM CustomFormats").First();
+            var json = db.Query<string>("SELECT \"Specifications\" FROM \"CustomFormats\"").First();
 
             ValidateFormatTag(json, "ReleaseTitleSpecification", false, false);
             ValidateFormatTag(json, "EditionSpecification", false, false);

@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             Alter.Table("ScheduledTasks").AlterColumn("Interval").AsDouble();
-            Execute.Sql("UPDATE ScheduledTasks SET Interval=0.25 WHERE TypeName='NzbDrone.Core.Download.CheckForFinishedDownloadCommand'");
+            Execute.Sql("UPDATE \"ScheduledTasks\" SET \"Interval\" = 0.25 WHERE \"TypeName\" = 'NzbDrone.Core.Download.CheckForFinishedDownloadCommand'");
         }
     }
 }

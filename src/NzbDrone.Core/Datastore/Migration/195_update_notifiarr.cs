@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Execute.Sql("UPDATE Notifications SET Implementation = Replace(Implementation, 'DiscordNotifier', 'Notifiarr'),ConfigContract = Replace(ConfigContract, 'DiscordNotifierSettings', 'NotifiarrSettings') WHERE Implementation = 'DiscordNotifier';");
+            Execute.Sql("UPDATE \"Notifications\" SET \"Implementation\" = Replace(\"Implementation\", 'DiscordNotifier', 'Notifiarr'),\"ConfigContract\" = Replace(\"ConfigContract\", 'DiscordNotifierSettings', 'NotifiarrSettings') WHERE \"Implementation\" = 'DiscordNotifier';");
         }
     }
 }

@@ -21,8 +21,8 @@ namespace NzbDrone.Core.Datastore.Migration
         private void FixMovies(IDbConnection conn, IDbTransaction tran)
         {
             var profiles = GetProfileIds(conn);
-            var movieRows = conn.Query<ProfileEntity179>($"SELECT Id, ProfileId FROM Movies");
-            var listRows = conn.Query<ProfileEntity179>($"SELECT Id, ProfileId FROM NetImport");
+            var movieRows = conn.Query<ProfileEntity179>($"SELECT \"Id\", \"ProfileId\" FROM \"Movies\"");
+            var listRows = conn.Query<ProfileEntity179>($"SELECT \"Id\", \"ProfileId\" FROM \"NetImport\"");
 
             // Only process if there are lists or movies existing in the DB
             if (movieRows.Any() || listRows.Any())
@@ -54,18 +54,18 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
 
                 //Correct any Movies that reference profiles that are null
-                var sql = $"UPDATE Movies SET ProfileId = {mostCommonProfileId} WHERE Id IN(SELECT Movies.Id FROM Movies LEFT OUTER JOIN Profiles ON Movies.ProfileId = Profiles.Id WHERE Profiles.Id IS NULL)";
+                var sql = $"UPDATE \"Movies\" SET \"ProfileId\" = {mostCommonProfileId} WHERE \"Id\" IN(SELECT \"Movies\".\"Id\" FROM \"Movies\" LEFT OUTER JOIN \"Profiles\" ON \"Movies\".\"ProfileId\" = \"Profiles\".\"Id\" WHERE \"Profiles\".\"Id\" IS NULL)";
                 conn.Execute(sql, transaction: tran);
 
                 //Correct any Lists that reference profiles that are null
-                sql = $"UPDATE NetImport SET ProfileId = {mostCommonProfileId} WHERE Id IN(SELECT NetImport.Id FROM NetImport LEFT OUTER JOIN Profiles ON NetImport.ProfileId = Profiles.Id WHERE Profiles.Id IS NULL)";
+                sql = $"UPDATE \"NetImport\" SET \"ProfileId\" = {mostCommonProfileId} WHERE \"Id\" IN(SELECT \"NetImport\".\"Id\" FROM \"NetImport\" LEFT OUTER JOIN \"Profiles\" ON \"NetImport\".\"ProfileId\" = \"Profiles\".\"Id\" WHERE \"Profiles\".\"Id\" IS NULL)";
                 conn.Execute(sql, transaction: tran);
             }
         }
 
         private List<int> GetProfileIds(IDbConnection conn)
         {
-            return conn.Query<QualityProfile180>("SELECT Id From Profiles").Select(p => p.Id).ToList();
+            return conn.Query<QualityProfile180>("SELECT \"Id\" From \"Profiles\"").Select(p => p.Id).ToList();
         }
 
         private void InsertDefaultQualityProfiles(IDbConnection conn, IDbTransaction tran)
@@ -80,7 +80,16 @@ namespace NzbDrone.Core.Datastore.Migration
                 using (IDbCommand insertNewLanguageProfileCmd = conn.CreateCommand())
                 {
                     insertNewLanguageProfileCmd.Transaction = tran;
-                    insertNewLanguageProfileCmd.CommandText = "INSERT INTO Profiles (Id, Name, Cutoff, Items, Language, FormatItems, MinFormatScore, CutoffFormatScore, UpgradeAllowed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                    if (conn.GetType().FullName == "Npgsql.NpgsqlConnection")
+                    {
+                        insertNewLanguageProfileCmd.CommandText = "INSERT INTO \"Profiles\" (\"Id\", \"Name\", \"Cutoff\", \"Items\", \"Language\", \"FormatItems\", \"MinFormatScore\", \"CutoffFormatScore\", \"UpgradeAllowed\") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+                    }
+                    else
+                    {
+                        insertNewLanguageProfileCmd.CommandText = "INSERT INTO \"Profiles\" (\"Id\", \"Name\", \"Cutoff\", \"Items\", \"Language\", \"FormatItems\", \"MinFormatScore\", \"CutoffFormatScore\", \"UpgradeAllowed\") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    }
+
                     insertNewLanguageProfileCmd.AddParameter(profileId);
                     insertNewLanguageProfileCmd.AddParameter(profile.Name);
                     insertNewLanguageProfileCmd.AddParameter(profile.Cutoff);
@@ -111,7 +120,7 @@ namespace NzbDrone.Core.Datastore.Migration
             var profiles = new List<QualityProfile180>();
 
             //Grab custom formats if any exist and add them to the new profiles
-            var formats = conn.Query<CustomFormat180>($"SELECT Id FROM CustomFormats").ToList();
+            var formats = conn.Query<CustomFormat180>($"SELECT \"Id\" FROM \"CustomFormats\"").ToList();
 
             profiles.Add(GetDefaultProfile("Any",
                 formats,
@@ -258,7 +267,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 Language = Language.English,
                 MinFormatScore = 0,
                 CutoffFormatScore = 0,
-                UpgradeAllowed = 0,
+                UpgradeAllowed = false,
                 FormatItems = formatItems
             };
 
@@ -278,7 +287,7 @@ namespace NzbDrone.Core.Datastore.Migration
             public int Cutoff { get; set; }
             public int MinFormatScore { get; set; }
             public int CutoffFormatScore { get; set; }
-            public int UpgradeAllowed { get; set; }
+            public bool UpgradeAllowed { get; set; }
             public Language Language { get; set; }
             public List<ProfileFormatItem180> FormatItems { get; set; }
             public List<QualityProfileItem111> Items { get; set; }

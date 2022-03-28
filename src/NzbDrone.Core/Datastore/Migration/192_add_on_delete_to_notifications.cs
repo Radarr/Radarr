@@ -9,8 +9,8 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             Rename.Column("OnDelete").OnTable("Notifications").To("OnMovieDelete");
-            Alter.Table("Notifications").AddColumn("OnMovieFileDelete").AsBoolean().WithDefaultValue(0);
-            Alter.Table("Notifications").AddColumn("OnMovieFileDeleteForUpgrade").AsBoolean().WithDefaultValue(0);
+            Alter.Table("Notifications").AddColumn("OnMovieFileDelete").AsBoolean().WithDefaultValue(false);
+            Alter.Table("Notifications").AddColumn("OnMovieFileDeleteForUpgrade").AsBoolean().WithDefaultValue(false);
         }
     }
 }

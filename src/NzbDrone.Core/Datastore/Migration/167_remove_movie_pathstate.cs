@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             Delete.Column("PathState").FromTable("Movies");
 
-            Execute.Sql("DELETE FROM Config WHERE [KEY] IN ('pathsdefaultstatic')");
+            Execute.Sql("DELETE FROM \"Config\" WHERE \"Key\" IN ('pathsdefaultstatic')");
 
             Alter.Table("MovieFiles").AddColumn("OriginalFilePath").AsString().Nullable();
 

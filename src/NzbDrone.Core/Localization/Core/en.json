@@ -177,6 +177,7 @@
   "CutoffFormatScoreHelpText": "Once this custom format score is reached Radarr will no longer download movies",
   "CutoffHelpText": "Once this quality is reached Radarr will no longer download movies",
   "CutoffUnmet": "Cut-off Unmet",
+  "Database": "Database",
   "Date": "Date",
   "Dates": "Dates",
   "Day": "Day",

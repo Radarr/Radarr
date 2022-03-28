@@ -9,8 +9,8 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Execute.Sql("UPDATE Indexers SET Settings = Replace(Settings, 'https://awesome-hd.net', 'https://awesome-hd.club') WHERE Implementation = 'AwesomeHD';");
-            Execute.Sql("UPDATE Indexers SET Settings = Replace(Settings, 'https://awesome-hd.me', 'https://awesome-hd.club') WHERE Implementation = 'AwesomeHD';");
+            Execute.Sql("UPDATE \"Indexers\" SET \"Settings\" = Replace(\"Settings\", 'https://awesome-hd.net', 'https://awesome-hd.club') WHERE \"Implementation\" = 'AwesomeHD';");
+            Execute.Sql("UPDATE \"Indexers\" SET \"Settings\" = Replace(\"Settings\", 'https://awesome-hd.me', 'https://awesome-hd.club') WHERE \"Implementation\" = 'AwesomeHD';");
         }
     }
 }

@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void RenameTMDbListType(IDbConnection conn, IDbTransaction tran)
         {
-            var rows = conn.Query<ProviderDefinition166>($"SELECT Id, Implementation, ConfigContract, Settings FROM NetImport WHERE Implementation = 'TMDbPopularImport'");
+            var rows = conn.Query<ProviderDefinition166>($"SELECT \"Id\", \"Implementation\", \"ConfigContract\", \"Settings\" FROM \"NetImport\" WHERE \"Implementation\" = 'TMDbPopularImport'");
 
             var corrected = new List<ProviderDefinition166>();
 
@@ -71,13 +71,13 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var updateSql = "UPDATE NetImport SET Settings = @Settings WHERE Id = @Id";
+            var updateSql = "UPDATE \"NetImport\" SET \"Settings\" = @Settings WHERE \"Id\" = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 
         private void RenameTraktListType(IDbConnection conn, IDbTransaction tran)
         {
-            var rows = conn.Query<ProviderDefinition166>($"SELECT Id, Implementation, ConfigContract, Settings FROM NetImport WHERE Implementation = 'TraktImport'");
+            var rows = conn.Query<ProviderDefinition166>($"SELECT \"Id\", \"Implementation\", \"ConfigContract\", \"Settings\" FROM \"NetImport\" WHERE \"Implementation\" = 'TraktImport'");
 
             var corrected = new List<ProviderDefinition166>();
 
@@ -112,13 +112,13 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var updateSql = "UPDATE NetImport SET Settings = @Settings WHERE Id = @Id";
+            var updateSql = "UPDATE \"NetImport\" SET \"Settings\" = @Settings WHERE \"Id\" = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 
         private void FixConfig(IDbConnection conn, IDbTransaction tran)
         {
-            var rows = conn.Query<ProviderDefinition166>($"SELECT Id, Implementation, ConfigContract, Settings FROM NetImport WHERE Implementation = 'TMDbImport'");
+            var rows = conn.Query<ProviderDefinition166>($"SELECT \"Id\", \"Implementation\", \"ConfigContract\", \"Settings\" FROM \"NetImport\" WHERE \"Implementation\" = 'TMDbImport'");
 
             var corrected = new List<ProviderDefinition166>();
 
@@ -167,7 +167,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
             }
 
-            var updateSql = "UPDATE NetImport SET Implementation = @Implementation, ConfigContract = @ConfigContract, Settings = @Settings WHERE Id = @Id";
+            var updateSql = "UPDATE \"NetImport\" SET \"Implementation\" = @Implementation, \"ConfigContract\" = @ConfigContract, \"Settings\" = @Settings WHERE \"Id\" = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 

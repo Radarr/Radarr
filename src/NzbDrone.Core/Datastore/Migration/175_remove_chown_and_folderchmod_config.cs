@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Execute.Sql("DELETE FROM config WHERE Key IN ('folderchmod', 'chownuser', 'parsingleniency')");
+            Execute.Sql("DELETE FROM \"Config\" WHERE \"Key\" IN ('folderchmod', 'chownuser', 'parsingleniency')");
         }
     }
 }

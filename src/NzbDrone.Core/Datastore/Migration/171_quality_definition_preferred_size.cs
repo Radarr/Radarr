@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void UpdateQualityDefinitions(IDbConnection conn, IDbTransaction tran)
         {
-            var existing = conn.Query<QualityDefinition170>("SELECT Id, MaxSize FROM QualityDefinitions");
+            var existing = conn.Query<QualityDefinition170>("SELECT \"Id\", \"MaxSize\" FROM \"QualityDefinitions\"");
 
             var updated = new List<QualityDefinition171>();
 
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var updateSql = "UPDATE QualityDefinitions SET PreferredSize = @PreferredSize WHERE Id = @Id";
+            var updateSql = "UPDATE \"QualityDefinitions\" SET \"PreferredSize\" = @PreferredSize WHERE \"Id\" = @Id";
             conn.Execute(updateSql, updated, transaction: tran);
         }
 

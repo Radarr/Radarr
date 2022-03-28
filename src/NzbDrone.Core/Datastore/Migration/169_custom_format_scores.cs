@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Delete.Column("FormatCutoff").FromTable("Profiles");
 
-            Alter.Table("CustomFormats").AddColumn("IncludeCustomFormatWhenRenaming").AsBoolean().WithDefaultValue(0);
+            Alter.Table("CustomFormats").AddColumn("IncludeCustomFormatWhenRenaming").AsBoolean().WithDefaultValue(false);
         }
 
         private void MigrateOrderToScores(IDbConnection conn, IDbTransaction tran)
@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Datastore.Migration
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<ProfileFormatItem168>>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<List<ProfileFormatItem169>>());
 
-            var rows = conn.Query<Profile168>("SELECT Id, FormatCutoff, FormatItems from Profiles", transaction: tran);
+            var rows = conn.Query<Profile168>("SELECT \"Id\", \"FormatCutoff\", \"FormatItems\" from \"Profiles\"", transaction: tran);
             var newRows = new List<Profile169>();
 
             foreach (var row in rows)
@@ -125,7 +125,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var sql = $"UPDATE Profiles SET MinFormatScore = @MinFormatScore, CutoffFormatScore = @CutoffFormatScore, FormatItems = @FormatItems WHERE Id = @Id";
+            var sql = $"UPDATE \"Profiles\" SET \"MinFormatScore\" = @MinFormatScore, \"CutoffFormatScore\" = @CutoffFormatScore, \"FormatItems\" = @FormatItems WHERE \"Id\" = @Id";
 
             conn.Execute(sql, newRows, transaction: tran);
         }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using Newtonsoft.Json;
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
         private List<regex_required_tagsFixture.CustomFormatTest149> QueryItems(IDirectDataMapper db)
         {
-            var items = db.Query<regex_required_tagsFixture.CustomFormatTest149>("SELECT Name, FormatTags FROM CustomFormats");
+            var items = db.Query<regex_required_tagsFixture.CustomFormatTest149>("SELECT \"Name\", \"FormatTags\" FROM \"CustomFormats\"");
 
             return items.Select(i =>
             {

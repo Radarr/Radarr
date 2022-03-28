@@ -28,8 +28,8 @@ namespace NzbDrone.Core.Datastore.Migration
 
         protected override void MainDbUpgrade()
         {
-            Execute.Sql("UPDATE CustomFilters SET Filters = Replace(Filters, 'ratings', 'tmdbRating') WHERE Type = 'discoverMovie';");
-            Execute.Sql("UPDATE CustomFilters SET Filters = Replace(Filters, 'ratings', 'tmdbRating') WHERE Type = 'movieIndex';");
+            Execute.Sql("UPDATE \"CustomFilters\" SET \"Filters\" = Replace(\"Filters\", 'ratings', 'tmdbRating') WHERE \"Type\" = 'discoverMovie';");
+            Execute.Sql("UPDATE \"CustomFilters\" SET \"Filters\" = Replace(\"Filters\", 'ratings', 'tmdbRating') WHERE \"Type\" = 'movieIndex';");
 
             Execute.WithConnection((conn, tran) => FixRatings(conn, tran, "Movies"));
             Execute.WithConnection((conn, tran) => FixRatings(conn, tran, "ImportListMovies"));
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void FixRatings(IDbConnection conn, IDbTransaction tran, string table)
         {
-            var rows = conn.Query<Movie205>($"SELECT Id, Ratings FROM {table}");
+            var rows = conn.Query<Movie205>($"SELECT \"Id\", \"Ratings\" FROM \"{table}\"");
 
             var corrected = new List<Movie206>();
 
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var updateSql = $"UPDATE {table} SET Ratings = @Ratings WHERE Id = @Id";
+            var updateSql = $"UPDATE \"{table}\" SET \"Ratings\" = @Ratings WHERE \"Id\" = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 

@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovieFile(c, 1);
             });
 
-            var items = db.Query<MovieFile188>("SELECT MediaInfo FROM MovieFiles");
+            var items = db.Query<MovieFile188>("SELECT \"MediaInfo\" FROM \"MovieFiles\"");
 
             items.Should().HaveCount(1);
 

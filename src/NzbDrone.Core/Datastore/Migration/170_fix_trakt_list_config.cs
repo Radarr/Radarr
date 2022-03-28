@@ -33,12 +33,12 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             Execute.WithConnection(FixTraktConfig);
             Execute.WithConnection(RenameRadarrListType);
-            Execute.Sql("DELETE FROM Config WHERE[KEY] IN ('TraktAuthToken', 'TraktRefreshToken', 'TraktTokenExpiry', 'NewTraktAuthToken', 'NewTraktRefreshToken', 'NewTraktTokenExpiry')");
+            Execute.Sql("DELETE FROM \"Config\" WHERE \"Key\" IN ('TraktAuthToken', 'TraktRefreshToken', 'TraktTokenExpiry', 'NewTraktAuthToken', 'NewTraktRefreshToken', 'NewTraktTokenExpiry')");
         }
 
         private void RenameRadarrListType(IDbConnection conn, IDbTransaction tran)
         {
-            var rows = conn.Query<ProviderDefinition169>($"SELECT Id, Implementation, ConfigContract, Settings FROM NetImport WHERE Implementation = 'RadarrLists'");
+            var rows = conn.Query<ProviderDefinition169>($"SELECT \"Id\", \"Implementation\", \"ConfigContract\", \"Settings\" FROM \"NetImport\" WHERE \"Implementation\" = 'RadarrLists'");
 
             var corrected = new List<ProviderDefinition169>();
 
@@ -52,13 +52,13 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var updateSql = "UPDATE NetImport SET Implementation = @Implementation, ConfigContract = @ConfigContract WHERE Id = @Id";
+            var updateSql = "UPDATE \"NetImport\" SET \"Implementation\" = @Implementation, \"ConfigContract\" = @ConfigContract WHERE \"Id\" = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 
         private void FixTraktConfig(IDbConnection conn, IDbTransaction tran)
         {
-            var rows = conn.Query<ProviderDefinition169>($"SELECT Id, Implementation, ConfigContract, Settings FROM NetImport WHERE Implementation = 'TraktImport'");
+            var rows = conn.Query<ProviderDefinition169>($"SELECT \"Id\", \"Implementation\", \"ConfigContract\", \"Settings\" FROM \"NetImport\" WHERE \"Implementation\" = 'TraktImport'");
 
             var corrected = new List<ProviderDefinition169>();
 
@@ -158,7 +158,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Console.WriteLine(corrected.ToJson());
 
-            var updateSql = "UPDATE NetImport SET Implementation = @Implementation, ConfigContract = @ConfigContract, Settings = @Settings WHERE Id = @Id";
+            var updateSql = "UPDATE \"NetImport\" SET \"Implementation\" = @Implementation, \"ConfigContract\" = @ConfigContract, \"Settings\" = @Settings WHERE \"Id\" = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);
         }
     }

@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Items").AsString().NotNullable()
                 .WithColumn("Language").AsInt32().Nullable();
 
-            Execute.Sql("UPDATE Profiles SET Language = 1");
+            Execute.Sql("UPDATE \"Profiles\" SET \"Language\" = 1");
 
             Create.TableForModel("SceneMappings")
                 .WithColumn("TvdbId").AsInt32()
@@ -243,8 +243,8 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Insert.IntoTable("DelayProfiles").Row(new
             {
-                EnableUsenet = 1,
-                EnableTorrent = 1,
+                EnableUsenet = true,
+                EnableTorrent = true,
                 PreferredProtocol = 1,
                 UsenetDelay = 0,
                 TorrentDelay = 0,

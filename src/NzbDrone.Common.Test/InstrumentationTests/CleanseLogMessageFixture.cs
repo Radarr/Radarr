@@ -63,6 +63,7 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         [TestCase("Hardlink '/home/mySecret/Downloads/abs.mkv' to '/media/abc.mkv' failed.")]
         [TestCase("https://notifiarr.com/notifier.php: api=1234530f-422f-4aac-b6b3-01233210aaaa&radarr_health_issue_message=Download")]
         [TestCase("/readarr/signalr/messages/negotiate?access_token=1234530f422f4aacb6b301233210aaaa&negotiateVersion=1")]
+        [TestCase(@"[Info] MigrationController: *** Migrating Database=radarr-main;Host=postgres14;Username=mySecret;Password=mySecret;Port=5432;Enlist=False ***")]
 
         // Announce URLs (passkeys) Magnet & Tracker
         [TestCase(@"magnet_uri"":""magnet:?xt=urn:btih:9pr04sgkillroyimaveql2tyu8xyui&dn=&tr=https%3a%2f%2fxxx.yyy%2f9pr04sg601233210imaveql2tyu8xyui%2fannounce""}")]

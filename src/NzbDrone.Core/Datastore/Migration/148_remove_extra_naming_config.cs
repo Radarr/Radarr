@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Datastore.Migration
         protected override void MainDbUpgrade()
         {
             // Remove all but 1 NamingConfig
-            Execute.Sql("DELETE FROM NamingConfig WHERE ID NOT IN(SELECT ID FROM NamingConfig LIMIT 1)");
+            Execute.Sql("DELETE FROM \"NamingConfig\" WHERE \"Id\" NOT IN(SELECT \"Id\" FROM \"NamingConfig\" LIMIT 1)");
         }
     }
 }

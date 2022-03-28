@@ -49,16 +49,16 @@ namespace NzbDrone.Core.History
 
         public List<MovieHistory> FindDownloadHistory(int movieId, QualityModel quality)
         {
-            var allowed = new[] { MovieHistoryEventType.Grabbed, MovieHistoryEventType.DownloadFailed, MovieHistoryEventType.DownloadFolderImported };
+            var allowed = new[] { (int)MovieHistoryEventType.Grabbed, (int)MovieHistoryEventType.DownloadFailed, (int)MovieHistoryEventType.DownloadFolderImported };
 
             return Query(h => h.MovieId == movieId &&
                          h.Quality == quality &&
-                         allowed.Contains(h.EventType));
+                         allowed.Contains((int)h.EventType));
         }
 
         public List<MovieHistory> GetByMovieId(int movieId, MovieHistoryEventType? eventType)
         {
-            var builder = new SqlBuilder()
+            var builder = new SqlBuilder(_database.DatabaseType)
                 .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id)
                 .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
                 .Where<MovieHistory>(h => h.MovieId == movieId);
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.History
             Delete(c => movieIds.Contains(c.MovieId));
         }
 
-        protected override SqlBuilder PagedBuilder() => new SqlBuilder()
+        protected override SqlBuilder PagedBuilder() => new SqlBuilder(_database.DatabaseType)
             .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id)
             .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id);
 
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.History
 
         public List<MovieHistory> Since(DateTime date, MovieHistoryEventType? eventType)
         {
-            var builder = new SqlBuilder()
+            var builder = new SqlBuilder(_database.DatabaseType)
                 .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id)
                 .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
                 .Where<MovieHistory>(x => x.Date >= date);

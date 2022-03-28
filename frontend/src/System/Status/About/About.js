@@ -23,6 +23,8 @@ class About extends Component {
       isDocker,
       runtimeVersion,
       migrationVersion,
+      databaseVersion,
+      databaseType,
       appData,
       startupPath,
       mode,
@@ -69,6 +71,11 @@ class About extends Component {
           />
 
           <DescriptionListItem
+            title={translate('Database')}
+            data={`${titleCase(databaseType)} ${databaseVersion}`}
+          />
+
+          <DescriptionListItem
             title={translate('AppDataDirectory')}
             data={appData}
           />
@@ -108,6 +115,8 @@ About.propTypes = {
   runtimeVersion: PropTypes.string.isRequired,
   isDocker: PropTypes.bool.isRequired,
   migrationVersion: PropTypes.number.isRequired,
+  databaseType: PropTypes.string.isRequired,
+  databaseVersion: PropTypes.string.isRequired,
   appData: PropTypes.string.isRequired,
   startupPath: PropTypes.string.isRequired,
   mode: PropTypes.string.isRequired,
