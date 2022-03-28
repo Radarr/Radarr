@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Rename.Table("NetImport").To("ImportLists");
             Rename.Table("NetImportStatus").To("ImportListStatus");
 
-            Execute.Sql("UPDATE Config SET Key = 'importlistsyncinterval' WHERE Key = 'netimportsyncinterval'");
+            Execute.Sql("UPDATE \"Config\" SET \"Key\" = 'importlistsyncinterval' WHERE \"Key\" = 'netimportsyncinterval'");
 
             Alter.Table("ImportLists").AddColumn("SearchOnAdd").AsBoolean().WithDefaultValue(false);
 

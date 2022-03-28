@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<NotificationEntity201>("SELECT Id,ConfigContract,Implementation,Name,Settings FROM Notifications");
+            var items = db.Query<NotificationEntity201>("SELECT \"Id\",\"ConfigContract\",\"Implementation\",\"Name\",\"Settings\" FROM \"Notifications\"");
 
             items.Should().HaveCount(1);
             items.First().ConfigContract.Should().Be("DiscordSettings");

@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (IDbCommand namingConfigCmd = conn.CreateCommand())
             {
                 namingConfigCmd.Transaction = tran;
-                namingConfigCmd.CommandText = @"SELECT * FROM NamingConfig LIMIT 1";
+                namingConfigCmd.CommandText = @"SELECT * FROM ""NamingConfig"" LIMIT 1";
                 using (IDataReader namingConfigReader = namingConfigCmd.ExecuteReader())
                 {
                     while (namingConfigReader.Read())
@@ -38,9 +38,9 @@ namespace NzbDrone.Core.Datastore.Migration
 
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {
-                            var text = string.Format("UPDATE NamingConfig " +
-                                                     "SET StandardMovieFormat = '{0}', " +
-                                                     "MovieFolderFormat = '{1}'",
+                            var text = string.Format("UPDATE \"NamingConfig\" " +
+                                                     "SET \"StandardMovieFormat\" = '{0}', " +
+                                                     "\"MovieFolderFormat\" = '{1}'",
                                                      standardMovieFormat,
                                                      movieFolderFormat);
 

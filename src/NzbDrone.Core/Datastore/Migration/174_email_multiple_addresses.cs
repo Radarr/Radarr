@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void ChangeEmailAddressType(IDbConnection conn, IDbTransaction tran)
         {
-            var rows = conn.Query<ProviderDefinition166>($"SELECT Id, Settings FROM Notifications WHERE Implementation = 'Email'");
+            var rows = conn.Query<ProviderDefinition166>($"SELECT \"Id\", \"Settings\" FROM \"Notifications\" WHERE \"Implementation\" = 'Email'");
 
             var corrected = new List<ProviderDefinition166>();
 
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var updateSql = "UPDATE Notifications SET Settings = @Settings WHERE Id = @Id";
+            var updateSql = "UPDATE \"Notifications\" SET \"Settings\" = @Settings WHERE \"Id\" = @Id";
             conn.Execute(updateSql, corrected, transaction: tran);
         }
 

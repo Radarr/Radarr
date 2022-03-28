@@ -135,9 +135,9 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
         private List<Profile147> QueryItems(IDirectDataMapper db)
         {
-            var test = db.Query("SELECT * FROM Profiles");
+            var test = db.Query("SELECT * FROM \"Profiles\"");
 
-            var items = db.Query<Profile147>("SELECT FormatItems, FormatCutoff FROM Profiles");
+            var items = db.Query<Profile147>("SELECT \"FormatItems\", \"FormatCutoff\" FROM \"Profiles\"");
 
             return items.Select(i =>
             {

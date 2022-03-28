@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ParsedMovieInfo164>());
             SqlMapper.AddTypeHandler(new EmbeddedDocumentConverter<ParsedMovieInfo165>());
-            var rows = conn.Query<ParsedMovieInfoData164>("SELECT Id, ParsedMovieInfo from PendingReleases");
+            var rows = conn.Query<ParsedMovieInfoData164>("SELECT \"Id\", \"ParsedMovieInfo\" from \"PendingReleases\"");
 
             var newRows = new List<ParsedMovieInfoData165>();
 
@@ -76,26 +76,26 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var sql = $"UPDATE PendingReleases SET ParsedMovieInfo = @ParsedMovieInfo WHERE Id = @Id";
+            var sql = $"UPDATE \"PendingReleases\" SET \"ParsedMovieInfo\" = @ParsedMovieInfo WHERE \"Id\" = @Id";
 
             conn.Execute(sql, newRows, transaction: tran);
         }
 
         private void RemoveCustomFormatFromQuality(IDbConnection conn, IDbTransaction tran, string table)
         {
-            var rows = conn.Query<QualityRow>($"SELECT Id, Quality from {table}");
+            var rows = conn.Query<QualityRow>($"SELECT \"Id\", \"Quality\" from \"{table}\"");
 
-            var sql = $"UPDATE {table} SET Quality = @Quality WHERE Id = @Id";
+            var sql = $"UPDATE \"{table}\" SET \"Quality\" = @Quality WHERE \"Id\" = @Id";
 
             conn.Execute(sql, rows, transaction: tran);
         }
 
         private void AddIndexerFlagsToBlacklist(IDbConnection conn, IDbTransaction tran)
         {
-            var blacklists = conn.Query<BlacklistData>("SELECT Blacklist.Id, Blacklist.TorrentInfoHash, History.Data " +
-                                                       "FROM Blacklist " +
-                                                       "JOIN History ON Blacklist.MovieId = History.MovieId " +
-                                                       "WHERE History.EventType = 1");
+            var blacklists = conn.Query<BlacklistData>("SELECT \"Blacklist\".\"Id\", \"Blacklist\".\"TorrentInfoHash\", \"History\".\"Data\" " +
+                                                       "FROM \"Blacklist\" " +
+                                                       "JOIN \"History\" ON \"Blacklist\".\"MovieId\" = \"History\".\"MovieId\" " +
+                                                       "WHERE \"History\".\"EventType\" = 1");
 
             var toUpdate = new List<IndexerFlagsItem>();
 
@@ -117,16 +117,16 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
             }
 
-            var updateSql = "UPDATE Blacklist SET IndexerFlags = @IndexerFlags WHERE Id = @Id";
+            var updateSql = "UPDATE \"Blacklist\" SET \"IndexerFlags\" = @IndexerFlags WHERE \"Id\" = @Id";
             conn.Execute(updateSql, toUpdate, transaction: tran);
         }
 
         private void AddIndexerFlagsToMovieFiles(IDbConnection conn, IDbTransaction tran)
         {
-            var movieFiles = conn.Query<MovieFileData>("SELECT MovieFiles.Id, MovieFiles.SceneName, History.SourceTitle, History.Data " +
-                                                       "FROM MovieFiles " +
-                                                       "JOIN History ON MovieFiles.MovieId = History.MovieId " +
-                                                       "WHERE History.EventType = 1");
+            var movieFiles = conn.Query<MovieFileData>("SELECT \"MovieFiles\".\"Id\", \"MovieFiles\".\"SceneName\", \"History\".\"SourceTitle\", \"History\".\"Data\" " +
+                                                       "FROM \"MovieFiles\" " +
+                                                       "JOIN \"History\" ON \"MovieFiles\".\"MovieId\" = \"History\".\"MovieId\" " +
+                                                       "WHERE \"History\".\"EventType\" = 1");
 
             var toUpdate = new List<IndexerFlagsItem>();
 
@@ -148,7 +148,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
             }
 
-            var updateSql = "UPDATE MovieFiles SET IndexerFlags = @IndexerFlags WHERE Id = @Id";
+            var updateSql = "UPDATE \"MovieFiles\" SET \"IndexerFlags\" = @IndexerFlags WHERE \"Id\" = @Id";
             conn.Execute(updateSql, toUpdate, transaction: tran);
         }
 

@@ -19,12 +19,12 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 c.Insert.IntoTable("NetImport").Row(new
                 {
-                    Enabled = 1,
-                    EnableAuto = 1,
+                    Enabled = true,
+                    EnableAuto = true,
                     RootFolderPath = "D:\\Movies",
                     ProfileId = 1,
                     MinimumAvailability = 1,
-                    ShouldMonitor = 1,
+                    ShouldMonitor = true,
                     Name = "IMDB List",
                     Implementation = "RadarrLists",
                     Settings = new RadarrListSettings169
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition169>("SELECT * FROM NetImport");
+            var items = db.Query<ListDefinition169>("SELECT * FROM \"NetImport\"");
 
             items.Should().HaveCount(1);
             items.First().Implementation.Should().Be("RadarrListImport");
@@ -52,12 +52,12 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 c.Insert.IntoTable("NetImport").Row(new
                 {
-                    Enabled = 1,
-                    EnableAuto = 1,
+                    Enabled = true,
+                    EnableAuto = true,
                     RootFolderPath = "D:\\Movies",
                     ProfileId = 1,
                     MinimumAvailability = 1,
-                    ShouldMonitor = 1,
+                    ShouldMonitor = true,
                     Name = "TraktImport",
                     Implementation = "TraktImport",
                     Settings = new TraktSettings169
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition169>("SELECT * FROM NetImport");
+            var items = db.Query<ListDefinition169>("SELECT * FROM \"NetImport\"");
 
             items.Should().HaveCount(1);
             items.First().Implementation.Should().Be("TraktUserImport");
@@ -90,12 +90,12 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 c.Insert.IntoTable("NetImport").Row(new
                 {
-                    Enabled = 1,
-                    EnableAuto = 1,
+                    Enabled = true,
+                    EnableAuto = true,
                     RootFolderPath = "D:\\Movies",
                     ProfileId = 1,
                     MinimumAvailability = 1,
-                    ShouldMonitor = 1,
+                    ShouldMonitor = true,
                     Name = "TraktImport",
                     Implementation = "TraktImport",
                     Settings = new TraktSettings169
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition169>("SELECT * FROM NetImport");
+            var items = db.Query<ListDefinition169>("SELECT * FROM \"NetImport\"");
 
             items.Should().HaveCount(1);
             items.First().Implementation.Should().Be("TraktPopularImport");
@@ -128,12 +128,12 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 c.Insert.IntoTable("NetImport").Row(new
                 {
-                    Enabled = 1,
-                    EnableAuto = 1,
+                    Enabled = true,
+                    EnableAuto = true,
                     RootFolderPath = "D:\\Movies",
                     ProfileId = 1,
                     MinimumAvailability = 1,
-                    ShouldMonitor = 1,
+                    ShouldMonitor = true,
                     Name = "TraktImport",
                     Implementation = "TraktImport",
                     Settings = new TraktSettings169
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition169>("SELECT * FROM NetImport");
+            var items = db.Query<ListDefinition169>("SELECT * FROM \"NetImport\"");
 
             items.Should().HaveCount(1);
             items.First().Implementation.Should().Be("TraktListImport");

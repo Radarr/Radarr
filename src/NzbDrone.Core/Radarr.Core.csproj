@@ -4,7 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="FluentMigrator.Runner.Postgres" Version="3.3.2" />
     <PackageReference Include="MailKit" Version="2.15.0" />
+    <PackageReference Include="Npgsql" Version="6.0.3" />
     <PackageReference Include="Servarr.FFMpegCore" Version="4.7.0-26" />
     <PackageReference Include="Servarr.FFprobe" Version="5.0.0.64" />
     <PackageReference Include="System.Memory" Version="4.5.4" />

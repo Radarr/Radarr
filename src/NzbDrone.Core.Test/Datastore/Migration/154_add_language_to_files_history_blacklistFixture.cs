@@ -32,8 +32,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 Monitored = true,
                 Title = "My Movie",
                 CleanTitle = "mytitle",
-                Status = MovieStatusType.Announced,
-                MinimumAvailability = MovieStatusType.Announced,
+                Status = (int)MovieStatusType.Announced,
+                MinimumAvailability = (int)MovieStatusType.Announced,
                 Images = new[] { new { CoverType = "Poster" } }.ToJson(),
                 HasPreDBEntry = false,
                 PathState = 1,
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovieFile(c, "My.Movie.2018.German.BluRay-Radarr", "Japanese");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM MovieFiles");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"MovieFiles\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -130,7 +130,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovieFile(c, "My.Movie.2018.German.BluRay-Radarr", "Japanese / French");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM MovieFiles");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"MovieFiles\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(2);
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovieFile(c, "My.Movie.2018.German.BluRay-Radarr", "");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM MovieFiles");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"MovieFiles\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -166,7 +166,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovieFile(c, "My.Movie.2018.German.BluRay-Radarr", "English (USA)");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM MovieFiles");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"MovieFiles\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -184,7 +184,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovieFile(c, "", "");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM MovieFiles");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"MovieFiles\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -201,7 +201,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovieFile(c, null, null);
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM MovieFiles");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"MovieFiles\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -218,7 +218,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovieFile(c, "My.Movie.2018.BluRay-Radarr", "");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM MovieFiles");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"MovieFiles\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -235,7 +235,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddMovieFile(c, "", "");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM MovieFiles");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"MovieFiles\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -253,7 +253,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddHistory(c, "My.Movie.2018.Italian.BluRay-Radarr");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM History");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"History\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -270,7 +270,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddHistory(c, "");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM History");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"History\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -287,7 +287,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddHistory(c, "Man on Fire");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM History");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"History\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -305,7 +305,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddHistory(c, "My.Movie.2018.Italian.BluRay-Radarr");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM History");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"History\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(3);
@@ -324,7 +324,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddBlacklist(c, "My.Movie.2018.Italian.BluRay-Radarr");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM Blacklist");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"Blacklist\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -341,7 +341,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddBlacklist(c, "");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM Blacklist");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"Blacklist\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);
@@ -358,7 +358,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 AddBlacklist(c, "Man on Fire");
             });
 
-            var items = db.Query<ModelWithLanguages154>("SELECT Id, Languages FROM Blacklist");
+            var items = db.Query<ModelWithLanguages154>("SELECT \"Id\", \"Languages\" FROM \"Blacklist\"");
 
             items.Should().HaveCount(1);
             items.First().Languages.Count.Should().Be(1);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -41,7 +41,8 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             Subject.Clean();
 
-            AllStoredModels.ToList().ForEach(t => t.LastExecution.Should().Be(expectedTime));
+            // BeCloseTo handles Postgres rounding times
+            AllStoredModels.ToList().ForEach(t => t.LastExecution.Should().BeCloseTo(expectedTime));
         }
     }
 }

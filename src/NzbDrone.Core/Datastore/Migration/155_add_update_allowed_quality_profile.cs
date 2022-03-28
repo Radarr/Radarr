@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Alter.Table("Profiles").AddColumn("UpgradeAllowed").AsInt32().Nullable();
+            Alter.Table("Profiles").AddColumn("UpgradeAllowed").AsBoolean().Nullable();
 
             // Set upgrade allowed for existing profiles (default will be false for new profiles)
             Update.Table("Profiles").Set(new { UpgradeAllowed = true }).AllRows();

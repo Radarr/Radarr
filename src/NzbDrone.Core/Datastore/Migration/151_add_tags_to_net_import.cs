@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Alter.Table("NetImport")
                  .AddColumn("Tags").AsString().Nullable();
 
-            Execute.Sql("UPDATE NetImport SET Tags = '[]'");
+            Execute.Sql("UPDATE \"NetImport\" SET \"Tags\" = '[]'");
         }
     }
 }

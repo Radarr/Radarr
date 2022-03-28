@@ -49,7 +49,7 @@ namespace NzbDrone.Core.Movies
             _alternativeTitleRepository = alternativeTitleRepository;
         }
 
-        protected override SqlBuilder Builder() => new SqlBuilder()
+        protected override SqlBuilder Builder() => new SqlBuilder(_database.DatabaseType)
             .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
             .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
             .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId);
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Movies
         {
             // the skips the join on profile and alternative title and populates manually
             // to avoid repeatedly deserializing the same profile / movie
-            var builder = new SqlBuilder()
+            var builder = new SqlBuilder(_database.DatabaseType)
                 .LeftJoin<Movie, MovieFile>((m, f) => m.MovieFileId == f.Id);
 
             var profiles = _profileRepository.All().ToDictionary(x => x.Id);
@@ -142,12 +142,26 @@ namespace NzbDrone.Core.Movies
         {
             var movieDictionary = new Dictionary<int, Movie>();
 
-            var builder = new SqlBuilder()
+            SqlBuilder builder;
+
+            if (_database.DatabaseType == DatabaseType.PostgreSQL)
+            {
+                builder = new SqlBuilder(_database.DatabaseType)
+                .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
+                .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
+                .LeftJoin<Movie, MovieTranslation>((m, tr) => m.Id == tr.MovieId)
+                .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+                .WherePostgres<Movie>(x => titles.Contains(x.CleanTitle));
+            }
+            else
+            {
+                builder = new SqlBuilder(_database.DatabaseType)
                 .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
                 .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
                 .LeftJoin<Movie, MovieTranslation>((m, tr) => m.Id == tr.MovieId)
                 .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
                 .Where<Movie>(x => titles.Contains(x.CleanTitle));
+            }
 
             _ = _database.QueryJoined<Movie, Profile, AlternativeTitle, MovieFile, MovieTranslation>(
                 builder,
@@ -160,12 +174,26 @@ namespace NzbDrone.Core.Movies
         {
             var movieDictionary = new Dictionary<int, Movie>();
 
-            var builder = new SqlBuilder()
+            SqlBuilder builder;
+
+            if (_database.DatabaseType == DatabaseType.PostgreSQL)
+            {
+                builder = new SqlBuilder(_database.DatabaseType)
+                .LeftJoin<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+                .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
+                .LeftJoin<Movie, MovieTranslation>((m, tr) => m.Id == tr.MovieId)
+                .Join<AlternativeTitle, Movie>((t, m) => t.MovieId == m.Id)
+                .WherePostgres<AlternativeTitle>(x => titles.Contains(x.CleanTitle));
+            }
+            else
+            {
+                builder = new SqlBuilder(_database.DatabaseType)
                 .LeftJoin<AlternativeTitle, Movie>((t, m) => t.MovieId == m.Id)
                 .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
                 .LeftJoin<Movie, MovieTranslation>((m, tr) => m.Id == tr.MovieId)
                 .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
                 .Where<AlternativeTitle>(x => titles.Contains(x.CleanTitle));
+            }
 
             _ = _database.QueryJoined<AlternativeTitle, Profile, Movie, MovieFile, MovieTranslation>(
                 builder,
@@ -182,12 +210,26 @@ namespace NzbDrone.Core.Movies
         {
             var movieDictionary = new Dictionary<int, Movie>();
 
-            var builder = new SqlBuilder()
+            SqlBuilder builder;
+
+            if (_database.DatabaseType == DatabaseType.PostgreSQL)
+            {
+                builder = new SqlBuilder(_database.DatabaseType)
+                .LeftJoin<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+                .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
+                .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
+                .Join<MovieTranslation, Movie>((tr, m) => tr.MovieId == m.Id)
+                .WherePostgres<MovieTranslation>(x => titles.Contains(x.CleanTitle));
+            }
+            else
+            {
+                builder = new SqlBuilder(_database.DatabaseType)
                 .LeftJoin<MovieTranslation, Movie>((tr, m) => tr.MovieId == m.Id)
                 .LeftJoin<Movie, AlternativeTitle>((m, t) => m.Id == t.MovieId)
                 .LeftJoin<Movie, MovieFile>((m, f) => m.Id == f.MovieId)
                 .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
                 .Where<MovieTranslation>(x => titles.Contains(x.CleanTitle));
+            }
 
             _ = _database.QueryJoined<MovieTranslation, Profile, Movie, MovieFile, AlternativeTitle>(
                 builder,
@@ -294,7 +336,7 @@ namespace NzbDrone.Core.Movies
         {
             using (var conn = _database.OpenConnection())
             {
-                var strSql = "SELECT Id AS [Key], Path AS [Value] FROM Movies";
+                var strSql = "SELECT \"Id\" AS \"Key\", \"Path\" AS \"Value\" FROM \"Movies\"";
                 return conn.Query<KeyValuePair<int, string>>(strSql).ToDictionary(x => x.Key, x => x.Value);
             }
         }
@@ -303,7 +345,7 @@ namespace NzbDrone.Core.Movies
         {
             using (var conn = _database.OpenConnection())
             {
-                var strSql = "SELECT Id AS [Key], TitleSlug AS [Value] FROM Movies";
+                var strSql = "SELECT \"Id\" AS \"Key\", \"TitleSlug\" AS \"Value\" FROM \"Movies\"";
                 return conn.Query<KeyValuePair<int, string>>(strSql).ToDictionary(x => x.Key, x => x.Value);
             }
         }
@@ -312,7 +354,7 @@ namespace NzbDrone.Core.Movies
         {
             using (var conn = _database.OpenConnection())
             {
-                return conn.Query<int>("SELECT TmdbId FROM Movies").ToList();
+                return conn.Query<int>("SELECT \"TmdbId\" FROM \"Movies\"").ToList();
             }
         }
 
@@ -320,7 +362,7 @@ namespace NzbDrone.Core.Movies
         {
             using (var conn = _database.OpenConnection())
             {
-                var strSql = "SELECT Id AS [Key], Tags AS [Value] FROM Movies";
+                var strSql = "SELECT \"Id\" AS \"Key\", \"Tags\" AS \"Value\" FROM \"Movies\"";
                 return conn.Query<KeyValuePair<int, List<int>>>(strSql).ToDictionary(x => x.Key, x => x.Value);
             }
         }
@@ -336,21 +378,42 @@ namespace NzbDrone.Core.Movies
 
             using (var conn = _database.OpenConnection())
             {
-                recommendations = conn.Query<int>(@"SELECT DISTINCT Rec FROM (
-                                                    SELECT DISTINCT Rec FROM
+                if (_database.DatabaseType == DatabaseType.PostgreSQL)
+                {
+                    recommendations = conn.Query<int>(@"SELECT DISTINCT ""Rec"" FROM (
+                                                    SELECT DISTINCT ""Rec"" FROM
                                                     (
-                                                    SELECT DISTINCT CAST(j.value AS INT) AS Rec FROM Movies CROSS JOIN json_each(Movies.Recommendations) AS j
-                                                    WHERE Rec NOT IN (SELECT TmdbId FROM Movies union SELECT TmdbId from ImportExclusions) LIMIT 10
+                                                    SELECT DISTINCT CAST(""value"" AS INT) AS ""Rec"" FROM ""Movies"", json_array_elements_text((""Movies"".""Recommendations"")::json)
+                                                    WHERE CAST(""value"" AS INT) NOT IN (SELECT ""TmdbId"" FROM ""Movies"" union SELECT ""TmdbId"" from ""ImportExclusions"" as sub1) LIMIT 10
+                                                    ) as sub2
+                                                    UNION
+                                                    SELECT ""Rec"" FROM
+                                                    (
+                                                    SELECT CAST(""value"" AS INT) AS ""Rec"" FROM ""Movies"", json_array_elements_text((""Movies"".""Recommendations"")::json)
+                                                    WHERE CAST(""value"" AS INT) NOT IN (SELECT ""TmdbId"" FROM ""Movies"" union SELECT ""TmdbId"" from ""ImportExclusions"" as sub2)
+                                                    GROUP BY ""Rec"" ORDER BY count(*) DESC LIMIT 120
+                                                    ) as sub4
+                                                    ) as sub5
+                                                    LIMIT 100;").ToList();
+                }
+                else
+                {
+                    recommendations = conn.Query<int>(@"SELECT DISTINCT ""Rec"" FROM (
+                                                    SELECT DISTINCT ""Rec"" FROM
+                                                    (
+                                                    SELECT DISTINCT CAST(""j"".""value"" AS INT) AS ""Rec"" FROM ""Movies"" CROSS JOIN json_each(""Movies"".""Recommendations"") AS ""j""
+                                                    WHERE ""Rec"" NOT IN (SELECT ""TmdbId"" FROM ""Movies"" union SELECT ""TmdbId"" from ""ImportExclusions"") LIMIT 10
                                                     )
                                                     UNION
-                                                    SELECT Rec FROM
+                                                    SELECT ""Rec"" FROM
                                                     (
-                                                    SELECT CAST(j.value AS INT) AS Rec FROM Movies CROSS JOIN json_each(Movies.Recommendations) AS j
-                                                    WHERE Rec NOT IN (SELECT TmdbId FROM Movies union SELECT TmdbId from ImportExclusions)
-                                                    GROUP BY Rec ORDER BY count(*) DESC LIMIT 120
+                                                    SELECT CAST(""j"".""value"" AS INT) AS ""Rec"" FROM ""Movies"" CROSS JOIN json_each(""Movies"".""Recommendations"") AS ""j""
+                                                    WHERE ""Rec"" NOT IN (SELECT ""TmdbId"" FROM ""Movies"" union SELECT ""TmdbId"" from ""ImportExclusions"")
+                                                    GROUP BY ""Rec"" ORDER BY count(*) DESC LIMIT 120
                                                     )
                                                     )
                                                     LIMIT 100;").ToList();
+                }
             }
 
             return recommendations;

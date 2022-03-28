@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (IDbCommand getSeriesCmd = conn.CreateCommand())
             {
                 getSeriesCmd.Transaction = tran;
-                getSeriesCmd.CommandText = @"SELECT Id, Value FROM Config WHERE Key = 'filedate'";
+                getSeriesCmd.CommandText = @"SELECT ""Id"", ""Value"" FROM ""Config"" WHERE ""Key"" = 'filedate'";
                 using (IDataReader seriesReader = getSeriesCmd.ExecuteReader())
                 {
                     while (seriesReader.Read())
@@ -30,7 +30,7 @@ namespace NzbDrone.Core.Datastore.Migration
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {
                             updateCmd.Transaction = tran;
-                            updateCmd.CommandText = "UPDATE Config SET Value = 'Release' WHERE Id = ?";
+                            updateCmd.CommandText = "UPDATE \"Config\" SET \"Value\" = 'Release' WHERE \"Id\" = ?";
                             updateCmd.AddParameter(id);
 
                             updateCmd.ExecuteNonQuery();

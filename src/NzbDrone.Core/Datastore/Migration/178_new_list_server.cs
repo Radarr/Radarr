@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void FixRadarrLists(IDbConnection conn, IDbTransaction tran)
         {
-            var rows = conn.Query<NetImportDefinition178>($"SELECT * FROM NetImport WHERE ConfigContract = 'RadarrListSettings'");
+            var rows = conn.Query<NetImportDefinition178>($"SELECT * FROM \"NetImport\" WHERE \"ConfigContract\" = 'RadarrListSettings'");
 
             var radarrUrls = new List<string>
             {
@@ -108,17 +108,17 @@ namespace NzbDrone.Core.Datastore.Migration
                 row.Settings = JsonSerializer.Serialize(newSettings, _serializerSettings);
             }
 
-            var updateSql = "UPDATE NetImport SET Implementation = @Implementation, " +
-                "ConfigContract = @ConfigContract, " +
-                "Settings = @Settings " +
-                "WHERE Id = @Id";
+            var updateSql = "UPDATE \"NetImport\" SET \"Implementation\" = @Implementation, " +
+                "\"ConfigContract\" = @ConfigContract, " +
+                "\"Settings\" = @Settings " +
+                "WHERE \"Id\" = @Id";
 
             conn.Execute(updateSql, rows, transaction: tran);
         }
 
         private void FixStevenLuLists(IDbConnection conn, IDbTransaction tran)
         {
-            var rows = conn.Query<NetImportDefinition178>($"SELECT * FROM NetImport WHERE ConfigContract = 'StevenLuSettings'");
+            var rows = conn.Query<NetImportDefinition178>($"SELECT * FROM \"NetImport\" WHERE \"ConfigContract\" = 'StevenLuSettings'");
 
             var updated = new List<NetImportDefinition178>();
 
@@ -160,10 +160,10 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
             }
 
-            var updateSql = "UPDATE NetImport SET Implementation = @Implementation, " +
-                "ConfigContract = @ConfigContract, " +
-                "Settings = @Settings " +
-                "WHERE Id = @Id";
+            var updateSql = "UPDATE \"NetImport\" SET \"Implementation\" = @Implementation, " +
+                "\"ConfigContract\" = @ConfigContract, " +
+                "\"Settings\" = @Settings " +
+                "WHERE \"Id\" = @Id";
             conn.Execute(updateSql, updated, transaction: tran);
         }
 

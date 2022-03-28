@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void UpdateCustomFormats(IDbConnection conn, IDbTransaction tran)
         {
-            var existing = conn.Query<FormatTag167>("SELECT Id, Name, FormatTags FROM CustomFormats");
+            var existing = conn.Query<FormatTag167>("SELECT \"Id\", \"Name\", \"FormatTags\" FROM \"CustomFormats\"");
 
             var updated = new List<Specification168>();
 
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 });
             }
 
-            var updateSql = "UPDATE CustomFormats SET Specifications = @Specifications WHERE Id = @Id";
+            var updateSql = "UPDATE \"CustomFormats\" SET \"Specifications\" = @Specifications WHERE \"Id\" = @Id";
             conn.Execute(updateSql, updated, transaction: tran);
         }
 

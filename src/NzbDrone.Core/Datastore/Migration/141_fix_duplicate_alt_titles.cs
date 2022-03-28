@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
@@ -9,16 +9,16 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            Execute.WithConnection(RenameUrlToBaseUrl);
+            Execute.WithConnection(RemoveDuplicateAlternateTitles);
             Alter.Table("AlternativeTitles").AlterColumn("CleanTitle").AsString().Unique();
         }
 
-        private void RenameUrlToBaseUrl(IDbConnection conn, IDbTransaction tran)
+        private void RemoveDuplicateAlternateTitles(IDbConnection conn, IDbTransaction tran)
         {
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
-                cmd.CommandText = "DELETE FROM AlternativeTitles WHERE rowid NOT IN ( SELECT MIN(rowid) FROM AlternativeTitles GROUP BY CleanTitle )";
+                cmd.CommandText = "DELETE FROM \"AlternativeTitles\" WHERE \"Id\" NOT IN (Select Min(\"Id\") From \"AlternativeTitles\" Group By \"CleanTitle\")";
 
                 cmd.ExecuteNonQuery();
             }

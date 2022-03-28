@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 using (var updateProfileCmd = _connection.CreateCommand())
                 {
                     updateProfileCmd.Transaction = _transaction;
-                    updateProfileCmd.CommandText = "UPDATE Profiles SET Name = ?, Cutoff = ?, Items = ?, Language = ? WHERE Id = ?";
+                    updateProfileCmd.CommandText = "UPDATE \"Profiles\" SET \"Name\" = ?, \"Cutoff\" = ?, \"Items\" = ?, \"Language\" = ? WHERE \"Id\" = ?";
                     updateProfileCmd.AddParameter(profile.Name);
                     updateProfileCmd.AddParameter(profile.Cutoff);
                     updateProfileCmd.AddParameter(profile.Items.ToJson());
@@ -187,7 +187,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (var getDefinitions = _connection.CreateCommand())
             {
                 getDefinitions.Transaction = _transaction;
-                getDefinitions.CommandText = @"SELECT Id, Quality FROM QualityDefinitions";
+                getDefinitions.CommandText = @"SELECT ""Id"", ""Quality"" FROM ""QualityDefinitions""";
 
                 using (var definitionsReader = getDefinitions.ExecuteReader())
                 {
@@ -225,7 +225,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (var getProfilesCmd = _connection.CreateCommand())
             {
                 getProfilesCmd.Transaction = _transaction;
-                getProfilesCmd.CommandText = @"SELECT Id, Name, Cutoff, Items, Language FROM Profiles";
+                getProfilesCmd.CommandText = @"SELECT ""Id"", ""Name"", ""Cutoff"", ""Items"", ""Language"" FROM ""Profiles""";
 
                 using (var profileReader = getProfilesCmd.ExecuteReader())
                 {

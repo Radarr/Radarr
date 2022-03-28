@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Create.Index().OnTable("DownloadHistory").OnColumn("MovieId");
             Create.Index().OnTable("DownloadHistory").OnColumn("DownloadId");
 
-            Execute.WithConnection(InitialImportedDownloadHistory);
+            IfDatabase("sqlite").Execute.WithConnection(InitialImportedDownloadHistory);
         }
 
         private static readonly Dictionary<int, int> EventTypeMap = new Dictionary<int, int>()
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
-                cmd.CommandText = "SELECT MovieId, DownloadId, EventType, SourceTitle, Date, Data FROM History WHERE DownloadId IS NOT NULL AND EventType IN (1, 3, 4, 9) GROUP BY EventType, DownloadId";
+                cmd.CommandText = "SELECT \"MovieId\", \"DownloadId\", \"EventType\", \"SourceTitle\", \"Date\", \"Data\" FROM \"History\" WHERE \"DownloadId\" IS NOT NULL AND \"EventType\" IN (1, 3, 4, 9) GROUP BY \"EventType\", \"DownloadId\"";
 
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -75,7 +75,15 @@ namespace NzbDrone.Core.Datastore.Migration
                         using (var updateCmd = conn.CreateCommand())
                         {
                             updateCmd.Transaction = tran;
-                            updateCmd.CommandText = @"INSERT INTO DownloadHistory (EventType, MovieId, DownloadId, SourceTitle, Date, Protocol, Data) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                            if (conn.GetType().FullName ==  "Npgsql.NpgsqlConnection")
+                            {
+                                updateCmd.CommandText = @"INSERT INTO ""DownloadHistory"" (""EventType"", ""MovieId"", ""DownloadId"", ""SourceTitle"", ""Date"", ""Protocol"", ""Data"") VALUES ($1, $2, $3, $4, $5, $6, $7)";
+                            }
+                            else
+                            {
+                                updateCmd.CommandText = @"INSERT INTO ""DownloadHistory"" (""EventType"", ""MovieId"", ""DownloadId"", ""SourceTitle"", ""Date"", ""Protocol"", ""Data"") VALUES (?, ?, ?, ?, ?, ?, ?)";
+                            }
+
                             updateCmd.AddParameter(downloadHistoryEventType);
                             updateCmd.AddParameter(movieId);
                             updateCmd.AddParameter(downloadId);

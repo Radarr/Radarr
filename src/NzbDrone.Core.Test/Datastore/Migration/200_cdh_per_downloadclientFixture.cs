@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 c.Insert.IntoTable("DownloadClients").Row(new
                 {
-                    Enable = 1,
+                    Enable = true,
                     Name = "Deluge",
                     Implementation = "Deluge",
                     Priority = 1,
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<DownloadClientDefinition158>("SELECT * FROM DownloadClients");
+            var items = db.Query<DownloadClientDefinition158>("SELECT * FROM \"DownloadClients\"");
 
             items.Should().HaveCount(1);
             items.First().RemoveCompletedDownloads.Should().BeFalse();
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
                 c.Insert.IntoTable("DownloadClients").Row(new
                 {
-                    Enable = 1,
+                    Enable = true,
                     Name = "Deluge",
                     Implementation = "Deluge",
                     Priority = 1,
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<DownloadClientDefinition158>("SELECT * FROM DownloadClients");
+            var items = db.Query<DownloadClientDefinition158>("SELECT * FROM \"DownloadClients\"");
 
             items.Should().HaveCount(1);
             items.First().RemoveCompletedDownloads.Should().BeTrue();
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 c.Insert.IntoTable("DownloadClients").Row(new
                 {
-                    Enable = 1,
+                    Enable = true,
                     Name = "RTorrent",
                     Implementation = "RTorrent",
                     Priority = 1,
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<DownloadClientDefinition158>("SELECT * FROM DownloadClients");
+            var items = db.Query<DownloadClientDefinition158>("SELECT * FROM \"DownloadClients\"");
 
             items.Should().HaveCount(1);
             items.First().RemoveCompletedDownloads.Should().BeFalse();

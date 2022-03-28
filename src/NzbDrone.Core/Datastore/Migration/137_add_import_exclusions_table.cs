@@ -29,7 +29,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (IDbCommand getSeriesCmd = conn.CreateCommand())
             {
                 getSeriesCmd.Transaction = tran;
-                getSeriesCmd.CommandText = @"SELECT Key, Value FROM Config WHERE Key = 'importexclusions'";
+                getSeriesCmd.CommandText = @"SELECT ""Key"", ""Value"" FROM ""Config"" WHERE ""Key"" = 'importexclusions'";
                 TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
                 using (IDataReader seriesReader = getSeriesCmd.ExecuteReader())
                 {
@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Datastore.Migration
                         using (IDbCommand updateCmd = conn.CreateCommand())
                         {
                             updateCmd.Transaction = tran;
-                            updateCmd.CommandText = "INSERT INTO ImportExclusions (tmdbid, MovieTitle) VALUES " + string.Join(", ", importExclusions);
+                            updateCmd.CommandText = "INSERT INTO \"ImportExclusions\" (tmdbid, MovieTitle) VALUES " + string.Join(", ", importExclusions);
 
                             updateCmd.ExecuteNonQuery();
                         }

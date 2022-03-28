@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void FixMovies(IDbConnection conn, IDbTransaction tran)
         {
-            var movieRows = conn.Query<MovieEntity185>($"SELECT Id, TmdbId, Added, LastInfoSync, MovieFileId FROM Movies");
+            var movieRows = conn.Query<MovieEntity185>($"SELECT \"Id\", \"TmdbId\", \"Added\", \"LastInfoSync\", \"MovieFileId\" FROM \"Movies\"");
 
             // Only process if there are movies existing in the DB
             if (movieRows.Any())
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                 if (purgeMovies.Count > 0)
                 {
-                    var deleteSql = "DELETE FROM Movies WHERE Id = @Id";
+                    var deleteSql = "DELETE FROM \"Movies\" WHERE \"Id\" = @Id";
                     conn.Execute(deleteSql, purgeMovies, transaction: tran);
                 }
 

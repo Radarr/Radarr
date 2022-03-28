@@ -11,9 +11,9 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.Datastore
 {
     [TestFixture]
-    public class WhereBuilderFixture : CoreTest
+    public class WhereBuilderSqliteFixture : CoreTest
     {
-        private WhereBuilder _subject;
+        private WhereBuilderSqlite _subject;
 
         [OneTimeSetUp]
         public void MapTables()
@@ -22,9 +22,9 @@ namespace NzbDrone.Core.Test.Datastore
             Mocker.Resolve<DbFactory>();
         }
 
-        private WhereBuilder Where(Expression<Func<Movie, bool>> filter)
+        private WhereBuilderSqlite Where(Expression<Func<Movie, bool>> filter)
         {
-            return new WhereBuilder(filter, true, 0);
+            return new WhereBuilderSqlite(filter, true, 0);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.Datastore
         public void where_throws_without_concrete_condition_if_requiresConcreteCondition()
         {
             Expression<Func<Movie, Movie, bool>> filter = (x, y) => x.Id == y.Id;
-            _subject = new WhereBuilder(filter, true, 0);
+            _subject = new WhereBuilderSqlite(filter, true, 0);
             Assert.Throws<InvalidOperationException>(() => _subject.ToString());
         }
 
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.Datastore
         public void where_allows_abstract_condition_if_not_requiresConcreteCondition()
         {
             Expression<Func<Movie, Movie, bool>> filter = (x, y) => x.Id == y.Id;
-            _subject = new WhereBuilder(filter, false, 0);
+            _subject = new WhereBuilderSqlite(filter, false, 0);
             _subject.ToString().Should().Be($"(\"Movies\".\"Id\" = \"Movies\".\"Id\")");
         }
 

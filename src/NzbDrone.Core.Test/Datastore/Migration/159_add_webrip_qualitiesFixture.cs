@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Datastore.Migration;
@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var profiles = db.Query<Profile159>("SELECT Items FROM Profiles LIMIT 1");
+            var profiles = db.Query<Profile159>("SELECT \"Items\" FROM \"Profiles\" LIMIT 1");
 
             var items = profiles.First().Items;
             items.Should().HaveCount(5);
@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var profiles = db.Query<Profile159>("SELECT Items FROM Profiles LIMIT 1");
+            var profiles = db.Query<Profile159>("SELECT \"Items\" FROM \"Profiles\" LIMIT 1");
 
             var items = profiles.First().Items;
             items.Should().HaveCount(5);
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var profiles = db.Query<Profile159>("SELECT Items FROM Profiles LIMIT 1");
+            var profiles = db.Query<Profile159>("SELECT \"Items\" FROM \"Profiles\" LIMIT 1");
 
             var items = profiles.First().Items;
             items.Count(c => c.Id == 1001).Should().Be(1);
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var profiles = db.Query<Profile159>("SELECT Items FROM Profiles LIMIT 1");
+            var profiles = db.Query<Profile159>("SELECT \"Items\" FROM \"Profiles\" LIMIT 1");
             var items = profiles.First().Items;
 
             items[1].Items.First().Quality.Should().Be((int)Quality.WEBRip480p);
