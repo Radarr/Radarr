@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Datastore
             // Only use the SQL condition if the expression didn't resolve to an actual value
             if (tableName != null && !gotValue)
             {
-                _sb.Append($"\"{tableName}\".\"{expression.Member.Name.ToLower()}\"");
+                _sb.Append($"\"{tableName}\".\"{expression.Member.Name}\"");
             }
             else
             {
