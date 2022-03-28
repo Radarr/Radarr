@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+    <RunConfiguration>
+        <EnvironmentVariables>
+            <Radarr__Postgres__Host>192.168.100.5</Radarr__Postgres__Host>
+			<Radarr__Postgres__Port>5432</Radarr__Postgres__Port>
+			<Radarr__Postgres__User>abc</Radarr__Postgres__User>
+			<Radarr__Postgres__Password>abc</Radarr__Postgres__Password>
+        </EnvironmentVariables>
+    </RunConfiguration>
+</RunSettings>
