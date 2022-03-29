@@ -103,11 +103,12 @@ namespace NzbDrone.Core.Organizer
 
             if (!namingConfig.RenameMovies)
             {
-                return GetOriginalTitle(movieFile);
+                return GetOriginalTitle(movieFile, false);
             }
 
             var pattern = namingConfig.StandardMovieFormat;
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+            var multipleTokens = TitleRegex.Matches(pattern).Count > 1;
 
             UpdateMediaInfoIfNeeded(pattern, movieFile, movie);
 
@@ -116,7 +117,7 @@ namespace NzbDrone.Core.Organizer
             AddIdTokens(tokenHandlers, movie);
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
-            AddMovieFileTokens(tokenHandlers, movieFile);
+            AddMovieFileTokens(tokenHandlers, movieFile, multipleTokens);
             AddEditionTagsTokens(tokenHandlers, movieFile);
             AddCustomFormats(tokenHandlers, movie, movieFile, customFormats);
 
@@ -167,6 +168,7 @@ namespace NzbDrone.Core.Organizer
 
             var pattern = namingConfig.MovieFolderFormat;
             var tokenHandlers = new Dictionary<string, Func<TokenMatch, string>>(FileNameBuilderTokenEqualityComparer.Instance);
+            var multipleTokens = TitleRegex.Matches(pattern).Count > 1;
 
             AddMovieTokens(tokenHandlers, movie);
             AddReleaseDateTokens(tokenHandlers, movie.Year);
@@ -176,12 +178,12 @@ namespace NzbDrone.Core.Organizer
             {
                 AddQualityTokens(tokenHandlers, movie, movieFile);
                 AddMediaInfoTokens(tokenHandlers, movieFile);
-                AddMovieFileTokens(tokenHandlers, movieFile);
+                AddMovieFileTokens(tokenHandlers, movieFile, multipleTokens);
                 AddEditionTagsTokens(tokenHandlers, movieFile);
             }
             else
             {
-                AddMovieFileTokens(tokenHandlers, new MovieFile { SceneName = $"{movie.Title} {movie.Year}", RelativePath = $"{movie.Title} {movie.Year}" });
+                AddMovieFileTokens(tokenHandlers, new MovieFile { SceneName = $"{movie.Title} {movie.Year}", RelativePath = $"{movie.Title} {movie.Year}" }, multipleTokens);
             }
 
             var splitPatterns = pattern.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
@@ -306,10 +308,10 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{TmdbId}"] = m => movie.MovieMetadata.Value.TmdbId.ToString();
         }
 
-        private void AddMovieFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
+        private void AddMovieFileTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile, bool multipleTokens)
         {
-            tokenHandlers["{Original Title}"] = m => GetOriginalTitle(movieFile);
-            tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(movieFile);
+            tokenHandlers["{Original Title}"] = m => GetOriginalTitle(movieFile, multipleTokens);
+            tokenHandlers["{Original Filename}"] = m => GetOriginalFileName(movieFile, multipleTokens);
 
             tokenHandlers["{Release Group}"] = m => movieFile.ReleaseGroup ?? m.DefaultValue("Radarr");
         }
@@ -572,18 +574,23 @@ namespace NzbDrone.Core.Organizer
             return string.Empty;
         }
 
-        private string GetOriginalTitle(MovieFile movieFile)
+        private string GetOriginalTitle(MovieFile movieFile, bool multipleTokens)
         {
             if (movieFile.SceneName.IsNullOrWhiteSpace())
             {
-                return GetOriginalFileName(movieFile);
+                return GetOriginalFileName(movieFile, multipleTokens);
             }
 
             return movieFile.SceneName;
         }
 
-        private string GetOriginalFileName(MovieFile movieFile)
+        private string GetOriginalFileName(MovieFile movieFile, bool multipleTokens)
         {
+            if (multipleTokens)
+            {
+                return string.Empty;
+            }
+
             if (movieFile.RelativePath.IsNullOrWhiteSpace())
             {
                 return Path.GetFileNameWithoutExtension(movieFile.Path);
