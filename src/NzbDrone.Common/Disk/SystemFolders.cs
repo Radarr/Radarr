@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using NzbDrone.Common.EnvironmentInfo;
 
@@ -24,7 +24,8 @@ namespace NzbDrone.Common.Disk
                        "/boot",
                        "/lib",
                        "/sbin",
-                       "/proc"
+                       "/proc",
+                       "/usr/bin"
                    };
         }
     }

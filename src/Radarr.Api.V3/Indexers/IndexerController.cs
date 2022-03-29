@@ -12,15 +12,5 @@ namespace Radarr.Api.V3.Indexers
             : base(indexerFactory, "indexer", ResourceMapper)
         {
         }
-
-        protected override void Validate(IndexerDefinition definition, bool includeWarnings)
-        {
-            if (!definition.Enable)
-            {
-                return;
-            }
-
-            base.Validate(definition, includeWarnings);
-        }
     }
 }

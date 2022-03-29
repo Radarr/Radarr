@@ -20,15 +20,5 @@ namespace Radarr.Api.V3.ImportLists
             SharedValidator.RuleFor(c => c.QualityProfileId).ValidId();
             SharedValidator.RuleFor(c => c.QualityProfileId).SetValidator(profileExistsValidator);
         }
-
-        protected override void Validate(ImportListDefinition definition, bool includeWarnings)
-        {
-            if (!definition.Enable)
-            {
-                return;
-            }
-
-            base.Validate(definition, includeWarnings);
-        }
     }
 }

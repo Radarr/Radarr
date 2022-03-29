@@ -12,15 +12,5 @@ namespace Radarr.Api.V3.Notifications
             : base(notificationFactory, "notification", ResourceMapper)
         {
         }
-
-        protected override void Validate(NotificationDefinition definition, bool includeWarnings)
-        {
-            if (!definition.OnGrab && !definition.OnDownload)
-            {
-                return;
-            }
-
-            base.Validate(definition, includeWarnings);
-        }
     }
 }
