@@ -49,14 +49,14 @@ namespace NzbDrone.Core.MediaFiles
             {
                 case FileDateType.Release:
                     {
-                        var airDate = movie.PhysicalRelease;
+                        var releaseDate = movie.PhysicalRelease ?? movie.DigitalRelease;
 
-                        if (airDate.HasValue == false)
+                        if (releaseDate.HasValue == false)
                         {
                             return false;
                         }
 
-                        return ChangeFileDate(movieFilePath, airDate.Value);
+                        return ChangeFileDate(movieFilePath, releaseDate.Value);
                     }
 
                 case FileDateType.Cinemas:
