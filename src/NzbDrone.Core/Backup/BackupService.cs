@@ -90,6 +90,8 @@ namespace NzbDrone.Core.Backup
 
             _archiveService.CreateZip(backupPath, _diskProvider.GetFiles(_backupTempFolder, SearchOption.TopDirectoryOnly));
 
+            Cleanup();
+
             _logger.ProgressDebug("Backup zip created");
         }
 
