@@ -1,4 +1,4 @@
-- **Due to undocumented and breaking API changes Qbit v4.4.0 is not supported.  It is generally recommended to avoid Qbit .0 releases.** Qbit v4.3.9 is the most recent working version. Qbit v4.4.1 may have issues as well.
+- **Due to undocumented and breaking API changes Qbit v4.4.0 is not supported.  It is generally recommended to avoid Qbit .0 releases.** Qbit v4.3.9 is the most recent working version. Qbit v4.4.1 has issues as well.
 - **Radarr v4 no longer supports Linux x86 (x32 bit) systems**
   - x32 Arm is still supported; armv7 is the minimum required architecture
   - Impacted users have been receiving a healthcheck since May 2021 with 3.2.0
