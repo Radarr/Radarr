@@ -66,7 +66,8 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(r => r.FreeSpace)
                   .Ignore(r => r.TotalSpace);
 
-            Mapper.Entity<ScheduledTask>("ScheduledTasks").RegisterModel();
+            Mapper.Entity<ScheduledTask>("ScheduledTasks").RegisterModel()
+                  .Ignore(i => i.Priority);
 
             Mapper.Entity<IndexerDefinition>("Indexers").RegisterModel()
                   .Ignore(x => x.ImplementationName)

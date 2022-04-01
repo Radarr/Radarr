@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NLog;
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Jobs
 
                 foreach (var task in tasks)
                 {
-                    _commandQueueManager.Push(task.TypeName, task.LastExecution, task.LastStartTime, CommandPriority.Low, CommandTrigger.Scheduled);
+                    _commandQueueManager.Push(task.TypeName, task.LastExecution, task.LastStartTime, task.Priority, CommandTrigger.Scheduled);
                 }
             }
             finally
