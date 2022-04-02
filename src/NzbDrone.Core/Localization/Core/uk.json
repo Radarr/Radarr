@@ -1,1 +1,20 @@
-{}
+{
+    "About": "Деталі",
+    "AcceptConfirmationModal": "Вікно підтвердження",
+    "Actions": "Дії",
+    "Activity": "Активність",
+    "Add": "Додати",
+    "AddCustomFormat": "Додати свій формат",
+    "AddDelayProfile": "Додати профіль затримки",
+    "AddDownloadClient": "Додати клієнт завантаження",
+    "Added": "Додано",
+    "AddedToDownloadQueue": "Додано в чергу на завантаження",
+    "AddExclusion": "Додати виняток",
+    "AddImportExclusionHelpText": "Заборонити додавання фільму до Radarr за списками",
+    "AddIndexer": "Додати індексатор",
+    "AddingTag": "Додавання тегу",
+    "AddList": "Додати список",
+    "AddListExclusion": "Додати винятки списку",
+    "AddMovie": "Додати фільм",
+    "AddMovies": "Додати фільми"
+}

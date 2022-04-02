@@ -932,7 +932,7 @@
     "TorrentsDisabled": "Torrentek nem engedélyezettek",
     "TorrentDelayTime": "Torrent késleltetés: {0}",
     "TMDb": "TMDb",
-    "ThisCannotBeCancelled": "Ezt nem lehet visszavonni az összes indexelő letiltása nélkül, ha egyszer elindult.",
+    "ThisCannotBeCancelled": "Ezt folyamatot az összes indexelő letiltása nélkül nem lehet visszavonni, ha egyszer elindult.",
     "TheLogLevelDefault": "A naplózási szint alapértékei az 'Info' alatt változtathatóak",
     "TagDetails": "Címke részletek - {0}",
     "Sunday": "Vasárnap",
