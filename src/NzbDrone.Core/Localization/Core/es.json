@@ -366,7 +366,7 @@
     "CertificationCountryHelpText": "Seleccionar país para certificaciones de películas",
     "CertificationCountry": "País de certificación",
     "CertificateValidationHelpText": "Cambiar como de estricta será la validación del certificado HTTPS. No cambiar a menos que entiendas los riesgos.",
-    "CertificateValidation": "Validación de certificado",
+    "CertificateValidation": "Validación del certificado",
     "BypassProxyForLocalAddresses": "Omitir Proxy para Direcciones Locales",
     "Branch": "Rama",
     "BindAddressHelpText": "Dirección IPv4 válida o '*' para todas las interfaces",
