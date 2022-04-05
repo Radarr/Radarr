@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "Kunne ikke indlæse sortliste",
     "Blocklisted": "Blacklist",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Er du sikker på, at du vil fjerne {0} element {1} fra køen?",
-    "BlocklistReleases": "Udgivelse af sortliste"
+    "BlocklistReleases": "Udgivelse af sortliste",
+    "Filters": "Filter",
+    "LocalPath": "Lokal sti",
+    "RemotePath": "Fjern sti",
+    "SelectLanguages": "Vælg sprog",
+    "List": "Lister",
+    "Rating": "Bedømmelser"
 }

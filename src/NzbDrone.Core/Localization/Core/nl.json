@@ -1078,5 +1078,11 @@
     "UnableToLoadBlocklist": "Kon zwarte lijst niet laden",
     "Blocklisted": "Blokkeerlijst",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Ben je zeker dat je {1} item{2} uit de wachtrij wilt verwijderen?",
-    "BlocklistReleases": "Uitgave op blokkeerlijst zetten"
+    "BlocklistReleases": "Uitgave op blokkeerlijst zetten",
+    "LocalPath": "Lokaal Pad",
+    "SelectLanguages": "Selecteer Taal",
+    "Rating": "Waardering",
+    "List": "Lijst",
+    "Filters": "Filter",
+    "RemotePath": "Extern Pad"
 }

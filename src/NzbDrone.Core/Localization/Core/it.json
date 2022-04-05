@@ -1080,5 +1080,13 @@
     "TaskUserAgentTooltip": "User-Agent esposto dalla app che ha chiamato la API",
     "UpdateAvailable": "É disponibile un nuovo aggiornamento",
     "BypassDelayIfHighestQualityHelpText": "Salta il ritardo quando la release ha la più alta qualità abilitata nel profilo qualità con il protocollo preferito",
-    "NotificationTriggersHelpText": "Selezionare quali eventi attiveranno questa notifica"
+    "NotificationTriggersHelpText": "Selezionare quali eventi attiveranno questa notifica",
+    "Filters": "Filtro",
+    "List": "Lista",
+    "LocalPath": "Percorso locale",
+    "RemotePathMappingCheckFilesWrongOSPath": "Stai utilizzando docker; Il client di download {0} riporta files in {1} ma questo non è un percorso valido {2}. Controlla la mappa dei percorsi remoti e le impostazioni del client di download.",
+    "RemotePathMappingCheckWrongOSPath": "Stai utilizzando docker; Il client di download {0} mette i download in {1} ma questo non è un percorso valido {2}. Controlla la mappa dei percorsi remoti e le impostazioni del client di download.",
+    "SelectLanguages": "Seleziona la lingua",
+    "Rating": "Valutazioni",
+    "RemotePath": "Percorso remoto"
 }

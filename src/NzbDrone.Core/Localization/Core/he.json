@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "לא ניתן לטעון את הרשימה השחורה",
     "Blocklisted": "רשימה שחורה",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "האם אתה בטוח שברצונך להסיר את {0} פריט {1} מהתור?",
-    "BlocklistReleases": "שחרור הרשימה השחורה"
+    "BlocklistReleases": "שחרור הרשימה השחורה",
+    "Filters": "לְסַנֵן",
+    "LocalPath": "נתיב מקומי",
+    "List": "רשימות",
+    "Rating": "דירוגים",
+    "RemotePath": "נתיב מרוחק",
+    "SelectLanguages": "בחר שפה"
 }

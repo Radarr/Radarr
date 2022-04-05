@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "Черният списък не може да се зареди",
     "Blocklisted": "Черен списък",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Наистина ли искате да премахнете {0} елемент {1} от опашката?",
-    "BlocklistReleases": "Освобождаване на черния списък"
+    "BlocklistReleases": "Освобождаване на черния списък",
+    "Filters": "Филтър",
+    "Rating": "Оценки",
+    "RemotePath": "Отдалечен път",
+    "List": "Списъци",
+    "LocalPath": "Местен път",
+    "SelectLanguages": "Избери език"
 }

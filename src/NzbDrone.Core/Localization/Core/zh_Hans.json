@@ -8,5 +8,8 @@
     "AddIndexer": "添加索引器",
     "ApiKey": "API密钥",
     "AddingTag": "添加标签",
-    "Apply": "应用"
+    "Apply": "应用",
+    "MinutesNinety": "60 分钟: {0}",
+    "MinutesSixty": "60 分钟: {0}",
+    "MinutesHundredTwenty": "20 分钟: {0}"
 }

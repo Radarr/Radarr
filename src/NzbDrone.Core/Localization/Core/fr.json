@@ -863,7 +863,7 @@
     "CustomFormatHelpText": "Raddar met un score pour chaque release en additionnant les scores des formats personnalisés correspondants. Si une nouvelle release permet d'améliorer le score, pour une qualité identique ou supérieure, alors Raddar la téléchargera.",
     "Days": "Jours",
     "Debug": "Debug",
-    "DefaultCase": "Cas par défaut",
+    "DefaultCase": "Casse par défaut",
     "DeletedMsg": "Le film à été supprimé de TMDb",
     "DeleteFilesHelpText": "Supprimer les fichiers du film et dossier du film",
     "DeleteFilesLabel": "Supprimer {0} fichiers",
@@ -1104,5 +1104,7 @@
     "RemotePath": "Dossier distant",
     "RemotePathMappingCheckFilesBadDockerPath": "Vous utilisez docker; {0} signifie les téléchargement dans {1} mais ce n'est pas un dossier valide. Vérifiez vos paramètres de dossier distant et les paramètres de votre client de téléchargement.",
     "RemotePathMappingCheckWrongOSPath": "Le client de téléchargement distant {0} met les téléchargements dans {1} mais ce chemin {2} est invalide.  Vérifiez vos paramètres de chemins distants et les paramètres de votre client de téléchargement.",
-    "RemoveCompleted": "Supprimer les complétés"
+    "RemoveCompleted": "Supprimer les complétés",
+    "Database": "Base de données",
+    "SelectLanguages": "Choisir la langue"
 }

@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "Δεν είναι δυνατή η φόρτωση της μαύρης λίστας",
     "Blocklisted": "Αποριφθέντα",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Είστε βέβαιοι ότι θέλετε να καταργήσετε το {0} στοιχείο {1} από την ουρά;",
-    "BlocklistReleases": "Έκδοση μαύρης λίστας"
+    "BlocklistReleases": "Έκδοση μαύρης λίστας",
+    "LocalPath": "Τοπικό μονοπάτι",
+    "RemotePath": "Απομακρυσμένη διαδρομή",
+    "SelectLanguages": "Επιλέξτε γλώσσα",
+    "List": "Τόπος αγώνων",
+    "Rating": "Ακροαματικότητα",
+    "Filters": "Φίλτρο"
 }

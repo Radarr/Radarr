@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "ब्लैकलिस्ट लोड करने में असमर्थ",
     "Blocklisted": "काला सूची में डालना",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "क्या आप वाकई {0} आइटम {1} को कतार से हटाना चाहते हैं?",
-    "BlocklistReleases": "ब्लैकलिस्ट रिलीज़"
+    "BlocklistReleases": "ब्लैकलिस्ट रिलीज़",
+    "Filters": "फ़िल्टर",
+    "LocalPath": "स्थानीय पथ",
+    "List": "सूचियों",
+    "Rating": "रेटिंग्स",
+    "RemotePath": "दूरस्थ पथ",
+    "SelectLanguages": "भाषा का चयन करें"
 }

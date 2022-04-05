@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "Nelze načíst černou listinu",
     "Blocklisted": "Černá listina",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Opravdu chcete odebrat {0} položku {1} z fronty?",
-    "BlocklistReleases": "Vydání černé listiny"
+    "BlocklistReleases": "Vydání černé listiny",
+    "Filters": "Filtr",
+    "LocalPath": "Místní cesta",
+    "RemotePath": "Vzdálená cesta",
+    "Rating": "Hodnocení",
+    "List": "Seznamy",
+    "SelectLanguages": "Zvolte jazyk"
 }

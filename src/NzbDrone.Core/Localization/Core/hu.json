@@ -906,13 +906,13 @@
     "InvalidFormat": "Érvénytelen Formátum",
     "InteractiveImportErrQuality": "A minőség kiválasztása szükséges mindegyik kiválasztott fájlnál",
     "InteractiveImportErrMovie": "A film kiválasztása szükséges mindegyik kiválaszott fájlnál",
-    "InteractiveImportErrLanguage": "A nyelv kiválasztása szükséges mindegyik kiválasztott fájlnál.",
+    "InteractiveImportErrLanguage": "A nyelv kiválasztása szükséges mindegyik kiválasztott fájlnál",
     "InstallLatest": "Legfrissebb telepítése",
     "InCinemasMsg": "A film a mozikban",
     "InCinemasDate": "Mozipremier dátum",
     "IMDb": "IMDb",
     "LowerCase": "Kisbetű",
-    "LookingForReleaseProfiles2": "helyett",
+    "LookingForReleaseProfiles2": "helyett.",
     "LookingForReleaseProfiles1": "Kiadási profilokat keresel? Próbáld ki",
     "ManualImportSelectMovie": "Manuális importálás - Film kiválasztása",
     "ManualImportSelectLanguage": "Manuális importálás - Nyelv választása",
@@ -1114,5 +1114,6 @@
     "OnApplicationUpdateHelpText": "Alkalmazásfrissítésről",
     "SizeLimit": "Méretkorlát",
     "OriginalTitle": "Eredeti Cím",
-    "OriginalLanguage": "Eredeti nyelv"
+    "OriginalLanguage": "Eredeti nyelv",
+    "Database": "Adatbázis"
 }
