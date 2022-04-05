@@ -8,8 +8,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using DryIoc;
 using DryIoc.Microsoft.DependencyInjection;
-using FluentMigrator.Runner.Processors.Postgres;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +15,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.WindowsServices;
 using NLog;
 using NzbDrone.Common.Composition.Extensions;
-using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Extensions;
@@ -135,7 +132,7 @@ namespace Radarr.Host
                 })
                 .ConfigureServices(services =>
                 {
-                    services.Configure<PostgresOptions>(config.GetSection("Postgres"));
+                    services.Configure<PostgresOptions>(config.GetSection("Radarr:Postgres"));
                 })
                 .ConfigureWebHost(builder =>
                 {
@@ -207,7 +204,7 @@ namespace Radarr.Host
             return new ConfigurationBuilder()
                 .AddXmlFile(appFolder.GetConfigPath(), optional: true, reloadOnChange: false)
                 .AddInMemoryCollection(new List<KeyValuePair<string, string>> { new ("dataProtectionFolder", appFolder.GetDataProtectionPath()) })
-                .AddEnvironmentVariables("Radarr__")
+                .AddEnvironmentVariables()
                 .Build();
         }
 
