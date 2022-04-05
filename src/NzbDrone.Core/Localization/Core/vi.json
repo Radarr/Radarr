@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "Không thể tải danh sách đen",
     "Blocklisted": "Danh sách đen",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Bạn có chắc chắn muốn xóa {0} mục {1} khỏi hàng đợi không?",
-    "BlocklistReleases": "Phát hành danh sách đen"
+    "BlocklistReleases": "Phát hành danh sách đen",
+    "Rating": "Xếp hạng",
+    "Filters": "Bộ lọc",
+    "List": "Danh sách",
+    "LocalPath": "Đường dẫn địa phương",
+    "SelectLanguages": "Chọn ngôn ngữ",
+    "RemotePath": "Đường đi từ xa"
 }

@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "Imposibil de încărcat lista neagră",
     "Blocklisted": "Listă Neagră",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Sigur doriți să eliminați {0} elementul {1} din coadă?",
-    "BlocklistReleases": "Lansare pe lista neagră"
+    "BlocklistReleases": "Lansare pe lista neagră",
+    "Filters": "Filtru",
+    "List": "Liste",
+    "LocalPath": "Calea locală",
+    "RemotePath": "Calea la distanță",
+    "SelectLanguages": "Selecteaza limba",
+    "Rating": "Recenzii"
 }

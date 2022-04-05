@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "블랙리스트를로드 할 수 없습니다.",
     "Blocklisted": "블랙리스트",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "대기열에서 {0} 항목 {1}을 제거하시겠습니까?",
-    "BlocklistReleases": "블랙리스트 릴리스"
+    "BlocklistReleases": "블랙리스트 릴리스",
+    "SelectLanguages": "언어 선택",
+    "Rating": "등급",
+    "LocalPath": "로컬 경로",
+    "Filters": "필터",
+    "List": "기울기",
+    "RemotePath": "원격 경로"
 }

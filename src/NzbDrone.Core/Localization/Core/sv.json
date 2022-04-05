@@ -1057,5 +1057,13 @@
     "Blocklisted": "Svartlista",
     "NotificationTriggersHelpText": "Markera vilka event som ska utlösa den här notifikationen",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Är du säker på vill ta bort {0} föremål{1} från kön?",
-    "BlocklistReleases": "Svartlista Utgåva"
+    "BlocklistReleases": "Svartlista Utgåva",
+    "Duration": "Tid",
+    "Never": "Aldrig",
+    "Rating": "Betyg",
+    "RemotePath": "Fjärrsökväg",
+    "SelectLanguages": "Välj språk",
+    "List": "Lista",
+    "LocalPath": "Lokal sökväg",
+    "Filters": "Filter"
 }

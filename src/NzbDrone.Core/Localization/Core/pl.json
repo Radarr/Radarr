@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "Nie można załadować czarnej listy",
     "Blocklisted": "Czarna lista",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Czy na pewno chcesz usunąć {0} element {1} z kolejki?",
-    "BlocklistReleases": "Wydanie czarnej listy"
+    "BlocklistReleases": "Wydanie czarnej listy",
+    "Filters": "Filtr",
+    "LocalPath": "Ścieżka lokalna",
+    "List": "Listy",
+    "Rating": "Oceny",
+    "RemotePath": "Zdalna ścieżka",
+    "SelectLanguages": "Wybierz język"
 }

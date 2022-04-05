@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "ไม่สามารถโหลดบัญชีดำ",
     "Blocklisted": "บัญชีดำ",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "แน่ใจไหมว่าต้องการลบ {0} รายการ {1} ออกจากคิว",
-    "BlocklistReleases": "Blacklist Release"
+    "BlocklistReleases": "Blacklist Release",
+    "SelectLanguages": "เลือกภาษา",
+    "Filters": "กรอง",
+    "LocalPath": "เส้นทางท้องถิ่น",
+    "List": "รายการ",
+    "Rating": "การให้คะแนน",
+    "RemotePath": "เส้นทางระยะไกล"
 }

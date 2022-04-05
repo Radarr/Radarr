@@ -1056,5 +1056,11 @@
     "UnableToLoadBlocklist": "Kara liste yüklenemiyor",
     "Blocklisted": "Kara liste",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Sıradan {0} öğeyi {1} kaldırmak istediğinizden emin misiniz?",
-    "BlocklistReleases": "Kara Liste Yayını"
+    "BlocklistReleases": "Kara Liste Yayını",
+    "RemotePath": "Uzak Yol",
+    "List": "Listeler",
+    "Filters": "Filtre",
+    "LocalPath": "Yerel Yol",
+    "Rating": "Puanlar",
+    "SelectLanguages": "Dil Seçin"
 }

@@ -1114,5 +1114,6 @@
     "RemotePath": "远程路径",
     "TmdbRating": "TMDb评分",
     "TmdbVotes": "TMDb评分数",
-    "DiscordUrlInSlackNotification": "你将Discord通知设为Slack通知，如设为Discord通知功能更好，受到影响的通知是: {0}"
+    "DiscordUrlInSlackNotification": "你将Discord通知设为Slack通知，如设为Discord通知功能更好，受到影响的通知是: {0}",
+    "Database": "数据库"
 }

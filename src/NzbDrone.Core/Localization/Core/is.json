@@ -1055,5 +1055,11 @@
     "UnableToLoadBlocklist": "Ekki er hægt að hlaða svartan lista",
     "Blocklisted": "Svartur listi",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Ertu viss um að þú viljir fjarlægja {0} hlut {1} úr biðröðinni?",
-    "BlocklistReleases": "Útgáfa svartalista"
+    "BlocklistReleases": "Útgáfa svartalista",
+    "SelectLanguages": "Veldu tungumál",
+    "List": "Listar",
+    "LocalPath": "Local Path",
+    "RemotePath": "Fjarstígur",
+    "Filters": "Sía",
+    "Rating": "Einkunnir"
 }

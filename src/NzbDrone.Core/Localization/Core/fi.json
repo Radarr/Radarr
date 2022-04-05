@@ -1114,5 +1114,6 @@
     "Started": "Alkoi",
     "Waiting": "Odottaa",
     "OriginalTitle": "Alkuperäinen nimi",
-    "OriginalLanguage": "Alkuperäinen kieli"
+    "OriginalLanguage": "Alkuperäinen kieli",
+    "Database": "Tietokanta"
 }
