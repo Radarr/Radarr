@@ -151,7 +151,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 // Calculate custom formats
                 if (trackedDownload.RemoteMovie != null)
                 {
-                    trackedDownload.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(parsedMovieInfo);
+                    trackedDownload.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(parsedMovieInfo, trackedDownload.RemoteMovie.Movie);
                 }
 
                 // Track it so it can be displayed in the queue even though we can't determine which movie it is for

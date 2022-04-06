@@ -14,7 +14,10 @@ namespace NzbDrone.Core.CustomFormats
 
         protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo)
         {
-            return movieInfo?.Languages?.Contains((Language)Value) ?? false;
+            var comparedLanguage = movieInfo != null && Name == "Original" && movieInfo.ExtraInfo.ContainsKey("OriginalLanguage")
+                ? (Language)movieInfo.ExtraInfo["OriginalLanguage"]
+                : (Language)Value;
+            return movieInfo?.Languages?.Contains(comparedLanguage) ?? false;
         }
     }
 }

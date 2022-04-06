@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Build();
 
             Mocker.GetMock<ICustomFormatCalculationService>()
-                .Setup(x => x.ParseCustomFormat(It.IsAny<ParsedMovieInfo>()))
+                .Setup(x => x.ParseCustomFormat(It.IsAny<ParsedMovieInfo>(), _movie))
                 .Returns(new List<CustomFormat>());
         }
 

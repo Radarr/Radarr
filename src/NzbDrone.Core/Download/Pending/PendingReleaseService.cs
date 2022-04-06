@@ -163,7 +163,7 @@ namespace NzbDrone.Core.Download.Pending
             {
                 if (pendingRelease.RemoteMovie != null)
                 {
-                    pendingRelease.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(pendingRelease.ParsedMovieInfo);
+                    pendingRelease.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(pendingRelease.ParsedMovieInfo, pendingRelease.RemoteMovie.Movie);
 
                     var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteMovie));
 
