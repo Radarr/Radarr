@@ -1,0 +1,41 @@
+﻿{
+  "MediaContainer": {
+    "librarySectionID": "watchlist",
+    "librarySectionTitle": "Watchlist",
+    "offset": 0,
+    "totalSize": 3,
+    "identifier": "tv.plex.provider.metadata",
+    "size": 3,
+    "Metadata": [
+      {
+        "type": "movie",
+        "title": "Arrival",
+        "year": 2016,
+        "Guid": [
+          {
+            "id": "imdb://tt2543164"
+          }
+        ]
+      },
+      {
+        "type": "movie",
+        "title": "The Last Witch Hunter",
+        "year": 2015,
+        "Guid": [
+          {
+            "id": "imdb://tt1618442"
+          },
+          {
+            "id": "tmdb://274854"
+          }
+        ]
+      },
+      {
+        "type": "movie",
+        "title": "Avengers: Endgame",
+        "year": 2019,
+        "Guid": []
+      }
+    ]
+  }
+}
