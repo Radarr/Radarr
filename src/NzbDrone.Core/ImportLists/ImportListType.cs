@@ -5,6 +5,7 @@ namespace NzbDrone.Core.ImportLists
         Program,
         TMDB,
         Trakt,
+        Plex,
         Other,
         Advanced
     }
