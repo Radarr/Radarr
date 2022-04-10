@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
@@ -35,16 +36,14 @@ namespace NzbDrone.Core.ImportLists.Plex
 
             foreach (var item in items)
             {
-                var tmdbIdString = item.Guids?.Find((guid) => guid.Id.StartsWith("tmdb://"))?.Id.Replace("tmdb://", "");
-                var tmdbId = 0;
-                if (tmdbIdString.IsNotNullOrWhiteSpace())
-                {
-                    tmdbId = int.Parse(tmdbIdString);
-                }
+                var tmdbIdString = FindGuid(item.Guids, "tmdb");
+                var imdbId = FindGuid(item.Guids, "imdb");
+
+                int.TryParse(tmdbIdString, out int tmdbId);
 
                 movies.AddIfNotNull(new ImportListMovie()
                 {
-                    ImdbId = item.Guids?.Find((guid) => guid.Id.StartsWith("imdb://"))?.Id.Replace("imdb://", ""),
+                    ImdbId = imdbId,
                     TmdbId = tmdbId,
                     Title = item.Title,
                     Year = item.Year
@@ -68,6 +67,13 @@ namespace NzbDrone.Core.ImportLists.Plex
             }
 
             return true;
+        }
+
+        private string FindGuid(List<PlexSectionItemGuid> guids, string prefix)
+        {
+            var scheme = $"{prefix}://";
+
+            return guids.FirstOrDefault((guid) => guid.Id.StartsWith(scheme))?.Id.Replace(scheme, "");
         }
     }
 }

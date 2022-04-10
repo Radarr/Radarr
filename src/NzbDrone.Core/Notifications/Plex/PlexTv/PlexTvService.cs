@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
                                  .AddQueryParam("includeFields", "title,type,year,ratingKey")
                                  .AddQueryParam("includeElements", "Guid")
                                  .AddQueryParam("sort", "watchlistedAt:desc")
-                                 .AddQueryParam("type", PlexMediaType.Movie.ToString("d"));
+                                 .AddQueryParam("type", (int)PlexMediaType.Movie);
 
             if (!string.IsNullOrWhiteSpace(authToken))
             {

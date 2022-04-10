@@ -9,7 +9,8 @@ using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ImportList.Plex
 {
-    public class PlexTest : CoreTest<PlexParser>
+    [TestFixture]
+    public class PlexParserFixture : CoreTest<PlexParser>
     {
         private ImportListResponse CreateResponse(string url, string content)
         {
@@ -30,6 +31,9 @@ namespace NzbDrone.Core.Test.ImportList.Plex
             result.First().Year.Should().Be(2016);
             result.First().ImdbId.Should().Be("tt2543164");
             result.First().TmdbId.Should().Be(0);
+
+            result[1].TmdbId.Should().Be(274854);
+            result[1].ImdbId.Should().Be("tt1618442");
         }
     }
 }
