@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
-                cmd.CommandText = "SELECT \"Enabled\", \"EnableAuto\", \"Settings\", \"ShouldMonitor\", \"Id\" FROM \"ImportLists\" WHERE \"Implementation\" = \"TMDbCollectionImport\"";
+                cmd.CommandText = "SELECT \"Enabled\", \"EnableAuto\", \"Settings\", \"ShouldMonitor\", \"Id\" FROM \"ImportLists\" WHERE \"Implementation\" = 'TMDbCollectionImport'";
 
                 using (var reader = cmd.ExecuteReader())
                 {
