@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Movies
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IMovieCollectionService _collectionService;
         private readonly IMovieService _movieService;
+        private readonly IMovieMetadataService _movieMetadataService;
         private readonly IAddMovieService _addMovieService;
 
         private readonly Logger _logger;
@@ -24,12 +25,14 @@ namespace NzbDrone.Core.Movies
         public RefreshCollectionService(IProvideMovieInfo movieInfo,
                                         IMovieCollectionService collectionService,
                                         IMovieService movieService,
+                                        IMovieMetadataService movieMetadataService,
                                         IAddMovieService addMovieService,
                                         Logger logger)
         {
             _movieInfo = movieInfo;
             _collectionService = collectionService;
             _movieService = movieService;
+            _movieMetadataService = movieMetadataService;
             _addMovieService = addMovieService;
             _logger = logger;
         }
@@ -62,7 +65,10 @@ namespace NzbDrone.Core.Movies
             collection.SortTitle = collectionInfo.SortTitle;
             collection.LastInfoSync = DateTime.UtcNow;
             collection.Images = collectionInfo.Images;
-            collection.MovieMetadataIds = collectionInfo.MovieMetadataIds;
+            collection.MovieTmdbIds = collectionInfo.MovieTmdbIds;
+
+            collectionInfo.Movies.ForEach(x => x.CollectionId = collection.Id);
+            _movieMetadataService.UpsertMany(collectionInfo.Movies);
 
             _logger.Debug("Finished collection refresh for {0}", collection.Title);
 
@@ -94,15 +100,13 @@ namespace NzbDrone.Core.Movies
             {
                 var existingMovies = _movieService.AllMovieTmdbIds();
 
-                _addMovieService.AddMovies(collection.MovieMetadata.Where(m => !existingMovies.Contains(m.TmdbId)).Select(m => new Movie
+                _addMovieService.AddMovies(collection.MovieTmdbIds.Where(m => !existingMovies.Contains(m)).Select(m => new Movie
                 {
-                    TmdbId = m.TmdbId,
-                    Title = m.Title,
+                    TmdbId = m,
                     ProfileId = collection.QualityProfileId,
                     RootFolderPath = collection.RootFolderPath,
                     MinimumAvailability = collection.MinimumAvailability,
-                    Monitored = true,
-                    Year = m.Year
+                    Monitored = true
                 }).ToList());
             }
         }

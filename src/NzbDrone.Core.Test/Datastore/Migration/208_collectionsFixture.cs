@@ -19,33 +19,38 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 c.Insert.IntoTable("Movies").Row(new
                 {
                     Monitored = true,
+                    MinimumAvailability = 4,
+                    ProfileId = 1,
+                    MovieFileId = 0,
+                    MovieMetadataId = 1,
+                    Path = string.Format("/Movies/{0}", "Title"),
+                });
+
+                c.Insert.IntoTable("MovieMetadata").Row(new
+                {
                     Title = "Title",
                     CleanTitle = "CleanTitle",
                     Status = 3,
-                    MinimumAvailability = 4,
                     Images = new[] { new { CoverType = "Poster" } }.ToJson(),
                     Recommendations = new[] { 1 }.ToJson(),
                     Runtime = 90,
+                    OriginalTitle = "Title",
+                    CleanOriginalTitle = "CleanTitle",
                     OriginalLanguage = 1,
-                    ProfileId = 1,
-                    MovieFileId = 0,
-                    Path = string.Format("/Movies/{0}", "Title"),
-                    TitleSlug = 123456,
                     TmdbId = 132456,
-                    Added = DateTime.UtcNow,
                     Collection = new { Name = "Some Collection", TmdbId = 11 }.ToJson(),
                     LastInfoSync = DateTime.UtcNow,
                 });
             });
 
-            var collections = db.Query<Collection207>("SELECT Id, Title, TmdbId, Monitored FROM Collections");
+            var collections = db.Query<Collection208>("SELECT Id, Title, TmdbId, Monitored FROM Collections");
 
             collections.Should().HaveCount(1);
             collections.First().TmdbId.Should().Be(11);
             collections.First().Title.Should().Be("Some Collection");
             collections.First().Monitored.Should().BeFalse();
 
-            var movies = db.Query<Movie207>("SELECT Id, CollectionId FROM Movies");
+            var movies = db.Query<Movie208>("SELECT Id, CollectionId FROM MovieMetadata");
 
             movies.Should().HaveCount(1);
             movies.First().CollectionId.Should().Be(collections.First().Id);
@@ -59,20 +64,25 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 c.Insert.IntoTable("Movies").Row(new
                 {
                     Monitored = true,
+                    MinimumAvailability = 4,
+                    ProfileId = 1,
+                    MovieFileId = 0,
+                    MovieMetadataId = 1,
+                    Path = string.Format("/Movies/{0}", "Title"),
+                });
+
+                c.Insert.IntoTable("MovieMetadata").Row(new
+                {
                     Title = "Title",
                     CleanTitle = "CleanTitle",
                     Status = 3,
-                    MinimumAvailability = 4,
                     Images = new[] { new { CoverType = "Poster" } }.ToJson(),
                     Recommendations = new[] { 1 }.ToJson(),
                     Runtime = 90,
+                    OriginalTitle = "Title",
+                    CleanOriginalTitle = "CleanTitle",
                     OriginalLanguage = 1,
-                    ProfileId = 1,
-                    MovieFileId = 0,
-                    Path = string.Format("/Movies/{0}", "Title"),
-                    TitleSlug = 123456,
                     TmdbId = 132456,
-                    Added = DateTime.UtcNow,
                     Collection = new { Name = "Some Collection", TmdbId = 11 }.ToJson(),
                     LastInfoSync = DateTime.UtcNow,
                 });
@@ -80,26 +90,31 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 c.Insert.IntoTable("Movies").Row(new
                 {
                     Monitored = true,
-                    Title = "Title 2",
+                    MinimumAvailability = 4,
+                    ProfileId = 1,
+                    MovieFileId = 0,
+                    MovieMetadataId = 2,
+                    Path = string.Format("/Movies/{0}", "Title"),
+                });
+
+                c.Insert.IntoTable("MovieMetadata").Row(new
+                {
+                    Title = "Title2",
                     CleanTitle = "CleanTitle2",
                     Status = 3,
-                    MinimumAvailability = 4,
                     Images = new[] { new { CoverType = "Poster" } }.ToJson(),
                     Recommendations = new[] { 1 }.ToJson(),
                     Runtime = 90,
+                    OriginalTitle = "Title2",
+                    CleanOriginalTitle = "CleanTitle2",
                     OriginalLanguage = 1,
-                    ProfileId = 1,
-                    MovieFileId = 0,
-                    Path = string.Format("/Movies/{0}", "Title 2"),
-                    TitleSlug = 123457,
                     TmdbId = 132457,
-                    Added = DateTime.UtcNow,
                     Collection = new { Name = "Some Collection", TmdbId = 11 }.ToJson(),
                     LastInfoSync = DateTime.UtcNow,
                 });
             });
 
-            var collections = db.Query<Collection207>("SELECT Id, Title, TmdbId, Monitored FROM Collections");
+            var collections = db.Query<Collection208>("SELECT Id, Title, TmdbId, Monitored FROM Collections");
 
             collections.Should().HaveCount(1);
             collections.First().TmdbId.Should().Be(11);
@@ -131,7 +146,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition207>("SELECT Id, Monitor FROM ImportLists");
+            var items = db.Query<ListDefinition208>("SELECT Id, Monitor FROM ImportLists");
 
             items.Should().HaveCount(1);
             items.First().Monitor.Should().Be(0);
@@ -161,7 +176,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition207>("SELECT Id, Monitor FROM ImportLists");
+            var items = db.Query<ListDefinition208>("SELECT Id, Monitor FROM ImportLists");
 
             items.Should().HaveCount(1);
             items.First().Monitor.Should().Be(2);
@@ -182,7 +197,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     ShouldMonitor = false,
                     Name = "IMDB List",
                     Implementation = "TMDbCollectionImport",
-                    Settings = new TmdbCollectionListSettings206
+                    Settings = new TmdbCollectionListSettings207
                     {
                         CollectionId = "11"
                     }.ToJson(),
@@ -190,7 +205,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition207>("SELECT Id, Monitor FROM ImportLists");
+            var items = db.Query<ListDefinition208>("SELECT Id, Monitor FROM ImportLists");
 
             items.Should().HaveCount(0);
         }
@@ -203,20 +218,25 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 c.Insert.IntoTable("Movies").Row(new
                 {
                     Monitored = true,
+                    MinimumAvailability = 4,
+                    ProfileId = 1,
+                    MovieFileId = 0,
+                    MovieMetadataId = 1,
+                    Path = string.Format("/Movies/{0}", "Title"),
+                });
+
+                c.Insert.IntoTable("MovieMetadata").Row(new
+                {
                     Title = "Title",
                     CleanTitle = "CleanTitle",
                     Status = 3,
-                    MinimumAvailability = 4,
                     Images = new[] { new { CoverType = "Poster" } }.ToJson(),
                     Recommendations = new[] { 1 }.ToJson(),
                     Runtime = 90,
+                    OriginalTitle = "Title",
+                    CleanOriginalTitle = "CleanTitle",
                     OriginalLanguage = 1,
-                    ProfileId = 1,
-                    MovieFileId = 0,
-                    Path = string.Format("/Movies/{0}", "Title"),
-                    TitleSlug = 123456,
                     TmdbId = 132456,
-                    Added = DateTime.UtcNow,
                     Collection = new { Name = "Some Collection", TmdbId = 11 }.ToJson(),
                     LastInfoSync = DateTime.UtcNow,
                 });
@@ -231,7 +251,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                     ShouldMonitor = false,
                     Name = "IMDB List",
                     Implementation = "TMDbCollectionImport",
-                    Settings = new TmdbCollectionListSettings206
+                    Settings = new TmdbCollectionListSettings207
                     {
                         CollectionId = "11"
                     }.ToJson(),
@@ -239,14 +259,14 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<Collection207>("SELECT Id, Monitored FROM Collections");
+            var items = db.Query<Collection208>("SELECT Id, Monitored FROM Collections");
 
             items.Should().HaveCount(1);
             items.First().Monitored.Should().BeTrue();
         }
     }
 
-    public class Collection207
+    public class Collection208
     {
         public int Id { get; set; }
         public int TmdbId { get; set; }
@@ -254,19 +274,19 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         public bool Monitored { get; set; }
     }
 
-    public class Movie207
+    public class Movie208
     {
         public int Id { get; set; }
         public int CollectionId { get; set; }
     }
 
-    public class ListDefinition207
+    public class ListDefinition208
     {
         public int Id { get; set; }
         public int Monitor { get; set; }
     }
 
-    public class TmdbCollectionListSettings206
+    public class TmdbCollectionListSettings207
     {
         public string CollectionId { get; set; }
     }

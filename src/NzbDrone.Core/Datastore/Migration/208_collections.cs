@@ -30,9 +30,9 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Monitored").AsBoolean().WithDefaultValue(false)
                 .WithColumn("LastInfoSync").AsDateTime().Nullable()
                 .WithColumn("Added").AsDateTime().Nullable()
-                .WithColumn("Movies").AsString().WithDefaultValue("[]");
+                .WithColumn("MovieTmdbIds").AsString().WithDefaultValue("[]");
 
-            Alter.Table("Movies").AddColumn("CollectionId").AsInt32().Nullable();
+            Alter.Table("MovieMetadata").AddColumn("CollectionId").AsInt32().Nullable();
             Alter.Table("ImportLists").AddColumn("Monitor").AsInt32().Nullable();
 
             Execute.WithConnection(MigrateCollections);
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Delete.Column("ShouldMonitor").FromTable("ImportLists");
             Delete.FromTable("ImportLists").Row(new { Implementation = "TMDbCollectionImport" });
-            Delete.Column("Collection").FromTable("Movies");
+            Delete.Column("Collection").FromTable("MovieMetadata");
         }
 
         private void MigrateCollections(IDbConnection conn, IDbTransaction tran)
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
-                cmd.CommandText = "SELECT \"Collection\", \"ProfileId\", \"MinimumAvailability\", \"Path\" FROM \"Movies\" WHERE \"Collection\" IS NOT NULL GROUP BY \"Collection\"";
+                cmd.CommandText = "SELECT \"Collection\", \"ProfileId\", \"MinimumAvailability\", \"Path\" FROM \"Movies\" JOIN \"MovieMetadata\" ON \"Movies\".\"MovieMetadataId\" = \"MovieMetadata\".\"Id\" WHERE \"Collection\" IS NOT NULL GROUP BY \"Collection\"";
 
                 var addedCollections = new List<int>();
                 var added = DateTime.UtcNow;
@@ -212,7 +212,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
-                cmd.CommandText = "SELECT \"Id\", \"Collection\" FROM \"Movies\" WHERE \"Collection\" IS NOT NULL";
+                cmd.CommandText = "SELECT \"Id\", \"Collection\" FROM \"MovieMetadata\" WHERE \"Collection\" IS NOT NULL";
 
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -227,7 +227,7 @@ namespace NzbDrone.Core.Datastore.Migration
                         using (var updateCmd = conn.CreateCommand())
                         {
                             updateCmd.Transaction = tran;
-                            updateCmd.CommandText = @"UPDATE ""Movies"" SET ""CollectionId"" = ? WHERE ""Id"" = ?";
+                            updateCmd.CommandText = @"UPDATE ""MovieMetadata"" SET ""CollectionId"" = ? WHERE ""Id"" = ?";
                             updateCmd.AddParameter(collectionId);
                             updateCmd.AddParameter(id);
 

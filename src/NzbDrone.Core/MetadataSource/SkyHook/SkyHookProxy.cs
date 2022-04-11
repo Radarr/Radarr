@@ -510,7 +510,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 CleanTitle = arg.Name.CleanMovieTitle(),
                 SortTitle = Parser.Parser.NormalizeTitle(arg.Name),
                 Images = arg.Images?.Select(MapImage).ToList() ?? new List<MediaCover.MediaCover>(),
-                MovieMetadata = arg.Parts?.Select(x => MapMovie(x)).ToList() ?? new List<MovieMetadata>()
+                MovieTmdbIds = arg.Parts?.Select(x => x.TmdbId).ToList() ?? new List<int>(),
+                Movies = arg.Parts?.Select(x => MapMovie(x)).ToList() ?? new List<MovieMetadata>()
             };
 
             return collection;
