@@ -6,7 +6,7 @@ namespace NzbDrone.Core.Movies
     {
         MovieMetadata Get(int id);
         MovieMetadata FindByTmdbId(int tmdbid);
-        List<MovieMetadata> GetMoviesByCollectionId(int collectionId);
+        List<MovieMetadata> GetMoviesByCollectionTmdbId(int collectionId);
         bool Upsert(MovieMetadata movie);
         bool UpsertMany(List<MovieMetadata> movies);
     }
@@ -25,9 +25,9 @@ namespace NzbDrone.Core.Movies
             return _movieMetadataRepository.FindByTmdbId(tmdbid);
         }
 
-        public List<MovieMetadata> GetMoviesByCollectionId(int collectionId)
+        public List<MovieMetadata> GetMoviesByCollectionTmdbId(int collectionId)
         {
-            return _movieMetadataRepository.GetMoviesByCollectionId(collectionId);
+            return _movieMetadataRepository.GetMoviesByCollectionTmdbId(collectionId);
         }
 
         public MovieMetadata Get(int id)

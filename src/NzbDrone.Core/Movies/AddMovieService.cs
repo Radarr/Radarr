@@ -61,10 +61,10 @@ namespace NzbDrone.Core.Movies
             _logger.Info("Adding Movie {0} Path: [{1}]", newMovie, newMovie.Path);
 
             // add collection
-            if (newMovie.MovieMetadata.Value.Collection != null)
+            if (newMovie.MovieMetadata.Value.CollectionTmdbId > 0)
             {
                 var newCollection = _collectionService.AddMovieCollection(BuildCollection(newMovie));
-                newMovie.MovieMetadata.Value.CollectionId = newCollection.Id;
+                newMovie.MovieMetadata.Value.CollectionTmdbId = newCollection.TmdbId;
             }
 
             _movieMetadataService.Upsert(newMovie.MovieMetadata.Value);
@@ -92,10 +92,10 @@ namespace NzbDrone.Core.Movies
                     movie.Added = added;
 
                     // add collection
-                    if (movie.MovieMetadata.Value.Collection != null)
+                    if (movie.MovieMetadata.Value.CollectionTmdbId > 0)
                     {
                         var newCollection = _collectionService.AddMovieCollection(BuildCollection(movie));
-                        movie.MovieMetadata.Value.CollectionId = newCollection.Id;
+                        movie.MovieMetadata.Value.CollectionTmdbId = newCollection.TmdbId;
                     }
 
                     moviesToAdd.Add(movie);
@@ -142,7 +142,12 @@ namespace NzbDrone.Core.Movies
 
         private MovieCollection BuildCollection(Movie newMovie)
         {
-            var collection = newMovie.MovieMetadata.Value.Collection.Value;
+            var collection = new MovieCollection
+            {
+                TmdbId = newMovie.MovieMetadata.Value.CollectionTmdbId,
+                Title = newMovie.MovieMetadata.Value.CollectionTitle
+            };
+
             collection.Monitored = newMovie.AddOptions?.Monitor == MonitorTypes.MovieAndCollection;
             collection.SearchOnAdd = newMovie.AddOptions?.SearchForMovie ?? false;
             collection.QualityProfileId = newMovie.ProfileId;

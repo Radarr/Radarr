@@ -96,7 +96,7 @@ namespace Radarr.Api.V3.Collections
         {
             var resource = collection.ToResource();
 
-            foreach (var movie in _movieMetadataService.GetMoviesByCollectionId(collection.Id))
+            foreach (var movie in _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId))
             {
                 var movieResource = movie.ToResource();
                 movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { Title = movie.Title, Year = movie.Year, ImdbId = movie.ImdbId, TmdbId = movie.TmdbId });

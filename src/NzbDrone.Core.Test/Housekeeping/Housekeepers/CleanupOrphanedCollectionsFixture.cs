@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var collection = Builder<MovieCollection>.CreateNew()
                                               .With(h => h.Id = 3)
+                                              .With(h => h.TmdbId = 123456)
                                               .With(h => h.Title = "Some Credit")
                                               .BuildNew();
 
@@ -29,12 +30,13 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         {
             var collection = Builder<MovieCollection>.CreateNew()
                                               .With(h => h.Id = 3)
+                                              .With(h => h.TmdbId = 123456)
                                               .With(h => h.Title = "Some Credit")
                                               .BuildNew();
 
             Db.Insert(collection);
 
-            var movie = Builder<MovieMetadata>.CreateNew().With(m => m.CollectionId = collection.Id).BuildNew();
+            var movie = Builder<MovieMetadata>.CreateNew().With(m => m.CollectionTmdbId = collection.TmdbId).BuildNew();
 
             Db.Insert(movie);
 

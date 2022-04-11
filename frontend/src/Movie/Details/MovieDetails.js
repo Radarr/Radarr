@@ -269,7 +269,7 @@ class MovieDetails extends Component {
       monitored,
       studio,
       genres,
-      collectionId,
+      collection,
       overview,
       youTubeTrailerId,
       isAvailable,
@@ -576,7 +576,7 @@ class MovieDetails extends Component {
                   </InfoLabel>
 
                   {
-                    !!collectionId &&
+                    !!collection &&
                       <InfoLabel
                         className={styles.detailsInfoLabel}
                         title={translate('Collection')}
@@ -584,7 +584,7 @@ class MovieDetails extends Component {
                       >
                         <div className={styles.collection}>
                           <MovieCollectionLabelConnector
-                            collectionId={collectionId}
+                            tmdbId={collection.tmdbId}
                           />
                         </div>
                       </InfoLabel>
@@ -800,7 +800,7 @@ MovieDetails.propTypes = {
   status: PropTypes.string.isRequired,
   studio: PropTypes.string,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
-  collectionId: PropTypes.number,
+  collection: PropTypes.object,
   youTubeTrailerId: PropTypes.string,
   isAvailable: PropTypes.bool.isRequired,
   inCinemas: PropTypes.string,

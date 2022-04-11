@@ -65,9 +65,8 @@ namespace NzbDrone.Core.Movies
             collection.SortTitle = collectionInfo.SortTitle;
             collection.LastInfoSync = DateTime.UtcNow;
             collection.Images = collectionInfo.Images;
-            collection.MovieTmdbIds = collectionInfo.MovieTmdbIds;
 
-            collectionInfo.Movies.ForEach(x => x.CollectionId = collection.Id);
+            collectionInfo.Movies.ForEach(x => x.CollectionTmdbId = collection.TmdbId);
             _movieMetadataService.UpsertMany(collectionInfo.Movies);
 
             _logger.Debug("Finished collection refresh for {0}", collection.Title);
@@ -100,9 +99,10 @@ namespace NzbDrone.Core.Movies
             {
                 var existingMovies = _movieService.AllMovieTmdbIds();
 
-                _addMovieService.AddMovies(collection.MovieTmdbIds.Where(m => !existingMovies.Contains(m)).Select(m => new Movie
+                _addMovieService.AddMovies(collection.Movies.Where(m => !existingMovies.Contains(m.TmdbId)).Select(m => new Movie
                 {
-                    TmdbId = m,
+                    TmdbId = m.TmdbId,
+                    Title = m.Title,
                     ProfileId = collection.QualityProfileId,
                     RootFolderPath = collection.RootFolderPath,
                     MinimumAvailability = collection.MinimumAvailability,

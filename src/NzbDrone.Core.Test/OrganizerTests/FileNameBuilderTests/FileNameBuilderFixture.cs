@@ -227,7 +227,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         public void should_replace_movie_collection()
         {
             _namingConfig.StandardMovieFormat = "{Movie Collection}";
-            _movie.MovieMetadata.Value.Collection = new MovieCollection { Title = "South Part Collection" };
+            _movie.MovieMetadata.Value.CollectionTitle = "South Part Collection";
 
             Subject.BuildFileName(_movie, _movieFile)
                    .Should().Be("South Part Collection");

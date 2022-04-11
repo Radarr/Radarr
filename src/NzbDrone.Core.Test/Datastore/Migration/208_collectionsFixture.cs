@@ -50,10 +50,10 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             collections.First().Title.Should().Be("Some Collection");
             collections.First().Monitored.Should().BeFalse();
 
-            var movies = db.Query<Movie208>("SELECT Id, CollectionId FROM MovieMetadata");
+            var movies = db.Query<Movie208>("SELECT Id, CollectionTmdbId FROM MovieMetadata");
 
             movies.Should().HaveCount(1);
-            movies.First().CollectionId.Should().Be(collections.First().Id);
+            movies.First().CollectionTmdbId.Should().Be(collections.First().TmdbId);
         }
 
         [Test]
@@ -277,7 +277,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
     public class Movie208
     {
         public int Id { get; set; }
-        public int CollectionId { get; set; }
+        public int CollectionTmdbId { get; set; }
     }
 
     public class ListDefinition208

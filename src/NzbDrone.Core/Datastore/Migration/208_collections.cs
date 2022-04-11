@@ -29,10 +29,11 @@ namespace NzbDrone.Core.Datastore.Migration
                 .WithColumn("Images").AsString().WithDefaultValue("[]")
                 .WithColumn("Monitored").AsBoolean().WithDefaultValue(false)
                 .WithColumn("LastInfoSync").AsDateTime().Nullable()
-                .WithColumn("Added").AsDateTime().Nullable()
-                .WithColumn("MovieTmdbIds").AsString().WithDefaultValue("[]");
+                .WithColumn("Added").AsDateTime().Nullable();
 
-            Alter.Table("MovieMetadata").AddColumn("CollectionId").AsInt32().Nullable();
+            Alter.Table("MovieMetadata").AddColumn("CollectionTmdbId").AsInt32().Nullable()
+                                        .AddColumn("CollectionTitle").AsString().Nullable();
+
             Alter.Table("ImportLists").AddColumn("Monitor").AsInt32().Nullable();
 
             Execute.WithConnection(MigrateCollections);
@@ -192,23 +193,6 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void MapCollections(IDbConnection conn, IDbTransaction tran)
         {
-            var collections = new List<MovieCollection207>();
-            using (var getCollections = conn.CreateCommand())
-            {
-                getCollections.Transaction = tran;
-                getCollections.CommandText = @"SELECT ""Id"", ""TmdbId"" FROM ""Collections""";
-
-                using (var definitionsReader = getCollections.ExecuteReader())
-                {
-                    while (definitionsReader.Read())
-                    {
-                        int id = definitionsReader.GetInt32(0);
-                        int tmdbId = definitionsReader.GetInt32(1);
-                        collections.Add(new MovieCollection207 { Id = id, TmdbId = tmdbId });
-                    }
-                }
-            }
-
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
@@ -222,13 +206,15 @@ namespace NzbDrone.Core.Datastore.Migration
                         var collection = reader.GetString(1);
                         var data = STJson.Deserialize<MovieCollection206>(collection);
 
-                        var collectionId = collections.SingleOrDefault(x => x.TmdbId == data.TmdbId).Id;
+                        var collectionId = data.TmdbId;
+                        var collectionTitle = data.Name;
 
                         using (var updateCmd = conn.CreateCommand())
                         {
                             updateCmd.Transaction = tran;
-                            updateCmd.CommandText = @"UPDATE ""MovieMetadata"" SET ""CollectionId"" = ? WHERE ""Id"" = ?";
+                            updateCmd.CommandText = @"UPDATE ""MovieMetadata"" SET ""CollectionTmdbId"" = ?, ""CollectionTitle"" = ? WHERE ""Id"" = ?";
                             updateCmd.AddParameter(collectionId);
+                            updateCmd.AddParameter(collectionTitle);
                             updateCmd.AddParameter(id);
 
                             updateCmd.ExecuteNonQuery();

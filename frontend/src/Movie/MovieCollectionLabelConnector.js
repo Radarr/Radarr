@@ -3,13 +3,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { toggleCollectionMonitored } from 'Store/Actions/movieCollectionActions';
-import createCollectionSelector from 'Store/Selectors/createCollectionSelector';
 import MovieCollectionLabel from './MovieCollectionLabel';
 
 function createMapStateToProps() {
   return createSelector(
-    createCollectionSelector(),
-    (collection) => {
+    (state, { tmdbId }) => tmdbId,
+    (state) => state.movieCollections.items,
+    (tmdbId, collections) => {
+      const collection = collections.find((movie) => movie.tmdbId === tmdbId);
       return {
         ...collection
       };
@@ -28,10 +29,10 @@ class MovieCollectionLabelConnector extends Component {
 
   onMonitorTogglePress = (monitored) => {
     this.props.toggleCollectionMonitored({
-      collectionId: this.props.collectionId,
+      collectionId: this.props.id,
       monitored
     });
-  }
+  };
 
   //
   // Render
@@ -47,7 +48,8 @@ class MovieCollectionLabelConnector extends Component {
 }
 
 MovieCollectionLabelConnector.propTypes = {
-  collectionId: PropTypes.number.isRequired,
+  tmdbId: PropTypes.number.isRequired,
+  id: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
   toggleCollectionMonitored: PropTypes.func.isRequired
 };

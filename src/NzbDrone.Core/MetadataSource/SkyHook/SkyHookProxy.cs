@@ -287,7 +287,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             if (resource.Collection != null)
             {
-                movie.Collection = MapCollection(resource.Collection);
+                movie.CollectionTmdbId = resource.Collection.TmdbId;
+                movie.CollectionTitle = resource.Collection.Name;
             }
 
             return movie;
@@ -510,7 +511,6 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 CleanTitle = arg.Name.CleanMovieTitle(),
                 SortTitle = Parser.Parser.NormalizeTitle(arg.Name),
                 Images = arg.Images?.Select(MapImage).ToList() ?? new List<MediaCover.MediaCover>(),
-                MovieTmdbIds = arg.Parts?.Select(x => x.TmdbId).ToList() ?? new List<int>(),
                 Movies = arg.Parts?.Select(x => MapMovie(x)).ToList() ?? new List<MovieMetadata>()
             };
 

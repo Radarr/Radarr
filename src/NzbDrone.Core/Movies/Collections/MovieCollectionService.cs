@@ -92,20 +92,20 @@ namespace NzbDrone.Core.Movies.Collections
 
         public void HandleAsync(MoviesDeletedEvent message)
         {
-            var collections = message.Movies.Select(x => x.MovieMetadata.Value.CollectionId).Distinct();
+            var collections = message.Movies.Select(x => x.MovieMetadata.Value.CollectionTmdbId).Distinct();
 
-            foreach (var collectionId in collections)
+            foreach (var collectionTmdbId in collections)
             {
-                if (collectionId == 0 || _movieMetadataService.GetMoviesByCollectionId(collectionId).Any())
+                if (collectionTmdbId == 0 || _movieMetadataService.GetMoviesByCollectionTmdbId(collectionTmdbId).Any())
                 {
                     continue;
                 }
 
-                var collection = GetCollection(collectionId);
+                var collection = FindByTmdbId(collectionTmdbId);
 
                 _eventAggregator.PublishEvent(new CollectionDeletedEvent(collection));
 
-                _repo.Delete(collectionId);
+                _repo.Delete(collectionTmdbId);
             }
         }
 

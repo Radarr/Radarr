@@ -106,7 +106,8 @@ namespace NzbDrone.Core.Movies
             movieMetadata.LastInfoSync = DateTime.UtcNow;
             movieMetadata.Runtime = movieInfo.Runtime;
             movieMetadata.Ratings = movieInfo.Ratings;
-            movieMetadata.Collection = movieInfo.Collection;
+            movieMetadata.CollectionTmdbId = movieInfo.CollectionTmdbId;
+            movieMetadata.CollectionTitle = movieInfo.CollectionTitle;
 
             //movie.Genres = movieInfo.Genres;
             movieMetadata.Certification = movieInfo.Certification;

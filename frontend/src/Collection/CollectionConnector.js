@@ -74,11 +74,11 @@ class CollectionConnector extends Component {
 
   onScroll = ({ scrollTop }) => {
     scrollPositions.movieCollections = scrollTop;
-  }
+  };
 
   onUpdateSelectedPress = (payload) => {
     this.props.onUpdateSelectedPress(payload);
-  }
+  };
 
   //
   // Render

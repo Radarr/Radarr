@@ -76,8 +76,8 @@ namespace Radarr.Api.V3.ImportLists
                 Genres = model.MovieMetadata.Value.Genres,
                 Ratings = model.MovieMetadata.Value.Ratings,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
-                Studio = model.MovieMetadata.Value.Studio,
-                Collection = model.MovieMetadata.Value.Collection
+                Collection = new MovieCollection { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId },
+                Studio = model.MovieMetadata.Value.Studio
             };
         }
 
@@ -112,7 +112,7 @@ namespace Radarr.Api.V3.ImportLists
                 Ratings = model.MovieMetadata.Value.Ratings,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
-                Collection = model.MovieMetadata.Value.Collection,
+                Collection = new MovieCollection { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId },
                 Lists = new HashSet<int> { model.ListId }
             };
         }
