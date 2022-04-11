@@ -1,5 +1,4 @@
 - Lidarr v1 coming to `develop` as beta soon^(tm)
 - [Lidarr](https://lidarr.audio/donate), [Prowlarr](https://prowlarr.com/donate), [Radarr](https://radarr.video/donate), [Readarr](https://readarr.com/donate) now accept direct bitcoin donations
 - [Readarr official beta on `develop` announced](https://www.reddit.com/r/Readarr/comments/sxvj8y/new_beta_release_develop_v0101248/)
-- [Radarr Postgres Database Support coming soon (PR#6873)](https://github.com/radarr/radarr/pull/6873)
 - [Lidarr Postgres Database Support in development (Draft PR#2625)](https://github.com/Lidarr/Lidarr/pull/2625)
