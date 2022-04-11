@@ -73,7 +73,7 @@ namespace NzbDrone.Core.ImportLists.Plex
         {
             var scheme = $"{prefix}://";
 
-            return guids.FirstOrDefault((guid) => guid.Id.StartsWith(scheme))?.Id.Replace(scheme, "");
+            return guids?.FirstOrDefault((guid) => guid.Id.StartsWith(scheme))?.Id.Replace(scheme, "");
         }
     }
 }
