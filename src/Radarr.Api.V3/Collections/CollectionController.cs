@@ -78,7 +78,7 @@ namespace Radarr.Api.V3.Collections
 
                 if (collectionResources.MonitorMovies.HasValue)
                 {
-                    var movies = _movieService.GetMoviesByCollectionId(collection.Id);
+                    var movies = _movieService.GetMoviesByCollectionTmdbId(collection.Id);
 
                     movies.ForEach(c => c.Monitored = collectionResources.MonitorMovies.Value);
 

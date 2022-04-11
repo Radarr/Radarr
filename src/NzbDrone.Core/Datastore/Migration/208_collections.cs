@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Datastore.Migration
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
-                cmd.CommandText = "SELECT \"Collection\", \"ProfileId\", \"MinimumAvailability\", \"Path\" FROM \"Movies\" JOIN \"MovieMetadata\" ON \"Movies\".\"MovieMetadataId\" = \"MovieMetadata\".\"Id\" WHERE \"Collection\" IS NOT NULL GROUP BY \"Collection\"";
+                cmd.CommandText = "SELECT \"Collection\", \"ProfileId\", \"MinimumAvailability\", \"Path\" FROM \"Movies\" JOIN \"MovieMetadata\" ON \"Movies\".\"MovieMetadataId\" = \"MovieMetadata\".\"Id\" WHERE \"Collection\" IS NOT NULL";
 
                 var addedCollections = new List<int>();
                 var added = DateTime.UtcNow;

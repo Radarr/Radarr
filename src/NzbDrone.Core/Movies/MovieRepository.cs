@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Movies
         List<Movie> MoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
         List<Movie> GetMoviesByFileId(int fileId);
-        List<Movie> GetMoviesByCollectionId(int collectionId);
+        List<Movie> GetMoviesByCollectionTmdbId(int collectionId);
         void SetFileId(int fileId, int movieId);
         PagingSpec<Movie> MoviesWhereCutoffUnmet(PagingSpec<Movie> pagingSpec, List<QualitiesBelowCutoff> qualitiesBelowCutoff);
         Movie FindByPath(string path);
@@ -223,7 +223,7 @@ namespace NzbDrone.Core.Movies
             return Query(x => x.MovieFileId == fileId);
         }
 
-        public List<Movie> GetMoviesByCollectionId(int collectionId)
+        public List<Movie> GetMoviesByCollectionTmdbId(int collectionId)
         {
             return Query(x => x.MovieMetadata.Value.CollectionTmdbId == collectionId);
         }
