@@ -62,7 +62,7 @@ class AddNewCollectionMovieModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.setMovieCollectionValue({ name, value });
-  }
+  };
 
   onAddMoviePress = () => {
     const {
@@ -88,7 +88,7 @@ class AddNewCollectionMovieModalContentConnector extends Component {
     });
 
     this.props.onModalClose(true);
-  }
+  };
 
   //
   // Render

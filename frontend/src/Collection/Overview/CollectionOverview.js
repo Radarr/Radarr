@@ -53,26 +53,26 @@ class CollectionOverview extends Component {
 
   setSliderRef = (ref) => {
     this.setState({ slider: ref });
-  }
+  };
 
   //
   // Listeners
 
   onPress = () => {
     this.setState({ isNewAddMovieModalOpen: true });
-  }
+  };
 
   onEditCollectionPress = () => {
     this.setState({ isEditCollectionModalOpen: true });
-  }
+  };
 
   onEditCollectionModalClose = () => {
     this.setState({ isEditCollectionModalOpen: false });
-  }
+  };
 
   onAddMovieModalClose = () => {
     this.setState({ isNewAddMovieModalOpen: false });
-  }
+  };
 
   onChange = ({ value, shiftKey }) => {
     const {
@@ -81,7 +81,7 @@ class CollectionOverview extends Component {
     } = this.props;
 
     onSelectedChange({ id, value, shiftKey });
-  }
+  };
 
   //
   // Render

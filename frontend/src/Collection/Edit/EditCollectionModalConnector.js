@@ -16,7 +16,7 @@ class EditCollectionModalConnector extends Component {
   onModalClose = () => {
     this.props.clearPendingChanges({ section: 'movieCollections' });
     this.props.onModalClose();
-  }
+  };
 
   //
   // Render

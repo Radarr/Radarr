@@ -26,7 +26,7 @@ class EditCollectionModalContent extends Component {
     } = this.props;
 
     onSavePress(false);
-  }
+  };
 
   //
   // Render

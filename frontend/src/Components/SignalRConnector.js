@@ -214,7 +214,7 @@ class SignalRConnector extends Component {
     } else if (action === 'deleted') {
       this.props.dispatchRemoveItem({ section, id: body.resource.id });
     }
-  }
+  };
 
   handleQueue = () => {
     if (this.props.isQueuePopulated) {

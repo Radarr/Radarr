@@ -75,7 +75,7 @@ class CollectionOverviewOptionsModalContent extends Component {
     }, () => {
       this.props.onChangeOverviewOption({ [name]: value });
     });
-  }
+  };
 
   onChangeOption = ({ name, value }) => {
     this.setState({
@@ -85,7 +85,7 @@ class CollectionOverviewOptionsModalContent extends Component {
         [name]: value
       });
     });
-  }
+  };
 
   //
   // Render

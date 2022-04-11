@@ -35,7 +35,7 @@ class CollectionMovieConnector extends Component {
       movieId: this.props.id,
       monitored
     });
-  }
+  };
 
   //
   // Render

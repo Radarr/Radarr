@@ -114,7 +114,7 @@ class CollectionOverviews extends Component {
 
   setGridRef = (ref) => {
     this._grid = ref;
-  }
+  };
 
   calculateGrid = (width = this.state.width, isSmallScreen) => {
     const {
@@ -132,7 +132,7 @@ class CollectionOverviews extends Component {
       posterHeight,
       rowHeight
     });
-  }
+  };
 
   cellRenderer = ({ key, rowIndex, style }) => {
     const {
@@ -185,14 +185,14 @@ class CollectionOverviews extends Component {
         />
       </div>
     );
-  }
+  };
 
   //
   // Listeners
 
   onMeasure = ({ width }) => {
     this.calculateGrid(width, this.props.isSmallScreen);
-  }
+  };
 
   //
   // Render

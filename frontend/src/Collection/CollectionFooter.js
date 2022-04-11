@@ -50,7 +50,7 @@ class CollectionFooter extends Component {
 
   onInputChange = ({ name, value }) => {
     this.setState({ [name]: value });
-  }
+  };
 
   onUpdateSelectedPress = () => {
     const {
@@ -69,7 +69,7 @@ class CollectionFooter extends Component {
     }
 
     this.props.onUpdateSelectedPress(changes);
-  }
+  };
 
   //
   // Render

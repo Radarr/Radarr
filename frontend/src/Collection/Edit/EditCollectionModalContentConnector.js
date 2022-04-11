@@ -84,13 +84,13 @@ class EditCollectionModalContentConnector extends Component {
 
   onInputChange = ({ name, value }) => {
     this.props.dispatchSetMovieCollectionValue({ name, value });
-  }
+  };
 
   onSavePress = () => {
     this.props.dispatchSaveMovieCollection({
       id: this.props.collectionId
     });
-  }
+  };
 
   //
   // Render

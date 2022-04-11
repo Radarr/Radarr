@@ -80,14 +80,14 @@ class Collection extends Component {
 
   setScrollerRef = (ref) => {
     this.setState({ scroller: ref });
-  }
+  };
 
   getSelectedIds = () => {
     if (this.state.allUnselected) {
       return [];
     }
     return getSelectedIds(this.state.selectedState);
-  }
+  };
 
   setSelectedState() {
     const {
@@ -173,40 +173,40 @@ class Collection extends Component {
 
   onOverviewOptionsPress = () => {
     this.setState({ isOverviewOptionsModalOpen: true });
-  }
+  };
 
   onOverviewOptionsModalClose = () => {
     this.setState({ isOverviewOptionsModalOpen: false });
-  }
+  };
 
   onJumpBarItemPress = (jumpToCharacter) => {
     this.setState({ jumpToCharacter });
-  }
+  };
 
   onSelectAllChange = ({ value }) => {
     this.setState(selectAll(this.state.selectedState, value));
-  }
+  };
 
   onSelectAllPress = () => {
     this.onSelectAllChange({ value: !this.state.allSelected });
-  }
+  };
 
   onRefreshMovieCollectionsPress = () => {
     this.props.onRefreshMovieCollectionsPress();
-  }
+  };
 
   onSelectedChange = ({ id, value, shiftKey = false }) => {
     this.setState((state) => {
       return toggleSelected(state, this.props.items, id, value, shiftKey, 'id');
     });
-  }
+  };
 
   onUpdateSelectedPress = (changes) => {
     this.props.onUpdateSelectedPress({
       collectionIds: this.getSelectedIds(),
       ...changes
     });
-  }
+  };
 
   //
   // Render

@@ -31,7 +31,7 @@ class CollectionOverviewConnector extends Component {
       collectionId: this.props.collectionId,
       monitored
     });
-  }
+  };
 
   //
   // Render
