@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
-using NzbDrone.Core.Extras.Files;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
@@ -31,7 +30,6 @@ namespace NzbDrone.Core.Extras
         public void Handle(MovieScannedEvent message)
         {
             var movie = message.Movie;
-            var extraFiles = new List<ExtraFile>();
 
             if (!_diskProvider.FolderExists(movie.Path))
             {
@@ -43,17 +41,16 @@ namespace NzbDrone.Core.Extras
             var filesOnDisk = _diskScanService.GetNonVideoFiles(movie.Path);
             var possibleExtraFiles = _diskScanService.FilterPaths(movie.Path, filesOnDisk, false);
 
-            var filteredFiles = possibleExtraFiles;
             var importedFiles = new List<string>();
 
             foreach (var existingExtraFileImporter in _existingExtraFileImporters)
             {
-                var imported = existingExtraFileImporter.ProcessFiles(movie, filteredFiles, importedFiles);
+                var imported = existingExtraFileImporter.ProcessFiles(movie, possibleExtraFiles, importedFiles);
 
                 importedFiles.AddRange(imported.Select(f => Path.Combine(movie.Path, f.RelativePath)));
             }
 
-            _logger.Info("Found {0} extra files", extraFiles.Count);
+            _logger.Info("Found {0} possible extra files, imported {1} files.", possibleExtraFiles.Count, importedFiles.Count);
         }
     }
 }
