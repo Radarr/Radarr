@@ -129,8 +129,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 c.Insert.IntoTable("ImportLists").Row(new
                 {
-                    Enabled = 1,
-                    EnableAuto = 1,
+                    Enabled = true,
+                    EnableAuto = true,
                     RootFolderPath = "D:\\Movies",
                     ProfileId = 1,
                     MinimumAvailability = 4,
@@ -159,8 +159,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 c.Insert.IntoTable("ImportLists").Row(new
                 {
-                    Enabled = 1,
-                    EnableAuto = 1,
+                    Enabled = true,
+                    EnableAuto = true,
                     RootFolderPath = "D:\\Movies",
                     ProfileId = 1,
                     MinimumAvailability = 4,
@@ -189,8 +189,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             {
                 c.Insert.IntoTable("ImportLists").Row(new
                 {
-                    Enabled = 1,
-                    EnableAuto = 1,
+                    Enabled = true,
+                    EnableAuto = true,
                     RootFolderPath = "D:\\Movies",
                     ProfileId = 1,
                     MinimumAvailability = 4,
@@ -243,8 +243,8 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
                 c.Insert.IntoTable("ImportLists").Row(new
                 {
-                    Enabled = 1,
-                    EnableAuto = 1,
+                    Enabled = true,
+                    EnableAuto = true,
                     RootFolderPath = "D:\\Movies",
                     ProfileId = 1,
                     MinimumAvailability = 4,
