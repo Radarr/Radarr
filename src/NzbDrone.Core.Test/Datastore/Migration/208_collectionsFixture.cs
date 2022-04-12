@@ -43,14 +43,14 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var collections = db.Query<Collection208>("SELECT Id, Title, TmdbId, Monitored FROM Collections");
+            var collections = db.Query<Collection208>("SELECT \"Id\", \"Title\", \"TmdbId\", \"Monitored\" FROM \"Collections\"");
 
             collections.Should().HaveCount(1);
             collections.First().TmdbId.Should().Be(11);
             collections.First().Title.Should().Be("Some Collection");
             collections.First().Monitored.Should().BeFalse();
 
-            var movies = db.Query<Movie208>("SELECT Id, CollectionTmdbId FROM MovieMetadata");
+            var movies = db.Query<Movie208>("SELECT \"Id\", \"CollectionTmdbId\" FROM \"MovieMetadata\"");
 
             movies.Should().HaveCount(1);
             movies.First().CollectionTmdbId.Should().Be(collections.First().TmdbId);
@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var collections = db.Query<Collection208>("SELECT Id, Title, TmdbId, Monitored FROM Collections");
+            var collections = db.Query<Collection208>("SELECT \"Id\", \"Title\", \"TmdbId\", \"Monitored\" FROM \"Collections\"");
 
             collections.Should().HaveCount(1);
             collections.First().TmdbId.Should().Be(11);
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition208>("SELECT Id, Monitor FROM ImportLists");
+            var items = db.Query<ListDefinition208>("SELECT \"Id\", \"Monitor\" FROM \"ImportLists\"");
 
             items.Should().HaveCount(1);
             items.First().Monitor.Should().Be(0);
@@ -176,7 +176,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition208>("SELECT Id, Monitor FROM ImportLists");
+            var items = db.Query<ListDefinition208>("SELECT \"Id\", \"Monitor\" FROM \"ImportLists\"");
 
             items.Should().HaveCount(1);
             items.First().Monitor.Should().Be(2);
@@ -205,7 +205,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<ListDefinition208>("SELECT Id, Monitor FROM ImportLists");
+            var items = db.Query<ListDefinition208>("SELECT \"Id\", \"Monitor\" FROM \"ImportLists\"");
 
             items.Should().HaveCount(0);
         }
@@ -259,7 +259,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 });
             });
 
-            var items = db.Query<Collection208>("SELECT Id, Monitored FROM Collections");
+            var items = db.Query<Collection208>("SELECT \"Id\", \"Monitored\" FROM \"Collections\"");
 
             items.Should().HaveCount(1);
             items.First().Monitored.Should().BeTrue();
