@@ -66,6 +66,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
             }
 
+            var newCollections = new List<MovieCollection208>();
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
@@ -82,9 +83,9 @@ namespace NzbDrone.Core.Datastore.Migration
                         var qualityProfileId = reader.GetInt32(1);
                         var minimumAvailability = reader.GetInt32(2);
                         var moviePath = reader.GetString(3);
-                        var data = STJson.Deserialize<MovieCollection206>(collection);
+                        var data = STJson.Deserialize<MovieCollection207>(collection);
 
-                        if (addedCollections.Contains(data.TmdbId))
+                        if (newCollections.Any(d => d.TmdbId == data.TmdbId))
                         {
                             continue;
                         }
@@ -103,31 +104,46 @@ namespace NzbDrone.Core.Datastore.Migration
                             rootFolderPath = moviePath.GetParentPath();
                         }
 
-                        using (var updateCmd = conn.CreateCommand())
+                        newCollections.Add(new MovieCollection208
                         {
-                            updateCmd.Transaction = tran;
-                            updateCmd.CommandText = @"INSERT INTO ""Collections"" (""TmdbId"", ""Title"", ""CleanTitle"", ""SortTitle"", ""Added"", ""QualityProfileId"", ""RootFolderPath"", ""SearchOnAdd"", ""MinimumAvailability"") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                            updateCmd.AddParameter(data.TmdbId);
-                            updateCmd.AddParameter(data.Name);
-                            updateCmd.AddParameter(data.Name.CleanMovieTitle());
-                            updateCmd.AddParameter(Parser.Parser.NormalizeTitle(data.Name));
-                            updateCmd.AddParameter(added);
-                            updateCmd.AddParameter(qualityProfileId);
-                            updateCmd.AddParameter(rootFolderPath);
-                            updateCmd.AddParameter(true);
-                            updateCmd.AddParameter(minimumAvailability);
-
-                            updateCmd.ExecuteNonQuery();
-                        }
-
-                        addedCollections.Add(data.TmdbId);
+                            TmdbId = data.TmdbId,
+                            Title = data.Name,
+                            CleanTitle = data.Name.CleanMovieTitle(),
+                            SortTitle = Parser.Parser.NormalizeTitle(data.Name),
+                            Added = added,
+                            QualityProfileId = qualityProfileId,
+                            RootFolderPath = rootFolderPath,
+                            SearchOnAdd = true,
+                            MinimumAvailability = minimumAvailability
+                        });
                     }
+                }
+            }
+
+            foreach (var collection in newCollections)
+            {
+                using (var updateCmd = conn.CreateCommand())
+                {
+                    updateCmd.Transaction = tran;
+                    updateCmd.CommandText = @"INSERT INTO ""Collections"" (""TmdbId"", ""Title"", ""CleanTitle"", ""SortTitle"", ""Added"", ""QualityProfileId"", ""RootFolderPath"", ""SearchOnAdd"", ""MinimumAvailability"") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    updateCmd.AddParameter(collection.TmdbId);
+                    updateCmd.AddParameter(collection.Title);
+                    updateCmd.AddParameter(collection.CleanTitle);
+                    updateCmd.AddParameter(collection.SortTitle);
+                    updateCmd.AddParameter(collection.Added);
+                    updateCmd.AddParameter(collection.QualityProfileId);
+                    updateCmd.AddParameter(collection.RootFolderPath);
+                    updateCmd.AddParameter(collection.SearchOnAdd);
+                    updateCmd.AddParameter(collection.MinimumAvailability);
+
+                    updateCmd.ExecuteNonQuery();
                 }
             }
         }
 
         private void MigrateCollectionMonitorStatus(IDbConnection conn, IDbTransaction tran)
         {
+            var updatedCollections = new List<MovieCollection208>();
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
@@ -149,22 +165,31 @@ namespace NzbDrone.Core.Datastore.Migration
                             continue;
                         }
 
-                        using (var updateCmd = conn.CreateCommand())
+                        updatedCollections.Add(new MovieCollection208
                         {
-                            updateCmd.Transaction = tran;
-                            updateCmd.CommandText = @"UPDATE ""Collections"" SET ""Monitored"" = ? WHERE ""TmdbId"" = ?";
-                            updateCmd.AddParameter(true);
-                            updateCmd.AddParameter(collectionId);
-
-                            updateCmd.ExecuteNonQuery();
-                        }
+                            TmdbId = collectionId
+                        });
                     }
+                }
+            }
+
+            foreach (var collection in updatedCollections)
+            {
+                using (var updateCmd = conn.CreateCommand())
+                {
+                    updateCmd.Transaction = tran;
+                    updateCmd.CommandText = @"UPDATE ""Collections"" SET ""Monitored"" = ? WHERE ""TmdbId"" = ?";
+                    updateCmd.AddParameter(true);
+                    updateCmd.AddParameter(collection.TmdbId);
+
+                    updateCmd.ExecuteNonQuery();
                 }
             }
         }
 
         private void MigrateListMonitor(IDbConnection conn, IDbTransaction tran)
         {
+            var updatedLists = new List<ImportList208>();
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
@@ -177,22 +202,33 @@ namespace NzbDrone.Core.Datastore.Migration
                         var shouldMonitor = reader.GetBoolean(0);
                         var listId = reader.GetInt32(1);
 
-                        using (var updateCmd = conn.CreateCommand())
+                        updatedLists.Add(new ImportList208
                         {
-                            updateCmd.Transaction = tran;
-                            updateCmd.CommandText = @"UPDATE ""ImportLists"" SET ""Monitor"" = ? WHERE ""Id"" = ?";
-                            updateCmd.AddParameter(shouldMonitor ? 0 : 2);
-                            updateCmd.AddParameter(listId);
-
-                            updateCmd.ExecuteNonQuery();
-                        }
+                            Monitor = shouldMonitor ? 0 : 2,
+                            Id = listId
+                        });
                     }
+                }
+            }
+
+            foreach (var list in updatedLists)
+            {
+                using (var updateCmd = conn.CreateCommand())
+                {
+                    updateCmd.Transaction = tran;
+                    updateCmd.CommandText = @"UPDATE ""ImportLists"" SET ""Monitor"" = ? WHERE ""Id"" = ?";
+                    updateCmd.AddParameter(list.Monitor);
+                    updateCmd.AddParameter(list.Id);
+
+                    updateCmd.ExecuteNonQuery();
                 }
             }
         }
 
         private void MapCollections(IDbConnection conn, IDbTransaction tran)
         {
+            var updatedMeta = new List<MovieMetadata208>();
+
             using (var cmd = conn.CreateCommand())
             {
                 cmd.Transaction = tran;
@@ -204,37 +240,67 @@ namespace NzbDrone.Core.Datastore.Migration
                     {
                         var id = reader.GetInt32(0);
                         var collection = reader.GetString(1);
-                        var data = STJson.Deserialize<MovieCollection206>(collection);
+                        var data = STJson.Deserialize<MovieCollection207>(collection);
 
                         var collectionId = data.TmdbId;
                         var collectionTitle = data.Name;
 
-                        using (var updateCmd = conn.CreateCommand())
+                        updatedMeta.Add(new MovieMetadata208
                         {
-                            updateCmd.Transaction = tran;
-                            updateCmd.CommandText = @"UPDATE ""MovieMetadata"" SET ""CollectionTmdbId"" = ?, ""CollectionTitle"" = ? WHERE ""Id"" = ?";
-                            updateCmd.AddParameter(collectionId);
-                            updateCmd.AddParameter(collectionTitle);
-                            updateCmd.AddParameter(id);
-
-                            updateCmd.ExecuteNonQuery();
-                        }
+                            CollectionTitle = collectionTitle,
+                            CollectionTmdbId = collectionId,
+                            Id = id
+                        });
                     }
+                }
+            }
+
+            foreach (var meta in updatedMeta)
+            {
+                using (var updateCmd = conn.CreateCommand())
+                {
+                    updateCmd.Transaction = tran;
+                    updateCmd.CommandText = @"UPDATE ""MovieMetadata"" SET ""CollectionTmdbId"" = ?, ""CollectionTitle"" = ? WHERE ""Id"" = ?";
+                    updateCmd.AddParameter(meta.CollectionTmdbId);
+                    updateCmd.AddParameter(meta.CollectionTitle);
+                    updateCmd.AddParameter(meta.Id);
+
+                    updateCmd.ExecuteNonQuery();
                 }
             }
         }
 
-        private class MovieCollection206
+        private class MovieCollection207
         {
             public string Name { get; set; }
             public int TmdbId { get; set; }
         }
 
-        private class MovieCollection207
+        private class MovieCollection208
         {
             public int Id { get; set; }
             public string Title { get; set; }
+            public string CleanTitle { get; set; }
+            public string SortTitle { get; set; }
+            public DateTime Added { get; set; }
+            public int QualityProfileId { get; set; }
+            public string RootFolderPath { get; set; }
+            public bool SearchOnAdd { get; set; }
+            public int MinimumAvailability { get; set; }
             public int TmdbId { get; set; }
+        }
+
+        private class MovieMetadata208
+        {
+            public int Id { get; set; }
+            public int CollectionTmdbId { get; set; }
+            public string CollectionTitle { get; set; }
+        }
+
+        private class ImportList208
+        {
+            public int Id { get; set; }
+            public int Monitor { get; set; }
         }
 
         private class TmdbCollectionSettings206
