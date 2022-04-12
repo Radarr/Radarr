@@ -120,25 +120,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
             }
 
-            foreach (var collection in newCollections)
-            {
-                using (var updateCmd = conn.CreateCommand())
-                {
-                    updateCmd.Transaction = tran;
-                    updateCmd.CommandText = @"INSERT INTO ""Collections"" (""TmdbId"", ""Title"", ""CleanTitle"", ""SortTitle"", ""Added"", ""QualityProfileId"", ""RootFolderPath"", ""SearchOnAdd"", ""MinimumAvailability"") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    updateCmd.AddParameter(collection.TmdbId);
-                    updateCmd.AddParameter(collection.Title);
-                    updateCmd.AddParameter(collection.CleanTitle);
-                    updateCmd.AddParameter(collection.SortTitle);
-                    updateCmd.AddParameter(collection.Added);
-                    updateCmd.AddParameter(collection.QualityProfileId);
-                    updateCmd.AddParameter(collection.RootFolderPath);
-                    updateCmd.AddParameter(collection.SearchOnAdd);
-                    updateCmd.AddParameter(collection.MinimumAvailability);
-
-                    updateCmd.ExecuteNonQuery();
-                }
-            }
+            var updateSql = "INSERT INTO \"Collections\" (\"TmdbId\", \"Title\", \"CleanTitle\", \"SortTitle\", \"Added\", \"QualityProfileId\", \"RootFolderPath\", \"SearchOnAdd\", \"MinimumAvailability\") VALUES (@TmdbId, @Title, @CleanTitle, @SortTitle, @Added, @QualityProfileId, @RootFolderPath, @SearchOnAdd, @MinimumAvailability)";
+            conn.Execute(updateSql, newCollections, transaction: tran);
         }
 
         private void MigrateCollectionMonitorStatus(IDbConnection conn, IDbTransaction tran)
@@ -167,24 +150,15 @@ namespace NzbDrone.Core.Datastore.Migration
 
                         updatedCollections.Add(new MovieCollection208
                         {
-                            TmdbId = collectionId
+                            TmdbId = collectionId,
+                            Monitored = true
                         });
                     }
                 }
             }
 
-            foreach (var collection in updatedCollections)
-            {
-                using (var updateCmd = conn.CreateCommand())
-                {
-                    updateCmd.Transaction = tran;
-                    updateCmd.CommandText = @"UPDATE ""Collections"" SET ""Monitored"" = ? WHERE ""TmdbId"" = ?";
-                    updateCmd.AddParameter(true);
-                    updateCmd.AddParameter(collection.TmdbId);
-
-                    updateCmd.ExecuteNonQuery();
-                }
-            }
+            var updateSql = "UPDATE \"Collections\" SET \"Monitored\" = @Monitored WHERE \"TmdbId\" = @TmdbId";
+            conn.Execute(updateSql, updatedCollections, transaction: tran);
         }
 
         private void MigrateListMonitor(IDbConnection conn, IDbTransaction tran)
@@ -211,18 +185,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
             }
 
-            foreach (var list in updatedLists)
-            {
-                using (var updateCmd = conn.CreateCommand())
-                {
-                    updateCmd.Transaction = tran;
-                    updateCmd.CommandText = @"UPDATE ""ImportLists"" SET ""Monitor"" = ? WHERE ""Id"" = ?";
-                    updateCmd.AddParameter(list.Monitor);
-                    updateCmd.AddParameter(list.Id);
-
-                    updateCmd.ExecuteNonQuery();
-                }
-            }
+            var updateSql = "UPDATE \"ImportLists\" SET \"Monitor\" = @Monitor WHERE \"Id\" = @Id";
+            conn.Execute(updateSql, updatedLists, transaction: tran);
         }
 
         private void MapCollections(IDbConnection conn, IDbTransaction tran)
@@ -255,19 +219,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 }
             }
 
-            foreach (var meta in updatedMeta)
-            {
-                using (var updateCmd = conn.CreateCommand())
-                {
-                    updateCmd.Transaction = tran;
-                    updateCmd.CommandText = @"UPDATE ""MovieMetadata"" SET ""CollectionTmdbId"" = ?, ""CollectionTitle"" = ? WHERE ""Id"" = ?";
-                    updateCmd.AddParameter(meta.CollectionTmdbId);
-                    updateCmd.AddParameter(meta.CollectionTitle);
-                    updateCmd.AddParameter(meta.Id);
-
-                    updateCmd.ExecuteNonQuery();
-                }
-            }
+            var updateSql = "UPDATE \"MovieMetadata\" SET \"CollectionTmdbId\" = @CollectionTmdbId, \"CollectionTitle\" = @CollectionTitle WHERE \"Id\" = @Id";
+            conn.Execute(updateSql, updatedMeta, transaction: tran);
         }
 
         private class MovieCollection207
@@ -287,6 +240,7 @@ namespace NzbDrone.Core.Datastore.Migration
             public string RootFolderPath { get; set; }
             public bool SearchOnAdd { get; set; }
             public int MinimumAvailability { get; set; }
+            public bool Monitored { get; set; }
             public int TmdbId { get; set; }
         }
 
