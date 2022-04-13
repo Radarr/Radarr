@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 
@@ -11,6 +12,7 @@ namespace NzbDrone.Core.Extras.Files
         void DeleteForMovieFile(int movieFileId);
         List<TExtraFile> GetFilesByMovie(int movieId);
         List<TExtraFile> GetFilesByMovieFile(int movieFileId);
+        TExtraFile FindByPath(int movieId, string path);
     }
 
     public class ExtraFileRepository<TExtraFile> : BasicRepository<TExtraFile>, IExtraFileRepository<TExtraFile>
@@ -39,6 +41,11 @@ namespace NzbDrone.Core.Extras.Files
         public List<TExtraFile> GetFilesByMovieFile(int movieFileId)
         {
             return Query(x => x.MovieFileId == movieFileId);
+        }
+
+        public TExtraFile FindByPath(int movieId, string path)
+        {
+            return Query(c => c.MovieId == movieId && c.RelativePath == path).SingleOrDefault();
         }
     }
 }

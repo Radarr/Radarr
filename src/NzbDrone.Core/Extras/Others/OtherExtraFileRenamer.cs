@@ -1,4 +1,3 @@
-using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
@@ -38,8 +37,8 @@ namespace NzbDrone.Core.Extras.Others
             }
 
             var relativePath = movie.Path.GetRelativePath(path);
+            var otherExtraFile = _otherExtraFileService.FindByPath(movie.Id, relativePath);
 
-            var otherExtraFile = _otherExtraFileService.GetFilesByMovie(movie.Id).Where(e => e.RelativePath == relativePath).SingleOrDefault();
             if (otherExtraFile != null)
             {
                 var newPath = path + "-orig";
@@ -63,8 +62,8 @@ namespace NzbDrone.Core.Extras.Others
             }
 
             var relativePath = movie.Path.GetRelativePath(path);
+            var otherExtraFile = _otherExtraFileService.FindByPath(movie.Id, relativePath);
 
-            var otherExtraFile = _otherExtraFileService.GetFilesByMovie(movie.Id).Where(e => e.RelativePath == relativePath).SingleOrDefault();
             if (otherExtraFile != null)
             {
                 _recycleBinProvider.DeleteFile(path);
