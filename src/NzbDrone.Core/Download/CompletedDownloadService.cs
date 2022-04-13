@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            var importResults = _downloadedMovieImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteMovie.Movie, trackedDownload.DownloadItem);
+            var importResults = _downloadedMovieImportService.ProcessPath(outputPath, ImportMode.Auto, trackedDownload.RemoteMovie.Movie, trackedDownload.ImportItem);
 
             if (VerifyImport(trackedDownload, importResults))
             {
