@@ -98,8 +98,9 @@ namespace NzbDrone.Core.Movies
             if (collection.Monitored)
             {
                 var existingMovies = _movieService.AllMovieTmdbIds();
+                var collectionMovies = _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId);
 
-                _addMovieService.AddMovies(collection.Movies.Where(m => !existingMovies.Contains(m.TmdbId)).Select(m => new Movie
+                _addMovieService.AddMovies(collectionMovies.Where(m => !existingMovies.Contains(m.TmdbId)).Select(m => new Movie
                 {
                     TmdbId = m.TmdbId,
                     Title = m.Title,
