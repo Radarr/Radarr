@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Specialized;
-using System.Net;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Http;

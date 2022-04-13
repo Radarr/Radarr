@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Commands;

@@ -1,7 +1,6 @@
 using System;
 using FluentValidation.Results;
 using NLog;
-using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 
 namespace NzbDrone.Core.Notifications.Simplepush

@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Equ;
-using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies.AlternativeTitles;
-using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Translations;
 
 namespace NzbDrone.Core.Movies

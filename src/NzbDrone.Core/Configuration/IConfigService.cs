@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using NzbDrone.Common.Http.Proxy;
-using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MetadataSource.SkyHook.Resource;
 using NzbDrone.Core.Qualities;

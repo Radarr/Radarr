@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using NzbDrone.Common.Messaging;
 using NzbDrone.Core.Movies.Collections;
 

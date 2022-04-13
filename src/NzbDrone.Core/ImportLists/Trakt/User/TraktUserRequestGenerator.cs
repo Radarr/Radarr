@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Common.Http;
 using NzbDrone.Core.Notifications.Trakt;
 
 namespace NzbDrone.Core.ImportLists.Trakt.User
