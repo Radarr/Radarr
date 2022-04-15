@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             WithEnglishRelease();
 
-            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             WithGermanRelease();
 
-            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             WithGermanRelease();
 
-            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             WithFrenchRelease();
 
-            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -100,11 +100,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             WithGermanRelease();
 
-            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
 
             WithEnglishRelease();
 
-            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Mocker.Resolve<LanguageSpecification>().IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
     }
 }

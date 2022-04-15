@@ -26,7 +26,7 @@ class MovieEditorFooter extends Component {
 
     this.state = {
       monitored: NO_CHANGE,
-      qualityProfileId: NO_CHANGE,
+      qualityProfileIds: NO_CHANGE,
       minimumAvailability: NO_CHANGE,
       rootFolderPath: NO_CHANGE,
       savingTags: false,
@@ -46,7 +46,7 @@ class MovieEditorFooter extends Component {
     if (prevProps.isSaving && !isSaving && !saveError) {
       this.setState({
         monitored: NO_CHANGE,
-        qualityProfileId: NO_CHANGE,
+        qualityProfileIds: NO_CHANGE,
         minimumAvailability: NO_CHANGE,
         rootFolderPath: NO_CHANGE,
         savingTags: false
@@ -143,7 +143,7 @@ class MovieEditorFooter extends Component {
 
     const {
       monitored,
-      qualityProfileId,
+      qualityProfileIds,
       minimumAvailability,
       rootFolderPath,
       savingTags,
@@ -178,13 +178,13 @@ class MovieEditorFooter extends Component {
 
         <div className={styles.inputContainer}>
           <MovieEditorFooterLabel
-            label={translate('QualityProfile')}
-            isSaving={isSaving && qualityProfileId !== NO_CHANGE}
+            label={translate('QualityProfiles')}
+            isSaving={isSaving && qualityProfileIds !== NO_CHANGE}
           />
 
           <QualityProfileSelectInputConnector
             name="qualityProfileId"
-            value={qualityProfileId}
+            value={qualityProfileIds}
             includeNoChange={true}
             isDisabled={!selectedCount}
             onChange={this.onInputChange}

@@ -87,7 +87,6 @@ class MovieIndexPoster extends Component {
       youTubeTrailerId,
       title,
       monitored,
-      hasFile,
       isAvailable,
       status,
       titleSlug,
@@ -98,7 +97,7 @@ class MovieIndexPoster extends Component {
       showTitle,
       showMonitored,
       showQualityProfile,
-      qualityProfile,
+      qualityProfileIds,
       showSearchAction,
       showRelativeDates,
       shortDateFormat,
@@ -117,6 +116,7 @@ class MovieIndexPoster extends Component {
       onSelectedChange,
       queueStatus,
       queueState,
+      statistics,
       ...otherProps
     } = this.props;
 
@@ -242,7 +242,7 @@ class MovieIndexPoster extends Component {
 
         <MovieIndexProgressBar
           monitored={monitored}
-          hasFile={hasFile}
+          hasFile={statistics.movieFileCount > 0}
           status={status}
           posterWidth={posterWidth}
           detailedProgressBar={detailedProgressBar}
@@ -265,12 +265,12 @@ class MovieIndexPoster extends Component {
             </div>
         }
 
-        {
+        {/* {
           showQualityProfile &&
             <div className={styles.title}>
               {qualityProfile.name}
             </div>
-        }
+        } */}
 
         {
           showCinemaRelease && inCinemas &&
@@ -324,7 +324,7 @@ class MovieIndexPoster extends Component {
         }
 
         <MovieIndexPosterInfo
-          qualityProfile={qualityProfile}
+          qualityProfileIds={qualityProfileIds}
           showQualityProfile={showQualityProfile}
           showReleaseDate={showReleaseDate}
           showRelativeDates={showRelativeDates}
@@ -357,7 +357,6 @@ MovieIndexPoster.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
-  hasFile: PropTypes.bool.isRequired,
   isAvailable: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   titleSlug: PropTypes.string.isRequired,
@@ -368,7 +367,7 @@ MovieIndexPoster.propTypes = {
   showTitle: PropTypes.bool.isRequired,
   showMonitored: PropTypes.bool.isRequired,
   showQualityProfile: PropTypes.bool.isRequired,
-  qualityProfile: PropTypes.object.isRequired,
+  qualityProfileIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   showSearchAction: PropTypes.bool.isRequired,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
@@ -389,7 +388,8 @@ MovieIndexPoster.propTypes = {
   imdbId: PropTypes.string,
   youTubeTrailerId: PropTypes.string,
   queueStatus: PropTypes.string,
-  queueState: PropTypes.string
+  queueState: PropTypes.string,
+  statistics: PropTypes.object
 };
 
 MovieIndexPoster.defaultProps = {

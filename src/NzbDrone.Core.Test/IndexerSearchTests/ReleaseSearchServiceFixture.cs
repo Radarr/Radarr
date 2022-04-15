@@ -38,6 +38,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             _movie = Builder<Movie>.CreateNew()
                 .With(v => v.Monitored = true)
+                .With(v => v.QualityProfileIds = new List<int> { 1 })
                 .Build();
 
             Mocker.GetMock<IMovieService>()
@@ -88,6 +89,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             _movie = Builder<Movie>.CreateNew()
                 .With(v => v.Monitored = true)
+                .With(v => v.QualityProfileIds = new List<int> { 1 })
                 .With(v => v.Tags = new HashSet<int> { 3 })
                 .Build();
 
@@ -115,6 +117,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             _movie = Builder<Movie>.CreateNew()
                 .With(v => v.Monitored = true)
+                .With(v => v.QualityProfileIds = new List<int> { 1 })
                 .With(v => v.Tags = new HashSet<int> { 3, 4, 5 })
                 .Build();
 
@@ -142,6 +145,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
 
             _movie = Builder<Movie>.CreateNew()
                 .With(v => v.Monitored = true)
+                .With(v => v.QualityProfileIds = new List<int> { 1 })
                 .With(v => v.Tags = new HashSet<int> { 4, 5, 6 })
                 .Build();
 

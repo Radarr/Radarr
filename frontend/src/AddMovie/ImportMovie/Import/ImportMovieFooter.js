@@ -25,13 +25,13 @@ class ImportMovieFooter extends Component {
 
     const {
       defaultMonitor,
-      defaultQualityProfileId,
+      defaultQualityProfileIds,
       defaultMinimumAvailability
     } = props;
 
     this.state = {
       monitor: defaultMonitor,
-      qualityProfileId: defaultQualityProfileId,
+      qualityProfileIds: defaultQualityProfileIds,
       minimumAvailability: defaultMinimumAvailability
     };
   }
@@ -39,16 +39,16 @@ class ImportMovieFooter extends Component {
   componentDidUpdate(prevProps, prevState) {
     const {
       defaultMonitor,
-      defaultQualityProfileId,
+      defaultQualityProfileIds,
       defaultMinimumAvailability,
       isMonitorMixed,
-      isQualityProfileIdMixed,
+      isQualityProfileIdsMixed,
       isMinimumAvailabilityMixed
     } = this.props;
 
     const {
       monitor,
-      qualityProfileId,
+      qualityProfileIds,
       minimumAvailability
     } = this.state;
 
@@ -60,10 +60,10 @@ class ImportMovieFooter extends Component {
       newState.monitor = defaultMonitor;
     }
 
-    if (isQualityProfileIdMixed && qualityProfileId !== MIXED) {
-      newState.qualityProfileId = MIXED;
-    } else if (!isQualityProfileIdMixed && qualityProfileId !== defaultQualityProfileId) {
-      newState.qualityProfileId = defaultQualityProfileId;
+    if (isQualityProfileIdsMixed && qualityProfileIds !== MIXED) {
+      newState.qualityProfileIds = MIXED;
+    } else if (!isQualityProfileIdsMixed && qualityProfileIds !== defaultQualityProfileIds) {
+      newState.qualityProfileIds = defaultQualityProfileIds;
     }
 
     if (isMinimumAvailabilityMixed && minimumAvailability !== MIXED) {
@@ -94,7 +94,7 @@ class ImportMovieFooter extends Component {
       isImporting,
       isLookingUpMovie,
       isMonitorMixed,
-      isQualityProfileIdMixed,
+      isQualityProfileIdsMixed,
       isMinimumAvailabilityMixed,
       hasUnsearchedItems,
       importError,
@@ -105,7 +105,7 @@ class ImportMovieFooter extends Component {
 
     const {
       monitor,
-      qualityProfileId,
+      qualityProfileIds,
       minimumAvailability
     } = this.state;
 
@@ -148,10 +148,10 @@ class ImportMovieFooter extends Component {
 
           <FormInputGroup
             type={inputTypes.QUALITY_PROFILE_SELECT}
-            name="qualityProfileId"
-            value={qualityProfileId}
+            name="qualityProfileIds"
+            value={qualityProfileIds}
             isDisabled={!selectedCount}
-            includeMixed={isQualityProfileIdMixed}
+            includeMixed={isQualityProfileIdsMixed}
             onChange={this.onInputChange}
           />
         </div>
@@ -251,10 +251,10 @@ ImportMovieFooter.propTypes = {
   isImporting: PropTypes.bool.isRequired,
   isLookingUpMovie: PropTypes.bool.isRequired,
   defaultMonitor: PropTypes.string.isRequired,
-  defaultQualityProfileId: PropTypes.number,
+  defaultQualityProfileIds: PropTypes.arrayOf(PropTypes.number),
   defaultMinimumAvailability: PropTypes.string,
   isMonitorMixed: PropTypes.bool.isRequired,
-  isQualityProfileIdMixed: PropTypes.bool.isRequired,
+  isQualityProfileIdsMixed: PropTypes.bool.isRequired,
   isMinimumAvailabilityMixed: PropTypes.bool.isRequired,
   hasUnsearchedItems: PropTypes.bool.isRequired,
   importError: PropTypes.object,

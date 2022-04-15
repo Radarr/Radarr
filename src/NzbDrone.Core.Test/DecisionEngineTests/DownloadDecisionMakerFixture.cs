@@ -9,6 +9,7 @@ using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Test.Framework;
 using NzbDrone.Test.Common;
 
@@ -42,18 +43,24 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _fail2 = new Mock<IDecisionEngineSpecification>();
             _fail3 = new Mock<IDecisionEngineSpecification>();
 
-            _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Accept);
-            _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Accept);
-            _pass3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Accept);
+            _pass1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(new List<Decision> { Decision.Accept() });
+            _pass2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(new List<Decision> { Decision.Accept() });
+            _pass3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(new List<Decision> { Decision.Accept() });
 
-            _fail1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Reject("fail1"));
-            _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Reject("fail2"));
-            _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(Decision.Reject("fail3"));
+            _fail1.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(new List<Decision> { Decision.Reject("fail1") });
+            _fail2.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(new List<Decision> { Decision.Reject("fail2") });
+            _fail3.Setup(c => c.IsSatisfiedBy(It.IsAny<RemoteMovie>(), null)).Returns(new List<Decision> { Decision.Reject("fail3") });
 
             _reports = new List<ReleaseInfo> { new ReleaseInfo { Title = "Trolls.2016.720p.WEB-DL.DD5.1.H264-FGT" } };
             _remoteEpisode = new RemoteMovie
             {
-                Movie = new Movie(),
+                Movie = new Movie
+                {
+                    QualityProfiles = new List<Profile>
+                    {
+                        new Profile()
+                    }
+                },
                 ParsedMovieInfo = new ParsedMovieInfo()
             };
 

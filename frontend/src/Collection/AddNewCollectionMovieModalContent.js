@@ -46,7 +46,7 @@ class AddNewCollectionMovieModalContent extends Component {
       onInputChange,
       rootFolderPath,
       monitor,
-      qualityProfileId,
+      qualityProfileIds,
       minimumAvailability,
       searchForMovie
     } = this.props;
@@ -126,13 +126,13 @@ class AddNewCollectionMovieModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>{translate('QualityProfile')}</FormLabel>
+                  <FormLabel>{translate('QualityProfiles')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.QUALITY_PROFILE_SELECT}
-                    name="qualityProfileId"
+                    name="qualityProfileIds"
                     onChange={this.onQualityProfileIdChange}
-                    {...qualityProfileId}
+                    {...qualityProfileIds}
                   />
                 </FormGroup>
 
@@ -189,7 +189,7 @@ AddNewCollectionMovieModalContent.propTypes = {
   addError: PropTypes.object,
   rootFolderPath: PropTypes.object,
   monitor: PropTypes.object.isRequired,
-  qualityProfileId: PropTypes.object,
+  qualityProfileIds: PropTypes.object,
   minimumAvailability: PropTypes.object.isRequired,
   searchForMovie: PropTypes.object.isRequired,
   folder: PropTypes.string.isRequired,

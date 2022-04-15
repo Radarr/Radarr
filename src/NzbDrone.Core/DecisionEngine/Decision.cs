@@ -1,9 +1,10 @@
-﻿namespace NzbDrone.Core.DecisionEngine
+namespace NzbDrone.Core.DecisionEngine
 {
     public class Decision
     {
         public bool Accepted { get; private set; }
         public string Reason { get; private set; }
+        public int ProfileId { get; private set; }
 
         private static readonly Decision AcceptDecision = new Decision { Accepted = true };
         private Decision()
@@ -15,17 +16,13 @@
             return AcceptDecision;
         }
 
-        public static Decision Reject(string reason, params object[] args)
-        {
-            return Reject(string.Format(reason, args));
-        }
-
-        public static Decision Reject(string reason)
+        public static Decision Reject(string reason, int profileId = 0)
         {
             return new Decision
             {
                 Accepted = false,
-                Reason = reason
+                Reason = reason,
+                ProfileId = profileId
             };
         }
     }

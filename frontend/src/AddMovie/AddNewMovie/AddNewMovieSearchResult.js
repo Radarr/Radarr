@@ -72,14 +72,18 @@ class AddNewMovieSearchResult extends Component {
       colorImpairedMode,
       id,
       monitored,
-      hasFile,
       isAvailable,
       queueStatus,
       queueState,
       runtime,
       movieRuntimeFormat,
-      certification
+      certification,
+      statistics
     } = this.props;
+
+    const {
+      movieFileCount
+    } = statistics;
 
     const {
       isNewAddMovieModalOpen
@@ -120,7 +124,7 @@ class AddNewMovieSearchResult extends Component {
                   isExistingMovie &&
                     <MovieIndexProgressBar
                       monitored={monitored}
-                      hasFile={hasFile}
+                      hasFile={movieFileCount > 0}
                       status={status}
                       posterWidth={posterWidth}
                       detailedProgressBar={true}
@@ -233,7 +237,7 @@ class AddNewMovieSearchResult extends Component {
               {
                 isExistingMovie && isSmallScreen &&
                   <MovieStatusLabel
-                    hasMovieFiles={hasFile}
+                    hasMovieFiles={movieFileCount > 0}
                     monitored={monitored}
                     isAvailable={isAvailable}
                     id={id}
@@ -290,7 +294,14 @@ AddNewMovieSearchResult.propTypes = {
   queueState: PropTypes.string,
   runtime: PropTypes.number.isRequired,
   movieRuntimeFormat: PropTypes.string.isRequired,
-  certification: PropTypes.string
+  certification: PropTypes.string,
+  statistics: PropTypes.object
+};
+
+AddNewMovieSearchResult.defaultProps = {
+  statistics: {
+    movieFileCount: 0
+  }
 };
 
 export default AddNewMovieSearchResult;

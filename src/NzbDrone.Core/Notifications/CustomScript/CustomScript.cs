@@ -195,9 +195,9 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.MovieMetadata.Value.TmdbId.ToString());
             environmentVariables.Add("Radarr_Movie_DeletedFiles", deleteMessage.DeletedFiles.ToString());
 
-            if (deleteMessage.DeletedFiles && movie.MovieFile != null)
+            if (deleteMessage.DeletedFiles && movie.MovieFiles != null)
             {
-                environmentVariables.Add("Radarr_Movie_Folder_Size", movie.MovieFile.Size.ToString());
+                environmentVariables.Add("Radarr_Movie_Folder_Size", movie.MovieFiles.Value.Select(f => f.Size).Sum().ToString());
             }
 
             ExecuteScript(environmentVariables);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
@@ -16,7 +17,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.Search
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        private Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria == null)
             {

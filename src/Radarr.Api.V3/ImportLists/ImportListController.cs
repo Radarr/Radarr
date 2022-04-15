@@ -17,8 +17,8 @@ namespace Radarr.Api.V3.ImportLists
         {
             SharedValidator.RuleFor(c => c.RootFolderPath).IsValidPath();
             SharedValidator.RuleFor(c => c.MinimumAvailability).NotNull();
-            SharedValidator.RuleFor(c => c.QualityProfileId).ValidId();
-            SharedValidator.RuleFor(c => c.QualityProfileId).SetValidator(profileExistsValidator);
+            SharedValidator.RuleForEach(c => c.QualityProfileIds).ValidId();
+            SharedValidator.RuleForEach(c => c.QualityProfileIds).SetValidator(profileExistsValidator);
         }
     }
 }

@@ -36,11 +36,6 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Returns(movieFiles.ToList());
         }
 
-        private void GivenFilesAreNotAttachedToEpisode()
-        {
-            _movie.MovieFileId = 0;
-        }
-
         private List<string> FilesOnDisk(IEnumerable<MovieFile> movieFiles)
         {
             return movieFiles.Select(e => Path.Combine(_movie.Path, e.RelativePath)).ToList();
@@ -84,22 +79,10 @@ namespace NzbDrone.Core.Test.MediaFiles
                                 .Build();
 
             GivenMovieFiles(movieFiles);
-            GivenFilesAreNotAttachedToEpisode();
 
             Subject.Clean(_movie, FilesOnDisk(movieFiles));
 
             Mocker.GetMock<IMediaFileService>().Verify(c => c.Delete(It.IsAny<MovieFile>(), DeleteMediaFileReason.NoLinkedEpisodes), Times.Exactly(10));
-        }
-
-        [Test]
-        [Ignore("Idc")]
-        public void should_unlink_episode_when_episodeFile_does_not_exist()
-        {
-            GivenMovieFiles(new List<MovieFile>());
-
-            Subject.Clean(_movie, new List<string>());
-
-            Mocker.GetMock<IMovieService>().Verify(c => c.UpdateMovie(It.Is<Movie>(e => e.MovieFileId == 0)), Times.Exactly(10));
         }
 
         [Test]

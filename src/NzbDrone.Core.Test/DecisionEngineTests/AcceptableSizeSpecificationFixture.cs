@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie.Movie = _movie;
             _remoteMovie.Release.Size = sizeInMegaBytes.Megabytes();
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().Be(expectedResult);
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted == expectedResult);
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _qualityType.MinSize = 10;
             _qualityType.MaxSize = 20;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie.Release.Size = 18457280000;
             _qualityType.MaxSize = null;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie.Release.Size = 36857280000;
             _qualityType.MaxSize = null;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -101,9 +101,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie.Movie = _movie;
             _remoteMovie.Release.Size = 1095.Megabytes();
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().Be(true);
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
             _remoteMovie.Release.Size = 1105.Megabytes();
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().Be(false);
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
             ExceptionVerification.ExpectedWarns(1);
         }
     }

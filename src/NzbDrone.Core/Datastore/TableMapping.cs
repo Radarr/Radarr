@@ -115,7 +115,9 @@ namespace NzbDrone.Core.Datastore
                   .Ignore(s => s.Year)
                   .Ignore(s => s.TmdbId)
                   .Ignore(s => s.ImdbId)
-                  .HasOne(a => a.MovieMetadata, a => a.MovieMetadataId);
+                  .HasOne(a => a.MovieMetadata, a => a.MovieMetadataId)
+                  .LazyLoad(a => a.QualityProfiles, (db, a) => db.Query<Profile>(new SqlBuilder(db.DatabaseType).Where<Profile>(b => a.QualityProfileIds.Contains(b.Id))).ToList(), a => a.QualityProfileIds.Count > 0)
+                  .LazyLoad(a => a.MovieFiles, (db, a) => db.Query<MovieFile>(new SqlBuilder(db.DatabaseType).Where<MovieFile>(b => b.MovieId == a.Id)).ToList(), b => b.Id > 0);
 
             Mapper.Entity<ImportListMovie>("ImportListMovies").RegisterModel()
                   .Ignore(s => s.Title)

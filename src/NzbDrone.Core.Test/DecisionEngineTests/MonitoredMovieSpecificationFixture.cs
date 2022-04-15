@@ -56,29 +56,29 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void setup_should_return_monitored_episode_should_return_true()
         {
-            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
-            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeTrue();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => x.Accepted);
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void not_monitored_series_should_be_skipped()
         {
             _fakeSeries.Monitored = false;
-            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Accepted.Should().BeFalse();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultMulti, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
         public void only_episode_not_monitored_should_return_false()
         {
             WithMovieUnmonitored();
-            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
         public void should_return_true_for_single_episode_search()
         {
             _fakeSeries.Monitored = false;
-            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, new MovieSearchCriteria { UserInvokedSearch = true }).Accepted.Should().BeTrue();
+            _monitoredEpisodeSpecification.IsSatisfiedBy(_parseResultSingle, new MovieSearchCriteria { UserInvokedSearch = true }).Should().OnlyContain(x => x.Accepted);
         }
     }
 }

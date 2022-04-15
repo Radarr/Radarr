@@ -9,6 +9,7 @@ namespace NzbDrone.Core.Movies.Collections
         public MovieCollection()
         {
             Images = new List<MediaCover.MediaCover>();
+            QualityProfileIds = new List<int>();
         }
 
         public string Title { get; set; }
@@ -17,7 +18,7 @@ namespace NzbDrone.Core.Movies.Collections
         public int TmdbId { get; set; }
         public string Overview { get; set; }
         public bool Monitored { get; set; }
-        public int QualityProfileId { get; set; }
+        public List<int> QualityProfileIds { get; set; }
         public string RootFolderPath { get; set; }
         public bool SearchOnAdd { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
@@ -32,7 +33,7 @@ namespace NzbDrone.Core.Movies.Collections
 
             Monitored = otherCollection.Monitored;
             SearchOnAdd = otherCollection.SearchOnAdd;
-            QualityProfileId = otherCollection.QualityProfileId;
+            QualityProfileIds = otherCollection.QualityProfileIds;
             MinimumAvailability = otherCollection.MinimumAvailability;
             RootFolderPath = otherCollection.RootFolderPath;
         }

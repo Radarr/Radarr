@@ -51,7 +51,6 @@ namespace NzbDrone.Core.Extras.Subtitles
                     var subtitleFile = new SubtitleFile
                     {
                         MovieId = movie.Id,
-                        MovieFileId = movie.MovieFileId,
                         RelativePath = movie.Path.GetRelativePath(possibleSubtitleFile),
                         Language = LanguageParser.ParseSubtitleLanguage(possibleSubtitleFile),
                         Extension = extension

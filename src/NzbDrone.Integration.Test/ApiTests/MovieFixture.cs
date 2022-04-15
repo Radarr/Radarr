@@ -132,16 +132,17 @@ namespace NzbDrone.Integration.Test.ApiTests
             var movie = EnsureMovie(680, "Pulp Fiction");
 
             var profileId = 1;
-            if (movie.QualityProfileId == profileId)
+
+            if (movie.QualityProfileIds.First() == profileId)
             {
                 profileId = 2;
             }
 
-            movie.QualityProfileId = profileId;
+            movie.QualityProfileIds = new List<int> { profileId };
 
             var result = Movies.Put(movie);
 
-            Movies.Get(movie.Id).QualityProfileId.Should().Be(profileId);
+            Movies.Get(movie.Id).QualityProfileIds.Should().Contain(profileId);
         }
 
         [Test]

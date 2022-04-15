@@ -37,9 +37,9 @@ namespace Radarr.Api.V3.Movies
                     movie.Monitored = resource.Monitored.Value;
                 }
 
-                if (resource.QualityProfileId.HasValue)
+                if (resource.QualityProfileIds != null)
                 {
-                    movie.ProfileId = resource.QualityProfileId.Value;
+                    movie.QualityProfileIds = resource.QualityProfileIds;
                 }
 
                 if (resource.MinimumAvailability.HasValue)

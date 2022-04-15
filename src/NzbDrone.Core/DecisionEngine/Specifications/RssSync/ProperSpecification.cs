@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -23,7 +24,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public virtual IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        private Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria != null)
             {
@@ -38,25 +44,29 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            if (subject.Movie.MovieFile == null)
+            if (subject.Movie.MovieFiles.Value.Count == 0)
             {
                 return Decision.Accept();
             }
 
-            var file = subject.Movie.MovieFile;
+            var files = subject.Movie.MovieFiles.Value;
 
-            if (_qualityUpgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedMovieInfo.Quality))
+            foreach (var file in files)
             {
-                if (downloadPropersAndRepacks == ProperDownloadTypes.DoNotUpgrade)
+                // TODO Look at this to ensure it doesn't throw out early
+                if (_qualityUpgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedMovieInfo.Quality))
                 {
-                    _logger.Debug("Auto downloading of propers is disabled");
-                    return Decision.Reject("Proper downloading is disabled");
-                }
+                    if (downloadPropersAndRepacks == ProperDownloadTypes.DoNotUpgrade)
+                    {
+                        _logger.Debug("Auto downloading of propers is disabled");
+                        return Decision.Reject("Proper downloading is disabled");
+                    }
 
-                if (file.DateAdded < DateTime.Today.AddDays(-7))
-                {
-                    _logger.Debug("Proper for old file, rejecting: {0}", subject);
-                    return Decision.Reject("Proper for old file");
+                    if (file.DateAdded < DateTime.Today.AddDays(-7))
+                    {
+                        _logger.Debug("Proper for old file, rejecting: {0}", subject);
+                        return Decision.Reject("Proper for old file");
+                    }
                 }
             }
 

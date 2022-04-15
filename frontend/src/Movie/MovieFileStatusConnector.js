@@ -16,7 +16,7 @@ function createMapStateToProps() {
         isAvailable: movie.isAvailable,
         monitored: movie.monitored,
         grabbed: movie.grabbed,
-        movieFile: movie.movieFile,
+        statistics: movie.statistics,
         colorImpairedMode: uiSettings.enableColorImpairedMode
       };
     }

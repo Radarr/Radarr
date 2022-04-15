@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -20,7 +21,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Temporary;
 
-        public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public virtual IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        private Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             if (subject.Release.DownloadProtocol != Indexers.DownloadProtocol.Usenet)
             {
@@ -43,7 +49,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             if (age < minimumAge)
             {
                 _logger.Debug("Only {0} minutes old, minimum age is {1} minutes", ageRounded, minimumAge);
-                return Decision.Reject("Only {0} minutes old, minimum age is {1} minutes", ageRounded, minimumAge);
+                return Decision.Reject(string.Format("Only {0} minutes old, minimum age is {1} minutes", ageRounded, minimumAge));
             }
 
             _logger.Debug("Release is {0} minutes old, greater than minimum age of {1} minutes", ageRounded, minimumAge);

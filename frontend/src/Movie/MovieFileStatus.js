@@ -9,13 +9,17 @@ function MovieFileStatus(props) {
   const {
     isAvailable,
     monitored,
-    movieFile,
     queueStatus,
     queueState,
+    statistics,
     colorImpairedMode
   } = props;
 
-  const hasMovieFile = !!movieFile;
+  const {
+    movieFileCount
+  } = statistics;
+
+  const hasMovieFile = movieFileCount > 0;
   const hasReleased = isAvailable;
 
   if (queueStatus) {
@@ -30,12 +34,10 @@ function MovieFileStatus(props) {
   }
 
   if (hasMovieFile) {
-    const quality = movieFile.quality;
-
     return (
       <div className={styles.center}>
         <span className={styles.ended} />
-        {quality.quality.name}
+        Downloaded
       </div>
     );
   }
@@ -79,10 +81,16 @@ function MovieFileStatus(props) {
 MovieFileStatus.propTypes = {
   isAvailable: PropTypes.bool,
   monitored: PropTypes.bool.isRequired,
-  movieFile: PropTypes.object,
+  statistics: PropTypes.object,
   queueStatus: PropTypes.string,
   queueState: PropTypes.string,
   colorImpairedMode: PropTypes.bool.isRequired
+};
+
+MovieFileStatus.defaultProps = {
+  statistics: {
+    movieFileCount: 0
+  }
 };
 
 export default MovieFileStatus;

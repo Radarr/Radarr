@@ -20,10 +20,6 @@ class AddNewMovieModalContent extends Component {
   //
   // Listeners
 
-  onQualityProfileIdChange = ({ value }) => {
-    this.props.onInputChange({ name: 'qualityProfileId', value: parseInt(value) });
-  };
-
   onAddMoviePress = () => {
     this.props.onAddMoviePress();
   };
@@ -40,7 +36,7 @@ class AddNewMovieModalContent extends Component {
       isAdding,
       rootFolderPath,
       monitor,
-      qualityProfileId,
+      qualityProfileIds,
       minimumAvailability,
       searchForMovie,
       folder,
@@ -130,9 +126,9 @@ class AddNewMovieModalContent extends Component {
 
                   <FormInputGroup
                     type={inputTypes.QUALITY_PROFILE_SELECT}
-                    name="qualityProfileId"
-                    onChange={this.onQualityProfileIdChange}
-                    {...qualityProfileId}
+                    name="qualityProfileIds"
+                    onChange={onInputChange}
+                    {...qualityProfileIds}
                   />
                 </FormGroup>
 
@@ -189,7 +185,7 @@ AddNewMovieModalContent.propTypes = {
   addError: PropTypes.object,
   rootFolderPath: PropTypes.object,
   monitor: PropTypes.object.isRequired,
-  qualityProfileId: PropTypes.object,
+  qualityProfileIds: PropTypes.arrayOf(PropTypes.object),
   minimumAvailability: PropTypes.object.isRequired,
   searchForMovie: PropTypes.object.isRequired,
   folder: PropTypes.string.isRequired,

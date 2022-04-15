@@ -34,7 +34,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
                     Name = "IMDb List",
                     Enabled = Enabled,
                     EnableAuto = true,
-                    ProfileId = 1,
+                    QualityProfileIds = new List<int> { 1 },
                     Implementation = GetType().Name,
                     Settings = new RSSImportSettings { Link = "https://rss.imdb.com/list/YOURLISTID" },
                 };
@@ -43,7 +43,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
                     Name = "IMDb Watchlist",
                     Enabled = Enabled,
                     EnableAuto = true,
-                    ProfileId = 1,
+                    QualityProfileIds = new List<int> { 1 },
                     Implementation = GetType().Name,
                     Settings = new RSSImportSettings { Link = "https://rss.imdb.com/user/IMDBUSERID/watchlist" },
                 };

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -42,7 +43,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                     FormatItems = CustomFormatsFixture.GetSampleFormatItems(),
                     MinFormatScore = 0
                 })
-                .With(e => e.MovieFile = _firstFile)
+                .With(e => e.MovieFiles = new List<MovieFile> { _firstFile })
                 .Build();
 
             _parseResultSingle = new RemoteMovie
@@ -65,15 +66,15 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_movie_has_no_existing_file()
         {
-            _parseResultSingle.Movie.MovieFile = null;
-            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            _parseResultSingle.Movie.MovieFiles = new List<MovieFile>();
+            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_be_upgradable_if_only_movie_is_upgradable()
         {
             WithFirstFileUpgradable();
-            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -85,7 +86,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             _firstFile.Quality = new QualityModel(Quality.WEBDL1080p);
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p);
-            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _firstFile.Quality = new QualityModel(Quality.WEBDL1080p, new Revision(2));
             _parseResultSingle.ParsedMovieInfo.Quality = new QualityModel(Quality.WEBDL1080p);
-            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            _upgradeDisk.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => !x.Accepted);
         }
     }
 }

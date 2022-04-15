@@ -39,7 +39,7 @@ function createMapStateToProps() {
 
       const movieSettings = {
         monitored: collection.monitored,
-        qualityProfileId: collection.qualityProfileId,
+        qualityProfileIds: collection.qualityProfileIds,
         minimumAvailability: collection.minimumAvailability,
         rootFolderPath: collection.rootFolderPath,
         searchOnAdd: collection.searchOnAdd

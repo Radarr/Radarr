@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.CustomFormats;
@@ -24,37 +25,47 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public virtual IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
-            var qualityProfile = subject.Movie.Profile;
+            var files = subject.Movie.MovieFiles.Value;
 
-            if (subject.Movie.MovieFileId != 0)
+            foreach (var file in files)
             {
-                var file = subject.Movie.MovieFile;
-
                 if (file == null)
                 {
                     _logger.Debug("File is no longer available, skipping this file.");
-                    return Decision.Accept();
+                    continue;
                 }
 
                 file.Movie = subject.Movie;
                 var customFormats = _formatService.ParseCustomFormat(file);
-                _logger.Debug("Comparing file quality with report. Existing file is {0} [{1}]", file.Quality, customFormats.ConcatToString());
 
-                if (!_upgradableSpecification.IsUpgradeAllowed(qualityProfile,
-                                                               file.Quality,
-                                                               customFormats,
-                                                               subject.ParsedMovieInfo.Quality,
-                                                               subject.CustomFormats))
+                foreach (var qualityProfile in subject.Movie.QualityProfiles.Value)
                 {
-                    _logger.Debug("Upgrading is not allowed by the quality profile");
+                    // Check to see if the existing file is valid for this profile. if not, don't count against this release
+                    var qualityIndex = qualityProfile.GetIndex(file.Quality.Quality);
+                    var qualityOrGroup = qualityProfile.Items[qualityIndex.Index];
 
-                    return Decision.Reject("Existing file and the Quality profile does not allow upgrades");
+                    if (!qualityOrGroup.Allowed)
+                    {
+                        continue;
+                    }
+
+                    _logger.Debug("Comparing file quality with report. Existing file is {0} [{1}]", file.Quality, customFormats.ConcatToString());
+
+                    if (!_upgradableSpecification.IsUpgradeAllowed(qualityProfile,
+                                                                   file.Quality,
+                                                                   customFormats,
+                                                                   subject.ParsedMovieInfo.Quality,
+                                                                   subject.CustomFormats))
+                    {
+                        _logger.Debug("Upgrading is not allowed by the quality profile");
+
+                        yield return Decision.Reject("Existing file and the Quality profile does not allow upgrades", qualityProfile.Id);
+                        break;
+                    }
                 }
             }
-
-            return Decision.Accept();
         }
     }
 }

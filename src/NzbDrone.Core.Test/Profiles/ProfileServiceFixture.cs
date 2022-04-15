@@ -54,12 +54,12 @@ namespace NzbDrone.Core.Test.Profiles
         {
             var movieList = Builder<Movie>.CreateListOfSize(3)
                                             .Random(1)
-                                            .With(c => c.ProfileId = 2)
+                                            .With(c => c.QualityProfileIds = new List<int> { 2 })
                                             .Build().ToList();
 
             var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                                                             .All()
-                                                            .With(c => c.ProfileId = 1)
+                                                            .With(c => c.QualityProfileIds = new List<int> { 1 })
                                                             .Build().ToList();
 
             Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);
@@ -75,12 +75,12 @@ namespace NzbDrone.Core.Test.Profiles
         {
             var movieList = Builder<Movie>.CreateListOfSize(3)
                 .All()
-                .With(c => c.ProfileId = 1)
+                .With(c => c.QualityProfileIds = new List<int> { 1 })
                 .Build().ToList();
 
             var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                 .Random(1)
-                .With(c => c.ProfileId = 2)
+                .With(c => c.QualityProfileIds = new List<int> { 2 })
                 .Build().ToList();
 
             Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);
@@ -96,17 +96,17 @@ namespace NzbDrone.Core.Test.Profiles
         {
             var movieList = Builder<Movie>.CreateListOfSize(3)
                 .All()
-                .With(c => c.ProfileId = 1)
+                .With(c => c.QualityProfileIds = new List<int> { 1 })
                 .Build().ToList();
 
             var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                 .Random(1)
-                .With(c => c.ProfileId = 1)
+                .With(c => c.QualityProfileIds = new List<int> { 1 })
                 .Build().ToList();
 
             var collectionList = Builder<MovieCollection>.CreateListOfSize(3)
                                                 .All()
-                                                .With(c => c.QualityProfileId = 2)
+                                                .With(c => c.QualityProfileIds = new List<int> { 2 })
                                                 .Build().ToList();
 
             Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);
@@ -123,17 +123,17 @@ namespace NzbDrone.Core.Test.Profiles
         {
             var movieList = Builder<Movie>.CreateListOfSize(3)
                                             .All()
-                                            .With(c => c.ProfileId = 2)
+                                            .With(c => c.QualityProfileIds = new List<int> { 2 })
                                             .Build().ToList();
 
             var importList = Builder<ImportListDefinition>.CreateListOfSize(3)
                                                             .All()
-                                                            .With(c => c.ProfileId = 2)
+                                                            .With(c => c.QualityProfileIds = new List<int> { 2 })
                                                             .Build().ToList();
 
             var collectionList = Builder<MovieCollection>.CreateListOfSize(3)
                                                             .All()
-                                                            .With(c => c.QualityProfileId = 2)
+                                                            .With(c => c.QualityProfileIds = new List<int> { 2 })
                                                             .Build().ToList();
 
             Mocker.GetMock<IMovieService>().Setup(c => c.GetAllMovies()).Returns(movieList);

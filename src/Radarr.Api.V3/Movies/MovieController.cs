@@ -20,6 +20,7 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.MovieStats;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
@@ -41,6 +42,7 @@ namespace Radarr.Api.V3.Movies
                                 IHandle<MediaCoversUpdatedEvent>
     {
         private readonly IMovieService _moviesService;
+        private readonly IMovieStatisticsService _movieStatisticsService;
         private readonly IMovieTranslationService _movieTranslationService;
         private readonly IAddMovieService _addMovieService;
         private readonly IMapCoversToLocal _coverMapper;
@@ -51,6 +53,7 @@ namespace Radarr.Api.V3.Movies
 
         public MovieController(IBroadcastSignalRMessage signalRBroadcaster,
                            IMovieService moviesService,
+                           IMovieStatisticsService movieStatisticsService,
                            IMovieTranslationService movieTranslationService,
                            IAddMovieService addMovieService,
                            IMapCoversToLocal coverMapper,
@@ -70,6 +73,7 @@ namespace Radarr.Api.V3.Movies
             : base(signalRBroadcaster)
         {
             _moviesService = moviesService;
+            _movieStatisticsService = movieStatisticsService;
             _movieTranslationService = movieTranslationService;
             _addMovieService = addMovieService;
             _qualityUpgradableSpecification = qualityUpgradableSpecification;
@@ -78,7 +82,7 @@ namespace Radarr.Api.V3.Movies
             _commandQueueManager = commandQueueManager;
             _logger = logger;
 
-            SharedValidator.RuleFor(s => s.QualityProfileId).ValidId();
+            SharedValidator.RuleFor(s => s.QualityProfileId).ValidId().When(s => s.QualityProfileIds == null || s.QualityProfileIds.Empty());
 
             SharedValidator.RuleFor(s => s.Path)
                            .Cascade(CascadeMode.StopOnFirstFailure)
@@ -91,7 +95,8 @@ namespace Radarr.Api.V3.Movies
                            .SetValidator(systemFolderValidator)
                            .When(s => !s.Path.IsNullOrWhiteSpace());
 
-            SharedValidator.RuleFor(s => s.QualityProfileId).SetValidator(profileExistsValidator);
+            SharedValidator.RuleFor(s => s.QualityProfileIds).NotNull().When(s => s.QualityProfileId == 0);
+            SharedValidator.RuleForEach(s => s.QualityProfileIds).SetValidator(profileExistsValidator);
 
             PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.RootFolderPath)
@@ -124,6 +129,7 @@ namespace Radarr.Api.V3.Movies
             {
                 var configLanguage = (Language)_configService.MovieInfoLanguage;
                 var availDelay = _configService.AvailabilityDelay;
+                var movieStats = _movieStatisticsService.MovieStatistics();
 
                 var movieTask = Task.Run(() => _moviesService.GetAllMovies());
 
@@ -145,6 +151,7 @@ namespace Radarr.Api.V3.Movies
                 }
 
                 MapCoversToLocal(moviesResources, coverFileInfos);
+                LinkMovieStatistics(moviesResources, movieStats);
             }
 
             return moviesResources;
@@ -153,6 +160,7 @@ namespace Radarr.Api.V3.Movies
         protected override MovieResource GetResourceById(int id)
         {
             var movie = _moviesService.GetMovie(id);
+
             return MapToResource(movie);
         }
 
@@ -170,6 +178,7 @@ namespace Radarr.Api.V3.Movies
 
             var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
             MapCoversToLocal(resource);
+            FetchAndLinkMovieStatistics(resource);
 
             return resource;
         }
@@ -201,6 +210,30 @@ namespace Radarr.Api.V3.Movies
 
             translations.TryGetValue(movie.Id, out var translation);
             return translation;
+        }
+
+        private void FetchAndLinkMovieStatistics(MovieResource resource)
+        {
+            LinkMovieStatistics(resource, _movieStatisticsService.MovieStatistics(resource.Id));
+        }
+
+        private void LinkMovieStatistics(List<MovieResource> resources, List<MovieStatistics> seriesStatistics)
+        {
+            foreach (var series in resources)
+            {
+                var stats = seriesStatistics.SingleOrDefault(ss => ss.MovieId == series.Id);
+                if (stats == null)
+                {
+                    continue;
+                }
+
+                LinkMovieStatistics(series, stats);
+            }
+        }
+
+        private void LinkMovieStatistics(MovieResource resource, MovieStatistics seriesStatistics)
+        {
+            resource.Statistics = seriesStatistics.ToResource();
         }
 
         [RestPostById]

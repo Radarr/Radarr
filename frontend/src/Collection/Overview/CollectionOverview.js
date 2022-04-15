@@ -96,7 +96,7 @@ class CollectionOverview extends Component {
   render() {
     const {
       monitored,
-      qualityProfileId,
+      qualityProfileIds,
       rootFolderPath,
       genres,
       id,
@@ -212,7 +212,7 @@ class CollectionOverview extends Component {
                         <span className={styles.qualityProfileName}>
                           {
                             <QualityProfileNameConnector
-                              qualityProfileId={qualityProfileId}
+                              qualityProfileIds={qualityProfileIds}
                             />
                           }
                         </span>
@@ -325,7 +325,7 @@ class CollectionOverview extends Component {
 CollectionOverview.propTypes = {
   id: PropTypes.number.isRequired,
   monitored: PropTypes.bool.isRequired,
-  qualityProfileId: PropTypes.number.isRequired,
+  qualityProfileIds: PropTypes.number.isRequired,
   minimumAvailability: PropTypes.string.isRequired,
   searchOnAdd: PropTypes.bool.isRequired,
   rootFolderPath: PropTypes.string.isRequired,

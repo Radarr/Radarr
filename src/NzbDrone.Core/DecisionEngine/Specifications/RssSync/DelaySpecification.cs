@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Download.Pending;
@@ -32,7 +33,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
         public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Temporary;
 
-        public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        private Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             if (searchCriteria != null && searchCriteria.UserInvokedSearch)
             {
@@ -40,7 +46,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var profile = subject.Movie.Profile;
+            var profiles = subject.Movie.QualityProfiles.Value;
             var delayProfile = _delayProfileService.BestForTags(subject.Movie.Tags);
             var delay = delayProfile.GetProtocolDelay(subject.Release.DownloadProtocol);
             var isPreferredProtocol = subject.Release.DownloadProtocol == delayProfile.PreferredProtocol;
@@ -51,41 +57,45 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 return Decision.Accept();
             }
 
-            var comparer = new QualityModelComparer(profile);
-
-            var file = subject.Movie.MovieFile;
-
-            if (isPreferredProtocol && (subject.Movie.MovieFileId != 0 && file != null))
+            foreach (var profile in profiles)
             {
-                var customFormats = _formatService.ParseCustomFormat(file);
-                var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile,
-                                                                              file.Quality,
-                                                                              customFormats,
-                                                                              subject.ParsedMovieInfo.Quality,
-                                                                              subject.CustomFormats);
+                var comparer = new QualityModelComparer(profile);
 
-                if (upgradable)
+                foreach (var file in subject.Movie.MovieFiles.Value)
                 {
-                    var revisionUpgrade = _qualityUpgradableSpecification.IsRevisionUpgrade(subject.Movie.MovieFile.Quality, subject.ParsedMovieInfo.Quality);
-
-                    if (revisionUpgrade)
+                    if (isPreferredProtocol && (file != null))
                     {
-                        _logger.Debug("New quality is a better revision for existing quality, skipping delay");
-                        return Decision.Accept();
+                        var customFormats = _formatService.ParseCustomFormat(file);
+                        var upgradable = _qualityUpgradableSpecification.IsUpgradable(profile,
+                                                                                      file.Quality,
+                                                                                      customFormats,
+                                                                                      subject.ParsedMovieInfo.Quality,
+                                                                                      subject.CustomFormats);
+
+                        if (upgradable)
+                        {
+                            var revisionUpgrade = _qualityUpgradableSpecification.IsRevisionUpgrade(file.Quality, subject.ParsedMovieInfo.Quality);
+
+                            if (revisionUpgrade)
+                            {
+                                _logger.Debug("New quality is a better revision for existing quality, skipping delay");
+                                return Decision.Accept();
+                            }
+                        }
                     }
                 }
-            }
 
-            // If quality meets or exceeds the best allowed quality in the profile accept it immediately
-            if (delayProfile.BypassIfHighestQuality)
-            {
-                var bestQualityInProfile = profile.LastAllowedQuality();
-                var isBestInProfile = comparer.Compare(subject.ParsedMovieInfo.Quality.Quality, bestQualityInProfile) >= 0;
-
-                if (isBestInProfile && isPreferredProtocol)
+                // If quality meets or exceeds the best allowed quality in the profile accept it immediately
+                if (delayProfile.BypassIfHighestQuality)
                 {
-                    _logger.Debug("Quality is highest in profile for preferred protocol, will not delay.");
-                    return Decision.Accept();
+                    var bestQualityInProfile = profile.LastAllowedQuality();
+                    var isBestInProfile = comparer.Compare(subject.ParsedMovieInfo.Quality.Quality, bestQualityInProfile) >= 0;
+
+                    if (isBestInProfile && isPreferredProtocol)
+                    {
+                        _logger.Debug("Quality is highest in profile for preferred protocol, will not delay.");
+                        return Decision.Accept();
+                    }
                 }
             }
 
