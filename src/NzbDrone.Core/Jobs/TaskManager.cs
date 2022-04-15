@@ -212,6 +212,7 @@ namespace NzbDrone.Core.Jobs
 
                 _scheduledTaskRepository.SetLastExecutionTime(scheduledTask.Id, lastExecution, message.Command.StartedAt.Value);
                 _cache.Find(scheduledTask.TypeName).LastExecution = lastExecution;
+                _cache.Find(scheduledTask.TypeName).LastStartTime = message.Command.StartedAt.Value;
             }
         }
 
