@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                                  WHERE ""Id"" IN (
                                  SELECT ""MovieFiles"".""Id"" FROM ""MovieFiles""
                                  LEFT OUTER JOIN ""Movies""
-                                 ON ""MovieFiles"".""Id"" = ""Movies"".""MovieFileId""
+                                 ON ""MovieFiles"".""MovieId"" = ""Movies"".""Id""
                                  WHERE ""Movies"".""Id"" IS NULL)");
             }
         }

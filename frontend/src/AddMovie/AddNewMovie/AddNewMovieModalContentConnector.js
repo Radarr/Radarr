@@ -58,7 +58,7 @@ class AddNewMovieModalContentConnector extends Component {
       tmdbId,
       rootFolderPath,
       monitor,
-      qualityProfileId,
+      qualityProfileIds,
       minimumAvailability,
       searchForMovie,
       tags
@@ -68,7 +68,7 @@ class AddNewMovieModalContentConnector extends Component {
       tmdbId,
       rootFolderPath: rootFolderPath.value,
       monitor: monitor.value,
-      qualityProfileId: qualityProfileId.value,
+      qualityProfileIds: qualityProfileIds.value,
       minimumAvailability: minimumAvailability.value,
       searchForMovie: searchForMovie.value,
       tags: tags.value
@@ -93,7 +93,7 @@ AddNewMovieModalContentConnector.propTypes = {
   tmdbId: PropTypes.number.isRequired,
   rootFolderPath: PropTypes.object,
   monitor: PropTypes.object.isRequired,
-  qualityProfileId: PropTypes.object,
+  qualityProfileIds: PropTypes.arrayOf(PropTypes.object),
   minimumAvailability: PropTypes.object.isRequired,
   searchForMovie: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,

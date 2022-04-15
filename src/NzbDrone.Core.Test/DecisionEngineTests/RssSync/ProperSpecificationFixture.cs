@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -33,7 +34,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             var fakeSeries = Builder<Movie>.CreateNew()
                          .With(c => c.Profile = new Profile { Cutoff = Quality.Bluray1080p.Id })
-                         .With(c => c.MovieFile = _firstFile)
+                         .With(c => c.MovieFiles = new List<MovieFile> { _firstFile })
                          .Build();
 
             _parseResultSingle = new RemoteMovie
@@ -54,7 +55,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _firstFile.Quality.Quality = Quality.DVD;
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -63,7 +64,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             WithFirstFileUpgradable();
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -72,7 +73,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             WithFirstFileUpgradable();
 
             _firstFile.DateAdded = DateTime.Today.AddDays(-30);
-            Subject.IsSatisfiedBy(_parseResultSingle, new MovieSearchCriteria()).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, new MovieSearchCriteria()).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -85,7 +86,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _firstFile.Quality.Quality = Quality.DVD;
 
             _firstFile.DateAdded = DateTime.Today;
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -98,7 +99,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _firstFile.Quality.Quality = Quality.DVD;
 
             _firstFile.DateAdded = DateTime.Today;
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => x.Accepted);
         }
 
         public void should_return_true_when_propers_are_not_preferred()
@@ -110,7 +111,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _firstFile.Quality.Quality = Quality.DVD;
 
             _firstFile.DateAdded = DateTime.Today;
-            Subject.IsSatisfiedBy(_parseResultSingle, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_parseResultSingle, null).Should().OnlyContain(x => x.Accepted);
         }
     }
 }

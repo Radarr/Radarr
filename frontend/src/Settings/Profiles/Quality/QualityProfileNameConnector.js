@@ -2,14 +2,26 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import createQualityProfileSelector from 'Store/Selectors/createQualityProfileSelector';
 
 function createMapStateToProps() {
   return createSelector(
-    createQualityProfileSelector(),
-    (qualityProfile) => {
+    (state, { qualityProfileIds }) => qualityProfileIds,
+    (state) => state.settings.qualityProfiles.items,
+    (qualityProfileIds, allProfiles) => {
+      let name = 'Multiple';
+
+      if (qualityProfileIds.length === 1) {
+        const profile = allProfiles.find((p) => {
+          return p.id === qualityProfileIds[0];
+        });
+
+        if (profile) {
+          name = profile.name;
+        }
+      }
+
       return {
-        name: qualityProfile.name
+        name
       };
     }
   );
@@ -24,7 +36,7 @@ function QualityProfileNameConnector({ name, ...otherProps }) {
 }
 
 QualityProfileNameConnector.propTypes = {
-  qualityProfileId: PropTypes.number.isRequired,
+  qualityProfileIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   name: PropTypes.string.isRequired
 };
 

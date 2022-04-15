@@ -21,16 +21,20 @@ class MovieIndexFooter extends PureComponent {
     let totalFileSize = 0;
 
     movies.forEach((s) => {
+      const { statistics = {} } = s;
 
-      if (s.hasFile) {
-        movieFiles += 1;
-      }
+      const {
+        movieFileCount = 0,
+        sizeOnDisk = 0
+      } = statistics;
+
+      movieFiles += movieFileCount;
 
       if (s.monitored) {
         monitored++;
       }
 
-      totalFileSize += s.sizeOnDisk;
+      totalFileSize += sizeOnDisk;
     });
 
     return (

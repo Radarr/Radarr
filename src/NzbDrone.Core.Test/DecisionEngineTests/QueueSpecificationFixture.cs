@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_true_when_queue_is_empty()
         {
             GivenEmptyQueue();
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().NotContain(x => !x.Accepted);
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                        .Build();
 
             GivenQueue(new List<RemoteMovie> { remoteMovie });
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().NotContain(x => !x.Accepted);
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Build();
 
             GivenQueue(new List<RemoteMovie> { remoteMovie });
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .Build();
 
             GivenQueue(new List<RemoteMovie> { remoteMovie });
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -147,7 +147,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .Build();
 
             GivenQueue(new List<RemoteMovie> { remoteMovie });
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenQueue(new List<RemoteMovie> { remoteMovie });
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -183,7 +183,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Build();
 
             GivenQueue(new List<RemoteMovie> { remoteMovie });
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -202,7 +202,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenQueue(new List<RemoteMovie> { remoteMovie }, TrackedDownloadState.FailedPending);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().NotContain(x => !x.Accepted);
         }
     }
 }

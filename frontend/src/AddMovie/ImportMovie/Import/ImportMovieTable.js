@@ -15,7 +15,7 @@ class ImportMovieTable extends Component {
     const {
       unmappedFolders,
       defaultMonitor,
-      defaultQualityProfileId,
+      defaultQualityProfileIds,
       defaultMinimumAvailability,
       onMovieLookup,
       onSetImportMovieValue
@@ -23,7 +23,7 @@ class ImportMovieTable extends Component {
 
     const values = {
       monitor: defaultMonitor,
-      qualityProfileId: defaultQualityProfileId,
+      qualityProfileIds: defaultQualityProfileIds,
       minimumAvailability: defaultMinimumAvailability
     };
 
@@ -167,7 +167,7 @@ ImportMovieTable.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   unmappedFolders: PropTypes.arrayOf(PropTypes.object),
   defaultMonitor: PropTypes.string.isRequired,
-  defaultQualityProfileId: PropTypes.number,
+  defaultQualityProfileIds: PropTypes.arrayOf(PropTypes.number),
   defaultMinimumAvailability: PropTypes.string,
   allSelected: PropTypes.bool.isRequired,
   allUnselected: PropTypes.bool.isRequired,

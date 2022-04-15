@@ -4,6 +4,7 @@ import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import QualityProfileListConnector from 'Components/QualityProfileListConnector';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
@@ -77,8 +78,9 @@ class MovieIndexRow extends Component {
       titleSlug,
       collection,
       studio,
-      qualityProfile,
+      qualityProfileIds,
       added,
+      statistics,
       year,
       inCinemas,
       physicalRelease,
@@ -88,7 +90,6 @@ class MovieIndexRow extends Component {
       runtime,
       minimumAvailability,
       path,
-      sizeOnDisk,
       genres,
       ratings,
       certification,
@@ -106,6 +107,10 @@ class MovieIndexRow extends Component {
       queueState,
       movieRuntimeFormat
     } = this.props;
+
+    const {
+      sizeOnDisk
+    } = statistics;
 
     const {
       isEditMovieModalOpen,
@@ -210,13 +215,15 @@ class MovieIndexRow extends Component {
               );
             }
 
-            if (name === 'qualityProfileId') {
+            if (name === 'qualityProfileIds') {
               return (
                 <VirtualTableRowCell
                   key={name}
                   className={styles[name]}
                 >
-                  {qualityProfile.name}
+                  <QualityProfileListConnector
+                    qualityProfileIds={qualityProfileIds}
+                  />
                 </VirtualTableRowCell>
               );
             }
@@ -498,8 +505,9 @@ MovieIndexRow.propTypes = {
   originalLanguage: PropTypes.object.isRequired,
   studio: PropTypes.string,
   collection: PropTypes.object,
-  qualityProfile: PropTypes.object.isRequired,
+  qualityProfileIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   added: PropTypes.string,
+  statistics: PropTypes.object.isRequired,
   year: PropTypes.number,
   inCinemas: PropTypes.string,
   physicalRelease: PropTypes.string,
@@ -507,7 +515,6 @@ MovieIndexRow.propTypes = {
   runtime: PropTypes.number,
   minimumAvailability: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
-  sizeOnDisk: PropTypes.number.isRequired,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   ratings: PropTypes.object.isRequired,
   certification: PropTypes.string,
@@ -530,6 +537,10 @@ MovieIndexRow.propTypes = {
 };
 
 MovieIndexRow.defaultProps = {
+  statistics: {
+    movieFileCount: 0,
+    releaseGroups: []
+  },
   genres: [],
   tags: []
 };

@@ -69,7 +69,7 @@ class EditMovieModalContent extends Component {
 
     const {
       monitored,
-      qualityProfileId,
+      qualityProfileIds,
       minimumAvailability,
       // Id,
       path,
@@ -110,12 +110,12 @@ class EditMovieModalContent extends Component {
             </FormGroup>
 
             <FormGroup>
-              <FormLabel>{translate('QualityProfile')}</FormLabel>
+              <FormLabel>{translate('QualityProfiles')}</FormLabel>
 
               <FormInputGroup
                 type={inputTypes.QUALITY_PROFILE_SELECT}
-                name="qualityProfileId"
-                {...qualityProfileId}
+                name="qualityProfileIds"
+                {...qualityProfileIds}
                 onChange={onInputChange}
               />
             </FormGroup>

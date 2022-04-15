@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import AvailabilitySelectInput from 'Components/Form/AvailabilitySelectInput';
-import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
 import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
 import SelectInput from 'Components/Form/SelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
@@ -11,6 +10,7 @@ import MoveMovieModal from 'Movie/MoveMovie/MoveMovieModal';
 import translate from 'Utilities/String/translate';
 import DeleteMovieModal from './Delete/DeleteMovieModal';
 import MovieEditorFooterLabel from './MovieEditorFooterLabel';
+import QualityProfilesModal from './QualityProfiles/QualityProfilesModal';
 import TagsModal from './Tags/TagsModal';
 import styles from './MovieEditorFooter.css';
 
@@ -26,12 +26,13 @@ class MovieEditorFooter extends Component {
 
     this.state = {
       monitored: NO_CHANGE,
-      qualityProfileId: NO_CHANGE,
       minimumAvailability: NO_CHANGE,
       rootFolderPath: NO_CHANGE,
       savingTags: false,
+      savingQualityProfiles: false,
       isDeleteMovieModalOpen: false,
       isTagsModalOpen: false,
+      isQualityProfilesModalOpen: false,
       isConfirmMoveModalOpen: false,
       destinationRootFolder: null
     };
@@ -46,10 +47,10 @@ class MovieEditorFooter extends Component {
     if (prevProps.isSaving && !isSaving && !saveError) {
       this.setState({
         monitored: NO_CHANGE,
-        qualityProfileId: NO_CHANGE,
         minimumAvailability: NO_CHANGE,
         rootFolderPath: NO_CHANGE,
-        savingTags: false
+        savingTags: false,
+        savingQualityProfiles: false
       });
     }
   }
@@ -91,6 +92,17 @@ class MovieEditorFooter extends Component {
     });
   };
 
+  onApplyQualityProfilesPress = (qualityProfileIds) => {
+    this.setState({
+      savingQualityProfiles: true,
+      isQualityProfilesModalOpen: false
+    });
+
+    this.props.onSaveSelected({
+      qualityProfileIds
+    });
+  };
+
   onDeleteSelectedPress = () => {
     this.setState({ isDeleteMovieModalOpen: true });
   };
@@ -105,6 +117,14 @@ class MovieEditorFooter extends Component {
 
   onTagsModalClose = () => {
     this.setState({ isTagsModalOpen: false });
+  };
+
+  onQualityProfilesPress = () => {
+    this.setState({ isQualityProfilesModalOpen: true });
+  };
+
+  onQualityProfilesModalClose = () => {
+    this.setState({ isQualityProfilesModalOpen: false });
   };
 
   onSaveRootFolderPress = () => {
@@ -143,11 +163,13 @@ class MovieEditorFooter extends Component {
 
     const {
       monitored,
-      qualityProfileId,
+      qualityProfileIds,
       minimumAvailability,
       rootFolderPath,
       savingTags,
+      savingQualityProfiles,
       isTagsModalOpen,
+      isQualityProfilesModalOpen,
       isDeleteMovieModalOpen,
       isConfirmMoveModalOpen,
       destinationRootFolder
@@ -178,17 +200,18 @@ class MovieEditorFooter extends Component {
 
         <div className={styles.inputContainer}>
           <MovieEditorFooterLabel
-            label={translate('QualityProfile')}
-            isSaving={isSaving && qualityProfileId !== NO_CHANGE}
+            label={translate('QualityProfiles')}
+            isSaving={isSaving && qualityProfileIds !== NO_CHANGE}
           />
 
-          <QualityProfileSelectInputConnector
-            name="qualityProfileId"
-            value={qualityProfileId}
-            includeNoChange={true}
-            isDisabled={!selectedCount}
-            onChange={this.onInputChange}
-          />
+          <SpinnerButton
+            className={styles.tagsButton}
+            isSpinning={isSaving && savingTags && savingQualityProfiles}
+            isDisabled={!selectedCount || isOrganizingMovie}
+            onPress={this.onQualityProfilesPress}
+          >
+            {translate('SetQualityProfiles')}
+          </SpinnerButton>
         </div>
 
         <div className={styles.inputContainer}>
@@ -243,7 +266,7 @@ class MovieEditorFooter extends Component {
 
                 <SpinnerButton
                   className={styles.tagsButton}
-                  isSpinning={isSaving && savingTags}
+                  isSpinning={isSaving && savingTags && savingQualityProfiles}
                   isDisabled={!selectedCount || isOrganizingMovie}
                   onPress={this.onTagsPress}
                 >
@@ -269,6 +292,13 @@ class MovieEditorFooter extends Component {
           movieIds={movieIds}
           onApplyTagsPress={this.onApplyTagsPress}
           onModalClose={this.onTagsModalClose}
+        />
+
+        <QualityProfilesModal
+          isOpen={isQualityProfilesModalOpen}
+          movieIds={movieIds}
+          onApplyQualityProfilesPress={this.onApplyQualityProfilesPress}
+          onModalClose={this.onQualityProfilesModalClose}
         />
 
         <DeleteMovieModal

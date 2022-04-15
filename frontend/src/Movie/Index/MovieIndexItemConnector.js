@@ -5,7 +5,6 @@ import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createExecutingCommandsSelector from 'Store/Selectors/createExecutingCommandsSelector';
-import createMovieQualityProfileSelector from 'Store/Selectors/createMovieQualityProfileSelector';
 import createMovieSelector from 'Store/Selectors/createMovieSelector';
 
 function selectShowSearchAction() {
@@ -29,13 +28,11 @@ function selectShowSearchAction() {
 function createMapStateToProps() {
   return createSelector(
     createMovieSelector(),
-    createMovieQualityProfileSelector(),
     selectShowSearchAction(),
     createExecutingCommandsSelector(),
     (state) => state.queue.details.items,
     (
       movie,
-      qualityProfile,
       showSearchAction,
       executingCommands,
       queueItems
@@ -68,7 +65,6 @@ function createMapStateToProps() {
 
       return {
         ...movie,
-        qualityProfile,
         showSearchAction,
         isRefreshingMovie,
         isSearchingMovie,

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -21,7 +22,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             _historyService = historyService;
         }
 
-        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        public IEnumerable<Decision> IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        {
+            return new List<Decision> { Calculate(localMovie, downloadClientItem) };
+        }
+
+        private Decision Calculate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             if (downloadClientItem == null)
             {

@@ -13,7 +13,6 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.SignalR;
-using Radarr.Api.V3.CustomFormats;
 using Radarr.Http;
 using Radarr.Http.REST;
 using Radarr.Http.REST.Attributes;
@@ -53,8 +52,8 @@ namespace Radarr.Api.V3.MovieFiles
             var movie = _movieService.GetMovie(movieFile.MovieId);
             movieFile.Movie = movie;
 
-            var resource = movieFile.ToResource(movie, _qualityUpgradableSpecification);
-            resource.CustomFormats = _formatCalculator.ParseCustomFormat(movieFile).ToResource(false);
+            var resource = movieFile.ToResource(movie, _qualityUpgradableSpecification, _formatCalculator);
+
             return resource;
         }
 
@@ -69,18 +68,17 @@ namespace Radarr.Api.V3.MovieFiles
             if (movieId.HasValue)
             {
                 var movie = _movieService.GetMovie(movieId.Value);
-                var file = _mediaFileService.GetFilesByMovie(movieId.Value).FirstOrDefault();
+                var files = _mediaFileService.GetFilesByMovie(movieId.Value);
 
-                if (file == null)
+                if (files == null)
                 {
                     return new List<MovieFileResource>();
                 }
 
-                var resource = file.ToResource(movie, _qualityUpgradableSpecification);
-                file.Movie = movie;
-                resource.CustomFormats = _formatCalculator.ParseCustomFormat(file).ToResource(false);
+                files.ForEach(x => x.Movie = movie);
+                var resources = files.Select(m => m.ToResource(movie, _qualityUpgradableSpecification, _formatCalculator)).ToList();
 
-                return new List<MovieFileResource> { resource };
+                return resources;
             }
             else
             {
@@ -88,7 +86,7 @@ namespace Radarr.Api.V3.MovieFiles
 
                 return movieFiles.GroupBy(e => e.MovieId)
                                    .SelectMany(f => f.ToList()
-                                                     .ConvertAll(e => e.ToResource(_movieService.GetMovie(f.Key), _qualityUpgradableSpecification)))
+                                                     .ConvertAll(e => e.ToResource(_movieService.GetMovie(f.Key), _qualityUpgradableSpecification, _formatCalculator)))
                                    .ToList();
             }
         }
@@ -156,9 +154,11 @@ namespace Radarr.Api.V3.MovieFiles
 
             _mediaFileService.Update(movieFiles);
 
-            var movie = _movieService.GetMovie(movieFiles.First().MovieId);
+            var movies = _movieService.GetMovies(movieFiles.Select(x => x.MovieId).Distinct());
 
-            return Accepted(movieFiles.ConvertAll(f => f.ToResource(movie, _qualityUpgradableSpecification)));
+            movieFiles.ForEach(x => x.Movie = movies.SingleOrDefault(m => m.Id == x.MovieId));
+
+            return Accepted(movieFiles.ConvertAll(f => f.ToResource(f.Movie, _qualityUpgradableSpecification, _formatCalculator)));
         }
 
         [RestDeleteById]

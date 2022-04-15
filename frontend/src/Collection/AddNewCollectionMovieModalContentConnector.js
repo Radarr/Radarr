@@ -25,7 +25,7 @@ function createMapStateToProps() {
       const collectionDefaults = {
         rootFolderPath: collection.rootFolderPath,
         monitor: 'movieOnly',
-        qualityProfileId: collection.qualityProfileId,
+        qualityProfileIds: collection.qualityProfileIds,
         minimumAvailability: collection.minimumAvailability,
         searchForMovie: collection.searchOnAdd,
         tags: []
@@ -70,7 +70,7 @@ class AddNewCollectionMovieModalContentConnector extends Component {
       title,
       rootFolderPath,
       monitor,
-      qualityProfileId,
+      qualityProfileIds,
       minimumAvailability,
       searchForMovie,
       tags
@@ -81,7 +81,7 @@ class AddNewCollectionMovieModalContentConnector extends Component {
       title,
       rootFolderPath: rootFolderPath.value,
       monitor: monitor.value,
-      qualityProfileId: qualityProfileId.value,
+      qualityProfileIds: qualityProfileIds.value,
       minimumAvailability: minimumAvailability.value,
       searchForMovie: searchForMovie.value,
       tags: tags.value
@@ -109,7 +109,7 @@ AddNewCollectionMovieModalContentConnector.propTypes = {
   title: PropTypes.string.isRequired,
   rootFolderPath: PropTypes.object,
   monitor: PropTypes.object.isRequired,
-  qualityProfileId: PropTypes.object,
+  qualityProfileIds: PropTypes.object,
   minimumAvailability: PropTypes.object.isRequired,
   searchForMovie: PropTypes.object.isRequired,
   tags: PropTypes.object.isRequired,
