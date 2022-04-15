@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Test.MovieTests.MovieRepositoryTests
             _profileRepository.Insert(profile);
 
             var movie = Builder<Movie>.CreateNew().BuildNew();
-            movie.ProfileId = profile.Id;
+            movie.QualityProfileIds = new List<int> { profile.Id };
 
             Subject.Insert(movie);
 

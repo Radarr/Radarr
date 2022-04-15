@@ -109,9 +109,9 @@ namespace NzbDrone.Core.Notifications.Webhook
                 DeletedFiles = deleteMessage.DeletedFiles
             };
 
-            if (deleteMessage.DeletedFiles && deleteMessage.Movie.MovieFile != null)
+            if (deleteMessage.DeletedFiles && deleteMessage.Movie.MovieFiles != null)
             {
-                payload.MovieFolderSize = deleteMessage.Movie.MovieFile.Size;
+                payload.MovieFolderSize = deleteMessage.Movie.MovieFiles.Value.Select(f => f.Size).Sum();
             }
 
             return payload;

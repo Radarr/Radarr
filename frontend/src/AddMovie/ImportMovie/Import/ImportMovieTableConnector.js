@@ -13,7 +13,7 @@ function createMapStateToProps() {
     (addMovie, importMovie, dimensions, allMovies) => {
       return {
         defaultMonitor: addMovie.defaults.monitor,
-        defaultQualityProfileId: addMovie.defaults.qualityProfileId,
+        defaultQualityProfileIds: addMovie.defaults.qualityProfileIds,
         defaultMinimumAvailability: addMovie.defaults.minimumAvailability,
         items: importMovie.items,
         isSmallScreen: dimensions.isSmallScreen,

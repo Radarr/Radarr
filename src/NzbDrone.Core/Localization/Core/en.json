@@ -933,6 +933,7 @@
   "SetPermissions": "Set Permissions",
   "SetPermissionsLinuxHelpText": "Should chmod be run when files are imported/renamed?",
   "SetPermissionsLinuxHelpTextWarning": "If you're unsure what these settings do, do not alter them.",
+  "SetQualityProfiles": "Set Quality Profiles",
   "SetReleaseGroup": "Set Release Group",
   "SetTags": "Set Tags",
   "Settings": "Settings",

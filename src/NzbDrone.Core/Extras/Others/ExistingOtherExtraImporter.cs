@@ -55,7 +55,6 @@ namespace NzbDrone.Core.Extras.Others
                 var extraFile = new OtherExtraFile
                 {
                     MovieId = movie.Id,
-                    MovieFileId = movie.MovieFileId,
                     RelativePath = movie.Path.GetRelativePath(possibleExtraFile),
                     Extension = extension
                 };

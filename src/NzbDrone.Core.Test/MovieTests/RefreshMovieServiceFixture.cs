@@ -35,6 +35,7 @@ namespace NzbDrone.Core.Test.MovieTests
 
             _existingMovie = Builder<Movie>.CreateNew()
                 .With(s => s.MovieMetadata.Value.Status = MovieStatusType.Released)
+                .With(s => s.QualityProfileIds = new List<int> { 1 })
                 .Build();
 
             Mocker.GetMock<IMovieService>()

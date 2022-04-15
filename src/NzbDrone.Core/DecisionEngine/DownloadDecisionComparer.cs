@@ -69,12 +69,15 @@ namespace NzbDrone.Core.DecisionEngine
 
         private int CompareQuality(DownloadDecision x, DownloadDecision y)
         {
+            var qualityProfile = x.RemoteMovie.Movie.QualityProfiles.Value.FirstOrDefault(p => p.Id == x.ProfileId) ??
+                x.RemoteMovie.Movie.QualityProfiles.Value.First();
+
             if (_configService.DownloadPropersAndRepacks == ProperDownloadTypes.DoNotPrefer)
             {
-                return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.GetIndex(remoteMovie.ParsedMovieInfo.Quality.Quality));
+                return CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => qualityProfile.GetIndex(remoteMovie.ParsedMovieInfo.Quality.Quality));
             }
 
-            return CompareAll(CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.Movie.Profile.GetIndex(remoteMovie.ParsedMovieInfo.Quality.Quality)),
+            return CompareAll(CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => qualityProfile.GetIndex(remoteMovie.ParsedMovieInfo.Quality.Quality)),
                               CompareBy(x.RemoteMovie, y.RemoteMovie, remoteMovie => remoteMovie.ParsedMovieInfo.Quality.Revision));
         }
 

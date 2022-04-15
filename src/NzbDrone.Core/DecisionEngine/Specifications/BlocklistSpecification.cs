@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.Blocklisting;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -19,7 +20,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        public Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             if (_blocklistService.Blocklisted(subject.Movie.Id, subject.Release))
             {

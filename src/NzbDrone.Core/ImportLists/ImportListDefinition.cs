@@ -9,13 +9,14 @@ namespace NzbDrone.Core.ImportLists
         public ImportListDefinition()
         {
             Tags = new HashSet<int>();
+            QualityProfileIds = new List<int>();
         }
 
         public bool Enabled { get; set; }
         public bool EnableAuto { get; set; }
         public MonitorTypes Monitor { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
-        public int ProfileId { get; set; }
+        public List<int> QualityProfileIds { get; set; }
         public string RootFolderPath { get; set; }
         public bool SearchOnAdd { get; set; }
         public override bool Enable => Enabled;

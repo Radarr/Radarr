@@ -8,7 +8,6 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Parser;
-using Radarr.Api.V3.MovieFiles;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Movies
@@ -19,6 +18,7 @@ namespace Radarr.Api.V3.Movies
         {
             Monitored = true;
             MinimumAvailability = MovieStatusType.Released;
+            QualityProfileIds = new List<int>();
         }
 
         // Todo: Sorters should be done completely on the client
@@ -46,12 +46,14 @@ namespace Radarr.Api.V3.Movies
         // public bool Downloaded { get; set; }
         public string RemotePoster { get; set; }
         public int Year { get; set; }
-        public bool HasFile { get; set; }
         public string YouTubeTrailerId { get; set; }
         public string Studio { get; set; }
 
         // View & Edit
         public string Path { get; set; }
+        public List<int> QualityProfileIds { get; set; }
+
+        // Compatabilitiy
         public int QualityProfileId { get; set; }
 
         // Editing Only
@@ -73,9 +75,9 @@ namespace Radarr.Api.V3.Movies
         public DateTime Added { get; set; }
         public AddMovieOptions AddOptions { get; set; }
         public Ratings Ratings { get; set; }
-        public MovieFileResource MovieFile { get; set; }
         public MovieCollection Collection { get; set; }
         public float Popularity { get; set; }
+        public MovieStatisticsResource Statistics { get; set; }
     }
 
     public static class MovieResourceMapper
@@ -86,10 +88,6 @@ namespace Radarr.Api.V3.Movies
             {
                 return null;
             }
-
-            var size = model.MovieFile?.Size ?? 0;
-
-            var movieFile = model.MovieFile?.ToResource(model, upgradableSpecification);
 
             var translatedTitle = movieTranslation?.Title ?? model.Title;
             var translatedOverview = movieTranslation?.Overview ?? model.MovieMetadata.Value.Overview;
@@ -107,9 +105,7 @@ namespace Radarr.Api.V3.Movies
                 InCinemas = model.MovieMetadata.Value.InCinemas,
                 PhysicalRelease = model.MovieMetadata.Value.PhysicalRelease,
                 DigitalRelease = model.MovieMetadata.Value.DigitalRelease,
-                HasFile = model.HasFile,
 
-                SizeOnDisk = size,
                 Status = model.MovieMetadata.Value.Status,
                 Overview = translatedOverview,
 
@@ -119,7 +115,8 @@ namespace Radarr.Api.V3.Movies
                 SecondaryYear = model.MovieMetadata.Value.SecondaryYear,
 
                 Path = model.Path,
-                QualityProfileId = model.ProfileId,
+                QualityProfileIds = model.QualityProfileIds,
+                QualityProfileId = model.QualityProfileIds.FirstOrDefault(),
 
                 Monitored = model.Monitored,
                 MinimumAvailability = model.MinimumAvailability,
@@ -140,7 +137,6 @@ namespace Radarr.Api.V3.Movies
                 AddOptions = model.AddOptions,
                 AlternateTitles = model.MovieMetadata.Value.AlternativeTitles.ToResource(),
                 Ratings = model.MovieMetadata.Value.Ratings,
-                MovieFile = movieFile,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
                 Collection = collection,
@@ -153,6 +149,13 @@ namespace Radarr.Api.V3.Movies
             if (resource == null)
             {
                 return null;
+            }
+
+            var profiles = resource.QualityProfileIds;
+
+            if (resource.QualityProfileIds.Count == 0)
+            {
+                profiles.Add(resource.QualityProfileId);
             }
 
             return new Movie
@@ -183,7 +186,7 @@ namespace Radarr.Api.V3.Movies
                 },
 
                 Path = resource.Path,
-                ProfileId = resource.QualityProfileId,
+                QualityProfileIds = resource.QualityProfileIds,
 
                 Monitored = resource.Monitored,
                 MinimumAvailability = resource.MinimumAvailability,

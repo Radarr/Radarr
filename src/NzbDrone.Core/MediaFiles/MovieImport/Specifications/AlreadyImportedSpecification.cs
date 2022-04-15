@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -22,7 +23,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
         public SpecificationPriority Priority => SpecificationPriority.Database;
 
-        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        public IEnumerable<Decision> IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        {
+            return new List<Decision> { Calculate(localMovie, downloadClientItem) };
+        }
+
+        private Decision Calculate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             if (downloadClientItem == null)
             {
@@ -32,7 +38,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
             var movie = localMovie.Movie;
 
-            if (!movie.HasFile)
+            if (!movie.MovieFiles?.Value.Any() ?? true)
             {
                 _logger.Debug("Skipping already imported check for movie without file");
                 return Decision.Accept();
@@ -58,7 +64,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             if (lastImported.DownloadId == downloadClientItem.DownloadId)
             {
                 _logger.Debug("Movie file previously imported at {0}", lastImported.Date);
-                return Decision.Reject("Movie file already imported at {0}", lastImported.Date.ToLocalTime());
+                return Decision.Reject(string.Format("Movie file already imported at {0}", lastImported.Date.ToLocalTime()));
             }
 
             return Decision.Accept();

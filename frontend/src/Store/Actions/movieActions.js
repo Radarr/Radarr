@@ -58,8 +58,8 @@ export const filters = [
         type: filterTypes.EQUAL
       },
       {
-        key: 'hasFile',
-        value: false,
+        key: 'movieFileCount',
+        value: 0,
         type: filterTypes.EQUAL
       }
     ]
@@ -74,8 +74,8 @@ export const filters = [
         type: filterTypes.EQUAL
       },
       {
-        key: 'hasFile',
-        value: false,
+        key: 'movieFileCount',
+        value: 0,
         type: filterTypes.EQUAL
       },
       {
@@ -95,9 +95,9 @@ export const filters = [
         type: filterTypes.EQUAL
       },
       {
-        key: 'hasFile',
-        value: true,
-        type: filterTypes.EQUAL
+        key: 'movieFileCount',
+        value: 0,
+        type: filterTypes.GREATER_THAN
       },
       {
         key: 'qualityCutoffNotMet',
@@ -179,6 +179,22 @@ export const filterPredicates = {
     return predicate(rating, filterValue);
   },
 
+  movieFileCount: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+    const seasonCount = item.statistics ? item.statistics.movieFileCount : 0;
+
+    return predicate(seasonCount, filterValue);
+  },
+
+  sizeOnDisk: function(item, filterValue, type) {
+    const predicate = filterTypePredicates[type];
+    const sizeOnDisk = item.statistics && item.statistics.sizeOnDisk ?
+      item.statistics.sizeOnDisk :
+      0;
+
+    return predicate(sizeOnDisk, filterValue);
+  },
+
   qualityCutoffNotMet: function(item) {
     const { movieFile = {} } = item;
 
@@ -207,6 +223,12 @@ export const sortPredicates = {
     }
 
     return result;
+  },
+
+  sizeOnDisk: function(item) {
+    const { statistics = {} } = item;
+
+    return statistics.sizeOnDisk || 0;
   },
 
   movieStatus: function(item) {

@@ -21,7 +21,7 @@ namespace Radarr.Api.V3.Collections
         public string Overview { get; set; }
         public bool Monitored { get; set; }
         public string RootFolderPath { get; set; }
-        public int QualityProfileId { get; set; }
+        public List<int> QualityProfileIds { get; set; }
         public bool SearchOnAdd { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
         public List<CollectionMovieResource> Movies { get; set; }
@@ -45,7 +45,7 @@ namespace Radarr.Api.V3.Collections
                 SortTitle = model.SortTitle,
                 Monitored = model.Monitored,
                 Images = model.Images,
-                QualityProfileId = model.QualityProfileId,
+                QualityProfileIds = model.QualityProfileIds,
                 RootFolderPath = model.RootFolderPath,
                 MinimumAvailability = model.MinimumAvailability,
                 SearchOnAdd = model.SearchOnAdd
@@ -72,7 +72,7 @@ namespace Radarr.Api.V3.Collections
                 SortTitle = resource.SortTitle,
                 Overview = resource.Overview,
                 Monitored = resource.Monitored,
-                QualityProfileId = resource.QualityProfileId,
+                QualityProfileIds = resource.QualityProfileIds,
                 RootFolderPath = resource.RootFolderPath,
                 SearchOnAdd = resource.SearchOnAdd,
                 MinimumAvailability = resource.MinimumAvailability

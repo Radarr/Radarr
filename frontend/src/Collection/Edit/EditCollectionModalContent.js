@@ -46,7 +46,7 @@ class EditCollectionModalContent extends Component {
 
     const {
       monitored,
-      qualityProfileId,
+      qualityProfileIds,
       minimumAvailability,
       // Id,
       rootFolderPath,
@@ -104,12 +104,12 @@ class EditCollectionModalContent extends Component {
                 </FormGroup>
 
                 <FormGroup>
-                  <FormLabel>{translate('QualityProfile')}</FormLabel>
+                  <FormLabel>{translate('QualityProfiles')}</FormLabel>
 
                   <FormInputGroup
                     type={inputTypes.QUALITY_PROFILE_SELECT}
-                    name="qualityProfileId"
-                    {...qualityProfileId}
+                    name="qualityProfileIds"
+                    {...qualityProfileIds}
                     onChange={onInputChange}
                   />
                 </FormGroup>

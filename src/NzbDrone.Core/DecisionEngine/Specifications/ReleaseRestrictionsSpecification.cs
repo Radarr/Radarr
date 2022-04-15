@@ -25,7 +25,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public virtual IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        private Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             _logger.Debug("Checking if release meets restrictions: {0}", subject);
 
@@ -44,7 +49,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 {
                     var terms = string.Join(", ", requiredTerms);
                     _logger.Debug("[{0}] does not contain one of the required terms: {1}", title, terms);
-                    return Decision.Reject("Does not contain one of the required terms: {0}", terms);
+                    return Decision.Reject(string.Format("Does not contain one of the required terms: {0}", terms));
                 }
             }
 
@@ -57,7 +62,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 {
                     var terms = string.Join(", ", foundTerms);
                     _logger.Debug("[{0}] contains these ignored terms: {1}", title, terms);
-                    return Decision.Reject("Contains these ignored terms: {0}", terms);
+                    return Decision.Reject(string.Format("Contains these ignored terms: {0}", terms));
                 }
             }
 

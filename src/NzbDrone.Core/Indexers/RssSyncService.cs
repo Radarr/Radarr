@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.DecisionEngine;
@@ -11,8 +11,6 @@ namespace NzbDrone.Core.Indexers
 {
     public class RssSyncService : IExecute<RssSyncCommand>
     {
-        private readonly IIndexerStatusService _indexerStatusService;
-        private readonly IIndexerFactory _indexerFactory;
         private readonly IFetchAndParseRss _rssFetcherAndParser;
         private readonly IMakeDownloadDecision _downloadDecisionMaker;
         private readonly IProcessDownloadDecisions _processDownloadDecisions;
@@ -20,17 +18,13 @@ namespace NzbDrone.Core.Indexers
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
-        public RssSyncService(IIndexerStatusService indexerStatusService,
-                              IIndexerFactory indexerFactory,
-                              IFetchAndParseRss rssFetcherAndParser,
+        public RssSyncService(IFetchAndParseRss rssFetcherAndParser,
                               IMakeDownloadDecision downloadDecisionMaker,
                               IProcessDownloadDecisions processDownloadDecisions,
                               IPendingReleaseService pendingReleaseService,
                               IEventAggregator eventAggregator,
                               Logger logger)
         {
-            _indexerStatusService = indexerStatusService;
-            _indexerFactory = indexerFactory;
             _rssFetcherAndParser = rssFetcherAndParser;
             _downloadDecisionMaker = downloadDecisionMaker;
             _processDownloadDecisions = processDownloadDecisions;

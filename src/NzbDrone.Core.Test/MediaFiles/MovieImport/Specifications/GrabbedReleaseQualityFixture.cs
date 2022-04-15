@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_be_accepted_when_downloadClientItem_is_null()
         {
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             GivenHistory(new List<MovieHistory>());
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             GivenHistory(history);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             GivenHistory(history);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             GivenHistory(history);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             GivenHistory(history);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Should().OnlyContain(x => x.Accepted);
         }
     }
 }

@@ -242,7 +242,7 @@ namespace NzbDrone.Core.Notifications
         {
             var manualInteractionMessage = new ManualInteractionRequiredMessage
             {
-                Message = GetMessage(message.RemoteMovie.Movie, message.RemoteMovie.Movie.MovieFile.Quality),
+                Message = GetMessage(message.RemoteMovie.Movie, message.RemoteMovie.ParsedMovieInfo.Quality),
                 Movie = message.RemoteMovie.Movie,
                 Quality = message.RemoteMovie.ParsedMovieInfo.Quality,
                 RemoteMovie = message.RemoteMovie,

@@ -8,6 +8,7 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
@@ -22,6 +23,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         private const string TITLE = "Movie.Title.2018.720p.HDTV.x264-Radarr";
 
         private Movie _movie;
+        private MovieFile _movieFile;
         private QualityModel _hdtv720p;
         private QualityModel _hdtv1080p;
         private RemoteMovie _remoteMovie;
@@ -32,8 +34,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _movie = Builder<Movie>.CreateNew()
                                     .With(m => m.Id = FIRST_MOVIE_ID)
-                                    .With(m => m.MovieFileId = 1)
                                     .Build();
+
+            _movieFile = Builder<MovieFile>.CreateNew().With(m => m.MovieId = _movie.Id).Build();
+
+            _movie.MovieFiles = new List<MovieFile> { _movieFile };
 
             _hdtv720p = new QualityModel(Quality.HDTV720p, new Revision(version: 1));
             _hdtv1080p = new QualityModel(Quality.HDTV1080p, new Revision(version: 1));
@@ -81,21 +86,21 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenCdhDisabled();
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_be_accepted_if_movie_does_not_have_a_file()
         {
-            _remoteMovie.Movie.MovieFileId = 0;
+            _movie.MovieFiles = new List<MovieFile> { };
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_be_accepted_if_movie_does_not_have_grabbed_event()
         {
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -103,7 +108,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenHistoryItem(Guid.NewGuid().ToString().ToUpper(), TITLE, _hdtv720p, MovieHistoryEventType.Grabbed);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -114,7 +119,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenHistoryItem(downloadId, TITLE, _hdtv720p, MovieHistoryEventType.Grabbed);
             GivenHistoryItem(downloadId, TITLE, _hdtv720p, MovieHistoryEventType.DownloadFolderImported);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -130,7 +135,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                          .With(t => t.InfoHash = null)
                                                          .Build();
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -146,7 +151,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                          .With(t => t.InfoHash = downloadId)
                                                          .Build();
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -162,7 +167,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                          .With(t => t.InfoHash = downloadId)
                                                          .Build();
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -178,7 +183,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                          .With(t => t.InfoHash = downloadId)
                                                          .Build();
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
     }
 }

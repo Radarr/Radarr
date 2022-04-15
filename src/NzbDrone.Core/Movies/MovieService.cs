@@ -5,8 +5,6 @@ using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
-using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Parser;
@@ -32,11 +30,9 @@ namespace NzbDrone.Core.Movies
         Dictionary<int, string> AllMoviePaths();
         List<int> AllMovieTmdbIds();
         bool MovieExists(Movie movie);
-        List<Movie> GetMoviesByFileId(int fileId);
         List<Movie> GetMoviesByCollectionTmdbId(int collectionId);
         List<Movie> GetMoviesBetweenDates(DateTime start, DateTime end, bool includeUnmonitored);
         PagingSpec<Movie> MoviesWithoutFiles(PagingSpec<Movie> pagingSpec);
-        void SetFileId(Movie movie, MovieFile movieFile);
         void DeleteMovie(int movieId, bool deleteFiles, bool addExclusion = false);
         void DeleteMovies(List<int> movieIds, bool deleteFiles, bool addExclusion = false);
         List<Movie> GetAllMovies();
@@ -50,8 +46,7 @@ namespace NzbDrone.Core.Movies
         bool ExistsByMetadataId(int metadataId);
     }
 
-    public class MovieService : IMovieService, IHandle<MovieFileAddedEvent>,
-                                               IHandle<MovieFileDeletedEvent>
+    public class MovieService : IMovieService
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IConfigService _configService;
@@ -289,17 +284,6 @@ namespace NzbDrone.Core.Movies
             _movieRepository.SetFields(movie, s => s.AddOptions);
         }
 
-        public void SetFileId(Movie movie, MovieFile movieFile)
-        {
-            _movieRepository.SetFileId(movieFile.Id, movie.Id);
-            _logger.Info("Assigning file [{0}] to movie [{1}]", movieFile.RelativePath, movie);
-        }
-
-        public List<Movie> GetMoviesByFileId(int fileId)
-        {
-            return _movieRepository.GetMoviesByFileId(fileId);
-        }
-
         public List<Movie> GetMoviesByCollectionTmdbId(int collectionId)
         {
             return _movieRepository.GetMoviesByCollectionTmdbId(collectionId);
@@ -403,32 +387,6 @@ namespace NzbDrone.Core.Movies
             }
 
             throw new MultipleMoviesFoundException(movies, "Expected one movie, but found {0}. Matching movies: {1}", movies.Count, string.Join(",", movies));
-        }
-
-        public void Handle(MovieFileAddedEvent message)
-        {
-            var movie = message.MovieFile.Movie;
-            movie.MovieFileId = message.MovieFile.Id;
-            _movieRepository.Update(movie);
-
-            // _movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
-            _logger.Info("Assigning file [{0}] to movie [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie);
-        }
-
-        public void Handle(MovieFileDeletedEvent message)
-        {
-            foreach (var movie in GetMoviesByFileId(message.MovieFile.Id))
-            {
-                _logger.Debug("Detaching movie {0} from file.", movie.Id);
-                movie.MovieFileId = 0;
-
-                if (message.Reason != DeleteMediaFileReason.Upgrade && _configService.AutoUnmonitorPreviouslyDownloadedMovies)
-                {
-                    movie.Monitored = false;
-                }
-
-                UpdateMovie(movie);
-            }
         }
     }
 }
