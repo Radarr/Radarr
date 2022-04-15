@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
@@ -60,7 +61,7 @@ namespace Radarr.Api.V3.MovieFiles
             };
         }
 
-        public static MovieFileResource ToResource(this MovieFile model, NzbDrone.Core.Movies.Movie movie, IUpgradableSpecification upgradableSpecification)
+        public static MovieFileResource ToResource(this MovieFile model, NzbDrone.Core.Movies.Movie movie, IUpgradableSpecification upgradableSpecification, ICustomFormatCalculationService formatCalculator)
         {
             if (model == null)
             {
@@ -84,7 +85,8 @@ namespace Radarr.Api.V3.MovieFiles
                 ReleaseGroup = model.ReleaseGroup,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
                 QualityCutoffNotMet = upgradableSpecification?.QualityCutoffNotMet(movie.Profile, model.Quality) ?? false,
-                OriginalFilePath = model.OriginalFilePath
+                OriginalFilePath = model.OriginalFilePath,
+                CustomFormats = formatCalculator.ParseCustomFormat(model).ToResource()
             };
         }
     }

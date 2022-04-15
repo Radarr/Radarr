@@ -31,6 +31,10 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
         [Test]
         public void should_not_delete_unorphaned_movie_files()
         {
+            var movie = Builder<Movie>.CreateNew()
+                              .With(e => e.Id = 2)
+                              .BuildNew();
+
             var movieFiles = Builder<MovieFile>.CreateListOfSize(2)
                                                    .All()
                                                    .With(h => h.Quality = new QualityModel())
@@ -39,15 +43,11 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
 
             Db.InsertMany(movieFiles);
 
-            var movie = Builder<Movie>.CreateNew()
-                                          .With(e => e.MovieFileId = movieFiles.First().Id)
-                                          .BuildNew();
-
             Db.Insert(movie);
 
             Subject.Clean();
             AllStoredModels.Should().HaveCount(1);
-            Db.All<Movie>().Should().Contain(e => e.MovieFileId == AllStoredModels.First().Id);
+            Db.All<Movie>().Should().Contain(e => e.MovieFiles.Value.Count > 0);
         }
     }
 }

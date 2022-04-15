@@ -207,9 +207,9 @@ namespace NzbDrone.Core.Download.Pending
             //Return best quality release for each movie
             var deduped = queued.GroupBy(q => q.Movie.Id).Select(g =>
             {
-                var movies = g.First().Movie;
+                var movie = g.First().Movie;
 
-                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(movies.Profile))
+                return g.OrderByDescending(e => e.Quality, new QualityModelComparer(movie.Profile))
                         .ThenBy(q => PrioritizeDownloadProtocol(q.Movie, q.Protocol))
                         .First();
             });

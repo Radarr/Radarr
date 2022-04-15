@@ -34,42 +34,42 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [Test]
         public void should_return_true_if_no_container_specified()
         {
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_return_true_if_mkv()
         {
             WithContainer("MKV");
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_return_false_if_vob()
         {
             WithContainer("VOB");
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
         public void should_return_false_if_iso()
         {
             WithContainer("ISO");
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
         public void should_return_false_if_m2ts()
         {
             WithContainer("M2TS");
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
         public void should_compare_case_insensitive()
         {
             WithContainer("vob");
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [TestCase("How the Earth Was Made S02 Disc 1 1080i Blu-ray DTS-HD MA 2.0 AVC-TrollHD")]
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         public void should_return_false_if_matches_disc_format(string title)
         {
             _remoteMovie.Release.Title = title;
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
     }
 }

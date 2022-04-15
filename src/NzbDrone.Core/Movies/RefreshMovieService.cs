@@ -138,7 +138,7 @@ namespace NzbDrone.Core.Movies
                     Title = movieInfo.CollectionTitle,
                     Monitored = movie.AddOptions?.Monitor == MonitorTypes.MovieAndCollection,
                     SearchOnAdd = movie.AddOptions?.SearchForMovie ?? false,
-                    QualityProfileId = movie.ProfileId,
+                    QualityProfileIds = movie.QualityProfileIds,
                     MinimumAvailability = movie.MinimumAvailability,
                     RootFolderPath = _folderService.GetBestRootFolderPath(movie.Path).TrimEnd('/', '\\', ' ')
                 });

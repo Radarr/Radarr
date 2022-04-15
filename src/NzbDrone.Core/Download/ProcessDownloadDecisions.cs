@@ -36,70 +36,82 @@ namespace NzbDrone.Core.Download
         public ProcessedDecisions ProcessDecisions(List<DownloadDecision> decisions)
         {
             var qualifiedReports = GetQualifiedReports(decisions);
-            var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(qualifiedReports);
+            var groupedDecisions = qualifiedReports.GroupBy(x => x.ProfileId, (key, g) => new { ProfileId = key, Decisions = g.ToList() });
+
+            var pendingAddQueue = new List<Tuple<DownloadDecision, PendingReleaseReason>>();
             var grabbed = new List<DownloadDecision>();
             var pending = new List<DownloadDecision>();
             var rejected = decisions.Where(d => d.Rejected).ToList();
 
-            var pendingAddQueue = new List<Tuple<DownloadDecision, PendingReleaseReason>>();
-
-            var usenetFailed = false;
-            var torrentFailed = false;
-
-            foreach (var report in prioritizedDecisions)
+            // Loop through decisions for each profile, so that we grab the best for each.
+            foreach (var profile in groupedDecisions)
             {
-                var remoteMovie = report.RemoteMovie;
-                var downloadProtocol = report.RemoteMovie.Release.DownloadProtocol;
+                var prioritizedDecisions = _prioritizeDownloadDecision.PrioritizeDecisionsForMovies(profile.Decisions);
 
-                // Skip if already grabbed
-                if (IsMovieProcessed(grabbed, report))
-                {
-                    continue;
-                }
+                var usenetFailed = false;
+                var torrentFailed = false;
 
-                if (report.TemporarilyRejected)
+                foreach (var report in prioritizedDecisions)
                 {
-                    PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.Delay);
-                    continue;
-                }
+                    var remoteMovie = report.RemoteMovie;
+                    var downloadProtocol = report.RemoteMovie.Release.DownloadProtocol;
 
-                if ((downloadProtocol == DownloadProtocol.Usenet && usenetFailed) ||
-                    (downloadProtocol == DownloadProtocol.Torrent && torrentFailed))
-                {
-                    PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.DownloadClientUnavailable);
-                    continue;
-                }
-
-                try
-                {
-                    _logger.Trace("Grabbing from Indexer {0} at priority {1}.", remoteMovie.Release.Indexer, remoteMovie.Release.IndexerPriority);
-                    _downloadService.DownloadReport(remoteMovie);
-                    grabbed.Add(report);
-                }
-                catch (ReleaseUnavailableException)
-                {
-                    _logger.Warn("Failed to download release from indexer, no longer available. " + remoteMovie);
-                    rejected.Add(report);
-                }
-                catch (Exception ex)
-                {
-                    if (ex is DownloadClientUnavailableException || ex is DownloadClientAuthenticationException)
+                    // Skip if already grabbed
+                    if (IsMovieProcessed(grabbed, report))
                     {
-                        _logger.Debug(ex, "Failed to send release to download client, storing until later. " + remoteMovie);
-                        PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.DownloadClientUnavailable);
-
-                        if (downloadProtocol == DownloadProtocol.Usenet)
-                        {
-                            usenetFailed = true;
-                        }
-                        else if (downloadProtocol == DownloadProtocol.Torrent)
-                        {
-                            torrentFailed = true;
-                        }
+                        continue;
                     }
-                    else
+
+                    if (grabbed.Any(g => g.RemoteMovie.Release.Guid == report.RemoteMovie.Release.Guid))
                     {
-                        _logger.Warn(ex, "Couldn't add report to download queue. " + remoteMovie);
+                        // Top release for this profile grabbed for another.
+                        break;
+                    }
+
+                    if (report.TemporarilyRejected)
+                    {
+                        PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.Delay);
+                        continue;
+                    }
+
+                    if ((downloadProtocol == DownloadProtocol.Usenet && usenetFailed) ||
+                        (downloadProtocol == DownloadProtocol.Torrent && torrentFailed))
+                    {
+                        PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.DownloadClientUnavailable);
+                        continue;
+                    }
+
+                    try
+                    {
+                        _logger.Trace("Grabbing from Indexer {0} at priority {1}.", remoteMovie.Release.Indexer, remoteMovie.Release.IndexerPriority);
+                        _downloadService.DownloadReport(remoteMovie);
+                        grabbed.Add(report);
+                    }
+                    catch (ReleaseUnavailableException)
+                    {
+                        _logger.Warn("Failed to download release from indexer, no longer available. " + remoteMovie);
+                        rejected.Add(report);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex is DownloadClientUnavailableException || ex is DownloadClientAuthenticationException)
+                        {
+                            _logger.Debug(ex, "Failed to send release to download client, storing until later. " + remoteMovie);
+                            PreparePending(pendingAddQueue, grabbed, pending, report, PendingReleaseReason.DownloadClientUnavailable);
+
+                            if (downloadProtocol == DownloadProtocol.Usenet)
+                            {
+                                usenetFailed = true;
+                            }
+                            else if (downloadProtocol == DownloadProtocol.Torrent)
+                            {
+                                torrentFailed = true;
+                            }
+                        }
+                        else
+                        {
+                            _logger.Warn(ex, "Couldn't add report to download queue. " + remoteMovie);
+                        }
                     }
                 }
             }
@@ -121,8 +133,10 @@ namespace NzbDrone.Core.Download
         private bool IsMovieProcessed(List<DownloadDecision> decisions, DownloadDecision report)
         {
             var movieId = report.RemoteMovie.Movie.Id;
+            var profileId = report.ProfileId;
 
-            return decisions.Select(r => r.RemoteMovie.Movie)
+            return decisions.Where(d => d.ProfileId == profileId)
+                            .Select(r => r.RemoteMovie.Movie)
                             .Select(e => e.Id)
                             .ToList()
                             .Contains(movieId);

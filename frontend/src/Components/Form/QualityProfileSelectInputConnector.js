@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import createSortedSectionSelector from 'Store/Selectors/createSortedSectionSelector';
 import sortByName from 'Utilities/Array/sortByName';
-import SelectInput from './SelectInput';
+import EnhancedSelectInput from './EnhancedSelectInput';
 
 function createMapStateToProps() {
   return createSelector(
@@ -46,39 +46,13 @@ function createMapStateToProps() {
 class QualityProfileSelectInputConnector extends Component {
 
   //
-  // Lifecycle
-
-  componentDidMount() {
-    const {
-      name,
-      value,
-      values
-    } = this.props;
-
-    if (!value || !values.some((v) => v.key === value) ) {
-      const firstValue = _.find(values, (option) => !isNaN(parseInt(option.key)));
-
-      if (firstValue) {
-        this.onChange({ name, value: firstValue.key });
-      }
-    }
-  }
-
-  //
-  // Listeners
-
-  onChange = ({ name, value }) => {
-    this.props.onChange({ name, value: parseInt(value) });
-  };
-
-  //
   // Render
 
   render() {
     return (
-      <SelectInput
+      <EnhancedSelectInput
         {...this.props}
-        onChange={this.onChange}
+        onChange={this.props.onChange}
       />
     );
   }
@@ -86,7 +60,7 @@ class QualityProfileSelectInputConnector extends Component {
 
 QualityProfileSelectInputConnector.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  value: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.arrayOf(PropTypes.string)]),
   values: PropTypes.arrayOf(PropTypes.object).isRequired,
   includeNoChange: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired

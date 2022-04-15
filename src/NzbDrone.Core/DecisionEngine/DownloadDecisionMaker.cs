@@ -68,7 +68,7 @@ namespace NzbDrone.Core.DecisionEngine
 
             foreach (var report in reports)
             {
-                DownloadDecision decision = null;
+                var decisions = new List<DownloadDecision>();
                 _logger.ProgressTrace("Processing release {0}/{1}", reportNumber, reports.Count);
                 _logger.Debug("Processing release '{0}' from '{1}'", report.Title, report.Indexer);
 
@@ -112,7 +112,7 @@ namespace NzbDrone.Core.DecisionEngine
                     if (result.MappingResultType != MappingResultType.Success)
                     {
                         var rejection = result.ToRejection();
-                        decision = new DownloadDecision(remoteMovie, rejection);
+                        decisions.Add(new DownloadDecision(remoteMovie, 0, rejection));
                     }
                     else
                     {
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.DecisionEngine
                             //remoteMovie.DownloadAllowed = true;
                             if (_configService.AllowHardcodedSubs)
                             {
-                                decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                                decisions = GetDecisionForReport(remoteMovie, searchCriteria);
                             }
                             else
                             {
@@ -129,11 +129,11 @@ namespace NzbDrone.Core.DecisionEngine
                                 _logger.Debug("Testing: {0}", whitelisted);
                                 if (whitelisted != null && whitelisted.Any(t => (parsedMovieInfo.Quality.HardcodedSubs.ToLower().Contains(t.ToLower()) && t.IsNotNullOrWhiteSpace())))
                                 {
-                                    decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                                    decisions = GetDecisionForReport(remoteMovie, searchCriteria);
                                 }
                                 else
                                 {
-                                    decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
+                                    decisions.Add(new DownloadDecision(remoteMovie, 0, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs)));
                                 }
                             }
                         }
@@ -141,7 +141,7 @@ namespace NzbDrone.Core.DecisionEngine
                         {
                             // _aggregationService.Augment(remoteMovie);
                             remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
-                            decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                            decisions = GetDecisionForReport(remoteMovie, searchCriteria);
                         }
                     }
                 }
@@ -150,44 +150,61 @@ namespace NzbDrone.Core.DecisionEngine
                     _logger.Error(e, "Couldn't process release.");
 
                     var remoteMovie = new RemoteMovie { Release = report };
-                    decision = new DownloadDecision(remoteMovie, new Rejection("Unexpected error processing release"));
+                    decisions.Add(new DownloadDecision(remoteMovie, 0, new Rejection("Unexpected error processing release")));
                 }
 
                 reportNumber++;
 
-                if (decision != null)
+                foreach (var decision in decisions)
                 {
-                    if (decision.Rejections.Any())
+                    if (decision != null)
                     {
-                        _logger.Debug("Release rejected for the following reasons: {0}", string.Join(", ", decision.Rejections));
-                    }
-                    else
-                    {
-                        _logger.Debug("Release accepted");
-                    }
+                        if (decision.Rejections.Any())
+                        {
+                            _logger.Debug("Release rejected for the following reasons: {0}", string.Join(", ", decision.Rejections));
+                        }
+                        else
+                        {
+                            _logger.Debug("Release accepted");
+                        }
 
-                    yield return decision;
+                        yield return decision;
+                    }
                 }
             }
         }
 
-        private DownloadDecision GetDecisionForReport(RemoteMovie remoteMovie, SearchCriteriaBase searchCriteria = null)
+        private List<DownloadDecision> GetDecisionForReport(RemoteMovie remoteMovie, SearchCriteriaBase searchCriteria = null)
         {
-            var reasons = _specifications.Select(c => EvaluateSpec(c, remoteMovie, searchCriteria))
+            var reasons = _specifications.SelectMany(c => EvaluateSpec(c, remoteMovie, searchCriteria))
                                          .Where(c => c != null);
 
-            return new DownloadDecision(remoteMovie, reasons.ToArray());
+            var decisions = new List<DownloadDecision>();
+
+            if (remoteMovie.Movie == null)
+            {
+                return new List<DownloadDecision> { new DownloadDecision(remoteMovie, 0, reasons.ToArray()) };
+            }
+
+            foreach (var profile in remoteMovie.Movie.QualityProfiles.Value)
+            {
+                decisions.Add(new DownloadDecision(remoteMovie, profile.Id, reasons.Where(x => x.ProfileId == profile.Id || x.ProfileId == 0).ToArray()));
+            }
+
+            return decisions;
         }
 
-        private Rejection EvaluateSpec(IDecisionEngineSpecification spec, RemoteMovie remoteMovie, SearchCriteriaBase searchCriteriaBase = null)
+        private List<Rejection> EvaluateSpec(IDecisionEngineSpecification spec, RemoteMovie remoteMovie, SearchCriteriaBase searchCriteriaBase = null)
         {
+            var rejections = new List<Rejection>();
+
             try
             {
-                var result = spec.IsSatisfiedBy(remoteMovie, searchCriteriaBase);
+                var results = spec.IsSatisfiedBy(remoteMovie, searchCriteriaBase);
 
-                if (!result.Accepted)
+                foreach (var result in results.Where(c => !c.Accepted))
                 {
-                    return new Rejection(result.Reason, spec.Type);
+                    rejections.Add(new Rejection(result.Reason, result.ProfileId, spec.Type));
                 }
             }
             catch (NotImplementedException)
@@ -199,10 +216,10 @@ namespace NzbDrone.Core.DecisionEngine
                 e.Data.Add("report", remoteMovie.Release.ToJson());
                 e.Data.Add("parsed", remoteMovie.ParsedMovieInfo.ToJson());
                 _logger.Error(e, "Couldn't evaluate decision on {0}, with spec: {1}", remoteMovie.Release.Title, spec.GetType().Name);
-                return new Rejection($"{spec.GetType().Name}: {e.Message}");
+                rejections.Add(new Rejection($"{spec.GetType().Name}: {e.Message}"));
             }
 
-            return null;
+            return rejections;
         }
     }
 }

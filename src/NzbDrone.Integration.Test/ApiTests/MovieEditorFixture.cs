@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
@@ -33,7 +34,7 @@ namespace NzbDrone.Integration.Test.ApiTests
 
             var movieEditor = new MovieEditorResource
             {
-                QualityProfileId = 2,
+                QualityProfileIds = new List<int> { 2 },
                 MovieIds = movies.Select(o => o.Id).ToList()
             };
 

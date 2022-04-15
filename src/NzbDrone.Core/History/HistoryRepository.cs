@@ -60,7 +60,6 @@ namespace NzbDrone.Core.History
         {
             var builder = new SqlBuilder(_database.DatabaseType)
                 .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id)
-                .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
                 .Where<MovieHistory>(h => h.MovieId == movieId);
 
             if (eventType.HasValue)
@@ -77,14 +76,12 @@ namespace NzbDrone.Core.History
         }
 
         protected override SqlBuilder PagedBuilder() => new SqlBuilder(_database.DatabaseType)
-            .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id)
-            .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id);
+            .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id);
 
         protected override IEnumerable<MovieHistory> PagedQuery(SqlBuilder sql) =>
-            _database.QueryJoined<MovieHistory, Movie, Profile>(sql, (hist, movie, profile) =>
+            _database.QueryJoined<MovieHistory, Movie>(sql, (hist, movie) =>
                     {
                         hist.Movie = movie;
-                        hist.Movie.Profile = profile;
                         return hist;
                     });
 
@@ -99,7 +96,6 @@ namespace NzbDrone.Core.History
         {
             var builder = new SqlBuilder(_database.DatabaseType)
                 .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id)
-                .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
                 .Where<MovieHistory>(x => x.Date >= date);
 
             if (eventType.HasValue)

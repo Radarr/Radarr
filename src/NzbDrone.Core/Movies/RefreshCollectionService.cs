@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Movies
                     {
                         TmdbId = m.TmdbId,
                         Title = m.Title,
-                        ProfileId = collection.QualityProfileId,
+                        QualityProfileIds = collection.QualityProfileIds,
                         RootFolderPath = collection.RootFolderPath,
                         MinimumAvailability = collection.MinimumAvailability,
                         AddOptions = new AddMovieOptions

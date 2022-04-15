@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Indexers;
@@ -20,7 +21,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        private Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             var torrentInfo = subject.Release as TorrentInfo;
 
@@ -49,7 +55,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 if (torrentInfo.Seeders.HasValue && torrentInfo.Seeders.Value < minimumSeeders)
                 {
                     _logger.Debug("Not enough seeders: {0}. Minimum seeders: {1}", torrentInfo.Seeders, minimumSeeders);
-                    return Decision.Reject("Not enough seeders: {0}. Minimum seeders: {1}", torrentInfo.Seeders, minimumSeeders);
+                    return Decision.Reject(string.Format("Not enough seeders: {0}. Minimum seeders: {1}", torrentInfo.Seeders, minimumSeeders));
                 }
             }
 

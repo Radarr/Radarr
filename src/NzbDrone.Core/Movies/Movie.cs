@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.MediaFiles;
@@ -13,13 +14,15 @@ namespace NzbDrone.Core.Movies
         {
             Tags = new HashSet<int>();
             MovieMetadata = new MovieMetadata();
+            QualityProfileIds = new List<int>();
         }
 
         public int MovieMetadataId { get; set; }
 
         public bool Monitored { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
-        public int ProfileId { get; set; }
+        public List<int> QualityProfileIds { get; set; }
+        public LazyLoaded<List<Profile>> QualityProfiles { get; set; }
 
         public string Path { get; set; }
 
@@ -27,13 +30,9 @@ namespace NzbDrone.Core.Movies
 
         public string RootFolderPath { get; set; }
         public DateTime Added { get; set; }
-        public Profile Profile { get; set; }
         public HashSet<int> Tags { get; set; }
         public AddMovieOptions AddOptions { get; set; }
-        public MovieFile MovieFile { get; set; }
-        public int MovieFileId { get; set; }
-
-        public bool HasFile => MovieFileId > 0;
+        public LazyLoaded<List<MovieFile>> MovieFiles { get; set; }
 
         //compatibility properties
         public string Title
@@ -58,6 +57,12 @@ namespace NzbDrone.Core.Movies
         {
             get { return MovieMetadata.Value.Year; }
             set { MovieMetadata.Value.Year = value; }
+        }
+
+        public Profile Profile
+        {
+            get { return QualityProfiles.Value.First(); }
+            set { QualityProfiles = new List<Profile> { value }; }
         }
 
         public string FolderName()
@@ -124,7 +129,7 @@ namespace NzbDrone.Core.Movies
         public void ApplyChanges(Movie otherMovie)
         {
             Path = otherMovie.Path;
-            ProfileId = otherMovie.ProfileId;
+            QualityProfileIds = otherMovie.QualityProfileIds;
 
             Monitored = otherMovie.Monitored;
             MinimumAvailability = otherMovie.MinimumAvailability;

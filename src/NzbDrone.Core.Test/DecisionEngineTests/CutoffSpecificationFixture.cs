@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void GivenFileQuality(QualityModel quality)
         {
-            _remoteMovie.Movie.MovieFile = Builder<MovieFile>.CreateNew().With(x => x.Quality = quality).Build();
+            _remoteMovie.Movie.MovieFiles = new List<MovieFile> { Builder<MovieFile>.CreateNew().With(x => x.Quality = quality).Build() };
         }
 
         private void GivenNewQuality(QualityModel quality)
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             });
 
             GivenFileQuality(new QualityModel(Quality.DVD, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().NotContain(x => !x.Accepted);
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             });
 
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -116,7 +116,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             });
 
             GivenFileQuality(new QualityModel(Quality.Bluray1080p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 1)));
             GivenNewQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().NotContain(x => !x.Accepted);
         }
 
         [Test]
@@ -146,7 +146,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             GivenFileQuality(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
             GivenNewQuality(new QualityModel(Quality.Bluray1080p, new Revision(version: 2)));
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenOldCustomFormats(new List<CustomFormat>());
             GivenNewCustomFormats(new List<CustomFormat> { _customFormat });
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenFileQuality(new QualityModel(Quality.WEBDL1080p, new Revision(version: 1)));
             GivenNewQuality(new QualityModel(Quality.WEBDL1080p, new Revision(version: 2)));
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().NotContain(x => !x.Accepted);
         }
 
         [Test]
@@ -201,7 +201,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenFileQuality(new QualityModel(Quality.WEBDL1080p));
             GivenNewQuality(new QualityModel(Quality.Bluray1080p));
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
     }
 }

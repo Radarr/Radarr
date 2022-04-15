@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
                 Title = "Series.Title.S01.720p.BluRay.X264-RlsGrp"
             };
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         // These tests are not needed anymore, since indexer settings are saved on the release itself!
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             _remoteMovie.Release.IndexerId = 0;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
                   .Setup(v => v.Get(It.IsAny<int>()))
                   .Callback<int>(i => { throw new ModelNotFoundException(typeof(IndexerDefinition), i); });
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             GivenReleaseSeeders(null);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [TestCase(5)]
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             GivenReleaseSeeders(seeders);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [TestCase(0)]
@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
         {
             GivenReleaseSeeders(seeders);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace NzbDrone.Core.IndexerSearch
                 InteractiveSearch = interactiveSearch
             };
 
-            var wantedLanguages = _profileService.GetAcceptableLanguages(movie.ProfileId);
+            var wantedLanguages = _profileService.GetAcceptableLanguages(movie.QualityProfileIds.First());
             var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
 
             var queryTranlations = new List<string>

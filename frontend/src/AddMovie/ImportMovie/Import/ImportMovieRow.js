@@ -11,7 +11,7 @@ function ImportMovieRow(props) {
   const {
     id,
     monitor,
-    qualityProfileId,
+    qualityProfileIds,
     minimumAvailability,
     selectedMovie,
     isExistingMovie,
@@ -62,8 +62,8 @@ function ImportMovieRow(props) {
       <VirtualTableRowCell className={styles.qualityProfile}>
         <FormInputGroup
           type={inputTypes.QUALITY_PROFILE_SELECT}
-          name="qualityProfileId"
-          value={qualityProfileId}
+          name="qualityProfileIds"
+          value={qualityProfileIds}
           onChange={onInputChange}
         />
       </VirtualTableRowCell>
@@ -74,7 +74,7 @@ function ImportMovieRow(props) {
 ImportMovieRow.propTypes = {
   id: PropTypes.string.isRequired,
   monitor: PropTypes.string.isRequired,
-  qualityProfileId: PropTypes.number.isRequired,
+  qualityProfileIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   minimumAvailability: PropTypes.string.isRequired,
   selectedMovie: PropTypes.object,
   isExistingMovie: PropTypes.bool.isRequired,

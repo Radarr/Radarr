@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -27,7 +28,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             new Regex(@"(?<!^)(?<identifier>[ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[a-d]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase),
         };
 
-        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        public IEnumerable<Decision> IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        {
+            return new List<Decision> { Calculate(localMovie, downloadClientItem) };
+        }
+
+        private Decision Calculate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             var regexReplace = MovieMultiPartRegex.First().Replace(localMovie.Path, "");
 

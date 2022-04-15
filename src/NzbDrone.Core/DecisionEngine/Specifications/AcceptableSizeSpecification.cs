@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
@@ -20,7 +21,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        private Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             _logger.Debug("Beginning size check for: {0}", subject);
 
@@ -53,7 +59,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                     var runtimeMessage = subject.Movie.Title;
 
                     _logger.Debug("Item: {0}, Size: {1} is smaller than minimum allowed size ({2} bytes for {3}), rejecting.", subject, subject.Release.Size, minSize, runtimeMessage);
-                    return Decision.Reject("{0} is smaller than minimum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), minSize.SizeSuffix(), runtimeMessage);
+                    return Decision.Reject(string.Format("{0} is smaller than minimum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), minSize.SizeSuffix(), runtimeMessage));
                 }
             }
 
@@ -77,7 +83,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 if (subject.Release.Size > maxSize)
                 {
                     _logger.Debug("Item: {0}, Size: {1} is greater than maximum allowed size ({2} for {3}), rejecting", subject, subject.Release.Size, maxSize, subject.Movie.Title);
-                    return Decision.Reject("{0} is larger than maximum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), maxSize.SizeSuffix(), subject.Movie.Title);
+                    return Decision.Reject(string.Format("{0} is larger than maximum allowed {1} (for {2})", subject.Release.Size.SizeSuffix(), maxSize.SizeSuffix(), subject.Movie.Title));
                 }
             }
 

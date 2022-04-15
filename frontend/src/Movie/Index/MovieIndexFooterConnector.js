@@ -14,16 +14,14 @@ function createUnoptimizedSelector() {
           monitored,
           status,
           statistics,
-          sizeOnDisk,
-          hasFile
+          sizeOnDisk
         } = s;
 
         return {
           monitored,
           status,
           statistics,
-          sizeOnDisk,
-          hasFile
+          sizeOnDisk
         };
       });
     }

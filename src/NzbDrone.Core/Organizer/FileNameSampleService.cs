@@ -64,8 +64,7 @@ namespace NzbDrone.Core.Organizer
 
             _movie = new Movie
             {
-                MovieFile = _movieFile,
-                MovieFileId = 1,
+                MovieFiles = new List<MovieFile> { _movieFile },
                 MovieMetadata = _movieMetadata,
                 MovieMetadataId = 1
             };

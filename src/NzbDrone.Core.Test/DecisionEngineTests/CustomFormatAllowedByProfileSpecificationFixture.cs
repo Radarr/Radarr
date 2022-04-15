@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie.Movie.Profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name);
             _remoteMovie.CustomFormatScore = _remoteMovie.Movie.Profile.CalculateCustomFormatScore(_remoteMovie.CustomFormats);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Console.WriteLine(_remoteMovie.CustomFormatScore);
             Console.WriteLine(_remoteMovie.Movie.Profile.MinFormatScore);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie.Movie.Profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name);
             _remoteMovie.CustomFormatScore = _remoteMovie.Movie.Profile.CalculateCustomFormatScore(_remoteMovie.CustomFormats);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie.Movie.Profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name, _format2.Name);
             _remoteMovie.CustomFormatScore = _remoteMovie.Movie.Profile.CalculateCustomFormatScore(_remoteMovie.CustomFormats);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie.Movie.Profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(_format1.Name, _format2.Name);
             _remoteMovie.CustomFormatScore = _remoteMovie.Movie.Profile.CalculateCustomFormatScore(_remoteMovie.CustomFormats);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _remoteMovie.Movie.Profile.MinFormatScore = 0;
             _remoteMovie.CustomFormatScore = _remoteMovie.Movie.Profile.CalculateCustomFormatScore(_remoteMovie.CustomFormats);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
     }
 }

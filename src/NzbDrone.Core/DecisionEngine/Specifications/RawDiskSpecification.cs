@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
@@ -28,7 +29,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public virtual Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public virtual IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        private Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             if (subject.Release == null)
             {

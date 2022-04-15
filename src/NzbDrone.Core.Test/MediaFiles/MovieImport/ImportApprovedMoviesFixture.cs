@@ -115,20 +115,6 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         }
 
         [Test]
-        public void should_only_import_each_movie_once()
-        {
-            GivenExistingFileOnDisk();
-
-            var all = new List<ImportDecision>();
-            all.AddRange(_approvedDecisions);
-            all.Add(new ImportDecision(_approvedDecisions.First().LocalMovie));
-
-            var result = Subject.Import(all, false);
-
-            result.Where(i => i.Result == ImportResultType.Imported).Should().HaveCount(_approvedDecisions.Count);
-        }
-
-        [Test]
         public void should_move_new_downloads()
         {
             Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);

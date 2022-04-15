@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Core.Configuration;
@@ -27,7 +28,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Database;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public virtual IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        private Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             var cdhEnabled = _configService.EnableCompletedDownloadHandling;
 
@@ -42,7 +48,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             _logger.Debug("Performing already imported check on report");
             if (movie != null)
             {
-                if (!movie.HasFile)
+                if (!movie.MovieFiles?.Value.Any() ?? true)
                 {
                     _logger.Debug("Skipping already imported check for movie without file");
                     return Decision.Accept();

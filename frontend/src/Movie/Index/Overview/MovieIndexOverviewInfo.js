@@ -79,13 +79,13 @@ function getInfoRowProps(row, props) {
     };
   }
 
-  if (name === 'qualityProfileId') {
-    return {
-      title: 'Quality Profile',
-      iconName: icons.PROFILE,
-      label: props.qualityProfile.name
-    };
-  }
+  // if (name === 'qualityProfileId') {
+  //   return {
+  //     title: 'Quality Profile',
+  //     iconName: icons.PROFILE,
+  //     label: props.qualityProfile.name
+  //   };
+  // }
 
   if (name === 'added') {
     const {

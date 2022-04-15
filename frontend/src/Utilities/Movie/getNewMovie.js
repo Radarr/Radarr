@@ -3,7 +3,7 @@ function getNewMovie(movie, payload) {
   const {
     rootFolderPath,
     monitor,
-    qualityProfileId,
+    qualityProfileIds,
     minimumAvailability,
     tags,
     searchForMovie = false
@@ -16,7 +16,7 @@ function getNewMovie(movie, payload) {
 
   movie.addOptions = addOptions;
   movie.monitored = monitor !== 'none';
-  movie.qualityProfileId = qualityProfileId;
+  movie.qualityProfileIds = qualityProfileIds;
   movie.minimumAvailability = minimumAvailability;
   movie.rootFolderPath = rootFolderPath;
   movie.tags = tags;

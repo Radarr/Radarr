@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
@@ -17,7 +18,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        public IEnumerable<Decision> IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        {
+            return new List<Decision> { Calculate(localMovie, downloadClientItem) };
+        }
+
+        private Decision Calculate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             if (localMovie.ExistingFile)
             {

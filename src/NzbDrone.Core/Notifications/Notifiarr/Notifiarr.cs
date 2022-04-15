@@ -158,9 +158,10 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             variables.Add("Radarr_Movie_ImdbId", movie.MovieMetadata.Value.ImdbId ?? string.Empty);
             variables.Add("Radarr_Movie_TmdbId", movie.MovieMetadata.Value.TmdbId.ToString());
             variables.Add("Radarr_Movie_DeletedFiles", deleteMessage.DeletedFiles.ToString());
-            if (deleteMessage.DeletedFiles && movie.MovieFile != null)
+
+            if (deleteMessage.DeletedFiles && movie.MovieFiles != null)
             {
-                variables.Add("Radarr_Movie_Folder_Size", movie.MovieFile.Size.ToString());
+                variables.Add("Radarr_Movie_Folder_Size", movie.MovieFiles.Value.Select(f => f.Size).Sum().ToString());
             }
 
             _proxy.SendNotification(variables, Settings);

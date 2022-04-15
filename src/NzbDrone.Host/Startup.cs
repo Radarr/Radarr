@@ -160,6 +160,11 @@ namespace NzbDrone.Host
                 });
             });
 
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.CustomSchemaIds(x => x.FullName);
+            });
+
             services
             .AddSignalR()
             .AddJsonProtocol(options =>

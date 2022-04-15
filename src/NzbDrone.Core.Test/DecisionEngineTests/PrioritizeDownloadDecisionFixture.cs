@@ -98,8 +98,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p, new Revision(version: 1, real: 1)));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Revision.Real.Should().Be(1);
@@ -112,8 +112,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p, new Revision(version: 2)));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Revision.Version.Should().Be(2);
@@ -126,8 +126,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p));
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Quality.Should().Be(Quality.HDTV720p);
@@ -142,10 +142,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovieHdLargeYoung = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), size: 3000.Megabytes(), age: 1);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovieSd));
-            decisions.Add(new DownloadDecision(remoteMovieHdSmallOld));
-            decisions.Add(new DownloadDecision(remoteMovieSmallYoung));
-            decisions.Add(new DownloadDecision(remoteMovieHdLargeYoung));
+            decisions.Add(new DownloadDecision(remoteMovieSd, 1));
+            decisions.Add(new DownloadDecision(remoteMovieHdSmallOld, 1));
+            decisions.Add(new DownloadDecision(remoteMovieSmallYoung, 1));
+            decisions.Add(new DownloadDecision(remoteMovieHdLargeYoung, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Should().Be(remoteMovieHdLargeYoung);
@@ -161,8 +161,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovieLarge = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), size: 15000.Megabytes(), age: 1);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovieSmall));
-            decisions.Add(new DownloadDecision(remoteMovieLarge));
+            decisions.Add(new DownloadDecision(remoteMovieSmall, 1));
+            decisions.Add(new DownloadDecision(remoteMovieLarge, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Should().Be(remoteMovieSmall);
@@ -178,8 +178,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovieLarge = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), size: 15000.Megabytes(), age: 1, runtime: 0);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovieSmall));
-            decisions.Add(new DownloadDecision(remoteMovieLarge));
+            decisions.Add(new DownloadDecision(remoteMovieSmall, 1));
+            decisions.Add(new DownloadDecision(remoteMovieLarge, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Should().Be(remoteMovieLarge);
@@ -195,8 +195,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovieLarge = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), size: 15000.Megabytes(), age: 1);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovieSmall));
-            decisions.Add(new DownloadDecision(remoteMovieLarge));
+            decisions.Add(new DownloadDecision(remoteMovieSmall, 1));
+            decisions.Add(new DownloadDecision(remoteMovieLarge, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Should().Be(remoteMovieLarge);
@@ -214,10 +214,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovie4 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), size: 15000.Megabytes(), age: 1);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
-            decisions.Add(new DownloadDecision(remoteMovie3));
-            decisions.Add(new DownloadDecision(remoteMovie4));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
+            decisions.Add(new DownloadDecision(remoteMovie3, 1));
+            decisions.Add(new DownloadDecision(remoteMovie4, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Should().Be(remoteMovie3);
@@ -230,8 +230,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), age: 5);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Should().Be(remoteMovie2);
@@ -246,8 +246,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), downloadProtocol: DownloadProtocol.Usenet);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Release.DownloadProtocol.Should().Be(DownloadProtocol.Usenet);
@@ -262,8 +262,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovie2 = GivenRemoteMovie(new QualityModel(Quality.HDTV720p), downloadProtocol: DownloadProtocol.Usenet);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Release.DownloadProtocol.Should().Be(DownloadProtocol.Torrent);
@@ -290,8 +290,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.Release.Title = "A Movie 1998";
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             ((TorrentInfo)qualifiedReports.First().RemoteMovie.Release).Seeders.Should().Be(torrentInfo2.Seeders);
@@ -319,8 +319,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.Release.Title = "A Movie 1998";
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             ((TorrentInfo)qualifiedReports.First().RemoteMovie.Release).Peers.Should().Be(torrentInfo2.Peers);
@@ -349,8 +349,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.Release.Title = "A Movie 1998";
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             ((TorrentInfo)qualifiedReports.First().RemoteMovie.Release).Peers.Should().Be(torrentInfo2.Peers);
@@ -380,8 +380,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.Release.Title = "A Movie 1998";
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             ((TorrentInfo)qualifiedReports.First().RemoteMovie.Release).Should().Be(torrentInfo1);
@@ -400,8 +400,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.Release.Size = 250.Megabytes();
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Release.Should().Be(remoteMovie1.Release);
@@ -419,8 +419,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.CustomFormatScore = remoteMovie2.Movie.Profile.CalculateCustomFormatScore(remoteMovie2.CustomFormats);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Release.Should().Be(remoteMovie2.Release);
@@ -440,8 +440,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.CustomFormatScore = remoteMovie2.Movie.Profile.CalculateCustomFormatScore(remoteMovie2.CustomFormats);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Release.Should().Be(remoteMovie2.Release);
@@ -459,8 +459,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.CustomFormatScore = remoteMovie2.Movie.Profile.CalculateCustomFormatScore(remoteMovie2.CustomFormats);
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Release.Should().Be(remoteMovie2.Release);
@@ -480,8 +480,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.CustomFormatScore = 0;
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Revision.Version.Should().Be(2);
@@ -501,8 +501,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.CustomFormatScore = 0;
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Revision.Version.Should().Be(2);
@@ -522,8 +522,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.CustomFormatScore = 0;
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Quality.Should().Be(Quality.WEBDL1080p);
@@ -545,8 +545,8 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie2.CustomFormatScore = 0;
 
             var decisions = new List<DownloadDecision>();
-            decisions.Add(new DownloadDecision(remoteMovie1));
-            decisions.Add(new DownloadDecision(remoteMovie2));
+            decisions.Add(new DownloadDecision(remoteMovie1, 1));
+            decisions.Add(new DownloadDecision(remoteMovie2, 1));
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.ParsedMovieInfo.Quality.Quality.Should().Be(Quality.WEBDL1080p);
@@ -563,7 +563,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovie3 = GivenRemoteMovie(new QualityModel(Quality.WEBDL1080p), indexerPriority: 1);
 
             var decisions = new List<DownloadDecision>();
-            decisions.AddRange(new[] { new DownloadDecision(remoteMovie1), new DownloadDecision(remoteMovie2), new DownloadDecision(remoteMovie3) });
+            decisions.AddRange(new[] { new DownloadDecision(remoteMovie1, 1), new DownloadDecision(remoteMovie2, 1), new DownloadDecision(remoteMovie3, 1) });
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Should().Be(remoteMovie3);
@@ -580,7 +580,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var remoteMovie4 = GivenRemoteMovie(new QualityModel(Quality.WEBDL1080p), indexerPriority: 25);
 
             var decisions = new List<DownloadDecision>();
-            decisions.AddRange(new[] { new DownloadDecision(remoteMovie1), new DownloadDecision(remoteMovie2), new DownloadDecision(remoteMovie3), new DownloadDecision(remoteMovie4) });
+            decisions.AddRange(new[] { new DownloadDecision(remoteMovie1, 1), new DownloadDecision(remoteMovie2, 1), new DownloadDecision(remoteMovie3, 1), new DownloadDecision(remoteMovie4, 1) });
 
             var qualifiedReports = Subject.PrioritizeDecisionsForMovies(decisions);
             qualifiedReports.First().RemoteMovie.Should().Be(remoteMovie4);
