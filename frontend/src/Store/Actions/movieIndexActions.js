@@ -99,8 +99,8 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'qualityProfileId',
-      label: () => translate('QualityProfile'),
+      name: 'qualityProfileIds',
+      label: () => translate('QualityProfiles'),
       isSortable: true,
       isVisible: true
     },
@@ -358,9 +358,9 @@ export const defaultState = {
       }
     },
     {
-      name: 'qualityProfileId',
+      name: 'qualityProfileIds',
       label: () => translate('QualityProfile'),
-      type: filterBuilderTypes.EXACT,
+      type: filterBuilderTypes.ARRAY,
       valueType: filterBuilderValueTypes.QUALITY_PROFILE
     },
     {

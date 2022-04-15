@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -37,12 +38,16 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
                                                  .With(d => d.PreferredProtocol = DownloadProtocol.Usenet)
                                                  .Build();
 
-            var series = Builder<Movie>.CreateNew()
+            var movie = Builder<Movie>.CreateNew()
                                         .With(s => s.QualityProfile = _profile)
                                         .Build();
 
+            var movieFile = Builder<MovieFile>.CreateNew().With(f => f.MovieId == movie.Id).Build();
+
+            movie.MovieFiles = new List<MovieFile> { movieFile };
+
             _remoteMovie = Builder<RemoteMovie>.CreateNew()
-                                                   .With(r => r.Movie = series)
+                                                   .With(r => r.Movie = movie)
                                                    .Build();
 
             _profile.Items = new List<QualityProfileQualityItem>();
@@ -68,7 +73,9 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         private void GivenExistingFile(QualityModel quality)
         {
             // _remoteEpisode.Episodes.First().EpisodeFileId = 1;
-            _remoteMovie.Movie.MovieFile = new MovieFile { Quality = quality };
+            var movieFile = new MovieFile { Quality = quality };
+
+            _remoteMovie.Movie.MovieFiles = new List<MovieFile> { movieFile };
         }
 
         private void GivenUpgradeForExistingFile()
@@ -81,7 +88,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_user_invoked_search()
         {
-            Subject.IsSatisfiedBy(new RemoteMovie(), new MovieSearchCriteria() { UserInvokedSearch = true }).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(new RemoteMovie(), new MovieSearchCriteria() { UserInvokedSearch = true }).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -92,7 +99,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteMovie, new MovieSearchCriteria()).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, new MovieSearchCriteria()).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -100,7 +107,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         {
             _delayProfile.UsenetDelay = 0;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -111,7 +118,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -123,7 +130,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _remoteMovie.Release.PublishDate = DateTime.UtcNow;
             _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray720p);
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -134,7 +141,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 60;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -145,7 +152,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -163,7 +170,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -181,7 +188,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -194,7 +201,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
 
             _delayProfile.UsenetDelay = 720;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -206,7 +213,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _delayProfile.UsenetDelay = 720;
             _delayProfile.MinimumCustomFormatScore = 50;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).All(x => x.Accepted).Should().BeFalse();
         }
 
         [Test]
@@ -219,7 +226,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _delayProfile.BypassIfAboveCustomFormatScore = true;
             _delayProfile.MinimumCustomFormatScore = 50;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).All(x => x.Accepted).Should().BeFalse();
         }
 
         [Test]
@@ -232,7 +239,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _delayProfile.BypassIfAboveCustomFormatScore = true;
             _delayProfile.MinimumCustomFormatScore = 50;
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).All(x => x.Accepted).Should().BeTrue();
         }
     }
 }

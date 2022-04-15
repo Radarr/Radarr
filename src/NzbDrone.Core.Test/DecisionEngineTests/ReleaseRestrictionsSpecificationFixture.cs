@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Setup(s => s.EnabledForTags(It.IsAny<HashSet<int>>(), It.IsAny<int>()))
                   .Returns(new List<ReleaseProfile>());
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(new List<string> { "WEBRip" }, new List<string>());
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(new List<string> { "doesnt", "exist" }, new List<string>());
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(new List<string>(), new List<string> { "ignored" });
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(new List<string>(), new List<string> { "edited" });
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [TestCase("EdiTED")]
@@ -98,7 +98,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(required.Split(',').ToList(), new List<string>());
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [TestCase("EdiTED")]
@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(new List<string>(), ignored.Split(',').ToList());
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                }
                            });
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [TestCase("/WEB/", true)]
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenRestictions(pattern.Split(',').ToList(), new List<string>());
 
-            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().Be(expected);
+            Subject.IsSatisfiedBy(_remoteMovie, null).Should().OnlyContain(x => x.Accepted == expected);
         }
     }
 }

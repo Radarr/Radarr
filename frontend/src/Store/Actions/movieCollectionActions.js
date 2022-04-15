@@ -49,7 +49,7 @@ export const defaultState = {
   defaults: {
     rootFolderPath: '',
     monitor: 'movieOnly',
-    qualityProfileId: 0,
+    qualityProfileIds: [0],
     minimumAvailability: 'announced',
     searchForMovie: true,
     tags: []

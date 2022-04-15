@@ -13,6 +13,7 @@ import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
 import MovieIndexPosterSelect from 'Movie/Index/Select/MovieIndexPosterSelect';
+import { Statistics } from 'Movie/Movie';
 import MoviePoster from 'Movie/MoviePoster';
 import { executeCommand } from 'Store/Actions/commandActions';
 import dimensions from 'Styles/Variables/dimensions';
@@ -67,15 +68,16 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
     path,
     overview,
     images,
-    hasFile,
     isAvailable,
+    statistics = {} as Statistics,
     tmdbId,
     imdbId,
     studio,
-    sizeOnDisk,
     added,
     youTubeTrailerId,
   } = movie;
+
+  const { movieFileCount } = statistics;
 
   const dispatch = useDispatch();
   const [isEditMovieModalOpen, setIsEditMovieModalOpen] = useState(false);
@@ -151,9 +153,8 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
 
           <MovieIndexProgressBar
             movieId={movieId}
-            movieFile={movie.movieFile}
+            movieFileCount={movieFileCount}
             monitored={monitored}
-            hasFile={hasFile}
             isAvailable={isAvailable}
             status={status}
             width={posterWidth}
@@ -223,7 +224,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
               monitored={monitored}
               qualityProfile={qualityProfile}
               studio={studio}
-              sizeOnDisk={sizeOnDisk}
+              sizeOnDisk={statistics.sizeOnDisk}
               added={added}
               path={path}
               sortKey={sortKey}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -21,7 +22,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
         public SpecificationPriority Priority => SpecificationPriority.Default;
         public RejectionType Type => RejectionType.Permanent;
 
-        public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        public IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
+        {
+            return new List<Decision> { Calculate(subject, searchCriteria) };
+        }
+
+        private Decision Calculate(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
             var hardcodeSubs = subject.ParsedMovieInfo.HardcodedSubs;
 
@@ -40,7 +46,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             else
             {
                 _logger.Debug("Hardcode subs found: {0}", hardcodeSubs);
-                return Decision.Reject("Hardcode subs found: {0}", hardcodeSubs);
+                return Decision.Reject(string.Format("Hardcode subs found: {0}", hardcodeSubs));
             }
         }
     }

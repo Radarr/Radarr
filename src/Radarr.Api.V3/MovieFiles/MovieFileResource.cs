@@ -85,7 +85,8 @@ namespace Radarr.Api.V3.MovieFiles
                 ReleaseGroup = model.ReleaseGroup,
                 MediaInfo = model.MediaInfo.ToResource(model.SceneName),
                 QualityCutoffNotMet = upgradableSpecification?.QualityCutoffNotMet(movie.QualityProfile, model.Quality) ?? false,
-                OriginalFilePath = model.OriginalFilePath
+                OriginalFilePath = model.OriginalFilePath,
+                CustomFormats = formatCalculationService.ParseCustomFormat(model).ToResource(false)
             };
 
             if (formatCalculationService != null)

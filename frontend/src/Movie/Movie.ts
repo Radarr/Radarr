@@ -1,6 +1,5 @@
 import ModelBase from 'App/ModelBase';
 import Language from 'Language/Language';
-import { MovieFile } from 'MovieFile/MovieFile';
 
 export interface Image {
   coverType: string;
@@ -19,6 +18,12 @@ export interface Ratings {
   rottenTomatoes: object;
 }
 
+export interface Statistics {
+  movieFileCount: number;
+  releaseGroups: string[];
+  sizeOnDisk: number;
+}
+
 interface Movie extends ModelBase {
   tmdbId: number;
   imdbId: string;
@@ -31,7 +36,8 @@ interface Movie extends ModelBase {
   titleSlug: string;
   collection: Collection;
   studio: string;
-  qualityProfileId: number;
+  qualityProfileIds: number[];
+  qualityProfile: object;
   added: string;
   year: number;
   inCinemas: string;
@@ -42,15 +48,13 @@ interface Movie extends ModelBase {
   runtime: number;
   minimumAvailability: string;
   path: string;
-  sizeOnDisk: number;
   genres: string[];
   ratings: Ratings;
   popularity: number;
   certification: string;
   tags: number[];
   images: Image[];
-  movieFile: MovieFile;
-  hasFile: boolean;
+  statistics: Statistics;
   isAvailable: boolean;
   isSaving?: boolean;
 }

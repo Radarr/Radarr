@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using NLog;
 using NzbDrone.Common.Disk;
@@ -22,7 +23,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        public IEnumerable<Decision> IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        {
+            return new List<Decision> { Calculate(localMovie, downloadClientItem) };
+        }
+
+        private Decision Calculate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             if (_configService.SkipFreeSpaceCheckWhenImporting)
             {

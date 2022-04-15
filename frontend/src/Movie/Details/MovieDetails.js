@@ -262,7 +262,7 @@ class MovieDetails extends Component {
       ratings,
       path,
       sizeOnDisk,
-      qualityProfileId,
+      qualityProfileIds,
       monitored,
       studio,
       genres,
@@ -557,7 +557,7 @@ class MovieDetails extends Component {
                     <span className={styles.qualityProfileName}>
                       {
                         <QualityProfileNameConnector
-                          qualityProfileId={qualityProfileId}
+                          qualityProfileIds={qualityProfileIds}
                         />
                       }
                     </span>
@@ -798,7 +798,7 @@ MovieDetails.propTypes = {
   ratings: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
   sizeOnDisk: PropTypes.number.isRequired,
-  qualityProfileId: PropTypes.number.isRequired,
+  qualityProfileIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   monitored: PropTypes.bool.isRequired,
   status: PropTypes.string.isRequired,
   studio: PropTypes.string,

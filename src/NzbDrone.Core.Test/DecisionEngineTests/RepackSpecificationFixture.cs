@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
@@ -29,7 +30,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                            .Build();
 
             _movie = Builder<Movie>.CreateNew()
-                                        .With(e => e.MovieFileId = 0)
                                         .Build();
         }
 
@@ -41,10 +41,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -52,99 +49,93 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             _parsedMovieInfo.Quality.Revision.IsRepack = true;
 
+            _movie.MovieFiles = new List<MovieFile> { };
+
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_return_true_if_is_a_repack_for_a_different_quality()
         {
             _parsedMovieInfo.Quality.Revision.IsRepack = true;
-            _movie.MovieFileId = 1;
-            _movie.MovieFile = Builder<MovieFile>.CreateNew()
-                                                                .With(e => e.Quality = new QualityModel(Quality.DVD))
-                                                                .With(e => e.ReleaseGroup = "Radarr")
-                                                                .Build();
+            var moviefile = Builder<MovieFile>.CreateNew()
+                                              .With(e => e.Quality = new QualityModel(Quality.DVD))
+                                              .With(e => e.ReleaseGroup = "Radarr")
+                                              .Build();
+
+            _movie.MovieFiles = new List<MovieFile> { moviefile };
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_return_true_if_is_a_repack_for_existing_file()
         {
             _parsedMovieInfo.Quality.Revision.IsRepack = true;
-            _movie.MovieFileId = 1;
-            _movie.MovieFile = Builder<MovieFile>.CreateNew()
+
+            var movieFile = Builder<MovieFile>.CreateNew()
                                                  .With(e => e.Quality = new QualityModel(Quality.SDTV))
                                                  .With(e => e.ReleaseGroup = "Radarr")
                                                  .Build();
+
+            _movie.MovieFiles = new List<MovieFile> { movieFile };
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_return_false_if_is_a_repack_for_a_different_file()
         {
             _parsedMovieInfo.Quality.Revision.IsRepack = true;
-            _movie.MovieFileId = 1;
-            _movie.MovieFile = Builder<MovieFile>.CreateNew()
+
+            var movieFile = Builder<MovieFile>.CreateNew()
                                                  .With(e => e.Quality = new QualityModel(Quality.SDTV))
                                                  .With(e => e.ReleaseGroup = "NotRadarr")
                                                  .Build();
+
+            _movie.MovieFiles = new List<MovieFile> { movieFile };
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeFalse();
+            Subject.IsSatisfiedBy(remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
         public void should_return_false_if_release_group_for_existing_file_is_unknown()
         {
             _parsedMovieInfo.Quality.Revision.IsRepack = true;
-            _movie.MovieFileId = 1;
-            _movie.MovieFile = Builder<MovieFile>.CreateNew()
+
+            var movieFile = Builder<MovieFile>.CreateNew()
                                                  .With(e => e.Quality = new QualityModel(Quality.SDTV))
                                                  .With(e => e.ReleaseGroup = "")
                                                  .Build();
+
+            _movie.MovieFiles = new List<MovieFile> { movieFile };
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeFalse();
+            Subject.IsSatisfiedBy(remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -153,21 +144,19 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _parsedMovieInfo.Quality.Revision.IsRepack = true;
             _parsedMovieInfo.ReleaseGroup = null;
 
-            _movie.MovieFileId = 1;
-            _movie.MovieFile = Builder<MovieFile>.CreateNew()
+            var movieFile = Builder<MovieFile>.CreateNew()
                                                  .With(e => e.Quality = new QualityModel(Quality.SDTV))
                                                  .With(e => e.ReleaseGroup = "Radarr")
                                                  .Build();
+
+            _movie.MovieFiles = new List<MovieFile> { movieFile };
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeFalse();
+            Subject.IsSatisfiedBy(remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -178,21 +167,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Returns(ProperDownloadTypes.DoNotUpgrade);
 
             _parsedMovieInfo.Quality.Revision.IsRepack = true;
-            _movie.MovieFileId = 1;
-            _movie.MovieFile = Builder<MovieFile>.CreateNew()
-                                                 .With(e => e.Quality = new QualityModel(Quality.SDTV))
-                                                 .With(e => e.ReleaseGroup = "Radarr")
-                                                 .Build();
+
+            var movieFile = Builder<MovieFile>.CreateNew()
+                                     .With(e => e.Quality = new QualityModel(Quality.SDTV))
+                                     .With(e => e.ReleaseGroup = "Radarr")
+                                     .Build();
+
+            _movie.MovieFiles = new List<MovieFile> { movieFile };
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeFalse();
+            Subject.IsSatisfiedBy(remoteMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -203,21 +191,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Returns(ProperDownloadTypes.PreferAndUpgrade);
 
             _parsedMovieInfo.Quality.Revision.IsRepack = true;
-            _movie.MovieFileId = 1;
-            _movie.MovieFile = Builder<MovieFile>.CreateNew()
-                                                 .With(e => e.Quality = new QualityModel(Quality.SDTV))
-                                                 .With(e => e.ReleaseGroup = "Radarr")
-                                                 .Build();
+
+            var movieFile = Builder<MovieFile>.CreateNew()
+                                     .With(e => e.Quality = new QualityModel(Quality.SDTV))
+                                     .With(e => e.ReleaseGroup = "Radarr")
+                                     .Build();
+
+            _movie.MovieFiles = new List<MovieFile> { movieFile };
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -228,21 +215,20 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Returns(ProperDownloadTypes.DoNotPrefer);
 
             _parsedMovieInfo.Quality.Revision.IsRepack = true;
-            _movie.MovieFileId = 1;
-            _movie.MovieFile = Builder<MovieFile>.CreateNew()
-                                                 .With(e => e.Quality = new QualityModel(Quality.SDTV))
-                                                 .With(e => e.ReleaseGroup = "Radarr")
-                                                 .Build();
+
+            var movieFile = Builder<MovieFile>.CreateNew()
+                                     .With(e => e.Quality = new QualityModel(Quality.SDTV))
+                                     .With(e => e.ReleaseGroup = "Radarr")
+                                     .Build();
+
+            _movie.MovieFiles = new List<MovieFile> { movieFile };
 
             var remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                       .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
                                                       .With(e => e.Movie = _movie)
                                                       .Build();
 
-            Subject.IsSatisfiedBy(remoteMovie, null)
-                   .Accepted
-                   .Should()
-                   .BeTrue();
+            Subject.IsSatisfiedBy(remoteMovie, null).Should().OnlyContain(x => x.Accepted);
         }
     }
 }

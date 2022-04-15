@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Extensions;
@@ -16,7 +17,12 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             _logger = logger;
         }
 
-        public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        public IEnumerable<Decision> IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        {
+            return new List<Decision> { Calculate(localMovie, downloadClientItem) };
+        }
+
+        public Decision Calculate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             if (localMovie.ExistingFile)
             {
@@ -34,7 +40,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             {
                 _logger.Debug("Unexpected movie(s) in file: {0}", localMovie.Movie.ToString());
 
-                return Decision.Reject("Movie {0} was not found in the grabbed release: {1}", localMovie.Movie.ToString(), releaseInfo.Title);
+                return Decision.Reject($"Movie {localMovie.Movie.ToString()} was not found in the grabbed release: {releaseInfo.Title}", 0);
             }
 
             return Decision.Accept();

@@ -107,8 +107,16 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
         public ImportDecision GetDecision(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
-            var reasons = _specifications.Select(c => EvaluateSpec(c, localMovie, downloadClientItem))
+            var reasons = _specifications.SelectMany(c => EvaluateSpec(c, localMovie, downloadClientItem))
                                          .Where(c => c != null);
+
+            foreach (var profile in localMovie.Movie.QualityProfiles.Value)
+            {
+                if (!reasons.Any(x => x.ProfileId == profile.Id || x.ProfileId == 0))
+                {
+                    return new ImportDecision(localMovie);
+                }
+            }
 
             return new ImportDecision(localMovie, reasons.ToArray());
         }
@@ -165,15 +173,17 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             return decision;
         }
 
-        private Rejection EvaluateSpec(IImportDecisionEngineSpecification spec, LocalMovie localMovie, DownloadClientItem downloadClientItem)
+        private List<Rejection> EvaluateSpec(IImportDecisionEngineSpecification spec, LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
+            var rejections = new List<Rejection>();
+
             try
             {
-                var result = spec.IsSatisfiedBy(localMovie, downloadClientItem);
+                var results = spec.IsSatisfiedBy(localMovie, downloadClientItem);
 
-                if (!result.Accepted)
+                foreach (var result in results.Where(c => !c.Accepted))
                 {
-                    return new Rejection(result.Reason);
+                    rejections.Add(new Rejection(result.Reason, result.ProfileId));
                 }
             }
             catch (NotImplementedException e)
@@ -184,10 +194,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             catch (Exception ex)
             {
                 _logger.Error(ex, "Couldn't evaluate decision on {0}", localMovie.Path);
-                return new Rejection($"{spec.GetType().Name}: {ex.Message}");
+                rejections.Add(new Rejection($"{spec.GetType().Name}: {ex.Message}"));
             }
 
-            return null;
+            return rejections;
         }
 
         private int GetNonSampleVideoFileCount(List<string> videoFiles, MovieMetadata movie)

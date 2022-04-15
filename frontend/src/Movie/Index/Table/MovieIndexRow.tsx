@@ -6,6 +6,7 @@ import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import QualityProfileList from 'Components/QualityProfileList';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
@@ -19,6 +20,7 @@ import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import createMovieIndexItemSelector from 'Movie/Index/createMovieIndexItemSelector';
+import { Statistics } from 'Movie/Movie';
 import MoviePopularityIndex from 'Movie/MoviePopularityIndex';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import { executeCommand } from 'Store/Actions/commandActions';
@@ -43,8 +45,9 @@ interface MovieIndexRowProps {
 function MovieIndexRow(props: MovieIndexRowProps) {
   const { movieId, columns, isSelectMode } = props;
 
-  const { movie, qualityProfile, isRefreshingMovie, isSearchingMovie } =
-    useSelector(createMovieIndexItemSelector(props.movieId));
+  const { movie, isRefreshingMovie, isSearchingMovie } = useSelector(
+    createMovieIndexItemSelector(props.movieId)
+  );
 
   const { showSearchAction } = useSelector(selectTableOptions);
 
@@ -66,8 +69,8 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     physicalRelease,
     runtime,
     minimumAvailability,
+    qualityProfileIds,
     path,
-    sizeOnDisk,
     genres = [],
     ratings,
     popularity,
@@ -76,11 +79,12 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     tmdbId,
     imdbId,
     isAvailable,
-    hasFile,
-    movieFile,
+    statistics = {} as Statistics,
     youTubeTrailerId,
     isSaving = false,
   } = movie;
+
+  const { movieFileCount, sizeOnDisk } = statistics;
 
   const dispatch = useDispatch();
   const [isEditMovieModalOpen, setIsEditMovieModalOpen] = useState(false);
@@ -207,10 +211,10 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           );
         }
 
-        if (name === 'qualityProfileId') {
+        if (name === 'qualityProfileIds') {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
-              {qualityProfile?.name ?? ''}
+              <QualityProfileList qualityProfileIds={qualityProfileIds} />
             </VirtualTableRowCell>
           );
         }
@@ -326,9 +330,8 @@ function MovieIndexRow(props: MovieIndexRowProps) {
             <VirtualTableRowCell key={name} className={styles[name]}>
               <MovieIndexProgressBar
                 movieId={movieId}
-                movieFile={movieFile}
+                movieFileCount={movieFileCount}
                 monitored={monitored}
-                hasFile={hasFile}
                 isAvailable={isAvailable}
                 status={status}
                 width={125}

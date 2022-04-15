@@ -6,6 +6,7 @@ import { ColorImpairedConsumer } from 'App/ColorImpairedContext';
 import MoviesAppState from 'App/State/MoviesAppState';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
+import { Statistics } from 'Movie/Movie';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
 import createDeepEqualSelector from 'Store/Selectors/createDeepEqualSelector';
 import formatBytes from 'Utilities/Number/formatBytes';
@@ -17,13 +18,12 @@ function createUnoptimizedSelector() {
     createClientSideCollectionSelector('movies', 'movieIndex'),
     (movies: MoviesAppState) => {
       return movies.items.map((m) => {
-        const { monitored, status, hasFile, sizeOnDisk } = m;
+        const { monitored, status, statistics = {} as Statistics } = m;
 
         return {
           monitored,
           status,
-          hasFile,
-          sizeOnDisk,
+          statistics,
         };
       });
     }
@@ -45,15 +45,17 @@ export default function MovieIndexFooter() {
   let totalFileSize = 0;
 
   movies.forEach((s) => {
-    if (s.hasFile) {
-      movieFiles += 1;
-    }
+    const { statistics = { movieFileCount: 0, sizeOnDisk: 0 } } = s;
+
+    const { movieFileCount = 0, sizeOnDisk = 0 } = statistics;
+
+    movieFiles += movieFileCount;
 
     if (s.monitored) {
       monitored++;
     }
 
-    totalFileSize += s.sizeOnDisk;
+    totalFileSize += sizeOnDisk;
   });
 
   return (

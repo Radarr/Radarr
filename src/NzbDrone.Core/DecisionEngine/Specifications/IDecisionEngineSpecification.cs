@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 
@@ -9,6 +10,6 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         SpecificationPriority Priority { get; }
 
-        Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria);
+        IEnumerable<Decision> IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria);
     }
 }

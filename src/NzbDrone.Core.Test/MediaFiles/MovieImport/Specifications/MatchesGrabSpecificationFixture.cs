@@ -70,13 +70,13 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             _localMovie.ExistingFile = true;
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_be_accepted_if_no_download_client_item()
         {
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             GivenHistoryForMovies();
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             GivenHistoryForMovies(_movie1);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             GivenHistoryForMovies(_movie2);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Should().OnlyContain(x => !x.Accepted);
         }
     }
 }

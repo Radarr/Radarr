@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_return_true_if_not_in_working_folder()
         {
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             GivenInWorkingFolder();
             GivenLastWriteTimeUtc(DateTime.UtcNow.AddHours(-1));
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             GivenInWorkingFolder();
             GivenLastWriteTimeUtc(DateTime.UtcNow);
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted == false);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             GivenInWorkingFolder();
             GivenLastWriteTimeUtc(DateTime.UtcNow.AddDays(-5));
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted == false);
         }
     }
 }

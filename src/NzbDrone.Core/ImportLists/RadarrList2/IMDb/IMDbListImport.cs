@@ -45,7 +45,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
                     Name = "IMDb Top 250",
                     Enabled = Enabled,
                     EnableAuto = true,
-                    QualityProfileId = 1,
+                    QualityProfileIds = new List<int> { 1 },
                     Implementation = GetType().Name,
                     Settings = new IMDbListSettings { ListId = "top250" },
                 };
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
                     Name = "IMDb Popular Movies",
                     Enabled = Enabled,
                     EnableAuto = true,
-                    QualityProfileId = 1,
+                    QualityProfileIds = new List<int> { 1 },
                     Implementation = GetType().Name,
                     Settings = new IMDbListSettings { ListId = "popular" },
                 };

@@ -50,6 +50,7 @@ namespace NzbDrone.Integration.Test
         public ReleaseClient Releases;
         public ClientBase<RootFolderResource> RootFolders;
         public MovieClient Movies;
+        public MovieFileClient MovieFiles;
         public ClientBase<TagResource> Tags;
         public ClientBase<MovieResource> WantedMissing;
         public ClientBase<MovieResource> WantedCutoffUnmet;
@@ -112,6 +113,7 @@ namespace NzbDrone.Integration.Test
             Releases = new ReleaseClient(RestClient, ApiKey);
             RootFolders = new ClientBase<RootFolderResource>(RestClient, ApiKey);
             Movies = new MovieClient(RestClient, ApiKey);
+            MovieFiles = new MovieFileClient(RestClient, ApiKey);
             Tags = new ClientBase<TagResource>(RestClient, ApiKey);
             WantedMissing = new ClientBase<MovieResource>(RestClient, ApiKey, "wanted/missing");
             WantedCutoffUnmet = new ClientBase<MovieResource>(RestClient, ApiKey, "wanted/cutoff");
@@ -279,9 +281,9 @@ namespace NzbDrone.Integration.Test
 
         public MovieFileResource EnsureMovieFile(MovieResource movie, Quality quality)
         {
-            var result = Movies.Get(movie.Id);
+            var fileResult = MovieFiles.Get(movie.Id);
 
-            if (result.MovieFile == null)
+            if (fileResult == null)
             {
                 var path = Path.Combine(MovieRootFolder, movie.Title, string.Format("{0} ({1}) - {2}.strm", movie.Title, movie.Year, quality.Name));
 
@@ -295,12 +297,12 @@ namespace NzbDrone.Integration.Test
                 Commands.PostAndWait(new RefreshMovieCommand(new List<int> { movie.Id }));
                 Commands.WaitAll();
 
-                result = Movies.Get(movie.Id);
+                fileResult = MovieFiles.Get(movie.Id);
 
-                result.MovieFile.Should().NotBeNull();
+                fileResult.Should().NotBeNull();
             }
 
-            return result.MovieFile;
+            return fileResult;
         }
 
         public QualityProfileResource EnsureProfileCutoff(int profileId, Quality cutoff, bool upgradeAllowed)

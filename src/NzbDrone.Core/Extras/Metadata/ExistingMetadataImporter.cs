@@ -65,8 +65,6 @@ namespace NzbDrone.Core.Extras.Metadata
                             _logger.Debug("Unable to parse extra file: {0}", possibleMetadataFile);
                             continue;
                         }
-
-                        metadata.MovieFileId = movie.MovieFileId;
                     }
 
                     metadata.Extension = Path.GetExtension(possibleMetadataFile);

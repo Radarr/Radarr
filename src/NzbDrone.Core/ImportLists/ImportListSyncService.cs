@@ -106,7 +106,7 @@ namespace NzbDrone.Core.ImportLists
                 {
                     Monitored = monitorType != MonitorTypes.None,
                     RootFolderPath = importList.RootFolderPath,
-                    QualityProfileId = importList.QualityProfileId,
+                    QualityProfileIds = importList.QualityProfileIds,
                     MinimumAvailability = importList.MinimumAvailability,
                     Tags = importList.Tags,
                     TmdbId = report.TmdbId,

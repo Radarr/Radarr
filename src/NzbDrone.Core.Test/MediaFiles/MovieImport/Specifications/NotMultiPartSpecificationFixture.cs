@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                   .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), false))
                   .Returns(filePaths);
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [TestCase(new object[]
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                   .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), false))
                   .Returns(filePaths);
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted == false);
         }
 
         [TestCase(new object[]
@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                   .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), false))
                   .Returns(filePaths);
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [TestCase(new object[]
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                   .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), false))
                   .Returns(filePaths);
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
     }
 }

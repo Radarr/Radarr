@@ -161,8 +161,7 @@ export const actionHandlers = handleThunks({
           return updateItem({
             section: movieSection,
             ...movie,
-            movieFileId: 0,
-            hasFile: false
+            movieFileId: 0
           });
         })
       ]));
@@ -200,8 +199,7 @@ export const actionHandlers = handleThunks({
           return updateItem({
             section: 'movies',
             ...movie,
-            movieFileId: 0,
-            hasFile: false
+            movieFileId: 0
           });
         }),
 

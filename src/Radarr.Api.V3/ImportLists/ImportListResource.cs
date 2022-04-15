@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Movies;
 
@@ -10,7 +11,7 @@ namespace Radarr.Api.V3.ImportLists
         public bool EnableAuto { get; set; }
         public MonitorTypes Monitor { get; set; }
         public string RootFolderPath { get; set; }
-        public int QualityProfileId { get; set; }
+        public List<int> QualityProfileIds { get; set; }
         public bool SearchOnAdd { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
         public ImportListType ListType { get; set; }
@@ -34,7 +35,7 @@ namespace Radarr.Api.V3.ImportLists
             resource.Monitor = definition.Monitor;
             resource.SearchOnAdd = definition.SearchOnAdd;
             resource.RootFolderPath = definition.RootFolderPath;
-            resource.QualityProfileId = definition.QualityProfileId;
+            resource.QualityProfileIds = definition.QualityProfileIds;
             resource.MinimumAvailability = definition.MinimumAvailability;
             resource.ListType = definition.ListType;
             resource.ListOrder = (int)definition.ListType;
@@ -57,7 +58,7 @@ namespace Radarr.Api.V3.ImportLists
             definition.Monitor = resource.Monitor;
             definition.SearchOnAdd = resource.SearchOnAdd;
             definition.RootFolderPath = resource.RootFolderPath;
-            definition.QualityProfileId = resource.QualityProfileId;
+            definition.QualityProfileIds = resource.QualityProfileIds;
             definition.MinimumAvailability = resource.MinimumAvailability;
             definition.ListType = resource.ListType;
             definition.MinRefreshInterval = resource.MinRefreshInterval;

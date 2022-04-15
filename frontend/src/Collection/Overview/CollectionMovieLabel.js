@@ -17,10 +17,12 @@ class CollectionMovieLabel extends Component {
       status,
       monitored,
       isAvailable,
-      hasFile,
       onMonitorTogglePress,
-      isSaving
+      isSaving,
+      statistics
     } = this.props;
+
+    const { movieFileCount } = statistics;
 
     return (
       <div className={styles.movie}>
@@ -46,11 +48,11 @@ class CollectionMovieLabel extends Component {
             <div
               className={classNames(
                 styles.movieStatus,
-                styles[getStatusStyle(status, monitored, hasFile, isAvailable, 'kinds')]
+                styles[getStatusStyle(status, monitored, movieFileCount > 0, isAvailable, 'kinds')]
               )}
             >
               {
-                hasFile ? translate('Downloaded') : translate('Missing')
+                movieFileCount > 0 ? translate('Downloaded') : translate('Missing')
               }
             </div>
         }
@@ -63,9 +65,9 @@ CollectionMovieLabel.propTypes = {
   id: PropTypes.number,
   title: PropTypes.string.isRequired,
   status: PropTypes.string,
+  statistics: PropTypes.object.isRequired,
   isAvailable: PropTypes.bool,
   monitored: PropTypes.bool,
-  hasFile: PropTypes.bool,
   isSaving: PropTypes.bool.isRequired,
   movieFile: PropTypes.object,
   movieFileId: PropTypes.number,
@@ -75,9 +77,7 @@ CollectionMovieLabel.propTypes = {
 CollectionMovieLabel.defaultProps = {
   isSaving: false,
   statistics: {
-    episodeFileCount: 0,
-    totalEpisodeCount: 0,
-    percentOfEpisodes: 0
+    movieFileCount: 0
   }
 };
 

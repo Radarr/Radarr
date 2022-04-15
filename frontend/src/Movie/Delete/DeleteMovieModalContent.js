@@ -49,20 +49,24 @@ class DeleteMovieModalContent extends Component {
     const {
       title,
       path,
-      hasFile,
+      statistics,
       deleteOptions,
-      sizeOnDisk,
       onModalClose,
       onDeleteOptionChange
     } = this.props;
 
+    const {
+      sizeOnDisk,
+      movieFileCount
+    } = statistics;
+
     const deleteFiles = this.state.deleteFiles;
     const addImportExclusion = deleteOptions.addImportExclusion;
 
-    let deleteFilesLabel = hasFile ? translate('DeleteFileLabel', [1]) : translate('DeleteFilesLabel', [0]);
+    let deleteFilesLabel = movieFileCount === 1 ? translate('DeleteFileLabel', [1]) : translate('DeleteFilesLabel', [movieFileCount]);
     let deleteFilesHelpText = translate('DeleteFilesHelpText');
 
-    if (!hasFile) {
+    if (movieFileCount === 0) {
       deleteFilesLabel = translate('DeleteMovieFolderLabel');
       deleteFilesHelpText = translate('DeleteMovieFolderHelpText');
     }
@@ -121,9 +125,9 @@ class DeleteMovieModalContent extends Component {
                 </div>
 
                 {
-                  !!hasFile &&
+                  movieFileCount > 0 &&
                     <div>
-                      {hasFile} {translate('MovieFilesTotaling')} {formatBytes(sizeOnDisk)}
+                      {movieFileCount} {translate('MovieFilesTotaling')} {formatBytes(sizeOnDisk)}
                     </div>
                 }
               </div>
@@ -151,12 +155,18 @@ class DeleteMovieModalContent extends Component {
 DeleteMovieModalContent.propTypes = {
   title: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
-  hasFile: PropTypes.bool.isRequired,
-  sizeOnDisk: PropTypes.number.isRequired,
   deleteOptions: PropTypes.object.isRequired,
   onDeleteOptionChange: PropTypes.func.isRequired,
+  statistics: PropTypes.object.isRequired,
   onDeletePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
+};
+
+DeleteMovieModalContent.defaultProps = {
+  statistics: {
+    sizeOnDisk: 0,
+    movieFileCount: 0
+  }
 };
 
 export default DeleteMovieModalContent;

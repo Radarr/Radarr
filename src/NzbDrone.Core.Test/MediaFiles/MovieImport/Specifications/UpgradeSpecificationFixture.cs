@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
@@ -25,7 +26,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         public void Setup()
         {
             _movie = Builder<Movie>.CreateNew()
-                                     .With(e => e.QualityProfile = new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() })
+                                     .With(e => e.QualityProfiles = new List<QualityProfile> { new QualityProfile { Items = Qualities.QualityFixture.GetDefaultQualities() } })
                                      .Build();
 
             _localMovie = new LocalMovie()
@@ -39,36 +40,39 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_return_true_if_no_existing_episodeFile()
         {
-            _localMovie.Movie.MovieFile = null;
-            _localMovie.Movie.MovieFileId = 0;
+            _localMovie.Movie.MovieFiles = new List<MovieFile>();
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_return_true_if_upgrade_for_existing_episodeFile()
         {
-            _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile =
+            var movieFile =
                     new MovieFile
                     {
+                        Id = 1,
                         Quality = new QualityModel(Quality.SDTV, new Revision(version: 1))
                     };
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            _localMovie.Movie.MovieFiles = new List<MovieFile> { movieFile };
+
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
         public void should_return_false_if_not_an_upgrade_for_existing_episodeFile()
         {
-            _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile =
+            var movieFile =
                 new MovieFile
                 {
+                    Id = 1,
                     Quality = new QualityModel(Quality.Bluray720p, new Revision(version: 1))
                 };
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
+            _localMovie.Movie.MovieFiles = new List<MovieFile> { movieFile };
+
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted == false);
         }
 
         [Test]
@@ -78,14 +82,16 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                   .Setup(s => s.DownloadPropersAndRepacks)
                   .Returns(ProperDownloadTypes.PreferAndUpgrade);
 
-            _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile =
+            var movieFile =
                 new MovieFile
                 {
+                    Id = 1,
                     Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 2))
                 };
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
+            _localMovie.Movie.MovieFiles = new List<MovieFile> { movieFile };
+
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
 
         [Test]
@@ -95,14 +101,16 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                   .Setup(s => s.DownloadPropersAndRepacks)
                   .Returns(ProperDownloadTypes.DoNotPrefer);
 
-            _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile =
+            var movieFile =
                 new MovieFile
                 {
+                    Id = 1,
                     Quality = new QualityModel(Quality.HDTV720p, new Revision(version: 2))
                 };
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            _localMovie.Movie.MovieFiles = new List<MovieFile> { movieFile };
+
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -112,25 +120,18 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
                   .Setup(s => s.DownloadPropersAndRepacks)
                   .Returns(ProperDownloadTypes.DoNotPrefer);
 
-            _localMovie.Quality = new QualityModel(Quality.Bluray1080p);
-
-            _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile =
+            var movieFile =
                 new MovieFile
                 {
+                    Id = 1,
                     Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 2))
                 };
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
-        }
+            _localMovie.Movie.MovieFiles = new List<MovieFile> { movieFile };
 
-        [Test]
-        public void should_return_true_if_movie_file_is_null()
-        {
-            _localMovie.Movie.MovieFile = null;
-            _localMovie.Movie.MovieFileId = 1;
+            _localMovie.Quality = new QualityModel(Quality.Bluray1080p);
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -140,6 +141,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             var movieFile = new MovieFile
             {
+                Id = 1,
                 Quality = new QualityModel(Quality.Bluray1080p)
             };
 
@@ -162,10 +164,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             _localMovie.CustomFormats = Builder<CustomFormat>.CreateListOfSize(1).Build().ToList();
             _localMovie.CustomFormatScore = 20;
 
-            _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile = movieFile;
+            _localMovie.Movie.MovieFiles = new List<MovieFile> { movieFile };
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -175,6 +176,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             var movieFile = new MovieFile
             {
+                Id = 1,
                 Quality = new QualityModel(Quality.Bluray720p)
             };
 
@@ -197,10 +199,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             _localMovie.CustomFormats = Builder<CustomFormat>.CreateListOfSize(1).Build().ToList();
             _localMovie.CustomFormatScore = 20;
 
-            _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile = movieFile;
+            _localMovie.Movie.MovieFiles = new List<MovieFile> { movieFile };
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => x.Accepted);
         }
 
         [Test]
@@ -210,6 +211,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             var movieFile = new MovieFile
             {
+                Id = 1,
                 Quality = new QualityModel(Quality.Bluray1080p)
             };
 
@@ -232,10 +234,9 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             _localMovie.CustomFormats = Builder<CustomFormat>.CreateListOfSize(1).Build().ToList();
             _localMovie.CustomFormatScore = 20;
 
-            _localMovie.Movie.MovieFileId = 1;
-            _localMovie.Movie.MovieFile = movieFile;
+            _localMovie.Movie.MovieFiles = new List<MovieFile> { movieFile };
 
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeFalse();
+            Subject.IsSatisfiedBy(_localMovie, null).Should().OnlyContain(x => !x.Accepted);
         }
     }
 }

@@ -68,14 +68,17 @@ namespace Radarr.Api.V3.MovieFiles
             if (movieId.HasValue)
             {
                 var movie = _movieService.GetMovie(movieId.Value);
-                var file = _mediaFileService.GetFilesByMovie(movieId.Value).FirstOrDefault();
+                var files = _mediaFileService.GetFilesByMovie(movieId.Value);
 
-                if (file == null)
+                if (files == null)
                 {
                     return new List<MovieFileResource>();
                 }
 
-                return new List<MovieFileResource> { file.ToResource(movie, _qualityUpgradableSpecification, _formatCalculator) };
+                files.ForEach(x => x.Movie = movie);
+                var resources = files.Select(m => m.ToResource(movie, _qualityUpgradableSpecification, _formatCalculator)).ToList();
+
+                return resources;
             }
             else
             {
@@ -152,8 +155,12 @@ namespace Radarr.Api.V3.MovieFiles
             }
 
             _mediaFileService.Update(movieFiles);
-            var movie = _movieService.GetMovie(movieFiles.First().MovieId);
-            return Accepted(movieFiles.ConvertAll(f => f.ToResource(movie, _qualityUpgradableSpecification, _formatCalculator)));
+
+            var movies = _movieService.GetMovies(movieFiles.Select(x => x.MovieId).Distinct());
+
+            movieFiles.ForEach(x => x.Movie = movies.SingleOrDefault(m => m.Id == x.MovieId));
+
+            return Accepted(movieFiles.ConvertAll(f => f.ToResource(f.Movie, _qualityUpgradableSpecification, _formatCalculator)));
         }
 
         [RestDeleteById]

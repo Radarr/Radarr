@@ -32,7 +32,7 @@
 }
 
 .originalLanguage,
-.qualityProfileId {
+.qualityProfileIds {
   composes: cell;
 
   flex: 1 0 125px;

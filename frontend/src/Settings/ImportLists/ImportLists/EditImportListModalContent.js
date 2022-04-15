@@ -46,7 +46,7 @@ function EditImportListModalContent(props) {
     minRefreshInterval,
     monitor,
     minimumAvailability,
-    qualityProfileId,
+    qualityProfileIds,
     rootFolderPath,
     searchOnAdd,
     tags,
@@ -169,8 +169,8 @@ function EditImportListModalContent(props) {
 
                 <FormInputGroup
                   type={inputTypes.QUALITY_PROFILE_SELECT}
-                  name="qualityProfileId"
-                  {...qualityProfileId}
+                  name="qualityProfileIds"
+                  {...qualityProfileIds}
                   onChange={onInputChange}
                 />
               </FormGroup>

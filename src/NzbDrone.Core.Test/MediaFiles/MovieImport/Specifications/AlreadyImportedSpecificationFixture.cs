@@ -49,15 +49,15 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         [Test]
         public void should_accepted_if_download_client_item_is_null()
         {
-            Subject.IsSatisfiedBy(_localMovie, null).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, null).All(x => x.Accepted).Should().BeTrue();
         }
 
         [Test]
         public void should_accept_if_episode_does_not_have_file()
         {
-            _movie.MovieFileId = 0;
+            _movie.MovieFiles = new Core.Datastore.LazyLoaded<List<Core.MediaFiles.MovieFile>>();
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).All(x => x.Accepted).Should().BeTrue();
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             GivenHistory(history);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).All(x => x.Accepted).Should().BeTrue();
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             GivenHistory(history);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).All(x => x.Accepted).Should().BeTrue();
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
             GivenHistory(history);
 
-            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).Accepted.Should().BeTrue();
+            Subject.IsSatisfiedBy(_localMovie, _downloadClientItem).All(x => x.Accepted).Should().BeTrue();
         }
     }
 }
