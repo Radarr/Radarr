@@ -127,21 +127,21 @@ function InteractiveSearchContent(props) {
 
       {
         !isFetching && !!error &&
-          <div>
+          <div className={styles.blankpad}>
             {translate('UnableToLoadResultsIntSearch')}
           </div>
       }
 
       {
         !isFetching && isPopulated && !totalReleasesCount &&
-          <div>
+          <div className={styles.blankpad}>
             {translate('NoResultsFound')}
           </div>
       }
 
       {
         !!totalReleasesCount && isPopulated && !items.length &&
-          <div>
+          <div className={styles.blankpad}>
             {translate('AllResultsHiddenFilter')}
           </div>
       }
