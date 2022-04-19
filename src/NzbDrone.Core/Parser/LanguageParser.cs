@@ -23,6 +23,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<french>\b(?:FR|VO|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRE|FRA)\b)|
                                                                             (?<russian>\brus\b)|
                                                                             (?<english>\beng\b)|
+                                                                            (?<spanish>\b(?:ES|SPA)\b)|
                                                                             (?<hungarian>\b(?:HUNDUB|HUN)\b)|
                                                                             (?<hebrew>\bHebDub\b)|
                                                                             (?<polish>\b(?:PL\W?DUB|DUB\W?PL|LEK\W?PL|PL\W?LEK)\b)|
@@ -238,6 +239,11 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["english"].Success)
                 {
                     languages.Add(Language.English);
+                }
+
+                if (match.Groups["spanish"].Success)
+                {
+                    languages.Add(Language.Spanish);
                 }
 
                 if (match.Groups["bulgarian"].Success)

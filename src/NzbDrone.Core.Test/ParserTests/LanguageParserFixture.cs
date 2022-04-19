@@ -52,9 +52,11 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Spanish.1080p.XviD-LOL")]
+        [TestCase("Movie.Let.there.be.Titles.2021.1080p.SPA.Blu-ray.DTS-HD-franjhos")]
         [TestCase("Movie Title (2020)[BDRemux AVC 1080p][E-AC3 DD Plus 5.1 Castellano-Inglés Subs]")]
         [TestCase("Movie Title (2020) [UHDRemux2160p HDR][DTS-HD MA 5.1 AC3 5.1 Castellano - True-HD 7.1 Atmos Inglés Subs]")]
         [TestCase("Movie Title (2016) [UHDRemux 2160p SDR] [Castellano DD 5.1 - Inglés DTS-HD MA 5.1 Subs]")]
+        [TestCase("Movie Title (2018) [BDRemux 1080p AVC ES DTS-HD MA 5.1 Subs][HDO].mkv")]
         public void should_parse_language_spanish(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
