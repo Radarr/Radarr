@@ -16,6 +16,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
         List<PlexSection> GetMovieSections(PlexServerSettings settings);
         void Update(int sectionId, PlexServerSettings settings);
         void UpdateMovie(string metadataId, PlexServerSettings settings);
+        void UpdatePath(string path, int sectionId, PlexServerSettings settings);
         string Version(PlexServerSettings settings);
         List<PlexPreference> Preferences(PlexServerSettings settings);
         string GetMetadataId(int sectionId, string imdbId, string language, PlexServerSettings settings);
@@ -76,6 +77,16 @@ namespace NzbDrone.Core.Notifications.Plex.Server
         {
             var resource = $"library/metadata/{metadataId}/refresh";
             var request = BuildRequest(resource, HttpMethod.Put, settings);
+            var response = ProcessRequest(request);
+
+            CheckForError(response);
+        }
+
+        public void UpdatePath(string path, int sectionId, PlexServerSettings settings)
+        {
+            var resource = $"library/sections/{sectionId}/refresh";
+            var request = BuildRequest(resource, HttpMethod.Get, settings);
+            request.AddQueryParam("path", path);
             var response = ProcessRequest(request);
 
             CheckForError(response);
