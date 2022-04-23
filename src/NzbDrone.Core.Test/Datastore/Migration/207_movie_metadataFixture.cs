@@ -285,6 +285,48 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             listMovies.Should().HaveCount(1);
             listMovies.First().MovieMetadataId.Should().Be(metadata.First().Id);
         }
+
+        [Test]
+        public void should_not_duplicate_metadata_from_lists()
+        {
+            var db = WithMigrationTestDb(c =>
+            {
+                c.Insert.IntoTable("ImportListMovies").Row(new
+                {
+                    Title = "Title",
+                    Status = 3,
+                    Images = new[] { new { CoverType = "Poster" } }.ToJson(),
+                    Runtime = 90,
+                    TmdbId = 123456,
+                    ListId = 4,
+                    Translations = new[] { new { } }.ToJson(),
+                    Collection = new { Name = "Some Collection", TmdbId = 11 }.ToJson(),
+                });
+
+                c.Insert.IntoTable("ImportListMovies").Row(new
+                {
+                    Title = "Title",
+                    Status = 3,
+                    Images = new[] { new { CoverType = "Poster" } }.ToJson(),
+                    Runtime = 90,
+                    TmdbId = 123456,
+                    ListId = 5,
+                    Translations = new[] { new { } }.ToJson(),
+                    Collection = new { Name = "Some Collection", TmdbId = 11 }.ToJson(),
+                });
+            });
+
+            var metadata = db.Query<MovieMetadata207>("SELECT \"Id\", \"Title\", \"TmdbId\" FROM \"MovieMetadata\"");
+
+            metadata.Should().HaveCount(1);
+            metadata.First().TmdbId.Should().Be(123456);
+            metadata.First().Title.Should().Be("Title");
+
+            var listMovies = db.Query<Movie207>("SELECT \"Id\", \"MovieMetadataId\" FROM \"ImportListMovies\"");
+
+            listMovies.Should().HaveCount(2);
+            listMovies.First().MovieMetadataId.Should().Be(metadata.First().Id);
+        }
     }
 
     public class MovieMetadata207
