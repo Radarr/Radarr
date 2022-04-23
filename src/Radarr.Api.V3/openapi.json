@@ -40,6 +40,14 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "movieMetadataId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
           }
         ],
         "responses": {
@@ -729,6 +737,14 @@
         "parameters": [
           {
             "name": "movieId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "movieMetadataId",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -8159,7 +8175,7 @@
           "sourceType": {
             "$ref": "#/components/schemas/SourceType"
           },
-          "movieId": {
+          "movieMetadataId": {
             "type": "integer",
             "format": "int32"
           },
@@ -8542,7 +8558,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "movieId": {
+          "movieMetadataId": {
             "type": "integer",
             "format": "int32"
           },
@@ -10461,6 +10477,10 @@
           },
           "collection": {
             "$ref": "#/components/schemas/MovieCollection"
+          },
+          "popularity": {
+            "type": "number",
+            "format": "float"
           }
         },
         "additionalProperties": false
