@@ -15,8 +15,9 @@ namespace Radarr.Api.V3.MovieFiles
         public int VideoBitDepth { get; set; }
         public long VideoBitrate { get; set; }
         public string VideoCodec { get; set; }
-        public string VideoDynamicRangeType { get; set; }
         public decimal VideoFps { get; set; }
+        public string VideoDynamicRange { get; set; }
+        public string VideoDynamicRangeType { get; set; }
         public string Resolution { get; set; }
         public string RunTime { get; set; }
         public string ScanType { get; set; }
@@ -42,8 +43,9 @@ namespace Radarr.Api.V3.MovieFiles
                 VideoBitDepth = model.VideoBitDepth,
                 VideoBitrate = model.VideoBitrate,
                 VideoCodec = MediaInfoFormatter.FormatVideoCodec(model, sceneName),
-                VideoDynamicRangeType = MediaInfoFormatter.FormatVideoDynamicRangeType(model),
                 VideoFps = Math.Round(model.VideoFps, 3),
+                VideoDynamicRange = MediaInfoFormatter.FormatVideoDynamicRange(model),
+                VideoDynamicRangeType = MediaInfoFormatter.FormatVideoDynamicRangeType(model),
                 Resolution = $"{model.Width}x{model.Height}",
                 RunTime = FormatRuntime(model.RunTime),
                 ScanType = model.ScanType,

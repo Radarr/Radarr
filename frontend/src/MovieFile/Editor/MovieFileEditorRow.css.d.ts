@@ -17,6 +17,7 @@ interface CssExports {
   'size': string;
   'subtitles': string;
   'video': string;
+  'videoDynamicRangeType': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

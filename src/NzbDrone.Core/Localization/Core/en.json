@@ -1247,6 +1247,7 @@
   "Version": "Version",
   "VersionUpdateText": "Version {0} of Radarr has been installed, in order to get the latest changes you'll need to reload Radarr.",
   "VideoCodec": "Video Codec",
+  "VideoDynamicRange": "Video Dynamic Range",
   "View": "View",
   "VisitGithubCustomFormatsAphrodite": "Visit the wiki for more details: ",
   "Waiting": "Waiting",

@@ -45,6 +45,11 @@ export const defaultState = {
       isVisible: true
     },
     {
+      name: 'videoDynamicRangeType',
+      label: () => translate('VideoDynamicRange'),
+      isVisible: false
+    },
+    {
       name: 'audioInfo',
       label: () => translate('AudioInfo'),
       isVisible: true

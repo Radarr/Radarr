@@ -201,8 +201,8 @@ class MovieFileEditorRow extends Component {
                   className={styles.audio}
                 >
                   <MediaInfoConnector
-                    movieFileId={id}
                     type={mediaInfoTypes.AUDIO}
+                    movieFileId={id}
                   />
                 </TableRowCell>
               );
@@ -243,8 +243,22 @@ class MovieFileEditorRow extends Component {
                   className={styles.video}
                 >
                   <MediaInfoConnector
-                    movieFileId={id}
                     type={mediaInfoTypes.VIDEO}
+                    movieFileId={id}
+                  />
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'videoDynamicRangeType') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.videoDynamicRangeType}
+                >
+                  <MediaInfoConnector
+                    type={mediaInfoTypes.VIDEO_DYNAMIC_RANGE_TYPE}
+                    movieFileId={id}
                   />
                 </TableRowCell>
               );
