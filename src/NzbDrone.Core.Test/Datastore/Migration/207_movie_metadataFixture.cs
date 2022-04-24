@@ -294,6 +294,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 c.Insert.IntoTable("ImportListMovies").Row(new
                 {
                     Title = "Title",
+                    Overview = "Overview 1",
                     Status = 3,
                     Images = new[] { new { CoverType = "Poster" } }.ToJson(),
                     Runtime = 90,
@@ -306,6 +307,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 c.Insert.IntoTable("ImportListMovies").Row(new
                 {
                     Title = "Title",
+                    Overview = "Overview 2",
                     Status = 3,
                     Images = new[] { new { CoverType = "Poster" } }.ToJson(),
                     Runtime = 90,
