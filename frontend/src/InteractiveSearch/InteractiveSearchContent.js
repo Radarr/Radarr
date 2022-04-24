@@ -159,7 +159,7 @@ function InteractiveSearchContent(props) {
                 items.map((item) => {
                   return (
                     <InteractiveSearchRowConnector
-                      key={item.guid}
+                      key={`${item.indexerId}-${item.guid}`}
                       {...item}
                       searchPayload={searchPayload}
                       longDateFormat={longDateFormat}
