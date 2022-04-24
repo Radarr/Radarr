@@ -44,9 +44,10 @@ namespace NzbDrone.Core.Datastore.Migration
 
             // Transfer metadata from ImportListMovies to MovieMetadata if not already in
             Execute.Sql(@"INSERT INTO ""MovieMetadata"" (""TmdbId"", ""ImdbId"", ""Title"", ""SortTitle"", ""CleanTitle"", ""OriginalTitle"", ""CleanOriginalTitle"", ""OriginalLanguage"", ""Overview"", ""Status"", ""LastInfoSync"", ""Images"", ""Genres"", ""Ratings"", ""Runtime"", ""InCinemas"", ""PhysicalRelease"", ""DigitalRelease"", ""Year"", ""Recommendations"", ""Certification"", ""YouTubeTrailerId"", ""Studio"", ""Collection"", ""Website"")
-                          SELECT DISTINCT ""TmdbId"", ""ImdbId"", ""Title"", ""SortTitle"", ""Title"", ""OriginalTitle"", ""OriginalTitle"", 1, ""Overview"", ""Status"", ""LastInfoSync"", ""Images"", ""Genres"", ""Ratings"", ""Runtime"", ""InCinemas"", ""PhysicalRelease"", ""DigitalRelease"", ""Year"", '[]', ""Certification"", ""YouTubeTrailerId"", ""Studio"", ""Collection"", ""Website""
+                          SELECT ""TmdbId"", ""ImdbId"", ""Title"", ""SortTitle"", ""Title"", ""OriginalTitle"", ""OriginalTitle"", 1, ""Overview"", ""Status"", ""LastInfoSync"", ""Images"", ""Genres"", ""Ratings"", ""Runtime"", ""InCinemas"", ""PhysicalRelease"", ""DigitalRelease"", ""Year"", '[]', ""Certification"", ""YouTubeTrailerId"", ""Studio"", ""Collection"", ""Website""
                           FROM ""ImportListMovies""
-                          WHERE ""ImportListMovies"".""TmdbId"" NOT IN ( SELECT ""MovieMetadata"".""TmdbId"" FROM ""MovieMetadata"" )");
+                          WHERE ""ImportListMovies"".""TmdbId"" NOT IN ( SELECT ""MovieMetadata"".""TmdbId"" FROM ""MovieMetadata"" )
+                          AND ""ImportListMovies"".""Id"" IN ( SELECT MIN(""Id"") FROM ""ImportListMovies"" GROUP BY ""TmdbId"" )");
 
             // Add an MovieMetadataId column to Movies
             Alter.Table("Movies").AddColumn("MovieMetadataId").AsInt32().WithDefaultValue(0);
