@@ -464,7 +464,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             }
             else
             {
-                movie.MovieMetadata.Value.Translations = _movieTranslationService.GetAllTranslationsForMovie(movie.MovieMetadataId);
+                movie.MovieMetadata.Value.Translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
             }
 
             return movie;

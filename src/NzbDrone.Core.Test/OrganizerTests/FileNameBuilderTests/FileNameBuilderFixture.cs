@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                 .Returns(new List<CustomFormat>());
 
             Mocker.GetMock<IMovieTranslationService>()
-                .Setup(v => v.GetAllTranslationsForMovie(It.IsAny<int>()))
+                .Setup(v => v.GetAllTranslationsForMovieMetadata(It.IsAny<int>()))
                 .Returns(_movieTranslations);
         }
 

@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 {
     public interface IAlternativeTitleService
     {
-        List<AlternativeTitle> GetAllTitlesForMovie(int movieId);
+        List<AlternativeTitle> GetAllTitlesForMovieMetadata(int movieMetadataId);
         AlternativeTitle AddAltTitle(AlternativeTitle title, MovieMetadata movie);
         List<AlternativeTitle> AddAltTitles(List<AlternativeTitle> titles, MovieMetadata movie);
         AlternativeTitle GetById(int id);
@@ -36,9 +36,9 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             _logger = logger;
         }
 
-        public List<AlternativeTitle> GetAllTitlesForMovie(int movieId)
+        public List<AlternativeTitle> GetAllTitlesForMovieMetadata(int movieMetadataId)
         {
-            return _titleRepo.FindByMovieMetadataId(movieId).ToList();
+            return _titleRepo.FindByMovieMetadataId(movieMetadataId).ToList();
         }
 
         public AlternativeTitle AddAltTitle(AlternativeTitle title, MovieMetadata movie)
@@ -69,15 +69,15 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             _titleRepo.Delete(title);
         }
 
-        public List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, MovieMetadata movie)
+        public List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, MovieMetadata movieMetadata)
         {
-            int movieId = movie.Id;
+            int movieMetadataId = movieMetadata.Id;
 
             // First update the movie ids so we can correlate them later.
-            titles.ForEach(t => t.MovieMetadataId = movieId);
+            titles.ForEach(t => t.MovieMetadataId = movieMetadataId);
 
             // Then make sure none of them are the same as the main title.
-            titles = titles.Where(t => t.CleanTitle != movie.CleanTitle).ToList();
+            titles = titles.Where(t => t.CleanTitle != movieMetadata.CleanTitle).ToList();
 
             // Then make sure they are all distinct titles
             titles = titles.DistinctBy(t => t.CleanTitle).ToList();
@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
             titles = titles.Where(t => !_titleRepo.All().Any(e => e.CleanTitle == t.CleanTitle && e.MovieMetadataId != t.MovieMetadataId)).ToList();
 
             // Now find titles to delete, update and insert.
-            var existingTitles = _titleRepo.FindByMovieMetadataId(movieId);
+            var existingTitles = _titleRepo.FindByMovieMetadataId(movieMetadataId);
 
             var insert = titles.Where(t => !existingTitles.Contains(t));
             var update = existingTitles.Where(t => titles.Contains(t));

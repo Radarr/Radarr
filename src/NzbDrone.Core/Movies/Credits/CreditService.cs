@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Movies.Credits
 {
     public interface ICreditService
     {
-        List<Credit> GetAllCreditsForMovie(int movieId);
+        List<Credit> GetAllCreditsForMovieMetadata(int movieMetadataId);
         Credit AddCredit(Credit credit, MovieMetadata movie);
         List<Credit> AddCredits(List<Credit> credits, MovieMetadata movie);
         Credit GetById(int id);
@@ -25,9 +25,9 @@ namespace NzbDrone.Core.Movies.Credits
             _creditRepo = creditRepo;
         }
 
-        public List<Credit> GetAllCreditsForMovie(int movieId)
+        public List<Credit> GetAllCreditsForMovieMetadata(int movieMetadataId)
         {
-            return _creditRepo.FindByMovieMetadataId(movieId).ToList();
+            return _creditRepo.FindByMovieMetadataId(movieMetadataId).ToList();
         }
 
         public Credit AddCredit(Credit credit, MovieMetadata movie)
@@ -58,15 +58,15 @@ namespace NzbDrone.Core.Movies.Credits
             _creditRepo.Delete(credit);
         }
 
-        public List<Credit> UpdateCredits(List<Credit> credits, MovieMetadata movie)
+        public List<Credit> UpdateCredits(List<Credit> credits, MovieMetadata movieMetadata)
         {
-            int movieId = movie.Id;
+            int movieMetadataId = movieMetadata.Id;
 
             // First update the movie ids so we can correlate them later.
-            credits.ForEach(t => t.MovieMetadataId = movieId);
+            credits.ForEach(t => t.MovieMetadataId = movieMetadataId);
 
             // Now find credits to delete, update and insert.
-            var existingCredits = _creditRepo.FindByMovieMetadataId(movieId);
+            var existingCredits = _creditRepo.FindByMovieMetadataId(movieMetadataId);
 
             // Should never have multiple credits with same credit_id, but check to ensure incase TMDB is on fritz
             var dupeFreeCredits = credits.DistinctBy(m => m.CreditTmdbId).ToList();

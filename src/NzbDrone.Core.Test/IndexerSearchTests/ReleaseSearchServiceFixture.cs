@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Test.IndexerSearchTests
                 .Returns(_movie);
 
             Mocker.GetMock<IMovieTranslationService>()
-                .Setup(s => s.GetAllTranslationsForMovie(It.IsAny<int>()))
+                .Setup(s => s.GetAllTranslationsForMovieMetadata(It.IsAny<int>()))
                 .Returns(new List<MovieTranslation>());
         }
 

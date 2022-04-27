@@ -29,13 +29,13 @@ namespace Radarr.Api.V3.Credits
         {
             if (movieMetadataId.HasValue)
             {
-                return _creditService.GetAllCreditsForMovie(movieMetadataId.Value).ToResource();
+                return _creditService.GetAllCreditsForMovieMetadata(movieMetadataId.Value).ToResource();
             }
 
             if (movieId.HasValue)
             {
                 var movie = _movieService.GetMovie(movieId.Value);
-                return _creditService.GetAllCreditsForMovie(movie.MovieMetadataId).ToResource();
+                return _creditService.GetAllCreditsForMovieMetadata(movie.MovieMetadataId).ToResource();
             }
 
             return _creditService.GetAllCredits().ToResource();

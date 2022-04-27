@@ -30,13 +30,13 @@ namespace Radarr.Api.V3.Movies
         {
             if (movieMetadataId.HasValue)
             {
-                return _altTitleService.GetAllTitlesForMovie(movieMetadataId.Value).ToResource();
+                return _altTitleService.GetAllTitlesForMovieMetadata(movieMetadataId.Value).ToResource();
             }
 
             if (movieId.HasValue)
             {
                 var movie = _movieService.GetMovie(movieId.Value);
-                return _altTitleService.GetAllTitlesForMovie(movie.MovieMetadataId).ToResource();
+                return _altTitleService.GetAllTitlesForMovieMetadata(movie.MovieMetadataId).ToResource();
             }
 
             return _altTitleService.GetAllTitles().ToResource();

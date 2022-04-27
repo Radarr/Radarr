@@ -49,7 +49,7 @@ namespace NzbDrone.Core.IndexerSearch
         public List<DownloadDecision> MovieSearch(int movieId, bool userInvokedSearch, bool interactiveSearch)
         {
             var movie = _movieService.GetMovie(movieId);
-            movie.MovieMetadata.Value.Translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
+            movie.MovieMetadata.Value.Translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
 
             return MovieSearch(movie, userInvokedSearch, interactiveSearch);
         }
@@ -77,7 +77,7 @@ namespace NzbDrone.Core.IndexerSearch
             };
 
             var wantedLanguages = _profileService.GetAcceptableLanguages(movie.ProfileId);
-            var translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
+            var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
 
             var queryTranlations = new List<string>
             {

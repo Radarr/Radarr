@@ -165,7 +165,7 @@ namespace Radarr.Api.V3.Movies
 
             var availDelay = _configService.AvailabilityDelay;
 
-            var translations = _movieTranslationService.GetAllTranslationsForMovie(movie.MovieMetadataId);
+            var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
             var translation = GetMovieTranslation(translations, movie.MovieMetadata, (Language)_configService.MovieInfoLanguage);
 
             var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
@@ -236,7 +236,7 @@ namespace Radarr.Api.V3.Movies
             var updatedMovie = _moviesService.UpdateMovie(model);
             var availDelay = _configService.AvailabilityDelay;
 
-            var translations = _movieTranslationService.GetAllTranslationsForMovie(movie.Id);
+            var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
             var translation = GetMovieTranslation(translations, movie.MovieMetadata, (Language)_configService.MovieInfoLanguage);
 
             BroadcastResourceChange(ModelAction.Updated, updatedMovie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
@@ -267,7 +267,7 @@ namespace Radarr.Api.V3.Movies
         public void Handle(MovieImportedEvent message)
         {
             var availDelay = _configService.AvailabilityDelay;
-            var translations = _movieTranslationService.GetAllTranslationsForMovie(message.ImportedMovie.Movie.Id);
+            var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(message.ImportedMovie.Movie.MovieMetadataId);
             var translation = GetMovieTranslation(translations, message.ImportedMovie.Movie.MovieMetadata, (Language)_configService.MovieInfoLanguage);
             BroadcastResourceChange(ModelAction.Updated, message.ImportedMovie.Movie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
         }
@@ -287,7 +287,7 @@ namespace Radarr.Api.V3.Movies
         public void Handle(MovieUpdatedEvent message)
         {
             var availDelay = _configService.AvailabilityDelay;
-            var translations = _movieTranslationService.GetAllTranslationsForMovie(message.Movie.Id);
+            var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(message.Movie.MovieMetadataId);
             var translation = GetMovieTranslation(translations, message.Movie.MovieMetadata, (Language)_configService.MovieInfoLanguage);
             BroadcastResourceChange(ModelAction.Updated, message.Movie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
         }
@@ -296,7 +296,7 @@ namespace Radarr.Api.V3.Movies
         public void Handle(MovieEditedEvent message)
         {
             var availDelay = _configService.AvailabilityDelay;
-            var translations = _movieTranslationService.GetAllTranslationsForMovie(message.Movie.Id);
+            var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(message.Movie.MovieMetadataId);
             var translation = GetMovieTranslation(translations, message.Movie.MovieMetadata, (Language)_configService.MovieInfoLanguage);
             BroadcastResourceChange(ModelAction.Updated, message.Movie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
         }
@@ -314,7 +314,7 @@ namespace Radarr.Api.V3.Movies
         public void Handle(MovieRenamedEvent message)
         {
             var availDelay = _configService.AvailabilityDelay;
-            var translations = _movieTranslationService.GetAllTranslationsForMovie(message.Movie.Id);
+            var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(message.Movie.MovieMetadataId);
             var translation = GetMovieTranslation(translations, message.Movie.MovieMetadata, (Language)_configService.MovieInfoLanguage);
             BroadcastResourceChange(ModelAction.Updated, message.Movie.ToResource(availDelay, translation, _qualityUpgradableSpecification));
         }

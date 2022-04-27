@@ -288,7 +288,7 @@ namespace NzbDrone.Core.Organizer
 
                     if (!movie.MovieMetadata.Value.Translations.Any())
                     {
-                        titles = _movieTranslationService.GetAllTranslationsForMovie(movie.Id).Where(t => t.Language == language).ToList();
+                        titles = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId).Where(t => t.Language == language).ToList();
                     }
 
                     return titles.FirstOrDefault()?.Title ?? movie.Title;

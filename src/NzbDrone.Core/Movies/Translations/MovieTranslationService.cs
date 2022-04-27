@@ -10,7 +10,7 @@ namespace NzbDrone.Core.Movies.Translations
 {
     public interface IMovieTranslationService
     {
-        List<MovieTranslation> GetAllTranslationsForMovie(int movieId);
+        List<MovieTranslation> GetAllTranslationsForMovieMetadata(int movieMetadataId);
         List<MovieTranslation> GetAllTranslationsForLanguage(Language language);
         List<MovieTranslation> UpdateTranslations(List<MovieTranslation> titles, MovieMetadata movie);
     }
@@ -27,9 +27,9 @@ namespace NzbDrone.Core.Movies.Translations
             _logger = logger;
         }
 
-        public List<MovieTranslation> GetAllTranslationsForMovie(int movieId)
+        public List<MovieTranslation> GetAllTranslationsForMovieMetadata(int movieMetadataId)
         {
-            return _translationRepo.FindByMovieMetadataId(movieId).ToList();
+            return _translationRepo.FindByMovieMetadataId(movieMetadataId).ToList();
         }
 
         public List<MovieTranslation> GetAllTranslationsForLanguage(Language language)
@@ -42,12 +42,12 @@ namespace NzbDrone.Core.Movies.Translations
             _translationRepo.Delete(title);
         }
 
-        public List<MovieTranslation> UpdateTranslations(List<MovieTranslation> translations, MovieMetadata movie)
+        public List<MovieTranslation> UpdateTranslations(List<MovieTranslation> translations, MovieMetadata movieMetadata)
         {
-            int movieId = movie.Id;
+            int movieMetadataId = movieMetadata.Id;
 
             // First update the movie ids so we can correlate them later
-            translations.ForEach(t => t.MovieMetadataId = movieId);
+            translations.ForEach(t => t.MovieMetadataId = movieMetadataId);
 
             // Then throw out any we don't have languages for
             translations = translations.Where(t => t.Language != null).ToList();
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Movies.Translations
             translations = translations.DistinctBy(t => t.Language).ToList();
 
             // Now find translations to delete, update and insert
-            var existingTranslations = _translationRepo.FindByMovieMetadataId(movieId);
+            var existingTranslations = _translationRepo.FindByMovieMetadataId(movieMetadataId);
 
             translations.ForEach(c => c.Id = existingTranslations.FirstOrDefault(t => t.Language == c.Language)?.Id ?? 0);
 

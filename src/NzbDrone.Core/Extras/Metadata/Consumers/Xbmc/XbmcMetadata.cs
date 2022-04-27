@@ -126,11 +126,11 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     (int)movie.MovieMetadata.Value.OriginalLanguage :
                     Settings.MovieMetadataLanguage;
 
-                var movieTranslations = _movieTranslationsService.GetAllTranslationsForMovie(movie.Id);
+                var movieTranslations = _movieTranslationsService.GetAllTranslationsForMovieMetadata(movie.MovieMetadataId);
                 var selectedSettingsLanguage = Language.FindById(movieMetadataLanguage);
                 var movieTranslation = movieTranslations.FirstOrDefault(mt => mt.Language == selectedSettingsLanguage);
 
-                var credits = _creditService.GetAllCreditsForMovie(movie.MovieMetadataId);
+                var credits = _creditService.GetAllCreditsForMovieMetadata(movie.MovieMetadataId);
 
                 var watched = GetExistingWatchedStatus(movie, movieFile.RelativePath);
 
