@@ -83,7 +83,7 @@ class DelayProfiles extends Component {
               <div>
                 <div className={styles.delayProfilesHeader}>
                   <div className={styles.column}>
-                    {translate('Protocol')}
+                    {translate('PreferredProtocol')}
                   </div>
                   <div className={styles.column}>
                     {translate('UsenetDelay')}

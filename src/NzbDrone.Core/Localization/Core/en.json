@@ -702,6 +702,7 @@
   "PreferIndexerFlags": "Prefer Indexer Flags",
   "PreferIndexerFlagsHelpText": "Prioritize releases with special flags",
   "Preferred": "Preferred",
+  "PreferredProtocol": "Preferred Protocol",
   "PreferredSize": "Preferred Size",
   "PreferTorrent": "Prefer Torrent",
   "PreferUsenet": "Prefer Usenet",
