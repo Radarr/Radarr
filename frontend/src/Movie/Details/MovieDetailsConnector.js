@@ -18,6 +18,7 @@ import { fetchImportListSchema } from 'Store/Actions/settingsActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
+import createMovieClientSideCollectionItemsSelector from 'Store/Selectors/createMovieClientSideCollectionItemsSelector';
 import { findCommand, isCommandExecuting } from 'Utilities/Command';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import MovieDetails from './MovieDetails';
@@ -86,16 +87,37 @@ function createMapStateToProps() {
     selectMovieFiles,
     selectMovieCredits,
     selectExtraFiles,
+    createMovieClientSideCollectionItemsSelector('movieIndex'),
     createAllMoviesSelector(),
     createCommandsSelector(),
     createDimensionsSelector(),
     (state) => state.queue.details.items,
     (state) => state.app.isSidebarVisible,
     (state) => state.settings.ui.item.movieRuntimeFormat,
-    (titleSlug, movieFiles, movieCredits, extraFiles, allMovies, commands, dimensions, queueItems, isSidebarVisible, movieRuntimeFormat) => {
-      const sortedMovies = _.orderBy(allMovies, 'sortTitle');
-      const movieIndex = _.findIndex(sortedMovies, { titleSlug });
+    (state) => state.settings.ui.item.movieDetailsNextPrevBehavior,
+    (state) => state.movieIndex.selectedFilterKey,
+    (state) => state.customFilters.items.filter((s) => s.type === 'movieIndex'),
+    (titleSlug, movieFiles, movieCredits, extraFiles, collectionMovies, allMovies, commands, dimensions, queueItems, isSidebarVisible, movieRuntimeFormat, movieDetailsNextPrevBehavior, indexFilter, customFilters) => {
+      let sortedMovies = [];
+      if (movieDetailsNextPrevBehavior === 'filter') {
+        collectionMovies.items.forEach((c) => sortedMovies.push(allMovies.find((a) => a.id === c.id)));
+      } else {
+        sortedMovies = _.orderBy(allMovies, 'sortTitle');
+      }
+
+      let movieIndex = _.findIndex(sortedMovies, { titleSlug });
+
+      if (customFilters.length && Number.isInteger(indexFilter)) {
+        indexFilter = customFilters.find((filter) => (filter.id === indexFilter)).label;
+      }
+
+      if (movieIndex === -1) {
+        sortedMovies.push(allMovies.find((a) => a.titleSlug === titleSlug));
+        movieIndex = sortedMovies.length - 1;
+      }
+
       const movie = sortedMovies[movieIndex];
+      const nextPrev = sortedMovies.length > 1;
 
       if (!movie) {
         return {};
@@ -166,7 +188,9 @@ function createMapStateToProps() {
         isSmallScreen: dimensions.isSmallScreen,
         isSidebarVisible,
         queueItems,
-        movieRuntimeFormat
+        movieRuntimeFormat,
+        indexFilter,
+        nextPrev
       };
     }
   );

@@ -70,6 +70,7 @@ namespace NzbDrone.Core.Configuration
         int FirstDayOfWeek { get; set; }
         string CalendarWeekColumnHeader { get; set; }
         MovieRuntimeFormatType MovieRuntimeFormat { get; set; }
+        MovieDetailsNextPrevBehaviorOption MovieDetailsNextPrevBehavior { get; set; }
 
         string ShortDateFormat { get; set; }
         string LongDateFormat { get; set; }

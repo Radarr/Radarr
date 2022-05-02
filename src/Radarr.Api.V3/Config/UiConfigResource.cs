@@ -11,6 +11,7 @@ namespace Radarr.Api.V3.Config
 
         // Movies
         public MovieRuntimeFormatType MovieRuntimeFormat { get; set; }
+        public MovieDetailsNextPrevBehaviorOption MovieDetailsNextPrevBehavior { get; set; }
 
         //Dates
         public string ShortDateFormat { get; set; }
@@ -33,6 +34,7 @@ namespace Radarr.Api.V3.Config
                 CalendarWeekColumnHeader = model.CalendarWeekColumnHeader,
 
                 MovieRuntimeFormat = model.MovieRuntimeFormat,
+                MovieDetailsNextPrevBehavior = model.MovieDetailsNextPrevBehavior,
 
                 ShortDateFormat = model.ShortDateFormat,
                 LongDateFormat = model.LongDateFormat,

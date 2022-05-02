@@ -81,6 +81,12 @@ namespace NzbDrone.Core.Configuration
             return _repository.Get(key.ToLower()) != null;
         }
 
+        public MovieDetailsNextPrevBehaviorOption MovieDetailsNextPrevBehavior
+        {
+            get { return GetValueEnum("MovieDetailsNextPrevBehavior", MovieDetailsNextPrevBehaviorOption.All); }
+            set { SetValue("MovieDetailsNextPrevBehavior", value); }
+        }
+
         public bool AutoUnmonitorPreviouslyDownloadedMovies
         {
             get { return GetValueBoolean("AutoUnmonitorPreviouslyDownloadedMovies"); }
