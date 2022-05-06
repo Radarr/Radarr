@@ -79,13 +79,13 @@ namespace Radarr.Http.Middleware
 
         private static string GetOrigin(HttpContext context)
         {
-            if (context.Request.Headers["UserAgent"].ToString().IsNullOrWhiteSpace())
+            if (context.Request.Headers["User-Agent"].ToString().IsNullOrWhiteSpace())
             {
                 return context.GetRemoteIP();
             }
             else
             {
-                return $"{context.GetRemoteIP()} {context.Request.Headers["UserAgent"]}";
+                return $"{context.GetRemoteIP()} {context.Request.Headers["User-Agent"]}";
             }
         }
     }
