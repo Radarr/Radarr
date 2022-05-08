@@ -65,10 +65,10 @@ function DownloadClientOptions(props) {
                   <FormInputGroup
                     type={inputTypes.NUMBER}
                     name="checkForFinishedDownloadInterval"
-                    min={0}
+                    min={1}
                     max={120}
                     unit="minutes"
-                    helpText={translate('HelpText')}
+                    helpText={translate('RefreshMonitoredIntervalHelpText')}
                     onChange={onInputChange}
                     {...settings.checkForFinishedDownloadInterval}
                   />

@@ -121,7 +121,7 @@ namespace NzbDrone.Core.Jobs
 
                     new ScheduledTask
                     {
-                        Interval = Math.Max(_configService.CheckForFinishedDownloadInterval, 1),
+                        Interval = GetRefreshMonitoredInterval(),
                         TypeName = typeof(RefreshMonitoredDownloadsCommand).FullName,
                         Priority = CommandPriority.High
                     }
@@ -192,6 +192,18 @@ namespace NzbDrone.Core.Jobs
             return interval;
         }
 
+        private int GetRefreshMonitoredInterval()
+        {
+            var interval = _configService.CheckForFinishedDownloadInterval;
+
+            if (interval < 1)
+            {
+                return 1;
+            }
+
+            return interval;
+        }
+
         private int GetImportListSyncInterval()
         {
             //Enforce 6 hour min on list sync
@@ -228,13 +240,14 @@ namespace NzbDrone.Core.Jobs
             backup.Interval = GetBackupInterval();
 
             var refreshMonitoredDownloads = _scheduledTaskRepository.GetDefinition(typeof(RefreshMonitoredDownloadsCommand));
-            refreshMonitoredDownloads.Interval = _configService.CheckForFinishedDownloadInterval;
+            refreshMonitoredDownloads.Interval = GetRefreshMonitoredInterval();
 
             _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, importList, refreshMonitoredDownloads, backup });
 
             _cache.Find(rss.TypeName).Interval = rss.Interval;
             _cache.Find(importList.TypeName).Interval = importList.Interval;
             _cache.Find(backup.TypeName).Interval = backup.Interval;
+            _cache.Find(refreshMonitoredDownloads.TypeName).Interval = refreshMonitoredDownloads.Interval;
         }
     }
 }
