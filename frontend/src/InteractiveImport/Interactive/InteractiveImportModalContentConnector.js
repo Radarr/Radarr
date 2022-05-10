@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -101,9 +100,18 @@ class InteractiveImportModalContentConnector extends Component {
   };
 
   onImportSelectedPress = (selected, importMode) => {
+    const {
+      items
+    } = this.props;
+
     const files = [];
 
-    _.forEach(this.props.items, (item) => {
+    if (importMode === 'chooseImportMode') {
+      this.setState({ interactiveImportErrorMessage: 'An import mode must be selected' });
+      return;
+    }
+
+    items.forEach((item) => {
       const isSelected = selected.indexOf(item.id) > -1;
 
       if (isSelected) {

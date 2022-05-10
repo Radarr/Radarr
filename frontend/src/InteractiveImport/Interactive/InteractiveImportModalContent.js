@@ -81,6 +81,7 @@ const filterExistingFilesOptions = {
 };
 
 const importModeOptions = [
+  { key: 'chooseImportMode', value: translate('ChooseImportMode'), disabled: true },
   { key: 'move', value: translate('MoveFiles') },
   { key: 'copy', value: translate('HardlinkCopyFiles') }
 ];
