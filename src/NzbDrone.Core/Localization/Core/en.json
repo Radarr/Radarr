@@ -441,6 +441,8 @@
     "IndexerTagHelpText": "Only use this indexer for movies with at least one matching tag. Leave blank to use with all movies.",
     "Info": "Info",
     "InstallLatest": "Install Latest",
+    "InstanceName": "Instance Name",
+    "InstanceNameHelpText": "Instance name in tab and for Syslog app name",
     "InteractiveImport": "Interactive Import",
     "InteractiveImportErrLanguage": "Language must be chosen for each selected file",
     "InteractiveImportErrMovie": "Movie must be chosen for each selected file",
