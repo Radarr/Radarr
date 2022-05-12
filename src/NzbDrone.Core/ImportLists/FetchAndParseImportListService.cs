@@ -178,12 +178,12 @@ namespace NzbDrone.Core.ImportLists
         {
             var mappedMovie = _movieSearch.MapMovieToTmdbMovie(new MovieMetadata { Title = report.Title, TmdbId = report.TmdbId, ImdbId = report.ImdbId, Year = report.Year });
 
-            _movieMetadataService.Upsert(mappedMovie);
-
             var mappedListMovie = new ImportListMovie { ListId = report.ListId };
 
             if (mappedMovie != null)
             {
+                _movieMetadataService.Upsert(mappedMovie);
+
                 mappedListMovie.MovieMetadata = mappedMovie;
                 mappedListMovie.MovieMetadataId = mappedMovie.Id;
             }
