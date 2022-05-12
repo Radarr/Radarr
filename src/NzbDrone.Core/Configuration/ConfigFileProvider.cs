@@ -237,7 +237,7 @@ namespace NzbDrone.Core.Configuration
 
         public int SyslogPort => GetValueInt("SyslogPort", 514, persist: false);
 
-        public string SyslogLevel => GetValue("SyslogLevel", LogLevel).ToLowerInvariant();
+        public string SyslogLevel => GetValue("SyslogLevel", LogLevel, false).ToLowerInvariant();
 
         public int GetValueInt(string key, int defaultValue, bool persist = true)
         {
