@@ -59,6 +59,7 @@ namespace Radarr.Api.V3.System
             return new
             {
                 AppName = BuildInfo.AppName,
+                InstanceName = _configFileProvider.InstanceName,
                 Version = BuildInfo.Version.ToString(),
                 BuildTime = BuildInfo.BuildDateTime,
                 IsDebug = BuildInfo.IsDebug,
