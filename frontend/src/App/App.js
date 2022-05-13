@@ -8,7 +8,7 @@ import AppRoutes from './AppRoutes';
 
 function App({ store, history }) {
   return (
-    <DocumentTitle title="Radarr">
+    <DocumentTitle title={window.Radarr.instanceName}>
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <PageConnector>
