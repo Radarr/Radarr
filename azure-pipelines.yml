@@ -101,7 +101,7 @@ stages:
             echo "Extra platforms already enabled"
           else
             echo "Enabling extra platform support"
-            sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
+            sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86;linux-arm-vfpv3d16/' $BUNDLEDVERSIONS
           fi
         displayName: Enable Extra Platform Support
       - bash: ./build.sh --backend --enable-extra-platforms
@@ -326,6 +326,14 @@ stages:
           tarCompression: 'gz'
           includeRootFolder: false
           rootFolderOrFile: $(artifactsFolder)/linux-arm/net6.0
+      - task: ArchiveFiles@2
+        displayName: Create linux-arm-vfpv3d16 tar
+        inputs:
+          archiveFile: '$(Build.ArtifactStagingDirectory)/Radarr.$(buildName).linux-core-arm-vfpv3d16.tar.gz'
+          archiveType: 'tar'
+          tarCompression: 'gz'
+          includeRootFolder: false
+          rootFolderOrFile: $(artifactsFolder)/linux-arm-vfpv3d16/net6.0
       - task: ArchiveFiles@2
         displayName: Create linux-musl-arm tar
         inputs:

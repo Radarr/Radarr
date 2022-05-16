@@ -27,20 +27,20 @@ UpdateVersionNumber()
 
 EnableExtraPlatformsInSDK()
 {
-    SDK_PATH=$(dotnet --list-sdks | grep -P '6\.\d\.\d+' | head -1 | sed 's/\(6\.[0-9]*\.[0-9]*\).*\[\(.*\)\]/\2\/\1/g')
+    SDK_PATH=$(dotnet --list-sdks | grep -P '6\.\d\.\d+' | tail -1 | sed 's/\(6\.[0-9]*\.[0-9]*\).*\[\(.*\)\]/\2\/\1/g')
     BUNDLEDVERSIONS="${SDK_PATH}/Microsoft.NETCoreSdk.BundledVersions.props"
-    if grep -q freebsd-x64 $BUNDLEDVERSIONS; then
+    if grep -q freebsd-x64 "${BUNDLEDVERSIONS}"; then
         echo "Extra platforms already enabled"
     else
         echo "Enabling extra platform support"
-        sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86/' $BUNDLEDVERSIONS
+        sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86;linux-arm-vfpv3d16/' "${BUNDLEDVERSIONS}"
     fi
 }
 
 EnableExtraPlatforms()
 {
-    if grep -qv freebsd-x64 src/Directory.Build.props; then
-        sed -i'' -e "s^<RuntimeIdentifiers>\(.*\)</RuntimeIdentifiers>^<RuntimeIdentifiers>\1;freebsd-x64;linux-x86</RuntimeIdentifiers>^g" src/Directory.Build.props
+    if ! grep -q freebsd-x64 src/Directory.Build.props; then
+        sed -i'' -e "s^<RuntimeIdentifiers>\(.*\)</RuntimeIdentifiers>^<RuntimeIdentifiers>\1;freebsd-x64;linux-x86;linux-arm-vfpv3d16</RuntimeIdentifiers>^g" src/Directory.Build.props
     fi
 }
 
@@ -428,6 +428,7 @@ then
         then
             Package "net6.0" "freebsd-x64"
             Package "net6.0" "linux-x86"
+            Package "net6.0" "linux-arm-vfpv3d16"
         fi
     else
         Package "$FRAMEWORK" "$RID"

@@ -34,11 +34,17 @@ namespace NzbDrone.Core.Update
 
         public UpdatePackage GetLatestUpdate(string branch, Version currentVersion)
         {
+#if ARM_VFPV3D16
+            var arch = "arm-vfpv3d16";
+#else
+            var arch = RuntimeInformation.OSArchitecture.ToString();
+#endif
+
             var request = _requestBuilder.Create()
                                          .Resource("/update/{branch}")
                                          .AddQueryParam("version", currentVersion)
                                          .AddQueryParam("os", OsInfo.Os.ToString().ToLowerInvariant())
-                                         .AddQueryParam("arch", RuntimeInformation.OSArchitecture)
+                                         .AddQueryParam("arch", arch)
                                          .AddQueryParam("runtime", PlatformInfo.Platform.ToString().ToLowerInvariant())
                                          .AddQueryParam("runtimeVer", _platformInfo.Version)
                                          .AddQueryParam("dbType", _mainDatabase.DatabaseType)

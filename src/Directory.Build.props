@@ -154,4 +154,9 @@
     <RuntimeIdentifier>osx-x64</RuntimeIdentifier>
   </PropertyGroup>
 
+  <!-- Define constant so we can identify the non-standard arch arm-vfpv3d16 -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-arm-vfpv3d16'">
+    <DefineConstants>ARM_VFPV3D16</DefineConstants>
+  </PropertyGroup>
+
 </Project>
