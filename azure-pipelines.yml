@@ -95,15 +95,24 @@ stages:
         inputs:
           version: $(dotnetVersion)
       - bash: |
-          BUNDLEDVERSIONS=${AGENT_TOOLSDIRECTORY}/dotnet/sdk/${DOTNETVERSION}/Microsoft.NETCoreSdk.BundledVersions.props
-          echo $BUNDLEDVERSIONS
-          if grep -q freebsd-x64 $BUNDLEDVERSIONS; then
-            echo "Extra platforms already enabled"
-          else
-            echo "Enabling extra platform support"
+          SDK_PATH="${AGENT_TOOLSDIRECTORY}/dotnet/sdk/${DOTNETVERSION}"
+          BUNDLEDVERSIONS="${SDK_PATH}/Microsoft.NETCoreSdk.BundledVersions.props"
+          
+          if ! grep -q freebsd-x64 $BUNDLEDVERSIONS; then
             sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86;linux-arm-vfpv3d16/' $BUNDLEDVERSIONS
           fi
-        displayName: Enable Extra Platform Support
+          grep freebsd-x64 $BUNDLEDVERSIONS
+        displayName: Extra Platform Support - Generic
+      - bash: |
+          SDK_PATH="${AGENT_TOOLSDIRECTORY}/dotnet/sdk/${DOTNETVERSION}"
+          RUNTIMEIDENTIFIERGRAPH="${SDK_PATH}/RuntimeIdentifierGraph.json"
+          
+          if ! grep -q linux-arm-vfpv3d16 "${RUNTIMEIDENTIFIERGRAPH}"; then
+            sed -i.ORI '/"runtimes":/a \ \ \ \ "linux-arm-vfpv3d16": {"#import": ["linux-arm"]},' "${RUNTIMEIDENTIFIERGRAPH}"
+          fi
+          grep -A5 -B5 linux-arm-vfpv3d16 $RUNTIMEIDENTIFIERGRAPH
+        displayName: Enable Extra Platform Support - Windows
+        condition: and(succeeded(), eq(variables['osName'], 'Windows'))
       - bash: ./build.sh --backend --enable-extra-platforms
         displayName: Build Radarr Backend
       - bash: |

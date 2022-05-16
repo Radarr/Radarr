@@ -27,13 +27,17 @@ UpdateVersionNumber()
 
 EnableExtraPlatformsInSDK()
 {
-    SDK_PATH=$(dotnet --list-sdks | grep -P '6\.\d\.\d+' | tail -1 | sed 's/\(6\.[0-9]*\.[0-9]*\).*\[\(.*\)\]/\2\/\1/g')
+    SDK_PATH=$(dotnet --list-sdks | grep '6\.[0-9]\.[0-9]\{3\}' | tail -1 | sed 's/\(6\.[0-9]*\.[0-9]*\).*\[\(.*\)\]/\2\/\1/g')
+    
     BUNDLEDVERSIONS="${SDK_PATH}/Microsoft.NETCoreSdk.BundledVersions.props"
-    if grep -q freebsd-x64 "${BUNDLEDVERSIONS}"; then
-        echo "Extra platforms already enabled"
-    else
+    if ! grep -q freebsd-x64 "${BUNDLEDVERSIONS}"; then
         echo "Enabling extra platform support"
         sed -i.ORI 's/osx-x64/osx-x64;freebsd-x64;linux-x86;linux-arm-vfpv3d16/' "${BUNDLEDVERSIONS}"
+    fi
+    
+    RUNTIMEIDENTIFIERGRAPH="${SDK_PATH}/RuntimeIdentifierGraph.json"
+    if ! grep -q linux-arm-vfpv3d16 "${RUNTIMEIDENTIFIERGRAPH}"; then
+        sed -i.ORI '/"runtimes":/a \ \ \ \ "linux-arm-vfpv3d16": {"#import": ["linux-arm"]},' "${RUNTIMEIDENTIFIERGRAPH}"
     fi
 }
 
@@ -74,8 +78,8 @@ Build()
         platform=Posix
     fi
 
-    dotnet clean $slnFile -c Debug
-    dotnet clean $slnFile -c Release
+    #dotnet clean $slnFile -c Debug
+    #dotnet clean $slnFile -c Release
 
     if [[ -z "$RID" || -z "$FRAMEWORK" ]];
     then
