@@ -10,6 +10,8 @@ import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import { inputTypes } from 'Helpers/Props';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
+import themes from 'Styles/Themes';
+import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
 
 export const firstDayOfWeekOptions = [
@@ -66,6 +68,9 @@ class UISettings extends Component {
     } = this.props;
 
     const uiLanguages = languages.filter((item) => item.value !== 'Original');
+
+    const themeOptions = Object.keys(themes)
+      .map((theme) => ({ key: theme, value: titleCase(theme) }));
 
     return (
       <PageContent title={translate('UISettings')}>
@@ -184,6 +189,17 @@ class UISettings extends Component {
                 </FieldSet>
 
                 <FieldSet legend={translate('Style')}>
+                  <FormGroup>
+                    <FormLabel>{translate('Theme')}</FormLabel>
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="theme"
+                      helpText={translate('ThemeHelpText', ['Theme.Park'])}
+                      values={themeOptions}
+                      onChange={onInputChange}
+                      {...settings.theme}
+                    />
+                  </FormGroup>
                   <FormGroup>
                     <FormLabel>{translate('SettingsEnableColorImpairedMode')}</FormLabel>
                     <FormInputGroup

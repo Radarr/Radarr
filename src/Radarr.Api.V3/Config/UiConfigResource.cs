@@ -21,11 +21,12 @@ namespace Radarr.Api.V3.Config
         public bool EnableColorImpairedMode { get; set; }
         public int MovieInfoLanguage { get; set; }
         public int UILanguage { get; set; }
+        public string Theme { get; set; }
     }
 
     public static class UiConfigResourceMapper
     {
-        public static UiConfigResource ToResource(IConfigService model)
+        public static UiConfigResource ToResource(IConfigFileProvider config, IConfigService model)
         {
             return new UiConfigResource
             {
@@ -41,7 +42,8 @@ namespace Radarr.Api.V3.Config
 
                 EnableColorImpairedMode = model.EnableColorImpairedMode,
                 MovieInfoLanguage = model.MovieInfoLanguage,
-                UILanguage = model.UILanguage
+                UILanguage = model.UILanguage,
+                Theme = config.Theme
             };
         }
     }
