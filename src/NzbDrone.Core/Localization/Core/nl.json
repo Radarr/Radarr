@@ -403,7 +403,6 @@
     "IgnoredAddresses": "Genegeerde Adressen",
     "ICalHttpUrlHelpText": "Kopieer deze URL naar je cliënt(en) of klik om te abonneren als je browser Webcal ondersteunt",
     "Hostname": "Hostnaam",
-    "HelpText": "Tussentijd in minuten. Schakel uit met 0 (dit stopt het automatisch ophalen van uitgaves)",
     "Group": "Groep",
     "Global": "Globaal",
     "GeneralSettings": "Algemene Instellingen",
@@ -1102,5 +1101,7 @@
     "OriginalTitle": "Originele titel",
     "Database": "Databasis",
     "ImdbRating": "IMDb beoordeling",
-    "ImdbVotes": "IMDb stemmen"
+    "ImdbVotes": "IMDb stemmen",
+    "TmdbVotes": "IMDb stemmen",
+    "TmdbRating": "IMDb beoordeling"
 }

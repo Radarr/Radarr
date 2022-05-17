@@ -96,7 +96,6 @@
     "FileWasDeletedByUpgrade": "Plik został usunięty, aby zaimportować uaktualnienie",
     "FollowPerson": "Śledź osobę",
     "Genres": "Gatunki",
-    "HelpText": "Odstęp w minutach. Ustaw na zero, aby wyłączyć (zatrzyma to wszystkie automatyczne przechwytywanie zwolnień)",
     "Ignored": "Zignorowano",
     "ImportRootPath": "Skieruj Radarr na folder zawierający wszystkie filmy, a nie konkretny film. na przykład {0} a nie {1}. Ponadto każdy film musi znajdować się we własnym folderze w folderze głównym / biblioteki.",
     "IncludeUnmonitored": "Uwzględnij niemonitorowane",

@@ -618,7 +618,6 @@
     "Group": "グループ",
     "HardlinkCopyFiles": "ファイルのハードリンク/コピー",
     "Health": "健康",
-    "HelpText": "分単位の間隔。無効にするにはゼロに設定します（これにより、すべての自動リリースグラブが停止します）",
     "HiddenClickToShow": "非表示、クリックして表示",
     "HideAdvanced": "高度な非表示",
     "History": "歴史",

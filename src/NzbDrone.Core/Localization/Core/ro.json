@@ -761,7 +761,6 @@
     "GrabRelease": "Grab Release",
     "GrabReleaseMessageText": "Radarr nu a putut stabili pentru ce film a fost lansată această lansare. Este posibil ca Radarr să nu poată importa automat această versiune. Doriți să luați „{0}”?",
     "Group": "grup",
-    "HelpText": "Interval în minute. Setați la zero pentru a dezactiva (acest lucru va opri toate apucările de eliberare automată)",
     "HiddenClickToShow": "Ascuns, faceți clic pentru a afișa",
     "IconForCutoffUnmet": "Pictogramă pentru Cutoff Unmet",
     "IgnoredAddresses": "Adrese ignorate",

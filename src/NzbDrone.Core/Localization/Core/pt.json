@@ -407,7 +407,6 @@
     "ICalHttpUrlHelpText": "Copie este URL para seu(s) cliente(s) ou clique para subscrever-se caso seu browser suporte webcal",
     "ICalFeed": "Feed do iCal",
     "Hostname": "Nome do anfitrião",
-    "HelpText": "Intervalo em minutos. Defina como zero para desativar (isso parará toda a captura automática)",
     "Group": "Grupo",
     "GrabRelease": "Capturar versão",
     "GrabID": "Capturar ID",

@@ -292,7 +292,6 @@
     "ImportNotForDownloads": "Nepoužívejte k importu souborů ke stažení z vašeho klienta pro stahování, toto je pouze pro existující organizované knihovny, nikoli pro netříděné soubory.",
     "GrabReleaseMessageText": "Radarr nebyl schopen určit, pro který film je toto vydání určeno. Radarr nemusí být schopen toto vydání automaticky importovat. Chcete chytit „{0}“?",
     "GrabSelected": "Chyťte vybrané",
-    "HelpText": "Interval v minutách. Nastavením na nulu deaktivujete (tím se zastaví veškeré automatické uvolnění uvolnění)",
     "HiddenClickToShow": "Skryté, kliknutím zobrazíte",
     "ImportMechanismHealthCheckMessage": "Povolit zpracování dokončeného stahování",
     "NoResultsFound": "Nebyly nalezeny žádné výsledky",

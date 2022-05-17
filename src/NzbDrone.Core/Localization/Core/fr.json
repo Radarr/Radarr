@@ -355,7 +355,6 @@
     "ICalHttpUrlHelpText": "Copiez cette URL dans votre client ou cliquez pour souscrire si votre navigateur est compatible avec webcal",
     "ICalFeed": "Flux iCal",
     "Hostname": "Nom d'hôte",
-    "HelpText": "Intervalle en minutes. Mettre à zéro pour désactiver (cela arrêtera tous les téléchargements automatiques)",
     "Group": "Groupe",
     "GrabRelease": "Télécharger la version",
     "GrabID": "ID du grab",
@@ -1115,5 +1114,6 @@
     "RemoveSelectedItem": "Supprimer l'élément sélectionné",
     "RemoveSelectedItems": "Supprimer les éléments sélectionnés",
     "SelectReleaseGroup": "Sélectionner le groupe de publication",
-    "SetReleaseGroup": "Régler le groupe de publication"
+    "SetReleaseGroup": "Régler le groupe de publication",
+    "RefreshMonitoredIntervalHelpText": "Intervalle en minutes entre chaque vérification des téléchargements, minimum 1 minute"
 }

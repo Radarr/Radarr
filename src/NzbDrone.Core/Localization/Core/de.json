@@ -573,7 +573,6 @@
     "ImportListSyncIntervalHelpText": "Wie oft die Listen synchronisiert werden sollen. Minimum 6 Stunden",
     "AddListExclusion": "Listenausschluss hinzufügen",
     "AddMoviesMonitored": "Filme beobachtet hinzufügen",
-    "HelpText": "Intervall in Minuten. Zum deaktivieren auf 0 setzen ( Dies wird das automatische Release erfassen deaktivieren )",
     "RequiredHelpText": "Diese {0} Bedingungen müsen zutreffen damit das eigene Format zutrifft. Ansonsten reicht ein einzelner {1} Treffer.",
     "AllowHardcodedSubsHelpText": "Filme mit hartcodierten Untertiteln werden auch automatisch heruntergeladen",
     "ICalHttpUrlHelpText": "Füge diese URL in deinen Client ein oder klicke auf abonnieren wenn dein Browser Webcal untertützt",
