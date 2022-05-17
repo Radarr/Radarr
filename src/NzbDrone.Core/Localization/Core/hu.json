@@ -207,7 +207,6 @@
     "History": "Történet",
     "HideAdvanced": "Haladó Elrejtése",
     "HiddenClickToShow": "Rejtett, kattints a megjelenítéshez",
-    "HelpText": "Intervallum percekben. A letiltáshoz állítsa nullára (ez megállítja az összes automatikus keresést)",
     "HealthNoIssues": "Nincs hiba a konfigurációval",
     "Health": "Állapot",
     "HaveNotAddedMovies": "Még nem adottál hozzá egyetlen filmet sem. Először szeretnéd importálni néhány filmedet vagy az összes filmet?",
@@ -1115,5 +1114,7 @@
     "SizeLimit": "Méretkorlát",
     "OriginalTitle": "Eredeti Cím",
     "OriginalLanguage": "Eredeti nyelv",
-    "Database": "Adatbázis"
+    "Database": "Adatbázis",
+    "RefreshMonitoredIntervalHelpText": "Milyen gyakran szeretnéd figyeltetni a letöltést a letöltő kliensekből, minimális időtartam 1 perc",
+    "RssSyncHelpText": "Intervallum percekben. A letiltáshoz állítsa nullára (ez megállítja az összes automatikus keresést)"
 }

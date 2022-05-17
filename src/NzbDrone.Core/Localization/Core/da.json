@@ -641,7 +641,6 @@
     "GrabRelease": "Grab Release",
     "GrabReleaseMessageText": "Radarr var ikke i stand til at bestemme, hvilken film denne udgivelse var til. Radarr kan muligvis ikke automatisk importere denne udgivelse. Vil du hente '{0}'?",
     "Group": "Gruppe",
-    "HelpText": "Interval på få minutter. Sæt til nul for at deaktivere (dette stopper al automatisk frigivelse)",
     "HiddenClickToShow": "Skjult, klik for at vise",
     "Host": "Vært",
     "iCalLink": "iCal Link",

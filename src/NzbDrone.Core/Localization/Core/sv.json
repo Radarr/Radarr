@@ -859,7 +859,6 @@
     "ForMoreInformationOnTheIndividualDownloadClients": "Klicka på informationsknapparna för mer information om de enskilda nedladdningsklienterna.",
     "ForMoreInformationOnTheIndividualIndexers": "För mer information om de enskilda indexerarna, klicka på informationsknapparna.",
     "GeneralSettings": "Allmänna Inställningar",
-    "HelpText": "Intervall i minuter. Ställ in på noll för att inaktivera (detta kommer stoppa all automatisk hämntning av utgåvor)",
     "IconForCutoffUnmet": "Ikon för Cutoff Unmet",
     "IgnoredHelpText": "Utgåvan kommer att avvisas om det innehåller en eller flera av villkoren (skiftlägeskänslig)",
     "IgnoredPlaceHolder": "Lägg till ny restriktion",

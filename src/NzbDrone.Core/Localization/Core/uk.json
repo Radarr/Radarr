@@ -215,5 +215,7 @@
     "DeleteListMessageText": "Ви впевнені, що хочете видалити тег {0} ?",
     "DeleteNotificationMessageText": "Ви впевнені, що хочете видалити клієнт завантаження '{0}'?",
     "DeleteTagMessageText": "Ви впевнені, що хочете видалити тег {0} ?",
-    "ExportCustomFormat": "Додати свій формат"
+    "ExportCustomFormat": "Додати свій формат",
+    "ImportCustomFormat": "Додати свій формат",
+    "DeleteRestrictionHelpText": "Ви впевнені, що хочете видалити цей профіль затримки?"
 }
