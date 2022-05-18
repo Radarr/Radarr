@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<german>german\b|videomann|ger[. ]dub)|
                                                                             (?<flemish>flemish)|
                                                                             (?<bulgarian>bgaudio)|
-                                                                            (?<brazilian>dublado)|
+                                                                            (?<brazilian>dublado|brazilian)|
                                                                             (?<greek>greek)|
                                                                             (?<french>\b(?:FR|VO|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRE|FRA)\b)|
                                                                             (?<russian>\brus\b)|
