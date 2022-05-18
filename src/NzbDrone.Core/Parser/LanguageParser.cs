@@ -18,7 +18,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<german>german\b|videomann|ger[. ]dub)|
                                                                             (?<flemish>flemish)|
                                                                             (?<bulgarian>bgaudio)|
-                                                                            (?<brazilian>dublado|brazilian)|
+                                                                            (?<brazilian>dublado)|
                                                                             (?<greek>greek)|
                                                                             (?<french>\b(?:FR|VO|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRE|FRA)\b)|
                                                                             (?<russian>\brus\b)|
@@ -151,6 +151,11 @@ namespace NzbDrone.Core.Parser
             if (lowerTitle.Contains("portuguese"))
             {
                 languages.Add(Language.Portuguese);
+            }
+
+            if (lowerTitle.Contains("brazilian"))
+            {
+                languages.Add(Language.PortugueseBR);
             }
 
             if (lowerTitle.Contains("hungarian"))
