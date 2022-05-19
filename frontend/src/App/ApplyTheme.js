@@ -6,7 +6,7 @@ import themes from 'Styles/Themes';
 
 function createMapStateToProps() {
   return createSelector(
-    (state) => state.settings.ui.item.theme || window.Prowlarr.theme,
+    (state) => state.settings.ui.item.theme || window.Radarr.theme,
     (
       theme
     ) => {

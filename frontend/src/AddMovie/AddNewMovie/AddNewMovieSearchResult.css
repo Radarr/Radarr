@@ -9,7 +9,7 @@
 .underlay {
   @add-mixin cover;
 
-  background-color: $white;
+  background-color: var(--underlayBackgroundColor);
   transition: background 500ms;
 
   &:hover {
@@ -31,7 +31,7 @@
   display: block;
   margin-right: 20px;
   height: 250px;
-  background-color: $defaultColor;
+  background-color: var(--defaultColor);
 }
 
 .content {
@@ -56,7 +56,7 @@
 
 .year {
   margin-left: 10px;
-  color: $disabledColor;
+  color: var(--disabledColor);
 }
 
 .icons {
@@ -75,7 +75,7 @@
 
 .exclusionIcon {
   margin-left: 10px;
-  color: $dangerColor;
+  color: var(--dangerColor);
   pointer-events: all;
 }
 

@@ -21,17 +21,17 @@
 .movieFolder {
   @add-mixin truncate;
 
-  color: $disabledColor;
+  color: var(--disabledColor);
 }
 
 .freeSpace {
   margin-left: 15px;
-  color: $darkGray;
+  color: var(--freeSpaceColor);
   font-size: $smallFontSize;
 }
 
 .isMissing {
   margin-left: 15px;
-  color: $dangerColor;
+  color: var(--dangerColor);
   font-size: $smallFontSize;
 }
