@@ -1,4 +1,10 @@
-const prowlarrOrange = '#e66000';
+const radarrYellow = '#ffc230';
+const darkGray = '#888';
+const gray = '#adadad';
+const dimColor = '#555';
+const black = '#000';
+const white = '#fff';
+const purple = '#7a43b6';
 
 module.exports = {
   textColor: '#ccc',
@@ -14,17 +20,17 @@ module.exports = {
   warningColor: '#ffa500',
   infoColor: '#5d9cec',
   purple: '#7a43b6',
-  prowlarrOrange,
+  radarrYellow,
   helpTextColor: '#909293',
   darkGray: '#888',
   gray: '#adadad',
 
   // Theme Colors
 
-  themeBlue: prowlarrOrange,
+  themeBlue: radarrYellow,
   themeRed: '#c4273c',
   themeDarkColor: '#595959',
-  themeLightColor: prowlarrOrange,
+  themeLightColor: radarrYellow,
   pageBackground: '#202020',
   pageFooterBackgroud: 'rgba(0, 0, 0, .25)',
 
@@ -33,12 +39,12 @@ module.exports = {
 
   // Labels
   inverseLabelColor: '#ddd',
-  inverseLabelTextColor: prowlarrOrange,
+  inverseLabelTextColor: black,
 
   // Links
-  defaultLinkHoverColor: '#fff',
-  linkColor: '#rgb(230, 96, 0)',
-  linkHoverColor: '#rgb(230, 96, 0, .8)',
+  defaultLinkHoverColor: '#rgb(255, 194, 48 .8)',
+  linkColor: '#rgb(255, 194, 48)',
+  linkHoverColor: '#rgb(255, 194, 48, .8)',
 
   // Header
   pageHeaderBackgroundColor: '#2a2a2a',
@@ -68,6 +74,9 @@ module.exports = {
   inputWarningBoxShadowColor: 'rgba(255, 165, 0, 0.6)',
   colorImpairedGradient: '#ffffff',
   colorImpairedGradientDark: '#f4f5f6',
+  contentBackgroundColor: white,
+  dividerColor: gray,
+  overlayTitleColor: white,
 
   //
   // Buttons
@@ -134,6 +143,7 @@ module.exports = {
   cardShadowColor: '#111',
   cardAlternateBackgroundColor: '#333333',
   cardCenterBackgroundColor: '#2a2a2a',
+  cardAddColor: white,
 
   //
   // Alert
@@ -177,6 +187,35 @@ module.exports = {
   popoverTitleBorderInverseColor: '#707070',
   popoverShadowInverseColor: 'rgba(0, 0, 0, 0.2)',
   popoverArrowBorderInverseColor: 'rgba(58, 63, 81, 0.75)',
+
+  //
+  // Misc
+
+  underlayBackgroundColor: white,
+  availNotMonitoredColor: darkGray,
+  freeSpaceColor: darkGray,
+  excludedColor: white,
+  controlsColor: white,
+  backdropOverlayColor: black,
+  headerContentColor: white,
+  endedColor: white,
+  containerBackgroundColor: white,
+  sliderAccentColor: '#5d9cec',
+  handleQualityDefinition: white,
+
+  //
+  // Calender
+
+  calendarBorderColor: '#e5e5e5',
+  calendarTodayBackgroundColor: darkGray,
+  calendarTextDim: dimColor,
+
+  //
+  // Queue
+
+  queueColor: purple,
+  queueBorderColor: purple,
+  progressColor: white,
 
   //
   // Table
