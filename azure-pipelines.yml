@@ -1143,4 +1143,14 @@ stages:
             SYSTEM_ACCESSTOKEN: $(System.AccessToken)
             DISCORDCHANNELID: $(discordChannelId)
             DISCORDWEBHOOKKEY: $(discordWebhookKey)
+    - job:
+      displayName: LinuxServer.io PR Build
+      condition: and(succeeded(), eq(variables['System.PullRequest.IsFork'], false), notIn(variables['Build.SourceBranch'], 'refs/heads/master','refs/heads/develop'))
+      pool:
+        vmImage: ${{ variables.linuxImage }}
+      steps:
+        - pwsh: | 
+            Invoke-RestMethod -Method POST -Uri 'https://ci.linuxserver.io/generic-webhook-trigger/invoke?servarr' -Headers @{Authorization = "Bearer $env:LSIO_CI_APIKEY"; application = "radarr"; branch = $env:SYSTEM_PULLREQUEST_SOURCEBRANCH; version = $env:radarrVersion} -ContentType application/json
+          env:
+            LSIO_CI_APIKEY: $(lsioCiApiKey)
 
