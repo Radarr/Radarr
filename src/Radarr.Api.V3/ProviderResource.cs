@@ -44,7 +44,7 @@ namespace Radarr.Api.V3
             };
         }
 
-        public virtual TProviderDefinition ToModel(TProviderResource resource)
+        public virtual TProviderDefinition ToModel(TProviderResource resource, TProviderDefinition existingDefinition)
         {
             if (resource == null)
             {
@@ -64,7 +64,7 @@ namespace Radarr.Api.V3
             };
 
             var configContract = ReflectionExtensions.CoreAssembly.FindTypeByName(definition.ConfigContract);
-            definition.Settings = (IProviderConfig)SchemaBuilder.ReadFromSchema(resource.Fields, configContract);
+            definition.Settings = (IProviderConfig)SchemaBuilder.ReadFromSchema(resource.Fields, configContract, existingDefinition?.Settings);
 
             return definition;
         }
