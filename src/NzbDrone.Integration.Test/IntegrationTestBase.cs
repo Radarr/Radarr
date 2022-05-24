@@ -303,13 +303,25 @@ namespace NzbDrone.Integration.Test
             return result.MovieFile;
         }
 
-        public QualityProfileResource EnsureProfileCutoff(int profileId, Quality cutoff)
+        public QualityProfileResource EnsureProfileCutoff(int profileId, Quality cutoff, bool upgradeAllowed)
         {
+            var needsUpdate = false;
             var profile = Profiles.Get(profileId);
 
             if (profile.Cutoff != cutoff.Id)
             {
                 profile.Cutoff = cutoff.Id;
+                needsUpdate = true;
+            }
+
+            if (profile.UpgradeAllowed != upgradeAllowed)
+            {
+                profile.UpgradeAllowed = upgradeAllowed;
+                needsUpdate = true;
+            }
+
+            if (needsUpdate)
+            {
                 profile = Profiles.Put(profile);
             }
 
