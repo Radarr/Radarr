@@ -43,14 +43,14 @@ namespace Radarr.Api.V3.ImportLists
             return resource;
         }
 
-        public override ImportListDefinition ToModel(ImportListResource resource)
+        public override ImportListDefinition ToModel(ImportListResource resource, ImportListDefinition existingDefinition)
         {
             if (resource == null)
             {
                 return null;
             }
 
-            var definition = base.ToModel(resource);
+            var definition = base.ToModel(resource, existingDefinition);
 
             definition.Enabled = resource.Enabled;
             definition.EnableAuto = resource.EnableAuto;

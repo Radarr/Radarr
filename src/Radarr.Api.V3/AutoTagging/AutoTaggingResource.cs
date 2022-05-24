@@ -66,8 +66,7 @@ namespace Radarr.Api.V3.AutoTagging
             // Finding the exact current specification isn't possible given the dynamic nature of them and the possibility that multiple
             // of the same type exist within the same format. Passing in null is safe as long as there never exists a specification that
             // relies on additional privacy.
-            // TODO: Check ReadFromSchema for third argument
-            var spec = (IAutoTaggingSpecification)SchemaBuilder.ReadFromSchema(resource.Fields, type);
+            var spec = (IAutoTaggingSpecification)SchemaBuilder.ReadFromSchema(resource.Fields, type, null);
             spec.Name = resource.Name;
             spec.Negate = resource.Negate;
             return spec;

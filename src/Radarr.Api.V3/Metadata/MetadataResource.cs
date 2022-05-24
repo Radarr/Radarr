@@ -23,14 +23,14 @@ namespace Radarr.Api.V3.Metadata
             return resource;
         }
 
-        public override MetadataDefinition ToModel(MetadataResource resource)
+        public override MetadataDefinition ToModel(MetadataResource resource, MetadataDefinition existingDefinition)
         {
             if (resource == null)
             {
                 return null;
             }
 
-            var definition = base.ToModel(resource);
+            var definition = base.ToModel(resource, existingDefinition);
 
             definition.Enable = resource.Enable;
 

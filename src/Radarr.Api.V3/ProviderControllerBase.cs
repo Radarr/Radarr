@@ -142,7 +142,8 @@ namespace Radarr.Api.V3
 
         private TProviderDefinition GetDefinition(TProviderResource providerResource, bool validate, bool includeWarnings, bool forceValidate)
         {
-            var definition = _resourceMapper.ToModel(providerResource);
+            var existingDefinition = providerResource.Id > 0 ? _providerFactory.Find(providerResource.Id) : null;
+            var definition = _resourceMapper.ToModel(providerResource, existingDefinition);
 
             if (validate && (definition.Enable || forceValidate))
             {
