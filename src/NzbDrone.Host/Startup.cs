@@ -63,8 +63,6 @@ namespace NzbDrone.Host
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddResponseCompression(options => options.EnableForHttps = true);
-
             services.AddCors(options =>
             {
                 options.AddPolicy(VersionedApiControllerAttribute.API_CORS_POLICY,
@@ -255,7 +253,6 @@ namespace NzbDrone.Host
             app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseResponseCompression();
             app.Properties["host.AppName"] = BuildInfo.AppName;
 
             app.UseMiddleware<VersionMiddleware>();
