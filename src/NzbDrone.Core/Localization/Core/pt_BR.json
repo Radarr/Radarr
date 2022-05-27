@@ -485,7 +485,7 @@
     "AddMovies": "Adicionar filmes",
     "AddMovie": "Adicionar filme",
     "AddListExclusion": "Adicionar exclusão à lista",
-    "AddList": "Adicionar lista",
+    "AddList": "Adicionar à Lista",
     "AddingTag": "Adicionando etiqueta",
     "AddIndexer": "Adicionar indexador",
     "AddImportExclusionHelpText": "Impedir a adição do filme ao Radarr por listas",
@@ -755,7 +755,7 @@
     "Restrictions": "Restrições",
     "RestoreBackup": "Restaurar backup",
     "Restore": "Restaurar",
-    "RestartRequiredHelpTextWarning": "Requer reinício para ter efeito",
+    "RestartRequiredHelpTextWarning": "Requer reinicio para fazer efeito",
     "RestartRadarr": "Reiniciar o Radarr",
     "RestartNow": "Reiniciar agora",
     "Restart": "Reiniciar",
@@ -773,7 +773,7 @@
     "Reorder": "Reorganizar",
     "RenameMoviesHelpText": "O Radarr usará o nome de arquivo existente se a renomeação estiver desativada",
     "RenameMovies": "Renomear filmes",
-    "RenameFiles": "Renomear arquivos",
+    "RenameFiles": "Renomear Arquivos",
     "Renamed": "Renomeado",
     "RemovingTag": "Removendo tag",
     "RemoveSelected": "Remover selecionado(s)",
@@ -1118,5 +1118,5 @@
     "RefreshMonitoredIntervalHelpText": "Com que frequência atualizar downloads monitorados de clientes de download, no mínimo 1 minuto",
     "RssSyncHelpText": "Intervalo em minutos. Defina como zero para desabilitar (isso interromperá todas as capturas de liberação automática)",
     "InstanceName": "Nome da instância",
-    "InstanceNameHelpText": "Nome da instância na aba e para nome do aplicativo Syslog"
+    "InstanceNameHelpText": "Nome da instância na guia e para o nome do aplicativo Syslog"
 }
