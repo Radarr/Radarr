@@ -15,7 +15,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(QualityParser));
 
         private static readonly Regex SourceRegex = new Regex(@"\b(?:
-                                                                (?<bluray>M?BluRay|Blu-Ray|HD.?DVD|BD(?!$)|UHDBD|BDISO|BDMux|BD25|BD50|BR.?DISK)|
+                                                                (?<bluray>M?BluRay|Blu-Ray|HD.?DVD|BD(?!$)|UHDBD|UHD2BD|BDISO|BDMux|BD25|BD50|BR.?DISK)|
                                                                 (?<webdl>WEB[-_. ]DL(?:mux)?|WEBDL|AmazonHD|iTunesHD|MaxdomeHD|NetflixU?HD|WebHD|[. ]WEB[. ](?:[xh]26[45]|DDP?5[. ]1)|[. ](?-i:WEB)$|(?:\d{3,4}0p)[-. ]WEB[-. ]|[-. ]WEB[-. ]\d{3,4}0p|\b\s\/\sWEB\s\/\s\b|(?:AMZN|NF|DP)[. -]WEB[. -])|
                                                                 (?<webrip>WebRip|Web-Rip|WEBMux)|
                                                                 (?<hdtv>HDTV)|

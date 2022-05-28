@@ -261,6 +261,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.2016.German.DTS.DL.1080p.UHDBD.x265-TDO.mkv", false)]
         [TestCase("Movie.Name.2021.1080p.BDLight.x265-AVCDVD", false)]
         [TestCase("Random.Title.2010.1080p.HD.DVD.AVC.DDP.5.1-GRouP", false)]
+        [TestCase("Movie.Title.2012.German.DL.1080p.UHD2BD.x264-QfG", false)]
         public void should_parse_bluray1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R1080p);
