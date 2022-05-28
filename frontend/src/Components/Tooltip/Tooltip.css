@@ -7,13 +7,13 @@
   position: relative;
 
   &.default {
-    background-color: $white;
-    box-shadow: 0 5px 10px $popoverShadowColor;
+    background-color: var(--white);
+    box-shadow: 0 5px 10px var(--popoverShadowColor);
   }
 
   &.inverse {
-    background-color: $themeDarkColor;
-    box-shadow: 0 5px 10px $popoverShadowInverseColor;
+    background-color: var(--themeDarkColor);
+    box-shadow: 0 5px 10px var(--popoverShadowInverseColor);
   }
 }
 
@@ -49,20 +49,20 @@
     content: ' ';
 
     &.default {
-      border-top-color: $popoverArrowBorderColor;
+      border-top-color: var(--popoverArrowBorderColor);
     }
 
     &.inverse {
-      border-top-color: $popoverArrowBorderInverseColor;
+      border-top-color: var(--popoverArrowBorderInverseColor);
     }
   }
 
   &.default {
-    border-top-color: $popoverArrowBorderColor;
+    border-top-color: var(--popoverArrowBorderColor);
   }
 
   &.inverse {
-    border-top-color: $popoverArrowBorderInverseColor;
+    border-top-color: var(--popoverArrowBorderInverseColor);
   }
 }
 
@@ -78,20 +78,20 @@
     content: ' ';
 
     &.default {
-      border-right-color: $popoverArrowBorderColor;
+      border-right-color: var(--popoverArrowBorderColor);
     }
 
     &.inverse {
-      border-right-color: $popoverArrowBorderInverseColor;
+      border-right-color: var(--popoverArrowBorderInverseColor);
     }
   }
 
   &.default {
-    border-right-color: $popoverArrowBorderColor;
+    border-right-color: var(--popoverArrowBorderColor);
   }
 
   &.inverse {
-    border-right-color: $popoverArrowBorderInverseColor;
+    border-right-color: var(--popoverArrowBorderInverseColor);
   }
 }
 
@@ -107,20 +107,20 @@
     content: ' ';
 
     &.default {
-      border-bottom-color: $popoverArrowBorderColor;
+      border-bottom-color: var(--popoverArrowBorderColor);
     }
 
     &.inverse {
-      border-bottom-color: $popoverArrowBorderInverseColor;
+      border-bottom-color: var(--popoverArrowBorderInverseColor);
     }
   }
 
   &.default {
-    border-bottom-color: $popoverArrowBorderColor;
+    border-bottom-color: var(--popoverArrowBorderColor);
   }
 
   &.inverse {
-    border-bottom-color: $popoverArrowBorderInverseColor;
+    border-bottom-color: var(--popoverArrowBorderInverseColor);
   }
 }
 
@@ -136,20 +136,20 @@
     content: ' ';
 
     &.default {
-      border-left-color: $popoverArrowBorderColor;
+      border-left-color: var(--popoverArrowBorderColor);
     }
 
     &.inverse {
-      border-left-color: $popoverArrowBorderInverseColor;
+      border-left-color: var(--popoverArrowBorderInverseColor);
     }
   }
 
   &.default {
-    border-left-color: $popoverArrowBorderColor;
+    border-left-color: var(--popoverArrowBorderColor);
   }
 
   &.inverse {
-    border-left-color: $popoverArrowBorderInverseColor;
+    border-left-color: var(--popoverArrowBorderInverseColor);
   }
 }
 

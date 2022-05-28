@@ -1,5 +1,5 @@
 .danger {
-  color: $dangerColor;
+  color: var(--dangerColor);
 }
 
 .default {
@@ -7,25 +7,21 @@
 }
 
 .disabled {
-  color: $disabledColor;
+  color: var(--disabledColor);
 }
 
 .info {
-  color: $infoColor;
-}
-
-.pink {
-  color: $pink;
+  color: var(--infoColor);
 }
 
 .success {
-  color: $successColor;
+  color: var(--successColor);
 }
 
 .warning {
-  color: $warningColor;
+  color: var(--warningColor);
 }
 
 .purple {
-  color: $purple;
+  color: var(--purple);
 }

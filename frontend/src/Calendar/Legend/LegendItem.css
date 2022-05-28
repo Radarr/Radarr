@@ -20,53 +20,53 @@
 .queue {
   composes: legendItemColor;
 
-  background-color: $queueColor;
+  background-color: var(--queueColor);
 }
 
 .continuing {
   composes: legendItemColor;
 
-  background-color: $primaryColor;
+  background-color: var(--primaryColor);
 }
 
 .availNotMonitored {
   composes: legendItemColor;
 
-  background-color: $darkGray;
+  background-color: var(--availNotMonitoredColor);
 }
 
 .ended {
   composes: legendItemColor;
 
-  background-color: $successColor;
+  background-color: var(--successColor);
 }
 
 .missingMonitored {
   composes: legendItemColor;
 
-  background-color: $dangerColor;
+  background-color: var(--dangerColor);
 
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(90deg, color($dangerColor shade(5%)), color($dangerColor shade(5%)) 5px, color($dangerColor shade(15%)) 5px, color($dangerColor shade(15%)) 10px);
+    background: repeating-linear-gradient(90deg, color(var(--dangerColor) shade(5%)), color(var(--dangerColor) shade(5%)) 5px, color(var(--dangerColor) shade(15%)) 5px, color(var(--dangerColor) shade(15%)) 10px);
   }
 }
 
 .missingUnmonitored {
   composes: legendItemColor;
 
-  background-color: $warningColor;
+  background-color: var(--warningColor);
 
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(45deg, $warningColor, $warningColor 5px, color($warningColor tint(15%)) 5px, color($warningColor tint(15%)) 10px);
+    background: repeating-linear-gradient(45deg, var(--warningColor), var(--warningColor) 5px, color(var(--warningColor) tint(15%)) 5px, color(var(--warningColor) tint(15%)) 10px);
   }
 }
 
 .missingMonitoredColorImpaired {
-  background: repeating-linear-gradient(90deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+  background: repeating-linear-gradient(90deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
 }
 
 .missingUnmonitoredColorImpaired {
-  background: repeating-linear-gradient(45deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+  background: repeating-linear-gradient(45deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
 }
 
 .legendItemText {

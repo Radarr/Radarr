@@ -7,7 +7,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #f5f5f5;
-  color: #3a3f51;
+  color: var(--themeDarkColor);
   white-space: pre;
   word-wrap: break-word;
   word-break: break-all;

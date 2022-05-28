@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import colors from 'Styles/Variables/colors';
+import Themes from 'Styles/Themes/light';
 import styles from './CircularProgressBar.css';
 
 class CircularProgressBar extends Component {
@@ -132,7 +132,7 @@ CircularProgressBar.defaultProps = {
   containerClassName: styles.circularProgressBarContainer,
   size: 60,
   strokeWidth: 5,
-  strokeColor: colors.radarrYellow,
+  strokeColor: Themes.radarrYellow,
   showProgressText: false
 };
 

@@ -1,29 +1,29 @@
 .queue {
   padding-left: 2px;
-  border-left: 4px solid $queueColor;
+  border-left: 4px solid var(--queueColor);
 }
 
 .continuing {
   padding-left: 2px;
-  border-left: 4px solid $primaryColor;
+  border-left: 4px solid var(--primaryColor);
 }
 
 .availNotMonitored {
   padding-left: 2px;
-  border-left: 4px solid $darkGray;
+  border-left: 4px solid var(--availNotMonitoredColor);
 }
 
 .ended {
   padding-left: 2px;
-  border-left: 4px solid $successColor;
+  border-left: 4px solid var(--successColor);
 }
 
 .missingMonitored {
   padding-left: 2px;
-  border-left: 4px solid $dangerColor;
+  border-left: 4px solid var(--dangerColor);
 }
 
 .missingUnmonitored {
   padding-left: 2px;
-  border-left: 4px solid $warningColor;
+  border-left: 4px solid var(--warningColor);
 }

@@ -18,11 +18,11 @@
   @add-mixin truncate;
 
   margin-left: 15px;
-  color: $darkGray;
+  color: var(--darkGray);
   font-size: $smallFontSize;
 }
 
 .divider {
   border: none;
-  border-bottom: 1px solid $lightGray;
+  border-bottom: 1px solid var(--dividerColor);
 }

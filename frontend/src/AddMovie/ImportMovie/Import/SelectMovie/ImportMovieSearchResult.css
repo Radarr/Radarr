@@ -3,6 +3,6 @@
   width: 100%;
 
   &:hover {
-    background-color: $menuItemHoverBackgroundColor;
+    background-color: var(--menuItemHoverBackgroundColor);
   }
 }

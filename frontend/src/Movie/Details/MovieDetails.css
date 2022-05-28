@@ -26,7 +26,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: $black;
+  background: var(--backdropOverlayColor);
   opacity: 0.7;
 }
 
@@ -35,7 +35,7 @@
   padding: 30px;
   width: 100%;
   height: 100%;
-  color: $white;
+  color: var(--headerContentColor);
 }
 
 .poster {
@@ -81,7 +81,7 @@
   width: 40px;
 
   &:hover {
-    color: $iconButtonHoverLightColor;
+    color: var(--iconButtonHoverLightColor);
   }
 }
 
@@ -109,7 +109,7 @@
   white-space: nowrap;
 
   &:hover {
-    color: $iconButtonHoverLightColor;
+    color: var(--iconButtonHoverLightColor);
   }
 }
 
@@ -172,7 +172,7 @@
 .tabList {
   margin: 0;
   padding: 0;
-  border-bottom: 1px solid $lightGray;
+  border-bottom: 1px solid var(--dividerColor);
 }
 
 .tab {
@@ -187,7 +187,7 @@
 }
 
 .selectedTab {
-  border-bottom: 4px solid $linkColor;
+  border-bottom: 4px solid var(--linkColor);
 }
 
 .tabContent {

@@ -58,6 +58,7 @@ namespace NzbDrone.Core.Configuration
         string PostgresPassword { get; }
         string PostgresMainDb { get; }
         string PostgresLogDb { get; }
+        string Theme { get; }
     }
 
     public class ConfigFileProvider : IConfigFileProvider
@@ -203,6 +204,7 @@ namespace NzbDrone.Core.Configuration
         public string PostgresMainDb => _postgresOptions?.MainDb ?? GetValue("PostgresMainDb", "radarr-main", persist: false);
         public string PostgresLogDb => _postgresOptions?.LogDb ?? GetValue("PostgresLogDb", "radarr-log", persist: false);
         public int PostgresPort => (_postgresOptions?.Port ?? 0) != 0 ? _postgresOptions.Port : GetValueInt("PostgresPort", 5432, persist: false);
+        public string Theme => GetValue("Theme", "light", persist: false);
         public bool LogSql => GetValueBoolean("LogSql", false, persist: false);
         public int LogRotate => GetValueInt("LogRotate", 50, persist: false);
         public bool FilterSentryEvents => GetValueBoolean("FilterSentryEvents", true, persist: false);

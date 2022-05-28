@@ -1,8 +1,8 @@
 .container {
   margin-top: 20px;
-  border: 1px solid $borderColor;
+  border: 1px solid var(--borderColor);
   border-radius: 4px;
-  background-color: $white;
+  background-color: var(--containerBackgroundColor);
 
   &:last-of-type {
     margin-bottom: 0;

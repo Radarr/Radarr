@@ -24,10 +24,10 @@ $hoverScale: 1.05;
   composes: link from '~Components/Link/Link.css';
 
   display: block;
-  color: $defaultColor;
+  color: var(--defaultColor);
 
   &:hover {
-    color: $defaultColor;
+    color: var(--defaultColor);
     text-decoration: none;
   }
 }
@@ -40,7 +40,7 @@ $hoverScale: 1.05;
 
 .exclusionIcon {
   margin-left: 10px;
-  color: $dangerColor;
+  color: var(--dangerColor);
   pointer-events: all;
 }
 

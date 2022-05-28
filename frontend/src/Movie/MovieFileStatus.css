@@ -5,42 +5,42 @@
 
 .missingUnmonitoredBackground {
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(45deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+    background: repeating-linear-gradient(45deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
   }
 }
 
 .missingMonitoredBackground {
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(90deg, $colorImpairedGradientDark, $colorImpairedGradientDark 5px, $colorImpairedGradient 5px, $colorImpairedGradient 10px);
+    background: repeating-linear-gradient(90deg, var(--colorImpairedGradientDark), var(--colorImpairedGradientDark) 5px, var(--colorImpairedGradient) 5px, var(--colorImpairedGradient) 10px);
   }
 }
 
 .queue {
   padding-right: 2px;
-  border-left: 5px solid $queueColor;
+  border-left: 5px solid var(--queueColor);
 }
 
 .continuing {
   padding-right: 2px;
-  border-left: 5px solid $primaryColor;
+  border-left: 5px solid var(--primaryColor);
 }
 
 .availNotMonitored {
   padding-right: 2px;
-  border-left: 5px solid $darkGray;
+  border-left: 5px solid var(--availNotMonitoredColor);
 }
 
 .ended {
   padding-right: 2px;
-  border-left: 5px solid $successColor;
+  border-left: 5px solid var(--successColor);
 }
 
 .missingMonitored {
   padding-right: 2px;
-  border-left: 5px solid $dangerColor;
+  border-left: 5px solid var(--dangerColor);
 }
 
 .missingUnmonitored {
   padding-right: 2px;
-  border-left: 5px solid $warningColor;
+  border-left: 5px solid var(--warningColor);
 }
