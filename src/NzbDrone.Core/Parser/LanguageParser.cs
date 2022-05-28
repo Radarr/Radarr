@@ -152,6 +152,11 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Portuguese);
             }
 
+            if (lowerTitle.Contains("brazilian"))
+            {
+                languages.Add(Language.PortugueseBR);
+            }
+
             if (lowerTitle.Contains("hungarian"))
             {
                 languages.Add(Language.Hungarian);
