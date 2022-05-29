@@ -5,17 +5,21 @@ export default function migrateMonitorToEnum(persistedState) {
   const discoverMovie = get(persistedState, 'discoverMovie.defaults.monitor');
 
   if (addMovie != null) {
-    if (addMovie) {
+    if (addMovie === true) {
       persistedState.addMovie.defaults.monitor = 'movieOnly';
-    } else {
+    }
+
+    if (addMovie === false) {
       persistedState.addMovie.defaults.monitor = 'none';
     }
   }
 
   if (discoverMovie != null) {
-    if (discoverMovie) {
+    if (discoverMovie === true) {
       persistedState.discoverMovie.defaults.monitor = 'movieOnly';
-    } else {
+    }
+
+    if (discoverMovie === false) {
       persistedState.discoverMovie.defaults.monitor = 'none';
     }
   }
