@@ -43,6 +43,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                     return Decision.Reject("Not a quality upgrade for existing movie file(s)");
                 }
 
+                movieFile.Movie = localMovie.Movie;
+
                 var customFormats = _customFormatCalculationService.ParseCustomFormat(movieFile);
                 var movieFileCustomFormatScore = localMovie.Movie.Profile.CalculateCustomFormatScore(customFormats);
 
