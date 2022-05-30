@@ -38,17 +38,6 @@ namespace Radarr.Api.V3.CustomFormats
                 {
                     context.AddFailure("Condition name(s) cannot be empty or consist of only spaces");
                 }
-
-                foreach (var specification in customFormat.Specifications)
-                {
-                    foreach (var field in specification.Fields.Where(f => (FieldType)Enum.Parse(typeof(FieldType), f.Type, true) == FieldType.Textbox))
-                    {
-                        if (specification.Name.IsNotNullOrWhiteSpace() && ((string)field.Value).IsNullOrWhiteSpace())
-                        {
-                            context.AddFailure(string.Format("'{0}' of condition '{1}' cannot be empty or consist of only spaces", field.Label, specification.Name));
-                        }
-                    }
-                }
             });
         }
 
