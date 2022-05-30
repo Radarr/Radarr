@@ -709,6 +709,7 @@
   "Progress": "Progress",
   "Proper": "Proper",
   "Protocol": "Protocol",
+  "PreferredProtocol": "Preferred Protocol",
   "ProtocolHelpText": "Choose which protocol(s) to use and which one is preferred when choosing between otherwise equal releases",
   "Proxy": "Proxy",
   "ProxyBypassFilterHelpText": "Use ',' as a separator, and '*.' as a wildcard for subdomains",
