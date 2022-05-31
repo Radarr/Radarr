@@ -20,6 +20,8 @@ const messages = [
   'Don\'t forget to tip your waitress',
   'Apply directly to the forehead',
   'Loading Battlestation'
+  'Now with added qbork'
+  'What lovely drives you have, shame if something was to happen to them'
 ];
 
 let message = null;
