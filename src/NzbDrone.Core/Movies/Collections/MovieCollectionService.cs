@@ -21,13 +21,13 @@ namespace NzbDrone.Core.Movies.Collections
     public class MovieCollectionService : IMovieCollectionService, IHandleAsync<MoviesDeletedEvent>
     {
         private readonly IMovieCollectionRepository _repo;
-        private readonly IMovieMetadataService _movieMetadataService;
+        private readonly IMovieService _movieService;
         private readonly IEventAggregator _eventAggregator;
 
-        public MovieCollectionService(IMovieCollectionRepository repo, IMovieMetadataService movieMetadataService, IEventAggregator eventAggregator)
+        public MovieCollectionService(IMovieCollectionRepository repo, IMovieService movieService, IEventAggregator eventAggregator)
         {
             _repo = repo;
-            _movieMetadataService = movieMetadataService;
+            _movieService = movieService;
             _eventAggregator = eventAggregator;
         }
 
@@ -96,16 +96,16 @@ namespace NzbDrone.Core.Movies.Collections
 
             foreach (var collectionTmdbId in collections)
             {
-                if (collectionTmdbId == 0 || _movieMetadataService.GetMoviesByCollectionTmdbId(collectionTmdbId).Any())
+                if (collectionTmdbId == 0 || _movieService.GetMoviesByCollectionTmdbId(collectionTmdbId).Any())
                 {
                     continue;
                 }
 
                 var collection = FindByTmdbId(collectionTmdbId);
 
-                _eventAggregator.PublishEvent(new CollectionDeletedEvent(collection));
-
                 _repo.Delete(collectionTmdbId);
+
+                _eventAggregator.PublishEvent(new CollectionDeletedEvent(collection));
             }
         }
 
