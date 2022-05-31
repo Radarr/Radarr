@@ -1,8 +1,8 @@
-import get from 'lodash';
+import _ from 'lodash';
 
 export default function migratePreDbToReleased(persistedState) {
-  const addMovie = get(persistedState, 'addMovie.defaults.minimumAvailability');
-  const discoverMovie = get(persistedState, 'discoverMovie.defaults.minimumAvailability');
+  const addMovie = _.get(persistedState, 'addMovie.defaults.minimumAvailability');
+  const discoverMovie = _.get(persistedState, 'discoverMovie.defaults.minimumAvailability');
 
   if (!addMovie && !discoverMovie) {
     return;

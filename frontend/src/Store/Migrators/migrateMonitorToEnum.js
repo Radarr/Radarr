@@ -1,8 +1,8 @@
-import get from 'lodash';
+import _ from 'lodash';
 
 export default function migrateMonitorToEnum(persistedState) {
-  const addMovie = get(persistedState, 'addMovie.defaults.monitor');
-  const discoverMovie = get(persistedState, 'discoverMovie.defaults.monitor');
+  const addMovie = _.get(persistedState, 'addMovie.defaults.monitor');
+  const discoverMovie = _.get(persistedState, 'discoverMovie.defaults.monitor');
 
   if (addMovie) {
     if (addMovie === 'true') {
