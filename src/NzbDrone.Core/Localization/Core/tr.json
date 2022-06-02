@@ -383,7 +383,6 @@
     "WhitelistedSubtitleTags": "Beyaz Listeye Eklenmiş Altyazı Etiketleri",
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "{0} yedeğini geri yüklemek ister misiniz?",
-    "Yes": "Evet",
     "YesCancel": "Evet İptal",
     "YesMoveFiles": "Evet, Dosyaları Taşı",
     "Yesterday": "Dün",
@@ -543,13 +542,11 @@
     "AddListExclusion": "Liste Hariç Tutma Ekle",
     "ApiKey": "API Anahtarı",
     "NamingSettings": "Adlandırma Ayarları",
-    "No": "Hayır",
     "NoLogFiles": "Günlük dosyası yok",
     "NoMatchFound": "Eşleşme bulunamadı!",
     "NotMonitored": "İzlenmeyen",
     "MinimumAge": "Asgari yaş",
     "NoUpdatesAreAvailable": "Güncelleme yok",
-    "AddMoviesMonitored": "İzlenen Filmleri Ekle",
     "AddingTag": "Etiket ekleniyor",
     "Age": "Yaş",
     "AgeWhenGrabbed": "Yaş (yakalandığında)",
@@ -1061,5 +1058,10 @@
     "Filters": "Filtre",
     "LocalPath": "Yerel Yol",
     "Rating": "Puanlar",
-    "SelectLanguages": "Dil Seçin"
+    "SelectLanguages": "Dil Seçin",
+    "RssSyncHelpText": "Dakika cinsinden aralık. Devre dışı bırakmak için sıfıra ayarlayın (bu, tüm otomatik bırakmayı durdurur)",
+    "AllCollectionsHiddenDueToFilter": "Uygulanan filtre nedeniyle tüm filmler gizlendi.",
+    "Collections": "Koleksiyon",
+    "MonitorMovies": "Filmi İzle",
+    "NoCollections": "Film bulunamadı, başlamak için yeni bir film eklemek veya mevcut filmlerden bazılarını içe aktarmak isteyeceksiniz."
 }

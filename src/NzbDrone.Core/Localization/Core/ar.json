@@ -3,7 +3,6 @@
     "Yesterday": "في الامس",
     "YesMoveFiles": "نعم ، انقل الملفات",
     "YesCancel": "نعم إلغاء",
-    "Yes": "نعم",
     "Year": "عام",
     "WouldYouLikeToRestoreBackup": "هل ترغب في استعادة النسخة الاحتياطية {0}؟",
     "Wiki": "ويكي",
@@ -294,7 +293,6 @@
     "NoChange": "لا تغيير",
     "NoBackupsAreAvailable": "لا توجد نسخ احتياطية متاحة",
     "NoAltTitle": "لا توجد عناوين بديلة.",
-    "No": "لا",
     "NextExecution": "التنفيذ القادم",
     "New": "جديد",
     "NetCore": ".شبكة",
@@ -1015,7 +1013,6 @@
     "DownloadClientCheckNoneAvailableMessage": "لا يوجد عميل تنزيل متاح",
     "AddNewMessage": "من السهل إضافة فيلم جديد ، فقط ابدأ بكتابة اسم الفيلم الذي تريد إضافته",
     "AddNew": "اضف جديد",
-    "AddMoviesMonitored": "إضافة أفلام مراقبتها",
     "AddMovies": "اضافة افلام",
     "AddMovie": "اضافة فيلم",
     "AddListExclusion": "إضافة استبعاد قائمة",
@@ -1061,5 +1058,10 @@
     "Rating": "التقييمات",
     "RemotePath": "مسار بعيد",
     "Filters": "منقي",
-    "LocalPath": "مسار محلي"
+    "LocalPath": "مسار محلي",
+    "MonitorMovies": "مراقبة الفيلم",
+    "NoCollections": "لم يتم العثور على أفلام ، للبدء ، ستحتاج إلى إضافة فيلم جديد أو استيراد بعض الأفلام الموجودة.",
+    "RssSyncHelpText": "الفاصل بالدقائق. اضبط على صفر للتعطيل (سيؤدي هذا إلى إيقاف كل عمليات الاستيلاء على التحرير التلقائي)",
+    "AllCollectionsHiddenDueToFilter": "جميع الأفلام مخفية بسبب الفلتر المطبق.",
+    "Collections": "مجموعة"
 }

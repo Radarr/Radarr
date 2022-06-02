@@ -323,7 +323,6 @@
     "AllowHardcodedSubsHelpText": "Legendas codificadas que sejam detectadas serão automaticamente transferidas",
     "AllowHardcodedSubs": "Permitir legendas codificadas",
     "AgeWhenGrabbed": "Tempo de vida (quando capturado)",
-    "AddMoviesMonitored": "Adicionar filmes monitorados",
     "AddListExclusion": "Adicionar exclusão de lista",
     "QualitySettings": "Definições de qualidade",
     "QualityCutoffHasNotBeenMet": "Limite de qualidade não alcançado",
@@ -818,8 +817,6 @@
     "IndexerLongTermStatusCheckSingleClientMessage": "Indexadores indisponíveis devido a erros à mais de 6 horas: {0}",
     "IndexerLongTermStatusCheckAllClientMessage": "Todos os indexadores estão indisponíveis devido a erros á mais de 6 horas",
     "EditMovieFile": "Editar ficheiro do filme",
-    "Yes": "Sim",
-    "No": "Não",
     "MovieIsRecommend": "Filme recomendado baseado em adições recentes",
     "ListSyncLevelHelpTextWarning": "Os ficheiros de filme serão permanentemente eliminados, isso poderá causar uma limpeza total de sua biblioteca se as listas estiverem vazias",
     "ConsideredAvailable": "Considerado disponível",
@@ -1114,5 +1111,10 @@
     "SetReleaseGroup": "Definir Grupo de Lançamento",
     "Started": "Começado",
     "Waiting": "À espera",
-    "Database": "base de dados"
+    "Database": "base de dados",
+    "AllCollectionsHiddenDueToFilter": "Todos os filmes estão ocultos devido ao filtro aplicado.",
+    "Collections": "Coleção",
+    "RssSyncHelpText": "Intervalo em minutos. Defina como zero para desativar (isso parará toda a captura automática)",
+    "MonitorMovies": "Monitorar filme",
+    "NoCollections": "Nenhum filme encontrado. Para começar, adiciona um novo filme ou importa alguns já existentes."
 }

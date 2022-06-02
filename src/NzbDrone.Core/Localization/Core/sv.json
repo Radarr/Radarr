@@ -297,7 +297,6 @@
     "MissingMonitoredAndConsideredAvailable": "Saknas (bevakad)",
     "DownloadedButNotMonitored": "Nedladdad (obevakad)",
     "DownloadedAndMonitored": "Nedladdad (bevakad)",
-    "AddMoviesMonitored": "Lägg till film(er) som bevakade",
     "MinutesSixty": "60 minuter: {0}",
     "MinutesNinety": "90 minuter: {0}",
     "MinutesHundredTwenty": "120 minuter: {0}",
@@ -453,7 +452,6 @@
     "Wiki": "Wiki",
     "YesMoveFiles": "Ja, flytta filerna",
     "YesCancel": "Ja, avbryt",
-    "Yes": "Ja",
     "RenameMovies": "Byt namn på filmer",
     "RemoveMovieAndKeepFiles": "Ta bort film och behåll filerna",
     "RemoveMovieAndDeleteFiles": "Ta bort film och radera filerna",
@@ -479,7 +477,6 @@
     "OnGrab": "Vid hämtning",
     "NoAltTitle": "Inga alternativa titlar.",
     "MustContain": "Måste innehålla",
-    "No": "Nej",
     "NoLinks": "Inga länkar",
     "NoLogFiles": "Inga loggfiler",
     "None": "Ingen",
@@ -1064,5 +1061,10 @@
     "SelectLanguages": "Välj språk",
     "List": "Lista",
     "LocalPath": "Lokal sökväg",
-    "Filters": "Filter"
+    "Filters": "Filter",
+    "AllCollectionsHiddenDueToFilter": "Samtliga filmer är dolda på grund av tillämpade filter.",
+    "Collections": "Samling",
+    "MonitorMovies": "Bevaka film",
+    "NoCollections": "Inga filmer hittades, för att komma igång lägg till en ny film eller importera några befintliga.",
+    "RssSyncHelpText": "Intervall i minuter. Ställ in på noll för att inaktivera (detta kommer stoppa all automatisk hämntning av utgåvor)"
 }

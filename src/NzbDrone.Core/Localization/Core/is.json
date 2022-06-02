@@ -419,7 +419,6 @@
     "Analytics": "Greiningar",
     "NamingSettings": "Nafngiftarstillingar",
     "NetCore": ".NET algerlega",
-    "No": "Nei",
     "NoBackupsAreAvailable": "Engin afrit eru í boði",
     "NoChange": "Engin breyting",
     "NoHistory": "Engin saga",
@@ -584,7 +583,6 @@
     "DownloadClientCheckNoneAvailableMessage": "Enginn niðurhalsþjónn er í boði",
     "DownloadClientCheckUnableToCommunicateMessage": "Ekki er hægt að eiga samskipti við {0}.",
     "DownloadClientSettings": "Sæktu niður stillingar viðskiptavinar",
-    "AddMoviesMonitored": "Bæta við kvikmyndum sem fylgst er með",
     "AddNew": "Bæta við nýju",
     "AddNewTmdbIdMessage": "Þú getur líka leitað með því að nota TMDb auðkenni kvikmyndar. t.d. 'tmdb: 71663'",
     "ApiKey": "API lykill",
@@ -1016,7 +1014,6 @@
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "Viltu endurheimta öryggisafritið {0}?",
     "Year": "Ár",
-    "Yes": "Já",
     "YesCancel": "Já, hætta við",
     "YesMoveFiles": "Já, hreyfðu skrárnar",
     "Yesterday": "Í gær",
@@ -1060,5 +1057,10 @@
     "LocalPath": "Local Path",
     "RemotePath": "Fjarstígur",
     "Filters": "Sía",
-    "Rating": "Einkunnir"
+    "Rating": "Einkunnir",
+    "AllCollectionsHiddenDueToFilter": "Allar kvikmyndir eru faldar vegna beittrar síu.",
+    "Collections": "Söfnun",
+    "MonitorMovies": "Fylgstu með kvikmynd",
+    "NoCollections": "Engar kvikmyndir fundust, til að byrja, þá viltu bæta við nýrri kvikmynd eða flytja inn þær sem fyrir eru.",
+    "RssSyncHelpText": "Bil á nokkrum mínútum. Stillt á núll til að gera óvirkt (þetta stöðvar allan sjálfvirkan losunartak)"
 }

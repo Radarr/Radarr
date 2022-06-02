@@ -408,7 +408,6 @@
     "MovieIsUnmonitored": "Filmen overvåges ikke",
     "Movies": "Film",
     "NetCore": ".NET Core",
-    "No": "Ingen",
     "OnHealthIssueHelpText": "Om sundhedsspørgsmål",
     "OnRenameHelpText": "Om omdøb",
     "OnUpgradeHelpText": "Ved opgradering",
@@ -457,7 +456,6 @@
     "AlreadyInYourLibrary": "Allerede i dit bibliotek",
     "RecycleBinCleanupDaysHelpTextWarning": "Filer i papirkurven, der er ældre end det valgte antal dage, renses automatisk",
     "AddListExclusion": "Tilføj ekskludering af liste",
-    "AddMoviesMonitored": "Tilføj overvågede film",
     "AddingTag": "Tilføjer tag",
     "AgeWhenGrabbed": "Alder (når grebet)",
     "RefreshAndScan": "Opdater & Scan",
@@ -1015,7 +1013,6 @@
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "Vil du gendanne sikkerhedskopien {0}?",
     "Year": "År",
-    "Yes": "Ja",
     "YesCancel": "Ja, Annuller",
     "YesMoveFiles": "Ja, flyt filerne",
     "Yesterday": "I går",
@@ -1060,5 +1057,10 @@
     "RemotePath": "Fjern sti",
     "SelectLanguages": "Vælg sprog",
     "List": "Lister",
-    "Rating": "Bedømmelser"
+    "Rating": "Bedømmelser",
+    "RssSyncHelpText": "Interval på få minutter. Sæt til nul for at deaktivere (dette stopper al automatisk frigivelse)",
+    "MonitorMovies": "Overvåg film",
+    "NoCollections": "Ingen film fundet. For at komme i gang vil du tilføje en ny film eller importere nogle eksisterende.",
+    "AllCollectionsHiddenDueToFilter": "Alle film er gemt på grund af aktivt filter.",
+    "Collections": "Samling"
 }

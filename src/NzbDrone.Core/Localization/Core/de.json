@@ -572,7 +572,6 @@
     "EnableMediaInfoHelpText": "Videoinformationen wie Auflösung, Laufzeit und Codec aus Datien erkennen. Dazu ist es erforderlich, dass Radarr Teile der Datei liest, was zu hoher Festplatten- oder Netzwerkaktivität während der Scans führen kann.",
     "ImportListSyncIntervalHelpText": "Wie oft die Listen synchronisiert werden sollen. Minimum 6 Stunden",
     "AddListExclusion": "Listenausschluss hinzufügen",
-    "AddMoviesMonitored": "Filme beobachtet hinzufügen",
     "RequiredHelpText": "Diese {0} Bedingungen müsen zutreffen damit das eigene Format zutrifft. Ansonsten reicht ein einzelner {1} Treffer.",
     "AllowHardcodedSubsHelpText": "Filme mit hartcodierten Untertiteln werden auch automatisch heruntergeladen",
     "ICalHttpUrlHelpText": "Füge diese URL in deinen Client ein oder klicke auf abonnieren wenn dein Browser Webcal untertützt",
@@ -822,8 +821,6 @@
     "ListSyncLevelHelpTextWarning": "Filmdateien werden dauerhaft gelöcht, dies kann deine ganze Mediathek leeren wenn deine Listen leer sind",
     "ConsideredAvailable": "Verfügbarkeit angenommen",
     "Announced": "Angekündigt",
-    "Yes": "Ja",
-    "No": "Nein",
     "MappedDrivesRunningAsService": "Zugeordnete Netzlaufwerke sind nicht verfügbar, wenn Radarr als Windows-Dienst ausgeführt wird. Bitte lesen Sie die FAQ für weitere Informationen",
     "CouldNotConnectSignalR": "Es konnte keine Verbindung zu SignalR hergestellt werden, die Benutzeroberfläche wird nicht aktualisiert",
     "ChmodGroupHelpTextWarning": "Dies funktioniert nur, wenn der Benutzer, der Radarr ausführt, der Eigentümer der Datei ist. Es ist besser, sicherzustellen, dass der Download-Client die gleiche Gruppe wie Radarr verwendet.",
@@ -1114,5 +1111,10 @@
     "Waiting": "warten",
     "OriginalTitle": "Originaler Titel",
     "OriginalLanguage": "Originale Sprache",
-    "Database": "Datenbank"
+    "Database": "Datenbank",
+    "AllCollectionsHiddenDueToFilter": "Alle Filme sind wegen dem Filter ausgeblendet.",
+    "Collections": "Sammlung",
+    "MonitorMovies": "Film beobachten",
+    "NoCollections": "Keine Filme gefunden. Zum Starten solltest du einen Film hinzufügen oder vorhandene Importieren.",
+    "RssSyncHelpText": "Intervall in Minuten. Zum deaktivieren auf 0 setzen ( Dies wird das automatische Release erfassen deaktivieren )"
 }

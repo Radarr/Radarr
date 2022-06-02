@@ -571,7 +571,6 @@
     "MustNotContain": "Nu trebuie să conțină",
     "NamingSettings": "Setări de denumire",
     "NetCore": ".NET Core",
-    "No": "Nu",
     "ApiKey": "Cheie API",
     "NoBackupsAreAvailable": "Nu sunt disponibile copii de rezervă",
     "NoHistory": "Fără istorie",
@@ -611,7 +610,6 @@
     "AutoUnmonitorPreviouslyDownloadedMoviesHelpText": "Filmele șterse de pe disc sunt automat monitorizate în Radarr",
     "TimeFormat": "Format de timp",
     "AddListExclusion": "Adăugați excluderea listei",
-    "AddMoviesMonitored": "Adăugați filme monitorizate",
     "AnalyseVideoFiles": "Analizați fișierele video",
     "AnalyticsEnabledHelpText": "Trimiteți informații anonime privind utilizarea și erorile către serverele Radarr. Aceasta include informații despre browserul dvs., ce pagini WebUI Radarr utilizați, raportarea erorilor, precum și sistemul de operare și versiunea de execuție. Vom folosi aceste informații pentru a acorda prioritate caracteristicilor și remedierilor de erori.",
     "AppDataDirectory": "Directorul AppData",
@@ -1020,7 +1018,6 @@
     "WhitelistedSubtitleTags": "Etichete de subtitrare pe lista albă",
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "Doriți să restaurați copia de rezervă {0}?",
-    "Yes": "da",
     "YesCancel": "Da, Anulați",
     "YesMoveFiles": "Da, mutați fișierele",
     "Yesterday": "Ieri",
@@ -1060,5 +1057,10 @@
     "LocalPath": "Calea locală",
     "RemotePath": "Calea la distanță",
     "SelectLanguages": "Selecteaza limba",
-    "Rating": "Recenzii"
+    "Rating": "Recenzii",
+    "AllCollectionsHiddenDueToFilter": "Toate filmele sunt ascunse datorită filtrelor aplicate.",
+    "Collections": "Colecție",
+    "MonitorMovies": "Monitorizați filmul",
+    "NoCollections": "Nu s-au găsit filme, pentru a începe, va trebui să adăugați un film nou sau să importați unele existente.",
+    "RssSyncHelpText": "Interval în minute. Setați la zero pentru a dezactiva (acest lucru va opri toate apucările de eliberare automată)"
 }

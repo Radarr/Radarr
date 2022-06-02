@@ -420,7 +420,6 @@
     "MustNotContain": "Nesmí obsahovat",
     "NamingSettings": "Nastavení pojmenování",
     "NetCore": ".NET Core",
-    "No": "Ne",
     "NoBackupsAreAvailable": "Nejsou k dispozici žádné zálohy",
     "NoChange": "Žádná změna",
     "NoHistory": "Žádná historie",
@@ -437,7 +436,6 @@
     "Overview": "Přehled",
     "Failed": "Selhalo",
     "AddMovies": "Přidat filmy",
-    "AddMoviesMonitored": "Přidat sledované filmy",
     "AddingTag": "Přidávání značky",
     "AlternativeTitle": "Alternativní název",
     "AnalyseVideoFiles": "Analyzujte video soubory",
@@ -1015,7 +1013,6 @@
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "Chcete obnovit zálohu {0}?",
     "Year": "Rok",
-    "Yes": "Ano",
     "YesCancel": "Ano, zrušit",
     "YesMoveFiles": "Ano, přesuňte soubory",
     "Yesterday": "Včera",
@@ -1060,5 +1057,10 @@
     "RemotePath": "Vzdálená cesta",
     "Rating": "Hodnocení",
     "List": "Seznamy",
-    "SelectLanguages": "Zvolte jazyk"
+    "SelectLanguages": "Zvolte jazyk",
+    "AllCollectionsHiddenDueToFilter": "Všechny filmy jsou skryty kvůli použitému filtru.",
+    "Collections": "Sbírka",
+    "MonitorMovies": "Monitorujte film",
+    "NoCollections": "Nebyly nalezeny žádné filmy. Chcete-li začít, budete chtít přidat nový film nebo importovat některé stávající.",
+    "RssSyncHelpText": "Interval v minutách. Nastavením na nulu deaktivujete (tím se zastaví veškeré automatické uvolnění uvolnění)"
 }

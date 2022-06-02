@@ -322,7 +322,6 @@
     "AllowHardcodedSubs": "Sta Ingebrande Ondertiteling Toe",
     "YesCancel": "Ja, Annuleren",
     "AddListExclusion": "Toevoegen aan Uitzonderingenlijst",
-    "AddMoviesMonitored": "Film(s) Bewaakt Toevoegen",
     "GrabID": "ID Ophalen",
     "CleanLibraryLevel": "Bibliotheek Opschonen Niveau",
     "DeleteTag": "Verwijder Tag",
@@ -983,7 +982,6 @@
     "NoListRecommendations": "Geen lijst aanbevelingen gevonden, om te beginnen, voeg een nieuwe film toe, importeer bestaande of voeg een lijst toe.",
     "NoLinks": "Geen koppelingen",
     "NoAltTitle": "Geen alternatieve titels.",
-    "No": "Nee",
     "Negate": "Negeren",
     "Negated": "Genegeerd",
     "MultiLanguage": "Meertalig",
@@ -1026,7 +1024,6 @@
     "Weeks": "Weken",
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "Wilt u de back-up {0} herstellen?",
-    "Yes": "Ja",
     "YesMoveFiles": "Ja, verplaats de bestanden",
     "Yesterday": "Gisteren",
     "SqliteVersionCheckUpgradeRequiredMessage": "De momenteel geïnstalleerde SQLite-versie {0} wordt niet langer ondersteund. Upgrade SQLite naar minimaal versie {1}.",
@@ -1103,5 +1100,10 @@
     "ImdbRating": "IMDb beoordeling",
     "ImdbVotes": "IMDb stemmen",
     "TmdbVotes": "IMDb stemmen",
-    "TmdbRating": "IMDb beoordeling"
+    "TmdbRating": "IMDb beoordeling",
+    "AllCollectionsHiddenDueToFilter": "Alle films zijn verborgen wegens de toegepaste filter.",
+    "RssSyncHelpText": "Tussentijd in minuten. Schakel uit met 0 (dit stopt het automatisch ophalen van uitgaves)",
+    "NoCollections": "Geen films gevonden, om te beginnen, voeg een nieuwe film toe of importeer bestaande films.",
+    "Collections": "Collectie",
+    "MonitorMovies": "Bewaak Film"
 }

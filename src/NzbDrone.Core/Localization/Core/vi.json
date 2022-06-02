@@ -338,7 +338,6 @@
     "AddToDownloadQueue": "Đã thêm vào hàng đợi tải xuống",
     "AfterManualRefresh": "Sau khi làm mới thủ công",
     "AllFiles": "Tất cả các tệp",
-    "AddMoviesMonitored": "Thêm phim được giám sát",
     "NegateHelpText": "Nếu được chọn, định dạng tùy chỉnh sẽ không áp dụng nếu điều kiện {0} này phù hợp.",
     "NextExecution": "Thực hiện tiếp theo",
     "NoAltTitle": "Không có tiêu đề thay thế.",
@@ -523,7 +522,6 @@
     "NamingSettings": "Cài đặt đặt tên",
     "NetCore": ".NET Core",
     "MoveFiles": "Di chuyển tệp",
-    "No": "Không",
     "NoBackupsAreAvailable": "Không có bản sao lưu nào",
     "AnalyseVideoFiles": "Phân tích tệp video",
     "NoLogFiles": "Không có tệp nhật ký",
@@ -1021,7 +1019,6 @@
     "WhitelistedSubtitleTags": "Thẻ phụ đề trong danh sách trắng",
     "Wiki": "Wiki",
     "Year": "Năm",
-    "Yes": "Đúng",
     "YesCancel": "Có, Hủy bỏ",
     "YesMoveFiles": "Có, di chuyển tệp",
     "YouCanAlsoSearch": "Bạn cũng có thể tìm kiếm bằng cách sử dụng TMDb ID hoặc IMDb ID của một bộ phim. ví dụ. `tmdb: 71663 '",
@@ -1060,5 +1057,10 @@
     "List": "Danh sách",
     "LocalPath": "Đường dẫn địa phương",
     "SelectLanguages": "Chọn ngôn ngữ",
-    "RemotePath": "Đường đi từ xa"
+    "RemotePath": "Đường đi từ xa",
+    "AllCollectionsHiddenDueToFilter": "Tất cả phim đều bị ẩn do áp dụng bộ lọc.",
+    "Collections": "Bộ sưu tập",
+    "MonitorMovies": "Theo dõi phim",
+    "NoCollections": "Không tìm thấy phim nào, để bắt đầu, bạn sẽ muốn thêm phim mới hoặc nhập một số phim hiện có.",
+    "RssSyncHelpText": "Khoảng thời gian tính bằng phút. Đặt thành 0 để tắt (điều này sẽ dừng tất cả việc lấy bản phát hành tự động)"
 }
