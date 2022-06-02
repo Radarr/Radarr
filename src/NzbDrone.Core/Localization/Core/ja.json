@@ -374,7 +374,6 @@
     "AddList": "リストを追加",
     "Age": "年齢",
     "NetCore": ".NET Core",
-    "No": "番号",
     "NoBackupsAreAvailable": "バックアップは利用できません",
     "MoveFiles": "ファイルの移動",
     "NoChange": "変化なし",
@@ -422,7 +421,6 @@
     "AppDataLocationHealthCheckMessage": "更新時にAppDataが削除されないように更新することはできません",
     "RestartRequiredHelpTextWarning": "有効にするには再起動が必要です",
     "AddListExclusion": "リストの除外を追加",
-    "AddMoviesMonitored": "監視対象の映画を追加する",
     "AddNew": "新しく追加する",
     "MovieNaming": "映画のネーミング",
     "MovieInfoLanguageHelpTextWarning": "ブラウザのリロードが必要",
@@ -1016,7 +1014,6 @@
     "WhitelistedSubtitleTags": "ホワイトリストに登録された字幕タグ",
     "WouldYouLikeToRestoreBackup": "バックアップ{0}を復元しますか？",
     "Year": "年",
-    "Yes": "はい",
     "YesCancel": "はい、キャンセル",
     "YesMoveFiles": "はい、ファイルを移動します",
     "Yesterday": "昨日",
@@ -1060,5 +1057,10 @@
     "List": "リスト",
     "Rating": "評価",
     "SelectLanguages": "言語を選択する",
-    "LocalPath": "ローカルパス"
+    "LocalPath": "ローカルパス",
+    "RssSyncHelpText": "分単位の間隔。無効にするにはゼロに設定します（これにより、すべての自動リリースグラブが停止します）",
+    "AllCollectionsHiddenDueToFilter": "フィルタが適用されているため、すべてのムービーが非表示になっています。",
+    "Collections": "コレクション",
+    "MonitorMovies": "モニタームービー",
+    "NoCollections": "映画が見つかりません。開始するには、新しい映画を追加するか、既存の映画をインポートする必要があります。"
 }

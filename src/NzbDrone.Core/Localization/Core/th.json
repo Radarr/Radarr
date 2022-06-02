@@ -381,7 +381,6 @@
     "CancelPendingTask": "แน่ใจไหมว่าต้องการยกเลิกงานที่รอดำเนินการนี้",
     "AddListExclusion": "เพิ่มการยกเว้นรายการ",
     "AddMovies": "เพิ่มภาพยนตร์",
-    "AddMoviesMonitored": "เพิ่มภาพยนตร์ที่ตรวจสอบ",
     "AddNewTmdbIdMessage": "คุณยังสามารถค้นหาโดยใช้ TMDb Id ของภาพยนตร์ เช่น. 'tmdb: 71663'",
     "AddRemotePathMapping": "เพิ่มการแมปเส้นทางระยะไกล",
     "Add": "เพิ่ม",
@@ -485,7 +484,6 @@
     "MustNotContain": "ต้องไม่มี",
     "NamingSettings": "การตั้งชื่อการตั้งค่า",
     "NetCore": ".NET Core",
-    "No": "ไม่",
     "NoBackupsAreAvailable": "ไม่มีการสำรองข้อมูล",
     "NoChange": "ไม่มีการเปลี่ยนแปลง",
     "NoHistory": "ไม่มีประวัติ",
@@ -1019,7 +1017,6 @@
     "Weeks": "สัปดาห์",
     "WhitelistedSubtitleTags": "แท็กคำบรรยายที่อนุญาตพิเศษ",
     "WouldYouLikeToRestoreBackup": "คุณต้องการกู้คืนข้อมูลสำรอง {0} หรือไม่",
-    "Yes": "ใช่",
     "YesCancel": "ใช่ยกเลิก",
     "YesMoveFiles": "ใช่ย้ายไฟล์",
     "Yesterday": "เมื่อวานนี้",
@@ -1060,5 +1057,10 @@
     "LocalPath": "เส้นทางท้องถิ่น",
     "List": "รายการ",
     "Rating": "การให้คะแนน",
-    "RemotePath": "เส้นทางระยะไกล"
+    "RemotePath": "เส้นทางระยะไกล",
+    "AllCollectionsHiddenDueToFilter": "ภาพยนตร์ทั้งหมดถูกซ่อนเนื่องจากใช้ฟิลเตอร์",
+    "MonitorMovies": "ตรวจสอบภาพยนตร์",
+    "Collections": "คอลเลกชัน",
+    "NoCollections": "ไม่พบภาพยนตร์ในการเริ่มต้นคุณจะต้องเพิ่มภาพยนตร์ใหม่หรือนำเข้าภาพยนตร์ที่มีอยู่",
+    "RssSyncHelpText": "ช่วงเวลาเป็นนาที ตั้งค่าเป็นศูนย์เพื่อปิดใช้งาน (สิ่งนี้จะหยุดการจับรุ่นอัตโนมัติทั้งหมด)"
 }

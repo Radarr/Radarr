@@ -205,7 +205,6 @@
     "Age": "Età",
     "AddRemotePathMapping": "Aggiungi Mappatura di un Percorso Remoto",
     "AddNewMovie": "Aggiungi Nuovo Film",
-    "AddMoviesMonitored": "Aggiungi Film Monitorato",
     "AddListExclusion": "Aggiungi Lista Esclusioni",
     "AddList": "Aggiungi Lista",
     "Close": "Chiudi",
@@ -822,8 +821,6 @@
     "MovieIsRecommend": "Il film è raccomandato in base alle aggiunte recenti",
     "ConsideredAvailable": "Considerato Disponibile",
     "Announced": "Annunciato",
-    "Yes": "Si",
-    "No": "No",
     "MappedDrivesRunningAsService": "Le unità di rete mappate non sono disponibili eseguendo come servizio di Windows. Vedere le FAQ per maggiori informazioni",
     "CouldNotConnectSignalR": "Non ho potuto connettermi a SignalR, l'interfaccia non si aggiornerà",
     "ChmodGroupHelpTextWarning": "Funziona solo se l'utente di Radarr è il proprietario del file. E' meglio assicurarsi che il client di download usi lo stesso gruppo di Radarr.",
@@ -1095,5 +1092,10 @@
     "DiscordUrlInSlackNotification": "Hai una notifica Discord configurata come notifica Slack. Configurala come notifica Discord per una miglior funzionalità. Le notifiche interessate sono: {0}",
     "Duration": "Durata",
     "InstanceNameHelpText": "Nome dell'istanza nella scheda e per il nome dell'applicazione Syslog",
-    "InstanceName": "Nome Istanza"
+    "InstanceName": "Nome Istanza",
+    "AllCollectionsHiddenDueToFilter": "Tutti i film sono nascosti a causa del filtro applicato.",
+    "Collections": "Collezione",
+    "MonitorMovies": "Monitora Film",
+    "NoCollections": "Nessun film trovato, per iniziare ti consigliamo di aggiungere un nuovo film o importarne alcuni esistenti.",
+    "RssSyncHelpText": "Intervallo in minuti. Imposta zero per disabilitarlo (ciò fermerà il recupero automatico di tutte le release)"
 }

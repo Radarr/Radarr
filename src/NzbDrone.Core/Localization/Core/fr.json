@@ -347,7 +347,6 @@
     "AllowHardcodedSubsHelpText": "Les sous-titres incrustés détectés seront automatiquement téléchargés",
     "AllowHardcodedSubs": "Autoriser les sous-titres incrustés",
     "AgeWhenGrabbed": "Age (au moment du téléchargement)",
-    "AddMoviesMonitored": "Ajouter des films en mode surveillé",
     "AddListExclusion": "Ajouter une exclusion de liste",
     "IgnoreDeletedMovies": "Annuler la surveillance des films supprimés",
     "IgnoredAddresses": "Adresses ignorées",
@@ -943,7 +942,6 @@
     "ImportNotForDownloads": "Ne pas utiliser pour importer des téléchargements à partir de votre client de téléchargement, cela concerne uniquement les bibliothèques organisées existantes, pas les fichiers non triés.",
     "PreferUsenet": "Préférez Usenet",
     "ReplaceWithDash": "Remplacer par Dash",
-    "No": "Non",
     "InCinemasDate": "Dans les cinémas Date",
     "InstallLatest": "Installer le dernier",
     "KeepAndUnmonitorMovie": "Conserver et annuler la surveillance du film",
@@ -1026,7 +1024,6 @@
     "Weeks": "Semaines",
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "Souhaitez-vous restaurer la sauvegarde {0} ?",
-    "Yes": "Oui",
     "YesMoveFiles": "Oui, déplacez les fichiers",
     "MoveFolders2": "Souhaitez-vous déplacer les fichiers vidéo de «{0}» vers «{1}» ?",
     "SqliteVersionCheckUpgradeRequiredMessage": "La version {0} de SQLite actuellement installée n'est plus prise en charge. Veuillez mettre à niveau SQLite vers au moins la version {1}.",
@@ -1115,5 +1112,12 @@
     "RemoveSelectedItems": "Supprimer les éléments sélectionnés",
     "SelectReleaseGroup": "Sélectionner le groupe de publication",
     "SetReleaseGroup": "Régler le groupe de publication",
-    "RefreshMonitoredIntervalHelpText": "Intervalle en minutes entre chaque vérification des téléchargements, minimum 1 minute"
+    "RefreshMonitoredIntervalHelpText": "Intervalle en minutes entre chaque vérification des téléchargements, minimum 1 minute",
+    "AllCollectionsHiddenDueToFilter": "Tous les films sont masqués en raison du filtre appliqué.",
+    "Collections": "Collection",
+    "MonitorMovies": "Surveiller le film",
+    "NoCollections": "Aucun film trouvé, pour commencer, vous voudrez ajouter un nouveau film ou importer des films existants.",
+    "RssSyncHelpText": "Intervalle en minutes. Mettre à zéro pour désactiver (cela arrêtera tous les téléchargements automatiques)",
+    "CollectionsSelectedInterp": "{0} Collections(s) Sélectionnée(s)",
+    "ChooseImportMode": "Mode d'importation"
 }

@@ -94,7 +94,6 @@
     "CreateEmptyMovieFolders": "Створіть порожні папки для фільмів",
     "CreateEmptyMovieFoldersHelpText": "Створити папки для не знайдених фільмів під час сканування",
     "CustomFormatUnknownConditionOption": "Невідомий параметр '{0}' для умови '{1}'",
-    "AddMoviesMonitored": "Додати відстежувані фільми",
     "AddNew": "Додати",
     "AddNewMessage": "Додати новий фільм дуже легко! Почни друкувати назву фільму, який хочете додати",
     "AddNewMovie": "Додати фільм",
@@ -217,5 +216,7 @@
     "DeleteTagMessageText": "Ви впевнені, що хочете видалити тег {0} ?",
     "ExportCustomFormat": "Додати свій формат",
     "ImportCustomFormat": "Додати свій формат",
-    "DeleteRestrictionHelpText": "Ви впевнені, що хочете видалити цей профіль затримки?"
+    "DeleteRestrictionHelpText": "Ви впевнені, що хочете видалити цей профіль затримки?",
+    "AllCollectionsHiddenDueToFilter": "Всі фільми заховані відповідно до фільтра.",
+    "Collections": "Колекція"
 }

@@ -396,7 +396,6 @@
     "AllowHardcodedSubs": "Permitir Hardcoded Subs",
     "AgeWhenGrabbed": "Edad (cuando capturada)",
     "AddImportExclusionHelpText": "Prevenir que la película sea añadida a Radarr mediante listas",
-    "AddMoviesMonitored": "Añadir Películas Monitoreadas",
     "AddListExclusion": "Añadir Exclusión De Lista",
     "YesCancel": "Si, cancelar",
     "WhitelistedSubtitleTags": "Etiquetas de Subtítulos Permitidas",
@@ -906,7 +905,6 @@
     "InCinemasMsg": "La película está en los cines",
     "ListSyncLevelHelpTextWarning": "Los archivos de películas se eliminarán permanentemente, esto puede resultar en borrar su biblioteca si sus listas están vacías",
     "RSS": "RSS",
-    "No": "No",
     "EditDelayProfile": "Editar perfil de retraso",
     "Connection": "Conexiones",
     "ConsideredAvailable": "Considerado disponible",
@@ -1025,7 +1023,6 @@
     "Weeks": "Semanas",
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "¿Le gustaría restaurar la copia de seguridad {0}?",
-    "Yes": "si",
     "YesMoveFiles": "Sí, mover los archivos",
     "Yesterday": "Ayer",
     "MoveFolders2": "¿Le gustaría mover los archivos de película de '{0}' a '{1}'?",
@@ -1113,5 +1110,10 @@
     "RemoveSelectedItems": "Eliminar los elementos seleccionados",
     "SelectReleaseGroup": "Seleccionar el grupo de lanzamiento",
     "SetReleaseGroup": "Configurar el grupo de lanzamiento",
-    "TaskUserAgentTooltip": "User-Agent proporcionado por la aplicación llamó a la API"
+    "TaskUserAgentTooltip": "User-Agent proporcionado por la aplicación llamó a la API",
+    "RssSyncHelpText": "Intervalo en minutos. Ajustar a cero para inhabilitar (esto dentendrá toda captura de estrenos automática)",
+    "AllCollectionsHiddenDueToFilter": "Todas las películas están ocultas debido al filtro aplicado.",
+    "Collections": "Colección",
+    "MonitorMovies": "Monitorear Película",
+    "NoCollections": "No se encontraron películas, para comenzar, querrá agregar una nueva película o importar algunas existentes."
 }

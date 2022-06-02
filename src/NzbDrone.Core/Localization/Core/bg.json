@@ -711,7 +711,6 @@
     "Wiki": "Wiki",
     "WouldYouLikeToRestoreBackup": "Искате ли да възстановите архива {0}?",
     "Year": "Година",
-    "Yes": "Да",
     "YesCancel": "Да, Отказ",
     "YesMoveFiles": "Да, премести файловете",
     "Yesterday": "Вчера",
@@ -768,7 +767,6 @@
     "MovieIsMonitored": "Филмът се следи",
     "RadarrUpdated": "Радар актуализиран",
     "AddListExclusion": "Добавяне на изключване от списъка",
-    "AddMoviesMonitored": "Добавяне на контролирани филми",
     "AddNewMovie": "Добавяне на нов филм",
     "AddNewTmdbIdMessage": "Можете също да търсите с помощта на TMDb Id на филм. напр. 'tmdb: 71663'",
     "AddRemotePathMapping": "Добавете отдалечено картографиране на пътя",
@@ -963,7 +961,6 @@
     "MustNotContain": "Не трябва да съдържа",
     "NamingSettings": "Настройки за именуване",
     "NetCore": ".NET Core",
-    "No": "Не",
     "NoBackupsAreAvailable": "Няма налични резервни копия",
     "NoChange": "Няма промяна",
     "NoHistory": "Няма история",
@@ -1060,5 +1057,10 @@
     "RemotePath": "Отдалечен път",
     "List": "Списъци",
     "LocalPath": "Местен път",
-    "SelectLanguages": "Избери език"
+    "SelectLanguages": "Избери език",
+    "MonitorMovies": "Монитор на филм",
+    "AllCollectionsHiddenDueToFilter": "Всички филми са скрити поради приложен филтър.",
+    "Collections": "колекция",
+    "NoCollections": "Не са намерени филми, за да започнете, ще искате да добавите нов филм или да импортирате някои съществуващи.",
+    "RssSyncHelpText": "Интервал за минути. Задайте на нула, за да деактивирате (това ще спре всички автоматично хващане на освобождаване)"
 }

@@ -161,8 +161,6 @@
     "AutomaticSearch": "자동 검색",
     "Date": "날짜",
     "CouldNotConnectSignalR": "SignalR에 연결할 수 없습니다. UI가 업데이트되지 않습니다.",
-    "No": "아니",
-    "AddMoviesMonitored": "모니터링 되는 영화 추가",
     "AddRootFolder": "루트 폴더 추가",
     "AddToDownloadQueue": "다운로드 대기열에 추가됨",
     "AfterManualRefresh": "수동 새로 고침 후",
@@ -1015,7 +1013,6 @@
     "Wiki": "위키",
     "WouldYouLikeToRestoreBackup": "{0} 백업을 복원 하시겠습니까?",
     "Year": "년",
-    "Yes": "예",
     "YesCancel": "예, 취소합니다",
     "YesMoveFiles": "예, 파일 이동",
     "Yesterday": "어제",
@@ -1060,5 +1057,10 @@
     "LocalPath": "로컬 경로",
     "Filters": "필터",
     "List": "기울기",
-    "RemotePath": "원격 경로"
+    "RemotePath": "원격 경로",
+    "AllCollectionsHiddenDueToFilter": "적용된 필터로 인해 모든 영화가 숨겨집니다.",
+    "MonitorMovies": "영화 모니터링",
+    "Collections": "컬렉션",
+    "NoCollections": "영화를 찾을 수 없습니다. 시작하려면 새 영화를 추가하거나 기존 영화를 가져와야합니다.",
+    "RssSyncHelpText": "간격 (분)입니다. 사용하지 않으려면 0으로 설정합니다 (모든 자동 릴리스 잡기가 중지됨)."
 }
