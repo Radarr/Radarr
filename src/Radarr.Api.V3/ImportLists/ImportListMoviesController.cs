@@ -24,6 +24,7 @@ namespace Radarr.Api.V3.ImportLists
         private readonly IImportListMovieService _listMovieService;
         private readonly IImportListFactory _importListFactory;
         private readonly IImportExclusionsService _importExclusionService;
+        private readonly INamingConfigService _namingService;
         private readonly IConfigService _configService;
 
         public ImportListMoviesController(IMovieService movieService,
@@ -32,6 +33,7 @@ namespace Radarr.Api.V3.ImportLists
                                     IImportListMovieService listMovieService,
                                     IImportListFactory importListFactory,
                                     IImportExclusionsService importExclusionsService,
+                                    INamingConfigService namingService,
                                     IConfigService configService)
         {
             _movieService = movieService;
@@ -40,6 +42,7 @@ namespace Radarr.Api.V3.ImportLists
             _listMovieService = listMovieService;
             _importListFactory = importListFactory;
             _importExclusionService = importExclusionsService;
+            _namingService = namingService;
             _configService = configService;
         }
 
@@ -91,6 +94,9 @@ namespace Radarr.Api.V3.ImportLists
 
         private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<Movie> movies, Language language)
         {
+            //Avoid calling for naming spec on every movie in filenamebuilder
+            var namingConfig = _namingService.GetConfig();
+
             foreach (var currentMovie in movies)
             {
                 var resource = DiscoverMoviesResourceMapper.ToResource(currentMovie);
@@ -104,7 +110,7 @@ namespace Radarr.Api.V3.ImportLists
 
                 resource.Title = translation?.Title ?? resource.Title;
                 resource.Overview = translation?.Overview ?? resource.Overview;
-                resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie);
+                resource.Folder = _fileNameBuilder.GetMovieFolder(currentMovie, namingConfig);
 
                 yield return resource;
             }
@@ -112,6 +118,9 @@ namespace Radarr.Api.V3.ImportLists
 
         private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<ImportListMovie> movies, Language language)
         {
+            // Avoid calling for naming spec on every movie in filenamebuilder
+            var namingConfig = _namingService.GetConfig();
+
             foreach (var currentMovie in movies)
             {
                 var resource = DiscoverMoviesResourceMapper.ToResource(currentMovie);
@@ -127,11 +136,8 @@ namespace Radarr.Api.V3.ImportLists
                 resource.Overview = translation?.Overview ?? resource.Overview;
                 resource.Folder = _fileNameBuilder.GetMovieFolder(new Movie
                 {
-                    Title = currentMovie.Title,
-                    Year = currentMovie.Year,
-                    ImdbId = currentMovie.ImdbId,
-                    TmdbId = currentMovie.TmdbId
-                });
+                    MovieMetadata = currentMovie.MovieMetadata
+                }, namingConfig);
 
                 yield return resource;
             }
