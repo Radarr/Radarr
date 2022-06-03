@@ -24,18 +24,21 @@ namespace Radarr.Api.V3.Collections
         private readonly IMovieService _movieService;
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IBuildFileNames _fileNameBuilder;
+        private readonly INamingConfigService _namingService;
 
         public CollectionController(IBroadcastSignalRMessage signalRBroadcaster,
                                     IMovieCollectionService collectionService,
                                     IMovieService movieService,
                                     IMovieMetadataService movieMetadataService,
-                                    IBuildFileNames fileNameBuilder)
+                                    IBuildFileNames fileNameBuilder,
+                                    INamingConfigService namingService)
             : base(signalRBroadcaster)
         {
             _collectionService = collectionService;
             _movieService = movieService;
             _movieMetadataService = movieMetadataService;
             _fileNameBuilder = fileNameBuilder;
+            _namingService = namingService;
         }
 
         protected override CollectionResource GetResourceById(int id)
@@ -46,7 +49,9 @@ namespace Radarr.Api.V3.Collections
         [HttpGet]
         public List<CollectionResource> GetCollections()
         {
-            return _collectionService.GetAllCollections().Select(c => MapToResource(c)).ToList();
+            var collectionMovies = _movieMetadataService.GetMoviesWithCollections();
+
+            return MapToResource(_collectionService.GetAllCollections(), collectionMovies).ToList();
         }
 
         [RestPutById]
@@ -90,6 +95,27 @@ namespace Radarr.Api.V3.Collections
             }
 
             return Accepted(update);
+        }
+
+        private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections, List<MovieMetadata> collectionMovies)
+        {
+            // Avoid calling for naming spec on every movie in filenamebuilder
+            var namingConfig = _namingService.GetConfig();
+
+            foreach (var collection in collections)
+            {
+                var resource = collection.ToResource();
+
+                foreach (var movie in collectionMovies.Where(m => m.CollectionTmdbId == collection.TmdbId))
+                {
+                    var movieResource = movie.ToResource();
+                    movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
+
+                    resource.Movies.Add(movieResource);
+                }
+
+                yield return resource;
+            }
         }
 
         private CollectionResource MapToResource(MovieCollection collection)
