@@ -32,6 +32,11 @@ $hoverScale: 1.05;
   display: block;
 }
 
+.labelsContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .moviesContainer {
   margin-bottom: 5px;
 }
