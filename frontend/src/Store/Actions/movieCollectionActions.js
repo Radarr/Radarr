@@ -40,7 +40,8 @@ export const defaultState = {
     detailedProgressBar: false,
     size: 'medium',
     showDetails: true,
-    showOverview: true
+    showOverview: true,
+    showPosters: true
   },
 
   defaults: {

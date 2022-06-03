@@ -1,0 +1,50 @@
+.movie {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  margin: 2px 4px;
+  border: 1px solid $borderColor;
+  border-radius: 4px;
+  background-color: #eee;
+  cursor: default;
+}
+
+.movieTitle {
+  padding: 0 4px;
+}
+
+.movieStatus {
+  padding: 0 4px;
+  border-left: 4px;
+  border-left-style: solid;
+  background-color: $white;
+  color: $defaultColor;
+}
+
+.primary {
+  border-color: $primaryColor;
+}
+
+.danger {
+  border-color: $dangerColor;
+}
+
+.success {
+  border-color: $successColor;
+}
+
+.purple {
+  border-color: $purple;
+}
+
+.warning {
+  border-color: $warningColor;
+}
+
+.info {
+  border-color: $infoColor;
+}
+
+.queue {
+  border-color: $queueColor;
+}

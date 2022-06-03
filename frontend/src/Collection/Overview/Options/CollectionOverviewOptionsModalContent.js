@@ -31,7 +31,8 @@ class CollectionOverviewOptionsModalContent extends Component {
       detailedProgressBar: props.detailedProgressBar,
       size: props.size,
       showDetails: props.showDetails,
-      showOverview: props.showOverview
+      showOverview: props.showOverview,
+      showPosters: props.showPosters
     };
   }
 
@@ -40,7 +41,8 @@ class CollectionOverviewOptionsModalContent extends Component {
       detailedProgressBar,
       size,
       showDetails,
-      showOverview
+      showOverview,
+      showPosters
     } = this.props;
 
     const state = {};
@@ -59,6 +61,10 @@ class CollectionOverviewOptionsModalContent extends Component {
 
     if (showOverview !== prevProps.showOverview) {
       state.showOverview = showOverview;
+    }
+
+    if (showPosters !== prevProps.showPosters) {
+      state.showPosters = showPosters;
     }
 
     if (!_.isEmpty(state)) {
@@ -99,13 +105,14 @@ class CollectionOverviewOptionsModalContent extends Component {
       size,
       detailedProgressBar,
       showDetails,
+      showPosters,
       showOverview
     } = this.state;
 
     return (
       <ModalContent onModalClose={onModalClose}>
         <ModalHeader>
-          Overview Options
+          {translate('CollectionOptions')}
         </ModalHeader>
 
         <ModalBody>
@@ -141,6 +148,7 @@ class CollectionOverviewOptionsModalContent extends Component {
                 type={inputTypes.CHECK}
                 name="showDetails"
                 value={showDetails}
+                helpText={translate('CollectionShowDetailsHelpText')}
                 onChange={this.onChangeOverviewOption}
               />
             </FormGroup>
@@ -152,6 +160,19 @@ class CollectionOverviewOptionsModalContent extends Component {
                 type={inputTypes.CHECK}
                 name="showOverview"
                 value={showOverview}
+                helpText={translate('CollectionShowOverviewsHelpText')}
+                onChange={this.onChangeOverviewOption}
+              />
+            </FormGroup>
+
+            <FormGroup>
+              <FormLabel>{translate('ShowPosters')}</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.CHECK}
+                name="showPosters"
+                value={showPosters}
+                helpText={translate('CollectionShowPostersHelpText')}
                 onChange={this.onChangeOverviewOption}
               />
             </FormGroup>
@@ -175,6 +196,7 @@ CollectionOverviewOptionsModalContent.propTypes = {
   size: PropTypes.string.isRequired,
   showDetails: PropTypes.bool.isRequired,
   showOverview: PropTypes.bool.isRequired,
+  showPosters: PropTypes.bool.isRequired,
   onChangeOverviewOption: PropTypes.func.isRequired,
   onChangeOption: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired

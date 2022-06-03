@@ -14,6 +14,7 @@ import dimensions from 'Styles/Variables/dimensions';
 import fonts from 'Styles/Variables/fonts';
 import translate from 'Utilities/String/translate';
 import CollectionMovieConnector from './CollectionMovieConnector';
+import CollectionMovieLabelConnector from './CollectionMovieLabelConnector';
 import styles from './CollectionOverview.css';
 
 import 'slick-carousel/slick/slick.css';
@@ -108,6 +109,7 @@ class CollectionOverview extends Component {
     const {
       showDetails,
       showOverview,
+      showPosters,
       detailedProgressBar
     } = this.props.overviewOptions;
 
@@ -161,21 +163,25 @@ class CollectionOverview extends Component {
                 />
               </div>
 
-              <div className={styles.navigationButtons}>
-                <IconButton
-                  name={icons.ARROW_LEFT}
-                  title={translate('ScrollMovies')}
-                  onPress={this.state.slider?.slickPrev}
-                  size={20}
-                />
+              {
+                showPosters &&
+                  <div className={styles.navigationButtons}>
+                    <IconButton
+                      name={icons.ARROW_LEFT}
+                      title={translate('ScrollMovies')}
+                      onPress={this.state.slider?.slickPrev}
+                      size={20}
+                    />
 
-                <IconButton
-                  name={icons.ARROW_RIGHT}
-                  title={translate('ScrollMovies')}
-                  onPress={this.state.slider?.slickNext}
-                  size={20}
-                />
-              </div>
+                    <IconButton
+                      name={icons.ARROW_RIGHT}
+                      title={translate('ScrollMovies')}
+                      onPress={this.state.slider?.slickNext}
+                      size={20}
+                    />
+                  </div>
+              }
+
             </div>
 
             {
@@ -261,22 +267,35 @@ class CollectionOverview extends Component {
                 </div>
             }
 
-            <div className={styles.sliderContainer}>
-              <Slider ref={this.setSliderRef} {...sliderSettings}>
-                {movies.map((movie) => (
-                  <div className={styles.movie} key={movie.tmdbId}>
-                    <CollectionMovieConnector
+            {
+              showPosters ?
+                <div className={styles.sliderContainer}>
+                  <Slider ref={this.setSliderRef} {...sliderSettings}>
+                    {movies.map((movie) => (
+                      <div className={styles.movie} key={movie.tmdbId}>
+                        <CollectionMovieConnector
+                          key={movie.tmdbId}
+                          posterWidth={posterWidth}
+                          posterHeight={posterHeight}
+                          detailedProgressBar={detailedProgressBar}
+                          collectionId={id}
+                          {...movie}
+                        />
+                      </div>
+                    ))}
+                  </Slider>
+                </div> :
+                <div className={styles.labelsContainer}>
+                  {movies.map((movie) => (
+                    <CollectionMovieLabelConnector
                       key={movie.tmdbId}
-                      posterWidth={posterWidth}
-                      posterHeight={posterHeight}
-                      detailedProgressBar={detailedProgressBar}
                       collectionId={id}
                       {...movie}
                     />
-                  </div>
-                ))}
-              </Slider>
-            </div>
+                  ))}
+                </div>
+            }
+
           </div>
         </div>
 

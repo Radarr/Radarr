@@ -30,7 +30,7 @@ function calculatePosterWidth(posterSize, isSmallScreen) {
 function calculateRowHeight(posterHeight, sortKey, isSmallScreen, overviewOptions) {
 
   const heights = [
-    posterHeight,
+    overviewOptions.showPosters ? posterHeight : 75,
     isSmallScreen ? columnPaddingSmallScreen : columnPadding
   ];
 
