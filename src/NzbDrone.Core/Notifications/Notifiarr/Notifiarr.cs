@@ -6,6 +6,7 @@ using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.HealthCheck;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Notifiarr
 {
@@ -112,6 +113,22 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             variables.Add("Radarr_MovieFile_QualityVersion", movieFile.Quality.Revision.Version.ToString());
             variables.Add("Radarr_MovieFile_ReleaseGroup", movieFile.ReleaseGroup ?? string.Empty);
             variables.Add("Radarr_MovieFile_SceneName", movieFile.SceneName ?? string.Empty);
+
+            _proxy.SendNotification(variables, Settings);
+        }
+
+        public override void OnMovieAdded(Movie movie)
+        {
+            var variables = new StringDictionary();
+
+            variables.Add("Radarr_EventType", "MovieAdded");
+            variables.Add("Radarr_Movie_Id", movie.Id.ToString());
+            variables.Add("Radarr_Movie_Title", movie.MovieMetadata.Value.Title);
+            variables.Add("Radarr_Movie_Year", movie.MovieMetadata.Value.Year.ToString());
+            variables.Add("Radarr_Movie_Path", movie.Path);
+            variables.Add("Radarr_Movie_ImdbId", movie.MovieMetadata.Value.ImdbId ?? string.Empty);
+            variables.Add("Radarr_Movie_TmdbId", movie.MovieMetadata.Value.TmdbId.ToString());
+            variables.Add("Radarr_Movie_AddMethod", movie.AddOptions.AddMethod.ToString());
 
             _proxy.SendNotification(variables, Settings);
         }

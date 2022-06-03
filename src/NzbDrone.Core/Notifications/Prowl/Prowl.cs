@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Prowl
 {
@@ -24,6 +25,11 @@ namespace NzbDrone.Core.Notifications.Prowl
         public override void OnDownload(DownloadMessage message)
         {
             _prowlProxy.SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, Settings);
+        }
+
+        public override void OnMovieAdded(Movie movie)
+        {
+            _prowlProxy.SendNotification(MOVIE_ADDED_TITLE, $"{movie.Title} added to library", Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)

@@ -125,6 +125,22 @@ namespace NzbDrone.Core.Notifications.CustomScript
             ExecuteScript(environmentVariables);
         }
 
+        public override void OnMovieAdded(Movie movie)
+        {
+            var environmentVariables = new StringDictionary();
+
+            environmentVariables.Add("Radarr_EventType", "MovieAdded");
+            environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
+            environmentVariables.Add("Radarr_Movie_Title", movie.MovieMetadata.Value.Title);
+            environmentVariables.Add("Radarr_Movie_Year", movie.MovieMetadata.Value.Year.ToString());
+            environmentVariables.Add("Radarr_Movie_Path", movie.Path);
+            environmentVariables.Add("Radarr_Movie_ImdbId", movie.MovieMetadata.Value.ImdbId ?? string.Empty);
+            environmentVariables.Add("Radarr_Movie_TmdbId", movie.MovieMetadata.Value.TmdbId.ToString());
+            environmentVariables.Add("Radarr_Movie_AddMethod", movie.AddOptions.AddMethod.ToString());
+
+            ExecuteScript(environmentVariables);
+        }
+
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
         {
             var movie = deleteMessage.Movie;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.PushBullet
@@ -27,6 +28,11 @@ namespace NzbDrone.Core.Notifications.PushBullet
         public override void OnDownload(DownloadMessage message)
         {
             _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE_BRANDED, message.Message, Settings);
+        }
+
+        public override void OnMovieAdded(Movie movie)
+        {
+            _proxy.SendNotification(MOVIE_ADDED_TITLE_BRANDED, $"{movie.Title} added to library", Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)

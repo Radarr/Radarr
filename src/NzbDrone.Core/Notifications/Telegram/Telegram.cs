@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Telegram
 {
@@ -32,6 +33,11 @@ namespace NzbDrone.Core.Notifications.Telegram
             {
                 _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, Settings);
             }
+        }
+
+        public override void OnMovieAdded(Movie movie)
+        {
+            _proxy.SendNotification(MOVIE_ADDED_TITLE, $"{movie.Title} added to library", Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)

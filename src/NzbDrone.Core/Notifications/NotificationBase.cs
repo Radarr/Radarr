@@ -13,12 +13,14 @@ namespace NzbDrone.Core.Notifications
         protected const string MOVIE_GRABBED_TITLE = "Movie Grabbed";
         protected const string MOVIE_DOWNLOADED_TITLE = "Movie Downloaded";
         protected const string MOVIE_UPGRADED_TITLE = "Movie Upgraded";
+        protected const string MOVIE_ADDED_TITLE = "Movie Added";
         protected const string MOVIE_DELETED_TITLE = "Movie Deleted";
         protected const string MOVIE_FILE_DELETED_TITLE = "Movie File Deleted";
         protected const string HEALTH_ISSUE_TITLE = "Health Check Failure";
         protected const string APPLICATION_UPDATE_TITLE = "Application Updated";
 
         protected const string MOVIE_GRABBED_TITLE_BRANDED = "Radarr - " + MOVIE_GRABBED_TITLE;
+        protected const string MOVIE_ADDED_TITLE_BRANDED = "Radarr - " + MOVIE_ADDED_TITLE;
         protected const string MOVIE_DOWNLOADED_TITLE_BRANDED = "Radarr - " + MOVIE_DOWNLOADED_TITLE;
         protected const string MOVIE_DELETED_TITLE_BRANDED = "Radarr - " + MOVIE_DELETED_TITLE;
         protected const string MOVIE_FILE_DELETED_TITLE_BRANDED = "Radarr - " + MOVIE_FILE_DELETED_TITLE;
@@ -50,6 +52,10 @@ namespace NzbDrone.Core.Notifications
         {
         }
 
+        public virtual void OnMovieAdded(Movie movie)
+        {
+        }
+
         public virtual void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
         {
         }
@@ -74,6 +80,7 @@ namespace NzbDrone.Core.Notifications
         public bool SupportsOnRename => HasConcreteImplementation("OnMovieRename");
         public bool SupportsOnDownload => HasConcreteImplementation("OnDownload");
         public bool SupportsOnUpgrade => SupportsOnDownload;
+        public bool SupportsOnMovieAdded => HasConcreteImplementation("OnMovieAdded");
         public bool SupportsOnMovieDelete => HasConcreteImplementation("OnMovieDelete");
         public bool SupportsOnMovieFileDelete => HasConcreteImplementation("OnMovieFileDelete");
         public bool SupportsOnMovieFileDeleteForUpgrade => SupportsOnMovieFileDelete;

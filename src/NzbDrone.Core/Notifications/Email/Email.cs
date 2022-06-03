@@ -8,6 +8,7 @@ using MimeKit;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http.Dispatchers;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Email
 {
@@ -38,6 +39,13 @@ namespace NzbDrone.Core.Notifications.Email
             var body = $"{message.Message} Downloaded and sorted.";
 
             SendEmail(Settings, MOVIE_DOWNLOADED_TITLE_BRANDED, body);
+        }
+
+        public override void OnMovieAdded(Movie movie)
+        {
+            var body = $"{movie.Title} added to library.";
+
+            SendEmail(Settings, MOVIE_ADDED_TITLE_BRANDED, body);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)

@@ -64,6 +64,11 @@ namespace NzbDrone.Core.Test.NotificationTests
                 TestLogger.Info("OnRename was called");
             }
 
+            public override void OnMovieAdded(Movie movie)
+            {
+                TestLogger.Info("OnMovieAdded was called");
+            }
+
             public override void OnMovieFileDelete(MovieFileDeleteMessage message)
             {
                 TestLogger.Info("OnMovieFileDelete was called");
@@ -117,6 +122,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             notification.SupportsOnDownload.Should().BeTrue();
             notification.SupportsOnUpgrade.Should().BeTrue();
             notification.SupportsOnRename.Should().BeTrue();
+            notification.SupportsOnMovieAdded.Should().BeTrue();
             notification.SupportsOnMovieDelete.Should().BeTrue();
             notification.SupportsOnMovieFileDelete.Should().BeTrue();
             notification.SupportsOnMovieFileDeleteForUpgrade.Should().BeTrue();
@@ -133,6 +139,7 @@ namespace NzbDrone.Core.Test.NotificationTests
             notification.SupportsOnDownload.Should().BeFalse();
             notification.SupportsOnUpgrade.Should().BeFalse();
             notification.SupportsOnRename.Should().BeFalse();
+            notification.SupportsOnMovieAdded.Should().BeFalse();
             notification.SupportsOnMovieDelete.Should().BeFalse();
             notification.SupportsOnMovieFileDelete.Should().BeFalse();
             notification.SupportsOnMovieFileDeleteForUpgrade.Should().BeFalse();

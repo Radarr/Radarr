@@ -19,6 +19,7 @@ namespace NzbDrone.Core.Notifications
           IHandle<MovieGrabbedEvent>,
           IHandle<MovieImportedEvent>,
           IHandle<MoviesDeletedEvent>,
+          IHandle<MovieAddedEvent>,
           IHandle<MovieFileDeletedEvent>,
           IHandle<HealthCheckFailedEvent>,
           IHandle<UpdateInstalledEvent>,
@@ -151,6 +152,24 @@ namespace NzbDrone.Core.Notifications
                 catch (Exception ex)
                 {
                     _logger.Warn(ex, "Unable to send OnDownload notification to: " + notification.Definition.Name);
+                }
+            }
+        }
+
+        public void Handle(MovieAddedEvent message)
+        {
+            foreach (var notification in _notificationFactory.OnMovieAddedEnabled())
+            {
+                try
+                {
+                    if (ShouldHandleMovie(notification.Definition, message.Movie))
+                    {
+                        notification.OnMovieAdded(message.Movie);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.Warn(ex, "Unable to send OnMovieAdded notification to: " + notification.Definition.Name);
                 }
             }
         }

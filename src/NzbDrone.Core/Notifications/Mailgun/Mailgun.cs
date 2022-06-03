@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FluentValidation.Results;
 using NLog;
+using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Mailgun
 {
@@ -27,6 +28,11 @@ namespace NzbDrone.Core.Notifications.Mailgun
         public override void OnDownload(DownloadMessage downloadMessage)
         {
             _proxy.SendNotification(downloadMessage.OldMovieFiles.Count > 0 ? MOVIE_UPGRADED_TITLE : MOVIE_DOWNLOADED_TITLE, downloadMessage.Message, Settings);
+        }
+
+        public override void OnMovieAdded(Movie movie)
+        {
+            _proxy.SendNotification(MOVIE_ADDED_TITLE, $"{movie.Title} added to library", Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)

@@ -109,7 +109,8 @@ namespace NzbDrone.Core.Movies
                     MinimumAvailability = collection.MinimumAvailability,
                     AddOptions = new AddMovieOptions
                     {
-                        SearchForMovie = collection.SearchOnAdd
+                        SearchForMovie = collection.SearchOnAdd,
+                        AddMethod = AddMovieMethod.Collection
                     },
                     Monitored = true
                 }).ToList());
