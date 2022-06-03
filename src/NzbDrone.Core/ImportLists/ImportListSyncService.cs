@@ -107,7 +107,8 @@ namespace NzbDrone.Core.ImportLists
                     AddOptions = new AddMovieOptions
                     {
                         SearchForMovie = monitorType != MonitorTypes.None && importList.SearchOnAdd,
-                        Monitor = monitorType
+                        Monitor = monitorType,
+                        AddMethod = AddMovieMethod.List
                     }
                 });
             }

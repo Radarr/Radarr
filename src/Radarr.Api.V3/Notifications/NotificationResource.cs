@@ -9,6 +9,7 @@ namespace Radarr.Api.V3.Notifications
         public bool OnDownload { get; set; }
         public bool OnUpgrade { get; set; }
         public bool OnRename { get; set; }
+        public bool OnMovieAdded { get; set; }
         public bool OnMovieDelete { get; set; }
         public bool OnMovieFileDelete { get; set; }
         public bool OnMovieFileDeleteForUpgrade { get; set; }
@@ -18,6 +19,7 @@ namespace Radarr.Api.V3.Notifications
         public bool SupportsOnDownload { get; set; }
         public bool SupportsOnUpgrade { get; set; }
         public bool SupportsOnRename { get; set; }
+        public bool SupportsOnMovieAdded { get; set; }
         public bool SupportsOnMovieDelete { get; set; }
         public bool SupportsOnMovieFileDelete { get; set; }
         public bool SupportsOnMovieFileDeleteForUpgrade { get; set; }
@@ -42,6 +44,7 @@ namespace Radarr.Api.V3.Notifications
             resource.OnDownload = definition.OnDownload;
             resource.OnUpgrade = definition.OnUpgrade;
             resource.OnRename = definition.OnRename;
+            resource.OnMovieAdded = definition.OnMovieAdded;
             resource.OnMovieDelete = definition.OnMovieDelete;
             resource.OnMovieFileDelete = definition.OnMovieFileDelete;
             resource.OnMovieFileDeleteForUpgrade = definition.OnMovieFileDeleteForUpgrade;
@@ -51,6 +54,7 @@ namespace Radarr.Api.V3.Notifications
             resource.SupportsOnDownload = definition.SupportsOnDownload;
             resource.SupportsOnUpgrade = definition.SupportsOnUpgrade;
             resource.SupportsOnRename = definition.SupportsOnRename;
+            resource.SupportsOnMovieAdded = definition.SupportsOnMovieAdded;
             resource.SupportsOnMovieDelete = definition.SupportsOnMovieDelete;
             resource.SupportsOnMovieFileDelete = definition.SupportsOnMovieFileDelete;
             resource.SupportsOnMovieFileDeleteForUpgrade = definition.SupportsOnMovieFileDeleteForUpgrade;
@@ -74,6 +78,7 @@ namespace Radarr.Api.V3.Notifications
             definition.OnDownload = resource.OnDownload;
             definition.OnUpgrade = resource.OnUpgrade;
             definition.OnRename = resource.OnRename;
+            definition.OnMovieAdded = resource.OnMovieAdded;
             definition.OnMovieDelete = resource.OnMovieDelete;
             definition.OnMovieFileDelete = resource.OnMovieFileDelete;
             definition.OnMovieFileDeleteForUpgrade = resource.OnMovieFileDeleteForUpgrade;
@@ -83,6 +88,7 @@ namespace Radarr.Api.V3.Notifications
             definition.SupportsOnDownload = resource.SupportsOnDownload;
             definition.SupportsOnUpgrade = resource.SupportsOnUpgrade;
             definition.SupportsOnRename = resource.SupportsOnRename;
+            definition.SupportsOnMovieAdded = resource.SupportsOnMovieAdded;
             definition.SupportsOnMovieDelete = resource.SupportsOnMovieDelete;
             definition.SupportsOnMovieFileDelete = resource.SupportsOnMovieFileDelete;
             definition.SupportsOnMovieFileDeleteForUpgrade = resource.SupportsOnMovieFileDeleteForUpgrade;

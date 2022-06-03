@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Notifications
         void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles);
         void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage);
         void OnMovieDelete(MovieDeleteMessage deleteMessage);
+        void OnMovieAdded(Movie movie);
         void OnHealthIssue(HealthCheck.HealthCheck healthCheck);
         void OnApplicationUpdate(ApplicationUpdateMessage updateMessage);
         void ProcessQueue();
@@ -21,6 +22,7 @@ namespace NzbDrone.Core.Notifications
         bool SupportsOnDownload { get; }
         bool SupportsOnUpgrade { get; }
         bool SupportsOnRename { get; }
+        bool SupportsOnMovieAdded { get; }
         bool SupportsOnMovieDelete { get; }
         bool SupportsOnMovieFileDelete { get; }
         bool SupportsOnMovieFileDeleteForUpgrade { get; }

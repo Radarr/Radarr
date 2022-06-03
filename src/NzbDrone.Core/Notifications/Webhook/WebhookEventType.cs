@@ -15,6 +15,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         MovieDelete,
         MovieFileDelete,
         Health,
-        ApplicationUpdate
+        ApplicationUpdate,
+        MovieAdded
     }
 }

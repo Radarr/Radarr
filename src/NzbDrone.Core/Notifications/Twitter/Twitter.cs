@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.Twitter
@@ -26,6 +27,11 @@ namespace NzbDrone.Core.Notifications.Twitter
         public override void OnDownload(DownloadMessage message)
         {
             _twitterService.SendNotification($"[Radarr] Imported: {message.Message}", Settings);
+        }
+
+        public override void OnMovieAdded(Movie movie)
+        {
+            _twitterService.SendNotification($"[Radarr] Added: {movie.Title}", Settings);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)

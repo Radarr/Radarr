@@ -648,6 +648,8 @@
   "OnLatestVersion": "The latest version of Radarr is already installed",
   "OnlyTorrent": "Only Torrent",
   "OnlyUsenet": "Only Usenet",
+  "OnMovieAdded": "On Movie Added",
+  "OnMovieAddedHelpText": "On Movie Added",
   "OnMovieDelete": "On Movie Delete",
   "OnMovieDeleteHelpText": "On Movie Delete",
   "OnMovieFileDelete": "On Movie File Delete",

@@ -19,6 +19,7 @@ function NotificationEventItems(props) {
     onDownload,
     onUpgrade,
     onRename,
+    onMovieAdded,
     onMovieDelete,
     onMovieFileDelete,
     onMovieFileDeleteForUpgrade,
@@ -28,6 +29,7 @@ function NotificationEventItems(props) {
     supportsOnDownload,
     supportsOnUpgrade,
     supportsOnRename,
+    supportsOnMovieAdded,
     supportsOnMovieDelete,
     supportsOnMovieFileDelete,
     supportsOnMovieFileDeleteForUpgrade,
@@ -88,6 +90,17 @@ function NotificationEventItems(props) {
               helpText={translate('OnRenameHelpText')}
               isDisabled={!supportsOnRename.value}
               {...onRename}
+              onChange={onInputChange}
+            />
+          </div>
+
+          <div>
+            <FormInputGroup
+              type={inputTypes.CHECK}
+              name="onMovieAdded"
+              helpText={translate('OnMovieAddedHelpText')}
+              isDisabled={!supportsOnMovieAdded.value}
+              {...onMovieAdded}
               onChange={onInputChange}
             />
           </div>

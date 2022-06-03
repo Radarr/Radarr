@@ -13,6 +13,7 @@ namespace NzbDrone.Core.Notifications
         List<INotification> OnDownloadEnabled();
         List<INotification> OnUpgradeEnabled();
         List<INotification> OnRenameEnabled();
+        List<INotification> OnMovieAddedEnabled();
         List<INotification> OnMovieDeleteEnabled();
         List<INotification> OnMovieFileDeleteEnabled();
         List<INotification> OnHealthIssueEnabled();
@@ -44,6 +45,11 @@ namespace NzbDrone.Core.Notifications
         public List<INotification> OnRenameEnabled()
         {
             return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnRename).ToList();
+        }
+
+        public List<INotification> OnMovieAddedEnabled()
+        {
+            return GetAvailableProviders().Where(n => ((NotificationDefinition)n.Definition).OnMovieAdded).ToList();
         }
 
         public List<INotification> OnMovieDeleteEnabled()
