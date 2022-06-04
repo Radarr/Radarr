@@ -85,6 +85,7 @@ namespace NzbDrone.Core.Notifications
             definition.SupportsOnDownload = provider.SupportsOnDownload;
             definition.SupportsOnUpgrade = provider.SupportsOnUpgrade;
             definition.SupportsOnRename = provider.SupportsOnRename;
+            definition.SupportsOnMovieAdded = provider.SupportsOnMovieAdded;
             definition.SupportsOnMovieDelete = provider.SupportsOnMovieDelete;
             definition.SupportsOnMovieFileDelete = provider.SupportsOnMovieFileDelete;
             definition.SupportsOnMovieFileDeleteForUpgrade = provider.SupportsOnMovieFileDeleteForUpgrade;
