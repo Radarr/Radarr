@@ -1134,5 +1134,12 @@
     "MonitoredCollectionHelpText": "Monitorar para que os filmes desta coleção sejam adicionados automaticamente à biblioteca",
     "RefreshCollections": "Atualizar Coleções",
     "SearchOnAddCollectionHelpText": "Pesquisar filmes nesta coleção quando adicionados à biblioteca",
-    "ScrollMovies": "Rolar Filmes"
+    "ScrollMovies": "Rolar Filmes",
+    "OnMovieAdded": "Ao Filme Adicionado",
+    "OnMovieAddedHelpText": "Ao Filme Adicionado",
+    "ShowPosters": "Mostrar pôsteres",
+    "CollectionOptions": "Opções de Coleção",
+    "CollectionShowDetailsHelpText": "Mostrar estado e propriedades da coleção",
+    "CollectionShowOverviewsHelpText": "Mostrar visão geral da coleção",
+    "CollectionShowPostersHelpText": "Mostrar pôsteres de itens da coleção"
 }
