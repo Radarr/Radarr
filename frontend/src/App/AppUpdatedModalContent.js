@@ -89,12 +89,12 @@ function AppUpdatedModalContent(props) {
 
                     <UpdateChanges
                       title={translate('New')}
-                      changes={update.changes.new}
+                      changes={Array.from(new Set(update.changes.new))}
                     />
 
                     <UpdateChanges
                       title={translate('Fixed')}
-                      changes={update.changes.fixed}
+                      changes={Array.from(new Set(update.changes.fixed))}
                     />
                   </div>
               }
