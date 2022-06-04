@@ -8313,6 +8313,14 @@
   },
   "components": {
     "schemas": {
+      "AddMovieMethod": {
+        "enum": [
+          "manual",
+          "list",
+          "collection"
+        ],
+        "type": "string"
+      },
       "AddMovieOptions": {
         "type": "object",
         "properties": {
@@ -8327,6 +8335,9 @@
           },
           "searchForMovie": {
             "type": "boolean"
+          },
+          "addMethod": {
+            "$ref": "#/components/schemas/AddMovieMethod"
           }
         },
         "additionalProperties": false
@@ -11207,6 +11218,9 @@
           "onRename": {
             "type": "boolean"
           },
+          "onMovieAdded": {
+            "type": "boolean"
+          },
           "onMovieDelete": {
             "type": "boolean"
           },
@@ -11232,6 +11246,9 @@
             "type": "boolean"
           },
           "supportsOnRename": {
+            "type": "boolean"
+          },
+          "supportsOnMovieAdded": {
             "type": "boolean"
           },
           "supportsOnMovieDelete": {
