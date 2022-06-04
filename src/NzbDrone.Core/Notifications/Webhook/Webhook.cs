@@ -136,7 +136,9 @@ namespace NzbDrone.Core.Notifications.Webhook
                 EventType = WebhookEventType.ApplicationUpdate,
                 Message = updateMessage.Message,
                 PreviousVersion = updateMessage.PreviousVersion.ToString(),
-                NewVersion = updateMessage.NewVersion.ToString()
+                NewVersion = updateMessage.NewVersion.ToString(),
+                NewChanges = updateMessage.Changes.New,
+                FixedChanges = updateMessage.Changes.Fixed
             };
 
             _proxy.SendWebhook(payload, Settings);

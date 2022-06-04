@@ -198,6 +198,7 @@ namespace NzbDrone.Core.Notifications
             updateMessage.Message = $"Radarr updated from {message.PreviousVerison.ToString()} to {message.NewVersion.ToString()}";
             updateMessage.PreviousVersion = message.PreviousVerison;
             updateMessage.NewVersion = message.NewVersion;
+            updateMessage.Changes = message.Changes;
 
             foreach (var notification in _notificationFactory.OnApplicationUpdateEnabled())
             {

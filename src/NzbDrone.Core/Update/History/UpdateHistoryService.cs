@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Update.History.Events;
@@ -17,13 +19,21 @@ namespace NzbDrone.Core.Update.History
     public class UpdateHistoryService : IUpdateHistoryService, IHandle<ApplicationStartedEvent>, IHandleAsync<ApplicationStartedEvent>
     {
         private readonly IUpdateHistoryRepository _repository;
+        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IUpdatePackageProvider _updatePackageProvider;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
         private Version _prevVersion;
 
-        public UpdateHistoryService(IUpdateHistoryRepository repository, IEventAggregator eventAggregator, Logger logger)
+        public UpdateHistoryService(IUpdateHistoryRepository repository,
+                                    IConfigFileProvider configFileProvider,
+                                    IUpdatePackageProvider updatePackageProvider,
+                                    IEventAggregator eventAggregator,
+                                    Logger logger)
         {
             _repository = repository;
+            _configFileProvider = configFileProvider;
+            _updatePackageProvider = updatePackageProvider;
             _eventAggregator = eventAggregator;
             _logger = logger;
         }
@@ -93,7 +103,20 @@ namespace NzbDrone.Core.Update.History
         {
             if (_prevVersion != null)
             {
-                _eventAggregator.PublishEvent(new UpdateInstalledEvent(_prevVersion, BuildInfo.Version));
+                var branch = _configFileProvider.Branch;
+                var version = BuildInfo.Version;
+                var packageChanges = _updatePackageProvider.GetRecentUpdates(branch, version, _prevVersion)
+                                                           .Select(u => u.Changes);
+
+                var changes = new UpdateChanges();
+
+                foreach (var change in packageChanges)
+                {
+                    changes.New = change.New.Union(change.New).ToList();
+                    changes.Fixed = change.Fixed.Union(change.Fixed).ToList();
+                }
+
+                _eventAggregator.PublishEvent(new UpdateInstalledEvent(_prevVersion, BuildInfo.Version, changes));
             }
         }
     }

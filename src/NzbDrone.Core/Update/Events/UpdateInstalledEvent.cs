@@ -7,11 +7,13 @@ namespace NzbDrone.Core.Update.History.Events
     {
         public Version PreviousVerison { get; set; }
         public Version NewVersion { get; set; }
+        public UpdateChanges Changes { get; set; }
 
-        public UpdateInstalledEvent(Version previousVersion, Version newVersion)
+        public UpdateInstalledEvent(Version previousVersion, Version newVersion, UpdateChanges changes)
         {
             PreviousVerison = previousVersion;
             NewVersion = newVersion;
+            Changes = changes;
         }
     }
 }

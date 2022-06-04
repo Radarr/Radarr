@@ -176,6 +176,16 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             variables.Add("Radarr_Update_NewVersion", updateMessage.NewVersion.ToString());
             variables.Add("Radarr_Update_PreviousVersion", updateMessage.PreviousVersion.ToString());
 
+            if (updateMessage.Changes.New.Any())
+            {
+                variables.Add("Radarr_Update_NewChanges", string.Join("|", updateMessage.Changes.New.Select(e => e)));
+            }
+
+            if (updateMessage.Changes.Fixed.Any())
+            {
+                variables.Add("Radarr_Update_FixedChanges", string.Join("|", updateMessage.Changes.Fixed.Select(e => e)));
+            }
+
             _proxy.SendNotification(variables, Settings);
         }
 

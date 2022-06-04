@@ -317,6 +317,16 @@ namespace NzbDrone.Core.Notifications.Discord
                                           {
                                               Name = "New Version",
                                               Value = updateMessage.NewVersion.ToString()
+                                          },
+                                          new DiscordField()
+                                          {
+                                              Name = "New",
+                                              Value = string.Format("```{0}```", string.Join(Environment.NewLine, updateMessage.Changes.New))
+                                          },
+                                          new DiscordField()
+                                          {
+                                              Name = "Fixed",
+                                              Value = string.Format("```{0}```", string.Join(Environment.NewLine, updateMessage.Changes.Fixed))
                                           }
                                       },
                                   }

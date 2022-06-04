@@ -212,6 +212,16 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Update_NewVersion", updateMessage.NewVersion.ToString());
             environmentVariables.Add("Radarr_Update_PreviousVersion", updateMessage.PreviousVersion.ToString());
 
+            if (updateMessage.Changes.New.Any())
+            {
+                environmentVariables.Add("Radarr_Update_NewChanges", string.Join("|", updateMessage.Changes.New.Select(e => e)));
+            }
+
+            if (updateMessage.Changes.Fixed.Any())
+            {
+                environmentVariables.Add("Radarr_Update_FixedChanges", string.Join("|", updateMessage.Changes.Fixed.Select(e => e)));
+            }
+
             ExecuteScript(environmentVariables);
         }
 
