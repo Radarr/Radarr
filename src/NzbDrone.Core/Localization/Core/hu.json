@@ -1133,5 +1133,9 @@
     "MonitorCollection": "Gyűjtemény monitorozása",
     "SearchOnAddCollectionHelpText": "Ebben a gyűjteményben található filmek keresése, a hozzáadás adás után",
     "UnableToLoadCollections": "Nem sikerült betölteni a gyűjteményeket",
-    "MonitoredCollectionHelpText": "A gyűjteményből származó filmek monitorozása, hogy automatikusan hozzáadódjanak a könyvtárhoz"
+    "MonitoredCollectionHelpText": "A gyűjteményből származó filmek monitorozása, hogy automatikusan hozzáadódjanak a könyvtárhoz",
+    "CollectionOptions": "Gyűjtemény baállítások",
+    "CollectionShowOverviewsHelpText": "Gyűjtemények áttekintésének megjelenítése",
+    "CollectionShowDetailsHelpText": "A gyűjtemény állapotának és tulajdonságainak megjelenítése",
+    "CollectionShowPostersHelpText": "Gyűjteményelemek posztereinek megjelenítése"
 }
