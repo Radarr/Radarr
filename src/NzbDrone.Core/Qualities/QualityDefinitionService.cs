@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
 using NzbDrone.Core.Lifecycle;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Qualities.Commands;
 
 namespace NzbDrone.Core.Qualities
 {
@@ -17,7 +19,7 @@ namespace NzbDrone.Core.Qualities
         QualityDefinition Get(Quality quality);
     }
 
-    public class QualityDefinitionService : IQualityDefinitionService, IHandle<ApplicationStartedEvent>
+    public class QualityDefinitionService : IQualityDefinitionService, IExecute<ResetQualityDefinitionsCommand>, IHandle<ApplicationStartedEvent>
     {
         private readonly IQualityDefinitionRepository _repo;
         private readonly ICached<Dictionary<Quality, QualityDefinition>> _cache;
@@ -104,6 +106,29 @@ namespace NzbDrone.Core.Qualities
             _logger.Debug("Setting up default quality config");
 
             InsertMissingDefinitions();
+        }
+
+        public void Execute(ResetQualityDefinitionsCommand message)
+        {
+            List<QualityDefinition> updateList = new List<QualityDefinition>();
+
+            var allDefinitions = Quality.DefaultQualityDefinitions.OrderBy(d => d.Weight).ToList();
+            var existingDefinitions = _repo.All().ToList();
+
+            foreach (var definition in allDefinitions)
+            {
+                var existing = existingDefinitions.SingleOrDefault(d => d.Quality == definition.Quality);
+
+                existing.MinSize = definition.MinSize;
+                existing.MaxSize = definition.MaxSize;
+                existing.Title = message.ResetTitles ? definition.Title : existing.Title;
+
+                updateList.Add(existing);
+            }
+
+            _repo.UpdateMany(updateList);
+
+            _cache.Clear();
         }
     }
 }
