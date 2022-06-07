@@ -6,6 +6,7 @@ using System.Linq;
 using FluentValidation.Results;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.HealthCheck;
+using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Notifiarr
@@ -77,6 +78,15 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             variables.Add("Radarr_MovieFile_SceneName", movieFile.SceneName ?? string.Empty);
             variables.Add("Radarr_MovieFile_SourcePath", sourcePath);
             variables.Add("Radarr_MovieFile_SourceFolder", Path.GetDirectoryName(sourcePath));
+            variables.Add("Radarr_MovieFile_MediaInfo_AudioChannels", MediaInfoFormatter.FormatAudioChannels(movieFile.MediaInfo).ToString());
+            variables.Add("Radarr_MovieFile_MediaInfo_AudioCodec", MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, null));
+            variables.Add("Radarr_MovieFile_MediaInfo_AudioLanguages", movieFile.MediaInfo.AudioLanguages.Distinct().ConcatToString(" / "));
+            variables.Add("Radarr_MovieFile_MediaInfo_Languages", movieFile.MediaInfo.AudioLanguages.ConcatToString(" / "));
+            variables.Add("Radarr_MovieFile_MediaInfo_Height", movieFile.MediaInfo.Height.ToString());
+            variables.Add("Radarr_MovieFile_MediaInfo_Width", movieFile.MediaInfo.Width.ToString());
+            variables.Add("Radarr_MovieFile_MediaInfo_Subtitles", movieFile.MediaInfo.Subtitles.ConcatToString(" / "));
+            variables.Add("Radarr_MovieFile_MediaInfo_VideoCodec", MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, null));
+            variables.Add("Radarr_MovieFile_MediaInfo_VideoDynamicRangeType", MediaInfoFormatter.FormatVideoDynamicRangeType(movieFile.MediaInfo));
             variables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
             variables.Add("Radarr_Download_Client", message.DownloadClientInfo?.Name ?? string.Empty);
             variables.Add("Radarr_Download_Client_Type", message.DownloadClientInfo?.Type ?? string.Empty);
