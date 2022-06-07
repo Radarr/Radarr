@@ -90,7 +90,7 @@ namespace NzbDrone.Core.ImportLists.Trakt
         [FieldDefinition(2, Label = "Certification", HelpText = "Filter movies by a certification (NR,G,PG,PG-13,R,NC-17), (Comma Separated)")]
         public string Certification { get; set; }
 
-        [FieldDefinition(3, Label = "Genres", HelpText = "Filter movies by Trakt Genre Slug (Comma Separated)")]
+        [FieldDefinition(3, Label = "Genres", HelpText = "Filter movies by Trakt Genre Slug (Comma Separated) Only for Popular Lists")]
         public string Genres { get; set; }
 
         [FieldDefinition(4, Label = "Years", HelpText = "Filter movies by year or year range")]
