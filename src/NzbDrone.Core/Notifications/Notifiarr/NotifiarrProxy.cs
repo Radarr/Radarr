@@ -78,8 +78,7 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             try
             {
                 var url = settings.Environment == (int)NotifiarrEnvironment.Development ? "https://dev.notifiarr.com" : "https://notifiarr.com";
-                var requestBuilder = new HttpRequestBuilder(url + "/notifier.php").Post();
-                requestBuilder.AddFormParameter("api", settings.APIKey).Build();
+                var requestBuilder = new HttpRequestBuilder(url + "/api/v1/notification/radarr/" + settings.APIKey).Post();
                 requestBuilder.AddFormParameter("instanceName", settings.InstanceName).Build();
 
                 foreach (string key in message.Keys)
