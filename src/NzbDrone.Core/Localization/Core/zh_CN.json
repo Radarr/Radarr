@@ -1134,5 +1134,6 @@
     "MovieOnly": "仅电影",
     "NoCollections": "没有发现集合，点击添加新的电影或者导入已经存在的电影",
     "InstanceNameHelpText": "选项卡及日志应用名称",
-    "ScrollMovies": "滚动电影"
+    "ScrollMovies": "滚动电影",
+    "CollectionOptions": "Collection Options"
 }
