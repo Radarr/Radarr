@@ -91,7 +91,7 @@ namespace NzbDrone.Core.MediaFiles
 
                 if (_diskProvider.FolderEmpty(rootFolder))
                 {
-                    _logger.Warn("Movie's root folder ({0}) is empty.", rootFolder);
+                    _logger.Warn("Movie's root folder ({0}) is empty. Rescan will not update movies as a failsafe.", rootFolder);
                     _eventAggregator.PublishEvent(new MovieScanSkippedEvent(movie, MovieScanSkippedReason.RootFolderIsEmpty));
                     return;
                 }
