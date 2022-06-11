@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
+import { icons } from 'Helpers/Props';
 import ImportMovieTitle from './ImportMovieTitle';
 import styles from './ImportMovieSearchResult.css';
 
@@ -18,6 +20,7 @@ class ImportMovieSearchResult extends Component {
 
   render() {
     const {
+      tmdbId,
       title,
       year,
       studio,
@@ -25,17 +28,30 @@ class ImportMovieSearchResult extends Component {
     } = this.props;
 
     return (
-      <Link
-        className={styles.movie}
-        onPress={this.onPress}
-      >
-        <ImportMovieTitle
-          title={title}
-          year={year}
-          network={studio}
-          isExistingMovie={isExistingMovie}
-        />
-      </Link>
+      <div className={styles.container}>
+        <Link
+          className={styles.movie}
+          onPress={this.onPress}
+        >
+          <ImportMovieTitle
+            title={title}
+            year={year}
+            network={studio}
+            isExistingMovie={isExistingMovie}
+          />
+        </Link>
+
+        <Link
+          className={styles.tmdbLink}
+          to={`https://www.themoviedb.org/movie/${tmdbId}`}
+        >
+          <Icon
+            className={styles.tmdbLinkIcon}
+            name={icons.EXTERNAL_LINK}
+            size={16}
+          />
+        </Link>
+      </div>
     );
   }
 }
