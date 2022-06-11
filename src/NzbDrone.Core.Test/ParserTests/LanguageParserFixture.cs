@@ -313,7 +313,6 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Slovak);
         }
 
-
         [TestCase("Movie.Title.2019.ARABIC.WEBRip.x264-VXT")]
         public void should_parse_language_arabic(string postTitle)
         {
