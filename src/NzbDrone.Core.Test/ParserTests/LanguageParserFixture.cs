@@ -294,12 +294,25 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.CZ.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.1994.1080p.XviD-LOL.czech.mkv")]
+        [TestCase("Movie Title (2022) - [tmdb-406759][Bluray-1080p][CS+EN]-DeDo")]
         public void should_parse_language_czech(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
 
             result.Languages.Should().BeEquivalentTo(Language.Czech);
         }
+
+        [TestCase("Movie.Title.1994.SK.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.1994.1080p.XviD-LOL.slovak.mkv")]
+        [TestCase("Movie Title (2022) - [tmdb-406759][Bluray-1080p][SK+EN]-DeDo")]
+        public void should_parse_language_slovak(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.Slovak);
+        }
+
 
         [TestCase("Movie.Title.2019.ARABIC.WEBRip.x264-VXT")]
         public void should_parse_language_arabic(string postTitle)

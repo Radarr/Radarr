@@ -1,4 +1,5 @@
 import { createBrowserHistory } from 'history';
+import moment from 'moment';
 import React from 'react';
 import { render } from 'react-dom';
 import createAppStore from 'Store/createAppStore';
@@ -11,6 +12,8 @@ import './index.css';
 
 const history = createBrowserHistory();
 const store = createAppStore(history);
+
+moment.locale('cs');
 
 render(
   <App
