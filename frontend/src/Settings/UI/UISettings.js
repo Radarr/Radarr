@@ -21,7 +21,9 @@ export const weekColumnOptions = [
   { key: 'ddd M/D', value: 'Tue 3/25' },
   { key: 'ddd MM/DD', value: 'Tue 03/25' },
   { key: 'ddd D/M', value: 'Tue 25/3' },
-  { key: 'ddd DD/MM', value: 'Tue 25/03' }
+  { key: 'ddd DD/MM', value: 'Tue 25/03' },
+  { key: 'ddd D.M.', value: 'Tue 25.3.' },
+  { key: 'ddd DD.MM.', value: 'Tue 25.03.' }
 ];
 
 const shortDateFormatOptions = [
@@ -30,12 +32,15 @@ const shortDateFormatOptions = [
   { key: 'MM/D/YYYY', value: '03/25/2014' },
   { key: 'MM/DD/YYYY', value: '03/25/2014' },
   { key: 'DD/MM/YYYY', value: '25/03/2014' },
-  { key: 'YYYY-MM-DD', value: '2014-03-25' }
+  { key: 'YYYY-MM-DD', value: '2014-03-25' },
+  { key: 'DD.M.YYYY', value: '25.3.2014' },
+  { key: 'DD.MM.YYYY', value: '25.03.2014' }
 ];
 
 const longDateFormatOptions = [
   { key: 'dddd, MMMM D YYYY', value: 'Tuesday, March 25, 2014' },
-  { key: 'dddd, D MMMM YYYY', value: 'Tuesday, 25 March, 2014' }
+  { key: 'dddd, D MMMM YYYY', value: 'Tuesday, 25 March, 2014' },
+  { key: 'dddd, DD.MMMM YYYY', value: 'Tuesday, 25.March 2014' }
 ];
 
 export const timeFormatOptions = [

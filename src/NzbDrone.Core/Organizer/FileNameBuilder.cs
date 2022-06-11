@@ -380,6 +380,18 @@ namespace NzbDrone.Core.Organizer
             {
                 mediaInfoAudioLanguages = $"[{mediaInfoAudioLanguages}]";
             }
+            else
+            {
+                var lang = LanguageParser.ParseLanguages(movieFile.RelativePath).FirstOrDefault();
+                if (lang != null)
+                {
+                    var isoLang = IsoLanguages.Get(lang);
+                    if (isoLang != null)
+                    {
+                        mediaInfoAudioLanguages = $"[{isoLang.TwoLetterCode.ToUpper()}]";
+                    }
+                }
+            }
 
             var mediaInfoAudioLanguagesAll = mediaInfoAudioLanguages;
             if (mediaInfoAudioLanguages == "[EN]")
