@@ -180,14 +180,14 @@ namespace NzbDrone.Core.Download
                 }
                 else
                 {
-                    _logger.Debug()
+                    _logger.ForDebugEvent()
                            .Message("No Movies were just imported, but all movies were previously imported, possible issue with download history.")
                            .Property("MovieId", trackedDownload.RemoteMovie.Movie.Id)
                            .Property("DownloadId", trackedDownload.DownloadItem.DownloadId)
                            .Property("Title", trackedDownload.DownloadItem.Title)
                            .Property("Path", trackedDownload.ImportItem.OutputPath.ToString())
                            .WriteSentryWarn("DownloadHistoryIncomplete")
-                           .Write();
+                           .Log();
                 }
 
                 trackedDownload.State = TrackedDownloadState.Imported;
