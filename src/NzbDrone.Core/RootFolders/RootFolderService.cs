@@ -162,7 +162,7 @@ namespace NzbDrone.Core.RootFolders
             var setToRemove = SpecialFolders;
             results.RemoveAll(x => setToRemove.Contains(new DirectoryInfo(x.Path.ToLowerInvariant()).Name));
 
-            results.RemoveAll(x => Directory.GetFiles(x.Path, IgnoreFolderFile).Length > 0);
+            results.RemoveAll(x => Directory.Exists(x.Path) && Directory.GetFiles(x.Path, IgnoreFolderFile).Length > 0);
 
             _logger.Debug("{0} unmapped folders detected.", results.Count);
             return results.OrderBy(u => u.Name, StringComparer.InvariantCultureIgnoreCase).ToList();
