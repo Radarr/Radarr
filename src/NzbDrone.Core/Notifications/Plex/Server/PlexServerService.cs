@@ -57,15 +57,15 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 var partialUpdates = _partialUpdateCache.Get(settings.Host, () => PartialUpdatesAllowed(settings, version), TimeSpan.FromHours(2));
                 var pathScanCache = _pathScanCache.Get(settings.Host, () => PathUpdatesAllowed(settings, version), TimeSpan.FromHours(2));
 
-                var pathUpdated = true;
+                var pathsUpdated = true;
 
                 if (pathScanCache)
                 {
                     foreach (var movie in multipleMovies)
                     {
-                        pathUpdated &= UpdatePath(movie, sections, settings);
+                        pathsUpdated &= UpdatePath(movie, sections, settings);
 
-                        if (!pathUpdated)
+                        if (!pathsUpdated)
                         {
                             break;
                         }
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 }
 
                 // If we couldn't path update then try partial and full update
-                if (!pathUpdated)
+                if (!pathScanCache || (pathScanCache && !pathsUpdated))
                 {
                     if (partialUpdates)
                     {
@@ -243,6 +243,10 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 _plexServerProxy.UpdatePath(mappedPath.FullPath, matchingSection.Id, settings);
 
                 pathUpdated = true;
+            }
+            else
+            {
+                _logger.Debug("Unable to update path, mapped movie path {0} is not a child of any plex libraries: {1}", mappedPath, sections.SelectMany(s => s.Locations.Select(l => l.Path)).Join(", "));
             }
 
             return pathUpdated;
