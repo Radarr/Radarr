@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 
-namespace NzbDrone.Http.Authentication
+namespace Radarr.Http.Authentication
 {
     public class BypassableDenyAnonymousAuthorizationRequirement : DenyAnonymousAuthorizationRequirement
     {

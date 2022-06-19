@@ -9,7 +9,7 @@ using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.Messaging.Events;
 using Radarr.Http.Extensions;
 
-namespace NzbDrone.Http.Authentication
+namespace Radarr.Http.Authentication
 {
     public class UiAuthorizationHandler : AuthorizationHandler<BypassableDenyAnonymousAuthorizationRequirement>, IAuthorizationRequirement, IHandle<ConfigSavedEvent>
     {

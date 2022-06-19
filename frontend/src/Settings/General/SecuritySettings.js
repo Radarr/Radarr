@@ -5,6 +5,7 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormInputButton from 'Components/Form/FormInputButton';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
+import OAuthInputConnector from 'Components/Form/OAuthInputConnector';
 import Icon from 'Components/Icon';
 import ClipboardButton from 'Components/Link/ClipboardButton';
 import ConfirmModal from 'Components/Modal/ConfirmModal';
@@ -36,6 +37,18 @@ export const authenticationMethodOptions = [
     key: 'forms',
     get value() {
       return translate('AuthForm');
+    }
+  },
+  {
+    key: 'plex',
+    get value() {
+      return translate('AuthPlex');
+    }
+  },
+  {
+    key: 'oidc',
+    get value() {
+      return translate('AuthOidc');
     }
   }
 ];
@@ -76,6 +89,22 @@ const certificateValidationOptions = [
   }
 ];
 
+const oauthData = {
+  implementation: { value: 'PlexImport' },
+  configContract: { value: 'PlexListSettings' },
+  fields: [
+    {
+      type: 'textbox',
+      name: 'accessToken'
+    },
+    {
+      type: 'oAuth',
+      name: 'signIn',
+      value: 'startAuth'
+    }
+  ]
+};
+
 class SecuritySettings extends Component {
 
   //
@@ -115,6 +144,7 @@ class SecuritySettings extends Component {
   render() {
     const {
       settings,
+      plexServersPopulated,
       isResettingApiKey,
       onInputChange
     } = this.props;
@@ -124,11 +154,19 @@ class SecuritySettings extends Component {
       authenticationRequired,
       username,
       password,
+      plexAuthServer,
+      plexRequireOwner,
+      oidcClientId,
+      oidcClientSecret,
+      oidcAuthority,
       apiKey,
       certificateValidation
     } = settings;
 
     const authenticationEnabled = authenticationMethod && authenticationMethod.value !== 'none';
+    const showUserPass = authenticationMethod && ['basic', 'forms'].includes(authenticationMethod.value);
+    const plexEnabled = authenticationMethod && authenticationMethod.value === 'plex';
+    const oidcEnabled = authenticationMethod && authenticationMethod.value === 'oidc';
 
     return (
       <FieldSet legend={translate('Security')}>
@@ -164,33 +202,107 @@ class SecuritySettings extends Component {
         }
 
         {
-          authenticationEnabled ?
-            <FormGroup>
-              <FormLabel>{translate('Username')}</FormLabel>
+          showUserPass &&
+            <>
+              <FormGroup>
+                <FormLabel>{translate('Username')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.TEXT}
-                name="username"
-                onChange={onInputChange}
-                {...username}
-              />
-            </FormGroup> :
-            null
+                <FormInputGroup
+                  type={inputTypes.TEXT}
+                  name="username"
+                  onChange={onInputChange}
+                  {...username}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>{translate('Password')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.PASSWORD}
+                  name="password"
+                  onChange={onInputChange}
+                  {...password}
+                />
+              </FormGroup>
+            </>
         }
 
         {
-          authenticationEnabled ?
-            <FormGroup>
-              <FormLabel>{translate('Password')}</FormLabel>
+          plexEnabled &&
+            <>
+              <FormGroup>
+                <FormLabel>{translate('PlexServer')}</FormLabel>
 
-              <FormInputGroup
-                type={inputTypes.PASSWORD}
-                name="password"
-                onChange={onInputChange}
-                {...password}
-              />
-            </FormGroup> :
-            null
+                <FormInputGroup
+                  type={inputTypes.PLEX_MACHINE_SELECT}
+                  name="plexAuthServer"
+                  buttons={[
+                    <FormInputButton
+                      key="auth"
+                      ButtonComponent={OAuthInputConnector}
+                      label={plexServersPopulated ? <Icon name={icons.REFRESH} /> : 'Fetch'}
+                      name="plexAuth"
+                      provider="importList"
+                      providerData={oauthData}
+                      section="settings.importLists"
+                      onChange={onInputChange}
+                    />
+                  ]}
+                  onChange={onInputChange}
+                  {...plexAuthServer}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>{translate('RestrictAccessToServerOwner')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="plexRequireOwner"
+                  onChange={onInputChange}
+                  {...plexRequireOwner}
+                />
+              </FormGroup>
+            </>
+        }
+
+        {
+          oidcEnabled &&
+            <>
+              <FormGroup>
+                <FormLabel>{translate('Authority')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.TEXT}
+                  name="oidcAuthority"
+                  onChange={onInputChange}
+                  {...oidcAuthority}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>{translate('ClientId')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.TEXT}
+                  name="oidcClientId"
+                  onChange={onInputChange}
+                  {...oidcClientId}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>{translate('ClientSecret')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.PASSWORD}
+                  name="oidcClientSecret"
+                  onChange={onInputChange}
+                  {...oidcClientSecret}
+                />
+              </FormGroup>
+            </>
         }
 
         <FormGroup>
@@ -254,6 +366,7 @@ class SecuritySettings extends Component {
 
 SecuritySettings.propTypes = {
   settings: PropTypes.object.isRequired,
+  plexServersPopulated: PropTypes.bool.isRequired,
   isResettingApiKey: PropTypes.bool.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onConfirmResetApiKey: PropTypes.func.isRequired

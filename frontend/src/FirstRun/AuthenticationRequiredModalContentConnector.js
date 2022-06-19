@@ -13,9 +13,11 @@ const SECTION = 'general';
 function createMapStateToProps() {
   return createSelector(
     createSettingsSectionSelector(SECTION),
-    (sectionSettings) => {
+    (state) => state.settings.plex,
+    (sectionSettings, plex) => {
       return {
-        ...sectionSettings
+        ...sectionSettings,
+        plexServersPopulated: plex.isPopulated
       };
     }
   );

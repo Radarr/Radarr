@@ -5,6 +5,7 @@ import { kinds } from 'Helpers/Props';
 
 function OAuthInput(props) {
   const {
+    className,
     label,
     authorizing,
     error,
@@ -12,21 +13,21 @@ function OAuthInput(props) {
   } = props;
 
   return (
-    <div>
-      <SpinnerErrorButton
-        kind={kinds.PRIMARY}
-        isSpinning={authorizing}
-        error={error}
-        onPress={onPress}
-      >
-        {label}
-      </SpinnerErrorButton>
-    </div>
+    <SpinnerErrorButton
+      className={className}
+      kind={kinds.PRIMARY}
+      isSpinning={authorizing}
+      error={error}
+      onPress={onPress}
+    >
+      {label}
+    </SpinnerErrorButton>
   );
 }
 
 OAuthInput.propTypes = {
-  label: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   authorizing: PropTypes.bool.isRequired,
   error: PropTypes.object,
   onPress: PropTypes.func.isRequired

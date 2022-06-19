@@ -28,6 +28,7 @@ class SelectInput extends Component {
       isDisabled,
       hasError,
       hasWarning,
+      hasButton,
       autoFocus,
       onBlur
     } = this.props;
@@ -38,6 +39,7 @@ class SelectInput extends Component {
           className,
           hasError && styles.hasError,
           hasWarning && styles.hasWarning,
+          hasButton && styles.hasButton,
           isDisabled && disabledClassName
         )}
         disabled={isDisabled}
@@ -80,6 +82,7 @@ SelectInput.propTypes = {
   isDisabled: PropTypes.bool,
   hasError: PropTypes.bool,
   hasWarning: PropTypes.bool,
+  hasButton: PropTypes.bool,
   autoFocus: PropTypes.bool.isRequired,
   onChange: PropTypes.func.isRequired,
   onBlur: PropTypes.func

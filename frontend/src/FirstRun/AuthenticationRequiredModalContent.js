@@ -2,18 +2,37 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
 import Alert from 'Components/Alert';
 import FormGroup from 'Components/Form/FormGroup';
+import FormInputButton from 'Components/Form/FormInputButton';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
+import OAuthInputConnector from 'Components/Form/OAuthInputConnector';
+import Icon from 'Components/Icon';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
-import { inputTypes, kinds } from 'Helpers/Props';
+import { icons, inputTypes, kinds } from 'Helpers/Props';
 import { authenticationMethodOptions, authenticationRequiredOptions } from 'Settings/General/SecuritySettings';
 import translate from 'Utilities/String/translate';
 import styles from './AuthenticationRequiredModalContent.css';
+
+const oauthData = {
+  implementation: { value: 'PlexImport' },
+  configContract: { value: 'PlexListSettings' },
+  fields: [
+    {
+      type: 'textbox',
+      name: 'accessToken'
+    },
+    {
+      type: 'oAuth',
+      name: 'signIn',
+      value: 'startAuth'
+    }
+  ]
+};
 
 function onModalClose() {
   // No-op
@@ -22,6 +41,7 @@ function onModalClose() {
 function AuthenticationRequiredModalContent(props) {
   const {
     isPopulated,
+    plexServersPopulated,
     error,
     isSaving,
     settings,
@@ -34,10 +54,18 @@ function AuthenticationRequiredModalContent(props) {
     authenticationMethod,
     authenticationRequired,
     username,
-    password
+    password,
+    plexAuthServer,
+    plexRequireOwner,
+    oidcClientId,
+    oidcClientSecret,
+    oidcAuthority
   } = settings;
 
   const authenticationEnabled = authenticationMethod && authenticationMethod.value !== 'none';
+  const showUserPass = authenticationMethod && ['basic', 'forms'].includes(authenticationMethod.value);
+  const plexEnabled = authenticationMethod && authenticationMethod.value === 'plex';
+  const oidcEnabled = authenticationMethod && authenticationMethod.value === 'oidc';
 
   const didMount = useRef(false);
 
@@ -97,29 +125,111 @@ function AuthenticationRequiredModalContent(props) {
                 />
               </FormGroup>
 
-              <FormGroup>
-                <FormLabel>{translate('Username')}</FormLabel>
+              {
+                showUserPass &&
+                  <>
+                    <FormGroup>
+                      <FormLabel>{translate('Username')}</FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.TEXT}
-                  name="username"
-                  onChange={onInputChange}
-                  helpTextWarning={username?.value ? undefined : translate('AuthenticationRequiredUsernameHelpTextWarning')}
-                  {...username}
-                />
-              </FormGroup>
+                      <FormInputGroup
+                        type={inputTypes.TEXT}
+                        name="username"
+                        onChange={onInputChange}
+                        helpTextWarning={username?.value ? undefined : translate('AuthenticationRequiredUsernameHelpTextWarning')}
+                        {...username}
+                      />
+                    </FormGroup>
 
-              <FormGroup>
-                <FormLabel>{translate('Password')}</FormLabel>
+                    <FormGroup>
+                      <FormLabel>{translate('Password')}</FormLabel>
 
-                <FormInputGroup
-                  type={inputTypes.PASSWORD}
-                  name="password"
-                  onChange={onInputChange}
-                  helpTextWarning={password?.value ? undefined : translate('AuthenticationRequiredPasswordHelpTextWarning')}
-                  {...password}
-                />
-              </FormGroup>
+                      <FormInputGroup
+                        type={inputTypes.PASSWORD}
+                        name="password"
+                        onChange={onInputChange}
+                        helpTextWarning={password?.value ? undefined : translate('AuthenticationRequiredPasswordHelpTextWarning')}
+                        {...password}
+                      />
+                    </FormGroup>
+                  </>
+              }
+
+              {
+                plexEnabled &&
+                  <>
+                    <FormGroup>
+                      <FormLabel>Plex Server</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.PLEX_MACHINE_SELECT}
+                        name="plexAuthServer"
+                        buttons={[
+                          <FormInputButton
+                            key="auth"
+                            ButtonComponent={OAuthInputConnector}
+                            label={plexServersPopulated ? <Icon name={icons.REFRESH} /> : 'Fetch'}
+                            name="plexAuth"
+                            provider="importList"
+                            providerData={oauthData}
+                            section="settings.importLists"
+                            onChange={onInputChange}
+                          />
+                        ]}
+                        onChange={onInputChange}
+                        {...plexAuthServer}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>Restrict Access to Server Owner</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.CHECK}
+                        name="plexRequireOwner"
+                        onChange={onInputChange}
+                        {...plexRequireOwner}
+                      />
+                    </FormGroup>
+                  </>
+              }
+
+              {
+                oidcEnabled &&
+                  <>
+                    <FormGroup>
+                      <FormLabel>Authority</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.TEXT}
+                        name="oidcAuthority"
+                        onChange={onInputChange}
+                        {...oidcAuthority}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>ClientId</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.TEXT}
+                        name="oidcClientId"
+                        onChange={onInputChange}
+                        {...oidcClientId}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <FormLabel>ClientSecret</FormLabel>
+
+                      <FormInputGroup
+                        type={inputTypes.PASSWORD}
+                        name="oidcClientSecret"
+                        onChange={onInputChange}
+                        {...oidcClientSecret}
+                      />
+                    </FormGroup>
+                  </>
+              }
             </div> :
             null
         }
@@ -145,6 +255,7 @@ function AuthenticationRequiredModalContent(props) {
 
 AuthenticationRequiredModalContent.propTypes = {
   isPopulated: PropTypes.bool.isRequired,
+  plexServersPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,
   isSaving: PropTypes.bool.isRequired,
   saveError: PropTypes.object,

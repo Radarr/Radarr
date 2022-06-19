@@ -10,6 +10,7 @@ export const NUMBER = 'number';
 export const OAUTH = 'oauth';
 export const PASSWORD = 'password';
 export const PATH = 'path';
+export const PLEX_MACHINE_SELECT = 'plexMachineSelect';
 export const QUALITY_PROFILE_SELECT = 'qualityProfileSelect';
 export const INDEXER_SELECT = 'indexerSelect';
 export const ROOT_FOLDER_SELECT = 'rootFolderSelect';
@@ -38,6 +39,7 @@ export const all = [
   OAUTH,
   PASSWORD,
   PATH,
+  PLEX_MACHINE_SELECT,
   QUALITY_PROFILE_SELECT,
   INDEXER_SELECT,
   DOWNLOAD_CLIENT_SELECT,

@@ -26,6 +26,9 @@ namespace Radarr.Http.Frontend
 
         [AllowAnonymous]
         [HttpGet("login")]
+        [HttpGet("login/failed")]
+        [HttpGet("login/sso")]
+        [HttpGet("login/sso/failed")]
         public async Task<IActionResult> LoginPage()
         {
             return await MapResource("login");

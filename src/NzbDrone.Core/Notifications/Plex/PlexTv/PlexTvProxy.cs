@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
@@ -12,6 +13,7 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
     {
         string GetAuthToken(string clientIdentifier, int pinId);
         bool Ping(string clientIdentifier, string authToken);
+        List<PlexTvResource> GetResources(string clientIdentifier, string token);
     }
 
     public class PlexTvProxy : IPlexTvProxy
@@ -59,6 +61,20 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
             }
 
             return false;
+        }
+
+        public List<PlexTvResource> GetResources(string clientIdentifier, string token)
+        {
+            var request = BuildRequest(clientIdentifier);
+            request.AddQueryParam("X-Plex-Token", token);
+            request.ResourceUrl = "api/v2/resources";
+
+            if (!Json.TryDeserialize<List<PlexTvResource>>(ProcessRequest(request), out var response))
+            {
+                response = new List<PlexTvResource>();
+            }
+
+            return response;
         }
 
         private HttpRequestBuilder BuildRequest(string clientIdentifier)

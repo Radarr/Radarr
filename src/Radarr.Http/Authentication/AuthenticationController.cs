@@ -23,13 +23,24 @@ namespace Radarr.Http.Authentication
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromForm] LoginResource resource, [FromQuery] string returnUrl = null)
+        public Task LoginLogin([FromForm] LoginResource resource, [FromQuery] string returnUrl = "/")
+        {
+            if (_configFileProvider.AuthenticationMethod == AuthenticationType.Forms)
+            {
+                return LoginForms(resource, returnUrl);
+            }
+
+            return LoginSso(resource, returnUrl);
+        }
+
+        private async Task LoginForms(LoginResource resource, string returnUrl)
         {
             var user = _authService.Login(HttpContext.Request, resource.Username, resource.Password);
 
             if (user == null)
             {
-                return Redirect($"~/login?returnUrl={returnUrl}&loginFailed=true");
+                await HttpContext.ForbidAsync(AuthenticationType.Forms.ToString());
+                return;
             }
 
             var claims = new List<Claim>
@@ -41,20 +52,36 @@ namespace Radarr.Http.Authentication
 
             var authProperties = new AuthenticationProperties
             {
-                IsPersistent = resource.RememberMe == "on"
+                IsPersistent = resource.RememberMe == "on",
+                RedirectUri = returnUrl
             };
 
             await HttpContext.SignInAsync(AuthenticationType.Forms.ToString(), new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "identifier")), authProperties);
+        }
 
-            return Redirect(_configFileProvider.UrlBase + "/");
+        private async Task LoginSso(LoginResource resource, string returnUrl = "/")
+        {
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = resource.RememberMe == "on",
+                RedirectUri = returnUrl
+            };
+
+            await HttpContext.ChallengeAsync(_configFileProvider.AuthenticationMethod.GetChallengeScheme(), authProperties);
         }
 
         [HttpGet("logout")]
-        public async Task<IActionResult> Logout()
+        public async Task Logout()
         {
             _authService.Logout(HttpContext);
-            await HttpContext.SignOutAsync(AuthenticationType.Forms.ToString());
-            return Redirect(_configFileProvider.UrlBase + "/");
+
+            var authType = _configFileProvider.AuthenticationMethod;
+            await HttpContext.SignOutAsync(authType.ToString());
+
+            if (authType == AuthenticationType.Oidc)
+            {
+                await HttpContext.SignOutAsync(authType.GetChallengeScheme());
+            }
         }
     }
 }

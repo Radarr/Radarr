@@ -12,6 +12,10 @@
   composes: hasWarning from '~Components/Form/Input.css';
 }
 
+.hasButton {
+  composes: hasButton from '~Components/Form/Input.css';
+}
+
 .isDisabled {
   opacity: 0.7;
   cursor: not-allowed;
