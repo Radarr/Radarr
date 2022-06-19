@@ -177,20 +177,17 @@ namespace NzbDrone.Host
             services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo(Configuration["dataProtectionFolder"]));
 
-            services.AddSingleton<IAuthorizationPolicyProvider, UiAuthorizationPolicyProvider>();
-            services.AddSingleton<IAuthorizationHandler, UiAuthorizationHandler>();
-
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("SignalR", policy =>
                 {
                     policy.AuthenticationSchemes.Add("SignalR");
-                    policy.RequireAuthenticatedUser();
+                    policy.Requirements.Add(new ApiKeyRequirement());
                 });
 
                 // Require auth on everything except those marked [AllowAnonymous]
                 options.FallbackPolicy = new AuthorizationPolicyBuilder("API")
-                .RequireAuthenticatedUser()
+                .AddRequirements(new ApiKeyRequirement())
                 .Build();
             });
 
