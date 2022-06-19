@@ -106,6 +106,7 @@ class GeneralSettings extends Component {
       packageUpdateMechanism,
       onInputChange,
       onConfirmResetApiKey,
+      plexServersPopulated,
       ...otherProps
     } = this.props;
 
@@ -144,6 +145,7 @@ class GeneralSettings extends Component {
 
                 <SecuritySettings
                   settings={settings}
+                  plexServersPopulated={plexServersPopulated}
                   isResettingApiKey={isResettingApiKey}
                   onInputChange={onInputChange}
                   onConfirmResetApiKey={onConfirmResetApiKey}
@@ -201,6 +203,7 @@ class GeneralSettings extends Component {
 
 GeneralSettings.propTypes = {
   advancedSettings: PropTypes.bool.isRequired,
+  plexServersPopulated: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isPopulated: PropTypes.bool.isRequired,
   error: PropTypes.object,

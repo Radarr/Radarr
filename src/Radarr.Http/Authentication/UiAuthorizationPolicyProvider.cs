@@ -2,9 +2,11 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
+using Radarr.Http.Authentication.Plex;
 
-namespace NzbDrone.Http.Authentication
+namespace Radarr.Http.Authentication
 {
     public class UiAuthorizationPolicyProvider : IAuthorizationPolicyProvider
     {
@@ -28,10 +30,15 @@ namespace NzbDrone.Http.Authentication
         {
             if (policyName.Equals(POLICY_NAME, StringComparison.OrdinalIgnoreCase))
             {
-                var policy = new AuthorizationPolicyBuilder(_config.AuthenticationMethod.ToString())
+                var builder = new AuthorizationPolicyBuilder(_config.AuthenticationMethod.ToString())
                     .AddRequirements(new BypassableDenyAnonymousAuthorizationRequirement());
 
-                return Task.FromResult(policy.Build());
+                if (_config.AuthenticationMethod == AuthenticationType.Plex)
+                {
+                    builder.AddRequirements(new PlexServerRequirement());
+                }
+
+                return Task.FromResult(builder.Build());
             }
 
             return FallbackPolicyProvider.GetPolicyAsync(policyName);

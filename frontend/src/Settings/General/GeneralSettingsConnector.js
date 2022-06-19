@@ -17,12 +17,14 @@ const SECTION = 'general';
 function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
+    (state) => state.settings.plex,
     createSettingsSectionSelector(SECTION),
     createCommandExecutingSelector(commandNames.RESET_API_KEY),
     createSystemStatusSelector(),
-    (advancedSettings, sectionSettings, isResettingApiKey, systemStatus) => {
+    (advancedSettings, plexSettings, sectionSettings, isResettingApiKey, systemStatus) => {
       return {
         advancedSettings,
+        plexServersPopulated: plexSettings.isPopulated,
         isResettingApiKey,
         isWindows: systemStatus.isWindows,
         isWindowsService: systemStatus.isWindows && systemStatus.mode === 'service',

@@ -10,7 +10,7 @@ function createMapStateToProps() {
     (state) => state.system.status,
     (status) => {
       return {
-        formsAuth: status.item.authentication === 'forms'
+        cookieAuth: ['forms', 'oidc', 'plex'].includes(status.item.authentication)
       };
     }
   );

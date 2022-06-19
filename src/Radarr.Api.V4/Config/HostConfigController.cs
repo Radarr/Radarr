@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -23,6 +24,8 @@ namespace Radarr.Api.V4.Config
         private readonly IConfigService _configService;
         private readonly IUserService _userService;
 
+        private static readonly List<AuthenticationType> UserPassAuths = new List<AuthenticationType> { AuthenticationType.Basic, AuthenticationType.Forms };
+
         public HostConfigController(IConfigFileProvider configFileProvider,
                                     IConfigService configService,
                                     IUserService userService,
@@ -42,8 +45,12 @@ namespace Radarr.Api.V4.Config
             SharedValidator.RuleFor(c => c.UrlBase).ValidUrlBase();
             SharedValidator.RuleFor(c => c.InstanceName).ContainsRadarr().When(c => c.InstanceName.IsNotNullOrWhiteSpace());
 
-            SharedValidator.RuleFor(c => c.Username).NotEmpty().When(c => c.AuthenticationMethod != AuthenticationType.None);
-            SharedValidator.RuleFor(c => c.Password).NotEmpty().When(c => c.AuthenticationMethod != AuthenticationType.None);
+            SharedValidator.RuleFor(c => c.Username).NotEmpty().When(c => UserPassAuths.Contains(c.AuthenticationMethod));
+            SharedValidator.RuleFor(c => c.Password).NotEmpty().When(c => UserPassAuths.Contains(c.AuthenticationMethod));
+            SharedValidator.RuleFor(c => c.PlexAuthServer).NotEmpty().When(c => c.AuthenticationMethod == AuthenticationType.Plex);
+            SharedValidator.RuleFor(c => c.OidcAuthority).IsValidUrl().Must(x => x.StartsWith("https://")).WithMessage("Authority must use HTTPS").When(c => c.AuthenticationMethod == AuthenticationType.Oidc);
+            SharedValidator.RuleFor(c => c.OidcClientId).NotEmpty().When(c => c.AuthenticationMethod == AuthenticationType.Oidc);
+            SharedValidator.RuleFor(c => c.OidcClientSecret).NotEmpty().When(c => c.AuthenticationMethod == AuthenticationType.Oidc);
 
             SharedValidator.RuleFor(c => c.SslPort).ValidPort().When(c => c.EnableSsl);
             SharedValidator.RuleFor(c => c.SslPort).NotEqual(c => c.Port).When(c => c.EnableSsl);

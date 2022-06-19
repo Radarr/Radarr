@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
-using NzbDrone.Common.EnvironmentInfo;
-using NzbDrone.Core.Configuration;
 using Radarr.Http.Extensions;
 using Radarr.Http.Frontend.Mappers;
 
@@ -27,6 +25,9 @@ namespace Radarr.Http.Frontend
 
         [AllowAnonymous]
         [HttpGet("login")]
+        [HttpGet("login/failed")]
+        [HttpGet("login/sso")]
+        [HttpGet("login/sso/failed")]
         public IActionResult LoginPage()
         {
             return MapResource("login");
