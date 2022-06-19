@@ -90,6 +90,16 @@ namespace NzbDrone.Core.Configuration
         string RijndaelSalt { get; }
         string HmacSalt { get; }
 
+        // Plex Auth
+        string PlexAuthServer { get; }
+
+        bool PlexRequireOwner { get; }
+
+        // OIDC Auth
+        string OidcClientId { get; }
+        string OidcClientSecret { get; }
+        string OidcAuthority { get; }
+
         // Proxy
         bool ProxyEnabled { get; }
         ProxyType ProxyType { get; }

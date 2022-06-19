@@ -210,34 +210,37 @@
 
             <form
               role="form"
+              action="/login"
               data-parsley-validate=""
               novalidate=""
               class="mb-lg"
               method="POST"
             >
-              <div class="form-group">
-                <input
-                  type="email"
-                  name="username"
-                  class="form-input"
-                  placeholder="Username"
-                  autocomplete="off"
-                  pattern=".{1,}"
-                  required
-                  title="User name is required"
-                  autoFocus="true"
-                  autoCapitalize="false"
-                />
-              </div>
+              <div id="user-pass" class="hidden">
+                <div class="form-group">
+                  <input
+                    type="email"
+                    name="username"
+                    class="form-input"
+                    placeholder="Username"
+                    autocomplete="off"
+                    pattern=".{1,}"
+                    required
+                    title="User name is required"
+                    autoFocus="true"
+                    autoCapitalize="false"
+                  />
+                </div>
 
-              <div class="form-group">
-                <input
-                  type="password"
-                  name="password"
-                  class="form-input"
-                  placeholder="Password"
-                  required
-                />
+                <div class="form-group">
+                  <input
+                    type="password"
+                    name="password"
+                    class="form-input"
+                    placeholder="Password"
+                    required
+                  />
+                </div>
               </div>
 
               <div class="remember-me-container">
@@ -257,10 +260,10 @@
                   >Forgot your password?</a
                 >
               </div>
-              <button type="submit" class="button">Login</button>
+              <button type="submit" class="button">LOGIN_PLACEHOLDER</button>
 
               <div id="login-failed" class="login-failed hidden">
-                Incorrect Username or Password
+                FAILED_PLACEHOLDER
               </div>
             </form>
           </div>
@@ -283,9 +286,14 @@
     var copyDiv = document.getElementById("copy");
     copyDiv.classList.remove("hidden");
 
-    if (window.location.search.indexOf("loginFailed=true") > -1) {
-      var loginFailedDiv = document.getElementById("login-failed");
+    var loginFailedDiv = document.getElementById("login-failed");
 
+    if (window.location.pathname.indexOf("/sso") === -1) {
+      var userPassDiv = document.getElementById("user-pass");
+      userPassDiv.classList.remove("hidden");
+    }
+
+    if (window.location.pathname.indexOf("/failed") > -1) {
       loginFailedDiv.classList.remove("hidden");
     }
   </script>

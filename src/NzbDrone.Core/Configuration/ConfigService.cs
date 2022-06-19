@@ -416,6 +416,16 @@ namespace NzbDrone.Core.Configuration
 
         public string HmacSalt => GetValue("HmacSalt", Guid.NewGuid().ToString(), true);
 
+        public string PlexAuthServer => GetValue("PlexAuthServer", string.Empty);
+
+        public bool PlexRequireOwner => GetValueBoolean("PlexRequireOwner", true);
+
+        public string OidcClientId => GetValue("OidcClientId", string.Empty);
+
+        public string OidcClientSecret => GetValue("OidcClientSecret", string.Empty);
+
+        public string OidcAuthority => GetValue("OidcAuthority", string.Empty);
+
         public bool ProxyEnabled => GetValueBoolean("ProxyEnabled", false);
 
         public ProxyType ProxyType => GetValueEnum<ProxyType>("ProxyType", ProxyType.Http);

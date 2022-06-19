@@ -22,7 +22,6 @@ using NzbDrone.Core.Instrumentation;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Host.AccessControl;
-using NzbDrone.Http.Authentication;
 using NzbDrone.SignalR;
 using Radarr.Api.V4.System;
 using Radarr.Http;
