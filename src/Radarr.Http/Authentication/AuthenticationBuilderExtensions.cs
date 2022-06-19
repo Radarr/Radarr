@@ -1,7 +1,9 @@
 using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Authentication;
+using Radarr.Http.Authentication.Plex;
 
 namespace Radarr.Http.Authentication
 {
@@ -22,25 +24,50 @@ namespace Radarr.Http.Authentication
             return authenticationBuilder.AddScheme<AuthenticationSchemeOptions, NoAuthenticationHandler>(name, options => { });
         }
 
-        public static AuthenticationBuilder AddExternal(this AuthenticationBuilder authenticationBuilder, string name)
+        public static string GetChallengeScheme(this AuthenticationType scheme)
         {
-            return authenticationBuilder.AddScheme<AuthenticationSchemeOptions, NoAuthenticationHandler>(name, options => { });
+            return scheme.ToString() + "Remote";
         }
 
         public static AuthenticationBuilder AddAppAuthentication(this IServiceCollection services)
         {
-            return services.AddAuthentication()
+            var builder = services.AddAuthentication()
                 .AddNone(AuthenticationType.None.ToString())
-                .AddExternal(AuthenticationType.External.ToString())
+                .AddNone(AuthenticationType.External.ToString())
                 .AddBasic(AuthenticationType.Basic.ToString())
                 .AddCookie(AuthenticationType.Forms.ToString(), options =>
                 {
-                    options.Cookie.Name = "RadarrAuth";
-                    options.AccessDeniedPath = "/login?loginFailed=true";
+                    options.Cookie.Name = BuildInfo.AppName + "Auth";
                     options.LoginPath = "/login";
+                    options.AccessDeniedPath = "/login/failed";
+                    options.LogoutPath = "/logout";
                     options.ExpireTimeSpan = TimeSpan.FromDays(7);
                     options.SlidingExpiration = true;
                 })
+                .AddCookie(AuthenticationType.Plex.ToString(), options =>
+                {
+                    options.Cookie.Name = BuildInfo.AppName + "PlexAuth";
+                    options.LoginPath = "/login/sso";
+                    options.AccessDeniedPath = "/login/sso/failed";
+                    options.LogoutPath = "/logout";
+                    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                    options.SlidingExpiration = true;
+                })
+                .AddPlex(AuthenticationType.Plex.GetChallengeScheme(), options =>
+                {
+                    options.SignInScheme = AuthenticationType.Plex.ToString();
+                    options.CorrelationCookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
+                })
+                .AddCookie(AuthenticationType.Oidc.ToString(), options =>
+                {
+                    options.Cookie.Name = BuildInfo.AppName + "OidcAuth";
+                    options.LoginPath = "/login/sso";
+                    options.AccessDeniedPath = "/login/sso/failed";
+                    options.LogoutPath = "/logout";
+                    options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                    options.SlidingExpiration = true;
+                })
+                .AddOpenIdConnect(AuthenticationType.Oidc.GetChallengeScheme(), _ => { } /* See ConfigureOidcOptions.cs */)
                 .AddApiKey("API", options =>
                 {
                     options.HeaderName = "X-Api-Key";
@@ -51,6 +78,8 @@ namespace Radarr.Http.Authentication
                     options.HeaderName = "X-Api-Key";
                     options.QueryName = "access_token";
                 });
+
+            return builder;
         }
     }
 }

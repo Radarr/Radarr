@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
-namespace NzbDrone.Http.Authentication
+namespace Radarr.Http.Authentication
 {
     public class ApiKeyRequirement : AuthorizationHandler<ApiKeyRequirement>, IAuthorizationRequirement
     {

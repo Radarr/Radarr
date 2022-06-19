@@ -31,6 +31,11 @@ namespace Radarr.Api.V4.Config
         public bool UpdateAutomatically { get; set; }
         public UpdateMechanism UpdateMechanism { get; set; }
         public string UpdateScriptPath { get; set; }
+        public string PlexAuthServer { get; set; }
+        public bool PlexRequireOwner { get; set; }
+        public string OidcClientId { get; set; }
+        public string OidcClientSecret { get; set; }
+        public string OidcAuthority { get; set; }
         public bool ProxyEnabled { get; set; }
         public ProxyType ProxyType { get; set; }
         public string ProxyHostname { get; set; }
@@ -74,6 +79,11 @@ namespace Radarr.Api.V4.Config
                 UpdateAutomatically = model.UpdateAutomatically,
                 UpdateMechanism = model.UpdateMechanism,
                 UpdateScriptPath = model.UpdateScriptPath,
+                PlexAuthServer = configService.PlexAuthServer,
+                PlexRequireOwner = configService.PlexRequireOwner,
+                OidcClientId = configService.OidcClientId,
+                OidcClientSecret = configService.OidcClientSecret,
+                OidcAuthority = configService.OidcAuthority,
                 ProxyEnabled = configService.ProxyEnabled,
                 ProxyType = configService.ProxyType,
                 ProxyHostname = configService.ProxyHostname,

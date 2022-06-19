@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -15,6 +16,8 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
         PlexTvSignInUrlResponse GetSignInUrl(string callbackUrl, int pinId, string pinCode);
         string GetAuthToken(int pinId);
         void Ping(string authToken);
+        List<PlexTvResource> GetResources(string token);
+
         HttpRequest GetWatchlist(string authToken);
     }
 
@@ -92,6 +95,11 @@ namespace NzbDrone.Core.Notifications.Plex.PlexTv
         {
             // Ping plex.tv if we haven't done so in the last 24 hours for this auth token.
             _cache.Get(authToken, () => _proxy.Ping(_configService.PlexClientIdentifier, authToken), TimeSpan.FromHours(24));
+        }
+
+        public List<PlexTvResource> GetResources(string token)
+        {
+            return _proxy.GetResources(_configService.PlexClientIdentifier, token);
         }
 
         public HttpRequest GetWatchlist(string authToken)
