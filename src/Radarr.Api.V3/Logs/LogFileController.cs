@@ -17,8 +17,8 @@ namespace Radarr.Api.V3.Logs
 
         public LogFileController(IAppFolderInfo appFolderInfo,
                              IDiskProvider diskProvider,
-                             IOptionsMonitor<ConfigFileOptions> configFileProvider)
-            : base(diskProvider, configFileProvider, "")
+                             IOptionsMonitor<ConfigFileOptions> configFileOptions)
+            : base(diskProvider, configFileOptions, "")
         {
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;

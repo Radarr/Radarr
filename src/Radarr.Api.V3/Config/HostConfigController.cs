@@ -20,18 +20,18 @@ namespace Radarr.Api.V3.Config
     [V3ApiController("config/host")]
     public class HostConfigController : RestController<HostConfigResource>
     {
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly IConfigFileWriter _configFileWriter;
         private readonly IConfigService _configService;
         private readonly IUserService _userService;
 
-        public HostConfigController(IOptionsMonitor<ConfigFileOptions> configFileProvider,
+        public HostConfigController(IOptionsMonitor<ConfigFileOptions> configFileOptions,
                                     IConfigFileWriter configFileWriter,
                                     IConfigService configService,
                                     IUserService userService,
                                     FileExistsValidator fileExistsValidator)
         {
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _configFileWriter = configFileWriter;
             _configService = configService;
             _userService = userService;
@@ -91,7 +91,7 @@ namespace Radarr.Api.V3.Config
         [HttpGet]
         public HostConfigResource GetHostConfig()
         {
-            var resource = _configFileProvider.CurrentValue.ToResource(_configService);
+            var resource = _configFileOptions.CurrentValue.ToResource(_configService);
             resource.Id = 1;
 
             var user = _userService.FindUser();

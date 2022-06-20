@@ -16,16 +16,16 @@ namespace NzbDrone.Core.Analytics
 
     public class AnalyticsService : IAnalyticsService
     {
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly IHistoryService _historyService;
 
-        public AnalyticsService(IHistoryService historyService, IOptionsMonitor<ConfigFileOptions> configFileProvider)
+        public AnalyticsService(IHistoryService historyService, IOptionsMonitor<ConfigFileOptions> configFileOptions)
         {
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _historyService = historyService;
         }
 
-        public bool IsEnabled => (_configFileProvider.CurrentValue.AnalyticsEnabled && RuntimeInfo.IsProduction) || RuntimeInfo.IsDevelopment;
+        public bool IsEnabled => (_configFileOptions.CurrentValue.AnalyticsEnabled && RuntimeInfo.IsProduction) || RuntimeInfo.IsDevelopment;
 
         public bool InstallIsActive
         {

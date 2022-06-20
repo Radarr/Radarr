@@ -12,15 +12,15 @@ namespace NzbDrone.Core.Instrumentation
 {
     public class ReconfigureSentry : IHandleAsync<ApplicationStartedEvent>
     {
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly IPlatformInfo _platformInfo;
         private readonly IMainDatabase _database;
 
-        public ReconfigureSentry(IOptionsMonitor<ConfigFileOptions> configFileProvider,
+        public ReconfigureSentry(IOptionsMonitor<ConfigFileOptions> configFileOptions,
                                  IPlatformInfo platformInfo,
                                  IMainDatabase database)
         {
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _platformInfo = platformInfo;
             _database = database;
         }
@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Instrumentation
             var sentryTarget = LogManager.Configuration.AllTargets.OfType<SentryTarget>().FirstOrDefault();
             if (sentryTarget != null)
             {
-                sentryTarget.UpdateScope(_database.Version, _database.Migration, _configFileProvider.CurrentValue.Branch, _platformInfo);
+                sentryTarget.UpdateScope(_database.Version, _database.Migration, _configFileOptions.CurrentValue.Branch, _platformInfo);
             }
         }
 

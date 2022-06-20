@@ -23,11 +23,11 @@ namespace Radarr.Http.Authentication
         private static string API_KEY;
         private static AuthenticationType AUTH_METHOD;
 
-        public AuthenticationService(IOptionsMonitor<ConfigFileOptions> configFileProvider, IUserService userService)
+        public AuthenticationService(IOptionsMonitor<ConfigFileOptions> configFileOptions, IUserService userService)
         {
             _userService = userService;
-            API_KEY = configFileProvider.CurrentValue.ApiKey;
-            AUTH_METHOD = configFileProvider.CurrentValue.AuthenticationMethod;
+            API_KEY = configFileOptions.CurrentValue.ApiKey;
+            AUTH_METHOD = configFileOptions.CurrentValue.AuthenticationMethod;
         }
 
         public User Login(HttpRequest request, string username, string password)

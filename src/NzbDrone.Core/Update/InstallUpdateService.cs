@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Update
         private readonly IVerifyUpdates _updateVerifier;
         private readonly IStartupContext _startupContext;
         private readonly IDeploymentInfoProvider _deploymentInfoProvider;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly IConfigFileWriter _configFileWriter;
         private readonly IRuntimeInfo _runtimeInfo;
         private readonly IBackupService _backupService;
@@ -53,16 +53,16 @@ namespace NzbDrone.Core.Update
                                     IVerifyUpdates updateVerifier,
                                     IStartupContext startupContext,
                                     IDeploymentInfoProvider deploymentInfoProvider,
-                                    IOptionsMonitor<ConfigFileOptions> configFileProvider,
+                                    IOptionsMonitor<ConfigFileOptions> configFileOptions,
                                     IConfigFileWriter configFileWriter,
                                     IRuntimeInfo runtimeInfo,
                                     IBackupService backupService,
                                     IOsInfo osInfo,
                                     Logger logger)
         {
-            if (configFileProvider == null)
+            if (configFileOptions == null)
             {
-                throw new ArgumentNullException(nameof(configFileProvider));
+                throw new ArgumentNullException(nameof(configFileOptions));
             }
 
             _checkUpdateService = checkUpdateService;
@@ -76,7 +76,7 @@ namespace NzbDrone.Core.Update
             _updateVerifier = updateVerifier;
             _startupContext = startupContext;
             _deploymentInfoProvider = deploymentInfoProvider;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _configFileWriter = configFileWriter;
             _runtimeInfo = runtimeInfo;
             _backupService = backupService;
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Update
         {
             EnsureAppDataSafety();
 
-            if (OsInfo.IsWindows || _configFileProvider.CurrentValue.UpdateMechanism != UpdateMechanism.Script)
+            if (OsInfo.IsWindows || _configFileOptions.CurrentValue.UpdateMechanism != UpdateMechanism.Script)
             {
                 var startupFolder = _appFolderInfo.StartUpFolder;
                 var uiFolder = Path.Combine(startupFolder, "UI");
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Update
 
             _backupService.Backup(BackupType.Update);
 
-            if (OsInfo.IsNotWindows && _configFileProvider.CurrentValue.UpdateMechanism == UpdateMechanism.Script)
+            if (OsInfo.IsNotWindows && _configFileOptions.CurrentValue.UpdateMechanism == UpdateMechanism.Script)
             {
                 InstallUpdateWithScript(updateSandboxFolder);
                 return true;
@@ -175,7 +175,7 @@ namespace NzbDrone.Core.Update
 
         private void EnsureValidBranch(UpdatePackage package)
         {
-            var currentBranch = _configFileProvider.CurrentValue.Branch;
+            var currentBranch = _configFileOptions.CurrentValue.Branch;
             if (package.Branch != currentBranch)
             {
                 try
@@ -194,7 +194,7 @@ namespace NzbDrone.Core.Update
 
         private void InstallUpdateWithScript(string updateSandboxFolder)
         {
-            var scriptPath = _configFileProvider.CurrentValue.UpdateScriptPath;
+            var scriptPath = _configFileOptions.CurrentValue.UpdateScriptPath;
 
             if (scriptPath.IsNullOrWhiteSpace())
             {
@@ -209,7 +209,7 @@ namespace NzbDrone.Core.Update
             _logger.Info("Removing Radarr.Update");
             _diskProvider.DeleteFolder(_appFolderInfo.GetUpdateClientFolder(), true);
 
-            _logger.ProgressInfo("Starting update script: {0}", _configFileProvider.CurrentValue.UpdateScriptPath);
+            _logger.ProgressInfo("Starting update script: {0}", _configFileOptions.CurrentValue.UpdateScriptPath);
             _processProvider.Start(scriptPath, GetUpdaterArgs(updateSandboxFolder));
         }
 
@@ -248,19 +248,19 @@ namespace NzbDrone.Core.Update
                 return null;
             }
 
-            if (OsInfo.IsNotWindows && !_configFileProvider.CurrentValue.UpdateAutomatically && updateTrigger != CommandTrigger.Manual)
+            if (OsInfo.IsNotWindows && !_configFileOptions.CurrentValue.UpdateAutomatically && updateTrigger != CommandTrigger.Manual)
             {
                 _logger.ProgressDebug("Auto-update not enabled, not installing available update.");
                 return null;
             }
 
             // Safety net, ConfigureUpdateMechanism should take care of invalid settings
-            if (_configFileProvider.CurrentValue.UpdateMechanism == UpdateMechanism.BuiltIn && _deploymentInfoProvider.IsExternalUpdateMechanism)
+            if (_configFileOptions.CurrentValue.UpdateMechanism == UpdateMechanism.BuiltIn && _deploymentInfoProvider.IsExternalUpdateMechanism)
             {
                 _logger.ProgressDebug("Built-In updater disabled, please use {0} to install", _deploymentInfoProvider.PackageUpdateMechanism);
                 return null;
             }
-            else if (_configFileProvider.CurrentValue.UpdateMechanism != UpdateMechanism.Script && _deploymentInfoProvider.IsExternalUpdateMechanism)
+            else if (_configFileOptions.CurrentValue.UpdateMechanism != UpdateMechanism.Script && _deploymentInfoProvider.IsExternalUpdateMechanism)
             {
                 _logger.ProgressDebug("Update available, please use {0} to install", _deploymentInfoProvider.PackageUpdateMechanism);
                 return null;
@@ -320,8 +320,8 @@ namespace NzbDrone.Core.Update
                 _logger.Debug("Post-install update check requested");
 
                 // Don't do a prestartup update check unless BuiltIn update is enabled
-                if (!_configFileProvider.CurrentValue.UpdateAutomatically ||
-                    _configFileProvider.CurrentValue.UpdateMechanism != UpdateMechanism.BuiltIn ||
+                if (!_configFileOptions.CurrentValue.UpdateAutomatically ||
+                    _configFileOptions.CurrentValue.UpdateMechanism != UpdateMechanism.BuiltIn ||
                     _deploymentInfoProvider.IsExternalUpdateMechanism)
                 {
                     _logger.Debug("Built-in updater disabled, skipping post-install update check");

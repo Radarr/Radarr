@@ -36,7 +36,7 @@ namespace NzbDrone.Core.MediaCover
         private readonly IHttpClient _httpClient;
         private readonly IDiskProvider _diskProvider;
         private readonly ICoverExistsSpecification _coverExistsSpecification;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
@@ -52,7 +52,7 @@ namespace NzbDrone.Core.MediaCover
                                  IDiskProvider diskProvider,
                                  IAppFolderInfo appFolderInfo,
                                  ICoverExistsSpecification coverExistsSpecification,
-                                 IOptionsMonitor<ConfigFileOptions> configFileProvider,
+                                 IOptionsMonitor<ConfigFileOptions> configFileOptions,
                                  IEventAggregator eventAggregator,
                                  Logger logger)
         {
@@ -61,7 +61,7 @@ namespace NzbDrone.Core.MediaCover
             _httpClient = httpClient;
             _diskProvider = diskProvider;
             _coverExistsSpecification = coverExistsSpecification;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _eventAggregator = eventAggregator;
             _logger = logger;
 
@@ -105,7 +105,7 @@ namespace NzbDrone.Core.MediaCover
                     var filePath = GetCoverPath(movieId, mediaCover.CoverType);
 
                     mediaCover.RemoteUrl = mediaCover.Url;
-                    mediaCover.Url = _configFileProvider.CurrentValue.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + ".jpg";
+                    mediaCover.Url = _configFileOptions.CurrentValue.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + ".jpg";
 
                     FileInfo file;
                     var fileExists = false;

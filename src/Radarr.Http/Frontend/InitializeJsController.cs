@@ -13,16 +13,16 @@ namespace Radarr.Http.Frontend
     [ApiController]
     public class InitializeJsController : Controller
     {
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly IAnalyticsService _analyticsService;
 
-        private string ApiKey => _configFileProvider.CurrentValue.ApiKey;
-        private string UrlBase => _configFileProvider.CurrentValue.UrlBase;
+        private string ApiKey => _configFileOptions.CurrentValue.ApiKey;
+        private string UrlBase => _configFileOptions.CurrentValue.UrlBase;
 
-        public InitializeJsController(IOptionsMonitor<ConfigFileOptions> configFileProvider,
+        public InitializeJsController(IOptionsMonitor<ConfigFileOptions> configFileOptions,
                                       IAnalyticsService analyticsService)
         {
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _analyticsService = analyticsService;
         }
 
@@ -40,8 +40,8 @@ namespace Radarr.Http.Frontend
             builder.AppendLine($"  apiKey: '{ApiKey}',");
             builder.AppendLine($"  release: '{BuildInfo.Release}',");
             builder.AppendLine($"  version: '{BuildInfo.Version.ToString()}',");
-            builder.AppendLine($"  instanceName: '{_configFileProvider.CurrentValue.InstanceName}',");
-            builder.AppendLine($"  branch: '{_configFileProvider.CurrentValue.Branch.ToLower()}',");
+            builder.AppendLine($"  instanceName: '{_configFileOptions.CurrentValue.InstanceName}',");
+            builder.AppendLine($"  branch: '{_configFileOptions.CurrentValue.Branch.ToLower()}',");
             builder.AppendLine($"  analytics: {_analyticsService.IsEnabled.ToString().ToLowerInvariant()},");
             builder.AppendLine($"  userHash: '{HashUtil.AnonymousToken()}',");
             builder.AppendLine($"  urlBase: '{UrlBase}',");

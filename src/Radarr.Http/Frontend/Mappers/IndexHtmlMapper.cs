@@ -10,19 +10,19 @@ namespace Radarr.Http.Frontend.Mappers
 {
     public class IndexHtmlMapper : HtmlMapperBase
     {
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
 
         public IndexHtmlMapper(IAppFolderInfo appFolderInfo,
                                IDiskProvider diskProvider,
-                               IOptionsMonitor<ConfigFileOptions> configFileProvider,
+                               IOptionsMonitor<ConfigFileOptions> configFileOptions,
                                Lazy<ICacheBreakerProvider> cacheBreakProviderFactory,
                                Logger logger)
             : base(diskProvider, cacheBreakProviderFactory, logger)
         {
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
 
             HtmlPath = Path.Combine(appFolderInfo.StartUpFolder, _uiFolder, "index.html");
-            UrlBase = configFileProvider.CurrentValue.UrlBase;
+            UrlBase = configFileOptions.CurrentValue.UrlBase;
         }
 
         public override string Map(string resourceUrl)

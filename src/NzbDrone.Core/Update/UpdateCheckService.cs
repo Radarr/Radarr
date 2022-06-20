@@ -12,18 +12,18 @@ namespace NzbDrone.Core.Update
     public class CheckUpdateService : ICheckUpdateService
     {
         private readonly IUpdatePackageProvider _updatePackageProvider;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
 
         public CheckUpdateService(IUpdatePackageProvider updatePackageProvider,
-                                  IOptionsMonitor<ConfigFileOptions> configFileProvider)
+                                  IOptionsMonitor<ConfigFileOptions> configFileOptions)
         {
             _updatePackageProvider = updatePackageProvider;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
         }
 
         public UpdatePackage AvailableUpdate()
         {
-            return _updatePackageProvider.GetLatestUpdate(_configFileProvider.CurrentValue.Branch, BuildInfo.Version);
+            return _updatePackageProvider.GetLatestUpdate(_configFileOptions.CurrentValue.Branch, BuildInfo.Version);
         }
     }
 }

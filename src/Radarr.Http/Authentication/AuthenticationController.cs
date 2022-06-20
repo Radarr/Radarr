@@ -15,12 +15,12 @@ namespace Radarr.Http.Authentication
     public class AuthenticationController : Controller
     {
         private readonly IAuthenticationService _authService;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
 
-        public AuthenticationController(IAuthenticationService authService, IOptionsMonitor<ConfigFileOptions> configFileProvider)
+        public AuthenticationController(IAuthenticationService authService, IOptionsMonitor<ConfigFileOptions> configFileOptions)
         {
             _authService = authService;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
         }
 
         [HttpPost("login")]
@@ -47,7 +47,7 @@ namespace Radarr.Http.Authentication
 
             await HttpContext.SignInAsync(AuthenticationType.Forms.ToString(), new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "identifier")), authProperties);
 
-            return Redirect(_configFileProvider.CurrentValue.UrlBase + "/");
+            return Redirect(_configFileOptions.CurrentValue.UrlBase + "/");
         }
 
         [HttpGet("logout")]
@@ -55,7 +55,7 @@ namespace Radarr.Http.Authentication
         {
             _authService.Logout(HttpContext);
             await HttpContext.SignOutAsync(AuthenticationType.Forms.ToString());
-            return Redirect(_configFileProvider.CurrentValue.UrlBase + "/");
+            return Redirect(_configFileOptions.CurrentValue.UrlBase + "/");
         }
     }
 }

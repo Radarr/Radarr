@@ -17,16 +17,16 @@ namespace NzbDrone.Core.Datastore
 
     public class ConnectionStringFactory : IConnectionStringFactory
     {
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
 
-        public ConnectionStringFactory(IAppFolderInfo appFolderInfo, IOptionsMonitor<ConfigFileOptions> configFileProvider)
+        public ConnectionStringFactory(IAppFolderInfo appFolderInfo, IOptionsMonitor<ConfigFileOptions> configFileOptions)
         {
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
 
-            MainDbConnectionString = _configFileProvider.CurrentValue.PostgresHost.IsNotNullOrWhiteSpace() ? GetPostgresConnectionString(_configFileProvider.CurrentValue.PostgresMainDb) :
+            MainDbConnectionString = _configFileOptions.CurrentValue.PostgresHost.IsNotNullOrWhiteSpace() ? GetPostgresConnectionString(_configFileOptions.CurrentValue.PostgresMainDb) :
                 GetConnectionString(appFolderInfo.GetDatabase());
 
-            LogDbConnectionString = _configFileProvider.CurrentValue.PostgresHost.IsNotNullOrWhiteSpace() ? GetPostgresConnectionString(_configFileProvider.CurrentValue.PostgresLogDb) :
+            LogDbConnectionString = _configFileOptions.CurrentValue.PostgresHost.IsNotNullOrWhiteSpace() ? GetPostgresConnectionString(_configFileOptions.CurrentValue.PostgresLogDb) :
                 GetConnectionString(appFolderInfo.GetLogDatabase());
         }
 
@@ -64,10 +64,10 @@ namespace NzbDrone.Core.Datastore
             var connectionBuilder = new NpgsqlConnectionStringBuilder();
 
             connectionBuilder.Database = dbName;
-            connectionBuilder.Host = _configFileProvider.CurrentValue.PostgresHost;
-            connectionBuilder.Username = _configFileProvider.CurrentValue.PostgresUser;
-            connectionBuilder.Password = _configFileProvider.CurrentValue.PostgresPassword;
-            connectionBuilder.Port = _configFileProvider.CurrentValue.PostgresPort;
+            connectionBuilder.Host = _configFileOptions.CurrentValue.PostgresHost;
+            connectionBuilder.Username = _configFileOptions.CurrentValue.PostgresUser;
+            connectionBuilder.Password = _configFileOptions.CurrentValue.PostgresPassword;
+            connectionBuilder.Port = _configFileOptions.CurrentValue.PostgresPort;
             connectionBuilder.Enlist = false;
 
             return connectionBuilder.ConnectionString;

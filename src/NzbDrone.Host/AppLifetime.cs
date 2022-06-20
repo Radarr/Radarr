@@ -15,7 +15,7 @@ namespace NzbDrone.Host
     public class AppLifetime : IHostedService, IHandle<ApplicationShutdownRequested>
     {
         private readonly IHostApplicationLifetime _appLifetime;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly IRuntimeInfo _runtimeInfo;
         private readonly IStartupContext _startupContext;
         private readonly IBrowserService _browserService;
@@ -24,7 +24,7 @@ namespace NzbDrone.Host
         private readonly Logger _logger;
 
         public AppLifetime(IHostApplicationLifetime appLifetime,
-            IOptionsMonitor<ConfigFileOptions> configFileProvider,
+            IOptionsMonitor<ConfigFileOptions> configFileOptions,
             IRuntimeInfo runtimeInfo,
             IStartupContext startupContext,
             IBrowserService browserService,
@@ -33,7 +33,7 @@ namespace NzbDrone.Host
             Logger logger)
         {
             _appLifetime = appLifetime;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _runtimeInfo = runtimeInfo;
             _startupContext = startupContext;
             _browserService = browserService;
@@ -60,7 +60,7 @@ namespace NzbDrone.Host
             _runtimeInfo.IsExiting = false;
 
             if (!_startupContext.Flags.Contains(StartupContext.NO_BROWSER)
-                && _configFileProvider.CurrentValue.LaunchBrowser)
+                && _configFileOptions.CurrentValue.LaunchBrowser)
             {
                 _browserService.LaunchWebUI();
             }

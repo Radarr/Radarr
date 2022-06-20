@@ -25,17 +25,17 @@ namespace NzbDrone.Core.Authentication
         private readonly IUserRepository _repo;
         private readonly IAppFolderInfo _appFolderInfo;
         private readonly IDiskProvider _diskProvider;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
 
         public UserService(IUserRepository repo,
             IAppFolderInfo appFolderInfo,
             IDiskProvider diskProvider,
-            IOptionsMonitor<ConfigFileOptions> configFileProvider)
+            IOptionsMonitor<ConfigFileOptions> configFileOptions)
         {
             _repo = repo;
             _appFolderInfo = appFolderInfo;
             _diskProvider = diskProvider;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
         }
 
         public User Add(string username, string password)

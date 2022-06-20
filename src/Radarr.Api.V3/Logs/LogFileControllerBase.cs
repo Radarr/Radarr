@@ -15,14 +15,14 @@ namespace Radarr.Api.V3.Logs
         protected string _resource;
 
         private readonly IDiskProvider _diskProvider;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
 
         public LogFileControllerBase(IDiskProvider diskProvider,
-                                 IOptionsMonitor<ConfigFileOptions> configFileProvider,
+                                 IOptionsMonitor<ConfigFileOptions> configFileOptions,
                                  string resource)
         {
             _diskProvider = diskProvider;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _resource = resource;
         }
 
@@ -43,8 +43,8 @@ namespace Radarr.Api.V3.Logs
                     Id = i + 1,
                     Filename = filename,
                     LastWriteTime = _diskProvider.FileGetLastWrite(file),
-                    ContentsUrl = string.Format("{0}/api/v1/{1}/{2}", _configFileProvider.CurrentValue.UrlBase, _resource, filename),
-                    DownloadUrl = string.Format("{0}/{1}/{2}", _configFileProvider.CurrentValue.UrlBase, DownloadUrlRoot, filename)
+                    ContentsUrl = string.Format("{0}/api/v1/{1}/{2}", _configFileOptions.CurrentValue.UrlBase, _resource, filename),
+                    DownloadUrl = string.Format("{0}/{1}/{2}", _configFileOptions.CurrentValue.UrlBase, DownloadUrlRoot, filename)
                 });
             }
 

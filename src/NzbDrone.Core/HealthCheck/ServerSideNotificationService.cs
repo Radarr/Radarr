@@ -20,14 +20,14 @@ namespace NzbDrone.Core.HealthCheck
     public class ServerSideNotificationService : IServerSideNotificationService
     {
         private readonly IHttpClient _client;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly IHttpRequestBuilderFactory _cloudRequestBuilder;
         private readonly Logger _logger;
 
-        public ServerSideNotificationService(IHttpClient client, IOptionsMonitor<ConfigFileOptions> configFileProvider, IRadarrCloudRequestBuilder cloudRequestBuilder, Logger logger)
+        public ServerSideNotificationService(IHttpClient client, IOptionsMonitor<ConfigFileOptions> configFileOptions, IRadarrCloudRequestBuilder cloudRequestBuilder, Logger logger)
         {
             _client = client;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _cloudRequestBuilder = cloudRequestBuilder.Services;
             _logger = logger;
         }
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.HealthCheck
                                               .AddQueryParam("os", OsInfo.Os.ToString().ToLowerInvariant())
                                               .AddQueryParam("arch", RuntimeInformation.OSArchitecture)
                                               .AddQueryParam("runtime", PlatformInfo.Platform.ToString().ToLowerInvariant())
-                                              .AddQueryParam("branch", _configFileProvider.CurrentValue.Branch)
+                                              .AddQueryParam("branch", _configFileOptions.CurrentValue.Branch)
                                               .Build();
             try
             {

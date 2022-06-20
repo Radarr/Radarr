@@ -217,7 +217,7 @@ namespace NzbDrone.Host
                               IAppFolderFactory appFolderFactory,
                               IProvidePidFile pidFileProvider,
                               IConfigFileWriter configFileWriter,
-                              IOptions<ConfigFileOptions> configFileProvider,
+                              IOptions<ConfigFileOptions> configFileOptions,
                               IRuntimeInfo runtimeInfo,
                               IFirewallAdapter firewallAdapter,
                               RadarrErrorPipeline errorHandler)
@@ -249,7 +249,7 @@ namespace NzbDrone.Host
 
             app.UseForwardedHeaders();
             app.UseMiddleware<LoggingMiddleware>();
-            app.UsePathBase(new PathString(configFileProvider.Value.UrlBase));
+            app.UsePathBase(new PathString(configFileOptions.Value.UrlBase));
             app.UseExceptionHandler(new ExceptionHandlerOptions
             {
                 AllowStatusCode404Response = true,
@@ -264,7 +264,7 @@ namespace NzbDrone.Host
             app.Properties["host.AppName"] = BuildInfo.AppName;
 
             app.UseMiddleware<VersionMiddleware>();
-            app.UseMiddleware<UrlBaseMiddleware>(configFileProvider.Value.UrlBase);
+            app.UseMiddleware<UrlBaseMiddleware>(configFileOptions.Value.UrlBase);
             app.UseMiddleware<CacheHeaderMiddleware>();
             app.UseMiddleware<IfModifiedMiddleware>();
             app.UseMiddleware<BufferingMiddleware>(new List<string> { "/api/v3/command" });

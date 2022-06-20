@@ -17,12 +17,12 @@ namespace Radarr.Host.AccessControl
     {
         private const NET_FW_PROFILE_TYPE_ FIREWALL_PROFILE = NET_FW_PROFILE_TYPE_.NET_FW_PROFILE_STANDARD;
 
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly Logger _logger;
 
-        public FirewallAdapter(IOptionsMonitor<ConfigFileOptions> configFileProvider, Logger logger)
+        public FirewallAdapter(IOptionsMonitor<ConfigFileOptions> configFileOptions, Logger logger)
         {
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _logger = logger;
         }
 
@@ -30,16 +30,16 @@ namespace Radarr.Host.AccessControl
         {
             if (IsFirewallEnabled())
             {
-                if (!IsNzbDronePortOpen(_configFileProvider.CurrentValue.Port))
+                if (!IsNzbDronePortOpen(_configFileOptions.CurrentValue.Port))
                 {
-                    _logger.Debug("Opening Port for Radarr: {0}", _configFileProvider.CurrentValue.Port);
-                    OpenFirewallPort(_configFileProvider.CurrentValue.Port);
+                    _logger.Debug("Opening Port for Radarr: {0}", _configFileOptions.CurrentValue.Port);
+                    OpenFirewallPort(_configFileOptions.CurrentValue.Port);
                 }
 
-                if (_configFileProvider.CurrentValue.EnableSsl && !IsNzbDronePortOpen(_configFileProvider.CurrentValue.SslPort))
+                if (_configFileOptions.CurrentValue.EnableSsl && !IsNzbDronePortOpen(_configFileOptions.CurrentValue.SslPort))
                 {
-                    _logger.Debug("Opening SSL Port for Radarr: {0}", _configFileProvider.CurrentValue.SslPort);
-                    OpenFirewallPort(_configFileProvider.CurrentValue.SslPort);
+                    _logger.Debug("Opening SSL Port for Radarr: {0}", _configFileOptions.CurrentValue.SslPort);
+                    OpenFirewallPort(_configFileOptions.CurrentValue.SslPort);
                 }
             }
         }

@@ -10,13 +10,13 @@ namespace Radarr.Http.Frontend.Mappers
     public class RobotsTxtMapper : StaticResourceMapperBase
     {
         private readonly IAppFolderInfo _appFolderInfo;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
 
-        public RobotsTxtMapper(IAppFolderInfo appFolderInfo, IDiskProvider diskProvider, IOptionsMonitor<ConfigFileOptions> configFileProvider, Logger logger)
+        public RobotsTxtMapper(IAppFolderInfo appFolderInfo, IDiskProvider diskProvider, IOptionsMonitor<ConfigFileOptions> configFileOptions, Logger logger)
             : base(diskProvider, logger)
         {
             _appFolderInfo = appFolderInfo;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
         }
 
         public override string Map(string resourceUrl)

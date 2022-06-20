@@ -13,12 +13,12 @@ namespace Radarr.Http.Frontend.Mappers
         public LoginHtmlMapper(IAppFolderInfo appFolderInfo,
                                IDiskProvider diskProvider,
                                Lazy<ICacheBreakerProvider> cacheBreakProviderFactory,
-                               IOptionsMonitor<ConfigFileOptions> configFileProvider,
+                               IOptionsMonitor<ConfigFileOptions> configFileOptions,
                                Logger logger)
             : base(diskProvider, cacheBreakProviderFactory, logger)
         {
             HtmlPath = Path.Combine(appFolderInfo.StartUpFolder, _uiFolder, "login.html");
-            UrlBase = configFileProvider.CurrentValue.UrlBase;
+            UrlBase = configFileOptions.CurrentValue.UrlBase;
         }
 
         public override string Map(string resourceUrl)

@@ -19,13 +19,13 @@ namespace NzbDrone.Core.MediaCover
     public class MediaCoverProxy : IMediaCoverProxy
     {
         private readonly IHttpClient _httpClient;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly ICached<string> _cache;
 
-        public MediaCoverProxy(IHttpClient httpClient, IOptionsMonitor<ConfigFileOptions> configFileProvider, ICacheManager cacheManager)
+        public MediaCoverProxy(IHttpClient httpClient, IOptionsMonitor<ConfigFileOptions> configFileOptions, ICacheManager cacheManager)
         {
             _httpClient = httpClient;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _cache = cacheManager.GetCache<string>(GetType());
         }
 
@@ -38,7 +38,7 @@ namespace NzbDrone.Core.MediaCover
             _cache.ClearExpired();
 
             var fileName = Path.GetFileName(url);
-            return _configFileProvider.CurrentValue.UrlBase + @"/MediaCoverProxy/" + hash + "/" + fileName;
+            return _configFileOptions.CurrentValue.UrlBase + @"/MediaCoverProxy/" + hash + "/" + fileName;
         }
 
         public string GetUrl(string hash)

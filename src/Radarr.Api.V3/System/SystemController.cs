@@ -21,7 +21,7 @@ namespace Radarr.Api.V3.System
         private readonly IRuntimeInfo _runtimeInfo;
         private readonly IPlatformInfo _platformInfo;
         private readonly IOsInfo _osInfo;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly IMainDatabase _database;
         private readonly ILifecycleService _lifecycleService;
         private readonly IDeploymentInfoProvider _deploymentInfoProvider;
@@ -33,7 +33,7 @@ namespace Radarr.Api.V3.System
                                 IRuntimeInfo runtimeInfo,
                                 IPlatformInfo platformInfo,
                                 IOsInfo osInfo,
-                                IOptionsMonitor<ConfigFileOptions> configFileProvider,
+                                IOptionsMonitor<ConfigFileOptions> configFileOptions,
                                 IMainDatabase database,
                                 ILifecycleService lifecycleService,
                                 IDeploymentInfoProvider deploymentInfoProvider,
@@ -45,7 +45,7 @@ namespace Radarr.Api.V3.System
             _runtimeInfo = runtimeInfo;
             _platformInfo = platformInfo;
             _osInfo = osInfo;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _database = database;
             _lifecycleService = lifecycleService;
             _deploymentInfoProvider = deploymentInfoProvider;
@@ -60,7 +60,7 @@ namespace Radarr.Api.V3.System
             return new
             {
                 AppName = BuildInfo.AppName,
-                InstanceName = _configFileProvider.CurrentValue.InstanceName,
+                InstanceName = _configFileOptions.CurrentValue.InstanceName,
                 Version = BuildInfo.Version.ToString(),
                 BuildTime = BuildInfo.BuildDateTime,
                 IsDebug = BuildInfo.IsDebug,
@@ -77,12 +77,12 @@ namespace Radarr.Api.V3.System
                 IsWindows = OsInfo.IsWindows,
                 IsDocker = _osInfo.IsDocker,
                 Mode = _runtimeInfo.Mode,
-                Branch = _configFileProvider.CurrentValue.Branch,
-                Authentication = _configFileProvider.CurrentValue.AuthenticationMethod,
+                Branch = _configFileOptions.CurrentValue.Branch,
+                Authentication = _configFileOptions.CurrentValue.AuthenticationMethod,
                 DatabaseType = _database.DatabaseType,
                 DatabaseVersion = _database.Version,
                 MigrationVersion = _database.Migration,
-                UrlBase = _configFileProvider.CurrentValue.UrlBase,
+                UrlBase = _configFileOptions.CurrentValue.UrlBase,
                 RuntimeVersion = _platformInfo.Version,
                 RuntimeName = PlatformInfo.Platform,
                 StartTime = _runtimeInfo.StartTime,

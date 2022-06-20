@@ -15,21 +15,21 @@ namespace Radarr.Host
     public class BrowserService : IBrowserService
     {
         private readonly IProcessProvider _processProvider;
-        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileOptions;
         private readonly IRuntimeInfo _runtimeInfo;
         private readonly Logger _logger;
 
-        public BrowserService(IProcessProvider processProvider, IOptionsMonitor<ConfigFileOptions> configFileProvider, IRuntimeInfo runtimeInfo, Logger logger)
+        public BrowserService(IProcessProvider processProvider, IOptionsMonitor<ConfigFileOptions> configFileOptions, IRuntimeInfo runtimeInfo, Logger logger)
         {
             _processProvider = processProvider;
-            _configFileProvider = configFileProvider;
+            _configFileOptions = configFileOptions;
             _runtimeInfo = runtimeInfo;
             _logger = logger;
         }
 
         public void LaunchWebUI()
         {
-            var url = string.Format("http://localhost:{0}", _configFileProvider.CurrentValue.Port);
+            var url = string.Format("http://localhost:{0}", _configFileOptions.CurrentValue.Port);
             try
             {
                 if (_runtimeInfo.IsUserInteractive)
