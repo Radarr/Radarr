@@ -696,6 +696,7 @@
   "PosterOptions": "Poster Options",
   "Posters": "Posters",
   "PosterSize": "Poster Size",
+  "PostgresLegacyEnvironmentVariables":  "You have defined the following legacy PostgreSQL environment variables: {0}. Please update them to: {1}", 
   "PreferAndUpgrade": "Prefer and Upgrade",
   "PreferIndexerFlags": "Prefer Indexer Flags",
   "PreferIndexerFlagsHelpText": "Prioritize releases with special flags",
