@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using NLog.Extensions.Logging;
 using NzbDrone.Common.EnvironmentInfo;
@@ -44,13 +46,14 @@ namespace NzbDrone.Host
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ConfigFileOptions>(Configuration);
+
             services.AddLogging(b =>
             {
                 b.ClearProviders();
-                b.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                b.AddFilter("Microsoft.AspNetCore", Microsoft.Extensions.Logging.LogLevel.Warning);
+                b.SetMinimumLevel(LogLevel.Trace);
+                b.AddFilter("Microsoft.AspNetCore", LogLevel.Warning);
                 b.AddFilter("Radarr.Http.Authentication", LogLevel.Information);
-                b.AddFilter("Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager", LogLevel.Error);
                 b.AddNLog();
             });
 
@@ -213,7 +216,8 @@ namespace NzbDrone.Host
                               ReconfigureLogging reconfigureLogging,
                               IAppFolderFactory appFolderFactory,
                               IProvidePidFile pidFileProvider,
-                              IConfigFileProvider configFileProvider,
+                              IConfigFileWriter configFileWriter,
+                              IOptions<ConfigFileOptions> configFileProvider,
                               IRuntimeInfo runtimeInfo,
                               IFirewallAdapter firewallAdapter,
                               RadarrErrorPipeline errorHandler)
@@ -221,6 +225,7 @@ namespace NzbDrone.Host
             initializeLogger.Initialize();
             appFolderFactory.Register();
             pidFileProvider.Write();
+            configFileWriter.EnsureDefaultConfigFile();
 
             reconfigureLogging.Reconfigure();
 
@@ -244,7 +249,7 @@ namespace NzbDrone.Host
 
             app.UseForwardedHeaders();
             app.UseMiddleware<LoggingMiddleware>();
-            app.UsePathBase(new PathString(configFileProvider.UrlBase));
+            app.UsePathBase(new PathString(configFileProvider.Value.UrlBase));
             app.UseExceptionHandler(new ExceptionHandlerOptions
             {
                 AllowStatusCode404Response = true,
@@ -259,7 +264,7 @@ namespace NzbDrone.Host
             app.Properties["host.AppName"] = BuildInfo.AppName;
 
             app.UseMiddleware<VersionMiddleware>();
-            app.UseMiddleware<UrlBaseMiddleware>(configFileProvider.UrlBase);
+            app.UseMiddleware<UrlBaseMiddleware>(configFileProvider.Value.UrlBase);
             app.UseMiddleware<CacheHeaderMiddleware>();
             app.UseMiddleware<IfModifiedMiddleware>();
             app.UseMiddleware<BufferingMiddleware>(new List<string> { "/api/v3/command" });

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
+using Moq;
 using Npgsql;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
@@ -124,13 +126,13 @@ namespace NzbDrone.Core.Test.Framework
 
         private void CreatePostgresDb()
         {
-            var options = Mocker.Resolve<IOptions<PostgresOptions>>().Value;
+            var options = Mocker.Resolve<IOptionsMonitor<ConfigFileOptions>>().CurrentValue;
             PostgresDatabase.Create(options, MigrationType);
         }
 
         private void DropPostgresDb()
         {
-            var options = Mocker.Resolve<IOptions<PostgresOptions>>().Value;
+            var options = Mocker.Resolve<IOptionsMonitor<ConfigFileOptions>>().CurrentValue;
             PostgresDatabase.Drop(options, MigrationType);
         }
 
@@ -174,12 +176,11 @@ namespace NzbDrone.Core.Test.Framework
             SetupLogging();
 
             // populate the possible postgres options
-            var postgresOptions = PostgresDatabase.GetTestOptions();
-            _databaseType = postgresOptions.Host.IsNotNullOrWhiteSpace() ? DatabaseType.PostgreSQL : DatabaseType.SQLite;
+            var options = PostgresDatabase.GetTestOptions();
+            _databaseType = options.PostgresHost.IsNotNullOrWhiteSpace() ? DatabaseType.PostgreSQL : DatabaseType.SQLite;
 
             // Set up remaining container services
-            Mocker.SetConstant(Options.Create(postgresOptions));
-            Mocker.SetConstant<IConfigFileProvider>(Mocker.Resolve<ConfigFileProvider>());
+            Mocker.GetMock<IOptionsMonitor<ConfigFileOptions>>().Setup(x => x.CurrentValue).Returns(options);
             Mocker.SetConstant<IConnectionStringFactory>(Mocker.Resolve<ConnectionStringFactory>());
             Mocker.SetConstant<IMigrationController>(Mocker.Resolve<MigrationController>());
 

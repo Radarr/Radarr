@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Options;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
@@ -18,7 +19,7 @@ namespace Radarr.Api.V3.Logs
 
         public UpdateLogFileController(IAppFolderInfo appFolderInfo,
                                    IDiskProvider diskProvider,
-                                   IConfigFileProvider configFileProvider)
+                                   IOptionsMonitor<ConfigFileOptions> configFileProvider)
             : base(diskProvider, configFileProvider, "update")
         {
             _appFolderInfo = appFolderInfo;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Options;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
@@ -16,7 +17,7 @@ namespace Radarr.Api.V3.Logs
 
         public LogFileController(IAppFolderInfo appFolderInfo,
                              IDiskProvider diskProvider,
-                             IConfigFileProvider configFileProvider)
+                             IOptionsMonitor<ConfigFileOptions> configFileProvider)
             : base(diskProvider, configFileProvider, "")
         {
             _appFolderInfo = appFolderInfo;

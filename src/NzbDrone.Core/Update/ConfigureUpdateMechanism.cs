@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -16,19 +17,21 @@ namespace NzbDrone.Core.Update
     public class UpdaterConfigProvider : IUpdaterConfigProvider, IHandle<ApplicationStartedEvent>
     {
         private readonly Logger _logger;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IConfigFileWriter _configFileWriter;
         private readonly IDeploymentInfoProvider _deploymentInfoProvider;
 
-        public UpdaterConfigProvider(IDeploymentInfoProvider deploymentInfoProvider, IConfigFileProvider configFileProvider, Logger logger)
+        public UpdaterConfigProvider(IDeploymentInfoProvider deploymentInfoProvider, IOptionsMonitor<ConfigFileOptions> configFileProvider, IConfigFileWriter configFileWriter, Logger logger)
         {
             _deploymentInfoProvider = deploymentInfoProvider;
             _configFileProvider = configFileProvider;
+            _configFileWriter = configFileWriter;
             _logger = logger;
         }
 
         public void Handle(ApplicationStartedEvent message)
         {
-            var updateMechanism = _configFileProvider.UpdateMechanism;
+            var updateMechanism = _configFileProvider.CurrentValue.UpdateMechanism;
             var packageUpdateMechanism = _deploymentInfoProvider.PackageUpdateMechanism;
 
             var externalMechanisms = Enum.GetValues(typeof(UpdateMechanism))
@@ -49,7 +52,7 @@ namespace NzbDrone.Core.Update
 
             if (_deploymentInfoProvider.IsExternalUpdateMechanism)
             {
-                var currentBranch = _configFileProvider.Branch;
+                var currentBranch = _configFileProvider.CurrentValue.Branch;
                 var packageBranch = _deploymentInfoProvider.PackageBranch;
                 if (packageBranch.IsNotNullOrWhiteSpace() && packageBranch != currentBranch)
                 {
@@ -63,18 +66,18 @@ namespace NzbDrone.Core.Update
         {
             var config = new Dictionary<string, object>
             {
-                [nameof(_configFileProvider.UpdateMechanism)] = updateMechanism
+                [nameof(_configFileProvider.CurrentValue.UpdateMechanism)] = updateMechanism
             };
-            _configFileProvider.SaveConfigDictionary(config);
+            _configFileWriter.SaveConfigDictionary(config);
         }
 
         private void ChangeBranch(string branch)
         {
             var config = new Dictionary<string, object>
             {
-                [nameof(_configFileProvider.Branch)] = branch
+                [nameof(_configFileProvider.CurrentValue.Branch)] = branch
             };
-            _configFileProvider.SaveConfigDictionary(config);
+            _configFileWriter.SaveConfigDictionary(config);
         }
     }
 }

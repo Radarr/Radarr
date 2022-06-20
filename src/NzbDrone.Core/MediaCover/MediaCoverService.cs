@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using Microsoft.Extensions.Options;
 using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.Disk;
@@ -35,7 +36,7 @@ namespace NzbDrone.Core.MediaCover
         private readonly IHttpClient _httpClient;
         private readonly IDiskProvider _diskProvider;
         private readonly ICoverExistsSpecification _coverExistsSpecification;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
 
@@ -51,7 +52,7 @@ namespace NzbDrone.Core.MediaCover
                                  IDiskProvider diskProvider,
                                  IAppFolderInfo appFolderInfo,
                                  ICoverExistsSpecification coverExistsSpecification,
-                                 IConfigFileProvider configFileProvider,
+                                 IOptionsMonitor<ConfigFileOptions> configFileProvider,
                                  IEventAggregator eventAggregator,
                                  Logger logger)
         {
@@ -104,7 +105,7 @@ namespace NzbDrone.Core.MediaCover
                     var filePath = GetCoverPath(movieId, mediaCover.CoverType);
 
                     mediaCover.RemoteUrl = mediaCover.Url;
-                    mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + ".jpg";
+                    mediaCover.Url = _configFileProvider.CurrentValue.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + ".jpg";
 
                     FileInfo file;
                     var fileExists = false;

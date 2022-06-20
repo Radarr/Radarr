@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using NetFwTypeLib;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
@@ -16,10 +17,10 @@ namespace Radarr.Host.AccessControl
     {
         private const NET_FW_PROFILE_TYPE_ FIREWALL_PROFILE = NET_FW_PROFILE_TYPE_.NET_FW_PROFILE_STANDARD;
 
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
         private readonly Logger _logger;
 
-        public FirewallAdapter(IConfigFileProvider configFileProvider, Logger logger)
+        public FirewallAdapter(IOptionsMonitor<ConfigFileOptions> configFileProvider, Logger logger)
         {
             _configFileProvider = configFileProvider;
             _logger = logger;
@@ -29,16 +30,16 @@ namespace Radarr.Host.AccessControl
         {
             if (IsFirewallEnabled())
             {
-                if (!IsNzbDronePortOpen(_configFileProvider.Port))
+                if (!IsNzbDronePortOpen(_configFileProvider.CurrentValue.Port))
                 {
-                    _logger.Debug("Opening Port for Radarr: {0}", _configFileProvider.Port);
-                    OpenFirewallPort(_configFileProvider.Port);
+                    _logger.Debug("Opening Port for Radarr: {0}", _configFileProvider.CurrentValue.Port);
+                    OpenFirewallPort(_configFileProvider.CurrentValue.Port);
                 }
 
-                if (_configFileProvider.EnableSsl && !IsNzbDronePortOpen(_configFileProvider.SslPort))
+                if (_configFileProvider.CurrentValue.EnableSsl && !IsNzbDronePortOpen(_configFileProvider.CurrentValue.SslPort))
                 {
-                    _logger.Debug("Opening SSL Port for Radarr: {0}", _configFileProvider.SslPort);
-                    OpenFirewallPort(_configFileProvider.SslPort);
+                    _logger.Debug("Opening SSL Port for Radarr: {0}", _configFileProvider.CurrentValue.SslPort);
+                    OpenFirewallPort(_configFileProvider.CurrentValue.SslPort);
                 }
             }
         }

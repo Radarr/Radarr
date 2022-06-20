@@ -5,6 +5,7 @@ using NLog;
 using Npgsql;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Migration.Framework;
 using NzbDrone.Core.Indexers.Newznab;
@@ -25,7 +26,7 @@ namespace NzbDrone.Integration.Test
 
         protected int Port { get; private set; }
 
-        protected PostgresOptions PostgresOptions { get; set; } = new ();
+        protected ConfigFileOptions Options { get; set; } = new ();
 
         protected override string RootUrl => $"http://localhost:{Port}/";
 
@@ -35,14 +36,14 @@ namespace NzbDrone.Integration.Test
         {
             Port = Interlocked.Increment(ref StaticPort);
 
-            PostgresOptions = PostgresDatabase.GetTestOptions();
+            Options = ConfigFileOptions.GetOptions();
 
-            if (PostgresOptions?.Host != null)
+            if (Options?.PostgresHost != null)
             {
-                CreatePostgresDb(PostgresOptions);
+                CreatePostgresDb(Options);
             }
 
-            _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger(), PostgresOptions, Port);
+            _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger(), Options, Port);
             _runner.Kill();
 
             _runner.Start();
@@ -74,19 +75,19 @@ namespace NzbDrone.Integration.Test
         protected override void StopTestTarget()
         {
             _runner.Kill();
-            if (PostgresOptions?.Host != null)
+            if (Options?.PostgresHost != null)
             {
-                DropPostgresDb(PostgresOptions);
+                DropPostgresDb(Options);
             }
         }
 
-        private static void CreatePostgresDb(PostgresOptions options)
+        private static void CreatePostgresDb(ConfigFileOptions options)
         {
             PostgresDatabase.Create(options, MigrationType.Main);
             PostgresDatabase.Create(options, MigrationType.Log);
         }
 
-        private static void DropPostgresDb(PostgresOptions options)
+        private static void DropPostgresDb(ConfigFileOptions options)
         {
             PostgresDatabase.Drop(options, MigrationType.Main);
             PostgresDatabase.Drop(options, MigrationType.Log);

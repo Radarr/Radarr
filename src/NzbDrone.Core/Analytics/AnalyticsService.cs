@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
@@ -15,16 +16,16 @@ namespace NzbDrone.Core.Analytics
 
     public class AnalyticsService : IAnalyticsService
     {
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
         private readonly IHistoryService _historyService;
 
-        public AnalyticsService(IHistoryService historyService, IConfigFileProvider configFileProvider)
+        public AnalyticsService(IHistoryService historyService, IOptionsMonitor<ConfigFileOptions> configFileProvider)
         {
             _configFileProvider = configFileProvider;
             _historyService = historyService;
         }
 
-        public bool IsEnabled => (_configFileProvider.AnalyticsEnabled && RuntimeInfo.IsProduction) || RuntimeInfo.IsDevelopment;
+        public bool IsEnabled => (_configFileProvider.CurrentValue.AnalyticsEnabled && RuntimeInfo.IsProduction) || RuntimeInfo.IsDevelopment;
 
         public bool InstallIsActive
         {

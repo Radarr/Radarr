@@ -9,12 +9,12 @@ namespace NzbDrone.Http.Authentication
     public class UiAuthorizationPolicyProvider : IAuthorizationPolicyProvider
     {
         private const string POLICY_NAME = "UI";
-        private readonly IConfigFileProvider _config;
+        private readonly IOptionsMonitor<ConfigFileOptions> _config;
 
         public DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; }
 
         public UiAuthorizationPolicyProvider(IOptions<AuthorizationOptions> options,
-            IConfigFileProvider config)
+            IOptionsMonitor<ConfigFileOptions> config)
         {
             FallbackPolicyProvider = new DefaultAuthorizationPolicyProvider(options);
             _config = config;
@@ -28,7 +28,7 @@ namespace NzbDrone.Http.Authentication
         {
             if (policyName.Equals(POLICY_NAME, StringComparison.OrdinalIgnoreCase))
             {
-                var policy = new AuthorizationPolicyBuilder(_config.AuthenticationMethod.ToString())
+                var policy = new AuthorizationPolicyBuilder(_config.CurrentValue.AuthenticationMethod.ToString())
                     .RequireAuthenticatedUser();
                 return Task.FromResult(policy.Build());
             }

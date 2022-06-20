@@ -1,9 +1,11 @@
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.HealthCheck.Checks;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.Test.Framework;
+using NzbDrone.Core.Update;
 
 namespace NzbDrone.Core.Test.HealthCheck.Checks
 {
@@ -20,9 +22,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
         private void GivenValidBranch(string branch)
         {
-            Mocker.GetMock<IConfigFileProvider>()
-                    .SetupGet(s => s.Branch)
-                    .Returns(branch);
+            Mocker.GetMock<IOptionsMonitor<ConfigFileOptions>>()
+                .Setup(s => s.CurrentValue)
+                .Returns(new ConfigFileOptions { Branch = branch });
         }
 
         [TestCase("aphrodite")]

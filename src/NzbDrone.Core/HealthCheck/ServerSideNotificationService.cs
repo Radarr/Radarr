@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Microsoft.Extensions.Options;
 using NLog;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.EnvironmentInfo;
@@ -19,11 +20,11 @@ namespace NzbDrone.Core.HealthCheck
     public class ServerSideNotificationService : IServerSideNotificationService
     {
         private readonly IHttpClient _client;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
         private readonly IHttpRequestBuilderFactory _cloudRequestBuilder;
         private readonly Logger _logger;
 
-        public ServerSideNotificationService(IHttpClient client, IConfigFileProvider configFileProvider, IRadarrCloudRequestBuilder cloudRequestBuilder, Logger logger)
+        public ServerSideNotificationService(IHttpClient client, IOptionsMonitor<ConfigFileOptions> configFileProvider, IRadarrCloudRequestBuilder cloudRequestBuilder, Logger logger)
         {
             _client = client;
             _configFileProvider = configFileProvider;
@@ -39,7 +40,7 @@ namespace NzbDrone.Core.HealthCheck
                                               .AddQueryParam("os", OsInfo.Os.ToString().ToLowerInvariant())
                                               .AddQueryParam("arch", RuntimeInformation.OSArchitecture)
                                               .AddQueryParam("runtime", PlatformInfo.Platform.ToString().ToLowerInvariant())
-                                              .AddQueryParam("branch", _configFileProvider.Branch)
+                                              .AddQueryParam("branch", _configFileProvider.CurrentValue.Branch)
                                               .Build();
             try
             {

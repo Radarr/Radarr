@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Options;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
@@ -18,10 +19,10 @@ namespace NzbDrone.Core.MediaCover
     public class MediaCoverProxy : IMediaCoverProxy
     {
         private readonly IHttpClient _httpClient;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
         private readonly ICached<string> _cache;
 
-        public MediaCoverProxy(IHttpClient httpClient, IConfigFileProvider configFileProvider, ICacheManager cacheManager)
+        public MediaCoverProxy(IHttpClient httpClient, IOptionsMonitor<ConfigFileOptions> configFileProvider, ICacheManager cacheManager)
         {
             _httpClient = httpClient;
             _configFileProvider = configFileProvider;
@@ -37,7 +38,7 @@ namespace NzbDrone.Core.MediaCover
             _cache.ClearExpired();
 
             var fileName = Path.GetFileName(url);
-            return _configFileProvider.UrlBase + @"/MediaCoverProxy/" + hash + "/" + fileName;
+            return _configFileProvider.CurrentValue.UrlBase + @"/MediaCoverProxy/" + hash + "/" + fileName;
         }
 
         public string GetUrl(string hash)

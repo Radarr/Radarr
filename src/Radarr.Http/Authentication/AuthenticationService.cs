@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using NLog;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
@@ -22,11 +23,11 @@ namespace Radarr.Http.Authentication
         private static string API_KEY;
         private static AuthenticationType AUTH_METHOD;
 
-        public AuthenticationService(IConfigFileProvider configFileProvider, IUserService userService)
+        public AuthenticationService(IOptionsMonitor<ConfigFileOptions> configFileProvider, IUserService userService)
         {
             _userService = userService;
-            API_KEY = configFileProvider.ApiKey;
-            AUTH_METHOD = configFileProvider.AuthenticationMethod;
+            API_KEY = configFileProvider.CurrentValue.ApiKey;
+            AUTH_METHOD = configFileProvider.CurrentValue.AuthenticationMethod;
         }
 
         public User Login(HttpRequest request, string username, string password)

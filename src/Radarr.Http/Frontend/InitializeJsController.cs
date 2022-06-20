@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using NzbDrone.Common;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Analytics;
@@ -12,21 +13,17 @@ namespace Radarr.Http.Frontend
     [ApiController]
     public class InitializeJsController : Controller
     {
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
         private readonly IAnalyticsService _analyticsService;
 
-        private static string _apiKey;
-        private static string _urlBase;
-        private string _generatedContent;
+        private string ApiKey => _configFileProvider.CurrentValue.ApiKey;
+        private string UrlBase => _configFileProvider.CurrentValue.UrlBase;
 
-        public InitializeJsController(IConfigFileProvider configFileProvider,
+        public InitializeJsController(IOptionsMonitor<ConfigFileOptions> configFileProvider,
                                       IAnalyticsService analyticsService)
         {
             _configFileProvider = configFileProvider;
             _analyticsService = analyticsService;
-
-            _apiKey = configFileProvider.ApiKey;
-            _urlBase = configFileProvider.UrlBase;
         }
 
         [HttpGet("/initialize.js")]
@@ -37,28 +34,21 @@ namespace Radarr.Http.Frontend
 
         private string GetContent()
         {
-            if (RuntimeInfo.IsProduction && _generatedContent != null)
-            {
-                return _generatedContent;
-            }
-
             var builder = new StringBuilder();
             builder.AppendLine("window.Radarr = {");
-            builder.AppendLine($"  apiRoot: '{_urlBase}/api/v3',");
-            builder.AppendLine($"  apiKey: '{_apiKey}',");
+            builder.AppendLine($"  apiRoot: '{UrlBase}/api/v3',");
+            builder.AppendLine($"  apiKey: '{ApiKey}',");
             builder.AppendLine($"  release: '{BuildInfo.Release}',");
             builder.AppendLine($"  version: '{BuildInfo.Version.ToString()}',");
-            builder.AppendLine($"  instanceName: '{_configFileProvider.InstanceName.ToString()}',");
-            builder.AppendLine($"  branch: '{_configFileProvider.Branch.ToLower()}',");
+            builder.AppendLine($"  instanceName: '{_configFileProvider.CurrentValue.InstanceName}',");
+            builder.AppendLine($"  branch: '{_configFileProvider.CurrentValue.Branch.ToLower()}',");
             builder.AppendLine($"  analytics: {_analyticsService.IsEnabled.ToString().ToLowerInvariant()},");
             builder.AppendLine($"  userHash: '{HashUtil.AnonymousToken()}',");
-            builder.AppendLine($"  urlBase: '{_urlBase}',");
+            builder.AppendLine($"  urlBase: '{UrlBase}',");
             builder.AppendLine($"  isProduction: {RuntimeInfo.IsProduction.ToString().ToLowerInvariant()}");
             builder.AppendLine("};");
 
-            _generatedContent = builder.ToString();
-
-            return _generatedContent;
+            return builder.ToString();
         }
     }
 }

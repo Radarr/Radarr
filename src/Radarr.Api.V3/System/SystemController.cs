@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Internal;
+using Microsoft.Extensions.Options;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
@@ -20,7 +21,7 @@ namespace Radarr.Api.V3.System
         private readonly IRuntimeInfo _runtimeInfo;
         private readonly IPlatformInfo _platformInfo;
         private readonly IOsInfo _osInfo;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
         private readonly IMainDatabase _database;
         private readonly ILifecycleService _lifecycleService;
         private readonly IDeploymentInfoProvider _deploymentInfoProvider;
@@ -32,7 +33,7 @@ namespace Radarr.Api.V3.System
                                 IRuntimeInfo runtimeInfo,
                                 IPlatformInfo platformInfo,
                                 IOsInfo osInfo,
-                                IConfigFileProvider configFileProvider,
+                                IOptionsMonitor<ConfigFileOptions> configFileProvider,
                                 IMainDatabase database,
                                 ILifecycleService lifecycleService,
                                 IDeploymentInfoProvider deploymentInfoProvider,
@@ -59,7 +60,7 @@ namespace Radarr.Api.V3.System
             return new
             {
                 AppName = BuildInfo.AppName,
-                InstanceName = _configFileProvider.InstanceName,
+                InstanceName = _configFileProvider.CurrentValue.InstanceName,
                 Version = BuildInfo.Version.ToString(),
                 BuildTime = BuildInfo.BuildDateTime,
                 IsDebug = BuildInfo.IsDebug,
@@ -76,12 +77,12 @@ namespace Radarr.Api.V3.System
                 IsWindows = OsInfo.IsWindows,
                 IsDocker = _osInfo.IsDocker,
                 Mode = _runtimeInfo.Mode,
-                Branch = _configFileProvider.Branch,
-                Authentication = _configFileProvider.AuthenticationMethod,
+                Branch = _configFileProvider.CurrentValue.Branch,
+                Authentication = _configFileProvider.CurrentValue.AuthenticationMethod,
                 DatabaseType = _database.DatabaseType,
                 DatabaseVersion = _database.Version,
                 MigrationVersion = _database.Migration,
-                UrlBase = _configFileProvider.UrlBase,
+                UrlBase = _configFileProvider.CurrentValue.UrlBase,
                 RuntimeVersion = _platformInfo.Version,
                 RuntimeName = PlatformInfo.Platform,
                 StartTime = _runtimeInfo.StartTime,

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Configuration.Events;
 using NzbDrone.Core.Localization;
@@ -9,9 +10,9 @@ namespace NzbDrone.Core.HealthCheck.Checks
     [CheckOn(typeof(ConfigSavedEvent))]
     public class ReleaseBranchCheck : HealthCheckBase
     {
-        private readonly IConfigFileProvider _configFileService;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileService;
 
-        public ReleaseBranchCheck(IConfigFileProvider configFileService, ILocalizationService localizationService)
+        public ReleaseBranchCheck(IOptionsMonitor<ConfigFileOptions> configFileService, ILocalizationService localizationService)
             : base(localizationService)
         {
             _configFileService = configFileService;
@@ -19,11 +20,11 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var currentBranch = _configFileService.Branch.ToLower();
+            var currentBranch = _configFileService.CurrentValue.Branch.ToLower();
 
             if (!Enum.GetNames(typeof(ReleaseBranches)).Any(x => x.ToLower() == currentBranch))
             {
-                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckOfficialBranchMessage"), _configFileService.Branch), "#branch-is-not-a-valid-release-branch");
+                return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("ReleaseBranchCheckOfficialBranchMessage"), _configFileService.CurrentValue.Branch), "#branch-is-not-a-valid-release-branch");
             }
 
             return new HealthCheck(GetType());

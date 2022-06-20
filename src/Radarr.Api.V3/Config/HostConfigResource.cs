@@ -45,7 +45,7 @@ namespace Radarr.Api.V3.Config
 
     public static class HostConfigResourceMapper
     {
-        public static HostConfigResource ToResource(this IConfigFileProvider model, IConfigService configService)
+        public static HostConfigResource ToResource(this ConfigFileOptions model, IConfigService configService)
         {
             // TODO: Clean this mess up. don't mix data from multiple classes, use sub-resources instead?
             return new HostConfigResource

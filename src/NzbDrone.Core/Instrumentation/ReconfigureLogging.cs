@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Config;
 using NLog.Targets.Syslog;
@@ -17,21 +18,21 @@ namespace NzbDrone.Core.Instrumentation
 {
     public class ReconfigureLogging : IHandleAsync<ConfigFileSavedEvent>
     {
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
 
-        public ReconfigureLogging(IConfigFileProvider configFileProvider)
+        public ReconfigureLogging(IOptionsMonitor<ConfigFileOptions> configFileProvider)
         {
             _configFileProvider = configFileProvider;
         }
 
         public void Reconfigure()
         {
-            var minimumLogLevel = LogLevel.FromString(_configFileProvider.LogLevel);
+            var minimumLogLevel = LogLevel.FromString(_configFileProvider.CurrentValue.LogLevel);
             LogLevel minimumConsoleLogLevel;
 
-            if (_configFileProvider.ConsoleLogLevel.IsNotNullOrWhiteSpace())
+            if (_configFileProvider.CurrentValue.ConsoleLogLevel.IsNotNullOrWhiteSpace())
             {
-                minimumConsoleLogLevel = LogLevel.FromString(_configFileProvider.ConsoleLogLevel);
+                minimumConsoleLogLevel = LogLevel.FromString(_configFileProvider.CurrentValue.ConsoleLogLevel);
             }
             else if (minimumLogLevel > LogLevel.Info)
             {
@@ -42,10 +43,10 @@ namespace NzbDrone.Core.Instrumentation
                 minimumConsoleLogLevel = LogLevel.Info;
             }
 
-            if (_configFileProvider.SyslogServer.IsNotNullOrWhiteSpace())
+            if (_configFileProvider.CurrentValue.SyslogServer.IsNotNullOrWhiteSpace())
             {
-                var syslogLevel = LogLevel.FromString(_configFileProvider.SyslogLevel);
-                SetSyslogParameters(_configFileProvider.SyslogServer, _configFileProvider.SyslogPort, syslogLevel);
+                var syslogLevel = LogLevel.FromString(_configFileProvider.CurrentValue.SyslogLevel);
+                SetSyslogParameters(_configFileProvider.CurrentValue.SyslogServer, _configFileProvider.CurrentValue.SyslogPort, syslogLevel);
             }
 
             var rules = LogManager.Configuration.LoggingRules;
@@ -60,7 +61,7 @@ namespace NzbDrone.Core.Instrumentation
             SetLogRotation();
 
             //Log Sql
-            SqlBuilderExtensions.LogSql = _configFileProvider.LogSql;
+            SqlBuilderExtensions.LogSql = _configFileProvider.CurrentValue.LogSql;
 
             //Sentry
             ReconfigureSentry();
@@ -95,7 +96,7 @@ namespace NzbDrone.Core.Instrumentation
         {
             foreach (var target in LogManager.Configuration.AllTargets.OfType<NzbDroneFileTarget>())
             {
-                target.MaxArchiveFiles = _configFileProvider.LogRotate;
+                target.MaxArchiveFiles = _configFileProvider.CurrentValue.LogRotate;
             }
         }
 
@@ -104,8 +105,8 @@ namespace NzbDrone.Core.Instrumentation
             var sentryTarget = LogManager.Configuration.AllTargets.OfType<SentryTarget>().FirstOrDefault();
             if (sentryTarget != null)
             {
-                sentryTarget.SentryEnabled = (RuntimeInfo.IsProduction && _configFileProvider.AnalyticsEnabled) || RuntimeInfo.IsDevelopment;
-                sentryTarget.FilterEvents = _configFileProvider.FilterSentryEvents;
+                sentryTarget.SentryEnabled = (RuntimeInfo.IsProduction && _configFileProvider.CurrentValue.AnalyticsEnabled) || RuntimeInfo.IsDevelopment;
+                sentryTarget.FilterEvents = _configFileProvider.CurrentValue.FilterSentryEvents;
             }
         }
 
@@ -119,7 +120,7 @@ namespace NzbDrone.Core.Instrumentation
             syslogTarget.MessageSend.Udp.Server = syslogServer;
             syslogTarget.MessageSend.Udp.ReconnectInterval = 500;
             syslogTarget.MessageCreation.Rfc = RfcNumber.Rfc5424;
-            syslogTarget.MessageCreation.Rfc5424.AppName = _configFileProvider.InstanceName;
+            syslogTarget.MessageCreation.Rfc5424.AppName = _configFileProvider.CurrentValue.InstanceName;
 
             var loggingRule = new LoggingRule("*", minimumLogLevel, syslogTarget);
 

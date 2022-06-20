@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Microsoft.Extensions.Options;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Processes;
@@ -14,11 +15,11 @@ namespace Radarr.Host
     public class BrowserService : IBrowserService
     {
         private readonly IProcessProvider _processProvider;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
         private readonly IRuntimeInfo _runtimeInfo;
         private readonly Logger _logger;
 
-        public BrowserService(IProcessProvider processProvider, IConfigFileProvider configFileProvider, IRuntimeInfo runtimeInfo, Logger logger)
+        public BrowserService(IProcessProvider processProvider, IOptionsMonitor<ConfigFileOptions> configFileProvider, IRuntimeInfo runtimeInfo, Logger logger)
         {
             _processProvider = processProvider;
             _configFileProvider = configFileProvider;
@@ -28,7 +29,7 @@ namespace Radarr.Host
 
         public void LaunchWebUI()
         {
-            var url = string.Format("http://localhost:{0}", _configFileProvider.Port);
+            var url = string.Format("http://localhost:{0}", _configFileProvider.CurrentValue.Port);
             try
             {
                 if (_runtimeInfo.IsUserInteractive)

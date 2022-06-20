@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
@@ -31,6 +33,10 @@ namespace NzbDrone.Core.Test.MediaCoverTests
                 .Build();
 
             Mocker.GetMock<IMovieService>().Setup(m => m.GetMovie(It.Is<int>(id => id == _movie.Id))).Returns(_movie);
+
+            Mocker.GetMock<IOptionsMonitor<ConfigFileOptions>>()
+                .Setup(x => x.CurrentValue)
+                .Returns(new ConfigFileOptions());
         }
 
         [Test]

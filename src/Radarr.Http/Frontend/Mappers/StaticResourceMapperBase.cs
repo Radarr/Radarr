@@ -10,6 +10,8 @@ namespace Radarr.Http.Frontend.Mappers
 {
     public abstract class StaticResourceMapperBase : IMapHttpRequestsToDisk
     {
+        protected readonly string _uiFolder;
+
         private readonly IDiskProvider _diskProvider;
         private readonly Logger _logger;
         private readonly StringComparison _caseSensitive;
@@ -22,6 +24,7 @@ namespace Radarr.Http.Frontend.Mappers
 
             _mimeTypeProvider = new FileExtensionContentTypeProvider();
             _caseSensitive = RuntimeInfo.IsProduction ? DiskProviderBase.PathStringComparison : StringComparison.OrdinalIgnoreCase;
+            _uiFolder = BuildInfo.IsDebug ? Path.Combine("..", "UI") : "UI";
         }
 
         public abstract string Map(string resourceUrl);

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using DryIoc;
 using DryIoc.Microsoft.DependencyInjection;
@@ -23,7 +21,6 @@ using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Host;
-using PostgresOptions = NzbDrone.Core.Datastore.PostgresOptions;
 
 namespace Radarr.Host
 {
@@ -53,7 +50,6 @@ namespace Radarr.Host
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
                 var appMode = GetApplicationMode(startupContext);
-                var config = GetConfiguration(startupContext);
 
                 switch (appMode)
                 {
@@ -86,18 +82,13 @@ namespace Radarr.Host
                             .UseServiceProviderFactory(new DryIocServiceProviderFactory(new Container(rules => rules.WithNzbDroneRules())))
                             .ConfigureContainer<IContainer>(c =>
                             {
-                                c.AutoAddServices(Bootstrap.ASSEMBLIES)
+                                c.AutoAddServices(ASSEMBLIES)
                                     .AddNzbDroneLogger()
                                     .AddDatabase()
                                     .AddStartupContext(startupContext)
                                     .Resolve<UtilityModeRouter>()
                                     .Route(appMode);
-                            })
-                            .ConfigureServices(services =>
-                            {
-                                services.Configure<PostgresOptions>(config.GetSection("Radarr:Postgres"));
                             }).Build();
-
                         break;
                     }
                 }
@@ -115,55 +106,20 @@ namespace Radarr.Host
 
         public static IHostBuilder CreateConsoleHostBuilder(string[] args, StartupContext context)
         {
-            var config = GetConfiguration(context);
-
-            var bindAddress = config.GetValue(nameof(ConfigFileProvider.BindAddress), "*");
-            var port = config.GetValue(nameof(ConfigFileProvider.Port), 7878);
-            var sslPort = config.GetValue(nameof(ConfigFileProvider.SslPort), 8787);
-            var enableSsl = config.GetValue(nameof(ConfigFileProvider.EnableSsl), false);
-            var sslCertPath = config.GetValue<string>(nameof(ConfigFileProvider.SslCertPath));
-            var sslCertPassword = config.GetValue<string>(nameof(ConfigFileProvider.SslCertPassword));
-
-            var urls = new List<string> { BuildUrl("http", bindAddress, port) };
-
-            if (enableSsl && sslCertPath.IsNotNullOrWhiteSpace())
-            {
-                urls.Add(BuildUrl("https", bindAddress, sslPort));
-            }
-
             return new HostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .AddConfig(context)
                 .UseServiceProviderFactory(new DryIocServiceProviderFactory(new Container(rules => rules.WithNzbDroneRules())))
                 .ConfigureContainer<IContainer>(c =>
                 {
-                    c.AutoAddServices(Bootstrap.ASSEMBLIES)
+                    c.AutoAddServices(ASSEMBLIES)
                         .AddNzbDroneLogger()
                         .AddDatabase()
                         .AddStartupContext(context);
                 })
-                .ConfigureServices(services =>
-                {
-                    services.Configure<PostgresOptions>(config.GetSection("Radarr:Postgres"));
-                })
                 .ConfigureWebHost(builder =>
                 {
-                    builder.UseConfiguration(config);
-                    builder.UseUrls(urls.ToArray());
-                    builder.UseKestrel(options =>
-                    {
-                        if (enableSsl && sslCertPath.IsNotNullOrWhiteSpace())
-                        {
-                            options.ConfigureHttpsDefaults(configureOptions =>
-                            {
-                                configureOptions.ServerCertificate = ValidateSslCertificate(sslCertPath, sslCertPassword);
-                            });
-                        }
-                    });
-                    builder.ConfigureKestrel(serverOptions =>
-                    {
-                        serverOptions.AllowSynchronousIO = true;
-                        serverOptions.Limits.MaxRequestBodySize = null;
-                    });
+                    builder.UseKestrel();
                     builder.UseStartup<Startup>();
                 });
         }
@@ -209,41 +165,15 @@ namespace Radarr.Host
             return ApplicationModes.Interactive;
         }
 
-        private static IConfiguration GetConfiguration(StartupContext context)
+        private static IHostBuilder AddConfig(this IHostBuilder builder, StartupContext context)
         {
             var appFolder = new AppFolderInfo(context);
-            return new ConfigurationBuilder()
-                .AddXmlFile(appFolder.GetConfigPath(), optional: true, reloadOnChange: false)
+            return builder.ConfigureAppConfiguration((_, config) =>
+            {
+                config.AddXmlFile(appFolder.GetConfigPath(), optional: true, reloadOnChange: true)
                 .AddInMemoryCollection(new List<KeyValuePair<string, string>> { new ("dataProtectionFolder", appFolder.GetDataProtectionPath()) })
-                .AddEnvironmentVariables()
-                .Build();
-        }
-
-        private static string BuildUrl(string scheme, string bindAddress, int port)
-        {
-            return $"{scheme}://{bindAddress}:{port}";
-        }
-
-        private static X509Certificate2 ValidateSslCertificate(string cert, string password)
-        {
-            X509Certificate2 certificate;
-
-            try
-            {
-                certificate = new X509Certificate2(cert, password, X509KeyStorageFlags.DefaultKeySet);
-            }
-            catch (CryptographicException ex)
-            {
-                if (ex.HResult == 0x2 || ex.HResult == 0x2006D080)
-                {
-                    throw new RadarrStartupException(ex,
-                        $"The SSL certificate file {cert} does not exist");
-                }
-
-                throw new RadarrStartupException(ex);
-            }
-
-            return certificate;
+                .AddEnvironmentVariables($"{BuildInfo.AppName}:");
+            });
         }
     }
 }

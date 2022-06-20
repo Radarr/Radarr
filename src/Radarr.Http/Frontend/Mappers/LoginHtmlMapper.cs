@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Microsoft.Extensions.Options;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
@@ -12,12 +13,12 @@ namespace Radarr.Http.Frontend.Mappers
         public LoginHtmlMapper(IAppFolderInfo appFolderInfo,
                                IDiskProvider diskProvider,
                                Lazy<ICacheBreakerProvider> cacheBreakProviderFactory,
-                               IConfigFileProvider configFileProvider,
+                               IOptionsMonitor<ConfigFileOptions> configFileProvider,
                                Logger logger)
             : base(diskProvider, cacheBreakProviderFactory, logger)
         {
-            HtmlPath = Path.Combine(appFolderInfo.StartUpFolder, configFileProvider.UiFolder, "login.html");
-            UrlBase = configFileProvider.UrlBase;
+            HtmlPath = Path.Combine(appFolderInfo.StartUpFolder, _uiFolder, "login.html");
+            UrlBase = configFileProvider.CurrentValue.UrlBase;
         }
 
         public override string Map(string resourceUrl)

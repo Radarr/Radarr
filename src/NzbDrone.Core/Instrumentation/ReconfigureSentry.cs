@@ -1,4 +1,5 @@
-﻿using System.Linq;
+using System.Linq;
+using Microsoft.Extensions.Options;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Instrumentation.Sentry;
@@ -11,11 +12,11 @@ namespace NzbDrone.Core.Instrumentation
 {
     public class ReconfigureSentry : IHandleAsync<ApplicationStartedEvent>
     {
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
         private readonly IPlatformInfo _platformInfo;
         private readonly IMainDatabase _database;
 
-        public ReconfigureSentry(IConfigFileProvider configFileProvider,
+        public ReconfigureSentry(IOptionsMonitor<ConfigFileOptions> configFileProvider,
                                  IPlatformInfo platformInfo,
                                  IMainDatabase database)
         {
@@ -30,7 +31,7 @@ namespace NzbDrone.Core.Instrumentation
             var sentryTarget = LogManager.Configuration.AllTargets.OfType<SentryTarget>().FirstOrDefault();
             if (sentryTarget != null)
             {
-                sentryTarget.UpdateScope(_database.Version, _database.Migration, _configFileProvider.Branch, _platformInfo);
+                sentryTarget.UpdateScope(_database.Version, _database.Migration, _configFileProvider.CurrentValue.Branch, _platformInfo);
             }
         }
 

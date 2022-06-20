@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using NzbDrone.Common.EnvironmentInfo;
 
 namespace NzbDrone.Core.Datastore
 {
@@ -18,7 +19,7 @@ namespace NzbDrone.Core.Datastore
                 .Build();
 
             var postgresOptions = new PostgresOptions();
-            config.GetSection("Radarr:Postgres").Bind(postgresOptions);
+            config.GetSection($"{BuildInfo.AppName}:Postgres").Bind(postgresOptions);
 
             return postgresOptions;
         }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Microsoft.Extensions.Options;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
@@ -16,13 +17,13 @@ namespace NzbDrone.Core.HealthCheck.Checks
         private readonly IDiskProvider _diskProvider;
         private readonly IAppFolderInfo _appFolderInfo;
         private readonly ICheckUpdateService _checkUpdateService;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
         private readonly IOsInfo _osInfo;
 
         public UpdateCheck(IDiskProvider diskProvider,
                            IAppFolderInfo appFolderInfo,
                            ICheckUpdateService checkUpdateService,
-                           IConfigFileProvider configFileProvider,
+                           IOptionsMonitor<ConfigFileOptions> configFileProvider,
                            IOsInfo osInfo,
                            ILocalizationService localizationService)
             : base(localizationService)
@@ -39,8 +40,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
             var startupFolder = _appFolderInfo.StartUpFolder;
             var uiFolder = Path.Combine(startupFolder, "UI");
 
-            if ((OsInfo.IsWindows || _configFileProvider.UpdateAutomatically) &&
-                _configFileProvider.UpdateMechanism == UpdateMechanism.BuiltIn &&
+            if ((OsInfo.IsWindows || _configFileProvider.CurrentValue.UpdateAutomatically) &&
+                _configFileProvider.CurrentValue.UpdateMechanism == UpdateMechanism.BuiltIn &&
                 !_osInfo.IsDocker)
             {
                 if (OsInfo.IsOsx && startupFolder.GetAncestorFolders().Contains("AppTranslocation"))

@@ -10,7 +10,7 @@ using NUnit.Framework;
 using NzbDrone.Common.Composition.Extensions;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Instrumentation.Extensions;
-using NzbDrone.Core.Datastore;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
@@ -32,7 +32,7 @@ namespace NzbDrone.Common.Test
                 .AddStartupContext(new StartupContext("first", "second"));
 
             container.RegisterInstance(new Mock<IHostLifetime>().Object);
-            container.RegisterInstance(new Mock<IOptions<PostgresOptions>>().Object);
+            container.RegisterInstance(new Mock<IOptions<ConfigFileOptions>>().Object);
 
             var serviceProvider = container.GetServiceProvider();
 

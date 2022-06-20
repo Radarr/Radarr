@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Microsoft.Extensions.Options;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
@@ -19,17 +20,17 @@ namespace NzbDrone.Core.Authentication
         User FindUser(Guid identifier);
     }
 
-    public class UserService : IUserService, IHandle<ApplicationStartedEvent>
+    public class UserService : IUserService
     {
         private readonly IUserRepository _repo;
         private readonly IAppFolderInfo _appFolderInfo;
         private readonly IDiskProvider _diskProvider;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
 
         public UserService(IUserRepository repo,
             IAppFolderInfo appFolderInfo,
             IDiskProvider diskProvider,
-            IConfigFileProvider configFileProvider)
+            IOptionsMonitor<ConfigFileOptions> configFileProvider)
         {
             _repo = repo;
             _appFolderInfo = appFolderInfo;
@@ -101,29 +102,6 @@ namespace NzbDrone.Core.Authentication
         public User FindUser(Guid identifier)
         {
             return _repo.FindUser(identifier);
-        }
-
-        public void Handle(ApplicationStartedEvent message)
-        {
-            if (_repo.All().Any())
-            {
-                return;
-            }
-
-            var xDoc = _configFileProvider.LoadConfigFile();
-            var config = xDoc.Descendants("Config").Single();
-            var usernameElement = config.Descendants("Username").FirstOrDefault();
-            var passwordElement = config.Descendants("Password").FirstOrDefault();
-
-            if (usernameElement == null || passwordElement == null)
-            {
-                return;
-            }
-
-            var username = usernameElement.Value;
-            var password = passwordElement.Value;
-
-            Add(username, password);
         }
     }
 }

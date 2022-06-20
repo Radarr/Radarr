@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Core.Configuration;
@@ -14,10 +15,10 @@ namespace Radarr.Api.V3.Logs
         protected string _resource;
 
         private readonly IDiskProvider _diskProvider;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
 
         public LogFileControllerBase(IDiskProvider diskProvider,
-                                 IConfigFileProvider configFileProvider,
+                                 IOptionsMonitor<ConfigFileOptions> configFileProvider,
                                  string resource)
         {
             _diskProvider = diskProvider;
@@ -42,8 +43,8 @@ namespace Radarr.Api.V3.Logs
                     Id = i + 1,
                     Filename = filename,
                     LastWriteTime = _diskProvider.FileGetLastWrite(file),
-                    ContentsUrl = string.Format("{0}/api/v1/{1}/{2}", _configFileProvider.UrlBase, _resource, filename),
-                    DownloadUrl = string.Format("{0}/{1}/{2}", _configFileProvider.UrlBase, DownloadUrlRoot, filename)
+                    ContentsUrl = string.Format("{0}/api/v1/{1}/{2}", _configFileProvider.CurrentValue.UrlBase, _resource, filename),
+                    DownloadUrl = string.Format("{0}/{1}/{2}", _configFileProvider.CurrentValue.UrlBase, DownloadUrlRoot, filename)
                 });
             }
 

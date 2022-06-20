@@ -25,15 +25,15 @@ namespace NzbDrone.Test.Common
 
         public string AppData { get; private set; }
         public string ApiKey { get; private set; }
-        public PostgresOptions PostgresOptions { get; private set; }
+        public ConfigFileOptions Options { get; private set; }
         public int Port { get; private set; }
 
-        public NzbDroneRunner(Logger logger, PostgresOptions postgresOptions, int port = 7878)
+        public NzbDroneRunner(Logger logger, ConfigFileOptions options, int port = 7878)
         {
             _processProvider = new ProcessProvider(logger);
             _restClient = new RestClient($"http://localhost:{port}/api/v3");
 
-            PostgresOptions = postgresOptions;
+            Options = options;
             Port = port;
         }
 
@@ -138,14 +138,14 @@ namespace NzbDrone.Test.Common
         private void Start(string outputRadarrConsoleExe)
         {
             StringDictionary envVars = new ();
-            if (PostgresOptions?.Host != null)
+            if (Options?.PostgresHost != null)
             {
-                envVars.Add("Radarr__Postgres__Host", PostgresOptions.Host);
-                envVars.Add("Radarr__Postgres__Port", PostgresOptions.Port.ToString());
-                envVars.Add("Radarr__Postgres__User", PostgresOptions.User);
-                envVars.Add("Radarr__Postgres__Password", PostgresOptions.Password);
-                envVars.Add("Radarr__Postgres__MainDb", PostgresOptions.MainDb);
-                envVars.Add("Radarr__Postgres__LogDb", PostgresOptions.LogDb);
+                envVars.Add("Radarr__PostgresHost", Options.PostgresHost);
+                envVars.Add("Radarr__PostgresPort", Options.PostgresPort.ToString());
+                envVars.Add("Radarr__PostgresUser", Options.PostgresUser);
+                envVars.Add("Radarr__PostgresPassword", Options.PostgresPassword);
+                envVars.Add("Radarr__PostgresMainDb", Options.PostgresMainDb);
+                envVars.Add("Radarr__PostgresLogDb", Options.PostgresLogDb);
 
                 TestContext.Progress.WriteLine("Using env vars:\n{0}", envVars.ToJson());
             }
@@ -175,11 +175,11 @@ namespace NzbDrone.Test.Common
 
             var xDoc = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
-                new XElement(ConfigFileProvider.CONFIG_ELEMENT_NAME,
-                             new XElement(nameof(ConfigFileProvider.ApiKey), apiKey),
-                             new XElement(nameof(ConfigFileProvider.LogLevel), "trace"),
-                             new XElement(nameof(ConfigFileProvider.AnalyticsEnabled), false),
-                             new XElement(nameof(ConfigFileProvider.Port), Port)));
+                new XElement(ConfigFileWriter.CONFIG_ELEMENT_NAME,
+                             new XElement(nameof(ConfigFileOptions.ApiKey), apiKey),
+                             new XElement(nameof(ConfigFileOptions.LogLevel), "trace"),
+                             new XElement(nameof(ConfigFileOptions.AnalyticsEnabled), false),
+                             new XElement(nameof(ConfigFileOptions.Port), Port)));
 
             var data = xDoc.ToString();
 

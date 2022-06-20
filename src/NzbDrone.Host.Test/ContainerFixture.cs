@@ -12,6 +12,7 @@ using NzbDrone.Common;
 using NzbDrone.Common.Composition.Extensions;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Instrumentation.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Download;
@@ -44,9 +45,9 @@ namespace NzbDrone.App.Test
                 .AddStartupContext(args);
 
             // dummy lifetime and broadcaster so tests resolve
-            container.RegisterInstance<IHostLifetime>(new Mock<IHostLifetime>().Object);
-            container.RegisterInstance<IBroadcastSignalRMessage>(new Mock<IBroadcastSignalRMessage>().Object);
-            container.RegisterInstance<IOptions<PostgresOptions>>(new Mock<IOptions<PostgresOptions>>().Object);
+            container.RegisterInstance(new Mock<IHostLifetime>().Object);
+            container.RegisterInstance(new Mock<IBroadcastSignalRMessage>().Object);
+            container.RegisterInstance(new Mock<IOptionsMonitor<ConfigFileOptions>>().Object);
 
             _container = container.GetServiceProvider();
         }

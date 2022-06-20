@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
 
@@ -11,10 +12,10 @@ namespace NzbDrone.Core.Update
     public class CheckUpdateService : ICheckUpdateService
     {
         private readonly IUpdatePackageProvider _updatePackageProvider;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
 
         public CheckUpdateService(IUpdatePackageProvider updatePackageProvider,
-                                  IConfigFileProvider configFileProvider)
+                                  IOptionsMonitor<ConfigFileOptions> configFileProvider)
         {
             _updatePackageProvider = updatePackageProvider;
             _configFileProvider = configFileProvider;
@@ -22,7 +23,7 @@ namespace NzbDrone.Core.Update
 
         public UpdatePackage AvailableUpdate()
         {
-            return _updatePackageProvider.GetLatestUpdate(_configFileProvider.Branch, BuildInfo.Version);
+            return _updatePackageProvider.GetLatestUpdate(_configFileProvider.CurrentValue.Branch, BuildInfo.Version);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.IO;
+using Microsoft.Extensions.Options;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
@@ -9,9 +10,9 @@ namespace Radarr.Http.Frontend.Mappers
     public class StaticResourceMapper : StaticResourceMapperBase
     {
         private readonly IAppFolderInfo _appFolderInfo;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
 
-        public StaticResourceMapper(IAppFolderInfo appFolderInfo, IDiskProvider diskProvider, IConfigFileProvider configFileProvider, Logger logger)
+        public StaticResourceMapper(IAppFolderInfo appFolderInfo, IDiskProvider diskProvider, IOptionsMonitor<ConfigFileOptions> configFileProvider, Logger logger)
             : base(diskProvider, logger)
         {
             _appFolderInfo = appFolderInfo;
@@ -23,7 +24,7 @@ namespace Radarr.Http.Frontend.Mappers
             var path = resourceUrl.Replace('/', Path.DirectorySeparatorChar);
             path = path.Trim(Path.DirectorySeparatorChar);
 
-            return Path.Combine(_appFolderInfo.StartUpFolder, _configFileProvider.UiFolder, path);
+            return Path.Combine(_appFolderInfo.StartUpFolder, _uiFolder, path);
         }
 
         public override bool CanHandle(string resourceUrl)

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
 
@@ -14,9 +15,9 @@ namespace Radarr.Http.Authentication
     public class AuthenticationController : Controller
     {
         private readonly IAuthenticationService _authService;
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
 
-        public AuthenticationController(IAuthenticationService authService, IConfigFileProvider configFileProvider)
+        public AuthenticationController(IAuthenticationService authService, IOptionsMonitor<ConfigFileOptions> configFileProvider)
         {
             _authService = authService;
             _configFileProvider = configFileProvider;
@@ -46,7 +47,7 @@ namespace Radarr.Http.Authentication
 
             await HttpContext.SignInAsync(AuthenticationType.Forms.ToString(), new ClaimsPrincipal(new ClaimsIdentity(claims, "Cookies", "user", "identifier")), authProperties);
 
-            return Redirect(_configFileProvider.UrlBase + "/");
+            return Redirect(_configFileProvider.CurrentValue.UrlBase + "/");
         }
 
         [HttpGet("logout")]
@@ -54,7 +55,7 @@ namespace Radarr.Http.Authentication
         {
             _authService.Logout(HttpContext);
             await HttpContext.SignOutAsync(AuthenticationType.Forms.ToString());
-            return Redirect(_configFileProvider.UrlBase + "/");
+            return Redirect(_configFileProvider.CurrentValue.UrlBase + "/");
         }
     }
 }

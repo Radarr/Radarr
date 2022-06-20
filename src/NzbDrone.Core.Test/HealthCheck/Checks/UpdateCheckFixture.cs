@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
@@ -19,6 +20,10 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Mocker.GetMock<ILocalizationService>()
                   .Setup(s => s.GetLocalizedString(It.IsAny<string>()))
                   .Returns("Some Warning Message");
+
+            Mocker.GetMock<IOptionsMonitor<ConfigFileOptions>>()
+                .Setup(c => c.CurrentValue)
+                .Returns(new ConfigFileOptions());
         }
 
         [Test]
@@ -44,9 +49,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
 
             const string startupFolder = @"/opt/nzbdrone";
 
-            Mocker.GetMock<IConfigFileProvider>()
-                  .Setup(s => s.UpdateAutomatically)
-                  .Returns(true);
+            Mocker.GetMock<IOptionsMonitor<ConfigFileOptions>>()
+                  .Setup(s => s.CurrentValue)
+                  .Returns(new ConfigFileOptions { UpdateAutomatically = true });
 
             Mocker.GetMock<IAppFolderInfo>()
                   .Setup(s => s.StartUpFolder)
@@ -67,9 +72,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             const string startupFolder = @"/opt/nzbdrone";
             const string uiFolder = @"/opt/nzbdrone/UI";
 
-            Mocker.GetMock<IConfigFileProvider>()
-                  .Setup(s => s.UpdateAutomatically)
-                  .Returns(true);
+            Mocker.GetMock<IOptionsMonitor<ConfigFileOptions>>()
+                .Setup(s => s.CurrentValue)
+                .Returns(new ConfigFileOptions { UpdateAutomatically = true });
 
             Mocker.GetMock<IAppFolderInfo>()
                   .Setup(s => s.StartUpFolder)
@@ -91,13 +96,9 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         {
             PosixOnly();
 
-            Mocker.GetMock<IConfigFileProvider>()
-                  .Setup(s => s.UpdateAutomatically)
-                  .Returns(true);
-
-            Mocker.GetMock<IConfigFileProvider>()
-                  .Setup(s => s.UpdateMechanism)
-                  .Returns(UpdateMechanism.Script);
+            Mocker.GetMock<IOptionsMonitor<ConfigFileOptions>>()
+                .Setup(s => s.CurrentValue)
+                .Returns(new ConfigFileOptions { UpdateAutomatically = true, UpdateMechanism = UpdateMechanism.Script });
 
             Mocker.GetMock<IAppFolderInfo>()
                   .Setup(s => s.StartUpFolder)

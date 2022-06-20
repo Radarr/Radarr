@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Authentication;
 using NzbDrone.Core.Configuration;
@@ -19,16 +20,19 @@ namespace Radarr.Api.V3.Config
     [V3ApiController("config/host")]
     public class HostConfigController : RestController<HostConfigResource>
     {
-        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IOptionsMonitor<ConfigFileOptions> _configFileProvider;
+        private readonly IConfigFileWriter _configFileWriter;
         private readonly IConfigService _configService;
         private readonly IUserService _userService;
 
-        public HostConfigController(IConfigFileProvider configFileProvider,
+        public HostConfigController(IOptionsMonitor<ConfigFileOptions> configFileProvider,
+                                    IConfigFileWriter configFileWriter,
                                     IConfigService configService,
                                     IUserService userService,
                                     FileExistsValidator fileExistsValidator)
         {
             _configFileProvider = configFileProvider;
+            _configFileWriter = configFileWriter;
             _configService = configService;
             _userService = userService;
 
@@ -87,7 +91,7 @@ namespace Radarr.Api.V3.Config
         [HttpGet]
         public HostConfigResource GetHostConfig()
         {
-            var resource = _configFileProvider.ToResource(_configService);
+            var resource = _configFileProvider.CurrentValue.ToResource(_configService);
             resource.Id = 1;
 
             var user = _userService.FindUser();
@@ -107,7 +111,7 @@ namespace Radarr.Api.V3.Config
                                      .GetProperties(BindingFlags.Instance | BindingFlags.Public)
                                      .ToDictionary(prop => prop.Name, prop => prop.GetValue(resource, null));
 
-            _configFileProvider.SaveConfigDictionary(dictionary);
+            _configFileWriter.SaveConfigDictionary(dictionary);
             _configService.SaveConfigDictionary(dictionary);
 
             if (resource.Username.IsNotNullOrWhiteSpace() && resource.Password.IsNotNullOrWhiteSpace())

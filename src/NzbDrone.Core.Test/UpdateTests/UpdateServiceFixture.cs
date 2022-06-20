@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common;
@@ -60,9 +61,9 @@ namespace NzbDrone.Core.Test.UpdateTests
             Mocker.GetMock<IProcessProvider>().Setup(c => c.GetCurrentProcess()).Returns(new ProcessInfo { Id = 12 });
             Mocker.GetMock<IRuntimeInfo>().Setup(c => c.ExecutingApplication).Returns(@"C:\Test\Radarr.exe");
 
-            Mocker.GetMock<IConfigFileProvider>()
-                  .SetupGet(s => s.UpdateAutomatically)
-                  .Returns(true);
+            Mocker.GetMock<IOptionsMonitor<ConfigFileOptions>>()
+                .Setup(s => s.CurrentValue)
+                .Returns(new ConfigFileOptions { UpdateAutomatically = true });
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(c => c.FolderWritable(It.IsAny<string>()))
@@ -77,13 +78,9 @@ namespace NzbDrone.Core.Test.UpdateTests
 
         private void GivenInstallScript(string path)
         {
-            Mocker.GetMock<IConfigFileProvider>()
-                  .SetupGet(s => s.UpdateMechanism)
-                  .Returns(UpdateMechanism.Script);
-
-            Mocker.GetMock<IConfigFileProvider>()
-                  .SetupGet(s => s.UpdateScriptPath)
-                  .Returns(path);
+            Mocker.GetMock<IOptionsMonitor<ConfigFileOptions>>()
+                .Setup(s => s.CurrentValue)
+                .Returns(new ConfigFileOptions { UpdateMechanism = UpdateMechanism.Script, UpdateScriptPath = path });
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FileExists(path, StringComparison.Ordinal))
@@ -334,7 +331,7 @@ namespace NzbDrone.Core.Test.UpdateTests
 
             Subject.Execute(new ApplicationUpdateCommand());
 
-            Mocker.GetMock<IConfigFileProvider>()
+            Mocker.GetMock<IConfigFileWriter>()
                   .Verify(v => v.SaveConfigDictionary(It.Is<Dictionary<string, object>>(d => d.ContainsKey("Branch") && (string)d["Branch"] == "fake")), Times.Once());
         }
 

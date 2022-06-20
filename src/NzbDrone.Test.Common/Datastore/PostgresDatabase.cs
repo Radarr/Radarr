@@ -1,5 +1,6 @@
 using System;
 using Npgsql;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
@@ -7,18 +8,18 @@ namespace NzbDrone.Test.Common.Datastore
 {
     public static class PostgresDatabase
     {
-        public static PostgresOptions GetTestOptions()
+        public static ConfigFileOptions GetTestOptions()
         {
-            var options = PostgresOptions.GetOptions();
+            var options = ConfigFileOptions.GetOptions();
 
             var uid = TestBase.GetUID();
-            options.MainDb = uid + "_main";
-            options.LogDb = uid + "_log";
+            options.PostgresMainDb = uid + "_main";
+            options.PostgresLogDb = uid + "_log";
 
             return options;
         }
 
-        public static void Create(PostgresOptions options, MigrationType migrationType)
+        public static void Create(ConfigFileOptions options, MigrationType migrationType)
         {
             var db = GetDatabaseName(options, migrationType);
             var connectionString = GetConnectionString(options);
@@ -26,11 +27,11 @@ namespace NzbDrone.Test.Common.Datastore
             conn.Open();
 
             using var cmd = conn.CreateCommand();
-            cmd.CommandText = $"CREATE DATABASE \"{db}\" WITH OWNER = {options.User} ENCODING = 'UTF8' CONNECTION LIMIT = -1;";
+            cmd.CommandText = $"CREATE DATABASE \"{db}\" WITH OWNER = {options.PostgresUser} ENCODING = 'UTF8' CONNECTION LIMIT = -1;";
             cmd.ExecuteNonQuery();
         }
 
-        public static void Drop(PostgresOptions options, MigrationType migrationType)
+        public static void Drop(ConfigFileOptions options, MigrationType migrationType)
         {
             var db = GetDatabaseName(options, migrationType);
             var connectionString = GetConnectionString(options);
@@ -42,26 +43,26 @@ namespace NzbDrone.Test.Common.Datastore
             cmd.ExecuteNonQuery();
         }
 
-        private static string GetConnectionString(PostgresOptions options)
+        private static string GetConnectionString(ConfigFileOptions options)
         {
             var builder = new NpgsqlConnectionStringBuilder()
             {
-                Host = options.Host,
-                Port = options.Port,
-                Username = options.User,
-                Password = options.Password,
+                Host = options.PostgresHost,
+                Port = options.PostgresPort,
+                Username = options.PostgresUser,
+                Password = options.PostgresPassword,
                 Enlist = false
             };
 
             return builder.ConnectionString;
         }
 
-        private static string GetDatabaseName(PostgresOptions options, MigrationType migrationType)
+        private static string GetDatabaseName(ConfigFileOptions options, MigrationType migrationType)
         {
             return migrationType switch
             {
-                MigrationType.Main => options.MainDb,
-                MigrationType.Log => options.LogDb,
+                MigrationType.Main => options.PostgresMainDb,
+                MigrationType.Log => options.PostgresLogDb,
                 _ => throw new NotImplementedException("Unknown migration type")
             };
         }

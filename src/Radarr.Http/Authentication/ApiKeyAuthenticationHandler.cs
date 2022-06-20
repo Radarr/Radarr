@@ -28,10 +28,10 @@ namespace Radarr.Http.Authentication
             ILoggerFactory logger,
             UrlEncoder encoder,
             ISystemClock clock,
-            IConfigFileProvider config)
+            IOptionsMonitor<ConfigFileOptions> config)
             : base(options, logger, encoder, clock)
         {
-            _apiKey = config.ApiKey;
+            _apiKey = config.CurrentValue.ApiKey;
         }
 
         private string ParseApiKey()
