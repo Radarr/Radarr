@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.UpdateTests
         {
             Mocker.GetMock<IOptionsMonitor<ConfigFileOptions>>()
                 .Setup(s => s.CurrentValue)
-                .Returns(new ConfigFileOptions { UpdateMechanism = UpdateMechanism.Script, UpdateScriptPath = path });
+                .Returns(new ConfigFileOptions { UpdateAutomatically = true, UpdateMechanism = UpdateMechanism.Script, UpdateScriptPath = path });
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.FileExists(path, StringComparison.Ordinal))

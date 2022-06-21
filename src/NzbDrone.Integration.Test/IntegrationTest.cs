@@ -36,7 +36,7 @@ namespace NzbDrone.Integration.Test
         {
             Port = Interlocked.Increment(ref StaticPort);
 
-            Options = ConfigFileOptions.GetOptions();
+            Options = PostgresDatabase.GetTestOptions();
 
             if (Options?.PostgresHost != null)
             {

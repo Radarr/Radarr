@@ -544,10 +544,10 @@ stages:
       variables:
         pattern: 'Radarr.*.linux-core-x64.tar.gz'
         artifactName: linux-x64-tests
-        Radarr__Postgres__Host: 'localhost'
-        Radarr__Postgres__Port: '5432'
-        Radarr__Postgres__User: 'radarr'
-        Radarr__Postgres__Password: 'radarr'
+        Radarr__PostgresHost: 'localhost'
+        Radarr__PostgresPort: '5432'
+        Radarr__PostgresUser: 'radarr'
+        Radarr__PostgresPassword: 'radarr'
 
       pool:
         vmImage: 'ubuntu-18.04'
@@ -681,10 +681,10 @@ stages:
       condition: and(succeeded(), eq(dependencies.Prepare.outputs['setVar.backendNotUpdated'], '0'))
       variables:
         pattern: 'Radarr.*.linux-core-x64.tar.gz'
-        Radarr__Postgres__Host: 'localhost'
-        Radarr__Postgres__Port: '5432'
-        Radarr__Postgres__User: 'radarr'
-        Radarr__Postgres__Password: 'radarr'
+        Radarr__PostgresHost: 'localhost'
+        Radarr__PostgresPort: '5432'
+        Radarr__PostgresUser: 'radarr'
+        Radarr__PostgresPassword: 'radarr'
 
       pool:
         vmImage: 'ubuntu-18.04'

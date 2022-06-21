@@ -2,6 +2,7 @@ using System.Linq;
 using DryIoc;
 using DryIoc.Microsoft.DependencyInjection;
 using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
@@ -32,7 +33,8 @@ namespace NzbDrone.Common.Test
                 .AddStartupContext(new StartupContext("first", "second"));
 
             container.RegisterInstance(new Mock<IHostLifetime>().Object);
-            container.RegisterInstance(new Mock<IOptions<ConfigFileOptions>>().Object);
+            container.RegisterInstance(new Mock<IConfiguration>().Object);
+            container.RegisterInstance(new Mock<IOptionsMonitor<ConfigFileOptions>>().Object);
 
             var serviceProvider = container.GetServiceProvider();
 
