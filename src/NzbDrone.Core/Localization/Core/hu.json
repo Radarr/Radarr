@@ -1137,5 +1137,8 @@
     "CollectionOptions": "Gyűjtemény baállítások",
     "CollectionShowOverviewsHelpText": "Gyűjtemények áttekintésének megjelenítése",
     "CollectionShowDetailsHelpText": "A gyűjtemény állapotának és tulajdonságainak megjelenítése",
-    "CollectionShowPostersHelpText": "Gyűjteményelemek posztereinek megjelenítése"
+    "CollectionShowPostersHelpText": "Gyűjteményelemek posztereinek megjelenítése",
+    "OnMovieAdded": "Film hozzáadásakor",
+    "OnMovieAddedHelpText": "Film hozzáadásakor",
+    "ShowPosters": "Poszterek megjelenítése"
 }
