@@ -8705,28 +8705,19 @@
         },
         "additionalProperties": false
       },
-      "CollectionUpdateCollectionResource": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "monitored": {
-            "type": "boolean",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "CollectionUpdateResource": {
         "type": "object",
         "properties": {
-          "collections": {
+          "collectionIds": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CollectionUpdateCollectionResource"
+              "type": "integer",
+              "format": "int32"
             },
+            "nullable": true
+          },
+          "monitored": {
+            "type": "boolean",
             "nullable": true
           },
           "monitorMovies": {
