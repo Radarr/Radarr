@@ -2,13 +2,15 @@ using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
-    [CheckOn(typeof(CollectionEditedEvent), CheckOnCondition.Always)]
+    [CheckOn(typeof(ModelEvent<RootFolder>))]
     public class MovieCollectionRootFolderCheck : HealthCheckBase
     {
         private readonly IMovieCollectionService _collectionService;

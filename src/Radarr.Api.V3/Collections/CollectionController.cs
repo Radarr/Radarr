@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Collections;
+using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Organizer;
 using NzbDrone.SignalR;
@@ -25,13 +27,15 @@ namespace Radarr.Api.V3.Collections
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly INamingConfigService _namingService;
+        private readonly IManageCommandQueue _commandQueueManager;
 
         public CollectionController(IBroadcastSignalRMessage signalRBroadcaster,
                                     IMovieCollectionService collectionService,
                                     IMovieService movieService,
                                     IMovieMetadataService movieMetadataService,
                                     IBuildFileNames fileNameBuilder,
-                                    INamingConfigService namingService)
+                                    INamingConfigService namingService,
+                                    IManageCommandQueue commandQueueManager)
             : base(signalRBroadcaster)
         {
             _collectionService = collectionService;
@@ -39,6 +43,7 @@ namespace Radarr.Api.V3.Collections
             _movieMetadataService = movieMetadataService;
             _fileNameBuilder = fileNameBuilder;
             _namingService = namingService;
+            _commandQueueManager = commandQueueManager;
         }
 
         protected override CollectionResource GetResourceById(int id)
@@ -67,34 +72,32 @@ namespace Radarr.Api.V3.Collections
         }
 
         [HttpPut]
-        public ActionResult UpdateCollections(CollectionUpdateResource collectionResources)
+        public ActionResult UpdateCollections(CollectionUpdateResource resource)
         {
-            var collectionsToUpdate = _collectionService.GetCollections(collectionResources.Collections.Select(c => c.Id));
-            var update = new List<CollectionResource>();
+            var collectionsToUpdate = _collectionService.GetCollections(resource.CollectionIds);
 
-            foreach (var c in collectionResources.Collections)
+            foreach (var collection in collectionsToUpdate)
             {
-                var collection = collectionsToUpdate.Single(n => n.Id == c.Id);
-
-                if (c.Monitored.HasValue)
+                if (resource.Monitored.HasValue)
                 {
-                    collection.Monitored = c.Monitored.Value;
+                    collection.Monitored = resource.Monitored.Value;
                 }
 
-                if (collectionResources.MonitorMovies.HasValue)
+                if (resource.MonitorMovies.HasValue)
                 {
                     var movies = _movieService.GetMoviesByCollectionTmdbId(collection.TmdbId);
 
-                    movies.ForEach(c => c.Monitored = collectionResources.MonitorMovies.Value);
+                    movies.ForEach(c => c.Monitored = resource.MonitorMovies.Value);
 
                     _movieService.UpdateMovie(movies, true);
                 }
-
-                var updatedCollection = _collectionService.UpdateCollection(collection);
-                update.Add(updatedCollection.ToResource());
             }
 
-            return Accepted(update);
+            var updated = _collectionService.UpdateCollections(collectionsToUpdate.ToList()).ToResource();
+
+            _commandQueueManager.Push(new RefreshCollectionsCommand());
+
+            return Accepted(updated);
         }
 
         private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections, List<MovieMetadata> collectionMovies)
@@ -125,7 +128,7 @@ namespace Radarr.Api.V3.Collections
             foreach (var movie in _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId))
             {
                 var movieResource = movie.ToResource();
-                movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { Title = movie.Title, Year = movie.Year, ImdbId = movie.ImdbId, TmdbId = movie.TmdbId });
+                movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie });
 
                 resource.Movies.Add(movieResource);
             }

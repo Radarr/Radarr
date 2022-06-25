@@ -12,7 +12,7 @@ using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.Movies
 {
-    public class RefreshCollectionService : IExecute<RefreshCollectionsCommand>, IHandle<CollectionEditedEvent>
+    public class RefreshCollectionService : IExecute<RefreshCollectionsCommand>
     {
         private readonly IProvideMovieInfo _movieInfo;
         private readonly IMovieCollectionService _collectionService;
@@ -150,11 +150,6 @@ namespace NzbDrone.Core.Movies
                     }
                 }
             }
-        }
-
-        public void Handle(CollectionEditedEvent message)
-        {
-            SyncCollectionMovies(message.Collection);
         }
     }
 }

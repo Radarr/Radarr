@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NLog;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies.Events;
 
@@ -13,6 +14,7 @@ namespace NzbDrone.Core.Movies.Collections
         IEnumerable<MovieCollection> GetCollections(IEnumerable<int> ids);
         List<MovieCollection> GetAllCollections();
         MovieCollection UpdateCollection(MovieCollection collection);
+        List<MovieCollection> UpdateCollections(List<MovieCollection> collections);
         void RemoveCollection(MovieCollection collection);
         bool Upsert(MovieCollection collection);
         bool UpsertMany(List<MovieCollection> collections);
@@ -23,12 +25,14 @@ namespace NzbDrone.Core.Movies.Collections
         private readonly IMovieCollectionRepository _repo;
         private readonly IMovieService _movieService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly Logger _logger;
 
-        public MovieCollectionService(IMovieCollectionRepository repo, IMovieService movieService, IEventAggregator eventAggregator)
+        public MovieCollectionService(IMovieCollectionRepository repo, IMovieService movieService, IEventAggregator eventAggregator, Logger logger)
         {
             _repo = repo;
             _movieService = movieService;
             _eventAggregator = eventAggregator;
+            _logger = logger;
         }
 
         public MovieCollection AddCollection(MovieCollection newCollection)
@@ -71,6 +75,21 @@ namespace NzbDrone.Core.Movies.Collections
             _eventAggregator.PublishEvent(new CollectionEditedEvent(updatedCollection, storedCollection));
 
             return updatedCollection;
+        }
+
+        public List<MovieCollection> UpdateCollections(List<MovieCollection> collections)
+        {
+            _logger.Debug("Updating {0} movie collections", collections.Count);
+
+            foreach (var c in collections)
+            {
+                _logger.Trace("Updating: {0}", c.Title);
+            }
+
+            _repo.UpdateMany(collections);
+            _logger.Debug("{0} movie collections updated", collections.Count);
+
+            return collections;
         }
 
         public void RemoveCollection(MovieCollection collection)
