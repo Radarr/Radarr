@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
@@ -81,6 +82,21 @@ namespace Radarr.Api.V3.Collections
                 if (resource.Monitored.HasValue)
                 {
                     collection.Monitored = resource.Monitored.Value;
+                }
+
+                if (resource.QualityProfileId.HasValue)
+                {
+                    collection.QualityProfileId = resource.QualityProfileId.Value;
+                }
+
+                if (resource.MinimumAvailability.HasValue)
+                {
+                    collection.MinimumAvailability = resource.MinimumAvailability.Value;
+                }
+
+                if (resource.RootFolderPath.IsNotNullOrWhiteSpace())
+                {
+                    collection.RootFolderPath = resource.RootFolderPath;
                 }
 
                 if (resource.MonitorMovies.HasValue)

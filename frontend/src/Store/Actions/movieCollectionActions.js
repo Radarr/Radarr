@@ -254,7 +254,10 @@ export const actionHandlers = handleThunks({
     const {
       collectionIds,
       monitored,
-      monitor
+      monitor,
+      qualityProfileId,
+      rootFolderPath,
+      minimumAvailability
     } = payload;
 
     const response = {};
@@ -267,6 +270,15 @@ export const actionHandlers = handleThunks({
       response.monitorMovies = monitor === 'monitored';
     }
 
+    if (payload.hasOwnProperty('qualityProfileId')) {
+      response.qualityProfileId = qualityProfileId;
+    }
+
+    if (payload.hasOwnProperty('minimumAvailability')) {
+      response.minimumAvailability = minimumAvailability;
+    }
+
+    response.rootFolderPath = rootFolderPath;
     response.collectionIds = collectionIds;
 
     dispatch(set({

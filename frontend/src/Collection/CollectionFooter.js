@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import AvailabilitySelectInput from 'Components/Form/AvailabilitySelectInput';
+import QualityProfileSelectInputConnector from 'Components/Form/QualityProfileSelectInputConnector';
+import RootFolderSelectInputConnector from 'Components/Form/RootFolderSelectInputConnector';
 import SelectInput from 'Components/Form/SelectInput';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
@@ -22,6 +25,9 @@ class CollectionFooter extends Component {
     this.state = {
       monitor: NO_CHANGE,
       monitored: NO_CHANGE,
+      qualityProfileId: NO_CHANGE,
+      minimumAvailability: NO_CHANGE,
+      rootFolderPath: NO_CHANGE,
       destinationRootFolder: null
     };
   }
@@ -36,7 +42,10 @@ class CollectionFooter extends Component {
     if (prevProps.isSaving && !isSaving && !saveError) {
       this.setState({
         monitored: NO_CHANGE,
-        monitor: NO_CHANGE
+        monitor: NO_CHANGE,
+        qualityProfileId: NO_CHANGE,
+        rootFolderPath: NO_CHANGE,
+        minimumAvailability: NO_CHANGE
       });
     }
 
@@ -55,7 +64,9 @@ class CollectionFooter extends Component {
   onUpdateSelectedPress = () => {
     const {
       monitor,
-      monitored
+      monitored,
+      qualityProfileId,
+      minimumAvailability
     } = this.state;
 
     const changes = {};
@@ -66,6 +77,14 @@ class CollectionFooter extends Component {
 
     if (monitor !== NO_CHANGE) {
       changes.monitor = monitor;
+    }
+
+    if (qualityProfileId !== NO_CHANGE) {
+      changes.qualityProfileId = qualityProfileId;
+    }
+
+    if (minimumAvailability !== NO_CHANGE) {
+      changes.minimumAvailability = minimumAvailability;
     }
 
     this.props.onUpdateSelectedPress(changes);
@@ -82,7 +101,10 @@ class CollectionFooter extends Component {
 
     const {
       monitored,
-      monitor
+      monitor,
+      qualityProfileId,
+      minimumAvailability,
+      rootFolderPath
     } = this.state;
 
     const monitoredOptions = [
@@ -121,6 +143,52 @@ class CollectionFooter extends Component {
             value={monitor}
             values={monitoredOptions}
             isDisabled={!selectedCount}
+            onChange={this.onInputChange}
+          />
+        </div>
+
+        <div className={styles.inputContainer}>
+          <CollectionFooterLabel
+            label={translate('QualityProfile')}
+            isSaving={isSaving && qualityProfileId !== NO_CHANGE}
+          />
+
+          <QualityProfileSelectInputConnector
+            name="qualityProfileId"
+            value={qualityProfileId}
+            includeNoChange={true}
+            isDisabled={!selectedCount}
+            onChange={this.onInputChange}
+          />
+        </div>
+
+        <div className={styles.inputContainer}>
+          <CollectionFooterLabel
+            label={translate('MinimumAvailability')}
+            isSaving={isSaving && minimumAvailability !== NO_CHANGE}
+          />
+
+          <AvailabilitySelectInput
+            name="minimumAvailability"
+            value={minimumAvailability}
+            includeNoChange={true}
+            isDisabled={!selectedCount}
+            onChange={this.onInputChange}
+          />
+        </div>
+
+        <div className={styles.inputContainer}>
+          <CollectionFooterLabel
+            label={translate('RootFolder')}
+            isSaving={isSaving && rootFolderPath !== NO_CHANGE}
+          />
+
+          <RootFolderSelectInputConnector
+            name="rootFolderPath"
+            value={rootFolderPath}
+            includeNoChange={true}
+            isDisabled={!selectedCount}
+            selectedValueOptions={{ includeFreeSpace: false }}
             onChange={this.onInputChange}
           />
         </div>
