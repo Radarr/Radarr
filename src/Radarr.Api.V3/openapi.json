@@ -8723,6 +8723,18 @@
           "monitorMovies": {
             "type": "boolean",
             "nullable": true
+          },
+          "qualityProfileId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "rootFolderPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "minimumAvailability": {
+            "$ref": "#/components/schemas/MovieStatusType"
           }
         },
         "additionalProperties": false
