@@ -1115,5 +1115,9 @@
     "AllCollectionsHiddenDueToFilter": "Todas las películas están ocultas debido al filtro aplicado.",
     "Collections": "Colección",
     "MonitorMovies": "Monitorear Película",
-    "NoCollections": "No se encontraron películas, para comenzar, querrá agregar una nueva película o importar algunas existentes."
+    "NoCollections": "No se encontraron películas, para comenzar, querrá agregar una nueva película o importar algunas existentes.",
+    "ChooseImportMode": "Elegir Modo de Importación",
+    "CollectionOptions": "Opciones de la Colección",
+    "CollectionShowDetailsHelpText": "Mostrar el estado y propiedades de la colección",
+    "CollectionShowOverviewsHelpText": "Mostrar resumenes de la colección"
 }

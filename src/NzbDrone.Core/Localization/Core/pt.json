@@ -1116,5 +1116,12 @@
     "Collections": "Coleção",
     "RssSyncHelpText": "Intervalo em minutos. Defina como zero para desativar (isso parará toda a captura automática)",
     "MonitorMovies": "Monitorar filme",
-    "NoCollections": "Nenhum filme encontrado. Para começar, adiciona um novo filme ou importa alguns já existentes."
+    "NoCollections": "Nenhum filme encontrado. Para começar, adiciona um novo filme ou importa alguns já existentes.",
+    "MovieAndCollection": "Filme e Coleção",
+    "CollectionsSelectedInterp": "{0} Coleções Selecionadas",
+    "EditCollection": "Editar Coleção",
+    "ChooseImportMode": "Selecionar Modo de Importação",
+    "InstanceName": "Nome da Instancia",
+    "CollectionOptions": "Opções de Coleção",
+    "CollectionShowDetailsHelpText": "Mostrar estado da coleção e proprieades"
 }
