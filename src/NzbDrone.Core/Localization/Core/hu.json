@@ -1140,5 +1140,6 @@
     "CollectionShowPostersHelpText": "Gyűjteményelemek posztereinek megjelenítése",
     "OnMovieAdded": "Film hozzáadásakor",
     "OnMovieAddedHelpText": "Film hozzáadásakor",
-    "ShowPosters": "Poszterek megjelenítése"
+    "ShowPosters": "Poszterek megjelenítése",
+    "InstanceNameHelpText": "Példánynév a böngésző lapon és a syslog alkalmazás neve"
 }
