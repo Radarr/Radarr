@@ -110,5 +110,6 @@
     "DeleteNotificationMessageText": "Naozaj chcete zmazať značku formátu {0} ?",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Naozaj chcete odobrať {0} položku {1} z fronty?",
     "ImportCustomFormat": "Pridať vlastný formát",
-    "DeleteRestrictionHelpText": "Naozaj chcete zmazať tento profil oneskorenia?"
+    "DeleteRestrictionHelpText": "Naozaj chcete zmazať tento profil oneskorenia?",
+    "AllCollectionsHiddenDueToFilter": "Všetky filmy sú skryté kvôli použitému filtru."
 }
