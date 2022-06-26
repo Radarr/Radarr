@@ -19,7 +19,7 @@
     "IndexerStatusCheckAllClientMessage": "Todos os indexadores estão indisponíveis devido a falhas",
     "IndexersSettingsSummary": "Indexadores e restrições de lançamento",
     "IndexerSettings": "Configurações do indexador",
-    "IndexerSearchCheckNoInteractiveMessage": "Nenhum indexador disponível com Busca Interativa habilitada, Radarr não irá prover quaisquer resultados para busca interativa",
+    "IndexerSearchCheckNoInteractiveMessage": "Nenhum indexador disponível com a Pesquisa Interativa ativada, o Radarr não fornecerá nenhum resultado de pesquisa interativa",
     "IndexerSearchCheckNoAvailableIndexersMessage": "Todos os indexadores com capacidade de pesquisa estão temporariamente indisponíveis devido a erros recentes do indexador",
     "IndexerSearchCheckNoAutomaticMessage": "Nenhum indexador disponível com a Pesquisa automática habilitada, o Radarr não fornecerá nenhum resultado de pesquisa automática",
     "Indexers": "Indexadores",
