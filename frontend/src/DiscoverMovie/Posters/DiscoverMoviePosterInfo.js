@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import HeartRating from 'Components/HeartRating';
+import TmdbRating from 'Components/TmdbRating';
 import { getMovieStatusDetails } from 'Movie/MovieStatus';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
@@ -111,7 +111,7 @@ function DiscoverMoviePosterInfo(props) {
   if (sortKey === 'ratings' && ratings) {
     return (
       <div className={styles.info}>
-        <HeartRating
+        <TmdbRating
           ratings={ratings}
         />
       </div>

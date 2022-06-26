@@ -22,7 +22,7 @@ class TmdbRating extends PureComponent {
     let ratingString = '0%';
 
     if (rating) {
-      ratingString = `${rating.value * 10}%`;
+      ratingString = `${(rating.value * 10).toFixed()}%`;
     }
 
     return (

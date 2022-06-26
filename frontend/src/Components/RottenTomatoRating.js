@@ -21,9 +21,11 @@ class RottenTomatoRating extends PureComponent {
     const rating = ratings.rottenTomatoes;
 
     let ratingString = '0%';
+    let ratingImage = rtFresh;
 
     if (rating) {
       ratingString = `${rating.value}%`;
+      ratingImage = rating.value > 50 ? rtFresh : rtRotten;
     }
 
     return (
@@ -32,7 +34,7 @@ class RottenTomatoRating extends PureComponent {
           !hideIcon &&
             <img
               className={styles.image}
-              src={rating.value > 50 ? rtFresh : rtRotten}
+              src={ratingImage}
               style={{
                 height: `${iconSize}px`
               }}

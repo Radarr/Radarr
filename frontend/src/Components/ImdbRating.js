@@ -22,11 +22,11 @@ class ImdbRating extends PureComponent {
     let ratingString = '0.0';
 
     if (rating) {
-      ratingString = `${rating.value}`;
+      ratingString = `${rating.value.toFixed(1)}`;
     }
 
     return (
-      <span title={`${rating.votes} votes`}>
+      <span title={`${rating ? rating.votes : 0} votes`}>
         {
           !hideIcon &&
             <img

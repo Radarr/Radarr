@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
+import ImdbRating from 'Components/ImdbRating';
 import IconButton from 'Components/Link/IconButton';
 import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
+import RottenTomatoRating from 'Components/RottenTomatoRating';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
 import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import TagListConnector from 'Components/TagListConnector';
+import TmdbRating from 'Components/TmdbRating';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
@@ -349,13 +351,39 @@ class MovieIndexRow extends Component {
               );
             }
 
-            if (name === 'ratings') {
+            if (name === 'tmdbRating') {
               return (
                 <VirtualTableRowCell
                   key={name}
                   className={styles[name]}
                 >
-                  <HeartRating
+                  <TmdbRating
+                    ratings={ratings}
+                  />
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'rottenTomatoesRating') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  <RottenTomatoRating
+                    ratings={ratings}
+                  />
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'imdbRating') {
+              return (
+                <VirtualTableRowCell
+                  key={name}
+                  className={styles[name]}
+                >
+                  <ImdbRating
                     ratings={ratings}
                   />
                 </VirtualTableRowCell>

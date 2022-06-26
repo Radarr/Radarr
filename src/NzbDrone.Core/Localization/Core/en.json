@@ -859,6 +859,7 @@
   "RootFolderCheckMultipleMessage": "Multiple root folders are missing: {0}",
   "RootFolderCheckSingleMessage": "Missing root folder: {0}",
   "RootFolders": "Root Folders",
+  "RottenTomatoesRating": "Tomato Rating",
   "RSS": "RSS",
   "RSSIsNotSupportedWithThisIndexer": "RSS is not supported with this indexer",
   "RSSSync": "RSS Sync",

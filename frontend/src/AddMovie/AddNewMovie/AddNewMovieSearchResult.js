@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import HeartRating from 'Components/HeartRating';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
 import Link from 'Components/Link/Link';
+import TmdbRating from 'Components/TmdbRating';
 import Tooltip from 'Components/Tooltip/Tooltip';
 import { icons, kinds, sizes, tooltipPositions } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
@@ -190,7 +190,7 @@ class AddNewMovieSearchResult extends Component {
 
             <div>
               <Label size={sizes.LARGE}>
-                <HeartRating
+                <TmdbRating
                   ratings={ratings}
                   iconSize={13}
                 />

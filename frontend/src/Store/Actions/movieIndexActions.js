@@ -178,8 +178,20 @@ export const defaultState = {
       isVisible: true
     },
     {
-      name: 'ratings',
-      label: translate('Ratings'),
+      name: 'tmdbRating',
+      label: translate('TmdbRating'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'rottenTomatoesRating',
+      label: translate('RottenTomatoesRating'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
+      name: 'imdbRating',
+      label: translate('ImdbRating'),
       isSortable: true,
       isVisible: false
     },
@@ -224,10 +236,22 @@ export const defaultState = {
       return originalLanguage.name;
     },
 
-    ratings: function(item) {
+    imdbRating: function(item) {
       const { ratings = {} } = item;
 
-      return ratings.tmdb? ratings.tmdb.value : 0;
+      return ratings.imdb ? ratings.imdb.value : 0;
+    },
+
+    tmdbRating: function(item) {
+      const { ratings = {} } = item;
+
+      return ratings.tmdb ? ratings.tmdb.value : 0;
+    },
+
+    rottenTomatoesRating: function(item) {
+      const { ratings = {} } = item;
+
+      return ratings.rottenTomatoes ? ratings.rottenTomatoes.value : 0;
     }
   },
 
@@ -411,6 +435,11 @@ export const defaultState = {
     {
       name: 'imdbRating',
       label: translate('ImdbRating'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'rottenTomatoesRating',
+      label: translate('RottenTomatoesRating'),
       type: filterBuilderTypes.NUMBER
     },
     {

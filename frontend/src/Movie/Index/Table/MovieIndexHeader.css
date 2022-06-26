@@ -77,7 +77,9 @@
   flex: 0 0 120px;
 }
 
-.ratings {
+.imdbRating,
+.tmdbRating,
+.rottenTomatoesRating {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
   flex: 0 0 80px;
