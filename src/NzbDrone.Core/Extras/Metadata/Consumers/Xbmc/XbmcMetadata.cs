@@ -158,20 +158,30 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                     {
                         var setRating = new XElement("ratings");
 
-                        if (movie.MovieMetadata.Value.Ratings.Tmdb?.Votes > 0)
-                        {
-                            var setRatethemoviedb = new XElement("rating", new XAttribute("name", "themoviedb"), new XAttribute("max", "10"), new XAttribute("default", "true"));
-                            setRatethemoviedb.Add(new XElement("value", movie.MovieMetadata.Value.Ratings.Tmdb.Value));
-                            setRatethemoviedb.Add(new XElement("votes", movie.MovieMetadata.Value.Ratings.Tmdb.Votes));
-                            setRating.Add(setRatethemoviedb);
-                        }
+                        var defaultRatingSet = false;
 
                         if (movie.MovieMetadata.Value.Ratings.Imdb?.Votes > 0)
                         {
-                            var setRateImdb = new XElement("rating", new XAttribute("name", "imdb"), new XAttribute("max", "10"));
+                            var setRateImdb = new XElement("rating", new XAttribute("name", "imdb"), new XAttribute("max", "10"), new XAttribute("default", "true"));
                             setRateImdb.Add(new XElement("value", movie.MovieMetadata.Value.Ratings.Imdb.Value));
                             setRateImdb.Add(new XElement("votes", movie.MovieMetadata.Value.Ratings.Imdb.Votes));
+
+                            defaultRatingSet = true;
                             setRating.Add(setRateImdb);
+                        }
+
+                        if (movie.MovieMetadata.Value.Ratings.Tmdb?.Votes > 0)
+                        {
+                            var setRatethemoviedb = new XElement("rating", new XAttribute("name", "themoviedb"), new XAttribute("max", "10"));
+                            setRatethemoviedb.Add(new XElement("value", movie.MovieMetadata.Value.Ratings.Tmdb.Value));
+                            setRatethemoviedb.Add(new XElement("votes", movie.MovieMetadata.Value.Ratings.Tmdb.Votes));
+
+                            if (!defaultRatingSet)
+                            {
+                                setRatethemoviedb.SetAttributeValue("default", "true");
+                            }
+
+                            setRating.Add(setRatethemoviedb);
                         }
 
                         details.Add(setRating);
