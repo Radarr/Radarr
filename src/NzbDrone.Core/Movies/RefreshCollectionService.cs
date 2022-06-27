@@ -99,21 +99,25 @@ namespace NzbDrone.Core.Movies
             {
                 var existingMovies = _movieService.AllMovieTmdbIds();
                 var collectionMovies = _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId);
+                var moviesToAdd = collectionMovies.Where(m => !existingMovies.Contains(m.TmdbId));
 
-                _addMovieService.AddMovies(collectionMovies.Where(m => !existingMovies.Contains(m.TmdbId)).Select(m => new Movie
+                if (moviesToAdd.Any())
                 {
-                    TmdbId = m.TmdbId,
-                    Title = m.Title,
-                    ProfileId = collection.QualityProfileId,
-                    RootFolderPath = collection.RootFolderPath,
-                    MinimumAvailability = collection.MinimumAvailability,
-                    AddOptions = new AddMovieOptions
+                    _addMovieService.AddMovies(moviesToAdd.Select(m => new Movie
                     {
-                        SearchForMovie = collection.SearchOnAdd,
-                        AddMethod = AddMovieMethod.Collection
-                    },
-                    Monitored = true
-                }).ToList());
+                        TmdbId = m.TmdbId,
+                        Title = m.Title,
+                        ProfileId = collection.QualityProfileId,
+                        RootFolderPath = collection.RootFolderPath,
+                        MinimumAvailability = collection.MinimumAvailability,
+                        AddOptions = new AddMovieOptions
+                        {
+                            SearchForMovie = collection.SearchOnAdd,
+                            AddMethod = AddMovieMethod.Collection
+                        },
+                        Monitored = true
+                    }).ToList());
+                }
             }
         }
 
