@@ -1141,5 +1141,6 @@
     "CollectionOptions": "Opções de Coleção",
     "CollectionShowDetailsHelpText": "Mostrar estado e propriedades da coleção",
     "CollectionShowOverviewsHelpText": "Mostrar visão geral da coleção",
-    "CollectionShowPostersHelpText": "Mostrar pôsteres de itens da coleção"
+    "CollectionShowPostersHelpText": "Mostrar pôsteres de itens da coleção",
+    "RottenTomatoesRating": "Avaliação Tomato"
 }
