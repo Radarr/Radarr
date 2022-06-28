@@ -1115,7 +1115,7 @@
     "RefreshMonitoredIntervalHelpText": "Miten usein valvottujen latausten tiedot päivitetään lataustyökaluilta (vähimmäisaika on 1 minuutti).",
     "RssSyncHelpText": "Aikaväli minuutteina. Arvo nolla kytkee toiminnon pois käytöstä ja lopettaen samalla automaattisen julkaisujen kaappauksen täysin.",
     "InstanceName": "Instanssin nimi",
-    "InstanceNameHelpText": "Instanssin nimi välilehdellä ja sovelluksen Syslog-nimeksi",
+    "InstanceNameHelpText": "Instanssin nimi välilehdellä ja järjestelmälokissa",
     "AllCollectionsHiddenDueToFilter": "Käytössä oleva suodatin on piilottanut kaikki kokoelmat.",
     "Collections": "Kokoelmat",
     "MonitorMovies": "Valvo elokuvia",
@@ -1141,5 +1141,6 @@
     "CollectionShowOverviewsHelpText": "Näytä kokoelmien katsaukset",
     "CollectionOptions": "Kokoelmien valinnat",
     "CollectionShowDetailsHelpText": "Näytä kokoelmien tila ja ominaisuudet",
-    "CollectionShowPostersHelpText": "Näytä kokoelmien julisteet"
+    "CollectionShowPostersHelpText": "Näytä kokoelmien julisteet",
+    "RottenTomatoesRating": "Tomaattiarvio"
 }

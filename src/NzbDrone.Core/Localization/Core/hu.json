@@ -1141,5 +1141,6 @@
     "OnMovieAdded": "Film hozzáadásakor",
     "OnMovieAddedHelpText": "Film hozzáadásakor",
     "ShowPosters": "Poszterek megjelenítése",
-    "InstanceNameHelpText": "Példánynév a böngésző lapon és a syslog alkalmazás neve"
+    "InstanceNameHelpText": "Példánynév a böngésző lapon és a syslog alkalmazás neve",
+    "RottenTomatoesRating": "Tomato Értékelés"
 }
