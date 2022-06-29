@@ -38,19 +38,8 @@ namespace NzbDrone.Core.Organizer
         private readonly ICustomFormatService _formatService;
         private readonly Logger _logger;
 
-        private static readonly Regex TitleRegex = new Regex(@"\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9|]+))?(?<suffix>[- ._)\]]*)\}",
+        private static readonly Regex TitleRegex = new Regex(@"(?<tag>\{(?:imdb-))?\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9|]+))?(?<suffix>[-} ._)\]]*)\}",
                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-
-        private static readonly Regex TagsRegex = new Regex(@"(?<tags>\{tags(?:\:0+)?})",
-                                                               RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        public static readonly Regex SeasonEpisodePatternRegex = new Regex(@"(?<separator>(?<=})[- ._]+?)?(?<seasonEpisode>s?{season(?:\:0+)?}(?<episodeSeparator>[- ._]?[ex])(?<episode>{episode(?:\:0+)?}))(?<separator>[- ._]+?(?={))?",
-                                                                            RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        public static readonly Regex AbsoluteEpisodePatternRegex = new Regex(@"(?<separator>(?<=})[- ._]+?)?(?<absolute>{absolute(?:\:0+)?})(?<separator>[- ._]+?(?={))?",
-                                                                    RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        public static readonly Regex AirDateRegex = new Regex(@"\{Air(\s|\W|_)Date\}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{((?:(Movie|Original))(?<separator>[- ._])(Clean|Original)?(Title|Filename)(The)?)(?::(?<customFormat>[a-z0-9|]+))?\})",
                                                                             RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -60,11 +49,6 @@ namespace NzbDrone.Core.Organizer
 
         private static readonly Regex ScenifyRemoveChars = new Regex(@"(?<=\s)(,|<|>|\/|\\|;|:|'|""|\||`|~|!|\?|@|$|%|^|\*|-|_|=){1}(?=\s)|('|:|\?|,)(?=(?:(?:s|m)\s)|\s|$)|(\(|\)|\[|\]|\{|\})", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex ScenifyReplaceChars = new Regex(@"[\/]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        //TODO: Support Written numbers (One, Two, etc) and Roman Numerals (I, II, III etc)
-        private static readonly Regex MultiPartCleanupRegex = new Regex(@"(?:\(\d+\)|(Part|Pt\.?)\s?\d+)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        private static readonly char[] EpisodeTitleTrimCharacters = new[] { ' ', '.', '?' };
 
         private static readonly Regex TitlePrefixRegex = new Regex(@"^(The|An|A) (.*?)((?: *\([^)]+\))*)$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -133,7 +117,7 @@ namespace NzbDrone.Core.Organizer
             AddQualityTokens(tokenHandlers, movie, movieFile);
             AddMediaInfoTokens(tokenHandlers, movieFile);
             AddMovieFileTokens(tokenHandlers, movieFile);
-            AddTagsTokens(tokenHandlers, movieFile);
+            AddEditionTagsTokens(tokenHandlers, movieFile);
             AddCustomFormats(tokenHandlers, movie, movieFile, customFormats);
 
             var splitPatterns = pattern.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
@@ -193,7 +177,7 @@ namespace NzbDrone.Core.Organizer
                 AddQualityTokens(tokenHandlers, movie, movieFile);
                 AddMediaInfoTokens(tokenHandlers, movieFile);
                 AddMovieFileTokens(tokenHandlers, movieFile);
-                AddTagsTokens(tokenHandlers, movieFile);
+                AddEditionTagsTokens(tokenHandlers, movieFile);
             }
             else
             {
@@ -297,7 +281,7 @@ namespace NzbDrone.Core.Organizer
             return movie.Title;
         }
 
-        private void AddTagsTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
+        private void AddEditionTagsTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
         {
             if (movieFile.Edition.IsNotNullOrWhiteSpace())
             {
@@ -497,6 +481,7 @@ namespace NzbDrone.Core.Organizer
             var tokenMatch = new TokenMatch
             {
                 RegexMatch = match,
+                Tag = match.Groups["tag"].Value,
                 Prefix = match.Groups["prefix"].Value,
                 Separator = match.Groups["separator"].Value,
                 Suffix = match.Groups["suffix"].Value,
@@ -531,7 +516,7 @@ namespace NzbDrone.Core.Organizer
 
             if (!replacementText.IsNullOrWhiteSpace())
             {
-                replacementText = tokenMatch.Prefix + replacementText + tokenMatch.Suffix;
+                replacementText = tokenMatch.Tag + tokenMatch.Prefix + replacementText + tokenMatch.Suffix;
             }
 
             return replacementText;
@@ -598,6 +583,7 @@ namespace NzbDrone.Core.Organizer
     internal sealed class TokenMatch
     {
         public Match RegexMatch { get; set; }
+        public string Tag { get; set; }
         public string Prefix { get; set; }
         public string Separator { get; set; }
         public string Suffix { get; set; }
