@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Movies
 
         public void Handle(MoviesImportedEvent message)
         {
-            _commandQueueManager.PushMany(message.MovieIds.Select(s => new RefreshMovieCommand(new List<int> { s }, true)).ToList());
+            _commandQueueManager.PushMany(message.Movies.Select(s => new RefreshMovieCommand(new List<int> { s.Id }, true)).ToList());
         }
     }
 }

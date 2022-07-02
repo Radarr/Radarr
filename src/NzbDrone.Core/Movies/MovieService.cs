@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Movies
         {
             _movieRepository.InsertMany(newMovies);
 
-            _eventAggregator.PublishEvent(new MoviesImportedEvent(newMovies.Select(s => s.Id).ToList()));
+            _eventAggregator.PublishEvent(new MoviesImportedEvent(newMovies));
 
             return newMovies;
         }

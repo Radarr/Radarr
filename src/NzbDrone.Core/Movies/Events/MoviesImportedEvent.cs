@@ -5,11 +5,11 @@ namespace NzbDrone.Core.Movies.Events
 {
     public class MoviesImportedEvent : IEvent
     {
-        public List<int> MovieIds { get; private set; }
+        public List<Movie> Movies { get; private set; }
 
-        public MoviesImportedEvent(List<int> movieIds)
+        public MoviesImportedEvent(List<Movie> movies)
         {
-            MovieIds = movieIds;
+            Movies = movies;
         }
     }
 }
