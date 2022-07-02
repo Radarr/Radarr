@@ -5,7 +5,7 @@ using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.MediaFiles.Events
 {
-    public class MovieImportedEvent : IEvent
+    public class MovieFileImportedEvent : IEvent
     {
         public LocalMovie MovieInfo { get; private set; }
         public MovieFile ImportedMovie { get; private set; }
@@ -14,7 +14,7 @@ namespace NzbDrone.Core.MediaFiles.Events
         public DownloadClientItemClientInfo DownloadClientInfo { get; set; }
         public string DownloadId { get; private set; }
 
-        public MovieImportedEvent(LocalMovie movieInfo, MovieFile importedMovie, List<MovieFile> oldFiles, bool newDownload, DownloadClientItem downloadClientItem)
+        public MovieFileImportedEvent(LocalMovie movieInfo, MovieFile importedMovie, List<MovieFile> oldFiles, bool newDownload, DownloadClientItem downloadClientItem)
         {
             MovieInfo = movieInfo;
             ImportedMovie = importedMovie;

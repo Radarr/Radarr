@@ -10,7 +10,7 @@ using NzbDrone.Core.ThingiProvider.Events;
 namespace NzbDrone.Core.HealthCheck.Checks
 {
     [CheckOn(typeof(ProviderUpdatedEvent<IImportList>))]
-    [CheckOn(typeof(MovieImportedEvent), CheckOnCondition.FailedOnly)]
+    [CheckOn(typeof(MovieFileImportedEvent), CheckOnCondition.FailedOnly)]
     [CheckOn(typeof(MovieImportFailedEvent), CheckOnCondition.SuccessfulOnly)]
     public class ImportListRootFolderCheck : HealthCheckBase
     {

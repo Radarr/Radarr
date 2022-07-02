@@ -144,7 +144,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                         _extraService.ImportMovie(localMovie, movieFile, copyOnly);
                     }
 
-                    _eventAggregator.PublishEvent(new MovieImportedEvent(localMovie, movieFile, oldFiles, newDownload, downloadClientItem));
+                    _eventAggregator.PublishEvent(new MovieFileImportedEvent(localMovie, movieFile, oldFiles, newDownload, downloadClientItem));
                 }
                 catch (RootFolderNotFoundException e)
                 {

@@ -27,13 +27,13 @@ namespace NzbDrone.Core.History
         List<MovieHistory> FindByDownloadId(string downloadId);
         List<MovieHistory> GetByMovieId(int movieId, MovieHistoryEventType? eventType);
         void UpdateMany(List<MovieHistory> toUpdate);
-        string FindDownloadId(MovieImportedEvent trackedDownload);
+        string FindDownloadId(MovieFileImportedEvent trackedDownload);
         List<MovieHistory> Since(DateTime date, MovieHistoryEventType? eventType);
     }
 
     public class HistoryService : IHistoryService,
                                   IHandle<MovieGrabbedEvent>,
-                                  IHandle<MovieImportedEvent>,
+                                  IHandle<MovieFileImportedEvent>,
                                   IHandle<DownloadFailedEvent>,
                                   IHandle<MovieFileDeletedEvent>,
                                   IHandle<MovieFileRenamedEvent>,
@@ -97,7 +97,7 @@ namespace NzbDrone.Core.History
             _historyRepository.UpdateMany(toUpdate);
         }
 
-        public string FindDownloadId(MovieImportedEvent trackedDownload)
+        public string FindDownloadId(MovieFileImportedEvent trackedDownload)
         {
             _logger.Debug("Trying to find downloadId for {0} from history", trackedDownload.ImportedMovie.Path);
 
@@ -170,7 +170,7 @@ namespace NzbDrone.Core.History
             _historyRepository.Insert(history);
         }
 
-        public void Handle(MovieImportedEvent message)
+        public void Handle(MovieFileImportedEvent message)
         {
             if (!message.NewDownload)
             {

@@ -144,7 +144,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             Subject.Import(new List<ImportDecision> { _approvedDecisions.First() }, true);
 
             Mocker.GetMock<IEventAggregator>()
-                .Verify(v => v.PublishEvent(It.IsAny<MovieImportedEvent>()), Times.Once());
+                .Verify(v => v.PublishEvent(It.IsAny<MovieFileImportedEvent>()), Times.Once());
         }
 
         [Test]

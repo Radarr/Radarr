@@ -32,7 +32,7 @@ namespace Radarr.Api.V3.Movies
 {
     [V3ApiController]
     public class MovieController : RestControllerWithSignalR<MovieResource, Movie>,
-                                IHandle<MovieImportedEvent>,
+                                IHandle<MovieFileImportedEvent>,
                                 IHandle<MovieFileDeletedEvent>,
                                 IHandle<MovieUpdatedEvent>,
                                 IHandle<MovieEditedEvent>,
@@ -264,7 +264,7 @@ namespace Radarr.Api.V3.Movies
         }
 
         [NonAction]
-        public void Handle(MovieImportedEvent message)
+        public void Handle(MovieFileImportedEvent message)
         {
             var availDelay = _configService.AvailabilityDelay;
             var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(message.ImportedMovie.Movie.MovieMetadataId);

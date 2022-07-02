@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Notifications
     public class NotificationService
         : IHandle<MovieRenamedEvent>,
           IHandle<MovieGrabbedEvent>,
-          IHandle<MovieImportedEvent>,
+          IHandle<MovieFileImportedEvent>,
           IHandle<MoviesDeletedEvent>,
           IHandle<MovieAddedEvent>,
           IHandle<MoviesImportedEvent>,
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Notifications
             }
         }
 
-        public void Handle(MovieImportedEvent message)
+        public void Handle(MovieFileImportedEvent message)
         {
             if (!message.NewDownload)
             {

@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Download.History
 
     public class DownloadHistoryService : IDownloadHistoryService,
                                           IHandle<MovieGrabbedEvent>,
-                                          IHandle<MovieImportedEvent>,
+                                          IHandle<MovieFileImportedEvent>,
                                           IHandle<DownloadCompletedEvent>,
                                           IHandle<DownloadFailedEvent>,
                                           IHandle<DownloadIgnoredEvent>,
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.Download.History
             _repository.Insert(history);
         }
 
-        public void Handle(MovieImportedEvent message)
+        public void Handle(MovieFileImportedEvent message)
         {
             if (!message.NewDownload)
             {
