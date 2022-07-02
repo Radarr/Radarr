@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Datastore.Migration
                         var moviePath = reader.GetString(3);
                         var data = STJson.Deserialize<MovieCollection207>(collection);
 
-                        if (newCollections.Any(d => d.TmdbId == data.TmdbId))
+                        if (data.TmdbId == 0 || newCollections.Any(d => d.TmdbId == data.TmdbId))
                         {
                             continue;
                         }
@@ -104,12 +104,14 @@ namespace NzbDrone.Core.Datastore.Migration
                             rootFolderPath = moviePath.GetParentPath();
                         }
 
+                        var collectionName = data.Name ?? $"Collection {data.TmdbId}";
+
                         newCollections.Add(new MovieCollection208
                         {
                             TmdbId = data.TmdbId,
-                            Title = data.Name,
-                            CleanTitle = data.Name.CleanMovieTitle(),
-                            SortTitle = Parser.Parser.NormalizeTitle(data.Name),
+                            Title = collectionName,
+                            CleanTitle = collectionName.CleanMovieTitle(),
+                            SortTitle = Parser.Parser.NormalizeTitle(collectionName),
                             Added = added,
                             QualityProfileId = qualityProfileId,
                             RootFolderPath = rootFolderPath,

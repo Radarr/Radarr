@@ -57,6 +57,51 @@ namespace NzbDrone.Core.Test.Datastore.Migration
         }
 
         [Test]
+        public void should_skip_collection_from_movie_without_name()
+        {
+            var db = WithMigrationTestDb(c =>
+            {
+                c.Insert.IntoTable("Movies").Row(new
+                {
+                    Monitored = true,
+                    MinimumAvailability = 4,
+                    ProfileId = 1,
+                    MovieFileId = 0,
+                    MovieMetadataId = 1,
+                    Path = string.Format("/Movies/{0}", "Title"),
+                });
+
+                c.Insert.IntoTable("MovieMetadata").Row(new
+                {
+                    Title = "Title",
+                    CleanTitle = "CleanTitle",
+                    Status = 3,
+                    Images = new[] { new { CoverType = "Poster" } }.ToJson(),
+                    Recommendations = new[] { 1 }.ToJson(),
+                    Runtime = 90,
+                    OriginalTitle = "Title",
+                    CleanOriginalTitle = "CleanTitle",
+                    OriginalLanguage = 1,
+                    TmdbId = 132456,
+                    Collection = new { TmdbId = 11 }.ToJson(),
+                    LastInfoSync = DateTime.UtcNow,
+                });
+            });
+
+            var collections = db.Query<Collection208>("SELECT \"Id\", \"Title\", \"TmdbId\", \"Monitored\" FROM \"Collections\"");
+
+            collections.Should().HaveCount(1);
+            collections.First().TmdbId.Should().Be(11);
+            collections.First().Title.Should().Be("Collection 11");
+            collections.First().Monitored.Should().BeFalse();
+
+            var movies = db.Query<Movie208>("SELECT \"Id\", \"CollectionTmdbId\" FROM \"MovieMetadata\"");
+
+            movies.Should().HaveCount(1);
+            movies.First().CollectionTmdbId.Should().Be(collections.First().TmdbId);
+        }
+
+        [Test]
         public void should_not_duplicate_collection()
         {
             var db = WithMigrationTestDb(c =>
