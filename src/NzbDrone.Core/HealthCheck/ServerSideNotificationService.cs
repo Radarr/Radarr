@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using NLog;
+using NzbDrone.Common.Cache;
 using NzbDrone.Common.Cloud;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Http;
@@ -23,24 +24,37 @@ namespace NzbDrone.Core.HealthCheck
         private readonly IHttpRequestBuilderFactory _cloudRequestBuilder;
         private readonly Logger _logger;
 
-        public ServerSideNotificationService(IHttpClient client, IConfigFileProvider configFileProvider, IRadarrCloudRequestBuilder cloudRequestBuilder, Logger logger)
+        private readonly ICached<List<HealthCheck>> _cache;
+
+        public ServerSideNotificationService(IHttpClient client,
+                                             IConfigFileProvider configFileProvider,
+                                             IRadarrCloudRequestBuilder cloudRequestBuilder,
+                                             ICacheManager cacheManager,
+                                             Logger logger)
         {
             _client = client;
             _configFileProvider = configFileProvider;
             _cloudRequestBuilder = cloudRequestBuilder.Services;
             _logger = logger;
+
+            _cache = cacheManager.GetCache<List<HealthCheck>>(GetType());
         }
 
         public List<HealthCheck> GetServerChecks()
         {
+            return _cache.Get("ServerChecks", () => RetrieveServerChecks(), TimeSpan.FromHours(2));
+        }
+
+        private List<HealthCheck> RetrieveServerChecks()
+        {
             var request = _cloudRequestBuilder.Create()
-                                              .Resource("/notification")
-                                              .AddQueryParam("version", BuildInfo.Version)
-                                              .AddQueryParam("os", OsInfo.Os.ToString().ToLowerInvariant())
-                                              .AddQueryParam("arch", RuntimeInformation.OSArchitecture)
-                                              .AddQueryParam("runtime", PlatformInfo.Platform.ToString().ToLowerInvariant())
-                                              .AddQueryParam("branch", _configFileProvider.Branch)
-                                              .Build();
+                                      .Resource("/notification")
+                                      .AddQueryParam("version", BuildInfo.Version)
+                                      .AddQueryParam("os", OsInfo.Os.ToString().ToLowerInvariant())
+                                      .AddQueryParam("arch", RuntimeInformation.OSArchitecture)
+                                      .AddQueryParam("runtime", PlatformInfo.Platform.ToString().ToLowerInvariant())
+                                      .AddQueryParam("branch", _configFileProvider.Branch)
+                                      .Build();
             try
             {
                 _logger.Trace("Getting server side health notifications");
