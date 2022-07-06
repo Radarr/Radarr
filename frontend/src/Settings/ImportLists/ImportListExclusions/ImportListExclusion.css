@@ -15,12 +15,13 @@
 
 .tmdbId,
 .movieYear {
-  flex: 0 0 70px;
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 80px;
 }
 
 .actions {
-  display: flex;
-  justify-content: flex-end;
-  flex: 1 0 auto;
-  padding-right: 10px;
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 70px;
 }

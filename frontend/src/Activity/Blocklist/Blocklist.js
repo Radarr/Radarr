@@ -181,12 +181,13 @@ class Blocklist extends Component {
                 >
                   <TableBody>
                     {
-                      items.map((item) => {
+                      items.map((item, index) => {
                         return (
                           <BlocklistRowConnector
                             key={item.id}
                             isSelected={selectedState[item.id] || false}
                             columns={columns}
+                            index={index}
                             {...item}
                             onSelectedChange={this.onSelectedChange}
                           />

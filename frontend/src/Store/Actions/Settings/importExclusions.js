@@ -4,6 +4,7 @@ import createRemoveItemHandler from 'Store/Actions/Creators/createRemoveItemHand
 import createSaveProviderHandler from 'Store/Actions/Creators/createSaveProviderHandler';
 import createSetSettingValueReducer from 'Store/Actions/Creators/Reducers/createSetSettingValueReducer';
 import { createThunk } from 'Store/thunks';
+import translate from 'Utilities/String/translate';
 
 //
 // Variables
@@ -48,7 +49,34 @@ export default {
     items: [],
     isSaving: false,
     saveError: null,
-    pendingChanges: {}
+    pendingChanges: {},
+
+    columns: [
+      {
+        name: 'tmdbId',
+        label: 'TmdbId',
+        isSortable: true,
+        isVisible: true
+      },
+      {
+        name: 'movieTitle',
+        label: translate('Title'),
+        isSortable: true,
+        isVisible: true
+      },
+      {
+        name: 'movieYear',
+        label: translate('Year'),
+        isSortable: true,
+        isVisible: true
+      },
+      {
+        name: 'actions',
+        columnLabel: translate('Actions'),
+        isVisible: true,
+        isModifiable: false
+      }
+    ]
   },
 
   //
