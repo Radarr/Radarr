@@ -318,7 +318,7 @@
     "ChangeHasNotBeenSavedYet": "Les changements n'ont pas encore été sauvegardés",
     "ChangeFileDate": "Changer la date du fichier",
     "CertificationCountryHelpText": "Choisir un pays pour les classifications de films",
-    "CertificateValidationHelpText": "Change la rigueur de la vérification du certificat HTTPS. Ne changez rien sauf si vous comprenez les risques.",
+    "CertificateValidationHelpText": "Modifier le degré de rigueur de la validation de la certification HTTPS. Ne pas changer à moins que vous ne compreniez les risques.",
     "CertificateValidation": "Validation du certificat",
     "BypassProxyForLocalAddresses": "Contourner le proxy pour les adresses locales",
     "Branch": "Branche",
@@ -1119,5 +1119,8 @@
     "NoCollections": "Aucun film trouvé, pour commencer, vous voudrez ajouter un nouveau film ou importer des films existants.",
     "RssSyncHelpText": "Intervalle en minutes. Mettre à zéro pour désactiver (cela arrêtera tous les téléchargements automatiques)",
     "CollectionsSelectedInterp": "{0} Collections(s) Sélectionnée(s)",
-    "ChooseImportMode": "Mode d'importation"
+    "ChooseImportMode": "Mode d'importation",
+    "CollectionOptions": "Options de collection",
+    "CollectionShowDetailsHelpText": "Afficher l'état et les propriétés de la collection",
+    "CollectionShowOverviewsHelpText": "Afficher les aperçus des collections"
 }
