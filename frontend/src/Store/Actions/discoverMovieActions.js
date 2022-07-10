@@ -561,7 +561,7 @@ export const actionHandlers = handleThunks({
     }, []);
 
     const promise = createAjaxRequest({
-      url: '/movie/import',
+      url: '/importlist/movie',
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(allNewMovies)
