@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Validation;
 using Radarr.Http;
 using Radarr.Http.REST;
 using Radarr.Http.REST.Attributes;
@@ -50,6 +52,9 @@ namespace Radarr.Api.V3.CustomFormats
         public ActionResult<CustomFormatResource> Create(CustomFormatResource customFormatResource)
         {
             var model = customFormatResource.ToModel(_specifications);
+
+            Validate(model);
+
             return Created(_formatService.Insert(model).Id);
         }
 
@@ -57,6 +62,9 @@ namespace Radarr.Api.V3.CustomFormats
         public ActionResult<CustomFormatResource> Update(CustomFormatResource resource)
         {
             var model = resource.ToModel(_specifications);
+
+            Validate(model);
+
             _formatService.Update(model);
 
             return Accepted(model.Id);
@@ -87,6 +95,25 @@ namespace Radarr.Api.V3.CustomFormats
             }
 
             return schema;
+        }
+
+        private void Validate(CustomFormat definition)
+        {
+            foreach (var spec in definition.Specifications)
+            {
+                var validationResult = spec.Validate();
+                VerifyValidationResult(validationResult);
+            }
+        }
+
+        protected void VerifyValidationResult(ValidationResult validationResult)
+        {
+            var result = new NzbDroneValidationResult(validationResult.Errors);
+
+            if (!result.IsValid)
+            {
+                throw new ValidationException(result.Errors);
+            }
         }
 
         private IEnumerable<ICustomFormatSpecification> GetPresets()
