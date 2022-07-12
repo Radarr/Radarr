@@ -22,10 +22,16 @@ namespace Radarr.Http.Authentication
             return authenticationBuilder.AddScheme<AuthenticationSchemeOptions, NoAuthenticationHandler>(name, options => { });
         }
 
+        public static AuthenticationBuilder AddExternal(this AuthenticationBuilder authenticationBuilder, string name)
+        {
+            return authenticationBuilder.AddScheme<AuthenticationSchemeOptions, NoAuthenticationHandler>(name, options => { });
+        }
+
         public static AuthenticationBuilder AddAppAuthentication(this IServiceCollection services)
         {
             return services.AddAuthentication()
                 .AddNone(AuthenticationType.None.ToString())
+                .AddExternal(AuthenticationType.External.ToString())
                 .AddBasic(AuthenticationType.Basic.ToString())
                 .AddCookie(AuthenticationType.Forms.ToString(), options =>
                 {
@@ -33,6 +39,7 @@ namespace Radarr.Http.Authentication
                     options.AccessDeniedPath = "/login?loginFailed=true";
                     options.LoginPath = "/login";
                     options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                    options.SlidingExpiration = true;
                 })
                 .AddApiKey("API", options =>
                 {
