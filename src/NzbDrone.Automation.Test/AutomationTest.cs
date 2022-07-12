@@ -46,7 +46,7 @@ namespace NzbDrone.Automation.Test
 
             _runner = new NzbDroneRunner(LogManager.GetCurrentClassLogger(), null);
             _runner.KillAll();
-            _runner.Start();
+            _runner.Start(true);
 
             driver.Url = "http://localhost:7878";
 

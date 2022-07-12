@@ -172,6 +172,8 @@ namespace NzbDrone.Host
                 .PersistKeysToFileSystem(new DirectoryInfo(Configuration["dataProtectionFolder"]));
 
             services.AddSingleton<IAuthorizationPolicyProvider, UiAuthorizationPolicyProvider>();
+            services.AddSingleton<IAuthorizationHandler, UiAuthorizationHandler>();
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("SignalR", policy =>

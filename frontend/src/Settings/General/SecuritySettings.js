@@ -11,10 +11,17 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import { icons, inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
-const authenticationMethodOptions = [
-  { key: 'none', value: translate('None') },
+export const authenticationRequiredWarning = 'To prevent remote access without authentication, Radarr now requires authentication to be enabled. You can optionally disable authentication from local addresses.';
+
+export const authenticationMethodOptions = [
+  { key: 'none', value: translate('None'), isDisabled: true },
   { key: 'basic', value: translate('AuthBasic') },
   { key: 'forms', value: translate('AuthForm') }
+];
+
+export const authenticationRequiredOptions = [
+  { key: 'enabled', value: 'Enabled' },
+  { key: 'disabledForLocalAddresses', value: 'Disabled for Local Addresses' }
 ];
 
 const certificateValidationOptions = [
@@ -68,6 +75,7 @@ class SecuritySettings extends Component {
 
     const {
       authenticationMethod,
+      authenticationRequired,
       username,
       password,
       apiKey,
@@ -86,13 +94,31 @@ class SecuritySettings extends Component {
             name="authenticationMethod"
             values={authenticationMethodOptions}
             helpText={translate('AuthenticationMethodHelpText')}
+            helpTextWarning={authenticationRequiredWarning}
             onChange={onInputChange}
             {...authenticationMethod}
           />
         </FormGroup>
 
         {
-          authenticationEnabled &&
+          authenticationEnabled ?
+            <FormGroup>
+              <FormLabel>Authentication Required</FormLabel>
+
+              <FormInputGroup
+                type={inputTypes.SELECT}
+                name="authenticationRequired"
+                values={authenticationRequiredOptions}
+                helpText="Change which requests authentication is required for. Do not change unless you understand the risks."
+                onChange={onInputChange}
+                {...authenticationRequired}
+              />
+            </FormGroup> :
+            null
+        }
+
+        {
+          authenticationEnabled ?
             <FormGroup>
               <FormLabel>{translate('Username')}</FormLabel>
 
@@ -102,11 +128,12 @@ class SecuritySettings extends Component {
                 onChange={onInputChange}
                 {...username}
               />
-            </FormGroup>
+            </FormGroup> :
+            null
         }
 
         {
-          authenticationEnabled &&
+          authenticationEnabled ?
             <FormGroup>
               <FormLabel>{translate('Password')}</FormLabel>
 
@@ -116,7 +143,8 @@ class SecuritySettings extends Component {
                 onChange={onInputChange}
                 {...password}
               />
-            </FormGroup>
+            </FormGroup> :
+            null
         }
 
         <FormGroup>
