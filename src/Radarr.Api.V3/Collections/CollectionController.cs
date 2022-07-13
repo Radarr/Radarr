@@ -167,7 +167,7 @@ namespace Radarr.Api.V3.Collections
         [NonAction]
         public void Handle(CollectionDeletedEvent message)
         {
-            BroadcastResourceChange(ModelAction.Deleted, MapToResource(message.Collection));
+            BroadcastResourceChange(ModelAction.Deleted, message.Collection.Id);
         }
     }
 }
