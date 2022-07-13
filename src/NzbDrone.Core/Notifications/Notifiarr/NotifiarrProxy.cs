@@ -54,17 +54,19 @@ namespace NzbDrone.Core.Notifications.Notifiarr
                         _logger.Error(ex, "API key is invalid: " + ex.Message);
                         return new ValidationFailure("APIKey", "API key is invalid");
                     case 400:
+                        _logger.Error(ex, "Unable to send test message. Ensure Radarr Integration is enabled & assigned a channel on Notifiarr");
+                        return new ValidationFailure("", "Unable to send test message. Ensure Radarr Integration is enabled & assigned a channel on Notifiarr");
                     case 520:
                     case 521:
                     case 522:
                     case 523:
                     case 524:
-                        _logger.Error(ex, "Unable to send test notification: " + ex.Message);
-                        return new ValidationFailure("", "Unable to send test notification");
+                        _logger.Error(ex, "Cloudflare Related HTTP Error - Unable to send test message: " + ex.Message);
+                        return new ValidationFailure("", "Cloudflare Related HTTP Error - Unable to send test message");
                 }
 
-                _logger.Error(ex, "Unable to send test message: " + ex.Message);
-                return new ValidationFailure("APIKey", "Unable to send test notification");
+                _logger.Error(ex, "Unknown HTTP Error - Unable to send test message: " + ex.Message);
+                return new ValidationFailure("", "Unknown HTTP Error - Unable to send test message");
             }
             catch (Exception ex)
             {
@@ -95,19 +97,21 @@ namespace NzbDrone.Core.Notifications.Notifiarr
                 switch ((int)ex.Response.StatusCode)
                 {
                     case 401:
-                        _logger.Error(ex, "API key is invalid");
-                        throw;
+                        _logger.Error("", "API key is invalid");
+                        throw new NotifiarrException("API key is invalid", ex);
                     case 400:
+                        _logger.Error(ex, "Unable to send notification. Ensure Radarr Integration is enabled & assigned a channel on Notifiarr");
+                        throw new NotifiarrException("Unable to send notification. Ensure Radarr Integration is enabled & assigned a channel on Notifiarr", ex);
                     case 520:
                     case 521:
                     case 522:
                     case 523:
                     case 524:
-                        _logger.Error(ex, "Unable to send notification");
-                        throw;
+                        _logger.Error(ex, "Cloudflare Related HTTP Error - Unable to send notification");
+                        throw new NotifiarrException("Cloudflare Related HTTP Error - Unable to send notification", ex);
                 }
 
-                throw new NotifiarrException("Unable to send notification", ex);
+                throw new NotifiarrException("Unknown HTTP Error - Unable to send notification", ex);
             }
         }
     }
