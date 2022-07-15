@@ -337,7 +337,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                         yearStr = $" {movie.Year}";
                     }
 
-                    newMovie = SearchForNewMovie(movie.Title + yearStr).FirstOrDefault().MovieMetadata;
+                    newMovie = SearchForNewMovie(movie.Title + yearStr).FirstOrDefault()?.MovieMetadata ?? null;
                 }
 
                 if (newMovie == null)
