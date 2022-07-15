@@ -3,12 +3,11 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Exceptions;
+using NzbDrone.Core.ImportLists.ImportExclusions;
 using NzbDrone.Core.Messaging.Commands;
-using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Commands;
-using NzbDrone.Core.Movies.Events;
 
 namespace NzbDrone.Core.Movies
 {
@@ -19,6 +18,7 @@ namespace NzbDrone.Core.Movies
         private readonly IMovieService _movieService;
         private readonly IMovieMetadataService _movieMetadataService;
         private readonly IAddMovieService _addMovieService;
+        private readonly IImportExclusionsService _importExclusionService;
 
         private readonly Logger _logger;
 
@@ -27,6 +27,7 @@ namespace NzbDrone.Core.Movies
                                         IMovieService movieService,
                                         IMovieMetadataService movieMetadataService,
                                         IAddMovieService addMovieService,
+                                        IImportExclusionsService importExclusionsService,
                                         Logger logger)
         {
             _movieInfo = movieInfo;
@@ -34,6 +35,7 @@ namespace NzbDrone.Core.Movies
             _movieService = movieService;
             _movieMetadataService = movieMetadataService;
             _addMovieService = addMovieService;
+            _importExclusionService = importExclusionsService;
             _logger = logger;
         }
 
@@ -99,7 +101,8 @@ namespace NzbDrone.Core.Movies
             {
                 var existingMovies = _movieService.AllMovieTmdbIds();
                 var collectionMovies = _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId);
-                var moviesToAdd = collectionMovies.Where(m => !existingMovies.Contains(m.TmdbId));
+                var excludedMovies = _importExclusionService.GetAllExclusions().Select(e => e.TmdbId);
+                var moviesToAdd = collectionMovies.Where(m => !existingMovies.Contains(m.TmdbId)).Where(m => !excludedMovies.Contains(m.TmdbId));
 
                 if (moviesToAdd.Any())
                 {
