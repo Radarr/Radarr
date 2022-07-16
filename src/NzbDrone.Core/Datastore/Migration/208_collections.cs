@@ -114,7 +114,7 @@ namespace NzbDrone.Core.Datastore.Migration
                             SortTitle = Parser.Parser.NormalizeTitle(collectionName),
                             Added = added,
                             QualityProfileId = qualityProfileId,
-                            RootFolderPath = rootFolderPath,
+                            RootFolderPath = rootFolderPath.TrimEnd('/', '\\', ' '),
                             SearchOnAdd = true,
                             MinimumAvailability = minimumAvailability
                         });

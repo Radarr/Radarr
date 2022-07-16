@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Movies
                     SearchOnAdd = movie.AddOptions?.SearchForMovie ?? false,
                     QualityProfileId = movie.ProfileId,
                     MinimumAvailability = movie.MinimumAvailability,
-                    RootFolderPath = _folderService.GetBestRootFolderPath(movie.Path)
+                    RootFolderPath = _folderService.GetBestRootFolderPath(movie.Path).TrimEnd('/', '\\', ' ')
                 });
 
                 movieMetadata.CollectionTmdbId = newCollection.TmdbId;
