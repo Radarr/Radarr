@@ -55,9 +55,7 @@ namespace Radarr.Api.V3.Collections
         [HttpGet]
         public List<CollectionResource> GetCollections()
         {
-            var collectionMovies = _movieMetadataService.GetMoviesWithCollections();
-
-            return MapToResource(_collectionService.GetAllCollections(), collectionMovies).ToList();
+            return MapToResource(_collectionService.GetAllCollections()).ToList();
         }
 
         [RestPutById]
@@ -116,10 +114,11 @@ namespace Radarr.Api.V3.Collections
             return Accepted(updated);
         }
 
-        private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections, List<MovieMetadata> collectionMovies)
+        private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections)
         {
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
+            var collectionMovies = _movieMetadataService.GetMoviesWithCollections();
 
             foreach (var collection in collections)
             {

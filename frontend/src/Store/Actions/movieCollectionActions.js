@@ -1,10 +1,12 @@
 import _ from 'lodash';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
+import { filterBuilderTypes, filterBuilderValueTypes, filterTypePredicates, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
+import sortByName from 'Utilities/Array/sortByName';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import getNewMovie from 'Utilities/Movie/getNewMovie';
+import translate from 'Utilities/String/translate';
 import { set, update, updateItem } from './baseActions';
 import createHandleActions from './Creators/createHandleActions';
 import createSaveProviderHandler from './Creators/createSaveProviderHandler';
@@ -63,19 +65,81 @@ export const defaultState = {
     }
   ],
 
-  filterPredicates: {},
+  filterPredicates: {
+    genres: function(item, filterValue, type) {
+      const predicate = filterTypePredicates[type];
+
+      let allGenres = [];
+      item.movies.forEach((movie) => {
+        allGenres = allGenres.concat(movie.genres);
+      });
+
+      const genres = Array.from(new Set(allGenres)).slice(0, 3);
+
+      return predicate(genres, filterValue);
+    },
+    totalMovies: function(item, filterValue, type) {
+      const predicate = filterTypePredicates[type];
+      const { movies } = item;
+
+      const totalMovies = movies.length;
+      return predicate(totalMovies, filterValue);
+    }
+  },
 
   filterBuilderProps: [
     {
       name: 'title',
-      label: 'Title',
+      label: translate('Title'),
       type: filterBuilderTypes.STRING
     },
     {
       name: 'monitored',
-      label: 'Monitored',
+      label: translate('Monitored'),
       type: filterBuilderTypes.EXACT,
       valueType: filterBuilderValueTypes.BOOL
+    },
+    {
+      name: 'qualityProfileId',
+      label: translate('QualityProfile'),
+      type: filterBuilderTypes.EXACT,
+      valueType: filterBuilderValueTypes.QUALITY_PROFILE
+    },
+    {
+      name: 'rootFolderPath',
+      label: translate('RootFolder'),
+      type: filterBuilderTypes.STRING
+    },
+    {
+      name: 'genres',
+      label: translate('Genres'),
+      type: filterBuilderTypes.ARRAY,
+      optionsSelector: function(items) {
+        const genreList = items.reduce((acc, collection) => {
+          let collectionGenres = [];
+          collection.movies.forEach((movie) => {
+            collectionGenres = collectionGenres.concat(movie.genres);
+          });
+
+          const genres = Array.from(new Set(collectionGenres)).slice(0, 3);
+
+          genres.forEach((genre) => {
+            acc.push({
+              id: genre,
+              name: genre
+            });
+          });
+
+          return acc;
+        }, []);
+
+        return genreList.sort(sortByName);
+      }
+    },
+    {
+      name: 'totalMovies',
+      label: translate('TotalMovies'),
+      type: filterBuilderTypes.NUMBER
     }
   ]
 };
