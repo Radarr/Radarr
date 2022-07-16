@@ -66,7 +66,8 @@ class CollectionFooter extends Component {
       monitor,
       monitored,
       qualityProfileId,
-      minimumAvailability
+      minimumAvailability,
+      rootFolderPath
     } = this.state;
 
     const changes = {};
@@ -85,6 +86,10 @@ class CollectionFooter extends Component {
 
     if (minimumAvailability !== NO_CHANGE) {
       changes.minimumAvailability = minimumAvailability;
+    }
+
+    if (rootFolderPath !== NO_CHANGE) {
+      changes.rootFolderPath = rootFolderPath;
     }
 
     this.props.onUpdateSelectedPress(changes);
