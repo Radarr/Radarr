@@ -41,6 +41,14 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, Source.TELESYNC, proper, Resolution.R720p);
         }
 
+        [TestCase("Movie Name 2018 NEW PROPER 720p HD-CAM X264 HQ-CPG", true)]
+        [TestCase("Movie Name (2022) 1080p HQCAM ENG x264 AAC - QRips", false)]
+        [TestCase("Movie Name (2018) 720p Hindi HQ CAMrip x264 AAC 1.4GB", false)]
+        public void should_parse_cam(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, Source.CAM, proper, Resolution.Unknown);
+        }
+
         [TestCase("S07E23 .avi ", false)]
         [TestCase("Movie Name S02E01 HDTV XviD 2HD", false)]
         [TestCase("Movie Name S05E11 PROPER HDTV XviD 2HD", true)]
