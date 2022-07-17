@@ -144,6 +144,7 @@ namespace NzbDrone.Core.ImportLists
                         var listMovies = MapMovieReports(importListReports.Movies).Where(x => x.TmdbId > 0).ToList();
 
                         listMovies = listMovies.DistinctBy(x => x.TmdbId).ToList();
+                        listMovies.ForEach(m => m.ListId = importList.Definition.Id);
 
                         result.Movies.AddRange(listMovies);
                         _listMovieService.SyncMoviesForList(listMovies, importList.Definition.Id);
@@ -172,11 +173,9 @@ namespace NzbDrone.Core.ImportLists
 
             var mappedListMovies = new List<ImportListMovie>();
 
-            foreach (var report in reports)
+            foreach (var movieMeta in mappedMovies)
             {
-                var mappedListMovie = new ImportListMovie { ListId = report.ListId };
-
-                var movieMeta = mappedMovies.FirstOrDefault(bulkMapMovies => bulkMapMovies.TmdbId == report.TmdbId);
+                var mappedListMovie = new ImportListMovie();
 
                 if (movieMeta != null)
                 {
