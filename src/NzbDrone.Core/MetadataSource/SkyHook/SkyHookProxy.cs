@@ -327,6 +327,13 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 }
                 else if (movie.ImdbId.IsNotNullOrWhiteSpace())
                 {
+                    newMovie = _movieMetadataService.FindByImdbId(Parser.Parser.NormalizeImdbId(movie.ImdbId));
+
+                    if (newMovie != null)
+                    {
+                        return newMovie;
+                    }
+
                     newMovie = GetMovieByImdbId(movie.ImdbId);
                 }
                 else
