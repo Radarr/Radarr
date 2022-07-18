@@ -42,14 +42,15 @@ namespace NzbDrone.Core.IndexerSearch
             foreach (var movieId in message.MovieIds)
             {
                 var movie = _movieService.GetMovie(movieId);
+                var userInvokedSearch = message.Trigger == CommandTrigger.Manual;
 
-                if (!movie.Monitored && message.Trigger != CommandTrigger.Manual)
+                if (!movie.Monitored && !userInvokedSearch)
                 {
                     _logger.Debug("Movie {0} is not monitored, skipping search", movie.Title);
                     continue;
                 }
 
-                var decisions = _releaseSearchService.MovieSearch(movieId, false, false);
+                var decisions = _releaseSearchService.MovieSearch(movieId, userInvokedSearch, false);
                 downloadedCount += _processDownloadDecisions.ProcessDecisions(decisions).Grabbed.Count;
             }
 
