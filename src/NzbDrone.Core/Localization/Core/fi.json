@@ -1142,5 +1142,6 @@
     "CollectionOptions": "Kokoelmien valinnat",
     "CollectionShowDetailsHelpText": "Näytä kokoelmien tila ja ominaisuudet",
     "CollectionShowPostersHelpText": "Näytä kokoelmien julisteet",
-    "RottenTomatoesRating": "Tomaattiarvio"
+    "RottenTomatoesRating": "Tomaattiarvio",
+    "TotalMovies": "Elokuvia yhteensä"
 }

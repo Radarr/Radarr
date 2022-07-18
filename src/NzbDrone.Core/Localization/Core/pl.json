@@ -1062,7 +1062,7 @@
     "Collections": "Kolekcje",
     "RssSyncHelpText": "Odstęp w minutach. Ustaw na zero, aby wyłączyć (zatrzyma to wszystkie automatyczne przechwytywanie zwolnień)",
     "NoCollections": "Nie znaleziono żadnych filmów. Aby rozpocząć, musisz dodać nowy film lub zaimportować istniejące",
-    "MonitorMovies": "Monitoruj film",
+    "MonitorMovies": "Monitoruj filmy",
     "ClickToChangeReleaseGroup": "Kliknij, by zmienić grupę wydającą",
     "RemotePathMappingCheckDownloadPermissions": "Radarr widzi film {0}, lecz nie ma do niego dostępu. Najprawdopodobniej to wynik błędu w uprawnieniach dostępu.",
     "NotificationTriggersHelpText": "Wybierz zdarzenia, które mają uruchamiać to powiadomienie",
@@ -1078,7 +1078,7 @@
     "ManualImportSetReleaseGroup": "Import ręczny - podaj nazwę grupy",
     "Never": "Nigdy",
     "RemotePathMappingCheckFilesWrongOSPath": "Zdalny klient pobierania {0} zgłosił pliki w {1}, lecz nie jest to poprawna ścieżka {2}. Zmień ustawienia zdalnego mapowania ścieżek i klienta pobierania.",
-    "RemotePathMappingCheckGenericPermissions": "Klient pobierania {0} umieszcza pobrane pliki w {1}, lecz Radarr nie widzi tego folderu. Być może należy zmienić uprawnienia dostępu do folderu.",
+    "RemotePathMappingCheckGenericPermissions": "Klient pobierania {0} umieszcza pobrane pliki w {1}, ale Radarr nie widzi tego folderu. Być może należy zmienić uprawnienia dostępu do folderu/ścieżkę dostępu.",
     "RemoveFailed": "Usuń nieudane",
     "RemoveDownloadsAlert": "Ustawienia usuwania zostały przeniesione do ustawień poszczególnych klientów pobierania powyżej.",
     "ShowCollectionDetails": "Pokaż stan kolekcji",
@@ -1141,5 +1141,7 @@
     "CollectionShowPostersHelpText": "Pokaż plakaty elementów kolekcji",
     "CollectionOptions": "Opcje Kolekcji",
     "CollectionShowDetailsHelpText": "Pokaż status i właściwości kolekcji",
-    "CollectionShowOverviewsHelpText": "Pokaż przegląd kolekcji"
+    "CollectionShowOverviewsHelpText": "Pokaż przegląd kolekcji",
+    "TotalMovies": "Filmów całkowicie",
+    "RottenTomatoesRating": "Ocena Tomato"
 }
