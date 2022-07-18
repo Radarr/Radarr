@@ -1,7 +1,14 @@
 {
     "About": "關於",
-    "Add": "添加",
+    "Add": "新增",
     "AcceptConfirmationModal": "接受確認模式",
-    "Actions": "‎行動‎",
-    "Activity": "‎活動‎"
+    "Actions": "執行",
+    "Activity": "‎活動‎",
+    "AddIndexer": "新增索引",
+    "AddingTag": "新增標籤",
+    "AddDownloadClient": "新增下載器",
+    "Added": "以新增",
+    "Age": "年齡",
+    "All": "全部",
+    "Analytics": "分析"
 }

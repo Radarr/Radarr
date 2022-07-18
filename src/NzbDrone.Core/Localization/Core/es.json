@@ -1119,5 +1119,6 @@
     "ChooseImportMode": "Elegir Modo de Importación",
     "CollectionOptions": "Opciones de la Colección",
     "CollectionShowDetailsHelpText": "Mostrar el estado y propiedades de la colección",
-    "CollectionShowOverviewsHelpText": "Mostrar resumenes de la colección"
+    "CollectionShowOverviewsHelpText": "Mostrar resumenes de la colección",
+    "CollectionShowPostersHelpText": "Mostrar póster de artículos de colección"
 }
