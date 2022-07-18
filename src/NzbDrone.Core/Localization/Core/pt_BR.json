@@ -1142,5 +1142,6 @@
     "CollectionShowDetailsHelpText": "Mostrar estado e propriedades da coleção",
     "CollectionShowOverviewsHelpText": "Mostrar visão geral da coleção",
     "CollectionShowPostersHelpText": "Mostrar pôsteres de itens da coleção",
-    "RottenTomatoesRating": "Avaliação Tomato"
+    "RottenTomatoesRating": "Avaliação Tomato",
+    "TotalMovies": "Total de Filmes"
 }

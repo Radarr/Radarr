@@ -637,7 +637,7 @@
     "InstallLatest": "安装最新版",
     "IndexerStatusCheckSingleClientMessage": "搜刮器因错误不可用：{0}",
     "IndexerStatusCheckAllClientMessage": "所有搜刮器都因错误不可用",
-    "IndexerSearchCheckNoInteractiveMessage": "没有任何索引器开启了手动搜索，Radarr 不会提供任何手动搜索结果",
+    "IndexerSearchCheckNoInteractiveMessage": "没有任何索引器开启了手动搜索，Radarr 不会提供任何手动搜索的结果",
     "IndexerRssHealthCheckNoIndexers": "没有任何索引器开启了RSS同步，Radarr不会自动抓取新发布的影片",
     "IndexerLongTermStatusCheckSingleClientMessage": "由于故障6小时，下列索引器都已不可用：{0}",
     "IndexerLongTermStatusCheckAllClientMessage": "由于故障超过6小时，所有索引器均不可用",
@@ -740,7 +740,7 @@
     "UnableToAddANewNotificationPleaseTryAgain": "无法添加新通知，请稍后重试。",
     "URLBase": "基本URL",
     "RemovedMovieCheckMultipleMessage": "电影“{0}”已从TMDb移除",
-    "SkipFreeSpaceCheckWhenImportingHelpText": "当 Radarr 无法从您的电影根文件夹中检测到空闲空间时使用",
+    "SkipFreeSpaceCheckWhenImportingHelpText": "当 Radarr 无法从movie根目录检测到空间时使用",
     "UnableToAddANewQualityProfilePleaseTryAgain": "无法添加新影片质量配置，请稍后重试。",
     "ThisCannotBeCancelled": "在不禁用所有索引器的情况下，一旦启动就无法取消。",
     "SearchCutoffUnmet": "搜索未满足终止条件的",
@@ -1135,5 +1135,12 @@
     "NoCollections": "没有发现集合，点击添加新的电影或者导入已经存在的电影",
     "InstanceNameHelpText": "选项卡及日志应用名称",
     "ScrollMovies": "滚动电影",
-    "CollectionOptions": "Collection Options"
+    "CollectionOptions": "集选项Collection Options",
+    "CollectionShowDetailsHelpText": "显示集合collection的状态和属性",
+    "CollectionShowOverviewsHelpText": "显示集合collection的概述",
+    "CollectionShowPostersHelpText": "显示集合项目海报",
+    "RottenTomatoesRating": "烂番茄指数",
+    "ShowPosters": "显示海报",
+    "OnMovieAdded": "电影添加时",
+    "OnMovieAddedHelpText": "电影添加时"
 }
