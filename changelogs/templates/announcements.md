@@ -1,4 +1,3 @@
-- Radarr Postgres Database Support has landed in `nightly` and will be coming to `develop` _soon_
-- Radarr Plex Watchlist Support has landed in `nightly` and will be coming to `develop` _soon_
-- "FFMpeg 5.0.1" fixes issues with FFprobe crashing on macOS
-- Radarr improved collections support coming _soon_^(tm)
+- Radarr Postgres Database Support
+- Radarr Plex Watchlist Support
+- Radarr Collections Support

@@ -1,4 +1,7 @@
-- Lidarr v1 coming to `develop` as beta soon^(tm)
+- [Lidarr v1 released on `master`](https://www.reddit.com/r/Lidarr/comments/v5fdhi/new_stable_release_master_v1022592/)
 - [Lidarr](https://lidarr.audio/donate), [Prowlarr](https://prowlarr.com/donate), [Radarr](https://radarr.video/donate), [Readarr](https://readarr.com/donate) now accept direct bitcoin donations
 - [Readarr official beta on `develop` announced](https://www.reddit.com/r/Readarr/comments/sxvj8y/new_beta_release_develop_v0101248/)
+- Radarr Postgres Database Support in `nightly` and `develop`
+- Prowlarr Postgres Database Support in `nightly` and `develop`
 - [Lidarr Postgres Database Support in development (Draft PR#2625)](https://github.com/Lidarr/Lidarr/pull/2625)
+- \*Arrs Wiki Contributions welcomed and strongly encouraged, simply auth with GitHub on the wiki and update the page
