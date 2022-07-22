@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Indexers
         {
             if (InfoHashElementName.IsNotNullOrWhiteSpace())
             {
-                return item.FindDecendants(InfoHashElementName).FirstOrDefault().Value;
+                return item.FindDecendants(InfoHashElementName).FirstOrDefault()?.Value;
             }
 
             var magnetUrl = GetMagnetUrl(item);
@@ -96,7 +96,7 @@ namespace NzbDrone.Core.Indexers
         {
             if (MagnetElementName.IsNotNullOrWhiteSpace())
             {
-                var magnetURL = item.FindDecendants(MagnetElementName).FirstOrDefault().Value;
+                var magnetURL = item.FindDecendants(MagnetElementName).FirstOrDefault()?.Value;
                 if (magnetURL.IsNotNullOrWhiteSpace() && magnetURL.StartsWith("magnet:"))
                 {
                     return magnetURL;
