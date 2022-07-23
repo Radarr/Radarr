@@ -305,6 +305,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                     details.Add(new XElement("trailer", "plugin://plugin.video.youtube/play/?video_id=" + movie.MovieMetadata.Value.YouTubeTrailerId));
 
+                    details.Add(new XElement("watched", watched));
+
                     if (movieFile.MediaInfo != null)
                     {
                         var sceneName = movieFile.GetSceneOrFileName();
