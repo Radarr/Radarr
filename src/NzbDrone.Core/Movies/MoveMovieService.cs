@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Movies
                 _diskProvider.CreateFolder(new DirectoryInfo(destinationPath).Parent.FullName);
                 _diskTransferService.TransferFolder(sourcePath, destinationPath, TransferMode.Move);
 
-                _logger.ProgressInfo("{0} moved successfully to {1}", movie.Title, movie.Path);
+                _logger.ProgressInfo("{0} moved successfully to {1}", movie.Title, destinationPath);
 
                 _eventAggregator.PublishEvent(new MovieMovedEvent(movie, sourcePath, destinationPath));
             }
