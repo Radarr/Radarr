@@ -127,6 +127,8 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             variables.Add("Radarr_MovieFile_QualityVersion", movieFile.Quality.Revision.Version.ToString());
             variables.Add("Radarr_MovieFile_ReleaseGroup", movieFile.ReleaseGroup ?? string.Empty);
             variables.Add("Radarr_MovieFile_SceneName", movieFile.SceneName ?? string.Empty);
+            variables.Add("Radarr_Release_CustomFormat", string.Join("|", movieFile.CustomFormats));
+            variables.Add("Radarr_Release_CustomFormatScore", movieFile.CustomFormatScore.ToString());
 
             _proxy.SendNotification(variables, Settings);
         }
