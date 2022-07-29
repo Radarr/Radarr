@@ -27,6 +27,7 @@ trigger:
     include:
     - develop
     - master
+    - zeus
 
 pr:
   branches:
