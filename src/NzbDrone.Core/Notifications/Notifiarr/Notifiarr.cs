@@ -92,6 +92,8 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             variables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
             variables.Add("Radarr_Download_Client", message.DownloadClientInfo?.Name ?? string.Empty);
             variables.Add("Radarr_Download_Client_Type", message.DownloadClientInfo?.Type ?? string.Empty);
+            variables.Add("Radarr_Release_CustomFormat", string.Join("|", remoteMovie.CustomFormats));
+            variables.Add("Radarr_Release_CustomFormatScore", remoteMovie.CustomFormatScore.ToString());
 
             if (message.OldMovieFiles.Any())
             {
