@@ -419,10 +419,13 @@ namespace NzbDrone.Core.Parser
             value = Regex.Replace(value, @"[^a-z0-9\s-_]", replaceCharacter, RegexOptions.Compiled);
 
             //Trim dashes or underscores from end, or user defined character set
-            value = value.Trim(trimEndChars.ToCharArray());
+            if (!string.IsNullOrEmpty(trimEndChars))
+            {
+                value = value.Trim(trimEndChars.ToCharArray());
+            }
 
             //Replace double occurrences of - or _, or user defined character set
-            if (deduplicateChars.Length > 0)
+            if (!string.IsNullOrEmpty(deduplicateChars))
             {
                 value = Regex.Replace(value, @"([" + deduplicateChars + "]){2,}", "$1", RegexOptions.Compiled);
             }

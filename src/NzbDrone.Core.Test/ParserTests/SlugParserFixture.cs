@@ -133,5 +133,29 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             Parser.Parser.ToUrlSlug(input, false, "", deduplicateChars).Should().Be(result);
         }
+
+        [Test]
+        public void should_handle_null_trim_parameters()
+        {
+            Parser.Parser.ToUrlSlug("test", false, null, "-_").Should().Be("test");
+        }
+
+        [Test]
+        public void should_handle_null_dedupe_parameters()
+        {
+            Parser.Parser.ToUrlSlug("test", false, "-_", null).Should().Be("test");
+        }
+
+        [Test]
+        public void should_handle_empty_trim_parameters()
+        {
+            Parser.Parser.ToUrlSlug("test", false, "", "-_").Should().Be("test");
+        }
+
+        [Test]
+        public void should_handle_empty_dedupe_parameters()
+        {
+            Parser.Parser.ToUrlSlug("test", false, "-_", "").Should().Be("test");
+        }
     }
 }
