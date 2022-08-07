@@ -26,6 +26,7 @@ namespace Radarr.Api.V3.Config
         public string SslCertPassword { get; set; }
         public string UrlBase { get; set; }
         public string InstanceName { get; set; }
+        public string ApplicationUrl { get; set; }
         public bool UpdateAutomatically { get; set; }
         public UpdateMechanism UpdateMechanism { get; set; }
         public string UpdateScriptPath { get; set; }
@@ -82,7 +83,8 @@ namespace Radarr.Api.V3.Config
                 CertificateValidation = configService.CertificateValidation,
                 BackupFolder = configService.BackupFolder,
                 BackupInterval = configService.BackupInterval,
-                BackupRetention = configService.BackupRetention
+                BackupRetention = configService.BackupRetention,
+                ApplicationUrl = configService.ApplicationUrl
             };
         }
     }
