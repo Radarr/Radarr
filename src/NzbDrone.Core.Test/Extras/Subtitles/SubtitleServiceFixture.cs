@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.Extras.Subtitles
         [TestCase("Movie Title - 2022.srt", "Movie Title - 2022.srt")]
         [TestCase("Movie.Title.2022.en.srt", "Movie Title - 2022.en.srt")]
         [TestCase("Movie.Title.2022.english.srt", "Movie Title - 2022.en.srt")]
-        [TestCase("Movie Title 2022_en_sdh_forced.srt", "Movie Title - 2022.en.srt")]
+        [TestCase("Movie Title 2022_en_sdh_forced.srt", "Movie Title - 2022.en.sdh.forced.srt")]
         [TestCase("Movie_Title_2022 en.srt", "Movie Title - 2022.en.srt")]
         [TestCase(@"Subs\Movie.Title.2022\2_en.srt", "Movie Title - 2022.en.srt")]
         [TestCase("sub.srt", "Movie Title - 2022.srt")]
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Test.Extras.Subtitles
             var files = new List<string>
             {
                 Path.Combine(_releaseFolder, "Movie.Title.2022.en.srt").AsOsAgnostic(),
-                Path.Combine(_releaseFolder, "Movie.Title.2022.english.srt").AsOsAgnostic(),
+                Path.Combine(_releaseFolder, "Movie.Title.2022.eng.srt").AsOsAgnostic(),
                 Path.Combine(_releaseFolder, "Subs", "Movie_Title_2022_en_forced.srt").AsOsAgnostic(),
                 Path.Combine(_releaseFolder, "Subs", "Movie.Title.2022", "2_fr.srt").AsOsAgnostic()
             };
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.Extras.Subtitles
             {
                 "Movie Title - 2022.1.en.srt",
                 "Movie Title - 2022.2.en.srt",
-                "Movie Title - 2022.3.en.srt",
+                "Movie Title - 2022.en.forced.srt",
                 "Movie Title - 2022.fr.srt",
             };
 
