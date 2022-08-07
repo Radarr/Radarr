@@ -50,6 +50,8 @@
   "ApiKey": "API Key",
   "AppDataDirectory": "AppData directory",
   "AppDataLocationHealthCheckMessage": "Updating will not be possible to prevent deleting AppData on Update",
+  "ApplicationURL": "Application URL",
+  "ApplicationUrlHelpText": "This application's external URL including http(s)://, port and URL base",
   "Apply": "Apply",
   "ApplyTags": "Apply Tags",
   "ApplyTagsHelpTexts1": "How to apply tags to the selected movies",
