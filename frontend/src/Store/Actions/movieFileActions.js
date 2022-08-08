@@ -165,11 +165,11 @@ export const actionHandlers = handleThunks({
       requestData.quality = quality;
     }
 
-    if (releaseGroup) {
+    if (releaseGroup !== undefined) {
       requestData.releaseGroup = releaseGroup;
     }
 
-    if (edition) {
+    if (edition !== undefined) {
       requestData.edition = edition;
     }
 
@@ -201,11 +201,11 @@ export const actionHandlers = handleThunks({
             props.quality = quality;
           }
 
-          if (edition) {
+          if (edition !== undefined) {
             props.edition = edition;
           }
 
-          if (releaseGroup) {
+          if (releaseGroup !== undefined) {
             props.releaseGroup = releaseGroup;
           }
 
