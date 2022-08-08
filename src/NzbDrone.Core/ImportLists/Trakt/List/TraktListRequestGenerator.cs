@@ -27,7 +27,13 @@ namespace NzbDrone.Core.ImportLists.Trakt.List
         {
             var link = string.Empty;
 
-            var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim());
+            // Trakt slug rules:
+            // - replace all special characters with a dash
+            // - replaces multiple dashes with a single dash
+            // - allows underscore as a valid character
+            // - does not trim underscore from the end
+            // - allows multiple underscores in a row
+            var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim(), true, "-", "-");
             link += $"users/{Settings.Username.Trim()}/lists/{listName}/items/movies?limit={Settings.Limit}";
 
             var request = new ImportListRequest(_traktProxy.BuildTraktRequest(link, HttpMethod.Get, Settings.AccessToken));

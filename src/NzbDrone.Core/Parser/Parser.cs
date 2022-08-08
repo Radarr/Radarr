@@ -401,7 +401,7 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
-        public static string ToUrlSlug(string value)
+        public static string ToUrlSlug(string value, bool invalidDashReplacement = false, string trimEndChars = "-_", string deduplicateChars = "-_")
         {
             //First to lower case
             value = value.ToLowerInvariant();
@@ -412,14 +412,23 @@ namespace NzbDrone.Core.Parser
             //Replace spaces
             value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
 
+            //Should invalid characters be replaced with dash or empty string?
+            string replaceCharacter = invalidDashReplacement ? "-" : string.Empty;
+
             //Remove invalid chars
-            value = Regex.Replace(value, @"[^a-z0-9\s-_]", "", RegexOptions.Compiled);
+            value = Regex.Replace(value, @"[^a-z0-9\s-_]", replaceCharacter, RegexOptions.Compiled);
 
-            //Trim dashes from end
-            value = value.Trim('-', '_');
+            //Trim dashes or underscores from end, or user defined character set
+            if (!string.IsNullOrEmpty(trimEndChars))
+            {
+                value = value.Trim(trimEndChars.ToCharArray());
+            }
 
-            //Replace double occurences of - or _
-            value = Regex.Replace(value, @"([-_]){2,}", "$1", RegexOptions.Compiled);
+            //Replace double occurrences of - or _, or user defined character set
+            if (!string.IsNullOrEmpty(deduplicateChars))
+            {
+                value = Regex.Replace(value, @"([" + deduplicateChars + "]){2,}", "$1", RegexOptions.Compiled);
+            }
 
             return value;
         }
