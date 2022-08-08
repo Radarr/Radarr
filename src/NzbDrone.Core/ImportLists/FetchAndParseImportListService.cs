@@ -167,6 +167,7 @@ namespace NzbDrone.Core.ImportLists
         {
             var mappedMovies = reports.Select(m => _movieSearch.MapMovieToTmdbMovie(new MovieMetadata { Title = m.Title, TmdbId = m.TmdbId, ImdbId = m.ImdbId, Year = m.Year }))
                                       .Where(x => x != null)
+                                      .DistinctBy(x => x.TmdbId)
                                       .ToList();
 
             _movieMetadataService.UpsertMany(mappedMovies);
