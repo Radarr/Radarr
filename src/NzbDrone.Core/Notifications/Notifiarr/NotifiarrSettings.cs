@@ -21,8 +21,6 @@ namespace NzbDrone.Core.Notifications.Notifiarr
         public string APIKey { get; set; }
         [FieldDefinition(1, Label = "Instance Name", Advanced = true, HelpText = "Unique name for this instance", HelpLink = "https://notifiarr.com")]
         public string InstanceName { get; set; }
-        [FieldDefinition(2, Label = "Environment", Advanced = true, Type = FieldType.Select, SelectOptions = typeof(NotifiarrEnvironment), HelpText = "Live unless told otherwise", HelpLink = "https://notifiarr.com")]
-        public int Environment { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
