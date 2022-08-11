@@ -148,12 +148,18 @@ namespace NzbDrone.Core.RootFolders
             var possibleMovieFolders = _diskProvider.GetDirectories(path).ToList();
             var unmappedFolders = possibleMovieFolders.Except(moviePaths.Select(s => s.Value), PathEqualityComparer.Instance).ToList();
 
-            foreach (string unmappedFolder in unmappedFolders)
+            var recycleBinPath = _configService.RecycleBin;
+
+            foreach (var unmappedFolder in unmappedFolders)
             {
                 var di = new DirectoryInfo(unmappedFolder.Normalize());
+
                 if ((!di.Attributes.HasFlag(FileAttributes.System) && !di.Attributes.HasFlag(FileAttributes.Hidden)) || di.Attributes.ToString() == "-1")
                 {
-                    results.Add(new UnmappedFolder { Name = di.Name, Path = di.FullName });
+                    if (string.IsNullOrWhiteSpace(recycleBinPath) || di.FullName.PathNotEquals(recycleBinPath))
+                    {
+                        results.Add(new UnmappedFolder { Name = di.Name, Path = di.FullName });
+                    }
                 }
             }
 
