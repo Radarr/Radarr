@@ -1,4 +1,4 @@
-﻿using NzbDrone.Common.Messaging;
+using NzbDrone.Common.Messaging;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.MediaFiles.Events
@@ -19,6 +19,8 @@ namespace NzbDrone.Core.MediaFiles.Events
     {
         RootFolderDoesNotExist,
         RootFolderIsEmpty,
-        MovieFolderDoesNotExist
+        MovieFolderDoesNotExist,
+        NeverRescanAfterRefresh,
+        RescanAfterManualRefreshOnly
     }
 }
