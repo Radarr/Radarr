@@ -229,21 +229,48 @@ namespace NzbDrone.Common.Instrumentation.Sentry
             {
                 if (FilterEvents)
                 {
-                    var sqlEx = logEvent.Exception as SQLiteException;
-                    if (sqlEx != null && FilteredSQLiteErrors.Contains(sqlEx.ResultCode))
+                    var exceptions = new List<Exception>();
+
+                    var aggEx = logEvent.Exception as AggregateException;
+
+                    if (aggEx != null && aggEx.InnerExceptions.Count > 0)
                     {
-                        return false;
+                        exceptions.AddRange(aggEx.InnerExceptions);
+                    }
+                    else
+                    {
+                        exceptions.Add(logEvent.Exception);
                     }
 
-                    if (FilteredExceptionTypeNames.Contains(logEvent.Exception.GetType().Name))
+                    // If any are sentry then send to sentry
+                    foreach (var ex in exceptions)
                     {
-                        return false;
+                        var isSentry = true;
+
+                        var sqlEx = ex as SQLiteException;
+                        if (sqlEx != null && !FilteredSQLiteErrors.Contains(sqlEx.ResultCode))
+                        {
+                            isSentry = false;
+                        }
+
+                        if (FilteredExceptionTypeNames.Contains(ex.GetType().Name))
+                        {
+                            isSentry = false;
+                        }
+
+                        if (FilteredExceptionMessages.Any(x => ex.Message.Contains(x)))
+                        {
+                            isSentry = false;
+                        }
+
+                        if (isSentry)
+                        {
+                            return true;
+                        }
                     }
 
-                    if (FilteredExceptionMessages.Any(x => logEvent.Exception.Message.Contains(x)))
-                    {
-                        return false;
-                    }
+                    // The exception or aggregate exception children were not sentry exceptions
+                    return false;
                 }
 
                 return true;
