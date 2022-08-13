@@ -34,7 +34,7 @@ namespace NzbDrone.Core.CustomFormats
 
         protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo)
         {
-            var comparedLanguage = movieInfo != null && Name == "Original" && movieInfo.ExtraInfo.ContainsKey("OriginalLanguage")
+            var comparedLanguage = movieInfo != null && movieInfo.ExtraInfo.ContainsKey("OriginalLanguage")
                 ? (Language)movieInfo.ExtraInfo["OriginalLanguage"]
                 : (Language)Value;
             return movieInfo?.Languages?.Contains(comparedLanguage) ?? false;
