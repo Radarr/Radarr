@@ -549,7 +549,7 @@ stages:
         Radarr__Postgres__Password: 'radarr'
 
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: ${{ variables.linuxImage }}
 
       timeoutInMinutes: 10
         
@@ -687,7 +687,7 @@ stages:
         Radarr__Postgres__Password: 'radarr'
 
       pool:
-        vmImage: 'ubuntu-18.04'
+        vmImage: ${{ variables.linuxImage }}
 
       steps:
         - task: UseDotNet@2
