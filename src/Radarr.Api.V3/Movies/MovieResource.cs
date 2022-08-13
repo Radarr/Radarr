@@ -94,6 +94,8 @@ namespace Radarr.Api.V3.Movies
             var translatedTitle = movieTranslation?.Title ?? model.Title;
             var translatedOverview = movieTranslation?.Overview ?? model.MovieMetadata.Value.Overview;
 
+            var collection = model.MovieMetadata.Value.CollectionTmdbId > 0 ? new MovieCollection { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId } : null;
+
             return new MovieResource
             {
                 Id = model.Id,
@@ -141,7 +143,7 @@ namespace Radarr.Api.V3.Movies
                 MovieFile = movieFile,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Studio = model.MovieMetadata.Value.Studio,
-                Collection = new MovieCollection { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId },
+                Collection = collection,
                 Popularity = model.MovieMetadata.Value.Popularity
             };
         }
