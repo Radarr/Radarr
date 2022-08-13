@@ -9,7 +9,7 @@
     <PackageReference Include="Npgsql" Version="6.0.3" />
     <PackageReference Include="Servarr.FFMpegCore" Version="4.7.0-26" />
     <PackageReference Include="Servarr.FFprobe" Version="5.0.1.93" />
-    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
@@ -22,7 +22,7 @@
     <PackageReference Include="NLog" Version="5.0.1" />
     <PackageReference Include="System.Data.SQLite.Core.Servarr" Version="1.0.115.5-18" />
     <PackageReference Include="MonoTorrent" Version="2.0.5" />
-    <PackageReference Include="System.Text.Json" Version="6.0.4" />
+    <PackageReference Include="System.Text.Json" Version="6.0.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NzbDrone.Common\Radarr.Common.csproj" />
