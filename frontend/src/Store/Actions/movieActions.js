@@ -116,7 +116,7 @@ export const filterPredicates = {
     const predicate = filterTypePredicates[type];
     const { collection } = item;
 
-    return predicate(collection ? collection.name : '', filterValue);
+    return predicate(collection ? collection.title : '', filterValue);
   },
 
   originalLanguage: function(item, filterValue, type) {

@@ -341,8 +341,8 @@ export const defaultState = {
         const collectionList = items.reduce((acc, movie) => {
           if (movie.collection) {
             acc.push({
-              id: movie.collection.name,
-              name: movie.collection.name
+              id: movie.collection.title,
+              name: movie.collection.title
             });
           }
 
