@@ -10,7 +10,7 @@ namespace NzbDrone.Core.CustomFormats
     {
         public SizeSpecificationValidator()
         {
-            RuleFor(c => c.Min).GreaterThan(0);
+            RuleFor(c => c.Min).GreaterThanOrEqualTo(0);
             RuleFor(c => c.Max).GreaterThan(c => c.Min);
         }
     }
