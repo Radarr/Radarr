@@ -49,7 +49,7 @@ A reminder about the `develop` and `nightly` branches
 
 # Release Notes
 
-## v4.2.1.6478 (changes since v4.2.0.6438)
+## v4.2.1.6478 (changes since [v4.2.0.6438](https://www.reddit.com/r/radarr/comments/w3kik4/new_release_develop_v4206438/))
 
  - Translated using Weblate (Spanish) [skip ci]
 
