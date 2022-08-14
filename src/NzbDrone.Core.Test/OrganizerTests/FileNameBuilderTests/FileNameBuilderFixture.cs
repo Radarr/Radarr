@@ -20,7 +20,6 @@ using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
 {
-    [Platform(Exclude = "Win")]
     [TestFixture]
 
     public class FileNameBuilderFixture : CoreTest<FileNameBuilder>
@@ -749,6 +748,30 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
             Subject.BuildFileName(_movie, _movieFile);
 
             Mocker.GetMock<IUpdateMediaInfo>().Verify(v => v.Update(_movieFile, _movie), Times.Never());
+        }
+
+        [TestCase("Movie.mp4", "Movie.mp4")]
+        [TestCase("Movie.mkv", "Movie.mkv")]
+        [TestCase("Movie.mp4]-[1_2]", "Movie.mp4")]
+        [TestCase("Movie.mkv]-[1_2]", "Movie.mkv")]
+        public void should_rename_invalid_extensions(string filePath, string expectedName)
+        {
+            _namingConfig.StandardMovieFormat =
+                "{Movie.Title}";
+
+            var movie = Builder<Movie>
+                .CreateNew()
+                .With(s => s.Title = "Movie")
+                .With(s => s.Path = "")
+                .Build();
+
+            var movieFile = Builder<MovieFile>
+                .CreateNew()
+                .With(s => s.RelativePath = filePath)
+                .Build();
+
+            var newFileName = Subject.BuildFileName(movie, movieFile);
+            Subject.BuildFilePath(movie, newFileName,  Path.GetExtension(filePath)).Should().Be(expectedName);
         }
 
         private void GivenMediaInfoModel(string videoCodec = "h264",
