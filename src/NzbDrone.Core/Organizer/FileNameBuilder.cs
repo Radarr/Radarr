@@ -146,9 +146,34 @@ namespace NzbDrone.Core.Organizer
         {
             Ensure.That(extension, () => extension).IsNotNullOrWhiteSpace();
 
+            extension = CleanUpExtension(fileName, extension);
+
             var path = movie.Path;
 
             return Path.Combine(path, fileName + extension);
+        }
+
+        private string CleanUpExtension(string fileName, string extension)
+        {
+            if (MediaFileExtensions.Extensions.Contains(extension))
+            {
+                return extension;
+            }
+
+            // Fix corrupted extensions in the format of: "[FileName.mkv]-[1_2]"
+            if (extension.Contains(']'))
+            {
+                _logger.Trace("Attempting to clean up extension on '{0}{1}'", fileName, extension);
+                var fixedExtension = extension.Substring(0, extension.IndexOf(']'));
+                if (MediaFileExtensions.Extensions.Contains(fixedExtension))
+                {
+                    _logger.Debug("Extension on '{0}{1}' renamed to '{2}'", fileName, extension, fixedExtension);
+                    return fixedExtension;
+                }
+            }
+
+            // Default back to existing extension if not in above format
+            return extension;
         }
 
         public BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec)
