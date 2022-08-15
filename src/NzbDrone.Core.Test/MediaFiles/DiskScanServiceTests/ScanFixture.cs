@@ -455,5 +455,23 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
 
             files.Should().HaveCount(2);
         }
+
+        [Test]
+        public void should_detect_obfuscated_and_normal_movie_files()
+        {
+            GivenMovieFolder();
+
+            GivenFiles(new List<string>
+                       {
+                           Path.Combine(_movie.Path, "This is a Movie.mp4").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "[private]-[group]-[This is a Movie.mp4]-[1_12]").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "[private]-[group]-[This is a Movie.nfo]-[2_12]").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "[private]-[group]-[This is a Movie.txt]-[3_12]").AsOsAgnostic()
+                       });
+
+            var files = Subject.GetVideoFiles(_movie.Path);
+
+            files.Should().HaveCount(2);
+        }
     }
 }

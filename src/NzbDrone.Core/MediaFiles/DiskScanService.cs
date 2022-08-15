@@ -200,7 +200,7 @@ namespace NzbDrone.Core.MediaFiles
                                            .ToList();
 
             // Find corrupted extensions in the format of: "[FileName.mkv]-[1_2]"
-            var mediaFilesListIncorrectExtension = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).Split(']').First())).ToList();
+            var mediaFilesListIncorrectExtension = filesOnDisk.Except(mediaFileList).Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).Split(']').First())).ToList();
 
             mediaFileList.AddRange(mediaFilesListIncorrectExtension);
 
@@ -227,7 +227,7 @@ namespace NzbDrone.Core.MediaFiles
                                            .ToList();
 
             // Find corrupted extensions in the format of: "[FileName.mkv]-[1_2]"
-            var mediaFilesListIncorrectExtension = filesOnDisk.Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).Split(']').First())).ToList();
+            var mediaFilesListIncorrectExtension = filesOnDisk.Except(mediaFileList).Where(file => MediaFileExtensions.Extensions.Contains(Path.GetExtension(file).Split(']').First())).ToList();
 
             mediaFileList.AddRange(mediaFilesListIncorrectExtension);
 
