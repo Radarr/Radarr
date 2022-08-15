@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FizzWare.NBuilder;
+using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Disk;
@@ -419,6 +420,40 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
 
             Mocker.GetMock<IMakeImportDecision>()
                   .Verify(v => v.GetImportDecisions(It.Is<List<string>>(l => l.Count == 1), _movie, false), Times.Once());
+        }
+
+        [Test]
+        public void should_detect_obfuscated_movie_files()
+        {
+            GivenMovieFolder();
+
+            GivenFiles(new List<string>
+                       {
+                           Path.Combine(_movie.Path, "[private]-[group]-[This is a Movie.mp4]-[1_12]").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "[private]-[group]-[This is a Movie.nfo]-[2_12]").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "[private]-[group]-[This is a Movie.txt]-[3_12]").AsOsAgnostic()
+                       });
+
+            var files = Subject.GetVideoFiles(_movie.Path);
+
+            files.Should().HaveCount(1);
+        }
+
+        [Test]
+        public void should_detect_obfuscated_nonmovie_files()
+        {
+            GivenMovieFolder();
+
+            GivenFiles(new List<string>
+                       {
+                           Path.Combine(_movie.Path, "[private]-[group]-[This is a Movie.mp4]-[1_12]").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "[private]-[group]-[This is a Movie.nfo]-[2_12]").AsOsAgnostic(),
+                           Path.Combine(_movie.Path, "[private]-[group]-[This is a Movie.txt]-[3_12]").AsOsAgnostic()
+                       });
+
+            var files = Subject.GetNonVideoFiles(_movie.Path);
+
+            files.Should().HaveCount(2);
         }
     }
 }
