@@ -119,9 +119,17 @@ namespace NzbDrone.Core.Movies
             return FindByTitle(new List<string> { title }, year, otherTitles, candidates);
         }
 
-        public Movie FindByTitle(List<string> cleanTitles, int? year, List<string> otherTitles, List<Movie> candidates)
+        public Movie FindByTitle(List<string> titles, int? year, List<string> otherTitles, List<Movie> candidates)
         {
+            var cleanTitles = titles.Select(t => t.CleanMovieTitle().ToLowerInvariant());
+
             var result = candidates.Where(x => cleanTitles.Contains(x.MovieMetadata.Value.CleanTitle)).FirstWithYear(year);
+
+            if (result == null)
+            {
+                result =
+                    candidates.Where(movie => cleanTitles.Contains(movie.MovieMetadata.Value.CleanOriginalTitle)).FirstWithYear(year);
+            }
 
             if (result == null)
             {
