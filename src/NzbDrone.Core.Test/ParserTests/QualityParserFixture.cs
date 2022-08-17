@@ -337,6 +337,21 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name.1993..BD25.ISO")]
         [TestCase("Movie.Title.2012.Bluray.1080p.3D.AVC.DTS-HD.MA.5.1.iso")]
         [TestCase("Movie.Title.1996.Bluray.ISO")]
+        [TestCase("Movie Title 2005 1080p USA Blu-ray AVC DTS-HD MA 5.1-PTP")]
+        [TestCase("Movie Title 2014 1080p Blu-ray AVC DTS-HD MA 5.1-PTP")]
+        [TestCase("Movie Title 1976 2160p UHD Blu-ray DTS-HD MA 5.1 DV HDR HEVC-UNTOUCHED")]
+        [TestCase("Movie Title 2004 1080p FRA Blu-ray VC-1 TrueHD 5.1-HDBEE")]
+        [TestCase("BD25.Movie.Title.1994.1080p.DTS-HD")]
+        [TestCase("Movie.Title.1997.1080p.NL.BD-50")]
+        [TestCase("Movie Title 2009 3D BD 2009 UNTOUCHED")]
+        [TestCase("Movie.Title.1982.1080p.HD.DVD.VC-1.DD+.5.1")]
+        [TestCase("Movie.Title.2007.1080p.HD.DVD.DD+.AVC")]
+        [TestCase("Movie.Title.2008.1080i.XXX.Blu-ray.MPEG-2.LPCM2.0.ISO Passworded Rar Archive")]
+        [TestCase("Movie.Title.2008.BONUS.GERMAN.SUBBED.COMPLETE.BLURAY")]
+        [TestCase("The German 2021 Bluray AVC")]
+        [TestCase("German.Only.Movie.2021.French.1080p.BluRay.AVC-UNTAVC")]
+        [TestCase("Movie.Title.2008.5xBlu-ray 1080p AVC DTS-HD MA 5.1")]
+        [TestCase("Movie.Title.2008.US.Directors.Cut.UHD.BD66.Blu-ray")]
         public void should_parse_brdisk_1080p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080p, Modifier.BRDISK);
