@@ -1142,5 +1142,6 @@
     "UnableToLoadCollections": "Sammlungen können nicht geladen werden",
     "InstanceName": "Instanzname",
     "InstanceNameHelpText": "Instanzname im Browser-Tab und für Syslog-Anwendungsname",
-    "RottenTomatoesRating": "Tomato Bewertung"
+    "RottenTomatoesRating": "Tomato Bewertung",
+    "TotalMovies": "Filme insgesamt"
 }
