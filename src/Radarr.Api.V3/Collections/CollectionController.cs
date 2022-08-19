@@ -53,9 +53,25 @@ namespace Radarr.Api.V3.Collections
         }
 
         [HttpGet]
-        public List<CollectionResource> GetCollections()
+        public List<CollectionResource> GetCollections(int? tmdbId)
         {
-            return MapToResource(_collectionService.GetAllCollections()).ToList();
+            var collectionResources = new List<CollectionResource>();
+
+            if (tmdbId.HasValue)
+            {
+                var collection = _collectionService.FindByTmdbId(tmdbId.Value);
+
+                if (collection != null)
+                {
+                    collectionResources.AddIfNotNull(MapToResource(collection));
+                }
+            }
+            else
+            {
+                collectionResources = MapToResource(_collectionService.GetAllCollections()).ToList();
+            }
+
+            return collectionResources;
         }
 
         [RestPutById]
