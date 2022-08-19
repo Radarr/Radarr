@@ -589,6 +589,16 @@
         "tags": [
           "Collection"
         ],
+        "parameters": [
+          {
+            "name": "tmdbId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success",
