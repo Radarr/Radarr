@@ -49,7 +49,7 @@ A reminder about the `develop` and `nightly` branches
 
 # Release Notes
 
-## v4.2.2.6503 (changes since v4.2.1.6478)
+## v4.2.2.6503 (changes since [v4.2.1.6478](https://www.reddit.com/r/radarr/comments/woe62q/new_release_develop_v4216478/))
 
  - Automated API Docs update
 
