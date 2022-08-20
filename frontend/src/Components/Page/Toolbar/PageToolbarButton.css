@@ -2,7 +2,8 @@
   composes: link from '~Components/Link/Link.css';
 
   padding-top: 4px;
-  width: $toolbarButtonWidth;
+  min-width: $toolbarButtonWidth;
+  width: min-content;
   text-align: center;
 
   &:hover {
