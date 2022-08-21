@@ -262,10 +262,10 @@ export const defaultState = {
       type: filterBuilderTypes.ARRAY,
       optionsSelector: function(items) {
         const collectionList = items.reduce((acc, movie) => {
-          if (movie.collection) {
+          if (movie.collection && movie.collection.title) {
             acc.push({
-              id: movie.collection.name,
-              name: movie.collection.name
+              id: movie.collection.title,
+              name: movie.collection.title
             });
           }
 
