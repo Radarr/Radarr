@@ -283,7 +283,11 @@ namespace NzbDrone.Core.Organizer
 
         private void AddEditionTagsTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, MovieFile movieFile)
         {
-            if (movieFile.Edition.IsNotNullOrWhiteSpace())
+            if (movieFile.Edition.ToUpper() == "IMAX")
+            {
+                tokenHandlers["{Edition Tags}"] = m => "IMAX";
+            }
+            else if (movieFile.Edition.IsNotNullOrWhiteSpace())
             {
                 tokenHandlers["{Edition Tags}"] = m => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(movieFile.Edition.ToLower());
             }
