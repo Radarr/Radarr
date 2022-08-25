@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex MPEG2Regex = new Regex(@"\b(?<mpeg2>MPEG[-_. ]?2)\b");
 
-        private static readonly Regex BRDISKRegex = new Regex(@"^(?!.*\b((?<!HD[._ -]|HD)DVD|BDRip|MKV|XviD|WMV|d3g|REMUX|BDREMUX|[xh][-_. ]?26[45]|German.*DL|((?<=\d{4}).*German.*(DL)?)(?=.*\b(AVC|HEVC|VC[-_. ]?1|MVC|MPEG[-_. ]?2)\b))\b)(((?=.*(Blu[-_. ]?ray|BD|HD[-_. ]?DVD)\b)(?=.*\b(AVC|HEVC|VC[-_. ]?1|MVC|MPEG[-_. ]?2|BDMV|ISO)\b))|^((?=.*\b(^((?=.*\b((.*_)?COMPLETE.*|Dis[ck])\b)(?=.*(Blu[-_. ]?ray|HD[-_. ]?DVD)))|3D[-_. ]?BD|BR[-_. ]?DISK|Full[-_. ]?Blu[-_. ]?ray|^((?=.*((BD|UHD)[-_. ]?(25|50|66|100|ISO)))))))).*",
+        private static readonly Regex BRDISKRegex = new Regex(@"^(?!.*\b((?<!HD[._ -]|HD)DVD|BDRip|720p|MKV|XviD|WMV|d3g|REMUX|^(?=.*1080p)(?=.*HEVC)|[xh][-_. ]?26[45]|German.*DL|((?<=\d{4}).*German.*(DL)?)(?=.*\b(AVC|HEVC|VC[-_. ]?1|MVC|MPEG[-_. ]?2)\b))\b)(((?=.*(Blu[-_. ]?ray|BD|HD[-_. ]?DVD)\b)(?=.*\b(AVC|HEVC|VC[-_. ]?1|MVC|MPEG[-_. ]?2|BDMV|ISO)\b))|^((?=.*\b(^((?=.*\b((.*_)?COMPLETE.*|Dis[ck])\b)(?=.*(Blu[-_. ]?ray|HD[-_. ]?DVD)))|3D[-_. ]?BD|BR[-_. ]?DISK|Full[-_. ]?Blu[-_. ]?ray|^((?=.*((BD|UHD)[-_. ]?(25|50|66|100|ISO)))))))).*",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex ProperRegex = new Regex(@"\b(?<proper>proper)\b",
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex HighDefPdtvRegex = new Regex(@"hr[-_. ]ws", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex RemuxRegex = new Regex(@"(?:[_. \[]|\d{4}p-)(?<remux>(?:(BD|UHD)[-_. ]?)?Remux)\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RemuxRegex = new Regex(@"^(?=.*1080p)(?=.*\b(Blu[-_. ]?ray|HD[-_. ]?DVD|BD|UHD))(?!.*WEB[-_. ]?DL)(?=.*(REMUX\b|((?<=\d{4}).*German.*(DL)?)(?=.*\b(AVC|HEVC|VC[-_. ]?1|MVC|MPEG[-_. ]?2)))).*\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex HDShitQualityRegex = new Regex(@"(HD-TS|HDTS|HDTSRip|HD-TC|HDTC|HDCAM|HD-CAM)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
