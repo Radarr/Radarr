@@ -316,6 +316,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Terminator.Dark.Fate.2019.German.DL.DTS.Dubbed.1080p.BluRay.AVC-PsO")]
         [TestCase("Movie.Title.1998.HDDVD.1080p.DD.5.1.VC-1.REMUX-FraMeSToR")]
         [TestCase("Movie.Title.2022.German.1080p.BluRay.AVC-PL3X")]
+        [TestCase("Movie.Title.2009.720p.BluRay.Remux.AVC.FLAC2.0-ACAB")]
         public void should_parse_remux1080p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080p, Modifier.REMUX);
