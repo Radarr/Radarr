@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex HighDefPdtvRegex = new Regex(@"hr[-_. ]ws", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex RemuxRegex = new Regex(@"^(?=.*1080p)(?=.*\b(Blu[-_. ]?ray|HD[-_. ]?DVD|BD|UHD))(?!.*WEB[-_. ]?DL)(?=.*(REMUX\b|((?<=\d{4}).*German.*(DL)?)(?=.*\b(AVC|HEVC|VC[-_. ]?1|MVC|MPEG[-_. ]?2)))).*\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RemuxRegex = new Regex(@"^(?=.*(\d{4})|720p)(?=.*\b(Blu[-_. ]?ray|HD[-_. ]?DVD|BD|UHD))(?!.*WEB[-_. ]?DL)(?=.*(REMUX\b|((?<=\d{4}).*German.*(DL)?)(?=.*\b(AVC|HEVC|VC[-_. ]?1|MVC|MPEG[-_. ]?2)))).*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex HDShitQualityRegex = new Regex(@"(HD-TS|HDTS|HDTSRip|HD-TC|HDTC|HDCAM|HD-CAM)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
