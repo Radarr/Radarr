@@ -24,6 +24,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             MovieMetadataLanguage = (int)Language.English;
             MovieImages = true;
             UseMovieNfo = false;
+            AddCollectionName = true;
         }
 
         [FieldDefinition(0, Label = "Movie Metadata", Type = FieldType.Checkbox)]
@@ -40,6 +41,9 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
         [FieldDefinition(4, Label = "Use Movie.nfo", Type = FieldType.Checkbox, HelpText = "Radarr will write metadata to movie.nfo instead of the default <movie-filename>.nfo")]
         public bool UseMovieNfo { get; set; }
+
+        [FieldDefinition(5, Label = "Collection Name", Type = FieldType.Checkbox, HelpText = "Radarr will write the collection name to the .nfo file", Advanced = true)]
+        public bool AddCollectionName { get; set; }
 
         public bool IsValid => true;
 
