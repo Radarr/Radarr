@@ -47,11 +47,11 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         [Test]
         public void should_add_edition_tag()
         {
-            _movieFile.Edition = "Uncut";
+            _movieFile.Edition = "Uncut Imax";
             _namingConfig.StandardMovieFormat = "{Movie Title} [{Edition Tags}]";
 
             Subject.BuildFileName(_movie, _movieFile)
-                   .Should().Be("South Park [Uncut]");
+                   .Should().Be("South Park [Uncut IMAX]");
         }
 
         [TestCase("{Movie Title} {edition-{Edition Tags}}")]
