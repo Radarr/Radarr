@@ -34,7 +34,8 @@ namespace NzbDrone.Core.Parser
                                                                                                           (?<czech>\bCZ\b)|
                                                                                                           (?<polish>\bPL\b)|
                                                                                                           (?<bulgarian>\bBG\b))(?:(?i)(?![\W|_|^]SUB))|
-                                                                                                          (?<slovak>\bSK\b)",
+                                                                                                          (?<slovak>\bSK\b)|
+                                                                                                          (?<latvian>\bLV\b)",
                                                                 RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex SubtitleLanguageRegex = new Regex(".+?[-_. ](?<iso_code>[a-z]{2,3})([-_. ](?<tags>full|forced|foreign|default|cc|psdh|sdh))*$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -189,6 +190,11 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Slovak);
             }
 
+            if (lowerTitle.Contains("latvian"))
+            {
+                languages.Add(Language.Latvian);
+            }
+
             // Case sensitive
             var caseSensitiveMatch = CaseSensitiveLanguageRegex.Match(title);
 
@@ -215,6 +221,11 @@ namespace NzbDrone.Core.Parser
             if (caseSensitiveMatch.Groups["slovak"].Captures.Cast<Capture>().Any())
             {
                 languages.Add(Language.Slovak);
+            }
+
+            if (caseSensitiveMatch.Groups["latvian"].Captures.Cast<Capture>().Any())
+            {
+                languages.Add(Language.Latvian);
             }
 
             var matches = LanguageRegex.Matches(title);
