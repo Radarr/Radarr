@@ -368,6 +368,16 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Slovak);
         }
 
+        [TestCase("Movie.Title.2022.LV.WEBRip.XviD-LOL")]
+        [TestCase("Movie.Title.2022.lv.WEBRip.XviD-LOL")]
+        [TestCase("Movie.Title.2022.LATVIAN.WEBRip.XviD-LOL")]
+        [TestCase("Movie.Title.2022.Latvian.WEBRip.XviD-LOL")]
+        public void should_parse_language_latvian(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+            result.Languages.Should().BeEquivalentTo(Language.Latvian);
+        }
+
         [TestCase("Movie.Title.en.sub")]
         [TestCase("Movie Title.eng.sub")]
         [TestCase("Movie.Title.eng.forced.sub")]
