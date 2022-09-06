@@ -1143,5 +1143,7 @@
     "CollectionShowDetailsHelpText": "Näytä kokoelmien tila ja ominaisuudet",
     "CollectionShowPostersHelpText": "Näytä kokoelmien julisteet",
     "RottenTomatoesRating": "Tomaattiarvio",
-    "TotalMovies": "Elokuvia yhteensä"
+    "TotalMovies": "Elokuvia yhteensä",
+    "ApplicationURL": "Sovelluksen URL-osoite",
+    "ApplicationUrlHelpText": "Sovelluksen ulkoinen URL-osoite, johon sisältyy http(s)://, portti ja URL-perusta."
 }
