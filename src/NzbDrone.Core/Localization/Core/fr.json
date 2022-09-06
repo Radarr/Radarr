@@ -1137,5 +1137,10 @@
     "UnableToLoadCollections": "Impossible de charger les collections",
     "RottenTomatoesRating": "Classement Rotten Tomatoes",
     "ShowCollectionDetails": "Afficher l'état de la collection",
-    "EditCollection": "Modifier la collection"
+    "EditCollection": "Modifier la collection",
+    "ApplicationURL": "URL de l'application",
+    "ApplicationUrlHelpText": "URL externe de cette application, y compris http(s)://, le port et l'URL de base",
+    "InstanceName": "Nom de l'instance",
+    "InstanceNameHelpText": "Nom de l'instance dans l'onglet du navigateur et pour le nom d'application dans Syslog",
+    "CollectionShowPostersHelpText": "Afficher les affiches des éléments de la collection"
 }

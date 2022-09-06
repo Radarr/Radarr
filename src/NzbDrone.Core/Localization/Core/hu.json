@@ -1143,5 +1143,7 @@
     "ShowPosters": "Poszterek megjelenítése",
     "InstanceNameHelpText": "Példánynév a böngésző lapon és a syslog alkalmazás neve",
     "RottenTomatoesRating": "Tomato Értékelés",
-    "TotalMovies": "Összes film"
+    "TotalMovies": "Összes film",
+    "ApplicationUrlHelpText": "Az alkalmazás külső URL-címe, beleértve a \"http(s)://\"-t, a \"Portot\" és az \"URL-alapot\" is",
+    "ApplicationURL": "Alkalmazás URL-je"
 }
