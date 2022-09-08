@@ -368,6 +368,16 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Slovak);
         }
         
+        [TestCase("Movie.Title.2022.LV.WEBRip.XviD-LOL")]
+        [TestCase("Movie.Title.2022.lv.WEBRip.XviD-LOL")]
+        [TestCase("Movie.Title.2022.LATVIAN.WEBRip.XviD-LOL")]
+        [TestCase("Movie.Title.2022.Latvian.WEBRip.XviD-LOL")]
+        public void should_parse_language_latvian(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+            result.Languages.Should().BeEquivalentTo(Language.Latvian);
+        }
+
         [TestCase("Movie.Title.1994.Catalan.1080p.XviD-LOL")]
         [TestCase("Movie Title (2020)[BDRemux AVC 1080p][E-AC3 DD Plus 5.1 CA-EN Subs]")]
         [TestCase("Movie Title (2020)[BDRemux AVC 1080p][E-AC3 DD Plus 5.1 ES-CA-EN Subs]")]
@@ -378,16 +388,6 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);
 
             result.Languages.Should().BeEquivalentTo(Language.Catalan);
-        }
-
-        [TestCase("Movie.Title.2022.LV.WEBRip.XviD-LOL")]
-        [TestCase("Movie.Title.2022.lv.WEBRip.XviD-LOL")]
-        [TestCase("Movie.Title.2022.LATVIAN.WEBRip.XviD-LOL")]
-        [TestCase("Movie.Title.2022.Latvian.WEBRip.XviD-LOL")]
-        public void should_parse_language_latvian(string postTitle)
-        {
-            var result = Parser.Parser.ParseMovieTitle(postTitle);
-            result.Languages.Should().BeEquivalentTo(Language.Latvian);
         }
 
         [TestCase("Movie.Title.en.sub")]
