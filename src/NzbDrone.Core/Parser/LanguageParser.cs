@@ -28,7 +28,8 @@ namespace NzbDrone.Core.Parser
                                                                             (?<polish>\b(?:PL\W?DUB|DUB\W?PL|LEK\W?PL|PL\W?LEK)\b)|
                                                                             (?<chinese>\[(?:CH[ST]|BIG5|GB)\]|简|繁|字幕)|
                                                                             (?<ukrainian>(?:(?:\dx)?UKR))|
-                                                                            (?<latvian>\bLV\b)",
+                                                                            (?<latvian>\bLV\b)|
+                                                                            (?<catalan>\b(?:CA|CAT)\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|
@@ -189,10 +190,15 @@ namespace NzbDrone.Core.Parser
             {
                 languages.Add(Language.Slovak);
             }
-
+ 
             if (lowerTitle.Contains("latvian"))
             {
                 languages.Add(Language.Latvian);
+            }
+
+            if (lowerTitle.Contains("catalan"))
+            {
+                languages.Add(Language.Catalan);
             }
 
             // Case sensitive
@@ -305,6 +311,10 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["latvian"].Success)
                 {
                     languages.Add(Language.Latvian);
+                
+                if (match.Groups["catalan"].Success)
+                {
+                    languages.Add(Language.Catalan);
                 }
             }
 

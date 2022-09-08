@@ -367,6 +367,18 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = Parser.Parser.ParseMovieTitle(postTitle);
             result.Languages.Should().BeEquivalentTo(Language.Slovak);
         }
+        
+        [TestCase("Movie.Title.1994.Catalan.1080p.XviD-LOL")]
+        [TestCase("Movie Title (2020)[BDRemux AVC 1080p][E-AC3 DD Plus 5.1 CA-EN Subs]")]
+        [TestCase("Movie Title (2020)[BDRemux AVC 1080p][E-AC3 DD Plus 5.1 ES-CA-EN Subs]")]
+        [TestCase("Movie Title (2020) [UHDRemux2160p HDR][DTS-HD MA 5.1 AC3 5.1 CA - True-HD 7.1 Atmos EN Subs]")]
+        [TestCase("Movie Title (2016) [UHDRemux 2160p SDR] [CA DD 5.1 - EN DTS-HD MA 5.1 Subs]")]
+        public void should_parse_language_spanish(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.Catalan);
+        }
 
         [TestCase("Movie.Title.2022.LV.WEBRip.XviD-LOL")]
         [TestCase("Movie.Title.2022.lv.WEBRip.XviD-LOL")]
