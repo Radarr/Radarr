@@ -215,7 +215,6 @@ function TagDetailsModalContent(props) {
             </FieldSet> :
             null
         }
-        
         {
           !!isCleanLibraryTag &&
             <FieldSet legend={translate('CleanLibraryTag')} />

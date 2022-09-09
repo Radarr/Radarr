@@ -121,6 +121,16 @@ function ImportListOptions(props: ImportListOptionsPageProps) {
               {...listSyncLevel}
             />
           </FormGroup>
+          <FormGroup>
+            <FormLabel>{translate('CleanLibraryTags')}</FormLabel>
+            <FormInputGroup
+              type={inputTypes.TAG}
+              name="cleanLibraryTags"
+              helpText={translate('TagsHelpText')}
+              {...settings.cleanLibraryTags}
+              onChange={onInputChange}
+            />
+          </FormGroup>
         </Form>
       ) : null}
     </FieldSet>

@@ -484,7 +484,7 @@ namespace NzbDrone.Core.Configuration
 
         private HashSet<int> GetValueHashSet(string key)
         {
-            string t1 = GetValue(key, string.Empty);
+            var t1 = GetValue(key, string.Empty);
             if (string.IsNullOrEmpty(t1) || t1.Equals("[]"))
             {
                 return new HashSet<int>();
