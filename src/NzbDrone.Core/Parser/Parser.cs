@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex SimpleReleaseTitleRegex = new Regex(@"\s*(?:[<>?*:|])", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly RegexReplace WebsitePrefixRegex = new RegexReplace(@"^\[\s*[-a-z]+(\.[a-z]+)+\s*\][- ]*|^www\.[a-z]+\.(?:com|net|org)[ -]*",
+        private static readonly RegexReplace WebsitePrefixRegex = new RegexReplace(@"^\[\s*[-a-z]+(\.[a-z]+)+\s*\][- ]*|^www\.[a-z0-9]+\.(?:com|net|org|casa|pics|tc)[ -]*",
                                                                 string.Empty,
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 

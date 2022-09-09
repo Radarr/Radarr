@@ -46,6 +46,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("A.I.Artificial.Movie.(2001)", "A.I. Artificial Movie")]
         [TestCase("A.Movie.Name.(1998)", "A Movie Name")]
         [TestCase("www.Torrenting.com - Movie.2008.720p.X264-DIMENSION", "Movie")]
+        [TestCase("www.5MovieRulz.tc - Movie (2000) Malayalam HQ HDRip - x264 - AAC - 700MB.mkv", "Movie")]
         [TestCase("Movie: The Movie World 2013", "Movie: The Movie World")]
         [TestCase("Movie.The.Final.Chapter.2016", "Movie The Final Chapter")]
         [TestCase("Der.Movie.James.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", "Der Movie James")]
