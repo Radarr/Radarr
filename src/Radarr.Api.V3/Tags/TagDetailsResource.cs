@@ -36,7 +36,6 @@ namespace Radarr.Api.V3.Tags
                 ImportListIds = model.ImportListIds,
                 NotificationIds = model.NotificationIds,
                 ReleaseProfileIds = model.ReleaseProfileIds,
-                RestrictionIds = model.RestrictionIds,
                 IsCleanLibraryTag = model.IsCleanLibraryTag,
                 IndexerIds = model.IndexerIds,
                 DownloadClientIds = model.DownloadClientIds,

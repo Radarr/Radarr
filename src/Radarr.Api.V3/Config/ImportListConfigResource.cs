@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using NzbDrone.Core.Configuration;
-using NzbDrone.Core.Tags;
 using Radarr.Http.REST;
 
 namespace Radarr.Api.V3.Config

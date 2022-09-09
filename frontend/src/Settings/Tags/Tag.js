@@ -57,7 +57,6 @@ class Tag extends Component {
       importListIds,
       notificationIds,
       releaseProfileIds,
-      restrictionIds,
       isCleanLibraryTag,
       indexerIds,
       downloadClientIds,
@@ -72,7 +71,6 @@ class Tag extends Component {
       importListIds.length ||
       notificationIds.length ||
       releaseProfileIds.length ||
-      restrictionIds.length ||
       isCleanLibraryTag ||
       indexerIds.length ||
       downloadClientIds.length ||
@@ -196,7 +194,6 @@ Tag.defaultProps = {
   delayProfileIds: [],
   notificationIds: [],
   releaseProfileIds: [],
-  restrictionIds: [],
   importListIds: [],
   isCleanLibraryTag: false,
   indexerIds: [],
