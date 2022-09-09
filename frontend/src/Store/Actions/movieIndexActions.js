@@ -227,7 +227,7 @@ export const defaultState = {
     collection: function(item) {
       const { collection ={} } = item;
 
-      return collection.name;
+      return collection.title;
     },
 
     originalLanguage: function(item) {
