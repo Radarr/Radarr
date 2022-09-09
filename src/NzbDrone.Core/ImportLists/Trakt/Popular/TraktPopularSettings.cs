@@ -39,6 +39,10 @@ namespace NzbDrone.Core.ImportLists.Trakt.Popular
         public TraktPopularSettings()
         {
             TraktListType = (int)TraktPopularListType.Popular;
+            Rating = "0-100";
+            Certification = "NR,G,PG,PG-13,R,NC-17";
+            Genres = "";
+            Years = "";
         }
 
         [FieldDefinition(1, Label = "List Type", Type = FieldType.Select, SelectOptions = typeof(TraktPopularListType), HelpText = "Type of list you're seeking to import from")]
