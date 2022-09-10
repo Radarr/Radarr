@@ -24,4 +24,12 @@ namespace Radarr.Http
         {
         }
     }
+
+    public class V4FeedControllerAttribute : VersionedFeedControllerAttribute
+    {
+        public V4FeedControllerAttribute(string resource = "[controller]")
+            : base(4, resource)
+        {
+        }
+    }
 }

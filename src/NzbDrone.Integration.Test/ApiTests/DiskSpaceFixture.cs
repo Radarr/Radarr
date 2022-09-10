@@ -2,7 +2,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Integration.Test.Client;
-using Radarr.Api.V3.DiskSpace;
+using Radarr.Api.V4.DiskSpace;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

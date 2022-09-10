@@ -31,4 +31,12 @@ namespace Radarr.Http
         {
         }
     }
+
+    public class V4ApiControllerAttribute : VersionedApiControllerAttribute
+    {
+        public V4ApiControllerAttribute(string resource = "[controller]")
+            : base(4, resource)
+        {
+        }
+    }
 }

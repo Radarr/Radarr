@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Radarr.Api.V3.Indexers;
+using Radarr.Api.V4.Indexers;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client
