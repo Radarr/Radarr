@@ -3,7 +3,7 @@
   align-items: stretch;
   overflow: hidden;
   margin: 2px 4px;
-  border: 1px solid $borderColor;
+  border: 1px solid var(--borderColor);
   border-radius: 4px;
   background-color: #eee;
   cursor: default;
@@ -17,34 +17,34 @@
   padding: 0 4px;
   border-left: 4px;
   border-left-style: solid;
-  background-color: $white;
-  color: $defaultColor;
+  background-color: var(--white);
+  color: var(--defaultColor);
 }
 
 .primary {
-  border-color: $primaryColor;
+  border-color: var(--primaryColor);
 }
 
 .danger {
-  border-color: $dangerColor;
+  border-color: var(--dangerColor);
 }
 
 .success {
-  border-color: $successColor;
+  border-color: var(--successColor);
 }
 
 .purple {
-  border-color: $purple;
+  border-color: var(--purple);
 }
 
 .warning {
-  border-color: $warningColor;
+  border-color: var(--warningColor);
 }
 
 .info {
-  border-color: $infoColor;
+  border-color: var(--infoColor);
 }
 
 .queue {
-  border-color: $queueColor;
+  border-color: var(--queueColor);
 }

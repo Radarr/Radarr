@@ -3,7 +3,7 @@
   align-items: stretch;
   flex-wrap: wrap;
   margin: 3px;
-  border: 1px solid $borderColor;
+  border: 1px solid var(--borderColor);
 
   &:hover {
     .token {

@@ -1,7 +1,7 @@
 .title {
   padding: 10px 20px;
-  border-bottom: 1px solid $popoverTitleBorderColor;
-  background-color: $popoverTitleBackgroundColor;
+  border-bottom: 1px solid var(--popoverTitleBorderColor);
+  background-color: var(--popoverTitleBackgroundColor);
   font-size: 16px;
 }
 

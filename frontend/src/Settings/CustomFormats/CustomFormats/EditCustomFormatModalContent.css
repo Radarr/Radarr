@@ -12,8 +12,8 @@
 .addSpecification {
   composes: customFormat from '~./CustomFormat.css';
 
-  background-color: $cardAlternateBackgroundColor;
-  color: $gray;
+  background-color: var(--cardAlternateBackgroundColor);
+  color: var(--gray);
   text-align: center;
   font-size: 45px;
 }
@@ -21,7 +21,7 @@
 .center {
   display: inline-block;
   padding: 5px 20px 0;
-  border: 1px solid $borderColor;
+  border: 1px solid var(--borderColor);
   border-radius: 4px;
-  background-color: $white;
+  background-color: var(--cardCenterBackgroundColor);
 }

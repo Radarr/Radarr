@@ -1,7 +1,7 @@
 .label {
   display: inline-block;
   margin: 2px;
-  color: $white;
+  color: var(--white);
   /** text-align: center; **/
   white-space: nowrap;
   line-height: 1;
@@ -10,7 +10,7 @@
 
 .title {
   margin-bottom: 2px;
-  color: $helpTextColor;
+  color: var(--helpTextColor);
   font-size: 10px;
 }
 
@@ -36,5 +36,5 @@
 /** Outline **/
 
 .outline {
-  background-color: $white;
+  background-color: var(--white);
 }

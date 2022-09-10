@@ -4,8 +4,8 @@
   align-items: center;
   flex: 0 0 auto;
   height: $headerHeight;
-  background-color: #464b51;
-  color: $white;
+  background-color: var(--pageHeaderBackgroundColor);
+  color: var(--white);
 }
 
 .logoContainer {
@@ -56,7 +56,7 @@
   line-height: 60px;
 
   &:hover {
-    color: $toobarButtonHoverColor;
+    color: var(--toobarButtonHoverColor);
   }
 }
 
@@ -67,7 +67,7 @@
   align-items: center;
   justify-content: center;
   width: 30px;
-  color: $themeRed;
+  color: var(--themeRed);
   text-align: center;
   line-height: 60px;
 

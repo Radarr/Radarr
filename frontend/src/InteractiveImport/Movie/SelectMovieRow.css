@@ -1,5 +1,5 @@
 .movie {
   padding: 8px;
   width: 100%;
-  border-bottom: 1px solid $borderColor;
+  border-bottom: 1px solid var(--borderColor);
 }

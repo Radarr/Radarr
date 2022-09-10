@@ -6,7 +6,7 @@ $hoverScale: 1.05;
 
   &:hover {
     z-index: 2;
-    box-shadow: 0 0 10px $black;
+    box-shadow: 0 0 10px var(--black);
     transition: all 200ms ease-in;
 
     .poster {
@@ -28,7 +28,7 @@ $hoverScale: 1.05;
 .poster {
   position: relative;
   display: block;
-  background-color: $defaultColor;
+  background-color: var(--defaultColor);
 }
 
 .overlay {
@@ -44,7 +44,7 @@ $hoverScale: 1.05;
 
 .overlayTitle {
   padding: 5px;
-  color: $offWhite;
+  color: var(--offWhite);
   text-align: left;
   font-weight: bold;
   font-size: 15px;
@@ -67,7 +67,7 @@ $hoverScale: 1.05;
   z-index: 3;
   border-radius: 4px;
   background-color: #707070;
-  color: $white;
+  color: var(--white);
   font-size: $smallFontSize;
   opacity: 0;
   transition: opacity 0;
@@ -77,7 +77,7 @@ $hoverScale: 1.05;
   composes: button from '~Components/Link/IconButton.css';
 
   &:hover {
-    color: $radarrYellow;
+    color: var(--radarrYellow);
   }
 }
 
@@ -102,16 +102,16 @@ $hoverScale: 1.05;
 
   position: relative;
   display: block;
-  background-color: $defaultColor;
+  background-color: var(--defaultColor);
 }
 
 .monitorToggleButton {
   composes: toggleButton from '~Components/MonitorToggleButton.css';
 
   width: 25px;
-  color: $white;
+  color: var(--white);
 
   &:hover {
-    color: $iconButtonHoverLightColor;
+    color: var(--iconButtonHoverLightColor);
   }
 }
