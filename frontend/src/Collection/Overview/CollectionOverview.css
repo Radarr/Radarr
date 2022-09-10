@@ -104,7 +104,7 @@ $hoverScale: 1.05;
   width: 25px;
 
   &:hover {
-    color: $iconButtonHoverLightColor;
+    color: var(--iconButtonHoverLightColor);
   }
 }
 
@@ -131,7 +131,7 @@ $hoverScale: 1.05;
     width: 20px;
 
     &:hover {
-      color: $iconButtonHoverLightColor;
+      color: var(--iconButtonHoverLightColor);
     }
   }
 }

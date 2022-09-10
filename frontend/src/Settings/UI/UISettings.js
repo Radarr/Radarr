@@ -10,6 +10,8 @@ import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
 import { inputTypes } from 'Helpers/Props';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
+import themes from 'Styles/Themes';
+import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
 
 export const firstDayOfWeekOptions = [
@@ -64,6 +66,9 @@ class UISettings extends Component {
       languages,
       ...otherProps
     } = this.props;
+
+    const themeOptions = Object.keys(themes)
+      .map((theme) => ({ key: theme, value: titleCase(theme) }));
 
     const uiLanguages = languages.filter((item) => item.value !== 'Original');
 
@@ -185,6 +190,18 @@ class UISettings extends Component {
 
                 <FieldSet legend={translate('Style')}>
                   <FormGroup>
+                    <FormLabel>{translate('SettingsTheme')}</FormLabel>
+                    <FormInputGroup
+                      type={inputTypes.SELECT}
+                      name="theme"
+                      helpText={translate('SettingsThemeHelpText')}
+                      values={themeOptions}
+                      onChange={onInputChange}
+                      {...settings.theme}
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
                     <FormLabel>{translate('SettingsEnableColorImpairedMode')}</FormLabel>
                     <FormInputGroup
                       type={inputTypes.CHECK}
@@ -237,8 +254,8 @@ UISettings.propTypes = {
   error: PropTypes.object,
   settings: PropTypes.object.isRequired,
   hasSettings: PropTypes.bool.isRequired,
-  onSavePress: PropTypes.func.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onSavePress: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired
 };
 

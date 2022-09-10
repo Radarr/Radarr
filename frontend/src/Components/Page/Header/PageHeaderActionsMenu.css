@@ -5,7 +5,7 @@
   text-align: center;
 
   &:hover {
-    color: $toobarButtonHoverColor;
+    color: var(--toobarButtonHoverColor);
   }
 }
 

@@ -922,6 +922,8 @@
   "SettingsShortDateFormat": "Short Date Format",
   "SettingsShowRelativeDates": "Show Relative Dates",
   "SettingsShowRelativeDatesHelpText": "Show relative (Today/Yesterday/etc) or absolute dates",
+  "SettingsTheme": "Theme",
+  "SettingsThemeHelpText": "Change Application UI Theme, Inspired by Theme.Park",
   "SettingsTimeFormat": "Time Format",
   "SettingsWeekColumnHeader": "Week Column Header",
   "SettingsWeekColumnHeaderHelpText": "Shown above each column when week is the active view",
