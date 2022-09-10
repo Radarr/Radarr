@@ -17,16 +17,16 @@ using NzbDrone.Core.Qualities;
 using NzbDrone.Integration.Test.Client;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common.Categories;
-using Radarr.Api.V3.Blocklist;
-using Radarr.Api.V3.Config;
-using Radarr.Api.V3.DownloadClient;
-using Radarr.Api.V3.History;
-using Radarr.Api.V3.MovieFiles;
-using Radarr.Api.V3.Movies;
-using Radarr.Api.V3.Profiles.Quality;
-using Radarr.Api.V3.RootFolders;
-using Radarr.Api.V3.System.Tasks;
-using Radarr.Api.V3.Tags;
+using Radarr.Api.V4.Blocklist;
+using Radarr.Api.V4.Config;
+using Radarr.Api.V4.DownloadClient;
+using Radarr.Api.V4.History;
+using Radarr.Api.V4.MovieFiles;
+using Radarr.Api.V4.Movies;
+using Radarr.Api.V4.Profiles.Quality;
+using Radarr.Api.V4.RootFolders;
+using Radarr.Api.V4.System.Tasks;
+using Radarr.Api.V4.Tags;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test
@@ -95,7 +95,7 @@ namespace NzbDrone.Integration.Test
 
         protected virtual void InitRestClients()
         {
-            RestClient = new RestClient(RootUrl + "api/v3/");
+            RestClient = new RestClient(RootUrl + "api/v4/");
             RestClient.AddDefaultHeader("Authentication", ApiKey);
             RestClient.AddDefaultHeader("X-Api-Key", ApiKey);
 

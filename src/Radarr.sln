@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29418.71
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{57A04B72-8088-4F75-A582-1158CF8291F7}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Platform", "Platform", "{4EACDBBC-BCD7-4765-A57B-3E08331E4749}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Radarr.Api.V3", "Radarr.Api.V3\Radarr.Api.V3.csproj", "{D1D48E1D-9EEB-470B-992C-3954F90FB014}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Radarr.Api.V4", "Radarr.Api.V4\Radarr.Api.V4.csproj", "{97071405-1CD1-4D81-B0C3-A37BB86ACF05}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Radarr.Http", "Radarr.Http\Radarr.Http.csproj", "{F8A02FD4-A7A4-40D0-BB81-6319105A3302}"
 EndProject
@@ -276,6 +278,14 @@ Global
 		{0E2B067C-4A97-430C-8767-D19ACB09A63A}.Release|Posix.Build.0 = Release|Any CPU
 		{0E2B067C-4A97-430C-8767-D19ACB09A63A}.Release|Windows.ActiveCfg = Release|Any CPU
 		{0E2B067C-4A97-430C-8767-D19ACB09A63A}.Release|Windows.Build.0 = Release|Any CPU
+		{97071405-1CD1-4D81-B0C3-A37BB86ACF05}.Debug|Posix.ActiveCfg = Debug|Any CPU
+		{97071405-1CD1-4D81-B0C3-A37BB86ACF05}.Debug|Posix.Build.0 = Debug|Any CPU
+		{97071405-1CD1-4D81-B0C3-A37BB86ACF05}.Debug|Windows.ActiveCfg = Debug|Any CPU
+		{97071405-1CD1-4D81-B0C3-A37BB86ACF05}.Debug|Windows.Build.0 = Debug|Any CPU
+		{97071405-1CD1-4D81-B0C3-A37BB86ACF05}.Release|Posix.ActiveCfg = Release|Any CPU
+		{97071405-1CD1-4D81-B0C3-A37BB86ACF05}.Release|Posix.Build.0 = Release|Any CPU
+		{97071405-1CD1-4D81-B0C3-A37BB86ACF05}.Release|Windows.ActiveCfg = Release|Any CPU
+		{97071405-1CD1-4D81-B0C3-A37BB86ACF05}.Release|Windows.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

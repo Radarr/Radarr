@@ -37,6 +37,7 @@ namespace Radarr.Host
             "Radarr.Core",
             "Radarr.SignalR",
             "Radarr.Api.V3",
+            "Radarr.Api.V4",
             "Radarr.Http"
         };
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Net;
-using Radarr.Api.V3.MovieFiles;
-using Radarr.Api.V3.Movies;
+using Radarr.Api.V4.MovieFiles;
+using Radarr.Api.V4.Movies;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client
