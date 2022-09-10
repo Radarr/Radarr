@@ -50,7 +50,7 @@ namespace NzbDrone.Integration.Test
             // Make sure tasks have been initialized so the config put below doesn't cause errors
             WaitForCompletion(() => Tasks.All().SelectList(x => x.TaskName).Contains("RssSync"));
 
-            Indexers.Post(new Radarr.Api.V3.Indexers.IndexerResource
+            Indexers.Post(new Radarr.Api.V4.Indexers.IndexerResource
             {
                 EnableRss = false,
                 EnableInteractiveSearch = false,

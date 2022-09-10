@@ -24,7 +24,7 @@ using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Host.AccessControl;
 using NzbDrone.Http.Authentication;
 using NzbDrone.SignalR;
-using Radarr.Api.V3.System;
+using Radarr.Api.V4.System;
 using Radarr.Http;
 using Radarr.Http.Authentication;
 using Radarr.Http.ErrorManagement;
@@ -87,6 +87,7 @@ namespace NzbDrone.Host
                 options.ReturnHttpNotAcceptable = true;
             })
             .AddApplicationPart(typeof(SystemController).Assembly)
+            .AddApplicationPart(typeof(Radarr.Api.V3.System.SystemController).Assembly)
             .AddApplicationPart(typeof(StaticResourceController).Assembly)
             .AddJsonOptions(options =>
             {
@@ -96,9 +97,9 @@ namespace NzbDrone.Host
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v3", new OpenApiInfo
+                c.SwaggerDoc("v4", new OpenApiInfo
                 {
-                    Version = "3.0.0",
+                    Version = "4.0.0",
                     Title = "Radarr",
                     Description = "Radarr API docs",
                     License = new OpenApiLicense
@@ -277,6 +278,7 @@ namespace NzbDrone.Host
             app.UseMiddleware<CacheHeaderMiddleware>();
             app.UseMiddleware<IfModifiedMiddleware>();
             app.UseMiddleware<BufferingMiddleware>(new List<string> { "/api/v3/command" });
+            app.UseMiddleware<BufferingMiddleware>(new List<string> { "/api/v4/command" });
 
             app.UseWebSockets();
 

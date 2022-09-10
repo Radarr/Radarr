@@ -18,7 +18,6 @@ namespace Radarr.Api.V3.Movies
         {
             Monitored = true;
             MinimumAvailability = MovieStatusType.Released;
-            QualityProfileIds = new List<int>();
         }
 
         // Todo: Sorters should be done completely on the client
@@ -51,10 +50,10 @@ namespace Radarr.Api.V3.Movies
 
         // View & Edit
         public string Path { get; set; }
-        public List<int> QualityProfileIds { get; set; }
 
         // Compatabilitiy
         public int QualityProfileId { get; set; }
+        public bool HasFile { get; set; }
 
         // Editing Only
         public bool Monitored { get; set; }
@@ -115,7 +114,6 @@ namespace Radarr.Api.V3.Movies
                 SecondaryYear = model.MovieMetadata.Value.SecondaryYear,
 
                 Path = model.Path,
-                QualityProfileIds = model.QualityProfileIds,
                 QualityProfileId = model.QualityProfileIds.FirstOrDefault(),
 
                 Monitored = model.Monitored,
@@ -151,13 +149,6 @@ namespace Radarr.Api.V3.Movies
                 return null;
             }
 
-            var profiles = resource.QualityProfileIds;
-
-            if (resource.QualityProfileIds.Count == 0)
-            {
-                profiles.Add(resource.QualityProfileId);
-            }
-
             return new Movie
             {
                 Id = resource.Id,
@@ -186,7 +177,7 @@ namespace Radarr.Api.V3.Movies
                 },
 
                 Path = resource.Path,
-                QualityProfileIds = resource.QualityProfileIds,
+                QualityProfileIds = new List<int> { resource.QualityProfileId },
 
                 Monitored = resource.Monitored,
                 MinimumAvailability = resource.MinimumAvailability,

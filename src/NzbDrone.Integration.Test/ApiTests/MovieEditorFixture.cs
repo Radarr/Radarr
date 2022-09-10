@@ -3,7 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Test.Common;
-using Radarr.Api.V3.Movies;
+using Radarr.Api.V4.Movies;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

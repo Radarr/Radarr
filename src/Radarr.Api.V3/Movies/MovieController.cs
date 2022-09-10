@@ -85,7 +85,7 @@ namespace Radarr.Api.V3.Movies
             _rootFolderService = rootFolderService;
             _logger = logger;
 
-            SharedValidator.RuleFor(s => s.QualityProfileId).ValidId().When(s => s.QualityProfileIds == null || s.QualityProfileIds.Empty());
+            SharedValidator.RuleFor(s => s.QualityProfileId).ValidId();
 
             SharedValidator.RuleFor(s => s.Path)
                            .Cascade(CascadeMode.Stop)
@@ -97,9 +97,6 @@ namespace Radarr.Api.V3.Movies
                            .SetValidator(recycleBinValidator)
                            .SetValidator(systemFolderValidator)
                            .When(s => !s.Path.IsNullOrWhiteSpace());
-
-            SharedValidator.RuleFor(s => s.QualityProfileIds).NotNull().When(s => s.QualityProfileId == 0);
-            SharedValidator.RuleForEach(s => s.QualityProfileIds).SetValidator(profileExistsValidator);
 
             PostValidator.RuleFor(s => s.Path).IsValidPath().When(s => s.RootFolderPath.IsNullOrWhiteSpace());
             PostValidator.RuleFor(s => s.RootFolderPath)
@@ -243,6 +240,8 @@ namespace Radarr.Api.V3.Movies
         private void LinkMovieStatistics(MovieResource resource, MovieStatistics seriesStatistics)
         {
             resource.Statistics = seriesStatistics.ToResource();
+            resource.SizeOnDisk = seriesStatistics.SizeOnDisk;
+            resource.HasFile = seriesStatistics.MovieFileCount > 0;
         }
 
         [RestPostById]

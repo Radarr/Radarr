@@ -1,6 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
-using Radarr.Api.V3.Tags;
+using Radarr.Api.V4.Tags;
 
 namespace NzbDrone.Integration.Test.ApiTests
 {

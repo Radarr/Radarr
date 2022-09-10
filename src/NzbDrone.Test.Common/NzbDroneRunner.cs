@@ -30,7 +30,7 @@ namespace NzbDrone.Test.Common
         public NzbDroneRunner(Logger logger, PostgresOptions postgresOptions, int port = 7878)
         {
             _processProvider = new ProcessProvider(logger);
-            _restClient = new RestClient($"http://localhost:{port}/api/v3");
+            _restClient = new RestClient($"http://localhost:{port}/api/v4");
 
             PostgresOptions = postgresOptions;
             Port = port;

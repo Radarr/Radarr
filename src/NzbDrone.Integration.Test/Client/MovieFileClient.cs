@@ -1,5 +1,5 @@
 using System.Net;
-using Radarr.Api.V3.MovieFiles;
+using Radarr.Api.V4.MovieFiles;
 using RestSharp;
 
 namespace NzbDrone.Integration.Test.Client

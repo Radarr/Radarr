@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.5.4" />
+    <PackageReference Include="Ical.Net" Version="4.2.0" />
+    <PackageReference Include="NLog" Version="5.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NzbDrone.Core\Radarr.Core.csproj" />
+    <ProjectReference Include="..\Radarr.Http\Radarr.Http.csproj" />
+  </ItemGroup>
+</Project>
