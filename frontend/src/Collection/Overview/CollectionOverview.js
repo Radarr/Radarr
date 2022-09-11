@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Slider from 'react-slick';
 import TextTruncate from 'react-text-truncate';
+import { Navigation } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import EditCollectionModalConnector from 'Collection/Edit/EditCollectionModalConnector';
 import CheckInput from 'Components/Form/CheckInput';
 import Icon from 'Components/Icon';
@@ -17,8 +19,9 @@ import CollectionMovieConnector from './CollectionMovieConnector';
 import CollectionMovieLabelConnector from './CollectionMovieLabelConnector';
 import styles from './CollectionOverview.css';
 
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 const columnPadding = parseInt(dimensions.movieIndexColumnPadding);
 const columnPaddingSmallScreen = parseInt(dimensions.movieIndexColumnPaddingSmallScreen);
@@ -52,8 +55,12 @@ class CollectionOverview extends Component {
   //
   // Control
 
-  setSliderRef = (ref) => {
-    this.setState({ slider: ref });
+  setSliderPrevRef = (ref) => {
+    this._swiperPrevRef = ref;
+  };
+
+  setSliderNextRef = (ref) => {
+    this._swiperNextRef = ref;
   };
 
   //
@@ -120,15 +127,6 @@ class CollectionOverview extends Component {
     const contentHeight = getContentHeight(rowHeight, isSmallScreen);
     const overviewHeight = contentHeight - titleRowHeight - posterHeight;
 
-    const sliderSettings = {
-      arrows: false,
-      dots: false,
-      infinite: false,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      variableWidth: true
-    };
-
     return (
       <div className={styles.container}>
         <div className={styles.content}>
@@ -166,19 +164,21 @@ class CollectionOverview extends Component {
               {
                 showPosters &&
                   <div className={styles.navigationButtons}>
-                    <IconButton
-                      name={icons.ARROW_LEFT}
-                      title={translate('ScrollMovies')}
-                      onPress={this.state.slider?.slickPrev}
-                      size={20}
-                    />
+                    <span ref={this.setSliderPrevRef}>
+                      <IconButton
+                        name={icons.ARROW_LEFT}
+                        title={translate('ScrollMovies')}
+                        size={20}
+                      />
+                    </span>
 
-                    <IconButton
-                      name={icons.ARROW_RIGHT}
-                      title={translate('ScrollMovies')}
-                      onPress={this.state.slider?.slickNext}
-                      size={20}
-                    />
+                    <span ref={this.setSliderNextRef}>
+                      <IconButton
+                        name={icons.ARROW_RIGHT}
+                        title={translate('ScrollMovies')}
+                        size={20}
+                      />
+                    </span>
                   </div>
               }
 
@@ -270,9 +270,23 @@ class CollectionOverview extends Component {
             {
               showPosters ?
                 <div className={styles.sliderContainer}>
-                  <Slider ref={this.setSliderRef} {...sliderSettings}>
+                  <Swiper
+                    slidesPerView='auto'
+                    spaceBetween={10}
+                    slidesPerGroup={3}
+                    loop={false}
+                    loopFillGroupWithBlank={true}
+                    className="mySwiper"
+                    modules={[Navigation]}
+                    onInit={(swiper) => {
+                      swiper.params.navigation.prevEl = this._swiperPrevRef;
+                      swiper.params.navigation.nextEl = this._swiperNextRef;
+                      swiper.navigation.init();
+                      swiper.navigation.update();
+                    }}
+                  >
                     {movies.map((movie) => (
-                      <div className={styles.movie} key={movie.tmdbId}>
+                      <SwiperSlide key={movie.tmdbId} style={{ width: posterWidth }}>
                         <CollectionMovieConnector
                           key={movie.tmdbId}
                           posterWidth={posterWidth}
@@ -281,9 +295,9 @@ class CollectionOverview extends Component {
                           collectionId={id}
                           {...movie}
                         />
-                      </div>
+                      </SwiperSlide>
                     ))}
-                  </Slider>
+                  </Swiper>
                 </div> :
                 <div className={styles.labelsContainer}>
                   {movies.map((movie) => (
