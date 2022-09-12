@@ -737,7 +737,7 @@
   "QualityOrLangCutoffHasNotBeenMet": "Quality or Language cutoff has not been met",
   "QualityProfile": "Quality Profile",
   "QualityProfileDeleteConfirm": "Are you sure you want to delete the quality profile {0}",
-  "QualityProfileInUse": "Can't delete a quality profile that is attached to a movie",
+  "QualityProfileInUse": "Can't delete a quality profile that is attached to a movie, list, or collection",
   "QualityProfiles": "Quality Profiles",
   "QualitySettings": "Quality Settings",
   "QualitySettingsSummary": "Quality sizes and naming",
