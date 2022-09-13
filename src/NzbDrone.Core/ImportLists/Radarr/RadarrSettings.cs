@@ -28,10 +28,10 @@ namespace NzbDrone.Core.ImportLists.Radarr
             TagIds = Array.Empty<int>();
         }
 
-        [FieldDefinition(0, Label = "Full URL", HelpText = "URL, including port, of the Radarr V3 instance to import from")]
+        [FieldDefinition(0, Label = "Full URL", HelpText = "URL, including port, of the Radarr instance to import from (Radarr 3.0 or higher)")]
         public string BaseUrl { get; set; }
 
-        [FieldDefinition(1, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "Apikey of the Radarr V3 instance to import from")]
+        [FieldDefinition(1, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "Apikey of the Radarr instance to import from (Radarr 3.0 or higher)")]
         public string ApiKey { get; set; }
 
         [FieldDefinition(2, Type = FieldType.Select, SelectOptionsProviderAction = "getProfiles", Label = "Profiles", HelpText = "Profiles from the source instance to import from")]
