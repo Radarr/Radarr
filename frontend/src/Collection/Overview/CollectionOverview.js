@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Slider from 'react-slick';
 import TextTruncate from 'react-text-truncate';
 import { Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
