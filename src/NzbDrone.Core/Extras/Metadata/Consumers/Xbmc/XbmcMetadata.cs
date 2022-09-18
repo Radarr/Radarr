@@ -148,11 +148,13 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                     var details = new XElement("movie");
 
-                    details.Add(new XElement("title", movieTranslation?.Title ?? movie.Title));
+                    var metadataTitle = movieTranslation?.Title ?? movie.Title;
+
+                    details.Add(new XElement("title", metadataTitle));
 
                     details.Add(new XElement("originaltitle", movie.MovieMetadata.Value.OriginalTitle));
 
-                    details.Add(new XElement("sorttitle", movie.MovieMetadata.Value.SortTitle));
+                    details.Add(new XElement("sorttitle", Parser.Parser.NormalizeTitle(metadataTitle)));
 
                     if (movie.MovieMetadata.Value.Ratings.Tmdb?.Votes > 0 || movie.MovieMetadata.Value.Ratings.Imdb?.Votes > 0)
                     {
