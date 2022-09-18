@@ -314,17 +314,18 @@ namespace NzbDrone.Core.Parser
                     case MappingResultType.Success:
                         return $"Successfully mapped release name {ReleaseName} to movie {Movie}";
                     case MappingResultType.NotParsable:
-                        return $"Failed to find movie title in release name {ReleaseName}";
+                        return $"Failed to find movie title in release name {ReleaseName}. Possibly due to missing year in search string.";
                     case MappingResultType.TitleNotFound:
                         return $"Could not find {RemoteMovie.ParsedMovieInfo.PrimaryMovieTitle}";
                     case MappingResultType.WrongYear:
-                        return $"Failed to map movie, expected year {RemoteMovie.Movie.MovieMetadata.Value.Year}, but found {RemoteMovie.ParsedMovieInfo.Year}";
+                        var commay = RemoteMovie.Movie.MovieMetadata.Value.SecondaryYear == 0 ? "" : ", ";
+                        return $"Failed to map movie, expected years {RemoteMovie.Movie.MovieMetadata.Value.Year}{commay}{RemoteMovie.Movie.MovieMetadata.Value.SecondaryYear}, but found {RemoteMovie.ParsedMovieInfo.Year}";
                     case MappingResultType.WrongTitle:
                         var comma = RemoteMovie.Movie.MovieMetadata.Value.AlternativeTitles.Count > 0 ? ", " : "";
                         return
                             $"Failed to map movie, found title(s) {string.Join(", ", RemoteMovie.ParsedMovieInfo.MovieTitles)}, expected one of: {RemoteMovie.Movie.MovieMetadata.Value.Title}{comma}{string.Join(", ", RemoteMovie.Movie.MovieMetadata.Value.AlternativeTitles)}";
                     default:
-                        return $"Failed to map movie for unknown reasons";
+                        return $"Failed to map movie for unknown reasons. Possibly due to missing year in search string.";
                 }
             }
         }
