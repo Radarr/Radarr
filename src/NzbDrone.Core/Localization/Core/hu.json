@@ -963,7 +963,7 @@
     "RadarrUpdated": "A Radarr frissítve",
     "RadarrCalendarFeed": "Radarr Naptár Feed",
     "QueueIsEmpty": "A várakozási sor üres",
-    "QualityProfileInUse": "A minőség profil ami már filmhez van rendelve, nem törölhető",
+    "QualityProfileInUse": "A filmhez, listához vagy gyűjteményhez csatolt minőségi profil nem törölhető",
     "QualityLimitsHelpText": "A korlátozások automatikusan beállítódnak a film hossza szerint.",
     "QualitiesHelpText": "A nagyobb minőség a listában jobban preferált. Ugyenazon minőségek a csoportban egyenlőek. Csak a bejelölt minőségek a kívánt minőségek",
     "Qualities": "Minőségek",
