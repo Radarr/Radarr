@@ -64,6 +64,8 @@ namespace NzbDrone.Core.Notifications.Plex.Server
 
         private void UpdateIfEnabled(Movie movie)
         {
+            _plexTvService.Ping(Settings.AuthToken);
+
             if (Settings.UpdateLibrary)
             {
                 _logger.Debug("Scheduling library update for movie {0} {1}", movie.Id, movie.Title);
@@ -77,7 +79,8 @@ namespace NzbDrone.Core.Notifications.Plex.Server
 
         public override void ProcessQueue()
         {
-            PlexUpdateQueue queue = _pendingMoviesCache.Find(Settings.Host);
+            var queue = _pendingMoviesCache.Find(Settings.Host);
+
             if (queue == null)
             {
                 return;
@@ -130,6 +133,8 @@ namespace NzbDrone.Core.Notifications.Plex.Server
 
         public override ValidationResult Test()
         {
+            _plexTvService.Ping(Settings.AuthToken);
+
             var failures = new List<ValidationFailure>();
 
             failures.AddIfNotNull(_plexServerService.Test(Settings));
