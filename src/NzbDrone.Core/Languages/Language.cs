@@ -154,7 +154,7 @@ namespace NzbDrone.Core.Languages
                     Bengali,
                     Slovak,
                     Latvian,
-		    Catalan,
+                    Catalan,
                     Any,
                     Original
                 };
