@@ -289,7 +289,7 @@
     "Presets": "Presety",
     "ProxyType": "Typ proxy",
     "PtpOldSettingsCheckMessage": "Następujące indeksatory PassThePopcorn mają przestarzałe ustawienia i należy je zaktualizować: {0}",
-    "QualityProfileInUse": "Nie można usunąć profilu jakości dołączonego do filmu",
+    "QualityProfileInUse": "Nie można usunąć profilu jakości przypisanego do filmu, listy bądź kolekcji",
     "QueueIsEmpty": "Kolejka jest pusta",
     "RadarrCalendarFeed": "Kanał kalendarza radarowego",
     "RadarrUpdated": "Radarr zaktualizowany",
@@ -1060,7 +1060,7 @@
     "SelectLanguages": "Wybierz język",
     "AllCollectionsHiddenDueToFilter": "Wszystkie kolekcje są ukryte ze względu na zastosowany filtr.",
     "Collections": "Kolekcje",
-    "RssSyncHelpText": "Odstęp w minutach. Ustaw na zero, aby wyłączyć (zatrzyma to wszystkie automatyczne przechwytywanie zwolnień)",
+    "RssSyncHelpText": "Odstęp w minutach. Ustaw na zero, aby wyłączyć (zatrzyma to wszystkie automatyczne przechwytywanie)",
     "NoCollections": "Nie znaleziono żadnych filmów. Aby rozpocząć, musisz dodać nowy film lub zaimportować istniejące",
     "MonitorMovies": "Monitoruj filmy",
     "ClickToChangeReleaseGroup": "Kliknij, by zmienić grupę wydającą",
@@ -1078,7 +1078,7 @@
     "ManualImportSetReleaseGroup": "Import ręczny - podaj nazwę grupy",
     "Never": "Nigdy",
     "RemotePathMappingCheckFilesWrongOSPath": "Zdalny klient pobierania {0} zgłosił pliki w {1}, lecz nie jest to poprawna ścieżka {2}. Zmień ustawienia zdalnego mapowania ścieżek i klienta pobierania.",
-    "RemotePathMappingCheckGenericPermissions": "Klient pobierania {0} umieszcza pobrane pliki w {1}, ale Radarr nie widzi tego folderu. Być może należy zmienić uprawnienia dostępu do folderu/ścieżkę dostępu.",
+    "RemotePathMappingCheckGenericPermissions": "Klient pobierania {0} umieszcza pobrane pliki w {1}, ale Radarr nie widzi tego folderu. Prawdopodobnie należy zmienić uprawnienia dostępu do folderu.",
     "RemoveFailed": "Usuń nieudane",
     "RemoveDownloadsAlert": "Ustawienia usuwania zostały przeniesione do ustawień poszczególnych klientów pobierania powyżej.",
     "ShowCollectionDetails": "Pokaż stan kolekcji",
@@ -1143,5 +1143,7 @@
     "CollectionShowDetailsHelpText": "Pokaż status i właściwości kolekcji",
     "CollectionShowOverviewsHelpText": "Pokaż przegląd kolekcji",
     "TotalMovies": "Filmów całkowicie",
-    "RottenTomatoesRating": "Ocena Tomato"
+    "RottenTomatoesRating": "Ocena Tomato",
+    "ApplicationUrlHelpText": "Zewnętrzny URL tej aplikacji zawiera http(s)://, port i adres URL",
+    "ApplicationURL": "Link do aplikacji"
 }

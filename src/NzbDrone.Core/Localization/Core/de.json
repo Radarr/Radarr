@@ -1143,5 +1143,7 @@
     "InstanceName": "Instanzname",
     "InstanceNameHelpText": "Instanzname im Browser-Tab und für Syslog-Anwendungsname",
     "RottenTomatoesRating": "Tomato Bewertung",
-    "TotalMovies": "Filme insgesamt"
+    "TotalMovies": "Filme insgesamt",
+    "ApplicationURL": "Anwendungs-URL",
+    "ApplicationUrlHelpText": "Die externe URL der Anwendung inklusive http(s)://, Port und URL-Basis"
 }

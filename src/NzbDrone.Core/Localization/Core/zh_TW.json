@@ -7,8 +7,12 @@
     "AddIndexer": "新增索引",
     "AddingTag": "新增標籤",
     "AddDownloadClient": "新增下載器",
-    "Added": "以新增",
+    "Added": "已新增",
     "Age": "年齡",
     "All": "全部",
-    "Analytics": "分析"
+    "Analytics": "分析",
+    "AddCustomFormat": "新增自定義格式",
+    "AddList": "新增列表",
+    "AddDelayProfile": "新增延時配置",
+    "AddedToDownloadQueue": "已添加到下載隊列"
 }

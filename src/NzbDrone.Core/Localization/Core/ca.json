@@ -1143,5 +1143,7 @@
     "ApiKey": "Clau API",
     "AppDataDirectory": "Directori AppData",
     "AppDataLocationHealthCheckMessage": "No es podrà actualitzar per evitar que s'eliminin AppData a l'actualització",
-    "Info": "Informació"
+    "Info": "Informació",
+    "ApplicationURL": "URL de l'aplicació",
+    "ApplicationUrlHelpText": "URL extern d'aquesta aplicació, inclòs http(s)://, port i URL base"
 }
