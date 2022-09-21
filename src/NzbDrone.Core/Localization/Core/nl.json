@@ -1105,5 +1105,7 @@
     "RssSyncHelpText": "Tussentijd in minuten. Schakel uit met 0 (dit stopt het automatisch ophalen van uitgaves)",
     "NoCollections": "Geen films gevonden, om te beginnen, voeg een nieuwe film toe of importeer bestaande films.",
     "Collections": "Collectie",
-    "MonitorMovies": "Bewaak Film"
+    "MonitorMovies": "Bewaak Film",
+    "ApplicationURL": "Applicatie URL",
+    "ApplicationUrlHelpText": "De externe URL van deze applicatie inclusief http(s)://,Port en URL base"
 }
