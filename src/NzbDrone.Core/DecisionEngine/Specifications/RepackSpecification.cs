@@ -1,19 +1,23 @@
-﻿using System;
+using System;
 using NLog;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
+using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine.Specifications
 {
     public class RepackSpecification : IDecisionEngineSpecification
     {
         private readonly UpgradableSpecification _upgradableSpecification;
+        private readonly IConfigService _configService;
         private readonly Logger _logger;
 
-        public RepackSpecification(UpgradableSpecification upgradableSpecification, Logger logger)
+        public RepackSpecification(UpgradableSpecification upgradableSpecification, IConfigService configService, Logger logger)
         {
             _upgradableSpecification = upgradableSpecification;
+            _configService = configService;
             _logger = logger;
         }
 
@@ -22,8 +26,16 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
         public Decision IsSatisfiedBy(RemoteMovie subject, SearchCriteriaBase searchCriteria)
         {
+            var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
+
             if (!subject.ParsedMovieInfo.Quality.Revision.IsRepack)
             {
+                return Decision.Accept();
+            }
+
+            if (downloadPropersAndRepacks == ProperDownloadTypes.DoNotPrefer)
+            {
+                _logger.Debug("Repacks are not preferred, skipping check");
                 return Decision.Accept();
             }
 
@@ -35,6 +47,12 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 {
                     var releaseGroup = subject.ParsedMovieInfo.ReleaseGroup;
                     var fileReleaseGroup = file.ReleaseGroup;
+
+                    if (downloadPropersAndRepacks == ProperDownloadTypes.DoNotUpgrade)
+                    {
+                        _logger.Debug("Auto downloading of repacks is disabled");
+                        return Decision.Reject("Repack downloading is disabled");
+                    }
 
                     if (fileReleaseGroup.IsNullOrWhiteSpace())
                     {
