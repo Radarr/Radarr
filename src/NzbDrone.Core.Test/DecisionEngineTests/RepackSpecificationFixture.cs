@@ -1,6 +1,8 @@
-﻿using FizzWare.NBuilder;
+using System;
+using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
@@ -167,6 +169,81 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                    .Accepted
                    .Should()
                    .BeFalse();
+        }
+
+        [Test]
+        public void should_return_false_when_repack_but_auto_download_repack_is_false()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotUpgrade);
+
+            _parsedMovieInfo.Quality.Revision.IsRepack = true;
+            _movie.MovieFileId = 1;
+            _movie.MovieFile = Builder<MovieFile>.CreateNew()
+                                                 .With(e => e.Quality = new QualityModel(Quality.SDTV))
+                                                 .With(e => e.ReleaseGroup = "Radarr")
+                                                 .Build();
+
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
+                                                      .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
+                                                      .With(e => e.Movie = _movie)
+                                                      .Build();
+
+            Subject.IsSatisfiedBy(remoteMovie, null)
+                   .Accepted
+                   .Should()
+                   .BeFalse();
+        }
+
+        [Test]
+        public void should_return_true_when_repack_but_auto_download_repack_is_true()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.PreferAndUpgrade);
+
+            _parsedMovieInfo.Quality.Revision.IsRepack = true;
+            _movie.MovieFileId = 1;
+            _movie.MovieFile = Builder<MovieFile>.CreateNew()
+                                                 .With(e => e.Quality = new QualityModel(Quality.SDTV))
+                                                 .With(e => e.ReleaseGroup = "Radarr")
+                                                 .Build();
+
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
+                                                      .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
+                                                      .With(e => e.Movie = _movie)
+                                                      .Build();
+
+            Subject.IsSatisfiedBy(remoteMovie, null)
+                   .Accepted
+                   .Should()
+                   .BeTrue();
+        }
+
+        [Test]
+        public void should_return_true_when_repacks_are_not_preferred()
+        {
+            Mocker.GetMock<IConfigService>()
+                  .Setup(s => s.DownloadPropersAndRepacks)
+                  .Returns(ProperDownloadTypes.DoNotPrefer);
+
+            _parsedMovieInfo.Quality.Revision.IsRepack = true;
+            _movie.MovieFileId = 1;
+            _movie.MovieFile = Builder<MovieFile>.CreateNew()
+                                                 .With(e => e.Quality = new QualityModel(Quality.SDTV))
+                                                 .With(e => e.ReleaseGroup = "Radarr")
+                                                 .Build();
+
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
+                                                      .With(e => e.ParsedMovieInfo = _parsedMovieInfo)
+                                                      .With(e => e.Movie = _movie)
+                                                      .Build();
+
+            Subject.IsSatisfiedBy(remoteMovie, null)
+                   .Accepted
+                   .Should()
+                   .BeTrue();
         }
     }
 }
