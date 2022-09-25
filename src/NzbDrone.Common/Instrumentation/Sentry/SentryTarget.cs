@@ -248,7 +248,7 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                         var isSentry = true;
 
                         var sqlEx = ex as SQLiteException;
-                        if (sqlEx != null && !FilteredSQLiteErrors.Contains(sqlEx.ResultCode))
+                        if (sqlEx != null && FilteredSQLiteErrors.Contains(sqlEx.ResultCode))
                         {
                             isSentry = false;
                         }

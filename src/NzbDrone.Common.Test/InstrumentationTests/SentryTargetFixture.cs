@@ -1,4 +1,5 @@
 using System;
+using System.Data.SQLite;
 using System.Globalization;
 using System.Linq;
 using FluentAssertions;
@@ -21,6 +22,7 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         private static Exception[] FilteredExceptions = new Exception[]
         {
             new UnauthorizedAccessException(),
+            new SQLiteException(SQLiteErrorCode.Locked, "database is locked"),
             new AggregateException(new Exception[]
             {
                 new UnauthorizedAccessException(),
@@ -30,6 +32,7 @@ namespace NzbDrone.Common.Test.InstrumentationTests
 
         private static Exception[] NonFilteredExceptions = new Exception[]
         {
+            new SQLiteException(SQLiteErrorCode.Error, "it's borked"),
             new AggregateException(new Exception[]
             {
                 new UnauthorizedAccessException(),
