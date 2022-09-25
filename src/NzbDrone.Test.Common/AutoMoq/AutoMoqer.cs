@@ -96,6 +96,11 @@ namespace NzbDrone.Test.Common.AutoMoq
                             return null;
                         }
 
+                        if (serviceType == typeof(System.Text.Json.Serialization.JsonConverter))
+                        {
+                            return null;
+                        }
+
                         // get the Mock object for the abstract class or interface
                         if (serviceType.IsInterface || serviceType.IsAbstract)
                         {
