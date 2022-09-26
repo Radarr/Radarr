@@ -4,8 +4,12 @@ on:
   issues:
     types: [labeled, unlabeled, reopened]
 
+permissions: {}
 jobs:
   support:
+    permissions:
+      issues: write # to modify issues
+
     runs-on: ubuntu-latest
     steps:
       - uses: dessant/support-requests@v2
