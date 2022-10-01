@@ -637,7 +637,7 @@
     "InstallLatest": "安装最新版",
     "IndexerStatusCheckSingleClientMessage": "搜刮器因错误不可用：{0}",
     "IndexerStatusCheckAllClientMessage": "所有搜刮器都因错误不可用",
-    "IndexerSearchCheckNoInteractiveMessage": "没有任何索引器开启了手动搜索，因此Radarr 不会提供任何手动搜索的结果",
+    "IndexerSearchCheckNoInteractiveMessage": "没有任何索引器勾选了手动搜索，因此Radarr 不会提供任何手动搜索的结果",
     "IndexerRssHealthCheckNoIndexers": "没有任何索引器开启了RSS同步，Radarr不会自动抓取新发布的影片",
     "IndexerLongTermStatusCheckSingleClientMessage": "由于故障6小时，下列索引器都已不可用：{0}",
     "IndexerLongTermStatusCheckAllClientMessage": "由于故障超过6小时，所有索引器均不可用",
@@ -775,7 +775,7 @@
     "Updates": "更新",
     "UnableToLoadRestrictions": "无法加载限制条件",
     "UnmonitoredHelpText": "在iCal订阅中包含未监控的电影",
-    "QualityProfileInUse": "无法删除已指定给影片的质量配置",
+    "QualityProfileInUse": "无法删除已指定给影片、列表、收藏的质量配置",
     "UnableToLoadQualities": "无法加载影片质量",
     "UnmappedFolders": "未映射的文件夹",
     "RecycleBinCleanupDaysHelpTextWarning": "回收站中的文件在超出选择的天数后会被自动清理",
@@ -1143,5 +1143,7 @@
     "ShowPosters": "显示海报",
     "OnMovieAdded": "电影添加时",
     "OnMovieAddedHelpText": "电影添加时",
-    "TotalMovies": "电影总数"
+    "TotalMovies": "电影总数",
+    "ApplicationUrlHelpText": "此应用的外部URL包含 http(s)://，端口和基本URL",
+    "ApplicationURL": "程序URL"
 }
