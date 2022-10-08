@@ -453,14 +453,6 @@
               "type": "boolean",
               "default": false
             }
-          },
-          {
-            "name": "includeArtist",
-            "in": "query",
-            "schema": {
-              "type": "boolean",
-              "default": false
-            }
           }
         ],
         "responses": {
