@@ -265,7 +265,15 @@ namespace NzbDrone.Core.Parser
 
                                 if (simpleTitleReplaceString.IsNotNullOrWhiteSpace())
                                 {
-                                    simpleReleaseTitle = simpleReleaseTitle.Replace(simpleTitleReplaceString, simpleTitleReplaceString.Contains(".") ? "A.Movie" : "A Movie");
+                                    if (match[0].Groups["title"].Success)
+                                    {
+                                        simpleReleaseTitle = simpleReleaseTitle.Remove(match[0].Groups["title"].Index, match[0].Groups["title"].Length)
+                                                                               .Insert(match[0].Groups["title"].Index, simpleTitleReplaceString.Contains(".") ? "A.Movie" : "A Movie");
+                                    }
+                                    else
+                                    {
+                                        simpleReleaseTitle = simpleReleaseTitle.Replace(simpleTitleReplaceString, simpleTitleReplaceString.Contains(".") ? "A.Movie" : "A Movie");
+                                    }
                                 }
 
                                 result.ReleaseGroup = ParseReleaseGroup(simpleReleaseTitle);
