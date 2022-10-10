@@ -45,11 +45,11 @@ body:
         - **Database**: Sqlite 3.36.0
     value: |
         - OS: 
-        - Radarr:
-        - Docker Install:
-        - Using Reverse Proxy:
-        - Browser:
-        - Database:
+        - Radarr: 
+        - Docker Install: 
+        - Using Reverse Proxy: 
+        - Browser: 
+        - Database: 
     render: markdown
   validations:
     required: true
