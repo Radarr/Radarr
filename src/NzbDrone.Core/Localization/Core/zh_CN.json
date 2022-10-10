@@ -79,7 +79,7 @@
     "BranchUpdate": "更新Radarr的分支",
     "Branch": "分支",
     "Calendar": "日历",
-    "BindAddressHelpText": "192.168.50.189:7878",
+    "BindAddressHelpText": "有效的 IP4 地址或以'*'代表所有地址",
     "BackupRetentionHelpText": "早于保留周期的自动备份将被自动清除",
     "BackupNow": "马上备份",
     "BackupIntervalHelpText": "自动备份时间间隔",
