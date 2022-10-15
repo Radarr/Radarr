@@ -60,6 +60,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Download_Client", message.DownloadClientName ?? string.Empty);
             environmentVariables.Add("Radarr_Download_Client_Type", message.DownloadClientType ?? string.Empty);
             environmentVariables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
+            environmentVariables.Add("Radarr_Release_CustomFormat", string.Join("|", remoteMovie.CustomFormats));
+            environmentVariables.Add("Radarr_Release_CustomFormatScore", remoteMovie.CustomFormatScore.ToString());
 
             ExecuteScript(environmentVariables);
         }
