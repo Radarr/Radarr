@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             IndexerFlags = movieFile.IndexerFlags.ToString();
             Size = movieFile.Size;
             DateAdded = movieFile.DateAdded;
+            MediaInfo = new WebhookMovieFileMediaInfo(movieFile);
         }
 
         public int Id { get; set; }
@@ -33,5 +34,6 @@ namespace NzbDrone.Core.Notifications.Webhook
         public string IndexerFlags { get; set; }
         public long Size { get; set; }
         public DateTime DateAdded { get; set; }
+        public WebhookMovieFileMediaInfo MediaInfo { get; set; }
     }
 }
