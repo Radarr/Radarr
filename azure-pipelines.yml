@@ -1143,4 +1143,5 @@ stages:
             SYSTEM_ACCESSTOKEN: $(System.AccessToken)
             DISCORDCHANNELID: $(discordChannelId)
             DISCORDWEBHOOKKEY: $(discordWebhookKey)
+            DISCORDTHREADID: $(discordThreadId)
 
