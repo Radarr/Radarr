@@ -109,7 +109,7 @@ namespace NzbDrone.Core.Download
                 movieGrabbedEvent.DownloadId = downloadClientId;
             }
 
-            _logger.ProgressInfo("Report sent to {0}. {1}", downloadClient.Definition.Name, downloadTitle);
+            _logger.ProgressInfo("Report sent to {0} from indexer {1}. {2}", downloadClient.Definition.Name, remoteMovie.Release.Indexer, downloadTitle);
             _eventAggregator.PublishEvent(movieGrabbedEvent);
         }
     }
