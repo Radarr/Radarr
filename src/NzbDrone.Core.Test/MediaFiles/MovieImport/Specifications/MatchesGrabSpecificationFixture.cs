@@ -2,7 +2,9 @@ using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using NUnit.Framework;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Download;
+using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.MovieImport.Specifications;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
@@ -46,8 +48,22 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
         private void GivenHistoryForMovies(params Movie[] movies)
         {
-            _localMovie.Release = new GrabbedReleaseInfo();
-            _localMovie.Release.MovieIds = movies.Select(e => e.Id).ToList();
+            if (movies.Empty())
+            {
+                return;
+            }
+
+            var grabbedHistories = Builder<MovieHistory>.CreateListOfSize(movies.Length)
+                .All()
+                .With(h => h.EventType == MovieHistoryEventType.Grabbed)
+                .BuildList();
+
+            for (var i = 0; i < grabbedHistories.Count; i++)
+            {
+                grabbedHistories[i].MovieId = movies[i].Id;
+            }
+
+            _localMovie.Release = new GrabbedReleaseInfo(grabbedHistories);
         }
 
         [Test]

@@ -31,20 +31,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
                 return localMovie;
             }
 
-            var movieIds = grabbedHistories.Select(h => h.MovieId).Distinct().ToList();
-            var grabbedHistory = grabbedHistories.First();
-            var releaseInfo = new GrabbedReleaseInfo();
-
-            grabbedHistory.Data.TryGetValue("indexer", out var indexer);
-            grabbedHistory.Data.TryGetValue("size", out var sizeString);
-            long.TryParse(sizeString, out var size);
-
-            releaseInfo.Title = grabbedHistory.SourceTitle;
-            releaseInfo.Indexer = indexer;
-            releaseInfo.Size = size;
-            releaseInfo.MovieIds = movieIds;
-
-            localMovie.Release = releaseInfo;
+            localMovie.Release = new GrabbedReleaseInfo(grabbedHistories);
 
             return localMovie;
         }

@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         Health,
         ApplicationUpdate,
         MovieAdded,
-        HealthRestored
+        HealthRestored,
+        ManualInteractionRequired
     }
 }
