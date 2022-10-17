@@ -277,6 +277,30 @@ namespace NzbDrone.Core.Notifications.CustomScript
             ExecuteScript(environmentVariables);
         }
 
+        public override void OnManualInteractionRequired(ManualInteractionRequiredMessage message)
+        {
+            var movie = message.Movie;
+            var environmentVariables = new StringDictionary();
+
+            environmentVariables.Add("Radarr_EventType", "ManualInteractionRequired");
+            environmentVariables.Add("Radarr_InstanceName", _configFileProvider.InstanceName);
+            environmentVariables.Add("Radarr_ApplicationUrl", _configService.ApplicationUrl);
+            environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
+            environmentVariables.Add("Radarr_Movie_Title", movie.MovieMetadata.Value.Title);
+            environmentVariables.Add("Radarr_Movie_Year", movie.MovieMetadata.Value.Year.ToString());
+            environmentVariables.Add("Radarr_Movie_Path", movie.Path);
+            environmentVariables.Add("Radarr_Movie_ImdbId", movie.MovieMetadata.Value.ImdbId ?? string.Empty);
+            environmentVariables.Add("Radarr_Movie_TmdbId", movie.MovieMetadata.Value.TmdbId.ToString());
+            environmentVariables.Add("Radarr_Movie_Overview", movie.MovieMetadata.Value.Overview);
+            environmentVariables.Add("Radarr_Download_Client", message.DownloadClientName ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Client_Type", message.DownloadClientType ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Id", message.DownloadId ?? string.Empty);
+            environmentVariables.Add("Radarr_Download_Size", message.TrackedDownload.DownloadItem.TotalSize.ToString());
+            environmentVariables.Add("Radarr_Download_Title", message.TrackedDownload.DownloadItem.Title);
+
+            ExecuteScript(environmentVariables);
+        }
+
         public override ValidationResult Test()
         {
             var failures = new List<ValidationFailure>();

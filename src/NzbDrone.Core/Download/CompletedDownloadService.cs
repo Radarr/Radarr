@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
-using NLog.Fluent;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -70,7 +69,8 @@ namespace NzbDrone.Core.Download
                 return;
             }
 
-            var historyItem = _historyService.MostRecentForDownloadId(trackedDownload.DownloadItem.DownloadId);
+            var grabbedHistories = _historyService.FindByDownloadId(trackedDownload.DownloadItem.DownloadId).Where(h => h.EventType == MovieHistoryEventType.Grabbed).ToList();
+            var historyItem = grabbedHistories.MaxBy(h => h.Date);
 
             if (historyItem == null && trackedDownload.DownloadItem.Category.IsNullOrWhiteSpace())
             {
@@ -105,6 +105,17 @@ namespace NzbDrone.Core.Download
                 if (movieMatchType == MovieMatchType.Id && releaseSource != ReleaseSourceType.InteractiveSearch)
                 {
                     trackedDownload.Warn("Found matching movie via grab history, but release was matched to movie by ID. Manual Import required.");
+
+                    if (!trackedDownload.HasNotifiedManualInteractionRequired)
+                    {
+                        trackedDownload.HasNotifiedManualInteractionRequired = true;
+
+                        var releaseInfo = new GrabbedReleaseInfo(grabbedHistories);
+                        var manualInteractionEvent = new ManualInteractionRequiredEvent(trackedDownload, releaseInfo);
+
+                        _eventAggregator.PublishEvent(manualInteractionEvent);
+                    }
+
                     return;
                 }
             }

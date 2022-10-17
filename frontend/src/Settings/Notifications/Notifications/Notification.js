@@ -66,6 +66,7 @@ class Notification extends Component {
       onHealthIssue,
       onHealthRestored,
       onApplicationUpdate,
+      onManualInteractionRequired,
       supportsOnGrab,
       supportsOnDownload,
       supportsOnUpgrade,
@@ -76,7 +77,8 @@ class Notification extends Component {
       supportsOnMovieFileDeleteForUpgrade,
       supportsOnHealthIssue,
       supportsOnHealthRestored,
-      supportsOnApplicationUpdate
+      supportsOnApplicationUpdate,
+      supportsOnManualInteractionRequired
     } = this.props;
 
     return (
@@ -178,7 +180,15 @@ class Notification extends Component {
         }
 
         {
-          !onGrab && !onDownload && !onRename && !onHealthIssue && !onHealthRestored && !onApplicationUpdate && !onMovieDelete && !onMovieFileDelete ?
+          supportsOnManualInteractionRequired && onManualInteractionRequired ?
+            <Label kind={kinds.SUCCESS}>
+              {translate('OnManualInteractionRequired')}
+            </Label> :
+            null
+        }
+
+        {
+          !onGrab && !onDownload && !onRename && !onHealthIssue && !onHealthRestored && !onApplicationUpdate && !onMovieDelete && !onMovieFileDelete && !onManualInteractionRequired ?
             <Label
               kind={kinds.DISABLED}
               outline={true}
@@ -223,6 +233,7 @@ Notification.propTypes = {
   onHealthIssue: PropTypes.bool.isRequired,
   onHealthRestored: PropTypes.bool.isRequired,
   onApplicationUpdate: PropTypes.bool.isRequired,
+  onManualInteractionRequired: PropTypes.bool.isRequired,
   supportsOnGrab: PropTypes.bool.isRequired,
   supportsOnDownload: PropTypes.bool.isRequired,
   supportsOnMovieDelete: PropTypes.bool.isRequired,
@@ -234,6 +245,7 @@ Notification.propTypes = {
   supportsOnHealthIssue: PropTypes.bool.isRequired,
   supportsOnHealthRestored: PropTypes.bool.isRequired,
   supportsOnApplicationUpdate: PropTypes.bool.isRequired,
+  supportsOnManualInteractionRequired: PropTypes.bool.isRequired,
   onConfirmDeleteNotification: PropTypes.func.isRequired
 };
 
