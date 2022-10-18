@@ -3,16 +3,92 @@ import React, { Component } from 'react';
 import FieldSet from 'Components/FieldSet';
 import SelectInput from 'Components/Form/SelectInput';
 import TextInput from 'Components/Form/TextInput';
+import Icon from 'Components/Icon';
 import Button from 'Components/Link/Button';
 import Modal from 'Components/Modal/Modal';
 import ModalBody from 'Components/Modal/ModalBody';
 import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
-import { sizes } from 'Helpers/Props';
+import { icons, sizes } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import NamingOption from './NamingOption';
 import styles from './NamingModal.css';
+
+const separatorOptions = [
+  { key: ' ', value: 'Space ( )' },
+  { key: '.', value: 'Period (.)' },
+  { key: '_', value: 'Underscore (_)' },
+  { key: '-', value: 'Dash (-)' }
+];
+
+const caseOptions = [
+  { key: 'title', value: translate('DefaultCase') },
+  { key: 'lower', value: translate('LowerCase') },
+  { key: 'upper', value: translate('UpperCase') }
+];
+
+const fileNameTokens = [
+  {
+    token: '{Movie Title} - {Quality Full}',
+    example: 'Movie Title (2010) - HDTV-720p Proper'
+  }
+];
+
+const movieTokens = [
+  { token: '{Movie Title}', example: 'Movie\'s Title' },
+  { token: '{Movie Title:DE}', example: 'Titel des Films' },
+  { token: '{Movie CleanTitle}', example: 'Movies Title' },
+  { token: '{Movie TitleThe}', example: 'Movie\'s Title, The' },
+  { token: '{Movie OriginalTitle}', example: 'Τίτλος ταινίας' },
+  { token: '{Movie CleanOriginalTitle}', example: 'Τίτλος ταινίας' },
+  { token: '{Movie TitleFirstCharacter}', example: 'M' },
+  { token: '{Movie Collection}', example: 'The Movie Collection' },
+  { token: '{Movie Certification}', example: 'R' },
+  { token: '{Release Year}', example: '2009' }
+];
+
+const movieIdTokens = [
+  { token: '{ImdbId}', example: 'tt12345' },
+  { token: '{TmdbId}', example: '123456' }
+];
+
+const qualityTokens = [
+  { token: '{Quality Full}', example: 'HDTV-720p Proper' },
+  { token: '{Quality Title}', example: 'HDTV-720p' }
+];
+
+const mediaInfoTokens = [
+  { token: '{MediaInfo Simple}', example: 'x264 DTS' },
+  { token: '{MediaInfo Full}', example: 'x264 DTS [EN+DE]', footNote: 1 },
+
+  { token: '{MediaInfo AudioCodec}', example: 'DTS' },
+  { token: '{MediaInfo AudioChannels}', example: '5.1' },
+  { token: '{MediaInfo AudioLanguages}', example: '[EN+DE]', footNote: 1 },
+  { token: '{MediaInfo SubtitleLanguages}', example: '[DE]', footNote: 1 },
+
+  { token: '{MediaInfo VideoCodec}', example: 'x264' },
+  { token: '{MediaInfo VideoBitDepth}', example: '10' },
+  { token: '{MediaInfo VideoDynamicRange}', example: 'HDR' },
+  { token: '{MediaInfo VideoDynamicRangeType}', example: 'DV HDR10' }
+];
+
+const releaseGroupTokens = [
+  { token: '{Release Group}', example: 'Rls Grp' }
+];
+
+const editionTokens = [
+  { token: '{Edition Tags}', example: 'IMAX' }
+];
+
+const customFormatTokens = [
+  { token: '{Custom Formats}', example: 'Surround Sound x264' }
+];
+
+const originalTokens = [
+  { token: '{Original Title}', example: 'Movie.Title.HDTV.x264-EVOLVE' },
+  { token: '{Original Filename}', example: 'movie title hdtv.x264-Evolve' }
+];
 
 class NamingModal extends Component {
 
@@ -93,81 +169,6 @@ class NamingModal extends Component {
       separator: tokenSeparator,
       case: tokenCase
     } = this.state;
-
-    const separatorOptions = [
-      { key: ' ', value: 'Space ( )' },
-      { key: '.', value: 'Period (.)' },
-      { key: '_', value: 'Underscore (_)' },
-      { key: '-', value: 'Dash (-)' }
-    ];
-
-    const caseOptions = [
-      { key: 'title', value: translate('DefaultCase') },
-      { key: 'lower', value: translate('LowerCase') },
-      { key: 'upper', value: translate('UpperCase') }
-    ];
-
-    const fileNameTokens = [
-      {
-        token: '{Movie Title} - {Quality Full}',
-        example: 'Movie Title (2010) - HDTV-720p Proper'
-      }
-    ];
-
-    const movieTokens = [
-      { token: '{Movie Title}', example: 'Movie\'s Title' },
-      { token: '{Movie Title:DE}', example: 'Titel des Films' },
-      { token: '{Movie CleanTitle}', example: 'Movies Title' },
-      { token: '{Movie TitleThe}', example: 'Movie\'s Title, The' },
-      { token: '{Movie OriginalTitle}', example: 'Τίτλος ταινίας' },
-      { token: '{Movie CleanOriginalTitle}', example: 'Τίτλος ταινίας' },
-      { token: '{Movie TitleFirstCharacter}', example: 'M' },
-      { token: '{Movie Collection}', example: 'The Movie Collection' },
-      { token: '{Movie Certification}', example: 'R' },
-      { token: '{Release Year}', example: '2009' }
-    ];
-
-    const movieIdTokens = [
-      { token: '{ImdbId}', example: 'tt12345' },
-      { token: '{TmdbId}', example: '123456' }
-    ];
-
-    const qualityTokens = [
-      { token: '{Quality Full}', example: 'HDTV-720p Proper' },
-      { token: '{Quality Title}', example: 'HDTV-720p' }
-    ];
-
-    const mediaInfoTokens = [
-      { token: '{MediaInfo Simple}', example: 'x264 DTS' },
-      { token: '{MediaInfo Full}', example: 'x264 DTS [EN+DE]' },
-
-      { token: '{MediaInfo AudioCodec}', example: 'DTS' },
-      { token: '{MediaInfo AudioChannels}', example: '5.1' },
-      { token: '{MediaInfo AudioLanguages}', example: '[EN+DE]' },
-      { token: '{MediaInfo SubtitleLanguages}', example: '[DE]' },
-
-      { token: '{MediaInfo VideoCodec}', example: 'x264' },
-      { token: '{MediaInfo VideoBitDepth}', example: '10' },
-      { token: '{MediaInfo VideoDynamicRange}', example: 'HDR' },
-      { token: '{MediaInfo VideoDynamicRangeType}', example: 'DV HDR10' }
-    ];
-
-    const releaseGroupTokens = [
-      { token: '{Release Group}', example: 'Rls Grp' }
-    ];
-
-    const editionTokens = [
-      { token: '{Edition Tags}', example: 'IMAX' }
-    ];
-
-    const customFormatTokens = [
-      { token: '{Custom Formats}', example: 'Surround Sound x264' }
-    ];
-
-    const originalTokens = [
-      { token: '{Original Title}', example: 'Movie.Title.HDTV.x264-EVOLVE' },
-      { token: '{Original Filename}', example: 'movie title hdtv.x264-Evolve' }
-    ];
 
     return (
       <Modal
@@ -297,7 +298,7 @@ class NamingModal extends Component {
                   <FieldSet legend={translate('MediaInfo')}>
                     <div className={styles.groups}>
                       {
-                        mediaInfoTokens.map(({ token, example }) => {
+                        mediaInfoTokens.map(({ token, example, footNote }) => {
                           return (
                             <NamingOption
                               key={token}
@@ -305,6 +306,7 @@ class NamingModal extends Component {
                               value={value}
                               token={token}
                               example={example}
+                              footNote={footNote}
                               tokenSeparator={tokenSeparator}
                               tokenCase={tokenCase}
                               onPress={this.onOptionPress}
@@ -313,6 +315,14 @@ class NamingModal extends Component {
                         }
                         )
                       }
+                    </div>
+
+                    <div className={styles.footNote}>
+                      <Icon className={styles.icon} name={icons.FOOTNOTE} />
+                      <div>
+                        MediaInfo Full/AudioLanguages/SubtitleLanguages support a <code>:EN+DE</code> suffix allowing you to filter the languages included in the filename. Use <code>-DE</code> to exclude specific languages.
+                        Appending <code>+</code> (eg <code>:EN+</code>) will output <code>[EN]</code>/<code>[EN+--]</code>/<code>[--]</code> depending on excluded languages. For example <code>{'{'}MediaInfo Full:EN+DE{'}'}</code>.
+                      </div>
                     </div>
                   </FieldSet>
 

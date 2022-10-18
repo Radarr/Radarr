@@ -669,6 +669,27 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be(expected);
         }
 
+        [TestCase("eng/deu", "", "[EN+DE]")]
+        [TestCase("eng/nld/deu", "", "[EN+NL+DE]")]
+        [TestCase("eng/deu", ":DE", "[DE]")]
+        [TestCase("eng/nld/deu", ":EN+NL", "[EN+NL]")]
+        [TestCase("eng/nld/deu", ":NL+EN", "[NL+EN]")]
+        [TestCase("eng/nld/deu", ":-NL", "[EN+DE]")]
+        [TestCase("eng/nld/deu", ":DE+", "[DE+-]")]
+        [TestCase("eng/nld/deu", ":DE+NO.", "[DE].")]
+        [TestCase("eng/nld/deu", ":-EN-", "[NL+DE]-")]
+        public void should_format_subtitle_languages_all(string subtitleLanguages, string format, string expected)
+        {
+            _movieFile.ReleaseGroup = null;
+
+            GivenMediaInfoModel(subtitles: subtitleLanguages);
+
+            _namingConfig.StandardMovieFormat = "{MediaInfo SubtitleLanguages" + format + "}End";
+
+            Subject.BuildFileName(_movie, _movieFile)
+                   .Should().Be(expected + "End");
+        }
+
         [TestCase(HdrFormat.None, "South.Park")]
         [TestCase(HdrFormat.Hlg10, "South.Park.HDR")]
         [TestCase(HdrFormat.Hdr10, "South.Park.HDR")]
