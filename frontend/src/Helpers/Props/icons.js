@@ -22,6 +22,7 @@ import {
 import {
   faArrowCircleLeft as fasArrowCircleLeft,
   faArrowCircleRight as fasArrowCircleRight,
+  faAsterisk as fasAsterisk,
   faBackward as fasBackward,
   faBan as fasBan,
   faBars as fasBars,
@@ -154,6 +155,7 @@ export const FILE = farFile;
 export const FILM = fasFilm;
 export const FILTER = fasFilter;
 export const FLAG = fasFlag;
+export const FOOTNOTE = fasAsterisk;
 export const FOLDER = farFolder;
 export const FOLDER_OPEN = fasFolderOpen;
 export const GENRE = fasTheaterMasks;

@@ -38,7 +38,7 @@ namespace NzbDrone.Core.Organizer
         private readonly ICustomFormatService _formatService;
         private readonly Logger _logger;
 
-        private static readonly Regex TitleRegex = new Regex(@"(?<tag>\{(?:imdb-|edition-))?\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9|]+))?(?<suffix>[-} ._)\]]*)\}",
+        private static readonly Regex TitleRegex = new Regex(@"(?<tag>\{(?:imdb-|edition-))?\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9|+-]+(?<!-)))?(?<suffix>[-} ._)\]]*)\}",
                                                              RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         public static readonly Regex MovieTitleRegex = new Regex(@"(?<token>\{((?:(Movie|Original))(?<separator>[- ._])(Clean|Original)?(Title|Filename)(The)?)(?::(?<customFormat>[a-z0-9|]+))?\})",
@@ -359,24 +359,6 @@ namespace NzbDrone.Core.Organizer
             var audioLanguages = movieFile.MediaInfo.AudioLanguages ?? new List<string>();
             var subtitles = movieFile.MediaInfo.Subtitles ?? new List<string>();
 
-            var mediaInfoAudioLanguages = GetLanguagesToken(audioLanguages);
-            if (!mediaInfoAudioLanguages.IsNullOrWhiteSpace())
-            {
-                mediaInfoAudioLanguages = $"[{mediaInfoAudioLanguages}]";
-            }
-
-            var mediaInfoAudioLanguagesAll = mediaInfoAudioLanguages;
-            if (mediaInfoAudioLanguages == "[EN]")
-            {
-                mediaInfoAudioLanguages = string.Empty;
-            }
-
-            var mediaInfoSubtitleLanguages = GetLanguagesToken(subtitles);
-            if (!mediaInfoSubtitleLanguages.IsNullOrWhiteSpace())
-            {
-                mediaInfoSubtitleLanguages = $"[{mediaInfoSubtitleLanguages}]";
-            }
-
             var videoBitDepth = movieFile.MediaInfo.VideoBitDepth > 0 ? movieFile.MediaInfo.VideoBitDepth.ToString() : 8.ToString();
             var audioChannelsFormatted = audioChannels > 0 ?
                                 audioChannels.ToString("F1", CultureInfo.InvariantCulture) :
@@ -391,16 +373,16 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{MediaInfo Audio}"] = m => audioCodec;
             tokenHandlers["{MediaInfo AudioCodec}"] = m => audioCodec;
             tokenHandlers["{MediaInfo AudioChannels}"] = m => audioChannelsFormatted;
-            tokenHandlers["{MediaInfo AudioLanguages}"] = m => mediaInfoAudioLanguages;
-            tokenHandlers["{MediaInfo AudioLanguagesAll}"] = m => mediaInfoAudioLanguagesAll;
+            tokenHandlers["{MediaInfo AudioLanguages}"] = m => GetLanguagesToken(audioLanguages, m.CustomFormat, true, true);
+            tokenHandlers["{MediaInfo AudioLanguagesAll}"] = m => GetLanguagesToken(audioLanguages, m.CustomFormat, false, true);
 
-            tokenHandlers["{MediaInfo SubtitleLanguages}"] = m => mediaInfoSubtitleLanguages;
-            tokenHandlers["{MediaInfo SubtitleLanguagesAll}"] = m => mediaInfoSubtitleLanguages;
+            tokenHandlers["{MediaInfo SubtitleLanguages}"] = m => GetLanguagesToken(subtitles, m.CustomFormat, false, true);
+            tokenHandlers["{MediaInfo SubtitleLanguagesAll}"] = m => GetLanguagesToken(subtitles, m.CustomFormat, false, true);
 
             tokenHandlers["{MediaInfo 3D}"] = m => mediaInfo3D;
 
             tokenHandlers["{MediaInfo Simple}"] = m => $"{videoCodec} {audioCodec}";
-            tokenHandlers["{MediaInfo Full}"] = m => $"{videoCodec} {audioCodec}{mediaInfoAudioLanguages} {mediaInfoSubtitleLanguages}";
+            tokenHandlers["{MediaInfo Full}"] = m => $"{videoCodec} {audioCodec}{GetLanguagesToken(audioLanguages, m.CustomFormat, true, true)} {GetLanguagesToken(subtitles, m.CustomFormat, false, true)}";
 
             tokenHandlers[MediaInfoVideoDynamicRangeToken] =
                 m => MediaInfoFormatter.FormatVideoDynamicRange(movieFile.MediaInfo);
@@ -419,7 +401,7 @@ namespace NzbDrone.Core.Organizer
             tokenHandlers["{Custom Formats}"] = m => string.Join(" ", customFormats.Where(x => x.IncludeCustomFormatWhenRenaming));
         }
 
-        private string GetLanguagesToken(List<string> mediaInfoLanguages)
+        private string GetLanguagesToken(List<string> mediaInfoLanguages, string filter, bool skipEnglishOnly, bool quoted)
         {
             var tokens = new List<string>();
             foreach (var item in mediaInfoLanguages)
@@ -448,7 +430,44 @@ namespace NzbDrone.Core.Organizer
                 }
             }
 
-            return string.Join("+", tokens.Distinct());
+            tokens = tokens.Distinct().ToList();
+
+            var filteredTokens = tokens;
+
+            // Exclude or filter
+            if (filter.IsNotNullOrWhiteSpace())
+            {
+                if (filter.StartsWith("-"))
+                {
+                    filteredTokens = tokens.Except(filter.Split('-')).ToList();
+                }
+                else
+                {
+                    filteredTokens = filter.Split('+').Intersect(tokens).ToList();
+                }
+            }
+
+            // Replace with wildcard (maybe too limited)
+            if (filter.IsNotNullOrWhiteSpace() && filter.EndsWith("+") && filteredTokens.Count != tokens.Count)
+            {
+                filteredTokens.Add("--");
+            }
+
+            if (skipEnglishOnly && filteredTokens.Count == 1 && filteredTokens.First() == "EN")
+            {
+                return string.Empty;
+            }
+
+            var response = string.Join("+", filteredTokens);
+
+            if (quoted && response.IsNotNullOrWhiteSpace())
+            {
+                return $"[{response}]";
+            }
+            else
+            {
+                return response;
+            }
         }
 
         private void UpdateMediaInfoIfNeeded(string pattern, MovieFile movieFile, Movie movie)
