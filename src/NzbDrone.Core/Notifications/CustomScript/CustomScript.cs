@@ -100,6 +100,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             {
                 environmentVariables.Add("Radarr_DeletedRelativePaths", string.Join("|", message.OldMovieFiles.Select(e => e.RelativePath)));
                 environmentVariables.Add("Radarr_DeletedPaths", string.Join("|", message.OldMovieFiles.Select(e => Path.Combine(movie.Path, e.RelativePath))));
+                environmentVariables.Add("Radarr_DeletedDateAdded", string.Join("|", message.OldMovieFiles.Select(e => e.DateAdded)));
             }
 
             ExecuteScript(environmentVariables);
