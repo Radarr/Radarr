@@ -13,7 +13,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation
 {
     public interface IAggregationService
     {
-        LocalMovie Augment(LocalMovie localMovie, DownloadClientItem downloadClientItem, bool otherFiles);
+        LocalMovie Augment(LocalMovie localMovie, DownloadClientItem downloadClientItem);
     }
 
     public class AggregationService : IAggregationService
@@ -37,7 +37,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation
             _logger = logger;
         }
 
-        public LocalMovie Augment(LocalMovie localMovie, DownloadClientItem downloadClientItem, bool otherFiles)
+        public LocalMovie Augment(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             var isMediaFile = MediaFileExtensions.Extensions.Contains(Path.GetExtension(localMovie.Path));
 
@@ -52,6 +52,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation
             }
 
             localMovie.Size = _diskProvider.GetFileSize(localMovie.Path);
+            localMovie.SceneName = localMovie.SceneSource ? SceneNameCalculator.GetSceneName(localMovie) : null;
 
             if (isMediaFile && (!localMovie.ExistingFile || _configService.EnableMediaInfo))
             {
@@ -62,7 +63,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation
             {
                 try
                 {
-                    augmenter.Aggregate(localMovie, downloadClientItem, otherFiles);
+                    augmenter.Aggregate(localMovie, downloadClientItem);
                 }
                 catch (Exception ex)
                 {

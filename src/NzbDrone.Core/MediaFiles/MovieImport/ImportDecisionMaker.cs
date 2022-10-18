@@ -91,7 +91,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     FolderMovieInfo = folderInfo,
                     Path = file,
                     SceneSource = sceneSource,
-                    ExistingFile = movie.Path.IsParentPath(file)
+                    ExistingFile = movie.Path.IsParentPath(file),
+                    OtherVideoFiles = nonSampleVideoFileCount > 1
                 };
 
                 decisions.AddIfNotNull(GetDecision(localMovie, downloadClientItem, nonSampleVideoFileCount > 1));
@@ -124,7 +125,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             try
             {
-                _aggregationService.Augment(localMovie, downloadClientItem, otherFiles);
+                _aggregationService.Augment(localMovie, downloadClientItem);
 
                 if (localMovie.Movie == null)
                 {

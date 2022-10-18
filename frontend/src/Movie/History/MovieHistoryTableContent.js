@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Icon from 'Components/Icon';
 import IconButton from 'Components/Link/IconButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import Table from 'Components/Table/Table';
@@ -33,6 +34,15 @@ const columns = [
     name: 'customFormats',
     label: translate('CustomFormats'),
     isSortable: false,
+    isVisible: true
+  },
+  {
+    name: 'customFormatScore',
+    label: React.createElement(Icon, {
+      name: icons.SCORE,
+      title: 'Custom format score'
+    }),
+    isSortable: true,
     isVisible: true
   },
   {

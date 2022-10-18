@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
             _logger = logger;
         }
 
-        public LocalMovie Aggregate(LocalMovie localMovie, DownloadClientItem downloadClientItem, bool otherFiles)
+        public LocalMovie Aggregate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             var languages = new List<Language> { localMovie.Movie?.MovieMetadata.Value.OriginalLanguage ?? Language.Unknown };
             var languagesConfidence = Confidence.Default;
