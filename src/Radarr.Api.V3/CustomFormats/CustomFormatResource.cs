@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -47,7 +48,15 @@ namespace Radarr.Api.V3.CustomFormats
 
         private static ICustomFormatSpecification MapSpecification(CustomFormatSpecificationSchema resource, List<ICustomFormatSpecification> specifications)
         {
-            var type = specifications.SingleOrDefault(x => x.GetType().Name == resource.Implementation).GetType();
+            var matchingSpec = specifications.SingleOrDefault(x => x.GetType().Name == resource.Implementation);
+
+            if (matchingSpec is null)
+            {
+                throw new ArgumentException(
+                    $"{resource.Implementation} is not a valid specification implementation");
+            }
+
+            var type = matchingSpec.GetType();
             var spec = (ICustomFormatSpecification)SchemaBuilder.ReadFromSchema(resource.Fields, type);
             spec.Name = resource.Name;
             spec.Negate = resource.Negate;
