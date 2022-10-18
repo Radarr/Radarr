@@ -341,7 +341,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                     localMovie.SceneSource = !existingFile;
                 }
 
-                localMovie = _aggregationService.Augment(localMovie, trackedDownload?.DownloadItem, false);
+                localMovie = _aggregationService.Augment(localMovie, trackedDownload?.DownloadItem);
 
                 // Apply the user-chosen values.
                 localMovie.Movie = movie;

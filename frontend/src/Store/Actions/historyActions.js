@@ -1,5 +1,7 @@
+import React from 'react';
 import { createAction } from 'redux-actions';
-import { filterTypes, sortDirections } from 'Helpers/Props';
+import Icon from 'Components/Icon';
+import { filterTypes, icons, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
 import serverSideCollectionHandlers from 'Utilities/serverSideCollectionHandlers';
@@ -82,6 +84,15 @@ export const defaultState = {
     {
       name: 'sourceTitle',
       label: translate('SourceTitle'),
+      isVisible: false
+    },
+    {
+      name: 'customFormatScore',
+      columnLabel: translate('CustomFormatScore'),
+      label: React.createElement(Icon, {
+        name: icons.SCORE,
+        title: 'Custom format score'
+      }),
       isVisible: false
     },
     {

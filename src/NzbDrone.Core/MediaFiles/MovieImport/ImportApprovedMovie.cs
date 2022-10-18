@@ -118,8 +118,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                     if (newDownload)
                     {
+                        movieFile.SceneName = localMovie.SceneName;
                         movieFile.OriginalFilePath = GetOriginalFilePath(downloadClientItem, localMovie);
-                        movieFile.SceneName = GetSceneName(downloadClientItem, localMovie);
                         var moveResult = _movieFileUpgrader.UpgradeMovieFile(movieFile, localMovie, copyOnly); //TODO: Check if this works
                         oldFiles = moveResult.OldFiles;
                     }
@@ -207,33 +207,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             }
 
             return Path.Combine(Path.GetFileName(parentPath), Path.GetFileName(path));
-        }
-
-        private string GetSceneName(DownloadClientItem downloadClientItem, LocalMovie localMovie)
-        {
-            if (downloadClientItem != null)
-            {
-                var sceneNameTitle = SceneChecker.GetSceneTitle(downloadClientItem.Title);
-                if (sceneNameTitle != null)
-                {
-                    return sceneNameTitle;
-                }
-            }
-
-            var fileName = Path.GetFileNameWithoutExtension(localMovie.Path.CleanFilePath());
-            var sceneNameFile = SceneChecker.GetSceneTitle(fileName);
-            if (sceneNameFile != null)
-            {
-                return sceneNameFile;
-            }
-
-            var folderTitle = localMovie.FolderMovieInfo?.ReleaseTitle;
-            if (folderTitle.IsNotNullOrWhiteSpace() && SceneChecker.IsSceneTitle(folderTitle))
-            {
-                return folderTitle;
-            }
-
-            return null;
         }
     }
 }
