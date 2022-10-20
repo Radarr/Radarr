@@ -353,8 +353,8 @@ namespace NzbDrone.Core.Organizer
 
             var sceneName = movieFile.GetSceneOrFileName();
 
-            var videoCodec = MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, sceneName);
-            var audioCodec = MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName);
+            var videoCodec = MediaInfoFormatter.FormatVideoCodec(movieFile.MediaInfo, sceneName) ?? string.Empty;
+            var audioCodec = MediaInfoFormatter.FormatAudioCodec(movieFile.MediaInfo, sceneName) ?? string.Empty;
             var audioChannels = MediaInfoFormatter.FormatAudioChannels(movieFile.MediaInfo);
             var audioLanguages = movieFile.MediaInfo.AudioLanguages ?? new List<string>();
             var subtitles = movieFile.MediaInfo.Subtitles ?? new List<string>();
