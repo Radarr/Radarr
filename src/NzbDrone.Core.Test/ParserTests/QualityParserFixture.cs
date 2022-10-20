@@ -208,6 +208,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.S04E01.iNTERNAL.1080p.WEBRip.x264-QRUS", false)]
         [TestCase("Movie.Name.1x04.ITA.1080p.WEBMux.x264-NovaRip", false)]
         [TestCase("Movie.Name.2019.S02E07.Chapter.15.The.Believer.4Kto1080p.DSNYP.Webrip.x265.10bit.EAC3.5.1.Atmos.GokiTAoE", false)]
+        [TestCase("Movie.Title.2019.1080p.AMZN.WEB-Rip.DDP.5.1.HEVC", false)]
         public void should_parse_webrip1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBRIP, proper, Resolution.R1080p);
