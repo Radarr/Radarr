@@ -28,6 +28,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<polish>\b(?:PL\W?DUB|DUB\W?PL|LEK\W?PL|PL\W?LEK)\b)|
                                                                             (?<chinese>\[(?:CH[ST]|BIG5|GB)\]|简|繁|字幕)|
                                                                             (?<ukrainian>(?:(?:\dx)?UKR))|
+                                                                            (?<spanish>\b(?:español|castellano)\b)|
                                                                             (?<latvian>\bLV\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
@@ -55,7 +56,7 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.French);
             }
 
-            if (lowerTitle.Contains("spanish") || lowerTitle.Contains("castellano"))
+            if (lowerTitle.Contains("spanish"))
             {
                 languages.Add(Language.Spanish);
             }
@@ -295,6 +296,11 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["chinese"].Success)
                 {
                     languages.Add(Language.Chinese);
+                }
+
+                if (match.Groups["spanish"].Success)
+                {
+                    languages.Add(Language.Spanish);
                 }
 
                 if (match.Groups["ukrainian"].Success)
