@@ -50,7 +50,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex RepackRegex = new Regex(@"\b(?<repack>repack|rerip)\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex VersionRegex = new Regex(@"\dv(?<version>\d)\b|\[v(?<version>\d)\]",
+        private static readonly Regex VersionRegex = new Regex(@"\d[-._ ]?v(?<version>\d)[-._ ]|\[v(?<version>\d)\]",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex RealRegex = new Regex(@"\b(?<real>REAL)\b",
@@ -74,8 +74,6 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex HighDefPdtvRegex = new Regex(@"hr[-_. ]ws", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex RemuxRegex = new Regex(@"(?:[_. \[]|\d{4}p-)(?<remux>(?:(BD|UHD)[-_. ]?)?Remux)\b|(?<remux>(?:(BD|UHD)[-_. ]?)?Remux[_. ]\d{4}p)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
-        private static readonly Regex HDShitQualityRegex = new Regex(@"(HD-TS|HDTS|HDTSRip|HD-TC|HDTC|HDCAM|HD-CAM)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private static readonly Regex HardcodedSubsRegex = new Regex(@"\b(?<hcsub>(\w+(?<!(SOFT|HORRIBLE))SUBS?)\b)|(?<hc>(HC|SUBBED))\b",
                                                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
