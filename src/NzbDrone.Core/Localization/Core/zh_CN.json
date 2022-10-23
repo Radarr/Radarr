@@ -79,7 +79,6 @@
     "BranchUpdate": "更新Radarr的分支",
     "Branch": "分支",
     "Calendar": "日历",
-    "BindAddressHelpText": "有效的 IP4 地址或以'*'代表所有地址",
     "BackupRetentionHelpText": "早于保留周期的自动备份将被自动清除",
     "BackupNow": "马上备份",
     "BackupIntervalHelpText": "自动备份时间间隔",
@@ -196,7 +195,7 @@
     "Result": "结果",
     "RestoreBackup": "恢复备份",
     "Restore": "恢复",
-    "RestartRequiredHelpTextWarning": "重启生效",
+    "RestartRequiredHelpTextWarning": "需要重新启动才能生效",
     "RestartRadarr": "重启Radarr",
     "RestartNow": "马上重启",
     "Restart": "重启",
@@ -637,7 +636,7 @@
     "InstallLatest": "安装最新版",
     "IndexerStatusCheckSingleClientMessage": "搜刮器因错误不可用：{0}",
     "IndexerStatusCheckAllClientMessage": "所有搜刮器都因错误不可用",
-    "IndexerSearchCheckNoInteractiveMessage": "没有任何索引器勾选了手动搜索，因此Radarr 不会提供任何手动搜索的结果",
+    "IndexerSearchCheckNoInteractiveMessage": "没有任何索引器开启了手动搜索，因此Radarr 不会提供任何手动搜索的结果",
     "IndexerRssHealthCheckNoIndexers": "没有任何索引器开启了RSS同步，Radarr不会自动抓取新发布的影片",
     "IndexerLongTermStatusCheckSingleClientMessage": "由于故障6小时，下列索引器都已不可用：{0}",
     "IndexerLongTermStatusCheckAllClientMessage": "由于故障超过6小时，所有索引器均不可用",
@@ -1145,5 +1144,7 @@
     "OnMovieAddedHelpText": "电影添加时",
     "TotalMovies": "电影总数",
     "ApplicationUrlHelpText": "此应用的外部URL包含 http(s)://，端口和基本URL",
-    "ApplicationURL": "程序URL"
+    "ApplicationURL": "程序URL",
+    "BindAddressHelpText": "有效的 IPv4 地址或以'*'代表所有接口",
+    "PreferredProtocol": "首选协议"
 }
