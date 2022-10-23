@@ -19,8 +19,6 @@ namespace NzbDrone.Core.Notifications.Notifiarr
 
         [FieldDefinition(0, Label = "API Key", Privacy = PrivacyLevel.ApiKey, HelpText = "Your API key from your profile", HelpLink = "https://notifiarr.com")]
         public string APIKey { get; set; }
-        [FieldDefinition(1, Label = "Instance Name", Advanced = true, HelpText = "Unique name for this instance", HelpLink = "https://notifiarr.com")]
-        public string InstanceName { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
