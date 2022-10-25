@@ -176,6 +176,10 @@ namespace NzbDrone.Core.Movies
                     {
                         _logger.Error("Collection '{0}' (TMDb {1}) was not found, it may have been removed from The Movie Database.", collection.Title, collection.TmdbId);
                     }
+                    catch (Exception e)
+                    {
+                        _logger.Error(e, "Couldn't refresh collection {0}", collection.Title);
+                    }
                 }
             }
         }
