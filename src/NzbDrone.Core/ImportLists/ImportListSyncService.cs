@@ -93,7 +93,7 @@ namespace NzbDrone.Core.ImportLists
 
             if (excludedMovie != null)
             {
-                _logger.Debug("{0} [{1}] Rejected due to list exlcusion", report.TmdbId, report.Title);
+                _logger.Debug("{0} [{1}] Rejected due to list exclusion", report.TmdbId, report.Title);
                 return;
             }
 
