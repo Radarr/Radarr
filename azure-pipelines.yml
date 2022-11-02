@@ -761,7 +761,7 @@ stages:
         inputs:
           buildType: 'current'
           artifactName: Packages
-          itemPattern: '/$(pattern)'
+          itemPattern: '**/$(pattern)'
           targetPath: $(Build.ArtifactStagingDirectory)
       - bash: |
           mkdir -p ${BUILD_ARTIFACTSTAGINGDIRECTORY}/bin
