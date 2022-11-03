@@ -206,7 +206,7 @@ PackageWindows()
     local folder=$artifactsFolder/$runtime/$framework/Radarr
     
     PackageFiles "$folder" "$framework" "$runtime"
-    cp -r $outputFolder/$framework-windows/$runtime/publish/* $folder
+    cp -r $outputFolder/$framework/$runtime/publish/* $folder
 
     echo "Removing Radarr.Mono"
     rm -f $folder/Radarr.Mono.*
