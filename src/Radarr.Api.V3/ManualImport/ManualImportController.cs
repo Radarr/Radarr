@@ -35,7 +35,7 @@ namespace Radarr.Api.V3.ManualImport
 
                 item.Movie = processedItem.Movie.ToResource(0);
                 item.Rejections = processedItem.Rejections;
-                if (item.Languages.Single() == Language.Unknown)
+                if (item.Languages.First() == Language.Unknown)
                 {
                     item.Languages = processedItem.Languages;
                 }

@@ -121,7 +121,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 SceneSource = SceneSource(movie, rootFolder),
                 ExistingFile = movie.Path.IsParentPath(path),
                 Size = _diskProvider.GetFileSize(path),
-                Languages = (languages?.SingleOrDefault() ?? Language.Unknown) == Language.Unknown ? languageParse : languages,
+                Languages = (languages?.FirstOrDefault() ?? Language.Unknown) == Language.Unknown ? languageParse : languages,
                 Quality = quality.Quality == Quality.Unknown ? QualityParser.ParseQuality(path) : quality,
                 ReleaseGroup = releaseGroup.IsNullOrWhiteSpace() ? Parser.Parser.ParseReleaseGroup(path) : releaseGroup,
             };
