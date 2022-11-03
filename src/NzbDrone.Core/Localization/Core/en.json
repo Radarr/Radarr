@@ -730,7 +730,7 @@
   "PtpOldSettingsCheckMessage": "The following PassThePopcorn indexers have deprecated settings and should be updated: {0}",
   "PublishedDate": "Published Date",
   "Qualities": "Qualities",
-  "QualitiesHelpText": "Qualities higher in the list are more preferred. Qualities within the same group are equal. Only checked qualities are wanted",
+  "QualitiesHelpText": "Qualities higher in the list are more preferred even if not checked. Qualities within the same group are equal. Only checked qualities are wanted",
   "Quality": "Quality",
   "QualityCutoffHasNotBeenMet": "Quality cutoff has not been met",
   "QualityDefinitions": "Quality Definitions",
