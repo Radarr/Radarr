@@ -425,7 +425,6 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be("South.Park.H264.DTS.[EN+ES+IT]");
         }
 
-        [Ignore("not currently supported")]
         [Test]
         public void should_format_mediainfo_3d_properly()
         {
