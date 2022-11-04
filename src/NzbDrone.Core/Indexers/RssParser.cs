@@ -165,9 +165,9 @@ namespace NzbDrone.Core.Indexers
             {
                 releaseInfo.Size = GetSize(item);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                throw new SizeParsingException("Unable to parse size from: {0}", releaseInfo.Title);
+                throw new SizeParsingException("Unable to parse size from: {0}", e, releaseInfo.Title);
             }
 
             return releaseInfo;
