@@ -59,8 +59,9 @@ namespace NzbDrone.Core.Notifications.Notifiarr
             try
             {
                 var instanceName = _configFileProvider.InstanceName;
-                var requestBuilder = new HttpRequestBuilder(URL + "/api/v1/notification/radarr/" + settings.APIKey).Post();
+                var requestBuilder = new HttpRequestBuilder(URL + "/api/v1/notification/radarr").Post();
                 requestBuilder.AddFormParameter("instanceName", instanceName).Build();
+                requestBuilder.SetHeader("X-API-Key", settings.APIKey);
 
                 foreach (string key in message.Keys)
                 {
