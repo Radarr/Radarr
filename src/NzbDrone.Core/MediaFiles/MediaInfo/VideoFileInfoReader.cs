@@ -75,7 +75,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
                 mediaInfoModel.VideoCodecID = analysis.PrimaryVideoStream?.CodecTagString;
                 mediaInfoModel.VideoProfile = analysis.PrimaryVideoStream?.Profile;
                 mediaInfoModel.VideoBitrate = analysis.PrimaryVideoStream?.BitRate ?? 0;
-                mediaInfoModel.VideoMultiViewCount = analysis.PrimaryVideoStream?.Tags.ContainsKey("stereo_mode") ?? false ? 2 : 1;
+                mediaInfoModel.VideoMultiViewCount = analysis.PrimaryVideoStream?.Tags?.ContainsKey("stereo_mode") ?? false ? 2 : 1;
                 mediaInfoModel.VideoBitDepth = GetPixelFormat(analysis.PrimaryVideoStream?.PixelFormat)?.Components.Min(x => x.BitDepth) ?? 8;
                 mediaInfoModel.VideoColourPrimaries = analysis.PrimaryVideoStream?.ColorPrimaries;
                 mediaInfoModel.VideoTransferCharacteristics = analysis.PrimaryVideoStream?.ColorTransfer;
