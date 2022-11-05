@@ -324,6 +324,12 @@ export const defaultState = {
       valueType: filterBuilderValueTypes.BOOL
     },
     {
+      name: 'isAvailableDate',
+      label: translate('DateConsideredAvailable'),
+      type: filterBuilderTypes.DATE,
+      valueType: filterBuilderValueTypes.DATE
+    },
+    {
       name: 'minimumAvailability',
       label: translate('MinimumAvailability'),
       type: filterBuilderTypes.EXACT,
@@ -348,6 +354,12 @@ export const defaultState = {
       name: 'imdbVotes',
       label: translate('ImdbVotes'),
       type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'minimumAvailabilityDate',
+      label: translate('MinimumAvailabilityDate'),
+      type: filterBuilderTypes.DATE,
+      valueType: filterBuilderValueTypes.DATE
     },
     {
       name: 'certification',

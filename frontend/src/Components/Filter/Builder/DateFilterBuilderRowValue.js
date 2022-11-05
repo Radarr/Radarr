@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import NumberInput from 'Components/Form/NumberInput';
 import SelectInput from 'Components/Form/SelectInput';
 import TextInput from 'Components/Form/TextInput';
-import { IN_LAST, IN_NEXT, NOT_IN_LAST, NOT_IN_NEXT } from 'Helpers/Props/filterTypes';
+import { IN_FUTURE, IN_LAST, IN_NEXT, IN_PAST, NOT_IN_LAST, NOT_IN_NEXT } from 'Helpers/Props/filterTypes';
 import isString from 'Utilities/String/isString';
 import translate from 'Utilities/String/translate';
 import { NAME } from './FilterBuilderRowValue';
@@ -24,6 +24,13 @@ function isInFilter(filterType) {
     filterType === NOT_IN_LAST ||
     filterType === IN_NEXT ||
     filterType === NOT_IN_NEXT
+  );
+}
+
+function isPastFutureFilter(filterType) {
+  return (
+    filterType === IN_FUTURE ||
+    filterType === IN_PAST
   );
 }
 
@@ -155,6 +162,10 @@ class DateFilterBuilderRowValue extends Component {
           />
         </div>
       );
+    }
+
+    if (isPastFutureFilter(filterType)) {
+      return null;
     }
 
     return (

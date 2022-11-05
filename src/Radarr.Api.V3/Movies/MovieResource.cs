@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
@@ -57,7 +58,9 @@ namespace Radarr.Api.V3.Movies
         //Editing Only
         public bool Monitored { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
+        public DateTime MinimumAvailabilityDate { get; set; }
         public bool IsAvailable { get; set; }
+        public DateTime IsAvailableDate { get; set; }
         public string FolderName { get; set; }
 
         public int Runtime { get; set; }
@@ -125,6 +128,8 @@ namespace Radarr.Api.V3.Movies
                 MinimumAvailability = model.MinimumAvailability,
 
                 IsAvailable = model.IsAvailable(availDelay),
+                IsAvailableDate = model.IsAvailableDate(availDelay),
+                MinimumAvailabilityDate = model.MinimumAvailabilityDate(),
                 FolderName = model.FolderName(),
 
                 Runtime = model.MovieMetadata.Value.Runtime,

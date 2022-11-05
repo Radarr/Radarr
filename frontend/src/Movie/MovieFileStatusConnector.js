@@ -14,9 +14,13 @@ function createMapStateToProps() {
       return {
         inCinemas: movie.inCinemas,
         isAvailable: movie.isAvailable,
+        isAvailableDate: movie.isAvailableDate,
         monitored: movie.monitored,
         grabbed: movie.grabbed,
         movieFile: movie.movieFile,
+        showRelativeDates: uiSettings.showRelativeDates,
+        shortDateFormat: uiSettings.shortDateFormat,
+        timeFormat: uiSettings.timeFormat,
         colorImpairedMode: uiSettings.enableColorImpairedMode
       };
     }
