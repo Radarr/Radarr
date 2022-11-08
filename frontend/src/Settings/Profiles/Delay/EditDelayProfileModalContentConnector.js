@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { saveDelayProfile, setDelayProfileValue } from 'Store/Actions/settingsActions';
 import selectSettings from 'Store/Selectors/selectSettings';
-import translate from 'Utilities/String/translate';
 import EditDelayProfileModalContent from './EditDelayProfileModalContent';
 
 const newDelayProfile = {
@@ -16,13 +15,6 @@ const newDelayProfile = {
   torrentDelay: 0,
   tags: []
 };
-
-const protocolOptions = [
-  { key: 'preferUsenet', value: translate('PreferUsenet') },
-  { key: 'preferTorrent', value: translate('PreferTorrent') },
-  { key: 'onlyUsenet', value: translate('OnlyUsenet') },
-  { key: 'onlyTorrent', value: translate('OnlyTorrent') }
-];
 
 function createDelayProfileSelector() {
   return createSelector(
@@ -79,7 +71,6 @@ function createMapStateToProps() {
 
       return {
         protocol,
-        protocolOptions,
         ...delayProfile
       };
     }

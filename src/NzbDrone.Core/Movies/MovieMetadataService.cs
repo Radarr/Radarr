@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NzbDrone.Core.ImportLists.ImportListMovies;
 
 namespace NzbDrone.Core.Movies
 {
@@ -11,15 +12,20 @@ namespace NzbDrone.Core.Movies
         List<MovieMetadata> GetMoviesByCollectionTmdbId(int collectionId);
         bool Upsert(MovieMetadata movie);
         bool UpsertMany(List<MovieMetadata> movies);
+        void DeleteMany(List<MovieMetadata> movies);
     }
 
     public class MovieMetadataService : IMovieMetadataService
     {
         private readonly IMovieMetadataRepository _movieMetadataRepository;
+        private readonly IMovieService _movieService;
+        private readonly IImportListMovieService _importListMovieService;
 
-        public MovieMetadataService(IMovieMetadataRepository movieMetadataRepository)
+        public MovieMetadataService(IMovieMetadataRepository movieMetadataRepository, IMovieService movieService, IImportListMovieService importListMovieService)
         {
             _movieMetadataRepository = movieMetadataRepository;
+            _movieService = movieService;
+            _importListMovieService = importListMovieService;
         }
 
         public MovieMetadata FindByTmdbId(int tmdbId)
@@ -55,6 +61,17 @@ namespace NzbDrone.Core.Movies
         public bool UpsertMany(List<MovieMetadata> movies)
         {
             return _movieMetadataRepository.UpsertMany(movies);
+        }
+
+        public void DeleteMany(List<MovieMetadata> movies)
+        {
+            foreach (var movie in movies)
+            {
+                if (!_importListMovieService.ExistsByMetadataId(movie.Id) && !_movieService.ExistsByMetadataId(movie.Id))
+                {
+                    _movieMetadataRepository.Delete(movie);
+                }
+            }
         }
     }
 }

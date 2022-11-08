@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Dapper;
 using NzbDrone.Core.Datastore;
@@ -30,6 +31,7 @@ namespace NzbDrone.Core.Movies
         List<int> AllMovieTmdbIds();
         Dictionary<int, List<int>> AllMovieTags();
         List<int> GetRecommendations();
+        bool ExistsByMetadataId(int metadataId);
     }
 
     public class MovieRepository : BasicRepository<Movie>, IMovieRepository
@@ -366,6 +368,13 @@ namespace NzbDrone.Core.Movies
             }
 
             return recommendations;
+        }
+
+        public bool ExistsByMetadataId(int metadataId)
+        {
+            var movies = Query(x => x.MovieMetadataId == metadataId);
+
+            return movies.Any();
         }
     }
 }

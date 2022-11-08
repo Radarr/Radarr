@@ -102,8 +102,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         private void GivenAugmentationSuccess()
         {
             Mocker.GetMock<IAggregationService>()
-                  .Setup(s => s.Augment(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>(), It.IsAny<bool>()))
-                  .Callback<LocalMovie, DownloadClientItem, bool>((localMovie, downloadClientItem, otherFiles) =>
+                  .Setup(s => s.Augment(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
+                  .Callback<LocalMovie, DownloadClientItem>((localMovie, downloadClientItem) =>
                   {
                       localMovie.Movie = _localMovie.Movie;
                   });
@@ -173,7 +173,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             GivenSpecifications(_pass1);
 
             Mocker.GetMock<IAggregationService>()
-                  .Setup(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>(), It.IsAny<bool>()))
+                  .Setup(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
                   .Throws<TestException>();
 
             _videoFiles = new List<string>
@@ -188,7 +188,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             Subject.GetImportDecisions(_videoFiles, _movie);
 
             Mocker.GetMock<IAggregationService>()
-                  .Verify(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>(), It.IsAny<bool>()), Times.Exactly(_videoFiles.Count));
+                  .Verify(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()), Times.Exactly(_videoFiles.Count));
 
             ExceptionVerification.ExpectedErrors(3);
         }
@@ -209,7 +209,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
             var fileNames = _videoFiles.Select(System.IO.Path.GetFileName);
 
             Mocker.GetMock<IAggregationService>()
-                  .Setup(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>(), It.IsAny<bool>()))
+                  .Setup(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
                   .Throws<TestException>();
         }
 
@@ -217,7 +217,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
         public void should_return_a_decision_when_exception_is_caught()
         {
             Mocker.GetMock<IAggregationService>()
-                  .Setup(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>(), It.IsAny<bool>()))
+                  .Setup(c => c.Augment(It.IsAny<LocalMovie>(), It.IsAny<DownloadClientItem>()))
                   .Throws<TestException>();
 
             _videoFiles = new List<string>

@@ -11,6 +11,7 @@ import { icons, kinds } from 'Helpers/Props';
 import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
+import formatCustomFormatScore from 'Utilities/Number/formatCustomFormatScore';
 import translate from 'Utilities/String/translate';
 import styles from './MovieHistoryRow.css';
 
@@ -102,6 +103,10 @@ class MovieHistoryRow extends Component {
           <MovieFormats
             formats={customFormats}
           />
+        </TableRowCell>
+
+        <TableRowCell key={name}>
+          {formatCustomFormatScore(data.customFormatScore)}
         </TableRowCell>
 
         <RelativeDateCellConnector

@@ -122,9 +122,8 @@ namespace Radarr.Api.V3.Indexers
             catch (Exception ex)
             {
                 _logger.Error(ex, "Movie search failed: " + ex.Message);
+                throw new NzbDroneClientException(HttpStatusCode.InternalServerError, ex.Message);
             }
-
-            return new List<ReleaseResource>();
         }
 
         private List<ReleaseResource> GetRss()

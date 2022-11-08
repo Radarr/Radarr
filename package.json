@@ -45,7 +45,7 @@
     "jquery": "3.6.0",
     "lodash": "4.17.21",
     "mobile-detect": "1.4.5",
-    "moment": "2.29.2",
+    "moment": "2.29.4",
     "mousetrap": "1.6.5",
     "normalize.css": "8.0.1",
     "prop-types": "15.7.2",

@@ -41,7 +41,7 @@ namespace Radarr.Api.V3.Calendar
         }
 
         [HttpGet]
-        public List<MovieResource> GetCalendar(DateTime? start, DateTime? end, bool unmonitored = false, bool includeArtist = false)
+        public List<MovieResource> GetCalendar(DateTime? start, DateTime? end, bool unmonitored = false)
         {
             var startUse = start ?? DateTime.Today;
             var endUse = end ?? DateTime.Today.AddDays(2);

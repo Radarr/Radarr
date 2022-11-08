@@ -71,6 +71,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title (2020)[BDRemux AVC 1080p][E-AC3 DD Plus 5.1 Castellano-Inglés Subs]")]
         [TestCase("Movie Title (2020) [UHDRemux2160p HDR][DTS-HD MA 5.1 AC3 5.1 Castellano - True-HD 7.1 Atmos Inglés Subs]")]
         [TestCase("Movie Title (2016) [UHDRemux 2160p SDR] [Castellano DD 5.1 - Inglés DTS-HD MA 5.1 Subs]")]
+        [TestCase("Movie Title 2022 [HDTV 720p][Cap.101][AC3 5.1 Castellano][www.pctnew.ORG]")]
+        [TestCase("Movie Title 2022 [HDTV 720p][Cap.206][AC3 5.1 Español Castellano]")]
         public void should_parse_language_spanish(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);

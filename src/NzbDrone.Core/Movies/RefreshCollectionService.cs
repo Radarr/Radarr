@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 using NzbDrone.Common.Instrumentation.Extensions;
@@ -48,6 +49,7 @@ namespace NzbDrone.Core.Movies
             _logger.ProgressInfo("Updating info for {0}", collection.Title);
 
             MovieCollection collectionInfo;
+            List<MovieMetadata> movies;
 
             try
             {
@@ -68,8 +70,27 @@ namespace NzbDrone.Core.Movies
             collection.LastInfoSync = DateTime.UtcNow;
             collection.Images = collectionInfo.Images;
 
-            collectionInfo.Movies.ForEach(x => x.CollectionTmdbId = collection.TmdbId);
-            _movieMetadataService.UpsertMany(collectionInfo.Movies);
+            movies = collectionInfo.Movies;
+            movies.ForEach(x => x.CollectionTmdbId = collection.TmdbId);
+
+            var existingMetaForCollection = _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId);
+
+            var updateList = new List<MovieMetadata>();
+
+            foreach (var remoteMovie in movies)
+            {
+                var existing = existingMetaForCollection.FirstOrDefault(e => e.TmdbId == remoteMovie.TmdbId);
+
+                if (existingMetaForCollection.Any(x => x.TmdbId == remoteMovie.TmdbId))
+                {
+                    existingMetaForCollection.Remove(existing);
+                }
+
+                updateList.Add(remoteMovie);
+            }
+
+            _movieMetadataService.UpsertMany(updateList);
+            _movieMetadataService.DeleteMany(existingMetaForCollection);
 
             _logger.Debug("Finished collection refresh for {0}", collection.Title);
 

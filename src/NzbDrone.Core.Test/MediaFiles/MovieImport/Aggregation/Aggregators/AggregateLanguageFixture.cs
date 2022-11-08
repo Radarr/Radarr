@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
         [Test]
         public void should_return_default_if_no_info_is_known()
         {
-            var result = Subject.Aggregate(_localMovie, null, false);
+            var result = Subject.Aggregate(_localMovie, null);
 
             result.Languages.Should().Contain(_movie.MovieMetadata.Value.OriginalLanguage);
         }
@@ -83,7 +83,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                             null,
                             null);
 
-            Subject.Aggregate(_localMovie, null, false).Languages.Should().Equal(new List<Language> { Language.French });
+            Subject.Aggregate(_localMovie, null).Languages.Should().Equal(new List<Language> { Language.French });
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                             null,
                             null);
 
-            var aggregation = Subject.Aggregate(_localMovie, null, false);
+            var aggregation = Subject.Aggregate(_localMovie, null);
 
             aggregation.Languages.Should().Equal(new List<Language> { Language.German });
         }
@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                             new List<Language> { Language.Spanish },
                             null);
 
-            Subject.Aggregate(_localMovie, null, false).Languages.Should().Equal(new List<Language> { Language.Spanish });
+            Subject.Aggregate(_localMovie, null).Languages.Should().Equal(new List<Language> { Language.Spanish });
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                             new List<Language> { Language.Unknown },
                             null);
 
-            Subject.Aggregate(_localMovie, null, false).Languages.Should().Equal(new List<Language> { Language.French, Language.German });
+            Subject.Aggregate(_localMovie, null).Languages.Should().Equal(new List<Language> { Language.French, Language.German });
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                             new List<Language> { Language.Unknown },
                             new List<Language> { Language.Japanese, Language.English });
 
-            Subject.Aggregate(_localMovie, null, false).Languages.Should().Equal(new List<Language> { Language.Japanese, Language.English });
+            Subject.Aggregate(_localMovie, null).Languages.Should().Equal(new List<Language> { Language.Japanese, Language.English });
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                             new List<Language> { Language.Unknown },
                             new List<Language> { Language.Unknown });
 
-            Subject.Aggregate(_localMovie, null, false).Languages.Should().Equal(new List<Language> { Language.French, Language.German });
+            Subject.Aggregate(_localMovie, null).Languages.Should().Equal(new List<Language> { Language.French, Language.German });
         }
     }
 }

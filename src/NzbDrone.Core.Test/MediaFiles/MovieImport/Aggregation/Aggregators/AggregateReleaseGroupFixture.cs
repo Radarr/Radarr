@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                 Movie = _movie
             };
 
-            Subject.Aggregate(localMovie, null, false);
+            Subject.Aggregate(localMovie, null);
 
             localMovie.ReleaseGroup.Should().Be("Viva");
         }
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                 Movie = _movie
             };
 
-            Subject.Aggregate(localMovie, null, false);
+            Subject.Aggregate(localMovie, null);
 
             localMovie.ReleaseGroup.Should().Be("Drone");
         }
@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                 Movie = _movie
             };
 
-            Subject.Aggregate(localMovie, null, false);
+            Subject.Aggregate(localMovie, null);
 
             localMovie.ReleaseGroup.Should().Be("Wizzy");
         }
@@ -95,7 +95,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                 Movie = _movie
             };
 
-            Subject.Aggregate(localMovie, null, false);
+            Subject.Aggregate(localMovie, null);
 
             localMovie.ReleaseGroup.Should().Be("FraMeSToR");
         }
@@ -115,7 +115,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Aggregation.Aggregators
                 Movie = _movie
             };
 
-            Subject.Aggregate(localMovie, null, false);
+            Subject.Aggregate(localMovie, null);
 
             localMovie.ReleaseGroup.Should().Be("FraMeSToR");
         }

@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.French);
             }
 
-            if (lowerTitle.Contains("spanish") || lowerTitle.Contains("castellano"))
+            if (lowerTitle.Contains("spanish"))
             {
                 languages.Add(Language.Spanish);
             }
@@ -302,6 +302,11 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["chinese"].Success)
                 {
                     languages.Add(Language.Chinese);
+                }
+
+                if (match.Groups["spanish"].Success)
+                {
+                    languages.Add(Language.Spanish);
                 }
 
                 if (match.Groups["ukrainian"].Success)

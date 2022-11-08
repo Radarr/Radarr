@@ -198,6 +198,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Title (2020) MULTi WEB 1080p x264-JiHEFF (S:317/L:28)", false)]
         [TestCase("Movie.Titles.2020.1080p.NF.WEB.DD2.0.x264-SNEAkY", false)]
         [TestCase("The.Movie.2022.NORDiC.1080p.DV.HDR.WEB.H 265-NiDHUG", false)]
+        [TestCase("Movie Title 2018 [WEB 1080p HEVC Opus] [Netaro]", false)]
+        [TestCase("Movie Title 2018 (WEB 1080p HEVC Opus) [Netaro]", false)]
         public void should_parse_webdl1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBDL, proper, Resolution.R1080p);
@@ -206,6 +208,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.S04E01.iNTERNAL.1080p.WEBRip.x264-QRUS", false)]
         [TestCase("Movie.Name.1x04.ITA.1080p.WEBMux.x264-NovaRip", false)]
         [TestCase("Movie.Name.2019.S02E07.Chapter.15.The.Believer.4Kto1080p.DSNYP.Webrip.x265.10bit.EAC3.5.1.Atmos.GokiTAoE", false)]
+        [TestCase("Movie.Title.2019.1080p.AMZN.WEB-Rip.DDP.5.1.HEVC", false)]
         public void should_parse_webrip1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.WEBRIP, proper, Resolution.R1080p);
@@ -314,6 +317,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.M.2008.USA.BluRay.Remux.1080p.MPEG-2.DD.5.1-TDD")]
         [TestCase("Movie.Title.2018.1080p.BluRay.REMUX.MPEG-2.DTS-HD.MA.5.1-EPSiLON")]
         [TestCase("Movie.Title.II.2003.4K.BluRay.Remux.1080p.AVC.DTS-HD.MA.5.1-BMF")]
+        [TestCase("Movie Title 2022 (BDRemux 1080p HEVC FLAC) [Netaro]")]
+        [TestCase("[Vodes] Movie Title - Other Title (2020) [BDRemux 1080p HEVC Dual-Audio]")]
         public void should_parse_remux1080p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080p, Modifier.REMUX);

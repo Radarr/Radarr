@@ -5,6 +5,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.ImportLists.Exceptions;
 using NzbDrone.Core.ImportLists.ImportListMovies;
+using NzbDrone.Core.Notifications.Plex.PlexTv;
 using NzbDrone.Core.Notifications.Plex.Server;
 
 namespace NzbDrone.Core.ImportLists.Plex
@@ -19,7 +20,7 @@ namespace NzbDrone.Core.ImportLists.Plex
 
         public virtual IList<ImportListMovie> ParseResponse(ImportListResponse importResponse)
         {
-            List<PlexSectionItem> items;
+            List<PlexWatchlistItem> items;
 
             _importResponse = importResponse;
 
@@ -30,7 +31,7 @@ namespace NzbDrone.Core.ImportLists.Plex
                 return movies;
             }
 
-            items = Json.Deserialize<PlexResponse<PlexSectionResponse>>(_importResponse.Content)
+            items = Json.Deserialize<PlexResponse<PlexWatchlistRespone>>(_importResponse.Content)
                         .MediaContainer
                         .Items;
 

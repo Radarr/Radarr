@@ -15,6 +15,7 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
         List<ImportListMovie> SyncMoviesForList(List<ImportListMovie> listMovies, int listId);
         void RemoveListMovie(ImportListMovie listMovie);
         ImportListMovie GetById(int id);
+        bool ExistsByMetadataId(int metadataId);
     }
 
     public class ImportListMovieService : IImportListMovieService, IHandleAsync<ProviderDeletedEvent<IImportList>>
@@ -78,6 +79,11 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
         {
             var moviesOnList = _importListMovieRepository.GetAllForLists(new List<int> { message.ProviderId });
             _importListMovieRepository.DeleteMany(moviesOnList);
+        }
+
+        public bool ExistsByMetadataId(int metadataId)
+        {
+            return _importListMovieRepository.ExistsByMetadataId(metadataId);
         }
     }
 }

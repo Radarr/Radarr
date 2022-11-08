@@ -48,6 +48,7 @@ namespace NzbDrone.Core.Movies
         List<int> GetRecommendedTmdbIds();
         bool MoviePathExists(string folder);
         void RemoveAddOptions(Movie movie);
+        bool ExistsByMetadataId(int metadataId);
     }
 
     public class MovieService : IMovieService, IHandle<MovieFileAddedEvent>,
@@ -387,6 +388,11 @@ namespace NzbDrone.Core.Movies
         public List<int> GetRecommendedTmdbIds()
         {
             return _movieRepository.GetRecommendations();
+        }
+
+        public bool ExistsByMetadataId(int metadataId)
+        {
+            return _movieRepository.ExistsByMetadataId(metadataId);
         }
 
         public void Handle(MovieFileAddedEvent message)

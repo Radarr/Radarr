@@ -1145,5 +1145,6 @@
     "RottenTomatoesRating": "Tomato Értékelés",
     "TotalMovies": "Összes film",
     "ApplicationUrlHelpText": "Az alkalmazás külső URL-címe, beleértve a \"http(s)://\"-t, a \"Portot\" és az \"URL-alapot\" is",
-    "ApplicationURL": "Alkalmazás URL-je"
+    "ApplicationURL": "Alkalmazás URL-je",
+    "PreferredProtocol": "Preferált protokoll"
 }

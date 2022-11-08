@@ -7,8 +7,12 @@ on:
 
 concurrency: azuresync-${{ github.event.issue.number }}
 
+permissions: {}
 jobs:
   alert:
+    permissions:
+      issues: write # to update issue body
+
     runs-on: ubuntu-latest
     steps:
       - uses: danhellem/github-actions-issue-to-work-item@master

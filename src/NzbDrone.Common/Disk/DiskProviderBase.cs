@@ -264,6 +264,11 @@ namespace NzbDrone.Common.Disk
 
         protected virtual void MoveFileInternal(string source, string destination)
         {
+            if (File.Exists(destination))
+            {
+                throw new FileAlreadyExistsException("File already exists", destination);
+            }
+
             File.Move(source, destination);
         }
 

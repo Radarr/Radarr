@@ -52,7 +52,7 @@ namespace NzbDrone.Core.HealthCheck
                                       .AddQueryParam("version", BuildInfo.Version)
                                       .AddQueryParam("os", OsInfo.Os.ToString().ToLowerInvariant())
                                       .AddQueryParam("arch", RuntimeInformation.OSArchitecture)
-                                      .AddQueryParam("runtime", PlatformInfo.Platform.ToString().ToLowerInvariant())
+                                      .AddQueryParam("runtime", "netcore")
                                       .AddQueryParam("branch", _configFileProvider.Branch)
                                       .Build();
             try

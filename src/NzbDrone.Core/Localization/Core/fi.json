@@ -1145,5 +1145,6 @@
     "RottenTomatoesRating": "Tomaattiarvio",
     "TotalMovies": "Elokuvia yhteensä",
     "ApplicationURL": "Sovelluksen URL-osoite",
-    "ApplicationUrlHelpText": "Sovelluksen ulkoinen URL-osoite, johon sisältyy http(s)://, portti ja URL-perusta."
+    "ApplicationUrlHelpText": "Sovelluksen ulkoinen URL-osoite, johon sisältyy http(s)://, portti ja URL-perusta.",
+    "PreferredProtocol": "Ensisijainen protokolla"
 }

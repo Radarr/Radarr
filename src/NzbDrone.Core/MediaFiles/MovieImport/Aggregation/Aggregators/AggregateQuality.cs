@@ -20,7 +20,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
             _logger = logger;
         }
 
-        public LocalMovie Aggregate(LocalMovie localMovie, DownloadClientItem downloadClientItem, bool otherFiles)
+        public LocalMovie Aggregate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             var source = Source.UNKNOWN;
             var sourceConfidence = Confidence.Default;
