@@ -1142,5 +1142,6 @@
     "ApplicationUrlHelpText": "URL externe de cette application, y compris http(s)://, le port et l'URL de base",
     "InstanceName": "Nom de l'instance",
     "InstanceNameHelpText": "Nom de l'instance dans l'onglet du navigateur et pour le nom d'application dans Syslog",
-    "CollectionShowPostersHelpText": "Afficher les affiches des éléments de la collection"
+    "CollectionShowPostersHelpText": "Afficher les affiches des éléments de la collection",
+    "PreferredProtocol": "Protocole préféré"
 }

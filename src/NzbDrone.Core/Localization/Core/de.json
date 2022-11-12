@@ -892,7 +892,7 @@
     "QualityProfileInUse": "Ein Qualitätsprofil mit zugeordneten Filmen, Listen oder Sammlungen kann nicht gelöscht werden",
     "QualityOrLangCutoffHasNotBeenMet": "Qualität oder Sprache haben die Schwelle noch nicht erreicht",
     "QualityLimitsHelpText": "Limitierungen werden automatisch an die Filmlänge angepasst.",
-    "QualitiesHelpText": "Qualitätsprofile oben sind mehr bevorzugt. Profile in einer Gruppe sind gleichgestellt. Nur ausgewählte werden gesucht",
+    "QualitiesHelpText": "Qualitätsprofile oben sind mehr bevorzugt, auch wenn diese nicht angehakt sind. Profile in einer Gruppe sind gleichgestellt. Nur ausgewählte werden gesucht",
     "Qualities": "Qualitätsprofile",
     "PrioritySettings": "Priorität: {0}",
     "PreviewRenameHelpText": "Tipp: Um eine Vorschau der Umbenennung zu bekommen, wähle Abbrechen und klicke auf einen Filmtitel und benutze den",
@@ -1145,5 +1145,6 @@
     "RottenTomatoesRating": "Tomato Bewertung",
     "TotalMovies": "Filme insgesamt",
     "ApplicationURL": "Anwendungs-URL",
-    "ApplicationUrlHelpText": "Die externe URL der Anwendung inklusive http(s)://, Port und URL-Basis"
+    "ApplicationUrlHelpText": "Die externe URL der Anwendung inklusive http(s)://, Port und URL-Basis",
+    "PreferredProtocol": "Bevorzugtes Protokoll"
 }

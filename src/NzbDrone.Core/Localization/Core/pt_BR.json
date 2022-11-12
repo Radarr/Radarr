@@ -854,7 +854,7 @@
     "QualityDefinitions": "Definições de qualidade",
     "QualityCutoffHasNotBeenMet": "Limite de qualidade não atingido",
     "Quality": "Qualidade",
-    "QualitiesHelpText": "Qualidades mais acima na lista têm maior prioridade, as que estão no mesmo grupo têm prioridade igual. Somente qualidades verificadas são desejadas",
+    "QualitiesHelpText": "As qualidades mais altas na lista são mais preferidas, mesmo que não estejam marcadas. As qualidades dentro do mesmo grupo são iguais. Apenas qualidades marcadas são desejadas",
     "Qualities": "Qualidades",
     "PublishedDate": "Data de publicação",
     "PtpOldSettingsCheckMessage": "As configurações dos seguintes indexadores do PassThePopcorn são obsoletas e devem ser atualizadas: {0}",
@@ -1145,5 +1145,6 @@
     "RottenTomatoesRating": "Avaliação Tomato",
     "TotalMovies": "Total de Filmes",
     "ApplicationURL": "URL da Aplicação",
-    "ApplicationUrlHelpText": "O URL externa deste aplicativo, incluindo http(s)://, porta e base de URL"
+    "ApplicationUrlHelpText": "O URL externa deste aplicativo, incluindo http(s)://, porta e base de URL",
+    "PreferredProtocol": "Protocolo Preferido"
 }
