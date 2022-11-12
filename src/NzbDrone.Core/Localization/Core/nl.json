@@ -809,7 +809,7 @@
     "AddToDownloadQueue": "Toegevoegd aan download wachtrij",
     "AddQualityProfile": "Kwaliteitsprofiel toevoegen",
     "AddNotification": "Notificatie toevoegen",
-    "AddedToDownloadQueue": "Aan download wachtrij toegevoegd",
+    "AddedToDownloadQueue": "Aan de download wachtrij toegevoegd",
     "AddDownloadClient": "Download Client Toevoegen",
     "Add": "Toevoegen",
     "ChmodFolderHelpTextWarning": "Dit werkt alleen als de gebruiker die Radarr draait de eigenaar is van het bestand. Het is beter om zeker te zijn dat de downloader de juiste rechten zet.",

@@ -804,7 +804,7 @@
     "RemotePathMappingCheckFilesLocalWrongOSPath": "El client de baixada local {0} ha informat de fitxers a {1}, però el camí {2} no és vàlid. Reviseu la configuració del vostre client de baixada.",
     "RemotePathMappingCheckFilesWrongOSPath": "El client de baixada remota {0} ha informat de fitxers a {1}, però el camí {2} no és vàlid. Reviseu els mapes de camins remots i baixeu la configuració del client.",
     "RemotePathMappingCheckFolderPermissions": "Radarr pot veure però no accedir al directori de descàrregues {0}. Error de permisos probable.",
-    "RemotePathMappingCheckGenericPermissions": "El client de baixada {0} col·loca les baixades a {1}, però Radarr no pot veure aquest directori.  És possible que hàgiu d'ajustar els permisos de la carpeta.",
+    "RemotePathMappingCheckGenericPermissions": "El client de baixada {0} col·loca les baixades a {1} però Radarr no pot veure aquest directori.  És possible que hàgiu d'ajustar els permisos de la carpeta.",
     "RemotePathMappingCheckImportFailed": "Radarr no ha pogut importar una pel·lícula. Comproveu els vostres registres per obtenir més informació.",
     "RemotePathMappingCheckLocalFolderMissing": "El client de descàrrega remota {0} col·loca les baixades a {1}, però sembla que aquest directori no existeix. És probable que falti o sigui incorrecte l'assignació de camins remots.",
     "RemotePathMappingCheckLocalWrongOSPath": "El client de baixada local {0} col·loca les baixades a {1}, però el camí {2} no és vàlid. Reviseu la configuració del vostre client de baixada.",
@@ -1145,5 +1145,6 @@
     "AppDataLocationHealthCheckMessage": "No es podrà actualitzar per evitar que s'eliminin AppData a l'actualització",
     "Info": "Informació",
     "ApplicationURL": "URL de l'aplicació",
-    "ApplicationUrlHelpText": "URL extern d'aquesta aplicació, inclòs http(s)://, port i URL base"
+    "ApplicationUrlHelpText": "URL extern d'aquesta aplicació, inclòs http(s)://, port i URL base",
+    "PreferredProtocol": "Protocol preferit"
 }
