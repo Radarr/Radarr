@@ -22,7 +22,7 @@ class ImdbRating extends PureComponent {
     let ratingString = '0.0';
 
     if (rating) {
-      ratingString = `${rating.value.toFixed(1)}`;
+      ratingString = `${Math.round(rating.value * 10) / 10}`;
     }
 
     return (
