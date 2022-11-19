@@ -100,7 +100,7 @@ namespace NzbDrone.Test.Common.AutoMoq
                         if (serviceType.IsInterface || serviceType.IsAbstract)
                         {
                             var mockType = typeof(Mock<>).MakeGenericType(serviceType);
-                            var mockFactory = new DelegateFactory(r =>
+                            var mockFactory = DelegateFactory.Of(r =>
                             {
                                 var mock = (Mock)r.Resolve(mockType);
                                 SetMock(serviceType, mock);
