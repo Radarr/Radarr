@@ -20,9 +20,9 @@ using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Host;
 using NzbDrone.SignalR;
 using NzbDrone.Test.Common;
-using Radarr.Host;
 using IServiceProvider = System.IServiceProvider;
 
 namespace NzbDrone.App.Test

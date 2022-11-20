@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Processes;
 using NzbDrone.Core.Configuration;
 
-namespace Radarr.Host
+namespace NzbDrone.Host
 {
     public interface IBrowserService
     {

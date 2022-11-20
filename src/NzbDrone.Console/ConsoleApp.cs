@@ -2,14 +2,12 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using Microsoft.AspNetCore.Connections;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
 using NzbDrone.Common.Instrumentation;
-using Radarr.Host;
-using Radarr.Host.AccessControl;
+using NzbDrone.Host;
+using NzbDrone.Host.AccessControl;
 
 namespace NzbDrone.Console
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SQLite;
 using NLog;
@@ -128,7 +128,7 @@ namespace NzbDrone.Core.Instrumentation
         private void WriteSqliteLog(Log log, string connectionString)
         {
             using (var connection =
-                SQLiteFactory.Instance.CreateConnection())
+                new SQLiteConnection(_connectionStringFactory.LogDbConnectionString).OpenAndReturn())
             {
                 connection.ConnectionString = connectionString;
                 connection.Open();

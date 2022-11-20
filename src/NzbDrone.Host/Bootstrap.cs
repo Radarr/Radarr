@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.WindowsServices;
 using NLog;
+using Npgsql;
 using NzbDrone.Common.Composition.Extensions;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Exceptions;
@@ -22,10 +24,9 @@ using NzbDrone.Common.Instrumentation;
 using NzbDrone.Common.Instrumentation.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Extensions;
-using NzbDrone.Host;
 using PostgresOptions = NzbDrone.Core.Datastore.PostgresOptions;
 
-namespace Radarr.Host
+namespace NzbDrone.Host
 {
     public static class Bootstrap
     {
@@ -111,6 +112,12 @@ namespace Radarr.Host
                 Logger.Info(e.Message);
                 LogManager.Configuration = null;
             }
+
+            // Make sure there are no lingering database connections
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            SQLiteConnection.ClearAllPools();
+            NpgsqlConnection.ClearAllPools();
         }
 
         public static IHostBuilder CreateConsoleHostBuilder(string[] args, StartupContext context)

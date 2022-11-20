@@ -2,10 +2,10 @@ using NLog;
 using NzbDrone.Common;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Processes;
-using Radarr.Host.AccessControl;
+using NzbDrone.Host.AccessControl;
 using IServiceProvider = NzbDrone.Common.IServiceProvider;
 
-namespace Radarr.Host
+namespace NzbDrone.Host
 {
     public interface IUtilityModeRouter
     {
