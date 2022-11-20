@@ -5,8 +5,8 @@ using Microsoft.Extensions.Hosting;
 using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Common.Instrumentation;
+using NzbDrone.Host;
 using NzbDrone.SysTray;
-using Radarr.Host;
 
 namespace NzbDrone
 {
