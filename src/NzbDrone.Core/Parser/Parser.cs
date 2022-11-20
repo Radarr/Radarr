@@ -18,6 +18,8 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex ReportEditionRegex = new Regex(@"^.+?" + EditionRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private static readonly RegexReplace[] PreSubstitutionRegex = Array.Empty<RegexReplace>();
+
         private static readonly Regex[] ReportMovieTitleRegex = new[]
         {
             //Anime [Subgroup] and Year
@@ -219,6 +221,15 @@ namespace NzbDrone.Core.Parser
                 releaseTitle = releaseTitle.Trim('-', '_');
 
                 releaseTitle = releaseTitle.Replace("【", "[").Replace("】", "]");
+
+                foreach (var replace in PreSubstitutionRegex)
+                {
+                    if (replace.TryReplace(ref releaseTitle))
+                    {
+                        Logger.Trace($"Replace regex: {replace}");
+                        Logger.Debug("Substituted with " + releaseTitle);
+                    }
+                }
 
                 var simpleTitle = SimpleTitleRegex.Replace(releaseTitle);
 
