@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Indexers.Omgwtfnzbs
 
         protected override string GetInfoUrl(XElement item)
         {
-            //Todo: Me thinks I need to parse details to get this...
+            // Todo: Me thinks I need to parse details to get this...
             var match = Regex.Match(item.Description(),
                 @"(?:\<b\>View NZB\:\<\/b\>\s\<a\shref\=\"")(?<URL>.+?)(?:\"")",
                 RegexOptions.IgnoreCase | RegexOptions.Compiled);

@@ -182,7 +182,7 @@ namespace NzbDrone.Core.History
 
             if (downloadId.IsNullOrWhiteSpace())
             {
-                downloadId = FindDownloadId(message); //For now fuck off.
+                downloadId = FindDownloadId(message); // For now fuck off.
             }
 
             var movie = message.MovieInfo.Movie;

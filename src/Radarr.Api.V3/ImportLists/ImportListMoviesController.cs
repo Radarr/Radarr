@@ -106,7 +106,7 @@ namespace Radarr.Api.V3.ImportLists
 
         private IEnumerable<ImportListMoviesResource> MapToResource(IEnumerable<Movie> movies, Language language)
         {
-            //Avoid calling for naming spec on every movie in filenamebuilder
+            // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
 
             foreach (var currentMovie in movies)

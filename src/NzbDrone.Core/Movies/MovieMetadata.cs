@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Movies
         public MovieStatusType Status { get; set; }
         public string Overview { get; set; }
 
-        //Get Loaded via a Join Query
+        // Get Loaded via a Join Query
         public List<AlternativeTitle> AlternativeTitles { get; set; }
         public List<MovieTranslation> Translations { get; set; }
 

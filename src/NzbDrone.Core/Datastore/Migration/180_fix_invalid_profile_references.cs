@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Datastore.Migration
             // Only process if there are lists or movies existing in the DB
             if (movieRows.Any() || listRows.Any())
             {
-                //If there are no Profiles lets add the defaults
+                // If there are no Profiles lets add the defaults
                 if (!profiles.Any())
                 {
                     InsertDefaultQualityProfiles(conn, tran);
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                 var mostCommonProfileId = 0;
 
-                //If we have some movies, lets determine the most common profile used and use it for the bad entries
+                // If we have some movies, lets determine the most common profile used and use it for the bad entries
                 if (movieRows.Any())
                 {
                     mostCommonProfileId = movieRows.Select(x => x.ProfileId)
@@ -53,11 +53,11 @@ namespace NzbDrone.Core.Datastore.Migration
                     mostCommonProfileId = profiles.First();
                 }
 
-                //Correct any Movies that reference profiles that are null
+                // Correct any Movies that reference profiles that are null
                 var sql = $"UPDATE \"Movies\" SET \"ProfileId\" = {mostCommonProfileId} WHERE \"Id\" IN(SELECT \"Movies\".\"Id\" FROM \"Movies\" LEFT OUTER JOIN \"Profiles\" ON \"Movies\".\"ProfileId\" = \"Profiles\".\"Id\" WHERE \"Profiles\".\"Id\" IS NULL)";
                 conn.Execute(sql, transaction: tran);
 
-                //Correct any Lists that reference profiles that are null
+                // Correct any Lists that reference profiles that are null
                 sql = $"UPDATE \"NetImport\" SET \"ProfileId\" = {mostCommonProfileId} WHERE \"Id\" IN(SELECT \"NetImport\".\"Id\" FROM \"NetImport\" LEFT OUTER JOIN \"Profiles\" ON \"NetImport\".\"ProfileId\" = \"Profiles\".\"Id\" WHERE \"Profiles\".\"Id\" IS NULL)";
                 conn.Execute(sql, transaction: tran);
             }
@@ -119,7 +119,7 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             var profiles = new List<QualityProfile180>();
 
-            //Grab custom formats if any exist and add them to the new profiles
+            // Grab custom formats if any exist and add them to the new profiles
             var formats = conn.Query<CustomFormat180>($"SELECT \"Id\" FROM \"CustomFormats\"").ToList();
 
             profiles.Add(GetDefaultProfile("Any",

@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Datastore.Migration
                     return;
                 }
 
-                //Process duplicates to pick which to purge
+                // Process duplicates to pick which to purge
                 foreach (var problemGroup in problemMovies)
                 {
                     var moviesWithFiles = problemGroup.Where(m => m.MovieFileId > 0);

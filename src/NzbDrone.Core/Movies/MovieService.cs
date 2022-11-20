@@ -401,7 +401,7 @@ namespace NzbDrone.Core.Movies
             movie.MovieFileId = message.MovieFile.Id;
             _movieRepository.Update(movie);
 
-            //_movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
+            // _movieRepository.SetFileId(message.MovieFile.Id, message.MovieFile.Movie.Value.Id);
             _logger.Info("Assigning file [{0}] to movie [{1}]", message.MovieFile.RelativePath, message.MovieFile.Movie);
         }
 

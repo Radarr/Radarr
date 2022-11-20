@@ -16,10 +16,10 @@ namespace NzbDrone.Core.ImportLists.RSSImport
             return pageableRequests;
         }
 
-        //public ImportListPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
-        //{
+        // public ImportListPageableRequestChain GetSearchRequests(MovieSearchCriteria searchCriteria)
+        // {
         //    return new ImportListPageableRequestChain();
-        //}
+        // }
         private IEnumerable<ImportListRequest> GetMovies(string searchParameters)
         {
             var request = new ImportListRequest($"{Settings.Link.Trim()}", HttpAccept.Rss);

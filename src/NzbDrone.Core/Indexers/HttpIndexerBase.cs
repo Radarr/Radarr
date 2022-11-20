@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Indexers
         {
             var generator = GetRequestGenerator();
 
-            //A func ensures cookies are always updated to the latest. This way, the first page could update the cookies and then can be reused by the second page.
+            // A func ensures cookies are always updated to the latest. This way, the first page could update the cookies and then can be reused by the second page.
             generator.GetCookies = () =>
             {
                 var cookies = _indexerStatusService.GetIndexerCookies(Definition.Id);

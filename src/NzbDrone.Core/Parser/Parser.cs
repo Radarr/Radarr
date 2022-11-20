@@ -22,45 +22,45 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex[] ReportMovieTitleRegex = new[]
         {
-            //Anime [Subgroup] and Year
+            // Anime [Subgroup] and Year
             new Regex(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|x|\d+|\]|\W\d+)))+.*?(?<hash>\[\w{8}\])?(?:$|\.)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Anime [Subgroup] no year, versioned title, hash
+            // Anime [Subgroup] no year, versioned title, hash
             new Regex(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+?)((v)(?:\d{1,2})(?:([-_. ])))(\[.*)?(?:[\[(][^])])?.*?(?<hash>\[\w{8}\])(?:$|\.)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Anime [Subgroup] no year, info in double sets of brackets, hash
+            // Anime [Subgroup] no year, info in double sets of brackets, hash
             new Regex(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+?)(\[.*).*?(?<hash>\[\w{8}\])(?:$|\.)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Anime [Subgroup] no year, info in parentheses or brackets, hash
+            // Anime [Subgroup] no year, info in parentheses or brackets, hash
             new Regex(@"^(?:\[(?<subgroup>.+?)\][-_. ]?)(?<title>(?![(\[]).+)(?:[\[(][^])]).*?(?<hash>\[\w{8}\])(?:$|\.)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Some german or french tracker formats (missing year, ...) (Only applies to german and TrueFrench releases) - see ParserFixture for examples and tests - french removed as it broke all movies w/ french titles
+            // Some german or french tracker formats (missing year, ...) (Only applies to german and TrueFrench releases) - see ParserFixture for examples and tests - french removed as it broke all movies w/ french titles
             new Regex(@"^(?<title>(?![(\[]).+?)((\W|_))(" + EditionRegex + @".{1,3})?(?:(?<!(19|20)\d{2}.*?)(German|TrueFrench))(.+?)(?=((19|20)\d{2}|$))(?<year>(19|20)\d{2}(?!p|i|\d+|\]|\W\d+))?(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
+            // Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.Special.Edition.2011
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*" + EditionRegex + @".{1,3}(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition //TODO: Seems to slow down parsing heavily!
+            // Special, Despecialized, etc. Edition Movies, e.g: Mission.Impossible.3.2011.Special.Edition //TODO: Seems to slow down parsing heavily!
             /*new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(19|20)\d{2}(?!p|i|(19|20)\d{2}|\]|\W(19|20)\d{2})))+(\W+|_|$)(?!\\)\(?(?<edition>(((Extended.|Ultimate.)?(Director.?s|Collector.?s|Theatrical|Ultimate|Final(?=(.(Cut|Edition|Version)))|Extended|Rogue|Special|Despecialized|\d{2,3}(th)?.Anniversary)(.(Cut|Edition|Version))?(.(Extended|Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit))?|((Uncensored|Remastered|Unrated|Uncut|IMAX|Fan.?Edit|Edition|Restored|((2|3|4)in1))))))\)?",
                           RegexOptions.IgnoreCase | RegexOptions.Compiled),*/
 
-            //Normal movie format, e.g: Mission.Impossible.3.2011
+            // Normal movie format, e.g: Mission.Impossible.3.2011
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|(1(8|9)|20)\d{2}|\]|\W(1(8|9)|20)\d{2})))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
+            // PassThePopcorn Torrent names: Star.Wars[PassThePopcorn]
             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![()\[!]))*(?<year>(\[\w *\])))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //That did not work? Maybe some tool uses [] for years. Who would do that?
+            // That did not work? Maybe some tool uses [] for years. Who would do that?
             new Regex(@"^(?<title>(?![(\[]).+?)?(?:(?:[-_\W](?<![)!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled),
 
-            //As a last resort for movies that have ( or [ in their title.
+            // As a last resort for movies that have ( or [ in their title.
             new Regex(@"^(?<title>.+?)?(?:(?:[-_\W](?<![)\[!]))*(?<year>(1(8|9)|20)\d{2}(?!p|i|\d+|\]|\W\d+)))+(\W+|_|$)(?!\\)", RegexOptions.IgnoreCase | RegexOptions.Compiled)
         };
 
         private static readonly Regex[] ReportMovieTitleFolderRegex = new[]
         {
-            //When year comes first.
+            // When year comes first.
             new Regex(@"^(?:(?:[-_\W](?<![)!]))*(?<year>(19|20)\d{2}(?!p|i|\d+|\W\d+)))+(\W+|_|$)(?<title>.+?)?$")
         };
 
@@ -77,26 +77,26 @@ namespace NzbDrone.Core.Parser
                 new Regex(@"^[A-Z]{11}\d{3}$", RegexOptions.Compiled),
                 new Regex(@"^[a-z]{12}\d{3}$", RegexOptions.Compiled),
 
-                //Backup filename (Unknown origins)
+                // Backup filename (Unknown origins)
                 new Regex(@"^Backup_\d{5,}S\d{2}-\d{2}$", RegexOptions.Compiled),
 
-                //123 - Started appearing December 2014
+                // 123 - Started appearing December 2014
                 new Regex(@"^123$", RegexOptions.Compiled),
 
-                //abc - Started appearing January 2015
+                // abc - Started appearing January 2015
                 new Regex(@"^abc$", RegexOptions.Compiled | RegexOptions.IgnoreCase),
 
-                //abc - Started appearing 2020
+                // abc - Started appearing 2020
                 new Regex(@"^abc[-_. ]xyz", RegexOptions.Compiled | RegexOptions.IgnoreCase),
 
-                //b00bs - Started appearing January 2015
+                // b00bs - Started appearing January 2015
                 new Regex(@"^b00bs$", RegexOptions.Compiled | RegexOptions.IgnoreCase)
             };
 
-        //Regex to detect whether the title was reversed.
+        // Regex to detect whether the title was reversed.
         private static readonly Regex ReversedTitleRegex = new Regex(@"(?:^|[-._ ])(p027|p0801)[-._ ]", RegexOptions.Compiled);
 
-        //Regex to split movie titles that contain `AKA`.
+        // Regex to split movie titles that contain `AKA`.
         private static readonly Regex AlternativeTitleRegex = new Regex(@"[ ]+AKA[ ]+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         // Regex to unbracket alternative titles.
@@ -147,11 +147,11 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex YearInTitleRegex = new Regex(@"^(?<title>.+?)(?:\W|_)?(?<year>\d{4})",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        //Handle Exception Release Groups that don't follow -RlsGrp; Manual List
-        //groups whose releases end with RlsGroup) or RlsGroup]
+        // Handle Exception Release Groups that don't follow -RlsGrp; Manual List
+        // groups whose releases end with RlsGroup) or RlsGroup]
         private static readonly Regex ExceptionReleaseGroupRegex = new Regex(@"(?<releasegroup>(Joy|YIFY|YTS.(MX|LT|AG)|FreetheFish|afm72|Anna|Bandi|Ghost|Kappa|MONOLITH|Qman|RZeroX|SAMPA|Silence|theincognito|t3nzin|Vyndros|HDO|DusIctv|DHD|SEV|CtrlHD|-ZR-|ADC|XZVN|RH|Kametsu|r00t|HONE)(?=\]|\)))", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-       //Handle Exception Release Groups that don't follow -RlsGrp; Manual List
+       // Handle Exception Release Groups that don't follow -RlsGrp; Manual List
        // name only...BE VERY CAREFUL WITH THIS, HIGH CHANCE OF FALSE POSITIVES
         private static readonly Regex ExceptionReleaseGroupRegexExact = new Regex(@"(?<releasegroup>KRaLiMaRKo|E\.N\.D|D\-Z0N3|Koten_Gars|BluDragon|ZØNEHD|Tigole|HQMUX)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -217,7 +217,7 @@ namespace NzbDrone.Core.Parser
 
                 var releaseTitle = RemoveFileExtension(title);
 
-                //Trim dashes from end
+                // Trim dashes from end
                 releaseTitle = releaseTitle.Trim('-', '_');
 
                 releaseTitle = releaseTitle.Replace("【", "[").Replace("】", "]");
@@ -269,7 +269,7 @@ namespace NzbDrone.Core.Parser
 
                             if (result != null)
                             {
-                                //TODO: Add tests for this!
+                                // TODO: Add tests for this!
                                 var simpleReleaseTitle = SimpleReleaseTitleRegex.Replace(releaseTitle, string.Empty);
 
                                 var simpleTitleReplaceString = match[0].Groups["title"].Success ? match[0].Groups["title"].Value : result.PrimaryMovieTitle;
@@ -422,28 +422,28 @@ namespace NzbDrone.Core.Parser
 
         public static string ToUrlSlug(string value, bool invalidDashReplacement = false, string trimEndChars = "-_", string deduplicateChars = "-_")
         {
-            //First to lower case
+            // First to lower case
             value = value.ToLowerInvariant();
 
-            //Remove all accents
+            // Remove all accents
             value = value.RemoveAccent();
 
-            //Replace spaces
+            // Replace spaces
             value = Regex.Replace(value, @"\s", "-", RegexOptions.Compiled);
 
-            //Should invalid characters be replaced with dash or empty string?
+            // Should invalid characters be replaced with dash or empty string?
             string replaceCharacter = invalidDashReplacement ? "-" : string.Empty;
 
-            //Remove invalid chars
+            // Remove invalid chars
             value = Regex.Replace(value, @"[^a-z0-9\s-_]", replaceCharacter, RegexOptions.Compiled);
 
-            //Trim dashes or underscores from end, or user defined character set
+            // Trim dashes or underscores from end, or user defined character set
             if (!string.IsNullOrEmpty(trimEndChars))
             {
                 value = value.Trim(trimEndChars.ToCharArray());
             }
 
-            //Replace double occurrences of - or _, or user defined character set
+            // Replace double occurrences of - or _, or user defined character set
             if (!string.IsNullOrEmpty(deduplicateChars))
             {
                 value = Regex.Replace(value, @"([" + deduplicateChars + "]){2,}", "$1", RegexOptions.Compiled);
@@ -456,7 +456,7 @@ namespace NzbDrone.Core.Parser
         {
             long number = 0;
 
-            //If Title only contains numbers return it as is.
+            // If Title only contains numbers return it as is.
             if (long.TryParse(title, out number))
             {
                 return title;
@@ -633,10 +633,10 @@ namespace NzbDrone.Core.Parser
             var movieTitles = new List<string>();
             movieTitles.Add(movieName);
 
-            //Delete parentheses of the form (aka ...).
+            // Delete parentheses of the form (aka ...).
             var unbracketedName = BracketedAlternativeTitleRegex.Replace(movieName, "$1 AKA $2");
 
-            //Split by AKA and filter out empty and duplicate names.
+            // Split by AKA and filter out empty and duplicate names.
             movieTitles
                 .AddRange(AlternativeTitleRegex
                         .Split(unbracketedName)

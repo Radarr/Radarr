@@ -64,7 +64,7 @@ namespace NzbDrone.Core.Datastore
                     {
                         version = db.QueryFirstOrDefault<string>("SHOW server_version");
 
-                        //Postgres can return extra info about operating system on version call, ignore this
+                        // Postgres can return extra info about operating system on version call, ignore this
                         version = Regex.Replace(version, @"\(.*?\)", "");
                     }
                     catch

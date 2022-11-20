@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
 
             _remoteMovie = new RemoteMovie();
 
-            //_remoteEpisode.Episodes = new List<Episode>{ _episode };
+            // _remoteEpisode.Episodes = new List<Episode>{ _episode };
             _remoteMovie.Movie = _movie;
             _remoteMovie.ParsedMovieInfo = _parsedMovieInfo;
             _remoteMovie.Release = _release;

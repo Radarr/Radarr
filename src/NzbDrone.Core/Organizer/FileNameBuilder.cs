@@ -153,7 +153,7 @@ namespace NzbDrone.Core.Organizer
 
         public BasicNamingConfig GetBasicNamingConfig(NamingConfig nameSpec)
         {
-            return new BasicNamingConfig(); //For now let's be lazy
+            return new BasicNamingConfig(); // For now let's be lazy
         }
 
         public string GetMovieFolder(Movie movie, NamingConfig namingConfig = null)
@@ -297,7 +297,7 @@ namespace NzbDrone.Core.Organizer
                 return;
             }
 
-            tokenHandlers["{Release Year}"] = m => string.Format("{0}", releaseYear.ToString()); //Do I need m.CustomFormat?
+            tokenHandlers["{Release Year}"] = m => string.Format("{0}", releaseYear.ToString()); // Do I need m.CustomFormat?
         }
 
         private void AddIdTokens(Dictionary<string, Func<TokenMatch, string>> tokenHandlers, Movie movie)

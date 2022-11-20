@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Indexers.Rarbg
         public long size { get; set; }
         public DateTime pubdate { get; set; }
 
-        //This is named episode_info for movies as well as shows
+        // This is named episode_info for movies as well as shows
         public RarbgTorrentInfo episode_info { get; set; }
         public int? ranked { get; set; }
         public string info_page { get; set; }

@@ -26,7 +26,7 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
 
             foreach (var movie in jsonResponse.Results)
             {
-                //Media Type is not Movie
+                // Media Type is not Movie
                 if (movie.MediaType != "movie")
                 {
                     continue;

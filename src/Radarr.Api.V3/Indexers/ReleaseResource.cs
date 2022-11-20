@@ -76,7 +76,7 @@ namespace Radarr.Api.V3.Indexers
                 CustomFormats = remoteMovie.CustomFormats.ToResource(),
                 CustomFormatScore = remoteMovie.CustomFormatScore,
 
-                //QualityWeight
+                // QualityWeight
                 Age = releaseInfo.Age,
                 AgeHours = releaseInfo.AgeHours,
                 AgeMinutes = releaseInfo.AgeMinutes,
@@ -101,7 +101,7 @@ namespace Radarr.Api.V3.Indexers
                 DownloadAllowed = remoteMovie.DownloadAllowed,
                 Edition = parsedMovieInfo.Edition,
 
-                //ReleaseWeight
+                // ReleaseWeight
                 MagnetUrl = torrentInfo.MagnetUrl,
                 InfoHash = torrentInfo.InfoHash,
                 Seeders = torrentInfo.Seeders,

@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.Search
                     Title = "Series.Title.S01.720p.BluRay.X264-RlsGrp",
                     Seeders = 0,
 
-                    //IndexerSettings = new TorrentRssIndexerSettings {MinimumSeeders = 5}
+                    // IndexerSettings = new TorrentRssIndexerSettings {MinimumSeeders = 5}
                 }
             };
 

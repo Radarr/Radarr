@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.Sql("UPDATE \"NamingConfig\" SET \"RenameMovies\"=\"RenameEpisodes\"");
             Delete.Column("RenameEpisodes").FromTable("NamingConfig");
 
-            //Manual SQL, Fluent Migrator doesn't support multi-column unique contraint on table creation, SQLite doesn't support adding it after creation
+            // Manual SQL, Fluent Migrator doesn't support multi-column unique contraint on table creation, SQLite doesn't support adding it after creation
             IfDatabase("sqlite").Execute.Sql("CREATE TABLE \"MovieTranslations\"(" +
                 "\"Id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "\"MovieId\" INTEGER NOT NULL, " +
@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Datastore.Migration
             Execute.WithConnection(FixLanguagesMoveFile);
             Execute.WithConnection(FixLanguagesHistory);
 
-            //Force refresh all movies in library
+            // Force refresh all movies in library
             Update.Table("ScheduledTasks")
                 .Set(new { LastExecution = "2014-01-01 00:00:00" })
                 .Where(new { TypeName = "NzbDrone.Core.Movies.Commands.RefreshMovieCommand" });

@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Movies
 
         public bool HasFile => MovieFileId > 0;
 
-        //compatibility properties
+        // compatibility properties
         public string Title
         {
             get { return MovieMetadata.Value.Title; }
@@ -67,17 +67,17 @@ namespace NzbDrone.Core.Movies
                 return "";
             }
 
-            //Well what about Path = Null?
-            //return new DirectoryInfo(Path).Name;
+            // Well what about Path = Null?
+            // return new DirectoryInfo(Path).Name;
             return Path;
         }
 
         public bool IsAvailable(int delay = 0)
         {
-            //the below line is what was used before delay was implemented, could still be used for cases when delay==0
-            //return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
+            // the below line is what was used before delay was implemented, could still be used for cases when delay==0
+            // return (Status >= MinimumAvailability || (MinimumAvailability == MovieStatusType.PreDB && Status >= MovieStatusType.Released));
 
-            //This more complex sequence handles the delay
+            // This more complex sequence handles the delay
             DateTime minimumAvailabilityDate;
 
             if ((MinimumAvailability == MovieStatusType.TBA) || (MinimumAvailability == MovieStatusType.Announced))

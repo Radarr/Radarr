@@ -13,10 +13,10 @@ namespace NzbDrone.Core.Test.ParserTests
         [SetUp]
         public void Setup()
         {
-            //QualityDefinitionServiceFixture.SetupDefaultDefinitions();
+            // QualityDefinitionServiceFixture.SetupDefaultDefinitions();
         }
 
-        //public static object[] SelfQualityParserCases = QualityDefinition.DefaultQualityDefinitions.ToArray();
+        // public static object[] SelfQualityParserCases = QualityDefinition.DefaultQualityDefinitions.ToArray();
         public static object[] OtherSourceQualityParserCases =
         {
             new object[] { "SD TV", Source.TV, Resolution.R480p, Modifier.NONE },

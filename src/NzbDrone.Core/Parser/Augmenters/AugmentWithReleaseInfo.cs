@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Parser.Augmenters
                 }
                 catch (Exception)
                 {
-                    //_logger.Debug("Indexer with id {0} does not exist, skipping minimum seeder checks.", subject.Release.IndexerId);
+                    // _logger.Debug("Indexer with id {0} does not exist, skipping minimum seeder checks.", subject.Release.IndexerId);
                 }                // First, let's augment the language!
 
                 var languageTitle = movieInfo.SimpleReleaseTitle;
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Parser.Augmenters
                     }
                 }
 
-                //Next, let's add other useful info to the extra info dict
+                // Next, let's add other useful info to the extra info dict
                 if (!movieInfo.ExtraInfo.ContainsKey("Size"))
                 {
                     movieInfo.ExtraInfo["Size"] = releaseInfo.Size;

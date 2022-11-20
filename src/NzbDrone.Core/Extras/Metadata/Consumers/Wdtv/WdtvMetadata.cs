@@ -135,7 +135,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Wdtv
                 return new List<ImageFileResult>();
             }
 
-            //Because we only support one image, attempt to get the Poster type, then if that fails grab the first
+            // Because we only support one image, attempt to get the Poster type, then if that fails grab the first
             var image = movie.MovieMetadata.Value.Images.SingleOrDefault(c => c.CoverType == MediaCoverTypes.Poster) ?? movie.MovieMetadata.Value.Images.FirstOrDefault();
             if (image == null)
             {

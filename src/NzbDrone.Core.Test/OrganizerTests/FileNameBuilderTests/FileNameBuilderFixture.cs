@@ -332,7 +332,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
                    .Should().Be("30 Rock - 30.Rock.S01E01.xvid-LOL");
         }
 
-        //TODO: Update this test or fix the underlying issue!
+        // TODO: Update this test or fix the underlying issue!
         /*
         [Test]
         public void should_replace_double_period_with_single_period()

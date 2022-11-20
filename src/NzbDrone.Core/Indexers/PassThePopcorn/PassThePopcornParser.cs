@@ -67,12 +67,12 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
 
                     if (torrent.GoldenPopcorn)
                     {
-                        flags |= IndexerFlags.PTP_Golden; //title = $"{title} 🍿";
+                        flags |= IndexerFlags.PTP_Golden; // title = $"{title} 🍿";
                     }
 
                     if (torrent.Checked)
                     {
-                        flags |= IndexerFlags.PTP_Approved; //title = $"{title} ✔";
+                        flags |= IndexerFlags.PTP_Approved; // title = $"{title} ✔";
                     }
 
                     if (torrent.FreeleechType == "Freeleech")

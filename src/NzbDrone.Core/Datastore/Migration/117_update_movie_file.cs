@@ -11,7 +11,7 @@ namespace NzbDrone.Core.Datastore.Migration
         {
             Create.Column("Edition").OnTable("MovieFiles").AsString().Nullable();
 
-            //Execute.WithConnection(SetSortTitles);
+            // Execute.WithConnection(SetSortTitles);
         }
 
         private void SetSortTitles(IDbConnection conn, IDbTransaction tran)

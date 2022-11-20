@@ -6,7 +6,7 @@ namespace Radarr.Api.V3.ImportLists
 {
     public class ImportExclusionsResource : ProviderResource<ImportExclusionsResource>
     {
-        //public int Id { get; set; }
+        // public int Id { get; set; }
         public int TmdbId { get; set; }
         public string MovieTitle { get; set; }
         public int MovieYear { get; set; }

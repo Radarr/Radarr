@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Instrumentation
 
                 var connectionString = _connectionStringFactory.LogDbConnectionString;
 
-                //TODO: Probably need more robust way to differentiate what's being used
+                // TODO: Probably need more robust way to differentiate what's being used
                 if (connectionString.Contains(".db"))
                 {
                     WriteSqliteLog(log, connectionString);

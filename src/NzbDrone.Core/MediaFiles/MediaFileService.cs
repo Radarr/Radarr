@@ -63,7 +63,7 @@ namespace NzbDrone.Core.MediaFiles
 
         public void Delete(MovieFile movieFile, DeleteMediaFileReason reason)
         {
-            //Little hack so we have the movie attached for the event consumers
+            // Little hack so we have the movie attached for the event consumers
             if (movieFile.Movie == null)
             {
                 movieFile.Movie = _movieRepository.Get(movieFile.MovieId);

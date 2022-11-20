@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                                   .ToList();
                 var grabbedHistoryItem = historyItems.FirstOrDefault(h => h.EventType == MovieHistoryEventType.Grabbed);
 
-                //TODO: Create release info from history and use that here, so we don't loose indexer flags!
+                // TODO: Create release info from history and use that here, so we don't loose indexer flags!
                 var parsedMovieInfo = _parsingService.ParseMovieInfo(trackedDownload.DownloadItem.Title, new List<object> { grabbedHistoryItem });
 
                 if (parsedMovieInfo != null)

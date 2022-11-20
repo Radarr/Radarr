@@ -47,7 +47,7 @@ namespace NzbDrone.Update.UpdateEngine
             {
                 _diskTransferService.TransferFile(_appFolderInfo.GetConfigPath(), _appFolderInfo.GetUpdateBackupConfigFile(), TransferMode.Copy);
 
-                //Backup new db if exists, else try old then fail
+                // Backup new db if exists, else try old then fail
                 if (_diskProvider.FileExists(_appFolderInfo.GetDatabase()))
                 {
                     _diskTransferService.TransferFile(_appFolderInfo.GetDatabase(), _appFolderInfo.GetUpdateBackupDatabase(), TransferMode.Copy);

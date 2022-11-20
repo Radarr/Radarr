@@ -13,17 +13,17 @@ namespace NzbDrone.Core.Configuration
 
         bool IsDefined(string key);
 
-        //Download Client
+        // Download Client
         string DownloadClientWorkingFolders { get; set; }
         int DownloadClientHistoryLimit { get; set; }
         int CheckForFinishedDownloadInterval { get; set; }
 
-        //Completed/Failed Download Handling (Download client)
+        // Completed/Failed Download Handling (Download client)
         bool EnableCompletedDownloadHandling { get; set; }
 
         bool AutoRedownloadFailed { get; set; }
 
-        //Media Management
+        // Media Management
         bool AutoUnmonitorPreviouslyDownloadedMovies { get; set; }
         string RecycleBin { get; set; }
         int RecycleBinCleanupDays { get; set; }
@@ -40,12 +40,12 @@ namespace NzbDrone.Core.Configuration
         RescanAfterRefreshType RescanAfterRefresh { get; set; }
         bool AutoRenameFolders { get; set; }
 
-        //Permissions (Media Management)
+        // Permissions (Media Management)
         bool SetPermissionsLinux { get; set; }
         string ChmodFolder { get; set; }
         string ChownGroup { get; set; }
 
-        //Indexers
+        // Indexers
         int Retention { get; set; }
         int RssSyncInterval { get; set; }
         int MaximumSize { get; set; }
@@ -62,10 +62,10 @@ namespace NzbDrone.Core.Configuration
         string ListSyncLevel { get; set; }
         string ImportExclusions { get; set; }
 
-        //Metadata Provider
+        // Metadata Provider
         TMDbCountryCode CertificationCountry { get; set; }
 
-        //UI
+        // UI
         int FirstDayOfWeek { get; set; }
         string CalendarWeekColumnHeader { get; set; }
         MovieRuntimeFormatType MovieRuntimeFormat { get; set; }
@@ -78,17 +78,17 @@ namespace NzbDrone.Core.Configuration
         int MovieInfoLanguage { get; set; }
         int UILanguage { get; set; }
 
-        //Internal
+        // Internal
         bool CleanupMetadataImages { get; set; }
         string PlexClientIdentifier { get; }
 
-        //Forms Auth
+        // Forms Auth
         string RijndaelPassphrase { get; }
         string HmacPassphrase { get; }
         string RijndaelSalt { get; }
         string HmacSalt { get; }
 
-        //Proxy
+        // Proxy
         bool ProxyEnabled { get; }
         ProxyType ProxyType { get; }
         string ProxyHostname { get; }

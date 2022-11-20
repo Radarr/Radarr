@@ -54,7 +54,7 @@ namespace NzbDrone.Core.MediaFiles
             var movie = _movieService.GetMovie(movieId);
             var file = _mediaFileService.GetFilesByMovie(movieId);
 
-            return GetPreviews(movie, file).OrderByDescending(m => m.MovieId).ToList(); //TODO: Would really like to not have these be lists
+            return GetPreviews(movie, file).OrderByDescending(m => m.MovieId).ToList(); // TODO: Would really like to not have these be lists
         }
 
         private IEnumerable<RenameMovieFilePreview> GetPreviews(Movie movie, List<MovieFile> files)

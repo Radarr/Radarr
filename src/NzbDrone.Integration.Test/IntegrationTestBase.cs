@@ -289,7 +289,7 @@ namespace NzbDrone.Integration.Test
 
                 var sourcePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "ApiTests", "Files", "H264_sample.mp4");
 
-                //File.Copy(sourcePath, path);
+                // File.Copy(sourcePath, path);
                 File.WriteAllText(path, "Fake Movie");
 
                 Commands.PostAndWait(new RefreshMovieCommand(new List<int> { movie.Id }));

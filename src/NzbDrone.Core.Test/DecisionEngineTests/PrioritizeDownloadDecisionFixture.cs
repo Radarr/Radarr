@@ -23,7 +23,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 {
     [TestFixture]
 
-    //TODO: Update for custom qualities!
+    // TODO: Update for custom qualities!
     public class PrioritizeDownloadDecisionFixture : CoreTest<DownloadDecisionPriorizationService>
     {
         private CustomFormat _customFormat1;

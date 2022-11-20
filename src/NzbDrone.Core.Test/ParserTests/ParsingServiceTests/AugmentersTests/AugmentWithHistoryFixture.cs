@@ -22,7 +22,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
         {
             base.Setup();
 
-            //Add multi indexer
+            // Add multi indexer
             GivenIndexerSettings(new RarbgSettings
             {
                 MultiLanguages = new List<int>

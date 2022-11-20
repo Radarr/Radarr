@@ -387,7 +387,7 @@ namespace NzbDrone.Core.Notifications.Discord
 
         private static string BytesToString(long byteCount)
         {
-            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; //Longs run out around EB
+            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" }; // Longs run out around EB
             if (byteCount == 0)
             {
                 return "0 " + suf[0];

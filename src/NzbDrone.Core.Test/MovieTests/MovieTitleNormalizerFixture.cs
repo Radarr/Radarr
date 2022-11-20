@@ -7,7 +7,7 @@ namespace NzbDrone.Core.Test.MovieTests
     [TestFixture]
     public class MovieTitleNormalizerFixture
     {
-        //TODO: Decide on reimplementing this!
+        // TODO: Decide on reimplementing this!
         /*
         [TestCase("A to Z", 281588, "a to z")]
         [TestCase("A. D. - The Trials & Triumph of the Early Church", 266757, "ad trials triumph early church")]

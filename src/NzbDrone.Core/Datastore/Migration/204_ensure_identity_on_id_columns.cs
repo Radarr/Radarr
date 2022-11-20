@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            //Purge Commands before reworking tables
+            // Purge Commands before reworking tables
             Delete.FromTable("Commands").AllRows();
 
             IfDatabase("sqlite").Alter.Column("Id").OnTable("Movies").AsInt32().PrimaryKey().Identity();

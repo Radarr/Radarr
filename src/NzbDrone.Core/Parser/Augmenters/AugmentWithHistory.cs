@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Parser.Augmenters
         {
             if (helper is MovieHistory history && history.EventType == MovieHistoryEventType.Grabbed)
             {
-                //First we create a release info from history data.
+                // First we create a release info from history data.
                 var releaseInfo = new ReleaseInfo();
 
                 if (int.TryParse(history.Data.GetValueOrDefault("indexerId"), out var indexerId))
@@ -45,7 +45,7 @@ namespace NzbDrone.Core.Parser.Augmenters
                     releaseInfo.IndexerFlags = indexerFlags;
                 }
 
-                //Now we run the release info augmenters from the history release info. TODO: Add setting to only do that if you trust your indexer!
+                // Now we run the release info augmenters from the history release info. TODO: Add setting to only do that if you trust your indexer!
                 var releaseInfoAugmenters = _augmenters.Where(a => a.Value.HelperType.IsInstanceOfType(releaseInfo));
                 foreach (var augmenter in releaseInfoAugmenters)
                 {
