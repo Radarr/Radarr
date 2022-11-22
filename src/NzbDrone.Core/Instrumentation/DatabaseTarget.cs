@@ -97,6 +97,11 @@ namespace NzbDrone.Core.Instrumentation
                     WritePostgresLog(log, connectionString);
                 }
             }
+            catch (NpgsqlException ex)
+            {
+                InternalLogger.Error("Unable to save log event to database: {0}", ex);
+                throw;
+            }
             catch (SQLiteException ex)
             {
                 InternalLogger.Error("Unable to save log event to database: {0}", ex);
@@ -128,10 +133,8 @@ namespace NzbDrone.Core.Instrumentation
         private void WriteSqliteLog(Log log, string connectionString)
         {
             using (var connection =
-                new SQLiteConnection(_connectionStringFactory.LogDbConnectionString).OpenAndReturn())
+                new SQLiteConnection(connectionString).OpenAndReturn())
             {
-                connection.ConnectionString = connectionString;
-                connection.Open();
                 using (var sqlCommand = connection.CreateCommand())
                 {
                     sqlCommand.CommandText = INSERT_COMMAND;
