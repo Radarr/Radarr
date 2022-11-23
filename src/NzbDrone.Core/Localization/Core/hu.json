@@ -1146,5 +1146,12 @@
     "TotalMovies": "Összes film",
     "ApplicationUrlHelpText": "Az alkalmazás külső URL-címe, beleértve a \"http(s)://\"-t, a \"Portot\" és az \"URL-alapot\" is",
     "ApplicationURL": "Alkalmazás URL-je",
-    "PreferredProtocol": "Preferált protokoll"
+    "PreferredProtocol": "Preferált protokoll",
+    "AreYouSureYouWantToResetQualityDefinitions": "Biztos visszaállítod a minőségi definíciókat?",
+    "SettingsTheme": "Téma",
+    "SettingsThemeHelpText": "Kezelőfelület témájának módosítása, a Theme.Park jóvoltából",
+    "ResetDefinitions": "Definíciók visszaállítása",
+    "ResetQualityDefinitions": "Állítsd vissza a minőségi meghatározásokat",
+    "ResetTitles": "Címek visszaállítása",
+    "ResetTitlesHelpText": "A definíciócímek és értékek visszaállítása"
 }
