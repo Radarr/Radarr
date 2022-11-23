@@ -1146,5 +1146,12 @@
     "TotalMovies": "Total de Filmes",
     "ApplicationURL": "URL da Aplicação",
     "ApplicationUrlHelpText": "O URL externa deste aplicativo, incluindo http(s)://, porta e base de URL",
-    "PreferredProtocol": "Protocolo Preferido"
+    "PreferredProtocol": "Protocolo Preferido",
+    "SettingsThemeHelpText": "Alterar o tema da interface do usuário do aplicativo, inspirado no Theme.Park",
+    "ResetDefinitions": "Redefinir definições",
+    "ResetQualityDefinitions": "Redefinir Definições de Qualidade",
+    "ResetTitles": "Redefinir Títulos",
+    "ResetTitlesHelpText": "Redefinir títulos de definição, bem como valores",
+    "SettingsTheme": "Tema",
+    "AreYouSureYouWantToResetQualityDefinitions": "Tem certeza de que deseja redefinir as definições de qualidade?"
 }
