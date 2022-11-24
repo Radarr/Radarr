@@ -215,6 +215,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name FRENCH BluRay 720p 2016 kjhlj", 2016)]
         [TestCase("Der.Movie.German.Bluray.FuckYou.Pso.Why.cant.you.follow.scene.rules.1998", 1998)]
         [TestCase("Movie Name (1897) [DVD].mp4", 1897)]
+        [TestCase("World Movie Z Movie [2023]", 2023)]
         public void should_parse_movie_year(string postTitle, int year)
         {
             Parser.Parser.ParseMovieTitle(postTitle).Year.Should().Be(year);
