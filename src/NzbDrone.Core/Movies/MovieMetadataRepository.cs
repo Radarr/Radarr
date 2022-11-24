@@ -45,39 +45,7 @@ namespace NzbDrone.Core.Movies
 
         public List<MovieMetadata> GetMoviesWithCollections()
         {
-            var movieDictionary = new Dictionary<int, MovieMetadata>();
-
-            var builder = new SqlBuilder(_database.DatabaseType)
-            .LeftJoin<MovieMetadata, MovieTranslation>((mm, t) => mm.Id == t.MovieMetadataId)
-            .Where<MovieMetadata>(x => x.CollectionTmdbId > 0);
-
-            _ = _database.QueryJoined<MovieMetadata, MovieTranslation>(
-                builder,
-                (metadata, translation) =>
-                {
-                    MovieMetadata movieEntry;
-
-                    if (!movieDictionary.TryGetValue(metadata.Id, out movieEntry))
-                    {
-                        movieEntry = metadata;
-                        movieDictionary.Add(movieEntry.Id, movieEntry);
-                    }
-
-                    if (translation != null)
-                    {
-                        movieEntry.Translations.Add(translation);
-                    }
-                    else
-                    {
-                        // Add a translation to avoid filename builder making another call thinking translations are not loaded
-                        // Optimize this later by pulling translations with metadata always
-                        movieEntry.Translations.Add(new MovieTranslation { Title = movieEntry.Title, Language = Language.English });
-                    }
-
-                    return movieEntry;
-                });
-
-            return movieDictionary.Values.ToList();
+            return Query(x => x.CollectionTmdbId > 0);
         }
 
         public List<MovieMetadata> GetMoviesByCollectionTmdbId(int collectionId)

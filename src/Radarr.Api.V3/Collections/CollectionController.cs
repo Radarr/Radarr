@@ -2,13 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Events;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Commands;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Events;
+using NzbDrone.Core.Movies.Translations;
 using NzbDrone.Core.Organizer;
 using NzbDrone.SignalR;
 using Radarr.Http;
@@ -26,6 +29,8 @@ namespace Radarr.Api.V3.Collections
         private readonly IMovieCollectionService _collectionService;
         private readonly IMovieService _movieService;
         private readonly IMovieMetadataService _movieMetadataService;
+        private readonly IMovieTranslationService _movieTranslationService;
+        private readonly IConfigService _configService;
         private readonly IBuildFileNames _fileNameBuilder;
         private readonly INamingConfigService _namingService;
         private readonly IManageCommandQueue _commandQueueManager;
@@ -34,6 +39,8 @@ namespace Radarr.Api.V3.Collections
                                     IMovieCollectionService collectionService,
                                     IMovieService movieService,
                                     IMovieMetadataService movieMetadataService,
+                                    IMovieTranslationService movieTranslationService,
+                                    IConfigService configService,
                                     IBuildFileNames fileNameBuilder,
                                     INamingConfigService namingService,
                                     IManageCommandQueue commandQueueManager)
@@ -42,6 +49,8 @@ namespace Radarr.Api.V3.Collections
             _collectionService = collectionService;
             _movieService = movieService;
             _movieMetadataService = movieMetadataService;
+            _movieTranslationService = movieTranslationService;
+            _configService = configService;
             _fileNameBuilder = fileNameBuilder;
             _namingService = namingService;
             _commandQueueManager = commandQueueManager;
@@ -132,16 +141,29 @@ namespace Radarr.Api.V3.Collections
 
         private IEnumerable<CollectionResource> MapToResource(List<MovieCollection> collections)
         {
+            var configLanguage = (Language)_configService.MovieInfoLanguage;
+
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
-            var collectionMovies = _movieMetadataService.GetMoviesWithCollections();
+
+            var allCollectionMovies = _movieMetadataService.GetMoviesWithCollections()
+                .GroupBy(x => x.CollectionTmdbId)
+                .ToDictionary(x => x.Key, x => (IEnumerable<MovieMetadata>)x);
+
+            var translations = _movieTranslationService.GetAllTranslationsForLanguage(configLanguage);
+            var tdict = translations.ToDictionary(x => x.MovieMetadataId);
 
             foreach (var collection in collections)
             {
                 var resource = collection.ToResource();
 
-                foreach (var movie in collectionMovies.Where(m => m.CollectionTmdbId == collection.TmdbId))
+                allCollectionMovies.TryGetValue(collection.TmdbId, out var collectionMovies);
+
+                foreach (var movie in collectionMovies)
                 {
+                    var translation = GetTranslationFromDict(tdict, movie, configLanguage);
+                    movie.Translations.Add(translation);
+
                     var movieResource = movie.ToResource();
                     movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
@@ -155,16 +177,70 @@ namespace Radarr.Api.V3.Collections
         private CollectionResource MapToResource(MovieCollection collection)
         {
             var resource = collection.ToResource();
+            var namingConfig = _namingService.GetConfig();
 
             foreach (var movie in _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId))
             {
+                var translations = _movieTranslationService.GetAllTranslationsForMovieMetadata(movie.Id);
+                var translation = GetMovieTranslation(translations, movie, (Language)_configService.MovieInfoLanguage);
+
+                movie.Translations.Add(translation);
+
                 var movieResource = movie.ToResource();
-                movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie });
+                movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
                 resource.Movies.Add(movieResource);
             }
 
             return resource;
+        }
+
+        private MovieTranslation GetMovieTranslation(List<MovieTranslation> translations, MovieMetadata movie, Language configLanguage)
+        {
+            if (configLanguage == Language.Original)
+            {
+                return new MovieTranslation
+                {
+                    Title = movie.OriginalTitle,
+                    Overview = movie.Overview
+                };
+            }
+
+            var translation = translations.FirstOrDefault(t => t.Language == configLanguage && t.MovieMetadataId == movie.Id);
+
+            if (translation == null)
+            {
+                translation = new MovieTranslation
+                {
+                    Title = movie.Title,
+                    Language = Language.English
+                };
+            }
+
+            return translation;
+        }
+
+        private MovieTranslation GetTranslationFromDict(Dictionary<int, MovieTranslation> translations, MovieMetadata movie, Language configLanguage)
+        {
+            if (configLanguage == Language.Original)
+            {
+                return new MovieTranslation
+                {
+                    Title = movie.OriginalTitle,
+                    Overview = movie.Overview
+                };
+            }
+
+            if (!translations.TryGetValue(movie.Id, out var translation))
+            {
+                translation = new MovieTranslation
+                {
+                    Title = movie.Title,
+                    Language = Language.English
+                };
+            }
+
+            return translation;
         }
 
         [NonAction]
