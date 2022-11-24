@@ -21,6 +21,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             Size = remoteMovie.Release.Size;
             CustomFormats = remoteMovie.CustomFormats?.Select(x => x.Name).ToList();
             CustomFormatScore = remoteMovie.CustomFormatScore;
+            IndexerFlags = remoteMovie.Release.IndexerFlags;
         }
 
         public string Quality { get; set; }
@@ -31,5 +32,6 @@ namespace NzbDrone.Core.Notifications.Webhook
         public long Size { get; set; }
         public int CustomFormatScore { get; set; }
         public List<string> CustomFormats { get; set; }
+        public IndexerFlags IndexerFlags { get; set; }
     }
 }

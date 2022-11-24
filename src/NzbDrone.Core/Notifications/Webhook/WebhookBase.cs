@@ -66,13 +66,14 @@ namespace NzbDrone.Core.Notifications.Webhook
             return payload;
         }
 
-        protected WebhookRenamePayload BuildOnMovieAdded(Movie movie)
+        protected WebhookAddedPayload BuildOnMovieAdded(Movie movie)
         {
-            return new WebhookRenamePayload
+            return new WebhookAddedPayload
             {
                 EventType = WebhookEventType.MovieAdded,
                 InstanceName = _configFileProvider.InstanceName,
-                Movie = new WebhookMovie(movie)
+                Movie = new WebhookMovie(movie),
+                AddMethod = movie.AddOptions.AddMethod
             };
         }
 
@@ -90,13 +91,20 @@ namespace NzbDrone.Core.Notifications.Webhook
 
         protected WebhookMovieDeletePayload BuildOnMovieDelete(MovieDeleteMessage deleteMessage)
         {
-            return new WebhookMovieDeletePayload
+            var payload = new WebhookMovieDeletePayload
             {
                 EventType = WebhookEventType.MovieDelete,
                 InstanceName = _configFileProvider.InstanceName,
                 Movie = new WebhookMovie(deleteMessage.Movie),
                 DeletedFiles = deleteMessage.DeletedFiles
             };
+
+            if (deleteMessage.DeletedFiles && deleteMessage.Movie.MovieFile != null)
+            {
+                payload.MovieFolderSize = deleteMessage.Movie.MovieFile.Size;
+            }
+
+            return payload;
         }
 
         protected WebhookRenamePayload BuildOnRenamePayload(Movie movie, List<RenamedMovieFile> renamedFiles)
