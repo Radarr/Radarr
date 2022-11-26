@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.FileSystemGlobbing;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
@@ -197,31 +198,34 @@ namespace NzbDrone.Core.Parser
             }
 
             // Case sensitive
-            var caseSensitiveMatch = CaseSensitiveLanguageRegex.Match(title);
+            var caseSensitiveMatchs = CaseSensitiveLanguageRegex.Matches(title);
 
-            if (caseSensitiveMatch.Groups["lithuanian"].Captures.Cast<Capture>().Any())
+            foreach (Match match in caseSensitiveMatchs)
             {
-                languages.Add(Language.Lithuanian);
-            }
+                if (match.Groups["lithuanian"].Captures.Cast<Capture>().Any())
+                {
+                    languages.Add(Language.Lithuanian);
+                }
 
-            if (caseSensitiveMatch.Groups["czech"].Captures.Cast<Capture>().Any())
-            {
-                languages.Add(Language.Czech);
-            }
+                if (match.Groups["czech"].Captures.Cast<Capture>().Any())
+                {
+                    languages.Add(Language.Czech);
+                }
 
-            if (caseSensitiveMatch.Groups["polish"].Captures.Cast<Capture>().Any())
-            {
-                languages.Add(Language.Polish);
-            }
+                if (match.Groups["polish"].Captures.Cast<Capture>().Any())
+                {
+                    languages.Add(Language.Polish);
+                }
 
-            if (caseSensitiveMatch.Groups["bulgarian"].Captures.Cast<Capture>().Any())
-            {
-                languages.Add(Language.Bulgarian);
-            }
+                if (match.Groups["bulgarian"].Captures.Cast<Capture>().Any())
+                {
+                    languages.Add(Language.Bulgarian);
+                }
 
-            if (caseSensitiveMatch.Groups["slovak"].Captures.Cast<Capture>().Any())
-            {
-                languages.Add(Language.Slovak);
+                if (match.Groups["slovak"].Captures.Cast<Capture>().Any())
+                {
+                    languages.Add(Language.Slovak);
+                }
             }
 
             var matches = LanguageRegex.Matches(title);
