@@ -99,9 +99,6 @@ namespace NzbDrone.Common.Instrumentation.Sentry
                                       o.Dsn = dsn;
                                       o.AttachStacktrace = true;
                                       o.MaxBreadcrumbs = 200;
-                                      o.SendDefaultPii = false;
-                                      o.Debug = false;
-                                      o.DiagnosticLevel = SentryLevel.Debug;
                                       o.Release = BuildInfo.Release;
                                       o.BeforeSend = x => SentryCleanser.CleanseEvent(x);
                                       o.BeforeBreadcrumb = x => SentryCleanser.CleanseBreadcrumb(x);
