@@ -4,7 +4,7 @@ import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import FilterMenuContent from './FilterMenuContent';
 import Menu from './Menu';
-import ToolbarMenuButton from './ToolbarMenuButton';
+import PageMenuButton from './PageMenuButton';
 import styles from './FilterMenu.css';
 
 class FilterMenu extends Component {
@@ -60,7 +60,7 @@ class FilterMenu extends Component {
             iconName={icons.FILTER}
             text={translate('Filter')}
             isDisabled={isDisabled}
-            indicator={selectedFilterKey !== 'all'}
+            showIndicator={selectedFilterKey !== 'all'}
           />
 
           <FilterMenuContent
@@ -106,7 +106,7 @@ FilterMenu.propTypes = {
 FilterMenu.defaultProps = {
   className: styles.filterMenu,
   isDisabled: false,
-  buttonComponent: ToolbarMenuButton
+  buttonComponent: PageMenuButton
 };
 
 export default FilterMenu;
