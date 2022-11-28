@@ -1144,7 +1144,7 @@
     "InstanceNameHelpText": "Példánynév a böngésző lapon és a syslog alkalmazás neve",
     "RottenTomatoesRating": "Tomato Értékelés",
     "TotalMovies": "Összes film",
-    "ApplicationUrlHelpText": "Az alkalmazás külső URL-címe, beleértve a \"http(s)://\"-t, a \"Portot\" és az \"URL-alapot\" is",
+    "ApplicationUrlHelpText": "Az alkalmazás külső URL-címe, beleértve a http(s)://-t, a portot és az URL-alapot",
     "ApplicationURL": "Alkalmazás URL-je",
     "PreferredProtocol": "Preferált protokoll",
     "AreYouSureYouWantToResetQualityDefinitions": "Biztos visszaállítod a minőségi definíciókat?",
