@@ -8731,6 +8731,10 @@
             "type": "boolean",
             "readOnly": true
           },
+          "isLongRunning": {
+            "type": "boolean",
+            "readOnly": true
+          },
           "name": {
             "type": "string",
             "nullable": true,
