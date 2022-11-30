@@ -109,6 +109,13 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Should.Not.Use.Dots.2022.1080p.BluRay.x265.10bit.Tigole", "Tigole")]
         [TestCase("Movie.Title.2005.2160p.UHD.BluRay.TrueHD 7.1.Atmos.x265 - HQMUX", "HQMUX")]
         [TestCase("Movie.Name.2022.1080p.BluRay.x264-VARYG (Blue Lock, Multi-Subs)", "VARYG")]
+        [TestCase("Movie.Title.2005.2160p.UHD.BluRay.TrueHD 7.1.Atmos.x265 - HQMUX", "HQMUX")]
+        [TestCase("Movie Title (2022) (2160p ATV WEB-DL Hybrid H265 DV HDR DDP Atmos 5.1 English - SMURF)", "SMURF")]
+        [TestCase("Movie Title (2009) (2160p PMTP WEB-DL Hybrid H265 DV HDR10+ DDP Atmos 5.1 English - SMURF)", "SMURF")]
+        [TestCase("Movie Title (2022) (2160p ATV WEB-DL x265 SDR DDP 5.1 English - JBENT TAoE)", "TAoE")]
+        [TestCase("Movie Title (2009) (2160p PMTP WEB-DL x265 SDR DDP 5.1 English - JBENT TAoE) ", "TAoE")]
+        [TestCase("Movie Title (2022) (2160p HMAX WEB-DL x265 SDR DDP Atmos 5.1 English - Ghost QxR)", "QxR")]
+        [TestCase("Movie Title (2009) (2160p NF WEB-DL x265 SDR DDP Atmos 5.1 English - Ghost QxR)", "QxR")]
         public void should_parse_exception_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
