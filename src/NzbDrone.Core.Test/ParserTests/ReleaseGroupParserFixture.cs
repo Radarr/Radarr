@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie Name (2020) [2160p x265 10bit S82 Joy]", "Joy")]
-        [TestCase("Movie Name (2003) (2160p BluRay X265 HEVC 10bit HDR AAC 7.1 Tigole) [QxR]", "Tigole")]
+        [TestCase("Movie Name (2003) (2160p BluRay X265 HEVC 10bit HDR AAC 7.1 Tigole) [QxR]", "QxR")]
         [TestCase("Ode To Joy (2009) (2160p BluRay x265 10bit HDR Joy)", "Joy")]
         [TestCase("Movie Name (2001) 1080p NF WEB-DL DDP2.0 x264-E.N.D", "E.N.D")]
         [TestCase("Movie Name (2020) [1080p] [WEBRip] [5.1] [YTS.MX]", "YTS.MX")]
