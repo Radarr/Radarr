@@ -214,5 +214,10 @@ namespace NzbDrone.Common.Extensions
 
             return parsedAddress.AddressFamily == AddressFamily.InterNetwork || parsedAddress.AddressFamily == AddressFamily.InterNetworkV6;
         }
+
+        public static string ToUrlHost(this string input)
+        {
+            return input.Contains(":") ? $"[{input}]" : input;
+        }
     }
 }
