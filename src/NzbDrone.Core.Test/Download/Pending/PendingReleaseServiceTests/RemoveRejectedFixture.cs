@@ -93,6 +93,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                                                    .With(h => h.MovieId = _movie.Id)
                                                    .With(h => h.Title = title)
                                                    .With(h => h.Release = release)
+                                                   .With(h => h.ParsedMovieInfo = _parsedMovieInfo)
                                                    .Build();
 
             Mocker.GetMock<IPendingReleaseRepository>()
