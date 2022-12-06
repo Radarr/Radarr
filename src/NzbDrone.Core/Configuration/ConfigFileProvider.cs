@@ -198,7 +198,7 @@ namespace NzbDrone.Core.Configuration
 
         public string LogLevel => GetValue("LogLevel", "info").ToLowerInvariant();
         public string ConsoleLogLevel => GetValue("ConsoleLogLevel", string.Empty, persist: false);
-        public string Theme => GetValue("Theme", "light", persist: false);
+        public string Theme => GetValue("Theme", "auto", persist: false);
         public string PostgresHost => _postgresOptions?.Host ?? GetValue("PostgresHost", string.Empty, persist: false);
         public string PostgresUser => _postgresOptions?.User ?? GetValue("PostgresUser", string.Empty, persist: false);
         public string PostgresPassword => _postgresOptions?.Password ?? GetValue("PostgresPassword", string.Empty, persist: false);
