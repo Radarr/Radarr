@@ -283,6 +283,12 @@ namespace NzbDrone.Core.Download.Pending
                     return null;
                 }
 
+                // Languages will be empty if added before upgrading to v4, reparsing the languages if they're empty will set it to Unknown or better.
+                if (release.ParsedMovieInfo.Languages.Empty())
+                {
+                    release.ParsedMovieInfo.Languages = LanguageParser.ParseLanguages(release.Title);
+                }
+
                 release.RemoteMovie = new RemoteMovie
                 {
                     Movie = movie,
