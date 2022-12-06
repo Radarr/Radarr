@@ -5,6 +5,7 @@ import ConfirmModal from 'Components/Modal/ConfirmModal';
 import { kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import TagDetailsModal from './Details/TagDetailsModal';
+import TagInUse from './TagInUse';
 import styles from './Tag.css';
 
 class Tag extends Component {
@@ -54,12 +55,13 @@ class Tag extends Component {
     const {
       label,
       delayProfileIds,
+      importListIds,
       notificationIds,
       restrictionIds,
-      importListIds,
-      movieIds,
       indexerIds,
-      downloadClientIds
+      downloadClientIds,
+      autoTagIds,
+      movieIds
     } = this.props;
 
     const {
@@ -69,12 +71,13 @@ class Tag extends Component {
 
     const isTagUsed = !!(
       delayProfileIds.length ||
+      importListIds.length ||
       notificationIds.length ||
       restrictionIds.length ||
-      importListIds.length ||
-      movieIds.length ||
       indexerIds.length ||
-      downloadClientIds.length
+      downloadClientIds.length ||
+      autoTagIds.length ||
+      movieIds.length
     );
 
     return (
@@ -88,59 +91,50 @@ class Tag extends Component {
         </div>
 
         {
-          isTagUsed &&
+          isTagUsed ?
             <div>
-              {
-                !!movieIds.length &&
-                  <div>
-                    {movieIds.length} movies
-                  </div>
-              }
+              <TagInUse
+                label="movie"
+                count={movieIds.length}
+              />
 
-              {
-                !!delayProfileIds.length &&
-                  <div>
-                    {delayProfileIds.length} delay profile{delayProfileIds.length > 1 && 's'}
-                  </div>
-              }
+              <TagInUse
+                label="delay profile"
+                count={delayProfileIds.length}
+              />
 
-              {
-                !!notificationIds.length &&
-                  <div>
-                    {notificationIds.length} connection{notificationIds.length > 1 && 's'}
-                  </div>
-              }
+              <TagInUse
+                label="import list"
+                count={importListIds.length}
+              />
 
-              {
-                !!restrictionIds.length &&
-                  <div>
-                    {restrictionIds.length} restriction{restrictionIds.length > 1 && 's'}
-                  </div>
-              }
+              <TagInUse
+                label="connection"
+                count={notificationIds.length}
+              />
 
-              {
-                !!importListIds.length &&
-                  <div>
-                    {importListIds.length} list{importListIds.length > 1 && 's'}
-                  </div>
-              }
+              <TagInUse
+                label="release profile"
+                count={restrictionIds.length}
+              />
 
-              {
-                indexerIds.length ?
-                  <div>
-                    {indexerIds.length} indexer{indexerIds.length > 1 && 's'}
-                  </div> :
-                  null
-              }
+              <TagInUse
+                label="indexer"
+                count={indexerIds.length}
+              />
 
-              {
-                downloadClientIds.length ?
-                  <div>
-                    {downloadClientIds.length} download client{indexerIds.length > 1 && 's'}
-                  </div> :
-                  null
-              }
-            </div>
+              <TagInUse
+                label="download client"
+                count={downloadClientIds.length}
+              />
+
+              <TagInUse
+                label="auto tagging"
+                count={autoTagIds.length}
+                shouldPluralize={false}
+              />
+            </div> :
+            null
         }
 
         {
@@ -155,11 +149,12 @@ class Tag extends Component {
           isTagUsed={isTagUsed}
           movieIds={movieIds}
           delayProfileIds={delayProfileIds}
+          importListIds={importListIds}
           notificationIds={notificationIds}
           restrictionIds={restrictionIds}
-          importListIds={importListIds}
           indexerIds={indexerIds}
           downloadClientIds={downloadClientIds}
+          autoTagIds={autoTagIds}
           isOpen={isDetailsModalOpen}
           onModalClose={this.onDetailsModalClose}
           onDeleteTagPress={this.onDeleteTagPress}
@@ -183,23 +178,25 @@ Tag.propTypes = {
   id: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
   delayProfileIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  importListIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   notificationIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   restrictionIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-  importListIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-  movieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   indexerIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   downloadClientIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  autoTagIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  movieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   onConfirmDeleteTag: PropTypes.func.isRequired
 };
 
 Tag.defaultProps = {
   delayProfileIds: [],
+  importListIds: [],
   notificationIds: [],
   restrictionIds: [],
-  importListIds: [],
-  movieIds: [],
   indexerIds: [],
-  downloadClientIds: []
+  downloadClientIds: [],
+  autoTagIds: [],
+  movieIds: []
 };
 
 export default Tag;

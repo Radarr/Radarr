@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.ImportLists;
@@ -35,6 +36,7 @@ namespace NzbDrone.Core.Tags
         private readonly IRestrictionService _restrictionService;
         private readonly IMovieService _movieService;
         private readonly IIndexerFactory _indexerService;
+        private readonly IAutoTaggingService _autoTaggingService;
         private readonly IDownloadClientFactory _downloadClientFactory;
 
         public TagService(ITagRepository repo,
@@ -45,6 +47,7 @@ namespace NzbDrone.Core.Tags
                           IRestrictionService restrictionService,
                           IMovieService movieService,
                           IIndexerFactory indexerService,
+                          IAutoTaggingService autoTaggingService,
                           IDownloadClientFactory downloadClientFactory)
         {
             _repo = repo;
@@ -55,6 +58,7 @@ namespace NzbDrone.Core.Tags
             _restrictionService = restrictionService;
             _movieService = movieService;
             _indexerService = indexerService;
+            _autoTaggingService = autoTaggingService;
             _downloadClientFactory = downloadClientFactory;
         }
 
@@ -89,6 +93,7 @@ namespace NzbDrone.Core.Tags
             var restrictions = _restrictionService.AllForTag(tagId);
             var movies = _movieService.AllMovieTags().Where(x => x.Value.Contains(tagId)).Select(x => x.Key).ToList();
             var indexers = _indexerService.AllForTag(tagId);
+            var autoTags = _autoTaggingService.AllForTag(tagId);
             var downloadClients = _downloadClientFactory.AllForTag(tagId);
 
             return new TagDetails
@@ -101,6 +106,7 @@ namespace NzbDrone.Core.Tags
                 RestrictionIds = restrictions.Select(c => c.Id).ToList(),
                 MovieIds = movies,
                 IndexerIds = indexers.Select(c => c.Id).ToList(),
+                AutoTagIds = autoTags.Select(c => c.Id).ToList(),
                 DownloadClientIds = downloadClients.Select(c => c.Id).ToList()
             };
         }
@@ -114,6 +120,7 @@ namespace NzbDrone.Core.Tags
             var restrictions = _restrictionService.All();
             var movies = _movieService.AllMovieTags();
             var indexers = _indexerService.All();
+            var autotags = _autoTaggingService.All();
             var downloadClients = _downloadClientFactory.All();
 
             var details = new List<TagDetails>();
@@ -130,6 +137,7 @@ namespace NzbDrone.Core.Tags
                     RestrictionIds = restrictions.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     MovieIds = movies.Where(c => c.Value.Contains(tag.Id)).Select(c => c.Key).ToList(),
                     IndexerIds = indexers.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
+                    AutoTagIds = autotags.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                     DownloadClientIds = downloadClients.Where(c => c.Tags.Contains(tag.Id)).Select(c => c.Id).ToList(),
                 });
             }

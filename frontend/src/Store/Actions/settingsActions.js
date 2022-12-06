@@ -1,6 +1,8 @@
 import { createAction } from 'redux-actions';
 import { handleThunks } from 'Store/thunks';
 import createHandleActions from './Creators/createHandleActions';
+import autoTaggings from './Settings/autoTaggings';
+import autoTaggingSpecifications from './Settings/autoTaggingSpecifications';
 import customFormats from './Settings/customFormats';
 import customFormatSpecifications from './Settings/customFormatSpecifications';
 import delayProfiles from './Settings/delayProfiles';
@@ -26,6 +28,8 @@ import remotePathMappings from './Settings/remotePathMappings';
 import restrictions from './Settings/restrictions';
 import ui from './Settings/ui';
 
+export * from './Settings/autoTaggingSpecifications';
+export * from './Settings/autoTaggings';
 export * from './Settings/customFormatSpecifications.js';
 export * from './Settings/customFormats';
 export * from './Settings/delayProfiles';
@@ -61,7 +65,8 @@ export const section = 'settings';
 
 export const defaultState = {
   advancedSettings: false,
-
+  autoTaggingSpecifications: autoTaggingSpecifications.defaultState,
+  autoTaggings: autoTaggings.defaultState,
   customFormatSpecifications: customFormatSpecifications.defaultState,
   customFormats: customFormats.defaultState,
   delayProfiles: delayProfiles.defaultState,
@@ -106,6 +111,8 @@ export const toggleAdvancedSettings = createAction(TOGGLE_ADVANCED_SETTINGS);
 // Action Handlers
 
 export const actionHandlers = handleThunks({
+  ...autoTaggingSpecifications.actionHandlers,
+  ...autoTaggings.actionHandlers,
   ...customFormatSpecifications.actionHandlers,
   ...customFormats.actionHandlers,
   ...delayProfiles.actionHandlers,
@@ -141,6 +148,8 @@ export const reducers = createHandleActions({
     return Object.assign({}, state, { advancedSettings: !state.advancedSettings });
   },
 
+  ...autoTaggingSpecifications.reducers,
+  ...autoTaggings.reducers,
   ...customFormatSpecifications.reducers,
   ...customFormats.reducers,
   ...delayProfiles.reducers,
