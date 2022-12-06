@@ -11,7 +11,8 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds } from 'Helpers/Props';
-import { authenticationMethodOptions, authenticationRequiredOptions, authenticationRequiredWarning } from 'Settings/General/SecuritySettings';
+import { authenticationMethodOptions, authenticationRequiredOptions } from 'Settings/General/SecuritySettings';
+import translate from 'Utilities/String/translate';
 import styles from './AuthenticationRequiredModalContent.css';
 
 function onModalClose() {
@@ -54,7 +55,7 @@ function AuthenticationRequiredModalContent(props) {
       onModalClose={onModalClose}
     >
       <ModalHeader>
-        Authentication Required
+        {translate('AuthenticationRequired')}
       </ModalHeader>
 
       <ModalBody>
@@ -62,71 +63,59 @@ function AuthenticationRequiredModalContent(props) {
           className={styles.authRequiredAlert}
           kind={kinds.WARNING}
         >
-          {authenticationRequiredWarning}
+          {translate('AuthenticationRequiredWarning')}
         </Alert>
 
         {
           isPopulated && !error ?
             <div>
               <FormGroup>
-                <FormLabel>Authentication</FormLabel>
+                <FormLabel>{translate('Authentication')}</FormLabel>
 
                 <FormInputGroup
                   type={inputTypes.SELECT}
                   name="authenticationMethod"
                   values={authenticationMethodOptions}
-                  helpText="Require Username and Password to access Radarr"
+                  helpText={translate('AuthenticationMethodHelpText')}
                   onChange={onInputChange}
                   {...authenticationMethod}
                 />
               </FormGroup>
 
-              {
-                authenticationEnabled ?
-                  <FormGroup>
-                    <FormLabel>Authentication Required</FormLabel>
+              <FormGroup>
+                <FormLabel>{translate('AuthenticationRequired')}</FormLabel>
 
-                    <FormInputGroup
-                      type={inputTypes.SELECT}
-                      name="authenticationRequired"
-                      values={authenticationRequiredOptions}
-                      helpText="Change which requests authentication is required for. Do not change unless you understand the risks."
-                      onChange={onInputChange}
-                      {...authenticationRequired}
-                    />
-                  </FormGroup> :
-                  null
-              }
+                <FormInputGroup
+                  type={inputTypes.SELECT}
+                  name="authenticationRequired"
+                  values={authenticationRequiredOptions}
+                  helpText={translate('AuthenticationRequiredHelpText')}
+                  onChange={onInputChange}
+                  {...authenticationRequired}
+                />
+              </FormGroup>
 
-              {
-                authenticationEnabled ?
-                  <FormGroup>
-                    <FormLabel>Username</FormLabel>
+              <FormGroup>
+                <FormLabel>{translate('Username')}</FormLabel>
 
-                    <FormInputGroup
-                      type={inputTypes.TEXT}
-                      name="username"
-                      onChange={onInputChange}
-                      {...username}
-                    />
-                  </FormGroup> :
-                  null
-              }
+                <FormInputGroup
+                  type={inputTypes.TEXT}
+                  name="username"
+                  onChange={onInputChange}
+                  {...username}
+                />
+              </FormGroup>
 
-              {
-                authenticationEnabled ?
-                  <FormGroup>
-                    <FormLabel>Password</FormLabel>
+              <FormGroup>
+                <FormLabel>{translate('Password')}</FormLabel>
 
-                    <FormInputGroup
-                      type={inputTypes.PASSWORD}
-                      name="password"
-                      onChange={onInputChange}
-                      {...password}
-                    />
-                  </FormGroup> :
-                  null
-              }
+                <FormInputGroup
+                  type={inputTypes.PASSWORD}
+                  name="password"
+                  onChange={onInputChange}
+                  {...password}
+                />
+              </FormGroup>
             </div> :
             null
         }
@@ -143,7 +132,7 @@ function AuthenticationRequiredModalContent(props) {
           isDisabled={!authenticationEnabled}
           onPress={onSavePress}
         >
-          Save
+          {translate('Save')}
         </SpinnerButton>
       </ModalFooter>
     </ModalContent>
