@@ -85,6 +85,14 @@ function createMatchingDownloadClientsSelector() {
   );
 }
 
+function createMatchingAutoTagsSelector() {
+  return createSelector(
+    (state, { autoTagIds }) => autoTagIds,
+    (state) => state.settings.autoTaggings.items,
+    findMatchingItems
+  );
+}
+
 function createMapStateToProps() {
   return createSelector(
     createMatchingMoviesSelector(),
@@ -94,7 +102,8 @@ function createMapStateToProps() {
     createMatchingImportListsSelector(),
     createMatchingIndexersSelector(),
     createMatchingDownloadClientsSelector(),
-    (movies, delayProfiles, notifications, restrictions, importLists, indexers, downloadClients) => {
+    createMatchingAutoTagsSelector(),
+    (movies, delayProfiles, notifications, restrictions, importLists, indexers, downloadClients, autoTags) => {
       return {
         movies,
         delayProfiles,
@@ -102,7 +111,8 @@ function createMapStateToProps() {
         restrictions,
         importLists,
         indexers,
-        downloadClients
+        downloadClients,
+        autoTags
       };
     }
   );

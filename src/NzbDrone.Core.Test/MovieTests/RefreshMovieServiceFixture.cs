@@ -4,6 +4,7 @@ using FizzWare.NBuilder;
 using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.AutoTagging;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
 using NzbDrone.Core.Movies;
@@ -56,6 +57,10 @@ namespace NzbDrone.Core.Test.MovieTests
             Mocker.GetMock<IRootFolderService>()
                   .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>(), null))
                   .Returns(string.Empty);
+
+            Mocker.GetMock<IAutoTaggingService>()
+                .Setup(s => s.GetTagChanges(_existingMovie))
+                .Returns(new AutoTaggingChanges());
         }
 
         private void GivenNewMovieInfo(MovieMetadata movie)
