@@ -143,7 +143,7 @@ namespace NzbDrone.Core.IndexerSearch
 
         private List<DownloadDecision> DeDupeDecisions(List<DownloadDecision> decisions)
         {
-            // De-dupe reports by guid so duplicate results aren't returned. Pick the one with the least rejections.
+            // De-dupe reports by guid so duplicate results aren't returned. Pick the one with the fewest rejections.
             return decisions.GroupBy(d => d.RemoteMovie.Release.Guid).Select(d => d.OrderBy(v => v.Rejections.Count()).First()).ToList();
         }
     }
