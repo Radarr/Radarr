@@ -5955,6 +5955,25 @@
         }
       }
     },
+    "/ping": {
+      "get": {
+        "tags": [
+          "Ping"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PingResource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v3/qualitydefinition/{id}": {
       "put": {
         "tags": [
@@ -7635,7 +7654,24 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemResource"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemResource"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SystemResource"
+                }
+              }
+            }
           }
         }
       }
@@ -9020,6 +9056,13 @@
           }
         },
         "additionalProperties": false
+      },
+      "DatabaseType": {
+        "enum": [
+          "sqLite",
+          "postgreSQL"
+        ],
+        "type": "string"
       },
       "DelayProfileResource": {
         "type": "object",
@@ -11353,6 +11396,16 @@
         },
         "additionalProperties": false
       },
+      "PingResource": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ProfileFormatItemResource": {
         "type": "object",
         "properties": {
@@ -12111,6 +12164,14 @@
         },
         "additionalProperties": false
       },
+      "RuntimeMode": {
+        "enum": [
+          "console",
+          "service",
+          "tray"
+        ],
+        "type": "string"
+      },
       "SelectOption": {
         "type": "object",
         "properties": {
@@ -12167,6 +12228,121 @@
           "indexer"
         ],
         "type": "string"
+      },
+      "SystemResource": {
+        "type": "object",
+        "properties": {
+          "appName": {
+            "type": "string",
+            "nullable": true
+          },
+          "instanceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "string",
+            "nullable": true
+          },
+          "buildTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isDebug": {
+            "type": "boolean"
+          },
+          "isProduction": {
+            "type": "boolean"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "isUserInteractive": {
+            "type": "boolean"
+          },
+          "startupPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "appData": {
+            "type": "string",
+            "nullable": true
+          },
+          "osName": {
+            "type": "string",
+            "nullable": true
+          },
+          "osVersion": {
+            "type": "string",
+            "nullable": true
+          },
+          "isNetCore": {
+            "type": "boolean"
+          },
+          "isLinux": {
+            "type": "boolean"
+          },
+          "isOsx": {
+            "type": "boolean"
+          },
+          "isWindows": {
+            "type": "boolean"
+          },
+          "isDocker": {
+            "type": "boolean"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/RuntimeMode"
+          },
+          "branch": {
+            "type": "string",
+            "nullable": true
+          },
+          "databaseType": {
+            "$ref": "#/components/schemas/DatabaseType"
+          },
+          "databaseVersion": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "authentication": {
+            "$ref": "#/components/schemas/AuthenticationType"
+          },
+          "migrationVersion": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "urlBase": {
+            "type": "string",
+            "nullable": true
+          },
+          "runtimeVersion": {
+            "$ref": "#/components/schemas/Version"
+          },
+          "runtimeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "packageVersion": {
+            "type": "string",
+            "nullable": true
+          },
+          "packageAuthor": {
+            "type": "string",
+            "nullable": true
+          },
+          "packageUpdateMechanism": {
+            "$ref": "#/components/schemas/UpdateMechanism"
+          },
+          "packageUpdateMechanismMessage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "TMDbCountryCode": {
         "enum": [
