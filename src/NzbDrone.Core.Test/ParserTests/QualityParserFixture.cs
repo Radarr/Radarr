@@ -150,6 +150,12 @@ namespace NzbDrone.Core.Test.ParserTests
             ParseAndVerifyQuality(title, QualitySource.TV, proper, Resolution.R1080p);
         }
 
+        [TestCase("[NOGRP][国漫][诛仙][Movie Title 2022][19][HEVC][GB][4K]", false)]
+        public void should_parse_hdtv2160p_quality(string title, bool proper)
+        {
+            ParseAndVerifyQuality(title, QualitySource.TV, proper, Resolution.R2160p);
+        }
+
         [TestCase("Movie Name S01E04 Mexicos Death Train 720p WEB DL", false)]
         [TestCase("Movie Name S02E21 720p WEB DL DD5 1 H 264", false)]
         [TestCase("Movie Name S04E22 720p WEB DL DD5 1 H 264 NFHD", false)]
