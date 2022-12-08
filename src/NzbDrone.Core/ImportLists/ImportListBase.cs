@@ -32,6 +32,7 @@ namespace NzbDrone.Core.ImportLists
         public abstract string Name { get; }
 
         public abstract ImportListType ListType { get; }
+        public abstract TimeSpan MinRefreshInterval { get; }
         public abstract bool Enabled { get; }
         public abstract bool EnableAuto { get; }
 

@@ -1,3 +1,4 @@
+using System;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
@@ -10,6 +11,7 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
         public override string Name => "CouchPotato";
 
         public override ImportListType ListType => ImportListType.Program;
+        public override TimeSpan MinRefreshInterval => TimeSpan.FromMinutes(30);
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 

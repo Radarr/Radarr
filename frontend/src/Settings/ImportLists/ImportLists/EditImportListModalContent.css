@@ -3,3 +3,9 @@
 
   margin-right: auto;
 }
+
+.message {
+  composes: alert from '~Components/Alert.css';
+
+  margin-bottom: 30px;
+}

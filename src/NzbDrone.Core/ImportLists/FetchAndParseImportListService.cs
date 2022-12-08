@@ -66,6 +66,15 @@ namespace NzbDrone.Core.ImportLists
                 _logger.ProgressInfo("Syncing Movies for List: {0}", importList.Name);
 
                 var importListLocal = importList;
+
+                var importListStatus = _importListStatusService.GetLastSyncListInfo(importListLocal.Definition.Id);
+
+                if (importListStatus.HasValue && DateTime.UtcNow < importListStatus + importListLocal.MinRefreshInterval)
+                {
+                    _logger.Trace("Skipping refresh of Import List {0} due to minimum refresh inverval", importListLocal.Definition.Name);
+                    continue;
+                }
+
                 var blockedLists = _importListStatusService.GetBlockedProviders().ToDictionary(v => v.ProviderId, v => v);
 
                 if (blockedLists.TryGetValue(importList.Definition.Id, out var blockedListStatus))
@@ -88,7 +97,7 @@ namespace NzbDrone.Core.ImportLists
                             if (!importListReports.AnyFailure)
                             {
                                 var alreadyMapped = result.Movies.Where(x => importListReports.Movies.Any(r => r.TmdbId == x.TmdbId));
-                                var listMovies = MapMovieReports(importListReports.Movies.Where(x => !result.Movies.Any(r => r.TmdbId == x.TmdbId)).ToList()).Where(x => x.TmdbId > 0).ToList();
+                                var listMovies = MapMovieReports(importListReports.Movies.Where(x => result.Movies.All(r => r.TmdbId != x.TmdbId)).ToList()).Where(x => x.TmdbId > 0).ToList();
 
                                 listMovies.AddRange(alreadyMapped);
                                 listMovies = listMovies.DistinctBy(x => x.TmdbId).ToList();
@@ -99,6 +108,8 @@ namespace NzbDrone.Core.ImportLists
                             }
 
                             result.AnyFailure |= importListReports.AnyFailure;
+
+                            _importListStatusService.UpdateListSyncStatus(importList.Definition.Id);
                         }
                     }
                     catch (Exception e)
@@ -151,6 +162,8 @@ namespace NzbDrone.Core.ImportLists
                     }
 
                     result.AnyFailure |= importListReports.AnyFailure;
+
+                    _importListStatusService.UpdateListSyncStatus(importList.Definition.Id);
                 }
             }
             catch (Exception e)
@@ -166,9 +179,9 @@ namespace NzbDrone.Core.ImportLists
         private List<ImportListMovie> MapMovieReports(List<ImportListMovie> reports)
         {
             var mappedMovies = reports.Select(m => _movieSearch.MapMovieToTmdbMovie(new MovieMetadata { Title = m.Title, TmdbId = m.TmdbId, ImdbId = m.ImdbId, Year = m.Year }))
-                                      .Where(x => x != null)
-                                      .DistinctBy(x => x.TmdbId)
-                                      .ToList();
+                .Where(x => x != null)
+                .DistinctBy(x => x.TmdbId)
+                .ToList();
 
             _movieMetadataService.UpsertMany(mappedMovies);
 
