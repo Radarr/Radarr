@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Notifications.Trakt
         TraktAuthRefreshResource RefreshAuthToken(string refreshToken);
         void AddToCollection(TraktCollectMoviesResource payload, string accessToken);
         void RemoveFromCollection(TraktCollectMoviesResource payload, string accessToken);
-        HttpRequest BuildTraktRequest(string resource, HttpMethod method, string accessToken);
+        HttpRequest BuildRequest(string resource, HttpMethod method, string accessToken);
     }
 
     public class TraktProxy : ITraktProxy
@@ -36,59 +36,30 @@ namespace NzbDrone.Core.Notifications.Trakt
 
         public void AddToCollection(TraktCollectMoviesResource payload, string accessToken)
         {
-            var request = BuildTraktRequest("sync/collection", HttpMethod.Post, accessToken);
+            var request = BuildRequest("sync/collection", HttpMethod.Post, accessToken);
 
             request.Headers.ContentType = "application/json";
             request.SetContent(payload.ToJson());
 
-            try
-            {
-                _httpClient.Execute(request);
-            }
-            catch (HttpException ex)
-            {
-                _logger.Error(ex, "Unable to post payload {0}", payload);
-                throw new TraktException("Unable to post payload", ex);
-            }
+            MakeRequest(request);
         }
 
         public void RemoveFromCollection(TraktCollectMoviesResource payload, string accessToken)
         {
-            var request = BuildTraktRequest("sync/collection/remove", HttpMethod.Post, accessToken);
+            var request = BuildRequest("sync/collection/remove", HttpMethod.Post, accessToken);
 
             request.Headers.ContentType = "application/json";
             request.SetContent(payload.ToJson());
 
-            try
-            {
-                _httpClient.Execute(request);
-            }
-            catch (HttpException ex)
-            {
-                _logger.Error(ex, "Unable to post payload {0}", payload);
-                throw new TraktException("Unable to post payload", ex);
-            }
+            MakeRequest(request);
         }
 
         public string GetUserName(string accessToken)
         {
-            var request = BuildTraktRequest("users/settings", HttpMethod.Get, accessToken);
+            var request = BuildRequest("users/settings", HttpMethod.Get, accessToken);
+            var response = _httpClient.Get<TraktUserSettingsResource>(request);
 
-            try
-            {
-                var response = _httpClient.Get<TraktUserSettingsResource>(request);
-
-                if (response != null && response.Resource != null)
-                {
-                    return response.Resource.User.Ids.Slug;
-                }
-            }
-            catch (HttpException)
-            {
-                _logger.Warn($"Error refreshing trakt access token");
-            }
-
-            return null;
+            return response?.Resource?.User?.Ids?.Slug;
         }
 
         public HttpRequest GetOAuthRequest(string callbackUrl)
@@ -110,7 +81,7 @@ namespace NzbDrone.Core.Notifications.Trakt
             return _httpClient.Get<TraktAuthRefreshResource>(request)?.Resource ?? null;
         }
 
-        public HttpRequest BuildTraktRequest(string resource, HttpMethod method, string accessToken)
+        public HttpRequest BuildRequest(string resource, HttpMethod method, string accessToken)
         {
             var request = new HttpRequestBuilder(URL).Resource(resource).Build();
 
@@ -126,6 +97,18 @@ namespace NzbDrone.Core.Notifications.Trakt
             }
 
             return request;
+        }
+
+        private void MakeRequest(HttpRequest request)
+        {
+            try
+            {
+                _httpClient.Execute(request);
+            }
+            catch (HttpException ex)
+            {
+                throw new TraktException("Unable to send payload", ex);
+            }
         }
     }
 }

@@ -71,7 +71,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.Popular
 
             link += filtersAndLimit;
 
-            var request = new ImportListRequest(_traktProxy.BuildTraktRequest(link, HttpMethod.Get, Settings.AccessToken));
+            var request = new ImportListRequest(_traktProxy.BuildRequest(link, HttpMethod.Get, Settings.AccessToken));
 
             yield return request;
         }
