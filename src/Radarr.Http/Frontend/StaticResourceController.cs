@@ -26,7 +26,6 @@ namespace Radarr.Http.Frontend
         [AllowAnonymous]
         [HttpGet("login")]
         [HttpGet("login/failed")]
-        [HttpGet("login/sso")]
         [HttpGet("login/sso/failed")]
         public IActionResult LoginPage()
         {

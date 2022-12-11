@@ -23,6 +23,7 @@ namespace Radarr.Http.Authentication
         }
 
         [HttpPost("login")]
+        [HttpGet("login/sso")]
         public Task LoginLogin([FromForm] LoginResource resource, [FromQuery] string returnUrl = "/")
         {
             if (_configFileProvider.AuthenticationMethod == AuthenticationType.Forms)
