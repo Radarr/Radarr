@@ -68,7 +68,7 @@ RootFolderSelectInputOption.propTypes = {
   value: PropTypes.string.isRequired,
   freeSpace: PropTypes.number,
   movieFolder: PropTypes.string,
-  isMissing: PropTypes.boolean,
+  isMissing: PropTypes.bool,
   isMobile: PropTypes.bool.isRequired,
   isWindows: PropTypes.bool
 };
