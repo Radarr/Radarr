@@ -49,6 +49,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.1990.Ultimate.Rekall.Edition.NORDiC.REMUX.1080p.BluRay.AVC.DTS-HD.MA5.1-TWA", "Ultimate Rekall Edition")]
         [TestCase("Movie.Title.1971.Signature.Edition.1080p.BluRay.FLAC.2.0.x264-TDD", "Signature Edition")]
         [TestCase("Movie.1979.The.Imperial.Edition.BluRay.720p.DTS.x264-CtrlHD", "Imperial Edition")]
+        [TestCase("Movie.1997.Open.Matte.1080p.BluRay.x264.DTS-FGT", "Open Matte")]
         public void should_parse_edition(string postTitle, string edition)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle);
