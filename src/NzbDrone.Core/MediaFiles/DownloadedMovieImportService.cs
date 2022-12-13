@@ -184,7 +184,10 @@ namespace NzbDrone.Core.MediaFiles
             if (_movieService.MoviePathExists(directoryInfo.FullName))
             {
                 _logger.Warn("Unable to process folder that is mapped to an existing movie");
-                return new List<ImportResult>();
+                return new List<ImportResult>
+                {
+                    RejectionResult("Import path is mapped to a movie folder")
+                };
             }
 
             var cleanedUpName = GetCleanedUpFolderName(directoryInfo.Name);
@@ -227,6 +230,10 @@ namespace NzbDrone.Core.MediaFiles
             {
                 _logger.Debug("Deleting folder after importing valid files");
                 _diskProvider.DeleteFolder(directoryInfo.FullName, true);
+            }
+            else if (importResults.Empty())
+            {
+                importResults.AddIfNotNull(CheckEmptyResultForIssue(directoryInfo.FullName));
             }
 
             return importResults;
@@ -310,6 +317,28 @@ namespace NzbDrone.Core.MediaFiles
             var localMovie = videoFile == null ? null : new LocalMovie { Path = videoFile };
 
             return new ImportResult(new ImportDecision(localMovie, new Rejection("Unknown Movie")), message);
+        }
+
+        private ImportResult RejectionResult(string message)
+        {
+            return new ImportResult(new ImportDecision(null, new Rejection(message)), message);
+        }
+
+        private ImportResult CheckEmptyResultForIssue(string folder)
+        {
+            var files = _diskProvider.GetFiles(folder, SearchOption.AllDirectories);
+
+            if (files.Any(file => FileExtensions.ExecutableExtensions.Contains(Path.GetExtension(file))))
+            {
+                return RejectionResult("Caution: Found executable file");
+            }
+
+            if (files.Any(file => FileExtensions.ArchiveExtensions.Contains(Path.GetExtension(file))))
+            {
+                return RejectionResult("Found archive file, might need to be extracted");
+            }
+
+            return null;
         }
 
         private void LogInaccessiblePathError(string path)

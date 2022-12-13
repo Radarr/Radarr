@@ -445,6 +445,58 @@ namespace NzbDrone.Core.Test.MediaFiles
                   .Verify(v => v.DeleteFolder(It.IsAny<string>(), true), Times.Never());
         }
 
+        [Test]
+        public void should_return_rejection_if_nothing_imported_and_contains_rar_file()
+        {
+            GivenValidMovie();
+
+            var path = @"C:\media\ba09030e-1234-1234-1234-123456789abc\[HorribleSubs] American Psycho (2000) [720p]\[HorribleSubs] American Psycho (2000) [720p].mkv".AsOsAgnostic();
+            var imported = new List<ImportDecision>();
+
+            Mocker.GetMock<IMakeImportDecision>()
+                .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>(), null, true, true))
+                .Returns(imported);
+
+            Mocker.GetMock<IImportApprovedMovie>()
+                .Setup(s => s.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto))
+                .Returns(imported.Select(i => new ImportResult(i)).ToList());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetFiles(It.IsAny<string>(), SearchOption.AllDirectories))
+                .Returns(new[] { _videoFiles.First().Replace(".ext", ".rar") });
+
+            var result = Subject.ProcessPath(path);
+
+            result.Count.Should().Be(1);
+            result.First().Result.Should().Be(ImportResultType.Rejected);
+        }
+
+        [Test]
+        public void should_return_rejection_if_nothing_imported_and_contains_executable_file()
+        {
+            GivenValidMovie();
+
+            var path = @"C:\media\ba09030e-1234-1234-1234-123456789abc\[HorribleSubs] American Psycho (2000) [720p]\[HorribleSubs] American Psycho (2000) [720p].mkv".AsOsAgnostic();
+            var imported = new List<ImportDecision>();
+
+            Mocker.GetMock<IMakeImportDecision>()
+                .Setup(s => s.GetImportDecisions(It.IsAny<List<string>>(), It.IsAny<Movie>(), It.IsAny<DownloadClientItem>(), null, true, true))
+                .Returns(imported);
+
+            Mocker.GetMock<IImportApprovedMovie>()
+                .Setup(s => s.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto))
+                .Returns(imported.Select(i => new ImportResult(i)).ToList());
+
+            Mocker.GetMock<IDiskProvider>()
+                .Setup(s => s.GetFiles(It.IsAny<string>(), SearchOption.AllDirectories))
+                .Returns(new[] { _videoFiles.First().Replace(".ext", ".exe") });
+
+            var result = Subject.ProcessPath(path);
+
+            result.Count.Should().Be(1);
+            result.First().Result.Should().Be(ImportResultType.Rejected);
+        }
+
         private void VerifyNoImport()
         {
             Mocker.GetMock<IImportApprovedMovie>().Verify(c => c.Import(It.IsAny<List<ImportDecision>>(), true, null, ImportMode.Auto),
