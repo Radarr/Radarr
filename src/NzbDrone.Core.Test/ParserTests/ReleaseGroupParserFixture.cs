@@ -51,6 +51,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Some.Really.Bad.Movie.Title.[2021].1080p.WEB-HDRip.Dual.Audio.[Hindi.[Clean]. .English].x264.AAC.DD.2.0.By.Full4Movies.mkv-xpost", null)]
         [TestCase("The.Movie.Title.2013.1080p.10bit.AMZN.WEB-DL.DDP5.1.HEVC-Vyndros", "Vyndros")]
         [TestCase("Movie.Name.2022.1080p.BluRay.x264-[YTS.AG]", "YTS.AG")]
+        [TestCase("Movie.Name.2022.1080p.BluRay.x264-VARYG", "VARYG")]
         [TestCase("Movie.Title.2019.1080p.AMZN.WEB-Rip.DDP.5.1.HEVC", null)]
         public void should_parse_expected_release_group(string title, string expected)
         {
@@ -107,6 +108,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Why.Cant.You.Use.Normal.Characters.2021.2160p.UHD.HDR10+.BluRay.TrueHD.Atmos.7.1.x265-ZØNEHD", "ZØNEHD")]
         [TestCase("Movie.Should.Not.Use.Dots.2022.1080p.BluRay.x265.10bit.Tigole", "Tigole")]
         [TestCase("Movie.Title.2005.2160p.UHD.BluRay.TrueHD 7.1.Atmos.x265 - HQMUX", "HQMUX")]
+        [TestCase("Movie.Name.2022.1080p.BluRay.x264-VARYG (Blue Lock, Multi-Subs)", "VARYG")]
         public void should_parse_exception_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
