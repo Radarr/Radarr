@@ -76,6 +76,15 @@ Thank you to [<img src="/Logo/jetbrains.svg" alt="JetBrains" width="32"> JetBrai
 * [<img src="/Logo/rider.svg" alt="Rider" width="32"> Rider](http://www.jetbrains.com/rider/)
 * [<img src="/Logo/dottrace.svg" alt="dotTrace" width="32"> dotTrace](http://www.jetbrains.com/dottrace/)
 
+## DigitalOcean
+
+This project is also supported by DigitalOcean
+<p>
+  <a href="https://www.digitalocean.com/">
+    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/SVG/DO_Logo_horizontal_blue.svg" width="201px">
+  </a>
+</p>
+
 ### License
 
 * [GNU GPL v3](http://www.gnu.org/licenses/gpl.html)
