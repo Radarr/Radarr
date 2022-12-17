@@ -189,14 +189,14 @@ namespace NzbDrone.Core.Download
             var filename = string.Format("{0}.torrent", FileNameBuilder.CleanFileName(remoteMovie.Release.Title));
             string hash = null;
 
-             try
-             {
-                 hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
-             }
-             catch (TorrentException ex)
-             {
-                 _logger.Error(ex, "Parsing torrent file for movie '{0}' failed ({1})", remoteMovie.Release.Title, System.Convert.ToBase64String(torrentFile));
-             }
+            try
+            {
+                hash = _torrentFileInfoReader.GetHashFromTorrentFile(torrentFile);
+            }
+            catch (TorrentException ex)
+            {
+                _logger.Error(ex, "Parsing torrent file for movie '{0}' failed ({1})", remoteMovie.Release.Title, System.Convert.ToBase64String(torrentFile));
+            }
 
             var actualHash = AddFromTorrentFile(remoteMovie, hash, filename, torrentFile);
 
