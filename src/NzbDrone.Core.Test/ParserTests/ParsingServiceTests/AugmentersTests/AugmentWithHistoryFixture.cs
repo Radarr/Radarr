@@ -99,6 +99,19 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests.AugmentersTests
         }
 
         [Test]
+        public void should_use_settings_languages_when_necessary_for_german_dual_language_releases()
+        {
+            var history = HistoryWithData("IndexerId", 1.ToString());
+
+            var movieInfo = Subject.AugmentMovieInfo(MovieInfo, history);
+            movieInfo.Languages.Should().BeEquivalentTo();
+
+            MovieInfo.SimpleReleaseTitle = "A Movie 1998 German DL Bluray 1080p";
+            var multiInfo = Subject.AugmentMovieInfo(MovieInfo, history);
+            multiInfo.Languages.Should().BeEquivalentTo(Language.English, Language.French);
+        }
+
+        [Test]
         public void should_not_use_settings_languages()
         {
             var unknownIndexer = HistoryWithData();

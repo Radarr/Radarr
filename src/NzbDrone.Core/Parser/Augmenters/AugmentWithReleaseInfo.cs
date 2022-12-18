@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
@@ -41,7 +42,9 @@ namespace NzbDrone.Core.Parser.Augmenters
                 var languageTitle = movieInfo.SimpleReleaseTitle;
                 if (movieInfo.PrimaryMovieTitle.IsNotNullOrWhiteSpace())
                 {
-                    if (languageTitle.ToLower().Contains("multi") && indexerSettings?.MultiLanguages?.Any() == true)
+                    if ((languageTitle.ToLower().Contains("multi") ||
+                         (languageTitle.ToLower().Contains("german") && new Regex(@"\bDL\b").IsMatch(languageTitle))) &&
+                        indexerSettings?.MultiLanguages?.Any() == true)
                     {
                         foreach (var i in indexerSettings.MultiLanguages)
                         {
