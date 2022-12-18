@@ -125,6 +125,17 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Die.fantastische.Reise.des.Dr.Dolittle.2020.German.DL.LD.1080p.WEBRip.x264-PRD", "Die fantastische Reise des Dr. Dolittle", "", 2020, Description = "dot after dr")]
         [TestCase("Der.Film.deines.Lebens.German.2011.PAL.DVDR-ETM", "Der Film deines Lebens", "", 2011, Description = "year at wrong position")]
         [TestCase("Kick.Ass.2.2013.German.DTS.DL.720p.BluRay.x264-Pate_", "Kick Ass 2", "", 2013, Description = "underscore at the end")]
+
+        // German in the title
+        [TestCase("The.Good.German.2006.GERMAN.720p.HDTV.x264-TVP", "The Good German", "", 2006)]
+        [TestCase("The.Good.German.German.2006.DVDRiP.SVCD-ATS", "The Good German", "", 2006)]
+        [TestCase("The.German.German.2006.DVDRiP.SVCD-ATS", "The German", "", 2006)]
+        [TestCase("The.German.2006.DVDRiP.SVCD-ATS", "The German", "", 2006)]
+        [TestCase("The.German.Doctor.2013.LIMITED.DVDRip.x264-RedBlade", "The German Doctor", "", 2013, Description = "German in the middle of the title")]
+        [TestCase("Movie.Title.German.2019.GERMAN.720p.BluRay.x264-UNiVERSUM", "Movie Title German", "", 2019)]
+        [TestCase("Movie.Title.German.GERMAN.2019.720p.BluRay.x264-UNiVERSUM", "Movie Title German", "", 2019)]
+        [TestCase("Movie.Title.on.German.DVD.2006.720p.HDTV.x264-TVP", "Movie Title on German DVD", "", 2006, Description = "should not match german before DVD when there comes a year afterwards")]
+        [TestCase("Movie.Title.German.PAL.DVDR-ETM", "Movie Title", "", 0, Description = "should match German without year but followed by scene word")]
         public void should_parse_german_movie(string postTitle, string title, string edition, int year)
         {
             ParsedMovieInfo movie = Parser.Parser.ParseMovieTitle(postTitle);
@@ -231,6 +242,11 @@ namespace NzbDrone.Core.Test.ParserTests
 
         [TestCase("The.Italian.Movie.2025.720p.BluRay.X264-AMIABLE")]
         [TestCase("The.French.Movie.2013.720p.BluRay.x264 - ROUGH[PublicHD]")]
+        [TestCase("Wakolda.German.Subbed.2013.AC3.DVDRiP.x264-ETM")]
+        [TestCase("The.German.Doctor.2013.LIMITED.DVDRip.x264-RedBlade")] // When German is not followed by a year or a SCENE word it is not matched
+        [TestCase("The.Good.German.2006.720p.HDTV.x264-TVP")] // The Good German is hardcoded not to match
+        [TestCase("German.Lancers.2019.720p.BluRay.x264-UNiVERSUM")] // German at the beginning is never matched
+        [TestCase("The.German.2019.720p.BluRay.x264-UNiVERSUM")] // The German is hardcoded not to match
         public void should_not_parse_wrong_language_in_title(string postTitle)
         {
             var parsed = Parser.Parser.ParseMovieTitle(postTitle, true);
