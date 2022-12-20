@@ -16,6 +16,7 @@ export const authenticationRequiredWarning = 'To prevent remote access without a
 
 export const authenticationMethodOptions = [
   { key: 'none', value: 'None', isDisabled: true },
+  { key: 'external', value: 'External', isHidden: true },
   { key: 'basic', value: 'Basic (Browser Popup, insecure over HTTP)' },
   { key: 'forms', value: 'Forms (Login Page)' },
   { key: 'plex', value: 'Plex' },
