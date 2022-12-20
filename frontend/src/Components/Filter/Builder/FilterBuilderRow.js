@@ -214,7 +214,7 @@ class FilterBuilderRow extends Component {
         key: availablePropFilter.name,
         value: availablePropFilter.label
       };
-    });
+    }).sort((a, b) => a.value.localeCompare(b.value));
 
     const ValueComponent = getRowValueConnector(selectedFilterBuilderProp);
 
