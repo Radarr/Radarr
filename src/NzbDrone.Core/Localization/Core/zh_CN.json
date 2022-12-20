@@ -1145,6 +1145,7 @@
     "TotalMovies": "电影总数",
     "ApplicationUrlHelpText": "此应用的外部URL包含 http(s)://，端口和基本URL",
     "ApplicationURL": "程序URL",
-    "BindAddressHelpText": "有效的 IPv4 地址或以'*'代表所有接口",
-    "PreferredProtocol": "首选协议"
+    "BindAddressHelpText": "有效的 IP4 地址或以'*'代表所有地址",
+    "PreferredProtocol": "首选协议",
+    "AreYouSureYouWantToResetQualityDefinitions": "AreYouSureYouWantToResetQualityDefinitions"
 }

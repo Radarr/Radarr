@@ -1045,7 +1045,7 @@
     "DeleteFileLabel": "Verwijder {0} Film Bestanden",
     "UnableToAddRootFolder": "Kon hoofdmappen niet inladen",
     "UpdateAvailable": "Nieuwe update is beschikbaar",
-    "From": "Van",
+    "From": "van",
     "RemotePathMappingCheckDownloadPermissions": "Radarr kan gedownloade film {0} zien, maar niet openen.  Waarschijnlijk fout met machtigingen.",
     "RemotePathMappingCheckFileRemoved": "Bestand {0} is halverwege de verwerking verwijderd.",
     "RemotePathMappingCheckFilesBadDockerPath": "U gebruikt docker; download client {0} gerapporteerde bestanden in {1} maar dit is geen geldig {2} pad.  Controleer uw externe padtoewijzingen en download clientinstellingen.",
@@ -1113,5 +1113,6 @@
     "ChooseImportMode": "Kies Importmodus",
     "CollectionOptions": "Collectieopties",
     "CollectionShowDetailsHelpText": "Collectie status en details weergeven",
-    "CollectionShowOverviewsHelpText": "Collectieoverzicht weergeven"
+    "CollectionShowOverviewsHelpText": "Collectieoverzicht weergeven",
+    "EditCollection": "Bewerk collectie"
 }
