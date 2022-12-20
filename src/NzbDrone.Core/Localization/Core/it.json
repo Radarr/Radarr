@@ -220,12 +220,12 @@
     "ChangeFileDate": "Cambiare la Data del File",
     "CertificationCountryHelpText": "Seleziona il Paese per le Certificazioni dei Film",
     "CertificationCountry": "Paese di Certificazione",
-    "CertificateValidationHelpText": "Cambia quanto è rigorosa la convalida del certificato HTTPS. Non cambiare a meno che tu non comprenda i rischi.",
+    "CertificateValidationHelpText": "Cambia quanto rigorosamente vengono validati i certificati HTTPS. Non cambiare senza conoscerne i rischi.",
     "CertificateValidation": "Convalida del Certificato",
     "Cancel": "Annulla",
     "BypassProxyForLocalAddresses": "Evita il Proxy per gli Indirizzi Locali",
     "Branch": "Ramo",
-    "BindAddressHelpText": "Indirizzo IPv4 valido o '*' per tutte le interfacce",
+    "BindAddressHelpText": "Indirizzo IPV4 valido o '*' per tutte le interfacce di rete",
     "BindAddress": "Indirizzo di Bind",
     "Backups": "I Backup",
     "BackupRetentionHelpText": "I backup automatici più vecchi del periodo di conservazione verranno eliminati automaticamente",
@@ -1097,5 +1097,12 @@
     "Collections": "Collezione",
     "MonitorMovies": "Monitora Film",
     "NoCollections": "Nessun film trovato, per iniziare ti consigliamo di aggiungere un nuovo film o importarne alcuni esistenti.",
-    "RssSyncHelpText": "Intervallo in minuti. Imposta zero per disabilitarlo (ciò fermerà il recupero automatico di tutte le release)"
+    "RssSyncHelpText": "Intervallo in minuti. Imposta zero per disabilitarlo (ciò fermerà il recupero automatico di tutte le release)",
+    "ApplicationURL": "URL Applicazione",
+    "ApplicationUrlHelpText": "L'URL esterno di questa applicazione, incluso http(s)://, porta e URL base",
+    "CollectionOptions": "Opzioni della Collezione",
+    "CollectionShowDetailsHelpText": "Mostra lo stato e le proprietà della collezione",
+    "Started": "Iniziato",
+    "AreYouSureYouWantToResetQualityDefinitions": "Sei sicuro di voler ripristinare le definizioni della qualità?",
+    "ChooseImportMode": "Selezionare Metodo di Importazione"
 }
