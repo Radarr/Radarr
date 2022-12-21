@@ -29,7 +29,9 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         private ParsedMovieInfo _umlautAltInfo;
         private ParsedMovieInfo _multiLanguageInfo;
         private ParsedMovieInfo _multiLanguageWithOriginalInfo;
+        private ParsedMovieInfo _multiLanguageTitle;
         private MovieSearchCriteria _movieSearchCriteria;
+        private MovieSearchCriteria _movieSearchCriteriaFirstPart;
 
         [SetUp]
         public void Setup()
@@ -114,6 +116,25 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             _movieSearchCriteria = new MovieSearchCriteria
             {
                 Movie = _movie
+            };
+
+            _multiLanguageTitle = new ParsedMovieInfo
+            {
+                MovieTitles = new List<string> { "Fack Ju Göthe 2 / Фак ю Готе 2" },
+                Languages = new List<Language> { Language.English },
+                Year = _movie.Year
+            };
+
+            _movieSearchCriteriaFirstPart = new MovieSearchCriteria
+            {
+                Movie = Builder<Movie>.CreateNew()
+                    .With(m => m.Title = "Fack Ju Göthe")
+                    .With(m => m.MovieMetadata.Value.CleanTitle = "fackjugoethe")
+                    .With(m => m.Year = 2010)
+                    .With(m => m.MovieMetadata.Value.AlternativeTitles = new List<AlternativeTitle> { new AlternativeTitle("Fack Ju Göthe: First") })
+                    .With(m => m.MovieMetadata.Value.Translations = new List<MovieTranslation> { new MovieTranslation { Title = "Translated Title", CleanTitle = "translatedtitle" } })
+                    .With(m => m.MovieMetadata.Value.OriginalLanguage = Language.English)
+                    .Build()
             };
         }
 
@@ -208,6 +229,18 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Subject.Map(_multiLanguageWithOriginalInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().Contain(Language.English);
             Subject.Map(_multiLanguageWithOriginalInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().Contain(Language.French);
             Subject.Map(_multiLanguageWithOriginalInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().NotContain(Language.Original);
+        }
+
+        [Test]
+        public void should_match_multilanguage_multiLanguageTitle()
+        {
+            Subject.Map(_multiLanguageTitle, "", _movieSearchCriteria).MappingResultType.Should().Be(MappingResultType.Success);
+        }
+
+        [Test]
+        public void should_not_match_multilanguage_multiLanguageTitle()
+        {
+            Subject.Map(_multiLanguageTitle, "", _movieSearchCriteriaFirstPart).MappingResultType.Should().Be(MappingResultType.WrongTitle);
         }
     }
 }

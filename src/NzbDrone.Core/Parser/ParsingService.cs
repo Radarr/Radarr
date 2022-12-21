@@ -260,9 +260,15 @@ namespace NzbDrone.Core.Parser
 
             var cleanTitle = parsedMovieInfo.PrimaryMovieTitle.CleanMovieTitle();
 
+            var multilangsTitle = new List<string>();
+            if (parsedMovieInfo.PrimaryMovieTitle.Contains('/'))
+            {
+                multilangsTitle = parsedMovieInfo.PrimaryMovieTitle.Split('/').ToList().ConvertAll<string>(t => t.CleanMovieTitle());
+            }
+
             foreach (var title in possibleTitles)
             {
-                if (title == cleanTitle)
+                if (title == cleanTitle || multilangsTitle.Contains(title))
                 {
                     possibleMovie = searchCriteria.Movie;
                 }
@@ -273,12 +279,12 @@ namespace NzbDrone.Core.Parser
                     var romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
                     // _logger.Debug(cleanTitle);
-                    if (title.Replace(arabicNumeral, romanNumeral) == cleanTitle)
+                    if (title.Replace(arabicNumeral, romanNumeral) == cleanTitle || multilangsTitle.Contains(title.Replace(arabicNumeral, romanNumeral)))
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
 
-                    if (title == cleanTitle.Replace(arabicNumeral, romanNumeral))
+                    if (title == cleanTitle.Replace(arabicNumeral, romanNumeral) || multilangsTitle.Select(t => t.Replace(arabicNumeral, romanNumeral)).Contains(title))
                     {
                         possibleMovie = searchCriteria.Movie;
                     }
