@@ -1,38 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Icon from 'Components/Icon';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
-import Popover from 'Components/Tooltip/Popover';
-import { icons, kinds, tooltipPositions } from 'Helpers/Props';
+import { tooltipPositions } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import QueueStatus from './QueueStatus';
 import styles from './QueueStatusCell.css';
-
-function getDetailedPopoverBody(statusMessages) {
-  return (
-    <div>
-      {
-        statusMessages.map(({ title, messages }) => {
-          return (
-            <div key={title}>
-              {title}
-              <ul>
-                {
-                  messages.map((message) => {
-                    return (
-                      <li key={message}>
-                        {message}
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-            </div>
-          );
-        })
-      }
-    </div>
-  );
-}
 
 function QueueStatusCell(props) {
   const {
@@ -44,97 +16,16 @@ function QueueStatusCell(props) {
     errorMessage
   } = props;
 
-  const hasWarning = trackedDownloadStatus === 'warning';
-  const hasError = trackedDownloadStatus === 'error';
-
-  // status === 'downloading'
-  let iconName = icons.DOWNLOADING;
-  let iconKind = kinds.DEFAULT;
-  let title = translate('Downloading');
-
-  if (status === 'paused') {
-    iconName = icons.PAUSED;
-    title = translate('Paused');
-  }
-
-  if (status === 'queued') {
-    iconName = icons.QUEUED;
-    title = translate('Queued');
-  }
-
-  if (status === 'completed') {
-    iconName = icons.DOWNLOADED;
-    title = translate('Downloaded');
-
-    if (trackedDownloadState === 'importPending') {
-      title += ` - ${translate('WaitingToImport')}`;
-      iconKind = kinds.PURPLE;
-    }
-
-    if (trackedDownloadState === 'importing') {
-      title += ` - ${translate('Importing')}`;
-      iconKind = kinds.PURPLE;
-    }
-
-    if (trackedDownloadState === 'failedPending') {
-      title += ` - ${translate('WaitingToProcess')}`;
-      iconKind = kinds.DANGER;
-    }
-  }
-
-  if (hasWarning) {
-    iconKind = kinds.WARNING;
-  }
-
-  if (status === 'delay') {
-    iconName = icons.PENDING;
-    title = translate('Pending');
-  }
-
-  if (status === 'DownloadClientUnavailable') {
-    iconName = icons.PENDING;
-    iconKind = kinds.WARNING;
-    title = `${translate('Pending')} - ${translate('DownloadClientUnavailable')}`;
-  }
-
-  if (status === 'failed') {
-    iconName = icons.DOWNLOADING;
-    iconKind = kinds.DANGER;
-    title = translate('DownloadFailed');
-  }
-
-  if (status === 'warning') {
-    iconName = icons.DOWNLOADING;
-    iconKind = kinds.WARNING;
-    const warningMessage = errorMessage || translate('CheckDownloadClientForDetails');
-    title = translate('DownloadWarning', { warningMessage });
-  }
-
-  if (hasError) {
-    if (status === 'completed') {
-      iconName = icons.DOWNLOAD;
-      iconKind = kinds.DANGER;
-      title = translate('ImportFailed', { sourceTitle });
-    } else {
-      iconName = icons.DOWNLOADING;
-      iconKind = kinds.DANGER;
-      title = translate('DownloadFailed');
-    }
-  }
-
   return (
     <TableRowCell className={styles.status}>
-      <Popover
-        anchor={
-          <Icon
-            name={iconName}
-            kind={iconKind}
-          />
-        }
-        title={title}
-        body={hasWarning || hasError ? getDetailedPopoverBody(statusMessages) : sourceTitle}
+      <QueueStatus
+        sourceTitle={sourceTitle}
+        status={status}
+        trackedDownloadStatus={trackedDownloadStatus}
+        trackedDownloadState={trackedDownloadState}
+        statusMessages={statusMessages}
+        errorMessage={errorMessage}
         position={tooltipPositions.RIGHT}
-        canFlip={false}
       />
     </TableRowCell>
   );

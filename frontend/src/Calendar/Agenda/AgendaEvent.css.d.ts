@@ -3,18 +3,19 @@
 interface CssExports {
   'continuing': string;
   'date': string;
-  'dateIcon': string;
   'downloaded': string;
   'event': string;
   'eventWrapper': string;
   'genres': string;
-  'link': string;
   'missingMonitored': string;
   'missingUnmonitored': string;
   'movieTitle': string;
+  'overlay': string;
   'queue': string;
+  'releaseIcon': string;
   'statusIcon': string;
   'time': string;
+  'underlay': string;
   'unmonitored': string;
 }
 export const cssExports: CssExports;

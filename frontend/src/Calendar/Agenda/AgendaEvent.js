@@ -87,23 +87,22 @@ class AgendaEvent extends Component {
     const link = `/movie/${titleSlug}`;
 
     return (
-      <div>
+      <div className={styles.event}>
         <Link
-          className={classNames(
-            styles.event,
-            styles.link
-          )}
+          className={styles.underlay}
           to={link}
-        >
-          <div className={styles.dateIcon}>
+        />
+
+        <div className={styles.overlay}>
+          <div className={styles.date}>
+            {(showDate) ? startTime.format(longDateFormat) : null}
+          </div>
+
+          <div className={styles.releaseIcon}>
             <Icon
               name={releaseIcon}
               kind={kinds.DEFAULT}
             />
-          </div>
-
-          <div className={styles.date}>
-            {(showDate) ? startTime.format(longDateFormat) : null}
           </div>
 
           <div
@@ -143,9 +142,7 @@ class AgendaEvent extends Component {
             }
 
             {
-              showCutoffUnmetIcon &&
-              !!movieFile &&
-              movieFile.qualityCutoffNotMet &&
+              showCutoffUnmetIcon && !!movieFile && movieFile.qualityCutoffNotMet &&
                 <Icon
                   className={styles.statusIcon}
                   name={icons.MOVIE_FILE}
@@ -154,7 +151,7 @@ class AgendaEvent extends Component {
                 />
             }
           </div>
-        </Link>
+        </div>
       </div>
     );
   }
