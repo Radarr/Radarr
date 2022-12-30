@@ -227,6 +227,8 @@ module.exports = {
   //
   // Misc
 
-  progressBarBackgroundColor: '#fff',
-  logEventsBackgroundColor: '#fff'
+  progressBarFrontTextColor: white,
+  progressBarBackTextColor: darkGray,
+  progressBarBackgroundColor: white,
+  logEventsBackgroundColor: white
 };
