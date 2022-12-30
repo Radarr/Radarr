@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import { icons, kinds } from 'Helpers/Props';
@@ -57,18 +57,20 @@ class CalendarEvent extends Component {
     }
 
     return (
-      <Fragment>
+      <div
+        className={classNames(
+          styles.event,
+          styles[statusStyle],
+          colorImpairedMode && 'colorImpaired',
+          fullColorEvents && 'fullColor'
+        )}
+      >
         <Link
-          className={classNames(
-            styles.event,
-            styles.link,
-            styles[statusStyle],
-            colorImpairedMode && 'colorImpaired',
-            fullColorEvents && 'fullColor'
-          )}
-          // component="div"
+          className={styles.underlay}
           to={link}
-        >
+        />
+
+        <div className={styles.overlay} >
           <div className={styles.info}>
             <div className={styles.movieTitle}>
               {title}
@@ -130,8 +132,8 @@ class CalendarEvent extends Component {
               </div> :
               null
           }
-        </Link>
-      </Fragment>
+        </div>
+      </div>
     );
   }
 }

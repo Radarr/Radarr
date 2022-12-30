@@ -1,116 +1,71 @@
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from 'Components/Icon';
-import { icons, kinds } from 'Helpers/Props';
+import Popover from 'Components/Tooltip/Popover';
+import { icons, tooltipPositions } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import QueueStatus from './QueueStatus';
+import styles from './QueueDetails.css';
 
 function QueueDetails(props) {
   const {
     title,
     size,
     sizeleft,
-    estimatedCompletionTime,
     status,
     trackedDownloadState,
     trackedDownloadStatus,
+    statusMessages,
     errorMessage,
     progressBar
   } = props;
 
   const progress = size ? (100 - sizeleft / size * 100) : 0;
+  const isDownloading = status === 'downloading';
+  const isPaused = status === 'paused';
+  const hasWarning = trackedDownloadStatus === 'warning';
+  const hasError = trackedDownloadStatus === 'error';
 
-  if (status === 'pending') {
-    return (
-      <Icon
-        name={icons.PENDING}
-        title={translate('ReleaseWillBeProcessedInterp', [moment(estimatedCompletionTime).fromNow()])}
-      />
-    );
-  }
+  if (
+    (isDownloading || isPaused) &&
+    !hasWarning &&
+    !hasError
+  ) {
+    const state = isPaused ? translate('Paused') : translate('Downloading');
 
-  if (status === 'completed') {
-    if (errorMessage) {
+    if (progress < 5) {
       return (
         <Icon
-          name={icons.DOWNLOAD}
-          kind={kinds.DANGER}
-          title={translate('ImportFailedInterp', { errorMessage })}
+          name={icons.DOWNLOADING}
+          title={`${state} - ${progress.toFixed(1)}% ${title}`}
         />
       );
     }
 
-    if (trackedDownloadStatus === 'warning') {
-      return (
-        <Icon
-          name={icons.DOWNLOAD}
-          kind={kinds.WARNING}
-          title={translate('UnableToImportCheckLogs')}
-        />
-      );
-    }
-
-    if (trackedDownloadState === 'importPending') {
-      return (
-        <Icon
-          name={icons.DOWNLOAD}
-          kind={kinds.PURPLE}
-          title={`${translate('Downloaded')} - ${translate('WaitingToImport')}`}
-        />
-      );
-    }
-
-    if (trackedDownloadState === 'importing') {
-      return (
-        <Icon
-          name={icons.DOWNLOAD}
-          kind={kinds.PURPLE}
-          title={`${translate('Downloaded')} - ${translate('Importing')}`}
-        />
-      );
-    }
-  }
-
-  if (errorMessage) {
     return (
-      <Icon
-        name={icons.DOWNLOADING}
-        kind={kinds.DANGER}
-        title={translate('DownloadFailedInterp', { errorMessage })}
+      <Popover
+        className={styles.progressBarContainer}
+        anchor={progressBar}
+        title={`${state} - ${progress.toFixed(1)}%`}
+        body={
+          <div>{title}</div>
+        }
+        position={tooltipPositions.LEFT}
       />
     );
   }
 
-  if (status === 'failed') {
-    return (
-      <Icon
-        name={icons.DOWNLOADING}
-        kind={kinds.DANGER}
-        title={translate('DownloadFailedCheckDownloadClientForMoreDetails')}
-      />
-    );
-  }
-
-  if (status === 'warning') {
-    return (
-      <Icon
-        name={icons.DOWNLOADING}
-        kind={kinds.WARNING}
-        title={translate('DownloadWarningCheckDownloadClientForMoreDetails')}
-      />
-    );
-  }
-
-  if (progress < 5) {
-    return (
-      <Icon
-        name={icons.DOWNLOADING}
-        title={translate('MovieIsDownloadingInterp', [progress.toFixed(1), title])}
-      />
-    );
-  }
-
-  return progressBar;
+  return (
+    <QueueStatus
+      sourceTitle={title}
+      status={status}
+      trackedDownloadStatus={trackedDownloadStatus}
+      trackedDownloadState={trackedDownloadState}
+      statusMessages={statusMessages}
+      errorMessage={errorMessage}
+      position={tooltipPositions.LEFT}
+    />
+  );
 }
 
 QueueDetails.propTypes = {
@@ -121,6 +76,7 @@ QueueDetails.propTypes = {
   status: PropTypes.string.isRequired,
   trackedDownloadState: PropTypes.string.isRequired,
   trackedDownloadStatus: PropTypes.string.isRequired,
+  statusMessages: PropTypes.arrayOf(PropTypes.object),
   errorMessage: PropTypes.string,
   progressBar: PropTypes.node.isRequired
 };

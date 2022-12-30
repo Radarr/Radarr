@@ -6,14 +6,15 @@ interface CssExports {
   'event': string;
   'genres': string;
   'info': string;
-  'link': string;
   'missingMonitored': string;
   'missingUnmonitored': string;
   'movieInfo': string;
   'movieTitle': string;
+  'overlay': string;
   'queue': string;
   'statusContainer': string;
   'statusIcon': string;
+  'underlay': string;
   'unmonitored': string;
 }
 export const cssExports: CssExports;
