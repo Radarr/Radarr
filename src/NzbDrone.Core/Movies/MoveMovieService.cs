@@ -42,6 +42,12 @@ namespace NzbDrone.Core.Movies
                 return;
             }
 
+            if (sourcePath.Equals(destinationPath))
+            {
+                _logger.ProgressInfo("'{0}' is already in the right location.", movie.Title, sourcePath);
+                return;
+            }
+
             if (index != null && total != null)
             {
                 _logger.ProgressInfo("Moving {0} from '{1}' to '{2}' ({3}/{4})", movie.Title, sourcePath, destinationPath, index + 1, total);
