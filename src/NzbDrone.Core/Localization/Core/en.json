@@ -869,6 +869,7 @@
   "RootFolders": "Root Folders",
   "RottenTomatoesRating": "Tomato Rating",
   "RSS": "RSS",
+  "RSSHelpText": "Will be used when Radarr periodically looks for releases via RSS Sync",
   "RSSIsNotSupportedWithThisIndexer": "RSS is not supported with this indexer",
   "RSSSync": "RSS Sync",
   "RssSyncHelpText": "Interval in minutes. Set to zero to disable (this will stop all automatic release grabbing)",
