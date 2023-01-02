@@ -1114,5 +1114,7 @@
     "CollectionOptions": "Collectieopties",
     "CollectionShowDetailsHelpText": "Collectie status en details weergeven",
     "CollectionShowOverviewsHelpText": "Collectieoverzicht weergeven",
-    "EditCollection": "Bewerk collectie"
+    "EditCollection": "Bewerk collectie",
+    "BypassDelayIfHighestQualityHelpText": "Vertraging ignoreren wanneer een release de hoogst ingeschakelde kwaliteit heeft in het kwialiteitsprofiel van het geprefereerde protocol",
+    "CollectionShowPostersHelpText": "Posters van de collectie tonen"
 }
