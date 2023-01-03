@@ -258,6 +258,7 @@
   "DownloadClients": "Download Clients",
   "DownloadClientSettings": "Download Client Settings",
   "DownloadClientsSettingsSummary": "Download clients, download handling and remote path mappings",
+  "DownloadClientSortingCheckMessage": "Download client {0} has {1} sorting enabled for Radarr's category. You should disable sorting in your download client to avoid import issues.",
   "DownloadClientStatusCheckAllClientMessage": "All download clients are unavailable due to failures",
   "DownloadClientStatusCheckSingleClientMessage": "Download clients unavailable due to failures: {0}",
   "DownloadClientUnavailable": "Download client is unavailable",
