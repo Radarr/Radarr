@@ -9,6 +9,7 @@ namespace NzbDrone.Core.Parser
         public string CountryCode { get; set; }
         public string EnglishName { get; set; }
         public Language Language { get; set; }
+        public string CountyCodeLower => CountryCode?.ToLower();
 
         public IsoLanguage(string twoLetterCode, string countryCode, string threeLetterCode, string englishName, Language language)
         {

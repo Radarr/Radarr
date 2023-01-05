@@ -4,30 +4,34 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { clearPendingChanges } from 'Store/Actions/baseActions';
 import { fetchUISettings, saveUISettings, setUISettingsValue } from 'Store/Actions/settingsActions';
+import createLanguagesSelector from 'Store/Selectors/createLanguagesSelector';
 import createSettingsSectionSelector from 'Store/Selectors/createSettingsSectionSelector';
 import UISettings from './UISettings';
 
 const SECTION = 'ui';
+const FILTER_LANGUAGES = ['Any', 'Unknown', 'Original'];
 
-function createLanguagesSelector() {
+function createFilteredLanguagesSelector() {
   return createSelector(
-    (state) => state.settings.languages,
+    createLanguagesSelector(),
     (languages) => {
-      const items = languages.items;
-      const filterItems = ['Any', 'Unknown'];
-
-      if (!items) {
+      if (!languages || !languages.items) {
         return [];
       }
 
-      const newItems = items.filter((lang) => !filterItems.includes(lang.name)).map((item) => {
-        return {
-          key: item.id,
-          value: item.name
-        };
-      });
+      const newItems = languages.items
+        .filter((lang) => !FILTER_LANGUAGES.includes(lang.name))
+        .map((item) => {
+          return {
+            key: item.id,
+            value: item.name
+          };
+        });
 
-      return newItems;
+      return {
+        ...languages,
+        items: newItems
+      };
     }
   );
 }
@@ -36,12 +40,15 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.settings.advancedSettings,
     createSettingsSectionSelector(SECTION),
-    createLanguagesSelector(),
+    createFilteredLanguagesSelector(),
     (advancedSettings, sectionSettings, languages) => {
       return {
         advancedSettings,
-        languages,
-        ...sectionSettings
+        languages: languages.items,
+        isLanguagesPopulated: languages.isPopulated,
+        ...sectionSettings,
+        isFetching: sectionSettings.isFetching || languages.isFetching,
+        error: sectionSettings.error || languages.error
       };
     }
   );
