@@ -25,5 +25,17 @@ namespace Radarr.Api.V3.Localization
         {
             return JsonSerializer.Serialize(_localizationService.GetLocalizationDictionary().ToResource(), _serializerSettings);
         }
+
+        [HttpGet("language")]
+        [Produces("application/json")]
+        public LocalizationLanguageResource GetLanguage()
+        {
+            var identifier = _localizationService.GetLanguageIdentifier();
+
+            return new LocalizationLanguageResource
+            {
+                Identifier = identifier
+            };
+        }
     }
 }
