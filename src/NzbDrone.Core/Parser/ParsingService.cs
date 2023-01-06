@@ -314,7 +314,7 @@ namespace NzbDrone.Core.Parser
                     case MappingResultType.Success:
                         return $"Successfully mapped release name {ReleaseName} to movie {Movie}";
                     case MappingResultType.NotParsable:
-                        return $"Failed to find movie title in release name {ReleaseName}. Possibly due to missing year in search string.";
+                        return $"Failed to find movie title in release name {ReleaseName}. Possibly due to missing year in release name.";
                     case MappingResultType.TitleNotFound:
                         return $"Could not find {RemoteMovie.ParsedMovieInfo.PrimaryMovieTitle}";
                     case MappingResultType.WrongYear:
