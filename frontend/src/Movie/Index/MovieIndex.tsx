@@ -10,6 +10,7 @@ import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
+import withScrollPosition from 'Components/withScrollPosition';
 import { align, icons } from 'Helpers/Props';
 import SortDirection from 'Helpers/Props/SortDirection';
 import NoMovie from 'Movie/NoMovie';
@@ -48,7 +49,11 @@ function getViewComponent(view: string) {
   return MovieIndexTable;
 }
 
-function MovieIndex() {
+interface MovieIndexProps {
+  initialScrollTop?: number;
+}
+
+const MovieIndex = withScrollPosition((props) => {
   const {
     isFetching,
     isPopulated,
@@ -257,6 +262,7 @@ function MovieIndex() {
           ref={scrollerRef}
           className={styles.contentBody}
           innerClassName={styles[`${view}InnerContentBody`]}
+          initialScrollTop={props.initialScrollTop}
           onScroll={onScroll}
         >
           {isFetching && !isPopulated ? <LoadingIndicator /> : null}
@@ -301,6 +307,6 @@ function MovieIndex() {
       ) : null}
     </PageContent>
   );
-}
+}, 'movieIndex');
 
 export default MovieIndex;
