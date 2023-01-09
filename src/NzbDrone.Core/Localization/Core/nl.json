@@ -372,7 +372,7 @@
     "CertificateValidation": "Certificaat Validatie",
     "BypassProxyForLocalAddresses": "Omzeil Proxy voor Lokale Adressen",
     "Branch": "Branch",
-    "BindAddressHelpText": "Geldig IPv4-adres of '*' voor alle interfaces",
+    "BindAddressHelpText": "Geldig IP-adres, localhost of '*' voor alle interfaces",
     "DeleteBackup": "Verwijder Veiligheidskopie",
     "BackupIntervalHelpText": "Tussentijd voor automatische back-up",
     "Backups": "Veiligheidskopieën",
@@ -723,7 +723,7 @@
     "HaveNotAddedMovies": "U heeft nog geen films toegevoegd, wilt u eerst enkele of al uw films importeren?",
     "ForMoreInformationOnTheIndividualIndexers": "Voor meer informatie over de individuele indexeerders, klik op de info knoppen.",
     "ForMoreInformationOnTheIndividualImportListsClinkOnTheInfoButtons": "Voor meer informatie over de individuele lijsten, klik op de info knoppen.",
-    "ForMoreInformationOnTheIndividualDownloadClients": "Voor meer informatie over de individuele downloaders, klik op de info knoppen.",
+    "ForMoreInformationOnTheIndividualDownloadClients": "Voor meer informatie over de individuele download applicaties, klik op de info knoppen.",
     "FailedLoadingSearchResults": "Laden van zoekresultaten is mislukt, gelieve opnieuw te proberen.",
     "ExtraFileExtensionsHelpTexts1": "Komma gescheiden lijst met extra bestanden om te importeren (.nfo zal als .nfo-orig worden geïmporteerd)",
     "CouldNotFindResults": "Kon geen resultaten vinden voor '{0}'",
@@ -1115,6 +1115,6 @@
     "CollectionShowDetailsHelpText": "Collectie status en details weergeven",
     "CollectionShowOverviewsHelpText": "Collectieoverzicht weergeven",
     "EditCollection": "Bewerk collectie",
-    "BypassDelayIfHighestQualityHelpText": "Vertraging ignoreren wanneer een release de hoogst ingeschakelde kwaliteit heeft in het kwialiteitsprofiel van het geprefereerde protocol",
+    "BypassDelayIfHighestQualityHelpText": "Vertraging negeren wanneer een release de hoogst mogelijke kwaliteit heeft in het kwaliteitsprofiel van het geprefereerde protocol",
     "CollectionShowPostersHelpText": "Posters van de collectie tonen"
 }

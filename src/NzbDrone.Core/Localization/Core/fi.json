@@ -1153,5 +1153,6 @@
     "SettingsThemeHelpText": "Vaihda sovelluksen käyttöliittymän ulkoasua. \"Automaattinen\" vaihtaa vaalean ja tumman tilan käyttöjärjestelmäsi teemaa vastaavaksi. Innoittanut Theme.Park.",
     "AreYouSureYouWantToResetQualityDefinitions": "Haluatko varmasti palauttaa laatumääritykset?",
     "ResetDefinitions": "Palauta määritykset",
-    "ResetTitlesHelpText": "Palauta määritysten nimet ja arvot."
+    "ResetTitlesHelpText": "Palauta määritysten nimet ja arvot.",
+    "RSSHelpText": "Käytetään etsittäessä julkaisuja RSS-syötteistä ajoitetusti."
 }

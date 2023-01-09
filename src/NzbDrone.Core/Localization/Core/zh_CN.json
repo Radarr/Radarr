@@ -1148,10 +1148,11 @@
     "BindAddressHelpText": "有效的 IP 地址，localhost，或以'*'代表所有地址",
     "PreferredProtocol": "首选协议",
     "AreYouSureYouWantToResetQualityDefinitions": "确定要重置质量定义吗？",
-    "SettingsThemeHelpText": "更改程序界面主题，“自动”主题将根据您的操作系统主题来设置浅色或深色模式。",
+    "SettingsThemeHelpText": "更改程序界面主题，“自动”主题将根据您的操作系统主题来设置浅色或深色模式。灵感来自Theme.Park",
     "ResetDefinitions": "重置定义",
     "ResetQualityDefinitions": "重置质量定义",
     "ResetTitles": "重置标题",
     "ResetTitlesHelpText": "重置定义标题与参数值",
-    "SettingsTheme": "主题"
+    "SettingsTheme": "主题",
+    "RSSHelpText": "当Radarr定期通过RSS同步查找发布时使用"
 }

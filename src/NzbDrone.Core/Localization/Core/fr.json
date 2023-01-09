@@ -1113,7 +1113,7 @@
     "SelectReleaseGroup": "Sélectionner le groupe de publication",
     "SetReleaseGroup": "Régler le groupe de publication",
     "RefreshMonitoredIntervalHelpText": "Intervalle en minutes entre chaque vérification des téléchargements, minimum 1 minute",
-    "AllCollectionsHiddenDueToFilter": "Tous les films sont masqués en raison du filtre appliqué.",
+    "AllCollectionsHiddenDueToFilter": "Toutes les collections sont masquées en raison du filtre appliqué.",
     "Collections": "Collections",
     "MonitorMovies": "Surveiller le film",
     "NoCollections": "Aucun film trouvé, pour commencer, vous voudrez ajouter un nouveau film ou importer des films existants.",
