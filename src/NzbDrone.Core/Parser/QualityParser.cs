@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Parser
                                                                 (?<scr>SCR|SCREENER|DVDSCR|DVDSCREENER)|
                                                                 (?<ts>TS[-_. ]|TELESYNC|HD-TS|HDTS|PDVD|TSRip|HDTSRip)|
                                                                 (?<tc>TC|TELECINE|HD-TC|HDTC)|
-                                                                (?<cam>CAMRIP|CAM|HDCAM|HQCAM|HD-CAM)|
+                                                                (?<cam>CAMRIP|CAM|HD-?CAM(?:Rip)?|HQCAM)|
                                                                 (?<wp>WORKPRINT|WP)|
                                                                 (?<pdtv>PDTV)|
                                                                 (?<sdtv>SDTV)|
