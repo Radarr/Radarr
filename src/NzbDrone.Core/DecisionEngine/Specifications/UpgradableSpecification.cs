@@ -144,7 +144,13 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
                 return true;
             }
 
-            return false;
+            if ((isQualityUpgrade || isCustomFormatUpgrade) && !qualityProfile.UpgradeAllowed)
+            {
+                _logger.Debug("Quality profile does not allow upgrades, skipping");
+                return false;
+            }
+
+            return true;
         }
     }
 }
