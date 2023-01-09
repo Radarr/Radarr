@@ -134,5 +134,9 @@
     "webpack-cli": "4.9.1",
     "webpack-livereload-plugin": "3.0.2",
     "worker-loader": "3.0.8"
+  },
+  "volta": {
+    "node": "16.17.0",
+    "yarn": "1.22.19"
   }
 }
