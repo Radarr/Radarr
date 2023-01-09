@@ -34,8 +34,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
                 if (qualityCompare < 0)
                 {
-                    _logger.Debug("This file isn't a quality upgrade for movie. Skipping {0}", localMovie.Path);
-                    return Decision.Reject("Not a quality upgrade for existing movie file(s)");
+                    _logger.Debug("This file isn't a quality upgrade for movie. New Quality is {0}. Skipping {1}", localMovie.Quality.Quality, localMovie.Path);
+                    return Decision.Reject("Not an upgrade for existing movie file. New Quality is {0}", localMovie.Quality.Quality);
                 }
             }
 
