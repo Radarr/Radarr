@@ -90,7 +90,7 @@ class CustomFormat extends Component {
             {name}
           </div>
 
-          <div>
+          <div className={styles.buttons}>
             <IconButton
               className={styles.cloneButton}
               title={translate('CloneCustomFormat')}
@@ -124,6 +124,7 @@ class CustomFormat extends Component {
 
               return (
                 <Label
+                  className={styles.label}
                   key={index}
                   kind={kind}
                 >

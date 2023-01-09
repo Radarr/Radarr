@@ -17,6 +17,10 @@
   font-size: 24px;
 }
 
+.buttons {
+  flex: 0 0 auto;
+}
+
 .cloneButton {
   composes: button from '~Components/Link/IconButton.css';
 
@@ -35,4 +39,11 @@
 
   margin: 0;
   border: none;
+}
+
+.label {
+  @add-mixin truncate;
+  composes: label from '~Components/Label.css';
+
+  max-width: 100%;
 }
