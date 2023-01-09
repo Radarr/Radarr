@@ -1153,5 +1153,6 @@
     "ResetDefinitions": "Definíciók visszaállítása",
     "ResetQualityDefinitions": "Állítsd vissza a minőségi meghatározásokat",
     "ResetTitles": "Címek visszaállítása",
-    "ResetTitlesHelpText": "A definíciócímek és értékek visszaállítása"
+    "ResetTitlesHelpText": "A definíciócímek és értékek visszaállítása",
+    "RSSHelpText": "Akkor használatos, amikor a Radarr rendszeresen keres kiadásokat az RSS Sync segítségével"
 }
