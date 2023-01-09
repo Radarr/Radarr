@@ -343,9 +343,12 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
 
                         if (movieFile.MediaInfo.Subtitles != null && movieFile.MediaInfo.Subtitles.Count > 0)
                         {
-                            var subtitle = new XElement("subtitle");
-                            subtitle.Add(new XElement("language", movieFile.MediaInfo.Subtitles));
-                            streamDetails.Add(subtitle);
+                            foreach (var s in movieFile.MediaInfo.Subtitles)
+                            {
+                                var subtitle = new XElement("subtitle");
+                                subtitle.Add(new XElement("language", s));
+                                streamDetails.Add(subtitle);
+                            }
                         }
 
                         fileInfo.Add(streamDetails);
