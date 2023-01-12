@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Movies
                             AddMethod = AddMovieMethod.Collection
                         },
                         Monitored = true
-                    }).ToList());
+                    }).ToList(), true);
                 }
             }
         }
