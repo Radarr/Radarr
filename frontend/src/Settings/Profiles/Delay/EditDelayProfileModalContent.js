@@ -67,6 +67,8 @@ function EditDelayProfileModalContent(props) {
     usenetDelay,
     torrentDelay,
     bypassIfHighestQuality,
+    bypassIfAboveCustomFormatScore,
+    minimumCustomFormatScore,
     tags
   } = item;
 
@@ -108,7 +110,7 @@ function EditDelayProfileModalContent(props) {
               </FormGroup>
 
               {
-                enableUsenet.value &&
+                enableUsenet.value ?
                   <FormGroup>
                     <FormLabel>{translate('UsenetDelay')}</FormLabel>
 
@@ -120,11 +122,12 @@ function EditDelayProfileModalContent(props) {
                       helpText={translate('UsenetDelayHelpText')}
                       onChange={onInputChange}
                     />
-                  </FormGroup>
+                  </FormGroup> :
+                  null
               }
 
               {
-                enableTorrent.value &&
+                enableTorrent.value ?
                   <FormGroup>
                     <FormLabel>{translate('TorrentDelay')}</FormLabel>
 
@@ -136,21 +139,48 @@ function EditDelayProfileModalContent(props) {
                       helpText={translate('TorrentDelayHelpText')}
                       onChange={onInputChange}
                     />
-                  </FormGroup>
+                  </FormGroup> :
+                  null
               }
 
-              {
-                <FormGroup>
-                  <FormLabel>{translate('BypassDelayIfHighestQuality')}</FormLabel>
+              <FormGroup>
+                <FormLabel>{translate('BypassDelayIfHighestQuality')}</FormLabel>
 
-                  <FormInputGroup
-                    type={inputTypes.CHECK}
-                    name="bypassIfHighestQuality"
-                    {...bypassIfHighestQuality}
-                    helpText={translate('BypassDelayIfHighestQualityHelpText')}
-                    onChange={onInputChange}
-                  />
-                </FormGroup>
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="bypassIfHighestQuality"
+                  {...bypassIfHighestQuality}
+                  helpText={translate('BypassDelayIfHighestQualityHelpText')}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <FormLabel>{translate('BypassDelayIfAboveCustomFormatScore')}</FormLabel>
+
+                <FormInputGroup
+                  type={inputTypes.CHECK}
+                  name="bypassIfAboveCustomFormatScore"
+                  {...bypassIfAboveCustomFormatScore}
+                  helpText={translate('BypassDelayIfAboveCustomFormatScoreHelpText')}
+                  onChange={onInputChange}
+                />
+              </FormGroup>
+
+              {
+                bypassIfAboveCustomFormatScore.value ?
+                  <FormGroup>
+                    <FormLabel>{translate('BypassDelayIfAboveCustomFormatScoreMinimumScore')}</FormLabel>
+
+                    <FormInputGroup
+                      type={inputTypes.NUMBER}
+                      name="minimumCustomFormatScore"
+                      {...minimumCustomFormatScore}
+                      helpText={translate('BypassDelayIfAboveCustomFormatScoreMinimumScoreHelpText')}
+                      onChange={onInputChange}
+                    />
+                  </FormGroup> :
+                  null
               }
 
               {
