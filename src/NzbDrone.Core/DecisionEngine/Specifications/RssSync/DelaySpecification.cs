@@ -89,6 +89,19 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
                 }
             }
 
+            // If quality meets or exceeds the best allowed quality in the profile accept it immediately
+            if (delayProfile.BypassIfAboveCustomFormatScore)
+            {
+                var score = subject.CustomFormatScore;
+                var minimum = delayProfile.MinimumCustomFormatScore;
+
+                if (score >= minimum && isPreferredProtocol)
+                {
+                    _logger.Debug("Custom format score ({0}) meets minimum ({1}) for preferred protocol, will not delay", score, minimum);
+                    return Decision.Accept();
+                }
+            }
+
             var oldest = _pendingReleaseService.OldestPendingRelease(subject.Movie.Id);
 
             if (oldest != null && oldest.Release.AgeMinutes > delay)

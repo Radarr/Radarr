@@ -106,9 +106,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_false_when_quality_is_last_allowed_in_profile_and_bypass_disabled()
         {
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
             _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray720p);
 
-            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
+            _delayProfile.UsenetDelay = 720;
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
@@ -116,8 +117,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
         [Test]
         public void should_be_true_when_quality_is_last_allowed_in_profile_and_bypass_enabled()
         {
+            _delayProfile.UsenetDelay = 720;
             _delayProfile.BypassIfHighestQuality = true;
 
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
             _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.Bluray720p);
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
@@ -192,6 +195,44 @@ namespace NzbDrone.Core.Test.DecisionEngineTests.RssSync
             _delayProfile.UsenetDelay = 720;
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_be_false_when_custom_format_score_is_above_minimum_but_bypass_disabled()
+        {
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
+            _remoteMovie.CustomFormatScore = 100;
+
+            _delayProfile.UsenetDelay = 720;
+            _delayProfile.MinimumCustomFormatScore = 50;
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_be_false_when_custom_format_score_is_above_minimum_and_bypass_enabled_but_under_minimum()
+        {
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
+            _remoteMovie.CustomFormatScore = 5;
+
+            _delayProfile.UsenetDelay = 720;
+            _delayProfile.BypassIfAboveCustomFormatScore = true;
+            _delayProfile.MinimumCustomFormatScore = 50;
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
+        }
+
+        [Test]
+        public void should_be_true_when_custom_format_score_is_above_minimum_and_bypass_enabled()
+        {
+            _remoteMovie.Release.PublishDate = DateTime.UtcNow;
+            _remoteMovie.CustomFormatScore = 100;
+
+            _delayProfile.UsenetDelay = 720;
+            _delayProfile.BypassIfAboveCustomFormatScore = true;
+            _delayProfile.MinimumCustomFormatScore = 50;
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
         }
     }
 }
