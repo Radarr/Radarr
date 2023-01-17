@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
         public void should_return_warning_when_download_client_has_not_been_configured()
         {
             Mocker.GetMock<IProvideDownloadClient>()
-                  .Setup(s => s.GetDownloadClients())
+                  .Setup(s => s.GetDownloadClients(It.IsAny<bool>()))
                   .Returns(Array.Empty<IDownloadClient>());
 
             Subject.Check().ShouldBeWarning();
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                           .Throws<Exception>();
 
             Mocker.GetMock<IProvideDownloadClient>()
-                  .Setup(s => s.GetDownloadClients())
+                  .Setup(s => s.GetDownloadClients(It.IsAny<bool>()))
                   .Returns(new IDownloadClient[] { downloadClient.Object });
 
             Subject.Check().ShouldBeError();
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
                           .Returns(new List<DownloadClientItem>());
 
             Mocker.GetMock<IProvideDownloadClient>()
-                  .Setup(s => s.GetDownloadClients())
+                  .Setup(s => s.GetDownloadClients(It.IsAny<bool>()))
                   .Returns(new IDownloadClient[] { downloadClient.Object });
 
             Subject.Check().ShouldBeOk();
