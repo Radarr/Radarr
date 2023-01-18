@@ -24,7 +24,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 {
     [TestFixture]
 
-    //TODO: Update all of this for movies.
+    // TODO: Update all of this for movies.
     public class ImportApprovedMoviesFixture : CoreTest<ImportApprovedMovie>
     {
         private List<ImportDecision> _rejectedDecisions;

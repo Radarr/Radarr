@@ -46,7 +46,7 @@ namespace Radarr.Api.V3.MovieFiles
                 MovieId = model.MovieId,
                 RelativePath = model.RelativePath,
 
-                //Path
+                // Path
                 Size = model.Size,
                 DateAdded = model.DateAdded,
                 SceneName = model.SceneName,

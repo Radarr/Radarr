@@ -59,8 +59,8 @@ namespace Radarr.Api.V3.Config
                 AuthenticationMethod = model.AuthenticationMethod,
                 AnalyticsEnabled = model.AnalyticsEnabled,
 
-                //Username
-                //Password
+                // Username
+                // Password
                 LogLevel = model.LogLevel,
                 ConsoleLogLevel = model.ConsoleLogLevel,
                 Branch = model.Branch,

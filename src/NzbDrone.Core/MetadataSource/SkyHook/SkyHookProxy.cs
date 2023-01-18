@@ -219,7 +219,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
             movie.Year = resource.Year;
 
-            //If the premier differs from the TMDB year, use it as a secondary year.
+            // If the premier differs from the TMDB year, use it as a secondary year.
             if (resource.Premier.HasValue && resource.Premier?.Year != movie.Year)
             {
                 movie.SecondaryYear = resource.Premier?.Year;
@@ -244,10 +244,10 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
             movie.Genres = resource.Genres;
             movie.Images = resource.Images.Select(MapImage).ToList();
 
-            //movie.Genres = resource.Genres;
+            // movie.Genres = resource.Genres;
             movie.Recommendations = resource.Recommendations?.Select(r => r.TmdbId).ToList() ?? new List<int>();
 
-            //Workaround due to metadata change until cache cleans up
+            // Workaround due to metadata change until cache cleans up
             if (movie.Ratings.Tmdb == null)
             {
                 var tmdbRating = resource.Ratings.FirstOrDefault();
@@ -387,8 +387,8 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
 
                 if (parserResult != null && parserResult.PrimaryMovieTitle != title)
                 {
-                    //Parser found something interesting!
-                    parserTitle = parserResult.PrimaryMovieTitle.ToLower().Replace(".", " "); //TODO Update so not every period gets replaced (e.g. R.I.P.D.)
+                    // Parser found something interesting!
+                    parserTitle = parserResult.PrimaryMovieTitle.ToLower().Replace(".", " "); // TODO Update so not every period gets replaced (e.g. R.I.P.D.)
                     if (parserResult.Year > 1800)
                     {
                         yearTerm = parserResult.Year.ToString();

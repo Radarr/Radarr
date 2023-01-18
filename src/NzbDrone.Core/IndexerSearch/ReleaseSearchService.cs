@@ -85,7 +85,7 @@ namespace NzbDrone.Core.IndexerSearch
                 movie.MovieMetadata.Value.OriginalTitle
             };
 
-            //Add Translation of wanted languages to search query
+            // Add Translation of wanted languages to search query
             foreach (var translation in translations.Where(a => wantedLanguages.Contains(a.Language)))
             {
                 queryTranlations.Add(translation.Title);

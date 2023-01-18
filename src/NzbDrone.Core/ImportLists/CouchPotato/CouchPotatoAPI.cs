@@ -41,7 +41,7 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
         public string[] actors { get; set; }
         public string[] writers { get; set; }
 
-        //public int? runtime { get; set; }
+        // public int? runtime { get; set; }
         public string type { get; set; }
         public string released { get; set; }
     }

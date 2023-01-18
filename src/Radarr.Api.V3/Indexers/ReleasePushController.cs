@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,8 @@ namespace Radarr.Api.V3.Indexers
         private readonly IProcessDownloadDecisions _downloadDecisionProcessor;
         private readonly IIndexerFactory _indexerFactory;
         private readonly Logger _logger;
+
+        private static readonly object PushLock = new object();
 
         public ReleasePushController(IMakeDownloadDecision downloadDecisionMaker,
                                  IProcessDownloadDecisions downloadDecisionProcessor,
@@ -54,8 +57,13 @@ namespace Radarr.Api.V3.Indexers
 
             ResolveIndexer(info);
 
-            var decisions = _downloadDecisionMaker.GetRssDecision(new List<ReleaseInfo> { info });
-            _downloadDecisionProcessor.ProcessDecisions(decisions);
+            List<DownloadDecision> decisions;
+
+            lock (PushLock)
+            {
+                decisions = _downloadDecisionMaker.GetRssDecision(new List<ReleaseInfo> { info });
+                _downloadDecisionProcessor.ProcessDecisions(decisions);
+            }
 
             var firstDecision = decisions.FirstOrDefault();
 

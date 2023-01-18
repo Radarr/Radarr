@@ -55,7 +55,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
                 }
                 catch (Exception itemEx)
                 {
-                    //itemEx.Data.Add("Item", item.Title());
+                    // itemEx.Data.Add("Item", item.Title());
                     _logger.Error(itemEx, "An error occurred while processing list feed item from {0}", importResponse.Request.Url);
                 }
             }
@@ -127,7 +127,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
 
             releaseInfo = ProcessItem(item, releaseInfo);
 
-            //_logger.Trace("Parsed: {0}", releaseInfo.Title);
+            // _logger.Trace("Parsed: {0}", releaseInfo.Title);
             return PostProcess(item, releaseInfo);
         }
 
@@ -142,7 +142,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
             }
 
             releaseInfo.Title = title;
-            var result = Parser.Parser.ParseMovieTitle(title); //Depreciated anyways
+            var result = Parser.Parser.ParseMovieTitle(title); // Depreciated anyways
 
             if (result != null)
             {

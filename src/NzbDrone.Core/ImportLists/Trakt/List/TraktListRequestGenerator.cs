@@ -36,7 +36,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.List
             var listName = Parser.Parser.ToUrlSlug(Settings.Listname.Trim(), true, "-", "-");
             link += $"users/{Settings.Username.Trim()}/lists/{listName}/items/movies?limit={Settings.Limit}";
 
-            var request = new ImportListRequest(_traktProxy.BuildTraktRequest(link, HttpMethod.Get, Settings.AccessToken));
+            var request = new ImportListRequest(_traktProxy.BuildRequest(link, HttpMethod.Get, Settings.AccessToken));
 
             yield return request;
         }

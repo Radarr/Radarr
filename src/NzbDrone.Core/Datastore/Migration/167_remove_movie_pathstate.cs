@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             Alter.Table("MovieFiles").AddColumn("OriginalFilePath").AsString().Nullable();
 
-            //This is Ignored in mapping, should not be in DB
+            // This is Ignored in mapping, should not be in DB
             Delete.Column("Path").FromTable("MovieFiles");
         }
     }

@@ -71,7 +71,7 @@ namespace NzbDrone.Core.ImportLists
                 if (blockedLists.TryGetValue(importList.Definition.Id, out ImportListStatus blockedListStatus))
                 {
                     _logger.Debug("Temporarily ignoring list {0} till {1} due to recent failures.", importList.Definition.Name, blockedListStatus.DisabledTill.Value.ToLocalTime());
-                    result.AnyFailure |= true; //Ensure we don't clean if a list is down
+                    result.AnyFailure |= true; // Ensure we don't clean if a list is down
                     continue;
                 }
 

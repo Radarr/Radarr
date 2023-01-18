@@ -4,6 +4,6 @@
   width: 15px;
 
   &:hover {
-    color: $iconButtonHoverLightColor;
+    color: var(--iconButtonHoverLightColor);
   }
 }

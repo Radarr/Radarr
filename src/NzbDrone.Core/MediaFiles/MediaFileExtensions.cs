@@ -12,10 +12,10 @@ namespace NzbDrone.Core.MediaFiles
         {
             _fileExtensions = new Dictionary<string, Quality>(StringComparer.OrdinalIgnoreCase)
             {
-                //Unknown
+                // Unknown
                 { ".webm", Quality.Unknown },
 
-                //SDTV
+                // SDTV
                 { ".m4v", Quality.SDTV },
                 { ".3gp", Quality.SDTV },
                 { ".nsv", Quality.SDTV },
@@ -55,18 +55,18 @@ namespace NzbDrone.Core.MediaFiles
                 { ".flv", Quality.SDTV },
                 { ".wpl", Quality.SDTV },
 
-                //DVD
+                // DVD
                 { ".img", Quality.DVD },
                 { ".iso", Quality.DVD },
                 { ".vob", Quality.DVD },
 
-                //HD
+                // HD
                 { ".mkv", Quality.WEBDL720p },
                 { ".mk3d", Quality.WEBDL720p },
                 { ".ts", Quality.SDTV },
                 { ".wtv", Quality.SDTV },
 
-                //Bluray
+                // Bluray
                 { ".m2ts", Quality.Bluray720p }
             };
         }

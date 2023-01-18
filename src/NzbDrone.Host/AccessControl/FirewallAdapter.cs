@@ -5,7 +5,7 @@ using NLog;
 using NzbDrone.Common.EnvironmentInfo;
 using NzbDrone.Core.Configuration;
 
-namespace Radarr.Host.AccessControl
+namespace NzbDrone.Host.AccessControl
 {
     public interface IFirewallAdapter
     {
@@ -77,7 +77,7 @@ namespace Radarr.Host.AccessControl
                 var netFwMgrType = Type.GetTypeFromProgID("HNetCfg.FwMgr", false);
                 var mgr = (INetFwMgr)Activator.CreateInstance(netFwMgrType);
 
-                //Open the port for the standard profile, should help when the user has multiple network adapters
+                // Open the port for the standard profile, should help when the user has multiple network adapters
                 mgr.LocalPolicy.GetProfileByType(FIREWALL_PROFILE).GloballyOpenPorts.Add(port);
             }
             catch (Exception ex)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SQLite;
 using NLog;
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Instrumentation
 
                 var connectionString = _connectionStringFactory.LogDbConnectionString;
 
-                //TODO: Probably need more robust way to differentiate what's being used
+                // TODO: Probably need more robust way to differentiate what's being used
                 if (connectionString.Contains(".db"))
                 {
                     WriteSqliteLog(log, connectionString);
@@ -96,6 +96,11 @@ namespace NzbDrone.Core.Instrumentation
                 {
                     WritePostgresLog(log, connectionString);
                 }
+            }
+            catch (NpgsqlException ex)
+            {
+                InternalLogger.Error("Unable to save log event to database: {0}", ex);
+                throw;
             }
             catch (SQLiteException ex)
             {
@@ -128,10 +133,8 @@ namespace NzbDrone.Core.Instrumentation
         private void WriteSqliteLog(Log log, string connectionString)
         {
             using (var connection =
-                SQLiteFactory.Instance.CreateConnection())
+                new SQLiteConnection(connectionString).OpenAndReturn())
             {
-                connection.ConnectionString = connectionString;
-                connection.Open();
                 using (var sqlCommand = connection.CreateCommand())
                 {
                     sqlCommand.CommandText = INSERT_COMMAND;

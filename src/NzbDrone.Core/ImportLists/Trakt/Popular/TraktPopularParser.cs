@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.ImportLists.ImportListMovies;
 using NzbDrone.Core.Notifications.Trakt.Resource;
 
@@ -31,11 +31,11 @@ namespace NzbDrone.Core.ImportLists.Trakt.Popular
 
             if (_settings.TraktListType == (int)TraktPopularListType.Popular)
             {
-                jsonResponse = JsonConvert.DeserializeObject<List<TraktMovieResource>>(_importResponse.Content);
+                jsonResponse = STJson.Deserialize<List<TraktMovieResource>>(_importResponse.Content);
             }
             else
             {
-                jsonResponse = JsonConvert.DeserializeObject<List<TraktListResource>>(_importResponse.Content).SelectList(c => c.Movie);
+                jsonResponse = STJson.Deserialize<List<TraktListResource>>(_importResponse.Content).SelectList(c => c.Movie);
             }
 
             // no movies were return

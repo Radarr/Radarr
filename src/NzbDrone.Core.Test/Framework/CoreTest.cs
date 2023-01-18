@@ -32,13 +32,13 @@ namespace NzbDrone.Core.Test.Framework
             Mocker.SetConstant<IRadarrCloudRequestBuilder>(new RadarrCloudRequestBuilder());
         }
 
-        //Used for tests that rely on parsing working correctly.
+        // Used for tests that rely on parsing working correctly.
         protected void UseRealParsingService()
         {
-            //Mocker.SetConstant<IParsingService>(new ParsingService(Mocker.Resolve<MovieService>(), Mocker.Resolve<ConfigService>(), Mocker.Resolve<QualityDefinitionService>(), TestLogger));
+            // Mocker.SetConstant<IParsingService>(new ParsingService(Mocker.Resolve<MovieService>(), Mocker.Resolve<ConfigService>(), Mocker.Resolve<QualityDefinitionService>(), TestLogger));
         }
 
-        //Used for tests that rely on parsing working correctly. Does some minimal parsing using the old static methods.
+        // Used for tests that rely on parsing working correctly. Does some minimal parsing using the old static methods.
         protected void ParseMovieTitle()
         {
             Mocker.GetMock<IParsingService>().Setup(c => c.ParseMovieInfo(It.IsAny<string>(), It.IsAny<System.Collections.Generic.List<object>>()))

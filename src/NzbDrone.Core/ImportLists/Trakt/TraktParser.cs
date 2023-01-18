@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Net;
-using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Common.Serializer;
 using NzbDrone.Core.ImportLists.Exceptions;
 using NzbDrone.Core.ImportLists.ImportListMovies;
 using NzbDrone.Core.Notifications.Trakt.Resource;
@@ -27,7 +27,7 @@ namespace NzbDrone.Core.ImportLists.Trakt
                 return movies;
             }
 
-            var jsonResponse = JsonConvert.DeserializeObject<List<TraktListResource>>(_importResponse.Content);
+            var jsonResponse = STJson.Deserialize<List<TraktListResource>>(_importResponse.Content);
 
             // no movies were return
             if (jsonResponse == null)

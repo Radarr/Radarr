@@ -77,25 +77,25 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
         private int GetMinimumAllowedRuntime(MovieMetadata movie)
         {
-            //Anime short - 15 seconds
+            // Anime short - 15 seconds
             if (movie.Runtime <= 3)
             {
                 return 15;
             }
 
-            //Webisodes - 90 seconds
+            // Webisodes - 90 seconds
             if (movie.Runtime <= 10)
             {
                 return 90;
             }
 
-            //30 minute episodes - 5 minutes
+            // 30 minute episodes - 5 minutes
             if (movie.Runtime <= 30)
             {
                 return 300;
             }
 
-            //60 minute episodes - 10 minutes
+            // 60 minute episodes - 10 minutes
             return 600;
         }
     }

@@ -14,8 +14,8 @@ using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Datastore.Extensions;
 using NzbDrone.Core.Lifecycle;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Host;
 using NzbDrone.Test.Common;
-using Radarr.Host;
 
 namespace NzbDrone.Common.Test
 {

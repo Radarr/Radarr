@@ -48,7 +48,7 @@ namespace NzbDrone.Core.ImportLists.RadarrList
             }
             catch (JsonSerializationException)
             {
-                //No error!
+                // No error!
             }
 
             if (importListResponse.HttpResponse.StatusCode != System.Net.HttpStatusCode.OK)

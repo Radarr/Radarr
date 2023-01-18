@@ -42,7 +42,7 @@ namespace NzbDrone.Core.ImportLists.Trakt.User
                     break;
             }
 
-            var request = new ImportListRequest(_traktProxy.BuildTraktRequest(link, HttpMethod.Get, Settings.AccessToken));
+            var request = new ImportListRequest(_traktProxy.BuildRequest(link, HttpMethod.Get, Settings.AccessToken));
 
             yield return request;
         }

@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.MovieTests
             _movie.MinimumAvailability = minimumAvailability;
         }
 
-        //minAvail = TBA
+        // minAvail = TBA
         [TestCase(null, null, null, MovieStatusType.TBA, true)]
         [TestCase("2000/01/01 21:10:42", null, null, MovieStatusType.TBA, true)]
         [TestCase("2100/01/01 21:10:42", null, null, MovieStatusType.TBA, true)]
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.MovieTests
         [TestCase(null, null, "2000/01/01 21:10:42", MovieStatusType.TBA, true)]
         [TestCase(null, null, "2100/01/01 21:10:42", MovieStatusType.TBA, true)]
 
-        //minAvail = Announced
+        // minAvail = Announced
         [TestCase(null, null, null, MovieStatusType.Announced, true)]
         [TestCase("2000/01/01 21:10:42", null, null, MovieStatusType.Announced, true)]
         [TestCase("2100/01/01 21:10:42", null, null, MovieStatusType.Announced, true)]
@@ -45,33 +45,33 @@ namespace NzbDrone.Core.Test.MovieTests
         [TestCase(null, null, "2000/01/01 21:10:42", MovieStatusType.Announced, true)]
         [TestCase(null, null, "2100/01/01 21:10:42", MovieStatusType.Announced, true)]
 
-        //minAvail = InCinemas
-        //InCinemas is known and in the past others are not known or in future
+        // minAvail = InCinemas
+        // InCinemas is known and in the past others are not known or in future
         [TestCase("2000/01/01 21:10:42", null, null, MovieStatusType.InCinemas, true)]
         [TestCase("2000/01/01 21:10:42", "2100/01/01 21:10:42", null, MovieStatusType.InCinemas, true)]
         [TestCase("2000/01/01 21:10:42", "2100/01/01 21:10:42", "2100/01/01 21:10:42", MovieStatusType.InCinemas, true)]
         [TestCase("2000/01/01 21:10:42", null, "2100/01/01 21:10:42", MovieStatusType.InCinemas, true)]
 
-        //InCinemas is known and in the future others are not known or in future
+        // InCinemas is known and in the future others are not known or in future
         [TestCase("2100/01/01 21:10:42", null, null, MovieStatusType.InCinemas, false)]
         [TestCase("2100/01/01 21:10:42", "2100/01/01 21:10:42", null, MovieStatusType.InCinemas, false)]
         [TestCase("2100/01/01 21:10:42", "2100/01/01 21:10:42", "2100/01/01 21:10:42", MovieStatusType.InCinemas, false)]
         [TestCase("2100/01/01 21:10:42", null, "2100/01/01 21:10:42", MovieStatusType.InCinemas, false)]
 
-        //handle the cases where InCinemas date is not known but Digital/Physical are and passed -- this refers to the issue being fixed along with these tests
+        // handle the cases where InCinemas date is not known but Digital/Physical are and passed -- this refers to the issue being fixed along with these tests
         [TestCase(null, "2000/01/01 21:10:42", null, MovieStatusType.InCinemas, true)]
         [TestCase(null, "2000/01/01 21:10:42", "2000/01/01 21:10:42", MovieStatusType.InCinemas, true)]
         [TestCase(null, null, "2000/01/01 21:10:42", MovieStatusType.InCinemas, true)]
 
-        //same as previous but digital/physical are in future
+        // same as previous but digital/physical are in future
         [TestCase(null, "2100/01/01 21:10:42", null, MovieStatusType.InCinemas, false)]
         [TestCase(null, "2100/01/01 21:10:42", "2100/01/01 21:10:42", MovieStatusType.InCinemas, false)]
         [TestCase(null, null, "2100/01/01 21:10:42", MovieStatusType.InCinemas, false)]
 
-        //no date values
+        // no date values
         [TestCase(null, null, null, MovieStatusType.InCinemas, false)]
 
-        //minAvail = Released
+        // minAvail = Released
         [TestCase(null, null, null, MovieStatusType.Released, false)]
         [TestCase("2000/01/01 21:10:42", null, null, MovieStatusType.Released, true)]
         [TestCase("2100/01/01 21:10:42", null, null, MovieStatusType.Released, false)]

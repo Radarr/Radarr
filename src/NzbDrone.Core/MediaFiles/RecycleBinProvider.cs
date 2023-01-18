@@ -185,7 +185,7 @@ namespace NzbDrone.Core.MediaFiles
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    //Handle and log permissions errors, move to next file
+                    // Handle and log permissions errors, move to next file
                     _logger.Error(ex.Message);
                     continue;
                 }

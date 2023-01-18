@@ -112,7 +112,7 @@ namespace NzbDrone.Core.Movies
             movieMetadata.Runtime = movieInfo.Runtime;
             movieMetadata.Ratings = movieInfo.Ratings;
 
-            //movie.Genres = movieInfo.Genres;
+            // movie.Genres = movieInfo.Genres;
             movieMetadata.Certification = movieInfo.Certification;
             movieMetadata.InCinemas = movieInfo.InCinemas;
             movieMetadata.Website = movieInfo.Website;

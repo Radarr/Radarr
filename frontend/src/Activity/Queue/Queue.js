@@ -75,13 +75,23 @@ class Queue extends Component {
       return;
     }
 
+    const nextState = {};
+
+    if (prevProps.items !== items) {
+      nextState.items = items;
+    }
+
     const selectedIds = this.getSelectedIds();
     const isPendingSelected = _.some(this.props.items, (item) => {
       return selectedIds.indexOf(item.id) > -1 && item.status === 'delay';
     });
 
     if (isPendingSelected !== this.state.isPendingSelected) {
-      this.setState({ isPendingSelected });
+      nextState.isPendingSelected = isPendingSelected;
+    }
+
+    if (!_.isEmpty(nextState)) {
+      this.setState(nextState);
     }
   }
 
@@ -214,26 +224,29 @@ class Queue extends Component {
 
         <PageContentBody>
           {
-            isRefreshing && !isAllPopulated &&
-              <LoadingIndicator />
+            isRefreshing && !isAllPopulated ?
+              <LoadingIndicator /> :
+              null
           }
 
           {
-            !isRefreshing && hasError &&
+            !isRefreshing && hasError ?
               <div>
                 {translate('FailedToLoadQueue')}
-              </div>
+              </div> :
+              null
           }
 
           {
-            isAllPopulated && !hasError && !items.length &&
+            isAllPopulated && !hasError && !items.length ?
               <div>
                 {translate('QueueIsEmpty')}
-              </div>
+              </div> :
+              null
           }
 
           {
-            isAllPopulated && !hasError && !!items.length &&
+            isAllPopulated && !hasError && !!items.length ?
               <div>
                 <Table
                   columns={columns}
@@ -268,7 +281,8 @@ class Queue extends Component {
                   isFetching={isRefreshing}
                   {...otherProps}
                 />
-              </div>
+              </div> :
+              null
           }
         </PageContentBody>
 

@@ -21,11 +21,11 @@ namespace Radarr.Api.V3.Movies
             MinimumAvailability = MovieStatusType.Released;
         }
 
-        //Todo: Sorters should be done completely on the client
-        //Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
-        //Todo: We should get the entire Profile instead of ID and Name separately
+        // Todo: Sorters should be done completely on the client
+        // Todo: Is there an easy way to keep IgnoreArticlesWhenSorting in sync between, Series, History, Missing?
+        // Todo: We should get the entire Profile instead of ID and Name separately
 
-        //View Only
+        // View Only
         public string Title { get; set; }
         public string OriginalTitle { get; set; }
         public Language OriginalLanguage { get; set; }
@@ -43,18 +43,18 @@ namespace Radarr.Api.V3.Movies
         public List<MediaCover> Images { get; set; }
         public string Website { get; set; }
 
-        //public bool Downloaded { get; set; }
+        // public bool Downloaded { get; set; }
         public string RemotePoster { get; set; }
         public int Year { get; set; }
         public bool HasFile { get; set; }
         public string YouTubeTrailerId { get; set; }
         public string Studio { get; set; }
 
-        //View & Edit
+        // View & Edit
         public string Path { get; set; }
         public int QualityProfileId { get; set; }
 
-        //Editing Only
+        // Editing Only
         public bool Monitored { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
         public bool IsAvailable { get; set; }

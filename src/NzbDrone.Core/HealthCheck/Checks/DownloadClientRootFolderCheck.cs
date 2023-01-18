@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.Http;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore.Events;
@@ -37,7 +38,9 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var clients = _downloadClientProvider.GetDownloadClients();
+            // Only check clients not in failure status, those get another message
+            var clients = _downloadClientProvider.GetDownloadClients(true);
+
             var rootFolders = _rootFolderService.All();
 
             foreach (var client in clients)
@@ -55,6 +58,10 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     }
                 }
                 catch (DownloadClientException ex)
+                {
+                    _logger.Debug(ex, "Unable to communicate with {0}", client.Definition.Name);
+                }
+                catch (HttpRequestException ex)
                 {
                     _logger.Debug(ex, "Unable to communicate with {0}", client.Definition.Name);
                 }

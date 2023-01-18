@@ -93,7 +93,7 @@ namespace NzbDrone.Core.DecisionEngine
                         if (result == null)
                         {
                             result = new MappingResult { MappingResultType = MappingResultType.NotParsable };
-                            result.Movie = null; //To ensure we have a remote movie, else null exception on next line!
+                            result.Movie = null; // To ensure we have a remote movie, else null exception on next line!
                             result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
                         }
                     }
@@ -118,7 +118,7 @@ namespace NzbDrone.Core.DecisionEngine
                     {
                         if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
                         {
-                            //remoteMovie.DownloadAllowed = true;
+                            // remoteMovie.DownloadAllowed = true;
                             if (_configService.AllowHardcodedSubs)
                             {
                                 decision = GetDecisionForReport(remoteMovie, searchCriteria);

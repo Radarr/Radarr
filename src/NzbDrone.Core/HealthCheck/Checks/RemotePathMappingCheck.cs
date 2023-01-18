@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net.Http;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.EnvironmentInfo;
@@ -53,7 +54,8 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 return new HealthCheck(GetType());
             }
 
-            var clients = _downloadClientProvider.GetDownloadClients();
+            // Only check clients not in failure status, those get another message
+            var clients = _downloadClientProvider.GetDownloadClients(true);
 
             foreach (var client in clients)
             {
@@ -100,6 +102,10 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 {
                     _logger.Debug(ex, "Unable to communicate with {0}", client.Definition.Name);
                 }
+                catch (HttpRequestException ex)
+                {
+                    _logger.Debug(ex, "Unable to communicate with {0}", client.Definition.Name);
+                }
                 catch (Exception ex)
                 {
                     _logger.Error(ex, "Unknown error occured in RemotePathMapping HealthCheck");
@@ -139,7 +145,14 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
                 // If the previous case did not match then the failure occured in DownloadedMovieImportService,
                 // while trying to locate the files reported by the download client
-                var client = _downloadClientProvider.GetDownloadClients().FirstOrDefault(x => x.Definition.Name == failureMessage.DownloadClientInfo.Name);
+                // Only check clients not in failure status, those get another message
+                var client = _downloadClientProvider.GetDownloadClients(true).FirstOrDefault(x => x.Definition.Name == failureMessage.DownloadClientInfo.Name);
+
+                if (client == null)
+                {
+                    return new HealthCheck(GetType());
+                }
+
                 try
                 {
                     var status = client.GetStatus();
@@ -189,6 +202,10 @@ namespace NzbDrone.Core.HealthCheck.Checks
                     }
                 }
                 catch (DownloadClientException ex)
+                {
+                    _logger.Debug(ex, "Unable to communicate with {0}", client.Definition.Name);
+                }
+                catch (HttpRequestException ex)
                 {
                     _logger.Debug(ex, "Unable to communicate with {0}", client.Definition.Name);
                 }

@@ -48,7 +48,7 @@ namespace Radarr.Api.V3.ManualImport
                 Languages = model.Languages,
                 ReleaseGroup = model.ReleaseGroup,
 
-                //QualityWeight
+                // QualityWeight
                 DownloadId = model.DownloadId,
                 Rejections = model.Rejections
             };

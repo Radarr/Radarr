@@ -58,6 +58,7 @@ namespace NzbDrone.Core.Configuration
         string PostgresPassword { get; }
         string PostgresMainDb { get; }
         string PostgresLogDb { get; }
+        string Theme { get; }
     }
 
     public class ConfigFileProvider : IConfigFileProvider
@@ -197,6 +198,7 @@ namespace NzbDrone.Core.Configuration
 
         public string LogLevel => GetValue("LogLevel", "info").ToLowerInvariant();
         public string ConsoleLogLevel => GetValue("ConsoleLogLevel", string.Empty, persist: false);
+        public string Theme => GetValue("Theme", "auto", persist: false);
         public string PostgresHost => _postgresOptions?.Host ?? GetValue("PostgresHost", string.Empty, persist: false);
         public string PostgresUser => _postgresOptions?.User ?? GetValue("PostgresUser", string.Empty, persist: false);
         public string PostgresPassword => _postgresOptions?.Password ?? GetValue("PostgresPassword", string.Empty, persist: false);
@@ -270,13 +272,13 @@ namespace NzbDrone.Core.Configuration
                         return valueHolder.First().Value.Trim();
                     }
 
-                    //Save the value
+                    // Save the value
                     if (persist)
                     {
                         SetValue(key, defaultValue);
                     }
 
-                    //return the default value
+                    // return the default value
                     return defaultValue.ToString();
                 });
         }

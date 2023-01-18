@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.IndexerTests.PTPTests
             first.DownloadUrl.Should().Be("https://passthepopcorn.me/torrents.php?action=download&id=452135&authkey=00000000000000000000000000000000&torrent_pass=00000000000000000000000000000000");
             first.InfoUrl.Should().Be("https://passthepopcorn.me/torrents.php?id=148131&torrentid=452135");
 
-            //first.PublishDate.Should().Be(DateTime.Parse("2017-04-17T12:13:42+0000").ToUniversalTime()); stupid timezones
+            // first.PublishDate.Should().Be(DateTime.Parse("2017-04-17T12:13:42+0000").ToUniversalTime()); stupid timezones
             first.Size.Should().Be(2466170624L);
             first.InfoHash.Should().BeNullOrEmpty();
             first.MagnetUrl.Should().BeNullOrEmpty();

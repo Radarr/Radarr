@@ -69,12 +69,18 @@ namespace Radarr.Http.REST
 
                 foreach (var resource in resourceArgs)
                 {
+                    // Map route Id to body resource if not set in request
+                    if (Request.Method == "PUT" && resource.Id == 0 && context.RouteData.Values.TryGetValue("id", out var routeId))
+                    {
+                        resource.Id = Convert.ToInt32(routeId);
+                    }
+
                     ValidateResource(resource, skipValidate, skipShared);
                 }
             }
 
             var attributes = descriptor.MethodInfo.CustomAttributes;
-            if (attributes.Any(x => VALIDATE_ID_ATTRIBUTES.Contains(x.GetType())) && !skipValidate)
+            if (attributes.Any(x => VALIDATE_ID_ATTRIBUTES.Contains(x.AttributeType)) && !skipValidate)
             {
                 if (context.ActionArguments.TryGetValue("id", out var idObj))
                 {

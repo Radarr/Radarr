@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Movies.Collections
             newCollection = AddSkyhookData(newCollection);
             newCollection = SetPropertiesAndValidate(newCollection);
 
-            _logger.Info("Adding Collection {0}", newCollection);
+            _logger.Info("Adding Collection {0}[{1}]", newCollection.Title, newCollection.TmdbId);
 
             _collectionService.AddCollection(newCollection);
 

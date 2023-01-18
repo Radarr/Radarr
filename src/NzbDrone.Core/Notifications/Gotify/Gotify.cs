@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using FluentValidation.Results;
 using NLog;
+using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Gotify
@@ -20,39 +23,39 @@ namespace NzbDrone.Core.Notifications.Gotify
         public override string Name => "Gotify";
         public override string Link => "https://gotify.net/";
 
-        public override void OnGrab(GrabMessage grabMessage)
+        public override void OnGrab(GrabMessage message)
         {
-            _proxy.SendNotification(MOVIE_GRABBED_TITLE, grabMessage.Message, Settings);
+            SendNotification(MOVIE_GRABBED_TITLE, message.Message, message.Movie);
         }
 
         public override void OnDownload(DownloadMessage message)
         {
-            _proxy.SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, Settings);
+            SendNotification(MOVIE_DOWNLOADED_TITLE, message.Message, message.Movie);
         }
 
         public override void OnMovieAdded(Movie movie)
         {
-            _proxy.SendNotification(MOVIE_ADDED_TITLE, $"{movie.Title} added to library", Settings);
+            SendNotification(MOVIE_ADDED_TITLE, $"{movie.Title} added to library", movie);
         }
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
         {
-            _proxy.SendNotification(MOVIE_FILE_DELETED_TITLE, deleteMessage.Message, Settings);
+            SendNotification(MOVIE_FILE_DELETED_TITLE, deleteMessage.Message, deleteMessage.Movie);
         }
 
         public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
         {
-            _proxy.SendNotification(MOVIE_DELETED_TITLE, deleteMessage.Message, Settings);
+            SendNotification(MOVIE_DELETED_TITLE, deleteMessage.Message, deleteMessage.Movie);
         }
 
         public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
         {
-            _proxy.SendNotification(HEALTH_ISSUE_TITLE, healthCheck.Message, Settings);
+            SendNotification(HEALTH_ISSUE_TITLE, healthCheck.Message, null);
         }
 
-        public override void OnApplicationUpdate(ApplicationUpdateMessage updateMessage)
+        public override void OnApplicationUpdate(ApplicationUpdateMessage message)
         {
-            _proxy.SendNotification(APPLICATION_UPDATE_TITLE, updateMessage.Message, Settings);
+            SendNotification(APPLICATION_UPDATE_TITLE, message.Message, null);
         }
 
         public override ValidationResult Test()
@@ -61,10 +64,29 @@ namespace NzbDrone.Core.Notifications.Gotify
 
             try
             {
+                var isMarkdown = false;
                 const string title = "Test Notification";
-                const string body = "This is a test message from Radarr";
 
-                _proxy.SendNotification(title, body, Settings);
+                var sb = new StringBuilder();
+                sb.AppendLine("This is a test message from Radarr");
+
+                if (Settings.IncludeMoviePoster)
+                {
+                    isMarkdown = true;
+
+                    sb.AppendLine("\r![](https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png)");
+                }
+
+                var payload = new GotifyMessage
+                {
+                    Title = title,
+                    Message = sb.ToString(),
+                    Priority = Settings.Priority
+                };
+
+                payload.SetContentType(isMarkdown);
+
+                _proxy.SendNotification(payload, Settings);
             }
             catch (Exception ex)
             {
@@ -73,6 +95,36 @@ namespace NzbDrone.Core.Notifications.Gotify
             }
 
             return new ValidationResult(failures);
+        }
+
+        private void SendNotification(string title, string message, Movie movie)
+        {
+            var isMarkdown = false;
+            var sb = new StringBuilder();
+
+            sb.AppendLine(message);
+
+            if (Settings.IncludeMoviePoster && movie != null)
+            {
+                var poster = movie.MovieMetadata.Value.Images.FirstOrDefault(x => x.CoverType == MediaCoverTypes.Poster)?.Url;
+
+                if (poster != null)
+                {
+                    isMarkdown = true;
+                    sb.AppendLine($"\r![]({poster})");
+                }
+            }
+
+            var payload = new GotifyMessage
+            {
+                Title = title,
+                Message = sb.ToString(),
+                Priority = Settings.Priority
+            };
+
+            payload.SetContentType(isMarkdown);
+
+            _proxy.SendNotification(payload, Settings);
         }
     }
 }

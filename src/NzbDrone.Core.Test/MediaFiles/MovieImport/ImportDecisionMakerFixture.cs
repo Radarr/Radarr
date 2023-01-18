@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport
 {
     [TestFixture]
 
-    //TODO: Add tests to ensure helpers for augmenters are correctly passed.
+    // TODO: Add tests to ensure helpers for augmenters are correctly passed.
     public class ImportDecisionMakerFixture : CoreTest<ImportDecisionMaker>
     {
         private List<string> _videoFiles;

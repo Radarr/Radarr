@@ -234,7 +234,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             result.Should().HaveCount(1);
 
-            //result.First().RemoteMovie.DownloadAllowed.Should().BeFalse();
+            // result.First().RemoteMovie.DownloadAllowed.Should().BeFalse();
         }
 
         [Test]
@@ -249,7 +249,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
             result.Should().HaveCount(1);
 
-            //result.First().RemoteMovie.DownloadAllowed.Should().BeFalse();
+            // result.First().RemoteMovie.DownloadAllowed.Should().BeFalse();
         }
 
         [Test]

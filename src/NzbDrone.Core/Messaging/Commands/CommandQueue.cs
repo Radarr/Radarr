@@ -176,6 +176,11 @@ namespace NzbDrone.Core.Messaging.Commands
                         queuedCommands = queuedCommands.Where(c => !exclusiveTypes.Any(x => x == c.Body.Name));
                     }
 
+                    if (startedCommands.Any(x => x.Body.IsLongRunning))
+                    {
+                        queuedCommands = queuedCommands.Where(c => !c.Body.IsExclusive);
+                    }
+
                     var localItem = queuedCommands.OrderByDescending(c => c.Priority)
                         .ThenBy(c => c.QueuedAt)
                         .FirstOrDefault();

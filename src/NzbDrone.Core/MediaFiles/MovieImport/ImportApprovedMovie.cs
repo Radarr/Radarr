@@ -52,7 +52,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         {
             _logger.Debug("Decisions: {0}", decisions.Count);
 
-            //I added a null op for the rare case that the quality is null. TODO: find out why that would even happen in the first place.
+            // I added a null op for the rare case that the quality is null. TODO: find out why that would even happen in the first place.
             var qualifiedImports = decisions.Where(c => c.Approved)
                .GroupBy(c => c.LocalMovie.Movie.Id, (i, s) => s
                    .OrderByDescending(c => c.LocalMovie.Quality ?? new QualityModel { Quality = Quality.Unknown }, new QualityModelComparer(s.First().LocalMovie.Movie.Profile))
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
                 try
                 {
-                    //check if already imported
+                    // check if already imported
                     if (importResults.Select(r => r.ImportDecision.LocalMovie.Movie)
                                          .Select(m => m.Id).Contains(localMovie.Movie.Id))
                     {
@@ -120,7 +120,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     {
                         movieFile.SceneName = localMovie.SceneName;
                         movieFile.OriginalFilePath = GetOriginalFilePath(downloadClientItem, localMovie);
-                        var moveResult = _movieFileUpgrader.UpgradeMovieFile(movieFile, localMovie, copyOnly); //TODO: Check if this works
+                        var moveResult = _movieFileUpgrader.UpgradeMovieFile(movieFile, localMovie, copyOnly); // TODO: Check if this works
                         oldFiles = moveResult.OldFiles;
                     }
                     else
@@ -165,7 +165,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 }
             }
 
-            //Adding all the rejected decisions
+            // Adding all the rejected decisions
             importResults.AddRange(decisions.Where(c => !c.Approved)
                                             .Select(d => new ImportResult(d, d.Rejections.Select(r => r.Reason).ToArray())));
 

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -13,10 +14,10 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.NotificationTests
 {
     [TestFixture]
-    public class TraktServiceFixture : CoreTest<TraktService>
+    public class TraktServiceFixture : CoreTest<Trakt>
     {
         private DownloadMessage _downloadMessage;
-        private TraktSettings _traktSettings;
+        private NotificationDefinition _traktDefinition;
 
         [SetUp]
         public void Setup()
@@ -34,11 +35,17 @@ namespace NzbDrone.Core.Test.NotificationTests
                 }
             };
 
-            _traktSettings = new TraktSettings
+            _traktDefinition = new NotificationDefinition
             {
-                AccessToken = "",
-                RefreshToken = ""
+                Settings = new TraktSettings
+                {
+                    AccessToken = "",
+                    RefreshToken = "",
+                    Expires = DateTime.Now.AddDays(1)
+                }
             };
+
+            Subject.Definition = _traktDefinition;
         }
 
         private void GiventValidMediaInfo(Quality quality, string audioChannels, string audioFormat, string scanType)
@@ -56,7 +63,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         [Test]
         public void should_add_collection_movie_if_null_mediainfo()
         {
-            Subject.AddMovieToCollection(_traktSettings, _downloadMessage.Movie, _downloadMessage.MovieFile);
+            Subject.OnDownload(_downloadMessage);
 
             Mocker.GetMock<ITraktProxy>()
                   .Verify(v => v.AddToCollection(It.IsAny<TraktCollectMoviesResource>(), It.IsAny<string>()), Times.Once());
@@ -67,7 +74,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         {
             GiventValidMediaInfo(Quality.Bluray1080p, "5.1", "DTS", "Progressive");
 
-            Subject.AddMovieToCollection(_traktSettings, _downloadMessage.Movie, _downloadMessage.MovieFile);
+            Subject.OnDownload(_downloadMessage);
 
             Mocker.GetMock<ITraktProxy>()
                   .Verify(v => v.AddToCollection(It.Is<TraktCollectMoviesResource>(t =>
@@ -83,7 +90,7 @@ namespace NzbDrone.Core.Test.NotificationTests
         {
             GiventValidMediaInfo(Quality.Bluray1080p, "2.0", "DTS", "Progressive");
 
-            Subject.AddMovieToCollection(_traktSettings, _downloadMessage.Movie, _downloadMessage.MovieFile);
+            Subject.OnDownload(_downloadMessage);
 
             Mocker.GetMock<ITraktProxy>()
                   .Verify(v => v.AddToCollection(It.Is<TraktCollectMoviesResource>(t =>

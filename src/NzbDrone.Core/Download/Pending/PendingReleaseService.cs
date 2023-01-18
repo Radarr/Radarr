@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Download.Pending
                 }
             }
 
-            //Return best quality release for each movie
+            // Return best quality release for each movie
             var deduped = queued.GroupBy(q => q.Movie.Id).Select(g =>
             {
                 var movies = g.First().Movie;
@@ -283,6 +283,12 @@ namespace NzbDrone.Core.Download.Pending
                     return null;
                 }
 
+                // Languages will be empty if added before upgrading to v4, reparsing the languages if they're empty will set it to Unknown or better.
+                if (release.ParsedMovieInfo.Languages.Empty())
+                {
+                    release.ParsedMovieInfo.Languages = LanguageParser.ParseLanguages(release.Title);
+                }
+
                 release.RemoteMovie = new RemoteMovie
                 {
                     Movie = movie,
@@ -359,8 +365,8 @@ namespace NzbDrone.Core.Download.Pending
                 var compare = new QualityModelComparer(profile).Compare(remoteMovie.ParsedMovieInfo.Quality,
                                                                         existingReport.RemoteMovie.ParsedMovieInfo.Quality);
 
-                //Only remove lower/equal quality pending releases
-                //It is safer to retry these releases on the next round than remove it and try to re-add it (if its still in the feed)
+                // Only remove lower/equal quality pending releases
+                // It is safer to retry these releases on the next round than remove it and try to re-add it (if its still in the feed)
                 if (compare >= 0)
                 {
                     _logger.Debug("Removing previously pending release, as it was grabbed.");

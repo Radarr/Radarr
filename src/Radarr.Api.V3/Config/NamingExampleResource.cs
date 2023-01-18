@@ -22,10 +22,10 @@ namespace Radarr.Api.V3.Config
                 StandardMovieFormat = model.StandardMovieFormat,
                 MovieFolderFormat = model.MovieFolderFormat,
 
-                //IncludeQuality
-                //ReplaceSpaces
-                //Separator
-                //NumberStyle
+                // IncludeQuality
+                // ReplaceSpaces
+                // Separator
+                // NumberStyle
             };
         }
 

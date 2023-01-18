@@ -9,7 +9,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            //Execute.WithConnection(RenameUrlToBaseUrl);
+            // Execute.WithConnection(RenameUrlToBaseUrl);
             Create.TableForModel("CustomFormats")
                 .WithColumn("Name").AsString().Unique()
                 .WithColumn("FormatTags").AsString();

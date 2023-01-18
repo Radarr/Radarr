@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 
 namespace NzbDrone.Core.Parser
 {
@@ -45,6 +45,11 @@ namespace NzbDrone.Core.Parser
             }
 
             return result;
+        }
+
+        public override string ToString()
+        {
+            return _regex.ToString();
         }
     }
 }

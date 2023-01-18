@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Movies
             var qualitiesBelowCutoff = new List<QualitiesBelowCutoff>();
             var profiles = _profileService.All();
 
-            //Get all items less than the cutoff
+            // Get all items less than the cutoff
             foreach (var profile in profiles)
             {
                 var cutoff = profile.UpgradeAllowed ? profile.Cutoff : profile.FirststAllowedQuality().Id;

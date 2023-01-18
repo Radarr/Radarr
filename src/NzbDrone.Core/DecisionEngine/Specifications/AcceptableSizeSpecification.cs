@@ -44,10 +44,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 var minSize = qualityDefinition.MinSize.Value.Megabytes();
 
-                //Multiply maxSize by Series.Runtime
+                // Multiply maxSize by Series.Runtime
                 minSize = minSize * subject.Movie.MovieMetadata.Value.Runtime;
 
-                //If the parsed size is smaller than minSize we don't want it
+                // If the parsed size is smaller than minSize we don't want it
                 if (subject.Release.Size < minSize)
                 {
                     var runtimeMessage = subject.Movie.Title;
@@ -70,10 +70,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
             {
                 var maxSize = qualityDefinition.MaxSize.Value.Megabytes();
 
-                //Multiply maxSize by Series.Runtime
+                // Multiply maxSize by Series.Runtime
                 maxSize = maxSize * subject.Movie.MovieMetadata.Value.Runtime;
 
-                //If the parsed size is greater than maxSize we don't want it
+                // If the parsed size is greater than maxSize we don't want it
                 if (subject.Release.Size > maxSize)
                 {
                     _logger.Debug("Item: {0}, Size: {1} is greater than maximum allowed size ({2} for {3}), rejecting", subject, subject.Release.Size, maxSize, subject.Movie.Title);

@@ -1,6 +1,6 @@
 using NzbDrone.Common.EnvironmentInfo;
 
-namespace Radarr.Host.AccessControl
+namespace NzbDrone.Host.AccessControl
 {
     public interface IRemoteAccessAdapter
     {

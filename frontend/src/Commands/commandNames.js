@@ -15,6 +15,7 @@ export const REFRESH_MOVIE = 'RefreshMovie';
 export const RENAME_FILES = 'RenameFiles';
 export const RENAME_MOVIE = 'RenameMovie';
 export const RESET_API_KEY = 'ResetApiKey';
+export const RESET_QUALITY_DEFINITIONS = 'ResetQualityDefinitions';
 export const RSS_SYNC = 'RssSync';
 export const MOVIE_SEARCH = 'MoviesSearch';
 export const IMPORT_LIST_SYNC = 'ImportListSync';

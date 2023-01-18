@@ -127,7 +127,7 @@ namespace NzbDrone.Core.Parser
                 result.Movie = null;
             }
 
-            //Use movie language as fallback if we could't parse a language (more accurate than just using English)
+            // Use movie language as fallback if we could't parse a language (more accurate than just using English)
             if (parsedMovieInfo.Languages.Count <= 1 && parsedMovieInfo.Languages.First() == Language.Unknown && result.Movie != null)
             {
                 parsedMovieInfo.Languages = new List<Language> { result.Movie.MovieMetadata.Value.OriginalLanguage };
@@ -189,7 +189,7 @@ namespace NzbDrone.Core.Parser
         {
             var movie = _movieService.FindByImdbId(imdbId);
 
-            //Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
+            // Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
             if (movie != null && parsedMovieInfo.Year > 1800 && (parsedMovieInfo.Year != movie.MovieMetadata.Value.Year && movie.MovieMetadata.Value.SecondaryYear != parsedMovieInfo.Year))
             {
                 result = new MappingResult { Movie = movie, MappingResultType = MappingResultType.WrongYear };
@@ -272,7 +272,7 @@ namespace NzbDrone.Core.Parser
                     var arabicNumeral = numeralMapping.ArabicNumeralAsString;
                     var romanNumeral = numeralMapping.RomanNumeralLowerCase;
 
-                    //_logger.Debug(cleanTitle);
+                    // _logger.Debug(cleanTitle);
                     if (title.Replace(arabicNumeral, romanNumeral) == cleanTitle)
                     {
                         possibleMovie = searchCriteria.Movie;

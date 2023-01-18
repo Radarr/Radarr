@@ -8,7 +8,7 @@ namespace NzbDrone.Core.Datastore.Migration
     {
         protected override void MainDbUpgrade()
         {
-            //Cleanup cases of Sonarr Interference with Radarr db
+            // Cleanup cases of Sonarr Interference with Radarr db
             if (Schema.Table("PendingReleases").Column("Reason").Exists())
             {
                 Delete.Column("Reason").FromTable("PendingReleases");

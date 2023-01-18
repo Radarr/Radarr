@@ -86,7 +86,6 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
                 if (moviePath != null)
                 {
-                    moviePath = new OsPath(moviePath).Directory.FullPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
                     _logger.Debug("Updating movie {0} (Path: {1}) on XBMC host: {2}", movie, moviePath, settings.Address);
                 }
                 else
