@@ -34,6 +34,7 @@ namespace Radarr.Api.V3.Queue
         public string DownloadClient { get; set; }
         public string Indexer { get; set; }
         public string OutputPath { get; set; }
+        public int? Year { get; set; }
     }
 
     public static class QueueResourceMapper
@@ -67,7 +68,8 @@ namespace Radarr.Api.V3.Queue
                 Protocol = model.Protocol,
                 DownloadClient = model.DownloadClient,
                 Indexer = model.Indexer,
-                OutputPath = model.OutputPath
+                OutputPath = model.OutputPath,
+                Year = model.Year,
             };
         }
 

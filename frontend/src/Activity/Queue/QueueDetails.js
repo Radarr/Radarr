@@ -9,6 +9,7 @@ function QueueDetails(props) {
   const {
     title,
     size,
+    year,
     sizeleft,
     estimatedCompletionTime,
     status,
@@ -115,6 +116,7 @@ function QueueDetails(props) {
 
 QueueDetails.propTypes = {
   title: PropTypes.string.isRequired,
+  year: PropTypes.number.isRequired,
   size: PropTypes.number.isRequired,
   sizeleft: PropTypes.number.isRequired,
   estimatedCompletionTime: PropTypes.string,
