@@ -129,7 +129,6 @@ class QueueRow extends Component {
 
         {
           columns.map((column) => {
-          console.log("🚀 ~ column", column.name)
 
             const {
               name,
