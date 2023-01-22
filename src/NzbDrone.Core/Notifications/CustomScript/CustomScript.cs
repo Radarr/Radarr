@@ -8,6 +8,7 @@ using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Processes;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.HealthCheck;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.MediaFiles.MediaInfo;
@@ -19,12 +20,20 @@ namespace NzbDrone.Core.Notifications.CustomScript
 {
     public class CustomScript : NotificationBase<CustomScriptSettings>
     {
+        private readonly IConfigFileProvider _configFileProvider;
+        private readonly IConfigService _configService;
         private readonly IDiskProvider _diskProvider;
         private readonly IProcessProvider _processProvider;
         private readonly Logger _logger;
 
-        public CustomScript(IDiskProvider diskProvider, IProcessProvider processProvider, Logger logger)
+        public CustomScript(IConfigFileProvider configFileProvider,
+            IConfigService configService,
+            IDiskProvider diskProvider,
+            IProcessProvider processProvider,
+            Logger logger)
         {
+            _configFileProvider = configFileProvider;
+            _configService = configService;
             _diskProvider = diskProvider;
             _processProvider = processProvider;
             _logger = logger;
@@ -44,6 +53,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "Grab");
+            environmentVariables.Add("Radarr_InstanceName", _configFileProvider.InstanceName);
+            environmentVariables.Add("Radarr_ApplicationUrl", _configService.ApplicationUrl);
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.MovieMetadata.Value.Title);
             environmentVariables.Add("Radarr_Movie_Year", movie.MovieMetadata.Value.Year.ToString());
@@ -75,6 +86,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "Download");
+            environmentVariables.Add("Radarr_InstanceName", _configFileProvider.InstanceName);
+            environmentVariables.Add("Radarr_ApplicationUrl", _configService.ApplicationUrl);
             environmentVariables.Add("Radarr_IsUpgrade", message.OldMovieFiles.Any().ToString());
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.MovieMetadata.Value.Title);
@@ -121,6 +134,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "Rename");
+            environmentVariables.Add("Radarr_InstanceName", _configFileProvider.InstanceName);
+            environmentVariables.Add("Radarr_ApplicationUrl", _configService.ApplicationUrl);
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.MovieMetadata.Value.Title);
             environmentVariables.Add("Radarr_Movie_Year", movie.MovieMetadata.Value.Year.ToString());
@@ -143,6 +158,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "MovieAdded");
+            environmentVariables.Add("Radarr_InstanceName", _configFileProvider.InstanceName);
+            environmentVariables.Add("Radarr_ApplicationUrl", _configService.ApplicationUrl);
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.MovieMetadata.Value.Title);
             environmentVariables.Add("Radarr_Movie_Year", movie.MovieMetadata.Value.Year.ToString());
@@ -162,6 +179,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "MovieFileDelete");
+            environmentVariables.Add("Radarr_InstanceName", _configFileProvider.InstanceName);
+            environmentVariables.Add("Radarr_ApplicationUrl", _configService.ApplicationUrl);
             environmentVariables.Add("Radarr_MovieFile_DeleteReason", deleteMessage.Reason.ToString());
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.Title);
@@ -187,6 +206,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "MovieDelete");
+            environmentVariables.Add("Radarr_InstanceName", _configFileProvider.InstanceName);
+            environmentVariables.Add("Radarr_ApplicationUrl", _configService.ApplicationUrl);
             environmentVariables.Add("Radarr_Movie_Id", movie.Id.ToString());
             environmentVariables.Add("Radarr_Movie_Title", movie.MovieMetadata.Value.Title);
             environmentVariables.Add("Radarr_Movie_Year", movie.MovieMetadata.Value.Year.ToString());
@@ -208,6 +229,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "HealthIssue");
+            environmentVariables.Add("Radarr_InstanceName", _configFileProvider.InstanceName);
+            environmentVariables.Add("Radarr_ApplicationUrl", _configService.ApplicationUrl);
             environmentVariables.Add("Radarr_Health_Issue_Level", Enum.GetName(typeof(HealthCheckResult), healthCheck.Type));
             environmentVariables.Add("Radarr_Health_Issue_Message", healthCheck.Message);
             environmentVariables.Add("Radarr_Health_Issue_Type", healthCheck.Source.Name);
@@ -221,6 +244,8 @@ namespace NzbDrone.Core.Notifications.CustomScript
             var environmentVariables = new StringDictionary();
 
             environmentVariables.Add("Radarr_EventType", "ApplicationUpdate");
+            environmentVariables.Add("Radarr_InstanceName", _configFileProvider.InstanceName);
+            environmentVariables.Add("Radarr_ApplicationUrl", _configService.ApplicationUrl);
             environmentVariables.Add("Radarr_Update_Message", updateMessage.Message);
             environmentVariables.Add("Radarr_Update_NewVersion", updateMessage.NewVersion.ToString());
             environmentVariables.Add("Radarr_Update_PreviousVersion", updateMessage.PreviousVersion.ToString());
@@ -249,8 +274,12 @@ namespace NzbDrone.Core.Notifications.CustomScript
             {
                 try
                 {
-                    var environmentVariables = new StringDictionary();
-                    environmentVariables.Add("Radarr_EventType", "Test");
+                    var environmentVariables = new StringDictionary
+                    {
+                        { "Radarr_EventType", "Test" },
+                        { "Radarr_InstanceName", _configFileProvider.InstanceName },
+                        { "Radarr_ApplicationUrl", _configService.ApplicationUrl }
+                    };
 
                     var processOutput = ExecuteScript(environmentVariables);
 
