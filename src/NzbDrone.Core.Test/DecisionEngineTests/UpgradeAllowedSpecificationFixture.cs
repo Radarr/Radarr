@@ -40,13 +40,11 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 {
                     new ProfileFormatItem
                     {
-                        Id = 1,
                         Format = _customFormatOne,
                         Score = 50
                     },
                     new ProfileFormatItem
                     {
-                        Id = 1,
                         Format = _customFormatTwo,
                         Score = 100
                     }
