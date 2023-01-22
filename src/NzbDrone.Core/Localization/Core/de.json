@@ -1153,5 +1153,7 @@
     "SettingsThemeHelpText": "Anwendungsdesign ändern, das 'Auto' Design passt sich an den Light/Dark-Mode deines Systems an. Inspiriert von Theme.Park",
     "ResetTitles": "Titel zurücksetzen",
     "ResetTitlesHelpText": "Definitionstitel und Werte zurücksetzen",
-    "SettingsTheme": "Design"
+    "SettingsTheme": "Design",
+    "RSSHelpText": "Wird benutzt, wenn Radarr mittels RSS-Sync regelmäßig nach Releases schaut",
+    "DownloadClientSortingCheckMessage": "Downloader {0} hat die {1} Sortierung für Radarrs Kategorie aktiviert. Dies sollte deaktiviert werden, um Import-Probleme zu vermeiden."
 }
