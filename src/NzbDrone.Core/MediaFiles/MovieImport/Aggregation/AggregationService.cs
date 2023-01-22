@@ -67,7 +67,9 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation
                 }
                 catch (Exception ex)
                 {
-                    _logger.Warn(ex, ex.Message);
+                    var message = $"Unable to augment information for file: '{localMovie.Path}'. Movie: {localMovie.Movie} Error: {ex.Message}";
+
+                    _logger.Warn(ex, message);
                 }
             }
 
