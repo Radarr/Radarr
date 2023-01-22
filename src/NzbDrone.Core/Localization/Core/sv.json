@@ -508,13 +508,13 @@
     "Add": "Lägg till",
     "CertValidationNoLocal": "Inaktiverad för lokala adresser",
     "BindAddress": "Bindningsadress",
-    "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Är du säker på vill ta bort {0} föremål{1} från kön?",
+    "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Är du säker på vill ta bort {0} föremål från kön?",
     "Announced": "Utannonserad",
     "Always": "Alltid",
-    "AddToDownloadQueue": "Tillagd till nedladdnings kö",
+    "AddToDownloadQueue": "Lägg till i nedladdningskö",
     "AddRestriction": "Lägg till restriktion",
     "AddImportExclusionHelpText": "Förhindra film att läggas till i Radarr från listor",
-    "AddedToDownloadQueue": "Lägg till i nedladdningskö",
+    "AddedToDownloadQueue": "Tillagd i nedladdningskö",
     "Unreleased": "Inte tillgänglig",
     "LinkHere": "här",
     "Paused": "Pausad",
@@ -1066,5 +1066,8 @@
     "Collections": "Samling",
     "MonitorMovies": "Bevaka film",
     "NoCollections": "Inga filmer hittades, för att komma igång lägg till en ny film eller importera några befintliga.",
-    "RssSyncHelpText": "Intervall i minuter. Ställ in på noll för att inaktivera (detta kommer stoppa all automatisk hämntning av utgåvor)"
+    "RssSyncHelpText": "Intervall i minuter. Ställ in på noll för att inaktivera (detta kommer stoppa all automatisk hämntning av utgåvor)",
+    "AnnouncedMsg": "Filmen tillkännages",
+    "ApplicationURL": "Applikations-URL",
+    "ApplicationUrlHelpText": "Denna applikations externa URL inklusive http(s)://, port och URL-bas"
 }

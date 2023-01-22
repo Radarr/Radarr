@@ -1072,7 +1072,7 @@
     "BlocklistRelease": "Uitgave op blokkeerlijst zetten",
     "RemoveFromBlocklist": "Verwijder van zwarte lijst",
     "UnableToLoadBlocklist": "Kon zwarte lijst niet laden",
-    "Blocklisted": "Blokkeerlijst",
+    "Blocklisted": "Geblokeerde lijst",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Ben je zeker dat je {1} item{2} uit de wachtrij wilt verwijderen?",
     "BlocklistReleases": "Uitgave op blokkeerlijst zetten",
     "LocalPath": "Lokaal Pad",
