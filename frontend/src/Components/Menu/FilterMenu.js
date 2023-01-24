@@ -4,7 +4,7 @@ import { icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import FilterMenuContent from './FilterMenuContent';
 import Menu from './Menu';
-import PageMenuButton from './PageMenuButton';
+import ToolbarMenuButton from './ToolbarMenuButton';
 import styles from './FilterMenu.css';
 
 class FilterMenu extends Component {
@@ -106,7 +106,7 @@ FilterMenu.propTypes = {
 FilterMenu.defaultProps = {
   className: styles.filterMenu,
   isDisabled: false,
-  buttonComponent: PageMenuButton
+  buttonComponent: ToolbarMenuButton
 };
 
 export default FilterMenu;
