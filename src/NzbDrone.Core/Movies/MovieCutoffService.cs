@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Profiles;
 using NzbDrone.Core.Qualities;
@@ -39,6 +40,13 @@ namespace NzbDrone.Core.Movies
                 {
                     qualitiesBelowCutoff.Add(new QualitiesBelowCutoff(profile.Id, belowCutoff.SelectMany(i => i.GetQualities().Select(q => q.Id))));
                 }
+            }
+
+            if (qualitiesBelowCutoff.Empty())
+            {
+                pagingSpec.Records = new List<Movie>();
+
+                return pagingSpec;
             }
 
             return _movieRepository.MoviesWhereCutoffUnmet(pagingSpec, qualitiesBelowCutoff);
