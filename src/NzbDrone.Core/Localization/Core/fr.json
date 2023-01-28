@@ -1115,7 +1115,7 @@
     "RefreshMonitoredIntervalHelpText": "Intervalle en minutes entre chaque vérification des téléchargements, minimum 1 minute",
     "AllCollectionsHiddenDueToFilter": "Toutes les collections sont masquées en raison du filtre appliqué.",
     "Collections": "Collections",
-    "MonitorMovies": "Surveiller le film",
+    "MonitorMovies": "Surveiller les films",
     "NoCollections": "Aucun film trouvé, pour commencer, vous voudrez ajouter un nouveau film ou importer des films existants.",
     "RssSyncHelpText": "Intervalle en minutes. Mettre à zéro pour désactiver (cela arrêtera tous les téléchargements automatiques)",
     "CollectionsSelectedInterp": "{0} Collections(s) Sélectionnée(s)",
