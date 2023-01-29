@@ -189,7 +189,6 @@ namespace NzbDrone.Core.Download.Pending
                         Movie = pendingRelease.RemoteMovie.Movie,
                         Quality = pendingRelease.RemoteMovie.ParsedMovieInfo?.Quality ?? new QualityModel(),
                         Languages = pendingRelease.RemoteMovie.ParsedMovieInfo?.Languages ?? new List<Language>(),
-                        Year = pendingRelease.ParsedMovieInfo?.Year,
                         Title = pendingRelease.Title,
                         Size = pendingRelease.RemoteMovie.Release.Size,
                         Sizeleft = pendingRelease.RemoteMovie.Release.Size,

@@ -96,7 +96,6 @@ class QueueRow extends Component {
       estimatedCompletionTime,
       timeleft,
       size,
-      year,
       sizeleft,
       showRelativeDates,
       shortDateFormat,
@@ -238,8 +237,10 @@ class QueueRow extends Component {
 
             if (name === 'year') {
               return (
-                <TableRowCell key={year}>
-                  {year}
+                <TableRowCell key={name}>
+                  {
+                    movie ? movie.year : ''
+                  }
                 </TableRowCell>
               );
             }

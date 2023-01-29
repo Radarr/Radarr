@@ -14,7 +14,6 @@ namespace NzbDrone.Core.Queue
     {
         public Movie Movie { get; set; }
         public List<Language> Languages { get; set; }
-        public int? Year { get; set; }
         public QualityModel Quality { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }
