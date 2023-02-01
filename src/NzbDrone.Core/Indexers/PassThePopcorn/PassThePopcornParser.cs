@@ -97,7 +97,7 @@ namespace NzbDrone.Core.Indexers.PassThePopcorn
                             InfoUrl = GetInfoUrl(result.GroupId, id),
                             Seeders = int.Parse(torrent.Seeders),
                             Peers = int.Parse(torrent.Leechers) + int.Parse(torrent.Seeders),
-                            PublishDate = torrent.UploadTime.ToUniversalTime(),
+                            PublishDate = TimeZoneInfo.ConvertTimeToUtc(torrent.UploadTime, TimeZoneInfo.Utc), // PTP returns UTC timestamps, without a timezone specifier.
                             Golden = torrent.GoldenPopcorn,
                             Scene = torrent.Scene,
                             Approved = torrent.Checked,
