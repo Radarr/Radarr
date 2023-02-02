@@ -12,11 +12,13 @@ namespace NzbDrone.Core.Notifications.Webhook
         where TSettings : IProviderConfig, new()
     {
         private readonly IConfigFileProvider _configFileProvider;
+        private readonly IConfigService _configService;
 
-        protected WebhookBase(IConfigFileProvider configFileProvider)
+        protected WebhookBase(IConfigFileProvider configFileProvider, IConfigService configService)
             : base()
         {
             _configFileProvider = configFileProvider;
+            _configService = configService;
         }
 
         protected WebhookGrabPayload BuildOnGrabPayload(GrabMessage message)
@@ -28,6 +30,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = WebhookEventType.Grab,
                 InstanceName = _configFileProvider.InstanceName,
+                ApplicationUrl = _configService.ApplicationUrl,
                 Movie = new WebhookMovie(message.Movie),
                 RemoteMovie = new WebhookRemoteMovie(remoteMovie),
                 Release = new WebhookRelease(quality, remoteMovie),
@@ -45,6 +48,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = WebhookEventType.Download,
                 InstanceName = _configFileProvider.InstanceName,
+                ApplicationUrl = _configService.ApplicationUrl,
                 Movie = new WebhookMovie(message.Movie),
                 RemoteMovie = new WebhookRemoteMovie(message.Movie),
                 MovieFile = new WebhookMovieFile(movieFile),
@@ -72,6 +76,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = WebhookEventType.MovieAdded,
                 InstanceName = _configFileProvider.InstanceName,
+                ApplicationUrl = _configService.ApplicationUrl,
                 Movie = new WebhookMovie(movie),
                 AddMethod = movie.AddOptions.AddMethod
             };
@@ -83,6 +88,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = WebhookEventType.MovieFileDelete,
                 InstanceName = _configFileProvider.InstanceName,
+                ApplicationUrl = _configService.ApplicationUrl,
                 Movie = new WebhookMovie(deleteMessage.Movie),
                 MovieFile = new WebhookMovieFile(deleteMessage.MovieFile),
                 DeleteReason = deleteMessage.Reason
@@ -95,6 +101,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = WebhookEventType.MovieDelete,
                 InstanceName = _configFileProvider.InstanceName,
+                ApplicationUrl = _configService.ApplicationUrl,
                 Movie = new WebhookMovie(deleteMessage.Movie),
                 DeletedFiles = deleteMessage.DeletedFiles
             };
@@ -113,6 +120,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = WebhookEventType.Rename,
                 InstanceName = _configFileProvider.InstanceName,
+                ApplicationUrl = _configService.ApplicationUrl,
                 Movie = new WebhookMovie(movie),
                 RenamedMovieFiles = renamedFiles.ConvertAll(x => new WebhookRenamedMovieFile(x))
             };
@@ -124,6 +132,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = WebhookEventType.Health,
                 InstanceName = _configFileProvider.InstanceName,
+                ApplicationUrl = _configService.ApplicationUrl,
                 Level = healthCheck.Type,
                 Message = healthCheck.Message,
                 Type = healthCheck.Source.Name,
@@ -137,6 +146,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = WebhookEventType.ApplicationUpdate,
                 InstanceName = _configFileProvider.InstanceName,
+                ApplicationUrl = _configService.ApplicationUrl,
                 Message = updateMessage.Message,
                 PreviousVersion = updateMessage.PreviousVersion.ToString(),
                 NewVersion = updateMessage.NewVersion.ToString()
@@ -149,6 +159,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             {
                 EventType = WebhookEventType.Test,
                 InstanceName = _configFileProvider.InstanceName,
+                ApplicationUrl = _configService.ApplicationUrl,
                 Movie = new WebhookMovie
                 {
                     Id = 1,

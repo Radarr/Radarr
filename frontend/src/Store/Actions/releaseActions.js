@@ -202,6 +202,11 @@ export const defaultState = {
       }
     },
     {
+      name: 'customFormatScore',
+      label: translate('CustomFormatScore'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
       name: 'rejectionCount',
       label: translate('RejectionCount'),
       type: filterBuilderTypes.NUMBER

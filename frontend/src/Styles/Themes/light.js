@@ -198,8 +198,8 @@ module.exports = {
   popoverShadowColor: 'rgba(0, 0, 0, 0.2)',
   popoverArrowBorderColor: '#fff',
 
-  popoverTitleBackgroundInverseColor: '#595959',
-  popoverTitleBorderInverseColor: '#707070',
+  popoverTitleBackgroundInverseColor: '#9b9b9b',
+  popoverTitleBorderInverseColor: '#bfbfbf',
   popoverShadowInverseColor: 'rgba(0, 0, 0, 0.2)',
   popoverArrowBorderInverseColor: 'rgba(58, 63, 81, 0.75)',
 
@@ -227,6 +227,8 @@ module.exports = {
   //
   // Misc
 
-  progressBarBackgroundColor: '#fff',
-  logEventsBackgroundColor: '#fff'
+  progressBarFrontTextColor: white,
+  progressBarBackTextColor: darkGray,
+  progressBarBackgroundColor: white,
+  logEventsBackgroundColor: white
 };

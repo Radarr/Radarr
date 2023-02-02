@@ -134,14 +134,33 @@ namespace NzbDrone.Core.Download
                 trackedDownload.Warn("No files found are eligible for import in {0}", outputPath);
             }
 
+            if (importResults.Count == 1)
+            {
+                var firstResult = importResults.First();
+
+                if (firstResult.Result == ImportResultType.Rejected && firstResult.ImportDecision.LocalMovie == null)
+                {
+                    trackedDownload.Warn(new TrackedDownloadStatusMessage(firstResult.Errors.First(), new List<string>()));
+
+                    return;
+                }
+            }
+
+            var statusMessages = new List<TrackedDownloadStatusMessage>
+                                 {
+                                    new TrackedDownloadStatusMessage("One or more movies expected in this release were not imported or missing", new List<string>())
+                                 };
+
             if (importResults.Any(c => c.Result != ImportResultType.Imported))
             {
-                var statusMessages = importResults
+                statusMessages.AddRange(importResults
                     .Where(v => v.Result != ImportResultType.Imported && v.ImportDecision.LocalMovie != null)
-                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalMovie.Path), v.Errors))
-                    .ToArray();
+                    .Select(v => new TrackedDownloadStatusMessage(Path.GetFileName(v.ImportDecision.LocalMovie.Path), v.Errors)));
 
-                trackedDownload.Warn(statusMessages);
+                if (statusMessages.Any())
+                {
+                    trackedDownload.Warn(statusMessages.ToArray());
+                }
             }
         }
 

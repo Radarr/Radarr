@@ -314,11 +314,13 @@ namespace NzbDrone.Core.Parser
                     case MappingResultType.Success:
                         return $"Successfully mapped release name {ReleaseName} to movie {Movie}";
                     case MappingResultType.NotParsable:
-                        return $"Failed to find movie title in release name {ReleaseName}";
+                        return $"Failed to find movie title and/or year in release name {ReleaseName}";
                     case MappingResultType.TitleNotFound:
                         return $"Could not find {RemoteMovie.ParsedMovieInfo.PrimaryMovieTitle}";
                     case MappingResultType.WrongYear:
-                        return $"Failed to map movie, expected year {RemoteMovie.Movie.MovieMetadata.Value.Year}, but found {RemoteMovie.ParsedMovieInfo.Year}";
+                        var movieYears = new HashSet<int> { RemoteMovie.Movie.MovieMetadata.Value.Year, RemoteMovie.Movie.MovieMetadata.Value.SecondaryYear.GetValueOrDefault() };
+
+                        return $"Failed to map movie, expected year {string.Join(", ", movieYears.Where(x => x > 0))}, but found {RemoteMovie.ParsedMovieInfo.Year}";
                     case MappingResultType.WrongTitle:
                         var comma = RemoteMovie.Movie.MovieMetadata.Value.AlternativeTitles.Count > 0 ? ", " : "";
                         return

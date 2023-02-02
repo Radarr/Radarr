@@ -7,11 +7,11 @@
 
   &:hover {
     .token {
-      background-color: #ddd;
+      background-color: var(--popoverTitleBackgroundInverseColor);
     }
 
     .example {
-      background-color: #ccc;
+      background-color: var(--popoverTitleBorderInverseColor);
     }
   }
 }
@@ -27,7 +27,7 @@
 .token {
   flex: 0 0 50%;
   padding: 6px 16px;
-  background-color: #eee;
+  background-color: var(--popoverTitleBorderColor);
   font-family: $monoSpaceFontFamily;
 }
 
@@ -38,7 +38,7 @@
   justify-content: space-between;
   flex: 0 0 50%;
   padding: 6px 16px;
-  background-color: #ddd;
+  background-color: var(--popoverTitleBackgroundColor);
 
   .footNote {
     padding: 2px;

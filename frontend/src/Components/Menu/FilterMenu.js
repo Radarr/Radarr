@@ -60,7 +60,7 @@ class FilterMenu extends Component {
             iconName={icons.FILTER}
             text={translate('Filter')}
             isDisabled={isDisabled}
-            indicator={selectedFilterKey !== 'all'}
+            showIndicator={selectedFilterKey !== 'all'}
           />
 
           <FilterMenuContent

@@ -58,7 +58,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
             if (lastImported.DownloadId == downloadClientItem.DownloadId)
             {
                 _logger.Debug("Movie file previously imported at {0}", lastImported.Date);
-                return Decision.Reject("Movie file already imported at {0}", lastImported.Date);
+                return Decision.Reject("Movie file already imported at {0}", lastImported.Date.ToLocalTime());
             }
 
             return Decision.Accept();
