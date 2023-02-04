@@ -106,6 +106,7 @@ namespace NzbDrone.Core.Movies
             movieMetadata.ImdbId = movieInfo.ImdbId;
             movieMetadata.Overview = movieInfo.Overview;
             movieMetadata.Status = movieInfo.Status;
+            movieMetadata.Images = movieInfo.Images;
             movieMetadata.CleanTitle = movieInfo.CleanTitle;
             movieMetadata.SortTitle = movieInfo.SortTitle;
             movieMetadata.LastInfoSync = DateTime.UtcNow;
@@ -152,6 +153,8 @@ namespace NzbDrone.Core.Movies
 
             _movieMetadataService.Upsert(movieMetadata);
             _creditService.UpdateCredits(credits, movieMetadata);
+
+            movie.MovieMetadata = movieMetadata;
 
             _logger.Debug("Finished movie metadata refresh for {0}", movieMetadata.Title);
             _eventAggregator.PublishEvent(new MovieUpdatedEvent(movie));
