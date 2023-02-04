@@ -156,6 +156,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
                 if (files.Count() > 100)
                 {
+                    _logger.Warn("Unable to determine movie from folder name and found more than 100 files. Skipping parsing");
+
                     return ProcessDownloadDirectory(rootFolder, files);
                 }
 
