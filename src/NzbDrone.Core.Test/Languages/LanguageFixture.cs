@@ -49,6 +49,7 @@ namespace NzbDrone.Core.Test.Languages
                 new object[] { 34, Language.Bengali },
                 new object[] { 35, Language.Slovak },
                 new object[] { 36, Language.Latvian },
+                new object[] { 37, Language.SpanishLatino }
             };
 
         public static object[] ToIntCases =
@@ -92,6 +93,7 @@ namespace NzbDrone.Core.Test.Languages
                 new object[] { Language.Bengali, 34 },
                 new object[] { Language.Slovak, 35 },
                 new object[] { Language.Latvian, 36 },
+                new object[] { Language.SpanishLatino, 37 }
             };
 
         [Test]

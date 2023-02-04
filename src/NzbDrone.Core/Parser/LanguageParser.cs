@@ -197,6 +197,11 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Latvian);
             }
 
+            if (lowerTitle.Contains("latino"))
+            {
+                languages.Add(Language.SpanishLatino);
+            }
+
             // Case sensitive
             var caseSensitiveMatchs = CaseSensitiveLanguageRegex.Matches(title);
 

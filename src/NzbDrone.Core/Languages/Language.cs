@@ -107,6 +107,7 @@ namespace NzbDrone.Core.Languages
         public static Language Bengali => new Language(34, "Bengali");
         public static Language Slovak => new Language(35, "Slovak");
         public static Language Latvian => new Language(36, "Latvian");
+        public static Language SpanishLatino => new Language(37, "Spanish (Latino)");
         public static Language Any => new Language(-1, "Any");
         public static Language Original => new Language(-2, "Original");
 
@@ -153,6 +154,7 @@ namespace NzbDrone.Core.Languages
                     Bengali,
                     Slovak,
                     Latvian,
+                    SpanishLatino,
                     Any,
                     Original
                 };

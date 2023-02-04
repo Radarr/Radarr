@@ -1,3 +1,4 @@
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Languages;
@@ -378,6 +379,18 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle);
             result.Languages.Should().BeEquivalentTo(Language.Latvian);
+        }
+
+        [TestCase("Movie.Title.2019.720p_Eng-Spa(Latino)_MovieClubMx")]
+        [TestCase("Movie.Title.1.WEB-DL.720p.Complete.Latino.YG")]
+        [TestCase("Movie.Title.1080p.WEB.H264.Latino.YG")]
+        [TestCase("Movie Title latino")]
+        [TestCase("Movie Title (Temporada 11 Completa) Audio Dual Ingles/Latino 1920x1080")]
+        [TestCase("Movie title 7x4 audio latino")]
+        public void should_parse_language_spanish_latino(string postTitle)
+        {
+            var result = LanguageParser.ParseLanguages(postTitle);
+            result.First().Id.Should().Be(Language.SpanishLatino.Id);
         }
 
         [TestCase("Movie.Title.en.sub")]
