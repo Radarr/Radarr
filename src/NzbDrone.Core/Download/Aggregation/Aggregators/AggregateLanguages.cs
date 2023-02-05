@@ -35,17 +35,17 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
                 return remoteMovie;
             }
 
-            var episodeTitleLanguage = LanguageParser.ParseLanguages(movie.Title);
+            var movieTitleLanguage = LanguageParser.ParseLanguages(movie.Title);
 
-            if (!episodeTitleLanguage.Contains(Language.Unknown))
+            if (!movieTitleLanguage.Contains(Language.Unknown))
             {
                 var normalizedEpisodeTitle = Parser.Parser.NormalizeEpisodeTitle(movie.Title);
-                var episodeTitleIndex = normalizedReleaseTokens.IndexOf(normalizedEpisodeTitle, StringComparison.CurrentCultureIgnoreCase);
+                var movieTitleIndex = normalizedReleaseTokens.IndexOf(normalizedEpisodeTitle, StringComparison.CurrentCultureIgnoreCase);
 
-                if (episodeTitleIndex >= 0)
+                if (movieTitleIndex >= 0)
                 {
-                    releaseTokens = releaseTokens.Remove(episodeTitleIndex, normalizedEpisodeTitle.Length);
-                    languagesToRemove.AddRange(episodeTitleLanguage);
+                    releaseTokens = releaseTokens.Remove(movieTitleIndex, normalizedEpisodeTitle.Length);
+                    languagesToRemove.AddRange(movieTitleLanguage);
                 }
             }
 
@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
             // Remove all languages that aren't part of the updated releaseTokens
             languages = languages.Except(languagesToRemove).ToList();
 
-            // Use series language as fallback if we couldn't parse a language
+            // Use movie language as fallback if we couldn't parse a language
             if (languages.Count == 0 || (languages.Count == 1 && languages.First() == Language.Unknown))
             {
                 languages = new List<Language> { movie.MovieMetadata.Value.OriginalLanguage };

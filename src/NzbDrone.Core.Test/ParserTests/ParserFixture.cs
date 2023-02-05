@@ -255,6 +255,18 @@ namespace NzbDrone.Core.Test.ParserTests
             parsed.Languages.Should().Contain(Language.German);
         }
 
+        [TestCase("Movie.Title.2016.1080p.KORSUB.WEBRip.x264.AAC2.0-RADARR", "KORSUB")]
+        [TestCase("Movie.Title.2016.1080p.KORSUBS.WEBRip.x264.AAC2.0-RADARR", "KORSUBS")]
+        [TestCase("Movie Title 2017 HC 720p HDRiP DD5 1 x264-LEGi0N", "Generic Hardcoded Subs")]
+        [TestCase("Movie.Title.2017.720p.SUBBED.HDRip.V2.XViD-26k.avi", "Generic Hardcoded Subs")]
+        [TestCase("Movie.Title.2000.1080p.BlueRay.x264.DTS.RoSubbed-playHD", null)]
+        [TestCase("Movie Title! 2018 [Web][MKV][h264][480p][AAC 2.0][Softsubs]", null)]
+        [TestCase("Movie Title! 2019 [HorribleSubs][Web][MKV][h264][848x480][AAC 2.0][Softsubs(HorribleSubs)]", null)]
+        public void should_parse_hardcoded_subs(string postTitle, string sub)
+        {
+            Parser.Parser.ParseMovieTitle(postTitle).HardcodedSubs.Should().Be(sub);
+        }
+
         [TestCase("That Italian Movie 2008 [tt1234567] 720p BluRay X264", "tt1234567")]
         [TestCase("That Italian Movie 2008 [tt12345678] 720p BluRay X264", "tt12345678")]
         public void should_parse_imdb_in_title(string postTitle, string imdb)

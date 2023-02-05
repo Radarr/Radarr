@@ -18,6 +18,9 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex ReportEditionRegex = new Regex(@"^.+?" + EditionRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b((?<hcsub>(\w+(?<!SOFT|HORRIBLE)SUBS?))|(?<hc>(HC|SUBBED)))\b",
+                                                        RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
+
         private static readonly RegexReplace[] PreSubstitutionRegex = Array.Empty<RegexReplace>();
 
         private static readonly Regex[] ReportMovieTitleRegex = new[]
@@ -295,6 +298,8 @@ namespace NzbDrone.Core.Parser
                                     result.ReleaseGroup = subGroup;
                                 }
 
+                                result.HardcodedSubs = ParseHardcodeSubs(title);
+
                                 Logger.Debug("Release Group parsed: {0}", result.ReleaseGroup);
 
                                 result.Languages = LanguageParser.ParseLanguages(result.ReleaseGroup.IsNotNullOrWhiteSpace() ? simpleReleaseTitle.Replace(result.ReleaseGroup, "RlsGrp") : simpleReleaseTitle);
@@ -489,6 +494,25 @@ namespace NzbDrone.Core.Parser
         public static string SimplifyReleaseTitle(this string title)
         {
             return SimpleReleaseTitleRegex.Replace(title, string.Empty);
+        }
+
+        public static string ParseHardcodeSubs(string title)
+        {
+            var subMatch = HardcodedSubsRegex.Matches(title).OfType<Match>().LastOrDefault();
+
+            if (subMatch != null && subMatch.Success)
+            {
+                if (subMatch.Groups["hcsub"].Success)
+                {
+                    return subMatch.Groups["hcsub"].Value;
+                }
+                else if (subMatch.Groups["hc"].Success)
+                {
+                    return "Generic Hardcoded Subs";
+                }
+            }
+
+            return null;
         }
 
         public static string ParseReleaseGroup(string title)

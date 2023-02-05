@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Parser.Model
         public int Year { get; set; }
         public string ImdbId { get; set; }
         public int TmdbId { get; set; }
+        public string HardcodedSubs { get; set; }
 
         public string MovieTitle => PrimaryMovieTitle;
 

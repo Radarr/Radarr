@@ -111,6 +111,8 @@ namespace NzbDrone.Core.DecisionEngine
                     remoteMovie.Release = report;
                     remoteMovie.MappingResult = result.MappingResultType;
 
+                    _aggregationService.Augment(remoteMovie);
+
                     if (result.MappingResultType != MappingResultType.Success)
                     {
                         var rejection = result.ToRejection();
@@ -118,37 +120,11 @@ namespace NzbDrone.Core.DecisionEngine
                     }
                     else
                     {
-                        if (parsedMovieInfo.Quality.HardcodedSubs.IsNotNullOrWhiteSpace())
-                        {
-                            // remoteMovie.DownloadAllowed = true;
-                            if (_configService.AllowHardcodedSubs)
-                            {
-                                decision = GetDecisionForReport(remoteMovie, searchCriteria);
-                            }
-                            else
-                            {
-                                var whitelisted = _configService.WhitelistedHardcodedSubs.Split(',');
-                                _logger.Debug("Testing: {0}", whitelisted);
-                                if (whitelisted != null && whitelisted.Any(t => (parsedMovieInfo.Quality.HardcodedSubs.ToLower().Contains(t.ToLower()) && t.IsNotNullOrWhiteSpace())))
-                                {
-                                    decision = GetDecisionForReport(remoteMovie, searchCriteria);
-                                }
-                                else
-                                {
-                                    decision = new DownloadDecision(remoteMovie, new Rejection("Hardcoded subs found: " + parsedMovieInfo.Quality.HardcodedSubs));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            _aggregationService.Augment(remoteMovie);
+                        remoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(remoteMovie, remoteMovie.Release.Size);
+                        remoteMovie.CustomFormatScore = remoteMovie?.Movie?.Profile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
 
-                            remoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(remoteMovie, remoteMovie.Release.Size);
-                            remoteMovie.CustomFormatScore = remoteMovie?.Movie?.Profile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
-
-                            remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
-                            decision = GetDecisionForReport(remoteMovie, searchCriteria);
-                        }
+                        remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
+                        decision = GetDecisionForReport(remoteMovie, searchCriteria);
                     }
                 }
                 catch (Exception e)

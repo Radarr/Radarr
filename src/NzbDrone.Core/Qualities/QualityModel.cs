@@ -10,8 +10,6 @@ namespace NzbDrone.Core.Qualities
 
         public Revision Revision { get; set; }
 
-        public string HardcodedSubs { get; set; }
-
         [JsonIgnore]
         public QualityDetectionSource SourceDetectionSource { get; set; }
 
