@@ -45,7 +45,7 @@ namespace Radarr.Api.V3.History
                 SourceTitle = model.SourceTitle,
                 Languages = model.Languages,
                 Quality = model.Quality,
-                CustomFormats = formatCalculator.ParseCustomFormat(model).ToResource(),
+                CustomFormats = formatCalculator.ParseCustomFormat(model, model.Movie).ToResource(false),
 
                 // QualityCutoffNotMet
                 Date = model.Date,

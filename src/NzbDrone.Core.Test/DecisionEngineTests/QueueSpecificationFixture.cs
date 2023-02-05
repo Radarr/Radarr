@@ -32,13 +32,13 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             Mocker.Resolve<UpgradableSpecification>();
 
-            CustomFormatsFixture.GivenCustomFormats();
+            CustomFormatsTestHelpers.GivenCustomFormats();
 
             _movie = Builder<Movie>.CreateNew()
                                      .With(e => e.Profile = new Profile
                                      {
                                          Items = Qualities.QualityFixture.GetDefaultQualities(),
-                                         FormatItems = CustomFormatsFixture.GetSampleFormatItems(),
+                                         FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(),
                                          MinFormatScore = 0,
                                          UpgradeAllowed = true
                                      })
@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .Build();
 
             Mocker.GetMock<ICustomFormatCalculationService>()
-                .Setup(x => x.ParseCustomFormat(It.IsAny<ParsedMovieInfo>(), _movie))
+                .Setup(x => x.ParseCustomFormat(It.IsAny<RemoteMovie>(), It.IsAny<long>()))
                 .Returns(new List<CustomFormat>());
         }
 

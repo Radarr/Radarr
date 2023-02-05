@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            CustomFormatsFixture.GivenCustomFormats(_customFormat1, _customFormat2);
+            CustomFormatsTestHelpers.GivenCustomFormats(_customFormat1, _customFormat2);
         }
 
         private void GivenAutoDownloadPropers(ProperDownloadTypes type)
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             var profile = new Profile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
-                FormatItems = CustomFormatsFixture.GetSampleFormatItems(_customFormat1.Name, _customFormat2.Name),
+                FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(_customFormat1.Name, _customFormat2.Name),
                 MinFormatScore = 0
             };
 

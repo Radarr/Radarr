@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Organizer
         private readonly IQualityDefinitionService _qualityDefinitionService;
         private readonly IUpdateMediaInfo _mediaInfoUpdater;
         private readonly IMovieTranslationService _movieTranslationService;
-        private readonly ICustomFormatService _formatService;
+        private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly Logger _logger;
 
         private static readonly Regex TitleRegex = new Regex(@"(?<tag>\{(?:imdb-|edition-))?\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[a-z0-9|+-]+(?<!-)))?(?<suffix>[-} ._)\]]*)\}",
@@ -83,14 +83,14 @@ namespace NzbDrone.Core.Organizer
                                IQualityDefinitionService qualityDefinitionService,
                                IUpdateMediaInfo mediaInfoUpdater,
                                IMovieTranslationService movieTranslationService,
-                               ICustomFormatService formatService,
+                               ICustomFormatCalculationService formatCalculator,
                                Logger logger)
         {
             _namingConfigService = namingConfigService;
             _qualityDefinitionService = qualityDefinitionService;
             _mediaInfoUpdater = mediaInfoUpdater;
             _movieTranslationService = movieTranslationService;
-            _formatService = formatService;
+            _formatCalculator = formatCalculator;
             _logger = logger;
         }
 
@@ -397,7 +397,7 @@ namespace NzbDrone.Core.Organizer
             if (customFormats == null)
             {
                 movieFile.Movie = movie;
-                customFormats = CustomFormatCalculationService.ParseCustomFormat(movieFile, _formatService.All());
+                customFormats = _formatCalculator.ParseCustomFormat(movieFile, movie);
             }
 
             tokenHandlers["{Custom Formats}"] = m => string.Join(" ", customFormats.Where(x => x.IncludeCustomFormatWhenRenaming));

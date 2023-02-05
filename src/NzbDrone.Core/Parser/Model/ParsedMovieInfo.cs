@@ -25,8 +25,6 @@ namespace NzbDrone.Core.Parser.Model
         public int Year { get; set; }
         public string ImdbId { get; set; }
         public int TmdbId { get; set; }
-        [JsonIgnore]
-        public Dictionary<string, object> ExtraInfo { get; set; } = new Dictionary<string, object>();
 
         public string MovieTitle => PrimaryMovieTitle;
 

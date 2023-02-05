@@ -7,6 +7,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Core.Download.Aggregation;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Jobs;
 using NzbDrone.Core.Languages;
@@ -44,6 +45,7 @@ namespace NzbDrone.Core.Download.Pending
         private readonly IDelayProfileService _delayProfileService;
         private readonly ITaskManager _taskManager;
         private readonly IConfigService _configService;
+        private readonly IRemoteMovieAggregationService _aggregationService;
         private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly IEventAggregator _eventAggregator;
         private readonly Logger _logger;
@@ -55,6 +57,7 @@ namespace NzbDrone.Core.Download.Pending
                                      IDelayProfileService delayProfileService,
                                      ITaskManager taskManager,
                                      IConfigService configService,
+                                     IRemoteMovieAggregationService aggregationService,
                                      ICustomFormatCalculationService formatCalculator,
                                      IEventAggregator eventAggregator,
                                      Logger logger)
@@ -66,6 +69,7 @@ namespace NzbDrone.Core.Download.Pending
             _delayProfileService = delayProfileService;
             _taskManager = taskManager;
             _configService = configService;
+            _aggregationService = aggregationService;
             _formatCalculator = formatCalculator;
             _eventAggregator = eventAggregator;
             _logger = logger;
@@ -163,8 +167,6 @@ namespace NzbDrone.Core.Download.Pending
             {
                 if (pendingRelease.RemoteMovie != null)
                 {
-                    pendingRelease.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(pendingRelease.ParsedMovieInfo, pendingRelease.RemoteMovie.Movie);
-
                     var ect = pendingRelease.Release.PublishDate.AddMinutes(GetDelay(pendingRelease.RemoteMovie));
 
                     if (ect < nextRssSync.Value)
@@ -188,7 +190,7 @@ namespace NzbDrone.Core.Download.Pending
                         Id = GetQueueId(pendingRelease, pendingRelease.RemoteMovie.Movie),
                         Movie = pendingRelease.RemoteMovie.Movie,
                         Quality = pendingRelease.RemoteMovie.ParsedMovieInfo?.Quality ?? new QualityModel(),
-                        Languages = pendingRelease.RemoteMovie.ParsedMovieInfo?.Languages ?? new List<Language>(),
+                        Languages = pendingRelease.RemoteMovie.Languages,
                         Title = pendingRelease.Title,
                         Size = pendingRelease.RemoteMovie.Release.Size,
                         Sizeleft = pendingRelease.RemoteMovie.Release.Size,
@@ -295,6 +297,9 @@ namespace NzbDrone.Core.Download.Pending
                     ParsedMovieInfo = release.ParsedMovieInfo,
                     Release = release.Release
                 };
+
+                _aggregationService.Augment(release.RemoteMovie);
+                release.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(release.RemoteMovie, release.Release.Size);
 
                 result.Add(release);
             }

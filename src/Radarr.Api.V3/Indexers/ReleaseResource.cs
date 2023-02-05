@@ -73,7 +73,7 @@ namespace Radarr.Api.V3.Indexers
             {
                 Guid = releaseInfo.Guid,
                 Quality = parsedMovieInfo.Quality,
-                CustomFormats = remoteMovie.CustomFormats.ToResource(),
+                CustomFormats = remoteMovie.CustomFormats.ToResource(false),
                 CustomFormatScore = remoteMovie.CustomFormatScore,
 
                 // QualityWeight
@@ -87,7 +87,7 @@ namespace Radarr.Api.V3.Indexers
                 ReleaseHash = parsedMovieInfo.ReleaseHash,
                 Title = releaseInfo.Title,
                 MovieTitles = parsedMovieInfo.MovieTitles,
-                Languages = parsedMovieInfo.Languages,
+                Languages = remoteMovie.Languages,
                 Approved = model.Approved,
                 TemporarilyRejected = model.TemporarilyRejected,
                 Rejected = model.Rejected,

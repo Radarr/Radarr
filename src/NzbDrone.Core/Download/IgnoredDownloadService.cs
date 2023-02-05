@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Download
             var downloadIgnoredEvent = new DownloadIgnoredEvent
             {
                 MovieId = movie.Id,
-                Languages = trackedDownload.RemoteMovie.ParsedMovieInfo.Languages,
+                Languages = trackedDownload.RemoteMovie.Languages,
                 Quality = trackedDownload.RemoteMovie.ParsedMovieInfo.Quality,
                 SourceTitle = trackedDownload.DownloadItem.Title,
                 DownloadClientInfo = trackedDownload.DownloadItem.DownloadClientInfo,

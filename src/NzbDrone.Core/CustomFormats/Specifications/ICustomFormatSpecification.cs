@@ -15,6 +15,6 @@ namespace NzbDrone.Core.CustomFormats
         NzbDroneValidationResult Validate();
 
         ICustomFormatSpecification Clone();
-        bool IsSatisfiedBy(ParsedMovieInfo movieInfo);
+        bool IsSatisfiedBy(CustomFormatInput input);
     }
 }

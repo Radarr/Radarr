@@ -54,6 +54,7 @@ namespace NzbDrone.Core.Test.Download.Pending.PendingReleaseServiceTests
                 Id = id,
                 Title = "Movie.Title.2020.720p-Radarr",
                 ParsedMovieInfo = new ParsedMovieInfo { MovieTitles = new List<string> { title }, Year = year },
+                Release = Builder<ReleaseInfo>.CreateNew().Build(),
                 MovieId = _movie.Id
             });
         }

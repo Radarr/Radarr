@@ -56,6 +56,7 @@ class HistoryRow extends Component {
       movie,
       quality,
       customFormats,
+      
       languages,
       qualityCutoffNotMet,
       eventType,

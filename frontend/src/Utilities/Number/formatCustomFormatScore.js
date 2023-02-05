@@ -1,5 +1,4 @@
-
-function formatCustomFormatScore(input) {
+function formatCustomFormatScore(input, customFormatsLength = 0) {
   const score = Number(input);
 
   if (score > 0) {
@@ -10,7 +9,7 @@ function formatCustomFormatScore(input) {
     return score;
   }
 
-  return '';
+  return customFormatsLength > 0 ? '+0' : '';
 }
 
 export default formatCustomFormatScore;

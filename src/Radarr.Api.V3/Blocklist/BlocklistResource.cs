@@ -42,7 +42,7 @@ namespace Radarr.Api.V3.Blocklist
                 SourceTitle = model.SourceTitle,
                 Languages = model.Languages,
                 Quality = model.Quality,
-                CustomFormats = formatCalculator.ParseCustomFormat(model).ToResource(),
+                CustomFormats = formatCalculator.ParseCustomFormat(model, model.Movie).ToResource(false),
                 Date = model.Date,
                 Protocol = model.Protocol,
                 Indexer = model.Indexer,

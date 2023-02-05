@@ -55,7 +55,8 @@ namespace NzbDrone.Core.Notifications.Webhook
                 IsUpgrade = message.OldMovieFiles.Any(),
                 DownloadClient = message.DownloadClientInfo?.Name,
                 DownloadClientType = message.DownloadClientInfo?.Type,
-                DownloadId = message.DownloadId
+                DownloadId = message.DownloadId,
+                CustomFormatInfo = new WebhookCustomFormatInfo(message.MovieInfo.CustomFormats, message.MovieInfo.CustomFormatScore)
             };
 
             if (message.OldMovieFiles.Any())

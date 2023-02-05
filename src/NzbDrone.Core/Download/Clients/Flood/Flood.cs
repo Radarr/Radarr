@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Download.Clients.Flood
                             result.Add(remoteMovie.ParsedMovieInfo.Quality.Quality.ToString());
                             break;
                         case (int)AdditionalTags.Languages:
-                            result.UnionWith(remoteMovie.ParsedMovieInfo.Languages.ConvertAll(language => language.ToString()));
+                            result.UnionWith(remoteMovie.Languages.ConvertAll(language => language.ToString()));
                             break;
                         case (int)AdditionalTags.ReleaseGroup:
                             result.Add(remoteMovie.ParsedMovieInfo.ReleaseGroup);

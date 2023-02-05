@@ -170,9 +170,9 @@ namespace NzbDrone.Core.Test.Profiles
             var customFormat1 = new CustomFormat("My Format 1", new LanguageSpecification { Value = (int)Language.English }) { Id = 1 };
             var customFormat2 = new CustomFormat("My Format 2", new LanguageSpecification { Value = (int)Language.French }) { Id = 2 };
 
-            CustomFormatsFixture.GivenCustomFormats(customFormat1, customFormat2);
+            CustomFormatsTestHelpers.GivenCustomFormats(customFormat1, customFormat2);
 
-            profile.FormatItems = CustomFormatsFixture.GetSampleFormatItems(customFormat2.Name);
+            profile.FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(customFormat2.Name);
 
             Mocker.GetMock<IProfileRepository>()
                   .Setup(s => s.Get(It.IsAny<int>()))

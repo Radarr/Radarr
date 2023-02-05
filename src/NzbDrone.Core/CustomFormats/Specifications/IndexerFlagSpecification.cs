@@ -32,10 +32,9 @@ namespace NzbDrone.Core.CustomFormats
         [FieldDefinition(1, Label = "Flag", Type = FieldType.Select, SelectOptions = typeof(IndexerFlags))]
         public int Value { get; set; }
 
-        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo)
+        protected override bool IsSatisfiedByWithoutNegate(CustomFormatInput input)
         {
-            var flags = movieInfo?.ExtraInfo?.GetValueOrDefault("IndexerFlags") as IndexerFlags?;
-            return flags?.HasFlag((IndexerFlags)Value) == true;
+            return input.IndexerFlags.HasFlag((IndexerFlags)Value) == true;
         }
 
         public override NzbDroneValidationResult Validate()
