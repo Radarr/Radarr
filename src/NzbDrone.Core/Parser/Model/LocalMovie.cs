@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles.MediaInfo;
 using NzbDrone.Core.Movies;
@@ -10,6 +11,7 @@ namespace NzbDrone.Core.Parser.Model
     {
         public LocalMovie()
         {
+            CustomFormats = new List<CustomFormat>();
         }
 
         public string Path { get; set; }
@@ -27,6 +29,8 @@ namespace NzbDrone.Core.Parser.Model
         public string Edition { get; set; }
         public string SceneName { get; set; }
         public bool OtherVideoFiles { get; set; }
+        public List<CustomFormat> CustomFormats { get; set; }
+        public int CustomFormatScore { get; set; }
 
         public override string ToString()
         {

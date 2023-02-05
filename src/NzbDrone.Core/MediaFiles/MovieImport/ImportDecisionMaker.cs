@@ -4,6 +4,7 @@ using System.Linq;
 using NLog;
 using NzbDrone.Common.Disk;
 using NzbDrone.Common.Extensions;
+using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.MediaFiles.MovieImport.Aggregation;
@@ -30,6 +31,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
         private readonly IDiskProvider _diskProvider;
         private readonly IDetectSample _detectSample;
         private readonly IParsingService _parsingService;
+        private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly Logger _logger;
 
         public ImportDecisionMaker(IEnumerable<IImportDecisionEngineSpecification> specifications,
@@ -38,6 +40,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                                    IDiskProvider diskProvider,
                                    IDetectSample detectSample,
                                    IParsingService parsingService,
+                                   ICustomFormatCalculationService formatCalculator,
                                    Logger logger)
         {
             _specifications = specifications;
@@ -46,6 +49,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             _diskProvider = diskProvider;
             _detectSample = detectSample;
             _parsingService = parsingService;
+            _formatCalculator = formatCalculator;
             _logger = logger;
         }
 
@@ -75,7 +79,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
             if (downloadClientItem != null)
             {
                 downloadClientItemInfo = Parser.Parser.ParseMovieTitle(downloadClientItem.Title);
-                downloadClientItemInfo = _parsingService.EnhanceMovieInfo(downloadClientItemInfo);
             }
 
             var nonSampleVideoFileCount = GetNonSampleVideoFileCount(newFiles, movie.MovieMetadata);
@@ -115,11 +118,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
 
             var fileMovieInfo = Parser.Parser.ParseMoviePath(localMovie.Path);
 
-            if (fileMovieInfo != null)
-            {
-                fileMovieInfo = _parsingService.EnhanceMovieInfo(fileMovieInfo);
-            }
-
             localMovie.FileMovieInfo = fileMovieInfo;
             localMovie.Size = _diskProvider.GetFileSize(localMovie.Path);
 
@@ -133,6 +131,9 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 }
                 else
                 {
+                    localMovie.CustomFormats = _formatCalculator.ParseCustomFormat(localMovie);
+                    localMovie.CustomFormatScore = localMovie.Movie.Profile?.CalculateCustomFormatScore(localMovie.CustomFormats) ?? 0;
+
                     decision = GetDecision(localMovie, downloadClientItem);
                 }
             }

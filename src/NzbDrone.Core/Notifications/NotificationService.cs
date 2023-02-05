@@ -130,6 +130,7 @@ namespace NzbDrone.Core.Notifications
             var downloadMessage = new DownloadMessage
             {
                 Message = GetMessage(message.MovieInfo.Movie, message.MovieInfo.Quality),
+                MovieInfo = message.MovieInfo,
                 MovieFile = message.ImportedMovie,
                 Movie = message.MovieInfo.Movie,
                 OldMovieFiles = message.OldFiles,

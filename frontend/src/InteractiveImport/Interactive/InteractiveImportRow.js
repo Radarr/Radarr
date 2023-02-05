@@ -12,6 +12,7 @@ import SelectLanguageModal from 'InteractiveImport/Language/SelectLanguageModal'
 import SelectMovieModal from 'InteractiveImport/Movie/SelectMovieModal';
 import SelectQualityModal from 'InteractiveImport/Quality/SelectQualityModal';
 import SelectReleaseGroupModal from 'InteractiveImport/ReleaseGroup/SelectReleaseGroupModal';
+import MovieFormats from 'Movie/MovieFormats';
 import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
 import formatBytes from 'Utilities/Number/formatBytes';
@@ -150,6 +151,7 @@ class InteractiveImportRow extends Component {
       languages,
       releaseGroup,
       size,
+      customFormats,
       rejections,
       isReprocessing,
       isSelected,
@@ -226,7 +228,7 @@ class InteractiveImportRow extends Component {
         </TableRowCellButton>
 
         <TableRowCellButton
-          className={styles.language}
+          className={styles.languages}
           title={translate('ClickToChangeLanguage')}
           onPress={this.onSelectLanguagePress}
         >
@@ -259,7 +261,26 @@ class InteractiveImportRow extends Component {
 
         <TableRowCell>
           {
-            !!rejections.length &&
+            customFormats?.length ?
+              <Popover
+                anchor={
+                  <Icon name={icons.INTERACTIVE} />
+                }
+                title="Formats"
+                body={
+                  <div className={styles.customFormatTooltip}>
+                    <MovieFormats formats={customFormats} />
+                  </div>
+                }
+                position={tooltipPositions.LEFT}
+              /> :
+              null
+          }
+        </TableRowCell>
+
+        <TableRowCell>
+          {
+            rejections.length ?
               <Popover
                 anchor={
                   <Icon
@@ -282,7 +303,9 @@ class InteractiveImportRow extends Component {
                   </ul>
                 }
                 position={tooltipPositions.LEFT}
-              />
+                canFlip={false}
+              /> :
+              null
           }
         </TableRowCell>
 
@@ -330,6 +353,7 @@ InteractiveImportRow.propTypes = {
   languages: PropTypes.arrayOf(PropTypes.object),
   releaseGroup: PropTypes.string,
   size: PropTypes.number.isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object),
   rejections: PropTypes.arrayOf(PropTypes.object).isRequired,
   isReprocessing: PropTypes.bool,
   isSelected: PropTypes.bool,

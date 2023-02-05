@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Mocker.Resolve<UpgradableSpecification>();
             _upgradeDisk = Mocker.Resolve<UpgradeDiskSpecification>();
 
-            CustomFormatsFixture.GivenCustomFormats();
+            CustomFormatsTestHelpers.GivenCustomFormats();
 
             _firstFile = new MovieFile { Quality = new QualityModel(Quality.Bluray1080p, new Revision(version: 2)), DateAdded = DateTime.Now };
 
@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 .With(c => c.Profile = new Profile
                 {
                     Cutoff = Quality.Bluray1080p.Id, Items = Qualities.QualityFixture.GetDefaultQualities(),
-                    FormatItems = CustomFormatsFixture.GetSampleFormatItems(),
+                    FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(),
                     MinFormatScore = 0
                 })
                 .With(e => e.MovieFile = _firstFile)

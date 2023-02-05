@@ -36,7 +36,8 @@ namespace NzbDrone.Core.Notifications.Webhook
                 Release = new WebhookRelease(quality, remoteMovie),
                 DownloadClient = message.DownloadClientName,
                 DownloadClientType = message.DownloadClientType,
-                DownloadId = message.DownloadId
+                DownloadId = message.DownloadId,
+                CustomFormatInfo = new WebhookCustomFormatInfo(remoteMovie.CustomFormats, remoteMovie.CustomFormatScore)
             };
         }
 
@@ -55,7 +56,8 @@ namespace NzbDrone.Core.Notifications.Webhook
                 IsUpgrade = message.OldMovieFiles.Any(),
                 DownloadClient = message.DownloadClientInfo?.Name,
                 DownloadClientType = message.DownloadClientInfo?.Type,
-                DownloadId = message.DownloadId
+                DownloadId = message.DownloadId,
+                CustomFormatInfo = new WebhookCustomFormatInfo(message.MovieInfo.CustomFormats, message.MovieInfo.CustomFormatScore)
             };
 
             if (message.OldMovieFiles.Any())

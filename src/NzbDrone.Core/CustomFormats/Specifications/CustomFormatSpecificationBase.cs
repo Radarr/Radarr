@@ -21,9 +21,9 @@ namespace NzbDrone.Core.CustomFormats
 
         public abstract NzbDroneValidationResult Validate();
 
-        public bool IsSatisfiedBy(ParsedMovieInfo movieInfo)
+        public bool IsSatisfiedBy(CustomFormatInput input)
         {
-            var match = IsSatisfiedByWithoutNegate(movieInfo);
+            var match = IsSatisfiedByWithoutNegate(input);
             if (Negate)
             {
                 match = !match;
@@ -32,6 +32,6 @@ namespace NzbDrone.Core.CustomFormats
             return match;
         }
 
-        protected abstract bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo);
+        protected abstract bool IsSatisfiedByWithoutNegate(CustomFormatInput input);
     }
 }

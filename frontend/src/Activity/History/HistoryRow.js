@@ -56,6 +56,7 @@ class HistoryRow extends Component {
       movie,
       quality,
       customFormats,
+      customFormatScore,
       languages,
       qualityCutoffNotMet,
       eventType,
@@ -175,7 +176,7 @@ class HistoryRow extends Component {
                   key={name}
                   className={styles.customFormatScore}
                 >
-                  {formatCustomFormatScore(data.customFormatScore)}
+                  {formatCustomFormatScore(customFormatScore)}
                 </TableRowCell>
               );
             }
@@ -241,8 +242,9 @@ HistoryRow.propTypes = {
   movie: PropTypes.object.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   quality: PropTypes.object.isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object),
+  customFormatScore: PropTypes.number.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
-  customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
   eventType: PropTypes.string.isRequired,
   sourceTitle: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,

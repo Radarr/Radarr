@@ -17,6 +17,7 @@ namespace Radarr.Api.V3.History
         public List<Language> Languages { get; set; }
         public QualityModel Quality { get; set; }
         public List<CustomFormatResource> CustomFormats { get; set; }
+        public int CustomFormatScore { get; set; }
         public bool QualityCutoffNotMet { get; set; }
         public DateTime Date { get; set; }
         public string DownloadId { get; set; }
@@ -37,6 +38,9 @@ namespace Radarr.Api.V3.History
                 return null;
             }
 
+            var customFormats = formatCalculator.ParseCustomFormat(model, model.Movie);
+            var customFormatScore = model.Movie.Profile.CalculateCustomFormatScore(customFormats);
+
             return new HistoryResource
             {
                 Id = model.Id,
@@ -45,7 +49,8 @@ namespace Radarr.Api.V3.History
                 SourceTitle = model.SourceTitle,
                 Languages = model.Languages,
                 Quality = model.Quality,
-                CustomFormats = formatCalculator.ParseCustomFormat(model).ToResource(),
+                CustomFormats = customFormats.ToResource(false),
+                CustomFormatScore = customFormatScore,
 
                 // QualityCutoffNotMet
                 Date = model.Date,

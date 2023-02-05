@@ -49,7 +49,7 @@ namespace NzbDrone.Core.DecisionEngine.Specifications.RssSync
 
             if (mostRecent != null && mostRecent.EventType == MovieHistoryEventType.Grabbed)
             {
-                var customFormats = _formatService.ParseCustomFormat(mostRecent);
+                var customFormats = _formatService.ParseCustomFormat(mostRecent, subject.Movie);
 
                 var cutoffUnmet = _upgradableSpecification.CutoffNotMet(subject.Movie.Profile,
                                                                         mostRecent.Quality,

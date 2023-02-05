@@ -32,9 +32,9 @@ namespace NzbDrone.Core.CustomFormats
         [FieldDefinition(1, Label = "Quality Modifier", Type = FieldType.Select, SelectOptions = typeof(Modifier))]
         public int Value { get; set; }
 
-        protected override bool IsSatisfiedByWithoutNegate(ParsedMovieInfo movieInfo)
+        protected override bool IsSatisfiedByWithoutNegate(CustomFormatInput input)
         {
-            return (movieInfo?.Quality?.Quality?.Modifier ?? (int)Modifier.NONE) == (Modifier)Value;
+            return (input.MovieInfo?.Quality?.Quality?.Modifier ?? (int)Modifier.NONE) == (Modifier)Value;
         }
 
         public override NzbDroneValidationResult Validate()

@@ -17,13 +17,14 @@ namespace Radarr.Api.V3.Blocklist
         private readonly ICustomFormatCalculationService _formatCalculator;
 
         public BlocklistController(IBlocklistService blocklistService,
-                               ICustomFormatCalculationService formatCalculator)
+                                   ICustomFormatCalculationService formatCalculator)
         {
             _blocklistService = blocklistService;
             _formatCalculator = formatCalculator;
         }
 
         [HttpGet]
+        [Produces("application/json")]
         public PagingResource<BlocklistResource> GetBlocklist()
         {
             var pagingResource = Request.ReadPagingResourceFromRequest<BlocklistResource>();
@@ -45,6 +46,7 @@ namespace Radarr.Api.V3.Blocklist
         }
 
         [HttpDelete("bulk")]
+        [Produces("application/json")]
         public object Remove([FromBody] BlocklistBulkResource resource)
         {
             _blocklistService.Delete(resource.Ids);

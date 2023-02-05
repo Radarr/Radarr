@@ -132,7 +132,7 @@ namespace NzbDrone.Core.History
                 EventType = MovieHistoryEventType.Grabbed,
                 Date = DateTime.UtcNow,
                 Quality = message.Movie.ParsedMovieInfo.Quality,
-                Languages = message.Movie.ParsedMovieInfo.Languages,
+                Languages = message.Movie.Languages,
                 SourceTitle = message.Movie.Release.Title,
                 DownloadId = message.DownloadId,
                 MovieId = message.Movie.Movie.Id
@@ -203,6 +203,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("DownloadClient", message.DownloadClientInfo?.Type);
             history.Data.Add("DownloadClientName", message.DownloadClientInfo?.Name);
             history.Data.Add("ReleaseGroup", message.MovieInfo.ReleaseGroup);
+            history.Data.Add("CustomFormatScore", message.MovieInfo.CustomFormatScore.ToString());
 
             _historyRepository.Insert(history);
         }

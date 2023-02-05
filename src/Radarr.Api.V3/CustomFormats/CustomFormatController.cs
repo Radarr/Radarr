@@ -45,10 +45,11 @@ namespace Radarr.Api.V3.CustomFormats
 
         protected override CustomFormatResource GetResourceById(int id)
         {
-            return _formatService.GetById(id).ToResource();
+            return _formatService.GetById(id).ToResource(true);
         }
 
         [RestPostById]
+        [Consumes("application/json")]
         public ActionResult<CustomFormatResource> Create(CustomFormatResource customFormatResource)
         {
             var model = customFormatResource.ToModel(_specifications);
@@ -59,6 +60,7 @@ namespace Radarr.Api.V3.CustomFormats
         }
 
         [RestPutById]
+        [Consumes("application/json")]
         public ActionResult<CustomFormatResource> Update(CustomFormatResource resource)
         {
             var model = resource.ToModel(_specifications);
@@ -71,9 +73,10 @@ namespace Radarr.Api.V3.CustomFormats
         }
 
         [HttpGet]
+        [Produces("application/json")]
         public List<CustomFormatResource> GetAll()
         {
-            return _formatService.All().ToResource();
+            return _formatService.All().ToResource(true);
         }
 
         [RestDeleteById]

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -9,7 +9,7 @@ using NzbDrone.Core.Test.Framework;
 namespace NzbDrone.Core.Test.CustomFormats
 {
     [TestFixture]
-    public class CustomFormatsFixture : CoreTest
+    public class CustomFormatsTestHelpers : CoreTest
     {
         private static List<CustomFormat> _customFormats { get; set; }
 

@@ -6,6 +6,7 @@ using NzbDrone.Common.Cache;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
+using NzbDrone.Core.Download.Aggregation;
 using NzbDrone.Core.Download.History;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
@@ -32,6 +33,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         private readonly IEventAggregator _eventAggregator;
         private readonly IDownloadHistoryService _downloadHistoryService;
         private readonly IConfigService _config;
+        private readonly IRemoteMovieAggregationService _aggregationService;
         private readonly ICustomFormatCalculationService _formatCalculator;
         private readonly Logger _logger;
         private readonly ICached<TrackedDownload> _cache;
@@ -40,6 +42,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                                       ICacheManager cacheManager,
                                       IHistoryService historyService,
                                       IConfigService config,
+                                      IRemoteMovieAggregationService aggregationService,
                                       ICustomFormatCalculationService formatCalculator,
                                       IEventAggregator eventAggregator,
                                       IDownloadHistoryService downloadHistoryService,
@@ -49,6 +52,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             _historyService = historyService;
             _cache = cacheManager.GetCache<TrackedDownload>(GetType());
             _config = config;
+            _aggregationService = aggregationService;
             _formatCalculator = formatCalculator;
             _eventAggregator = eventAggregator;
             _downloadHistoryService = downloadHistoryService;
@@ -118,6 +122,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 if (parsedMovieInfo != null)
                 {
                     trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null).RemoteMovie;
+
+                    _aggregationService.Augment(trackedDownload.RemoteMovie);
                 }
 
                 var downloadHistory = _downloadHistoryService.GetLatestDownloadHistoryItem(downloadItem.DownloadId);
@@ -151,7 +157,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 // Calculate custom formats
                 if (trackedDownload.RemoteMovie != null)
                 {
-                    trackedDownload.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(parsedMovieInfo, trackedDownload.RemoteMovie.Movie);
+                    trackedDownload.RemoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(trackedDownload.RemoteMovie, downloadItem.TotalSize);
                 }
 
                 // Track it so it can be displayed in the queue even though we can't determine which movie it is for
@@ -192,6 +198,8 @@ namespace NzbDrone.Core.Download.TrackedDownloads
             var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title);
 
             trackedDownload.RemoteMovie = parsedMovieInfo == null ? null : _parsingService.Map(parsedMovieInfo, "", null).RemoteMovie;
+
+            _aggregationService.Augment(trackedDownload.RemoteMovie);
         }
 
         private static TrackedDownloadState GetStateFromHistory(DownloadHistoryEventType eventType)

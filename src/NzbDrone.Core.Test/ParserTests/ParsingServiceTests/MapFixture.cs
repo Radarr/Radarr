@@ -194,20 +194,5 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
             Subject.Map(_umlautInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
             Subject.Map(_umlautAltInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
         }
-
-        [Test]
-        public void should_convert_original()
-        {
-            Subject.Map(_multiLanguageInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().Contain(Language.English);
-            Subject.Map(_multiLanguageInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().Contain(Language.French);
-        }
-
-        [Test]
-        public void should_remove_original_as_already_exists()
-        {
-            Subject.Map(_multiLanguageWithOriginalInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().Contain(Language.English);
-            Subject.Map(_multiLanguageWithOriginalInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().Contain(Language.French);
-            Subject.Map(_multiLanguageWithOriginalInfo, "", _movieSearchCriteria).RemoteMovie.ParsedMovieInfo.Languages.Should().NotContain(Language.Original);
-        }
     }
 }

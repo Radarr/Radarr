@@ -6,7 +6,6 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Parser.Augmenters;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
 
@@ -17,7 +16,6 @@ namespace NzbDrone.Core.Parser
         Movie GetMovie(string title);
         MappingResult Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
         ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers);
-        ParsedMovieInfo EnhanceMovieInfo(ParsedMovieInfo parsedMovieInfo, List<object> helpers = null);
         ParsedMovieInfo ParseMinimalMovieInfo(string path, bool isDir = false);
         ParsedMovieInfo ParseMinimalPathMovieInfo(string path);
     }
@@ -27,15 +25,12 @@ namespace NzbDrone.Core.Parser
         private static HashSet<ArabicRomanNumeral> _arabicRomanNumeralMappings;
 
         private readonly IMovieService _movieService;
-        private readonly IEnumerable<IAugmentParsedMovieInfo> _augmenters;
         private readonly Logger _logger;
 
         public ParsingService(IMovieService movieService,
-                              IEnumerable<IAugmentParsedMovieInfo> augmenters,
                               Logger logger)
         {
             _movieService = movieService;
-            _augmenters = augmenters;
             _logger = logger;
 
             if (_arabicRomanNumeralMappings == null)
@@ -53,25 +48,7 @@ namespace NzbDrone.Core.Parser
                 return null;
             }
 
-            result = EnhanceMovieInfo(result, helpers);
-
             return result;
-        }
-
-        public ParsedMovieInfo EnhanceMovieInfo(ParsedMovieInfo minimalInfo, List<object> helpers = null)
-        {
-            if (helpers != null)
-            {
-                var augmenters = _augmenters.Where(a => helpers.Any(t => a.HelperType.IsInstanceOfType(t)) || a.HelperType == null);
-
-                foreach (var augmenter in augmenters)
-                {
-                    minimalInfo = augmenter.AugmentMovieInfo(minimalInfo,
-                        helpers.FirstOrDefault(h => augmenter.HelperType.IsInstanceOfType(h)));
-                }
-            }
-
-            return minimalInfo;
         }
 
         public ParsedMovieInfo ParseMinimalMovieInfo(string file, bool isDir = false)
@@ -125,27 +102,6 @@ namespace NzbDrone.Core.Parser
             {
                 result = new MappingResult { MappingResultType = MappingResultType.Unknown };
                 result.Movie = null;
-            }
-
-            // Use movie language as fallback if we could't parse a language (more accurate than just using English)
-            if (parsedMovieInfo.Languages.Count <= 1 && parsedMovieInfo.Languages.First() == Language.Unknown && result.Movie != null)
-            {
-                parsedMovieInfo.Languages = new List<Language> { result.Movie.MovieMetadata.Value.OriginalLanguage };
-                _logger.Debug("Language couldn't be parsed from release, fallback to movie original language: {0}", result.Movie.MovieMetadata.Value.OriginalLanguage.Name);
-            }
-
-            if (parsedMovieInfo.Languages.Contains(Language.Original))
-            {
-                parsedMovieInfo.Languages.Remove(Language.Original);
-
-                if (result.Movie != null && !parsedMovieInfo.Languages.Contains(result.Movie.MovieMetadata.Value.OriginalLanguage))
-                {
-                    parsedMovieInfo.Languages.Add(result.Movie.MovieMetadata.Value.OriginalLanguage);
-                }
-                else
-                {
-                    parsedMovieInfo.Languages.Add(Language.Unknown);
-                }
             }
 
             result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;

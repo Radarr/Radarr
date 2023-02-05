@@ -38,14 +38,14 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             Mocker.Resolve<UpgradableSpecification>();
             _upgradeHistory = Mocker.Resolve<HistorySpecification>();
 
-            CustomFormatsFixture.GivenCustomFormats();
+            CustomFormatsTestHelpers.GivenCustomFormats();
 
             _fakeMovie = Builder<Movie>.CreateNew()
                 .With(c => c.Profile = new Profile
                 {
                     Items = Qualities.QualityFixture.GetDefaultQualities(),
                     Cutoff = Quality.Bluray1080p.Id,
-                    FormatItems = CustomFormatsFixture.GetSampleFormatItems("None"),
+                    FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems("None"),
                     MinFormatScore = 0,
                     UpgradeAllowed = true
                 })
@@ -66,7 +66,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                   .Returns(true);
 
             Mocker.GetMock<ICustomFormatCalculationService>()
-                .Setup(x => x.ParseCustomFormat(It.IsAny<MovieHistory>()))
+                .Setup(x => x.ParseCustomFormat(It.IsAny<MovieHistory>(), It.IsAny<Movie>()))
                 .Returns(new List<CustomFormat>());
         }
 
@@ -163,7 +163,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 Cutoff = Quality.Bluray1080p.Id,
-                FormatItems = CustomFormatsFixture.GetSampleFormatItems(),
+                FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(),
                 MinFormatScore = 0
             };
 
@@ -171,7 +171,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _upgradableQuality = new QualityModel(Quality.WEBDL1080p, new Revision(version: 1));
 
             Mocker.GetMock<ICustomFormatCalculationService>()
-                .Setup(x => x.ParseCustomFormat(It.IsAny<MovieHistory>()))
+                .Setup(x => x.ParseCustomFormat(It.IsAny<MovieHistory>(), It.IsAny<Movie>()))
                 .Returns(new List<CustomFormat>());
 
             GivenMostRecentForEpisode(FIRST_EPISODE_ID, string.Empty, _upgradableQuality, DateTime.UtcNow, MovieHistoryEventType.Grabbed);
@@ -186,7 +186,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 Cutoff = Quality.WEBDL1080p.Id,
-                FormatItems = CustomFormatsFixture.GetSampleFormatItems(),
+                FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(),
                 MinFormatScore = 0
             };
 
@@ -221,7 +221,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
                 Cutoff = Quality.WEBDL1080p.Id,
-                FormatItems = CustomFormatsFixture.GetSampleFormatItems(),
+                FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(),
                 MinFormatScore = 0
             };
 

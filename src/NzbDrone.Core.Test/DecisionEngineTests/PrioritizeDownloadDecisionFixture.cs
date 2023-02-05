@@ -37,7 +37,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             _customFormat1 = new CustomFormat("My Format 1", new LanguageSpecification { Value = (int)Language.English }) { Id = 1 };
             _customFormat2 = new CustomFormat("My Format 2", new LanguageSpecification { Value = (int)Language.French }) { Id = 2 };
 
-            CustomFormatsFixture.GivenCustomFormats(_customFormat1, _customFormat2);
+            CustomFormatsTestHelpers.GivenCustomFormats(_customFormat1, _customFormat2);
 
             Mocker.GetMock<IQualityDefinitionService>()
                   .Setup(s => s.Get(It.IsAny<Quality>()))
@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             remoteMovie.Movie = Builder<Movie>.CreateNew().With(m => m.Profile = new Profile
             {
                 Items = Qualities.QualityFixture.GetDefaultQualities(),
-                FormatItems = CustomFormatsFixture.GetSampleFormatItems(_customFormat1.Name, _customFormat2.Name),
+                FormatItems = CustomFormatsTestHelpers.GetSampleFormatItems(_customFormat1.Name, _customFormat2.Name),
                 MinFormatScore = 0
             })
                 .With(m => m.Title = "A Movie")

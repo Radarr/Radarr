@@ -75,9 +75,6 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex RemuxRegex = new Regex(@"(?:[_. \[]|\d{4}p-)(?<remux>(?:(BD|UHD)[-_. ]?)?Remux)\b|(?<remux>(?:(BD|UHD)[-_. ]?)?Remux[_. ]\d{4}p)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex HardcodedSubsRegex = new Regex(@"\b((?<hcsub>(\w+(?<!SOFT|HORRIBLE)SUBS?))|(?<hc>(HC|SUBBED)))\b",
-                                                                RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
-
         public static QualityModel ParseQuality(string name)
         {
             Logger.Debug("Trying to parse quality for {0}", name);
@@ -110,19 +107,6 @@ namespace NzbDrone.Core.Parser
         {
             var normalizedName = name.Replace('_', ' ').Trim();
             var result = ParseQualityModifiers(name, normalizedName);
-            var subMatch = HardcodedSubsRegex.Matches(normalizedName).OfType<Match>().LastOrDefault();
-
-            if (subMatch != null && subMatch.Success)
-            {
-                if (subMatch.Groups["hcsub"].Success)
-                {
-                    result.HardcodedSubs = subMatch.Groups["hcsub"].Value;
-                }
-                else if (subMatch.Groups["hc"].Success)
-                {
-                    result.HardcodedSubs = "Generic Hardcoded Subs";
-                }
-            }
 
             var sourceMatches = SourceRegex.Matches(normalizedName);
             var sourceMatch = sourceMatches.OfType<Match>().LastOrDefault();
