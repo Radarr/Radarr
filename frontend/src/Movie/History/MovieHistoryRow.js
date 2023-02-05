@@ -62,6 +62,7 @@ class MovieHistoryRow extends Component {
       sourceTitle,
       quality,
       customFormats,
+      customFormatScore,
       languages,
       qualityCutoffNotMet,
       date,
@@ -106,7 +107,7 @@ class MovieHistoryRow extends Component {
         </TableRowCell>
 
         <TableRowCell key={name}>
-          {formatCustomFormatScore(data.customFormatScore)}
+          {formatCustomFormatScore(customFormatScore)}
         </TableRowCell>
 
         <RelativeDateCellConnector
@@ -161,7 +162,8 @@ MovieHistoryRow.propTypes = {
   sourceTitle: PropTypes.string.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   quality: PropTypes.object.isRequired,
-  customFormats: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFormats: PropTypes.arrayOf(PropTypes.object),
+  customFormatScore: PropTypes.number.isRequired,
   qualityCutoffNotMet: PropTypes.bool.isRequired,
   date: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,

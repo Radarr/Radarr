@@ -11,6 +11,7 @@ namespace NzbDrone.Core.Parser.Model
     {
         public LocalMovie()
         {
+            CustomFormats = new List<CustomFormat>();
         }
 
         public string Path { get; set; }
