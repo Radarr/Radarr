@@ -116,7 +116,7 @@ namespace NzbDrone.Core.CustomFormats
             var episodeInfo = new ParsedMovieInfo
             {
                 MovieTitles = new List<string>() { localMovie.Movie.Title },
-                SimpleReleaseTitle = localMovie.SceneName.SimplifyReleaseTitle(),
+                SimpleReleaseTitle = localMovie.SceneName?.SimplifyReleaseTitle(),
                 ReleaseTitle = localMovie.SceneName,
                 Quality = localMovie.Quality,
                 Edition = localMovie.Edition,
