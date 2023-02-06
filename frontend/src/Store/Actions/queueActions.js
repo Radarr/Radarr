@@ -119,6 +119,12 @@ export const defaultState = {
         isVisible: false
       },
       {
+        name: 'year',
+        label: translate('Year'),
+        isSortable: true,
+        isVisible: true
+      },
+      {
         name: 'outputPath',
         label: translate('OutputPath'),
         isSortable: false,

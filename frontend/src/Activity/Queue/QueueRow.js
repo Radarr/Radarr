@@ -128,6 +128,7 @@ class QueueRow extends Component {
 
         {
           columns.map((column) => {
+
             const {
               name,
               isVisible
@@ -230,6 +231,16 @@ class QueueRow extends Component {
               return (
                 <TableRowCell key={name}>
                   {formatBytes(size)}
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'year') {
+              return (
+                <TableRowCell key={name}>
+                  {
+                    movie ? movie.year : ''
+                  }
                 </TableRowCell>
               );
             }
@@ -362,6 +373,7 @@ QueueRow.propTypes = {
   estimatedCompletionTime: PropTypes.string,
   timeleft: PropTypes.string,
   size: PropTypes.number,
+  year: PropTypes.number,
   sizeleft: PropTypes.number,
   showRelativeDates: PropTypes.bool.isRequired,
   shortDateFormat: PropTypes.string.isRequired,
