@@ -31,10 +31,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             if (wantedLanguage == Language.Original)
             {
-                if (!subject.ParsedMovieInfo.Languages.Contains(originalLanguage))
+                if (!subject.Languages.Contains(originalLanguage))
                 {
-                    _logger.Debug("Original Language({0}) is wanted, but found {1}", originalLanguage, subject.ParsedMovieInfo.Languages.ToExtendedString());
-                    return Decision.Reject("Original Language ({0}) is wanted, but found {1}", originalLanguage, subject.ParsedMovieInfo.Languages.ToExtendedString());
+                    _logger.Debug("Original Language({0}) is wanted, but found {1}", originalLanguage, subject.Languages.ToExtendedString());
+                    return Decision.Reject("Original Language ({0}) is wanted, but found {1}", originalLanguage, subject.Languages.ToExtendedString());
                 }
 
                 return Decision.Accept();
@@ -42,10 +42,10 @@ namespace NzbDrone.Core.DecisionEngine.Specifications
 
             _logger.Debug("Checking if report meets language requirements. {0}", subject.ParsedMovieInfo.Languages.ToExtendedString());
 
-            if (!subject.ParsedMovieInfo.Languages.Contains(wantedLanguage))
+            if (!subject.Languages.Contains(wantedLanguage))
             {
-                _logger.Debug("Report Language: {0} rejected because it is not wanted, wanted {1}", subject.ParsedMovieInfo.Languages.ToExtendedString(), wantedLanguage);
-                return Decision.Reject("{0} is wanted, but found {1}", wantedLanguage, subject.ParsedMovieInfo.Languages.ToExtendedString());
+                _logger.Debug("Report Language: {0} rejected because it is not wanted, wanted {1}", subject.Languages.ToExtendedString(), wantedLanguage);
+                return Decision.Reject("{0} is wanted, but found {1}", wantedLanguage, subject.Languages.ToExtendedString());
             }
 
             return Decision.Accept();
