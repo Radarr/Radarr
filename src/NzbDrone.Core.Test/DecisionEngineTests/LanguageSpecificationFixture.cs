@@ -41,17 +41,17 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
 
         private void WithEnglishRelease()
         {
-            _remoteMovie.ParsedMovieInfo.Languages = new List<Language> { Language.English };
+            _remoteMovie.Languages = new List<Language> { Language.English };
         }
 
         private void WithGermanRelease()
         {
-            _remoteMovie.ParsedMovieInfo.Languages = new List<Language> { Language.German };
+            _remoteMovie.Languages = new List<Language> { Language.German };
         }
 
         private void WithFrenchRelease()
         {
-            _remoteMovie.ParsedMovieInfo.Languages = new List<Language> { Language.French };
+            _remoteMovie.Languages = new List<Language> { Language.French };
         }
 
         [Test]
