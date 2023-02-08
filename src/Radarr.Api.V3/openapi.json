@@ -321,17 +321,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/BlocklistResourcePagingResource"
-                }
-              },
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BlocklistResourcePagingResource"
-                }
-              },
-              "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/BlocklistResourcePagingResource"
                 }
@@ -1221,16 +1211,6 @@
               "schema": {
                 "$ref": "#/components/schemas/CustomFormatResource"
               }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFormatResource"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFormatResource"
-              }
             }
           }
         },
@@ -1265,23 +1245,7 @@
           "200": {
             "description": "Success",
             "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CustomFormatResource"
-                  }
-                }
-              },
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CustomFormatResource"
-                  }
-                }
-              },
-              "text/json": {
                 "schema": {
                   "type": "array",
                   "items": {
@@ -1312,16 +1276,6 @@
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFormatResource"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomFormatResource"
-              }
-            },
-            "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/CustomFormatResource"
               }
@@ -8999,7 +8953,8 @@
             "nullable": true
           },
           "includeCustomFormatWhenRenaming": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
           },
           "specifications": {
             "type": "array",
@@ -9410,6 +9365,10 @@
               "$ref": "#/components/schemas/CustomFormatResource"
             },
             "nullable": true
+          },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
           },
           "qualityCutoffNotMet": {
             "type": "boolean"
@@ -10212,6 +10171,13 @@
           },
           "downloadId": {
             "type": "string",
+            "nullable": true
+          },
+          "customFormats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomFormatResource"
+            },
             "nullable": true
           },
           "rejections": {
@@ -11376,11 +11342,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "extraInfo": {
-            "type": "object",
-            "additionalProperties": {
-              "nullable": true
-            },
+          "hardcodedSubs": {
+            "type": "string",
             "nullable": true
           },
           "movieTitle": {
@@ -11533,10 +11496,6 @@
           },
           "revision": {
             "$ref": "#/components/schemas/Revision"
-          },
-          "hardcodedSubs": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
