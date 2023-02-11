@@ -18,6 +18,7 @@ export const certificationCountryOptions = [
   { key: 'fr', value: 'France' },
   { key: 'de', value: 'Germany' },
   { key: 'gb', value: 'Great Britain' },
+  { key: 'ie', value: 'Ireland' },
   { key: 'it', value: 'Italy' },
   { key: 'es', value: 'Spain' },
   { key: 'us', value: 'United States' },
