@@ -1,6 +1,7 @@
 /* eslint-disable no-bitwise */
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import translate from 'Utilities/String/translate';
 import EnhancedSelectInput from './EnhancedSelectInput';
 import styles from './UMaskInput.css';
 
@@ -101,16 +102,16 @@ class UMaskInput extends Component {
         </div>
         <div className={styles.details}>
           <div>
-            <label>UMask</label>
+            <label>{translate('UMask')}</label>
             <div className={styles.value}>{umask}</div>
           </div>
           <div>
-            <label>Folder</label>
+            <label>{translate('Folder')}</label>
             <div className={styles.value}>{folder}</div>
             <div className={styles.unit}>d{formatPermissions(folderNum)}</div>
           </div>
           <div>
-            <label>File</label>
+            <label>{translate('File')}</label>
             <div className={styles.value}>{file}</div>
             <div className={styles.unit}>{formatPermissions(fileNum)}</div>
           </div>

@@ -162,7 +162,7 @@ class CalendarOptionsModalContent extends Component {
                   values={weekColumnOptions}
                   value={calendarWeekColumnHeader}
                   onChange={this.onGlobalInputChange}
-                  helpText={translate('HelpText')}
+                  helpText={translate('SettingsWeekColumnHeaderHelpText')}
                 />
               </FormGroup>
 

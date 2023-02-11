@@ -266,7 +266,7 @@ class InteractiveImportRow extends Component {
                 anchor={
                   <Icon name={icons.INTERACTIVE} />
                 }
-                title="Formats"
+                title={translate('Formats')}
                 body={
                   <div className={styles.customFormatTooltip}>
                     <MovieFormats formats={customFormats} />
