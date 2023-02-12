@@ -202,6 +202,16 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.SpanishLatino);
             }
 
+            if (lowerTitle.Contains("catalan"))
+            {
+                languages.Add(Language.Catalan);
+            }
+
+            if (lowerTitle.Contains("tamil"))
+            {
+                languages.Add(Language.Tamil);
+            }
+
             // Case sensitive
             var caseSensitiveMatchs = CaseSensitiveLanguageRegex.Matches(title);
 

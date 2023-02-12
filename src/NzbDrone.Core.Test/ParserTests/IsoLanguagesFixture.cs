@@ -22,7 +22,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("enus")]
         [TestCase("enusa")]
         [TestCase("wo")]
-        [TestCase("ca-IT")]
         [TestCase("fr-CA")]
         public void unknown_or_invalid_code_should_return_null(string isoCode)
         {

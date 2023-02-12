@@ -393,6 +393,14 @@ namespace NzbDrone.Core.Test.ParserTests
             result.First().Id.Should().Be(Language.SpanishLatino.Id);
         }
 
+        [TestCase("Movie.Title.1994.Catalan.1080p.XviD-LOL")]
+        public void should_parse_language_catalan(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle, true);
+
+            result.Languages.Should().BeEquivalentTo(Language.Catalan);
+        }
+
         [TestCase("Movie.Title.en.sub")]
         [TestCase("Movie Title.eng.sub")]
         [TestCase("Movie.Title.eng.forced.sub")]
