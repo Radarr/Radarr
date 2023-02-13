@@ -168,13 +168,14 @@ namespace NzbDrone.Core.CustomFormats
         private static List<CustomFormat> ParseCustomFormat(MovieFile movieFile, Movie movie, List<CustomFormat> allCustomFormats)
         {
             var releaseTitle = string.Empty;
+
             if (movieFile.SceneName.IsNotNullOrWhiteSpace())
             {
                 releaseTitle = movieFile.SceneName;
             }
             else if (movieFile.OriginalFilePath.IsNotNullOrWhiteSpace())
             {
-                releaseTitle = movieFile.OriginalFilePath;
+                releaseTitle = Path.GetFileName(movieFile.OriginalFilePath);
             }
             else if (movieFile.RelativePath.IsNotNullOrWhiteSpace())
             {
