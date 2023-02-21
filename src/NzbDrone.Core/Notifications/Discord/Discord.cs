@@ -222,6 +222,21 @@ namespace NzbDrone.Core.Notifications.Discord
             _proxy.SendPayload(payload, Settings);
         }
 
+        public override void OnMovieAdded(Movie movie)
+        {
+            var attachments = new List<Embed>
+                              {
+                                  new Embed
+                                  {
+                                      Title = movie.MovieMetadata.Value.Title,
+                                      Description = $"{movie.Title} added to library",
+                                  }
+                              };
+
+            var payload = CreatePayload("Added", attachments);
+            _proxy.SendPayload(payload, Settings);
+        }
+
         public override void OnMovieRename(Movie movie, List<RenamedMovieFile> renamedFiles)
         {
             var attachments = new List<Embed>();
