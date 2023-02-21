@@ -84,7 +84,8 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Roksbox
 
                 if (extension == ".jpg")
                 {
-                    if (Path.GetFileNameWithoutExtension(filename).Equals(parentdir.Name, StringComparison.InvariantCultureIgnoreCase))
+                    if (Path.GetFileNameWithoutExtension(filename).Equals(parentdir.Name, StringComparison.InvariantCultureIgnoreCase) &&
+                        !path.GetParentName().Equals("metadata", StringComparison.InvariantCultureIgnoreCase))
                     {
                         metadata.Type = MetadataType.MovieImage;
                         return metadata;
