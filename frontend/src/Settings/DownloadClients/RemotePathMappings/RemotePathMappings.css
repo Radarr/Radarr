@@ -1,15 +1,20 @@
 .remotePathMappingsHeader {
   display: flex;
   margin-bottom: 10px;
+  padding-right: 24px;
   font-weight: bold;
 }
 
 .host {
-  flex: 0 0 300px;
+  @add-mixin truncate;
+
+  flex: 0 1 300px;
 }
 
 .path {
-  flex: 0 0 400px;
+  @add-mixin truncate;
+
+  flex: 0 1 400px;
 }
 
 .addRemotePathMapping {
