@@ -189,7 +189,7 @@ namespace NzbDrone.Core.ImportLists
                 if (releases.Empty())
                 {
                     return new NzbDroneValidationFailure(string.Empty,
-                               "No results were returned from your import list, please check your settings.")
+                               "No results were returned from your import list, please check your settings and the log for details.")
                     { IsWarning = true };
                 }
             }
@@ -199,21 +199,21 @@ namespace NzbDrone.Core.ImportLists
             }
             catch (UnsupportedFeedException ex)
             {
-                _logger.Warn(ex, "Import List feed is not supported");
+                _logger.Warn(ex, "Import list feed is not supported");
 
-                return new ValidationFailure(string.Empty, "Import List feed is not supported: " + ex.Message);
+                return new ValidationFailure(string.Empty, "Import list feed is not supported: " + ex.Message);
             }
             catch (ImportListException ex)
             {
                 _logger.Warn(ex, "Unable to connect to list");
 
-                return new ValidationFailure(string.Empty, "Unable to connect to list. " + ex.Message);
+                return new ValidationFailure(string.Empty, $"Unable to connect to import list: {ex.Message}. Check the log surrounding this error for details.");
             }
             catch (Exception ex)
             {
-                _logger.Warn(ex, "Unable to connect to list");
+                _logger.Warn(ex, "Unable to connect to import list");
 
-                return new ValidationFailure(string.Empty, "Unable to connect to list, check the log for more details");
+                return new ValidationFailure(string.Empty, $"Unable to connect to import list: {ex.Message}. Check the log surrounding this error for details.");
             }
 
             return null;
