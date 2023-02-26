@@ -4,7 +4,6 @@ using System.Linq;
 using NLog;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Parser.RomanNumerals;
@@ -214,31 +213,15 @@ namespace NzbDrone.Core.Parser
             possibleTitles.AddRange(searchCriteria.Movie.MovieMetadata.Value.AlternativeTitles.Select(t => t.CleanTitle));
             possibleTitles.AddRange(searchCriteria.Movie.MovieMetadata.Value.Translations.Select(t => t.CleanTitle));
 
-            var cleanTitle = parsedMovieInfo.PrimaryMovieTitle.CleanMovieTitle();
+            var cleanTitles = parsedMovieInfo.MovieTitles.Select(t => t.CleanMovieTitle()).ToArray();
 
-            foreach (var title in possibleTitles)
+            if (possibleTitles.Any(pt =>
+                cleanTitles.Contains(pt)
+                || _arabicRomanNumeralMappings.Any(mn =>
+                    cleanTitles.Contains(pt.Replace(mn.ArabicNumeralAsString, mn.RomanNumeralLowerCase))
+                    || cleanTitles.Any(t => t.Replace(mn.ArabicNumeralAsString, mn.RomanNumeralLowerCase) == pt))))
             {
-                if (title == cleanTitle)
-                {
-                    possibleMovie = searchCriteria.Movie;
-                }
-
-                foreach (var numeralMapping in _arabicRomanNumeralMappings)
-                {
-                    var arabicNumeral = numeralMapping.ArabicNumeralAsString;
-                    var romanNumeral = numeralMapping.RomanNumeralLowerCase;
-
-                    // _logger.Debug(cleanTitle);
-                    if (title.Replace(arabicNumeral, romanNumeral) == cleanTitle)
-                    {
-                        possibleMovie = searchCriteria.Movie;
-                    }
-
-                    if (title == cleanTitle.Replace(arabicNumeral, romanNumeral))
-                    {
-                        possibleMovie = searchCriteria.Movie;
-                    }
-                }
+                possibleMovie = searchCriteria.Movie;
             }
 
             if (possibleMovie != null)
