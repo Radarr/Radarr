@@ -302,7 +302,7 @@
     "Added": "Adicionado",
     "Activity": "Atividade",
     "Actions": "Ações",
-    "About": "Informações",
+    "About": "Sobre",
     "AvailabilityDelay": "Atraso de disponibilidade",
     "AutoUnmonitorPreviouslyDownloadedMoviesHelpText": "Filmes eliminados do disco deixam automaticamente de ser monitorados no Radarr",
     "AutoRedownloadFailedHelpText": "Pesquisar e tentar transferir automaticamente uma versão diferente",
@@ -1145,5 +1145,6 @@
     "MovieCollectionMissingRoot": "Falta a pasta base para a coleção de filmes: {0}",
     "MovieCollectionMultipleMissingRoots": "Faltam várias pastas base para as coleções de filmes: {0}",
     "MovieOnly": "Apenas filme",
-    "ShowCollectionDetails": "Mostrar estado da coleção"
+    "ShowCollectionDetails": "Mostrar estado da coleção",
+    "File": "Ficheiro"
 }

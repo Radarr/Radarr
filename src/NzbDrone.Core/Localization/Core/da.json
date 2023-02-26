@@ -1062,5 +1062,6 @@
     "MonitorMovies": "Overvåg film",
     "NoCollections": "Ingen film fundet. For at komme i gang vil du tilføje en ny film eller importere nogle eksisterende.",
     "AllCollectionsHiddenDueToFilter": "Alle film er gemt på grund af aktivt filter.",
-    "Collections": "Samling"
+    "Collections": "Samling",
+    "File": "Filer"
 }

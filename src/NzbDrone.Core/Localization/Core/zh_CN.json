@@ -636,7 +636,7 @@
     "InstallLatest": "安装最新版",
     "IndexerStatusCheckSingleClientMessage": "搜刮器因错误不可用：{0}",
     "IndexerStatusCheckAllClientMessage": "所有搜刮器都因错误不可用",
-    "IndexerSearchCheckNoInteractiveMessage": "没有任何索引器开启了手动搜索，因此 Radarr 不会提供任何手动搜索的结果",
+    "IndexerSearchCheckNoInteractiveMessage": "没有任何索引器开启了手动搜索，因此 Radarr不会提供任何手动搜索的结果",
     "IndexerRssHealthCheckNoIndexers": "没有任何索引器开启了RSS同步，Radarr不会自动抓取新发布的影片",
     "IndexerLongTermStatusCheckSingleClientMessage": "由于故障6小时，下列索引器都已不可用：{0}",
     "IndexerLongTermStatusCheckAllClientMessage": "由于故障超过6小时，所有索引器均不可用",
@@ -1145,7 +1145,7 @@
     "TotalMovies": "电影总数",
     "ApplicationUrlHelpText": "此应用的外部URL，包含 http(s)://、端口和基本URL",
     "ApplicationURL": "程序URL",
-    "BindAddressHelpText": "有效的 IP 地址，localhost，或以'*'代表所有地址",
+    "BindAddressHelpText": "有效的 IPv4 地址、localhost、或以'*'代表所有接口",
     "PreferredProtocol": "首选协议",
     "AreYouSureYouWantToResetQualityDefinitions": "确定要重置质量定义吗？",
     "SettingsThemeHelpText": "更改程序界面主题，“自动”主题将根据您的操作系统主题来设置浅色或深色模式。灵感来自Theme.Park",
@@ -1155,5 +1155,7 @@
     "ResetTitlesHelpText": "重置定义标题与参数值",
     "SettingsTheme": "主题",
     "RSSHelpText": "当Radarr定期通过RSS同步查找发布时使用",
-    "DownloadClientSortingCheckMessage": "下载客户端 {0} 为 Radarr 的类别启用了 {1} 排序。 您应该在下载客户端中禁用排序以避免导入问题。"
+    "DownloadClientSortingCheckMessage": "下载客户端 {0} 为 Radarr 的类别启用了 {1} 排序。 您应该在下载客户端中禁用排序以避免导入问题。",
+    "File": "文件",
+    "UMask": "UMask"
 }

@@ -1154,5 +1154,6 @@
     "AreYouSureYouWantToResetQualityDefinitions": "Haluatko varmasti palauttaa laatumääritykset?",
     "ResetDefinitions": "Palauta määritykset",
     "ResetTitlesHelpText": "Palauta määritysten nimet ja arvot.",
-    "RSSHelpText": "Käytetään etsittäessä julkaisuja RSS-syötteistä ajoitetusti."
+    "RSSHelpText": "Käytetään etsittäessä julkaisuja RSS-syötteistä ajoitetusti.",
+    "File": "Tiedosto"
 }

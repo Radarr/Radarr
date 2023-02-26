@@ -1062,5 +1062,6 @@
     "Collections": "Söfnun",
     "MonitorMovies": "Fylgstu með kvikmynd",
     "NoCollections": "Engar kvikmyndir fundust, til að byrja, þá viltu bæta við nýrri kvikmynd eða flytja inn þær sem fyrir eru.",
-    "RssSyncHelpText": "Bil á nokkrum mínútum. Stillt á núll til að gera óvirkt (þetta stöðvar allan sjálfvirkan losunartak)"
+    "RssSyncHelpText": "Bil á nokkrum mínútum. Stillt á núll til að gera óvirkt (þetta stöðvar allan sjálfvirkan losunartak)",
+    "File": "Skrár"
 }

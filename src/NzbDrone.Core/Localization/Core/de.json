@@ -821,7 +821,7 @@
     "ListSyncLevelHelpTextWarning": "Filmdateien werden dauerhaft gelöcht, dies kann deine ganze Mediathek leeren wenn deine Listen leer sind",
     "ConsideredAvailable": "Verfügbarkeit angenommen",
     "Announced": "Angekündigt",
-    "MappedDrivesRunningAsService": "Zugeordnete Netzlaufwerke sind nicht verfügbar, wenn Radarr als Windows-Dienst ausgeführt wird. Bitte lesen Sie die FAQ für weitere Informationen",
+    "MappedDrivesRunningAsService": "Zugeordnete Netzlaufwerke sind nicht verfügbar, wenn Prowlarr als Windows-Dienst ausgeführt wird. Bitte lesen Sie die FAQ für weitere Informationen",
     "CouldNotConnectSignalR": "Es konnte keine Verbindung zu SignalR hergestellt werden, die Benutzeroberfläche wird nicht aktualisiert",
     "ChmodGroupHelpTextWarning": "Dies funktioniert nur, wenn der Benutzer, der Radarr ausführt, der Eigentümer der Datei ist. Es ist besser, sicherzustellen, dass der Download-Client die gleiche Gruppe wie Radarr verwendet.",
     "ChmodGroupHelpText": "Gruppenname oder gid. Verwenden Sie gid für entfernte Dateisysteme.",
@@ -1155,5 +1155,6 @@
     "ResetTitlesHelpText": "Definitionstitel und Werte zurücksetzen",
     "SettingsTheme": "Design",
     "RSSHelpText": "Wird benutzt, wenn Radarr mittels RSS-Sync regelmäßig nach Releases schaut",
-    "DownloadClientSortingCheckMessage": "Downloader {0} hat die {1} Sortierung für Radarrs Kategorie aktiviert. Dies sollte deaktiviert werden, um Import-Probleme zu vermeiden."
+    "DownloadClientSortingCheckMessage": "Downloader {0} hat die {1} Sortierung für Radarrs Kategorie aktiviert. Dies sollte deaktiviert werden, um Import-Probleme zu vermeiden.",
+    "File": "Datei"
 }

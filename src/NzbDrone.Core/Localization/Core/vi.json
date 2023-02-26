@@ -1062,5 +1062,6 @@
     "Collections": "Bộ sưu tập",
     "MonitorMovies": "Theo dõi phim",
     "NoCollections": "Không tìm thấy phim nào, để bắt đầu, bạn sẽ muốn thêm phim mới hoặc nhập một số phim hiện có.",
-    "RssSyncHelpText": "Khoảng thời gian tính bằng phút. Đặt thành 0 để tắt (điều này sẽ dừng tất cả việc lấy bản phát hành tự động)"
+    "RssSyncHelpText": "Khoảng thời gian tính bằng phút. Đặt thành 0 để tắt (điều này sẽ dừng tất cả việc lấy bản phát hành tự động)",
+    "File": "Các tập tin"
 }
