@@ -1155,5 +1155,6 @@
     "ResetTitles": "Réinitialiser les titres",
     "ResetTitlesHelpText": "Réinitialiser les titres des définitions ainsi que les valeurs",
     "SettingsThemeHelpText": "Changez le thème de l'interface de l'application. Le thème \"Auto\" utilisera celui de votre système d'exploitation pour définir le mode clair ou foncé. Inspiré par Theme.Park",
-    "ShowPosters": "Montre les affiches"
+    "ShowPosters": "Montre les affiches",
+    "File": "Fichier"
 }

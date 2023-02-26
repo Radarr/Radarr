@@ -1062,5 +1062,6 @@
     "Collections": "Sbírka",
     "MonitorMovies": "Monitorujte film",
     "NoCollections": "Nebyly nalezeny žádné kolekce, pro začátek budete chtít přidat nový film nebo importovat některé stávající",
-    "RssSyncHelpText": "Interval v minutách. Nastavením na nulu deaktivujete (tím se zastaví veškeré automatické uvolnění uvolnění)"
+    "RssSyncHelpText": "Interval v minutách. Nastavením na nulu deaktivujete (tím se zastaví veškeré automatické uvolnění uvolnění)",
+    "File": "Soubory"
 }

@@ -829,7 +829,7 @@
     "MegabytesPerMinute": "Megabytes Per Minuut",
     "Medium": "Gemiddeld",
     "Max": "Max",
-    "MappedDrivesRunningAsService": "Toegewezen netwerkstation is niet beschikbaar wanneer Radarr wordt uitgevoerd als een Windows Service. Bekijk de Veelgestelde Vragen voor meer informatie",
+    "MappedDrivesRunningAsService": "Toegewezen netwerkstation is niet beschikbaar wanneer Prowlarr wordt uitgevoerd als een Windows Service. Bekijk de Veelgestelde Vragen voor meer informatie",
     "ManualImportSelectQuality": " Manuele Import - Selecteer Kwaliteit",
     "ManualImportSelectLanguage": "Manuele import - Selecteer Taal",
     "ManualImportSelectMovie": "Manuele import - Selecteer Film",
@@ -1116,5 +1116,6 @@
     "CollectionShowOverviewsHelpText": "Collectieoverzicht weergeven",
     "EditCollection": "Bewerk collectie",
     "BypassDelayIfHighestQualityHelpText": "Vertraging negeren wanneer een release de hoogst mogelijke kwaliteit heeft in het kwaliteitsprofiel van het geprefereerde protocol",
-    "CollectionShowPostersHelpText": "Posters van de collectie tonen"
+    "CollectionShowPostersHelpText": "Posters van de collectie tonen",
+    "File": "Bestand"
 }

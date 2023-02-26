@@ -1107,5 +1107,6 @@
     "ChooseImportMode": "Selezionare Metodo di Importazione",
     "EditCollection": "Modifica Connessione",
     "SettingsThemeHelpText": "Cambia il Tema dell'interfaccia dell’applicazione, il Tema 'Auto' userà il suo Tema di Sistema per impostare la modalità Chiara o Scura. Ispirato da {0}",
-    "PreferredProtocol": "Protocollo Preferito"
+    "PreferredProtocol": "Protocollo Preferito",
+    "File": "File"
 }

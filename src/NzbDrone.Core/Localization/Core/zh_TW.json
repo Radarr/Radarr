@@ -17,5 +17,7 @@
     "AddedToDownloadQueue": "已添加到下載隊列",
     "EditCustomFormat": "新增自定義格式",
     "EditDelayProfile": "新增延時配置",
-    "AddToDownloadQueue": "已添加到下載隊列"
+    "AddToDownloadQueue": "已添加到下載隊列",
+    "ExportCustomFormat": "新增自定義格式",
+    "ImportCustomFormat": "新增自定義格式"
 }

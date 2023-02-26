@@ -1145,5 +1145,6 @@
     "TotalMovies": "Filmów całkowicie",
     "RottenTomatoesRating": "Ocena Tomato",
     "ApplicationUrlHelpText": "Zewnętrzny URL tej aplikacji zawiera http(s)://, port i adres URL",
-    "ApplicationURL": "Link do aplikacji"
+    "ApplicationURL": "Link do aplikacji",
+    "File": "Plik"
 }
