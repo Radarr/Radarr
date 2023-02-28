@@ -285,5 +285,18 @@ namespace NzbDrone.Core.Test.ParserTests
         {
             Parser.Parser.NormalizeImdbId(imdbid).Should().BeEquivalentTo(normalized);
         }
+
+        [TestCase(@"Аватар / Avatar (Джеймс Кэмерон / James Cameron) [2009, США, фантастика] [Special Edition Re-release Cut]", "Avatar", 2009)]
+        [TestCase(@"Кот в сапогах 2: Последнее желание / Puss in Boots: The Last Wish / 2022 / ПМ, СТ / WEB-DLRip", "Puss in Boots: The Last Wish", 2022)]
+        [TestCase(@"Аферисты / Sharper (2023) WEB-DLRip от MegaPeer | D", "Sharper", 2023)]
+        public void should_parse_cyrillic_titles(string postTitle, string title, int year)
+        {
+            var movieInfo = Parser.Parser.ParseMovieTitle(postTitle);
+            using (new AssertionScope())
+            {
+                movieInfo.PrimaryMovieTitle.Should().Be(title);
+                movieInfo.Year.Should().Be(year);
+            }
+        }
     }
 }
