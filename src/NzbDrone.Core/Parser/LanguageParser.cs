@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Logger Logger = NzbDroneLogger.GetLogger(typeof(LanguageParser));
 
         private static readonly Regex LanguageRegex = new Regex(@"(?:\W|_|^)(?<italian>\b(?:ita|italian)\b)|
-                                                                            (?<german>german\b|videomann|ger[. ]dub)|
+                                                                            (?<german>german\b|\bdeu\b|videomann|ger[. ]dub)|
                                                                             (?<flemish>flemish)|
                                                                             (?<bulgarian>bgaudio)|
                                                                             (?<brazilian>dublado)|
