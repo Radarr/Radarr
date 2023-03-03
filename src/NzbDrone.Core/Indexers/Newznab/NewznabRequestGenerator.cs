@@ -165,9 +165,14 @@ namespace NzbDrone.Core.Indexers.Newznab
                         searchQuery = string.Format("{0} {1}", searchQuery, searchCriteria.Movie.Year);
                     }
 
+                    var capabilities = _capabilitiesProvider.GetCapabilities(Settings);
+                    var searchType = capabilities.SupportedMovieSearchParameters.Contains("q")
+                        ? "movie"
+                        : "search";
+
                     chain.Add(GetPagedRequests(MaxPages,
                         Settings.Categories,
-                        "search",
+                        searchType,
                         string.Format("&q={0}", NewsnabifyTitle(searchQuery))));
                 }
             }
