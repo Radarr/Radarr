@@ -52,11 +52,7 @@
   width: 75px;
 }
 
-.title {
-  composes: cell;
-}
-
-.title div {
+.titleContent {
   overflow-wrap: break-word;
 }
 

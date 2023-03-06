@@ -246,10 +246,12 @@ function InteractiveSearchRow(props: InteractiveSearchRowProps) {
         ) : null}
       </TableRowCell>
 
-      <TableRowCell className={styles.title}>
-        <Link to={infoUrl} title={title}>
-          <div>{title}</div>
-        </Link>
+      <TableRowCell>
+        <div className={styles.titleContent}>
+          <Link to={infoUrl} title={title}>
+            {title}
+          </Link>
+        </div>
       </TableRowCell>
 
       <TableRowCell className={styles.indexer}>{indexer}</TableRowCell>
