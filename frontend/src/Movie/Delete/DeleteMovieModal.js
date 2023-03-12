@@ -28,6 +28,7 @@ function DeleteMovieModal(props) {
 }
 
 DeleteMovieModal.propTypes = {
+  ...DeleteMovieModalContentConnector.propTypes,
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired,
   previousMovie: PropTypes.string

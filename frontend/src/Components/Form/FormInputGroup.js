@@ -260,6 +260,9 @@ FormInputGroup.propTypes = {
   className: PropTypes.string.isRequired,
   containerClassName: PropTypes.string.isRequired,
   inputClassName: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  value: PropTypes.any,
+  values: PropTypes.arrayOf(PropTypes.any),
   type: PropTypes.string.isRequired,
   unit: PropTypes.string,
   buttons: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
@@ -269,7 +272,8 @@ FormInputGroup.propTypes = {
   helpLink: PropTypes.string,
   pending: PropTypes.bool,
   errors: PropTypes.arrayOf(PropTypes.object),
-  warnings: PropTypes.arrayOf(PropTypes.object)
+  warnings: PropTypes.arrayOf(PropTypes.object),
+  onChange: PropTypes.func.isRequired
 };
 
 FormInputGroup.defaultProps = {

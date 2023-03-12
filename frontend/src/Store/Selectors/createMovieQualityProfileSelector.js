@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect';
 import createMovieSelector from './createMovieSelector';
 
-function createMovieQualityProfileSelector() {
+function createMovieQualityProfileSelector(movieId) {
   return createSelector(
     (state) => state.settings.qualityProfiles.items,
-    createMovieSelector(),
+    createMovieSelector(movieId),
     (qualityProfiles, movie = {}) => {
       return qualityProfiles.find((profile) => {
         return profile.id === movie.qualityProfileId;
