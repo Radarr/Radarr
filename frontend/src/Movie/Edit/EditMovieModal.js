@@ -18,6 +18,7 @@ function EditMovieModal({ isOpen, onModalClose, ...otherProps }) {
 }
 
 EditMovieModal.propTypes = {
+  ...EditMovieModalContentConnector.propTypes,
   isOpen: PropTypes.bool.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

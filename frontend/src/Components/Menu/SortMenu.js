@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Menu from 'Components/Menu/Menu';
 import ToolbarMenuButton from 'Components/Menu/ToolbarMenuButton';
-import { icons } from 'Helpers/Props';
+import { align, icons } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
 function SortMenu(props) {
@@ -31,7 +31,8 @@ function SortMenu(props) {
 SortMenu.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node.isRequired,
-  isDisabled: PropTypes.bool.isRequired
+  isDisabled: PropTypes.bool.isRequired,
+  alignMenu: PropTypes.oneOf([align.LEFT, align.RIGHT])
 };
 
 SortMenu.defaultProps = {

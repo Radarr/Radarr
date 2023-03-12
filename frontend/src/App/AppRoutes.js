@@ -12,7 +12,7 @@ import NotFound from 'Components/NotFound';
 import Switch from 'Components/Router/Switch';
 import DiscoverMovieConnector from 'DiscoverMovie/DiscoverMovieConnector';
 import MovieDetailsPageConnector from 'Movie/Details/MovieDetailsPageConnector';
-import MovieIndexConnector from 'Movie/Index/MovieIndexConnector';
+import MovieIndex from 'Movie/Index/MovieIndex';
 import CustomFormatSettingsConnector from 'Settings/CustomFormats/CustomFormatSettingsConnector';
 import DownloadClientSettingsConnector from 'Settings/DownloadClients/DownloadClientSettingsConnector';
 import GeneralSettingsConnector from 'Settings/General/GeneralSettingsConnector';
@@ -48,7 +48,7 @@ function AppRoutes(props) {
       <Route
         exact={true}
         path="/"
-        component={MovieIndexConnector}
+        component={MovieIndex}
       />
 
       {

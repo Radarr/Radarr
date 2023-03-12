@@ -32,6 +32,7 @@ class EditMovieModalConnector extends Component {
 }
 
 EditMovieModalConnector.propTypes = {
+  ...EditMovieModal.propTypes,
   onModalClose: PropTypes.func.isRequired,
   clearPendingChanges: PropTypes.func.isRequired
 };

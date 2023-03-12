@@ -1,15 +1,22 @@
 import { createSelector } from 'reselect';
 
-function createMovieSelector() {
-  return createSelector(
-    (state, { movieId }) => movieId,
-    (state) => state.movies.itemMap,
-    (state) => state.movies.items,
-    (movieId, itemMap, allMovies) => {
-      if (allMovies && itemMap && movieId in itemMap) {
+function createMovieSelector(id) {
+  if (id == null) {
+    return createSelector(
+      (state, { movieId }) => movieId,
+      (state) => state.movies.itemMap,
+      (state) => state.movies.items,
+      (movieId, itemMap, allMovies) => {
         return allMovies[itemMap[movieId]];
       }
-      return undefined;
+    );
+  }
+
+  return createSelector(
+    (state) => state.movies.itemMap,
+    (state) => state.movies.items,
+    (itemMap, allMovies) => {
+      return allMovies[itemMap[id]];
     }
   );
 }

@@ -35,8 +35,9 @@ class Collection extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.scrollerRef = React.createRef();
+
     this.state = {
-      scroller: null,
       jumpBarItems: { order: [] },
       jumpToCharacter: null,
       isPosterOptionsModalOpen: false,
@@ -77,10 +78,6 @@ class Collection extends Component {
 
   //
   // Control
-
-  setScrollerRef = (ref) => {
-    this.setState({ scroller: ref });
-  };
 
   getSelectedIds = () => {
     if (this.state.allUnselected) {
@@ -234,7 +231,6 @@ class Collection extends Component {
     } = this.props;
 
     const {
-      scroller,
       jumpBarItems,
       jumpToCharacter,
       isOverviewOptionsModalOpen,
@@ -246,7 +242,7 @@ class Collection extends Component {
     const selectedMovieIds = this.getSelectedIds();
 
     const ViewComponent = getViewComponent(view);
-    const isLoaded = !!(!error && isPopulated && items.length && scroller);
+    const isLoaded = !!(!error && isPopulated && items.length && this.scrollerRef.current);
     const hasNoCollection = !totalItems;
 
     return (
@@ -306,10 +302,9 @@ class Collection extends Component {
 
         <div className={styles.pageContentBodyWrapper}>
           <PageContentBody
-            registerScroller={this.setScrollerRef}
+            ref={this.scrollerRef}
             className={styles.contentBody}
             innerClassName={styles[`${view}InnerContentBody`]}
-            onScroll={onScroll}
           >
             {
               isFetching && !isPopulated &&
@@ -327,7 +322,7 @@ class Collection extends Component {
               isLoaded &&
                 <div className={styles.contentBodyContainer}>
                   <ViewComponent
-                    scroller={scroller}
+                    scroller={this.scrollerRef.current}
                     items={items}
                     filters={filters}
                     sortKey={sortKey}
