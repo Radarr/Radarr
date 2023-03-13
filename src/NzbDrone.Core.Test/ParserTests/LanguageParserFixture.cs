@@ -147,6 +147,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie.Title.1994.Romanian.1080p.XviD-LOL")]
+        [TestCase("Movie.Title.1994.1080p.XviD.RoDubbed-LOL")]
         public void should_parse_language_romanian(string postTitle)
         {
             var result = Parser.Parser.ParseMovieTitle(postTitle, true);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.Extensions.FileSystemGlobbing;
 using NLog;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
@@ -19,6 +18,7 @@ namespace NzbDrone.Core.Parser
                                                                             (?<german>german\b|videomann|ger[. ]dub)|
                                                                             (?<flemish>flemish)|
                                                                             (?<bulgarian>bgaudio)|
+                                                                            (?<romanian>rodubbed)|
                                                                             (?<brazilian>dublado)|
                                                                             (?<greek>greek)|
                                                                             (?<french>\b(?:FR|VO|VFF|VFQ|VFI|VF2|TRUEFRENCH|FRE|FRA)\b)|
@@ -330,6 +330,11 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["latvian"].Success)
                 {
                     languages.Add(Language.Latvian);
+                }
+
+                if (match.Groups["romanian"].Success)
+                {
+                    languages.Add(Language.Romanian);
                 }
             }
 
