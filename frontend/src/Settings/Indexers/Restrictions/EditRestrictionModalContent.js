@@ -48,6 +48,7 @@ function EditRestrictionModalContent(props) {
 
             <FormInputGroup
               {...required}
+              inputClassName={styles.tagInternalInput}
               type={inputTypes.TEXT_TAG}
               name="required"
               helpText={translate('RequiredRestrictionHelpText')}
@@ -63,6 +64,7 @@ function EditRestrictionModalContent(props) {
 
             <FormInputGroup
               {...ignored}
+              inputClassName={styles.tagInternalInput}
               type={inputTypes.TEXT_TAG}
               name="ignored"
               helpText={translate('IgnoredHelpText')}

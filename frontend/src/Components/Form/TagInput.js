@@ -76,9 +76,15 @@ class TagInput extends Component {
   // Listeners
 
   onTagEdit = ({ value, ...otherProps }) => {
-    this.setState({ value });
+    const currentValue = this.state.value;
 
-    this.props.onTagDelete(otherProps);
+    if (currentValue && this.props.onTagReplace) {
+      this.props.onTagReplace(otherProps, { name: currentValue });
+    } else {
+      this.props.onTagDelete(otherProps);
+    }
+
+    this.setState({ value });
   };
 
   onInputContainerPress = () => {
@@ -232,7 +238,7 @@ class TagInput extends Component {
       <AutoSuggestInput
         {...otherProps}
         forwardedRef={this._setAutosuggestRef}
-        className={styles.internalInput}
+        className={className}
         inputContainerClassName={classNames(
           inputContainerClassName,
           isFocused && styles.isFocused
@@ -272,7 +278,8 @@ TagInput.propTypes = {
   hasWarning: PropTypes.bool,
   tagComponent: PropTypes.elementType.isRequired,
   onTagAdd: PropTypes.func.isRequired,
-  onTagDelete: PropTypes.func.isRequired
+  onTagDelete: PropTypes.func.isRequired,
+  onTagReplace: PropTypes.func
 };
 
 TagInput.defaultProps = {
