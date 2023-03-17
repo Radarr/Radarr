@@ -220,6 +220,7 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_Movie_ImdbId", movie.MovieMetadata.Value.ImdbId ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_TmdbId", movie.MovieMetadata.Value.TmdbId.ToString());
             environmentVariables.Add("Radarr_Movie_DeletedFiles", deleteMessage.DeletedFiles.ToString());
+            environmentVariables.Add("Radarr_Movie_Overview", movie.MovieMetadata.Value.Overview);
 
             if (deleteMessage.DeletedFiles && movie.MovieFile != null)
             {
