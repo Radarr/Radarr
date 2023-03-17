@@ -14,12 +14,8 @@ namespace NzbDrone.Core.Notifications.Plex.Server
     public interface IPlexServerProxy
     {
         List<PlexSection> GetMovieSections(PlexServerSettings settings);
-        void Update(int sectionId, PlexServerSettings settings);
-        void UpdateMovie(string metadataId, PlexServerSettings settings);
-        void UpdatePath(string path, int sectionId, PlexServerSettings settings);
         string Version(PlexServerSettings settings);
-        List<PlexPreference> Preferences(PlexServerSettings settings);
-        string GetMetadataId(int sectionId, string imdbId, string language, PlexServerSettings settings);
+        void Update(int sectionId, string path, PlexServerSettings settings);
     }
 
     public class PlexServerProxy : IPlexServerProxy
@@ -64,29 +60,13 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                        .ToList();
         }
 
-        public void Update(int sectionId, PlexServerSettings settings)
+        public void Update(int sectionId, string path, PlexServerSettings settings)
         {
             var resource = $"library/sections/{sectionId}/refresh";
             var request = BuildRequest(resource, HttpMethod.Get, settings);
-            var response = ProcessRequest(request);
 
-            CheckForError(response);
-        }
-
-        public void UpdateMovie(string metadataId, PlexServerSettings settings)
-        {
-            var resource = $"library/metadata/{metadataId}/refresh";
-            var request = BuildRequest(resource, HttpMethod.Put, settings);
-            var response = ProcessRequest(request);
-
-            CheckForError(response);
-        }
-
-        public void UpdatePath(string path, int sectionId, PlexServerSettings settings)
-        {
-            var resource = $"library/sections/{sectionId}/refresh";
-            var request = BuildRequest(resource, HttpMethod.Get, settings);
             request.AddQueryParam("path", path);
+
             var response = ProcessRequest(request);
 
             CheckForError(response);
@@ -108,55 +88,6 @@ namespace NzbDrone.Core.Notifications.Plex.Server
             return Json.Deserialize<PlexResponse<PlexIdentity>>(response)
                        .MediaContainer
                        .Version;
-        }
-
-        public List<PlexPreference> Preferences(PlexServerSettings settings)
-        {
-            var request = BuildRequest(":/prefs", HttpMethod.Get, settings);
-            var response = ProcessRequest(request);
-
-            CheckForError(response);
-
-            if (response.Contains("_children"))
-            {
-                return Json.Deserialize<PlexPreferencesLegacy>(response)
-                           .Preferences;
-            }
-
-            return Json.Deserialize<PlexResponse<PlexPreferences>>(response)
-                       .MediaContainer
-                       .Preferences;
-        }
-
-        public string GetMetadataId(int sectionId, string imdbId, string language, PlexServerSettings settings)
-        {
-            var guid = $"com.plexapp.agents.imdb://{imdbId}?lang={language}";
-            var resource = $"library/sections/{sectionId}/all?guid={System.Web.HttpUtility.UrlEncode(guid)}";
-            var request = BuildRequest(resource, HttpMethod.Get, settings);
-            var response = ProcessRequest(request);
-
-            CheckForError(response);
-
-            List<PlexSectionItem> items;
-
-            if (response.Contains("_children"))
-            {
-                items = Json.Deserialize<PlexSectionResponseLegacy>(response)
-                            .Items;
-            }
-            else
-            {
-                items = Json.Deserialize<PlexResponse<PlexSectionResponse>>(response)
-                            .MediaContainer
-                            .Items;
-            }
-
-            if (items == null || items.Empty())
-            {
-                return null;
-            }
-
-            return items.First().Id;
         }
 
         private HttpRequestBuilder BuildRequest(string resource, HttpMethod method, PlexServerSettings settings)
