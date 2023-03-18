@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Test.Housekeeping.Housekeepers
             Subject.Clean();
 
             // BeCloseTo handles Postgres rounding times
-            AllStoredModels.ToList().ForEach(t => t.LastExecution.Should().BeCloseTo(expectedTime));
+            AllStoredModels.ToList().ForEach(t => t.LastExecution.Should().BeCloseTo(expectedTime, TimeSpan.FromMilliseconds(20)));
         }
     }
 }

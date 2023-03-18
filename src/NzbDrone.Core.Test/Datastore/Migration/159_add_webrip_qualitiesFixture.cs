@@ -38,9 +38,9 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             var items = profiles.First().Items;
             items.Should().HaveCount(5);
-            items.Select(v => v.Quality).Should().BeEquivalentTo(1, null, null, null, null);
-            items.Select(v => v.Items.Count).Should().BeEquivalentTo(0, 2, 2, 2, 2);
-            items.Select(v => v.Allowed).Should().BeEquivalentTo(true, false, false, false, false);
+            items.Select(v => v.Quality).Should().Equal(1, null, null, null, null);
+            items.Select(v => v.Items.Count).Should().Equal(0, 2, 2, 2, 2);
+            items.Select(v => v.Allowed).Should().Equal(true, false, false, false, false);
         }
 
         [Test]
@@ -61,9 +61,9 @@ namespace NzbDrone.Core.Test.Datastore.Migration
 
             var items = profiles.First().Items;
             items.Should().HaveCount(5);
-            items.Select(v => v.Quality).Should().BeEquivalentTo(1, null, null, null, null);
-            items.Select(v => v.Items.Count).Should().BeEquivalentTo(0, 2, 2, 2, 2);
-            items.Select(v => v.Allowed).Should().BeEquivalentTo(true, false, false, false, false);
+            items.Select(v => v.Quality).Should().Equal(1, null, null, null, null);
+            items.Select(v => v.Items.Count).Should().Equal(0, 2, 2, 2, 2);
+            items.Select(v => v.Allowed).Should().Equal(true, false, false, false, false);
         }
 
         [Test]
@@ -85,9 +85,9 @@ namespace NzbDrone.Core.Test.Datastore.Migration
             var items = profiles.First().Items;
             items.Count(c => c.Id == 1001).Should().Be(1);
             items.Should().HaveCount(5);
-            items.Select(v => v.Quality).Should().BeEquivalentTo(1, null, null, null, null);
-            items.Select(v => v.Items.Count).Should().BeEquivalentTo(0, 2, 2, 2, 2);
-            items.Select(v => v.Allowed).Should().BeEquivalentTo(true, false, false, false, false);
+            items.Select(v => v.Quality).Should().Equal(1, null, null, null, null);
+            items.Select(v => v.Items.Count).Should().Equal(0, 2, 2, 2, 2);
+            items.Select(v => v.Allowed).Should().Equal(true, false, false, false, false);
         }
 
         [Test]
