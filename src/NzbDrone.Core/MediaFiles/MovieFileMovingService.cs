@@ -100,7 +100,7 @@ namespace NzbDrone.Core.MediaFiles
         {
             Ensure.That(movieFile, () => movieFile).IsNotNull();
             Ensure.That(movie, () => movie).IsNotNull();
-            Ensure.That(destinationFilePath, () => destinationFilePath).IsValidPath();
+            Ensure.That(destinationFilePath, () => destinationFilePath).IsValidPath(PathValidationType.CurrentOs);
 
             var movieFilePath = movieFile.Path ?? Path.Combine(movie.Path, movieFile.RelativePath);
 
