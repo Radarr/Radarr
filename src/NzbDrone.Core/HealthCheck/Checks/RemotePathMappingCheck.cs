@@ -164,7 +164,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("RemotePathMappingCheckImportFailed"), "#remote-path-import-failed");
                     }
 
-                    if (!dlpath.IsPathValid())
+                    if (!dlpath.IsPathValid(PathValidationType.CurrentOs))
                     {
                         if (!status.IsLocalhost)
                         {

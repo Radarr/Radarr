@@ -73,7 +73,7 @@ namespace NzbDrone.Core.RootFolders
             {
                 try
                 {
-                    if (folder.Path.IsPathValid())
+                    if (folder.Path.IsPathValid(PathValidationType.CurrentOs))
                     {
                         GetDetails(folder, moviePaths, true);
                     }
