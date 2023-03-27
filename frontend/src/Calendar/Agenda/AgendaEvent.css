@@ -75,7 +75,7 @@
 }
 
 @media only screen and (max-width: $breakpointSmall) {
-  .event {
+  .overlay {
     flex-direction: column;
   }
 
