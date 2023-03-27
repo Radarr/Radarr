@@ -10,7 +10,6 @@ using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
-using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.Events;
 using NzbDrone.Core.RemotePathMappings;
 using NzbDrone.Core.ThingiProvider.Events;
@@ -165,7 +164,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                         return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("RemotePathMappingCheckImportFailed"), "#remote-path-import-failed");
                     }
 
-                    if (!dlpath.IsPathValid())
+                    if (!dlpath.IsPathValid(PathValidationType.CurrentOs))
                     {
                         if (!status.IsLocalhost)
                         {
