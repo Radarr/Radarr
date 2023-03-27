@@ -14,14 +14,14 @@ namespace NzbDrone.Common.OAuth
         {
             get
             {
-                var parameters = this.Where(p => p.Name.Equals(name));
+                var parameters = this.Where(p => p.Name.Equals(name)).ToArray();
 
                 if (!parameters.Any())
                 {
                     return null;
                 }
 
-                if (parameters.Count() == 1)
+                if (parameters.Length == 1)
                 {
                     return parameters.Single();
                 }
