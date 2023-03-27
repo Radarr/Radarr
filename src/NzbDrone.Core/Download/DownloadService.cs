@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Download
 {
     public interface IDownloadService
     {
-        Task DownloadReport(RemoteMovie remoteMovie);
+        Task DownloadReport(RemoteMovie remoteMovie, int? downloadClientId);
     }
 
     public class DownloadService : IDownloadService
@@ -50,13 +50,15 @@ namespace NzbDrone.Core.Download
             _logger = logger;
         }
 
-        public async Task DownloadReport(RemoteMovie remoteMovie)
+        public async Task DownloadReport(RemoteMovie remoteMovie, int? downloadClientId)
         {
             var filterBlockedClients = remoteMovie.Release.PendingReleaseReason == PendingReleaseReason.DownloadClientUnavailable;
 
             var tags = remoteMovie.Movie?.Tags;
 
-            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteMovie.Release.DownloadProtocol, remoteMovie.Release.IndexerId, filterBlockedClients, tags);
+            var downloadClient = downloadClientId.HasValue
+                ? _downloadClientProvider.Get(downloadClientId.Value)
+                : _downloadClientProvider.GetDownloadClient(remoteMovie.Release.DownloadProtocol, remoteMovie.Release.IndexerId, filterBlockedClients, tags);
 
             await DownloadReport(remoteMovie, downloadClient);
         }

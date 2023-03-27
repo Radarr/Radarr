@@ -80,7 +80,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteMovie));
 
             await Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>(), null), Times.Once());
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteMovie));
 
             await Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>(), null), Times.Once());
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteMovie2));
 
             await Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>(), null), Times.Once());
         }
 
         [Test]
@@ -175,7 +175,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             var decisions = new List<DownloadDecision>();
             decisions.Add(new DownloadDecision(remoteMovie));
 
-            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteMovie>())).Throws(new Exception());
+            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteMovie>(), null)).Throws(new Exception());
 
             var result = await Subject.ProcessDecisions(decisions);
 
@@ -204,7 +204,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteMovie, new Rejection("Failure!", RejectionType.Temporary)));
 
             await Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>()), Times.Never());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>(), null), Times.Never());
         }
 
         [Test]
@@ -242,11 +242,11 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteMovie));
             decisions.Add(new DownloadDecision(remoteMovie));
 
-            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteMovie>()))
+            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.IsAny<RemoteMovie>(), null))
                   .Throws(new DownloadClientUnavailableException("Download client failed"));
 
             await Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>()), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.IsAny<RemoteMovie>(), null), Times.Once());
         }
 
         [Test]
@@ -259,12 +259,12 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteMovie));
             decisions.Add(new DownloadDecision(remoteMovie2));
 
-            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.Is<RemoteMovie>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)))
+            Mocker.GetMock<IDownloadService>().Setup(s => s.DownloadReport(It.Is<RemoteMovie>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet), null))
                   .Throws(new DownloadClientUnavailableException("Download client failed"));
 
             await Subject.ProcessDecisions(decisions);
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteMovie>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet)), Times.Once());
-            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteMovie>(r => r.Release.DownloadProtocol == DownloadProtocol.Torrent)), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteMovie>(r => r.Release.DownloadProtocol == DownloadProtocol.Usenet), null), Times.Once());
+            Mocker.GetMock<IDownloadService>().Verify(v => v.DownloadReport(It.Is<RemoteMovie>(r => r.Release.DownloadProtocol == DownloadProtocol.Torrent), null), Times.Once());
         }
 
         [Test]
@@ -276,7 +276,7 @@ namespace NzbDrone.Core.Test.Download.DownloadApprovedReportsTests
             decisions.Add(new DownloadDecision(remoteMovie));
 
             Mocker.GetMock<IDownloadService>()
-                  .Setup(s => s.DownloadReport(It.IsAny<RemoteMovie>()))
+                  .Setup(s => s.DownloadReport(It.IsAny<RemoteMovie>(), null))
                   .Throws(new ReleaseUnavailableException(remoteMovie.Release, "That 404 Error is not just a Quirk"));
 
             var result = await Subject.ProcessDecisions(decisions);
