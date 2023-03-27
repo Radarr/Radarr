@@ -32,7 +32,11 @@ const columns = [
   },
   {
     name: 'rejections',
-    label: React.createElement(Icon, { name: icons.DANGER }),
+    columnLabel: () => translate('Rejections'),
+    label: React.createElement(Icon, {
+      name: icons.DANGER,
+      title: () => translate('Rejections')
+    }),
     isSortable: true,
     fixedSortDirection: sortDirections.ASCENDING,
     isVisible: true
@@ -88,6 +92,7 @@ const columns = [
   },
   {
     name: 'customFormatScore',
+    columnLabel: () => translate('CustomFormatScore'),
     label: React.createElement(Icon, {
       name: icons.SCORE,
       title: () => translate('CustomFormatScore')
@@ -97,7 +102,11 @@ const columns = [
   },
   {
     name: 'indexerFlags',
-    label: React.createElement(Icon, { name: icons.FLAG }),
+    columnLabel: () => translate('IndexerFlags'),
+    label: React.createElement(Icon, {
+      name: icons.FLAG,
+      title: () => translate('IndexerFlags')
+    }),
     isSortable: true,
     isVisible: true
   }

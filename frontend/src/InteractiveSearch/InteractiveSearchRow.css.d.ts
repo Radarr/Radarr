@@ -7,10 +7,13 @@ interface CssExports {
   'customFormat': string;
   'customFormatScore': string;
   'download': string;
+  'downloadIcon': string;
   'history': string;
   'indexer': string;
   'indexerFlags': string;
-  'language': string;
+  'interactiveIcon': string;
+  'languages': string;
+  'manualDownloadContent': string;
   'peers': string;
   'protocol': string;
   'quality': string;

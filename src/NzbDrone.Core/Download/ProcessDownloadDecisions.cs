@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Download
                 try
                 {
                     _logger.Trace("Grabbing from Indexer {0} at priority {1}.", remoteMovie.Release.Indexer, remoteMovie.Release.IndexerPriority);
-                    await _downloadService.DownloadReport(remoteMovie);
+                    await _downloadService.DownloadReport(remoteMovie, null);
                     grabbed.Add(report);
                 }
                 catch (ReleaseUnavailableException)
