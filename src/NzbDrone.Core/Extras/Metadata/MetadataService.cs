@@ -132,7 +132,7 @@ namespace NzbDrone.Core.Extras.Metadata
 
             if (movieFolder.IsNullOrWhiteSpace())
             {
-                return new List<MetadataFile>();
+                return Array.Empty<MetadataFile>();
             }
 
             var files = new List<MetadataFile>();

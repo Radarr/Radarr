@@ -85,7 +85,7 @@ namespace NzbDrone.Core.Indexers
 
             if (!PostProcess(indexerResponse, items, releases))
             {
-                return new List<ReleaseInfo>();
+                return Array.Empty<ReleaseInfo>();
             }
 
             return releases;

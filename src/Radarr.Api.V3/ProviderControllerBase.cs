@@ -43,11 +43,11 @@ namespace Radarr.Api.V3
         [HttpGet]
         public List<TProviderResource> GetAll()
         {
-            var providerDefinitions = _providerFactory.All().OrderBy(p => p.ImplementationName);
+            var providerDefinitions = _providerFactory.All();
 
-            var result = new List<TProviderResource>(providerDefinitions.Count());
+            var result = new List<TProviderResource>(providerDefinitions.Count);
 
-            foreach (var definition in providerDefinitions)
+            foreach (var definition in providerDefinitions.OrderBy(p => p.ImplementationName))
             {
                 _providerFactory.SetProviderCharacteristics(definition);
 
