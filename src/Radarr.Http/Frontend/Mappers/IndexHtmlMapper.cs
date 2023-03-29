@@ -35,7 +35,7 @@ namespace Radarr.Http.Frontend.Mappers
 
             return !resourceUrl.StartsWith("/content") &&
                    !resourceUrl.StartsWith("/mediacover") &&
-                   !resourceUrl.Contains(".") &&
+                   !resourceUrl.Contains('.') &&
                    !resourceUrl.StartsWith("/login");
         }
     }

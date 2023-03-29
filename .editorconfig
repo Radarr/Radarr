@@ -19,10 +19,10 @@ indent_size = 4
 dotnet_sort_system_directives_first = true
 
 # Avoid "this." and "Me." if not necessary
-dotnet_style_qualification_for_field = false:warning
-dotnet_style_qualification_for_property = false:warning
-dotnet_style_qualification_for_method = false:warning
-dotnet_style_qualification_for_event = false:warning
+dotnet_style_qualification_for_field = false:refactoring
+dotnet_style_qualification_for_property = false:refactoring
+dotnet_style_qualification_for_method = false:refactoring
+dotnet_style_qualification_for_event = false:refactoring
 
 # Indentation preferences
 csharp_indent_block_contents = true
@@ -32,6 +32,10 @@ csharp_indent_case_contents_when_block = true
 csharp_indent_switch_labels = true
 csharp_indent_labels = flush_left
 
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
 dotnet_naming_style.instance_field_style.capitalization = camel_case
 dotnet_naming_style.instance_field_style.required_prefix = _
 
@@ -64,6 +68,7 @@ dotnet_diagnostic.SA1406.severity = suggestion
 dotnet_diagnostic.SA1410.severity = suggestion
 dotnet_diagnostic.SA1411.severity = suggestion
 dotnet_diagnostic.SA1413.severity = none
+dotnet_diagnostic.SA1512.severity = none
 dotnet_diagnostic.SA1516.severity = none
 dotnet_diagnostic.SA1600.severity = none
 dotnet_diagnostic.SA1601.severity = none
@@ -162,6 +167,7 @@ dotnet_diagnostic.CA1309.severity = suggestion
 dotnet_diagnostic.CA1310.severity = suggestion
 dotnet_diagnostic.CA1401.severity = suggestion
 dotnet_diagnostic.CA1416.severity = suggestion
+dotnet_diagnostic.CA1419.severity = suggestion
 dotnet_diagnostic.CA1507.severity = suggestion
 dotnet_diagnostic.CA1508.severity = suggestion
 dotnet_diagnostic.CA1707.severity = suggestion
@@ -177,9 +183,6 @@ dotnet_diagnostic.CA1720.severity = suggestion
 dotnet_diagnostic.CA1721.severity = suggestion
 dotnet_diagnostic.CA1724.severity = suggestion
 dotnet_diagnostic.CA1725.severity = suggestion
-dotnet_diagnostic.CA1801.severity = suggestion
-dotnet_diagnostic.CA1802.severity = suggestion
-dotnet_diagnostic.CA1805.severity = suggestion
 dotnet_diagnostic.CA1806.severity = suggestion
 dotnet_diagnostic.CA1810.severity = suggestion
 dotnet_diagnostic.CA1812.severity = suggestion
@@ -191,13 +194,11 @@ dotnet_diagnostic.CA1819.severity = suggestion
 dotnet_diagnostic.CA1822.severity = suggestion
 dotnet_diagnostic.CA1823.severity = suggestion
 dotnet_diagnostic.CA1824.severity = suggestion
+dotnet_diagnostic.CA1848.severity = suggestion
 dotnet_diagnostic.CA2000.severity = suggestion
 dotnet_diagnostic.CA2002.severity = suggestion
 dotnet_diagnostic.CA2007.severity = suggestion
 dotnet_diagnostic.CA2008.severity = suggestion
-dotnet_diagnostic.CA2009.severity = suggestion
-dotnet_diagnostic.CA2010.severity = suggestion
-dotnet_diagnostic.CA2011.severity = suggestion
 dotnet_diagnostic.CA2012.severity = suggestion
 dotnet_diagnostic.CA2013.severity = suggestion
 dotnet_diagnostic.CA2100.severity = suggestion
@@ -228,6 +229,9 @@ dotnet_diagnostic.CA2243.severity = suggestion
 dotnet_diagnostic.CA2244.severity = suggestion
 dotnet_diagnostic.CA2245.severity = suggestion
 dotnet_diagnostic.CA2246.severity = suggestion
+dotnet_diagnostic.CA2249.severity = suggestion
+dotnet_diagnostic.CA2251.severity = suggestion
+dotnet_diagnostic.CA2254.severity = suggestion
 dotnet_diagnostic.CA3061.severity = suggestion
 dotnet_diagnostic.CA3075.severity = suggestion
 dotnet_diagnostic.CA3076.severity = suggestion
@@ -255,7 +259,7 @@ dotnet_diagnostic.CA5392.severity = suggestion
 dotnet_diagnostic.CA5394.severity = suggestion
 dotnet_diagnostic.CA5397.severity = suggestion
 
-
+dotnet_diagnostic.SYSLIB0006.severity = none
 
 [*.{js,html,js,hbs,less,css}]
 charset = utf-8

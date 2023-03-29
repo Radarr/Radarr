@@ -11,12 +11,12 @@ namespace NzbDrone.Core.Parser
                 return null;
             }
 
-            if (!title.Contains("."))
+            if (!title.Contains('.'))
             {
                 return null;
             }
 
-            if (title.Contains(" "))
+            if (title.Contains(' '))
             {
                 return null;
             }

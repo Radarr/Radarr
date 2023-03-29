@@ -213,7 +213,7 @@ namespace NzbDrone.Core.Parser
                     var titleWithoutExtension = RemoveFileExtension(title).ToCharArray();
                     Array.Reverse(titleWithoutExtension);
 
-                    title = new string(titleWithoutExtension) + title.Substring(titleWithoutExtension.Length);
+                    title = $"{titleWithoutExtension}{title.Substring(titleWithoutExtension.Length)}";
 
                     Logger.Debug("Reversed name detected. Converted to '{0}'", title);
                 }
@@ -282,11 +282,11 @@ namespace NzbDrone.Core.Parser
                                     if (match[0].Groups["title"].Success)
                                     {
                                         simpleReleaseTitle = simpleReleaseTitle.Remove(match[0].Groups["title"].Index, match[0].Groups["title"].Length)
-                                                                               .Insert(match[0].Groups["title"].Index, simpleTitleReplaceString.Contains(".") ? "A.Movie" : "A Movie");
+                                                                               .Insert(match[0].Groups["title"].Index, simpleTitleReplaceString.Contains('.') ? "A.Movie" : "A Movie");
                                     }
                                     else
                                     {
-                                        simpleReleaseTitle = simpleReleaseTitle.Replace(simpleTitleReplaceString, simpleTitleReplaceString.Contains(".") ? "A.Movie" : "A Movie");
+                                        simpleReleaseTitle = simpleReleaseTitle.Replace(simpleTitleReplaceString, simpleTitleReplaceString.Contains('.') ? "A.Movie" : "A Movie");
                                     }
                                 }
 

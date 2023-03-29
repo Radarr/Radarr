@@ -67,7 +67,7 @@ namespace NzbDrone.Core.Test.Extras.Subtitles
 
             var results = Subject.ImportFiles(_localMovie, _movieFile, files, true).ToList();
 
-            results.Count().Should().Be(0);
+            results.Count.Should().Be(0);
         }
 
         [Test]
@@ -84,7 +84,7 @@ namespace NzbDrone.Core.Test.Extras.Subtitles
 
             var results = Subject.ImportFiles(_localMovie, _movieFile, files, true).ToList();
 
-            results.Count().Should().Be(1);
+            results.Count.Should().Be(1);
 
             results[0].RelativePath.AsOsAgnostic().PathEquals(expectedOutputPath.AsOsAgnostic()).Should().Be(true);
         }
@@ -110,7 +110,7 @@ namespace NzbDrone.Core.Test.Extras.Subtitles
 
             var results = Subject.ImportFiles(_localMovie, _movieFile, files, true).ToList();
 
-            results.Count().Should().Be(expectedOutputs.Length);
+            results.Count.Should().Be(expectedOutputs.Length);
 
             for (int i = 0; i < expectedOutputs.Length; i++)
             {
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Test.Extras.Subtitles
 
             var results = Subject.ImportFiles(_localMovie, _movieFile, files, true).ToList();
 
-            results.Count().Should().Be(expectedOutputs.Length);
+            results.Count.Should().Be(expectedOutputs.Length);
 
             for (int i = 0; i < expectedOutputs.Length; i++)
             {
@@ -169,7 +169,7 @@ namespace NzbDrone.Core.Test.Extras.Subtitles
 
             var results = Subject.ImportFiles(_localMovie, _movieFile, new List<string> { subtitleFile }, true).ToList();
 
-            results.Count().Should().Be(1);
+            results.Count.Should().Be(1);
 
             results[0].RelativePath.AsOsAgnostic().PathEquals(expectedOutputPath.AsOsAgnostic()).Should().Be(true);
 

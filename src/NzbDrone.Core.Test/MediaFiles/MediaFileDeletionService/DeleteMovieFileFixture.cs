@@ -14,7 +14,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaFileDeletionService
     [TestFixture]
     public class DeleteMovieFileFixture : CoreTest<Core.MediaFiles.MediaFileDeletionService>
     {
-        private static readonly string RootFolder = @"C:\Test\Movies";
+        private const string RootFolder = @"C:\Test\Movies";
         private Movie _movie;
         private MovieFile _movieFile;
 

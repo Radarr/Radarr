@@ -1,7 +1,9 @@
 <Project>
   <!-- Common to all Radarr Projects -->
   <PropertyGroup>
+    <AnalysisLevel>6.0-all</AnalysisLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 	<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
 
     <PlatformTarget>AnyCPU</PlatformTarget>

@@ -62,7 +62,7 @@ namespace NzbDrone.Core.Test.Extras.Others
 
             var results = Subject.ImportFiles(_localMovie, _movieFile, files, true).ToList();
 
-            results.Count().Should().Be(1);
+            results.Count.Should().Be(1);
 
             results[0].RelativePath.AsOsAgnostic().PathEquals(expectedOutputPath.AsOsAgnostic()).Should().Be(true);
         }
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Test.Extras.Others
 
             var results = Subject.ImportFiles(_localMovie, _movieFile, files, true).ToList();
 
-            results.Count().Should().Be(1);
+            results.Count.Should().Be(1);
         }
     }
 }

@@ -124,12 +124,12 @@ namespace NzbDrone.Core.Indexers.Newznab
 
                 if (includeTmdbSearch)
                 {
-                    ids += "&tmdbid=" + searchCriteria.Movie.MovieMetadata.Value.TmdbId;
+                    ids += $"&tmdbid={searchCriteria.Movie.MovieMetadata.Value.TmdbId}";
                 }
 
                 if (includeImdbSearch)
                 {
-                    ids += "&imdbid=" + searchCriteria.Movie.MovieMetadata.Value.ImdbId.Substring(2);
+                    ids += $"&imdbid={searchCriteria.Movie.MovieMetadata.Value.ImdbId.Substring(2)}";
                 }
 
                 chain.Add(GetPagedRequests(maxPages, categories, "movie", ids));

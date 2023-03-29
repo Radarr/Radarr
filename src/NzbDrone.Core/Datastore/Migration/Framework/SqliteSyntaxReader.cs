@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -250,7 +250,7 @@ namespace NzbDrone.Core.Datastore.Migration.Framework
                 }
 
                 Index = end + 1;
-                identifier.Append(Buffer.Substring(start, end - start));
+                identifier.Append(Buffer.AsSpan(start, end - start));
 
                 if (Buffer[Index] != escape)
                 {
