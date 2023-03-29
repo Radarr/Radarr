@@ -14,6 +14,7 @@ namespace NzbDrone.Core.Notifications.Webhook
         public string FolderPath { get; set; }
         public int TmdbId { get; set; }
         public string ImdbId { get; set; }
+        public string Overview { get; set; }
 
         public WebhookMovie()
         {
@@ -28,6 +29,7 @@ namespace NzbDrone.Core.Notifications.Webhook
             FolderPath = movie.Path;
             TmdbId = movie.TmdbId;
             ImdbId = movie.ImdbId;
+            Overview = movie.MovieMetadata.Value.Overview;
         }
 
         public WebhookMovie(Movie movie, MovieFile movieFile)
