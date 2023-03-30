@@ -107,6 +107,10 @@ namespace NzbDrone.Core.Notifications.Discord
                         discordField.Name = "Custom Format Score";
                         discordField.Value = message.RemoteMovie.CustomFormatScore.ToString();
                         break;
+                    case DiscordGrabFieldType.Indexer:
+                        discordField.Name = "Indexer";
+                        discordField.Value = message.RemoteMovie.Release.Indexer;
+                        break;
                 }
 
                 if (discordField.Name.IsNotNullOrWhiteSpace() && discordField.Value.IsNotNullOrWhiteSpace())
