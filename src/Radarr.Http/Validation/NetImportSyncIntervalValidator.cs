@@ -4,10 +4,7 @@ namespace Radarr.Http.Validation
 {
     public class ImportListSyncIntervalValidator : PropertyValidator
     {
-        public ImportListSyncIntervalValidator()
-            : base("Must be greater than 6 hours")
-        {
-        }
+        protected override string GetDefaultMessageTemplate() => "Must be greater than 6 hours";
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
@@ -18,12 +15,7 @@ namespace Radarr.Http.Validation
 
             var value = (int)context.PropertyValue;
 
-            if (value >= 6)
-            {
-                return true;
-            }
-
-            return false;
+            return value >= 6;
         }
     }
 }

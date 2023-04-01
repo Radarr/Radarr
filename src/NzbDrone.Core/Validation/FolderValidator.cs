@@ -5,10 +5,7 @@ namespace NzbDrone.Core.Validation
 {
     public class FolderValidator : PropertyValidator
     {
-        public FolderValidator()
-            : base("Invalid Path")
-        {
-        }
+        protected override string GetDefaultMessageTemplate() => "Invalid Path";
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
