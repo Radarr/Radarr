@@ -8,10 +8,11 @@ namespace NzbDrone.Core.Validation.Paths
         private readonly IMovieService _movieService;
 
         public MovieExistsValidator(IMovieService movieService)
-            : base("This movie has already been added")
         {
             _movieService = movieService;
         }
+
+        protected override string GetDefaultMessageTemplate() => "This movie has already been added";
 
         protected override bool IsValid(PropertyValidatorContext context)
         {

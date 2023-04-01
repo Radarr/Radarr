@@ -10,10 +10,11 @@ namespace NzbDrone.Core.Validation.Paths
         private readonly IMovieService _moviesService;
 
         public MoviePathValidator(IMovieService moviesService)
-            : base("Path is already configured for an existing movie: {moviePath}")
         {
             _moviesService = moviesService;
         }
+
+        protected override string GetDefaultMessageTemplate() => "Path is already configured for an existing movie: {moviePath}";
 
         protected override bool IsValid(PropertyValidatorContext context)
         {

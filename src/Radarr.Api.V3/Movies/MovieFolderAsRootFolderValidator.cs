@@ -11,10 +11,11 @@ namespace Radarr.Api.V3.Movies
         private readonly IBuildFileNames _fileNameBuilder;
 
         public MovieFolderAsRootFolderValidator(IBuildFileNames fileNameBuilder)
-            : base("Root folder path contains movie folder")
         {
             _fileNameBuilder = fileNameBuilder;
         }
+
+        protected override string GetDefaultMessageTemplate() => "Root folder path contains movie folder";
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
@@ -23,7 +24,7 @@ namespace Radarr.Api.V3.Movies
                 return true;
             }
 
-            var movieResource = context.Instance as MovieResource;
+            var movieResource = context.InstanceToValidate as MovieResource;
 
             if (movieResource == null)
             {
@@ -37,7 +38,7 @@ namespace Radarr.Api.V3.Movies
                 return true;
             }
 
-            var rootFolder = new DirectoryInfo(rootFolderPath).Name;
+            var rootFolder = new DirectoryInfo(rootFolderPath!).Name;
             var movie = movieResource.ToModel();
             var movieFolder = _fileNameBuilder.GetMovieFolder(movie);
 

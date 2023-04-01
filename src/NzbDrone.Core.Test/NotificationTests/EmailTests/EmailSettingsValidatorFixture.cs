@@ -61,7 +61,6 @@ namespace NzbDrone.Core.Test.NotificationTests.EmailTests
         }
 
         [TestCase("radarr")]
-        [TestCase("radarr@radarr")]
         [TestCase("radarr.video")]
         public void should_not_be_valid_if_to_is_invalid(string email)
         {
@@ -71,7 +70,6 @@ namespace NzbDrone.Core.Test.NotificationTests.EmailTests
         }
 
         [TestCase("radarr")]
-        [TestCase("radarr@radarr")]
         [TestCase("radarr.video")]
         public void should_not_be_valid_if_cc_is_invalid(string email)
         {
@@ -81,7 +79,6 @@ namespace NzbDrone.Core.Test.NotificationTests.EmailTests
         }
 
         [TestCase("radarr")]
-        [TestCase("radarr@radarr")]
         [TestCase("radarr.video")]
         public void should_not_be_valid_if_bcc_is_invalid(string email)
         {

@@ -81,7 +81,7 @@ namespace Radarr.Api.V3.Movies
             SharedValidator.RuleFor(s => s.QualityProfileId).ValidId();
 
             SharedValidator.RuleFor(s => s.Path)
-                           .Cascade(CascadeMode.StopOnFirstFailure)
+                           .Cascade(CascadeMode.Stop)
                            .IsValidPath()
                            .SetValidator(rootFolderValidator)
                            .SetValidator(mappedNetworkDriveValidator)

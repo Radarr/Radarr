@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using FluentValidation.Validators;
 
 namespace NzbDrone.Core.Organizer

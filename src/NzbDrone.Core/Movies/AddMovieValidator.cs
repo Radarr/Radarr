@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Movies
                                  MoviePathValidator moviePathValidator,
                                  MovieAncestorValidator movieAncestorValidator)
         {
-            RuleFor(c => c.Path).Cascade(CascadeMode.StopOnFirstFailure)
+            RuleFor(c => c.Path).Cascade(CascadeMode.Stop)
                                 .IsValidPath()
                                 .SetValidator(rootFolderValidator)
                                 .SetValidator(recycleBinValidator)
