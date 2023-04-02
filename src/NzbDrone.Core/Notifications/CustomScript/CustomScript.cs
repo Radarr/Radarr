@@ -122,6 +122,9 @@ namespace NzbDrone.Core.Notifications.CustomScript
             environmentVariables.Add("Radarr_MovieFile_MediaInfo_VideoDynamicRangeType", MediaInfoFormatter.FormatVideoDynamicRangeType(movieFile.MediaInfo));
             environmentVariables.Add("Radarr_MovieFile_CustomFormat", string.Join("|", message.MovieInfo.CustomFormats));
             environmentVariables.Add("Radarr_MovieFile_CustomFormatScore", message.MovieInfo.CustomFormatScore.ToString());
+            environmentVariables.Add("Radarr_Release_Indexer", message.Release?.Indexer);
+            environmentVariables.Add("Radarr_Release_Size", message.Release?.Size.ToString());
+            environmentVariables.Add("Radarr_Release_Title", message.Release?.Title);
 
             if (message.OldMovieFiles.Any())
             {

@@ -136,7 +136,8 @@ namespace NzbDrone.Core.Notifications
                 OldMovieFiles = message.OldFiles,
                 SourcePath = message.MovieInfo.Path,
                 DownloadClientInfo = message.DownloadClientInfo,
-                DownloadId = message.DownloadId
+                DownloadId = message.DownloadId,
+                Release = message.MovieInfo.Release
             };
 
             foreach (var notification in _notificationFactory.OnDownloadEnabled())

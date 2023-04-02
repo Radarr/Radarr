@@ -12,14 +12,10 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
     public class MatchesGrabSpecification : IImportDecisionEngineSpecification
     {
         private readonly Logger _logger;
-        private readonly IParsingService _parsingService;
-        private readonly IHistoryService _historyService;
 
-        public MatchesGrabSpecification(IParsingService parsingService, IHistoryService historyService, Logger logger)
+        public MatchesGrabSpecification(Logger logger)
         {
             _logger = logger;
-            _parsingService = parsingService;
-            _historyService = historyService;
         }
 
         public Decision IsSatisfiedBy(LocalMovie localMovie, DownloadClientItem downloadClientItem)
@@ -29,25 +25,18 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                 return Decision.Accept();
             }
 
-            if (downloadClientItem == null)
+            var releaseInfo = localMovie.Release;
+
+            if (releaseInfo == null || releaseInfo.MovieIds.Empty())
             {
                 return Decision.Accept();
             }
 
-            var grabbedHistory = _historyService.FindByDownloadId(downloadClientItem.DownloadId)
-                .Where(h => h.EventType == MovieHistoryEventType.Grabbed)
-                .ToList();
-
-            if (grabbedHistory.Empty())
-            {
-                return Decision.Accept();
-            }
-
-            if (grabbedHistory.All(o => o.MovieId != localMovie.Movie.Id))
+            if (releaseInfo.MovieIds.All(o => o != localMovie.Movie.Id))
             {
                 _logger.Debug("Unexpected movie(s) in file: {0}", localMovie.Movie.ToString());
 
-                return Decision.Reject("Movie {0} was not found in the grabbed release: {1}", localMovie.Movie.ToString(), grabbedHistory.First().SourceTitle);
+                return Decision.Reject("Movie {0} was not found in the grabbed release: {1}", localMovie.Movie.ToString(), releaseInfo.Title);
             }
 
             return Decision.Accept();

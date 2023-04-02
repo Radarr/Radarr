@@ -1,10 +1,8 @@
-using System.Collections.Generic;
+using System.Linq;
 using FizzWare.NBuilder;
 using FluentAssertions;
-using Moq;
 using NUnit.Framework;
 using NzbDrone.Core.Download;
-using NzbDrone.Core.History;
 using NzbDrone.Core.MediaFiles.MovieImport.Specifications;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
@@ -40,6 +38,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
             _localMovie = Builder<LocalMovie>.CreateNew()
                                                  .With(l => l.Path = @"C:\Test\Unsorted\Series.Title.S01E01.720p.HDTV-Sonarr\S01E05.mkv".AsOsAgnostic())
                                                  .With(l => l.Movie = _movie1)
+                                                 .With(l => l.Release = null)
                                                  .Build();
 
             _downloadClientItem = Builder<DownloadClientItem>.CreateNew().Build();
@@ -47,19 +46,8 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
 
         private void GivenHistoryForMovies(params Movie[] movies)
         {
-            var history = new List<MovieHistory>();
-
-            foreach (var movie in movies)
-            {
-                history.Add(Builder<MovieHistory>.CreateNew()
-                    .With(h => h.EventType = MovieHistoryEventType.Grabbed)
-                    .With(h => h.MovieId = movie.Id)
-                    .Build());
-            }
-
-            Mocker.GetMock<IHistoryService>()
-                  .Setup(s => s.FindByDownloadId(It.IsAny<string>()))
-                  .Returns(history);
+            _localMovie.Release = new GrabbedReleaseInfo();
+            _localMovie.Release.MovieIds = movies.Select(e => e.Id).ToList();
         }
 
         [Test]
@@ -77,7 +65,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         }
 
         [Test]
-        public void should_be_accepted_if_no_grab_history()
+        public void should_be_accepted_if_no_grab_release_info()
         {
             GivenHistoryForMovies();
 
@@ -85,7 +73,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         }
 
         [Test]
-        public void should_be_accepted_if_file_episode_matches_single_grab_history()
+        public void should_be_accepted_if_file_episode_matches_single_grab_release_info()
         {
             GivenHistoryForMovies(_movie1);
 
@@ -93,7 +81,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         }
 
         [Test]
-        public void should_be_rejected_if_file_episode_does_not_match_single_grab_history()
+        public void should_be_rejected_if_file_episode_does_not_match_single_grab_release_info()
         {
             GivenHistoryForMovies(_movie2);
 

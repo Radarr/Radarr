@@ -31,6 +31,7 @@ namespace NzbDrone.Core.Parser.Model
         public bool OtherVideoFiles { get; set; }
         public List<CustomFormat> CustomFormats { get; set; }
         public int CustomFormatScore { get; set; }
+        public GrabbedReleaseInfo Release { get; set; }
 
         public override string ToString()
         {
