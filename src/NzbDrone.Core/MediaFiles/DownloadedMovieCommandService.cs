@@ -19,18 +19,21 @@ namespace NzbDrone.Core.MediaFiles
         private readonly ITrackedDownloadService _trackedDownloadService;
         private readonly IDiskProvider _diskProvider;
         private readonly ICompletedDownloadService _completedDownloadService;
+        private readonly ICommandResultReporter _commandResultReporter;
         private readonly Logger _logger;
 
         public DownloadedMovieCommandService(IDownloadedMovieImportService downloadedMovieImportService,
                                                 ITrackedDownloadService trackedDownloadService,
                                                 IDiskProvider diskProvider,
                                                 ICompletedDownloadService completedDownloadService,
+                                                ICommandResultReporter commandResultReporter,
                                                 Logger logger)
         {
             _downloadedMovieImportService = downloadedMovieImportService;
             _trackedDownloadService = trackedDownloadService;
             _diskProvider = diskProvider;
             _completedDownloadService = completedDownloadService;
+            _commandResultReporter = commandResultReporter;
             _logger = logger;
         }
 
@@ -78,8 +81,10 @@ namespace NzbDrone.Core.MediaFiles
 
             if (importResults == null || importResults.All(v => v.Result != ImportResultType.Imported))
             {
-                // Atm we don't report it as a command failure, coz that would cause the download to be failed.
+                // Allow the command to complete successfully, but report as unsuccessful
+
                 _logger.ProgressDebug("Failed to import");
+                _commandResultReporter.Report(CommandResult.Unsuccessful);
             }
         }
     }
