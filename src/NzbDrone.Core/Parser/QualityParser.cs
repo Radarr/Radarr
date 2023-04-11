@@ -17,7 +17,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex SourceRegex = new Regex(@"\b(?:
                                                                 (?<bluray>M?BluRay|Blu-Ray|HD.?DVD|BD(?!$)|UHDBD|UHD2BD|BDISO|BDMux|BD25|BD50|BR.?DISK)|
                                                                 (?<webdl>WEB[-_. ]DL(?:mux)?|WEBDL|AmazonHD|iTunesHD|MaxdomeHD|NetflixU?HD|WebHD|[. ]WEB[. ](?:[xh][ .]?26[45]|DDP?5[. ]1)|[. ](?-i:WEB)$|(?:\d{3,4}0p)[-. ]WEB[-. ]|[-. ]WEB[-. ]\d{3,4}0p|\b\s\/\sWEB\s\/\s\b|(?:AMZN|NF|DP)[. -]WEB[. -](?!Rip))|
-                                                                (?<webrip>WebRip|Web-Rip|WEBMux)|
+                                                                (?<webrip>(?<!Pre[.-])Web-?Rip|WEBMux)|
                                                                 (?<hdtv>HDTV)|
                                                                 (?<bdrip>BDRip|BDLight)|
                                                                 (?<brrip>BRRip)|
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Parser
                                                                 (?<scr>SCR|SCREENER|DVDSCR|DVDSCREENER)|
                                                                 (?<ts>TS[-_. ]|TELESYNC|HD-TS|HDTS|PDVD|TSRip|HDTSRip)|
                                                                 (?<tc>TC|TELECINE|HD-TC|HDTC)|
-                                                                (?<cam>CAMRIP|CAM|HD-?CAM(?:Rip)?|HQCAM)|
+                                                                (?<cam>CAMRIP|CAM|HD-?CAM(?:Rip)?|HQCAM|PRE[-.]WEB-?Rip)|
                                                                 (?<wp>WORKPRINT|WP)|
                                                                 (?<pdtv>PDTV)|
                                                                 (?<sdtv>SDTV)|

@@ -45,6 +45,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name (2022) 1080p HQCAM ENG x264 AAC - QRips", false)]
         [TestCase("Movie Name (2018) 720p Hindi HQ CAMrip x264 AAC 1.4GB", false)]
         [TestCase("Movie Name (2022) New HDCAMRip 1080p [Love Rulz]", false)]
+        [TestCase("Movie.Name.2023.1080p.PRE-WEB-Rip.DD2.0.x264-xCLuMsYx", false)]
         public void should_parse_cam(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.CAM, proper, Resolution.Unknown);
