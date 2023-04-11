@@ -61,17 +61,14 @@ namespace NzbDrone.Core.Movies
         {
             get
             {
-                if (PhysicalRelease.HasValue)
+                if ((PhysicalRelease.HasValue && PhysicalRelease.Value >= DateTime.UtcNow.AddDays(-21)) ||
+                    (DigitalRelease.HasValue && DigitalRelease.Value >= DateTime.UtcNow.AddDays(-21)) ||
+                    (InCinemas.HasValue && InCinemas.Value >= DateTime.UtcNow.AddDays(-120)))
                 {
-                    return PhysicalRelease.Value >= DateTime.UtcNow.AddDays(-21);
+                    return true;
                 }
 
-                if (InCinemas.HasValue)
-                {
-                    return InCinemas.Value >= DateTime.UtcNow.AddDays(-120);
-                }
-
-                return true;
+                return false;
             }
         }
 
