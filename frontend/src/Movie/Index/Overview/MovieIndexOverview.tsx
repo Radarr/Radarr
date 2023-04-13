@@ -12,6 +12,7 @@ import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
+import MovieIndexPosterSelect from 'Movie/Index/Select/MovieIndexPosterSelect';
 import MoviePoster from 'Movie/MoviePoster';
 import { executeCommand } from 'Store/Actions/commandActions';
 import dimensions from 'Styles/Variables/dimensions';
@@ -39,6 +40,7 @@ interface MovieIndexOverviewProps {
   posterWidth: number;
   posterHeight: number;
   rowHeight: number;
+  isSelectMode: boolean;
   isSmallScreen: boolean;
 }
 
@@ -49,6 +51,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
     posterWidth,
     posterHeight,
     rowHeight,
+    isSelectMode,
     isSmallScreen,
   } = props;
 
@@ -132,6 +135,7 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
       <div className={styles.content}>
         <div className={styles.poster}>
           <div className={styles.posterContainer}>
+            {isSelectMode ? <MovieIndexPosterSelect movieId={movieId} /> : null}
             <Link className={styles.link} style={elementStyle} to={link}>
               <MoviePoster
                 className={styles.poster}

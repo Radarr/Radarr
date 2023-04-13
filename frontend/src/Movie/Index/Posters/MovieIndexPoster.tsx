@@ -12,6 +12,7 @@ import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import MovieIndexProgressBar from 'Movie/Index/ProgressBar/MovieIndexProgressBar';
+import MovieIndexPosterSelect from 'Movie/Index/Select/MovieIndexPosterSelect';
 import MoviePoster from 'Movie/MoviePoster';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
@@ -24,12 +25,13 @@ import styles from './MovieIndexPoster.css';
 interface MovieIndexPosterProps {
   movieId: number;
   sortKey: string;
+  isSelectMode: boolean;
   posterWidth: number;
   posterHeight: number;
 }
 
 function MovieIndexPoster(props: MovieIndexPosterProps) {
-  const { movieId, sortKey, posterWidth, posterHeight } = props;
+  const { movieId, sortKey, isSelectMode, posterWidth, posterHeight } = props;
 
   const { movie, qualityProfile, isRefreshingMovie, isSearchingMovie } =
     useSelector(createMovieIndexItemSelector(props.movieId));
@@ -124,6 +126,8 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
   return (
     <div className={styles.content}>
       <div className={styles.posterContainer}>
+        {isSelectMode ? <MovieIndexPosterSelect movieId={movieId} /> : null}
+
         <Label className={styles.controls}>
           <SpinnerIconButton
             name={icons.REFRESH}

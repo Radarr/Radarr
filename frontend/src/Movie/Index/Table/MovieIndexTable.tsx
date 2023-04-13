@@ -25,6 +25,7 @@ interface RowItemData {
   items: Movie[];
   sortKey: string;
   columns: Column[];
+  isSelectMode: boolean;
 }
 
 interface MovieIndexTableProps {
@@ -34,6 +35,7 @@ interface MovieIndexTableProps {
   jumpToCharacter?: string;
   scrollTop?: number;
   scrollerRef: React.MutableRefObject<HTMLElement>;
+  isSelectMode: boolean;
   isSmallScreen: boolean;
 }
 
@@ -47,7 +49,7 @@ const Row: React.FC<ListChildComponentProps<RowItemData>> = ({
   style,
   data,
 }) => {
-  const { items, sortKey, columns } = data;
+  const { items, sortKey, columns, isSelectMode } = data;
 
   if (index >= items.length) {
     return null;
@@ -63,7 +65,12 @@ const Row: React.FC<ListChildComponentProps<RowItemData>> = ({
         ...style,
       }}
     >
-      <MovieIndexRow movieId={movie.id} sortKey={sortKey} columns={columns} />
+      <MovieIndexRow
+        movieId={movie.id}
+        sortKey={sortKey}
+        columns={columns}
+        isSelectMode={isSelectMode}
+      />
     </div>
   );
 };
@@ -78,6 +85,7 @@ function MovieIndexTable(props: MovieIndexTableProps) {
     sortKey,
     sortDirection,
     jumpToCharacter,
+    isSelectMode,
     isSmallScreen,
     scrollerRef,
   } = props;
@@ -172,6 +180,7 @@ function MovieIndexTable(props: MovieIndexTableProps) {
           columns={columns}
           sortKey={sortKey}
           sortDirection={sortDirection}
+          isSelectMode={isSelectMode}
         />
         <List<RowItemData>
           ref={listRef}
@@ -188,6 +197,7 @@ function MovieIndexTable(props: MovieIndexTableProps) {
             items,
             sortKey,
             columns,
+            isSelectMode,
           }}
         >
           {Row}
