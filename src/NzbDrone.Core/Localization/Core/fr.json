@@ -144,7 +144,7 @@
     "ListsSettingsSummary": "Importer listes, listes d'exclusions",
     "ListExclusions": "Liste des exclusions",
     "IndexersSettingsSummary": "Indexeurs et restrictions de version",
-    "Grabbed": "Attrapé",
+    "Grabbed": "Récupéré",
     "Genres": "Genres",
     "Forecast": "Prévision",
     "DownloadClientsSettingsSummary": "Clients de Téléchargement, la gestion des téléchargements et les mappages de chemins d'accès à distance",
@@ -582,7 +582,7 @@
     "UsenetDelayHelpText": "Délai en minutes avant de récupérer une version Usenet",
     "Uptime": "Durée de fonctionnent",
     "UpgradeUntilThisQualityIsMetOrExceeded": "Mettre à niveau jusqu'à ce que cette qualité soit atteinte ou dépassée",
-    "UpgradeAllowedHelpText": "Ne sera pas mis à jour si la qualité est désactivée",
+    "UpgradeAllowedHelpText": "Si désactivé, la qualité ne sera pas améliorée",
     "UpdateScriptPathHelpText": "Chemin vers un script personnalisé qui prend un package de mise à jour extraite et gère le reste du processus de mise à jour",
     "UpdateMechanismHelpText": "Utiliser le programme de mise à jour intégré de Radarr ou un script",
     "UpdateAutomaticallyHelpText": "Télécharger et installer automatiquement les mises à jour. Vous pourrez toujours installer à partir de System : Updates",
@@ -671,7 +671,7 @@
     "ShowCutoffUnmetIconHelpText": "Afficher l'icône des fichiers lorsque la limite n'a pas été atteinte",
     "ShowCertification": "Afficher la certification",
     "ShowAsAllDayEvents": "Afficher comme événements d'une journée entière",
-    "ShouldMonitorHelpText": "Les films ou les collections ajoutés par cette liste doivent-ils être ajoutés en tant que surveillés",
+    "ShouldMonitorHelpText": "Les films ou les collections ajoutés par cette liste devraient-ils être ajoutés en tant que surveillés",
     "SettingsRuntimeFormat": "Format de durée",
     "SetPermissionsLinuxHelpTextWarning": "Si vous ne savez pas ce que font ces paramètres, ne les modifiez pas.",
     "SetPermissionsLinuxHelpText": "Chmod doit-il être exécuté lorsque les fichiers sont importés/renommés ?",
@@ -1117,7 +1117,7 @@
     "Collections": "Collections",
     "MonitorMovies": "Surveiller les films",
     "NoCollections": "Aucune collection n'a été trouvée. Pour commencer, vous devez ajouter un nouveau film ou importer des films existants",
-    "RssSyncHelpText": "Intervalle en minutes. Mettez la valeur zéro pour désactiver (cela arrêtera tous les téléchargements automatiques de version)",
+    "RssSyncHelpText": "Intervalle en minutes. Régler à zéro pour désactiver (cela arrêtera tous les déclenchements automatiques).",
     "CollectionsSelectedInterp": "{0} Collections(s) Sélectionnée(s)",
     "ChooseImportMode": "Mode d'importation",
     "CollectionOptions": "Options de collection",
@@ -1156,5 +1156,6 @@
     "ResetTitlesHelpText": "Réinitialiser les titres des définitions ainsi que les valeurs",
     "SettingsThemeHelpText": "Changez le thème de l'interface de l'application. Le thème \"Auto\" utilisera celui de votre système d'exploitation pour définir le mode clair ou foncé. Inspiré par Theme.Park",
     "ShowPosters": "Montre les affiches",
-    "File": "Fichier"
+    "File": "Fichier",
+    "UMask": "UMask"
 }

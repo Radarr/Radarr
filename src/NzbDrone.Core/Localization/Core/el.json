@@ -1156,5 +1156,6 @@
     "Waiting": "Αναμονή",
     "UpdateAvailable": "Νέα ενημέρωση είναι διαθέσιμη",
     "SizeLimit": "Όριο μεγέθους",
-    "File": "Αρχεία"
+    "File": "Αρχεία",
+    "UMask": "UMask"
 }
