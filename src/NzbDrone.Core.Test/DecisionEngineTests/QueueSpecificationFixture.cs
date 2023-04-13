@@ -4,9 +4,11 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using NzbDrone.Core.Configuration;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Profiles;
@@ -203,6 +205,32 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenQueue(new List<RemoteMovie> { remoteMovie }, TrackedDownloadState.FailedPending);
 
             Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeTrue();
+        }
+
+        [Test]
+        public void should_return_false_if_same_quality_non_proper_in_queue_and_download_propers_is_do_not_upgrade()
+        {
+            _remoteMovie.ParsedMovieInfo.Quality = new QualityModel(Quality.HDTV720p, new Revision(2));
+            _movie.Profile.Cutoff = _remoteMovie.ParsedMovieInfo.Quality.Quality.Id;
+
+            Mocker.GetMock<IConfigService>()
+                .Setup(s => s.DownloadPropersAndRepacks)
+                .Returns(ProperDownloadTypes.DoNotUpgrade);
+
+            var remoteMovie = Builder<RemoteMovie>.CreateNew()
+                .With(r => r.Movie = _movie)
+                .With(r => r.ParsedMovieInfo = new ParsedMovieInfo
+                {
+                    Quality = new QualityModel(Quality.HDTV720p),
+                    Languages = new List<Language> { Language.English }
+                })
+                .With(r => r.Release = _releaseInfo)
+                .With(r => r.CustomFormats = new List<CustomFormat>())
+                .Build();
+
+            GivenQueue(new List<RemoteMovie> { remoteMovie });
+
+            Subject.IsSatisfiedBy(_remoteMovie, null).Accepted.Should().BeFalse();
         }
     }
 }
