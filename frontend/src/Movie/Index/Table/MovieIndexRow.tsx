@@ -8,6 +8,7 @@ import SpinnerIconButton from 'Components/Link/SpinnerIconButton';
 import RottenTomatoRating from 'Components/RottenTomatoRating';
 import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellConnector';
 import VirtualTableRowCell from 'Components/Table/Cells/VirtualTableRowCell';
+import VirtualTableSelectCell from 'Components/Table/Cells/VirtualTableSelectCell';
 import Column from 'Components/Table/Column';
 import TagListConnector from 'Components/TagListConnector';
 import TmdbRating from 'Components/TmdbRating';
@@ -27,15 +28,17 @@ import translate from 'Utilities/String/translate';
 import MovieStatusCell from './MovieStatusCell';
 import selectTableOptions from './selectTableOptions';
 import styles from './MovieIndexRow.css';
+import { SelectActionType, useSelect } from 'App/SelectContext';
 
 interface MovieIndexRowProps {
   movieId: number;
   sortKey: string;
   columns: Column[];
+  isSelectMode: boolean;
 }
 
 function MovieIndexRow(props: MovieIndexRowProps) {
-  const { movieId, columns } = props;
+  const { movieId, columns, isSelectMode } = props;
 
   const { movie, qualityProfile, isRefreshingMovie, isSearchingMovie } =
     useSelector(createMovieIndexItemSelector(props.movieId));
@@ -75,6 +78,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
   const dispatch = useDispatch();
   const [isEditMovieModalOpen, setIsEditMovieModalOpen] = useState(false);
   const [isDeleteMovieModalOpen, setIsDeleteMovieModalOpen] = useState(false);
+  const [selectState, selectDispatch] = useSelect();
 
   const onRefreshPress = useCallback(() => {
     dispatch(
@@ -111,8 +115,29 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     setIsDeleteMovieModalOpen(false);
   }, [setIsDeleteMovieModalOpen]);
 
+  const onSelectedChange = useCallback(
+    ({ id, value, shiftKey }) => {
+      selectDispatch({
+        type: SelectActionType.ToggleSelected,
+        id,
+        isSelected: value,
+        shiftKey,
+      });
+    },
+    [selectDispatch]
+  );
+
   return (
     <>
+      {isSelectMode ? (
+        <VirtualTableSelectCell
+          id={movieId}
+          isSelected={selectState.selectedState[movieId]}
+          isDisabled={false}
+          onSelectedChange={onSelectedChange}
+        />
+      ) : null}
+
       {columns.map((column) => {
         const { name, isVisible } = column;
 

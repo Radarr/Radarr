@@ -36,6 +36,7 @@ interface CellItemData {
   };
   items: Movie[];
   sortKey: string;
+  isSelectMode: boolean;
 }
 
 interface MovieIndexPostersProps {
@@ -45,6 +46,7 @@ interface MovieIndexPostersProps {
   jumpToCharacter?: string;
   scrollTop?: number;
   scrollerRef: React.MutableRefObject<HTMLElement>;
+  isSelectMode: boolean;
   isSmallScreen: boolean;
 }
 
@@ -63,7 +65,7 @@ const Cell: React.FC<GridChildComponentProps<CellItemData>> = ({
   style,
   data,
 }) => {
-  const { layout, items, sortKey } = data;
+  const { layout, items, sortKey, isSelectMode } = data;
 
   const { columnCount, padding, posterWidth, posterHeight } = layout;
 
@@ -85,6 +87,7 @@ const Cell: React.FC<GridChildComponentProps<CellItemData>> = ({
       <MovieIndexPoster
         movieId={movie.id}
         sortKey={sortKey}
+        isSelectMode={isSelectMode}
         posterWidth={posterWidth}
         posterHeight={posterHeight}
       />
@@ -97,7 +100,14 @@ function getWindowScrollTopPosition() {
 }
 
 export default function MovieIndexPosters(props: MovieIndexPostersProps) {
-  const { scrollerRef, items, sortKey, jumpToCharacter, isSmallScreen } = props;
+  const {
+    scrollerRef,
+    items,
+    sortKey,
+    jumpToCharacter,
+    isSelectMode,
+    isSmallScreen,
+  } = props;
 
   const { posterOptions } = useSelector(movieIndexSelector);
   const ref: React.MutableRefObject<Grid> = useRef();
@@ -276,6 +286,7 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
           },
           items,
           sortKey,
+          isSelectMode,
         }}
       >
         {Cell}
