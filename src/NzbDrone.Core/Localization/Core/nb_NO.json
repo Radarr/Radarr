@@ -108,7 +108,7 @@
     "AreYouSureYouWantToDeleteThisRemotePathMapping": "Er du sikker på at du vil slette denne eksterne banetilordningen?",
     "AutoRedownloadFailedHelpText": "Søk etter eller prøv å laste ned en annen versjon automatisk",
     "BackupFolderHelpText": "Relative stier vil være under Radarr's AppData -katalog",
-    "BindAddressHelpText": "Gyldig IPv4 -adresse eller \"*\" for alle grensesnitt",
+    "BindAddressHelpText": "Gyldig IPv4 -adresse, localhost eller \"*\" for alle grensesnitt",
     "BypassDelayIfHighestQuality": "Omgå hvis høyeste kvalitet",
     "BypassDelayIfHighestQualityHelpText": "Omgåelsesforsinkelse når utgivelsen har den høyeste aktiverte kvaliteten i kvalitetsprofilen med den foretrukne protokollen",
     "ChangeHasNotBeenSavedYet": "Endringen er ikke lagret ennå",
@@ -256,5 +256,9 @@
     "New": "Ny",
     "RemotePathMappings": "Ekstern portmapping",
     "Languages": "språk",
-    "File": "Fil"
+    "File": "Fil",
+    "ApplicationURL": "Applikasjon URL",
+    "ApplicationUrlHelpText": "Denne applikasjonens eksterne URL inkludert http(s)://, port og URL base",
+    "CollectionOptions": "Innstillinger for Samling",
+    "AreYouSureYouWantToResetQualityDefinitions": "Er du sikker på at du vil nullstille kvalitetsdefinisjonene?"
 }
