@@ -81,8 +81,9 @@ namespace NzbDrone.Core.Test.Blocklisting
 
             Subject.DeleteForMovies(new List<int> { _movie1.Id });
 
-            var removedMovieBlocklists = Subject.BlocklistedByMovie(_movie1.Id);
-            var nonRemovedMovieBlocklists = Subject.BlocklistedByMovie(_movie2.Id);
+            var blocklist = Subject.All();
+            var removedMovieBlocklists = blocklist.Where(b => b.MovieId == _movie1.Id);
+            var nonRemovedMovieBlocklists = blocklist.Where(b => b.MovieId == _movie2.Id);
 
             removedMovieBlocklists.Should().HaveCount(0);
             nonRemovedMovieBlocklists.Should().HaveCount(1);
