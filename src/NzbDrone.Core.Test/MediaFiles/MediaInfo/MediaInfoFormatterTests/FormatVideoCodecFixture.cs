@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MediaInfo.MediaInfoFormatterTests
         [TestCase("msmpeg4, DIV3", "Movie the Title (1976) 360p MPEG Audio.avi", "DivX")]
         [TestCase("msmpeg4v2, DIV3", "Movie the Title (1976) 360p MPEG Audio.avi", "DivX")]
         [TestCase("msmpeg4v3, DIV3", "Movie the Title (1976) 360p MPEG Audio.avi", "DivX")]
+        [TestCase("vp6f, 4", "Movie the Title (1976) 360p MPEG Audio.flv", "VP6")]
         [TestCase("vp6, 4", "Top Gear - S12E01 - Lorries - SD TV.flv", "VP6")]
         [TestCase("vp7, VP70", "Movie the Title.avi", "VP7")]
         [TestCase("vp8, V_VP8", "Movie the Title.mkv", "VP8")]
