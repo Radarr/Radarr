@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using NzbDrone.Core.Datastore;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
@@ -32,7 +33,14 @@ namespace NzbDrone.Core.Blocklisting
 
         public List<Blocklist> BlocklistedByMovie(int movieId)
         {
-            return Query(x => x.MovieId == movieId);
+            var builder = Builder().Join<Blocklist, Movie>((h, a) => h.MovieId == a.Id)
+                                   .Where<Blocklist>(h => h.MovieId == movieId);
+
+            return _database.QueryJoined<Blocklist, Movie>(builder, (blocklist, movie) =>
+            {
+                blocklist.Movie = movie;
+                return blocklist;
+            }).OrderByDescending(h => h.Date).ToList();
         }
 
         public void DeleteForMovies(List<int> movieIds)
