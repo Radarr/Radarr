@@ -113,6 +113,7 @@ class AddNewMovieSearchResult extends Component {
                     images={images}
                     size={250}
                     overflow={true}
+                    lazy={false}
                   />
                 </div>
 
