@@ -75,7 +75,7 @@ namespace NzbDrone.Core.Test.NotificationTests.EmailTests
         [TestCase("radarr.video")]
         public void should_not_be_valid_if_cc_is_invalid(string email)
         {
-            _emailSettings.CC = new string[] { email };
+            _emailSettings.Cc = new string[] { email };
 
             _validator.Validate(_emailSettings).IsValid.Should().BeFalse();
         }
@@ -94,7 +94,7 @@ namespace NzbDrone.Core.Test.NotificationTests.EmailTests
         public void should_not_be_valid_if_to_bcc_cc_are_all_empty()
         {
             _emailSettings.To = Array.Empty<string>();
-            _emailSettings.CC = Array.Empty<string>();
+            _emailSettings.Cc = Array.Empty<string>();
             _emailSettings.Bcc = Array.Empty<string>();
 
             _validator.Validate(_emailSettings).IsValid.Should().BeFalse();
