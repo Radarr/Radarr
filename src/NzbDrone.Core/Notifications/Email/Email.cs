@@ -106,7 +106,7 @@ namespace NzbDrone.Core.Notifications.Email
 
             email.From.Add(ParseAddress("From", settings.From));
             email.To.AddRange(settings.To.Select(x => ParseAddress("To", x)));
-            email.Cc.AddRange(settings.CC.Select(x => ParseAddress("CC", x)));
+            email.Cc.AddRange(settings.Cc.Select(x => ParseAddress("CC", x)));
             email.Bcc.AddRange(settings.Bcc.Select(x => ParseAddress("BCC", x)));
 
             email.Subject = subject;
