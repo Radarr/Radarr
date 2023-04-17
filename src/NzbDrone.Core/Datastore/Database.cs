@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
+using System.Data.SQLite;
 using System.Text.RegularExpressions;
 using Dapper;
 using NLog;
@@ -39,17 +40,9 @@ namespace NzbDrone.Core.Datastore
         {
             get
             {
-                using (var db = _datamapperFactory())
-                {
-                    if (db.ConnectionString.Contains(".db"))
-                    {
-                        return DatabaseType.SQLite;
-                    }
-                    else
-                    {
-                        return DatabaseType.PostgreSQL;
-                    }
-                }
+                using var db = _datamapperFactory();
+
+                return db is SQLiteConnection ? DatabaseType.SQLite : DatabaseType.PostgreSQL;
             }
         }
 
