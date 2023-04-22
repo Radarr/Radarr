@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SelectProvider } from 'App/SelectContext';
-import { REFRESH_MOVIE, RSS_SYNC } from 'Commands/commandNames';
+import { RSS_SYNC } from 'Commands/commandNames';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
@@ -14,6 +14,7 @@ import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptions
 import withScrollPosition from 'Components/withScrollPosition';
 import { align, icons } from 'Helpers/Props';
 import SortDirection from 'Helpers/Props/SortDirection';
+import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import NoMovie from 'Movie/NoMovie';
 import { executeCommand } from 'Store/Actions/commandActions';
 import {
@@ -31,11 +32,17 @@ import MovieIndexFilterMenu from './Menus/MovieIndexFilterMenu';
 import MovieIndexSortMenu from './Menus/MovieIndexSortMenu';
 import MovieIndexViewMenu from './Menus/MovieIndexViewMenu';
 import MovieIndexFooter from './MovieIndexFooter';
+import MovieIndexRefreshMovieButton from './MovieIndexRefreshMovieButton';
+import MovieIndexSearchButton from './MovieIndexSearchButton';
 import MovieIndexOverviews from './Overview/MovieIndexOverviews';
 import MovieIndexOverviewOptionsModal from './Overview/Options/MovieIndexOverviewOptionsModal';
 import MovieIndexPosters from './Posters/MovieIndexPosters';
 import MovieIndexPosterOptionsModal from './Posters/Options/MovieIndexPosterOptionsModal';
 import MovieIndexSelectAllButton from './Select/MovieIndexSelectAllButton';
+import MovieIndexSelectAllMenuItem from './Select/MovieIndexSelectAllMenuItem';
+import MovieIndexSelectFooter from './Select/MovieIndexSelectFooter';
+import MovieIndexSelectModeButton from './Select/MovieIndexSelectModeButton';
+import MovieIndexSelectModeMenuItem from './Select/MovieIndexSelectModeMenuItem';
 import MovieIndexTable from './Table/MovieIndexTable';
 import MovieIndexTableOptions from './Table/MovieIndexTableOptions';
 import styles from './MovieIndex.css';
@@ -72,9 +79,6 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
     view,
   } = useSelector(createMovieClientSideCollectionItemsSelector('movieIndex'));
 
-  const isRefreshingMovie = useSelector(
-    createCommandExecutingSelector(REFRESH_MOVIE)
-  );
   const isRssSyncExecuting = useSelector(
     createCommandExecutingSelector(RSS_SYNC)
   );
@@ -82,16 +86,10 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   const dispatch = useDispatch();
   const scrollerRef = useRef<HTMLDivElement>();
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
+  const [isInteractiveImportModalOpen, setIsInteractiveImportModalOpen] =
+    useState(false);
   const [jumpToCharacter, setJumpToCharacter] = useState<string | null>(null);
   const [isSelectMode, setIsSelectMode] = useState(false);
-
-  const onRefreshMoviePress = useCallback(() => {
-    dispatch(
-      executeCommand({
-        name: REFRESH_MOVIE,
-      })
-    );
-  }, [dispatch]);
 
   const onSelectModePress = useCallback(() => {
     setIsSelectMode(!isSelectMode);
@@ -144,6 +142,14 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   const onOptionsModalClose = useCallback(() => {
     setIsOptionsModalOpen(false);
   }, [setIsOptionsModalOpen]);
+
+  const onInteractiveImportPress = useCallback(() => {
+    setIsInteractiveImportModalOpen(true);
+  }, [setIsInteractiveImportModalOpen]);
+
+  const onInteractiveImportModalClose = useCallback(() => {
+    setIsInteractiveImportModalOpen(false);
+  }, [setIsInteractiveImportModalOpen]);
 
   const onJumpBarItemPress = useCallback(
     (character) => {
@@ -202,17 +208,13 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   const hasNoMovie = !totalItems;
 
   return (
-    <SelectProvider isSelectMode={isSelectMode} items={items}>
+    <SelectProvider items={items}>
       <PageContent>
         <PageToolbar>
           <PageToolbarSection>
-            <PageToolbarButton
-              label={translate('UpdateAll')}
-              iconName={icons.REFRESH}
-              spinningName={icons.REFRESH}
-              isSpinning={isRefreshingMovie}
-              isDisabled={hasNoMovie}
-              onPress={onRefreshMoviePress}
+            <MovieIndexRefreshMovieButton
+              isSelectMode={isSelectMode}
+              selectedFilterKey={selectedFilterKey}
             />
 
             <PageToolbarButton
@@ -225,17 +227,37 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
 
             <PageToolbarSeparator />
 
+            <MovieIndexSearchButton
+              isSelectMode={isSelectMode}
+              selectedFilterKey={selectedFilterKey}
+            />
+
             <PageToolbarButton
+              label={translate('ManualImport')}
+              iconName={icons.INTERACTIVE}
+              isDisabled={hasNoMovie}
+              onPress={onInteractiveImportPress}
+            />
+
+            <PageToolbarSeparator />
+
+            <MovieIndexSelectModeButton
               label={
                 isSelectMode
                   ? translate('StopSelecting')
-                  : translate('SelectMovie')
+                  : translate('EditMovies')
               }
-              iconName={isSelectMode ? icons.SERIES_ENDED : icons.CHECK}
+              iconName={isSelectMode ? icons.SERIES_ENDED : icons.EDIT}
+              isSelectMode={isSelectMode}
+              overflowComponent={MovieIndexSelectModeMenuItem}
               onPress={onSelectModePress}
             />
 
-            {isSelectMode ? <MovieIndexSelectAllButton /> : null}
+            <MovieIndexSelectAllButton
+              label="SelectAll"
+              isSelectMode={isSelectMode}
+              overflowComponent={MovieIndexSelectAllMenuItem}
+            />
           </PageToolbarSection>
 
           <PageToolbarSection
@@ -326,6 +348,14 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
             />
           ) : null}
         </div>
+
+        {isSelectMode ? <MovieIndexSelectFooter /> : null}
+
+        <InteractiveImportModal
+          isOpen={isInteractiveImportModalOpen}
+          onModalClose={onInteractiveImportModalClose}
+        />
+
         {view === 'posters' ? (
           <MovieIndexPosterOptionsModal
             isOpen={isOptionsModalOpen}

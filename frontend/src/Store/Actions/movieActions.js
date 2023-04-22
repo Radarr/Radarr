@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { createAction } from 'redux-actions';
+import { batchActions } from 'redux-batched-actions';
 import { filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 // import { batchActions } from 'redux-batched-actions';
@@ -7,7 +8,7 @@ import createAjaxRequest from 'Utilities/createAjaxRequest';
 import dateFilterPredicate from 'Utilities/Date/dateFilterPredicate';
 import padNumber from 'Utilities/Number/padNumber';
 import translate from 'Utilities/String/translate';
-import { updateItem } from './baseActions';
+import { set, updateItem } from './baseActions';
 import createFetchHandler from './Creators/createFetchHandler';
 import createHandleActions from './Creators/createHandleActions';
 import createRemoveItemHandler from './Creators/createRemoveItemHandler';
@@ -245,11 +246,20 @@ export const defaultState = {
   error: null,
   isSaving: false,
   saveError: null,
+  isDeleting: false,
+  deleteError: null,
   items: [],
   sortKey: 'sortTitle',
   sortDirection: sortDirections.ASCENDING,
-  pendingChanges: {}
+  pendingChanges: {},
+  deleteOptions: {
+    addImportListExclusion: false
+  }
 };
+
+export const persistState = [
+  'movies.deleteOptions'
+];
 
 //
 // Actions Types
@@ -258,6 +268,10 @@ export const FETCH_MOVIES = 'movies/fetchMovies';
 export const SET_MOVIE_VALUE = 'movies/setMovieValue';
 export const SAVE_MOVIE = 'movies/saveMovie';
 export const DELETE_MOVIE = 'movies/deleteMovie';
+export const SAVE_MOVIE_EDITOR = 'movies/saveMovieEditor';
+export const BULK_DELETE_MOVIE = 'movies/bulkDeleteMovie';
+
+export const SET_DELETE_OPTION = 'movies/setDeleteOption';
 
 export const TOGGLE_MOVIE_MONITORED = 'movies/toggleMovieMonitored';
 
@@ -291,6 +305,8 @@ export const deleteMovie = createThunk(DELETE_MOVIE, (payload) => {
 });
 
 export const toggleMovieMonitored = createThunk(TOGGLE_MOVIE_MONITORED);
+export const saveMovieEditor = createThunk(SAVE_MOVIE_EDITOR);
+export const bulkDeleteMovie = createThunk(BULK_DELETE_MOVIE);
 
 export const setMovieValue = createAction(SET_MOVIE_VALUE, (payload) => {
   return {
@@ -298,6 +314,8 @@ export const setMovieValue = createAction(SET_MOVIE_VALUE, (payload) => {
     ...payload
   };
 });
+
+export const setDeleteOption = createAction(SET_DELETE_OPTION);
 
 //
 // Helpers
@@ -359,8 +377,79 @@ export const actionHandlers = handleThunks({
         isSaving: false
       }));
     });
-  }
+  },
 
+  [SAVE_MOVIE_EDITOR]: function(getState, payload, dispatch) {
+    dispatch(set({
+      section,
+      isSaving: true
+    }));
+
+    const promise = createAjaxRequest({
+      url: '/movie/editor',
+      method: 'PUT',
+      data: JSON.stringify(payload),
+      dataType: 'json'
+    }).request;
+
+    promise.done((data) => {
+      dispatch(batchActions([
+        ...data.map((movie) => {
+          return updateItem({
+            id: movie.id,
+            section: 'movies',
+            ...movie
+          });
+        }),
+
+        set({
+          section,
+          isSaving: false,
+          saveError: null
+        })
+      ]));
+    });
+
+    promise.fail((xhr) => {
+      dispatch(set({
+        section,
+        isSaving: false,
+        saveError: xhr
+      }));
+    });
+  },
+
+  [BULK_DELETE_MOVIE]: function(getState, payload, dispatch) {
+    dispatch(set({
+      section,
+      isDeleting: true
+    }));
+
+    const promise = createAjaxRequest({
+      url: '/movie/editor',
+      method: 'DELETE',
+      data: JSON.stringify(payload),
+      dataType: 'json'
+    }).request;
+
+    promise.done(() => {
+      // SignaR will take care of removing the movie from the collection
+
+      dispatch(set({
+        section,
+        isDeleting: false,
+        deleteError: null
+      }));
+    });
+
+    promise.fail((xhr) => {
+      dispatch(set({
+        section,
+        isDeleting: false,
+        deleteError: xhr
+      }));
+    });
+  }
 });
 
 //
@@ -368,6 +457,14 @@ export const actionHandlers = handleThunks({
 
 export const reducers = createHandleActions({
 
-  [SET_MOVIE_VALUE]: createSetSettingValueReducer(section)
+  [SET_MOVIE_VALUE]: createSetSettingValueReducer(section),
+  [SET_DELETE_OPTION]: (state, { payload }) => {
+    return {
+      ...state,
+      deleteOptions: {
+        ...payload
+      }
+    };
+  }
 
 }, defaultState, section);
