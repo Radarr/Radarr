@@ -8,6 +8,7 @@
 .body {
   overflow: auto;
   padding: 10px;
+  background-color: var(--popoverBodyBackgroundColor);
 }
 
 .tooltipBody {

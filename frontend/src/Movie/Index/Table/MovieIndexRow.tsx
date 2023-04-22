@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { SelectActionType, useSelect } from 'App/SelectContext';
 import { MOVIE_SEARCH, REFRESH_MOVIE } from 'Commands/commandNames';
 import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
@@ -13,7 +14,7 @@ import Column from 'Components/Table/Column';
 import TagListConnector from 'Components/TagListConnector';
 import TmdbRating from 'Components/TmdbRating';
 import Tooltip from 'Components/Tooltip/Tooltip';
-import { icons } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
@@ -28,7 +29,6 @@ import translate from 'Utilities/String/translate';
 import MovieStatusCell from './MovieStatusCell';
 import selectTableOptions from './selectTableOptions';
 import styles from './MovieIndexRow.css';
-import { SelectActionType, useSelect } from 'App/SelectContext';
 
 interface MovieIndexRowProps {
   movieId: number;
@@ -62,16 +62,16 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     minimumAvailability,
     path,
     sizeOnDisk,
-    genres,
+    genres = [],
     queueStatus,
     queueState,
     ratings,
     certification,
-    tags,
+    tags = [],
     tmdbId,
     imdbId,
     youTubeTrailerId,
-    kinds,
+    isSaving = false,
     movieRuntimeFormat,
   } = movie;
 
@@ -150,8 +150,11 @@ function MovieIndexRow(props: MovieIndexRowProps) {
             <MovieStatusCell
               key={name}
               className={styles[name]}
+              movieId={movieId}
               monitored={monitored}
               status={status}
+              isSelectMode={isSelectMode}
+              isSaving={isSaving}
               component={VirtualTableRowCell}
             />
           );

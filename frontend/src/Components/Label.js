@@ -33,6 +33,7 @@ function Label(props) {
 
 Label.propTypes = {
   className: PropTypes.string.isRequired,
+  title: PropTypes.string,
   kind: PropTypes.oneOf(kinds.all).isRequired,
   size: PropTypes.oneOf(sizes.all).isRequired,
   outline: PropTypes.bool.isRequired,

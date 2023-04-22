@@ -38,6 +38,7 @@ interface Movie extends ModelBase {
   certification: string;
   tags: number[];
   images: Image;
+  isSaving?: boolean;
 }
 
 export default Movie;

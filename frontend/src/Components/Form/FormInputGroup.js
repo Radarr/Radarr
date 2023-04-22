@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Link from 'Components/Link/Link';
-import { inputTypes } from 'Helpers/Props';
+import { inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import AutoCompleteInput from './AutoCompleteInput';
 import AvailabilitySelectInput from './AvailabilitySelectInput';
@@ -264,12 +264,16 @@ FormInputGroup.propTypes = {
   value: PropTypes.any,
   values: PropTypes.arrayOf(PropTypes.any),
   type: PropTypes.string.isRequired,
+  kind: PropTypes.oneOf(kinds.all),
   unit: PropTypes.string,
   buttons: PropTypes.oneOfType([PropTypes.node, PropTypes.arrayOf(PropTypes.node)]),
   helpText: PropTypes.string,
   helpTexts: PropTypes.arrayOf(PropTypes.string),
   helpTextWarning: PropTypes.string,
   helpLink: PropTypes.string,
+  includeNoChange: PropTypes.bool,
+  includeNoChangeDisabled: PropTypes.bool,
+  selectedValueOptions: PropTypes.object,
   pending: PropTypes.bool,
   errors: PropTypes.arrayOf(PropTypes.object),
   warnings: PropTypes.arrayOf(PropTypes.object),

@@ -1,11 +1,7 @@
 import { createAction } from 'redux-actions';
-import { batchActions } from 'redux-batched-actions';
 import { filterBuilderTypes, filterBuilderValueTypes, sortDirections } from 'Helpers/Props';
-import { createThunk, handleThunks } from 'Store/thunks';
 import sortByName from 'Utilities/Array/sortByName';
-import createAjaxRequest from 'Utilities/createAjaxRequest';
 import translate from 'Utilities/String/translate';
-import { set, updateItem } from './baseActions';
 import createHandleActions from './Creators/createHandleActions';
 import createSetClientSideCollectionFilterReducer from './Creators/Reducers/createSetClientSideCollectionFilterReducer';
 import createSetClientSideCollectionSortReducer from './Creators/Reducers/createSetClientSideCollectionSortReducer';
@@ -496,8 +492,6 @@ export const SET_MOVIE_VIEW = 'movieIndex/setMovieView';
 export const SET_MOVIE_TABLE_OPTION = 'movieIndex/setMovieTableOption';
 export const SET_MOVIE_POSTER_OPTION = 'movieIndex/setMoviePosterOption';
 export const SET_MOVIE_OVERVIEW_OPTION = 'movieIndex/setMovieOverviewOption';
-export const SAVE_MOVIE_EDITOR = 'movieIndex/saveMovieEditor';
-export const BULK_DELETE_MOVIE = 'movieIndex/bulkDeleteMovie';
 
 //
 // Action Creators
@@ -508,85 +502,6 @@ export const setMovieView = createAction(SET_MOVIE_VIEW);
 export const setMovieTableOption = createAction(SET_MOVIE_TABLE_OPTION);
 export const setMoviePosterOption = createAction(SET_MOVIE_POSTER_OPTION);
 export const setMovieOverviewOption = createAction(SET_MOVIE_OVERVIEW_OPTION);
-export const saveMovieEditor = createThunk(SAVE_MOVIE_EDITOR);
-export const bulkDeleteMovie = createThunk(BULK_DELETE_MOVIE);
-
-//
-// Action Handlers
-
-export const actionHandlers = handleThunks({
-  [SAVE_MOVIE_EDITOR]: function(getState, payload, dispatch) {
-    dispatch(set({
-      section,
-      isSaving: true
-    }));
-
-    const promise = createAjaxRequest({
-      url: '/movie/editor',
-      method: 'PUT',
-      data: JSON.stringify(payload),
-      dataType: 'json'
-    }).request;
-
-    promise.done((data) => {
-      dispatch(batchActions([
-        ...data.map((movie) => {
-          return updateItem({
-            id: movie.id,
-            section: 'movies',
-            ...movie
-          });
-        }),
-
-        set({
-          section,
-          isSaving: false,
-          saveError: null
-        })
-      ]));
-    });
-
-    promise.fail((xhr) => {
-      dispatch(set({
-        section,
-        isSaving: false,
-        saveError: xhr
-      }));
-    });
-  },
-
-  [BULK_DELETE_MOVIE]: function(getState, payload, dispatch) {
-    dispatch(set({
-      section,
-      isDeleting: true
-    }));
-
-    const promise = createAjaxRequest({
-      url: '/movie/editor',
-      method: 'DELETE',
-      data: JSON.stringify(payload),
-      dataType: 'json'
-    }).request;
-
-    promise.done(() => {
-      // SignaR will take care of removing the movie from the collection
-
-      dispatch(set({
-        section,
-        isDeleting: false,
-        deleteError: null
-      }));
-    });
-
-    promise.fail((xhr) => {
-      dispatch(set({
-        section,
-        isDeleting: false,
-        deleteError: xhr
-      }));
-    });
-  }
-});
 
 //
 // Reducers
