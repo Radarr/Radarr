@@ -95,6 +95,8 @@ function MovieIndexTable(props: MovieIndexTableProps) {
   const listRef: React.MutableRefObject<List> = useRef();
   const [measureRef, bounds] = useMeasure();
   const [size, setSize] = useState({ width: 0, height: 0 });
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
 
   const rowHeight = useMemo(() => {
     return showBanners ? 70 : 38;
@@ -105,8 +107,8 @@ function MovieIndexTable(props: MovieIndexTableProps) {
 
     if (isSmallScreen) {
       setSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: windowWidth,
+        height: windowHeight,
       });
 
       return;
@@ -119,10 +121,10 @@ function MovieIndexTable(props: MovieIndexTableProps) {
 
       setSize({
         width: width - padding * 2,
-        height: window.innerHeight,
+        height: windowHeight,
       });
     }
-  }, [isSmallScreen, scrollerRef, bounds]);
+  }, [isSmallScreen, windowWidth, windowHeight, scrollerRef, bounds]);
 
   useEffect(() => {
     const currentScrollListener = isSmallScreen ? window : scrollerRef.current;
