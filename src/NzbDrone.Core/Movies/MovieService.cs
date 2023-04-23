@@ -124,37 +124,33 @@ namespace NzbDrone.Core.Movies
         {
             var cleanTitles = titles.Select(t => t.CleanMovieTitle().ToLowerInvariant());
 
-            var result = candidates.Where(x => cleanTitles.Contains(x.MovieMetadata.Value.CleanTitle)).FirstWithYear(year);
+            var result = candidates.Where(x => cleanTitles.Contains(x.MovieMetadata.Value.CleanTitle) || cleanTitles.Contains(x.MovieMetadata.Value.CleanOriginalTitle))
+                .AllWithYear(year)
+                .ToList();
 
-            if (result == null)
+            if (result == null || result.Count == 0)
             {
                 result =
-                    candidates.Where(movie => cleanTitles.Contains(movie.MovieMetadata.Value.CleanOriginalTitle)).FirstWithYear(year);
+                    candidates.Where(movie => otherTitles.Contains(movie.MovieMetadata.Value.CleanTitle)).AllWithYear(year).ToList();
             }
 
-            if (result == null)
-            {
-                result =
-                    candidates.Where(movie => otherTitles.Contains(movie.MovieMetadata.Value.CleanTitle)).FirstWithYear(year);
-            }
-
-            if (result == null)
+            if (result == null || result.Count == 0)
             {
                 result = candidates
                     .Where(m => m.MovieMetadata.Value.AlternativeTitles.Any(t => cleanTitles.Contains(t.CleanTitle) ||
                                                         otherTitles.Contains(t.CleanTitle)))
-                    .FirstWithYear(year);
+                    .AllWithYear(year).ToList();
             }
 
-            if (result == null)
+            if (result == null || result.Count == 0)
             {
                 result = candidates
                     .Where(m => m.MovieMetadata.Value.Translations.Any(t => cleanTitles.Contains(t.CleanTitle) ||
                                                         otherTitles.Contains(t.CleanTitle)))
-                    .FirstWithYear(year);
+                    .AllWithYear(year).ToList();
             }
 
-            return result;
+            return ReturnSingleMovieOrThrow(result.ToList());
         }
 
         public List<Movie> FindByTitleCandidates(List<string> titles, out List<string> otherTitles)
@@ -393,6 +389,21 @@ namespace NzbDrone.Core.Movies
         public bool ExistsByMetadataId(int metadataId)
         {
             return _movieRepository.ExistsByMetadataId(metadataId);
+        }
+
+        private Movie ReturnSingleMovieOrThrow(List<Movie> movies)
+        {
+            if (movies.Count == 0)
+            {
+                return null;
+            }
+
+            if (movies.Count == 1)
+            {
+                return movies.First();
+            }
+
+            throw new MultipleMoviesFoundException("Expected one movie, but found {0}. Matching movies: {1}", movies.Count, string.Join(",", movies));
         }
 
         public void Handle(MovieFileAddedEvent message)

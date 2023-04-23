@@ -132,12 +132,25 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
         private List<ManualImportItem> ProcessFolder(string rootFolder, string baseFolder, string downloadId, int? movieId, bool filterExistingFiles)
         {
             DownloadClientItem downloadClientItem = null;
+            Movie movie = null;
 
             var directoryInfo = new DirectoryInfo(baseFolder);
 
-            var movie = movieId.HasValue ?
-                _movieService.GetMovie(movieId.Value) :
-                _parsingService.GetMovie(directoryInfo.Name);
+            if (movieId.HasValue)
+            {
+                movie = _movieService.GetMovie(movieId.Value);
+            }
+            else
+            {
+                try
+                {
+                    movie = _parsingService.GetMovie(directoryInfo.Name);
+                }
+                catch (MultipleMoviesFoundException e)
+                {
+                    _logger.Warn(e, "Unable to match movie by title");
+                }
+            }
 
             if (downloadId.IsNotNullOrWhiteSpace())
             {
