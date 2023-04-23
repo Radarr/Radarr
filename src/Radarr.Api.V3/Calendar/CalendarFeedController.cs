@@ -26,15 +26,15 @@ namespace Radarr.Api.V3.Calendar
         }
 
         [HttpGet("Radarr.ics")]
-        public IActionResult GetCalendarFeed(int pastDays = 7, int futureDays = 28, string tagList = "", bool unmonitored = false)
+        public IActionResult GetCalendarFeed(int pastDays = 7, int futureDays = 28, string tags = "", bool unmonitored = false)
         {
             var start = DateTime.Today.AddDays(-pastDays);
             var end = DateTime.Today.AddDays(futureDays);
-            var tags = new List<int>();
+            var parsedTags = new List<int>();
 
-            if (tagList.IsNotNullOrWhiteSpace())
+            if (tags.IsNotNullOrWhiteSpace())
             {
-                tags.AddRange(tagList.Split(',').Select(_tagService.GetTag).Select(t => t.Id));
+                parsedTags.AddRange(tags.Split(',').Select(_tagService.GetTag).Select(t => t.Id));
             }
 
             var movies = _movieService.GetMoviesBetweenDates(start, end, unmonitored);
@@ -49,7 +49,7 @@ namespace Radarr.Api.V3.Calendar
 
             foreach (var movie in movies.OrderBy(v => v.Added))
             {
-                if (tags.Any() && tags.None(movie.Tags.Contains))
+                if (parsedTags.Any() && parsedTags.None(movie.Tags.Contains))
                 {
                     continue;
                 }
