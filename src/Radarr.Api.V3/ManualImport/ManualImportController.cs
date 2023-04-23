@@ -35,7 +35,9 @@ namespace Radarr.Api.V3.ManualImport
 
                 item.Movie = processedItem.Movie.ToResource(0);
                 item.Rejections = processedItem.Rejections;
-                if (item.Languages.Single() == Language.Unknown)
+
+                if (item.Languages?.Count <= 1 && (item.Languages?.SingleOrDefault() ?? Language.Unknown) == Language.Unknown &&
+                    processedItem.Languages.Any())
                 {
                     item.Languages = processedItem.Languages;
                 }
@@ -45,7 +47,7 @@ namespace Radarr.Api.V3.ManualImport
                     item.Quality = processedItem.Quality;
                 }
 
-                if (item.ReleaseGroup.IsNotNullOrWhiteSpace())
+                if (item.ReleaseGroup.IsNullOrWhiteSpace())
                 {
                     item.ReleaseGroup = processedItem.ReleaseGroup;
                 }
