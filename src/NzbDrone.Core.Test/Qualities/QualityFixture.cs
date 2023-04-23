@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
@@ -76,6 +76,7 @@ namespace NzbDrone.Core.Test.Qualities
                 Quality.REGIONAL,
                 Quality.SDTV,
                 Quality.DVD,
+                Quality.DVD576p,
                 Quality.DVDR,
                 Quality.HDTV720p,
                 Quality.HDTV1080p,

@@ -42,6 +42,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 Quality.REGIONAL,
                 Quality.SDTV,
                 Quality.DVD,
+                Quality.DVD576p,
                 Quality.DVDR,
                 Quality.HDTV720p,
                 Quality.HDTV1080p,
@@ -70,6 +71,7 @@ namespace NzbDrone.Core.Test.Datastore.Migration
                 Quality.REGIONAL,
                 Quality.SDTV,
                 Quality.DVD,
+                Quality.DVD576p,
                 Quality.WEBDL480p,
                 Quality.Bluray480p,
                 Quality.Bluray576p);

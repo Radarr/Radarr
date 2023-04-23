@@ -348,8 +348,15 @@ namespace NzbDrone.Core.Parser
 
                 if (sourceMatch.Groups["dvd"].Success)
                 {
-                    result.Quality = Quality.DVD;
-                    return result;
+                    switch (resolution)
+                    {
+                        case Resolution.R576p:
+                            result.Quality = Quality.DVD576p;
+                            return result;
+                        default:
+                            result.Quality = Quality.DVD;
+                            return result;
+                    }
                 }
 
                 if (sourceMatch.Groups["pdtv"].Success ||
@@ -391,7 +398,7 @@ namespace NzbDrone.Core.Parser
                     normalizedName.ContainsIgnoreCase("480p"))
                 {
                     result.ResolutionDetectionSource = QualityDetectionSource.Name;
-                    result.Quality = Quality.DVD;
+                    result.Quality = Quality.DVD; // andy-reeves
                     return result;
                 }
 
@@ -542,7 +549,7 @@ namespace NzbDrone.Core.Parser
                 if (normalizedName.Contains("dvd"))
                 {
                     result.SourceDetectionSource = QualityDetectionSource.Name;
-                    result.Quality = Quality.DVD;
+                    result.Quality = Quality.DVD; // andy-reeves
                 }
                 else if (normalizedName.ContainsIgnoreCase("bluray"))
                 {

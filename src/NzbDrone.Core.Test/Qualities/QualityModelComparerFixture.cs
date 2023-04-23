@@ -45,6 +45,11 @@ namespace NzbDrone.Core.Test.Qualities
                                           },
                                           new ProfileQualityItem
                                           {
+                                              Allowed = false,
+                                              Quality = Quality.DVD576p
+                                          },
+                                          new ProfileQualityItem
+                                          {
                                               Allowed = true,
                                               Items = new List<ProfileQualityItem>
                                                       {
@@ -77,7 +82,7 @@ namespace NzbDrone.Core.Test.Qualities
             GivenDefaultProfile();
 
             var first = new QualityModel(Quality.Bluray1080p);
-            var second = new QualityModel(Quality.DVD);
+            var second = new QualityModel(Quality.DVD); // andy-reeves
 
             var compare = Subject.Compare(first, second);
 
@@ -89,7 +94,7 @@ namespace NzbDrone.Core.Test.Qualities
         {
             GivenDefaultProfile();
 
-            var first = new QualityModel(Quality.DVD);
+            var first = new QualityModel(Quality.DVD); // andy-reeves
             var second = new QualityModel(Quality.Bluray1080p);
 
             var compare = Subject.Compare(first, second);

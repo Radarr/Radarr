@@ -90,6 +90,7 @@ namespace NzbDrone.Core.Qualities
         // SD
         public static Quality SDTV => new Quality(1, "SDTV", Source.TV, 480);
         public static Quality DVD => new Quality(2, "DVD", Source.DVD, 480);
+        public static Quality DVD576p => new Quality(32, "DVD-576p", Source.DVD, 576);
         public static Quality DVDR => new Quality(23, "DVD-R", Source.DVD, 480, Modifier.REMUX); // new
 
         // HDTV
@@ -136,6 +137,7 @@ namespace NzbDrone.Core.Qualities
                 REGIONAL,
                 SDTV,
                 DVD,
+                DVD576p, // andy-reeves
                 DVDR,
                 HDTV720p,
                 HDTV1080p,
@@ -175,33 +177,34 @@ namespace NzbDrone.Core.Qualities
                 new QualityDefinition(Quality.REGIONAL)    { Weight = 6,  MinSize = 0, MaxSize = 100, PreferredSize = 95 },
                 new QualityDefinition(Quality.DVDSCR)      { Weight = 7,  MinSize = 0, MaxSize = 100, PreferredSize = 95 },
                 new QualityDefinition(Quality.SDTV)        { Weight = 8,  MinSize = 0, MaxSize = 100, PreferredSize = 95 },
-                new QualityDefinition(Quality.DVD)         { Weight = 9,  MinSize = 0, MaxSize = 100, PreferredSize = 95 },
-                new QualityDefinition(Quality.DVDR)        { Weight = 10,  MinSize = 0, MaxSize = 100, PreferredSize = 95 },
+                new QualityDefinition(Quality.DVD)         { Weight = 9,  MinSize = 0, MaxSize = 100, PreferredSize = 95 }, // andy-reeves
+                new QualityDefinition(Quality.DVD576p)     { Weight = 10,  MinSize = 0, MaxSize = 100, PreferredSize = 95 }, // andy-reeves
+                new QualityDefinition(Quality.DVDR)        { Weight = 11,  MinSize = 0, MaxSize = 100, PreferredSize = 95 }, // andy-reeves
 
-                new QualityDefinition(Quality.WEBDL480p)   { Weight = 11, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 480p" },
-                new QualityDefinition(Quality.WEBRip480p)   { Weight = 11, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 480p" },
-                new QualityDefinition(Quality.Bluray480p)  { Weight = 12, MinSize = 0, MaxSize = 100, PreferredSize = 95 },
-                new QualityDefinition(Quality.Bluray576p)  { Weight = 13, MinSize = 0, MaxSize = 100, PreferredSize = 95 },
+                new QualityDefinition(Quality.WEBDL480p)   { Weight = 12, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 480p" }, // andy-reeves
+                new QualityDefinition(Quality.WEBRip480p)  { Weight = 12, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 480p" }, // andy-reeves
+                new QualityDefinition(Quality.Bluray480p)  { Weight = 13, MinSize = 0, MaxSize = 100, PreferredSize = 95 }, // andy-reeves
+                new QualityDefinition(Quality.Bluray576p)  { Weight = 14, MinSize = 0, MaxSize = 100, PreferredSize = 95 }, // andy-reeves
 
-                new QualityDefinition(Quality.HDTV720p)    { Weight = 14, MinSize = 0, MaxSize = 100, PreferredSize = 95 },
-                new QualityDefinition(Quality.WEBDL720p)   { Weight = 15, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 720p" },
-                new QualityDefinition(Quality.WEBRip720p)   { Weight = 15, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 720p" },
-                new QualityDefinition(Quality.Bluray720p)  { Weight = 16, MinSize = 0, MaxSize = 100, PreferredSize = 95 },
+                new QualityDefinition(Quality.HDTV720p)    { Weight = 15, MinSize = 0, MaxSize = 100, PreferredSize = 95 }, // andy-reeves
+                new QualityDefinition(Quality.WEBDL720p)   { Weight = 16, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 720p" }, // andy-reeves
+                new QualityDefinition(Quality.WEBRip720p)  { Weight = 16, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 720p" }, // andy-reeves
+                new QualityDefinition(Quality.Bluray720p)  { Weight = 17, MinSize = 0, MaxSize = 100, PreferredSize = 95 }, // andy-reeves
 
-                new QualityDefinition(Quality.HDTV1080p)   { Weight = 17, MinSize = 0, MaxSize = 100, PreferredSize = 95 },
-                new QualityDefinition(Quality.WEBDL1080p)  { Weight = 18, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 1080p" },
-                new QualityDefinition(Quality.WEBRip1080p)   { Weight = 18, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 1080p" },
-                new QualityDefinition(Quality.Bluray1080p) { Weight = 19, MinSize = 0, MaxSize = null, PreferredSize = null },
-                new QualityDefinition(Quality.Remux1080p)  { Weight = 20, MinSize = 0, MaxSize = null, PreferredSize = null },
+                new QualityDefinition(Quality.HDTV1080p)   { Weight = 18, MinSize = 0, MaxSize = 100, PreferredSize = 95 }, // andy-reeves
+                new QualityDefinition(Quality.WEBDL1080p)  { Weight = 19, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 1080p" }, // andy-reeves
+                new QualityDefinition(Quality.WEBRip1080p) { Weight = 19, MinSize = 0, MaxSize = 100, PreferredSize = 95, GroupName = "WEB 1080p" }, // andy-reeves
+                new QualityDefinition(Quality.Bluray1080p) { Weight = 20, MinSize = 0, MaxSize = null, PreferredSize = null }, // andy-reeves
+                new QualityDefinition(Quality.Remux1080p)  { Weight = 21, MinSize = 0, MaxSize = null, PreferredSize = null }, // andy-reeves
 
-                new QualityDefinition(Quality.HDTV2160p)   { Weight = 21, MinSize = 0, MaxSize = null, PreferredSize = null },
-                new QualityDefinition(Quality.WEBDL2160p)  { Weight = 22, MinSize = 0, MaxSize = null, PreferredSize = null, GroupName = "WEB 2160p" },
-                new QualityDefinition(Quality.WEBRip2160p)  { Weight = 22, MinSize = 0, MaxSize = null, PreferredSize = null, GroupName = "WEB 2160p" },
-                new QualityDefinition(Quality.Bluray2160p) { Weight = 23, MinSize = 0, MaxSize = null, PreferredSize = null },
-                new QualityDefinition(Quality.Remux2160p)  { Weight = 24, MinSize = 0, MaxSize = null, PreferredSize = null },
+                new QualityDefinition(Quality.HDTV2160p)   { Weight = 22, MinSize = 0, MaxSize = null, PreferredSize = null }, // andy-reeves
+                new QualityDefinition(Quality.WEBDL2160p)  { Weight = 23, MinSize = 0, MaxSize = null, PreferredSize = null, GroupName = "WEB 2160p" }, // andy-reeves
+                new QualityDefinition(Quality.WEBRip2160p) { Weight = 23, MinSize = 0, MaxSize = null, PreferredSize = null, GroupName = "WEB 2160p" }, // andy-reeves
+                new QualityDefinition(Quality.Bluray2160p) { Weight = 24, MinSize = 0, MaxSize = null, PreferredSize = null }, // andy-reeves
+                new QualityDefinition(Quality.Remux2160p)  { Weight = 25, MinSize = 0, MaxSize = null, PreferredSize = null }, // andy-reeves
 
-                new QualityDefinition(Quality.BRDISK)      { Weight = 25, MinSize = 0, MaxSize = null, PreferredSize = null },
-                new QualityDefinition(Quality.RAWHD)       { Weight = 26, MinSize = 0, MaxSize = null, PreferredSize = null }
+                new QualityDefinition(Quality.BRDISK)      { Weight = 26, MinSize = 0, MaxSize = null, PreferredSize = null }, // andy-reeves
+                new QualityDefinition(Quality.RAWHD)       { Weight = 27, MinSize = 0, MaxSize = null, PreferredSize = null } // andy-reeves
             };
         }
 

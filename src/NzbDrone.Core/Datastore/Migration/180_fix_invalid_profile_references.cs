@@ -133,6 +133,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 Quality.REGIONAL,
                 Quality.SDTV,
                 Quality.DVD,
+                Quality.DVD576p,
                 Quality.DVDR,
                 Quality.HDTV720p,
                 Quality.HDTV1080p,
@@ -164,7 +165,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 Quality.DVDSCR,
                 Quality.REGIONAL,
                 Quality.SDTV,
-                Quality.DVD,
+                Quality.DVD, // andy-reeves
+                Quality.DVD576p, // andy-reeves
                 Quality.WEBDL480p,
                 Quality.WEBRip480p,
                 Quality.Bluray480p,
