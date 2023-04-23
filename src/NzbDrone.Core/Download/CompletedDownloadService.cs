@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ using NzbDrone.Core.MediaFiles.MovieImport;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser;
+using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Download
 {
@@ -92,13 +94,17 @@ namespace NzbDrone.Core.Download
 
                 if (movie == null)
                 {
-                    trackedDownload.Warn("Movie title mismatch, automatic import is not possible.");
+                    trackedDownload.Warn("Movie title mismatch, Manual Import required.");
                     return;
                 }
 
-                trackedDownload.Warn("Found matching movie via grab history, but release title doesn't match movie title. Automatic import is not possible.");
+                Enum.TryParse(historyItem.Data.GetValueOrDefault(MovieHistory.MOVIE_MATCH_TYPE, MovieMatchType.Unknown.ToString()), out MovieMatchType movieMatchType);
 
-                return;
+                if (movieMatchType == MovieMatchType.Id)
+                {
+                    trackedDownload.Warn("Found matching movie via grab history, but release was matched to movie by ID. Manual Import required.");
+                    return;
+                }
             }
 
             trackedDownload.State = TrackedDownloadState.ImportPending;

@@ -10,10 +10,8 @@ using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Download.Aggregation;
 using NzbDrone.Core.IndexerSearch.Definitions;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
-using NzbDrone.Core.Qualities;
 
 namespace NzbDrone.Core.DecisionEngine
 {
@@ -80,51 +78,50 @@ namespace NzbDrone.Core.DecisionEngine
                 {
                     var parsedMovieInfo = _parsingService.ParseMovieInfo(report.Title, new List<object> { report });
 
-                    MappingResult result = null;
-
-                    if (parsedMovieInfo == null || parsedMovieInfo.PrimaryMovieTitle.IsNullOrWhiteSpace())
+                    if (parsedMovieInfo != null && !parsedMovieInfo.PrimaryMovieTitle.IsNullOrWhiteSpace())
                     {
-                        _logger.Debug("{0} could not be parsed :(.", report.Title);
-                        parsedMovieInfo = new ParsedMovieInfo
-                        {
-                            MovieTitles = new List<string>() { report.Title },
-                            SimpleReleaseTitle = report.Title.SimplifyReleaseTitle(),
-                            Year = 1290,
-                            Languages = new List<Language> { Language.Unknown },
-                            Quality = new QualityModel(),
-                        };
+                        var remoteMovie = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
+                        remoteMovie.Release = report;
 
-                        if (result == null)
+                        if (remoteMovie.Movie == null)
                         {
-                            result = new MappingResult { MappingResultType = MappingResultType.NotParsable };
-                            result.Movie = null; // To ensure we have a remote movie, else null exception on next line!
-                            result.RemoteMovie.ParsedMovieInfo = parsedMovieInfo;
+                            var reason = "Unknown Movie";
+
+                            decision = new DownloadDecision(remoteMovie, new Rejection(reason));
+                        }
+                        else
+                        {
+                            _aggregationService.Augment(remoteMovie);
+
+                            remoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(remoteMovie, remoteMovie.Release.Size);
+                            remoteMovie.CustomFormatScore = remoteMovie?.Movie?.Profile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
+
+                            remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
+                            decision = GetDecisionForReport(remoteMovie, searchCriteria);
                         }
                     }
-                    else
+
+                    if (searchCriteria != null)
                     {
-                        result = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
-                    }
+                        if (parsedMovieInfo == null)
+                        {
+                            parsedMovieInfo = new ParsedMovieInfo
+                            {
+                                Languages = LanguageParser.ParseLanguages(report.Title),
+                                Quality = QualityParser.ParseQuality(report.Title)
+                            };
+                        }
 
-                    result.ReleaseName = report.Title;
-                    var remoteMovie = result.RemoteMovie;
-                    remoteMovie.Release = report;
-                    remoteMovie.MappingResult = result.MappingResultType;
+                        if (parsedMovieInfo.PrimaryMovieTitle.IsNullOrWhiteSpace())
+                        {
+                            var remoteMovie = new RemoteMovie
+                            {
+                                Release = report,
+                                ParsedMovieInfo = parsedMovieInfo,
+                            };
 
-                    _aggregationService.Augment(remoteMovie);
-
-                    if (result.MappingResultType != MappingResultType.Success)
-                    {
-                        var rejection = result.ToRejection();
-                        decision = new DownloadDecision(remoteMovie, rejection);
-                    }
-                    else
-                    {
-                        remoteMovie.CustomFormats = _formatCalculator.ParseCustomFormat(remoteMovie, remoteMovie.Release.Size);
-                        remoteMovie.CustomFormatScore = remoteMovie?.Movie?.Profile?.CalculateCustomFormatScore(remoteMovie.CustomFormats) ?? 0;
-
-                        remoteMovie.DownloadAllowed = remoteMovie.Movie != null;
-                        decision = GetDecisionForReport(remoteMovie, searchCriteria);
+                            decision = new DownloadDecision(remoteMovie, new Rejection("Unable to parse release"));
+                        }
                     }
                 }
                 catch (Exception e)

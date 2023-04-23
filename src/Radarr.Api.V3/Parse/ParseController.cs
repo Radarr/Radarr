@@ -45,14 +45,14 @@ namespace Radarr.Api.V3.Parse
 
             var remoteMovie = _parsingService.Map(parsedMovieInfo, "");
 
-            _aggregationService.Augment(remoteMovie.RemoteMovie);
+            _aggregationService.Augment(remoteMovie);
 
             if (remoteMovie != null)
             {
                 return new ParseResource
                 {
                     Title = title,
-                    ParsedMovieInfo = remoteMovie.RemoteMovie.ParsedMovieInfo,
+                    ParsedMovieInfo = remoteMovie.ParsedMovieInfo,
                     Movie = remoteMovie.Movie.ToResource(_configService.AvailabilityDelay)
                 };
             }
