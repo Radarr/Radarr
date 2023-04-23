@@ -239,8 +239,7 @@ namespace NzbDrone.Core.Download.Pending
             var movieReleases = GetPendingReleases(movieId);
 
             return movieReleases.Select(r => r.RemoteMovie)
-                                 .OrderByDescending(p => p.Release.AgeHours)
-                                 .FirstOrDefault();
+                                 .MaxBy(p => p.Release.AgeHours);
         }
 
         private List<PendingRelease> GetPendingReleases()

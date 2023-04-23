@@ -37,9 +37,7 @@ namespace NzbDrone.Core.History
 
         public MovieHistory MostRecentForDownloadId(string downloadId)
         {
-            return FindByDownloadId(downloadId)
-                .OrderByDescending(h => h.Date)
-                .FirstOrDefault();
+            return FindByDownloadId(downloadId).MaxBy(h => h.Date);
         }
 
         public List<MovieHistory> FindByDownloadId(string downloadId)
@@ -90,9 +88,7 @@ namespace NzbDrone.Core.History
 
         public MovieHistory MostRecentForMovie(int movieId)
         {
-            return Query(x => x.MovieId == movieId)
-                .OrderByDescending(h => h.Date)
-                .FirstOrDefault();
+            return Query(x => x.MovieId == movieId).MaxBy(h => h.Date);
         }
 
         public List<MovieHistory> Since(DateTime date, MovieHistoryEventType? eventType)
