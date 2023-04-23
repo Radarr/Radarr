@@ -37,12 +37,12 @@ namespace NzbDrone.Core.Notifications.PushBullet
 
         public override void OnMovieFileDelete(MovieFileDeleteMessage deleteMessage)
         {
-            _proxy.SendNotification(MOVIE_FILE_DELETED_TITLE, deleteMessage.Message, Settings);
+            _proxy.SendNotification(MOVIE_FILE_DELETED_TITLE_BRANDED, deleteMessage.Message, Settings);
         }
 
         public override void OnMovieDelete(MovieDeleteMessage deleteMessage)
         {
-            _proxy.SendNotification(MOVIE_DELETED_TITLE, deleteMessage.Message, Settings);
+            _proxy.SendNotification(MOVIE_DELETED_TITLE_BRANDED, deleteMessage.Message, Settings);
         }
 
         public override void OnHealthIssue(HealthCheck.HealthCheck healthCheck)
