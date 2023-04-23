@@ -20,7 +20,7 @@ namespace NzbDrone.Core.Test.ParserTests
         public static object[] OtherSourceQualityParserCases =
         {
             new object[] { "SD TV", Source.TV, Resolution.R480p, Modifier.NONE },
-            new object[] { "SD DVD",  Source.DVD, Resolution.R480p, Modifier.NONE },
+            new object[] { "SD DVD",  Source.DVD, Resolution.Unknown, Modifier.NONE },
             new object[] { "480p WEB-DL", Source.WEBDL, Resolution.R480p, Modifier.NONE },
             new object[] { "HD TV", Source.TV, Resolution.R720p, Modifier.NONE },
             new object[] { "1080p HD TV", Source.TV, Resolution.R1080p, Modifier.NONE },
@@ -79,7 +79,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("SomeMovie.2018.DVDRip.ts", false)]
         public void should_parse_dvd_quality(string title, bool proper)
         {
-            ParseAndVerifyQuality(title, Source.DVD, proper, Resolution.R480p);
+            ParseAndVerifyQuality(title, Source.DVD, proper, Resolution.Unknown);
         }
 
         [TestCase("Some.Movie.Magic.Rainbow.2007.DVD5.NTSC", false)]
