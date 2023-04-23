@@ -12,7 +12,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: dessant/support-requests@v2
+      - uses: dessant/support-requests@v3
         with:
           github-token: ${{ github.token }}
           support-label: 'Type: Support'
@@ -22,4 +22,15 @@ jobs:
             to be a support request. Please hop over onto our [Discord](https://radarr.video/discord) 
             or [Subreddit](https://reddit.com/r/radarr)
           close-issue: true
+          lock-issue: false
+      - uses: dessant/support-requests@v3
+        with:
+          github-token: ${{ github.token }}
+          support-label: 'Status: Logs Needed'
+          issue-comment: >
+            :wave: @{issue-author}, In order to help you further we'll need to see logs. 
+            You'll need to enable trace logging and replicate the problem that you encountered. 
+            Guidance on how to enable trace logging can be found in 
+            our [troubleshooting guide](https://wiki.servarr.com/radarr/troubleshooting#logging-and-log-files).
+          close-issue: false
           lock-issue: false
