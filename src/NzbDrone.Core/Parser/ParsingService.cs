@@ -15,8 +15,6 @@ namespace NzbDrone.Core.Parser
         Movie GetMovie(string title);
         RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
         RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, int movieId);
-        ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers);
-        ParsedMovieInfo ParseMinimalMovieInfo(string path, bool isDir = false);
         ParsedMovieInfo ParseMinimalPathMovieInfo(string path);
     }
 
@@ -39,39 +37,22 @@ namespace NzbDrone.Core.Parser
             }
         }
 
-        public ParsedMovieInfo ParseMovieInfo(string title, List<object> helpers)
-        {
-            var result = Parser.ParseMovieTitle(title);
-
-            if (result == null)
-            {
-                return null;
-            }
-
-            return result;
-        }
-
-        public ParsedMovieInfo ParseMinimalMovieInfo(string file, bool isDir = false)
-        {
-            return Parser.ParseMovieTitle(file, isDir);
-        }
-
         public ParsedMovieInfo ParseMinimalPathMovieInfo(string path)
         {
             var fileInfo = new FileInfo(path);
 
-            var result = ParseMinimalMovieInfo(fileInfo.Name, true);
+            var result = Parser.ParseMovieTitle(fileInfo.Name, true);
 
             if (result == null)
             {
                 _logger.Debug("Attempting to parse movie info using directory and file names. {0}", fileInfo.Directory.Name);
-                result = ParseMinimalMovieInfo(fileInfo.Directory.Name + " " + fileInfo.Name);
+                result = Parser.ParseMovieTitle(fileInfo.Directory.Name + " " + fileInfo.Name);
             }
 
             if (result == null)
             {
                 _logger.Debug("Attempting to parse movie info using directory name. {0}", fileInfo.Directory.Name);
-                result = ParseMinimalMovieInfo(fileInfo.Directory.Name + fileInfo.Extension);
+                result = Parser.ParseMovieTitle(fileInfo.Directory.Name + fileInfo.Extension);
             }
 
             return result;

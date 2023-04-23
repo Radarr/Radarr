@@ -33,7 +33,7 @@ namespace Radarr.Api.V3.Parse
                 return null;
             }
 
-            var parsedMovieInfo = _parsingService.ParseMovieInfo(title, new List<object>());
+            var parsedMovieInfo = Parser.ParseMovieTitle(title);
 
             if (parsedMovieInfo == null)
             {

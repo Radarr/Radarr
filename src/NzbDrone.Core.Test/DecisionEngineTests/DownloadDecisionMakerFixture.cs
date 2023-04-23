@@ -32,8 +32,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         [SetUp]
         public void Setup()
         {
-            ParseMovieTitle();
-
             _pass1 = new Mock<IDecisionEngineSpecification>();
             _pass2 = new Mock<IDecisionEngineSpecification>();
             _pass3 = new Mock<IDecisionEngineSpecification>();
