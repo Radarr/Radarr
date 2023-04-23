@@ -121,7 +121,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
                 if (parsedMovieInfo != null)
                 {
-                    trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null).RemoteMovie;
+                    trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null);
 
                     _aggregationService.Augment(trackedDownload.RemoteMovie);
                 }
@@ -149,7 +149,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
 
                         if (parsedMovieInfo != null)
                         {
-                            trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null).RemoteMovie;
+                            trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null);
                         }
                     }
                 }
@@ -197,7 +197,7 @@ namespace NzbDrone.Core.Download.TrackedDownloads
         {
             var parsedMovieInfo = Parser.Parser.ParseMovieTitle(trackedDownload.DownloadItem.Title);
 
-            trackedDownload.RemoteMovie = parsedMovieInfo == null ? null : _parsingService.Map(parsedMovieInfo, "", null).RemoteMovie;
+            trackedDownload.RemoteMovie = parsedMovieInfo == null ? null : _parsingService.Map(parsedMovieInfo, "", null);
 
             _aggregationService.Augment(trackedDownload.RemoteMovie);
         }

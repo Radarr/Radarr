@@ -147,30 +147,6 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         }
 
         [Test]
-        public void should_not_match_with_wrong_year()
-        {
-            GivenMatchByMovieTitle();
-            Subject.Map(_wrongYearInfo, "", _movieSearchCriteria).MappingResultType.Should().Be(MappingResultType.WrongYear);
-        }
-
-        [Test]
-        public void should_not_match_wrong_title()
-        {
-            GivenMatchByMovieTitle();
-            Subject.Map(_wrongTitleInfo, "", _movieSearchCriteria).MappingResultType.Should().Be(MappingResultType.WrongTitle);
-        }
-
-        [Test]
-        public void should_return_title_not_found_when_all_is_null()
-        {
-            Mocker.GetMock<IMovieService>()
-                .Setup(s => s.FindByTitle(It.IsAny<string>()))
-                .Returns((Movie)null);
-            Subject.Map(_parsedMovieInfo, "", null).MappingResultType.Should()
-                .Be(MappingResultType.TitleNotFound);
-        }
-
-        [Test]
         public void should_match_alternative_title()
         {
             Subject.Map(_alternativeTitleInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);

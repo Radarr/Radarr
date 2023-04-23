@@ -12,8 +12,14 @@ namespace NzbDrone.Core.Download.Pending
         public ParsedMovieInfo ParsedMovieInfo { get; set; }
         public ReleaseInfo Release { get; set; }
         public PendingReleaseReason Reason { get; set; }
+        public PendingReleaseAdditionalInfo AdditionalInfo { get; set; }
 
         // Not persisted
         public RemoteMovie RemoteMovie { get; set; }
+    }
+
+    public class PendingReleaseAdditionalInfo
+    {
+        public MovieMatchType MovieMatchType { get; set; }
     }
 }

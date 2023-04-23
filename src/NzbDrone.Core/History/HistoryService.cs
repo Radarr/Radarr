@@ -153,6 +153,7 @@ namespace NzbDrone.Core.History
             history.Data.Add("TmdbId", message.Movie.Release.TmdbId.ToString());
             history.Data.Add("Protocol", ((int)message.Movie.Release.DownloadProtocol).ToString());
             history.Data.Add("CustomFormatScore", message.Movie.CustomFormatScore.ToString());
+            history.Data.Add("MovieMatchType", message.Movie.MovieMatchType.ToString());
             history.Data.Add("IndexerFlags", message.Movie.Release.IndexerFlags.ToString());
             history.Data.Add("IndexerId", message.Movie.Release.IndexerId.ToString());
 

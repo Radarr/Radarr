@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
         {
             GivenDownloadHistory();
 
-            var remoteEpisode = new RemoteMovie
+            var remoteMovie = new RemoteMovie
             {
                 Movie = new Movie() { Id = 3 },
 
@@ -56,7 +56,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.Map(It.Is<ParsedMovieInfo>(i => i.PrimaryMovieTitle == "A Movie"), It.IsAny<string>(), null))
-                  .Returns(new MappingResult { RemoteMovie = remoteEpisode });
+                  .Returns(remoteMovie);
 
             ParseMovieTitle();
 
@@ -104,7 +104,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), null))
-                  .Returns(new MappingResult { RemoteMovie = remoteMovie });
+                  .Returns(remoteMovie);
 
             Mocker.GetMock<IHistoryService>()
                   .Setup(s => s.FindByDownloadId(It.IsAny<string>()))
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), null))
-                  .Returns(new MappingResult { MappingResultType = MappingResultType.Unknown });
+                  .Returns(default(RemoteMovie));
 
             Subject.Handle(new MoviesDeletedEvent(new List<Movie> { remoteMovie.Movie }, false, false));
 
@@ -163,7 +163,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), null))
-                  .Returns(new MappingResult { MappingResultType = MappingResultType.Unknown });
+                  .Returns(default(RemoteMovie));
 
             Mocker.GetMock<IHistoryService>()
                   .Setup(s => s.FindByDownloadId(It.IsAny<string>()))
@@ -195,7 +195,7 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
 
             Mocker.GetMock<IParsingService>()
                   .Setup(s => s.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), null))
-                  .Returns(new MappingResult { MappingResultType = MappingResultType.Unknown });
+                  .Returns(default(RemoteMovie));
 
             Subject.Handle(new MoviesDeletedEvent(new List<Movie> { remoteMovie.Movie }, false, false));
 

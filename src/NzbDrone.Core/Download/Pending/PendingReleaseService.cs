@@ -293,6 +293,7 @@ namespace NzbDrone.Core.Download.Pending
                 release.RemoteMovie = new RemoteMovie
                 {
                     Movie = movie,
+                    MovieMatchType = release.AdditionalInfo?.MovieMatchType ?? MovieMatchType.Unknown,
                     ParsedMovieInfo = release.ParsedMovieInfo,
                     Release = release.Release
                 };
@@ -315,7 +316,11 @@ namespace NzbDrone.Core.Download.Pending
                 Release = decision.RemoteMovie.Release,
                 Title = decision.RemoteMovie.Release.Title,
                 Added = DateTime.UtcNow,
-                Reason = reason
+                Reason = reason,
+                AdditionalInfo = new PendingReleaseAdditionalInfo
+                {
+                    MovieMatchType = decision.RemoteMovie.MovieMatchType
+                }
             };
 
             if (release.ParsedMovieInfo == null)

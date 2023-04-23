@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
     {
         private List<ReleaseInfo> _reports;
         private RemoteMovie _remoteEpisode;
-        private MappingResult _mappingResult;
+        private FindMovieResult _mappingResult;
 
         private Mock<IDecisionEngineSpecification> _pass1;
         private Mock<IDecisionEngineSpecification> _pass2;
@@ -57,11 +57,10 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
                 ParsedMovieInfo = new ParsedMovieInfo()
             };
 
-            _mappingResult = new MappingResult { Movie = new Movie(), MappingResultType = MappingResultType.Success };
-            _mappingResult.RemoteMovie = _remoteEpisode;
+            _mappingResult = new FindMovieResult(new Movie(), MovieMatchType.Title);
 
             Mocker.GetMock<IParsingService>()
-                  .Setup(c => c.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), It.IsAny<SearchCriteriaBase>())).Returns(_mappingResult);
+                  .Setup(c => c.Map(It.IsAny<ParsedMovieInfo>(), It.IsAny<string>(), It.IsAny<SearchCriteriaBase>())).Returns(_remoteEpisode);
         }
 
         private void GivenSpecifications(params Mock<IDecisionEngineSpecification>[] mocks)
@@ -128,7 +127,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
             _reports[0].Title = "Not parsable";
-            _mappingResult.MappingResultType = MappingResultType.NotParsable;
 
             Subject.GetRssDecision(_reports).ToList();
 
@@ -144,7 +142,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
             _reports[0].Title = "1937 - Snow White and the Seven Dwarves";
-            _mappingResult.MappingResultType = MappingResultType.NotParsable;
 
             var results = Subject.GetRssDecision(_reports).ToList();
 
@@ -162,7 +159,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
         {
             GivenSpecifications(_pass1, _pass2, _pass3);
             _reports[0].Title = "1937 - Snow White and the Seven Dwarves";
-            _mappingResult.MappingResultType = MappingResultType.NotParsable;
 
             Subject.GetSearchDecision(_reports, new MovieSearchCriteria()).ToList();
 
@@ -179,7 +175,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenSpecifications(_pass1, _pass2, _pass3);
 
             _remoteEpisode.Movie = null;
-            _mappingResult.MappingResultType = MappingResultType.TitleNotFound;
 
             Subject.GetRssDecision(_reports);
 
@@ -228,7 +223,6 @@ namespace NzbDrone.Core.Test.DecisionEngineTests
             GivenSpecifications(_pass1, _pass2, _pass3);
 
             _remoteEpisode.Movie = null;
-            _mappingResult.MappingResultType = MappingResultType.TitleNotFound;
 
             var result = Subject.GetRssDecision(_reports);
 
