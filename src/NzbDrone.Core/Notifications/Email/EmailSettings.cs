@@ -32,7 +32,8 @@ namespace NzbDrone.Core.Notifications.Email
 
         public EmailSettings()
         {
-            Port = 567;
+            Port = 587;
+
             To = Array.Empty<string>();
             Cc = Array.Empty<string>();
             Bcc = Array.Empty<string>();
