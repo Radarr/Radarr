@@ -58,8 +58,6 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
                   .Setup(s => s.Map(It.Is<ParsedMovieInfo>(i => i.PrimaryMovieTitle == "A Movie"), It.IsAny<string>(), null))
                   .Returns(remoteMovie);
 
-            ParseMovieTitle();
-
             var client = new DownloadClientDefinition()
             {
                 Id = 1,
@@ -109,8 +107,6 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             Mocker.GetMock<IHistoryService>()
                   .Setup(s => s.FindByDownloadId(It.IsAny<string>()))
                   .Returns(new List<MovieHistory>());
-
-            ParseMovieTitle();
 
             var client = new DownloadClientDefinition()
             {
@@ -168,8 +164,6 @@ namespace NzbDrone.Core.Test.Download.TrackedDownloads
             Mocker.GetMock<IHistoryService>()
                   .Setup(s => s.FindByDownloadId(It.IsAny<string>()))
                   .Returns(new List<MovieHistory>());
-
-            ParseMovieTitle();
 
             var client = new DownloadClientDefinition()
             {
