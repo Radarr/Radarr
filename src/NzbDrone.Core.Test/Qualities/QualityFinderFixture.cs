@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using NUnit.Framework;
 using NzbDrone.Core.Qualities;
 
@@ -29,6 +29,7 @@ namespace NzbDrone.Core.Test.Qualities
         }
 
         [TestCase(Source.DVD, 480, Modifier.NONE)]
+        [TestCase(Source.DVD, 576, Modifier.NONE)]
         public void should_return_DVD(Source source, int resolution, Modifier modifier)
         {
             QualityFinder.FindBySourceAndResolution(source, resolution, modifier).Should().Be(Quality.DVD);

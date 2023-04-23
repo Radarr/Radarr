@@ -89,7 +89,7 @@ namespace NzbDrone.Core.Qualities
 
         // SD
         public static Quality SDTV => new Quality(1, "SDTV", Source.TV, 480);
-        public static Quality DVD => new Quality(2, "DVD", Source.DVD, 480);
+        public static Quality DVD => new Quality(2, "DVD", Source.DVD, 0);
         public static Quality DVDR => new Quality(23, "DVD-R", Source.DVD, 480, Modifier.REMUX); // new
 
         // HDTV
