@@ -27,6 +27,7 @@ function HistoryDetails(props) {
       downloadClient,
       downloadClientName,
       downloadId,
+      movieMatchType,
       age,
       ageHours,
       ageMinutes,
@@ -71,6 +72,16 @@ function HistoryDetails(props) {
                 <Link to={nzbInfoUrl}>{nzbInfoUrl}</Link>
               </DescriptionListItemDescription>
             </span>
+        }
+
+        {
+          movieMatchType ?
+            <DescriptionListItem
+              descriptionClassName={styles.description}
+              title={translate('MovieMatchType')}
+              data={movieMatchType}
+            /> :
+            null
         }
 
         {
