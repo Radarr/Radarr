@@ -403,7 +403,7 @@ namespace NzbDrone.Core.Movies
                 return movies.First();
             }
 
-            throw new MultipleMoviesFoundException("Expected one movie, but found {0}. Matching movies: {1}", movies.Count, string.Join(",", movies));
+            throw new MultipleMoviesFoundException(movies, "Expected one movie, but found {0}. Matching movies: {1}", movies.Count, string.Join(",", movies));
         }
 
         public void Handle(MovieFileAddedEvent message)

@@ -10,6 +10,7 @@ using NzbDrone.Core.Download.Aggregation;
 using NzbDrone.Core.Download.History;
 using NzbDrone.Core.History;
 using NzbDrone.Core.Messaging.Events;
+using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Parser;
 
@@ -145,11 +146,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                         trackedDownload.RemoteMovie == null ||
                         trackedDownload.RemoteMovie.Movie == null)
                     {
-                        parsedMovieInfo = _parsingService.ParseMovieInfo(firstHistoryItem.SourceTitle, new List<object> { grabbedHistoryItem });
+                        parsedMovieInfo = Parser.Parser.ParseMovieTitle(firstHistoryItem.SourceTitle);
 
                         if (parsedMovieInfo != null)
                         {
-                            trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo, "", null);
+                            trackedDownload.RemoteMovie = _parsingService.Map(parsedMovieInfo,
+                                firstHistoryItem.MovieId);
                         }
                     }
                 }
@@ -165,6 +167,12 @@ namespace NzbDrone.Core.Download.TrackedDownloads
                 {
                     _logger.Trace("No Movie found for download '{0}'", trackedDownload.DownloadItem.Title);
                 }
+            }
+            catch (MultipleMoviesFoundException e)
+            {
+                _logger.Debug(e, "Found multiple movies for " + downloadItem.Title);
+
+                trackedDownload.Warn("Unable to import automatically, found multiple movies: {0}", string.Join(", ", e.Movies));
             }
             catch (Exception e)
             {
