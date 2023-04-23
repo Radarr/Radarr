@@ -95,6 +95,10 @@ namespace NzbDrone.Core.Download
                     trackedDownload.Warn("Movie title mismatch, automatic import is not possible.");
                     return;
                 }
+
+                trackedDownload.Warn("Found matching movie via grab history, but release title doesn't match movie title. Automatic import is not possible.");
+
+                return;
             }
 
             trackedDownload.State = TrackedDownloadState.ImportPending;
