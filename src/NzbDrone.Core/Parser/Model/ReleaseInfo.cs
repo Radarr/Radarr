@@ -1,11 +1,18 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using NzbDrone.Core.Indexers;
+using NzbDrone.Core.Languages;
 
 namespace NzbDrone.Core.Parser.Model
 {
     public class ReleaseInfo
     {
+        public ReleaseInfo()
+        {
+            Languages = new List<Language>();
+        }
+
         public string Guid { get; set; }
         public string Title { get; set; }
         public long Size { get; set; }
@@ -27,6 +34,7 @@ namespace NzbDrone.Core.Parser.Model
         public string Resolution { get; set; }
 
         public IndexerFlags IndexerFlags { get; set; }
+        public List<Language> Languages { get; set; }
 
         public int Age
         {

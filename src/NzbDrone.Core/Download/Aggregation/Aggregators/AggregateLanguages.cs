@@ -20,6 +20,7 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
         public RemoteMovie Aggregate(RemoteMovie remoteMovie)
         {
             var parsedMovieInfo = remoteMovie.ParsedMovieInfo;
+            var releaseInfo = remoteMovie.Release;
             var languages = parsedMovieInfo.Languages;
             var movie = remoteMovie.Movie;
             var releaseTokens = parsedMovieInfo.SimpleReleaseTitle ?? parsedMovieInfo.ReleaseTitle;
@@ -30,30 +31,40 @@ namespace NzbDrone.Core.Download.Aggregation.Aggregators
             {
                 _logger.Debug("Unable to aggregate languages, using parsed values: {0}", string.Join(", ", languages.ToList()));
 
-                remoteMovie.Languages = languages;
+                remoteMovie.Languages = releaseInfo.Languages.Any() ? releaseInfo.Languages : languages;
 
                 return remoteMovie;
             }
 
-            var movieTitleLanguage = LanguageParser.ParseLanguages(movie.Title);
-
-            if (!movieTitleLanguage.Contains(Language.Unknown))
+            if (releaseInfo != null && releaseInfo.Languages.Any())
             {
-                var normalizedEpisodeTitle = Parser.Parser.NormalizeEpisodeTitle(movie.Title);
-                var movieTitleIndex = normalizedReleaseTokens.IndexOf(normalizedEpisodeTitle, StringComparison.CurrentCultureIgnoreCase);
+                _logger.Debug("Languages provided by indexer, using release values: {0}", string.Join(", ", releaseInfo.Languages));
 
-                if (movieTitleIndex >= 0)
-                {
-                    releaseTokens = releaseTokens.Remove(movieTitleIndex, normalizedEpisodeTitle.Length);
-                    languagesToRemove.AddRange(movieTitleLanguage);
-                }
+                // Use languages from release (given by indexer or user) if available
+                languages = releaseInfo.Languages;
             }
+            else
+            {
+                var movieTitleLanguage = LanguageParser.ParseLanguages(movie.Title);
 
-            // Remove any languages still in the title that would normally be removed
-            languagesToRemove = languagesToRemove.Except(LanguageParser.ParseLanguages(releaseTokens)).ToList();
+                if (!movieTitleLanguage.Contains(Language.Unknown))
+                {
+                    var normalizedEpisodeTitle = Parser.Parser.NormalizeEpisodeTitle(movie.Title);
+                    var movieTitleIndex = normalizedReleaseTokens.IndexOf(normalizedEpisodeTitle, StringComparison.CurrentCultureIgnoreCase);
 
-            // Remove all languages that aren't part of the updated releaseTokens
-            languages = languages.Except(languagesToRemove).ToList();
+                    if (movieTitleIndex >= 0)
+                    {
+                        releaseTokens = releaseTokens.Remove(movieTitleIndex, normalizedEpisodeTitle.Length);
+                        languagesToRemove.AddRange(movieTitleLanguage);
+                    }
+                }
+
+                // Remove any languages still in the title that would normally be removed
+                languagesToRemove = languagesToRemove.Except(LanguageParser.ParseLanguages(releaseTokens)).ToList();
+
+                // Remove all languages that aren't part of the updated releaseTokens
+                languages = languages.Except(languagesToRemove).ToList();
+            }
 
             // Use movie language as fallback if we couldn't parse a language
             if (languages.Count == 0 || (languages.Count == 1 && languages.First() == Language.Unknown))
