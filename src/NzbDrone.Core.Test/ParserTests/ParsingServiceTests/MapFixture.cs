@@ -129,7 +129,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         {
             GivenMatchByMovieTitle();
 
-            Subject.Map(_parsedMovieInfo, "", null);
+            Subject.Map(_parsedMovieInfo, "", 0, null);
 
             Mocker.GetMock<IMovieService>()
                 .Verify(v => v.FindByTitle(It.IsAny<List<string>>(), It.IsAny<int>(), It.IsAny<List<string>>(), null), Times.Once());
@@ -140,7 +140,7 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         {
             GivenMatchByMovieTitle();
 
-            Subject.Map(_parsedMovieInfo, "", _movieSearchCriteria);
+            Subject.Map(_parsedMovieInfo, "", 0, _movieSearchCriteria);
 
             Mocker.GetMock<IMovieService>()
                   .Verify(v => v.FindByTitle(It.IsAny<string>()), Times.Never());
@@ -149,26 +149,26 @@ namespace NzbDrone.Core.Test.ParserTests.ParsingServiceTests
         [Test]
         public void should_match_alternative_title()
         {
-            Subject.Map(_alternativeTitleInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+            Subject.Map(_alternativeTitleInfo, "", 0, _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
         }
 
         [Test]
         public void should_match_translation_title()
         {
-            Subject.Map(_translationTitleInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+            Subject.Map(_translationTitleInfo, "", 0, _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
         }
 
         [Test]
         public void should_match_roman_title()
         {
-            Subject.Map(_romanTitleInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+            Subject.Map(_romanTitleInfo, "", 0, _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
         }
 
         [Test]
         public void should_match_umlauts()
         {
-            Subject.Map(_umlautInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
-            Subject.Map(_umlautAltInfo, "", _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+            Subject.Map(_umlautInfo, "", 0, _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
+            Subject.Map(_umlautAltInfo, "", 0, _movieSearchCriteria).Movie.Should().Be(_movieSearchCriteria.Movie);
         }
     }
 }

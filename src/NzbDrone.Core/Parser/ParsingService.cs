@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NLog;
-using NzbDrone.Core.DecisionEngine;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
@@ -13,7 +13,7 @@ namespace NzbDrone.Core.Parser
     public interface IParsingService
     {
         Movie GetMovie(string title);
-        RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null);
+        RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, string imdbId, int tmdbId, SearchCriteriaBase searchCriteria = null);
         RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, int movieId);
         ParsedMovieInfo ParseMinimalPathMovieInfo(string path);
     }
@@ -67,7 +67,9 @@ namespace NzbDrone.Core.Parser
                 return _movieService.FindByTitle(title);
             }
 
-            if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out var result))
+            var result = TryGetMovieByTitleAndOrYear(parsedMovieInfo);
+
+            if (result != null)
             {
                 return result.Movie;
             }
@@ -75,9 +77,9 @@ namespace NzbDrone.Core.Parser
             return null;
         }
 
-        public RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria = null)
+        public RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, string imdbId, int tmdbId, SearchCriteriaBase searchCriteria = null)
         {
-            return Map(parsedMovieInfo, imdbId, null, searchCriteria);
+            return Map(parsedMovieInfo, imdbId, tmdbId, null, searchCriteria);
         }
 
         public RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, int movieId)
@@ -89,7 +91,7 @@ namespace NzbDrone.Core.Parser
             };
         }
 
-        public RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, string imdbId, Movie movie, SearchCriteriaBase searchCriteria)
+        public RemoteMovie Map(ParsedMovieInfo parsedMovieInfo, string imdbId, int tmdbId, Movie movie, SearchCriteriaBase searchCriteria)
         {
             var remoteMovie = new RemoteMovie
             {
@@ -98,7 +100,7 @@ namespace NzbDrone.Core.Parser
 
             if (movie == null)
             {
-                var movieMatch = FindMovie(parsedMovieInfo, imdbId, searchCriteria);
+                var movieMatch = FindMovie(parsedMovieInfo, imdbId, tmdbId, searchCriteria);
 
                 if (movieMatch != null)
                 {
@@ -117,62 +119,67 @@ namespace NzbDrone.Core.Parser
             return remoteMovie;
         }
 
-        private FindMovieResult FindMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, SearchCriteriaBase searchCriteria)
+        private FindMovieResult FindMovie(ParsedMovieInfo parsedMovieInfo, string imdbId, int tmdbId, SearchCriteriaBase searchCriteria)
         {
             FindMovieResult result = null;
 
             if (!string.IsNullOrWhiteSpace(imdbId) && imdbId != "0")
             {
-                if (TryGetMovieByImDbId(parsedMovieInfo, imdbId, out result))
+                result = TryGetMovieByImDbId(parsedMovieInfo, imdbId);
+            }
+
+            if (result == null && tmdbId > 0)
+            {
+                result = TryGetMovieByTmdbId(parsedMovieInfo, tmdbId);
+            }
+
+            if (result == null)
+            {
+                if (searchCriteria != null)
                 {
-                    return result;
+                    result = TryGetMovieBySearchCriteria(parsedMovieInfo, imdbId, tmdbId, searchCriteria);
+                }
+                else
+                {
+                    result = TryGetMovieByTitleAndOrYear(parsedMovieInfo);
                 }
             }
 
-            if (searchCriteria != null)
+            if (result == null)
             {
-                if (TryGetMovieBySearchCriteria(parsedMovieInfo, searchCriteria, out result))
-                {
-                    return result;
-                }
-            }
-            else
-            {
-                if (TryGetMovieByTitleAndOrYear(parsedMovieInfo, out result))
-                {
-                    return result;
-                }
+                _logger.Debug($"No matching movie for titles {string.Join(", ", parsedMovieInfo.MovieTitles)} ({parsedMovieInfo.Year})");
             }
 
-            // nothing found up to here => logging that and returning null
-            _logger.Debug($"No matching movie for titles {string.Join(", ", parsedMovieInfo.MovieTitles)} ({parsedMovieInfo.Year})");
             return result;
         }
 
-        private bool TryGetMovieByImDbId(ParsedMovieInfo parsedMovieInfo, string imdbId, out FindMovieResult result)
+        private FindMovieResult TryGetMovieByImDbId(ParsedMovieInfo parsedMovieInfo, string imdbId)
         {
             var movie = _movieService.FindByImdbId(imdbId);
 
             // Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
-            if (movie != null && parsedMovieInfo.Year > 1800 && (parsedMovieInfo.Year != movie.MovieMetadata.Value.Year && movie.MovieMetadata.Value.SecondaryYear != parsedMovieInfo.Year))
+            if (movie != null && (parsedMovieInfo.Year < 1800 || movie.MovieMetadata.Value.Year == parsedMovieInfo.Year || movie.MovieMetadata.Value.SecondaryYear == parsedMovieInfo.Year))
             {
-                result = new FindMovieResult(movie, MovieMatchType.Id);
-                return false;
+                return new FindMovieResult(movie, MovieMatchType.Id);
             }
 
-            if (movie != null)
-            {
-                result = new FindMovieResult(movie, MovieMatchType.Id);
-            }
-            else
-            {
-                result = new FindMovieResult(movie, MovieMatchType.Unknown);
-            }
-
-            return movie != null;
+            return null;
         }
 
-        private bool TryGetMovieByTitleAndOrYear(ParsedMovieInfo parsedMovieInfo, out FindMovieResult result)
+        private FindMovieResult TryGetMovieByTmdbId(ParsedMovieInfo parsedMovieInfo, int tmdbId)
+        {
+            var movie = _movieService.FindByTmdbId(tmdbId);
+
+            // Should fix practically all problems, where indexer is shite at adding correct imdbids to movies.
+            if (movie != null && (parsedMovieInfo.Year < 1800 || movie.MovieMetadata.Value.Year == parsedMovieInfo.Year || movie.MovieMetadata.Value.SecondaryYear == parsedMovieInfo.Year))
+            {
+                return new FindMovieResult(movie, MovieMatchType.Id);
+            }
+
+            return null;
+        }
+
+        private FindMovieResult TryGetMovieByTitleAndOrYear(ParsedMovieInfo parsedMovieInfo)
         {
             var candidates = _movieService.FindByTitleCandidates(parsedMovieInfo.MovieTitles, out var otherTitles);
 
@@ -182,8 +189,7 @@ namespace NzbDrone.Core.Parser
                 movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitles, parsedMovieInfo.Year, otherTitles, candidates);
                 if (movieByTitleAndOrYear != null)
                 {
-                    result = new FindMovieResult(movieByTitleAndOrYear, MovieMatchType.Title);
-                    return true;
+                    return new FindMovieResult(movieByTitleAndOrYear, MovieMatchType.Title);
                 }
 
                 // Only default to not using year when one is parsed if only one movie candidate exists
@@ -192,33 +198,31 @@ namespace NzbDrone.Core.Parser
                     movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitles, null, otherTitles, candidates);
                     if (movieByTitleAndOrYear != null)
                     {
-                        result = new FindMovieResult(movieByTitleAndOrYear, MovieMatchType.Title);
-                        return false;
+                        return new FindMovieResult(movieByTitleAndOrYear, MovieMatchType.Title);
                     }
                 }
 
-                result = new FindMovieResult(movieByTitleAndOrYear, MovieMatchType.Unknown);
-                return false;
+                return null;
             }
 
             movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitles, null, otherTitles, candidates);
             if (movieByTitleAndOrYear != null)
             {
-                result = new FindMovieResult(movieByTitleAndOrYear, MovieMatchType.Title);
-                return true;
+                return new FindMovieResult(movieByTitleAndOrYear, MovieMatchType.Title);
             }
 
-            result = new FindMovieResult(movieByTitleAndOrYear, MovieMatchType.Unknown);
-            return false;
+            return null;
         }
 
-        private bool TryGetMovieBySearchCriteria(ParsedMovieInfo parsedMovieInfo, SearchCriteriaBase searchCriteria, out FindMovieResult result)
+        private FindMovieResult TryGetMovieBySearchCriteria(ParsedMovieInfo parsedMovieInfo, string imdbId, int tmdbId, SearchCriteriaBase searchCriteria)
         {
             Movie possibleMovie = null;
 
-            var possibleTitles = new List<string>();
-
-            possibleTitles.Add(searchCriteria.Movie.MovieMetadata.Value.CleanTitle);
+            var possibleTitles = new List<string>
+            {
+                searchCriteria.Movie.MovieMetadata.Value.CleanTitle
+            };
+            possibleTitles.AddIfNotNull(searchCriteria.Movie.MovieMetadata.Value.CleanOriginalTitle);
             possibleTitles.AddRange(searchCriteria.Movie.MovieMetadata.Value.AlternativeTitles.Select(t => t.CleanTitle));
             possibleTitles.AddRange(searchCriteria.Movie.MovieMetadata.Value.Translations.Select(t => t.CleanTitle));
 
@@ -237,17 +241,21 @@ namespace NzbDrone.Core.Parser
             {
                 if (parsedMovieInfo.Year < 1800 || possibleMovie.MovieMetadata.Value.Year == parsedMovieInfo.Year || possibleMovie.MovieMetadata.Value.SecondaryYear == parsedMovieInfo.Year)
                 {
-                    result = new FindMovieResult(possibleMovie, MovieMatchType.Title);
-                    return true;
+                    return new FindMovieResult(possibleMovie, MovieMatchType.Title);
                 }
-
-                result = new FindMovieResult(possibleMovie, MovieMatchType.Title);
-                return false;
             }
 
-            result = new FindMovieResult(searchCriteria.Movie, MovieMatchType.Unknown);
+            if (tmdbId > 0 && tmdbId == searchCriteria.Movie.TmdbId)
+            {
+                return new FindMovieResult(searchCriteria.Movie, MovieMatchType.Id);
+            }
 
-            return false;
+            if (imdbId.IsNotNullOrWhiteSpace() && imdbId == searchCriteria.Movie.ImdbId)
+            {
+                return new FindMovieResult(searchCriteria.Movie, MovieMatchType.Id);
+            }
+
+            return null;
         }
     }
 }

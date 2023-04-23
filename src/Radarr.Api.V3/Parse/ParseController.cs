@@ -43,7 +43,7 @@ namespace Radarr.Api.V3.Parse
                 };
             }
 
-            var remoteMovie = _parsingService.Map(parsedMovieInfo, "");
+            var remoteMovie = _parsingService.Map(parsedMovieInfo, "", 0);
 
             _aggregationService.Augment(remoteMovie);
 
