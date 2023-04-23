@@ -80,7 +80,7 @@ namespace NzbDrone.Core.DecisionEngine
 
                     if (parsedMovieInfo != null && !parsedMovieInfo.PrimaryMovieTitle.IsNullOrWhiteSpace())
                     {
-                        var remoteMovie = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), searchCriteria);
+                        var remoteMovie = _parsingService.Map(parsedMovieInfo, report.ImdbId.ToString(), report.TmdbId, searchCriteria);
                         remoteMovie.Release = report;
 
                         if (remoteMovie.Movie == null)
