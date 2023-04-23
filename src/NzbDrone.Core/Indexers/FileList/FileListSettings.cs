@@ -71,25 +71,25 @@ namespace NzbDrone.Core.Indexers.FileList
 
     public enum FileListCategories
     {
-        [FieldOption]
+        [FieldOption("Movies SD")]
         Movie_SD = 1,
-        [FieldOption]
+        [FieldOption("Movies DVD")]
         Movie_DVD = 2,
-        [FieldOption]
+        [FieldOption("Movies DVD-RO")]
         Movie_DVDRO = 3,
-        [FieldOption]
+        [FieldOption("Movies HD")]
         Movie_HD = 4,
-        [FieldOption]
+        [FieldOption("Movies HD-RO")]
         Movie_HDRO = 19,
-        [FieldOption]
-        Movie_BluRay = 20,
-        [FieldOption]
-        Movie_BluRay4K = 26,
-        [FieldOption]
-        Movie_3D = 25,
-        [FieldOption]
+        [FieldOption("Movies 4K")]
         Movie_4K = 6,
-        [FieldOption]
+        [FieldOption("Movies Blu-Ray")]
+        Movie_BluRay = 20,
+        [FieldOption("Movies 4K Blu-Ray")]
+        Movie_BluRay4K = 26,
+        [FieldOption("Movies 3D")]
+        Movie_3D = 25,
+        [FieldOption("XXX")]
         Xxx = 7
     }
 }
