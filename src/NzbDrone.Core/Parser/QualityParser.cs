@@ -398,7 +398,7 @@ namespace NzbDrone.Core.Parser
                     normalizedName.ContainsIgnoreCase("480p"))
                 {
                     result.ResolutionDetectionSource = QualityDetectionSource.Name;
-                    result.Quality = Quality.DVD; // andy-reeves
+                    result.Quality = Quality.DVD;
                     return result;
                 }
 
