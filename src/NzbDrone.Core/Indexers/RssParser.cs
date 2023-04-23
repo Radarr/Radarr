@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -12,6 +12,7 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Core.Indexers.Exceptions;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Indexers
@@ -160,6 +161,7 @@ namespace NzbDrone.Core.Indexers
             releaseInfo.DownloadUrl = GetDownloadUrl(item);
             releaseInfo.InfoUrl = GetInfoUrl(item);
             releaseInfo.CommentUrl = GetCommentUrl(item);
+            releaseInfo.Languages = GetLanguages(item);
 
             try
             {
@@ -224,6 +226,11 @@ namespace NzbDrone.Core.Indexers
         protected virtual string GetCommentUrl(XElement item)
         {
             return ParseUrl((string)item.Element("comments"));
+        }
+
+        protected virtual List<Language> GetLanguages(XElement item)
+        {
+            return new List<Language>();
         }
 
         protected virtual long GetSize(XElement item)

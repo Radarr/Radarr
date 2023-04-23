@@ -32,6 +32,7 @@ namespace NzbDrone.Core.Test.Download.Aggregation.Aggregators
             _remoteMovie = Builder<RemoteMovie>.CreateNew()
                                                  .With(l => l.ParsedMovieInfo = null)
                                                  .With(l => l.Movie = _movie)
+                                                 .With(l => l.Release = new ReleaseInfo())
                                                  .Build();
         }
 

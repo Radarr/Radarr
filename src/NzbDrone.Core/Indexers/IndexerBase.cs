@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using FluentValidation.Results;
 using NLog;
+using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.IndexerSearch.Definitions;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
@@ -15,6 +18,8 @@ namespace NzbDrone.Core.Indexers
     public abstract class IndexerBase<TSettings> : IIndexer
         where TSettings : IIndexerSettings, new()
     {
+        private static readonly Regex MultiRegex = new (@"\b(?<multi>multi)\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         protected readonly IIndexerStatusService _indexerStatusService;
         protected readonly IConfigService _configService;
         protected readonly IParsingService _parsingService;
@@ -73,9 +78,16 @@ namespace NzbDrone.Core.Indexers
         protected virtual IList<ReleaseInfo> CleanupReleases(IEnumerable<ReleaseInfo> releases)
         {
             var result = releases.DistinctBy(v => v.Guid).ToList();
+            var settings = Definition.Settings as IIndexerSettings;
 
             result.ForEach(c =>
             {
+                // Use multi languages from setting if ReleaseInfo languages is empty
+                if (c.Languages.Empty() && MultiRegex.IsMatch(c.Title) && settings.MultiLanguages.Any())
+                {
+                    c.Languages = settings.MultiLanguages.Select(i => (Language)i).ToList();
+                }
+
                 c.IndexerId = Definition.Id;
                 c.Indexer = Definition.Name;
                 c.DownloadProtocol = Protocol;
