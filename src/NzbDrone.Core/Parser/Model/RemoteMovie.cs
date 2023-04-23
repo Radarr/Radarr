@@ -17,6 +17,7 @@ namespace NzbDrone.Core.Parser.Model
         public bool DownloadAllowed { get; set; }
         public TorrentSeedConfiguration SeedConfiguration { get; set; }
         public List<Language> Languages { get; set; }
+        public ReleaseSourceType ReleaseSource { get; set; }
 
         public RemoteMovie()
         {
@@ -28,5 +29,15 @@ namespace NzbDrone.Core.Parser.Model
         {
             return Release.Title;
         }
+    }
+
+    public enum ReleaseSourceType
+    {
+        Unknown = 0,
+        Rss = 1,
+        Search = 2,
+        UserInvokedSearch = 3,
+        InteractiveSearch = 4,
+        ReleasePush = 5
     }
 }

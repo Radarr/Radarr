@@ -294,6 +294,7 @@ namespace NzbDrone.Core.Download.Pending
                 {
                     Movie = movie,
                     MovieMatchType = release.AdditionalInfo?.MovieMatchType ?? MovieMatchType.Unknown,
+                    ReleaseSource = release.AdditionalInfo?.ReleaseSource ?? ReleaseSourceType.Unknown,
                     ParsedMovieInfo = release.ParsedMovieInfo,
                     Release = release.Release
                 };
