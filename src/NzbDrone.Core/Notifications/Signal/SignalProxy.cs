@@ -29,7 +29,10 @@ namespace NzbDrone.Core.Notifications.Signal
 
         public void SendNotification(string title, string message, SignalSettings settings)
         {
-            var text = $"{HttpUtility.HtmlEncode(title)}\n{HttpUtility.HtmlEncode(message)}";
+            var text = new StringBuilder();
+            text.Append(title);
+            text.Append(new string("\n"));
+            text.Append(message);
 
             var urlSignalAPI = HttpRequestBuilder.BuildBaseUrl(
                 settings.UseSSLSignalAPI,
@@ -38,22 +41,21 @@ namespace NzbDrone.Core.Notifications.Signal
                 "/v2/send");
 
             var requestBuilder = new HttpRequestBuilder(urlSignalAPI).Post();
-            var request = requestBuilder.Build();
 
-            if (settings.AuthenticationSignalAPI)
+            if (settings.LoginSignalAPI.IsNotNullOrWhiteSpace() && settings.PasswordSignalAPI.IsNotNullOrWhiteSpace())
             {
-                var authCredentials = $"Basic {System.Convert.ToBase64String(Encoding.UTF8.GetBytes($"{settings.LoginSignalAPI}:{settings.PasswordSignalAPI}"))}";
-                request = requestBuilder.SetHeader("Authorization", authCredentials)
-                                            .Build();
+                requestBuilder.NetworkCredential = new BasicNetworkCredential(settings.LoginSignalAPI, settings.PasswordSignalAPI);
             }
+
+            var request = requestBuilder.Build();
 
             request.Headers.ContentType = "application/json";
 
             var payload = new SignalPayload
             {
-                Message = text,
+                Message = text.ToString(),
                 Number = settings.SourceNumber,
-                Recipients = new string[1]
+                Recipients = new[] { settings.ReceiverID }
             };
             payload.Recipients[0] = settings.ReceiverID;
             request.SetContent(payload.ToJson());
@@ -72,20 +74,36 @@ namespace NzbDrone.Core.Notifications.Signal
             catch (Exception ex)
             {
                 _logger.Error(ex, "Unable to send test message");
-
                 if (ex is WebException webException)
                 {
-                    return new ValidationFailure("Connection", $"{webException.Status.ToString()}: {webException.Message}");
+                    return new ValidationFailure("SignalAPIHost", $"{webException.Status.ToString()}: {webException.Message}");
                 }
-                else if (ex is Common.Http.HttpException restException && restException.Response.StatusCode == HttpStatusCode.BadRequest)
+                else if (ex is Common.Http.HttpException restException)
                 {
-                    var error = Json.Deserialize<SignalError>(restException.Response.Content);
-                    var property = error.Description.ContainsIgnoreCase("chat not found") ? "ChatId" : "BotToken";
+                    if (restException.Response.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        var error = Json.Deserialize<SignalError>(restException.Response.Content);
+                        var property = "SignalAPIHost";
 
-                    return new ValidationFailure(property, error.Description);
+                        if (error.Error.ContainsIgnoreCase("Invalid group id"))
+                        {
+                            property = "ReceiverID";
+                        }
+                        else if (error.Error.ContainsIgnoreCase("Invalid account"))
+                        {
+                            property = "SourceNumber";
+                        }
+
+                        return new ValidationFailure(property, error.Error);
+                    }
+                    else if (restException.Response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        var property = "LoginSignalAPI";
+                        return new ValidationFailure(property, "Login/Password invalid");
+                    }
                 }
 
-                return new ValidationFailure("BotToken", "Unable to send test message");
+                return new ValidationFailure("SignalAPIHost", "Unable to send test message");
             }
 
             return null;

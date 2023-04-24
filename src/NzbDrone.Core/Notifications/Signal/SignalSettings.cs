@@ -5,15 +5,6 @@ using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.Notifications.Signal
 {
-    public class SignalPayload
-    {
-        public string Message { get; set; }
-
-        public string Number { get; set; }
-
-        public string[] Recipients { get; set; }
-    }
-
     public class SignalSettingsValidator : AbstractValidator<SignalSettings>
     {
         public SignalSettingsValidator()
@@ -22,8 +13,6 @@ namespace NzbDrone.Core.Notifications.Signal
             RuleFor(c => c.SignalAPIPort).NotEmpty();
             RuleFor(c => c.SourceNumber).NotEmpty();
             RuleFor(c => c.ReceiverID).NotEmpty();
-            RuleFor(c => c.LoginSignalAPI).NotEmpty().When(c => c.AuthenticationSignalAPI);
-            RuleFor(c => c.PasswordSignalAPI).NotEmpty().When(c => c.AuthenticationSignalAPI);
         }
     }
 
@@ -46,13 +35,10 @@ namespace NzbDrone.Core.Notifications.Signal
         [FieldDefinition(4, Label = "Group ID / PhoneNumber", HelpText = "GroupID / PhoneNumber of the receiver")]
         public string ReceiverID { get; set; }
 
-        [FieldDefinition(5, Label = "Authentication signal-api", Type = FieldType.Checkbox, HelpText = "Signal-api protected by basic auth")]
-        public bool AuthenticationSignalAPI { get; set; }
-
-        [FieldDefinition(6, Label = "Login", Privacy = PrivacyLevel.UserName, HelpText = "Login used to authenticate requests toward signal-api")]
+        [FieldDefinition(5, Label = "Login", Privacy = PrivacyLevel.UserName, HelpText = "Login used to authenticate requests toward signal-api")]
         public string LoginSignalAPI { get; set; }
 
-        [FieldDefinition(7, Label = "Password", Type = FieldType.Password, Privacy = PrivacyLevel.Password, HelpText = "Password used to authenticate requests toward signal-api")]
+        [FieldDefinition(6, Label = "Password", Type = FieldType.Password, Privacy = PrivacyLevel.Password, HelpText = "Password used to authenticate requests toward signal-api")]
         public string PasswordSignalAPI { get; set; }
 
         public NzbDroneValidationResult Validate()
