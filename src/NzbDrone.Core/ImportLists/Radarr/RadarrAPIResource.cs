@@ -16,6 +16,7 @@ namespace NzbDrone.Core.ImportLists.Radarr
         public int Year { get; set; }
         public string TitleSlug { get; set; }
         public int QualityProfileId { get; set; }
+        public string RootFolderPath { get; set; }
         public HashSet<int> Tags { get; set; }
     }
 
@@ -28,6 +29,12 @@ namespace NzbDrone.Core.ImportLists.Radarr
     public class RadarrTag
     {
         public string Label { get; set; }
+        public int Id { get; set; }
+    }
+
+    public class RadarrRootFolder
+    {
+        public string Path { get; set; }
         public int Id { get; set; }
     }
 }

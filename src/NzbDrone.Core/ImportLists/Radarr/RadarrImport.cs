@@ -41,16 +41,27 @@ namespace NzbDrone.Core.ImportLists.Radarr
 
                 foreach (var remoteMovie in remoteMovies)
                 {
-                    if ((!Settings.ProfileIds.Any() || Settings.ProfileIds.Contains(remoteMovie.QualityProfileId)) &&
-                        (!Settings.TagIds.Any() || Settings.TagIds.Any(x => remoteMovie.Tags.Any(y => y == x))))
+                    if (Settings.ProfileIds.Any() && !Settings.ProfileIds.Contains(remoteMovie.QualityProfileId))
                     {
-                        movies.Add(new ImportListMovie
-                        {
-                            TmdbId = remoteMovie.TmdbId,
-                            Title = remoteMovie.Title,
-                            Year = remoteMovie.Year
-                        });
+                        continue;
                     }
+
+                    if (Settings.TagIds.Any() && !Settings.TagIds.Any(x => remoteMovie.Tags.Any(y => y == x)))
+                    {
+                        continue;
+                    }
+
+                    if (Settings.RootFolderPaths.Any() && !Settings.RootFolderPaths.Any(rootFolderPath => remoteMovie.RootFolderPath.ContainsIgnoreCase(rootFolderPath)))
+                    {
+                        continue;
+                    }
+
+                    movies.Add(new ImportListMovie
+                    {
+                        TmdbId = remoteMovie.TmdbId,
+                        Title = remoteMovie.Title,
+                        Year = remoteMovie.Year
+                    });
                 }
 
                 _importListStatusService.RecordSuccess(Definition.Id);
@@ -104,6 +115,23 @@ namespace NzbDrone.Core.ImportLists.Radarr
                                                 Value = d.Id,
                                                 Name = d.Label
                                             })
+                };
+            }
+
+            if (action == "getRootFolders")
+            {
+                Settings.Validate().Filter("ApiKey").ThrowOnError();
+
+                var remoteRootfolders = _radarrV3Proxy.GetRootFolders(Settings);
+
+                return new
+                {
+                    options = remoteRootfolders.OrderBy(d => d.Path, StringComparer.InvariantCultureIgnoreCase)
+                        .Select(d => new
+                        {
+                            value = d.Path,
+                            name = d.Path
+                        })
                 };
             }
 
