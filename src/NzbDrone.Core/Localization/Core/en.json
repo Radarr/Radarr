@@ -766,6 +766,7 @@
   "RecycleBinCleanupDaysHelpText": "Set to 0 to disable automatic cleanup",
   "RecycleBinCleanupDaysHelpTextWarning": "Files in the recycle bin older than the selected number of days will be cleaned up automatically",
   "RecycleBinHelpText": "Movie files will go here when deleted instead of being permanently deleted",
+  "RecycleBinUnableToWriteHealthCheck": "Unable to write to configured recycling bin folder: {0}. Ensure this path exists and is writable by the user running Radarr",
   "RecyclingBin": "Recycling Bin",
   "RecyclingBinCleanup": "Recycling Bin Cleanup",
   "Reddit": "Reddit",
