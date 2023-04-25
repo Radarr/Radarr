@@ -26,6 +26,7 @@ namespace NzbDrone.Core.ImportLists.Radarr
             ApiKey = "";
             ProfileIds = Array.Empty<int>();
             TagIds = Array.Empty<int>();
+            RootFolderPaths = Array.Empty<string>();
         }
 
         [FieldDefinition(0, Label = "Full URL", HelpText = "URL, including port, of the Radarr instance to import from (Radarr 3.0 or higher)")]
@@ -39,6 +40,9 @@ namespace NzbDrone.Core.ImportLists.Radarr
 
         [FieldDefinition(3, Type = FieldType.Select, SelectOptionsProviderAction = "getTags", Label = "Tags", HelpText = "Tags from the source instance to import from")]
         public IEnumerable<int> TagIds { get; set; }
+
+        [FieldDefinition(4, Type = FieldType.Select, SelectOptionsProviderAction = "getRootFolders", Label = "Root Folders", HelpText = "Root Folders from the source instance to import from")]
+        public IEnumerable<string> RootFolderPaths { get; set; }
 
         public NzbDroneValidationResult Validate()
         {
