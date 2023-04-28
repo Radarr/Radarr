@@ -264,7 +264,7 @@ class EditQualityProfileModalContent extends Component {
                         </FormGroup>
 
                         <div className={styles.formatItemLarge}>
-                          {getCustomFormatRender(formatItems, ...otherProps)}
+                          {getCustomFormatRender(formatItems, otherProps)}
                         </div>
                       </div>
 
