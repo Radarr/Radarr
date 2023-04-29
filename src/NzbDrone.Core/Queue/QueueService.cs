@@ -58,7 +58,7 @@ namespace NzbDrone.Core.Queue
         {
             var queue = new Queue
             {
-                Languages = trackedDownload.RemoteMovie?.ParsedMovieInfo.Languages ?? new List<Language> { Language.Unknown },
+                Languages = trackedDownload.RemoteMovie?.Languages ?? new List<Language> { Language.Unknown },
                 Quality = trackedDownload.RemoteMovie?.ParsedMovieInfo.Quality ?? new QualityModel(Quality.Unknown),
                 Title = trackedDownload.DownloadItem.Title,
                 Size = trackedDownload.DownloadItem.TotalSize,
