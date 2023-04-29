@@ -252,6 +252,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.2019.720p.MBLURAY.x264-MBLURAYFANS.mkv", false)]
         [TestCase("Movie.Name2017.720p.MBluRay.x264-TREBLE.mkv", false)]
         [TestCase("Movie.Name.2.Parte.2.ITA-ENG.720p.BDMux.DD5.1.x264-DarkSideMux", false)]
+        [TestCase("Movie.Hunter.2018.720p.Blu-ray.Remux.AVC.FLAC.2.0-SiCFoI", false)]
         public void should_parse_bluray720p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R720p);

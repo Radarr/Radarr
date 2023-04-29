@@ -180,7 +180,8 @@ namespace NzbDrone.Core.Parser
                     }
 
                     // Treat a remux without a source as 1080p, not 720p.
-                    if (remuxMatch)
+                    // 720p remux should fallback as 720p BluRay
+                    if (remuxMatch && resolution != Resolution.R720p)
                     {
                         result.Quality = Quality.Remux1080p;
                         return result;
@@ -410,9 +411,10 @@ namespace NzbDrone.Core.Parser
                 }
 
                 // Treat a remux without a source as 1080p, not 720p.
-                if (remuxMatch)
+                // 720p remux should fallback as 720p BluRay
+                if (remuxMatch && resolution != Resolution.R720p)
                 {
-                    result.Quality = Quality.Bluray1080p;
+                    result.Quality = Quality.Remux1080p;
                     return result;
                 }
 
