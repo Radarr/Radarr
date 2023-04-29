@@ -26,7 +26,7 @@ function ModalError(props) {
           messageClassName={styles.message}
           detailsClassName={styles.details}
           {...otherProps}
-          message='There was an error loading this item'
+          message={translate('ThereWasAnErrorLoadingThisItem')}
         />
       </ModalBody>
 
