@@ -5,11 +5,14 @@ using NzbDrone.Common.Extensions;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Localization;
 using NzbDrone.Core.MediaFiles.Events;
+using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.ThingiProvider.Events;
 
 namespace NzbDrone.Core.HealthCheck.Checks
 {
     [CheckOn(typeof(ProviderUpdatedEvent<IImportList>))]
+    [CheckOn(typeof(MoviesDeletedEvent))]
+    [CheckOn(typeof(MovieMovedEvent))]
     [CheckOn(typeof(MovieFileImportedEvent), CheckOnCondition.FailedOnly)]
     [CheckOn(typeof(MovieImportFailedEvent), CheckOnCondition.SuccessfulOnly)]
     public class ImportListRootFolderCheck : HealthCheckBase

@@ -27,7 +27,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
             var backOffProviders = enabledProviders.Join(_providerStatusService.GetBlockedProviders(),
                     i => i.Definition.Id,
                     s => s.ProviderId,
-                    (i, s) => new { Provider = i, Status = s })
+                    (i, s) => new { ImportList = i, Status = s })
                 .ToList();
 
             if (backOffProviders.Empty())
@@ -40,7 +40,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
                 return new HealthCheck(GetType(), HealthCheckResult.Error, _localizationService.GetLocalizedString("ImportListStatusCheckAllClientMessage"), "#lists-are-unavailable-due-to-failures");
             }
 
-            return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("ImportListStatusCheckSingleClientMessage"), string.Join(", ", backOffProviders.Select(v => v.Provider.Definition.Name))), "#lists-are-unavailable-due-to-failures");
+            return new HealthCheck(GetType(), HealthCheckResult.Warning, string.Format(_localizationService.GetLocalizedString("ImportListStatusCheckSingleClientMessage"), string.Join(", ", backOffProviders.Select(v => v.ImportList.Definition.Name))), "#lists-are-unavailable-due-to-failures");
         }
     }
 }
