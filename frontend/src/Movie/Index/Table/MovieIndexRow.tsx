@@ -70,6 +70,9 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     tags = [],
     tmdbId,
     imdbId,
+    isAvailable,
+    grabbed,
+    movieFile,
     youTubeTrailerId,
     isSaving = false,
     movieRuntimeFormat,
@@ -310,7 +313,10 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
               <MovieFileStatusConnector
-                movieId={movieId}
+                isAvailable={isAvailable}
+                monitored={monitored}
+                grabbed={grabbed}
+                movieFile={movieFile}
                 queueStatus={queueStatus}
                 queueState={queueState}
               />

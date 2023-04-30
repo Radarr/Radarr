@@ -22,14 +22,14 @@ interface DeleteMovieModalContentProps {
 }
 
 const selectDeleteOptions = createSelector(
-  (state) => state.movie.deleteOptions,
+  (state) => state.movies.deleteOptions,
   (deleteOptions) => deleteOptions
 );
 
 function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
   const { movieIds, onModalClose } = props;
 
-  const { addImportListExclusion } = useSelector(selectDeleteOptions);
+  const { addImportExclusion } = useSelector(selectDeleteOptions);
   const allMovies = useSelector(createAllMoviesSelector());
   const dispatch = useDispatch();
 
@@ -68,7 +68,7 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
       bulkDeleteMovie({
         movieIds,
         deleteFiles,
-        addImportListExclusion,
+        addImportExclusion,
       })
     );
 
@@ -76,7 +76,7 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
   }, [
     movieIds,
     deleteFiles,
-    addImportListExclusion,
+    addImportExclusion,
     setDeleteFiles,
     dispatch,
     onModalClose,
@@ -93,8 +93,8 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
 
             <FormInputGroup
               type={inputTypes.CHECK}
-              name="addImportListExclusion"
-              value={addImportListExclusion}
+              name="addImportExclusion"
+              value={addImportExclusion}
               helpText={translate('AddImportExclusionHelpText')}
               onChange={onDeleteOptionChange}
             />

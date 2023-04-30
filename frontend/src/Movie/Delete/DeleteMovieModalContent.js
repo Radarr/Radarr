@@ -23,8 +23,7 @@ class DeleteMovieModalContent extends Component {
     super(props, context);
 
     this.state = {
-      deleteFiles: false,
-      addImportExclusion: false
+      deleteFiles: false
     };
   }
 
@@ -35,15 +34,11 @@ class DeleteMovieModalContent extends Component {
     this.setState({ deleteFiles: value });
   };
 
-  onAddImportExclusionChange = ({ value }) => {
-    this.setState({ addImportExclusion: value });
-  };
-
   onDeleteMovieConfirmed = () => {
     const deleteFiles = this.state.deleteFiles;
-    const addImportExclusion = this.state.addImportExclusion;
+    const addImportExclusion = this.props.deleteOptions.addImportExclusion;
 
-    this.setState({ deleteFiles: false, addImportExclusion: false });
+    this.setState({ deleteFiles: false });
     this.props.onDeletePress(deleteFiles, addImportExclusion);
   };
 
@@ -55,12 +50,14 @@ class DeleteMovieModalContent extends Component {
       title,
       path,
       hasFile,
+      deleteOptions,
       sizeOnDisk,
-      onModalClose
+      onModalClose,
+      onDeleteOptionChange
     } = this.props;
 
     const deleteFiles = this.state.deleteFiles;
-    const addImportExclusion = this.state.addImportExclusion;
+    const addImportExclusion = deleteOptions.addImportExclusion;
 
     let deleteFilesLabel = hasFile ? translate('DeleteFileLabel', [1]) : translate('DeleteFilesLabel', [0]);
     let deleteFilesHelpText = translate('DeleteFilesHelpText');
@@ -99,7 +96,7 @@ class DeleteMovieModalContent extends Component {
               value={addImportExclusion}
               helpText={translate('AddImportExclusionHelpText')}
               kind={kinds.DANGER}
-              onChange={this.onAddImportExclusionChange}
+              onChange={onDeleteOptionChange}
             />
           </FormGroup>
 
@@ -156,6 +153,8 @@ DeleteMovieModalContent.propTypes = {
   path: PropTypes.string.isRequired,
   hasFile: PropTypes.bool.isRequired,
   sizeOnDisk: PropTypes.number.isRequired,
+  deleteOptions: PropTypes.object.isRequired,
+  onDeleteOptionChange: PropTypes.func.isRequired,
   onDeletePress: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };
