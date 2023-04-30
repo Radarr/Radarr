@@ -63,6 +63,7 @@ class PageHeader extends Component {
             <img
               className={isSmallScreen ? styles.logo : styles.logoFull}
               src={isSmallScreen ? `${window.Radarr.urlBase}/Content/Images/logo.png` : `${window.Radarr.urlBase}/Content/Images/logo-full.png`}
+              alt="Radarr Logo"
             />
           </Link>
         </div>
@@ -81,6 +82,7 @@ class PageHeader extends Component {
           <IconButton
             className={styles.donate}
             name={icons.HEART}
+            aria-label="Donate"
             to="https://radarr.video/donate"
             size={14}
           />
