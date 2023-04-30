@@ -85,6 +85,11 @@ namespace NzbDrone.Core.Indexers
             return requests;
         }
 
+        public override HttpRequest GetDownloadRequest(string link)
+        {
+            return new HttpRequest(link);
+        }
+
         protected virtual IList<ReleaseInfo> FetchReleases(Func<IIndexerRequestGenerator, IndexerPageableRequestChain> pageableRequestChainSelector, bool isRecent = false)
         {
             var releases = new List<ReleaseInfo>();
