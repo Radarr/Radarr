@@ -341,7 +341,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
 
                 var localMovie = new LocalMovie
                 {
-                    ExistingFile = false,
+                    ExistingFile = existingFile,
                     FileMovieInfo = fileMovieInfo,
                     Path = file.Path,
                     Quality = file.Quality,
