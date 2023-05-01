@@ -62,13 +62,19 @@ namespace NzbDrone.Core.Download
 
             // Get the seed configuration for this release.
             remoteMovie.SeedConfiguration = _seedConfigProvider.GetSeedConfiguration(remoteMovie);
-            var indexer = _indexerFactory.GetInstance(_indexerFactory.Get(remoteMovie.Release.IndexerId));
 
             // Limit grabs to 2 per second.
             if (remoteMovie.Release.DownloadUrl.IsNotNullOrWhiteSpace() && !remoteMovie.Release.DownloadUrl.StartsWith("magnet:"))
             {
                 var url = new HttpUri(remoteMovie.Release.DownloadUrl);
                 _rateLimitService.WaitAndPulse(url.Host, TimeSpan.FromSeconds(2));
+            }
+
+            IIndexer indexer = null;
+
+            if (remoteMovie.Release.IndexerId > 0)
+            {
+                indexer = _indexerFactory.GetInstance(_indexerFactory.Get(remoteMovie.Release.IndexerId));
             }
 
             string downloadClientId;
