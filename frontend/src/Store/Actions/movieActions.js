@@ -253,7 +253,7 @@ export const defaultState = {
   sortDirection: sortDirections.ASCENDING,
   pendingChanges: {},
   deleteOptions: {
-    addImportListExclusion: false
+    addImportExclusion: false
   }
 };
 
