@@ -1,6 +1,6 @@
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import React, { useCallback } from 'react';
-import { SelectActionType, useSelect } from 'App/SelectContext';
+import { useSelect } from 'App/SelectContext';
 import PageToolbarOverflowMenuItem from 'Components/Page/Toolbar/PageToolbarOverflowMenuItem';
 
 interface MovieIndexSelectModeMenuItemProps {
@@ -19,7 +19,7 @@ function MovieIndexSelectModeMenuItem(
   const onPressWrapper = useCallback(() => {
     if (isSelectMode) {
       selectDispatch({
-        type: SelectActionType.Reset,
+        type: 'reset',
       });
     }
 

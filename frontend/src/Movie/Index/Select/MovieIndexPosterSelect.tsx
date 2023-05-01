@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useCallback } from 'react';
-import { SelectActionType, useSelect } from 'App/SelectContext';
+import { useSelect } from 'App/SelectContext';
 import Icon from 'Components/Icon';
 import Link from 'Components/Link/Link';
 import { icons } from 'Helpers/Props';
@@ -20,7 +20,7 @@ function MovieIndexPosterSelect(props: MovieIndexPosterSelectProps) {
       const shiftKey = nativeEvent.shiftKey;
 
       selectDispatch({
-        type: SelectActionType.ToggleSelected,
+        type: 'toggleSelected',
         id: movieId,
         isSelected: !isSelected,
         shiftKey,

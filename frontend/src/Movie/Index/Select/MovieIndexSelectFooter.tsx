@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
-import { SelectActionType, useSelect } from 'App/SelectContext';
+import { useSelect } from 'App/SelectContext';
 import { RENAME_MOVIE } from 'Commands/commandNames';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
@@ -128,7 +128,7 @@ function MovieIndexSelectFooter() {
 
   useEffect(() => {
     if (!isDeleting && !deleteError) {
-      selectDispatch({ type: SelectActionType.UnselectAll });
+      selectDispatch({ type: 'unselectAll' });
     }
   }, [isDeleting, deleteError, selectDispatch]);
 

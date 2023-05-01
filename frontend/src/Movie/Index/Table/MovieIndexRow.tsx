@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SelectActionType, useSelect } from 'App/SelectContext';
+import { useSelect } from 'App/SelectContext';
 import { MOVIE_SEARCH, REFRESH_MOVIE } from 'Commands/commandNames';
 import Icon from 'Components/Icon';
 import ImdbRating from 'Components/ImdbRating';
@@ -121,7 +121,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
   const onSelectedChange = useCallback(
     ({ id, value, shiftKey }) => {
       selectDispatch({
-        type: SelectActionType.ToggleSelected,
+        type: 'toggleSelected',
         id,
         isSelected: value,
         shiftKey,

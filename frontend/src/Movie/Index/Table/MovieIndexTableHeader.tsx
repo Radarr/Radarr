@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { SelectActionType, useSelect } from 'App/SelectContext';
+import { useSelect } from 'App/SelectContext';
 import IconButton from 'Components/Link/IconButton';
 import Column from 'Components/Table/Column';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
@@ -46,7 +46,7 @@ function MovieIndexTableHeader(props: MovieIndexTableHeaderProps) {
   const onSelectAllChange = useCallback(
     ({ value }) => {
       selectDispatch({
-        type: value ? SelectActionType.SelectAll : SelectActionType.UnselectAll,
+        type: value ? 'selectAll' : 'unselectAll',
       });
     },
     [selectDispatch]
