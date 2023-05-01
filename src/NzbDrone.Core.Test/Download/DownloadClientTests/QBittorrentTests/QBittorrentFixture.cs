@@ -453,7 +453,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -466,7 +466,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().Be(expectedHash);
         }
@@ -481,7 +481,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR";
 
-            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteMovie, CreateIndexer()));
+            Assert.Throws<ReleaseDownloadException>(() => Subject.Download(remoteMovie));
         }
 
         [Test]
@@ -494,7 +494,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = "magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp://abc";
 
-            Assert.DoesNotThrow(() => Subject.Download(remoteMovie, CreateIndexer()));
+            Assert.DoesNotThrow(() => Subject.Download(remoteMovie));
 
             Mocker.GetMock<IQBittorrentProxy>()
                   .Verify(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<TorrentSeedConfiguration>(), It.IsAny<QBittorrentSettings>()), Times.Once());
@@ -508,7 +508,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             Mocker.GetMock<IQBittorrentProxy>()
                   .Verify(v => v.MoveTorrentToTopInQueue(It.IsAny<string>(), It.IsAny<QBittorrentSettings>()), Times.Once());
@@ -526,7 +526,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -560,7 +560,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -573,7 +573,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.QBittorrentTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
         }

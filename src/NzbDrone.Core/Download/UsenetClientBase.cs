@@ -35,7 +35,7 @@ namespace NzbDrone.Core.Download
 
         protected abstract string AddFromNzbFile(RemoteMovie remoteMovie, string filename, byte[] fileContents);
 
-        public override string Download(RemoteMovie remoteMovie, IIndexer indexer)
+        public override string Download(RemoteMovie remoteMovie)
         {
             var url = remoteMovie.Release.DownloadUrl;
             var filename = FileNameBuilder.CleanFileName(remoteMovie.Release.Title) + ".nzb";
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Download
 
             try
             {
-                var request = indexer.GetDownloadRequest(url);
+                var request = new HttpRequest(url);
                 request.RateLimitKey = remoteMovie?.Release?.IndexerId.ToString();
                 nzbData = _httpClient.Get(request).ResponseData;
 

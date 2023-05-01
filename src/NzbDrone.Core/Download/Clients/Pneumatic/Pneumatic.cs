@@ -33,7 +33,7 @@ namespace NzbDrone.Core.Download.Clients.Pneumatic
 
         public override DownloadProtocol Protocol => DownloadProtocol.Usenet;
 
-        public override string Download(RemoteMovie remoteMovie, IIndexer indexer)
+        public override string Download(RemoteMovie remoteMovie)
         {
             var url = remoteMovie.Release.DownloadUrl;
             var title = remoteMovie.Release.Title;

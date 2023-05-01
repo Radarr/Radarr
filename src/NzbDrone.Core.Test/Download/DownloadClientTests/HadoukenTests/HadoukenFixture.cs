@@ -202,7 +202,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.HadoukenTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -286,7 +286,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.HadoukenTests
             Mocker.GetMock<IHadoukenProxy>()
                .Setup(v => v.AddTorrentUri(It.IsAny<HadoukenSettings>(), It.IsAny<string>()));
 
-            var result = Subject.Download(remoteMovie, CreateIndexer());
+            var result = Subject.Download(remoteMovie);
 
             Assert.IsFalse(result.Any(c => char.IsLower(c)));
         }
@@ -300,7 +300,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.HadoukenTests
                .Setup(v => v.AddTorrentFile(It.IsAny<HadoukenSettings>(), It.IsAny<byte[]>()))
                .Returns("hash");
 
-            var result = Subject.Download(remoteMovie, CreateIndexer());
+            var result = Subject.Download(remoteMovie);
 
             Assert.IsFalse(result.Any(c => char.IsLower(c)));
         }

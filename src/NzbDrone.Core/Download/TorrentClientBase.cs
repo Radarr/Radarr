@@ -42,7 +42,7 @@ namespace NzbDrone.Core.Download
         protected abstract string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink);
         protected abstract string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent);
 
-        public override string Download(RemoteMovie remoteMovie, IIndexer indexer)
+        public override string Download(RemoteMovie remoteMovie)
         {
             var torrentInfo = remoteMovie.Release as TorrentInfo;
 
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Download
                 {
                     try
                     {
-                        return DownloadFromWebUrl(remoteMovie, indexer, torrentUrl);
+                        return DownloadFromWebUrl(remoteMovie, torrentUrl);
                     }
                     catch (Exception ex)
                     {
@@ -115,20 +115,20 @@ namespace NzbDrone.Core.Download
 
                 if (torrentUrl.IsNotNullOrWhiteSpace())
                 {
-                    return DownloadFromWebUrl(remoteMovie, indexer, torrentUrl);
+                    return DownloadFromWebUrl(remoteMovie, torrentUrl);
                 }
             }
 
             return null;
         }
 
-        private string DownloadFromWebUrl(RemoteMovie remoteMovie, IIndexer indexer, string torrentUrl)
+        private string DownloadFromWebUrl(RemoteMovie remoteMovie, string torrentUrl)
         {
             byte[] torrentFile = null;
 
             try
             {
-                var request = indexer.GetDownloadRequest(torrentUrl);
+                var request = new HttpRequest(torrentUrl);
                 request.RateLimitKey = remoteMovie?.Release?.IndexerId.ToString();
                 request.Headers.Accept = "application/x-bittorrent";
                 request.AllowAutoRedirect = false;
@@ -150,9 +150,7 @@ namespace NzbDrone.Core.Download
                             return DownloadFromMagnetUrl(remoteMovie, locationHeader);
                         }
 
-                        request.Url += new HttpUri(locationHeader);
-
-                        return DownloadFromWebUrl(remoteMovie, indexer, request.Url.ToString());
+                        return DownloadFromWebUrl(remoteMovie, locationHeader);
                     }
 
                     throw new WebException("Remote website tried to redirect without providing a location.");

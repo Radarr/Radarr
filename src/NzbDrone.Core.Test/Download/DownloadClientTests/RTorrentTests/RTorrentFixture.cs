@@ -117,7 +117,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.RTorrentTests
 
             var remoteEpisode = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteEpisode, CreateIndexer());
+            var id = Subject.Download(remoteEpisode);
 
             id.Should().NotBeNullOrEmpty();
         }

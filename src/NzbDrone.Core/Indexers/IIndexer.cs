@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NzbDrone.Common.Http;
 using NzbDrone.Core.IndexerSearch.Definitions;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
@@ -14,6 +13,5 @@ namespace NzbDrone.Core.Indexers
 
         IList<ReleaseInfo> FetchRecent();
         IList<ReleaseInfo> Fetch(MovieSearchCriteria searchCriteria);
-        HttpRequest GetDownloadRequest(string link);
     }
 }

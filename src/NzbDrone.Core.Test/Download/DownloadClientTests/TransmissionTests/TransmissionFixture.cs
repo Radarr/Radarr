@@ -61,7 +61,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
         }
@@ -74,7 +74,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -90,7 +90,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -108,7 +108,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -123,7 +123,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
 
             var remoteMovie = CreateRemoteMovie();
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().NotBeNullOrEmpty();
 
@@ -139,7 +139,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
             var remoteMovie = CreateRemoteMovie();
             remoteMovie.Release.DownloadUrl = magnetUrl;
 
-            var id = Subject.Download(remoteMovie, CreateIndexer());
+            var id = Subject.Download(remoteMovie);
 
             id.Should().Be(expectedHash);
         }
