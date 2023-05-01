@@ -31,6 +31,10 @@ class EditMovieModalContent extends Component {
   //
   // Listeners
 
+  onCancelPress = () => {
+    this.setState({ isConfirmMoveModalOpen: false });
+  };
+
   onSavePress = () => {
     const {
       isPathChanging,
@@ -171,6 +175,7 @@ class EditMovieModalContent extends Component {
           originalPath={originalPath}
           destinationPath={path.value}
           isOpen={this.state.isConfirmMoveModalOpen}
+          onModalClose={this.onCancelPress}
           onSavePress={this.onSavePress}
           onMoveMoviePress={this.onMoveMoviePress}
         />

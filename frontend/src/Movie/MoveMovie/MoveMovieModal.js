@@ -16,6 +16,7 @@ function MoveMovieModal(props) {
     destinationPath,
     destinationRootFolder,
     isOpen,
+    onModalClose,
     onSavePress,
     onMoveMoviePress
   } = props;
@@ -34,11 +35,11 @@ function MoveMovieModal(props) {
       isOpen={isOpen}
       size={sizes.MEDIUM}
       closeOnBackgroundClick={false}
-      onModalClose={onSavePress}
+      onModalClose={onModalClose}
     >
       <ModalContent
         showCloseButton={true}
-        onModalClose={onSavePress}
+        onModalClose={onModalClose}
       >
         <ModalHeader>
           {translate('MoveFiles')}
@@ -84,6 +85,7 @@ MoveMovieModal.propTypes = {
   destinationPath: PropTypes.string,
   destinationRootFolder: PropTypes.string,
   isOpen: PropTypes.bool.isRequired,
+  onModalClose: PropTypes.func.isRequired,
   onSavePress: PropTypes.func.isRequired,
   onMoveMoviePress: PropTypes.func.isRequired
 };
