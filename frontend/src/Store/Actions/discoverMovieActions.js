@@ -95,6 +95,12 @@ export const defaultState = {
       isModifiable: false
     },
     {
+      name: 'originalLanguage',
+      label: translate('OriginalLanguage'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'collection',
       label: translate('Collection'),
       isSortable: true,
@@ -191,6 +197,12 @@ export const defaultState = {
       return collection.title;
     },
 
+    originalLanguage: function(item) {
+      const { originalLanguage ={} } = item;
+
+      return originalLanguage.name;
+    },
+
     studio: function(item) {
       const studio = item.studio;
 
@@ -266,6 +278,25 @@ export const defaultState = {
             acc.push({
               id: movie.collection.title,
               name: movie.collection.title
+            });
+          }
+
+          return acc;
+        }, []);
+
+        return collectionList.sort(sortByName);
+      }
+    },
+    {
+      name: 'originalLanguage',
+      label: translate('OriginalLanguage'),
+      type: filterBuilderTypes.EXACT,
+      optionsSelector: function(items) {
+        const collectionList = items.reduce((acc, movie) => {
+          if (movie.originalLanguage) {
+            acc.push({
+              id: movie.originalLanguage.name,
+              name: movie.originalLanguage.name
             });
           }
 

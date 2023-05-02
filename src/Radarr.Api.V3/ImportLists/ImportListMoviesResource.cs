@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NzbDrone.Core.ImportLists.ImportListMovies;
+using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Collections;
@@ -17,6 +18,7 @@ namespace Radarr.Api.V3.ImportLists
 
         public string Title { get; set; }
         public string SortTitle { get; set; }
+        public Language OriginalLanguage { get; set; }
         public MovieStatusType Status { get; set; }
         public string Overview { get; set; }
         public DateTime? InCinemas { get; set; }
@@ -58,6 +60,7 @@ namespace Radarr.Api.V3.ImportLists
                 TmdbId = model.TmdbId,
                 Title = model.Title,
                 SortTitle = model.MovieMetadata.Value.SortTitle,
+                OriginalLanguage = model.MovieMetadata.Value.OriginalLanguage,
                 InCinemas = model.MovieMetadata.Value.InCinemas,
                 PhysicalRelease = model.MovieMetadata.Value.PhysicalRelease,
                 DigitalRelease = model.MovieMetadata.Value.DigitalRelease,
@@ -93,6 +96,7 @@ namespace Radarr.Api.V3.ImportLists
                 TmdbId = model.TmdbId,
                 Title = model.Title,
                 SortTitle = model.MovieMetadata.Value.SortTitle,
+                OriginalLanguage = model.MovieMetadata.Value.OriginalLanguage,
                 InCinemas = model.MovieMetadata.Value.InCinemas,
                 PhysicalRelease = model.MovieMetadata.Value.PhysicalRelease,
                 DigitalRelease = model.MovieMetadata.Value.DigitalRelease,

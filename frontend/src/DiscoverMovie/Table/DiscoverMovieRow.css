@@ -51,6 +51,12 @@
   flex: 0 0 115px;
 }
 
+.originalLanguage {
+  composes: cell;
+
+  flex: 1 0 125px;
+}
+
 .ratings,
 .runtime {
   composes: cell;

@@ -61,6 +61,7 @@ class DiscoverMovieRow extends Component {
       imdbId,
       youTubeTrailerId,
       title,
+      originalLanguage,
       studio,
       inCinemas,
       physicalRelease,
@@ -165,6 +166,14 @@ class DiscoverMovieRow extends Component {
                   className={styles[name]}
                 >
                   {collection ? collection.title : null }
+                </VirtualTableRowCell>
+              );
+            }
+
+            if (name === 'originalLanguage') {
+              return (
+                <VirtualTableRowCell key={name} className={styles[name]}>
+                  {originalLanguage.name}
                 </VirtualTableRowCell>
               );
             }
@@ -363,6 +372,7 @@ DiscoverMovieRow.propTypes = {
   youTubeTrailerId: PropTypes.string,
   status: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  originalLanguage: PropTypes.object.isRequired,
   year: PropTypes.number.isRequired,
   overview: PropTypes.string.isRequired,
   folder: PropTypes.string.isRequired,

@@ -9,6 +9,7 @@ interface CssExports {
   'inCinemas': string;
   'isRecommendation': string;
   'lists': string;
+  'originalLanguage': string;
   'physicalRelease': string;
   'ratings': string;
   'runtime': string;

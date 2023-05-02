@@ -26,6 +26,12 @@
   flex: 0 0 180px;
 }
 
+.originalLanguage {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 1 0 125px;
+}
+
 .ratings,
 .runtime {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
