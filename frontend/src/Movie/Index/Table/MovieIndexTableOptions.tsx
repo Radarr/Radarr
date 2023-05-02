@@ -16,7 +16,7 @@ function MovieIndexTableOptions(props: MovieIndexTableOptionsProps) {
 
   const tableOptions = useSelector(selectTableOptions);
 
-  const showSearchAction = tableOptions;
+  const { showSearchAction } = tableOptions;
 
   const onTableOptionChangeWrapper = useCallback(
     ({ name, value }) => {
