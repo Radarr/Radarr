@@ -389,15 +389,14 @@ function MovieIndexRow(props: MovieIndexRowProps) {
                 onPress={onRefreshPress}
               />
 
-              {showSearchAction && (
+              {showSearchAction ? (
                 <SpinnerIconButton
-                  className={styles.actions}
                   name={icons.SEARCH}
                   title={translate('SearchForMovie')}
                   isSpinning={isSearchingMovie}
                   onPress={onSearchPress}
                 />
-              )}
+              ) : null}
 
               <IconButton
                 name={icons.EDIT}
