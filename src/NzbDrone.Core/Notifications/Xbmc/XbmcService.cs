@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using FluentValidation.Results;
@@ -35,23 +35,25 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
         public void UpdateMovie(XbmcSettings settings, Movie movie)
         {
-            if (!settings.AlwaysUpdate)
+            if (CheckIfVideoPlayerOpen(settings))
             {
-                _logger.Debug("Determining if there are any active players on XBMC host: {0}", settings.Address);
-                var activePlayers = _proxy.GetActivePlayers(settings);
+                _logger.Debug("Video is currently playing, skipping library update");
 
-                if (activePlayers.Any(a => a.Type.Equals("video")))
-                {
-                    _logger.Debug("Video is currently playing, skipping library update");
-                    return;
-                }
+                return;
             }
 
-            UpdateMovieLibrary(settings, movie);
+            UpdateLibrary(settings, movie);
         }
 
         public void Clean(XbmcSettings settings)
         {
+            if (CheckIfVideoPlayerOpen(settings))
+            {
+                _logger.Debug("Video is currently playing, skipping library clean");
+
+                return;
+            }
+
             _proxy.CleanLibrary(settings);
         }
 
@@ -61,7 +63,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
             if (!allMovies.Any())
             {
-                _logger.Debug("No Movies returned from XBMC");
+                _logger.Debug("No Movies returned from Kodi");
                 return null;
             }
 
@@ -78,7 +80,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
             return null;
         }
 
-        private void UpdateMovieLibrary(XbmcSettings settings, Movie movie)
+        private void UpdateLibrary(XbmcSettings settings, Movie movie)
         {
             try
             {
@@ -86,11 +88,11 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
                 if (moviePath != null)
                 {
-                    _logger.Debug("Updating movie {0} (Path: {1}) on XBMC host: {2}", movie, moviePath, settings.Address);
+                    _logger.Debug("Updating movie {0} (Path: {1}) on Kodi host: {2}", movie, moviePath, settings.Address);
                 }
                 else
                 {
-                    _logger.Debug("Movie {0} doesn't exist on XBMC host: {1}, Updating Entire Library", movie, settings.Address);
+                    _logger.Debug("Movie {0} doesn't exist on Kodi host: {1}, Updating Entire Library", movie, settings.Address);
                 }
 
                 var response = _proxy.UpdateLibrary(settings, moviePath);
@@ -104,6 +106,19 @@ namespace NzbDrone.Core.Notifications.Xbmc
             {
                 _logger.Debug(ex, ex.Message);
             }
+        }
+
+        private bool CheckIfVideoPlayerOpen(XbmcSettings settings)
+        {
+            if (settings.AlwaysUpdate)
+            {
+                return false;
+            }
+
+            _logger.Debug("Determining if there are any active players on Kodi host: {0}", settings.Address);
+            var activePlayers = _proxy.GetActivePlayers(settings);
+
+            return activePlayers.Any(a => a.Type.Equals("video"));
         }
 
         public ValidationFailure Test(XbmcSettings settings, string message)
