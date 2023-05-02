@@ -28,7 +28,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
         {
             var downloadPropersAndRepacks = _configService.DownloadPropersAndRepacks;
             var qualityProfile = localMovie.Movie.Profile;
-            var qualityComparer = new QualityModelComparer(localMovie.Movie.Profile);
+            var qualityComparer = new QualityModelComparer(qualityProfile);
 
             if (localMovie.Movie.MovieFileId > 0)
             {
@@ -60,6 +60,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
                     return Decision.Reject("Not a quality revision upgrade for existing movie file(s)");
                 }
 
+                movieFile.Movie = localMovie.Movie;
                 var currentFormats = _formatService.ParseCustomFormat(movieFile);
                 var currentScore = qualityProfile.CalculateCustomFormatScore(currentFormats);
 
