@@ -77,7 +77,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     dispatch(
       executeCommand({
         name: REFRESH_MOVIE,
-        movieId,
+        movieIds: [movieId],
       })
     );
   }, [movieId, dispatch]);
@@ -86,7 +86,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     dispatch(
       executeCommand({
         name: MOVIE_SEARCH,
-        movieId,
+        movieIds: [movieId],
       })
     );
   }, [movieId, dispatch]);
