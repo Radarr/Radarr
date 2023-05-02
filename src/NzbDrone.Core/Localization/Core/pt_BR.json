@@ -1157,5 +1157,14 @@
     "RSSHelpText": "Será usado quando o Radarr procurar periodicamente lançamentos via RSS Sync",
     "DownloadClientSortingCheckMessage": "O cliente de download {0} tem classificação {1} habilitada para a categoria do Radarr. Você deve desativar a classificação em seu cliente de download para evitar problemas de importação.",
     "File": "Arquivo",
-    "UMask": "Desmascarar"
+    "UMask": "Desmascarar",
+    "StopSelecting": "Parar de selecionar",
+    "UpdateFiltered": "Atualização filtrada",
+    "EditMovies": "Editar Filmes",
+    "EditSelectedMovies": "Editar Filmes Selecionados",
+    "RecycleBinUnableToWriteHealthCheck": "Não é possível gravar na pasta da lixeira configurada: {0}. Certifique-se de que este caminho exista e seja gravável pelo usuário executando o Radarr",
+    "MovieMatchType": "Tipo de Filme Correspondente",
+    "Loading": "Carregando",
+    "ThereWasAnErrorLoadingThisItem": "Ocorreu um erro ao carregar este item",
+    "ThereWasAnErrorLoadingThisPage": "Ocorreu um erro ao carregar esta página"
 }
