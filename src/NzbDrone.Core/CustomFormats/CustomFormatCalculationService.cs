@@ -187,9 +187,7 @@ namespace NzbDrone.Core.CustomFormats
                 Quality = movieFile.Quality,
                 Languages = movieFile.Languages,
                 ReleaseGroup = movieFile.ReleaseGroup,
-                Edition = movieFile.Edition,
-                Year = movieFile.Movie.MovieMetadata.Value.Year,
-                ImdbId = movieFile.Movie.MovieMetadata.Value.ImdbId
+                Edition = movieFile.Edition
             };
 
             var input = new CustomFormatInput
