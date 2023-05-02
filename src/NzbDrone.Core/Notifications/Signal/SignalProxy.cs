@@ -35,9 +35,9 @@ namespace NzbDrone.Core.Notifications.Signal
             text.Append(message);
 
             var urlSignalAPI = HttpRequestBuilder.BuildBaseUrl(
-                settings.UseSSLSignalAPI,
-                settings.SignalAPIHost,
-                settings.SignalAPIPort,
+                settings.UseSSL,
+                settings.Host,
+                settings.Port,
                 "/v2/send");
 
             var requestBuilder = new HttpRequestBuilder(urlSignalAPI).Post();
@@ -57,7 +57,6 @@ namespace NzbDrone.Core.Notifications.Signal
                 Number = settings.SourceNumber,
                 Recipients = new[] { settings.ReceiverID }
             };
-            payload.Recipients[0] = settings.ReceiverID;
             request.SetContent(payload.ToJson());
             _httpClient.Post(request);
         }
@@ -76,14 +75,14 @@ namespace NzbDrone.Core.Notifications.Signal
                 _logger.Error(ex, "Unable to send test message");
                 if (ex is WebException webException)
                 {
-                    return new ValidationFailure("SignalAPIHost", $"{webException.Status.ToString()}: {webException.Message}");
+                    return new ValidationFailure("Host", $"{webException.Status.ToString()}: {webException.Message}");
                 }
                 else if (ex is Common.Http.HttpException restException)
                 {
                     if (restException.Response.StatusCode == HttpStatusCode.BadRequest)
                     {
                         var error = Json.Deserialize<SignalError>(restException.Response.Content);
-                        var property = "SignalAPIHost";
+                        var property = "Host";
 
                         if (error.Error.ContainsIgnoreCase("Invalid group id"))
                         {
@@ -103,7 +102,7 @@ namespace NzbDrone.Core.Notifications.Signal
                     }
                 }
 
-                return new ValidationFailure("SignalAPIHost", "Unable to send test message");
+                return new ValidationFailure("Host", "Unable to send test message");
             }
 
             return null;

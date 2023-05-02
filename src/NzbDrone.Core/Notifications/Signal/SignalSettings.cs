@@ -9,8 +9,8 @@ namespace NzbDrone.Core.Notifications.Signal
     {
         public SignalSettingsValidator()
         {
-            RuleFor(c => c.SignalAPIHost).NotEmpty();
-            RuleFor(c => c.SignalAPIPort).NotEmpty();
+            RuleFor(c => c.Host).NotEmpty();
+            RuleFor(c => c.Port).NotEmpty();
             RuleFor(c => c.SourceNumber).NotEmpty();
             RuleFor(c => c.ReceiverID).NotEmpty();
         }
@@ -20,14 +20,14 @@ namespace NzbDrone.Core.Notifications.Signal
     {
         private static readonly SignalSettingsValidator Validator = new SignalSettingsValidator();
 
-        [FieldDefinition(0, Label = "Host of Signal API", Privacy = PrivacyLevel.ApiKey, HelpText = "localhost")]
-        public string SignalAPIHost { get; set; }
+        [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox, HelpText = "localhost")]
+        public string Host { get; set; }
 
-        [FieldDefinition(1, Label = "Port of Signal API", Privacy = PrivacyLevel.ApiKey, HelpText = "8080")]
-        public int SignalAPIPort { get; set; }
+        [FieldDefinition(1, Label = "Port", Type = FieldType.Textbox, HelpText = "8080")]
+        public int Port { get; set; }
 
-        [FieldDefinition(2, Label = "Use SSL", Type = FieldType.Checkbox, HelpText = "Signal-api used with HTTPS")]
-        public bool UseSSLSignalAPI { get; set; }
+        [FieldDefinition(2, Label = "Use SSL", Type = FieldType.Checkbox, HelpText = "Use a secure connection.")]
+        public bool UseSSL { get; set; }
 
         [FieldDefinition(3, Label = "Sender Number", Privacy = PrivacyLevel.ApiKey, HelpText = "PhoneNumber of the sender register in signal-api")]
         public string SourceNumber { get; set; }
