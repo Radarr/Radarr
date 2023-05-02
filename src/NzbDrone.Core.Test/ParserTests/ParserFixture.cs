@@ -193,6 +193,13 @@ namespace NzbDrone.Core.Test.ParserTests
                 "Return Earth to Normal 'em High",
                 "World 2"
             })]
+        [TestCase("Енола Голмс / Enola Holmes (2020) UHD WEB-DL 2160p 4K HDR H.265 Ukr/Eng | Sub Ukr/Eng",
+            new string[]
+            {
+                "Енола Голмс / Enola Holmes",
+                "Енола Голмс",
+                "Enola Holmes"
+            })]
         public void should_parse_movie_alternative_titles(string postTitle, string[] parsedTitles)
         {
             var movieInfo = Parser.Parser.ParseMovieTitle(postTitle, true);

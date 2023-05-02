@@ -100,7 +100,7 @@ namespace NzbDrone.Core.Parser
         private static readonly Regex ReversedTitleRegex = new Regex(@"(?:^|[-._ ])(p027|p0801)[-._ ]", RegexOptions.Compiled);
 
         // Regex to split movie titles that contain `AKA`.
-        private static readonly Regex AlternativeTitleRegex = new Regex(@"[ ]+AKA[ ]+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex AlternativeTitleRegex = new Regex(@"[ ]+(?:AKA|\/)[ ]+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         // Regex to unbracket alternative titles.
         private static readonly Regex BracketedAlternativeTitleRegex = new Regex(@"(.*) \([ ]*AKA[ ]+(.*)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
