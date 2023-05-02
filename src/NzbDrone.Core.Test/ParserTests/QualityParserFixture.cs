@@ -453,14 +453,16 @@ namespace NzbDrone.Core.Test.ParserTests
             result.ResolutionDetectionSource.Should().Be(QualityDetectionSource.Name);
         }
 
-        [TestCase("Movie Title 2018 REPACK 720p x264 aAF", true)]
-        [TestCase("Movie.Title.2018.REPACK.720p.x264-aAF", true)]
-        [TestCase("Movie.Title.2018.PROPER.720p.x264-aAF", false)]
-        [TestCase("Movie.Title.2018.RERIP.720p.BluRay.x264-DEMAND", true)]
-        public void should_be_able_to_parse_repack(string title, bool isRepack)
+        [TestCase("Movie Title 2018 REPACK 720p HDTV x264 aAF", true, 2)]
+        [TestCase("Movie.Title.2018.REPACK.720p.HDTV.x264-aAF", true, 2)]
+        [TestCase("Movie.Title.2018.REPACK2.720p.HDTV.x264-aAF", true, 3)]
+        [TestCase("Movie.Title.2018.PROPER.720p.HDTV.x264-aAF", false, 2)]
+        [TestCase("Movie.Title.2018.RERIP.720p.BluRay.x264-DEMAND", true, 2)]
+        [TestCase("Movie.Title.2018.RERIP2.720p.BluRay.x264-DEMAND", true, 3)]
+        public void should_be_able_to_parse_repack(string title, bool isRepack, int version)
         {
             var result = QualityParser.ParseQuality(title);
-            result.Revision.Version.Should().Be(2);
+            result.Revision.Version.Should().Be(version);
             result.Revision.IsRepack.Should().Be(isRepack);
         }
 
