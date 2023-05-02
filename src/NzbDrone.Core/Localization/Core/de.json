@@ -904,7 +904,7 @@
     "PhysicalReleaseDate": "Disc Veröffentlichungsdatum",
     "OrganizeSelectedMovies": "Ausgewählte Filme organisieren",
     "OrganizeConfirm": "Bist du sicher, dass du alle Datien der {0} ausgewählten Filme organisieren willst?",
-    "OnRename": "Bei Umbenennen",
+    "OnRename": "Bei Umbenennung",
     "OnlyUsenet": "Nur Usenet",
     "OnlyTorrent": "Nur Torrents",
     "OnLatestVersion": "Die aktuellste Version ist bereits installiert",
@@ -1157,5 +1157,9 @@
     "RSSHelpText": "Wird benutzt, wenn Radarr mittels RSS-Sync regelmäßig nach Releases schaut",
     "DownloadClientSortingCheckMessage": "Downloader {0} hat die {1} Sortierung für Radarrs Kategorie aktiviert. Dies sollte deaktiviert werden, um Import-Probleme zu vermeiden.",
     "File": "Datei",
-    "UMask": "UMask"
+    "UMask": "UMask",
+    "MovieMatchType": "Filmübereinstimmungstyp",
+    "EditSelectedMovies": "Bearbeite ausgewählte Filme",
+    "EditMovies": "Filme bearbeiten",
+    "RecycleBinUnableToWriteHealthCheck": "Schreiben in konfigurierten Papierkorbordner nicht möglich: {0}. Stelle sicher, dass dieser Pfad existiert und von dem Benutzer, der Radarr ausführt, beschreibbar ist"
 }

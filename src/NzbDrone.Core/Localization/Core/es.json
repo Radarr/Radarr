@@ -261,7 +261,7 @@
     "SystemTimeCheckMessage": "El reloj del sistema está retrasado más de un día. Las tareas de mantenimiento no se ejecutarán correctamente hasta que se haya corregido",
     "MonitorMovie": "Monitorear Película",
     "ExistingMovies": "Película(s) Existente",
-    "EditRemotePathMapping": "Editar Mapping de Ruta Remota",
+    "EditRemotePathMapping": "Editar Mapeo de Ruta Remota",
     "DetailedProgressBarHelpText": "Mostrar texto en la barra de progreso",
     "InteractiveImport": "Importación Interactiva",
     "DetailedProgressBar": "Barra de Progreso Detallada",
@@ -1157,5 +1157,7 @@
     "ShowOverview": "Presentación",
     "AreYouSureYouWantToResetQualityDefinitions": "¿Está seguro de que desea restablecer las definiciones de calidad?",
     "SettingsTheme": "Tema",
-    "PreferredProtocol": "Protocolo preferido"
+    "PreferredProtocol": "Protocolo preferido",
+    "EditMovies": "Editar  peliculas",
+    "EditSelectedMovies": "Editar Peliculas Seleccionadas"
 }

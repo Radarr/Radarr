@@ -1157,5 +1157,13 @@
     "RSSHelpText": "当Radarr定期通过RSS同步查找发布时使用",
     "DownloadClientSortingCheckMessage": "下载客户端 {0} 为 Radarr 的类别启用了 {1} 排序。 您应该在下载客户端中禁用排序以避免导入问题。",
     "File": "文件",
-    "UMask": "UMask"
+    "UMask": "UMask",
+    "MovieMatchType": "电影匹配类型",
+    "Loading": "加载中",
+    "StopSelecting": "停止选择",
+    "ThereWasAnErrorLoadingThisItem": "加载此项目时出错",
+    "ThereWasAnErrorLoadingThisPage": "加载此页时出错",
+    "UpdateFiltered": "更新过滤",
+    "EditMovies": "编辑电影",
+    "EditSelectedMovies": "编辑选定的电影"
 }
