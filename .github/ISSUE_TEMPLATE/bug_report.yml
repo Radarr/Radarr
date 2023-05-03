@@ -73,3 +73,10 @@ body:
       Additionally, any additional info? Screenshots? References? Anything that will give us more context about the issue you are encountering!
   validations:
     required: true
+- type: checkboxes
+  attributes:
+    label: Trace Logs have been provided as applicable. Reports may be closed if the required logs are not provided.
+    description: Trace logs are generally required for all bug reports
+    options:
+    - label: I have followed the steps in the wiki link above and provided the required trace logs that are relevant and show this issue.
+      required: true
