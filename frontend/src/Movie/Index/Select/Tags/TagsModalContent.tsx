@@ -1,6 +1,7 @@
-import { concat, uniq } from 'lodash';
+import { uniq } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Tag } from 'App/State/TagsAppState';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
@@ -12,6 +13,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds, sizes } from 'Helpers/Props';
+import Movie from 'Movie/Movie';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import createTagsSelector from 'Store/Selectors/createTagsSelector';
 import translate from 'Utilities/String/translate';
@@ -26,29 +28,35 @@ interface TagsModalContentProps {
 function TagsModalContent(props: TagsModalContentProps) {
   const { movieIds, onModalClose, onApplyTagsPress } = props;
 
-  const allMovies = useSelector(createAllMoviesSelector());
-  const tagList = useSelector(createTagsSelector());
+  const allMovies: Movie[] = useSelector(createAllMoviesSelector());
+  const tagList: Tag[] = useSelector(createTagsSelector());
 
   const [tags, setTags] = useState<number[]>([]);
   const [applyTags, setApplyTags] = useState('add');
 
   const movieTags = useMemo(() => {
-    const movies = movieIds.map((id) => {
-      return allMovies.find((s) => s.id === id);
-    });
+    const tags = movieIds.reduce((acc: number[], id) => {
+      const s = allMovies.find((s) => s.id === id);
 
-    return uniq(concat(...movies.map((s) => s.tags)));
+      if (s) {
+        acc.push(...s.tags);
+      }
+
+      return acc;
+    }, []);
+
+    return uniq(tags);
   }, [movieIds, allMovies]);
 
   const onTagsChange = useCallback(
-    ({ value }) => {
+    ({ value }: { value: number[] }) => {
       setTags(value);
     },
     [setTags]
   );
 
   const onApplyTagsChange = useCallback(
-    ({ value }) => {
+    ({ value }: { value: string }) => {
       setApplyTags(value);
     },
     [setApplyTags]

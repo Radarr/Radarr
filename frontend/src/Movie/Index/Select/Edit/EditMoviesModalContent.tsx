@@ -44,7 +44,7 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
   const [isConfirmMoveModalOpen, setIsConfirmMoveModalOpen] = useState(false);
 
   const save = useCallback(
-    (moveFiles) => {
+    (moveFiles: boolean) => {
       let hasChanges = false;
       const payload: SavePayload = {};
 
@@ -74,7 +74,7 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
   );
 
   const onInputChange = useCallback(
-    ({ name, value }) => {
+    ({ name, value }: { name: string; value: string }) => {
       switch (name) {
         case 'monitored':
           setMonitored(value);

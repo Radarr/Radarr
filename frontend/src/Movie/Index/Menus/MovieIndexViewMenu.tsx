@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import MenuContent from 'Components/Menu/MenuContent';
 import ViewMenu from 'Components/Menu/ViewMenu';
@@ -6,7 +5,13 @@ import ViewMenuItem from 'Components/Menu/ViewMenuItem';
 import { align } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 
-function MovieIndexViewMenu(props) {
+interface MovieIndexViewMenuProps {
+  view: string;
+  isDisabled: boolean;
+  onViewSelect(value: string): unknown;
+}
+
+function MovieIndexViewMenu(props: MovieIndexViewMenuProps) {
   const { view, isDisabled, onViewSelect } = props;
 
   return (
@@ -31,11 +36,5 @@ function MovieIndexViewMenu(props) {
     </ViewMenu>
   );
 }
-
-MovieIndexViewMenu.propTypes = {
-  view: PropTypes.string.isRequired,
-  isDisabled: PropTypes.bool.isRequired,
-  onViewSelect: PropTypes.func.isRequired,
-};
 
 export default MovieIndexViewMenu;

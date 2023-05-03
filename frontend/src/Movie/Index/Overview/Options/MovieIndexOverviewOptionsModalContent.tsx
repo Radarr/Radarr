@@ -44,7 +44,7 @@ function MovieIndexOverviewOptionsModalContent(
   const dispatch = useDispatch();
 
   const onOverviewOptionChange = useCallback(
-    ({ name, value }) => {
+    ({ name, value }: { name: string; value: unknown }) => {
       dispatch(setMovieOverviewOption({ [name]: value }));
     },
     [dispatch]

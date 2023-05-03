@@ -1,8 +1,9 @@
 import { throttle } from 'lodash';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FixedSizeList as List, ListChildComponentProps } from 'react-window';
 import { createSelector } from 'reselect';
+import AppState from 'App/State/AppState';
 import Scroller from 'Components/Scroller/Scroller';
 import Column from 'Components/Table/Column';
 import useMeasure from 'Helpers/Hooks/useMeasure';
@@ -13,7 +14,6 @@ import dimensions from 'Styles/Variables/dimensions';
 import getIndexOfFirstCharacter from 'Utilities/Array/getIndexOfFirstCharacter';
 import MovieIndexRow from './MovieIndexRow';
 import MovieIndexTableHeader from './MovieIndexTableHeader';
-import selectTableOptions from './selectTableOptions';
 import styles from './MovieIndexTable.css';
 
 const bodyPadding = parseInt(dimensions.pageContentBodyPadding);
@@ -30,17 +30,17 @@ interface RowItemData {
 
 interface MovieIndexTableProps {
   items: Movie[];
-  sortKey?: string;
+  sortKey: string;
   sortDirection?: SortDirection;
   jumpToCharacter?: string;
   scrollTop?: number;
-  scrollerRef: React.MutableRefObject<HTMLElement>;
+  scrollerRef: RefObject<HTMLElement>;
   isSelectMode: boolean;
   isSmallScreen: boolean;
 }
 
 const columnsSelector = createSelector(
-  (state) => state.movieIndex.columns,
+  (state: AppState) => state.movieIndex.columns,
   (columns) => columns
 );
 
@@ -91,19 +91,18 @@ function MovieIndexTable(props: MovieIndexTableProps) {
   } = props;
 
   const columns = useSelector(columnsSelector);
-  const { showBanners } = useSelector(selectTableOptions);
-  const listRef: React.MutableRefObject<List> = useRef();
+  const listRef = useRef<List<RowItemData>>(null);
   const [measureRef, bounds] = useMeasure();
   const [size, setSize] = useState({ width: 0, height: 0 });
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;
 
   const rowHeight = useMemo(() => {
-    return showBanners ? 70 : 38;
-  }, [showBanners]);
+    return 38;
+  }, []);
 
   useEffect(() => {
-    const current = scrollerRef.current as HTMLElement;
+    const current = scrollerRef?.current as HTMLElement;
 
     if (isSmallScreen) {
       setSize({
@@ -127,8 +126,8 @@ function MovieIndexTable(props: MovieIndexTableProps) {
   }, [isSmallScreen, windowWidth, windowHeight, scrollerRef, bounds]);
 
   useEffect(() => {
-    const currentScrollListener = isSmallScreen ? window : scrollerRef.current;
-    const currentScrollerRef = scrollerRef.current;
+    const currentScrollerRef = scrollerRef.current as HTMLElement;
+    const currentScrollListener = isSmallScreen ? window : currentScrollerRef;
 
     const handleScroll = throttle(() => {
       const { offsetTop = 0 } = currentScrollerRef;
@@ -137,7 +136,7 @@ function MovieIndexTable(props: MovieIndexTableProps) {
           ? getWindowScrollTopPosition()
           : currentScrollerRef.scrollTop) - offsetTop;
 
-      listRef.current.scrollTo(scrollTop);
+      listRef.current?.scrollTo(scrollTop);
     }, 10);
 
     currentScrollListener.addEventListener('scroll', handleScroll);
@@ -166,8 +165,8 @@ function MovieIndexTable(props: MovieIndexTableProps) {
           scrollTop += offset;
         }
 
-        listRef.current.scrollTo(scrollTop);
-        scrollerRef.current.scrollTo(0, scrollTop);
+        listRef.current?.scrollTo(scrollTop);
+        scrollerRef?.current?.scrollTo(0, scrollTop);
       }
     }
   }, [jumpToCharacter, rowHeight, items, scrollerRef, listRef]);

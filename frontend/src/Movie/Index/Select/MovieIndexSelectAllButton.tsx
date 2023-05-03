@@ -6,7 +6,7 @@ import { icons } from 'Helpers/Props';
 interface MovieIndexSelectAllButtonProps {
   label: string;
   isSelectMode: boolean;
-  overflowComponent: React.FunctionComponent;
+  overflowComponent: React.FunctionComponent<never>;
 }
 
 function MovieIndexSelectAllButton(props: MovieIndexSelectAllButtonProps) {

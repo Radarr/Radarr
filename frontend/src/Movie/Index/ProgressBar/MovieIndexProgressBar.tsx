@@ -1,60 +1,77 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import ProgressBar from 'Components/ProgressBar';
 import { sizes } from 'Helpers/Props';
-import getQueueStatusText from 'Utilities/Movie/getQueueStatusText';
+import createMovieQueueItemsDetailsSelector, {
+  MovieQueueDetails,
+} from 'Movie/Index/createMovieQueueDetailsSelector';
+import { MovieFile } from 'MovieFile/MovieFile';
 import getStatusStyle from 'Utilities/Movie/getStatusStyle';
 import translate from 'Utilities/String/translate';
 import styles from './MovieIndexProgressBar.css';
 
 interface MovieIndexProgressBarProps {
+  movieId: number;
+  movieFile: MovieFile;
   monitored: boolean;
   status: string;
   hasFile: boolean;
   isAvailable: boolean;
-  posterWidth: number;
+  width: number;
   detailedProgressBar: boolean;
-  bottomRadius: boolean;
-  queueStatus: string;
-  queueState: string;
+  bottomRadius?: boolean;
+  isStandAlone?: boolean;
 }
 
 function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
   const {
+    movieId,
+    movieFile,
     monitored,
     status,
     hasFile,
     isAvailable,
-    posterWidth,
+    width,
     detailedProgressBar,
     bottomRadius,
-    queueStatus,
-    queueState,
+    isStandAlone,
   } = props;
 
+  const queueDetails: MovieQueueDetails = useSelector(
+    createMovieQueueItemsDetailsSelector(movieId)
+  );
+
   const progress = 100;
-  const queueStatusText = getQueueStatusText(queueStatus, queueState);
+  const queueStatusText = queueDetails.count > 0 ? 'Downloading' : null;
   let movieStatus = status === 'released' && hasFile ? 'downloaded' : status;
 
   if (movieStatus === 'deleted') {
     movieStatus = 'Missing';
 
     if (hasFile) {
-      movieStatus = 'Downloaded';
+      const quality = movieFile.quality;
+
+      movieStatus = quality.quality.name;
     }
   } else if (hasFile) {
-    movieStatus = 'Downloaded';
+    const quality = movieFile.quality;
+
+    movieStatus = quality.quality.name;
   } else if (isAvailable && !hasFile) {
     movieStatus = 'Missing';
   } else {
     movieStatus = 'NotAvailable';
   }
 
+  const attachedClassName = bottomRadius
+    ? styles.progressRadius
+    : styles.progress;
+  const containerClassName = isStandAlone ? undefined : attachedClassName;
+
   return (
     <ProgressBar
       className={styles.progressBar}
-      containerClassName={
-        bottomRadius ? styles.progressRadius : styles.progress
-      }
+      containerClassName={containerClassName}
       progress={progress}
       kind={getStatusStyle(
         status,
@@ -62,11 +79,11 @@ function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
         hasFile,
         isAvailable,
         'kinds',
-        queueStatusText
+        queueDetails.count > 0
       )}
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
       showText={detailedProgressBar}
-      width={posterWidth}
+      width={width}
       text={queueStatusText ? queueStatusText : translate(movieStatus)}
     />
   );

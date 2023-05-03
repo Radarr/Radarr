@@ -2,6 +2,7 @@ import { orderBy } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
+import AppState from 'App/State/AppState';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
@@ -11,8 +12,10 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { inputTypes, kinds } from 'Helpers/Props';
+import Movie from 'Movie/Movie';
 import { bulkDeleteMovie, setDeleteOption } from 'Store/Actions/movieActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
+import { CheckInputChanged } from 'typings/inputs';
 import translate from 'Utilities/String/translate';
 import styles from './DeleteMovieModalContent.css';
 
@@ -22,7 +25,7 @@ interface DeleteMovieModalContentProps {
 }
 
 const selectDeleteOptions = createSelector(
-  (state) => state.movies.deleteOptions,
+  (state: AppState) => state.movies.deleteOptions,
   (deleteOptions) => deleteOptions
 );
 
@@ -30,28 +33,28 @@ function DeleteMovieModalContent(props: DeleteMovieModalContentProps) {
   const { movieIds, onModalClose } = props;
 
   const { addImportExclusion } = useSelector(selectDeleteOptions);
-  const allMovies = useSelector(createAllMoviesSelector());
+  const allMovies: Movie[] = useSelector(createAllMoviesSelector());
   const dispatch = useDispatch();
 
   const [deleteFiles, setDeleteFiles] = useState(false);
 
-  const movies = useMemo(() => {
+  const movies = useMemo((): Movie[] => {
     const movies = movieIds.map((id) => {
       return allMovies.find((s) => s.id === id);
-    });
+    }) as Movie[];
 
     return orderBy(movies, ['sortTitle']);
   }, [movieIds, allMovies]);
 
   const onDeleteFilesChange = useCallback(
-    ({ value }) => {
+    ({ value }: CheckInputChanged) => {
       setDeleteFiles(value);
     },
     [setDeleteFiles]
   );
 
   const onDeleteOptionChange = useCallback(
-    ({ name, value }) => {
+    ({ name, value }: { name: string; value: boolean }) => {
       dispatch(
         setDeleteOption({
           [name]: value,

@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSelect } from 'App/SelectContext';
+import ClientSideCollectionAppState from 'App/State/ClientSideCollectionAppState';
+import MoviesAppState, { MovieIndexAppState } from 'App/State/MoviesAppState';
 import { REFRESH_MOVIE } from 'Commands/commandNames';
 import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import { icons } from 'Helpers/Props';
@@ -21,9 +23,11 @@ function MovieIndexRefreshMovieButton(
   const isRefreshing = useSelector(
     createCommandExecutingSelector(REFRESH_MOVIE)
   );
-  const { items, totalItems } = useSelector(
-    createMovieClientSideCollectionItemsSelector('movieIndex')
-  );
+  const {
+    items,
+    totalItems,
+  }: MoviesAppState & MovieIndexAppState & ClientSideCollectionAppState =
+    useSelector(createMovieClientSideCollectionItemsSelector('movieIndex'));
 
   const dispatch = useDispatch();
   const { isSelectMode, selectedFilterKey } = props;

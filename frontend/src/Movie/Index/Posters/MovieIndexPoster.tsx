@@ -63,9 +63,8 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     physicalRelease,
     digitalRelease,
     path,
+    movieFile,
     certification,
-    queueStatus,
-    queueState,
   } = movie;
 
   const dispatch = useDispatch();
@@ -185,14 +184,14 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
       </div>
 
       <MovieIndexProgressBar
+        movieId={movieId}
+        movieFile={movieFile}
         monitored={monitored}
         hasFile={hasFile}
         isAvailable={isAvailable}
         status={status}
-        posterWidth={posterWidth}
+        width={posterWidth}
         detailedProgressBar={detailedProgressBar}
-        queueStatus={queueStatus}
-        queueState={queueState}
         bottomRadius={false}
       />
 

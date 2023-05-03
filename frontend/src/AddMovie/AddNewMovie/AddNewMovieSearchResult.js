@@ -123,7 +123,7 @@ class AddNewMovieSearchResult extends Component {
                       monitored={monitored}
                       hasFile={hasFile}
                       status={status}
-                      posterWidth={posterWidth}
+                      width={posterWidth}
                       detailedProgressBar={true}
                       queueStatus={queueStatus}
                       queueState={queueState}

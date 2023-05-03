@@ -1,6 +1,14 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SelectProvider } from 'App/SelectContext';
+import ClientSideCollectionAppState from 'App/State/ClientSideCollectionAppState';
+import MoviesAppState, { MovieIndexAppState } from 'App/State/MoviesAppState';
 import { RSS_SYNC } from 'Commands/commandNames';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
@@ -17,12 +25,14 @@ import SortDirection from 'Helpers/Props/SortDirection';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import NoMovie from 'Movie/NoMovie';
 import { executeCommand } from 'Store/Actions/commandActions';
+import { fetchMovies } from 'Store/Actions/movieActions';
 import {
   setMovieFilter,
   setMovieSort,
   setMovieTableOption,
   setMovieView,
 } from 'Store/Actions/movieIndexActions';
+import { fetchQueueDetails } from 'Store/Actions/queueActions';
 import scrollPositions from 'Store/scrollPositions';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
@@ -77,23 +87,27 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
     sortKey,
     sortDirection,
     view,
-  } = useSelector(createMovieClientSideCollectionItemsSelector('movieIndex'));
+  }: MoviesAppState & MovieIndexAppState & ClientSideCollectionAppState =
+    useSelector(createMovieClientSideCollectionItemsSelector('movieIndex'));
 
   const isRssSyncExecuting = useSelector(
     createCommandExecutingSelector(RSS_SYNC)
   );
   const { isSmallScreen } = useSelector(createDimensionsSelector());
   const dispatch = useDispatch();
-  const scrollerRef = useRef<HTMLDivElement>();
+  const scrollerRef = useRef<HTMLDivElement>(null);
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
   const [isInteractiveImportModalOpen, setIsInteractiveImportModalOpen] =
     useState(false);
-  const [jumpToCharacter, setJumpToCharacter] = useState<string | null>(null);
+  const [jumpToCharacter, setJumpToCharacter] = useState<string | undefined>(
+    undefined
+  );
   const [isSelectMode, setIsSelectMode] = useState(false);
 
-  const onSelectModePress = useCallback(() => {
-    setIsSelectMode(!isSelectMode);
-  }, [isSelectMode, setIsSelectMode]);
+  useEffect(() => {
+    dispatch(fetchMovies());
+    dispatch(fetchQueueDetails({ all: true }));
+  }, [dispatch]);
 
   const onRssSyncPress = useCallback(() => {
     dispatch(
@@ -103,15 +117,19 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
     );
   }, [dispatch]);
 
+  const onSelectModePress = useCallback(() => {
+    setIsSelectMode(!isSelectMode);
+  }, [isSelectMode, setIsSelectMode]);
+
   const onTableOptionChange = useCallback(
-    (payload) => {
+    (payload: unknown) => {
       dispatch(setMovieTableOption(payload));
     },
     [dispatch]
   );
 
   const onViewSelect = useCallback(
-    (value) => {
+    (value: string) => {
       dispatch(setMovieView({ view: value }));
 
       if (scrollerRef.current) {
@@ -122,14 +140,14 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   );
 
   const onSortSelect = useCallback(
-    (value) => {
+    (value: string) => {
       dispatch(setMovieSort({ sortKey: value }));
     },
     [dispatch]
   );
 
   const onFilterSelect = useCallback(
-    (value) => {
+    (value: string) => {
       dispatch(setMovieFilter({ selectedFilterKey: value }));
     },
     [dispatch]
@@ -152,15 +170,15 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   }, [setIsInteractiveImportModalOpen]);
 
   const onJumpBarItemPress = useCallback(
-    (character) => {
+    (character: string) => {
       setJumpToCharacter(character);
     },
     [setJumpToCharacter]
   );
 
   const onScroll = useCallback(
-    ({ scrollTop }) => {
-      setJumpToCharacter(null);
+    ({ scrollTop }: { scrollTop: number }) => {
+      setJumpToCharacter(undefined);
       scrollPositions.movieIndex = scrollTop;
     },
     [setJumpToCharacter]
@@ -174,10 +192,10 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
       };
     }
 
-    const characters = items.reduce((acc, item) => {
+    const characters = items.reduce((acc: Record<string, number>, item) => {
       let char = item.sortTitle.charAt(0);
 
-      if (!isNaN(char)) {
+      if (!isNaN(Number(char))) {
         char = '#';
       }
 
@@ -312,13 +330,17 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
           <PageContentBody
             ref={scrollerRef}
             className={styles.contentBody}
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             innerClassName={styles[`${view}InnerContentBody`]}
             initialScrollTop={props.initialScrollTop}
             onScroll={onScroll}
           >
             {isFetching && !isPopulated ? <LoadingIndicator /> : null}
 
-            {!isFetching && !!error ? <div>Unable to load movie</div> : null}
+            {!isFetching && !!error ? (
+              <div>{translate('UnableToLoadMovies')}</div>
+            ) : null}
 
             {isLoaded ? (
               <div className={styles.contentBodyContainer}>

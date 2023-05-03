@@ -45,7 +45,7 @@ function MovieIndexPosterOptionsModalContent(
   const dispatch = useDispatch();
 
   const onPosterOptionChange = useCallback(
-    ({ name, value }) => {
+    ({ name, value }: { name: string; value: unknown }) => {
       dispatch(setMoviePosterOption({ [name]: value }));
     },
     [dispatch]

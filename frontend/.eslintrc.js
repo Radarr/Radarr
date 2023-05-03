@@ -28,7 +28,8 @@ module.exports = {
   globals: {
     expect: false,
     chai: false,
-    sinon: false
+    sinon: false,
+    JSX: true
   },
 
   parserOptions: {

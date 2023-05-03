@@ -53,7 +53,7 @@
   background-color: var(--dangerColor);
 
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(90deg, var(--dangerColor), var(--dangerColor) 5px, var(--dangerColor) 5px, var(--dimColor) 10px);
+    background: repeating-linear-gradient(90deg, color(#f05050 shade(5%)), color(#f05050 shade(5%)) 5px, color(#f05050 shade(15%)) 5px, color(#f05050 shade(15%)) 10px);
   }
 }
 
@@ -69,7 +69,7 @@
   background-color: var(--warningColor);
 
   &:global(.colorImpaired) {
-    background: repeating-linear-gradient(45deg, var(--warningColor), var(--warningColor) 5px, var(--warningColor) 5px, var(--dimColor) 10px);
+    background: repeating-linear-gradient(45deg, #ffa500, #ffa500 5px, color(#ffa500 tint(15%)) 5px, color(#ffa500 tint(15%)) 10px);
   }
 }
 

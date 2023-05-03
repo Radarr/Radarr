@@ -2,9 +2,11 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { useSelect } from 'App/SelectContext';
+import AppState from 'App/State/AppState';
 import { RENAME_MOVIE } from 'Commands/commandNames';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import PageContentFooter from 'Components/Page/PageContentFooter';
+import usePrevious from 'Helpers/Hooks/usePrevious';
 import { kinds } from 'Helpers/Props';
 import { saveMovieEditor } from 'Store/Actions/movieActions';
 import { fetchRootFolders } from 'Store/Actions/rootFolderActions';
@@ -17,8 +19,15 @@ import OrganizeMoviesModal from './Organize/OrganizeMoviesModal';
 import TagsModal from './Tags/TagsModal';
 import styles from './MovieIndexSelectFooter.css';
 
+interface SavePayload {
+  monitored?: boolean;
+  qualityProfileId?: number;
+  rootFolderPath?: string;
+  moveFiles?: boolean;
+}
+
 const movieEditorSelector = createSelector(
-  (state) => state.movies,
+  (state: AppState) => state.movies,
   (movies) => {
     const { isSaving, isDeleting, deleteError } = movies;
 
@@ -46,6 +55,7 @@ function MovieIndexSelectFooter() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isSavingMovies, setIsSavingMovies] = useState(false);
   const [isSavingTags, setIsSavingTags] = useState(false);
+  const previousIsDeleting = usePrevious(isDeleting);
 
   const [selectState, selectDispatch] = useSelect();
   const { selectedState } = selectState;
@@ -65,7 +75,7 @@ function MovieIndexSelectFooter() {
   }, [setIsEditModalOpen]);
 
   const onSavePress = useCallback(
-    (payload) => {
+    (payload: SavePayload) => {
       setIsSavingMovies(true);
       setIsEditModalOpen(false);
 
@@ -96,7 +106,7 @@ function MovieIndexSelectFooter() {
   }, [setIsTagsModalOpen]);
 
   const onApplyTagsPress = useCallback(
-    (tags, applyTags) => {
+    (tags: number[], applyTags: string) => {
       setIsSavingTags(true);
       setIsTagsModalOpen(false);
 
@@ -127,10 +137,10 @@ function MovieIndexSelectFooter() {
   }, [isSaving]);
 
   useEffect(() => {
-    if (!isDeleting && !deleteError) {
+    if (previousIsDeleting && !isDeleting && !deleteError) {
       selectDispatch({ type: 'unselectAll' });
     }
-  }, [isDeleting, deleteError, selectDispatch]);
+  }, [previousIsDeleting, isDeleting, deleteError, selectDispatch]);
 
   useEffect(() => {
     dispatch(fetchRootFolders());
