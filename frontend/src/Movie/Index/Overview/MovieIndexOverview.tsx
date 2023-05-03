@@ -72,8 +72,6 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
     tmdbId,
     imdbId,
     youTubeTrailerId,
-    queueStatus,
-    queueState,
   } = movie;
 
   const dispatch = useDispatch();
@@ -149,14 +147,14 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
           </div>
 
           <MovieIndexProgressBar
+            movieId={movieId}
+            movieFile={movie.movieFile}
             monitored={monitored}
             hasFile={hasFile}
             isAvailable={isAvailable}
             status={status}
-            posterWidth={posterWidth}
+            width={posterWidth}
             detailedProgressBar={overviewOptions.detailedProgressBar}
-            queueStatus={queueStatus}
-            queueState={queueState}
             bottomRadius={false}
           />
         </div>

@@ -19,13 +19,15 @@ import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import createMovieIndexItemSelector from 'Movie/Index/createMovieIndexItemSelector';
-import MovieFileStatusConnector from 'Movie/MovieFileStatusConnector';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import { executeCommand } from 'Store/Actions/commandActions';
+import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
+import { SelectStateInputProps } from 'typings/props';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import formatBytes from 'Utilities/Number/formatBytes';
 import titleCase from 'Utilities/String/titleCase';
 import translate from 'Utilities/String/translate';
+import MovieIndexProgressBar from '../ProgressBar/MovieIndexProgressBar';
 import MovieStatusCell from './MovieStatusCell';
 import selectTableOptions from './selectTableOptions';
 import styles from './MovieIndexRow.css';
@@ -44,6 +46,8 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     useSelector(createMovieIndexItemSelector(props.movieId));
 
   const { showSearchAction } = useSelector(selectTableOptions);
+
+  const { movieRuntimeFormat } = useSelector(createUISettingsSelector());
 
   const {
     monitored,
@@ -64,19 +68,16 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     path,
     sizeOnDisk,
     genres = [],
-    queueStatus,
-    queueState,
     ratings,
     certification,
     tags = [],
     tmdbId,
     imdbId,
     isAvailable,
-    grabbed,
+    hasFile,
     movieFile,
     youTubeTrailerId,
     isSaving = false,
-    movieRuntimeFormat,
   } = movie;
 
   const dispatch = useDispatch();
@@ -120,7 +121,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
   }, [setIsDeleteMovieModalOpen]);
 
   const onSelectedChange = useCallback(
-    ({ id, value, shiftKey }) => {
+    ({ id, value, shiftKey }: SelectStateInputProps) => {
       selectDispatch({
         type: 'toggleSelected',
         id,
@@ -214,6 +215,8 @@ function MovieIndexRow(props: MovieIndexRowProps) {
 
         if (name === 'added') {
           return (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore ts(2739)
             <RelativeDateCellConnector
               key={name}
               className={styles[name]}
@@ -233,6 +236,8 @@ function MovieIndexRow(props: MovieIndexRowProps) {
 
         if (name === 'inCinemas') {
           return (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore ts(2739)
             <RelativeDateCellConnector
               key={name}
               className={styles[name]}
@@ -244,6 +249,8 @@ function MovieIndexRow(props: MovieIndexRowProps) {
 
         if (name === 'digitalRelease') {
           return (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore ts(2739)
             <RelativeDateCellConnector
               key={name}
               className={styles[name]}
@@ -255,6 +262,8 @@ function MovieIndexRow(props: MovieIndexRowProps) {
 
         if (name === 'physicalRelease') {
           return (
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore ts(2739)
             <RelativeDateCellConnector
               key={name}
               className={styles[name]}
@@ -313,13 +322,17 @@ function MovieIndexRow(props: MovieIndexRowProps) {
         if (name === 'movieStatus') {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
-              <MovieFileStatusConnector
-                isAvailable={isAvailable}
-                monitored={monitored}
-                grabbed={grabbed}
+              <MovieIndexProgressBar
+                movieId={movieId}
                 movieFile={movieFile}
-                queueStatus={queueStatus}
-                queueState={queueState}
+                monitored={monitored}
+                hasFile={hasFile}
+                isAvailable={isAvailable}
+                status={status}
+                width={125}
+                detailedProgressBar={true}
+                bottomRadius={false}
+                isStandAlone={true}
               />
             </VirtualTableRowCell>
           );

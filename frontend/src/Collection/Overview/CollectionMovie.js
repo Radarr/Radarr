@@ -134,7 +134,7 @@ class CollectionMovie extends Component {
                       hasFile={hasFile}
                       status={status}
                       bottomRadius={true}
-                      posterWidth={posterWidth}
+                      width={posterWidth}
                       detailedProgressBar={detailedProgressBar}
                       isAvailable={isAvailable}
                     />

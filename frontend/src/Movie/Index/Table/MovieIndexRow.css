@@ -57,7 +57,10 @@
 .movieStatus {
   composes: cell;
 
-  flex: 0 0 110px;
+  display: flex;
+  justify-content: center;
+  flex: 0 0 150px;
+  flex-direction: column;
 }
 
 .certification {

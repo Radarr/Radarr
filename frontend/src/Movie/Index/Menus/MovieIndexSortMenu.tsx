@@ -1,12 +1,19 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import MenuContent from 'Components/Menu/MenuContent';
 import SortMenu from 'Components/Menu/SortMenu';
 import SortMenuItem from 'Components/Menu/SortMenuItem';
-import { align, sortDirections } from 'Helpers/Props';
+import { align } from 'Helpers/Props';
+import SortDirection from 'Helpers/Props/SortDirection';
 import translate from 'Utilities/String/translate';
 
-function MovieIndexSortMenu(props) {
+interface MovieIndexSortMenuProps {
+  sortKey?: string;
+  sortDirection?: SortDirection;
+  isDisabled: boolean;
+  onSortSelect(sortKey: string): unknown;
+}
+
+function MovieIndexSortMenu(props: MovieIndexSortMenuProps) {
   const { sortKey, sortDirection, isDisabled, onSortSelect } = props;
 
   return (
@@ -159,12 +166,5 @@ function MovieIndexSortMenu(props) {
     </SortMenu>
   );
 }
-
-MovieIndexSortMenu.propTypes = {
-  sortKey: PropTypes.string,
-  sortDirection: PropTypes.oneOf(sortDirections.all),
-  isDisabled: PropTypes.bool.isRequired,
-  onSortSelect: PropTypes.func.isRequired,
-};
 
 export default MovieIndexSortMenu;

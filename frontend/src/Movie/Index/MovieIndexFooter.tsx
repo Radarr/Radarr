@@ -3,6 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { ColorImpairedConsumer } from 'App/ColorImpairedContext';
+import MoviesAppState from 'App/State/MoviesAppState';
 import DescriptionList from 'Components/DescriptionList/DescriptionList';
 import DescriptionListItem from 'Components/DescriptionList/DescriptionListItem';
 import createClientSideCollectionSelector from 'Store/Selectors/createClientSideCollectionSelector';
@@ -14,13 +15,15 @@ import styles from './MovieIndexFooter.css';
 function createUnoptimizedSelector() {
   return createSelector(
     createClientSideCollectionSelector('movies', 'movieIndex'),
-    (movies) => {
+    (movies: MoviesAppState) => {
       return movies.items.map((m) => {
-        const { monitored, status } = m;
+        const { monitored, status, hasFile, sizeOnDisk } = m;
 
         return {
           monitored,
           status,
+          hasFile,
+          sizeOnDisk,
         };
       });
     }

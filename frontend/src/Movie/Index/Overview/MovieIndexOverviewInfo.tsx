@@ -1,13 +1,44 @@
+import { IconDefinition } from '@fortawesome/free-regular-svg-icons';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { icons } from 'Helpers/Props';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
 import dimensions from 'Styles/Variables/dimensions';
+import { UiSettings } from 'typings/UiSettings';
 import formatDateTime from 'Utilities/Date/formatDateTime';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import MovieIndexOverviewInfoRow from './MovieIndexOverviewInfoRow';
 import styles from './MovieIndexOverviewInfo.css';
+
+interface RowProps {
+  name: string;
+  showProp: string;
+  valueProp: string;
+}
+
+interface RowInfoProps {
+  title: string;
+  iconName: IconDefinition;
+  label: string;
+}
+
+interface MovieIndexOverviewInfoProps {
+  height: number;
+  showStudio: boolean;
+  showMonitored: boolean;
+  showQualityProfile: boolean;
+  showAdded: boolean;
+  showPath: boolean;
+  showSizeOnDisk: boolean;
+  monitored: boolean;
+  studio?: string;
+  qualityProfile: object;
+  added?: string;
+  path: string;
+  sizeOnDisk?: number;
+  sortKey: string;
+}
 
 const infoRowHeight = parseInt(dimensions.movieIndexOverviewInfoRowHeight);
 
@@ -44,7 +75,11 @@ const rows = [
   },
 ];
 
-function getInfoRowProps(row, props, uiSettings) {
+function getInfoRowProps(
+  row: RowProps,
+  props: MovieIndexOverviewInfoProps,
+  uiSettings: UiSettings
+): RowInfoProps | null {
   const { name } = row;
 
   if (name === 'monitored') {
@@ -61,7 +96,7 @@ function getInfoRowProps(row, props, uiSettings) {
     return {
       title: 'Studio',
       iconName: icons.STUDIO,
-      label: props.studio,
+      label: props.studio ?? '',
     };
   }
 
@@ -69,6 +104,9 @@ function getInfoRowProps(row, props, uiSettings) {
     return {
       title: 'Quality Profile',
       iconName: icons.PROFILE,
+      // TODO: Type QualityProfile
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore ts(2339)
       label: props.qualityProfile.name,
     };
   }
@@ -81,10 +119,11 @@ function getInfoRowProps(row, props, uiSettings) {
     return {
       title: `Added: ${formatDateTime(added, longDateFormat, timeFormat)}`,
       iconName: icons.ADD,
-      label: getRelativeDate(added, shortDateFormat, showRelativeDates, {
-        timeFormat,
-        timeForToday: true,
-      }),
+      label:
+        getRelativeDate(added, shortDateFormat, showRelativeDates, {
+          timeFormat,
+          timeForToday: true,
+        }) ?? '',
     };
   }
 
@@ -103,21 +142,8 @@ function getInfoRowProps(row, props, uiSettings) {
       label: formatBytes(props.sizeOnDisk),
     };
   }
-}
 
-interface MovieIndexOverviewInfoProps {
-  height: number;
-  showMonitored: boolean;
-  showQualityProfile: boolean;
-  showAdded: boolean;
-  showPath: boolean;
-  showSizeOnDisk: boolean;
-  monitored: boolean;
-  qualityProfile: object;
-  added?: string;
-  path: string;
-  sizeOnDisk?: number;
-  sortKey: string;
+  return null;
 }
 
 function MovieIndexOverviewInfo(props: MovieIndexOverviewInfoProps) {
@@ -133,6 +159,8 @@ function MovieIndexOverviewInfo(props: MovieIndexOverviewInfoProps) {
       const { name, showProp, valueProp } = row;
 
       const isVisible =
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore ts(7053)
         props[valueProp] != null && (props[showProp] || props.sortKey === name);
 
       return {
@@ -156,6 +184,10 @@ function MovieIndexOverviewInfo(props: MovieIndexOverviewInfoProps) {
         shownRows++;
 
         const infoRowProps = getInfoRowProps(row, props, uiSettings);
+
+        if (infoRowProps == null) {
+          return null;
+        }
 
         return <MovieIndexOverviewInfoRow key={row.name} {...infoRowProps} />;
       })}

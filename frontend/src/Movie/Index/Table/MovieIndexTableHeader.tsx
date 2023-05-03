@@ -14,6 +14,7 @@ import {
   setMovieSort,
   setMovieTableOption,
 } from 'Store/Actions/movieIndexActions';
+import { CheckInputChanged } from 'typings/inputs';
 import MovieIndexTableOptions from './MovieIndexTableOptions';
 import styles from './MovieIndexTableHeader.css';
 
@@ -30,21 +31,21 @@ function MovieIndexTableHeader(props: MovieIndexTableHeaderProps) {
   const [selectState, selectDispatch] = useSelect();
 
   const onSortPress = useCallback(
-    (value) => {
+    (value: string) => {
       dispatch(setMovieSort({ sortKey: value }));
     },
     [dispatch]
   );
 
   const onTableOptionChange = useCallback(
-    (payload) => {
+    (payload: unknown) => {
       dispatch(setMovieTableOption(payload));
     },
     [dispatch]
   );
 
   const onSelectAllChange = useCallback(
-    ({ value }) => {
+    ({ value }: CheckInputChanged) => {
       selectDispatch({
         type: value ? 'selectAll' : 'unselectAll',
       });
@@ -91,7 +92,11 @@ function MovieIndexTableHeader(props: MovieIndexTableHeaderProps) {
         return (
           <VirtualTableHeaderCell
             key={name}
-            className={classNames(styles[name])}
+            className={classNames(
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              styles[name]
+            )}
             name={name}
             sortKey={sortKey}
             sortDirection={sortDirection}

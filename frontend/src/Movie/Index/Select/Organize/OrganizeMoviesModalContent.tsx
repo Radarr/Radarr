@@ -10,6 +10,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import { icons, kinds } from 'Helpers/Props';
+import Movie from 'Movie/Movie';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import translate from 'Utilities/String/translate';
@@ -23,15 +24,21 @@ interface OrganizeMoviesModalContentProps {
 function OrganizeMoviesModalContent(props: OrganizeMoviesModalContentProps) {
   const { movieIds, onModalClose } = props;
 
-  const allMovies = useSelector(createAllMoviesSelector());
+  const allMovies: Movie[] = useSelector(createAllMoviesSelector());
   const dispatch = useDispatch();
 
   const movieTitles = useMemo(() => {
-    const movies = movieIds.map((id) => {
-      return allMovies.find((s) => s.id === id);
-    });
+    const movie = movieIds.reduce((acc: Movie[], id) => {
+      const s = allMovies.find((s) => s.id === id);
 
-    const sorted = orderBy(movies, ['sortTitle']);
+      if (s) {
+        acc.push(s);
+      }
+
+      return acc;
+    }, []);
+
+    const sorted = orderBy(movie, ['sortTitle']);
 
     return sorted.map((s) => s.title);
   }, [movieIds, allMovies]);

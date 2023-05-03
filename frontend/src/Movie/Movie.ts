@@ -1,4 +1,5 @@
 import ModelBase from 'App/ModelBase';
+import { MovieFile } from 'MovieFile/MovieFile';
 
 export interface Image {
   coverType: string;
@@ -11,24 +12,30 @@ export interface Language {
   name: string;
 }
 
+export interface Collection {
+  title: string;
+}
+
 interface Movie extends ModelBase {
   tmdbId: number;
   imdbId: string;
+  sortTitle: string;
+  overview: string;
   youTubeTrailerId: string;
   monitored: boolean;
   status: string;
   title: string;
   titleSlug: string;
-  collection: object;
+  collection: Collection;
   studio: string;
   qualityProfile: object;
-  added: Date;
+  added: string;
   year: number;
-  inCinemas: Date;
-  physicalRelease: Date;
+  inCinemas: string;
+  physicalRelease: string;
   originalLanguage: Language;
   originalTitle: string;
-  digitalRelease: Date;
+  digitalRelease: string;
   runtime: number;
   minimumAvailability: string;
   path: string;
@@ -37,7 +44,10 @@ interface Movie extends ModelBase {
   ratings: object;
   certification: string;
   tags: number[];
-  images: Image;
+  images: Image[];
+  movieFile: MovieFile;
+  hasFile: boolean;
+  isAvailable: boolean;
   isSaving?: boolean;
 }
 

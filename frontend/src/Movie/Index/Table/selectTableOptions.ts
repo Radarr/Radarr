@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
+import AppState from 'App/State/AppState';
 
 const selectTableOptions = createSelector(
-  (state) => state.movieIndex.tableOptions,
+  (state: AppState) => state.movieIndex.tableOptions,
   (tableOptions) => tableOptions
 );
 

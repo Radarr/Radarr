@@ -1,7 +1,8 @@
 import { createSelector } from 'reselect';
+import AppState from 'App/State/AppState';
 
 const selectOverviewOptions = createSelector(
-  (state) => state.movieIndex.overviewOptions,
+  (state: AppState) => state.movieIndex.overviewOptions,
   (overviewOptions) => overviewOptions
 );
 
