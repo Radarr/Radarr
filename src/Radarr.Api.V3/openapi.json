@@ -8789,6 +8789,9 @@
           "status": {
             "$ref": "#/components/schemas/CommandStatus"
           },
+          "result": {
+            "$ref": "#/components/schemas/CommandResult"
+          },
           "queued": {
             "type": "string",
             "format": "date-time"
@@ -8835,6 +8838,14 @@
           }
         },
         "additionalProperties": false
+      },
+      "CommandResult": {
+        "enum": [
+          "unknown",
+          "successful",
+          "unsuccessful"
+        ],
+        "type": "string"
       },
       "CommandStatus": {
         "enum": [
