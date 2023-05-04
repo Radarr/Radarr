@@ -51,6 +51,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     title,
     collection,
     studio,
+    status,
     originalLanguage,
     originalTitle,
     added,
