@@ -1158,7 +1158,7 @@
     "DownloadClientSortingCheckMessage": "O cliente de download {0} tem classificação {1} habilitada para a categoria do Radarr. Você deve desativar a classificação em seu cliente de download para evitar problemas de importação.",
     "File": "Arquivo",
     "UMask": "Desmascarar",
-    "StopSelecting": "Parar de selecionar",
+    "StopSelecting": "Parar Seleção",
     "UpdateFiltered": "Atualização filtrada",
     "EditMovies": "Editar Filmes",
     "EditSelectedMovies": "Editar Filmes Selecionados",
