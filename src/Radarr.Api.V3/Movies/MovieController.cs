@@ -20,6 +20,7 @@ using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Commands;
 using NzbDrone.Core.Movies.Events;
 using NzbDrone.Core.Movies.Translations;
+using NzbDrone.Core.RootFolders;
 using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
@@ -45,6 +46,7 @@ namespace Radarr.Api.V3.Movies
         private readonly IAddMovieService _addMovieService;
         private readonly IMapCoversToLocal _coverMapper;
         private readonly IManageCommandQueue _commandQueueManager;
+        private readonly IRootFolderService _rootFolderService;
         private readonly IUpgradableSpecification _qualityUpgradableSpecification;
         private readonly IConfigService _configService;
         private readonly Logger _logger;
@@ -55,6 +57,7 @@ namespace Radarr.Api.V3.Movies
                            IAddMovieService addMovieService,
                            IMapCoversToLocal coverMapper,
                            IManageCommandQueue commandQueueManager,
+                           IRootFolderService rootFolderService,
                            IUpgradableSpecification qualityUpgradableSpecification,
                            IConfigService configService,
                            RootFolderValidator rootFolderValidator,
@@ -76,6 +79,7 @@ namespace Radarr.Api.V3.Movies
             _configService = configService;
             _coverMapper = coverMapper;
             _commandQueueManager = commandQueueManager;
+            _rootFolderService = rootFolderService;
             _logger = logger;
 
             SharedValidator.RuleFor(s => s.QualityProfileId).ValidId();
@@ -145,6 +149,10 @@ namespace Radarr.Api.V3.Movies
                 }
 
                 MapCoversToLocal(moviesResources, coverFileInfos);
+
+                var rootFolders = _rootFolderService.All();
+
+                moviesResources.ForEach(m => m.RootFolderPath = _rootFolderService.GetBestRootFolderPath(m.Path, rootFolders));
             }
 
             return moviesResources;
@@ -170,6 +178,8 @@ namespace Radarr.Api.V3.Movies
 
             var resource = movie.ToResource(availDelay, translation, _qualityUpgradableSpecification);
             MapCoversToLocal(resource);
+
+            resource.RootFolderPath = _rootFolderService.GetBestRootFolderPath(resource.Path);
 
             return resource;
         }

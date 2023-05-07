@@ -57,7 +57,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieFileMovingServiceTests
                   .Returns(true);
 
             Mocker.GetMock<IRootFolderService>()
-                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>()))
+                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>(), null))
                   .Returns(rootFolder);
         }
 
