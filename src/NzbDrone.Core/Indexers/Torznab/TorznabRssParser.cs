@@ -21,6 +21,11 @@ namespace NzbDrone.Core.Indexers.Torznab
 
         protected override bool PreProcess(IndexerResponse indexerResponse)
         {
+            if (indexerResponse.HttpResponse.HasHttpError)
+            {
+                base.PreProcess(indexerResponse);
+            }
+
             var xdoc = LoadXmlDocument(indexerResponse);
             var error = xdoc.Descendants("error").FirstOrDefault();
 
