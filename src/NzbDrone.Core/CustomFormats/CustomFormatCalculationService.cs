@@ -117,7 +117,7 @@ namespace NzbDrone.Core.CustomFormats
             var episodeInfo = new ParsedMovieInfo
             {
                 MovieTitles = new List<string>() { localMovie.Movie.Title },
-                SimpleReleaseTitle = localMovie.SceneName?.SimplifyReleaseTitle(),
+                SimpleReleaseTitle = localMovie.SceneName.IsNotNullOrWhiteSpace() ? localMovie.SceneName.SimplifyReleaseTitle() : Path.GetFileName(localMovie.Path).SimplifyReleaseTitle(),
                 ReleaseTitle = localMovie.SceneName,
                 Quality = localMovie.Quality,
                 Edition = localMovie.Edition,
@@ -130,7 +130,8 @@ namespace NzbDrone.Core.CustomFormats
                 MovieInfo = episodeInfo,
                 Movie = localMovie.Movie,
                 Size = localMovie.Size,
-                Languages = localMovie.Languages
+                Languages = localMovie.Languages,
+                Filename = Path.GetFileName(localMovie.Path)
             };
 
             return ParseCustomFormat(input);
@@ -166,24 +167,24 @@ namespace NzbDrone.Core.CustomFormats
 
         private static List<CustomFormat> ParseCustomFormat(MovieFile movieFile, Movie movie, List<CustomFormat> allCustomFormats)
         {
-            var sceneName = string.Empty;
+            var releaseTitle = string.Empty;
             if (movieFile.SceneName.IsNotNullOrWhiteSpace())
             {
-                sceneName = movieFile.SceneName;
+                releaseTitle = movieFile.SceneName;
             }
             else if (movieFile.OriginalFilePath.IsNotNullOrWhiteSpace())
             {
-                sceneName = movieFile.OriginalFilePath;
+                releaseTitle = movieFile.OriginalFilePath;
             }
             else if (movieFile.RelativePath.IsNotNullOrWhiteSpace())
             {
-                sceneName = Path.GetFileName(movieFile.RelativePath);
+                releaseTitle = Path.GetFileName(movieFile.RelativePath);
             }
 
             var movieInfo = new ParsedMovieInfo
             {
                 MovieTitles = new List<string>() { movie.Title },
-                SimpleReleaseTitle = sceneName.SimplifyReleaseTitle(),
+                SimpleReleaseTitle = releaseTitle.SimplifyReleaseTitle(),
                 Quality = movieFile.Quality,
                 Languages = movieFile.Languages,
                 ReleaseGroup = movieFile.ReleaseGroup,
