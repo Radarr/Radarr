@@ -105,19 +105,12 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                     var rootFolder = new OsPath(rootFolderPath);
                     var mappedPath = new OsPath(settings.MapTo) + (rootFolder - new OsPath(settings.MapFrom));
 
-                    try
+                    if (location.Path.PathEquals(mappedPath.FullPath))
                     {
-                        if (location.Path.PathEquals(mappedPath.FullPath))
-                        {
-                            _logger.Debug("Updating matching section location, {0}", location.Path);
-                            UpdateSectionPath(movieRelativePath, section, location, settings);
+                        _logger.Debug("Updating matching section location, {0}", location.Path);
+                        UpdateSectionPath(movieRelativePath, section, location, settings);
 
-                            return;
-                        }
-                    }
-                    catch (ArgumentException)
-                    {
-                        // Swallow argument exception that is thrown by path comparison when comparing paths from different OSes
+                        return;
                     }
                 }
             }
