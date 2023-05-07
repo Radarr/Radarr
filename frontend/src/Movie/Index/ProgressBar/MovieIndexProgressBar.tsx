@@ -49,14 +49,10 @@ function MovieIndexProgressBar(props: MovieIndexProgressBarProps) {
     movieStatus = 'Missing';
 
     if (hasFile) {
-      const quality = movieFile.quality;
-
-      movieStatus = quality.quality.name;
+      movieStatus = movieFile?.quality?.quality.name ?? 'Downloaded';
     }
   } else if (hasFile) {
-    const quality = movieFile.quality;
-
-    movieStatus = quality.quality.name;
+    movieStatus = movieFile?.quality?.quality.name ?? 'Downloaded';
   } else if (isAvailable && !hasFile) {
     movieStatus = 'Missing';
   } else {
