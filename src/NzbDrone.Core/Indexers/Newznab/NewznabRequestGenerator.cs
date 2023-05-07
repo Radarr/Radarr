@@ -141,14 +141,14 @@ namespace NzbDrone.Core.Indexers.Newznab
                     chain.Add(GetPagedRequests(maxPages,
                         categories,
                         "movie",
-                        string.Format("&tmdbid={0}", searchCriteria.Movie.MovieMetadata.Value.TmdbId)));
+                        $"&tmdbid={searchCriteria.Movie.MovieMetadata.Value.TmdbId}"));
                 }
                 else if (includeImdbSearch)
                 {
                     chain.Add(GetPagedRequests(maxPages,
                         categories,
                         "movie",
-                        string.Format("&imdbid={0}", searchCriteria.Movie.MovieMetadata.Value.ImdbId.Substring(2))));
+                        $"&imdbid={searchCriteria.Movie.MovieMetadata.Value.ImdbId.Substring(2)}"));
                 }
             }
 
@@ -162,13 +162,13 @@ namespace NzbDrone.Core.Indexers.Newznab
 
                     if (!Settings.RemoveYear)
                     {
-                        searchQuery = string.Format("{0} {1}", searchQuery, searchCriteria.Movie.Year);
+                        searchQuery = $"{searchQuery} {searchCriteria.Movie.Year}";
                     }
 
                     chain.Add(GetPagedRequests(MaxPages,
                         Settings.Categories,
                         "search",
-                        string.Format("&q={0}", NewsnabifyTitle(searchQuery))));
+                        $"&q={NewsnabifyTitle(searchQuery)}"));
                 }
             }
         }
@@ -182,7 +182,7 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             var categoriesQuery = string.Join(",", categories.Distinct());
 
-            var baseUrl = string.Format("{0}{1}?t={2}&cat={3}&extended=1{4}", Settings.BaseUrl.TrimEnd('/'), Settings.ApiPath.TrimEnd('/'), searchType, categoriesQuery, Settings.AdditionalParameters);
+            var baseUrl = $"{Settings.BaseUrl.TrimEnd('/')}{Settings.ApiPath.TrimEnd('/')}?t={searchType}&cat={categoriesQuery}&extended=1{Settings.AdditionalParameters}";
 
             if (Settings.ApiKey.IsNotNullOrWhiteSpace())
             {
@@ -191,13 +191,13 @@ namespace NzbDrone.Core.Indexers.Newznab
 
             if (PageSize == 0)
             {
-                yield return new IndexerRequest(string.Format("{0}{1}", baseUrl, parameters), HttpAccept.Rss);
+                yield return new IndexerRequest($"{baseUrl}{parameters}", HttpAccept.Rss);
             }
             else
             {
                 for (var page = 0; page < maxPages; page++)
                 {
-                    yield return new IndexerRequest(string.Format("{0}&offset={1}&limit={2}{3}", baseUrl, page * PageSize, PageSize, parameters), HttpAccept.Rss);
+                    yield return new IndexerRequest($"{baseUrl}&offset={page * PageSize}&limit={PageSize}{parameters}", HttpAccept.Rss);
                 }
             }
         }
