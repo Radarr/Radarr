@@ -51,7 +51,7 @@ namespace NzbDrone.Core.ImportLists.Radarr
                         continue;
                     }
 
-                    if (Settings.RootFolderPaths.Any() && !Settings.RootFolderPaths.Any(rootFolderPath => remoteMovie.RootFolderPath.ContainsIgnoreCase(rootFolderPath)))
+                    if (Settings.RootFolderPaths.Any() && !Settings.RootFolderPaths.Any(rootFolderPath => remoteMovie.Path.ContainsIgnoreCase(rootFolderPath)))
                     {
                         continue;
                     }
