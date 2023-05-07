@@ -55,7 +55,7 @@ namespace NzbDrone.Core.Test.MovieTests
                   .Callback<int>((i) => { throw new MovieNotFoundException(i); });
 
             Mocker.GetMock<IRootFolderService>()
-                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>()))
+                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>(), null))
                   .Returns(string.Empty);
         }
 

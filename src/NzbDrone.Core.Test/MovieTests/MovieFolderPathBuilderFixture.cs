@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Moq;
@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Test.MovieTests
         public void GivenExistingRootFolder(string rootFolder)
         {
             Mocker.GetMock<IRootFolderService>()
-                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>()))
+                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>(), null))
                   .Returns(rootFolder);
         }
 

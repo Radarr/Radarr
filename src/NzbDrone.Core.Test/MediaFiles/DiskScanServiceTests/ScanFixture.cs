@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Test.MediaFiles.DiskScanServiceTests
                   .Returns((string path) => Directory.GetParent(path).FullName);
 
             Mocker.GetMock<IRootFolderService>()
-                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>()))
+                  .Setup(s => s.GetBestRootFolderPath(It.IsAny<string>(), null))
                   .Returns(_rootFolder);
 
             Mocker.GetMock<IMediaFileService>()

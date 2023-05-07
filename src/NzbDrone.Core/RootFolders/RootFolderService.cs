@@ -19,7 +19,7 @@ namespace NzbDrone.Core.RootFolders
         RootFolder Add(RootFolder rootDir);
         void Remove(int id);
         RootFolder Get(int id, bool timeout);
-        string GetBestRootFolderPath(string path);
+        string GetBestRootFolderPath(string path, List<RootFolder> rootFolders = null);
     }
 
     public class RootFolderService : IRootFolderService
@@ -180,9 +180,11 @@ namespace NzbDrone.Core.RootFolders
             return rootFolder;
         }
 
-        public string GetBestRootFolderPath(string path)
+        public string GetBestRootFolderPath(string path, List<RootFolder> rootFolders = null)
         {
-            var possibleRootFolder = All().Where(r => r.Path.IsParentPath(path)).MaxBy(r => r.Path.Length);
+            var allRootFoldersToConsider = rootFolders ?? All();
+
+            var possibleRootFolder = allRootFoldersToConsider.Where(r => r.Path.IsParentPath(path)).MaxBy(r => r.Path.Length);
 
             if (possibleRootFolder == null)
             {
