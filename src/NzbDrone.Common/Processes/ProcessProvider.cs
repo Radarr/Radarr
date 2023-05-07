@@ -131,14 +131,7 @@ namespace NzbDrone.Common.Processes
                         var key = environmentVariable.Key.ToString();
                         var value = environmentVariable.Value?.ToString();
 
-                        if (startInfo.EnvironmentVariables.ContainsKey(key))
-                        {
-                            startInfo.EnvironmentVariables[key] = value;
-                        }
-                        else
-                        {
-                            startInfo.EnvironmentVariables.Add(key, value);
-                        }
+                        startInfo.EnvironmentVariables[key] = value;
                     }
                     catch (Exception e)
                     {
