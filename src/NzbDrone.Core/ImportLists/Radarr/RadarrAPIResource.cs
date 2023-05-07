@@ -16,7 +16,7 @@ namespace NzbDrone.Core.ImportLists.Radarr
         public int Year { get; set; }
         public string TitleSlug { get; set; }
         public int QualityProfileId { get; set; }
-        public string RootFolderPath { get; set; }
+        public string Path { get; set; }
         public HashSet<int> Tags { get; set; }
     }
 
