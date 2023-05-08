@@ -48,6 +48,7 @@
   "Announced": "Announced",
   "AnnouncedMsg": "Movie is announced",
   "ApiKey": "API Key",
+  "ApiKeyValidationHealthCheckMessage": "Please update your API key to be at least 20 characters long. You can do this via settings or the config file",
   "AppDataDirectory": "AppData directory",
   "AppDataLocationHealthCheckMessage": "Updating will not be possible to prevent deleting AppData on Update",
   "ApplicationURL": "Application URL",
