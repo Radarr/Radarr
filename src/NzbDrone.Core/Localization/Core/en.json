@@ -652,6 +652,8 @@
   "OnGrabHelpText": "On Grab",
   "OnHealthIssue": "On Health Issue",
   "OnHealthIssueHelpText": "On Health Issue",
+  "OnHealthRestored": "On Health Restored",
+  "OnHealthRestoredHelpText": "On Health Restored",
   "OnImport": "On Import",
   "OnLatestVersion": "The latest version of Radarr is already installed",
   "OnMovieAdded": "On Movie Added",
