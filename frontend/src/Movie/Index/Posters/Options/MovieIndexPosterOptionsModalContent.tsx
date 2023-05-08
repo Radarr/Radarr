@@ -124,7 +124,7 @@ function MovieIndexPosterOptionsModalContent(
               type={inputTypes.CHECK}
               name="showCinemaRelease"
               value={showCinemaRelease}
-              helpText={translate('showCinemaReleaseHelpText')}
+              helpText={translate('ShowCinemaReleaseHelpText')}
               onChange={onPosterOptionChange}
             />
           </FormGroup>
