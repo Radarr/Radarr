@@ -36,7 +36,7 @@ function getUrls(state) {
     icalUrl += `tags=${tags.toString()}&`;
   }
 
-  icalUrl += `apikey=${window.Radarr.apiKey}`;
+  icalUrl += `apikey=${encodeURIComponent(window.Radarr.apiKey)}`;
 
   const iCalHttpUrl = `${window.location.protocol}//${icalUrl}`;
   const iCalWebCalUrl = `webcal://${icalUrl}`;
