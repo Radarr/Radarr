@@ -1,6 +1,7 @@
 import InteractiveImportAppState from 'App/State/InteractiveImportAppState';
 import MovieFilesAppState from './MovieFilesAppState';
 import MoviesAppState, { MovieIndexAppState } from './MoviesAppState';
+import ParseAppState from './ParseAppState';
 import QueueAppState from './QueueAppState';
 import SettingsAppState from './SettingsAppState';
 import TagsAppState from './TagsAppState';
@@ -41,6 +42,7 @@ interface AppState {
   movieFiles: MovieFilesAppState;
   interactiveImport: InteractiveImportAppState;
   movieIndex: MovieIndexAppState;
+  parse: ParseAppState;
   settings: SettingsAppState;
   movies: MoviesAppState;
   tags: TagsAppState;

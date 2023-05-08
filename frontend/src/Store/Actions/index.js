@@ -19,6 +19,7 @@ import * as movieHistory from './movieHistoryActions';
 import * as movieIndex from './movieIndexActions';
 import * as oAuth from './oAuthActions';
 import * as organizePreview from './organizePreviewActions';
+import * as parse from './parseActions';
 import * as paths from './pathActions';
 import * as providerOptions from './providerOptionActions';
 import * as queue from './queueActions';
@@ -44,6 +45,7 @@ export default [
   interactiveImportActions,
   oAuth,
   organizePreview,
+  parse,
   paths,
   providerOptions,
   queue,

@@ -34,6 +34,7 @@ import {
   faBug as fasBug,
   faBuilding as fasBuilding,
   faBullhorn as fasBullhorn,
+  faCalculator as fasCalculator,
   faCalendarAlt as fasCalendarAlt,
   faCaretDown as fasCaretDown,
   faCheck as fasCheck,
@@ -189,6 +190,7 @@ export const PAGE_PREVIOUS = fasBackward;
 export const PAGE_NEXT = fasForward;
 export const PAGE_LAST = fasFastForward;
 export const PARENT = fasLevelUpAlt;
+export const PARSE = fasCalculator;
 export const PAUSED = fasPause;
 export const PENDING = farClock;
 export const PLAY = fasPlay;
