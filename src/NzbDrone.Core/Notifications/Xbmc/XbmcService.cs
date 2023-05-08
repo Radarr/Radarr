@@ -1,9 +1,7 @@
 using System;
-using System.IO;
 using System.Linq;
 using FluentValidation.Results;
 using NLog;
-using NzbDrone.Common.Disk;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Xbmc

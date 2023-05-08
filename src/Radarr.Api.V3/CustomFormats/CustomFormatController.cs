@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Common.Extensions;
-using NzbDrone.Core.Annotations;
 using NzbDrone.Core.CustomFormats;
 using NzbDrone.Core.Validation;
 using Radarr.Http;

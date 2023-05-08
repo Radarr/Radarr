@@ -25,7 +25,6 @@ using NzbDrone.Core.Validation;
 using NzbDrone.Core.Validation.Paths;
 using NzbDrone.SignalR;
 using Radarr.Http;
-using Radarr.Http.Extensions;
 using Radarr.Http.REST;
 using Radarr.Http.REST.Attributes;
 

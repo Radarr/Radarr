@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using NzbDrone.Common.EnsureThat;
-using NzbDrone.Common.Extensions;
 
 namespace NzbDrone.Common.Cache
 {

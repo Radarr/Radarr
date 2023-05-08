@@ -1,5 +1,3 @@
-using NzbDrone.Core.Parser.Model;
-
 namespace NzbDrone.Core.CustomFormats
 {
     public class ReleaseGroupSpecification : RegexSpecificationBase

@@ -4,7 +4,6 @@ using System.IO;
 using NzbDrone.Core.DecisionEngine.Specifications;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.MediaFiles;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using Radarr.Api.V3.CustomFormats;
 using Radarr.Http.REST;

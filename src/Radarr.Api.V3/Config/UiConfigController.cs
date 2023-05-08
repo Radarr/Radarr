@@ -2,7 +2,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.Configuration;
-using Radarr.Api.V3.Config;
 using Radarr.Http;
 using Radarr.Http.REST.Attributes;
 

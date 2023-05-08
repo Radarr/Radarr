@@ -1,5 +1,4 @@
 using System.Net.Http;
-using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
 using NzbDrone.Core.Notifications.Webhook;

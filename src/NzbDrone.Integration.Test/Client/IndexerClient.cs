@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Radarr.Api.V3.Indexers;
 using RestSharp;

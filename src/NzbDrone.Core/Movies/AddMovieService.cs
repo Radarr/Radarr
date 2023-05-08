@@ -8,10 +8,8 @@ using NLog;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Core.Exceptions;
 using NzbDrone.Core.MetadataSource;
-using NzbDrone.Core.Movies.Collections;
 using NzbDrone.Core.Organizer;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.RootFolders;
 
 namespace NzbDrone.Core.Movies
 {

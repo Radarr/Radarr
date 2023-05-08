@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NLog;
-using NLog.Fluent;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Instrumentation;
 using NzbDrone.Common.Instrumentation.Extensions;

@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using NLog;
 using NLog.Targets;
