@@ -1,7 +1,6 @@
 using System;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Validation;
 

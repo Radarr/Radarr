@@ -1,4 +1,3 @@
-using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Radarr.Api.V3.Tags;

@@ -2,7 +2,6 @@ using System.Linq;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.Languages;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Validation;
 
 namespace NzbDrone.Core.CustomFormats

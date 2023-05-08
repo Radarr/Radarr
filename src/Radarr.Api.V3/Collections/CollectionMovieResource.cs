@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NzbDrone.Core.MediaCover;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Movies.Collections;
 
 namespace Radarr.Api.V3.Collections
 {

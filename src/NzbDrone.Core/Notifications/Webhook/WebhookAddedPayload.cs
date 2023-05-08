@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using NzbDrone.Core.Movies;
 
 namespace NzbDrone.Core.Notifications.Webhook

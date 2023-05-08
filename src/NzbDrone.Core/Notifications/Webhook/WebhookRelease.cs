@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Qualities;

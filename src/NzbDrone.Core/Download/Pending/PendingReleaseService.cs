@@ -10,7 +10,6 @@ using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Download.Aggregation;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Jobs;
-using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.Movies.Events;

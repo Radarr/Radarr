@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Qualities;
 

@@ -1,5 +1,4 @@
 using System;
-using Moq;
 using NUnit.Framework;
 using NzbDrone.Common.Cache;
 using NzbDrone.Common.Cloud;
@@ -10,7 +9,6 @@ using NzbDrone.Common.Http.Proxy;
 using NzbDrone.Common.TPL;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.Http;
-using NzbDrone.Core.Parser;
 using NzbDrone.Core.Security;
 using NzbDrone.Test.Common;
 

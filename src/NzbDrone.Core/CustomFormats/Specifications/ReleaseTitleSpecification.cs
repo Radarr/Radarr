@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using NzbDrone.Core.Parser.Model;
-
 namespace NzbDrone.Core.CustomFormats
 {
     public class ReleaseTitleSpecification : RegexSpecificationBase

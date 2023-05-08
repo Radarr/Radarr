@@ -10,7 +10,6 @@ using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Clients;
 using NzbDrone.Core.Download.Clients.FreeboxDownload;
 using NzbDrone.Core.Download.Clients.FreeboxDownload.Responses;
-using NzbDrone.Core.Movies;
 using NzbDrone.Core.Parser.Model;
 
 namespace NzbDrone.Core.Test.Download.DownloadClientTests.FreeboxDownloadTests

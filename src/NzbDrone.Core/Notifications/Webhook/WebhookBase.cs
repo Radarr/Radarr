@@ -4,7 +4,6 @@ using System.Linq;
 using NzbDrone.Core.Configuration;
 using NzbDrone.Core.MediaFiles;
 using NzbDrone.Core.Movies;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.Notifications.Webhook
