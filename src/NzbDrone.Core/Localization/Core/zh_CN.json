@@ -987,7 +987,7 @@
     "MovieExcludedFromAutomaticAdd": "影片已被排除在自动添加之外",
     "MovieDetailsPreviousMovie": "影片详细：前一个",
     "MovieDetailsNextMovie": "影片详细：下一个",
-    "MovieChat": "Movie Chat",
+    "MovieChat": "电影聊天",
     "MovieAlreadyExcluded": "影片已排除",
     "Mode": "模式",
     "MinimumLimits": "最小限制",
@@ -1027,7 +1027,6 @@
     "ReleaseWillBeProcessedInterp": "发布将被处理{0}",
     "SqliteVersionCheckUpgradeRequiredMessage": "当前不再支持当前安装的SQLite版本{0}。请升级SQLite至少到版本{1}。",
     "ShowCinemaRelease": "电影院上映日期",
-    "showCinemaReleaseHelpText": "在海报下显示电影院上映日期",
     "ShowReleaseDate": "显示发布日期",
     "ShowReleaseDateHelpText": "在海报下显示发布日期",
     "OnMovieDeleteHelpText": "电影删除时",
@@ -1143,8 +1142,8 @@
     "OnMovieAdded": "电影添加时",
     "OnMovieAddedHelpText": "电影添加时",
     "TotalMovies": "电影总数",
-    "ApplicationUrlHelpText": "此应用的外部URL，包含 http(s)://、端口和基本URL",
-    "ApplicationURL": "程序URL",
+    "ApplicationUrlHelpText": "此应用程序的外部URL，包括http(s)://，端口和基本URL",
+    "ApplicationURL": "应用程序 URL",
     "BindAddressHelpText": "有效的 IPv4 地址、localhost、或以'*'代表所有接口",
     "PreferredProtocol": "首选协议",
     "AreYouSureYouWantToResetQualityDefinitions": "确定要重置质量定义吗？",
@@ -1165,5 +1164,6 @@
     "ThereWasAnErrorLoadingThisPage": "加载此页时出错",
     "UpdateFiltered": "更新过滤",
     "EditMovies": "编辑电影",
-    "EditSelectedMovies": "编辑选定的电影"
+    "EditSelectedMovies": "编辑选定的电影",
+    "RecycleBinUnableToWriteHealthCheck": "无法写入配置的回收站文件夹:{0}。确保此路径存在，并且可由运行Radarr的用户写入"
 }

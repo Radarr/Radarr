@@ -1028,7 +1028,6 @@
     "Edit": "Muokkaa",
     "SqliteVersionCheckUpgradeRequiredMessage": "Tällä hetkellä asennettua SQLite-versiota {0} ei enää tueta. Päivitä SQLite vähintään versioon {1}.",
     "ShowCinemaRelease": "Näytä teatterijulkaisu",
-    "showCinemaReleaseHelpText": "Näytä teatterijulkaisun päivämäärä julisteen alla.",
     "ShowReleaseDate": "Näytä fyysinen julkaisu",
     "ShowReleaseDateHelpText": "Näytä fyysisen julkaisun päivämäärä julisteen alla.",
     "OnMovieDelete": "Kun elokuva poistetaan",

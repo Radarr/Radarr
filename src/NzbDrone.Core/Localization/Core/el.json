@@ -1028,7 +1028,6 @@
     "Search": "Αναζήτηση",
     "SqliteVersionCheckUpgradeRequiredMessage": "Η τρέχουσα εγκατεστημένη έκδοση SQLite {0} δεν υποστηρίζεται πλέον. Αναβαθμίστε το SQLite σε τουλάχιστον έκδοση {1}.",
     "ShowCinemaRelease": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου",
-    "showCinemaReleaseHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας κινηματογράφου κάτω από την αφίσα",
     "ShowReleaseDate": "Εμφάνιση ημερομηνίας κυκλοφορίας",
     "ShowReleaseDateHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας στην αφίσα",
     "OnMovieFileDeleteForUpgradeHelpText": "Διαγραφή αρχείου ταινίας για αναβάθμιση",

@@ -1028,7 +1028,6 @@
     "MoveFolders2": "¿Le gustaría mover los archivos de película de '{0}' a '{1}'?",
     "SqliteVersionCheckUpgradeRequiredMessage": "La versión {0} de SQLite instalada actualmente ya no es compatible. Actualice SQLite al menos a la versión {1}.",
     "ShowCinemaRelease": "Mostrar fecha de estreno en el cine",
-    "showCinemaReleaseHelpText": "Mostrar la fecha de estreno en el cine debajo del cartel",
     "ShowReleaseDate": "Mostrar fecha de lanzamiento",
     "ShowReleaseDateHelpText": "Mostrar la fecha de lanzamiento debajo del cartel",
     "OnMovieDelete": "Al Eliminar Película",

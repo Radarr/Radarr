@@ -1027,7 +1027,6 @@
     "ImportNotForDownloads": "Ne használja letöltések importálására a letöltötőkliensről, ez csak a meglévő szervezett könyvtárakra vonatkozik, nem rendezetlen mappákra/fájlokra.",
     "ImportLibrary": "Könyvtár importálás",
     "SqliteVersionCheckUpgradeRequiredMessage": "A jelenleg telepített {0} SQLite verzió már nem támogatott. Kérjük, frissítse az SQLite-t legalább a (z) {1} verzióra.",
-    "showCinemaReleaseHelpText": "A mozi megjelenésének dátuma a poszter alatt",
     "ShowReleaseDateHelpText": "Mutasd a megjelenés dátumát a poszter alatt",
     "ShowCinemaRelease": "A mozi megjelenésének dátuma",
     "ShowReleaseDate": "Megjelenés dátuma",

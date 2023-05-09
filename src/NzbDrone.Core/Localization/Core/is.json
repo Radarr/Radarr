@@ -1028,7 +1028,6 @@
     "Edit": "Breyta",
     "SqliteVersionCheckUpgradeRequiredMessage": "Núverandi uppsett SQLite útgáfa {0} er ekki lengur studd. Vinsamlegast uppfærðu SQLite í að minnsta kosti útgáfu {1}.",
     "ShowCinemaRelease": "Sýna útgáfudag kvikmyndahússins",
-    "showCinemaReleaseHelpText": "Sýnið útgáfudag kvikmyndahússins undir veggspjaldinu",
     "ShowReleaseDate": "Sýna útgáfudag",
     "ShowReleaseDateHelpText": "Sýnið útgáfudagsetningu undir veggspjaldi",
     "OnMovieDeleteHelpText": "Í Eyðingu kvikmyndar",

@@ -1027,7 +1027,6 @@
     "Search": "검색",
     "Edit": "편집하다",
     "SqliteVersionCheckUpgradeRequiredMessage": "현재 설치된 SQLite 버전 {0}은 더 이상 지원되지 않습니다. SQLite를 최소한 {1} 버전으로 업그레이드하십시오.",
-    "showCinemaReleaseHelpText": "포스터 아래에 영화 개봉일 표시",
     "ShowReleaseDateHelpText": "포스터 아래에 출시일 표시",
     "ShowCinemaRelease": "영화 개봉일 표시",
     "ShowReleaseDate": "출시일 표시",

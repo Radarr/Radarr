@@ -1030,7 +1030,6 @@
     "ShowReleaseDate": "Zobrazit datum vydání",
     "ShowReleaseDateHelpText": "Zobrazit datum vydání pod plakátem",
     "ShowCinemaRelease": "Zobrazit datum vydání kina",
-    "showCinemaReleaseHelpText": "Zobrazit datum vydání kina pod plakátem",
     "OnMovieDelete": "Při mazání filmu",
     "OnMovieDeleteHelpText": "Při mazání filmu",
     "OnMovieFileDelete": "Při mazání filmových souborů",

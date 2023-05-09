@@ -1028,7 +1028,6 @@
     "MovieExcludedFromAutomaticAdd": "Film exkluderad från automatisk läggning",
     "SqliteVersionCheckUpgradeRequiredMessage": "För närvarande installerad SQLite-version {0} stöds inte längre. Uppgradera SQLite till minst version {1}.",
     "ShowCinemaRelease": "Visa utgivningsdatum för bio",
-    "showCinemaReleaseHelpText": "Visa släppdatum för bio under affischen",
     "ShowReleaseDate": "Visa släppdatum",
     "ShowReleaseDateHelpText": "Visa släppdatum under affischen",
     "OnMovieDelete": "Vid radering av film",

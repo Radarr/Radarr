@@ -1028,7 +1028,6 @@
     "ImportNotForDownloads": "Benutze dies NICHT um abgeschlossene Downloads deines Download Clients hinzuzufügen. Dies ist NUR für vorhandene organisierte Mediatheken und nicht für unsortierte Dateien.",
     "SqliteVersionCheckUpgradeRequiredMessage": "Die derzeit installierte SQLite-Version {0} wird nicht mehr unterstützt. Bitte aktualisieren Sie SQLite auf mindestens Version {1}.",
     "ShowCinemaRelease": "Erscheinungsdatum des Kinos anzeigen",
-    "showCinemaReleaseHelpText": "Erscheinungsdatum des Kinos unter Poster anzeigen",
     "ShowReleaseDate": "Veröffentlichungsdatum anzeigen",
     "ShowReleaseDateHelpText": "Erscheinungsdatum unter Poster anzeigen",
     "OnMovieDelete": "Beim Löschen des Films",

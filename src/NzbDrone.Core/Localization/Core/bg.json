@@ -1030,7 +1030,6 @@
     "ShowReleaseDate": "Показване на датата на издаване",
     "ShowReleaseDateHelpText": "Показване на датата на пускане под постер",
     "ShowCinemaRelease": "Показване на датата на излизане на киното",
-    "showCinemaReleaseHelpText": "Покажете датата на излизане на киното под плакат",
     "OnMovieDelete": "На Изтриване на филм",
     "OnMovieDeleteHelpText": "На Изтриване на филм",
     "OnMovieFileDelete": "В Изтриване на файл с филм",

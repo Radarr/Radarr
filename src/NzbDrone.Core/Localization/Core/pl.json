@@ -1028,7 +1028,6 @@
     "Edit": "Edytować",
     "SqliteVersionCheckUpgradeRequiredMessage": "Aktualnie zainstalowana wersja SQLite {0} nie jest już obsługiwana. Zaktualizuj SQLite przynajmniej do wersji {1}.",
     "ShowCinemaRelease": "Pokaż datę premiery w kinie",
-    "showCinemaReleaseHelpText": "Pokaż datę premiery w kinie pod plakatem",
     "ShowReleaseDate": "Pokaż datę wydania",
     "ShowReleaseDateHelpText": "Pokaż datę premiery pod plakatem",
     "OnMovieDelete": "Usuń film",

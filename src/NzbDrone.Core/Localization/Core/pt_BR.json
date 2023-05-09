@@ -1028,7 +1028,6 @@
     "MIA": "Desaparecidos",
     "SqliteVersionCheckUpgradeRequiredMessage": "A versão {0} do SQLite instalada atualmente não é mais compatível. Atualize o SQLite para pelo menos a versão {1}.",
     "ShowCinemaRelease": "Mostrar data de lançamento no cinema",
-    "showCinemaReleaseHelpText": "Mostrar data de lançamento no cinema abaixo do pôster",
     "ShowReleaseDate": "Mostrar data de lançamento",
     "ShowReleaseDateHelpText": "Mostrar data de lançamento abaixo do pôster",
     "OnMovieDeleteHelpText": "Ao excluir filme",
@@ -1144,7 +1143,7 @@
     "CollectionShowPostersHelpText": "Mostrar pôsteres de itens da coleção",
     "RottenTomatoesRating": "Avaliação Tomato",
     "TotalMovies": "Total de Filmes",
-    "ApplicationURL": "URL do Aplicativo",
+    "ApplicationURL": "URL do aplicativo",
     "ApplicationUrlHelpText": "A URL externa deste aplicativo, incluindo http(s)://, porta e base da URL",
     "PreferredProtocol": "Protocolo Preferido",
     "SettingsThemeHelpText": "Alterar o tema da interface do usuário do aplicativo, o tema 'Auto' usará o tema do sistema operacional para definir o modo Claro ou Escuro. Inspirado por Theme.Park",
@@ -1166,5 +1165,6 @@
     "MovieMatchType": "Tipo de Filme Correspondente",
     "Loading": "Carregando",
     "ThereWasAnErrorLoadingThisItem": "Ocorreu um erro ao carregar este item",
-    "ThereWasAnErrorLoadingThisPage": "Ocorreu um erro ao carregar esta página"
+    "ThereWasAnErrorLoadingThisPage": "Ocorreu um erro ao carregar esta página",
+    "ShowCinemaReleaseHelpText": "Mostrar data de lançamento do cinema sob o pôster"
 }
