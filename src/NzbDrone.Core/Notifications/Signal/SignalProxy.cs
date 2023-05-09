@@ -30,9 +30,8 @@ namespace NzbDrone.Core.Notifications.Signal
         public void SendNotification(string title, string message, SignalSettings settings)
         {
             var text = new StringBuilder();
-            text.Append(title);
-            text.Append(new string("\n"));
-            text.Append(message);
+            text.AppendLine(title);
+            text.AppendLine(message);
 
             var urlSignalAPI = HttpRequestBuilder.BuildBaseUrl(
                 settings.UseSSL,
@@ -42,9 +41,9 @@ namespace NzbDrone.Core.Notifications.Signal
 
             var requestBuilder = new HttpRequestBuilder(urlSignalAPI).Post();
 
-            if (settings.LoginSignalAPI.IsNotNullOrWhiteSpace() && settings.PasswordSignalAPI.IsNotNullOrWhiteSpace())
+            if (settings.AuthUsername.IsNotNullOrWhiteSpace() && settings.AuthPassword.IsNotNullOrWhiteSpace())
             {
-                requestBuilder.NetworkCredential = new BasicNetworkCredential(settings.LoginSignalAPI, settings.PasswordSignalAPI);
+                requestBuilder.NetworkCredential = new BasicNetworkCredential(settings.AuthUsername, settings.AuthPassword);
             }
 
             var request = requestBuilder.Build();
@@ -54,8 +53,8 @@ namespace NzbDrone.Core.Notifications.Signal
             var payload = new SignalPayload
             {
                 Message = text.ToString(),
-                Number = settings.SourceNumber,
-                Recipients = new[] { settings.ReceiverID }
+                Number = settings.SenderNumber,
+                Recipients = new[] { settings.ReceiverId }
             };
             request.SetContent(payload.ToJson());
             _httpClient.Post(request);
@@ -70,39 +69,49 @@ namespace NzbDrone.Core.Notifications.Signal
 
                 SendNotification(title, body, settings);
             }
+            catch (WebException ex)
+            {
+                _logger.Error(ex, "Unable to send test message: {0}", ex.Message);
+                return new ValidationFailure("Host", $"Unable to send test message: {ex.Message}");
+            }
+            catch (HttpException ex)
+            {
+                _logger.Error(ex, "Unable to send test message: {0}", ex.Message);
+
+                if (ex.Response.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    if (ex.Response.Content.ContainsIgnoreCase("400 The plain HTTP request was sent to HTTPS port"))
+                    {
+                        return new ValidationFailure("UseSSL", "SSL seems to be required");
+                    }
+
+                    var error = Json.Deserialize<SignalError>(ex.Response.Content);
+
+                    var property = "Host";
+
+                    if (error.Error.ContainsIgnoreCase("Invalid group id"))
+                    {
+                        property = "ReceiverId";
+                    }
+                    else if (error.Error.ContainsIgnoreCase("Invalid account"))
+                    {
+                        property = "SenderNumber";
+                    }
+
+                    return new ValidationFailure(property, $"Unable to send test message: {error.Error}");
+                }
+
+                if (ex.Response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    return new ValidationFailure("AuthUsername", "Login/Password invalid");
+                }
+
+                return new ValidationFailure("Host", $"Unable to send test message: {ex.Message}");
+            }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Unable to send test message");
-                if (ex is WebException webException)
-                {
-                    return new ValidationFailure("Host", $"{webException.Status.ToString()}: {webException.Message}");
-                }
-                else if (ex is Common.Http.HttpException restException)
-                {
-                    if (restException.Response.StatusCode == HttpStatusCode.BadRequest)
-                    {
-                        var error = Json.Deserialize<SignalError>(restException.Response.Content);
-                        var property = "Host";
-
-                        if (error.Error.ContainsIgnoreCase("Invalid group id"))
-                        {
-                            property = "ReceiverID";
-                        }
-                        else if (error.Error.ContainsIgnoreCase("Invalid account"))
-                        {
-                            property = "SourceNumber";
-                        }
-
-                        return new ValidationFailure(property, error.Error);
-                    }
-                    else if (restException.Response.StatusCode == HttpStatusCode.Unauthorized)
-                    {
-                        var property = "LoginSignalAPI";
-                        return new ValidationFailure(property, "Login/Password invalid");
-                    }
-                }
-
-                return new ValidationFailure("Host", "Unable to send test message");
+                _logger.Error(ex, "Unable to send test message: {0}", ex.Message);
+                return new ValidationFailure("Host", $"Unable to send test message: {ex.Message}");
             }
 
             return null;

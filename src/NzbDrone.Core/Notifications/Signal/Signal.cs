@@ -16,7 +16,7 @@ namespace NzbDrone.Core.Notifications.Signal
         }
 
         public override string Name => "Signal";
-        public override string Link => "https://Signal.org/";
+        public override string Link => "https://signal.org/";
 
         public override void OnGrab(GrabMessage grabMessage)
         {
