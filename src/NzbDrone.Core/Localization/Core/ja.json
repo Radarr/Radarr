@@ -1028,7 +1028,6 @@
     "Edit": "編集",
     "SqliteVersionCheckUpgradeRequiredMessage": "現在インストールされているSQLiteバージョン{0}はサポートされなくなりました。 SQLiteを少なくともバージョン{1}にアップグレードしてください。",
     "ShowCinemaRelease": "シネマのリリース日を表示",
-    "showCinemaReleaseHelpText": "ポスターの下に映画のリリース日を表示する",
     "ShowReleaseDate": "リリース日を表示",
     "ShowReleaseDateHelpText": "ポスターの下にリリース日を表示する",
     "OnMovieFileDeleteHelpText": "ムービーファイルの削除について",

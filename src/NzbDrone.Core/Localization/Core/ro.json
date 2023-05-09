@@ -1027,7 +1027,6 @@
     "MovieExcludedFromAutomaticAdd": "Filmul este exclus din adăugarea automată",
     "ReleaseWillBeProcessedInterp": "Eliberarea va fi procesată {0}",
     "SqliteVersionCheckUpgradeRequiredMessage": "Versiunea SQLite instalată în prezent {0} nu mai este acceptată. Actualizați SQLite la cel puțin versiunea {1}.",
-    "showCinemaReleaseHelpText": "Afișați data lansării cinematografului sub afiș",
     "ShowReleaseDate": "Afișează data lansării",
     "ShowReleaseDateHelpText": "Afișați data lansării sub afiș",
     "ShowCinemaRelease": "Data lansării Show Cinema",

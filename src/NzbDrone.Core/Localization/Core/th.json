@@ -1028,7 +1028,6 @@
     "Edit": "แก้ไข",
     "SqliteVersionCheckUpgradeRequiredMessage": "ไม่รองรับ SQLite เวอร์ชัน {0} ที่ติดตั้งในปัจจุบันอีกต่อไป โปรดอัปเกรด SQLite เป็นเวอร์ชันอย่างน้อย {1}",
     "ShowCinemaRelease": "วันฉายภาพยนตร์",
-    "showCinemaReleaseHelpText": "ฉายวันที่ฉายในโรงภาพยนตร์ใต้โปสเตอร์",
     "ShowReleaseDate": "แสดงวันที่วางจำหน่าย",
     "ShowReleaseDateHelpText": "แสดงวันที่วางจำหน่ายใต้โปสเตอร์",
     "OnMovieDelete": "บน Movie Delete",

@@ -1028,7 +1028,6 @@
     "Edit": "Biên tập",
     "SqliteVersionCheckUpgradeRequiredMessage": "Phiên bản SQLite được cài đặt hiện tại {0} không còn được hỗ trợ. Vui lòng nâng cấp SQLite lên ít nhất phiên bản {1}.",
     "ShowCinemaRelease": "Ngày phát hành rạp chiếu phim",
-    "showCinemaReleaseHelpText": "Hiển thị ngày phát hành rạp chiếu phim dưới áp phích",
     "ShowReleaseDate": "Hiển thị ngày phát hành",
     "ShowReleaseDateHelpText": "Hiển thị ngày phát hành dưới áp phích",
     "OnMovieDelete": "Trên phim Xóa",

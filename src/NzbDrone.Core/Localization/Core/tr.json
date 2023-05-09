@@ -1028,7 +1028,6 @@
     "MoveFolders2": "Film dosyalarını '{0}' konumundan '{1}' konumuna taşımak ister misiniz?",
     "SqliteVersionCheckUpgradeRequiredMessage": "Şu anda kurulu olan SQLite sürümü {0} artık desteklenmiyor. Lütfen SQLite'ı en az {1} sürümüne yükseltin.",
     "ShowCinemaRelease": "Sinema Çıkış Tarihini Göster",
-    "showCinemaReleaseHelpText": "Sinema çıkış tarihini posterin altında gösterin",
     "ShowReleaseDate": "Çıkış Tarihini Göster",
     "ShowReleaseDateHelpText": "Posterin altında çıkış tarihini göster",
     "OnMovieDelete": "Film Silindiğinde",

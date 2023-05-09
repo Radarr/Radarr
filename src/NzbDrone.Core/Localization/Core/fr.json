@@ -1028,7 +1028,6 @@
     "MoveFolders2": "Souhaitez-vous déplacer les fichiers vidéo de «{0}» vers «{1}» ?",
     "SqliteVersionCheckUpgradeRequiredMessage": "La version {0} de SQLite actuellement installée n'est plus prise en charge. Veuillez mettre à niveau SQLite vers au moins la version {1}.",
     "ShowCinemaRelease": "Afficher la date de sortie du cinéma",
-    "showCinemaReleaseHelpText": "Afficher la date de sortie du cinéma sous l'affiche",
     "ShowReleaseDate": "Afficher la date de sortie",
     "ShowReleaseDateHelpText": "Afficher la date de sortie sous l'affiche",
     "OnMovieFileDeleteForUpgradeHelpText": "À la suppression du fichier vidéo pour mise à niveau",

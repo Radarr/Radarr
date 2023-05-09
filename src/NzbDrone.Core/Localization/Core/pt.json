@@ -1027,7 +1027,6 @@
     "YesMoveFiles": "Sim, mova os ficheiros",
     "MoveFolders2": "Deseja mover os ficheiros de filme de \"{0}\" para \"{1}\"?",
     "SqliteVersionCheckUpgradeRequiredMessage": "A versão do SQLite atualmente instalada {0} não é mais suportada. Atualiza o SQLite para pelo menos a versão {1}.",
-    "showCinemaReleaseHelpText": "Mostrar data de lançamento no cinema embaixo do cartaz",
     "ShowCinemaRelease": "Mostrar data de lançamento no cinema",
     "ShowReleaseDate": "Mostrar data de lançamento",
     "ShowReleaseDateHelpText": "Mostrar data de lançamento abaixo do cartaz",

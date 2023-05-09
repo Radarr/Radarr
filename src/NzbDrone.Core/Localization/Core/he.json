@@ -1029,7 +1029,6 @@
     "SqliteVersionCheckUpgradeRequiredMessage": "גרסת SQLite המותקנת כעת {0} אינה נתמכת עוד. אנא שדרג את SQLite לגרסה {1} לפחות.",
     "ShowReleaseDateHelpText": "הצג תאריך יציאה תחת הכרזה",
     "ShowCinemaRelease": "הצג תאריך יציאה לקולנוע",
-    "showCinemaReleaseHelpText": "הצג תאריך יציאה לקולנוע תחת הכרזה",
     "ShowReleaseDate": "הצגת תאריך פרסום",
     "OnMovieFileDelete": "במחיקת קובץ הסרט",
     "OnMovieFileDeleteHelpText": "במחיקת קובץ הסרט",
