@@ -11220,7 +11220,13 @@
           "onHealthIssue": {
             "type": "boolean"
           },
+          "onHealthRestored": {
+            "type": "boolean"
+          },
           "onApplicationUpdate": {
+            "type": "boolean"
+          },
+          "onManualInteractionRequired": {
             "type": "boolean"
           },
           "supportsOnGrab": {
@@ -11250,7 +11256,13 @@
           "supportsOnHealthIssue": {
             "type": "boolean"
           },
+          "supportsOnHealthRestored": {
+            "type": "boolean"
+          },
           "supportsOnApplicationUpdate": {
+            "type": "boolean"
+          },
+          "supportsOnManualInteractionRequired": {
             "type": "boolean"
           },
           "includeHealthWarnings": {
