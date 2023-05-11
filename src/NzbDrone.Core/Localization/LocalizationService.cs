@@ -146,21 +146,12 @@ namespace NzbDrone.Core.Localization
                 return;
             }
 
-            using (var fs = File.OpenRead(resourcePath))
-            {
-                if (fs != null)
-                {
-                    var dict = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(fs);
+            await using var fs = File.OpenRead(resourcePath);
+            var dict = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(fs);
 
-                    foreach (var key in dict.Keys)
-                    {
-                        dictionary[key] = dict[key];
-                    }
-                }
-                else
-                {
-                    _logger.Error("Missing translation/culture resource: {0}", resourcePath);
-                }
+            foreach (var key in dict.Keys)
+            {
+                dictionary[key] = dict[key];
             }
         }
 
