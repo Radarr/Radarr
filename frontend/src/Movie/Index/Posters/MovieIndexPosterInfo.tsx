@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from 'Components/Icon';
 import { icons } from 'Helpers/Props';
+import QualityProfile from 'typings/QualityProfile';
 import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import formatBytes from 'Utilities/Number/formatBytes';
 import translate from 'Utilities/String/translate';
@@ -9,8 +10,7 @@ import styles from './MovieIndexPosterInfo.css';
 interface MovieIndexPosterInfoProps {
   studio?: string;
   showQualityProfile: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  qualityProfile: any;
+  qualityProfile: QualityProfile;
   added?: string;
   inCinemas?: string;
   digitalRelease?: string;
