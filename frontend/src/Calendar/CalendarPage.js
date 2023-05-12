@@ -14,6 +14,7 @@ import NoMovie from 'Movie/NoMovie';
 import getErrorMessage from 'Utilities/Object/getErrorMessage';
 import translate from 'Utilities/String/translate';
 import CalendarConnector from './CalendarConnector';
+import CalendarFilterModal from './CalendarFilterModal';
 import CalendarLinkModal from './iCal/CalendarLinkModal';
 import LegendConnector from './Legend/LegendConnector';
 import CalendarOptionsModal from './Options/CalendarOptionsModal';
@@ -83,6 +84,7 @@ class CalendarPage extends Component {
       movieIsFetching,
       movieIsPopulated,
       missingMovieIds,
+      customFilters,
       isRssSyncExecuting,
       isSearchingForMissing,
       useCurrentPage,
@@ -137,7 +139,8 @@ class CalendarPage extends Component {
               isDisabled={!hasMovie}
               selectedFilterKey={selectedFilterKey}
               filters={filters}
-              customFilters={[]}
+              customFilters={customFilters}
+              filterModalConnectorComponent={CalendarFilterModal}
               onFilterSelect={onFilterSelect}
             />
           </PageToolbarSection>
@@ -208,6 +211,7 @@ CalendarPage.propTypes = {
   movieIsFetching: PropTypes.bool.isRequired,
   movieIsPopulated: PropTypes.bool.isRequired,
   missingMovieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   isRssSyncExecuting: PropTypes.bool.isRequired,
   isSearchingForMissing: PropTypes.bool.isRequired,
   useCurrentPage: PropTypes.bool.isRequired,
