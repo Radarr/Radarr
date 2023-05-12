@@ -1,0 +1,28 @@
+'Area: API':
+  - src/Radarr.Api.V3/**/*
+
+'Area: Db-migration':
+  - src/NzbDrone.Core/Datastore/Migration/*
+
+'Area: Download Clients':
+  - src/NzbDrone.Core/Download/Clients/**/*
+
+'Area: Import Lists':
+  - src/NzbDrone.Core/ImportLists/**/*
+
+'Area: Indexer':
+  - src/NzbDrone.Core/Indexers/**/*
+
+'Area: Notifications':
+  - src/NzbDrone.Core/Notifications/**/*
+
+'Area: Organizer':
+  - src/NzbDrone.Core/Organizer/**/*
+
+'Area: Parser':
+  - src/NzbDrone.Core/Parser/**/*
+
+'Area: UI':
+  - frontend/**/*
+  - package.json
+  - yarn.lock
