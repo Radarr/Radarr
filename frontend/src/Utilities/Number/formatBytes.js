@@ -10,7 +10,7 @@ function formatBytes(input) {
   return filesize(size, {
     base: 2,
     round: 1
-  });
+  }).toString();
 }
 
 export default formatBytes;
