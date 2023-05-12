@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Notifications.Signal
         public int Port { get; set; }
 
         [FieldDefinition(2, Label = "Use SSL", Type = FieldType.Checkbox, HelpText = "Use a secure connection.")]
-        public bool UseSSL { get; set; }
+        public bool UseSsl { get; set; }
 
         [FieldDefinition(3, Label = "Sender Number", Privacy = PrivacyLevel.ApiKey, HelpText = "Phone number of the sender register in signal-api")]
         public string SenderNumber { get; set; }

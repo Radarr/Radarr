@@ -34,7 +34,7 @@ namespace NzbDrone.Core.Notifications.Signal
             text.AppendLine(message);
 
             var urlSignalAPI = HttpRequestBuilder.BuildBaseUrl(
-                settings.UseSSL,
+                settings.UseSsl,
                 settings.Host,
                 settings.Port,
                 "/v2/send");
@@ -82,7 +82,7 @@ namespace NzbDrone.Core.Notifications.Signal
                 {
                     if (ex.Response.Content.ContainsIgnoreCase("400 The plain HTTP request was sent to HTTPS port"))
                     {
-                        return new ValidationFailure("UseSSL", "SSL seems to be required");
+                        return new ValidationFailure("UseSsl", "SSL seems to be required");
                     }
 
                     var error = Json.Deserialize<SignalError>(ex.Response.Content);
