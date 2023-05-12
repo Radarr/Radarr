@@ -92,7 +92,7 @@ namespace NzbDrone.Core.Download
 
             if (filterBlockedClients)
             {
-                return FilterBlockedIndexers(enabledClients).ToList();
+                return FilterBlockedDownloadClients(enabledClients).ToList();
             }
 
             return enabledClients;
@@ -103,15 +103,13 @@ namespace NzbDrone.Core.Download
             return _downloadClientFactory.GetAvailableProviders().Single(d => d.Definition.Id == id);
         }
 
-        private IEnumerable<IDownloadClient> FilterBlockedIndexers(IEnumerable<IDownloadClient> clients)
+        private IEnumerable<IDownloadClient> FilterBlockedDownloadClients(IEnumerable<IDownloadClient> clients)
         {
             var blockedClients = _downloadClientStatusService.GetBlockedProviders().ToDictionary(v => v.ProviderId, v => v);
 
             foreach (var client in clients)
             {
-                DownloadClientStatus blockedClientStatus;
-
-                if (blockedClients.TryGetValue(client.Definition.Id, out blockedClientStatus))
+                if (blockedClients.TryGetValue(client.Definition.Id, out var blockedClientStatus))
                 {
                     _logger.Debug("Temporarily ignoring client {0} till {1} due to recent failures.", client.Definition.Name, blockedClientStatus.DisabledTill.Value.ToLocalTime());
                     continue;
