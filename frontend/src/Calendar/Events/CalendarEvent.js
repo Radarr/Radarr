@@ -25,6 +25,7 @@ class CalendarEvent extends Component {
       title,
       titleSlug,
       genres,
+      date,
       monitored,
       certification,
       hasFile,
@@ -33,8 +34,7 @@ class CalendarEvent extends Component {
       showMovieInformation,
       showCutoffUnmetIcon,
       fullColorEvents,
-      colorImpairedMode,
-      date
+      colorImpairedMode
     } = this.props;
 
     const isDownloading = !!(queueItem || grabbed);
@@ -148,17 +148,18 @@ CalendarEvent.propTypes = {
   inCinemas: PropTypes.string,
   physicalRelease: PropTypes.string,
   digitalRelease: PropTypes.string,
+  date: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
   certification: PropTypes.string,
   hasFile: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
-  showMovieInformation: PropTypes.bool.isRequired,
-  showCutoffUnmetIcon: PropTypes.bool.isRequired,
-  fullColorEvents: PropTypes.bool.isRequired,
-  timeFormat: PropTypes.string.isRequired,
-  colorImpairedMode: PropTypes.bool.isRequired,
-  date: PropTypes.string.isRequired
+  // These props come from the connector, not marked as required to appease TS for now.
+  showMovieInformation: PropTypes.bool,
+  showCutoffUnmetIcon: PropTypes.bool,
+  fullColorEvents: PropTypes.bool,
+  timeFormat: PropTypes.string,
+  colorImpairedMode: PropTypes.bool
 };
 
 CalendarEvent.defaultProps = {
