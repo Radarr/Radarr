@@ -1166,5 +1166,10 @@
     "Loading": "Carregando",
     "ThereWasAnErrorLoadingThisItem": "Ocorreu um erro ao carregar este item",
     "ThereWasAnErrorLoadingThisPage": "Ocorreu um erro ao carregar esta página",
-    "ShowCinemaReleaseHelpText": "Mostrar data de lançamento do cinema sob o pôster"
+    "ShowCinemaReleaseHelpText": "Mostrar data de lançamento do cinema sob o pôster",
+    "OnHealthRestored": "Com a Saúde Restaurada",
+    "OnHealthRestoredHelpText": "Com a Saúde Restaurada",
+    "OnManualInteractionRequired": "Uma Interação Manual é Necessária",
+    "OnManualInteractionRequiredHelpText": "Uma Interação Manual é Necessária",
+    "ApiKeyValidationHealthCheckMessage": "Atualize sua chave de API para ter pelo menos 20 caracteres. Você pode fazer isso através das configurações ou do arquivo de configuração"
 }

@@ -1165,5 +1165,9 @@
     "EditSelectedMovies": "Modifier films sélectionnés",
     "StopSelecting": "Arrêtez la sélection",
     "UpdateFiltered": "Mettre à jour les filtres",
-    "RecycleBinUnableToWriteHealthCheck": "Impossible d'écrire dans le dossier de corbeille configuré : {0}. Assurez vous que ce chemin existe et est accessible en écriture par l'utilisateur exécutant Radarr"
+    "RecycleBinUnableToWriteHealthCheck": "Impossible d'écrire dans le dossier de corbeille configuré : {0}. Assurez vous que ce chemin existe et est accessible en écriture par l'utilisateur exécutant Radarr",
+    "ApiKeyValidationHealthCheckMessage": "Merci de mettre à jour votre clé API afin qu'elle fasse plus de 20 caractères. Rendez vous dans les paramètres ou dans le fichier de configuration",
+    "OnManualInteractionRequired": "Interaction manuelle requise",
+    "OnManualInteractionRequiredHelpText": "Interaction manuelle requise",
+    "ShowCinemaReleaseHelpText": "Afficher la date de sortie au cinéma sous l'affiche"
 }
