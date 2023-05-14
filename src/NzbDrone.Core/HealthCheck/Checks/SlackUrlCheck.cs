@@ -22,7 +22,9 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var discordSlackNotifications = _notificationFactory.GetAvailableProviders().Where(n => n.ConfigContract.Equals("SlackSettings") && (n.Definition.Settings as SlackSettings).WebHookUrl.Contains("discord"));
+            var discordSlackNotifications = _notificationFactory.GetAvailableProviders()
+                .Where(n => n.ConfigContract.Equals("SlackSettings") && ((SlackSettings)n.Definition.Settings).WebHookUrl.Contains("discord"))
+                .ToList();
 
             if (discordSlackNotifications.Empty())
             {
@@ -31,8 +33,7 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
             return new HealthCheck(GetType(),
                 HealthCheckResult.Warning,
-                string.Format(_localizationService.GetLocalizedString("DiscordUrlInSlackNotification"),
-                    string.Join(", ", discordSlackNotifications.Select(n => n.Name))),
+                string.Format(_localizationService.GetLocalizedString("DiscordUrlInSlackNotification"), string.Join(", ", discordSlackNotifications.Select(n => n.Name))),
                 "#discord-as-slack-notification");
         }
     }

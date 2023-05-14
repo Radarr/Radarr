@@ -18,10 +18,12 @@ namespace NzbDrone.Core.HealthCheck.Checks
 
         public override HealthCheck Check()
         {
-            var ptpIndexers = _indexerFactory.All().Where(i => i.Settings.GetType() == typeof(PassThePopcornSettings));
+            var ptpIndexers = _indexerFactory.All()
+                .Where(i => i.Settings.GetType() == typeof(PassThePopcornSettings));
 
             var ptpIndexerOldSettings = ptpIndexers
-                .Where(i => (i.Settings as PassThePopcornSettings).APIUser.IsNullOrWhiteSpace()).Select(i => i.Name);
+                .Where(i => ((PassThePopcornSettings)i.Settings).APIUser.IsNullOrWhiteSpace()).Select(i => i.Name)
+                .ToList();
 
             if (ptpIndexerOldSettings.Any())
             {

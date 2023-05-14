@@ -21,10 +21,10 @@ namespace NzbDrone.Core.HealthCheck.Checks
         {
             // Not best for optimization but due to possible symlinks and junctions, we get mounts based on series path so internals can handle mount resolution.
             var mounts = _movieService.AllMoviePaths()
-                                      .Select(p => _diskProvider.GetMount(p.Value))
-                                      .Where(m => m != null && m.MountOptions != null && m.MountOptions.IsReadOnly)
-                                      .DistinctBy(m => m.RootDirectory)
-                                      .ToList();
+                .Select(p => _diskProvider.GetMount(p.Value))
+                .Where(m => m is { MountOptions.IsReadOnly: true })
+                .DistinctBy(m => m.RootDirectory)
+                .ToList();
 
             if (mounts.Any())
             {
