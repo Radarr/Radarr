@@ -3,7 +3,7 @@
 
 # Explicitly set bash scripts to have unix endings
 *.sh text eol=lf
-macOS/Radarr text eol=lf
+distribution/osx/Radarr text eol=lf
 
 # Custom for Visual Studio
 *.cs     diff=csharp

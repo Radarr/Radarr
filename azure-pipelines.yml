@@ -211,8 +211,8 @@ stages:
         displayName: Fetch Frontend
       - bash: |
           ./build.sh --packages --installer
-          cp setup/output/Radarr.*win-x64.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x64-installer.exe
-          cp setup/output/Radarr.*win-x86.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x86-installer.exe
+          cp distribution/windows/setup/output/Radarr.*win-x64.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x64-installer.exe
+          cp distribution/windows/setup/output/Radarr.*win-x86.exe ${BUILD_ARTIFACTSTAGINGDIRECTORY}/Radarr.${BUILDNAME}.windows-core-x86-installer.exe
         displayName: Create Installers
       - publish: $(Build.ArtifactStagingDirectory)
         artifact: 'WindowsInstaller'
