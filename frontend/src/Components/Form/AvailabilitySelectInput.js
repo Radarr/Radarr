@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import translate from 'Utilities/String/translate';
-import SelectInput from './SelectInput';
+import EnhancedSelectInput from './EnhancedSelectInput';
 
 const availabilityOptions = [
   { key: 'announced', value: translate('Announced') },
@@ -34,7 +34,7 @@ function AvailabilitySelectInput(props) {
   }
 
   return (
-    <SelectInput
+    <EnhancedSelectInput
       {...props}
       values={values}
     />

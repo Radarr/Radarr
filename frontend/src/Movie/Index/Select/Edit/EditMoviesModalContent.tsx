@@ -15,6 +15,7 @@ import styles from './EditMoviesModalContent.css';
 interface SavePayload {
   monitored?: boolean;
   qualityProfileId?: number;
+  minimumAvailability?: string;
   rootFolderPath?: string;
   moveFiles?: boolean;
 }
@@ -40,6 +41,7 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
   const [qualityProfileId, setQualityProfileId] = useState<string | number>(
     NO_CHANGE
   );
+  const [minimumAvailability, setMinimumAvailability] = useState(NO_CHANGE);
   const [rootFolderPath, setRootFolderPath] = useState(NO_CHANGE);
   const [isConfirmMoveModalOpen, setIsConfirmMoveModalOpen] = useState(false);
 
@@ -58,6 +60,11 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
         payload.qualityProfileId = qualityProfileId as number;
       }
 
+      if (minimumAvailability !== NO_CHANGE) {
+        hasChanges = true;
+        payload.minimumAvailability = minimumAvailability as string;
+      }
+
       if (rootFolderPath !== NO_CHANGE) {
         hasChanges = true;
         payload.rootFolderPath = rootFolderPath;
@@ -70,7 +77,14 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
 
       onModalClose();
     },
-    [monitored, qualityProfileId, rootFolderPath, onSavePress, onModalClose]
+    [
+      monitored,
+      qualityProfileId,
+      minimumAvailability,
+      rootFolderPath,
+      onSavePress,
+      onModalClose,
+    ]
   );
 
   const onInputChange = useCallback(
@@ -81,6 +95,9 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
           break;
         case 'qualityProfileId':
           setQualityProfileId(value);
+          break;
+        case 'minimumAvailability':
+          setMinimumAvailability(value);
           break;
         case 'rootFolderPath':
           setRootFolderPath(value);
@@ -134,7 +151,7 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
         </FormGroup>
 
         <FormGroup>
-          <FormLabel>{translate('Quality Profile')}</FormLabel>
+          <FormLabel>{translate('QualityProfile')}</FormLabel>
 
           <FormInputGroup
             type={inputTypes.QUALITY_PROFILE_SELECT}
@@ -147,7 +164,20 @@ function EditMoviesModalContent(props: EditMoviesModalContentProps) {
         </FormGroup>
 
         <FormGroup>
-          <FormLabel>{translate('Root Folder')}</FormLabel>
+          <FormLabel>{translate('MinimumAvailability')}</FormLabel>
+
+          <FormInputGroup
+            type={inputTypes.AVAILABILITY_SELECT}
+            name="minimumAvailability"
+            value={minimumAvailability}
+            includeNoChange={true}
+            includeNoChangeDisabled={false}
+            onChange={onInputChange}
+          />
+        </FormGroup>
+
+        <FormGroup>
+          <FormLabel>{translate('RootFolder')}</FormLabel>
 
           <FormInputGroup
             type={inputTypes.ROOT_FOLDER_SELECT}
