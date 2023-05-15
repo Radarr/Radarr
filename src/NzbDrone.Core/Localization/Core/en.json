@@ -485,7 +485,7 @@
   "List": "List",
   "ListExclusions": "List Exclusions",
   "ListSettings": "List Settings",
-  "ListSyncLevelHelpText": "Movies in library will handled based on your selection if they fall off or do not appear on your list(s)",
+  "ListSyncLevelHelpText": "Movies in library will be handled based on your selection if they fall off or do not appear on your list(s)",
   "ListSyncLevelHelpTextWarning": "Movie files will be permanently deleted, this can result in wiping your library if your lists are empty",
   "ListTagsHelpText": "Tags list items will be added with",
   "ListUpdateInterval": "List Update Interval",
