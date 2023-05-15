@@ -1,4 +1,0 @@
-- Radarr Postgres Database Support in `master`
-- Prowlarr Postgres Database Support in `nightly` and `develop`
-- [Lidarr Postgres Database Support in development (Draft PR#2625)](https://github.com/Lidarr/Lidarr/pull/2625)
-- \*Arrs Wiki Contributions welcomed and strongly encouraged, simply auth with GitHub on the wiki and update the page

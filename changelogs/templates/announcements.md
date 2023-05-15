@@ -1,8 +1,2 @@
-- Radarr Postgres Database Support
-- Radarr Plex Watchlist Support
-- Radarr Collections Support
-  - Existing Collection Lists have been migrated
-- Some users may experience `Database Malformed` or other migration errors
-  - This is caused by the database having existing corruption.
-  - The solution is to follow the instructions noted on the FAQ for a malformed database. <https://wiki.servarr.com/radarr/faq#i-am-getting-an-error-database-disk-image-is-malformed>
-  - Given this just occurred after an update then if the post-migrated database will not open or cannot be recovered then make a copy of the database from a recent backup and apply the database recovery process to that file then try starting Radarr with the recovered backup file.  It should then migrate without issues then.
+- Radarr Plex Watchlist Improvements
+- Parsing Improvements
