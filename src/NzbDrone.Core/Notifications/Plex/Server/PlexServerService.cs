@@ -103,7 +103,14 @@ namespace NzbDrone.Core.Notifications.Plex.Server
                 foreach (var location in section.Locations)
                 {
                     var rootFolder = new OsPath(rootFolderPath);
-                    var mappedPath = new OsPath(settings.MapTo) + (rootFolder - new OsPath(settings.MapFrom));
+                    var mappedPath = rootFolder;
+
+                    if (settings.MapTo.IsNotNullOrWhiteSpace())
+                    {
+                        mappedPath = new OsPath(settings.MapTo) + (rootFolder - new OsPath(settings.MapFrom));
+
+                        _logger.Trace("Mapping Path from {0} to {1} for partial scan", rootFolder, mappedPath);
+                    }
 
                     if (location.Path.PathEquals(mappedPath.FullPath))
                     {
