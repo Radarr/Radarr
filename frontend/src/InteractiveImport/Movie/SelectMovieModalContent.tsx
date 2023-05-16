@@ -15,12 +15,39 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import Scroller from 'Components/Scroller/Scroller';
+import Column from 'Components/Table/Column';
+import VirtualTableRowButton from 'Components/Table/VirtualTableRowButton';
 import { scrollDirections } from 'Helpers/Props';
 import Movie from 'Movie/Movie';
 import createAllMoviesSelector from 'Store/Selectors/createAllMoviesSelector';
 import dimensions from 'Styles/Variables/dimensions';
+import translate from 'Utilities/String/translate';
+import SelectMovieModalTableHeader from './SelectMovieModalTableHeader';
 import SelectMovieRow from './SelectMovieRow';
 import styles from './SelectMovieModalContent.css';
+
+const columns = [
+  {
+    name: 'title',
+    label: translate('Title'),
+    isVisible: true,
+  },
+  {
+    name: 'year',
+    label: translate('Year'),
+    isVisible: true,
+  },
+  {
+    name: 'imdbId',
+    label: translate('ImdbId'),
+    isVisible: true,
+  },
+  {
+    name: 'tmdbId',
+    label: translate('TmdbId'),
+    isVisible: true,
+  },
+];
 
 const bodyPadding = parseInt(dimensions.pageContentBodyPadding);
 
@@ -32,6 +59,7 @@ interface SelectMovieModalContentProps {
 
 interface RowItemData {
   items: Movie[];
+  columns: Column[];
   onMovieSelect(movieId: number): void;
 }
 
@@ -40,7 +68,7 @@ const Row: React.FC<ListChildComponentProps<RowItemData>> = ({
   style,
   data,
 }) => {
-  const { items, onMovieSelect } = data;
+  const { items, columns, onMovieSelect } = data;
 
   if (index >= items.length) {
     return null;
@@ -49,20 +77,24 @@ const Row: React.FC<ListChildComponentProps<RowItemData>> = ({
   const movie = items[index];
 
   return (
-    <div
+    <VirtualTableRowButton
       style={{
         display: 'flex',
         justifyContent: 'space-between',
         ...style,
       }}
+      onPress={() => onMovieSelect(movie.id)}
     >
       <SelectMovieRow
         id={movie.id}
         title={movie.title}
+        tmdbId={movie.tmdbId}
+        imdbId={movie.imdbId}
         year={movie.year}
+        columns={columns}
         onMovieSelect={onMovieSelect}
       />
-    </div>
+    </VirtualTableRowButton>
   );
 };
 
@@ -161,6 +193,7 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
           autoFocus={false}
           ref={scrollerRef}
         >
+          <SelectMovieModalTableHeader columns={columns} />
           <List<RowItemData>
             ref={listRef}
             style={{
@@ -174,6 +207,7 @@ function SelectMovieModalContent(props: SelectMovieModalContentProps) {
             itemSize={38}
             itemData={{
               items,
+              columns,
               onMovieSelect: onMovieSelectWrapper,
             }}
           >
