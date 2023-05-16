@@ -1,5 +1,25 @@
-.movie {
-  padding: 8px;
-  width: 100%;
-  border-bottom: 1px solid var(--borderColor);
+.cell {
+  composes: cell from '~Components/Table/Cells/VirtualTableRowCell.css';
+
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  composes: cell;
+
+  flex: 4 0 140px;
+}
+
+.year {
+  composes: cell;
+
+  flex: 0 0 70px;
+}
+
+.tmdbId,
+.imdbId {
+  composes: cell;
+
+  flex: 0 0 110px;
 }
