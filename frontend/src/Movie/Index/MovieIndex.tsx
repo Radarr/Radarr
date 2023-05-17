@@ -25,7 +25,6 @@ import SortDirection from 'Helpers/Props/SortDirection';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import NoMovie from 'Movie/NoMovie';
 import { executeCommand } from 'Store/Actions/commandActions';
-import { fetchMovies } from 'Store/Actions/movieActions';
 import {
   setMovieFilter,
   setMovieSort,
@@ -105,7 +104,6 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
   const [isSelectMode, setIsSelectMode] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchMovies());
     dispatch(fetchQueueDetails({ all: true }));
   }, [dispatch]);
 
