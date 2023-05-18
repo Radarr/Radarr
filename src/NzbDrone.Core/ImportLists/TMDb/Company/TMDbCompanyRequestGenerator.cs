@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using NLog;
 using NzbDrone.Common.Http;
@@ -12,10 +12,6 @@ namespace NzbDrone.Core.ImportLists.TMDb.Company
         public IHttpRequestBuilderFactory RequestBuilder { get; set; }
         public Logger Logger { get; set; }
         public int MaxPages { get; set; }
-
-        public TMDbCompanyRequestGenerator()
-        {
-        }
 
         public virtual ImportListPageableRequestChain GetMovies()
         {

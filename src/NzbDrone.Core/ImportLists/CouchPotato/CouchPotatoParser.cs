@@ -12,10 +12,6 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
     {
         private ImportListResponse _importListResponse;
 
-        public CouchPotatoParser()
-        {
-        }
-
         public IList<ImportListMovie> ParseResponse(ImportListResponse importListResponse)
         {
             _importListResponse = importListResponse;

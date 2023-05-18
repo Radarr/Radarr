@@ -10,10 +10,6 @@ namespace NzbDrone.Core.Indexers.TorrentPotato
     {
         public TorrentPotatoSettings Settings { get; set; }
 
-        public TorrentPotatoRequestGenerator()
-        {
-        }
-
         public virtual IndexerPageableRequestChain GetRecentRequests()
         {
             var pageableRequests = new IndexerPageableRequestChain();

@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
 using NzbDrone.Core.Validation;
@@ -18,10 +18,6 @@ namespace NzbDrone.Core.ImportLists.RadarrList2.IMDbList
     public class IMDbListSettings : IProviderConfig
     {
         private static readonly IMDbSettingsValidator Validator = new IMDbSettingsValidator();
-
-        public IMDbListSettings()
-        {
-        }
 
         [FieldDefinition(1, Label = "List/User ID", HelpText = "IMDb list ID (e.g ls12345678), IMDb user ID (e.g. ur12345678), 'top250' or 'popular'")]
         public string ListId { get; set; }

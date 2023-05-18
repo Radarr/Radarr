@@ -9,9 +9,5 @@ namespace NzbDrone.Core.MediaFiles.Commands
 
         public override bool SendUpdatesToClient => true;
         public override bool RequiresDiskAccess => true;
-
-        public RenameMovieCommand()
-        {
-        }
     }
 }

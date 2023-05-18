@@ -11,10 +11,6 @@ namespace NzbDrone.Core.ImportLists.StevenLu
     {
         private ImportListResponse _importResponse;
 
-        public StevenLuParser()
-        {
-        }
-
         public IList<ImportListMovie> ParseResponse(ImportListResponse importResponse)
         {
             _importResponse = importResponse;

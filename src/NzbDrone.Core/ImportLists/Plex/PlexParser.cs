@@ -14,10 +14,6 @@ namespace NzbDrone.Core.ImportLists.Plex
     {
         private ImportListResponse _importResponse;
 
-        public PlexParser()
-        {
-        }
-
         public virtual IList<ImportListMovie> ParseResponse(ImportListResponse importResponse)
         {
             List<PlexWatchlistItem> items;
