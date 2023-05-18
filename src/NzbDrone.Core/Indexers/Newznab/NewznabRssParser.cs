@@ -56,7 +56,8 @@ namespace NzbDrone.Core.Indexers.Newznab
 
         protected override bool PreProcess(IndexerResponse indexerResponse)
         {
-            if (indexerResponse.HttpResponse.HasHttpError)
+            if (indexerResponse.HttpResponse.HasHttpError &&
+                (indexerResponse.HttpResponse.Headers.ContentType == null || !indexerResponse.HttpResponse.Headers.ContentType.Contains("xml")))
             {
                 base.PreProcess(indexerResponse);
             }
