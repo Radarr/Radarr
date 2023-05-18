@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Http;
 
@@ -10,10 +10,6 @@ namespace NzbDrone.Core.ImportLists.TMDb.Person
         public IHttpClient HttpClient { get; set; }
         public IHttpRequestBuilderFactory RequestBuilder { get; set; }
         public Logger Logger { get; set; }
-
-        public TMDbPersonRequestGenerator()
-        {
-        }
 
         public virtual ImportListPageableRequestChain GetMovies()
         {

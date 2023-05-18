@@ -8,10 +8,6 @@ namespace Radarr.Api.V3.Credits
 {
     public class CreditResource : RestResource
     {
-        public CreditResource()
-        {
-        }
-
         public string PersonName { get; set; }
         public string CreditTmdbId { get; set; }
         public int PersonTmdbId { get; set; }

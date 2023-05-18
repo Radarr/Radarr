@@ -13,10 +13,6 @@ namespace NzbDrone.Core.ImportLists.TMDb.Keyword
         public Logger Logger { get; set; }
         public int MaxPages { get; set; }
 
-        public TMDbKeywordRequestGenerator()
-        {
-        }
-
         public virtual ImportListPageableRequestChain GetMovies()
         {
             var pageableRequests = new ImportListPageableRequestChain();

@@ -7,9 +7,6 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 {
     public class MediaBrowserSettingsValidator : AbstractValidator<MediaBrowserMetadataSettings>
     {
-        public MediaBrowserSettingsValidator()
-        {
-        }
     }
 
     public class MediaBrowserMetadataSettings : IProviderConfig

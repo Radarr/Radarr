@@ -13,10 +13,6 @@ namespace NzbDrone.Core.ImportLists.TMDb.List
         public Logger Logger { get; set; }
         public int MaxPages { get; set; }
 
-        public TMDbListRequestGenerator()
-        {
-        }
-
         public virtual ImportListPageableRequestChain GetMovies()
         {
             var pageableRequests = new ImportListPageableRequestChain();

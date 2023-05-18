@@ -12,10 +12,6 @@ namespace NzbDrone.Core.ImportLists.Trakt
     {
         private ImportListResponse _importResponse;
 
-        public TraktParser()
-        {
-        }
-
         public virtual IList<ImportListMovie> ParseResponse(ImportListResponse importResponse)
         {
             _importResponse = importResponse;
