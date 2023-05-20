@@ -15,7 +15,7 @@ namespace Radarr.Api.V3.Movies
             _fileNameBuilder = fileNameBuilder;
         }
 
-        protected override string GetDefaultMessageTemplate() => "Root folder path contains movie folder";
+        protected override string GetDefaultMessageTemplate() => "Root folder path '{rootFolderPath}' contains movie folder '{movieFolder}'";
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
@@ -24,9 +24,7 @@ namespace Radarr.Api.V3.Movies
                 return true;
             }
 
-            var movieResource = context.InstanceToValidate as MovieResource;
-
-            if (movieResource == null)
+            if (context.InstanceToValidate is not MovieResource movieResource)
             {
                 return true;
             }
@@ -41,6 +39,9 @@ namespace Radarr.Api.V3.Movies
             var rootFolder = new DirectoryInfo(rootFolderPath!).Name;
             var movie = movieResource.ToModel();
             var movieFolder = _fileNameBuilder.GetMovieFolder(movie);
+
+            context.MessageFormatter.AppendArgument("rootFolderPath", rootFolderPath);
+            context.MessageFormatter.AppendArgument("movieFolder", movieFolder);
 
             if (movieFolder == rootFolder)
             {
