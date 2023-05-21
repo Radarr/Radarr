@@ -32,7 +32,7 @@ namespace NzbDrone.Core.Test.Download
 
             Mocker.GetMock<IProvideDownloadClient>()
                 .Setup(v => v.GetDownloadClient(It.IsAny<DownloadProtocol>(), It.IsAny<int>(), It.IsAny<bool>()))
-                .Returns<DownloadProtocol, int>((v, i) => _downloadClients.FirstOrDefault(d => d.Protocol == v));
+                .Returns<DownloadProtocol, int, bool>((v, i, f) => _downloadClients.FirstOrDefault(d => d.Protocol == v));
 
             var releaseInfo = Builder<ReleaseInfo>.CreateNew()
                 .With(v => v.DownloadProtocol = DownloadProtocol.Usenet)
