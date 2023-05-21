@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
+using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
 
@@ -35,6 +37,10 @@ namespace NzbDrone.Core.Parser.Model
 
         public IndexerFlags IndexerFlags { get; set; }
         public List<Language> Languages { get; set; }
+
+        // Used to track pending releases that are being reprocessed
+        [JsonIgnore]
+        public PendingReleaseReason? PendingReleaseReason { get; set; }
 
         public int Age
         {
