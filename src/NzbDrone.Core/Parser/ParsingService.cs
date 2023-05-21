@@ -192,16 +192,6 @@ namespace NzbDrone.Core.Parser
                     return new FindMovieResult(movieByTitleAndOrYear, MovieMatchType.Title);
                 }
 
-                // Only default to not using year when one is parsed if only one movie candidate exists
-                if (candidates != null && candidates.Count == 1)
-                {
-                    movieByTitleAndOrYear = _movieService.FindByTitle(parsedMovieInfo.MovieTitles, null, otherTitles, candidates);
-                    if (movieByTitleAndOrYear != null)
-                    {
-                        return new FindMovieResult(movieByTitleAndOrYear, MovieMatchType.Title);
-                    }
-                }
-
                 return null;
             }
 
