@@ -123,6 +123,8 @@ namespace NzbDrone.Core.ImportLists
 
             Task.WaitAll(taskList.ToArray());
 
+            result.Movies = result.Movies.DistinctBy(r => new { r.TmdbId, r.ImdbId, r.Title }).ToList();
+
             _logger.Debug("Found {0} reports for all lists", result.Movies.Count);
 
             return result;
@@ -170,6 +172,8 @@ namespace NzbDrone.Core.ImportLists
             {
                 _logger.Error(e, "Error during Import List Sync for list {0}", importList.Name);
             }
+
+            result.Movies = result.Movies.DistinctBy(r => new { r.TmdbId, r.ImdbId, r.Title }).ToList();
 
             _logger.Debug("Found {0} reports for list {1}", result.Movies.Count, importList.Name);
 
