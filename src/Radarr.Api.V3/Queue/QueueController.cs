@@ -9,6 +9,7 @@ using NzbDrone.Core.Datastore.Events;
 using NzbDrone.Core.Download;
 using NzbDrone.Core.Download.Pending;
 using NzbDrone.Core.Download.TrackedDownloads;
+using NzbDrone.Core.Indexers;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Messaging.Events;
 using NzbDrone.Core.Profiles.Qualities;
@@ -130,15 +131,15 @@ namespace Radarr.Api.V3.Queue
 
         [HttpGet]
         [Produces("application/json")]
-        public PagingResource<QueueResource> GetQueue([FromQuery] PagingRequestResource paging, bool includeUnknownMovieItems = false, bool includeMovie = false)
+        public PagingResource<QueueResource> GetQueue([FromQuery] PagingRequestResource paging, bool includeUnknownMovieItems = false, bool includeMovie = false, [FromQuery] int[] movieIds = null, DownloadProtocol? protocol = null, [FromQuery] int[] languages = null, int? quality = null)
         {
             var pagingResource = new PagingResource<QueueResource>(paging);
             var pagingSpec = pagingResource.MapToPagingSpec<QueueResource, NzbDrone.Core.Queue.Queue>("timeleft", SortDirection.Ascending);
 
-            return pagingSpec.ApplyToPage((spec) => GetQueue(spec, includeUnknownMovieItems), (q) => MapToResource(q, includeMovie));
+            return pagingSpec.ApplyToPage((spec) => GetQueue(spec, movieIds?.ToHashSet(), protocol, languages?.ToHashSet(), quality, includeUnknownMovieItems), (q) => MapToResource(q, includeMovie));
         }
 
-        private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec, bool includeUnknownMovieItems)
+        private PagingSpec<NzbDrone.Core.Queue.Queue> GetQueue(PagingSpec<NzbDrone.Core.Queue.Queue> pagingSpec, HashSet<int> movieIds, DownloadProtocol? protocol, HashSet<int> languages, int? quality, bool includeUnknownMovieItems)
         {
             var ascending = pagingSpec.SortDirection == SortDirection.Ascending;
             var orderByFunc = GetOrderByFunc(pagingSpec);
@@ -146,7 +147,36 @@ namespace Radarr.Api.V3.Queue
             var queue = _queueService.GetQueue();
             var filteredQueue = includeUnknownMovieItems ? queue : queue.Where(q => q.Movie != null);
             var pending = _pendingReleaseService.GetPendingQueue();
-            var fullQueue = filteredQueue.Concat(pending).ToList();
+
+            var hasMovieIdFilter = movieIds.Any();
+            var hasLanguageFilter = languages.Any();
+            var fullQueue = filteredQueue.Concat(pending).Where(q =>
+            {
+                var include = true;
+
+                if (hasMovieIdFilter)
+                {
+                    include &= q.Movie != null && movieIds.Contains(q.Movie.Id);
+                }
+
+                if (include && protocol.HasValue)
+                {
+                    include &= q.Protocol == protocol.Value;
+                }
+
+                if (include && hasLanguageFilter)
+                {
+                    include &= q.Languages.Any(l => languages.Contains(l.Id));
+                }
+
+                if (include && quality.HasValue)
+                {
+                    include &= q.Quality.Quality.Id == quality.Value;
+                }
+
+                return include;
+            }).ToList();
+
             IOrderedEnumerable<NzbDrone.Core.Queue.Queue> ordered;
 
             if (pagingSpec.SortKey == "timeleft")

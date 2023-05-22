@@ -6,6 +6,7 @@ import * as commandNames from 'Commands/commandNames';
 import withCurrentPage from 'Components/withCurrentPage';
 import { executeCommand } from 'Store/Actions/commandActions';
 import * as queueActions from 'Store/Actions/queueActions';
+import { createCustomFiltersSelector } from 'Store/Selectors/createClientSideCollectionSelector';
 import createCommandExecutingSelector from 'Store/Selectors/createCommandExecutingSelector';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import Queue from './Queue';
@@ -15,12 +16,16 @@ function createMapStateToProps() {
     (state) => state.movies,
     (state) => state.queue.options,
     (state) => state.queue.paged,
+    (state) => state.queue.status.item,
+    createCustomFiltersSelector('queue'),
     createCommandExecutingSelector(commandNames.REFRESH_MONITORED_DOWNLOADS),
-    (movies, options, queue, isRefreshMonitoredDownloadsExecuting) => {
+    (movies, options, queue, status, customFilters, isRefreshMonitoredDownloadsExecuting) => {
       return {
+        count: options.includeUnknownMovieItems ? status.totalCount : status.count,
         isMoviesFetching: movies.isFetching,
         isMoviesPopulated: movies.isPopulated,
         moviesError: movies.error,
+        customFilters,
         isRefreshMonitoredDownloadsExecuting,
         ...options,
         ...queue
@@ -106,6 +111,10 @@ class QueueConnector extends Component {
     this.props.setQueueSort({ sortKey });
   };
 
+  onFilterSelect = (selectedFilterKey) => {
+    this.props.setQueueFilter({ selectedFilterKey });
+  };
+
   onTableOptionChange = (payload) => {
     this.props.setQueueTableOption(payload);
 
@@ -140,6 +149,7 @@ class QueueConnector extends Component {
         onLastPagePress={this.onLastPagePress}
         onPageSelect={this.onPageSelect}
         onSortPress={this.onSortPress}
+        onFilterSelect={this.onFilterSelect}
         onTableOptionChange={this.onTableOptionChange}
         onRefreshPress={this.onRefreshPress}
         onGrabSelectedPress={this.onGrabSelectedPress}
@@ -162,6 +172,7 @@ QueueConnector.propTypes = {
   gotoQueueLastPage: PropTypes.func.isRequired,
   gotoQueuePage: PropTypes.func.isRequired,
   setQueueSort: PropTypes.func.isRequired,
+  setQueueFilter: PropTypes.func.isRequired,
   setQueueTableOption: PropTypes.func.isRequired,
   clearQueue: PropTypes.func.isRequired,
   grabQueueItems: PropTypes.func.isRequired,
