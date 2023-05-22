@@ -5,7 +5,6 @@ namespace Radarr.Api.V3.Config
 {
     public class ImportListConfigResource : RestResource
     {
-        public int ImportListSyncInterval { get; set; }
         public string ListSyncLevel { get; set; }
         public string ImportExclusions { get; set; }
     }
@@ -16,7 +15,6 @@ namespace Radarr.Api.V3.Config
         {
             return new ImportListConfigResource
             {
-                ImportListSyncInterval = model.ImportListSyncInterval,
                 ListSyncLevel = model.ListSyncLevel,
                 ImportExclusions = model.ImportExclusions
             };

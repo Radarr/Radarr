@@ -11,6 +11,8 @@ namespace NzbDrone.Core.Datastore.Migration
             Delete.Column("LastSyncListInfo").FromTable("ImportListStatus");
 
             Alter.Table("ImportListStatus").AddColumn("LastInfoSync").AsDateTimeOffset().Nullable();
+
+            Delete.FromTable("Config").Row(new { Key = "importlistsyncinterval" });
         }
     }
 }

@@ -50,23 +50,6 @@ function ImportListOptions(props) {
                 advancedSettings={advancedSettings}
                 isAdvanced={true}
               >
-                <FormLabel>{translate('ListUpdateInterval')}</FormLabel>
-
-                <FormInputGroup
-                  type={inputTypes.NUMBER}
-                  name="importListSyncInterval"
-                  min={6}
-                  unit="hours"
-                  helpText={translate('ImportListSyncIntervalHelpText')}
-                  onChange={onInputChange}
-                  {...settings.importListSyncInterval}
-                />
-              </FormGroup>
-
-              <FormGroup
-                advancedSettings={advancedSettings}
-                isAdvanced={true}
-              >
                 <FormLabel>{translate('CleanLibraryLevel')}</FormLabel>
 
                 <FormInputGroup

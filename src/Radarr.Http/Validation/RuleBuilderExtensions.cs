@@ -36,10 +36,5 @@ namespace Radarr.Http.Validation
         {
             return ruleBuilder.SetValidator(new RssSyncIntervalValidator());
         }
-
-        public static IRuleBuilderOptions<T, int> IsValidImportListSyncInterval<T>(this IRuleBuilder<T, int> ruleBuilder)
-        {
-            return ruleBuilder.SetValidator(new ImportListSyncIntervalValidator());
-        }
     }
 }
