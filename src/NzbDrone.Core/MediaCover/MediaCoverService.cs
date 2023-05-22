@@ -22,7 +22,7 @@ namespace NzbDrone.Core.MediaCover
         Dictionary<string, FileInfo> GetCoverFileInfos();
         void ConvertToLocalUrls(int movieId, IEnumerable<MediaCover> covers, Dictionary<string, FileInfo> fileInfos = null);
         void ConvertToLocalUrls(IEnumerable<Tuple<int, IEnumerable<MediaCover>>> items, Dictionary<string, FileInfo> coverFileInfos);
-        string GetCoverPath(int movieId, MediaCoverTypes mediaCoverTypes, int? height = null);
+        string GetCoverPath(int movieId, MediaCoverTypes coverType, int? height = null);
     }
 
     public class MediaCoverService :
@@ -67,11 +67,11 @@ namespace NzbDrone.Core.MediaCover
             _coverRootFolder = appFolderInfo.GetMediaCoverPath();
         }
 
-        public string GetCoverPath(int movieId, MediaCoverTypes coverTypes, int? height = null)
+        public string GetCoverPath(int movieId, MediaCoverTypes coverType, int? height = null)
         {
             var heightSuffix = height.HasValue ? "-" + height.ToString() : "";
 
-            return Path.Combine(GetMovieCoverPath(movieId), coverTypes.ToString().ToLower() + heightSuffix + ".jpg");
+            return Path.Combine(GetMovieCoverPath(movieId), coverType.ToString().ToLower() + heightSuffix + GetExtension(coverType));
         }
 
         public Dictionary<string, FileInfo> GetCoverFileInfos()
@@ -101,10 +101,15 @@ namespace NzbDrone.Core.MediaCover
             {
                 foreach (var mediaCover in covers)
                 {
+                    if (mediaCover.CoverType == MediaCoverTypes.Unknown)
+                    {
+                        continue;
+                    }
+
                     var filePath = GetCoverPath(movieId, mediaCover.CoverType);
 
                     mediaCover.RemoteUrl = mediaCover.Url;
-                    mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + ".jpg";
+                    mediaCover.Url = _configFileProvider.UrlBase + @"/MediaCover/" + movieId + "/" + mediaCover.CoverType.ToString().ToLower() + GetExtension(mediaCover.CoverType);
 
                     FileInfo file;
                     var fileExists = false;
@@ -249,6 +254,15 @@ namespace NzbDrone.Core.MediaCover
                     }
                 }
             }
+        }
+
+        private string GetExtension(MediaCoverTypes coverType)
+        {
+            return coverType switch
+            {
+                MediaCoverTypes.Clearlogo => ".png",
+                _ => ".jpg"
+            };
         }
 
         public void HandleAsync(MovieUpdatedEvent message)
