@@ -147,11 +147,18 @@ namespace NzbDrone.Core.MediaCover
 
             foreach (var cover in movie.MovieMetadata.Value.Images)
             {
+                if (cover.CoverType == MediaCoverTypes.Unknown)
+                {
+                    continue;
+                }
+
                 var fileName = GetCoverPath(movie.Id, cover.CoverType);
                 var alreadyExists = false;
+
                 try
                 {
                     alreadyExists = _coverExistsSpecification.AlreadyExists(cover.Url, fileName);
+
                     if (!alreadyExists)
                     {
                         DownloadCover(movie, cover);
