@@ -211,7 +211,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             _capabilities.SupportedMovieSearchParameters = new[] { "q" };
             _capabilities.TextSearchEngine = "raw";
 
-            MovieSearchCriteria movieRawSearchCriteria = new MovieSearchCriteria
+            var movieRawSearchCriteria = new MovieSearchCriteria
             {
                 Movie = new Movies.Movie { Title = "Some Movie & Title: Words", Year = 2021, TmdbId = 123 },
                 SceneTitles = new List<string> { "Some Movie & Title: Words" }
@@ -232,7 +232,7 @@ namespace NzbDrone.Core.Test.IndexerTests.NewznabTests
             _capabilities.SupportedMovieSearchParameters = new[] { "q" };
             _capabilities.TextSearchEngine = "sphinx";
 
-            MovieSearchCriteria movieRawSearchCriteria = new MovieSearchCriteria
+            var movieRawSearchCriteria = new MovieSearchCriteria
             {
                 Movie = new Movies.Movie { Title = "Some Movie & Title: Words", Year = 2021, TmdbId = 123 },
                 SceneTitles = new List<string> { "Some Movie & Title: Words" }

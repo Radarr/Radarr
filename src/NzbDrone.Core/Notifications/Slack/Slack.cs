@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Notifications.Slack
         {
             var attachments = new List<Attachment>();
 
-            foreach (RenamedMovieFile renamedFile in renamedFiles)
+            foreach (var renamedFile in renamedFiles)
             {
                 attachments.Add(new Attachment
                 {

@@ -125,8 +125,8 @@ namespace NzbDrone.Core.Messaging.Commands
             _cancellationTokenSource = new CancellationTokenSource();
 
             var envLimit = Environment.GetEnvironmentVariable("THREAD_LIMIT") ?? $"{THREAD_LIMIT}";
-            int threadLimit = THREAD_LIMIT;
-            if (int.TryParse(envLimit, out int parsedLimit))
+            var threadLimit = THREAD_LIMIT;
+            if (int.TryParse(envLimit, out var parsedLimit))
             {
                 threadLimit = parsedLimit;
             }
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Messaging.Commands
 
             _logger.Info("Starting {} threads for tasks.", threadLimit);
 
-            for (int i = 0; i < threadLimit + 1; i++)
+            for (var i = 0; i < threadLimit + 1; i++)
             {
                 var thread = new Thread(ExecuteCommands);
                 thread.Start();

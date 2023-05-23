@@ -87,9 +87,9 @@ namespace Radarr.Api.V3.Movies
                 return null;
             }
 
-            long size = model.MovieFile?.Size ?? 0;
+            var size = model.MovieFile?.Size ?? 0;
 
-            MovieFileResource movieFile = model.MovieFile?.ToResource(model, upgradableSpecification);
+            var movieFile = model.MovieFile?.ToResource(model, upgradableSpecification);
 
             var translatedTitle = movieTranslation?.Title ?? model.Title;
             var translatedOverview = movieTranslation?.Overview ?? model.MovieMetadata.Value.Overview;

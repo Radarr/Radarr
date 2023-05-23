@@ -68,7 +68,7 @@ namespace NzbDrone.Core.ImportLists
                 var importListLocal = importList;
                 var blockedLists = _importListStatusService.GetBlockedProviders().ToDictionary(v => v.ProviderId, v => v);
 
-                if (blockedLists.TryGetValue(importList.Definition.Id, out ImportListStatus blockedListStatus))
+                if (blockedLists.TryGetValue(importList.Definition.Id, out var blockedListStatus))
                 {
                     _logger.Debug("Temporarily ignoring list {0} till {1} due to recent failures.", importList.Definition.Name, blockedListStatus.DisabledTill.Value.ToLocalTime());
                     result.AnyFailure |= true; // Ensure we don't clean if a list is down

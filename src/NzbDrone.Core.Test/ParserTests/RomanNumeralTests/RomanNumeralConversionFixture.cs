@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -25,9 +25,9 @@ namespace NzbDrone.Core.Test.ParserTests.RomanNumeralTests
         [Order(0)]
         public void should_convert_arabic_numeral_to_roman_numeral([Range(1, 20)] int arabicNumeral)
         {
-            RomanNumeral romanNumeral = new RomanNumeral(arabicNumeral);
+            var romanNumeral = new RomanNumeral(arabicNumeral);
 
-            string expectedValue = _arabicToRomanNumeralsMapping[arabicNumeral];
+            var expectedValue = _arabicToRomanNumeralsMapping[arabicNumeral];
 
             Assert.AreEqual(romanNumeral.ToRomanNumeral(), expectedValue);
         }
@@ -36,9 +36,9 @@ namespace NzbDrone.Core.Test.ParserTests.RomanNumeralTests
         [Order(1)]
         public void should_convert_roman_numeral_to_arabic_numeral([Range(1, 20)] int arabicNumeral)
         {
-            RomanNumeral romanNumeral = new RomanNumeral(_arabicToRomanNumeralsMapping[arabicNumeral]);
+            var romanNumeral = new RomanNumeral(_arabicToRomanNumeralsMapping[arabicNumeral]);
 
-            int expectecdValue = arabicNumeral;
+            var expectecdValue = arabicNumeral;
 
             Assert.AreEqual(romanNumeral.ToInt(), expectecdValue);
         }

@@ -60,7 +60,7 @@ namespace NzbDrone.Core.Datastore.Migration
                 {
                     while (definitionsReader.Read())
                     {
-                        string path = definitionsReader.GetString(0);
+                        var path = definitionsReader.GetString(0);
                         rootPaths.Add(path);
                     }
                 }

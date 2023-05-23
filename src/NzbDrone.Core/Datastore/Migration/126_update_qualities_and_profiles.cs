@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using FluentMigrator;
@@ -193,8 +193,8 @@ namespace NzbDrone.Core.Datastore.Migration
                 {
                     while (definitionsReader.Read())
                     {
-                        int id = definitionsReader.GetInt32(0);
-                        int quality = definitionsReader.GetInt32(1);
+                        var id = definitionsReader.GetInt32(0);
+                        var quality = definitionsReader.GetInt32(1);
                         definitions.Add(new QualityDefinition125 { Id = id, Quality = quality });
                     }
                 }

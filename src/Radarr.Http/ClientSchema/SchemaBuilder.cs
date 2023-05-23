@@ -72,7 +72,7 @@ namespace Radarr.Http.ClientSchema
                     result = GetFieldMapping(type, "", v => v);
 
                     // Renumber al the field Orders since nested settings will have dupe Orders.
-                    for (int i = 0; i < result.Length; i++)
+                    for (var i = 0; i < result.Length; i++)
                     {
                         result[i].Field.Order = i;
                     }

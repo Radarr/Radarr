@@ -43,7 +43,7 @@ namespace NzbDrone.Core.Movies.Translations
 
         public List<MovieTranslation> UpdateTranslations(List<MovieTranslation> translations, MovieMetadata movieMetadata)
         {
-            int movieMetadataId = movieMetadata.Id;
+            var movieMetadataId = movieMetadata.Id;
 
             // First update the movie ids so we can correlate them later
             translations.ForEach(t => t.MovieMetadataId = movieMetadataId);

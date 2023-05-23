@@ -427,7 +427,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     var slug = lowerTitle.Split(':')[1].Trim();
 
-                    string imdbid = slug;
+                    var imdbid = slug;
 
                     if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace))
                     {
@@ -449,7 +449,7 @@ namespace NzbDrone.Core.MetadataSource.SkyHook
                 {
                     var slug = lowerTitle.Split(':')[1].Trim();
 
-                    int tmdbid = -1;
+                    var tmdbid = -1;
 
                     if (slug.IsNullOrWhiteSpace() || slug.Any(char.IsWhiteSpace) || !int.TryParse(slug, out tmdbid))
                     {

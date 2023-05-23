@@ -197,7 +197,7 @@ namespace NzbDrone.Core.Test.Datastore
 
             Subject.SetFields(_basicList, x => x.Interval);
 
-            for (int i = 0; i < _basicList.Count; i++)
+            for (var i = 0; i < _basicList.Count; i++)
             {
                 _basicList[i].LastExecution = executionBackup[i];
             }

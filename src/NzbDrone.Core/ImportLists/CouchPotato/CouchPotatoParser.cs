@@ -35,7 +35,7 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
 
             foreach (var item in responseData)
             {
-                int tmdbid = item.info?.tmdb_id ?? 0;
+                var tmdbid = item.info?.tmdb_id ?? 0;
 
                 // Fix weird error reported by Madmanali93
                 if (item.type != null && item.releases != null)
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.ImportLists.CouchPotato
                     {
                         // snatched,missing,available,downloaded
                         // done,seeding
-                        bool isCompleted = item.releases.Any(rel => (rel.status == "done" || rel.status == "seeding"));
+                        var isCompleted = item.releases.Any(rel => (rel.status == "done" || rel.status == "seeding"));
                         if (!isCompleted)
                         {
                             movies.AddIfNotNull(new ImportListMovie()

@@ -77,7 +77,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
             foreach (var profile in profiles.OrderBy(p => p.Id))
             {
-                using (IDbCommand insertNewLanguageProfileCmd = conn.CreateCommand())
+                using (var insertNewLanguageProfileCmd = conn.CreateCommand())
                 {
                     insertNewLanguageProfileCmd.Transaction = tran;
 

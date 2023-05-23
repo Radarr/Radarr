@@ -41,7 +41,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             _localMovie.Path = paths.First().ToString().AsOsAgnostic();
 
-            string[] filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
+            var filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), SearchOption.TopDirectoryOnly))
@@ -69,7 +69,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             _localMovie.Path = paths.First().ToString().AsOsAgnostic();
 
-            string[] filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
+            var filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), SearchOption.TopDirectoryOnly))
@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             _localMovie.Path = paths.First().ToString().AsOsAgnostic();
 
-            string[] filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
+            var filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), SearchOption.TopDirectoryOnly))
@@ -105,7 +105,7 @@ namespace NzbDrone.Core.Test.MediaFiles.MovieImport.Specifications
         {
             _localMovie.Path = paths.First().ToString().AsOsAgnostic();
 
-            string[] filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
+            var filePaths = paths.Cast<string>().Select(x => x.AsOsAgnostic()).ToArray();
 
             Mocker.GetMock<IDiskProvider>()
                   .Setup(s => s.GetFiles(_localMovie.Path.GetParentPath(), SearchOption.TopDirectoryOnly))

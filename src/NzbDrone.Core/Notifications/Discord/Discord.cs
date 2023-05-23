@@ -247,7 +247,7 @@ namespace NzbDrone.Core.Notifications.Discord
         {
             var attachments = new List<Embed>();
 
-            foreach (RenamedMovieFile renamedFile in renamedFiles)
+            foreach (var renamedFile in renamedFiles)
             {
                 attachments.Add(new Embed
                 {

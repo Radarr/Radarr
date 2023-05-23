@@ -27,9 +27,9 @@ namespace Radarr.Api.V3.ExtraFiles
         {
             var extraFiles = new List<ExtraFileResource>();
 
-            List<SubtitleFile> subtitleFiles = _subtitleFileService.GetFilesByMovie(movieId);
-            List<MetadataFile> metadataFiles = _metadataFileService.GetFilesByMovie(movieId);
-            List<OtherExtraFile> otherExtraFiles = _otherFileService.GetFilesByMovie(movieId);
+            var subtitleFiles = _subtitleFileService.GetFilesByMovie(movieId);
+            var metadataFiles = _metadataFileService.GetFilesByMovie(movieId);
+            var otherExtraFiles = _otherFileService.GetFilesByMovie(movieId);
 
             extraFiles.AddRange(subtitleFiles.ToResource());
             extraFiles.AddRange(metadataFiles.ToResource());

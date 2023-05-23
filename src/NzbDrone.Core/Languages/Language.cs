@@ -184,7 +184,7 @@ namespace NzbDrone.Core.Languages
                 return Unknown;
             }
 
-            Language language = All.FirstOrDefault(v => v.Id == id);
+            var language = All.FirstOrDefault(v => v.Id == id);
 
             if (language == null)
             {

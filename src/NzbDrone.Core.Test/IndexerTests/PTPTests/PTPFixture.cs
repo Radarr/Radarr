@@ -31,7 +31,7 @@ namespace NzbDrone.Core.Test.IndexerTests.PTPTests
         {
             var authResponse = new PassThePopcornAuthResponse { Result = "Ok" };
 
-            System.IO.StringWriter authStream = new System.IO.StringWriter();
+            var authStream = new System.IO.StringWriter();
             Json.Serialize(authResponse, authStream);
             var responseJson = ReadAllText(fileName);
 

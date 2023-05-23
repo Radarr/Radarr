@@ -88,7 +88,7 @@ namespace NzbDrone.Core.Movies
             var existingMetadata = FindById(data.Select(x => x.TmdbId).ToList());
             var updateMetadataList = new List<MovieMetadata>();
             var addMetadataList = new List<MovieMetadata>();
-            int upToDateMetadataCount = 0;
+            var upToDateMetadataCount = 0;
 
             foreach (var meta in data)
             {

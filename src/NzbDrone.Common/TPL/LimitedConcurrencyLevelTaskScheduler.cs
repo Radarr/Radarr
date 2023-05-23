@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -137,7 +137,7 @@ namespace NzbDrone.Common.TPL
         /// <returns>An enumerable of the tasks currently scheduled.</returns>
         protected sealed override IEnumerable<Task> GetScheduledTasks()
         {
-            bool lockTaken = false;
+            var lockTaken = false;
             try
             {
                 Monitor.TryEnter(_tasks, ref lockTaken);

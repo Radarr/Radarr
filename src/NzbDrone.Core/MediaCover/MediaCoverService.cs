@@ -147,7 +147,7 @@ namespace NzbDrone.Core.MediaCover
 
         private bool EnsureCovers(Movie movie)
         {
-            bool updated = false;
+            var updated = false;
             var toResize = new List<Tuple<MediaCover, bool>>();
 
             foreach (var cover in movie.MovieMetadata.Value.Images)

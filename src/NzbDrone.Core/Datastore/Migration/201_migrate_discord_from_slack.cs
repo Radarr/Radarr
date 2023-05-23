@@ -45,10 +45,10 @@ namespace NzbDrone.Core.Datastore.Migration
                 return;
             }
 
-            foreach (NotificationEntity201 notification in discordSlackNotifications)
+            foreach (var notification in discordSlackNotifications)
             {
-                SlackNotificationSettings201 settings = JsonSerializer.Deserialize<SlackNotificationSettings201>(notification.Settings, _serializerSettings);
-                DiscordNotificationSettings201 discordSettings = new DiscordNotificationSettings201
+                var settings = JsonSerializer.Deserialize<SlackNotificationSettings201>(notification.Settings, _serializerSettings);
+                var discordSettings = new DiscordNotificationSettings201
                 {
                     Avatar = settings.Icon,
                     GrabFields = new List<int> { 0, 1, 2, 3, 5, 6, 7, 8, 9 },

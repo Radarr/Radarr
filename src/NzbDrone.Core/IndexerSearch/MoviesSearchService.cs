@@ -68,7 +68,7 @@ namespace NzbDrone.Core.IndexerSearch
             };
 
             pagingSpec.FilterExpressions.Add(v => v.Monitored == true);
-            List<Movie> movies = _movieService.MoviesWithoutFiles(pagingSpec).Records.ToList();
+            var movies = _movieService.MoviesWithoutFiles(pagingSpec).Records.ToList();
 
             var queue = _queueService.GetQueue().Where(q => q.Movie != null).Select(q => q.Movie.Id);
             var missing = movies.Where(e => !queue.Contains(e.Id)).ToList();
@@ -88,7 +88,7 @@ namespace NzbDrone.Core.IndexerSearch
 
             pagingSpec.FilterExpressions.Add(v => v.Monitored == true);
 
-            List<Movie> movies = _movieCutoffService.MoviesWhereCutoffUnmet(pagingSpec).Records.ToList();
+            var movies = _movieCutoffService.MoviesWhereCutoffUnmet(pagingSpec).Records.ToList();
 
             var queue = _queueService.GetQueue().Where(q => q.Movie != null).Select(q => q.Movie.Id);
             var missing = movies.Where(e => !queue.Contains(e.Id)).ToList();
