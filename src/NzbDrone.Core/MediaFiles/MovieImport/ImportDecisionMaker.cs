@@ -91,6 +91,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                 {
                     Movie = movie,
                     DownloadClientMovieInfo = downloadClientItemInfo,
+                    DownloadItem = downloadClientItem,
                     FolderMovieInfo = folderInfo,
                     Path = file,
                     SceneSource = sceneSource,

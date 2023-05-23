@@ -117,6 +117,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 Movie = movie,
                 FileMovieInfo = Parser.Parser.ParseMoviePath(path),
                 DownloadClientMovieInfo = downloadClientItem == null ? null : Parser.Parser.ParseMovieTitle(downloadClientItem.Title),
+                DownloadItem = downloadClientItem,
                 Path = path,
                 SceneSource = SceneSource(movie, rootFolder),
                 ExistingFile = movie.Path.IsParentPath(path),
@@ -355,6 +356,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Manual
                 {
                     trackedDownload = _trackedDownloadService.Find(file.DownloadId);
                     localMovie.DownloadClientMovieInfo = trackedDownload?.RemoteMovie?.ParsedMovieInfo;
+                    localMovie.DownloadItem = trackedDownload?.DownloadItem;
                 }
 
                 if (file.FolderName.IsNotNullOrWhiteSpace())
