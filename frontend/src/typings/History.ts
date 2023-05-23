@@ -1,0 +1,27 @@
+import Language from 'Language/Language';
+import { QualityModel } from 'Quality/Quality';
+import CustomFormat from './CustomFormat';
+
+export type HistoryEventType =
+  | 'grabbed'
+  | 'downloadFolderImported'
+  | 'downloadFailed'
+  | 'movieFileDeleted'
+  | 'movieFolderImported'
+  | 'movieFileRenamed'
+  | 'downloadIgnored';
+
+export default interface History {
+  movieId: number;
+  sourceTitle: string;
+  languages: Language[];
+  quality: QualityModel;
+  customFormats: CustomFormat[];
+  customFormatScore: number;
+  qualityCutoffNotMet: boolean;
+  date: string;
+  downloadId: string;
+  eventType: HistoryEventType;
+  data: unknown;
+  id: number;
+}

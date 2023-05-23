@@ -6,6 +6,7 @@ import { filterBuilderTypes, filterBuilderValueTypes, icons } from 'Helpers/Prop
 import BoolFilterBuilderRowValue from './BoolFilterBuilderRowValue';
 import DateFilterBuilderRowValue from './DateFilterBuilderRowValue';
 import FilterBuilderRowValueConnector from './FilterBuilderRowValueConnector';
+import HistoryEventTypeFilterBuilderRowValue from './HistoryEventTypeFilterBuilderRowValue';
 import ImportListFilterBuilderRowValueConnector from './ImportListFilterBuilderRowValueConnector';
 import IndexerFilterBuilderRowValueConnector from './IndexerFilterBuilderRowValueConnector';
 import LanguageFilterBuilderRowValue from './LanguageFilterBuilderRowValue';
@@ -59,6 +60,9 @@ function getRowValueConnector(selectedFilterBuilderProp) {
 
     case filterBuilderValueTypes.DATE:
       return DateFilterBuilderRowValue;
+
+    case filterBuilderValueTypes.HISTORY_EVENT_TYPE:
+      return HistoryEventTypeFilterBuilderRowValue;
 
     case filterBuilderValueTypes.INDEXER:
       return IndexerFilterBuilderRowValueConnector;

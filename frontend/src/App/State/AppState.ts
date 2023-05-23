@@ -1,6 +1,7 @@
 import InteractiveImportAppState from 'App/State/InteractiveImportAppState';
 import CalendarAppState from './CalendarAppState';
 import CommandAppState from './CommandAppState';
+import HistoryAppState from './HistoryAppState';
 import MovieCollectionAppState from './MovieCollectionAppState';
 import MovieFilesAppState from './MovieFilesAppState';
 import MoviesAppState, { MovieIndexAppState } from './MoviesAppState';
@@ -46,6 +47,7 @@ export interface CustomFilter {
 interface AppState {
   calendar: CalendarAppState;
   commands: CommandAppState;
+  history: HistoryAppState;
   interactiveImport: InteractiveImportAppState;
   movieCollections: MovieCollectionAppState;
   movieFiles: MovieFilesAppState;

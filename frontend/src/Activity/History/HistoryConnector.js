@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import withCurrentPage from 'Components/withCurrentPage';
 import * as historyActions from 'Store/Actions/historyActions';
+import { createCustomFiltersSelector } from 'Store/Selectors/createClientSideCollectionSelector';
 import { registerPagePopulator, unregisterPagePopulator } from 'Utilities/pagePopulator';
 import History from './History';
 
@@ -11,11 +12,13 @@ function createMapStateToProps() {
   return createSelector(
     (state) => state.history,
     (state) => state.movies,
-    (history, movies) => {
+    createCustomFiltersSelector('history'),
+    (history, movies, customFilters) => {
       return {
         isMoviesFetching: movies.isFetching,
         isMoviesPopulated: movies.isPopulated,
         moviesError: movies.error,
+        customFilters,
         ...history
       };
     }

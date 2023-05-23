@@ -14,6 +14,7 @@ import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptions
 import TablePager from 'Components/Table/TablePager';
 import { align, icons, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import HistoryFilterModal from './HistoryFilterModal';
 import HistoryRowConnector from './HistoryRowConnector';
 
 class History extends Component {
@@ -33,6 +34,7 @@ class History extends Component {
       columns,
       selectedFilterKey,
       filters,
+      customFilters,
       totalRecords,
       onFilterSelect,
       onFirstPagePress,
@@ -70,7 +72,8 @@ class History extends Component {
               alignMenu={align.RIGHT}
               selectedFilterKey={selectedFilterKey}
               filters={filters}
-              customFilters={[]}
+              customFilters={customFilters}
+              filterModalConnectorComponent={HistoryFilterModal}
               onFilterSelect={onFilterSelect}
             />
           </PageToolbarSection>
@@ -144,8 +147,9 @@ History.propTypes = {
   moviesError: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selectedFilterKey: PropTypes.string.isRequired,
+  selectedFilterKey: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   filters: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customFilters: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalRecords: PropTypes.number,
   onFilterSelect: PropTypes.func.isRequired,
   onFirstPagePress: PropTypes.func.isRequired
