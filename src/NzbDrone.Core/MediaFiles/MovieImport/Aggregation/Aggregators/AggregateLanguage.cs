@@ -23,7 +23,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
         public LocalMovie Aggregate(LocalMovie localMovie, DownloadClientItem downloadClientItem)
         {
             var languages = new List<Language> { localMovie.Movie?.MovieMetadata.Value.OriginalLanguage ?? Language.Unknown };
-            var languagesConfidence = Confidence.Default;
 
             foreach (var augmentLanguage in _augmentLanguages)
             {
@@ -38,7 +37,6 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Aggregation.Aggregators
                 if (augmentedLanguage?.Languages != null && augmentedLanguage.Languages.Count > 0 && !(augmentedLanguage.Languages.Count == 1 && augmentedLanguage.Languages.Contains(Language.Unknown)))
                 {
                     languages = augmentedLanguage.Languages;
-                    languagesConfidence = augmentedLanguage.Confidence;
                 }
             }
 

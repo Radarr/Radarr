@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -60,14 +60,11 @@ namespace NzbDrone.Core.Test.Framework
             {
                 var columnName = dataRow.Table.Columns[i].ColumnName;
 
-                object value;
                 if (dataRow.ItemArray[i] == DBNull.Value)
                 {
-                    value = null;
                 }
                 else
                 {
-                    value = dataRow.ItemArray[i];
                 }
 
                 item[columnName] = dataRow.ItemArray[i];
