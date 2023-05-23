@@ -55,9 +55,7 @@ namespace NzbDrone.Core.Movies
                 builder,
                 (metadata, translation) =>
                 {
-                    MovieMetadata movieEntry;
-
-                    if (!movieDictionary.TryGetValue(metadata.Id, out movieEntry))
+                    if (!movieDictionary.TryGetValue(metadata.Id, out var movieEntry))
                     {
                         movieEntry = metadata;
                         movieDictionary.Add(movieEntry.Id, movieEntry);

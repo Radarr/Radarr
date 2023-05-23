@@ -83,9 +83,7 @@ namespace NzbDrone.Mono.Disk
 
         private bool TryFollowFirstSymbolicLink(ref string path)
         {
-            string[] dirs;
-            int lastIndex;
-            GetPathComponents(path, out dirs, out lastIndex);
+            GetPathComponents(path, out var dirs, out var lastIndex);
 
             if (lastIndex == 0)
             {

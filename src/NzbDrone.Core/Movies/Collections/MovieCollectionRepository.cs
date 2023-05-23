@@ -33,7 +33,6 @@ namespace NzbDrone.Core.Movies.Collections
             var existingMetadata = GetByTmdbId(data.Select(x => x.TmdbId).ToList());
             var updateCollectionList = new List<MovieCollection>();
             var addCollectionList = new List<MovieCollection>();
-            int upToDateMetadataCount = 0;
 
             foreach (var collection in data)
             {
@@ -50,7 +49,6 @@ namespace NzbDrone.Core.Movies.Collections
                     }
                     else
                     {
-                        upToDateMetadataCount++;
                     }
                 }
                 else

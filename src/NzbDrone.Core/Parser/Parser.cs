@@ -459,10 +459,8 @@ namespace NzbDrone.Core.Parser
 
         public static string CleanMovieTitle(this string title)
         {
-            long number = 0;
-
             // If Title only contains numbers return it as is.
-            if (long.TryParse(title, out number))
+            if (long.TryParse(title, out _))
             {
                 return title;
             }
@@ -550,9 +548,8 @@ namespace NzbDrone.Core.Parser
             if (matches.Count != 0)
             {
                 var group = matches.OfType<Match>().Last().Groups["releasegroup"].Value;
-                int groupIsNumeric;
 
-                if (int.TryParse(group, out groupIsNumeric))
+                if (int.TryParse(group, out _))
                 {
                     return null;
                 }

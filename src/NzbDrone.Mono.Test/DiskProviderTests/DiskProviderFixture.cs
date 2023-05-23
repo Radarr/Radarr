@@ -57,8 +57,7 @@ namespace NzbDrone.Mono.Test.DiskProviderTests
         protected void SetWritePermissionsInternal(string path, bool writable, bool setgid)
         {
             // Remove Write permissions, we're still owner so we can clean it up, but we'll have to do that explicitly.
-            Stat stat;
-            Syscall.stat(path, out stat);
+            Syscall.stat(path, out var stat);
             FilePermissions mode = stat.st_mode;
 
             if (writable)

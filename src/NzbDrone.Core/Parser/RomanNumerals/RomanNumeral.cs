@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 namespace NzbDrone.Core.Parser.RomanNumerals
@@ -52,9 +52,7 @@ namespace NzbDrone.Core.Parser.RomanNumerals
         /// <param name="romanNumeral">The roman numeral.</param>
         public RomanNumeral(string romanNumeral)
         {
-            int value;
-
-            if (TryParse(romanNumeral, out value))
+            if (TryParse(romanNumeral, out var value))
             {
                 _value = value;
             }
@@ -312,10 +310,9 @@ namespace NzbDrone.Core.Parser.RomanNumerals
             }
             else if (obj is string)
             {
-                int value;
                 var numeral = obj as string;
 
-                if (TryParse(numeral, out value))
+                if (TryParse(numeral, out var value))
                 {
                     return _value.CompareTo(value);
                 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+using System;
 using NzbDrone.Common.Cache;
 
 namespace NzbDrone.Core.Restrictions
@@ -30,8 +29,7 @@ namespace NzbDrone.Core.Restrictions
 
         private Predicate<string> CreateMatcherInternal(string term)
         {
-            Regex regex;
-            if (PerlRegexFactory.TryCreateRegex(term, out regex))
+            if (PerlRegexFactory.TryCreateRegex(term, out var regex))
             {
                 return regex.IsMatch;
             }

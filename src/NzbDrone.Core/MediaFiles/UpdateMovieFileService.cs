@@ -77,9 +77,7 @@ namespace NzbDrone.Core.MediaFiles
 
         private bool ChangeFileDate(string filePath, DateTime date)
         {
-            DateTime oldDateTime;
-
-            if (DateTime.TryParse(_diskProvider.FileGetLastWrite(filePath).ToLongDateString(), out oldDateTime))
+            if (DateTime.TryParse(_diskProvider.FileGetLastWrite(filePath).ToLongDateString(), out var oldDateTime))
             {
                 if (!DateTime.Equals(date, oldDateTime))
                 {
