@@ -12,6 +12,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
     public interface IUpdateMediaInfo
     {
         bool Update(MovieFile movieFile, Movie movie);
+        bool UpdateMediaInfo(MovieFile episodeFile, Movie movie);
     }
 
     public class UpdateMediaInfoService : IUpdateMediaInfo, IHandle<MovieScannedEvent>
@@ -65,7 +66,7 @@ namespace NzbDrone.Core.MediaFiles.MediaInfo
             return UpdateMediaInfo(movieFile, movie);
         }
 
-        private bool UpdateMediaInfo(MovieFile movieFile, Movie movie)
+        public bool UpdateMediaInfo(MovieFile movieFile, Movie movie)
         {
             var path = Path.Combine(movie.Path, movieFile.RelativePath);
 

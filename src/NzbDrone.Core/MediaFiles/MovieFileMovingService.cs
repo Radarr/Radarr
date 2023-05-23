@@ -29,6 +29,7 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IDiskTransferService _diskTransferService;
         private readonly IDiskProvider _diskProvider;
         private readonly IMediaFileAttributeService _mediaFileAttributeService;
+        private readonly IImportScript _scriptImportDecider;
         private readonly IEventAggregator _eventAggregator;
         private readonly IConfigService _configService;
         private readonly IRootFolderService _rootFolderService;
@@ -39,6 +40,7 @@ namespace NzbDrone.Core.MediaFiles
                                 IDiskTransferService diskTransferService,
                                 IDiskProvider diskProvider,
                                 IMediaFileAttributeService mediaFileAttributeService,
+                                IImportScript scriptImportDecider,
                                 IEventAggregator eventAggregator,
                                 IConfigService configService,
                                 IRootFolderService rootFolderService,
@@ -49,6 +51,7 @@ namespace NzbDrone.Core.MediaFiles
             _diskTransferService = diskTransferService;
             _diskProvider = diskProvider;
             _mediaFileAttributeService = mediaFileAttributeService;
+            _scriptImportDecider = scriptImportDecider;
             _eventAggregator = eventAggregator;
             _configService = configService;
             _rootFolderService = rootFolderService;
@@ -76,7 +79,7 @@ namespace NzbDrone.Core.MediaFiles
 
             _logger.Debug("Moving movie file: {0} to {1}", movieFile.Path, filePath);
 
-            return TransferFile(movieFile, localMovie.Movie, filePath, TransferMode.Move);
+            return TransferFile(movieFile, localMovie.Movie, filePath, TransferMode.Move, localMovie);
         }
 
         public MovieFile CopyMovieFile(MovieFile movieFile, LocalMovie localMovie)
@@ -89,14 +92,14 @@ namespace NzbDrone.Core.MediaFiles
             if (_configService.CopyUsingHardlinks)
             {
                 _logger.Debug("Hardlinking movie file: {0} to {1}", movieFile.Path, filePath);
-                return TransferFile(movieFile, localMovie.Movie, filePath, TransferMode.HardLinkOrCopy);
+                return TransferFile(movieFile, localMovie.Movie, filePath, TransferMode.HardLinkOrCopy, localMovie);
             }
 
             _logger.Debug("Copying movie file: {0} to {1}", movieFile.Path, filePath);
-            return TransferFile(movieFile, localMovie.Movie, filePath, TransferMode.Copy);
+            return TransferFile(movieFile, localMovie.Movie, filePath, TransferMode.Copy, localMovie);
         }
 
-        private MovieFile TransferFile(MovieFile movieFile, Movie movie, string destinationFilePath, TransferMode mode)
+        private MovieFile TransferFile(MovieFile movieFile, Movie movie, string destinationFilePath, TransferMode mode, LocalMovie localMovie = null)
         {
             Ensure.That(movieFile, () => movieFile).IsNotNull();
             Ensure.That(movie, () => movie).IsNotNull();
@@ -114,9 +117,32 @@ namespace NzbDrone.Core.MediaFiles
                 throw new SameFilenameException("File not moved, source and destination are the same", movieFilePath);
             }
 
-            _diskTransferService.TransferFile(movieFilePath, destinationFilePath, mode);
+            var transfer = true;
 
             movieFile.RelativePath = movie.Path.GetRelativePath(destinationFilePath);
+
+            if (localMovie is not null)
+            {
+                var scriptImportDecision = _scriptImportDecider.TryImport(movieFilePath, destinationFilePath, localMovie, movieFile, mode);
+
+                switch (scriptImportDecision)
+                {
+                    case ScriptImportDecision.DeferMove:
+                        break;
+                    case ScriptImportDecision.RenameRequested:
+                        MoveMovieFile(movieFile, movie);
+                        transfer = false;
+                        break;
+                    case ScriptImportDecision.MoveComplete:
+                        transfer = false;
+                        break;
+                }
+            }
+
+            if (transfer)
+            {
+                _diskTransferService.TransferFile(movieFilePath, destinationFilePath, mode);
+            }
 
             _updateMovieFileService.ChangeFileDateForFile(movieFile, movie);
 

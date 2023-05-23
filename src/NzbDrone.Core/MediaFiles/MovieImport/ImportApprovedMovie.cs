@@ -125,8 +125,8 @@ namespace NzbDrone.Core.MediaFiles.MovieImport
                     {
                         movieFile.SceneName = localMovie.SceneName;
                         movieFile.OriginalFilePath = GetOriginalFilePath(downloadClientItem, localMovie);
-                        var moveResult = _movieFileUpgrader.UpgradeMovieFile(movieFile, localMovie, copyOnly); // TODO: Check if this works
-                        oldFiles = moveResult.OldFiles;
+
+                        oldFiles = _movieFileUpgrader.UpgradeMovieFile(movieFile, localMovie, copyOnly).OldFiles;
                     }
                     else
                     {

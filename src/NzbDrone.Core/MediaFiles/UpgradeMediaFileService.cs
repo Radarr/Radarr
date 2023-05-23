@@ -66,6 +66,8 @@ namespace NzbDrone.Core.MediaFiles
                 _mediaFileService.Delete(existingFile, DeleteMediaFileReason.Upgrade);
             }
 
+            localMovie.OldFiles = moveFileResult.OldFiles;
+
             if (copyOnly)
             {
                 moveFileResult.MovieFile = _movieFileMover.CopyMovieFile(movieFile, localMovie);
