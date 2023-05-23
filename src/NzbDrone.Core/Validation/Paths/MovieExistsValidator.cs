@@ -21,7 +21,7 @@ namespace NzbDrone.Core.Validation.Paths
                 return true;
             }
 
-            int tmdbId = (int)context.PropertyValue;
+            var tmdbId = (int)context.PropertyValue;
 
             return _movieService.FindByTmdbId(tmdbId) == null;
         }

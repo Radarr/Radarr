@@ -95,9 +95,9 @@ namespace NzbDrone.Core.Parser.RomanNumerals
             }
 
             text = text.ToUpper();
-            int len = 0;
+            var len = 0;
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 if (text.StartsWith(Thousands[i]))
                 {
@@ -113,7 +113,7 @@ namespace NzbDrone.Core.Parser.RomanNumerals
                 len = 0;
             }
 
-            for (int i = 0; i < 9; i++)
+            for (var i = 0; i < 9; i++)
             {
                 if (text.StartsWith(Hundreds[i]))
                 {
@@ -129,7 +129,7 @@ namespace NzbDrone.Core.Parser.RomanNumerals
                 len = 0;
             }
 
-            for (int i = 0; i < 9; i++)
+            for (var i = 0; i < 9; i++)
             {
                 if (text.StartsWith(Tens[i]))
                 {
@@ -145,7 +145,7 @@ namespace NzbDrone.Core.Parser.RomanNumerals
                 len = 0;
             }
 
-            for (int i = 0; i < 9; i++)
+            for (var i = 0; i < 9; i++)
             {
                 if (text.StartsWith(Units[i]))
                 {

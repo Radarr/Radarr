@@ -142,7 +142,7 @@ namespace NzbDrone.Core.Configuration
             {
                 const string defaultValue = "*";
 
-                string bindAddress = GetValue("BindAddress", defaultValue);
+                var bindAddress = GetValue("BindAddress", defaultValue);
                 if (string.IsNullOrWhiteSpace(bindAddress))
                 {
                     return defaultValue;

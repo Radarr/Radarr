@@ -33,7 +33,7 @@ namespace NzbDrone.Core.MediaFiles.MovieImport.Specifications
 
             foreach (var workingFolder in _configService.DownloadClientWorkingFolders.Split('|'))
             {
-                DirectoryInfo parent = Directory.GetParent(localMovie.Path);
+                var parent = Directory.GetParent(localMovie.Path);
                 while (parent != null)
                 {
                     if (parent.Name.StartsWith(workingFolder))

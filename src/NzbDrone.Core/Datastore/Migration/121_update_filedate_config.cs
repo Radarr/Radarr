@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using System.Text;
 using System.Text.RegularExpressions;
 using FluentMigrator;
@@ -16,18 +16,18 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void SetTitleSlug(IDbConnection conn, IDbTransaction tran)
         {
-            using (IDbCommand getSeriesCmd = conn.CreateCommand())
+            using (var getSeriesCmd = conn.CreateCommand())
             {
                 getSeriesCmd.Transaction = tran;
                 getSeriesCmd.CommandText = @"SELECT ""Id"", ""Value"" FROM ""Config"" WHERE ""Key"" = 'filedate'";
-                using (IDataReader seriesReader = getSeriesCmd.ExecuteReader())
+                using (var seriesReader = getSeriesCmd.ExecuteReader())
                 {
                     while (seriesReader.Read())
                     {
                         var id = seriesReader.GetInt32(0);
                         var value = seriesReader.GetString(1);
 
-                        using (IDbCommand updateCmd = conn.CreateCommand())
+                        using (var updateCmd = conn.CreateCommand())
                         {
                             updateCmd.Transaction = tran;
                             updateCmd.CommandText = "UPDATE \"Config\" SET \"Value\" = 'Release' WHERE \"Id\" = ?";

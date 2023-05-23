@@ -26,32 +26,32 @@ namespace NzbDrone.Core.Parser.RomanNumerals
 
             _arabicRomanNumeralsMapping = new HashSet<ArabicRomanNumeral>();
             _simpleArabicNumeralMappings = new Dictionary<SimpleArabicNumeral, SimpleRomanNumeral>();
-            foreach (int arabicNumeral in Enumerable.Range(1, DICTIONARY_PREPOPULATION_SIZE + 1))
+            foreach (var arabicNumeral in Enumerable.Range(1, DICTIONARY_PREPOPULATION_SIZE + 1))
             {
                 GenerateRomanNumerals(arabicNumeral, out var romanNumeralAsString, out var arabicNumeralAsString);
-                ArabicRomanNumeral arm = new ArabicRomanNumeral(arabicNumeral, arabicNumeralAsString, romanNumeralAsString);
+                var arm = new ArabicRomanNumeral(arabicNumeral, arabicNumeralAsString, romanNumeralAsString);
                 _arabicRomanNumeralsMapping.Add(arm);
 
-                SimpleArabicNumeral sam = new SimpleArabicNumeral(arabicNumeral);
-                SimpleRomanNumeral srm = new SimpleRomanNumeral(romanNumeralAsString);
+                var sam = new SimpleArabicNumeral(arabicNumeral);
+                var srm = new SimpleRomanNumeral(romanNumeralAsString);
                 _simpleArabicNumeralMappings.Add(sam, srm);
             }
         }
 
         private static void GenerateRomanNumerals(int arabicNumeral, out string romanNumeral, out string arabicNumeralAsString)
         {
-            RomanNumeral romanNumeralObject = new RomanNumeral(arabicNumeral);
+            var romanNumeralObject = new RomanNumeral(arabicNumeral);
             romanNumeral = romanNumeralObject.ToRomanNumeral();
             arabicNumeralAsString = Convert.ToString(arabicNumeral);
         }
 
         private static HashSet<ArabicRomanNumeral> GenerateAdditionalMappings(int offset, int length)
         {
-            HashSet<ArabicRomanNumeral> additionalArabicRomanNumerals = new HashSet<ArabicRomanNumeral>();
-            foreach (int arabicNumeral in Enumerable.Range(offset, length))
+            var additionalArabicRomanNumerals = new HashSet<ArabicRomanNumeral>();
+            foreach (var arabicNumeral in Enumerable.Range(offset, length))
             {
                 GenerateRomanNumerals(arabicNumeral, out var romanNumeral, out var arabicNumeralAsString);
-                ArabicRomanNumeral arm = new ArabicRomanNumeral(arabicNumeral, arabicNumeralAsString, romanNumeral);
+                var arm = new ArabicRomanNumeral(arabicNumeral, arabicNumeralAsString, romanNumeral);
                 additionalArabicRomanNumerals.Add(arm);
             }
 
@@ -78,7 +78,7 @@ namespace NzbDrone.Core.Parser.RomanNumerals
                     return new HashSet<ArabicRomanNumeral>(_arabicRomanNumeralsMapping.Take(upToArabicNumber));
                 }
 
-                HashSet<ArabicRomanNumeral> largerMapping = GenerateAdditionalMappings(DICTIONARY_PREPOPULATION_SIZE + 1, upToArabicNumber);
+                var largerMapping = GenerateAdditionalMappings(DICTIONARY_PREPOPULATION_SIZE + 1, upToArabicNumber);
                 _arabicRomanNumeralsMapping = (HashSet<ArabicRomanNumeral>)_arabicRomanNumeralsMapping.Union(largerMapping);
             }
 
@@ -123,12 +123,12 @@ namespace NzbDrone.Core.Parser.RomanNumerals
         private static Dictionary<SimpleArabicNumeral, SimpleRomanNumeral> GenerateAdditionalSimpleNumerals(int offset,
             int length)
         {
-            Dictionary<SimpleArabicNumeral, SimpleRomanNumeral> moreNumerals = new Dictionary<SimpleArabicNumeral, SimpleRomanNumeral>();
-            foreach (int arabicNumeral in Enumerable.Range(offset, length))
+            var moreNumerals = new Dictionary<SimpleArabicNumeral, SimpleRomanNumeral>();
+            foreach (var arabicNumeral in Enumerable.Range(offset, length))
             {
                 GenerateRomanNumerals(arabicNumeral, out var romanNumeral, out _);
-                SimpleArabicNumeral san = new SimpleArabicNumeral(arabicNumeral);
-                SimpleRomanNumeral srn = new SimpleRomanNumeral(romanNumeral);
+                var san = new SimpleArabicNumeral(arabicNumeral);
+                var srn = new SimpleRomanNumeral(romanNumeral);
                 moreNumerals.Add(san, srn);
             }
 

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using NzbDrone.Common.Serializer;
 
 namespace NzbDrone.Common.Instrumentation
@@ -16,7 +16,7 @@ namespace NzbDrone.Common.Instrumentation
                 }
             }
 
-            foreach (JToken token in json)
+            foreach (var token in json)
             {
                 Visit(token);
             }

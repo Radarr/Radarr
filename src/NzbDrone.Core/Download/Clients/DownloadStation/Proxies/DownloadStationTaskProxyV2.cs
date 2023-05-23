@@ -39,7 +39,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
             else
             {
                 _logger.Trace("No directory configured in settings; falling back to client default destination folder.");
-                string defaultDestination = _defaultDestinationProxy.GetDefaultDestination(settings);
+                var defaultDestination = _defaultDestinationProxy.GetDefaultDestination(settings);
 
                 if (defaultDestination.IsNotNullOrWhiteSpace())
                 {
@@ -72,7 +72,7 @@ namespace NzbDrone.Core.Download.Clients.DownloadStation.Proxies
             else
             {
                 _logger.Trace("No directory configured in settings; falling back to client default destination folder.");
-                string defaultDestination = _defaultDestinationProxy.GetDefaultDestination(settings);
+                var defaultDestination = _defaultDestinationProxy.GetDefaultDestination(settings);
 
                 if (defaultDestination.IsNotNullOrWhiteSpace())
                 {

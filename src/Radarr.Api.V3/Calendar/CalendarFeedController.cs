@@ -68,8 +68,8 @@ namespace Radarr.Api.V3.Calendar
         private void CreateEvent(Ical.Net.Calendar calendar, MovieMetadata movie, string releaseType)
         {
             var date = movie.InCinemas;
-            string eventType = "_cinemas";
-            string summaryText = "(Theatrical Release)";
+            var eventType = "_cinemas";
+            var summaryText = "(Theatrical Release)";
 
             if (releaseType == "digital")
             {

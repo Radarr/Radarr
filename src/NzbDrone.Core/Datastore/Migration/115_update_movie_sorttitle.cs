@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 using FluentMigrator;
 using NzbDrone.Core.Datastore.Migration.Framework;
 
@@ -15,11 +15,11 @@ namespace NzbDrone.Core.Datastore.Migration
 
         private void SetSortTitles(IDbConnection conn, IDbTransaction tran)
         {
-            using (IDbCommand getSeriesCmd = conn.CreateCommand())
+            using (var getSeriesCmd = conn.CreateCommand())
             {
                 getSeriesCmd.Transaction = tran;
                 getSeriesCmd.CommandText = @"SELECT ""Id"", ""Title"" FROM ""Movies""";
-                using (IDataReader seriesReader = getSeriesCmd.ExecuteReader())
+                using (var seriesReader = getSeriesCmd.ExecuteReader())
                 {
                     while (seriesReader.Read())
                     {
@@ -28,7 +28,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                         var sortTitle = Parser.Parser.NormalizeTitle(title).ToLower();
 
-                        using (IDbCommand updateCmd = conn.CreateCommand())
+                        using (var updateCmd = conn.CreateCommand())
                         {
                             updateCmd.Transaction = tran;
                             updateCmd.CommandText = "UPDATE \"Movies\" SET \"SortTitle\" = ? WHERE \"Id\" = ?";

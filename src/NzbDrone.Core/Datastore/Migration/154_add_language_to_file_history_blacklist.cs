@@ -38,12 +38,12 @@ namespace NzbDrone.Core.Datastore.Migration
             var languageConverter = new EmbeddedDocumentConverter<List<Language>>(new LanguageIntConverter());
 
             var profileLanguages = new Dictionary<int, int>();
-            using (IDbCommand getProfileCmd = conn.CreateCommand())
+            using (var getProfileCmd = conn.CreateCommand())
             {
                 getProfileCmd.Transaction = tran;
                 getProfileCmd.CommandText = "SELECT \"Id\", \"Language\" FROM \"Profiles\"";
 
-                IDataReader profilesReader = getProfileCmd.ExecuteReader();
+                var profilesReader = getProfileCmd.ExecuteReader();
                 while (profilesReader.Read())
                 {
                     var profileId = profilesReader.GetInt32(0);
@@ -65,11 +65,11 @@ namespace NzbDrone.Core.Datastore.Migration
 
             var movieLanguages = new Dictionary<int, int>();
 
-            using (IDbCommand getSeriesCmd = conn.CreateCommand())
+            using (var getSeriesCmd = conn.CreateCommand())
             {
                 getSeriesCmd.Transaction = tran;
                 getSeriesCmd.CommandText = @"SELECT ""Id"", ""ProfileId"" FROM ""Movies""";
-                using (IDataReader moviesReader = getSeriesCmd.ExecuteReader())
+                using (var moviesReader = getSeriesCmd.ExecuteReader())
                 {
                     while (moviesReader.Read())
                     {
@@ -86,11 +86,11 @@ namespace NzbDrone.Core.Datastore.Migration
             var movieFileLanguages = new Dictionary<int, List<Language>>();
             var releaseLanguages = new Dictionary<string, List<Language>>();
 
-            using (IDbCommand getSeriesCmd = conn.CreateCommand())
+            using (var getSeriesCmd = conn.CreateCommand())
             {
                 getSeriesCmd.Transaction = tran;
                 getSeriesCmd.CommandText = @"SELECT ""Id"", ""MovieId"", ""SceneName"", ""MediaInfo"" FROM ""MovieFiles""";
-                using (IDataReader movieFilesReader = getSeriesCmd.ExecuteReader())
+                using (var movieFilesReader = getSeriesCmd.ExecuteReader())
                 {
                     while (movieFilesReader.Read())
                     {
@@ -136,11 +136,11 @@ namespace NzbDrone.Core.Datastore.Migration
 
             var historyLanguages = new Dictionary<int, List<Language>>();
 
-            using (IDbCommand getSeriesCmd = conn.CreateCommand())
+            using (var getSeriesCmd = conn.CreateCommand())
             {
                 getSeriesCmd.Transaction = tran;
                 getSeriesCmd.CommandText = @"SELECT ""Id"", ""SourceTitle"", ""MovieId"" FROM ""History""";
-                using (IDataReader historyReader = getSeriesCmd.ExecuteReader())
+                using (var historyReader = getSeriesCmd.ExecuteReader())
                 {
                     while (historyReader.Read())
                     {
@@ -173,11 +173,11 @@ namespace NzbDrone.Core.Datastore.Migration
 
             var blacklistLanguages = new Dictionary<int, List<Language>>();
 
-            using (IDbCommand getSeriesCmd = conn.CreateCommand())
+            using (var getSeriesCmd = conn.CreateCommand())
             {
                 getSeriesCmd.Transaction = tran;
                 getSeriesCmd.CommandText = @"SELECT ""Id"", ""SourceTitle"", ""MovieId"" FROM ""Blacklist""";
-                using (IDataReader blacklistReader = getSeriesCmd.ExecuteReader())
+                using (var blacklistReader = getSeriesCmd.ExecuteReader())
                 {
                     while (blacklistReader.Read())
                     {
@@ -209,7 +209,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                 var movieFileIds = group.Select(v => v.ToString()).Join(",");
 
-                using (IDbCommand updateMovieFilesCmd = conn.CreateCommand())
+                using (var updateMovieFilesCmd = conn.CreateCommand())
                 {
                     updateMovieFilesCmd.Transaction = tran;
                     if (conn.GetType().FullName == "Npgsql.NpgsqlConnection")
@@ -235,7 +235,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                 var historyIds = group.Select(v => v.ToString()).Join(",");
 
-                using (IDbCommand updateHistoryCmd = conn.CreateCommand())
+                using (var updateHistoryCmd = conn.CreateCommand())
                 {
                     updateHistoryCmd.Transaction = tran;
                     if (conn.GetType().FullName == "Npgsql.NpgsqlConnection")
@@ -261,7 +261,7 @@ namespace NzbDrone.Core.Datastore.Migration
 
                 var blacklistIds = group.Select(v => v.ToString()).Join(",");
 
-                using (IDbCommand updateBlacklistCmd = conn.CreateCommand())
+                using (var updateBlacklistCmd = conn.CreateCommand())
                 {
                     updateBlacklistCmd.Transaction = tran;
                     if (conn.GetType().FullName == "Npgsql.NpgsqlConnection")

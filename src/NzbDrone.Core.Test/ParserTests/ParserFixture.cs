@@ -4,7 +4,6 @@ using FluentAssertions.Execution;
 using NUnit.Framework;
 using NzbDrone.Core.Languages;
 using NzbDrone.Core.Parser;
-using NzbDrone.Core.Parser.Model;
 using NzbDrone.Core.Test.Framework;
 
 namespace NzbDrone.Core.Test.ParserTests
@@ -72,7 +71,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[sam] Toward the Terra (1980) [BD 1080p TrueHD].mkv", "Toward the Terra", "sam", 1980)]
         public void should_parse_anime_movie_title(string postTitle, string title, string releaseGroup, int year)
         {
-            ParsedMovieInfo movie = Parser.Parser.ParseMovieTitle(postTitle);
+            var movie = Parser.Parser.ParseMovieTitle(postTitle);
             using (new AssertionScope())
             {
                 movie.PrimaryMovieTitle.Should().Be(title);
@@ -89,7 +88,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[Kulot] Violet Evergarden Gaiden Eien to Jidou Shuki Ningyou [Dual-Audio][BDRip 1920x804 HEVC FLACx2] [91FC62A8].mkv", "Violet Evergarden Gaiden Eien to Jidou Shuki Ningyou", "Kulot")]
         public void should_parse_anime_movie_title_without_year(string postTitle, string title, string releaseGroup)
         {
-            ParsedMovieInfo movie = Parser.Parser.ParseMovieTitle(postTitle);
+            var movie = Parser.Parser.ParseMovieTitle(postTitle);
             using (new AssertionScope())
             {
                 movie.PrimaryMovieTitle.Should().Be(title);
@@ -127,7 +126,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Kick.Ass.2.2013.German.DTS.DL.720p.BluRay.x264-Pate_", "Kick Ass 2", "", 2013, Description = "underscore at the end")]
         public void should_parse_german_movie(string postTitle, string title, string edition, int year)
         {
-            ParsedMovieInfo movie = Parser.Parser.ParseMovieTitle(postTitle);
+            var movie = Parser.Parser.ParseMovieTitle(postTitle);
             using (new AssertionScope())
             {
                 movie.PrimaryMovieTitle.Should().Be(title);

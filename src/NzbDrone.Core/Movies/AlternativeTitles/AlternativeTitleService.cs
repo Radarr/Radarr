@@ -70,7 +70,7 @@ namespace NzbDrone.Core.Movies.AlternativeTitles
 
         public List<AlternativeTitle> UpdateTitles(List<AlternativeTitle> titles, MovieMetadata movieMetadata)
         {
-            int movieMetadataId = movieMetadata.Id;
+            var movieMetadataId = movieMetadata.Id;
 
             // First update the movie ids so we can correlate them later.
             titles.ForEach(t => t.MovieMetadataId = movieMetadataId);

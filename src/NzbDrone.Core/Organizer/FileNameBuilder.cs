@@ -224,11 +224,11 @@ namespace NzbDrone.Core.Organizer
         {
             var colonReplacementFormat = colonReplacement.GetFormatString();
 
-            string result = name;
+            var result = name;
             string[] badCharacters = { "\\", "/", "<", ">", "?", "*", ":", "|", "\"" };
             string[] goodCharacters = { "+", "+", "", "", "!", "-", colonReplacementFormat, "", "" };
 
-            for (int i = 0; i < badCharacters.Length; i++)
+            for (var i = 0; i < badCharacters.Length; i++)
             {
                 result = result.Replace(badCharacters[i], replace ? goodCharacters[i] : string.Empty);
             }
@@ -414,7 +414,7 @@ namespace NzbDrone.Core.Organizer
                 }
             }
 
-            for (int i = 0; i < tokens.Count; i++)
+            for (var i = 0; i < tokens.Count; i++)
             {
                 try
                 {

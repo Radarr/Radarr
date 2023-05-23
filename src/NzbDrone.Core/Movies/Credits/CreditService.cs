@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Movies.Credits
 
         public List<Credit> UpdateCredits(List<Credit> credits, MovieMetadata movieMetadata)
         {
-            int movieMetadataId = movieMetadata.Id;
+            var movieMetadataId = movieMetadata.Id;
 
             // First update the movie ids so we can correlate them later.
             credits.ForEach(t => t.MovieMetadataId = movieMetadataId);
