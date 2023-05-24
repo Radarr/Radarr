@@ -41,6 +41,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     showTitle,
     showMonitored,
     showQualityProfile,
+    showCinemaRelease,
     showReleaseDate,
     showSearchAction,
   } = useSelector(selectPosterOptions);
@@ -59,6 +60,8 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     youTubeTrailerId,
     hasFile,
     isAvailable,
+    studio,
+    added,
     inCinemas,
     physicalRelease,
     digitalRelease,
@@ -199,7 +202,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
 
       {showMonitored ? (
         <div className={styles.title}>
-          {monitored ? translate('monitored') : translate('unmonitored')}
+          {monitored ? translate('Monitored') : translate('Unmonitored')}
         </div>
       ) : null}
 
@@ -208,8 +211,11 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
       ) : null}
 
       <MovieIndexPosterInfo
+        studio={studio}
         qualityProfile={qualityProfile}
+        added={added}
         showQualityProfile={showQualityProfile}
+        showCinemaRelease={showCinemaRelease}
         showReleaseDate={showReleaseDate}
         showRelativeDates={showRelativeDates}
         shortDateFormat={shortDateFormat}
