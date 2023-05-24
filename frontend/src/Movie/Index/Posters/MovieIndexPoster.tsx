@@ -127,7 +127,7 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
 
   return (
     <div className={styles.content}>
-      <div className={styles.posterContainer}>
+      <div className={styles.posterContainer} title={title}>
         {isSelectMode ? <MovieIndexPosterSelect movieId={movieId} /> : null}
 
         <Label className={styles.controls}>
@@ -198,7 +198,11 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         bottomRadius={false}
       />
 
-      {showTitle ? <div className={styles.title}>{title}</div> : null}
+      {showTitle ? (
+        <div className={styles.title} title={title}>
+          {title}
+        </div>
+      ) : null}
 
       {showMonitored ? (
         <div className={styles.title}>
