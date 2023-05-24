@@ -10289,7 +10289,8 @@
           "banner",
           "fanart",
           "screenshot",
-          "headshot"
+          "headshot",
+          "clearlogo"
         ],
         "type": "string"
       },
