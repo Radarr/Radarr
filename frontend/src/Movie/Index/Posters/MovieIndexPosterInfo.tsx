@@ -20,6 +20,7 @@ interface MovieIndexPosterInfoProps {
   sizeOnDisk?: number;
   sortKey: string;
   showRelativeDates: boolean;
+  showCinemaRelease: boolean;
   showReleaseDate: boolean;
   shortDateFormat: string;
   timeFormat: string;
@@ -39,6 +40,7 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     sizeOnDisk,
     sortKey,
     showRelativeDates,
+    showCinemaRelease,
     showReleaseDate,
     shortDateFormat,
     timeFormat,
@@ -70,7 +72,7 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     );
   }
 
-  if (sortKey === 'inCinemas' && inCinemas && !showReleaseDate) {
+  if (sortKey === 'inCinemas' && inCinemas && showCinemaRelease) {
     const inCinemasDate = getRelativeDate(
       inCinemas,
       shortDateFormat,
@@ -88,7 +90,7 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     );
   }
 
-  if (sortKey === 'digitalRelease' && digitalRelease && !showReleaseDate) {
+  if (sortKey === 'digitalRelease' && digitalRelease && showReleaseDate) {
     const digitalReleaseDate = getRelativeDate(
       digitalRelease,
       shortDateFormat,
@@ -106,7 +108,7 @@ function MovieIndexPosterInfo(props: MovieIndexPosterInfoProps) {
     );
   }
 
-  if (sortKey === 'physicalRelease' && physicalRelease && !showReleaseDate) {
+  if (sortKey === 'physicalRelease' && physicalRelease && showReleaseDate) {
     const physicalReleaseDate = getRelativeDate(
       physicalRelease,
       shortDateFormat,
