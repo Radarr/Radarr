@@ -44,5 +44,14 @@ namespace NzbDrone.Core.Test.ParserTests
             var result = IsoLanguages.Find(isoCode);
             result.Should().Be(null);
         }
+
+        [TestCase("te")]
+        [TestCase("tel")]
+        [TestCase("te-IN")]
+        public void should_return_telugu(string isoCode)
+        {
+            var result = IsoLanguages.Find(isoCode);
+            result.Language.Should().Be(Language.Telugu);
+        }
     }
 }
