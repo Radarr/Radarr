@@ -212,6 +212,11 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Tamil);
             }
 
+            if (lowerTitle.Contains("telugu"))
+            {
+                languages.Add(Language.Telugu);
+            }
+
             // Case sensitive
             var caseSensitiveMatchs = CaseSensitiveLanguageRegex.Matches(title);
 
