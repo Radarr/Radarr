@@ -9,6 +9,7 @@ import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import translate from 'Utilities/String/translate';
 import ImportListExclusionsConnector from './ImportListExclusions/ImportListExclusionsConnector';
 import ImportListsConnector from './ImportLists/ImportListsConnector';
+import ManageImportListsModal from './ImportLists/Manage/ManageImportListsModal';
 import ImportListOptionsConnector from './Options/ImportListOptionsConnector';
 
 class ImportListSettings extends Component {
@@ -23,7 +24,8 @@ class ImportListSettings extends Component {
 
     this.state = {
       isSaving: false,
-      hasPendingChanges: false
+      hasPendingChanges: false,
+      isManageImportListsOpen: false
     };
   }
 
@@ -36,6 +38,14 @@ class ImportListSettings extends Component {
 
   onChildStateChange = (payload) => {
     this.setState(payload);
+  };
+
+  onManageImportListsPress = () => {
+    this.setState({ isManageImportListsOpen: true });
+  };
+
+  onManageImportListsModalClose = () => {
+    this.setState({ isManageImportListsOpen: false });
   };
 
   onSavePress = () => {
@@ -55,7 +65,8 @@ class ImportListSettings extends Component {
 
     const {
       isSaving,
-      hasPendingChanges
+      hasPendingChanges,
+      isManageImportListsOpen
     } = this.state;
 
     return (
@@ -73,6 +84,12 @@ class ImportListSettings extends Component {
                 isSpinning={isTestingAll}
                 onPress={dispatchTestAllImportList}
               />
+
+              <PageToolbarButton
+                label="Manage Lists"
+                iconName={icons.MANAGE}
+                onPress={this.onManageImportListsPress}
+              />
             </Fragment>
           }
           onSavePress={this.onSavePress}
@@ -87,6 +104,11 @@ class ImportListSettings extends Component {
           />
 
           <ImportListExclusionsConnector />
+
+          <ManageImportListsModal
+            isOpen={isManageImportListsOpen}
+            onModalClose={this.onManageImportListsModalClose}
+          />
 
         </PageContentBody>
       </PageContent>

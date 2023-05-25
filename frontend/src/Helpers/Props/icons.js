@@ -71,6 +71,7 @@ import {
   faLanguage as fasLanguage,
   faLaptop as fasLaptop,
   faLevelUpAlt as fasLevelUpAlt,
+  faListCheck as fasListCheck,
   faMedkit as fasMedkit,
   faMinus as fasMinus,
   faPause as fasPause,
@@ -172,6 +173,7 @@ export const INFO = fasInfoCircle;
 export const INTERACTIVE = fasUser;
 export const KEYBOARD = farKeyboard;
 export const LOGOUT = fasSignOutAlt;
+export const MANAGE = fasListCheck;
 export const MEDIA_INFO = farFileInvoice;
 export const MISSING = fasExclamationTriangle;
 export const MONITORED = fasBookmark;
