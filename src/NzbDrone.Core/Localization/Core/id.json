@@ -33,5 +33,20 @@
     "Added": "Ditambahkan",
     "AddedToDownloadQueue": "Ditambahkan ke antrean pengunduhan",
     "AgeWhenGrabbed": "Usia (saat diperoleh)",
-    "AllResultsHiddenFilter": "Seluruh hasil disembunyikan karena penyaringan yang diterapkan"
+    "AllResultsHiddenFilter": "Seluruh hasil disembunyikan karena penyaringan yang diterapkan",
+    "CantFindMovie": "Mengapa saya tidak bisa menemukan film ini?",
+    "ChangeHasNotBeenSavedYet": "Perubahan belum disimpan",
+    "AptUpdater": "Gunakan apt untuk memasang pembaruan",
+    "Automatic": "Otomatis",
+    "AutomaticSearch": "Penelusuran Otomatis",
+    "AlternativeTitle": "Judul Lain",
+    "Announced": "Diumumkan",
+    "AnnouncedMsg": "Film telah diumumkan",
+    "AppDataDirectory": "Direktori AppData",
+    "BackupNow": "Cadangkan Sekarang",
+    "Calendar": "Kalender",
+    "Cancel": "Batal",
+    "ClickToChangeLanguage": "Klik untuk mengubah bahasa",
+    "ClickToChangeMovie": "Klik untuk mengubah film",
+    "ClickToChangeQuality": "Klik untuk mengubah kualitas"
 }
