@@ -362,6 +362,15 @@ namespace NzbDrone.Core.Test.ParserTests
             result.Languages.Should().BeEquivalentTo(Language.Bengali);
         }
 
+        [TestCase("Movie Title (2018) Telugu DVDScr X264 AAC 700 MB")]
+        [TestCase("Movie.Title.2022.Tel.WEBRip.x264-VXT")]
+        [TestCase("Movie Title (2019) Proper HDRip - 720p - x264 - HQ Line Auds - [Telugu + Tamil + Hindi + English] - 1.1GB")]
+        public void should_parse_language_telugu(string postTitle)
+        {
+            var result = Parser.Parser.ParseMovieTitle(postTitle);
+            result.Languages.Should().Contain(Language.Telugu);
+        }
+
         [TestCase("Movie.Title.1994.HDTV.x264.SK-iCZi")]
         [TestCase("Movie.Title.2019.1080p.HDTV.x265.iNTERNAL.SK-iCZi")]
         [TestCase("Movie.Title.2018.SLOVAK.DUAL.2160p.UHD.BluRay.x265-iCZi")]
