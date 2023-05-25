@@ -30,7 +30,8 @@ namespace NzbDrone.Core.Parser
                                                                             (?<chinese>\[(?:CH[ST]|BIG5|GB)\]|简|繁|字幕)|
                                                                             (?<ukrainian>(?:(?:\dx)?UKR))|
                                                                             (?<spanish>\b(?:español|castellano)\b)|
-                                                                            (?<latvian>\bLV\b)",
+                                                                            (?<latvian>\bLV\b)|
+                                                                            (?<telugu>\btel\b)",
                                                                 RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
         private static readonly Regex CaseSensitiveLanguageRegex = new Regex(@"(?:(?i)(?<!SUB[\W|_|^]))(?:(?<lithuanian>\bLT\b)|
@@ -212,6 +213,11 @@ namespace NzbDrone.Core.Parser
                 languages.Add(Language.Tamil);
             }
 
+            if (lowerTitle.Contains("telugu"))
+            {
+                languages.Add(Language.Telugu);
+            }
+
             // Case sensitive
             var caseSensitiveMatchs = CaseSensitiveLanguageRegex.Matches(title);
 
@@ -335,6 +341,11 @@ namespace NzbDrone.Core.Parser
                 if (match.Groups["romanian"].Success)
                 {
                     languages.Add(Language.Romanian);
+                }
+
+                if (match.Groups["telugu"].Success)
+                {
+                    languages.Add(Language.Telugu);
                 }
             }
 
