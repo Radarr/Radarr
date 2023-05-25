@@ -8,6 +8,7 @@ import { icons } from 'Helpers/Props';
 import SettingsToolbarConnector from 'Settings/SettingsToolbarConnector';
 import translate from 'Utilities/String/translate';
 import DownloadClientsConnector from './DownloadClients/DownloadClientsConnector';
+import ManageDownloadClientsModal from './DownloadClients/Manage/ManageDownloadClientsModal';
 import DownloadClientOptionsConnector from './Options/DownloadClientOptionsConnector';
 import RemotePathMappingsConnector from './RemotePathMappings/RemotePathMappingsConnector';
 
@@ -23,7 +24,8 @@ class DownloadClientSettings extends Component {
 
     this.state = {
       isSaving: false,
-      hasPendingChanges: false
+      hasPendingChanges: false,
+      isManageDownloadClientsOpen: false
     };
   }
 
@@ -36,6 +38,14 @@ class DownloadClientSettings extends Component {
 
   onChildStateChange = (payload) => {
     this.setState(payload);
+  };
+
+  onManageDownloadClientsPress = () => {
+    this.setState({ isManageDownloadClientsOpen: true });
+  };
+
+  onManageDownloadClientsModalClose = () => {
+    this.setState({ isManageDownloadClientsOpen: false });
   };
 
   onSavePress = () => {
@@ -55,7 +65,8 @@ class DownloadClientSettings extends Component {
 
     const {
       isSaving,
-      hasPendingChanges
+      hasPendingChanges,
+      isManageDownloadClientsOpen
     } = this.state;
 
     return (
@@ -73,6 +84,12 @@ class DownloadClientSettings extends Component {
                 isSpinning={isTestingAll}
                 onPress={dispatchTestAllDownloadClients}
               />
+
+              <PageToolbarButton
+                label="Manage Clients"
+                iconName={icons.MANAGE}
+                onPress={this.onManageDownloadClientsPress}
+              />
             </Fragment>
           }
           onSavePress={this.onSavePress}
@@ -87,6 +104,11 @@ class DownloadClientSettings extends Component {
           />
 
           <RemotePathMappingsConnector />
+
+          <ManageDownloadClientsModal
+            isOpen={isManageDownloadClientsOpen}
+            onModalClose={this.onManageDownloadClientsModalClose}
+          />
         </PageContentBody>
       </PageContent>
     );
