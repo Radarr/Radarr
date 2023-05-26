@@ -343,7 +343,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie Name.1993..BD25.ISO")]
         [TestCase("Movie.Title.2012.Bluray.1080p.3D.AVC.DTS-HD.MA.5.1.iso")]
         [TestCase("Movie.Title.1996.Bluray.ISO")]
-        [TestCase("Random.Title.2010.1080p.HD.DVD.AVC.DDP.5.1-GRouP", false)]
+        [TestCase("Random.Title.2010.1080p.HD.DVD.AVC.DDP.5.1-GRouP")]
         [TestCase("Movie Title 2005 1080p USA Blu-ray AVC DTS-HD MA 5.1-PTP")]
         [TestCase("Movie Title 2014 1080p Blu-ray AVC DTS-HD MA 5.1-PTP")]
         [TestCase("Movie Title 1976 2160p UHD Blu-ray DTS-HD MA 5.1 DV HDR HEVC-UNTOUCHED")]
