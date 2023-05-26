@@ -118,6 +118,7 @@ namespace NzbDrone.Core.DecisionEngine
                             {
                                 Release = report,
                                 ParsedMovieInfo = parsedMovieInfo,
+                                Languages = parsedMovieInfo.Languages
                             };
 
                             decision = new DownloadDecision(remoteMovie, new Rejection("Unable to parse release"));
