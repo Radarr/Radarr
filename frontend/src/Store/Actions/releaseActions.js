@@ -74,6 +74,17 @@ export const defaultState = {
       key: 'all',
       label: translate('All'),
       filters: []
+    },
+    {
+      key: 'accepted',
+      label: translate('Accepted'),
+      filters: [
+        {
+          key: 'rejectionCount',
+          value: 0,
+          type: filterTypes.EQUAL
+        }
+      ]
     }
   ],
 
