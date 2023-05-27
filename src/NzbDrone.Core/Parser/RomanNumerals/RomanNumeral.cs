@@ -209,7 +209,7 @@ namespace NzbDrone.Core.Parser.RomanNumerals
         /// Returns the Roman numeral that was passed in as either an Arabic numeral
         /// or a Roman numeral.
         /// </summary>
-        /// <returns>A <see cref="System.string" /> representing a Roman Numeral</returns>
+        /// <returns>A <see cref="string" /> representing a Roman Numeral</returns>
         public string ToRomanNumeral()
         {
             return ToString();
@@ -349,7 +349,7 @@ namespace NzbDrone.Core.Parser.RomanNumerals
         /// during creation.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.string" /> that represents a Roman Numeral.
+        /// A <see cref="string" /> that represents a Roman Numeral.
         /// </returns>
         public override string ToString()
         {
