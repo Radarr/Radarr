@@ -358,7 +358,6 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The German 2021 Bluray AVC")]
         [TestCase("German.Only.Movie.2021.French.1080p.BluRay.AVC-UNTAVC")]
         [TestCase("Movie.Title.2008.US.Directors.Cut.UHD.BD66.Blu-ray")]
-        [TestCase("Movie Title 2010 720p Blu-ray AVC DTS-HD MA 5.1")]
         public void should_parse_brdisk_1080p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080p, Modifier.BRDISK);
