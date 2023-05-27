@@ -19,7 +19,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         SabnzbdConfig GetConfig(SabnzbdSettings settings);
         SabnzbdFullStatus GetFullStatus(SabnzbdSettings settings);
         SabnzbdQueue GetQueue(int start, int limit, SabnzbdSettings settings);
-        SabnzbdHistory GetHistory(int start, int limit, string category, SabnzbdSettings settings);
+        SabnzbdHistory GetHistory(int start, int limit, SabnzbdSettings settings);
         string RetryDownload(string id, SabnzbdSettings settings);
     }
 
@@ -46,7 +46,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
         {
             var request = BuildRequest("addfile", settings).Post();
 
-            request.AddQueryParam("cat", category);
+            request.AddQueryParam("cat", settings.MovieCategory);
             request.AddQueryParam("priority", priority);
 
             request.AddFormUpload("name", filename, nzbData, "application/x-nzb");
@@ -111,20 +111,25 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
             request.AddQueryParam("start", start);
             request.AddQueryParam("limit", limit);
 
+            if (settings.MovieCategory.IsNotNullOrWhiteSpace())
+            {
+                request.AddQueryParam("category", settings.MovieCategory);
+            }
+
             var response = ProcessRequest(request, settings);
 
             return Json.Deserialize<SabnzbdQueue>(JObject.Parse(response).SelectToken("queue").ToString());
         }
 
-        public SabnzbdHistory GetHistory(int start, int limit, string category, SabnzbdSettings settings)
+        public SabnzbdHistory GetHistory(int start, int limit, SabnzbdSettings settings)
         {
             var request = BuildRequest("history", settings);
             request.AddQueryParam("start", start);
             request.AddQueryParam("limit", limit);
 
-            if (category.IsNotNullOrWhiteSpace())
+            if (settings.MovieCategory.IsNotNullOrWhiteSpace())
             {
-                request.AddQueryParam("category", category);
+                request.AddQueryParam("category", settings.MovieCategory);
             }
 
             var response = ProcessRequest(request, settings);
