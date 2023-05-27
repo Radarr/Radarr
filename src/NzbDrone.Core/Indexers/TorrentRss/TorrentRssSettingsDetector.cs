@@ -35,11 +35,11 @@ namespace NzbDrone.Core.Indexers.TorrentRss
         /// </summary>
         /// <param name="settings">Indexer Settings to use for Parser</param>
         /// <returns>Parsed Settings or <c>null</c></returns>
-        public TorrentRssIndexerParserSettings Detect(TorrentRssIndexerSettings indexerSettings)
+        public TorrentRssIndexerParserSettings Detect(TorrentRssIndexerSettings settings)
         {
-            _logger.Debug("Evaluating TorrentRss feed '{0}'", indexerSettings.BaseUrl);
+            _logger.Debug("Evaluating TorrentRss feed '{0}'", settings.BaseUrl);
 
-            var requestGenerator = new TorrentRssIndexerRequestGenerator { Settings = indexerSettings };
+            var requestGenerator = new TorrentRssIndexerRequestGenerator { Settings = settings };
             var request = requestGenerator.GetRecentRequests().GetAllTiers().First().First();
 
             HttpResponse httpResponse = null;
@@ -54,7 +54,7 @@ namespace NzbDrone.Core.Indexers.TorrentRss
             }
 
             var indexerResponse = new IndexerResponse(request, httpResponse);
-            return GetParserSettings(indexerResponse, indexerSettings);
+            return GetParserSettings(indexerResponse, settings);
         }
 
         private TorrentRssIndexerParserSettings GetParserSettings(IndexerResponse response, TorrentRssIndexerSettings indexerSettings)
