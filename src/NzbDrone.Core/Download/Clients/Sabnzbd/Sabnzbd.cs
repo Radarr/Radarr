@@ -107,7 +107,7 @@ namespace NzbDrone.Core.Download.Clients.Sabnzbd
 
         private IEnumerable<DownloadClientItem> GetHistory()
         {
-            var sabHistory = _proxy.GetHistory(0, _configService.DownloadClientHistoryLimit, Settings.MovieCategory, Settings);
+            var sabHistory = _proxy.GetHistory(0, _configService.DownloadClientHistoryLimit, Settings);
 
             var historyItems = new List<DownloadClientItem>();
 
