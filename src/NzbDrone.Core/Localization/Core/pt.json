@@ -1156,5 +1156,7 @@
     "SettingsTheme": "Tema",
     "AreYouSureYouWantToResetQualityDefinitions": "Tem certeza de que deseja redefinir as definições de qualidade?",
     "DownloadClientSortingCheckMessage": "O cliente de download {0} tem {1} classificação habilitada para a categoria do Radarr. Você deve desativar a classificação em seu cliente de download para evitar problemas de importação.",
-    "PreferredProtocol": "Protocolo Preferido"
+    "PreferredProtocol": "Protocolo Preferido",
+    "ShowCinemaReleaseHelpText": "Mostrar data de lançamento abaixo do cartaz",
+    "EditMovies": "Editar filme"
 }

@@ -1062,5 +1062,7 @@
     "MonitorMovies": "Monitorizați filmul",
     "NoCollections": "Nu s-au găsit filme, pentru a începe, va trebui să adăugați un film nou sau să importați unele existente.",
     "RssSyncHelpText": "Interval în minute. Setați la zero pentru a dezactiva (acest lucru va opri toate apucările de eliberare automată)",
-    "File": "Fișier"
+    "File": "Fișier",
+    "EditMovies": "Editați filmul",
+    "ShowCinemaReleaseHelpText": "Afișați data lansării sub afiș"
 }

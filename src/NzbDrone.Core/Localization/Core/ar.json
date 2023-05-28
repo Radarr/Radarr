@@ -1064,5 +1064,7 @@
     "AllCollectionsHiddenDueToFilter": "جميع الأفلام مخفية بسبب الفلتر المطبق.",
     "Collections": "مجموعة",
     "File": "الملفات",
-    "AnnouncedMsg": "تم اعلان الفيلم"
+    "AnnouncedMsg": "تم اعلان الفيلم",
+    "ShowCinemaReleaseHelpText": "عرض تاريخ الإصدار تحت الملصق",
+    "EditMovies": "تحرير الفيلم"
 }

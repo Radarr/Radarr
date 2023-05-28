@@ -1154,5 +1154,7 @@
     "ResetDefinitions": "Palauta määritykset",
     "ResetTitlesHelpText": "Palauta määritysten nimet ja arvot.",
     "RSSHelpText": "Käytetään etsittäessä julkaisuja RSS-syötteistä ajoitetusti.",
-    "File": "Tiedosto"
+    "File": "Tiedosto",
+    "EditMovies": "Muokkaa elokuvaa",
+    "ShowCinemaReleaseHelpText": "Näytä fyysisen julkaisun päivämäärä julisteen alla."
 }

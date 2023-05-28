@@ -248,5 +248,14 @@
     "CollectionsSelectedInterp": "{0} Kolekcija odabrano",
     "ColonReplacement": "Zamjena Zareza",
     "ColonReplacementFormatHelpText": "izmijeni kako Radar upravlja zamjenama zareza",
-    "Columns": "Stupci"
+    "Columns": "Stupci",
+    "DeleteBackupMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
+    "DeleteCustomFormat": "Kloniraj Prilagođeni Format",
+    "DeleteDownloadClientMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
+    "DeleteIndexerMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
+    "DeleteListMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
+    "DeleteNotificationMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
+    "ExportCustomFormat": "Dodaj Prilagođeni Format",
+    "ImportCustomFormat": "Dodaj Prilagođeni Format",
+    "SomeResultsHiddenFilter": "Svi rezultati su skriveni zbog primjenjenog filtera"
 }

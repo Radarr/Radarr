@@ -1062,5 +1062,7 @@
     "Collections": "コレクション",
     "MonitorMovies": "モニタームービー",
     "NoCollections": "映画が見つかりません。開始するには、新しい映画を追加するか、既存の映画をインポートする必要があります。",
-    "File": "ファイル"
+    "File": "ファイル",
+    "ShowCinemaReleaseHelpText": "ポスターの下にリリース日を表示する",
+    "EditMovies": "映画の編集"
 }

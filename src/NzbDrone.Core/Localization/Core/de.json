@@ -1160,5 +1160,6 @@
     "MovieMatchType": "Filmübereinstimmungstyp",
     "EditSelectedMovies": "Bearbeite ausgewählte Filme",
     "EditMovies": "Filme bearbeiten",
-    "RecycleBinUnableToWriteHealthCheck": "Schreiben in konfigurierten Papierkorbordner nicht möglich: {0}. Stelle sicher, dass dieser Pfad existiert und von dem Benutzer, der Radarr ausführt, beschreibbar ist"
+    "RecycleBinUnableToWriteHealthCheck": "Schreiben in konfigurierten Papierkorbordner nicht möglich: {0}. Stelle sicher, dass dieser Pfad existiert und von dem Benutzer, der Radarr ausführt, beschreibbar ist",
+    "ShowCinemaReleaseHelpText": "Erscheinungsdatum unter Poster anzeigen"
 }
