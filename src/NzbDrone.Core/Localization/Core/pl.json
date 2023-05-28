@@ -681,7 +681,6 @@
     "InteractiveSearch": "Wyszukiwanie interaktywne",
     "Interval": "Interwał",
     "KeepAndUnmonitorMovie": "Zachowaj i nie monitoruj filmu",
-    "Language": "Język",
     "LanguageHelpText": "Język wydań",
     "Languages": "Języki",
     "Large": "Duży",
@@ -1145,5 +1144,8 @@
     "RottenTomatoesRating": "Ocena Tomato",
     "ApplicationUrlHelpText": "Zewnętrzny URL tej aplikacji zawiera http(s)://, port i adres URL",
     "ApplicationURL": "Link do aplikacji",
-    "File": "Plik"
+    "File": "Plik",
+    "Language": "Język",
+    "ShowCinemaReleaseHelpText": "Pokaż datę premiery pod plakatem",
+    "EditMovies": "Edytuj film"
 }

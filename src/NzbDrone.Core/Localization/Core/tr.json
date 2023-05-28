@@ -1063,5 +1063,7 @@
     "Collections": "Koleksiyon",
     "MonitorMovies": "Filmi İzle",
     "NoCollections": "Film bulunamadı, başlamak için yeni bir film eklemek veya mevcut filmlerden bazılarını içe aktarmak isteyeceksiniz.",
-    "File": "Dosyalar"
+    "File": "Dosyalar",
+    "ShowCinemaReleaseHelpText": "Posterin altında çıkış tarihini göster",
+    "EditMovies": "Filmi Düzenle"
 }

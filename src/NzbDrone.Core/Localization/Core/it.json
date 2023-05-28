@@ -1115,5 +1115,9 @@
     "CollectionShowOverviewsHelpText": "Mostra panoramica della collezione",
     "ImdbVotes": "Voti IMDb",
     "ImdbRating": "Valutazione IMDb",
-    "DownloadClientSortingCheckMessage": "Il client di download {0} ha l'ordinamento {1} abilitato per la categoria di Radarr. Dovresti disabilitare l'ordinamento nel tuo client di download per evitare problemi di importazione."
+    "DownloadClientSortingCheckMessage": "Il client di download {0} ha l'ordinamento {1} abilitato per la categoria di Radarr. Dovresti disabilitare l'ordinamento nel tuo client di download per evitare problemi di importazione.",
+    "ShowCinemaReleaseHelpText": "Mostra la data di uscita sotto il poster",
+    "TmdbRating": "Valutazione IMDb",
+    "TmdbVotes": "Voti IMDb",
+    "EditMovies": "Modifica Film"
 }

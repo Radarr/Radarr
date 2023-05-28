@@ -1156,5 +1156,7 @@
     "RSSHelpText": "Akkor használatos, amikor a Radarr rendszeresen keres kiadásokat az RSS Sync segítségével",
     "DownloadClientSortingCheckMessage": "A(z) {0} letöltési kliensben engedélyezve van a(z) {1} rendezés a Radarr kategóriájához. Az importálási problémák elkerülése érdekében le kell tiltania a rendezést a letöltési kliensben.",
     "File": "Fájl",
-    "UMask": "UMask"
+    "UMask": "UMask",
+    "EditMovies": "Film Szerkesztése",
+    "ShowCinemaReleaseHelpText": "Mutasd a megjelenés dátumát a poszter alatt"
 }

@@ -1069,5 +1069,7 @@
     "AnnouncedMsg": "Filmen tillkännages",
     "ApplicationURL": "Applikations-URL",
     "ApplicationUrlHelpText": "Denna applikations externa URL inklusive http(s)://, port och URL-bas",
-    "File": "Fil"
+    "File": "Fil",
+    "EditMovies": "Redigera film",
+    "ShowCinemaReleaseHelpText": "Visa släppdatum under affischen"
 }

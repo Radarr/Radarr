@@ -1158,5 +1158,6 @@
     "SettingsTheme": "Tema",
     "PreferredProtocol": "Protocolo preferido",
     "EditMovies": "Editar  peliculas",
-    "EditSelectedMovies": "Editar Peliculas Seleccionadas"
+    "EditSelectedMovies": "Editar Peliculas Seleccionadas",
+    "ShowCinemaReleaseHelpText": "Mostrar la fecha de lanzamiento debajo del cartel"
 }

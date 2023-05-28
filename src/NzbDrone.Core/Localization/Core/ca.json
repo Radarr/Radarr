@@ -1156,5 +1156,7 @@
     "SettingsTheme": "Tema",
     "UMask": "Umask",
     "RSSHelpText": "S'utilitzarà quan Radarr cerqui publicacions periòdicament mitjançant RSS Sync",
-    "AreYouSureYouWantToResetQualityDefinitions": "Esteu segur que voleu restablir les definicions de qualitat?"
+    "AreYouSureYouWantToResetQualityDefinitions": "Esteu segur que voleu restablir les definicions de qualitat?",
+    "EditMovies": "Edita pel·lícula",
+    "ShowCinemaReleaseHelpText": "Mostra la data de llançament sota el cartell"
 }

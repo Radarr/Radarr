@@ -1165,5 +1165,6 @@
     "UpdateFiltered": "更新过滤",
     "EditMovies": "编辑电影",
     "EditSelectedMovies": "编辑选定的电影",
-    "RecycleBinUnableToWriteHealthCheck": "无法写入配置的回收站文件夹:{0}。确保此路径存在，并且可由运行Radarr的用户写入"
+    "RecycleBinUnableToWriteHealthCheck": "无法写入配置的回收站文件夹:{0}。确保此路径存在，并且可由运行Radarr的用户写入",
+    "ShowCinemaReleaseHelpText": "在海报下显示发布日期"
 }

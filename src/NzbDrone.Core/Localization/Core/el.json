@@ -1156,5 +1156,7 @@
     "UpdateAvailable": "Νέα ενημέρωση είναι διαθέσιμη",
     "SizeLimit": "Όριο μεγέθους",
     "File": "Αρχεία",
-    "UMask": "UMask"
+    "UMask": "UMask",
+    "EditMovies": "Επεξεργασία ταινίας",
+    "ShowCinemaReleaseHelpText": "Εμφάνιση ημερομηνίας κυκλοφορίας στην αφίσα"
 }

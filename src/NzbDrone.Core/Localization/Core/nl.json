@@ -425,7 +425,7 @@
     "DownloadWarningCheckDownloadClientForMoreDetails": "Download waarschuwing: controleer de downloader voor meer details",
     "DownloadFailedCheckDownloadClientForMoreDetails": "Download mislukt: controleer de downloader voor meer details",
     "CopyUsingHardlinksHelpTextWarning": "Sporadisch kan bestandsvergrendeling het hernoemen van in gebruik zijnde bestanden blokkeren. Als noodoplossing kunt u de hernoem functie van Radarr gebruiken na het opheffen van de bestandsvergrendeling.",
-    "CopyUsingHardlinksHelpText": "Gebruik hardlinks bij het kopiëren van torrent bestanden die nog actief zijn",
+    "CopyUsingHardlinksHelpText": "Hardlinks stellen Radarr in staat om torrents die nog actief zijn te importeren naar de film map zonder extra schijfruimte te gebruiken of het hele bestand te kopiëren. Hardlinks werken alleen wanneer de bron en de bestemming op hetzelfde volume staan",
     "CheckForFinishedDownloadsInterval": "Controle Van Voltooide Downloads Tussentijd",
     "PreferIndexerFlags": "Verkies Indexeerder Flags",
     "PortNumber": "Poort Nummer",
@@ -504,7 +504,7 @@
     "IncludeUnknownMovieItemsHelpText": "Toon items zonder een film in de wachtrij, dit kan verwijderde films, TV series of iets anders in Radarr zijn categorie omvatten",
     "IncludeHealthWarningsHelpText": "Voeg Gezondheidswaarschuwingen Toe",
     "IncludeUnmonitored": "Voeg Onbewaakte Toe",
-    "ListSyncLevelHelpText": "Films in de bibliotheek zullen onbewaakt of verwijderd worden als ze niet in je lijst voorkomen",
+    "ListSyncLevelHelpText": "Films in de bibliotheek zullen afgehandeld worden volgens jouw selectie wanneer ze van je lijst(en) afvallen of er niet in voorkomen",
     "LaunchBrowserHelpText": " Open een web browser en navigeer naar de Radarr startpagina bij het starten van de app.",
     "MaximumSizeHelpText": "Maximale grootte in MB voor een op te halen uitgave. Zet op nul voor ongelimiteerd",
     "MIA": "MIA",
@@ -1116,5 +1116,12 @@
     "EditCollection": "Bewerk collectie",
     "BypassDelayIfHighestQualityHelpText": "Vertraging negeren wanneer een release de hoogst mogelijke kwaliteit heeft in het kwaliteitsprofiel van het geprefereerde protocol",
     "CollectionShowPostersHelpText": "Posters van de collectie tonen",
-    "File": "Bestand"
+    "File": "Bestand",
+    "DiscordUrlInSlackNotification": "U heeft een Discord notificatie ingesteld als Slack notificatie. Stel dit in als een Discord notificatie voor betere functionaliteit. De notificaties waar dit op van toepassing is zijn: {0}",
+    "EditSelectedMovies": "Bewerk Geselecteerde Films",
+    "IndexerJackettAll": "Indexeerders die het niet ondersteunde 'all' endpoint van Jacket gebruiken: {0}",
+    "DownloadClientSortingCheckMessage": "Download cliënt {0} heeft {1} sortering aanstaan voor Radarr's categorie. U zou sortering uit moeten zetten in uw download cliënt om importeerproblemen te voorkomen.",
+    "ApiKeyValidationHealthCheckMessage": "Maak je API sleutel alsjeblieft minimaal 20 karakters lang. Dit kan gedaan worden via de instellingen of het configuratiebestand",
+    "EditMovies": "Bewerk Films",
+    "ShowCinemaReleaseHelpText": "Laat releasedatum zien onder poster"
 }
