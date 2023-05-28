@@ -10877,6 +10877,13 @@
           "copyUsingHardlinks": {
             "type": "boolean"
           },
+          "useScriptImport": {
+            "type": "boolean"
+          },
+          "scriptImportPath": {
+            "type": "string",
+            "nullable": true
+          },
           "importExtraFiles": {
             "type": "boolean"
           },
