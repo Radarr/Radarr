@@ -75,5 +75,7 @@
     "Host": "Host",
     "Hostname": "Hostname",
     "IMDb": "IMDb",
-    "NetCore": ".NET"
+    "NetCore": ".NET",
+    "Connection": "Koleksi",
+    "ImportCustomFormat": "Tambahkan Format Khusus"
 }
