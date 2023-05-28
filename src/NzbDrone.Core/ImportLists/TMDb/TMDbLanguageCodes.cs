@@ -1,4 +1,4 @@
-﻿namespace NzbDrone.Core.ImportLists.TMDb
+namespace NzbDrone.Core.ImportLists.TMDb
 {
     public enum TMDbLanguageCodes
     {
@@ -21,6 +21,10 @@
         sv,
         tr,
         vi,
-        zh
+        zh,
+        ta,
+        te,
+        hi,
+        bn
     }
 }
