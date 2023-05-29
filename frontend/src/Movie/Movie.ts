@@ -16,6 +16,13 @@ export interface Collection {
   title: string;
 }
 
+export interface Ratings {
+  imdb: object;
+  tmdb: object;
+  metacritic: object;
+  rottenTomatoes: object;
+}
+
 interface Movie extends ModelBase {
   tmdbId: number;
   imdbId: string;
@@ -41,7 +48,7 @@ interface Movie extends ModelBase {
   path: string;
   sizeOnDisk: number;
   genres: string[];
-  ratings: object;
+  ratings: Ratings;
   certification: string;
   tags: number[];
   images: Image[];

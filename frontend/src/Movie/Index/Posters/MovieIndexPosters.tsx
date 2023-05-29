@@ -143,6 +143,7 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
       showTitle,
       showMonitored,
       showQualityProfile,
+      showCinemaRelease,
       showReleaseDate,
     } = posterOptions;
 
@@ -167,6 +168,10 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
       heights.push(19);
     }
 
+    if (showCinemaRelease) {
+      heights.push(19);
+    }
+
     if (showReleaseDate) {
       heights.push(19);
     }
@@ -174,12 +179,28 @@ export default function MovieIndexPosters(props: MovieIndexPostersProps) {
     switch (sortKey) {
       case 'studio':
       case 'added':
+      case 'year':
+      case 'imdbRating':
+      case 'tmdbRating':
       case 'path':
       case 'sizeOnDisk':
+      case 'originalTitle':
+      case 'originalLanguage':
         heights.push(19);
         break;
       case 'qualityProfileId':
         if (!showQualityProfile) {
+          heights.push(19);
+        }
+        break;
+      case 'inCinemas':
+        if (!showCinemaRelease) {
+          heights.push(19);
+        }
+        break;
+      case 'digitalRelease':
+      case 'physicalRelease':
+        if (!showReleaseDate) {
           heights.push(19);
         }
         break;
