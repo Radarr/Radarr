@@ -16,6 +16,7 @@ import MovieIndexPosterSelect from 'Movie/Index/Select/MovieIndexPosterSelect';
 import MoviePoster from 'Movie/MoviePoster';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
+import getRelativeDate from 'Utilities/Date/getRelativeDate';
 import translate from 'Utilities/String/translate';
 import createMovieIndexItemSelector from '../createMovieIndexItemSelector';
 import MovieIndexPosterInfo from './MovieIndexPosterInfo';
@@ -125,6 +126,20 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     height: `${posterHeight}px`,
   };
 
+  let releaseDate = '';
+  let releaseDateType = '';
+  if (physicalRelease && digitalRelease) {
+    releaseDate =
+      physicalRelease < digitalRelease ? physicalRelease : digitalRelease;
+    releaseDateType = physicalRelease < digitalRelease ? 'Released' : 'Digital';
+  } else if (physicalRelease && !digitalRelease) {
+    releaseDate = physicalRelease;
+    releaseDateType = 'Released';
+  } else if (digitalRelease && !physicalRelease) {
+    releaseDate = digitalRelease;
+    releaseDateType = 'Digital';
+  }
+
   return (
     <div className={styles.content}>
       <div className={styles.posterContainer} title={title}>
@@ -212,6 +227,28 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
 
       {showQualityProfile ? (
         <div className={styles.title}>{qualityProfile.name}</div>
+      ) : null}
+
+      {showCinemaRelease && inCinemas ? (
+        <div className={styles.title}>
+          <Icon name={icons.IN_CINEMAS} />{' '}
+          {getRelativeDate(inCinemas, shortDateFormat, showRelativeDates, {
+            timeFormat,
+            timeForToday: false,
+          })}
+        </div>
+      ) : null}
+
+      {showReleaseDate && releaseDate ? (
+        <div className={styles.title}>
+          <Icon
+            name={releaseDateType === 'Digital' ? icons.MOVIE_FILE : icons.DISC}
+          />{' '}
+          {getRelativeDate(releaseDate, shortDateFormat, showRelativeDates, {
+            timeFormat,
+            timeForToday: false,
+          })}
+        </div>
       ) : null}
 
       <MovieIndexPosterInfo
