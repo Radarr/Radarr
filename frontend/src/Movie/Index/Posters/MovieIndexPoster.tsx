@@ -47,9 +47,8 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     showSearchAction,
   } = useSelector(selectPosterOptions);
 
-  const { showRelativeDates, shortDateFormat, timeFormat } = useSelector(
-    createUISettingsSelector()
-  );
+  const { showRelativeDates, shortDateFormat, longDateFormat, timeFormat } =
+    useSelector(createUISettingsSelector());
 
   const {
     title,
@@ -63,12 +62,17 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
     isAvailable,
     studio,
     added,
+    year,
     inCinemas,
     physicalRelease,
     digitalRelease,
     path,
     movieFile,
+    ratings,
+    sizeOnDisk,
     certification,
+    originalTitle,
+    originalLanguage,
   } = movie;
 
   const dispatch = useDispatch();
@@ -226,11 +230,13 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
       ) : null}
 
       {showQualityProfile ? (
-        <div className={styles.title}>{qualityProfile.name}</div>
+        <div className={styles.title} title={translate('QualityProfile')}>
+          {qualityProfile.name}
+        </div>
       ) : null}
 
       {showCinemaRelease && inCinemas ? (
-        <div className={styles.title}>
+        <div className={styles.title} title={translate('InCinemas')}>
           <Icon name={icons.IN_CINEMAS} />{' '}
           {getRelativeDate(inCinemas, shortDateFormat, showRelativeDates, {
             timeFormat,
@@ -255,18 +261,24 @@ function MovieIndexPoster(props: MovieIndexPosterProps) {
         studio={studio}
         qualityProfile={qualityProfile}
         added={added}
+        year={year}
         showQualityProfile={showQualityProfile}
         showCinemaRelease={showCinemaRelease}
         showReleaseDate={showReleaseDate}
         showRelativeDates={showRelativeDates}
         shortDateFormat={shortDateFormat}
+        longDateFormat={longDateFormat}
         timeFormat={timeFormat}
         inCinemas={inCinemas}
         physicalRelease={physicalRelease}
         digitalRelease={digitalRelease}
+        ratings={ratings}
+        sizeOnDisk={sizeOnDisk}
         sortKey={sortKey}
         path={path}
         certification={certification}
+        originalTitle={originalTitle}
+        originalLanguage={originalLanguage}
       />
 
       <EditMovieModalConnector
