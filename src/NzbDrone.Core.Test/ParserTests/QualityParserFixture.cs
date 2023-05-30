@@ -323,6 +323,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Title.II.2003.4K.BluRay.Remux.1080p.AVC.DTS-HD.MA.5.1-BMF")]
         [TestCase("Movie Title 2022 (BDRemux 1080p HEVC FLAC) [Netaro]")]
         [TestCase("[Vodes] Movie Title - Other Title (2020) [BDRemux 1080p HEVC Dual-Audio]")]
+        [TestCase("This.Wonderful.Movie.1991.German.ML.1080p.BluRay.AVC-GeRMaNSCeNEGRoUP")]
         public void should_parse_remux1080p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R1080p, Modifier.REMUX);
@@ -335,6 +336,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[Dolby Vision] Movie.Title.S07.MULTi.UHD.BLURAY.REMUX.DV-NoTag")]
         [TestCase("Movie.Name.2020.German.UHDBD.2160p.HDR10.HEVC.EAC3.DL.Remux-pmHD.mkv")]
         [TestCase("Movie Name (2021) [Remux-2160p x265 HDR 10-BIT DTS-HD MA 7.1]-FraMeSToR.mkv")]
+        [TestCase("This.Wonderful.Movie.1991.German.ML.2160p.BluRay.HEVC-GeRMaNSCeNEGRoUP")]
         public void should_parse_remux2160p_quality(string title)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, false, Resolution.R2160p, Modifier.REMUX);
