@@ -86,6 +86,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Some.Movie.Magic.Rainbow.2007.DVD9.NTSC", false)]
         [TestCase("Some.Movie.Magic.Rainbow.2007.DVDR.NTSC", false)]
         [TestCase("Some.Movie.Magic.Rainbow.2007.DVD-R.NTSC", false)]
+        [TestCase("Some.Movie.2020.PAL.2xDVD9", false)]
+        [TestCase("Some.Movie.2000.2DVD5", false)]
+        [TestCase("Some.Movie.2005.PAL.MDVDR-SOMegRoUP", false)]
         public void should_parse_dvdr_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.DVD, proper, Resolution.R480p, Modifier.REMUX);
