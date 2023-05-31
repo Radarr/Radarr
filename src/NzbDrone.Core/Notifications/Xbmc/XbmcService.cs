@@ -86,7 +86,7 @@ namespace NzbDrone.Core.Notifications.Xbmc
 
                 if (moviePath != null)
                 {
-                    _logger.Debug("Updating movie {0} (Path: {1}) on Kodi host: {2}", movie, moviePath, settings.Address);
+                    _logger.Debug("Updating movie {0} (Kodi path: {1}) on Kodi host: {2}", movie, moviePath, settings.Address);
                 }
                 else
                 {
