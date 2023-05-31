@@ -108,9 +108,10 @@ namespace NzbDrone.Common.Instrumentation
         {
             LogManager.Setup().LoadConfiguration(c =>
             {
+                c.ForLogger("System.*").WriteToNil(LogLevel.Warn);
+                c.ForLogger("Microsoft.*").WriteToNil(LogLevel.Warn);
                 c.ForLogger("Microsoft.Hosting.Lifetime*").WriteToNil(LogLevel.Info);
-                c.ForLogger("System*").WriteToNil(LogLevel.Warn);
-                c.ForLogger("Microsoft*").WriteToNil(LogLevel.Warn);
+                c.ForLogger("Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware").WriteToNil(LogLevel.Fatal);
             });
         }
 
