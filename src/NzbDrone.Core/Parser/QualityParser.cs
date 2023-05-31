@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Parser
 
         private static readonly Regex HighDefPdtvRegex = new (@"hr[-_. ]ws", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex RemuxRegex = new (@"^((?<exceptions>(?!.*(WEB-?DL|PDTV|DVD))(?=.*(?<remux>\b(BD|UHD)?REMUX\b|(?<germanremuxes>((?<=\d{4}).*German.*(?<multilanguage>[DM]L)?)(?<codecs>(?=.*\b(AVC|HEVC|VC[_. -]?1|MVC|MPEG[_. -]?2))(?=.*Blu-?ray))))))).*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex RemuxRegex = new (@"^(?!.*(WEB-?DL|PDTV|DVD))(?=.*(\b(BD|UHD)?REMUX\b|(((?<=\d{4}).*German.*([DM]L)?)((?=.*\b(AVC|HEVC|VC[_. -]?1|MVC|MPEG[_. -]?2))(?=.*Blu-?ray))))).*", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static QualityModel ParseQuality(string name)
         {
