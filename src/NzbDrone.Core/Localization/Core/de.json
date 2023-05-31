@@ -1161,5 +1161,6 @@
     "EditSelectedMovies": "Bearbeite ausgewählte Filme",
     "EditMovies": "Filme bearbeiten",
     "RecycleBinUnableToWriteHealthCheck": "Schreiben in konfigurierten Papierkorbordner nicht möglich: {0}. Stelle sicher, dass dieser Pfad existiert und von dem Benutzer, der Radarr ausführt, beschreibbar ist",
-    "ShowCinemaReleaseHelpText": "Erscheinungsdatum unter Poster anzeigen"
+    "ShowCinemaReleaseHelpText": "Erscheinungsdatum unter Poster anzeigen",
+    "ApiKeyValidationHealthCheckMessage": "Bitte den API Schlüssel korrigieren, dieser muss mindestens {0} Zeichen lang sein. Die Änderung kann über die Einstellungen oder die Konfigurationsdatei erfolgen"
 }

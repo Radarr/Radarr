@@ -36,7 +36,7 @@
     "Delete": "Supprimer",
     "DelayProfiles": "Profils de retard",
     "Day": "Jour",
-    "CustomFormats": "Formats Perso.",
+    "CustomFormats": "Formats perso.",
     "CustomFilters": "Filtres personnalisés",
     "Crew": "Équipe",
     "Connections": "Connexions",
@@ -1169,5 +1169,6 @@
     "ApiKeyValidationHealthCheckMessage": "Merci de mettre à jour votre clé API afin qu'elle fasse plus de 20 caractères. Rendez vous dans les paramètres ou dans le fichier de configuration",
     "OnManualInteractionRequired": "Interaction manuelle requise",
     "OnManualInteractionRequiredHelpText": "Interaction manuelle requise",
-    "ShowCinemaReleaseHelpText": "Afficher la date de sortie au cinéma sous l'affiche"
+    "ShowCinemaReleaseHelpText": "Afficher la date de sortie au cinéma sous l'affiche",
+    "ImportScriptPath": "Importer chemin du script"
 }
