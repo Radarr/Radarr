@@ -59,9 +59,12 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.MediaBrowser
 
             _logger.Debug("Generating movie.xml for: {0}", movie.Title);
             var sb = new StringBuilder();
-            var xws = new XmlWriterSettings();
-            xws.OmitXmlDeclaration = true;
-            xws.Indent = false;
+            var xws = new XmlWriterSettings
+            {
+                OmitXmlDeclaration = true,
+                Indent = false,
+                Encoding = Encoding.Unicode
+            };
 
             using (var xw = XmlWriter.Create(sb, xws))
             {

@@ -135,9 +135,12 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                 var watched = GetExistingWatchedStatus(movie, movieFile.RelativePath);
 
                 var sb = new StringBuilder();
-                var xws = new XmlWriterSettings();
-                xws.OmitXmlDeclaration = true;
-                xws.Indent = false;
+                var xws = new XmlWriterSettings
+                {
+                    OmitXmlDeclaration = true,
+                    Indent = false,
+                    Encoding = Encoding.Unicode
+                };
 
                 using (var xw = XmlWriter.Create(sb, xws))
                 {
