@@ -80,53 +80,63 @@ namespace NzbDrone.Core.ImportLists.Radarr
             // Return early if there is not an API key
             if (Settings.ApiKey.IsNullOrWhiteSpace())
             {
-                return new
-                {
-                    devices = new List<object>()
-                };
+                return new { options = new List<object>() };
             }
 
             Settings.Validate().Filter("ApiKey").ThrowOnError();
 
             if (action == "getProfiles")
             {
-                var devices = _radarrV3Proxy.GetProfiles(Settings);
+                var profiles = _radarrV3Proxy.GetProfiles(Settings);
+
+                if (profiles == null)
+                {
+                    return new { options = new List<object>() };
+                }
 
                 return new
                 {
-                    options = devices.OrderBy(d => d.Name, StringComparer.InvariantCultureIgnoreCase)
-                                            .Select(d => new
-                                            {
-                                                Value = d.Id,
-                                                Name = d.Name
-                                            })
+                    options = profiles.OrderBy(d => d.Name, StringComparer.InvariantCultureIgnoreCase)
+                        .Select(d => new
+                        {
+                            Value = d.Id,
+                            Name = d.Name
+                        })
                 };
             }
 
             if (action == "getTags")
             {
-                var devices = _radarrV3Proxy.GetTags(Settings);
+                var tags = _radarrV3Proxy.GetTags(Settings);
+
+                if (tags == null)
+                {
+                    return new { options = new List<object>() };
+                }
 
                 return new
                 {
-                    options = devices.OrderBy(d => d.Label, StringComparer.InvariantCultureIgnoreCase)
-                                            .Select(d => new
-                                            {
-                                                Value = d.Id,
-                                                Name = d.Label
-                                            })
+                    options = tags.OrderBy(d => d.Label, StringComparer.InvariantCultureIgnoreCase)
+                        .Select(d => new
+                        {
+                            Value = d.Id,
+                            Name = d.Label
+                        })
                 };
             }
 
             if (action == "getRootFolders")
             {
-                Settings.Validate().Filter("ApiKey").ThrowOnError();
+                var remoteRootFolders = _radarrV3Proxy.GetRootFolders(Settings);
 
-                var remoteRootfolders = _radarrV3Proxy.GetRootFolders(Settings);
+                if (remoteRootFolders == null)
+                {
+                    return new { options = new List<object>() };
+                }
 
                 return new
                 {
-                    options = remoteRootfolders.OrderBy(d => d.Path, StringComparer.InvariantCultureIgnoreCase)
+                    options = remoteRootFolders.OrderBy(d => d.Path, StringComparer.InvariantCultureIgnoreCase)
                         .Select(d => new
                         {
                             Value = d.Path,
