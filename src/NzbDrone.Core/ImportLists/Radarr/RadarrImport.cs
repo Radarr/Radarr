@@ -95,11 +95,11 @@ namespace NzbDrone.Core.ImportLists.Radarr
                 return new
                 {
                     options = devices.OrderBy(d => d.Name, StringComparer.InvariantCultureIgnoreCase)
-                                            .Select(d => new
-                                            {
-                                                Value = d.Id,
-                                                Name = d.Name
-                                            })
+                        .Select(d => new
+                        {
+                            Value = d.Id,
+                            Name = d.Name
+                        })
                 };
             }
 
@@ -110,23 +110,21 @@ namespace NzbDrone.Core.ImportLists.Radarr
                 return new
                 {
                     options = devices.OrderBy(d => d.Label, StringComparer.InvariantCultureIgnoreCase)
-                                            .Select(d => new
-                                            {
-                                                Value = d.Id,
-                                                Name = d.Label
-                                            })
+                        .Select(d => new
+                        {
+                            Value = d.Id,
+                            Name = d.Label
+                        })
                 };
             }
 
             if (action == "getRootFolders")
             {
-                Settings.Validate().Filter("ApiKey").ThrowOnError();
-
-                var remoteRootfolders = _radarrV3Proxy.GetRootFolders(Settings);
+                var remoteRootFolders = _radarrV3Proxy.GetRootFolders(Settings);
 
                 return new
                 {
-                    options = remoteRootfolders.OrderBy(d => d.Path, StringComparer.InvariantCultureIgnoreCase)
+                    options = remoteRootFolders.OrderBy(d => d.Path, StringComparer.InvariantCultureIgnoreCase)
                         .Select(d => new
                         {
                             Value = d.Path,
