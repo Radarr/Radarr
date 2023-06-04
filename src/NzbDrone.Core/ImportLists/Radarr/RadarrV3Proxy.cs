@@ -63,6 +63,12 @@ namespace NzbDrone.Core.ImportLists.Radarr
                     return new ValidationFailure("ApiKey", "API Key is invalid");
                 }
 
+                if (ex.Response.HasHttpRedirect)
+                {
+                    _logger.Error(ex, "Radarr returned redirect and is invalid");
+                    return new ValidationFailure("BaseUrl", "Radarr URL is invalid, are you missing a URL base?");
+                }
+
                 _logger.Error(ex, "Unable to connect to import list.");
                 return new ValidationFailure(string.Empty, $"Unable to connect to import list: {ex.Message}. Check the log surrounding this error for details.");
             }
@@ -84,10 +90,17 @@ namespace NzbDrone.Core.ImportLists.Radarr
 
             var baseUrl = settings.BaseUrl.TrimEnd('/');
 
-            var request = new HttpRequestBuilder(baseUrl).Resource(resource).Accept(HttpAccept.Json)
-                .SetHeader("X-Api-Key", settings.ApiKey).Build();
+            var request = new HttpRequestBuilder(baseUrl).Resource(resource)
+                .Accept(HttpAccept.Json)
+                .SetHeader("X-Api-Key", settings.ApiKey)
+                .Build();
 
             var response = _httpClient.Get(request);
+
+            if ((int)response.StatusCode >= 300)
+            {
+                throw new HttpException(response);
+            }
 
             var results = JsonConvert.DeserializeObject<List<TResource>>(response.Content);
 
