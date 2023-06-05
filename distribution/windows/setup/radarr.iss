@@ -37,6 +37,7 @@ AppContact={#ForumsURL}
 VersionInfoVersion={#BaseVersion}
 SetupLogging=yes
 OutputDir=output
+AppverName={#AppName}
 WizardStyle=modern
 
 [Languages]
