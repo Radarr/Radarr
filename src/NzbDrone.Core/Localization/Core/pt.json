@@ -1,6 +1,6 @@
 {
     "Peers": "Elementos",
-    "AppDataLocationHealthCheckMessage": "Não será possível atualizar para evitar a exclusão da pasta AppData durante a atualização",
+    "AppDataLocationHealthCheckMessage": "Não foi possivél actualizar para prevenir apagar a AppData durante a actualização",
     "Year": "Ano",
     "Week": "Semana",
     "Warn": "Avisar",
@@ -1158,5 +1158,6 @@
     "DownloadClientSortingCheckMessage": "O cliente de download {0} tem {1} classificação habilitada para a categoria do Radarr. Você deve desativar a classificação em seu cliente de download para evitar problemas de importação.",
     "PreferredProtocol": "Protocolo Preferido",
     "ShowCinemaReleaseHelpText": "Mostrar data de lançamento abaixo do cartaz",
-    "EditMovies": "Editar filme"
+    "EditMovies": "Editar filme",
+    "ApiKeyValidationHealthCheckMessage": "Por favor, actualize a sua API Key para ter no minimo {0} caracteres. Pode fazer através das definições ou do ficheiro de configuração"
 }
