@@ -39,9 +39,8 @@ namespace NzbDrone.Core.ImportLists.TMDb
                 Title = movieResult.Title,
             };
 
-            if (movieResult.ReleaseDate.IsNotNullOrWhiteSpace())
+            if (movieResult.ReleaseDate.IsNotNullOrWhiteSpace() && DateTime.TryParse(movieResult.ReleaseDate, out var releaseDate))
             {
-                DateTime.TryParse(movieResult.ReleaseDate, out var releaseDate);
                 movie.Year = releaseDate.Year;
             }
 
