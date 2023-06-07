@@ -234,6 +234,18 @@ export const sortPredicates = {
     }
 
     return padNumber(result.toString(), 2) + qualityName;
+  },
+
+  inCinemas: function(item) {
+    return item.inCinemas || '';
+  },
+
+  physicalRelease: function(item) {
+    return item.physicalRelease || '';
+  },
+
+  digitalRelease: function(item) {
+    return item.digitalRelease || '';
   }
 };
 
