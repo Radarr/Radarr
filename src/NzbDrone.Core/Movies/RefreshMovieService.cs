@@ -144,8 +144,11 @@ namespace NzbDrone.Core.Movies
                     RootFolderPath = _folderService.GetBestRootFolderPath(movie.Path).TrimEnd('/', '\\', ' ')
                 });
 
-                movieMetadata.CollectionTmdbId = newCollection.TmdbId;
-                movieMetadata.CollectionTitle = newCollection.Title;
+                if (newCollection != null)
+                {
+                    movieMetadata.CollectionTmdbId = newCollection.TmdbId;
+                    movieMetadata.CollectionTitle = newCollection.Title;
+                }
             }
 
             movieMetadata.AlternativeTitles = _titleService.UpdateTitles(movieInfo.AlternativeTitles, movieMetadata);

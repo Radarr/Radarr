@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using FluentValidation;
-using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.EnsureThat;
 using NzbDrone.Core.Exceptions;
@@ -42,6 +39,12 @@ namespace NzbDrone.Core.Movies.Collections
             }
 
             newCollection = AddSkyhookData(newCollection);
+
+            if (newCollection == null)
+            {
+                return null;
+            }
+
             newCollection = SetPropertiesAndValidate(newCollection);
 
             _logger.Info("Adding Collection {0}[{1}]", newCollection.Title, newCollection.TmdbId);
@@ -63,10 +66,7 @@ namespace NzbDrone.Core.Movies.Collections
             {
                 _logger.Error("TmdbId {0} was not found, it may have been removed from TMDb.", newCollection.TmdbId);
 
-                throw new ValidationException(new List<ValidationFailure>
-                                              {
-                                                  new ValidationFailure("TmdbId", $"A collection with this ID was not found.", newCollection.TmdbId)
-                                              });
+                return null;
             }
 
             collection.ApplyChanges(newCollection);

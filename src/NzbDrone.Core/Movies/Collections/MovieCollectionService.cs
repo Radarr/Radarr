@@ -122,6 +122,11 @@ namespace NzbDrone.Core.Movies.Collections
 
                 var collection = FindByTmdbId(collectionTmdbId);
 
+                if (collection == null)
+                {
+                    continue;
+                }
+
                 _repo.Delete(collection.Id);
 
                 _eventAggregator.PublishEvent(new CollectionDeletedEvent(collection));
