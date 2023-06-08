@@ -1,5 +1,4 @@
 using System;
-using System.Text.RegularExpressions;
 using FluentValidation.Results;
 using NLog;
 using NzbDrone.Common.Disk;
