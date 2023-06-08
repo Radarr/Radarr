@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using FluentValidation;
 using NzbDrone.Common.Extensions;
@@ -33,6 +35,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             Host = "localhost";
             Port = 9091;
             UrlBase = "/transmission/";
+            AdditionalLabels = Enumerable.Empty<int>();
         }
 
         [FieldDefinition(0, Label = "Host", Type = FieldType.Textbox)]
@@ -56,16 +59,25 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         [FieldDefinition(6, Label = "Category", Type = FieldType.Textbox, HelpText = "Adding a category specific to Radarr avoids conflicts with unrelated non-Radarr downloads. Using a category is optional, but strongly recommended. Creates a [category] subdirectory in the output directory.")]
         public string MovieCategory { get; set; }
 
-        [FieldDefinition(7, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default Transmission location")]
+        [FieldDefinition(7, Label = "Labels", Type = FieldType.Tag, HelpText = "This option requires at least Transmission version 3.0 (recomended instead of Category). Initial labels of a download. To be recognized, a download must have all initial labels. This avoids conflicts with unrelated downloads.")]
+        public IEnumerable<string> Labels { get; set; }
+
+        [FieldDefinition(8, Label = "Post-Import Labels", Type = FieldType.Tag, HelpText = "This option requires at least Transmission version 3.0. Appends labels after a download is imported.", Advanced = true)]
+        public IEnumerable<string> PostImportLabels { get; set; }
+
+        [FieldDefinition(9, Label = "Additional Labels", Type = FieldType.Select, SelectOptions = typeof(AdditionalLabels), HelpText = "This option requires at least Transmission version 3.0. Adds properties of media as labels. Hints are examples.", Advanced = true)]
+        public IEnumerable<int> AdditionalLabels { get; set; }
+
+        [FieldDefinition(10, Label = "Directory", Type = FieldType.Textbox, Advanced = true, HelpText = "Optional location to put downloads in, leave blank to use the default Transmission location")]
         public string MovieDirectory { get; set; }
 
-        [FieldDefinition(8, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(TransmissionPriority), HelpText = "Priority to use when grabbing movies that released within the last 21 days")]
+        [FieldDefinition(11, Label = "Recent Priority", Type = FieldType.Select, SelectOptions = typeof(TransmissionPriority), HelpText = "Priority to use when grabbing movies that released within the last 21 days")]
         public int RecentMoviePriority { get; set; }
 
-        [FieldDefinition(9, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(TransmissionPriority), HelpText = "Priority to use when grabbing movies that released over 21 days ago")]
+        [FieldDefinition(12, Label = "Older Priority", Type = FieldType.Select, SelectOptions = typeof(TransmissionPriority), HelpText = "Priority to use when grabbing movies that released over 21 days ago")]
         public int OlderMoviePriority { get; set; }
 
-        [FieldDefinition(10, Label = "Add Paused", Type = FieldType.Checkbox)]
+        [FieldDefinition(13, Label = "Add Paused", Type = FieldType.Checkbox)]
         public bool AddPaused { get; set; }
 
         public NzbDroneValidationResult Validate()

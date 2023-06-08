@@ -32,10 +32,58 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             _proxy = proxy;
         }
 
+        private bool SupportLabels => _proxy.GetClientVersion(Settings) >= new Version(3, 0);
+
+        private static IEnumerable<string> HandleTags(RemoteMovie remoteMovie, TransmissionSettings settings)
+        {
+            var result = new HashSet<string>();
+
+            if (settings.Labels.Any())
+            {
+                result.UnionWith(settings.Labels);
+            }
+
+            if (settings.AdditionalLabels.Any())
+            {
+                foreach (var additionalTag in settings.AdditionalLabels)
+                {
+                    switch (additionalTag)
+                    {
+                        case (int)AdditionalLabels.Collection:
+                            result.Add(remoteMovie.Movie.MovieMetadata.Value.CollectionTitle);
+                            break;
+                        case (int)AdditionalLabels.Quality:
+                            result.Add(remoteMovie.ParsedMovieInfo.Quality.Quality.ToString());
+                            break;
+                        case (int)AdditionalLabels.Languages:
+                            result.UnionWith(remoteMovie.Languages.ConvertAll(language => language.ToString()));
+                            break;
+                        case (int)AdditionalLabels.ReleaseGroup:
+                            result.Add(remoteMovie.ParsedMovieInfo.ReleaseGroup);
+                            break;
+                        case (int)AdditionalLabels.Year:
+                            result.Add(remoteMovie.Movie.Year.ToString());
+                            break;
+                        case (int)AdditionalLabels.Indexer:
+                            result.Add(remoteMovie.Release.Indexer);
+                            break;
+                        case (int)AdditionalLabels.Studio:
+                            result.Add(remoteMovie.Movie.MovieMetadata.Value.Studio);
+                            break;
+                        default:
+                            throw new DownloadClientException("Unexpected additional tag ID");
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public override IEnumerable<DownloadClientItem> GetItems()
         {
+            var sup = SupportLabels;
             var configFunc = new Lazy<TransmissionConfig>(() => _proxy.GetConfig(Settings));
-            var torrents = _proxy.GetTorrents(Settings);
+            var torrents = _proxy.GetTorrents(SupportLabels, Settings);
 
             var items = new List<DownloadClientItem>();
 
@@ -67,9 +115,23 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
                 outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath);
 
+                if (SupportLabels && !Settings.Labels.All(label => torrent.Labels.Contains(label)))
+                {
+                    continue;
+                }
+
                 var item = new DownloadClientItem();
                 item.DownloadId = torrent.HashString.ToUpper();
-                item.Category = Settings.MovieCategory;
+
+                if (!SupportLabels)
+                {
+                    item.Category = Settings.MovieCategory;
+                }
+                else
+                {
+                    item.Category = torrent.Labels.Count > 0 ? torrent.Labels[0] : null;
+                }
+
                 item.Title = torrent.Name;
 
                 item.DownloadClientInfo = DownloadClientItemClientInfo.FromDownloadClient(this);
@@ -198,7 +260,9 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
-            _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), Settings);
+            var labels = SupportLabels ? HandleTags(remoteMovie, Settings) : null;
+
+            _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), labels, Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
 
             var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
@@ -214,7 +278,9 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
-            _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), Settings);
+            var labels = SupportLabels ? HandleTags(remoteMovie, Settings) : null;
+
+            _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), labels, Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
 
             var isRecentMovie = remoteMovie.Movie.MovieMetadata.Value.IsRecentMovie;
@@ -226,6 +292,23 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             }
 
             return hash;
+        }
+
+        public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
+        {
+            if (SupportLabels && Settings.PostImportLabels.Any())
+            {
+                try
+                {
+                    var torrent = _proxy.GetTorrents(SupportLabels, Settings).Single(t => t.HashString == downloadClientItem.DownloadId.ToLower());
+                    var labels = torrent.Labels.Concat(Settings.PostImportLabels).Distinct().ToList();
+                    _proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), labels, Settings);
+                }
+                catch (DownloadClientException)
+                {
+                    _logger.Warn("Failed to add post-import torrent label \"{0}\" for {1} in Transmission. Does the label exist?", Settings.PostImportLabels, downloadClientItem.Title);
+                }
+            }
         }
 
         protected override void Test(List<ValidationFailure> failures)
@@ -281,9 +364,9 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 _logger.Error(ex, ex.Message);
 
                 return new NzbDroneValidationFailure("Host", "Unable to connect to Transmission")
-                       {
-                           DetailedDescription = ex.Message
-                       };
+                {
+                    DetailedDescription = ex.Message
+                };
             }
             catch (Exception ex)
             {
@@ -299,7 +382,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         {
             try
             {
-                _proxy.GetTorrents(Settings);
+                _proxy.GetTorrents(SupportLabels, Settings);
             }
             catch (Exception ex)
             {

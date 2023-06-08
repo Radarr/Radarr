@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
@@ -13,10 +14,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 {
     public interface ITransmissionProxy
     {
-        List<TransmissionTorrent> GetTorrents(TransmissionSettings settings);
-        void AddTorrentFromUrl(string torrentUrl, string downloadDirectory, TransmissionSettings settings);
-        void AddTorrentFromData(byte[] torrentData, string downloadDirectory, TransmissionSettings settings);
+        List<TransmissionTorrent> GetTorrents(bool labels, TransmissionSettings settings);
+        void AddTorrentFromUrl(string torrentUrl, string downloadDirectory, IEnumerable<string> labels, TransmissionSettings settings);
+        void AddTorrentFromData(byte[] torrentData, string downloadDirectory, IEnumerable<string> labels, TransmissionSettings settings);
         void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, TransmissionSettings settings);
+        void SetTorrentLabel(string hash, IEnumerable<string> tags, TransmissionSettings settings);
         TransmissionConfig GetConfig(TransmissionSettings settings);
         string GetProtocolVersion(TransmissionSettings settings);
         Version GetClientVersion(TransmissionSettings settings);
@@ -39,16 +41,16 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             _authSessionIDCache = cacheManager.GetCache<string>(GetType(), "authSessionID");
         }
 
-        public List<TransmissionTorrent> GetTorrents(TransmissionSettings settings)
+        public List<TransmissionTorrent> GetTorrents(bool labels, TransmissionSettings settings)
         {
-            var result = GetTorrentStatus(settings);
+            var result = GetTorrentStatus(labels, settings);
 
             var torrents = ((JArray)result.Arguments["torrents"]).ToObject<List<TransmissionTorrent>>();
 
             return torrents;
         }
 
-        public void AddTorrentFromUrl(string torrentUrl, string downloadDirectory, TransmissionSettings settings)
+        public void AddTorrentFromUrl(string torrentUrl, string downloadDirectory, IEnumerable<string> labels, TransmissionSettings settings)
         {
             var arguments = new Dictionary<string, object>();
             arguments.Add("filename", torrentUrl);
@@ -59,10 +61,15 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 arguments.Add("download-dir", downloadDirectory);
             }
 
+            if (labels != null && labels.Any())
+            {
+                arguments.Add("labels", labels);
+            }
+
             ProcessRequest("torrent-add", arguments, settings);
         }
 
-        public void AddTorrentFromData(byte[] torrentData, string downloadDirectory, TransmissionSettings settings)
+        public void AddTorrentFromData(byte[] torrentData, string downloadDirectory, IEnumerable<string> labels, TransmissionSettings settings)
         {
             var arguments = new Dictionary<string, object>();
             arguments.Add("metainfo", Convert.ToBase64String(torrentData));
@@ -71,6 +78,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             if (!downloadDirectory.IsNullOrWhiteSpace())
             {
                 arguments.Add("download-dir", downloadDirectory);
+            }
+
+            if (labels != null && labels.Any())
+            {
+                arguments.Add("labels", labels);
             }
 
             ProcessRequest("torrent-add", arguments, settings);
@@ -97,6 +109,22 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 arguments.Add("seedIdleLimit", Convert.ToInt32(seedConfiguration.SeedTime.Value.TotalMinutes));
                 arguments.Add("seedIdleMode", 1);
             }
+
+            ProcessRequest("torrent-set", arguments, settings);
+        }
+
+        public void SetTorrentLabel(string hash, IEnumerable<string> labels, TransmissionSettings settings)
+        {
+            if (labels != null && !labels.Any())
+            {
+                return;
+            }
+
+            var arguments = new Dictionary<string, object>
+            {
+                { "ids", new[] { hash } },
+                { "labels", labels }
+            };
 
             ProcessRequest("torrent-set", arguments, settings);
         }
@@ -155,12 +183,12 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return ProcessRequest("session-stats", null, settings);
         }
 
-        private TransmissionResponse GetTorrentStatus(TransmissionSettings settings)
+        private TransmissionResponse GetTorrentStatus(bool labels, TransmissionSettings settings)
         {
-            return GetTorrentStatus(null, settings);
+            return GetTorrentStatus(null, labels, settings);
         }
 
-        private TransmissionResponse GetTorrentStatus(IEnumerable<string> hashStrings, TransmissionSettings settings)
+        private TransmissionResponse GetTorrentStatus(IEnumerable<string> hashStrings, bool labels, TransmissionSettings settings)
         {
             var fields = new string[]
             {
@@ -182,7 +210,8 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 "seedRatioMode",
                 "seedIdleLimit",
                 "seedIdleMode",
-                "fileCount"
+                "fileCount",
+                labels ? "labels" : null
             };
 
             var arguments = new Dictionary<string, object>();
