@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using NLog;
 using NzbDrone.Common.Cache;
@@ -18,7 +19,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         void SetTorrentSeedingConfiguration(string hash, TorrentSeedConfiguration seedConfiguration, TransmissionSettings settings);
         TransmissionConfig GetConfig(TransmissionSettings settings);
         string GetProtocolVersion(TransmissionSettings settings);
-        string GetClientVersion(TransmissionSettings settings);
+        Version GetClientVersion(TransmissionSettings settings);
         void RemoveTorrent(string hash, bool removeData, TransmissionSettings settings);
         void MoveTorrentToTopInQueue(string hashString, TransmissionSettings settings);
     }
@@ -107,11 +108,15 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             return config.RpcVersion;
         }
 
-        public string GetClientVersion(TransmissionSettings settings)
+        public Version GetClientVersion(TransmissionSettings settings)
         {
             var config = GetConfig(settings);
+            var versionString = config.Version;
 
-            return config.Version;
+            var versionResult = Regex.Match(versionString, @"(?<!\(|(\d|\.)+)(\d|\.)+(?!\)|(\d|\.)+)").Value;
+            var version = Version.Parse(versionResult);
+
+            return version;
         }
 
         public TransmissionConfig GetConfig(TransmissionSettings settings)

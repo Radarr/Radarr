@@ -27,12 +27,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         protected override ValidationFailure ValidateVersion()
         {
-            var versionString = _proxy.GetClientVersion(Settings);
-
-            _logger.Debug("Transmission version information: {0}", versionString);
-
-            var versionResult = Regex.Match(versionString, @"(?<!\(|(\d|\.)+)(\d|\.)+(?!\)|(\d|\.)+)").Value;
-            var version = Version.Parse(versionResult);
+            var version = _proxy.GetClientVersion(Settings);
 
             if (version < new Version(2, 40))
             {
