@@ -87,7 +87,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             id.Should().NotBeNullOrEmpty();
 
             Mocker.GetMock<ITransmissionProxy>()
-                .Verify(v => v.AddTorrentFromData(It.IsAny<byte[]>(), @"C:/Downloads/Finished/radarr", It.IsAny<TransmissionSettings>()), Times.Once());
+                .Verify(v => v.AddTorrentFromData(It.IsAny<byte[]>(), @"C:/Downloads/Finished/radarr", null, It.IsAny<TransmissionSettings>()), Times.Once());
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             id.Should().NotBeNullOrEmpty();
 
             Mocker.GetMock<ITransmissionProxy>()
-                  .Verify(v => v.AddTorrentFromData(It.IsAny<byte[]>(), @"C:/Downloads/Finished/transmission/radarr", It.IsAny<TransmissionSettings>()), Times.Once());
+                  .Verify(v => v.AddTorrentFromData(It.IsAny<byte[]>(), @"C:/Downloads/Finished/transmission/radarr", null, It.IsAny<TransmissionSettings>()), Times.Once());
         }
 
         [Test]
@@ -121,7 +121,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             id.Should().NotBeNullOrEmpty();
 
             Mocker.GetMock<ITransmissionProxy>()
-                  .Verify(v => v.AddTorrentFromData(It.IsAny<byte[]>(), @"C:/Downloads/Finished/transmission/radarr", It.IsAny<TransmissionSettings>()), Times.Once());
+                  .Verify(v => v.AddTorrentFromData(It.IsAny<byte[]>(), @"C:/Downloads/Finished/transmission/radarr", null, It.IsAny<TransmissionSettings>()), Times.Once());
         }
 
         [Test]
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.VuzeTests
             id.Should().NotBeNullOrEmpty();
 
             Mocker.GetMock<ITransmissionProxy>()
-                  .Verify(v => v.AddTorrentFromData(It.IsAny<byte[]>(), null, It.IsAny<TransmissionSettings>()), Times.Once());
+                  .Verify(v => v.AddTorrentFromData(It.IsAny<byte[]>(), null, null, It.IsAny<TransmissionSettings>()), Times.Once());
         }
 
         [TestCase("magnet:?xt=urn:btih:ZPBPA2P6ROZPKRHK44D5OW6NHXU5Z6KR&tr=udp", "CBC2F069FE8BB2F544EAE707D75BCD3DE9DCF951")]

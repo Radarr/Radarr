@@ -125,7 +125,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
         protected void GivenFailedDownload()
         {
             Mocker.GetMock<ITransmissionProxy>()
-                  .Setup(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TransmissionSettings>()))
+                  .Setup(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<string>(), null, It.IsAny<TransmissionSettings>()))
                   .Throws<InvalidOperationException>();
         }
 
@@ -136,11 +136,11 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
                   .Returns<HttpRequest>(r => new HttpResponse(r, new HttpHeader(), new byte[1000]));
 
             Mocker.GetMock<ITransmissionProxy>()
-                  .Setup(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TransmissionSettings>()))
+                  .Setup(s => s.AddTorrentFromUrl(It.IsAny<string>(), It.IsAny<string>(), null, It.IsAny<TransmissionSettings>()))
                   .Callback(PrepareClientToReturnQueuedItem);
 
             Mocker.GetMock<ITransmissionProxy>()
-                  .Setup(s => s.AddTorrentFromData(It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<TransmissionSettings>()))
+                  .Setup(s => s.AddTorrentFromData(It.IsAny<byte[]>(), It.IsAny<string>(), null, It.IsAny<TransmissionSettings>()))
                   .Callback(PrepareClientToReturnQueuedItem);
         }
 
@@ -152,7 +152,7 @@ namespace NzbDrone.Core.Test.Download.DownloadClientTests.TransmissionTests
             }
 
             Mocker.GetMock<ITransmissionProxy>()
-                  .Setup(s => s.GetTorrents(It.IsAny<TransmissionSettings>()))
+                  .Setup(s => s.GetTorrents(false, It.IsAny<TransmissionSettings>()))
                   .Returns(torrents);
         }
 
