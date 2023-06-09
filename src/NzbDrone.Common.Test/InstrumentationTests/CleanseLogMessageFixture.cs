@@ -10,7 +10,9 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         // Indexer Urls
         [TestCase(@"https://iptorrents.com/torrents/rss?u=mySecret;tp=mySecret;l5;download")]
         [TestCase(@"http://rss.torrentleech.org/mySecret")]
-        [TestCase(@"http://rss.torrentleech.org/rss/download/12345/01233210/filename.torrent")]
+        [TestCase(@"https://rss24h.torrentleech.org/mySecret")]
+        [TestCase(@"http://rss.torrentleech.org/rss/download/12345/01233210/file.name-RLSGRP.torrent")]
+        [TestCase(@"https://www.torrentleech.org/rss/download/12345/01233210/file.name-RLSGRP.torrent")]
         [TestCase(@"http://www.bitmetv.org/rss.php?uid=mySecret&passkey=mySecret")]
         [TestCase(@"https://rss.omgwtfnzbs.org/rss-search.php?catid=19,20&user=sonarr&api=mySecret&eng=1")]
         [TestCase(@"https://dognzb.cr/fetch/2b51db35e1912ffc138825a12b9933d2/2b51db35e1910123321025a12b9933d2")]
@@ -44,6 +46,7 @@ namespace NzbDrone.Common.Test.InstrumentationTests
         // Deluge
         [TestCase(@",{""download_location"": ""C:\Users\\mySecret mySecret\\Downloads""}")]
         [TestCase(@",{""download_location"": ""/home/mySecret/Downloads""}")]
+        [TestCase(@",{""download_location"": ""/Users/mySecret/Downloads""}")]
         [TestCase(@"auth.login(""mySecret"")")]
 
         // Download Station
@@ -59,8 +62,11 @@ namespace NzbDrone.Common.Test.InstrumentationTests
 
         // Internal
         [TestCase(@"OutputPath=/home/mySecret/Downloads")]
+        [TestCase(@"OutputPath=/Users/mySecret/Downloads")]
         [TestCase("Hardlinking episode file: /home/mySecret/Downloads to /media/abc.mkv")]
+        [TestCase("Hardlinking episode file: /Users/mySecret/Downloads to /media/abc.mkv")]
         [TestCase("Hardlink '/home/mySecret/Downloads/abs.mkv' to '/media/abc.mkv' failed.")]
+        [TestCase("Hardlink '/Users/mySecret/Downloads/abs.mkv' to '/media/abc.mkv' failed.")]
         [TestCase("https://notifiarr.com/notifier.php: api=1234530f-422f-4aac-b6b3-01233210aaaa&radarr_health_issue_message=Download")]
         [TestCase("/readarr/signalr/messages/negotiate?access_token=1234530f422f4aacb6b301233210aaaa&negotiateVersion=1")]
         [TestCase(@"[Info] MigrationController: *** Migrating Database=radarr-main;Host=postgres14;Username=mySecret;Password=mySecret;Port=5432;Enlist=False ***")]
