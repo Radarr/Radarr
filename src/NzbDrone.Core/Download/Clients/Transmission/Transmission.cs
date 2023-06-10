@@ -28,6 +28,8 @@ namespace NzbDrone.Core.Download.Clients.Transmission
         {
             var version = _proxy.GetClientVersion(Settings);
 
+            _logger.Debug("Transmission version information: {0}", version);
+
             if (version < new Version(2, 40))
             {
                 return new ValidationFailure(string.Empty, "Transmission version not supported, should be 2.40 or higher.");
