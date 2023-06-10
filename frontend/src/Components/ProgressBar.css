@@ -17,6 +17,10 @@
   color: var(--white);
   transition: width 0.6s ease;
 
+  &.default {
+    background-color: var(--darkGray);
+  }
+
   &.primary {
     background-color: var(--primaryColor);
   }
@@ -57,10 +61,6 @@
 .frontTextContainer {
   z-index: 1;
   color: var(--progressBarFrontTextColor);
-
-  &.default {
-    color: var(--darkGray);
-  }
 }
 
 .backTextContainer {
