@@ -129,7 +129,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 }
                 else
                 {
-                    item.Category = torrent.Labels.Count > 0 ? torrent.Labels[0] : null;
+                    item.Category = torrent.Labels.FirstOrDefault();
                 }
 
                 item.Title = torrent.Name;
