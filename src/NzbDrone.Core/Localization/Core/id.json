@@ -77,5 +77,13 @@
     "IMDb": "IMDb",
     "NetCore": ".NET",
     "Connection": "Koleksi",
-    "ImportCustomFormat": "Tambahkan Format Khusus"
+    "ImportCustomFormat": "Tambahkan Format Khusus",
+    "ConnectionLost": "Koneksi Terputus",
+    "ConnectionLostAutomaticMessage": "Radarr akan mencoba untuk menghubungi secara otomatis, atau klik muat ulang di bawah.",
+    "CopyToClipboard": "Salin ke Papan Klip",
+    "Date": "Tanggal",
+    "Close": "Tutup",
+    "Crew": "Kru",
+    "CurrentlyInstalled": "Saat Ini Terpasang",
+    "Delete": "Hapus"
 }
