@@ -168,7 +168,7 @@ class SecuritySettings extends Component {
           isOpen={this.state.isConfirmApiKeyResetModalOpen}
           kind={kinds.DANGER}
           title={translate('ResetAPIKey')}
-          message={translate('AreYouSureYouWantToResetYourAPIKey')}
+          message={translate('ResetAPIKeyMessageText')}
           confirmLabel={translate('Reset')}
           onConfirm={this.onConfirmResetApiKey}
           onCancel={this.onCloseResetApiKeyModal}

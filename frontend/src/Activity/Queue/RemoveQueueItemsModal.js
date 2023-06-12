@@ -88,7 +88,7 @@ class RemoveQueueItemsModal extends Component {
 
           <ModalBody>
             <div className={styles.message}>
-              {selectedCount > 1 ? translate('AreYouSureYouWantToRemoveSelectedItemsFromQueue', selectedCount) : translate('AreYouSureYouWantToRemoveSelectedItemFromQueue')}
+              {selectedCount > 1 ? translate('RemoveSelectedItemsQueueMessageText', selectedCount) : translate('RemoveSelectedItemQueueMessageText')}
             </div>
 
             {
@@ -133,7 +133,7 @@ class RemoveQueueItemsModal extends Component {
               kind={kinds.DANGER}
               onPress={this.onRemoveConfirmed}
             >
-              Remove
+              {translate('Remove')}
             </Button>
           </ModalFooter>
         </ModalContent>
