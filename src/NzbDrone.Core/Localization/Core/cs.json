@@ -168,7 +168,6 @@
     "AnalyticsEnabledHelpText": "Odesílejte anonymní informace o použití a chybách na servery Radarru. To zahrnuje informace o vašem prohlížeči, které stránky Radarr WebUI používáte, hlášení chyb a také verzi operačního systému a běhového prostředí. Tyto informace použijeme k upřednostnění funkcí a oprav chyb.",
     "AptUpdater": "Nainstalujte aktualizaci pomocí apt",
     "AreYouSureYouWantToDeleteFormat": "Opravdu chcete smazat značku formátu {0}?",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Opravdu chcete toto vzdálené mapování cesty odstranit?",
     "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Opravdu chcete odebrat {0} položku {1} z fronty?",
     "ApplyTagsHelpTexts2": "Přidat: Přidejte značky do existujícího seznamu značek",
     "AudioInfo": "Zvukové informace",

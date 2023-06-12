@@ -139,7 +139,6 @@
     "AptUpdater": "aptを使用してアップデートをインストールします",
     "AreYouSureYouWantToDeleteFormat": "フォーマットタグ{0}を削除してもよろしいですか？",
     "AreYouSureYouWantToDeleteThisImportListExclusion": "このインポートリストの除外を削除してもよろしいですか？",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "このリモートパスマッピングを削除してもよろしいですか？",
     "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "キューから{0}アイテム{1}を削除してもよろしいですか？",
     "AvailabilityDelay": "可用性の遅延",
     "AvailabilityDelayHelpText": "映画を検索できる日付の前後の時間",

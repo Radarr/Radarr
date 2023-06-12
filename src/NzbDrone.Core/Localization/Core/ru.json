@@ -752,7 +752,6 @@
     "AvailabilityDelayHelpText": "Время до или после доступной даты для поиска фильма",
     "AvailabilityDelay": "Задержка доступности",
     "AuthBasic": "Базовый (всплывающее окно браузера)",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Вы уверены, что хотите удалить это отображение удаленного пути?",
     "AreYouSureYouWantToDeleteThisDelayProfile": "Вы уверены, что хотите удалить этот профиль задержки?",
     "AgeWhenGrabbed": "Возраст (когда захвачен)",
     "AddQualityProfile": "Добавить профиль качества",

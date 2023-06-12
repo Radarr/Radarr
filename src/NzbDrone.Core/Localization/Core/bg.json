@@ -748,7 +748,6 @@
     "AptUpdater": "Използвайте apt, за да инсталирате актуализацията",
     "AreYouSureYouWantToDeleteFormat": "Наистина ли искате да изтриете маркер за формат {0}?",
     "AreYouSureYouWantToDeleteThisImportListExclusion": "Наистина ли искате да изтриете това изключване от списъка за импортиране?",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Наистина ли искате да изтриете това отдалечено картографиране на пътя?",
     "AudioInfo": "Аудио информация",
     "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Наистина ли искате да премахнете {0} елемент {1} от опашката?",
     "AsAllDayHelpText": "Събитията ще се показват като събития през целия ден във вашия календар",

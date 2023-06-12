@@ -172,7 +172,6 @@
     "AptUpdater": "Χρησιμοποιήστε το apt για να εγκαταστήσετε την ενημέρωση",
     "AreYouSureYouWantToDeleteFormat": "Είστε βέβαιοι ότι θέλετε να διαγράψετε την ετικέτα μορφής {0};",
     "AreYouSureYouWantToDeleteThisImportListExclusion": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την εξαίρεση λίστας εισαγωγής;",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Είστε βέβαιοι ότι θέλετε να διαγράψετε αυτήν την αντιστοίχιση απομακρυσμένης διαδρομής;",
     "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Είστε βέβαιοι ότι θέλετε να καταργήσετε το {0} στοιχείο {1} από την ουρά;",
     "CustomFormatUnknownCondition": "Άγνωστη συνθήκη προσαρμοσμένης μορφής \"{0}\"",
     "AddRemotePathMapping": "Προσθήκη απομακρυσμένης αντιστοίχισης διαδρομής",

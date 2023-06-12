@@ -202,7 +202,6 @@
     "AptUpdater": "Użyj apt, aby zainstalować aktualizację",
     "AreYouSureYouWantToDeleteFormat": "Czy na pewno chcesz usunąć tag formatu {0}?",
     "AreYouSureYouWantToDeleteThisImportListExclusion": "Czy na pewno chcesz usunąć to wykluczenie listy importu?",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Czy na pewno chcesz usunąć to mapowanie zdalnej ścieżki?",
     "AudioInfo": "Informacje audio",
     "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Czy na pewno chcesz usunąć elementy ({0}) z kolejki?",
     "OnLatestVersion": "Najnowsza wersja Radarr jest już zainstalowana",

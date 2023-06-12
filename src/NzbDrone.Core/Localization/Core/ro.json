@@ -614,7 +614,6 @@
     "AnalyticsEnabledHelpText": "Trimiteți informații anonime privind utilizarea și erorile către serverele Radarr. Aceasta include informații despre browserul dvs., ce pagini WebUI Radarr utilizați, raportarea erorilor, precum și sistemul de operare și versiunea de execuție. Vom folosi aceste informații pentru a acorda prioritate caracteristicilor și remedierilor de erori.",
     "AppDataDirectory": "Directorul AppData",
     "AreYouSureYouWantToDeleteThisImportListExclusion": "Sigur doriți să ștergeți această excludere din lista de importuri?",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Sigur doriți să ștergeți această mapare a căilor la distanță?",
     "AreYouSureYouWantToResetYourAPIKey": "Sigur doriți să vă resetați cheia API?",
     "AsAllDayHelpText": "Evenimentele vor apărea ca evenimente pe tot parcursul zilei în calendarul dvs.",
     "ApplyTags": "Aplicați etichete",

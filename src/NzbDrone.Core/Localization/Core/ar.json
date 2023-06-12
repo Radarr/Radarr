@@ -885,7 +885,6 @@
     "AsAllDayHelpText": "ستظهر الأحداث كأحداث طوال اليوم في التقويم الخاص بك",
     "AreYouSureYouWantToResetYourAPIKey": "هل أنت متأكد أنك تريد إعادة تعيين مفتاح API الخاص بك؟",
     "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "هل تريد بالتأكيد إزالة {0} عنصر {1} من قائمة الانتظار؟",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "هل أنت متأكد أنك تريد حذف تعيين المسار البعيد هذا؟",
     "AreYouSureYouWantToDeleteThisImportListExclusion": "هل أنت متأكد أنك تريد حذف استثناء قائمة الاستيراد؟",
     "AreYouSureYouWantToDeleteThisDelayProfile": "هل أنت متأكد أنك تريد حذف ملف تعريف التأخير هذا؟",
     "AreYouSureYouWantToDeleteFormat": "هل تريد بالتأكيد حذف علامة التنسيق {0}؟",
