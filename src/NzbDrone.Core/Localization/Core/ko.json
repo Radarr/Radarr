@@ -170,7 +170,6 @@
     "ApplyTagsHelpTexts2": "추가 : 기존 태그 목록에 태그를 추가합니다.",
     "ApplyTagsHelpTexts3": "제거 : 입력한 태그를 제거합니다.",
     "AreYouSureYouWantToDeleteThisImportListExclusion": "이 가져오기 목록 제외를 삭제하시겠습니까?",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "이 원격 경로 매핑을 삭제하시겠습니까?",
     "AudioInfo": "오디오 정보",
     "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "대기열에서 {0} 항목 {1}을 제거하시겠습니까?",
     "BuiltIn": "내장",

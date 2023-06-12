@@ -143,7 +143,6 @@
     "AptUpdater": "Використовуйте apt для інсталяції оновлення",
     "AreYouSureYouWantToDeleteFormat": "Ви впевнені, що хочете видалити тег {0} ?",
     "AreYouSureYouWantToDeleteThisDelayProfile": "Ви впевнені, що хочете видалити цей профіль затримки?",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Ви впевнені, що хочете видалити це відображення віддаленого шляху?",
     "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Ви впевнені, що хочете видалити 1 елемент із черги?",
     "AreYouSureYouWantToRemoveTheSelectedItemsFromBlocklist": "Ви впевнені, що хочете видалити вибрані елементи зі списку блокування?",
     "AreYouSureYouWantToResetYourAPIKey": "Ви впевнені, що хочете скинути свій ключ API?",

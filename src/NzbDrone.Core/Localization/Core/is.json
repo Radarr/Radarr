@@ -252,7 +252,6 @@
     "ICalFeed": "iCal straumur",
     "Imported": "Innflutt",
     "ImportFailedInterp": "Innflutningur mistókst: {0}",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Ertu viss um að þú viljir eyða þessari ytri slóðakortun?",
     "AudioInfo": "Hljóðupplýsingar",
     "AreYouSureYouWantToResetYourAPIKey": "Ertu viss um að þú viljir endurstilla API lykilinn þinn?",
     "AsAllDayHelpText": "Viðburðir munu birtast sem viðburðir allan daginn í dagatalinu þínu",

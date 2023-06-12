@@ -105,7 +105,6 @@
     "AllowHardcodedSubsHelpText": "Oppdagede hardkodede subs blir automatisk lastet ned",
     "AnalyticsEnabledHelpText": "Send anonym bruk og feilinformasjon til Radarrs servere. Dette inkluderer informasjon om nettleseren din, hvilke Radarr WebUI -sider du bruker, feilrapportering samt OS og kjøretidsversjon. Vi vil bruke denne informasjonen til å prioritere funksjoner og feilrettinger.",
     "AreYouSureYouWantToDeleteFormat": "Er du sikker på at du vil slette formattaggen {0}?",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Er du sikker på at du vil slette denne eksterne banetilordningen?",
     "AutoRedownloadFailedHelpText": "Søk etter eller prøv å laste ned en annen versjon automatisk",
     "BackupFolderHelpText": "Relative stier vil være under Radarr's AppData -katalog",
     "BindAddressHelpText": "Gyldig IPv4 -adresse, localhost eller \"*\" for alle grensesnitt",

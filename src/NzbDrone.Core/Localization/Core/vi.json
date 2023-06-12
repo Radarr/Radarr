@@ -547,7 +547,6 @@
     "AnalyticsEnabledHelpText": "Gửi thông tin sử dụng và lỗi ẩn danh đến máy chủ của Radarr. Điều này bao gồm thông tin về trình duyệt của bạn, trang WebUI của Radarr mà bạn sử dụng, báo cáo lỗi cũng như hệ điều hành và phiên bản thời gian chạy. Chúng tôi sẽ sử dụng thông tin này để ưu tiên các tính năng và sửa lỗi.",
     "AppDataDirectory": "Thư mục AppData",
     "AreYouSureYouWantToDeleteThisImportListExclusion": "Bạn có chắc chắn muốn xóa loại trừ danh sách nhập này không?",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Bạn có chắc chắn muốn xóa ánh xạ đường dẫn từ xa này không?",
     "AreYouSureYouWantToResetYourAPIKey": "Bạn có chắc chắn muốn đặt lại Khóa API của mình không?",
     "AsAllDayHelpText": "Sự kiện sẽ xuất hiện dưới dạng sự kiện cả ngày trong lịch của bạn",
     "Authentication": "Xác thực",

@@ -258,7 +258,6 @@
     "AptUpdater": "ใช้ apt เพื่อติดตั้งการอัปเดต",
     "AreYouSureYouWantToDeleteFormat": "แน่ใจไหมว่าต้องการลบแท็กรูปแบบ {0}",
     "AreYouSureYouWantToDeleteThisImportListExclusion": "แน่ใจไหมว่าต้องการลบการยกเว้นรายการนำเข้านี้",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "แน่ใจไหมว่าต้องการลบการแมปเส้นทางระยะไกลนี้",
     "AudioInfo": "ข้อมูลเสียง",
     "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "แน่ใจไหมว่าต้องการลบ {0} รายการ {1} ออกจากคิว",
     "AreYouSureYouWantToResetYourAPIKey": "แน่ใจไหมว่าต้องการรีเซ็ตคีย์ API",

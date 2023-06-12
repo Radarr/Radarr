@@ -190,7 +190,6 @@
     "Always": "Altid",
     "AnalyticsEnabledHelpText": "Send anonym brugs- og fejlinformation til Radarrs servere. Dette inkluderer information i din browser, hvilke Radarr WebUI-sider du bruger, fejlrapportering samt OS og runtime-version. Vi bruger disse oplysninger til at prioritere funktioner og fejlrettelser.",
     "AppDataDirectory": "AppData-bibliotek",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Er du sikker på, at du vil slette denne kortlægning af fjernstien?",
     "AuthBasic": "Grundlæggende (pop op-browser)",
     "Authentication": "Godkendelse",
     "ApplyTags": "Anvend tags",

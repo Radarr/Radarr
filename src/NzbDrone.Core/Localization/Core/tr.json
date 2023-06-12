@@ -553,7 +553,6 @@
     "AnalyticsEnabledHelpText": "Anonim kullanım ve hata bilgilerini Radarr sunucularına gönderin. Bu, tarayıcınızla ilgili bilgileri, kullandığınız Radarr WebUI sayfalarını, hata raporlamasının yanı sıra işletim sistemi ve çalışma zamanı sürümünü içerir. Bu bilgileri, özellikleri ve hata düzeltmelerini önceliklendirmek için kullanacağız.",
     "Apply": "Uygulamak",
     "AreYouSureYouWantToDeleteThisImportListExclusion": "Bu içe aktarma listesi dışlamasını silmek istediğinizden emin misiniz?",
-    "AreYouSureYouWantToDeleteThisRemotePathMapping": "Bu uzak yol eşlemesini silmek istediğinizden emin misiniz?",
     "AreYouSureYouWantToResetYourAPIKey": "API Anahtarınızı sıfırlamak istediğinizden emin misiniz?",
     "AsAllDayHelpText": "Etkinlikler, takviminizde tüm gün süren etkinlikler olarak görünecek",
     "Authentication": "Doğrulama",
