@@ -141,7 +141,7 @@ class DelayProfile extends Component {
           isOpen={this.state.isDeleteDelayProfileModalOpen}
           kind={kinds.DANGER}
           title={translate('DeleteDelayProfile')}
-          message={translate('AreYouSureYouWantToDeleteThisDelayProfile')}
+          message={translate('DeleteDelayProfileMessageText')}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteDelayProfile}
           onCancel={this.onDeleteDelayProfileModalClose}

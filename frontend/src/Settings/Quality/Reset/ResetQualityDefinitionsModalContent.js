@@ -60,17 +60,19 @@ class ResetQualityDefinitionsModalContent extends Component {
 
         <ModalBody>
           <div className={styles.messageContainer}>
-            {translate('AreYouSureYouWantToResetQualityDefinitions')}
+            {translate('ResetQualityDefinitionsMessageText')}
           </div>
 
           <FormGroup>
-            <FormLabel>{translate('ResetTitles')}</FormLabel>
+            <FormLabel>
+              {translate('ResetTitles')}
+            </FormLabel>
 
             <FormInputGroup
               type={inputTypes.CHECK}
               name="resetDefinitionTitles"
               value={resetDefinitionTitles}
-              helpText={translate('ResetTitlesHelpText')}
+              helpText={translate('ResetDefinitionTitlesHelpText')}
               onChange={this.onResetDefinitionTitlesChange}
             />
           </FormGroup>

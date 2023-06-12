@@ -89,7 +89,7 @@ class ImportListExclusion extends Component {
           isOpen={this.state.isDeleteImportExclusionModalOpen}
           kind={kinds.DANGER}
           title={translate('DeleteImportListExclusion')}
-          message={translate('AreYouSureYouWantToDeleteThisImportListExclusion')}
+          message={translate('DeleteImportListExclusionMessageText')}
           confirmLabel={translate('Delete')}
           onConfirm={this.onConfirmDeleteImportExclusion}
           onCancel={this.onDeleteImportExclusionModalClose}
