@@ -36,7 +36,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 },
                 Url = $"https://www.themoviedb.org/movie/{message.Movie.MovieMetadata.Value.TmdbId}",
                 Description = "Movie Grabbed",
-                Title = message.Movie.MovieMetadata.Value.Year > 0 ? $"{message.Movie.MovieMetadata.Value.Title} ({message.Movie.MovieMetadata.Value.Year})" : message.Movie.MovieMetadata.Value.Title,
+                Title = GetTitle(message.Movie),
                 Color = (int)DiscordColors.Standard,
                 Fields = new List<DiscordField>(),
                 Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
@@ -136,7 +136,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 },
                 Url = $"https://www.themoviedb.org/movie/{message.Movie.MovieMetadata.Value.TmdbId}",
                 Description = isUpgrade ? "Movie Upgraded" : "Movie Imported",
-                Title = message.Movie.MovieMetadata.Value.Year > 0 ? $"{message.Movie.MovieMetadata.Value.Title} ({message.Movie.MovieMetadata.Value.Year})" : message.Movie.MovieMetadata.Value.Title,
+                Title = GetTitle(message.Movie),
                 Color = isUpgrade ? (int)DiscordColors.Upgrade : (int)DiscordColors.Success,
                 Fields = new List<DiscordField>(),
                 Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
@@ -288,7 +288,7 @@ namespace NzbDrone.Core.Notifications.Discord
                               {
                                   new Embed
                                   {
-                                      Title = movie.MovieMetadata.Value.Title,
+                                      Title = GetTitle(movie),
                                       Description = deleteMessage.MovieFile.Path
                                   }
                               };
@@ -392,7 +392,7 @@ namespace NzbDrone.Core.Notifications.Discord
                 },
                 Url = $"https://www.themoviedb.org/movie/{movie.MovieMetadata.Value.TmdbId}",
                 Description = "Manual interaction needed",
-                Title = movie.MovieMetadata.Value.Title,
+                Title = GetTitle(movie),
                 Color = (int)DiscordColors.Standard,
                 Fields = new List<DiscordField>(),
                 Timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
@@ -552,6 +552,13 @@ namespace NzbDrone.Core.Notifications.Discord
             }
 
             return links;
+        }
+
+        private string GetTitle(Movie movie)
+        {
+            var title = movie.MovieMetadata.Value.Year > 0 ? $"{movie.MovieMetadata.Value.Title} ({movie.MovieMetadata.Value.Year})" : movie.MovieMetadata.Value.Title;
+
+            return title.Length > 256 ? $"{title.AsSpan(0, 253)}..." : title;
         }
     }
 }
