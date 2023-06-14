@@ -206,7 +206,6 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         private TransmissionResponse GetTorrentStatus(IEnumerable<string> hashStrings, TransmissionSettings settings)
         {
-            _logger.Trace("fdsfsd:" + settings.Host);
             var fields = new List<string>
             {
                 "id",
@@ -245,15 +244,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
             var result = ProcessRequest("torrent-get", arguments, settings);
 
-            _logger.Trace("aaaaaaaaa:" + result.Arguments.ToJson());
-
             return result;
         }
 
         private HttpRequestBuilder BuildRequest(TransmissionSettings settings)
         {
-            _logger.Trace("BuildRequest: " + settings.Host);
-
             var requestBuilder = new HttpRequestBuilder(settings.UseSsl, settings.Host, settings.Port, settings.UrlBase)
                 .Resource("rpc")
                 .Accept(HttpAccept.Json);

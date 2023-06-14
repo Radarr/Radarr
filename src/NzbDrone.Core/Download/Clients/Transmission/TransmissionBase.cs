@@ -386,7 +386,6 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         private ValidationFailure TestGetTorrents()
         {
-            _logger.Trace("Fra: " + Settings.Host);
             try
             {
                 _proxy.GetTorrents(Settings);
