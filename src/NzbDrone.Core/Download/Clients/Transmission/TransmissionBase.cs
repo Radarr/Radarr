@@ -32,8 +32,6 @@ namespace NzbDrone.Core.Download.Clients.Transmission
             _proxy = proxy;
         }
 
-        private bool SupportLabels => _proxy.GetClientVersion(Settings) >= new Version(3, 0);
-
         private static IEnumerable<string> HandleTags(RemoteMovie remoteMovie, TransmissionSettings settings)
         {
             var result = new HashSet<string>();
@@ -81,9 +79,8 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         public override IEnumerable<DownloadClientItem> GetItems()
         {
-            var sup = SupportLabels;
             var configFunc = new Lazy<TransmissionConfig>(() => _proxy.GetConfig(Settings));
-            var torrents = _proxy.GetTorrents(SupportLabels, Settings);
+            var torrents = _proxy.GetTorrents(Settings);
 
             var items = new List<DownloadClientItem>();
 
@@ -115,7 +112,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
                 outputPath = _remotePathMappingService.RemapRemoteToLocal(Settings.Host, outputPath);
 
-                if (SupportLabels && !Settings.Labels.All(label => torrent.Labels.Contains(label)))
+                if (_proxy.SupportLabels(Settings) && !Settings.Labels.All(label => torrent.Labels.Contains(label)))
                 {
                     continue;
                 }
@@ -123,7 +120,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 var item = new DownloadClientItem();
                 item.DownloadId = torrent.HashString.ToUpper();
 
-                if (!SupportLabels)
+                if (!_proxy.SupportLabels(Settings))
                 {
                     item.Category = Settings.MovieCategory;
                 }
@@ -260,7 +257,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         protected override string AddFromMagnetLink(RemoteMovie remoteMovie, string hash, string magnetLink)
         {
-            var labels = SupportLabels ? HandleTags(remoteMovie, Settings) : null;
+            var labels = _proxy.SupportLabels(Settings) ? HandleTags(remoteMovie, Settings) : null;
 
             _proxy.AddTorrentFromUrl(magnetLink, GetDownloadDirectory(), labels, Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
@@ -278,7 +275,7 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         protected override string AddFromTorrentFile(RemoteMovie remoteMovie, string hash, string filename, byte[] fileContent)
         {
-            var labels = SupportLabels ? HandleTags(remoteMovie, Settings) : null;
+            var labels = _proxy.SupportLabels(Settings) ? HandleTags(remoteMovie, Settings) : null;
 
             _proxy.AddTorrentFromData(fileContent, GetDownloadDirectory(), labels, Settings);
             _proxy.SetTorrentSeedingConfiguration(hash, remoteMovie.SeedConfiguration, Settings);
@@ -296,11 +293,11 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         public override void MarkItemAsImported(DownloadClientItem downloadClientItem)
         {
-            if (SupportLabels && Settings.PostImportLabels.Any())
+            if (_proxy.SupportLabels(Settings) && Settings.PostImportLabels.Any())
             {
                 try
                 {
-                    var torrent = _proxy.GetTorrents(SupportLabels, Settings).Single(t => t.HashString == downloadClientItem.DownloadId.ToLower());
+                    var torrent = _proxy.GetSingleTorrent(downloadClientItem.DownloadId.ToLower(), Settings);
                     var labels = torrent.Labels.Concat(Settings.PostImportLabels).Distinct().ToList();
                     _proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), labels, Settings);
                 }
@@ -380,9 +377,10 @@ namespace NzbDrone.Core.Download.Clients.Transmission
 
         private ValidationFailure TestGetTorrents()
         {
+            _logger.Trace("Fra: " + Settings.Host);
             try
             {
-                _proxy.GetTorrents(SupportLabels, Settings);
+                _proxy.GetTorrents(Settings);
             }
             catch (Exception ex)
             {
