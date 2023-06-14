@@ -2,8 +2,6 @@
     "About": "O",
     "Actions": "Akcije",
     "AddedToDownloadQueue": "Dodano u red za preuzimanje",
-    "AreYouSureYouWantToDeleteThisImportListExclusion": "Jeste li sigurni da želite izbrisati ovu uvoznu listu isključenja?",
-    "AreYouSureYouWantToRemoveTheSelectedItemsFromBlocklist": "Jeste li sigurni da želite izbrisati odabrane stavke iz blok liste?",
     "Activity": "Aktivnost",
     "AcceptConfirmationModal": "Prihvati Modal Potvrde",
     "AddCustomFormat": "Dodaj Prilagođeni Format",
@@ -33,12 +31,6 @@
     "ApplyTagsHelpTexts3": "Ukloni: Ukloni unešene oznake",
     "ApplyTagsHelpTexts4": "Zamijeni: Zamijeni oznake sa unešenim oznakama (ostavi prazno kako bi poništio oznake)",
     "AptUpdater": "Koristi apt kako bi instalirao ažuriranje",
-    "AreYouSureYouWantToDeleteFormat": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
-    "AreYouSureYouWantToDeleteThisDelayProfile": "Jeste li sigurni da želite obrisati ovaj profil odgode?",
-    "AreYouSureYouWantToRemoveSelectedItemFromQueue": "Jeste li sigurni da želite izbrisati 1 stavku iz reda?",
-    "AreYouSureYouWantToRemoveSelectedItemsFromQueue": "Jeste li sigurni da želite izbrisati stavku {0} iz reda?",
-    "AreYouSureYouWantToResetQualityDefinitions": "Jeste li sigurni da želite resetirati definicije kvaliteta?",
-    "AreYouSureYouWantToResetYourAPIKey": "Jeste li sigurni da želite resetirati vaš API Ključ?",
     "AsAllDayHelpText": "Događaji će se pojaviti kao cjelodnevni događaji u Vašem kalendaru",
     "AudioInfo": "Informacije o Zvuku",
     "AuthBasic": "Osnovno (Skočni prozor preglednika)",
@@ -235,7 +227,6 @@
     "ClickToChangeReleaseGroup": "Klikni za promjenu grupe verzije",
     "ClientPriority": "Prioritet Klijenata",
     "CloneCustomFormat": "Kloniraj Prilagođeni Format",
-    "CloneFormatTag": "Kloniraj Oznaku Formata",
     "CloneIndexer": "Kloniraj Indekser",
     "CloneProfile": "Kloniraj Profil",
     "Close": "Zatvori",
@@ -256,5 +247,6 @@
     "DeleteNotificationMessageText": "Jeste li sigurni da želite obrisati oznaku formata {0}?",
     "ExportCustomFormat": "Dodaj Prilagođeni Format",
     "ImportCustomFormat": "Dodaj Prilagođeni Format",
-    "SomeResultsHiddenFilter": "Svi rezultati su skriveni zbog primjenjenog filtera"
+    "SomeResultsHiddenFilter": "Svi rezultati su skriveni zbog primjenjenog filtera",
+    "DeleteRemotePathMapping": "Daljinsko Mapiranje Portova"
 }
