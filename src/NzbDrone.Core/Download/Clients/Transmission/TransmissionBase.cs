@@ -299,6 +299,15 @@ namespace NzbDrone.Core.Download.Clients.Transmission
                 {
                     var torrent = _proxy.GetSingleTorrent(downloadClientItem.DownloadId.ToLower(), Settings);
                     var labels = torrent.Labels.Concat(Settings.PostImportLabels).Distinct().ToList();
+
+                    if (Settings.Labels.Any())
+                    {
+                        foreach (var label in Settings.Labels)
+                        {
+                            labels.Remove(label);
+                        }
+                    }
+
                     _proxy.SetTorrentLabel(downloadClientItem.DownloadId.ToLower(), labels, Settings);
                 }
                 catch (DownloadClientException)
