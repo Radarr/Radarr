@@ -76,7 +76,8 @@ namespace NzbDrone.Core.History
 
         protected override SqlBuilder PagedBuilder() => new SqlBuilder(_database.DatabaseType)
             .Join<MovieHistory, Movie>((h, m) => h.MovieId == m.Id)
-            .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id);
+            .Join<Movie, Profile>((m, p) => m.ProfileId == p.Id)
+            .LeftJoin<Movie, MovieMetadata>((m, mm) => m.MovieMetadataId == mm.Id);
 
         protected override IEnumerable<MovieHistory> PagedQuery(SqlBuilder sql) =>
             _database.QueryJoined<MovieHistory, Movie, Profile>(sql, (hist, movie, profile) =>
