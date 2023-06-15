@@ -16,29 +16,30 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            var mapper = _database.OpenConnection();
-
-            if (_database.DatabaseType == DatabaseType.PostgreSQL)
+            using (var mapper = _database.OpenConnection())
             {
+                if (_database.DatabaseType == DatabaseType.PostgreSQL)
+                {
+                    mapper.Execute(@"DELETE FROM ""PendingReleases""
+                                WHERE ""Added"" < @TwoWeeksAgo
+                                AND ""Reason"" = ANY (@Reasons)",
+                              new
+                              {
+                                  TwoWeeksAgo = DateTime.UtcNow.AddDays(-14),
+                                  Reasons = new[] { (int)PendingReleaseReason.DownloadClientUnavailable, (int)PendingReleaseReason.Fallback }
+                              });
+                }
+                else
+                {
                 mapper.Execute(@"DELETE FROM ""PendingReleases""
-                            WHERE ""Added"" < @TwoWeeksAgo
-                            AND ""Reason"" = ANY (@Reasons)",
-                          new
-                          {
-                              TwoWeeksAgo = DateTime.UtcNow.AddDays(-14),
-                              Reasons = new[] { (int)PendingReleaseReason.DownloadClientUnavailable, (int)PendingReleaseReason.Fallback }
-                          });
-            }
-            else
-            {
-            mapper.Execute(@"DELETE FROM ""PendingReleases""
-                            WHERE ""Added"" < @TwoWeeksAgo
-                            AND ""REASON"" IN @Reasons",
-                          new
-                          {
-                              TwoWeeksAgo = DateTime.UtcNow.AddDays(-14),
-                              Reasons = new[] { (int)PendingReleaseReason.DownloadClientUnavailable, (int)PendingReleaseReason.Fallback }
-                          });
+                                WHERE ""Added"" < @TwoWeeksAgo
+                                AND ""REASON"" IN @Reasons",
+                              new
+                              {
+                                  TwoWeeksAgo = DateTime.UtcNow.AddDays(-14),
+                                  Reasons = new[] { (int)PendingReleaseReason.DownloadClientUnavailable, (int)PendingReleaseReason.Fallback }
+                              });
+                }
             }
         }
     }
