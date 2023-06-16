@@ -92,9 +92,9 @@ class ImportMovieSelectFolder extends Component {
 
           {
             !isFetching && error ?
-              <div>
+              <Alert kind={kinds.DANGER}>
                 {translate('UnableToLoadRootFolders')}
-              </div> :
+              </Alert> :
               null
           }
 

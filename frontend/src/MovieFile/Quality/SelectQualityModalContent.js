@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'Components/Alert';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
@@ -92,9 +93,9 @@ class SelectQualityModalContent extends Component {
 
           {
             !isFetching && !!error &&
-              <div>
+              <Alert kind={kinds.DANGER}>
                 {translate('UnableToLoadQualities')}
-              </div>
+              </Alert>
           }
 
           {

@@ -29,9 +29,9 @@ function DownloadClientOptions(props) {
 
       {
         !isFetching && error &&
-          <div>
+          <Alert kind={kinds.DANGER}>
             {translate('UnableToLoadDownloadClientOptions')}
-          </div>
+          </Alert>
       }
 
       {

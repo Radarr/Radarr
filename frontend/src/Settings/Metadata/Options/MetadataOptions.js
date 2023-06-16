@@ -6,8 +6,9 @@ import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
 import FormLabel from 'Components/Form/FormLabel';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
-import { inputTypes } from 'Helpers/Props';
+import { inputTypes, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
+import Alert from '../../../Components/Alert';
 
 // Note: Do Not Translate Certification Countries
 
@@ -43,9 +44,9 @@ function MetadataOptions(props) {
 
       {
         !isFetching && error &&
-          <div>
+          <Alert kind={kinds.DANGER}>
             {translate('UnableToLoadIndexerOptions')}
-          </div>
+          </Alert>
       }
 
       {

@@ -10,6 +10,7 @@ import { SelectProvider } from 'App/SelectContext';
 import ClientSideCollectionAppState from 'App/State/ClientSideCollectionAppState';
 import MoviesAppState, { MovieIndexAppState } from 'App/State/MoviesAppState';
 import { RSS_SYNC } from 'Commands/commandNames';
+import Alert from 'Components/Alert';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
@@ -20,7 +21,7 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import withScrollPosition from 'Components/withScrollPosition';
-import { align, icons } from 'Helpers/Props';
+import { align, icons, kinds } from 'Helpers/Props';
 import SortDirection from 'Helpers/Props/SortDirection';
 import InteractiveImportModal from 'InteractiveImport/InteractiveImportModal';
 import NoMovie from 'Movie/NoMovie';
@@ -337,7 +338,9 @@ const MovieIndex = withScrollPosition((props: MovieIndexProps) => {
             {isFetching && !isPopulated ? <LoadingIndicator /> : null}
 
             {!isFetching && !!error ? (
-              <div>{translate('UnableToLoadMovies')}</div>
+              <Alert kind={kinds.DANGER}>
+                {translate('UnableToLoadMovies')}
+              </Alert>
             ) : null}
 
             {isLoaded ? (

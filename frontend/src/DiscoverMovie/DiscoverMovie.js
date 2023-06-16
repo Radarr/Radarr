@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'Components/Alert';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
@@ -10,7 +11,7 @@ import PageToolbarButton from 'Components/Page/Toolbar/PageToolbarButton';
 import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
-import { align, icons, sortDirections } from 'Helpers/Props';
+import { align, icons, kinds, sortDirections } from 'Helpers/Props';
 import styles from 'Movie/Index/MovieIndex.css';
 import hasDifferentItemsOrOrder from 'Utilities/Object/hasDifferentItemsOrOrder';
 import translate from 'Utilities/String/translate';
@@ -369,9 +370,9 @@ class DiscoverMovie extends Component {
 
             {
               !isFetching && !!error &&
-                <div>
+                <Alert kind={kinds.DANGER}>
                   {translate('UnableToLoadMovies')}
-                </div>
+                </Alert>
             }
 
             {

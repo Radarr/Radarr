@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
 import { Error } from 'App/State/AppSectionState';
 import AppState from 'App/State/AppState';
+import Alert from 'Components/Alert';
 import Form from 'Components/Form/Form';
 import FormGroup from 'Components/Form/FormGroup';
 import FormInputGroup from 'Components/Form/FormInputGroup';
@@ -130,7 +131,9 @@ function SelectQualityModalContent(props: SelectQualityModalContentProps) {
         {isFetching && <LoadingIndicator />}
 
         {!isFetching && error ? (
-          <div>{translate('UnableToLoadQualities')}</div>
+          <Alert kind={kinds.DANGER}>
+            {translate('UnableToLoadQualities')}
+          </Alert>
         ) : null}
 
         {isPopulated && !error ? (

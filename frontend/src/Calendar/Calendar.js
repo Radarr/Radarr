@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'Components/Alert';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
+import { kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import AgendaConnector from './Agenda/AgendaConnector';
 import * as calendarViews from './calendarViews';
@@ -31,9 +33,9 @@ class Calendar extends Component {
 
         {
           !isFetching && !!error &&
-            <div>
+            <Alert kind={kinds.DANGER}>
               {translate('UnableToLoadTheCalendar')}
-            </div>
+            </Alert>
         }
 
         {

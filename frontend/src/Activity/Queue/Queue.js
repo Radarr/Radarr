@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import Alert from 'Components/Alert';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
 import PageContent from 'Components/Page/PageContent';
 import PageContentBody from 'Components/Page/PageContentBody';
@@ -12,7 +13,7 @@ import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
 import TablePager from 'Components/Table/TablePager';
-import { align, icons } from 'Helpers/Props';
+import { align, icons, kinds } from 'Helpers/Props';
 import getRemovedItems from 'Utilities/Object/getRemovedItems';
 import hasDifferentItems from 'Utilities/Object/hasDifferentItems';
 import translate from 'Utilities/String/translate';
@@ -231,17 +232,17 @@ class Queue extends Component {
 
           {
             !isRefreshing && hasError ?
-              <div>
+              <Alert kind={kinds.DANGER}>
                 {translate('FailedToLoadQueue')}
-              </div> :
+              </Alert> :
               null
           }
 
           {
             isAllPopulated && !hasError && !items.length ?
-              <div>
+              <Alert kind={kinds.INFO}>
                 {translate('QueueIsEmpty')}
-              </div> :
+              </Alert> :
               null
           }
 
