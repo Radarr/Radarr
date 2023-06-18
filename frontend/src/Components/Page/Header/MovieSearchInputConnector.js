@@ -19,6 +19,8 @@ function createCleanMovieSelector() {
           year,
           images,
           alternateTitles = [],
+          tmdbId,
+          imdbId,
           tags = []
         } = movie;
 
@@ -29,6 +31,8 @@ function createCleanMovieSelector() {
           year,
           images,
           alternateTitles,
+          tmdbId,
+          imdbId,
           firstCharacter: title.charAt(0).toLowerCase(),
           tags: tags.reduce((acc, id) => {
             const matchingTag = allTags.find((tag) => tag.id === id);
