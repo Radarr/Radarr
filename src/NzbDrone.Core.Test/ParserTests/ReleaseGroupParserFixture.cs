@@ -59,7 +59,7 @@ namespace NzbDrone.Core.Test.ParserTests
         }
 
         [TestCase("Movie Name (2020) [2160p x265 10bit S82 Joy]", "Joy")]
-        [TestCase("Movie Name (2003) (2160p BluRay X265 HEVC 10bit HDR AAC 7.1 Tigole) [QxR]", "Tigole")]
+        [TestCase("Movie Name (2003) (2160p BluRay X265 HEVC 10bit HDR AAC 7.1 Tigole) [QxR]", "QxR")]
         [TestCase("Ode To Joy (2009) (2160p BluRay x265 10bit HDR Joy)", "Joy")]
         [TestCase("Movie Name (2001) 1080p NF WEB-DL DDP2.0 x264-E.N.D", "E.N.D")]
         [TestCase("Movie Name (2020) [1080p] [WEBRip] [5.1] [YTS.MX]", "YTS.MX")]
@@ -109,6 +109,17 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Should.Not.Use.Dots.2022.1080p.BluRay.x265.10bit.Tigole", "Tigole")]
         [TestCase("Movie.Title.2005.2160p.UHD.BluRay.TrueHD 7.1.Atmos.x265 - HQMUX", "HQMUX")]
         [TestCase("Movie.Name.2022.1080p.BluRay.x264-VARYG (Blue Lock, Multi-Subs)", "VARYG")]
+        [TestCase("Movie.Title.2005.2160p.UHD.BluRay.TrueHD 7.1.Atmos.x265 - HQMUX", "HQMUX")]
+        [TestCase("Movie Title (2022) (2160p ATV WEB-DL Hybrid H265 DV HDR DDP Atmos 5.1 English - SMURF)", "SMURF")]
+        [TestCase("Movie Title (2009) (2160p PMTP WEB-DL Hybrid H265 DV HDR10+ DDP Atmos 5.1 English - SMURF)", "SMURF")]
+        [TestCase("Movie Title (2022) (1080p iT WEB-DL H264 SDR DDP Atmos 5.1 English - WDYM)", "WDYM")]
+        [TestCase("Movie Title (2009) (1080p NF WEB-DL Hybrid H265 DV HDR DDP 5.1 English - WDYM) ", "WDYM")]
+        [TestCase("Movie Title (2022) (2160p ATVP WEB-DL H265 DV DDP Atmos 5.1 English - FLUX)", "FLUX")]
+        [TestCase("Movie Title (2009) (2160p MAX WEB-DL H265 DV HDR TrueHD Atmos 7.1 English - FLUX)", "FLUX")]
+        [TestCase("Movie Title (2022) (2160p ATV WEB-DL x265 SDR DDP 5.1 English - JBENT TAoE)", "TAoE")]
+        [TestCase("Movie Title (2009) (2160p PMTP WEB-DL x265 SDR DDP 5.1 English - JBENT TAoE) ", "TAoE")]
+        [TestCase("Movie Title (2022) (2160p HMAX WEB-DL x265 SDR DDP Atmos 5.1 English - Ghost QxR)", "QxR")]
+        [TestCase("Movie Title (2009) (2160p NF WEB-DL x265 SDR DDP Atmos 5.1 English - Ghost QxR)", "QxR")]
         public void should_parse_exception_release_group(string title, string expected)
         {
             Parser.Parser.ParseReleaseGroup(title).Should().Be(expected);
