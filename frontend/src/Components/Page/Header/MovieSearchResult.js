@@ -12,6 +12,8 @@ function MovieSearchResult(props) {
     year,
     images,
     alternateTitles,
+    tmdbId,
+    imdbId,
     tags
   } = props;
 
@@ -48,6 +50,22 @@ function MovieSearchResult(props) {
         }
 
         {
+          match.key === 'tmdbId' && tmdbId ?
+            <div className={styles.alternateTitle}>
+              TmdbId: {tmdbId}
+            </div> :
+            null
+        }
+
+        {
+          match.key === 'imdbId' && imdbId ?
+            <div className={styles.alternateTitle}>
+              ImdbId: {imdbId}
+            </div> :
+            null
+        }
+
+        {
           tag ?
             <div className={styles.tagContainer}>
               <Label
@@ -69,6 +87,8 @@ MovieSearchResult.propTypes = {
   year: PropTypes.number.isRequired,
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tmdbId: PropTypes.number,
+  imdbId: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.object).isRequired,
   match: PropTypes.object.isRequired
 };

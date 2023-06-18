@@ -9,6 +9,8 @@ const fuseOptions = {
   keys: [
     'title',
     'alternateTitles.title',
+    'tmdbId',
+    'imdbId',
     'tags.label'
   ]
 };
