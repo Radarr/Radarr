@@ -116,6 +116,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Movie.Name.S01E05.480p.BluRay.DD5.1.x264-HiSD", false)]
         [TestCase("Movie.Name.S03E01-06.DUAL.BDRip.AC3.-HELLYWOOD", false)]
         [TestCase("Movie.Name.2011.LIMITED.BluRay.360p.H264-20-40", false)]
+        [TestCase("Movie.2009.Blu.ray.AVC.DTS.HD.MA.5.1", false)]
         public void should_parse_bluray480p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Source.BLURAY, proper, Resolution.R480p);
