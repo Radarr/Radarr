@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using Newtonsoft.Json;
 using NzbDrone.Common.Extensions;
 using NzbDrone.Common.Http;
 using NzbDrone.Common.Serializer;
@@ -74,6 +75,7 @@ namespace NzbDrone.Core.Indexers.HDBits
             query.Medium = Settings.Mediums.ToArray();
 
             request.SetContent(query.ToJson());
+            request.ContentSummary = query.ToJson(Formatting.None);
 
             yield return new IndexerRequest(request);
         }
