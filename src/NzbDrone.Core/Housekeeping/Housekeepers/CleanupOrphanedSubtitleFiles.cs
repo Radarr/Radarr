@@ -20,29 +20,25 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         private void DeleteOrphanedByMovie()
         {
-            using (var mapper = _database.OpenConnection())
-            {
-                mapper.Execute(@"DELETE FROM ""SubtitleFiles""
-                                     WHERE ""Id"" IN (
-                                     SELECT ""SubtitleFiles"".""Id"" FROM ""SubtitleFiles""
-                                     LEFT OUTER JOIN ""Movies""
-                                     ON ""SubtitleFiles"".""MovieId"" = ""Movies"".""Id""
-                                     WHERE ""Movies"".""Id"" IS NULL)");
-            }
+            using var mapper = _database.OpenConnection();
+            mapper.Execute(@"DELETE FROM ""SubtitleFiles""
+                             WHERE ""Id"" IN (
+                             SELECT ""SubtitleFiles"".""Id"" FROM ""SubtitleFiles""
+                             LEFT OUTER JOIN ""Movies""
+                             ON ""SubtitleFiles"".""MovieId"" = ""Movies"".""Id""
+                             WHERE ""Movies"".""Id"" IS NULL)");
         }
 
         private void DeleteOrphanedByMovieFile()
         {
-            using (var mapper = _database.OpenConnection())
-            {
-                mapper.Execute(@"DELETE FROM ""SubtitleFiles""
-                                     WHERE ""Id"" IN (
-                                     SELECT ""SubtitleFiles"".""Id"" FROM ""SubtitleFiles""
-                                     LEFT OUTER JOIN ""MovieFiles""
-                                     ON ""SubtitleFiles"".""MovieFileId"" = ""MovieFiles"".""Id""
-                                     WHERE ""SubtitleFiles"".""MovieFileId"" > 0
-                                     AND ""MovieFiles"".""Id"" IS NULL)");
-            }
+            using var mapper = _database.OpenConnection();
+            mapper.Execute(@"DELETE FROM ""SubtitleFiles""
+                             WHERE ""Id"" IN (
+                             SELECT ""SubtitleFiles"".""Id"" FROM ""SubtitleFiles""
+                             LEFT OUTER JOIN ""MovieFiles""
+                             ON ""SubtitleFiles"".""MovieFileId"" = ""MovieFiles"".""Id""
+                             WHERE ""SubtitleFiles"".""MovieFileId"" > 0
+                             AND ""MovieFiles"".""Id"" IS NULL)");
         }
     }
 }

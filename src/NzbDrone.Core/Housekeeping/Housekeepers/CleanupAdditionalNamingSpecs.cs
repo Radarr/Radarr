@@ -14,13 +14,11 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            using (var mapper = _database.OpenConnection())
-            {
-                mapper.Execute(@"DELETE FROM ""NamingConfig""
-                                     WHERE ""Id"" NOT IN (
-                                     SELECT ""Id"" FROM ""NamingConfig""
-                                     LIMIT 1)");
-            }
+            using var mapper = _database.OpenConnection();
+            mapper.Execute(@"DELETE FROM ""NamingConfig""
+                             WHERE ""Id"" NOT IN (
+                             SELECT ""Id"" FROM ""NamingConfig""
+                             LIMIT 1)");
         }
     }
 }

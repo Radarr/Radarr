@@ -14,13 +14,11 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            using (var mapper = _database.OpenConnection())
-            {
-                mapper.Execute(@"DELETE FROM ""Collections"" WHERE ""TmdbId"" IN (SELECT ""X"".""TmdbId"" FROM (SELECT ""Collections"".""TmdbId"", COUNT(""Movies"".""Id"") as ""MovieCount"" FROM ""Collections"" 
-                                 LEFT OUTER JOIN ""MovieMetadata"" ON ""Collections"".""TmdbId"" = ""MovieMetadata"".""CollectionTmdbId""
-                                 LEFT OUTER JOIN ""Movies"" ON ""Movies"".""MovieMetadataId"" = ""MovieMetadata"".""Id""
-                                 GROUP BY ""Collections"".""Id"") AS ""X"" WHERE ""X"".""MovieCount"" = 0)");
-            }
+            using var mapper = _database.OpenConnection();
+            mapper.Execute(@"DELETE FROM ""Collections"" WHERE ""TmdbId"" IN (SELECT ""X"".""TmdbId"" FROM (SELECT ""Collections"".""TmdbId"", COUNT(""Movies"".""Id"") as ""MovieCount"" FROM ""Collections""
+                             LEFT OUTER JOIN ""MovieMetadata"" ON ""Collections"".""TmdbId"" = ""MovieMetadata"".""CollectionTmdbId""
+                             LEFT OUTER JOIN ""Movies"" ON ""Movies"".""MovieMetadataId"" = ""MovieMetadata"".""Id""
+                             GROUP BY ""Collections"".""Id"") AS ""X"" WHERE ""X"".""MovieCount"" = 0)");
         }
     }
 }

@@ -18,30 +18,28 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            using (var mapper = _database.OpenConnection())
+            using var mapper = _database.OpenConnection();
+            var usedTags = new[] { "Movies", "Notifications", "DelayProfiles", "Restrictions", "ImportLists", "Indexers" }
+                .SelectMany(v => GetUsedTags(v, mapper))
+                .Distinct()
+                .ToList();
+
+            if (usedTags.Any())
             {
-                var usedTags = new[] { "Movies", "Notifications", "DelayProfiles", "Restrictions", "ImportLists", "Indexers" }
-                    .SelectMany(v => GetUsedTags(v, mapper))
-                    .Distinct()
-                    .ToList();
+                var usedTagsList = usedTags.Select(d => d.ToString()).Join(",");
 
-                if (usedTags.Any())
+                if (_database.DatabaseType == DatabaseType.PostgreSQL)
                 {
-                    var usedTagsList = usedTags.Select(d => d.ToString()).Join(",");
-
-                    if (_database.DatabaseType == DatabaseType.PostgreSQL)
-                    {
-                        mapper.Execute($"DELETE FROM \"Tags\" WHERE NOT \"Id\" = ANY (\'{{{usedTagsList}}}\'::int[])");
-                    }
-                    else
-                    {
-                        mapper.Execute($"DELETE FROM \"Tags\" WHERE NOT \"Id\" IN ({usedTagsList})");
-                    }
+                    mapper.Execute($"DELETE FROM \"Tags\" WHERE NOT \"Id\" = ANY (\'{{{usedTagsList}}}\'::int[])");
                 }
                 else
                 {
-                    mapper.Execute("DELETE FROM \"Tags\"");
+                    mapper.Execute($"DELETE FROM \"Tags\" WHERE NOT \"Id\" IN ({usedTagsList})");
                 }
+            }
+            else
+            {
+                mapper.Execute("DELETE FROM \"Tags\"");
             }
         }
 

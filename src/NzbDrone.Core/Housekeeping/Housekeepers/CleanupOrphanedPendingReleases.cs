@@ -14,15 +14,13 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
 
         public void Clean()
         {
-            using (var mapper = _database.OpenConnection())
-            {
-                mapper.Execute(@"DELETE FROM ""PendingReleases""
-                                 WHERE ""Id"" IN (
-                                 SELECT ""PendingReleases"".""Id"" FROM ""PendingReleases""
-                                 LEFT OUTER JOIN ""Movies""
-                                 ON ""PendingReleases"".""MovieId"" = ""Movies"".""Id""
-                                 WHERE ""Movies"".""Id"" IS NULL)");
-            }
+            using var mapper = _database.OpenConnection();
+            mapper.Execute(@"DELETE FROM ""PendingReleases""
+                             WHERE ""Id"" IN (
+                             SELECT ""PendingReleases"".""Id"" FROM ""PendingReleases""
+                             LEFT OUTER JOIN ""Movies""
+                             ON ""PendingReleases"".""MovieId"" = ""Movies"".""Id""
+                             WHERE ""Movies"".""Id"" IS NULL)");
         }
     }
 }
