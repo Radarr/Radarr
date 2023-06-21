@@ -22,6 +22,7 @@ namespace Radarr.Api.V3.Health
             _healthCheckService = healthCheckService;
         }
 
+        [NonAction]
         protected override HealthResource GetResourceById(int id)
         {
             throw new NotImplementedException();

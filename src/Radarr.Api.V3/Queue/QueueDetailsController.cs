@@ -26,6 +26,7 @@ namespace Radarr.Api.V3.Queue
             _pendingReleaseService = pendingReleaseService;
         }
 
+        [NonAction]
         protected override QueueResource GetResourceById(int id)
         {
             throw new NotImplementedException();

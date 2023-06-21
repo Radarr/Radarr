@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using NzbDrone.Core.DecisionEngine;
 using NzbDrone.Core.Profiles;
 using Radarr.Http.REST;
@@ -15,6 +16,7 @@ namespace Radarr.Api.V3.Indexers
             _qualityProfile = qualityProfileService.GetDefaultProfile(string.Empty);
         }
 
+        [NonAction]
         protected override ReleaseResource GetResourceById(int id)
         {
             throw new NotImplementedException();
