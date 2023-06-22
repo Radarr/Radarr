@@ -48,7 +48,7 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [Test]
-        public void should_add_imdb_tag()
+        public void should_add_imdb_tag_with_dash()
         {
             _namingConfig.MovieFolderFormat = "{Movie Title} {imdb-{ImdbId}}";
 
@@ -57,9 +57,60 @@ namespace NzbDrone.Core.Test.OrganizerTests.FileNameBuilderTests
         }
 
         [Test]
-        public void should_skip_imdb_tag_if_null()
+        public void should_add_imdb_tag_with_equals()
+        {
+            _namingConfig.MovieFolderFormat = "{Movie Title} {imdb={ImdbId}}";
+
+            Subject.GetMovieFolder(_movie)
+                   .Should().Be($"Movie Title {{imdb={_movie.ImdbId}}}");
+        }
+
+        [Test]
+        public void should_skip_imdb_tag_if_null_with_dash()
         {
             _namingConfig.MovieFolderFormat = "{Movie Title} {imdb-{ImdbId}}";
+
+            _movie.ImdbId = null;
+
+            Subject.GetMovieFolder(_movie)
+                   .Should().Be($"Movie Title");
+        }
+
+        [Test]
+        public void should_skip_bracket_imdb_tag_if_null_with_dash()
+        {
+            _namingConfig.MovieFolderFormat = "{Movie Title} [imdb-{ImdbId}]";
+
+            _movie.ImdbId = null;
+
+            Subject.GetMovieFolder(_movie)
+                   .Should().Be($"Movie Title");
+        }
+
+        [Test]
+        public void should_skip_imdb_tag_if_null_with_equals()
+        {
+            _namingConfig.MovieFolderFormat = "{Movie Title} {imdb={ImdbId}}";
+
+            _movie.ImdbId = null;
+
+            Subject.GetMovieFolder(_movie)
+                   .Should().Be($"Movie Title");
+        }
+
+        [Test]
+        public void should_add_bracket_imdb_tag_with_equals()
+        {
+            _namingConfig.MovieFolderFormat = "{Movie Title} [imdb={ImdbId}]";
+
+            Subject.GetMovieFolder(_movie)
+                   .Should().Be($"Movie Title [imdb={_movie.ImdbId}]");
+        }
+
+        [Test]
+        public void should_skip_bracket_imdb_tag_if_null_with_equals()
+        {
+            _namingConfig.MovieFolderFormat = "{Movie Title} [imdb={ImdbId}]";
 
             _movie.ImdbId = null;
 
