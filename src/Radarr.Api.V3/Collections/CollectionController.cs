@@ -145,6 +145,11 @@ namespace Radarr.Api.V3.Collections
                     var movieResource = movie.ToResource();
                     movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
+                    if (_movieService.FindByTmdbId(movie.TmdbId) == null)
+                    {
+                        resource.MissingMovies++;
+                    }
+
                     resource.Movies.Add(movieResource);
                 }
 
@@ -160,6 +165,11 @@ namespace Radarr.Api.V3.Collections
             {
                 var movieResource = movie.ToResource();
                 movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie });
+
+                if (_movieService.FindByTmdbId(movie.TmdbId) == null)
+                {
+                    resource.MissingMovies++;
+                }
 
                 resource.Movies.Add(movieResource);
             }
