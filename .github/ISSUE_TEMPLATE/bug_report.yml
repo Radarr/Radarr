@@ -76,7 +76,7 @@ body:
 - type: checkboxes
   attributes:
     label: Trace Logs have been provided as applicable. Reports may be closed if the required logs are not provided.
-    description: Trace logs are generally required for all bug reports
+    description: Trace logs are generally required for all bug reports and contain `trace`. Info logs are invalid for bug reports and do not contain `debug` nor `trace`
     options:
-    - label: I have followed the steps in the wiki link above and provided the required trace logs that are relevant and show this issue.
+    - label: I have read and followed the steps in the wiki link above and provided the required trace logs - the logs contain `trace` - that are relevant and show this issue.
       required: true
