@@ -135,6 +135,7 @@ namespace Radarr.Api.V3.Collections
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
             var collectionMovies = _movieMetadataService.GetMoviesWithCollections();
+            var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
 
             foreach (var collection in collections)
             {
@@ -144,6 +145,11 @@ namespace Radarr.Api.V3.Collections
                 {
                     var movieResource = movie.ToResource();
                     movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
+
+                    if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
+                    {
+                        resource.MissingMovies++;
+                    }
 
                     resource.Movies.Add(movieResource);
                 }
@@ -155,11 +161,17 @@ namespace Radarr.Api.V3.Collections
         private CollectionResource MapToResource(MovieCollection collection)
         {
             var resource = collection.ToResource();
+            var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
 
             foreach (var movie in _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId))
             {
                 var movieResource = movie.ToResource();
                 movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie });
+
+                if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
+                {
+                    resource.MissingMovies++;
+                }
 
                 resource.Movies.Add(movieResource);
             }

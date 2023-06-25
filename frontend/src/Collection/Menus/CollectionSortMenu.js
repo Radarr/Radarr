@@ -28,6 +28,14 @@ function CollectionSortMenu(props) {
         >
           {translate('Title')}
         </SortMenuItem>
+        <SortMenuItem
+          name="missingMovies"
+          sortKey={sortKey}
+          sortDirection={sortDirection}
+          onPress={onSortSelect}
+        >
+          {translate('Missing')}
+        </SortMenuItem>
       </MenuContent>
     </SortMenu>
   );

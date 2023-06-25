@@ -25,6 +25,7 @@ namespace Radarr.Api.V3.Collections
         public bool SearchOnAdd { get; set; }
         public MovieStatusType MinimumAvailability { get; set; }
         public List<CollectionMovieResource> Movies { get; set; }
+        public int MissingMovies { get; set; }
     }
 
     public static class CollectionResourceMapper

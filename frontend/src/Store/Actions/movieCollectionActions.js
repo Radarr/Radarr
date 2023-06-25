@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { createAction } from 'redux-actions';
 import { batchActions } from 'redux-batched-actions';
-import { filterBuilderTypes, filterBuilderValueTypes, filterTypePredicates, sortDirections } from 'Helpers/Props';
+import { filterBuilderTypes, filterBuilderValueTypes, filterTypePredicates, filterTypes, sortDirections } from 'Helpers/Props';
 import { createThunk, handleThunks } from 'Store/thunks';
 import sortByName from 'Utilities/Array/sortByName';
 import createAjaxRequest from 'Utilities/createAjaxRequest';
@@ -62,6 +62,28 @@ export const defaultState = {
       key: 'all',
       label: 'All',
       filters: []
+    },
+    {
+      key: 'missing',
+      label: 'Missing',
+      filters: [
+        {
+          key: 'missingMovies',
+          value: 0,
+          type: filterTypes.GREATER_THAN
+        }
+      ]
+    },
+    {
+      key: 'complete',
+      label: 'Complete',
+      filters: [
+        {
+          key: 'missingMovies',
+          value: 0,
+          type: filterTypes.EQUAL
+        }
+      ]
     }
   ],
 
