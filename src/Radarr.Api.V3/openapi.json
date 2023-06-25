@@ -8746,6 +8746,10 @@
               "$ref": "#/components/schemas/CollectionMovieResource"
             },
             "nullable": true
+          },
+          "missingMovies": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
