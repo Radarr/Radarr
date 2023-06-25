@@ -135,7 +135,7 @@ namespace Radarr.Api.V3.Collections
             // Avoid calling for naming spec on every movie in filenamebuilder
             var namingConfig = _namingService.GetConfig();
             var collectionMovies = _movieMetadataService.GetMoviesWithCollections();
-            var existingMoviesTmdbIds = new HashSet<int>(_movieService.GetAllMovies().Select(m => m.TmdbId));
+            var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
 
             foreach (var collection in collections)
             {
@@ -161,7 +161,7 @@ namespace Radarr.Api.V3.Collections
         private CollectionResource MapToResource(MovieCollection collection)
         {
             var resource = collection.ToResource();
-            var existingMoviesTmdbIds = new HashSet<int>(_movieService.GetAllMovies().Select(m => m.TmdbId));
+            var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
 
             foreach (var movie in _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId))
             {
