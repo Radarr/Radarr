@@ -60,12 +60,12 @@ export const defaultState = {
   filters: [
     {
       key: 'all',
-      label: 'All',
+      label: translate('All'),
       filters: []
     },
     {
       key: 'missing',
-      label: 'Missing',
+      label: translate('Missing'),
       filters: [
         {
           key: 'missingMovies',
@@ -76,7 +76,7 @@ export const defaultState = {
     },
     {
       key: 'complete',
-      label: 'Complete',
+      label: translate('Complete'),
       filters: [
         {
           key: 'missingMovies',
