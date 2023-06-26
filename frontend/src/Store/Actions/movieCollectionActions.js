@@ -272,6 +272,9 @@ export const actionHandlers = handleThunks({
     }).request;
 
     promise.done((data) => {
+      const collectionToUpdate = getState().movieCollections.items.find((collection) => collection.tmdbId === data.collection.tmdbId);
+      const collectionData = { ...collectionToUpdate, missingMovies: Math.max(0, collectionToUpdate.missingMovies - 1 ) };
+
       dispatch(batchActions([
         updateItem({ section: 'movies', ...data }),
 
@@ -280,7 +283,9 @@ export const actionHandlers = handleThunks({
           isAdding: false,
           isAdded: true,
           addError: null
-        })
+        }),
+
+        updateItem({ section, ...collectionData })
       ]));
     });
 

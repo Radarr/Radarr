@@ -347,7 +347,27 @@ export const actionHandlers = handleThunks({
 
   [FETCH_MOVIES]: createFetchHandler(section, '/movie'),
   [SAVE_MOVIE]: createSaveProviderHandler(section, '/movie', { getAjaxOptions: getSaveAjaxOptions }),
-  [DELETE_MOVIE]: createRemoveItemHandler(section, '/movie'),
+  [DELETE_MOVIE]: (getState, payload, dispatch) => {
+    createRemoveItemHandler(section, '/movie')(getState, payload, dispatch);
+
+    if (!payload.collectionTmdbId) {
+      return;
+    }
+
+    const collectionToUpdate = getState().movieCollections.items.find((collection) => collection.tmdbId === payload.collectionTmdbId);
+
+    // Skip updating if the last movie in the collection is being deleted
+    if (collectionToUpdate.movies.length - collectionToUpdate.missingMovies === 1) {
+      return;
+    }
+
+    const collectionData = { ...collectionToUpdate, missingMovies: collectionToUpdate.missingMovies + 1 };
+
+    dispatch(updateItem({
+      section: 'movieCollections',
+      ...collectionData
+    }));
+  },
 
   [TOGGLE_MOVIE_MONITORED]: (getState, payload, dispatch) => {
     const {

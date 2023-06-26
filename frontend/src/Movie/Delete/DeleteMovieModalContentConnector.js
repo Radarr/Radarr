@@ -31,6 +31,7 @@ function createMapDispatchToProps(dispatch, props) {
       dispatch(
         deleteMovie({
           id: props.movieId,
+          collectionTmdbId: this.collection?.tmdbId,
           deleteFiles,
           addImportExclusion
         })
