@@ -131,8 +131,7 @@ export const actionHandlers = handleThunks({
     promise.done((data) => {
       const updatedItem = _.cloneDeep(data);
       updatedItem.id = updatedItem.tmdbId;
-
-      dispatch(batchActions([
+      const actions = [
         updateItem({ section: 'movies', ...data }),
         updateItem({ section: 'addMovie', ...updatedItem }),
 
@@ -142,7 +141,21 @@ export const actionHandlers = handleThunks({
           isAdded: true,
           addError: null
         })
-      ]));
+      ];
+
+      if (!newMovie.collection) {
+        dispatch(batchActions(actions));
+        return;
+      }
+
+      const collectionToUpdate = getState().movieCollections.items.find((collection) => collection.tmdbId === newMovie.collection.tmdbId);
+
+      if (collectionToUpdate) {
+        const collectionData = { ...collectionToUpdate, missingMovies: Math.max(0, collectionToUpdate.missingMovies - 1 ) };
+        actions.push(updateItem({ section: 'movieCollections', ...collectionData }));
+      }
+
+      dispatch(batchActions(actions));
     });
 
     promise.fail((xhr) => {
