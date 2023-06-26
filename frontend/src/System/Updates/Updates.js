@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component, Fragment } from 'react';
+import Alert from 'Components/Alert';
 import Icon from 'Components/Icon';
 import Label from 'Components/Label';
 import SpinnerButton from 'Components/Link/SpinnerButton';
@@ -61,9 +62,9 @@ class Updates extends Component {
 
           {
             noUpdates &&
-              <div>
+              <Alert kind={kinds.INFO}>
                 {translate('NoUpdatesAreAvailable')}
-              </div>
+              </Alert>
           }
 
           {

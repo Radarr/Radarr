@@ -11,7 +11,7 @@ import PageToolbarSection from 'Components/Page/Toolbar/PageToolbarSection';
 import PageToolbarSeparator from 'Components/Page/Toolbar/PageToolbarSeparator';
 import Table from 'Components/Table/Table';
 import TableBody from 'Components/Table/TableBody';
-import { icons } from 'Helpers/Props';
+import { icons, kinds } from 'Helpers/Props';
 import translate from 'Utilities/String/translate';
 import LogsNavMenu from '../LogsNavMenu';
 import LogFilesTableRow from './LogFilesTableRow';
@@ -118,9 +118,9 @@ class LogFiles extends Component {
 
           {
             !isFetching && !items.length &&
-              <div>
+              <Alert kind={kinds.INFO}>
                 {translate('NoLogFiles')}
-              </div>
+              </Alert>
           }
         </PageContentBody>
       </PageContent>
