@@ -303,6 +303,7 @@ class MovieDetails extends Component {
       selectedTabIndex
     } = this.state;
 
+    const fanartUrl = getFanartUrl(images);
     const marqueeWidth = isSmallScreen ? titleWidth : (titleWidth - 150);
 
     return (
@@ -361,9 +362,11 @@ class MovieDetails extends Component {
           <div className={styles.header}>
             <div
               className={styles.backdrop}
-              style={{
-                backgroundImage: `url(${getFanartUrl(images)})`
-              }}
+              style={
+                fanartUrl ?
+                  { backgroundImage: `url(${fanartUrl})` } :
+                  null
+              }
             >
               <div className={styles.backdropOverlay} />
             </div>
