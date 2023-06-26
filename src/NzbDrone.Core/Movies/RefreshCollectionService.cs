@@ -139,7 +139,8 @@ namespace NzbDrone.Core.Movies
                             SearchForMovie = collection.SearchOnAdd,
                             AddMethod = AddMovieMethod.Collection
                         },
-                        Monitored = true
+                        Monitored = true,
+                        Tags = collection.Tags
                     }).ToList(), true);
                 }
             }

@@ -25,6 +25,7 @@ namespace NzbDrone.Core.Movies.Collections
         public List<MediaCover.MediaCover> Images { get; set; }
         public DateTime Added { get; set; }
         public List<MovieMetadata> Movies { get; set; }
+        public HashSet<int> Tags { get; set; }
 
         public void ApplyChanges(MovieCollection otherCollection)
         {
@@ -35,6 +36,7 @@ namespace NzbDrone.Core.Movies.Collections
             QualityProfileId = otherCollection.QualityProfileId;
             MinimumAvailability = otherCollection.MinimumAvailability;
             RootFolderPath = otherCollection.RootFolderPath;
+            Tags = otherCollection.Tags;
         }
     }
 }
