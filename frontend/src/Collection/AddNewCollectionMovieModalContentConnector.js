@@ -28,7 +28,7 @@ function createMapStateToProps() {
         qualityProfileId: collection.qualityProfileId,
         minimumAvailability: collection.minimumAvailability,
         searchForMovie: collection.searchOnAdd,
-        tags: []
+        tags: collection.tags || []
       };
 
       const {

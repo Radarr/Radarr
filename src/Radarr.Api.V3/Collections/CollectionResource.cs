@@ -26,6 +26,7 @@ namespace Radarr.Api.V3.Collections
         public MovieStatusType MinimumAvailability { get; set; }
         public List<CollectionMovieResource> Movies { get; set; }
         public int MissingMovies { get; set; }
+        public HashSet<int> Tags { get; set; }
     }
 
     public static class CollectionResourceMapper
@@ -49,7 +50,8 @@ namespace Radarr.Api.V3.Collections
                 QualityProfileId = model.QualityProfileId,
                 RootFolderPath = model.RootFolderPath,
                 MinimumAvailability = model.MinimumAvailability,
-                SearchOnAdd = model.SearchOnAdd
+                SearchOnAdd = model.SearchOnAdd,
+                Tags = model.Tags
             };
         }
 
@@ -76,7 +78,8 @@ namespace Radarr.Api.V3.Collections
                 QualityProfileId = resource.QualityProfileId,
                 RootFolderPath = resource.RootFolderPath,
                 SearchOnAdd = resource.SearchOnAdd,
-                MinimumAvailability = resource.MinimumAvailability
+                MinimumAvailability = resource.MinimumAvailability,
+                Tags = resource.Tags
             };
         }
 
