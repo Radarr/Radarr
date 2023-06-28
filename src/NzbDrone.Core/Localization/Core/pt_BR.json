@@ -1182,5 +1182,6 @@
     "RemoveSelectedItemsQueueMessageText": "Tem certeza de que deseja remover {0} itens da fila?",
     "ResetAPIKeyMessageText": "Tem certeza de que deseja redefinir sua chave de API?",
     "ResetDefinitionTitlesHelpText": "Redefinir títulos da configuração, bem como valores",
-    "ResetQualityDefinitionsMessageText": "Tem certeza de que deseja redefinir as configurações de qualidade?"
+    "ResetQualityDefinitionsMessageText": "Tem certeza de que deseja redefinir as configurações de qualidade?",
+    "Complete": "Completo"
 }
