@@ -10,4 +10,11 @@
     <ProjectReference Include="..\NzbDrone.Test.Common\Radarr.Test.Common.csproj" />
     <ProjectReference Include="..\Radarr.Api.V3\Radarr.Api.V3.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="Properties\launchSettings.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

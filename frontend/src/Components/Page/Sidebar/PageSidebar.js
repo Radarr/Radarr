@@ -72,6 +72,22 @@ const links = [
   },
 
   {
+    iconName: icons.WARNING,
+    title: translate('Missing'),
+    to: '/wanted/missing',
+    children: [
+      {
+        title: translate('Missing'),
+        to: '/wanted/missing'
+      },
+      {
+        title: translate('CutoffUnmet'),
+        to: '/wanted/cutoff'
+      }
+    ]
+  },
+
+  {
     iconName: icons.SETTINGS,
     title: translate('Settings'),
     to: '/settings',
