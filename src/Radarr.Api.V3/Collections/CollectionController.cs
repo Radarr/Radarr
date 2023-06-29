@@ -77,35 +77,13 @@ namespace Radarr.Api.V3.Collections
         [RestPutById]
         public ActionResult<CollectionResource> UpdateCollection(CollectionResource collectionResource)
         {
-            var collectionToUpdate = _collectionService.GetCollection(collectionResource.Id);
+            var collection = _collectionService.GetCollection(collectionResource.Id);
 
-            if (!collectionToUpdate.Tags.SetEquals(collectionResource.Tags))
-            {
-                var collectionMovies = _movieService.GetMoviesByCollectionTmdbId(collectionToUpdate.TmdbId);
-                var moviesToUpdate = new List<Movie>();
+            var model = collectionResource.ToModel(collection);
 
-                // Only add tags that are not already on the movie
-                foreach (var movie in collectionMovies)
-                {
-                    var initialTagsCount = movie.Tags.Count;
-                    movie.Tags.UnionWith(collectionResource.Tags);
-                    if (movie.Tags.Count > initialTagsCount)
-                    {
-                        moviesToUpdate.Add(movie);
-                    }
-                }
+            var updatedMovie = _collectionService.UpdateCollection(model);
 
-                if (moviesToUpdate.Count > 0)
-                {
-                    _movieService.UpdateMovie(moviesToUpdate, true);
-                }
-            }
-
-            var model = collectionResource.ToModel(collectionToUpdate);
-
-            var updatedCollection = _collectionService.UpdateCollection(model);
-
-            return Accepted(updatedCollection.Id);
+            return Accepted(updatedMovie.Id);
         }
 
         [HttpPut]
