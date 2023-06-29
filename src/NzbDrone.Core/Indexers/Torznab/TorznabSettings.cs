@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,17 +13,14 @@ namespace NzbDrone.Core.Indexers.Torznab
 {
     public class TorznabSettingsValidator : AbstractValidator<TorznabSettings>
     {
-        private static readonly string[] ApiKeyWhiteList =
-        {
-            "hd4free.xyz",
-        };
+        private static readonly string[] ApiKeyWhiteList = Array.Empty<string>();
 
         private static bool ShouldHaveApiKey(TorznabSettings settings)
         {
             return settings.BaseUrl != null && ApiKeyWhiteList.Any(c => settings.BaseUrl.ToLowerInvariant().Contains(c));
         }
 
-        private static readonly Regex AdditionalParametersRegex = new Regex(@"(&.+?\=.+?)+", RegexOptions.Compiled);
+        private static readonly Regex AdditionalParametersRegex = new (@"(&.+?\=.+?)+", RegexOptions.Compiled);
 
         public TorznabSettingsValidator()
         {
@@ -46,19 +44,19 @@ namespace NzbDrone.Core.Indexers.Torznab
 
     public class TorznabSettings : NewznabSettings, ITorrentIndexerSettings
     {
-        private static readonly TorznabSettingsValidator Validator = new TorznabSettingsValidator();
+        private static readonly TorznabSettingsValidator Validator = new ();
 
         public TorznabSettings()
         {
             MinimumSeeders = IndexerDefaults.MINIMUM_SEEDERS;
-            RequiredFlags = new List<int>();
+            RequiredFlags = Array.Empty<int>();
         }
 
         [FieldDefinition(8, Type = FieldType.Number, Label = "Minimum Seeders", HelpText = "Minimum number of seeders required.", Advanced = true)]
         public int MinimumSeeders { get; set; }
 
         [FieldDefinition(9)]
-        public SeedCriteriaSettings SeedCriteria { get; set; } = new SeedCriteriaSettings();
+        public SeedCriteriaSettings SeedCriteria { get; set; } = new ();
 
         [FieldDefinition(10, Type = FieldType.TagSelect, SelectOptions = typeof(IndexerFlags), Label = "Required Flags", HelpText = "What indexer flags are required?", HelpLink = "https://wiki.servarr.com/radarr/settings#indexer-flags", Advanced = true)]
         public IEnumerable<int> RequiredFlags { get; set; }
