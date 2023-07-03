@@ -220,6 +220,8 @@ namespace Radarr.Api.V3.Queue
                     return q => q.Movie?.MovieMetadata.Value.SortTitle ?? q.Title;
                 case "title":
                     return q => q.Title;
+                case "year":
+                    return q => q.Movie?.Year ?? 0;
                 case "languages":
                     return q => q.Languages;
                 case "quality":
