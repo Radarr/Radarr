@@ -50,6 +50,7 @@ class EditCollectionModalContent extends Component {
       minimumAvailability,
       // Id,
       rootFolderPath,
+      tags,
       searchOnAdd
     } = item;
 
@@ -123,6 +124,17 @@ class EditCollectionModalContent extends Component {
                     {...rootFolderPath}
                     includeMissingValue={true}
                     onChange={onInputChange}
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  <FormLabel>{translate('Tags')}</FormLabel>
+
+                  <FormInputGroup
+                    type={inputTypes.TAG}
+                    name="tags"
+                    onChange={onInputChange}
+                    {...tags}
                   />
                 </FormGroup>
 
