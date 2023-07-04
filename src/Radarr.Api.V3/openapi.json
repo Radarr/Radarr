@@ -8750,6 +8750,15 @@
           "missingMovies": {
             "type": "integer",
             "format": "int32"
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -9884,10 +9893,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "importListSyncInterval": {
-            "type": "integer",
-            "format": "int32"
-          },
           "listSyncLevel": {
             "type": "string",
             "nullable": true
@@ -9981,6 +9986,9 @@
           "listOrder": {
             "type": "integer",
             "format": "int32"
+          },
+          "minRefreshInterval": {
+            "$ref": "#/components/schemas/TimeSpan"
           }
         },
         "additionalProperties": false
@@ -10785,6 +10793,15 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/MovieMetadata"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
             },
             "nullable": true
           }
