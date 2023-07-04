@@ -27,7 +27,7 @@ namespace NzbDrone.Core.Test.ImportListTests
             _blockedLists = new List<ImportListStatus>();
 
             Mocker.GetMock<IImportListFactory>()
-                  .Setup(v => v.Enabled())
+                  .Setup(v => v.Enabled(It.IsAny<bool>()))
                   .Returns(_importLists);
 
             Mocker.GetMock<IImportListStatusService>()
@@ -183,7 +183,7 @@ namespace NzbDrone.Core.Test.ImportListTests
 
             var listResult = Subject.Fetch();
             listResult.AnyFailure.Should().BeFalse();
-            listResult.Movies.Count.Should().Be(10);
+            listResult.Movies.Count.Should().Be(5);
         }
     }
 }

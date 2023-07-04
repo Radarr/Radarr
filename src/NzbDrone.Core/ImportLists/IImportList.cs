@@ -1,3 +1,4 @@
+using System;
 using NzbDrone.Core.ThingiProvider;
 
 namespace NzbDrone.Core.ImportLists
@@ -8,6 +9,7 @@ namespace NzbDrone.Core.ImportLists
         bool EnableAuto { get; }
 
         ImportListType ListType { get; }
+        TimeSpan MinRefreshInterval { get; }
         ImportListFetchResult Fetch();
     }
 }

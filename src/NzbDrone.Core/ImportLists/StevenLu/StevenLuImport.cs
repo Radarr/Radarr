@@ -1,3 +1,4 @@
+using System;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
@@ -10,6 +11,7 @@ namespace NzbDrone.Core.ImportLists.StevenLu
         public override string Name => "StevenLu Custom";
 
         public override ImportListType ListType => ImportListType.Advanced;
+        public override TimeSpan MinRefreshInterval => TimeSpan.FromHours(24);
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 

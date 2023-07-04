@@ -15,6 +15,7 @@ namespace NzbDrone.Core.ImportLists.Trakt
         public ITraktProxy _traktProxy;
         private readonly IImportListRepository _importListRepository;
         public override ImportListType ListType => ImportListType.Trakt;
+        public override TimeSpan MinRefreshInterval => TimeSpan.FromHours(12);
 
         protected TraktImportBase(IImportListRepository importListRepository,
                                   ITraktProxy traktProxy,

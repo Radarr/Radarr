@@ -116,13 +116,6 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("AvailabilityDelay", value); }
         }
 
-        public int ImportListSyncInterval
-        {
-            get { return GetValueInt("ImportListSyncInterval", 24); }
-
-            set { SetValue("ImportListSyncInterval", value); }
-        }
-
         public string ListSyncLevel
         {
             get { return GetValue("ListSyncLevel", "disabled"); }

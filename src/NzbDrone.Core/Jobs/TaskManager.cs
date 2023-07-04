@@ -121,7 +121,7 @@ namespace NzbDrone.Core.Jobs
 
                     new ScheduledTask
                     {
-                        Interval = GetImportListSyncInterval(),
+                        Interval = 5,
                         TypeName = typeof(ImportListSyncCommand).FullName
                     },
 
@@ -210,14 +210,6 @@ namespace NzbDrone.Core.Jobs
             return interval;
         }
 
-        private int GetImportListSyncInterval()
-        {
-            // Enforce 6 hour min on list sync
-            var interval = Math.Max(_configService.ImportListSyncInterval, 6);
-
-            return interval * 60;
-        }
-
         public void Handle(CommandExecutedEvent message)
         {
             var scheduledTask = _scheduledTaskRepository.All().SingleOrDefault(c => c.TypeName == message.Command.Body.GetType().FullName);
@@ -239,19 +231,15 @@ namespace NzbDrone.Core.Jobs
             var rss = _scheduledTaskRepository.GetDefinition(typeof(RssSyncCommand));
             rss.Interval = GetRssSyncInterval();
 
-            var importList = _scheduledTaskRepository.GetDefinition(typeof(ImportListSyncCommand));
-            importList.Interval = GetImportListSyncInterval();
-
             var backup = _scheduledTaskRepository.GetDefinition(typeof(BackupCommand));
             backup.Interval = GetBackupInterval();
 
             var refreshMonitoredDownloads = _scheduledTaskRepository.GetDefinition(typeof(RefreshMonitoredDownloadsCommand));
             refreshMonitoredDownloads.Interval = GetRefreshMonitoredInterval();
 
-            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, importList, refreshMonitoredDownloads, backup });
+            _scheduledTaskRepository.UpdateMany(new List<ScheduledTask> { rss, refreshMonitoredDownloads, backup });
 
             _cache.Find(rss.TypeName).Interval = rss.Interval;
-            _cache.Find(importList.TypeName).Interval = importList.Interval;
             _cache.Find(backup.TypeName).Interval = backup.Interval;
             _cache.Find(refreshMonitoredDownloads.TypeName).Interval = refreshMonitoredDownloads.Interval;
         }

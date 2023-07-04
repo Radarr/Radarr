@@ -1,10 +1,10 @@
-using NzbDrone.Core.Movies;
+using System;
 using NzbDrone.Core.ThingiProvider.Status;
 
 namespace NzbDrone.Core.ImportLists
 {
     public class ImportListStatus : ProviderStatusBase
     {
-        public Movie LastSyncListInfo { get; set; }
+        public DateTime? LastInfoSync { get; set; }
     }
 }

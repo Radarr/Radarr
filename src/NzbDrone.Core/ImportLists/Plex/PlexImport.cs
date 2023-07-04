@@ -15,6 +15,7 @@ namespace NzbDrone.Core.ImportLists.Plex
     {
         public readonly IPlexTvService _plexTvService;
         public override ImportListType ListType => ImportListType.Plex;
+        public override TimeSpan MinRefreshInterval => TimeSpan.FromHours(6);
 
         public PlexImport(IPlexTvService plexTvService,
                                   IHttpClient httpClient,

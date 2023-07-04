@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NLog;
 using NzbDrone.Common.Http;
@@ -12,6 +13,7 @@ namespace NzbDrone.Core.ImportLists.RSSImport
         public override string Name => "RSS List";
 
         public override ImportListType ListType => ImportListType.Advanced;
+        public override TimeSpan MinRefreshInterval => TimeSpan.FromHours(12);
         public override bool Enabled => true;
         public override bool EnableAuto => false;
 

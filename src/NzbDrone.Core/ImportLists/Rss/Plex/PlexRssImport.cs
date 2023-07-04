@@ -1,3 +1,4 @@
+using System;
 using NLog;
 using NzbDrone.Common.Http;
 using NzbDrone.Core.Configuration;
@@ -9,6 +10,7 @@ namespace NzbDrone.Core.ImportLists.Rss.Plex
     {
         public override string Name => "Plex Watchlist RSS";
         public override ImportListType ListType => ImportListType.Plex;
+        public override TimeSpan MinRefreshInterval => TimeSpan.FromHours(6);
 
         public PlexRssImport(IHttpClient httpClient,
             IImportListStatusService importListStatusService,

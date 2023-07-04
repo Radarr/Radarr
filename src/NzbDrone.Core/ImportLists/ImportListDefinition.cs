@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NzbDrone.Core.Movies;
 using NzbDrone.Core.ThingiProvider;
@@ -21,5 +22,6 @@ namespace NzbDrone.Core.ImportLists
         public override bool Enable => Enabled;
 
         public ImportListType ListType { get; set; }
+        public TimeSpan MinRefreshInterval { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace NzbDrone.Core.ImportLists.Radarr
         public override bool EnableAuto => false;
 
         public override ImportListType ListType => ImportListType.Program;
+        public override TimeSpan MinRefreshInterval => TimeSpan.FromMinutes(15);
 
         public RadarrImport(IRadarrV3Proxy radarrV3Proxy,
                             IImportListStatusService importListStatusService,

@@ -1,3 +1,4 @@
+using System;
 using NzbDrone.Core.ImportLists;
 using NzbDrone.Core.Movies;
 
@@ -14,6 +15,7 @@ namespace Radarr.Api.V3.ImportLists
         public MovieStatusType MinimumAvailability { get; set; }
         public ImportListType ListType { get; set; }
         public int ListOrder { get; set; }
+        public TimeSpan MinRefreshInterval { get; set; }
     }
 
     public class ImportListResourceMapper : ProviderResourceMapper<ImportListResource, ImportListDefinition>
@@ -36,6 +38,7 @@ namespace Radarr.Api.V3.ImportLists
             resource.MinimumAvailability = definition.MinimumAvailability;
             resource.ListType = definition.ListType;
             resource.ListOrder = (int)definition.ListType;
+            resource.MinRefreshInterval = definition.MinRefreshInterval;
 
             return resource;
         }
@@ -57,6 +60,7 @@ namespace Radarr.Api.V3.ImportLists
             definition.ProfileId = resource.QualityProfileId;
             definition.MinimumAvailability = resource.MinimumAvailability;
             definition.ListType = resource.ListType;
+            definition.MinRefreshInterval = resource.MinRefreshInterval;
 
             return definition;
         }
