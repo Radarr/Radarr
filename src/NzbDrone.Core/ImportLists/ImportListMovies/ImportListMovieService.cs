@@ -50,7 +50,7 @@ namespace NzbDrone.Core.ImportLists.ImportListMovies
 
             _importListMovieRepository.InsertMany(listMovies.Where(l => l.Id == 0).ToList());
             _importListMovieRepository.UpdateMany(listMovies.Where(l => l.Id > 0).ToList());
-            _importListMovieRepository.DeleteMany(existingListMovies.Where(l => !listMovies.Any(x => x.TmdbId == l.TmdbId)).ToList());
+            _importListMovieRepository.DeleteMany(existingListMovies.Where(l => listMovies.All(x => x.TmdbId != l.TmdbId)).ToList());
 
             return listMovies;
         }

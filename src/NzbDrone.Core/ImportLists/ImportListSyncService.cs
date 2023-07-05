@@ -20,6 +20,7 @@ namespace NzbDrone.Core.ImportLists
         private readonly IAddMovieService _addMovieService;
         private readonly IConfigService _configService;
         private readonly IImportExclusionsService _exclusionService;
+        private readonly IImportListMovieService _listMovieService;
 
         public ImportListSyncService(IImportListFactory importListFactory,
                                       IFetchAndParseImportList listFetcherAndParser,
@@ -27,6 +28,7 @@ namespace NzbDrone.Core.ImportLists
                                       IAddMovieService addMovieService,
                                       IConfigService configService,
                                       IImportExclusionsService exclusionService,
+                                      IImportListMovieService listMovieService,
                                       Logger logger)
         {
             _importListFactory = importListFactory;
@@ -34,6 +36,7 @@ namespace NzbDrone.Core.ImportLists
             _movieService = movieService;
             _addMovieService = addMovieService;
             _exclusionService = exclusionService;
+            _listMovieService = listMovieService;
             _logger = logger;
             _configService = configService;
         }
@@ -57,10 +60,11 @@ namespace NzbDrone.Core.ImportLists
                 return;
             }
 
-            // if (!result.AnyFailure)
-            // {
-            //     CleanLibrary(result.Movies.ToList());
-            // }
+            if (!result.AnyFailure)
+            {
+                CleanLibrary();
+            }
+
             ProcessReports(result);
         }
 
@@ -79,7 +83,7 @@ namespace NzbDrone.Core.ImportLists
             }
 
             // Check to see if movie excluded
-            var excludedMovie = listExclusions.Where(s => s.TmdbId == report.TmdbId).SingleOrDefault();
+            var excludedMovie = listExclusions.SingleOrDefault(s => s.TmdbId == report.TmdbId);
 
             if (excludedMovie != null)
             {
@@ -171,17 +175,20 @@ namespace NzbDrone.Core.ImportLists
             }
         }
 
-        private void CleanLibrary(List<ImportListMovie> listMovies)
+        private void CleanLibrary()
         {
-            var moviesToUpdate = new List<Movie>();
-
             if (_configService.ListSyncLevel == "disabled")
             {
                 return;
             }
 
+            var listMovies = _listMovieService.GetAllListMovies();
+
             // TODO use AllMovieTmdbIds here?
             var moviesInLibrary = _movieService.GetAllMovies();
+
+            var moviesToUpdate = new List<Movie>();
+
             foreach (var movie in moviesInLibrary)
             {
                 var movieExists = listMovies.Any(c => c.TmdbId == movie.TmdbId || c.ImdbId == movie.ImdbId);
@@ -205,8 +212,6 @@ namespace NzbDrone.Core.ImportLists
                         case "removeAndDelete":
                             _logger.Info("{0} was in your library, but not found in your lists --> Removing from library and deleting files", movie);
                             _movieService.DeleteMovie(movie.Id, true);
-                            break;
-                        default:
                             break;
                     }
                 }
