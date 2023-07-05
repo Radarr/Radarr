@@ -156,6 +156,10 @@ namespace NzbDrone.Core.Test.ImportList
                   .Setup(v => v.GetAllMovies())
                   .Returns(_existingMovies);
 
+            Mocker.GetMock<IImportListMovieService>()
+                .Setup(v => v.GetAllListMovies())
+                .Returns(_list1Movies);
+
             Subject.Execute(_commandAll);
 
             Mocker.GetMock<IMovieService>()
@@ -178,6 +182,10 @@ namespace NzbDrone.Core.Test.ImportList
             Mocker.GetMock<IMovieService>()
                   .Setup(v => v.GetAllMovies())
                   .Returns(_existingMovies);
+
+            Mocker.GetMock<IImportListMovieService>()
+                .Setup(v => v.GetAllListMovies())
+                .Returns(_list1Movies);
 
             Subject.Execute(_commandAll);
 
@@ -204,6 +212,10 @@ namespace NzbDrone.Core.Test.ImportList
                   .Setup(v => v.GetAllMovies())
                   .Returns(_existingMovies);
 
+            Mocker.GetMock<IImportListMovieService>()
+                .Setup(v => v.GetAllListMovies())
+                .Returns(_list1Movies);
+
             Subject.Execute(_commandAll);
 
             Mocker.GetMock<IMovieService>()
@@ -224,6 +236,10 @@ namespace NzbDrone.Core.Test.ImportList
                   .Setup(v => v.GetAllMovies())
                   .Returns(_existingMovies);
 
+            Mocker.GetMock<IImportListMovieService>()
+                .Setup(v => v.GetAllListMovies())
+                .Returns(_list1Movies);
+
             Subject.Execute(_commandAll);
 
             Mocker.GetMock<IMovieService>()
@@ -240,6 +256,10 @@ namespace NzbDrone.Core.Test.ImportList
             Mocker.GetMock<IMovieService>()
                   .Setup(v => v.GetAllMovies())
                   .Returns(_existingMovies);
+
+            Mocker.GetMock<IImportListMovieService>()
+                .Setup(v => v.GetAllListMovies())
+                .Returns(_list1Movies);
 
             Subject.Execute(_commandAll);
 
@@ -266,6 +286,10 @@ namespace NzbDrone.Core.Test.ImportList
             Mocker.GetMock<IMovieService>()
                   .Setup(v => v.GetAllMovies())
                   .Returns(_existingMovies);
+
+            Mocker.GetMock<IImportListMovieService>()
+                .Setup(v => v.GetAllListMovies())
+                .Returns(_list1Movies);
 
             Subject.Execute(_commandAll);
 
