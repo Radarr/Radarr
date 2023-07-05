@@ -57,11 +57,10 @@ namespace NzbDrone.Core.ImportLists
                 return;
             }
 
-            if (!result.AnyFailure)
-            {
-                CleanLibrary(result.Movies.ToList());
-            }
-
+            // if (!result.AnyFailure)
+            // {
+            //     CleanLibrary(result.Movies.ToList());
+            // }
             ProcessReports(result);
         }
 
