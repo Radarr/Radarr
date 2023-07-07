@@ -5,6 +5,7 @@ import Column from 'Components/Table/Column';
 import TableRow from 'Components/Table/TableRow';
 import TagListConnector from 'Components/TagListConnector';
 import { SelectStateInputProps } from 'typings/props';
+import translate from 'Utilities/String/translate';
 import styles from './ManageIndexersModalRow.css';
 
 interface ManageIndexersModalRowProps {
@@ -59,15 +60,15 @@ function ManageIndexersModalRow(props: ManageIndexersModalRowProps) {
       </TableRowCell>
 
       <TableRowCell className={styles.enableRss}>
-        {enableRss ? 'Yes' : 'No'}
+        {enableRss ? translate('Yes') : translate('No')}
       </TableRowCell>
 
       <TableRowCell className={styles.enableAutomaticSearch}>
-        {enableAutomaticSearch ? 'Yes' : 'No'}
+        {enableAutomaticSearch ? translate('Yes') : translate('No')}
       </TableRowCell>
 
       <TableRowCell className={styles.enableInteractiveSearch}>
-        {enableInteractiveSearch ? 'Yes' : 'No'}
+        {enableInteractiveSearch ? translate('Yes') : translate('No')}
       </TableRowCell>
 
       <TableRowCell className={styles.priority}>{priority}</TableRowCell>
