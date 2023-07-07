@@ -1089,5 +1089,6 @@
     "EditMovies": "ערוך את הסרט",
     "ShowCinemaReleaseHelpText": "הצג תאריך יציאה תחת הכרזה",
     "DeleteRemotePathMapping": "ערוך מיפוי נתיבים מרחוק",
-    "DeleteRemotePathMappingMessageText": "האם אתה בטוח שברצונך למחוק את מיפוי הנתיבים המרוחק הזה?"
+    "DeleteRemotePathMappingMessageText": "האם אתה בטוח שברצונך למחוק את מיפוי הנתיבים המרוחק הזה?",
+    "ApiKeyValidationHealthCheckMessage": "עדכן בבקשה את מפתח ה API שלך שיהיה עם לפחות {0} תווים. ניתן לעשות זאת דרך ההגדות או קובץ הקונפיגורציה"
 }

@@ -1181,5 +1181,7 @@
     "ResetAPIKeyMessageText": "Tem certeza de que deseja redefinir sua chave de API?",
     "ResetDefinitionTitlesHelpText": "Redefinir títulos da configuração, bem como valores",
     "ResetQualityDefinitionsMessageText": "Tem certeza de que deseja redefinir as configurações de qualidade?",
-    "Complete": "Completo"
+    "Complete": "Completo",
+    "ListWillRefreshEveryInterp": "A lista será atualizada a cada {0}",
+    "ListRefreshInterval": "Intervalo de atualização da lista"
 }

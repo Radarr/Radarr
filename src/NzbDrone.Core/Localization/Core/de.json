@@ -684,7 +684,7 @@
     "AddingTag": "Tag hinzufügen",
     "YouCanAlsoSearch": "Es kann auch nach der TMDb oder IMDb ID eines Filmes gesucht werden. Z.B.: 'tmdb:71663'",
     "VisitGithubCustomFormatsAphrodite": "Besuche das Wiki für mehr Details: ",
-    "Unreleased": "Nicht verfügbar",
+    "Unreleased": "Unveröffentlicht",
     "UnableToLoadUISettings": "Oberflächen Einstellungen konnten nicht geladen werden",
     "UnableToLoadTheCalendar": "Kalender konnte nicht geladen werden",
     "UnableToLoadRootFolders": "Stammordner konnten nicht geladen werden",
@@ -1180,5 +1180,8 @@
     "CloneCondition": "Bedingung klonen",
     "DeleteCondition": "Bedingung löschen",
     "RemoveSelectedItemBlocklistMessageText": "Bist du sicher, dass du die ausgewählten Einträge aus der Sperrliste entfernen willst?",
-    "ResetQualityDefinitionsMessageText": "Bist du sicher, dass du die Qualitätsdefinitionen zurücksetzen willst?"
+    "ResetQualityDefinitionsMessageText": "Bist du sicher, dass du die Qualitätsdefinitionen zurücksetzen willst?",
+    "Complete": "Vollständig",
+    "ListWillRefreshEveryInterp": "Liste wird alle [0] aktualisiert",
+    "ListRefreshInterval": "Listen Aktualisierungsintervall"
 }

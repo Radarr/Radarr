@@ -1154,5 +1154,18 @@
     "EditSelectedMovies": "编辑选定的电影",
     "RecycleBinUnableToWriteHealthCheck": "无法写入配置的回收站文件夹:{0}。确保此路径存在，并且可由运行Radarr的用户写入",
     "ShowCinemaReleaseHelpText": "在海报下显示发布日期",
-    "DeleteRemotePathMapping": "编辑远程映射路径"
+    "DeleteRemotePathMapping": "编辑远程映射路径",
+    "Complete": "完成",
+    "DeleteCondition": "删除条件",
+    "DeleteConditionMessageText": "是否确实要删除条件“{0}”？",
+    "DeleteDelayProfileMessageText": "是否确实要删除此延迟配置文件？",
+    "DeleteCustomFormatMessageText": "是否确实要删除条件“{0}”？",
+    "DeleteRemotePathMappingMessageText": "是否确实要删除此远程路径映射？",
+    "ImportScriptPath": "导入脚本路径",
+    "ImportUsingScript": "使用脚本导入",
+    "ListRefreshInterval": "列表刷新间隔",
+    "CloneCondition": "克隆条件",
+    "ApiKeyValidationHealthCheckMessage": "请将API密钥更新为至少{0}个字符长。您可以通过设置或配置文件执行此操作",
+    "DeleteFormatMessageText": "你确定要删除格式标签 “{0}” 吗?",
+    "DeleteImportListExclusionMessageText": "你确定要删除这个导入排除列表吗？"
 }
