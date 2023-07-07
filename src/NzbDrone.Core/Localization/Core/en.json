@@ -54,6 +54,7 @@
   "ApplicationURL": "Application URL",
   "ApplicationUrlHelpText": "This application's external URL including http(s)://, port and URL base",
   "Apply": "Apply",
+  "ApplyChanges": "Apply Changes",
   "ApplyTags": "Apply Tags",
   "ApplyTagsHelpTexts1": "How to apply tags to the selected movies",
   "ApplyTagsHelpTexts2": "Add: Add the tags to the existing list of tags",

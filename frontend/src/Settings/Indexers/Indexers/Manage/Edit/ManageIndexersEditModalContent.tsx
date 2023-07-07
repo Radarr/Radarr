@@ -168,7 +168,7 @@ function ManageIndexersEditModalContent(
         <div>
           <Button onPress={onModalClose}>{translate('Cancel')}</Button>
 
-          <Button onPress={save}>{translate('Apply Changes')}</Button>
+          <Button onPress={save}>{translate('ApplyChanges')}</Button>
         </div>
       </ModalFooter>
     </ModalContent>
