@@ -1183,5 +1183,11 @@
     "ResetQualityDefinitionsMessageText": "Tem certeza de que deseja redefinir as configurações de qualidade?",
     "Complete": "Completo",
     "ListWillRefreshEveryInterp": "A lista será atualizada a cada {0}",
-    "ListRefreshInterval": "Intervalo de atualização da lista"
+    "ListRefreshInterval": "Intervalo de atualização da lista",
+    "CountIndexersSelected": "{0} indexadores selecionados",
+    "DeleteIndexers": "Excluir indexador(es)",
+    "ManageIndexers": "Gerenciar Indexadores",
+    "ApplyChanges": "Aplicar Mudanças",
+    "DeleteIndexersMessageText": "Tem certeza de que deseja excluir {0} indexadores?",
+    "EditSelectedIndexers": "Editar indexadores selecionados"
 }
