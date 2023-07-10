@@ -63,7 +63,6 @@ namespace NzbDrone.Core.ImportLists
 
             foreach (var importList in importLists)
             {
-
                 var importListLocal = importList;
                 var importListStatus = _importListStatusService.GetLastSyncListInfo(importListLocal.Definition.Id);
 
