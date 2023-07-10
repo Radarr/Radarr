@@ -92,24 +92,24 @@ namespace NzbDrone.Core.MediaFiles
         {
             if (message.DeleteFiles)
             {
-                var allMovies = _movieService.GetAllMovies();
+                var allMovies = _movieService.AllMoviePaths();
 
                 foreach (var movie in message.Movies)
                 {
                     foreach (var s in allMovies)
                     {
-                        if (s.Id == movie.Id)
+                        if (s.Key == movie.Id)
                         {
                             continue;
                         }
 
-                        if (movie.Path.IsParentPath(s.Path))
+                        if (movie.Path.IsParentPath(s.Value))
                         {
                             _logger.Error("Movie path: '{0}' is a parent of another movie, not deleting files.", movie.Path);
                             return;
                         }
 
-                        if (movie.Path.PathEquals(s.Path))
+                        if (movie.Path.PathEquals(s.Value))
                         {
                             _logger.Error("Movie path: '{0}' is the same as another movie, not deleting files.", movie.Path);
                             return;
