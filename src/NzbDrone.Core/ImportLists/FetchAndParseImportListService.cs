@@ -73,11 +73,11 @@ namespace NzbDrone.Core.ImportLists
                     if (DateTime.UtcNow < importListNextSync)
                     {
                         _logger.Trace("Skipping refresh of Import List [{0}]: {1} due to minimum refresh interval. Next Sync at {2}", importList.Name, importListLocal.Definition.Name, importListNextSync);
-                        
+
                         continue;
                     }
                 }
-                
+
                 _logger.ProgressInfo("Syncing Movies for Import List [{0}]: {1}", importList.Name, importListLocal.Definition.Name);
 
                 var blockedLists = _importListStatusService.GetBlockedProviders().ToDictionary(v => v.ProviderId, v => v);
