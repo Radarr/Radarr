@@ -63,23 +63,27 @@ namespace NzbDrone.Core.ImportLists
 
             foreach (var importList in importLists)
             {
-                _logger.ProgressInfo("Syncing Movies for List: {0}", importList.Name);
 
                 var importListLocal = importList;
-
                 var importListStatus = _importListStatusService.GetLastSyncListInfo(importListLocal.Definition.Id);
 
-                if (importListStatus.HasValue && DateTime.UtcNow < importListStatus + importListLocal.MinRefreshInterval)
+                _logger.ProgressInfo("Syncing Movies for Import List [{0}]: {1}", importList.Name, importListLocal.Definition.Name);
+
+                if (importListStatus.HasValue)
                 {
-                    _logger.Trace("Skipping refresh of Import List {0} due to minimum refresh inverval", importListLocal.Definition.Name);
-                    continue;
+                    var importListNextSync = importListStatus.Value + importListLocal.MinRefreshInterval;
+
+                    if (DateTime.UtcNow < importListNextSync)
+                    {
+                        _logger.Trace("Skipping refresh of Import List [{0}]: {1} due to minimum refresh interval. Next Sync at {2}", importList.Name, importListLocal.Definition.Name, importListNextSync);
+                    }
                 }
 
                 var blockedLists = _importListStatusService.GetBlockedProviders().ToDictionary(v => v.ProviderId, v => v);
 
                 if (blockedLists.TryGetValue(importList.Definition.Id, out var blockedListStatus))
                 {
-                    _logger.Debug("Temporarily ignoring list {0} till {1} due to recent failures.", importList.Definition.Name, blockedListStatus.DisabledTill.Value.ToLocalTime());
+                    _logger.Debug("Temporarily ignoring Import List [{0}]: {1} till {2} due to recent failures.", importList.Name, importListLocal.Definition.Name, blockedListStatus.DisabledTill.Value.ToLocalTime());
                     result.AnyFailure |= true; // Ensure we don't clean if a list is down
                     continue;
                 }
@@ -92,7 +96,7 @@ namespace NzbDrone.Core.ImportLists
 
                         lock (result)
                         {
-                            _logger.Debug("Found {0} from {1}", importListReports.Movies.Count, importList.Name);
+                            _logger.Debug("Found {0} from Import List [{1}]: {2}", importListReports.Movies.Count, importList.Name, importListLocal.Definition.Name);
 
                             if (!importListReports.AnyFailure)
                             {
@@ -114,7 +118,7 @@ namespace NzbDrone.Core.ImportLists
                     }
                     catch (Exception e)
                     {
-                        _logger.Error(e, "Error during Import List Sync for list {0}", importList.Name);
+                        _logger.Error(e, "Error during Import List Sync [{0}]: {1}", importList.Name, importListLocal.Definition.Name);
                     }
                 }).LogExceptions();
 
@@ -125,7 +129,7 @@ namespace NzbDrone.Core.ImportLists
 
             result.Movies = result.Movies.DistinctBy(r => new { r.TmdbId, r.ImdbId, r.Title }).ToList();
 
-            _logger.Debug("Found {0} reports for all lists", result.Movies.Count);
+            _logger.Debug("Found {0} total reports from {1} lists", result.Movies.Count, importLists.Count);
 
             return result;
         }
@@ -138,7 +142,7 @@ namespace NzbDrone.Core.ImportLists
 
             if (importList == null || !definition.Enable)
             {
-                _logger.Debug("Import list {0} is not enabled. No Movies will be added");
+                _logger.Debug("Import List [{0}]: {1} not enabled, skipping.", importList.Name, importList.Definition.Name);
                 return result;
             }
 
@@ -150,7 +154,7 @@ namespace NzbDrone.Core.ImportLists
 
                 lock (result)
                 {
-                    _logger.Debug("Found {0} from {1}", importListReports.Movies.Count, importList.Name);
+                    _logger.Debug("Found {0} from [{1}]: {2}", importListReports.Movies.Count, importList.Name, importListLocal.Definition.Name);
 
                     if (!importListReports.AnyFailure)
                     {
@@ -170,12 +174,12 @@ namespace NzbDrone.Core.ImportLists
             }
             catch (Exception e)
             {
-                _logger.Error(e, "Error during Import List Sync for list {0}", importList.Name);
+                _logger.Error(e, "Error during Import List Sync [{1}]: {2}", importList.Name, importListLocal.Definition.Name);
             }
 
             result.Movies = result.Movies.DistinctBy(r => new { r.TmdbId, r.ImdbId, r.Title }).ToList();
 
-            _logger.Debug("Found {0} reports for list {1}", result.Movies.Count, importList.Name);
+            _logger.Debug("Found {0} movies from [{1}]: {2}", result.Movies.Count, importList.Name, importListLocal.Definition.Name);
 
             return result;
         }
