@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IndexerAppState } from 'App/State/SettingsAppState';
+import Alert from 'Components/Alert';
 import Button from 'Components/Link/Button';
 import SpinnerButton from 'Components/Link/SpinnerButton';
 import LoadingIndicator from 'Components/Loading/LoadingIndicator';
@@ -201,6 +202,10 @@ function ManageIndexersModalContent(props: ManageIndexersModalContentProps) {
 
         {error ? <div>{errorMessage}</div> : null}
 
+        {isPopulated && !error && !items.length && (
+          <Alert kind={kinds.INFO}>{translate('NoIndexersFound')}</Alert>
+        )}
+
         {isPopulated && !!items.length && !isFetching && !isFetching ? (
           <Table
             columns={COLUMNS}
@@ -275,8 +280,10 @@ function ManageIndexersModalContent(props: ManageIndexersModalContentProps) {
       <ConfirmModal
         isOpen={isDeleteModalOpen}
         kind={kinds.DANGER}
-        title={translate('DeleteIndexers')}
-        message={translate('DeleteIndexersMessageText', [selectedIds.length])}
+        title={translate('DeleteSelectedIndexers')}
+        message={translate('DeleteSelectedIndexersMessageText', [
+          selectedIds.length,
+        ])}
         confirmLabel={translate('Delete')}
         onConfirm={onConfirmDelete}
         onCancel={onDeleteModalClose}

@@ -1,9 +1,11 @@
 import React, { useCallback } from 'react';
+import Label from 'Components/Label';
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Column from 'Components/Table/Column';
 import TableRow from 'Components/Table/TableRow';
 import TagListConnector from 'Components/TagListConnector';
+import { kinds } from 'Helpers/Props';
 import { SelectStateInputProps } from 'typings/props';
 import translate from 'Utilities/String/translate';
 import styles from './ManageIndexersModalRow.css';
@@ -60,15 +62,30 @@ function ManageIndexersModalRow(props: ManageIndexersModalRowProps) {
       </TableRowCell>
 
       <TableRowCell className={styles.enableRss}>
-        {enableRss ? translate('Yes') : translate('No')}
+        <Label
+          kind={enableRss ? kinds.SUCCESS : kinds.DISABLED}
+          outline={!enableRss}
+        >
+          {enableRss ? translate('Yes') : translate('No')}
+        </Label>
       </TableRowCell>
 
       <TableRowCell className={styles.enableAutomaticSearch}>
-        {enableAutomaticSearch ? translate('Yes') : translate('No')}
+        <Label
+          kind={enableAutomaticSearch ? kinds.SUCCESS : kinds.DISABLED}
+          outline={!enableAutomaticSearch}
+        >
+          {enableAutomaticSearch ? translate('Yes') : translate('No')}
+        </Label>
       </TableRowCell>
 
       <TableRowCell className={styles.enableInteractiveSearch}>
-        {enableInteractiveSearch ? translate('Yes') : translate('No')}
+        <Label
+          kind={enableInteractiveSearch ? kinds.SUCCESS : kinds.DISABLED}
+          outline={!enableInteractiveSearch}
+        >
+          {enableInteractiveSearch ? translate('Yes') : translate('No')}
+        </Label>
       </TableRowCell>
 
       <TableRowCell className={styles.priority}>{priority}</TableRowCell>

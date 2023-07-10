@@ -27,9 +27,9 @@ interface ManageDownloadClientsEditModalContentProps {
 const NO_CHANGE = 'noChange';
 
 const enableOptions = [
-  { key: NO_CHANGE, value: 'No Change', disabled: true },
-  { key: 'enabled', value: 'Enabled' },
-  { key: 'disabled', value: 'Disabled' },
+  { key: NO_CHANGE, value: translate('NoChange'), disabled: true },
+  { key: 'enabled', value: translate('Enabled') },
+  { key: 'disabled', value: translate('Disabled') },
 ];
 
 function ManageDownloadClientsEditModalContent(
@@ -97,7 +97,9 @@ function ManageDownloadClientsEditModalContent(
           setRemoveFailedDownloads(value);
           break;
         default:
-          console.warn('EditDownloadClientsModalContent Unknown Input');
+          console.warn(
+            `EditDownloadClientsModalContent Unknown Input: '${name}'`
+          );
       }
     },
     []
@@ -162,9 +164,7 @@ function ManageDownloadClientsEditModalContent(
 
       <ModalFooter className={styles.modalFooter}>
         <div className={styles.selected}>
-          {translate('{count} download clients selected', {
-            count: selectedCount,
-          })}
+          {translate('CountDownloadClientsSelected', [selectedCount])}
         </div>
 
         <div>

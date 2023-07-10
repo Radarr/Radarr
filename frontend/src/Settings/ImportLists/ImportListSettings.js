@@ -86,7 +86,7 @@ class ImportListSettings extends Component {
               />
 
               <PageToolbarButton
-                label="Manage Lists"
+                label={translate('ManageLists')}
                 iconName={icons.MANAGE}
                 onPress={this.onManageImportListsPress}
               />

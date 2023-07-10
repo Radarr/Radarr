@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using NzbDrone.Core.ThingiProvider;
-using Radarr.Api.V3.Movies;
 
 namespace Radarr.Api.V3
 {
@@ -9,6 +8,18 @@ namespace Radarr.Api.V3
         public List<int> Ids { get; set; }
         public List<int> Tags { get; set; }
         public ApplyTags ApplyTags { get; set; }
+
+        public ProviderBulkResource()
+        {
+            Ids = new List<int>();
+        }
+    }
+
+    public enum ApplyTags
+    {
+        Add,
+        Remove,
+        Replace
     }
 
     public class ProviderBulkResourceMapper<TProviderBulkResource, TProviderDefinition>

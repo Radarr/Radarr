@@ -86,7 +86,7 @@ class IndexerSettings extends Component {
               />
 
               <PageToolbarButton
-                label="Manage Indexers"
+                label={translate('ManageIndexers')}
                 iconName={icons.MANAGE}
                 onPress={this.onManageIndexersPress}
               />
