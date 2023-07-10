@@ -162,11 +162,12 @@ namespace Radarr.Api.V3.Collections
         {
             var resource = collection.ToResource();
             var existingMoviesTmdbIds = _movieService.AllMovieWithCollectionsTmdbIds();
+            var namingConfig = _namingService.GetConfig();
 
             foreach (var movie in _movieMetadataService.GetMoviesByCollectionTmdbId(collection.TmdbId))
             {
                 var movieResource = movie.ToResource();
-                movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie });
+                movieResource.Folder = _fileNameBuilder.GetMovieFolder(new Movie { MovieMetadata = movie }, namingConfig);
 
                 if (!existingMoviesTmdbIds.Contains(movie.TmdbId))
                 {
