@@ -37,18 +37,18 @@ namespace NzbDrone.Core.Housekeeping.Housekeepers
                 return;
             }
 
-            var movies = _movieService.GetAllMovies();
+            var movies = _movieService.AllMoviePaths();
 
             foreach (var movie in movies)
             {
-                var images = _metaFileService.GetFilesByMovie(movie.Id)
+                var images = _metaFileService.GetFilesByMovie(movie.Key)
                     .Where(c => c.LastUpdated > new DateTime(2014, 12, 27) && c.RelativePath.EndsWith(".jpg", StringComparison.InvariantCultureIgnoreCase));
 
                 foreach (var image in images)
                 {
                     try
                     {
-                        var path = Path.Combine(movie.Path, image.RelativePath);
+                        var path = Path.Combine(movie.Value, image.RelativePath);
                         if (!IsValid(path))
                         {
                             _logger.Debug("Deleting invalid image file " + path);

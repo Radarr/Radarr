@@ -20,25 +20,25 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
     public class DeleteBadMediaCoversFixture : CoreTest<DeleteBadMediaCovers>
     {
         private List<MetadataFile> _metadata;
-        private List<Movie> _movies;
+        private Dictionary<int, string> _movies;
 
         [SetUp]
         public void Setup()
         {
-            _movies = Builder<Movie>.CreateListOfSize(1)
-                .All()
-                .With(c => c.Path = "C:\\Movie\\".AsOsAgnostic())
-                .Build().ToList();
+            _movies = new Dictionary<int, string>
+            {
+                { 1, "C:\\Movie\\".AsOsAgnostic() }
+            };
 
             _metadata = Builder<MetadataFile>.CreateListOfSize(1)
                .Build().ToList();
 
             Mocker.GetMock<IMovieService>()
-                .Setup(c => c.GetAllMovies())
+                .Setup(c => c.AllMoviePaths())
                 .Returns(_movies);
 
             Mocker.GetMock<IMetadataFileService>()
-                .Setup(c => c.GetFilesByMovie(_movies.First().Id))
+                .Setup(c => c.GetFilesByMovie(_movies.First().Key))
                 .Returns(_metadata);
 
             Mocker.GetMock<IConfigService>().SetupGet(c => c.CleanupMetadataImages).Returns(true);
@@ -73,7 +73,7 @@ namespace NzbDrone.Core.Test.HealthCheck.Checks
             Subject.Clean();
 
             Mocker.GetMock<IConfigService>().VerifySet(c => c.CleanupMetadataImages = true, Times.Never());
-            Mocker.GetMock<IMovieService>().Verify(c => c.GetAllMovies(), Times.Never());
+            Mocker.GetMock<IMovieService>().Verify(c => c.AllMoviePaths(), Times.Never());
 
             AssertImageWasNotRemoved();
         }
