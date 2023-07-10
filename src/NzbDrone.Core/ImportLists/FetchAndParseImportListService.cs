@@ -66,8 +66,6 @@ namespace NzbDrone.Core.ImportLists
                 var importListLocal = importList;
                 var importListStatus = _importListStatusService.GetLastSyncListInfo(importListLocal.Definition.Id);
 
-                _logger.ProgressInfo("Syncing Movies for Import List [{0}]: {1}", importList.Name, importListLocal.Definition.Name);
-
                 if (importListStatus.HasValue)
                 {
                     var importListNextSync = importListStatus.Value + importListLocal.MinRefreshInterval;
@@ -79,6 +77,8 @@ namespace NzbDrone.Core.ImportLists
                         continue;
                     }
                 }
+                
+                _logger.ProgressInfo("Syncing Movies for Import List [{0}]: {1}", importList.Name, importListLocal.Definition.Name);
 
                 var blockedLists = _importListStatusService.GetBlockedProviders().ToDictionary(v => v.ProviderId, v => v);
 
