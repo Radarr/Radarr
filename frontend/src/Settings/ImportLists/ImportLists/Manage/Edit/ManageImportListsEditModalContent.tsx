@@ -26,9 +26,9 @@ interface ManageImportListsEditModalContentProps {
 const NO_CHANGE = 'noChange';
 
 const autoAddOptions = [
-  { key: NO_CHANGE, value: 'No Change', disabled: true },
-  { key: 'enabled', value: 'Enabled' },
-  { key: 'disabled', value: 'Disabled' },
+  { key: NO_CHANGE, value: translate('NoChange'), disabled: true },
+  { key: 'enabled', value: translate('Enabled') },
+  { key: 'disabled', value: translate('Disabled') },
 ];
 
 function ManageImportListsEditModalContent(
@@ -36,7 +36,7 @@ function ManageImportListsEditModalContent(
 ) {
   const { importListIds, onSavePress, onModalClose } = props;
 
-  const [enableAuto, setenableAuto] = useState(NO_CHANGE);
+  const [enableAuto, setEnableAuto] = useState(NO_CHANGE);
   const [qualityProfileId, setQualityProfileId] = useState<string | number>(
     NO_CHANGE
   );
@@ -72,7 +72,7 @@ function ManageImportListsEditModalContent(
     ({ name, value }: { name: string; value: string }) => {
       switch (name) {
         case 'enableAuto':
-          setenableAuto(value);
+          setEnableAuto(value);
           break;
         case 'qualityProfileId':
           setQualityProfileId(value);
@@ -81,7 +81,7 @@ function ManageImportListsEditModalContent(
           setRootFolderPath(value);
           break;
         default:
-          console.warn('EditImportListModalContent Unknown Input');
+          console.warn(`EditImportListModalContent Unknown Input: '${name}'`);
       }
     },
     []
@@ -136,7 +136,7 @@ function ManageImportListsEditModalContent(
 
       <ModalFooter className={styles.modalFooter}>
         <div className={styles.selected}>
-          {translate('{count} import lists selected', { count: selectedCount })}
+          {translate('CountImportListsSelected', [selectedCount])}
         </div>
 
         <div>

@@ -37,7 +37,7 @@ function TagsModalContent(props: TagsModalContentProps) {
   const [tags, setTags] = useState<number[]>([]);
   const [applyTags, setApplyTags] = useState('add');
 
-  const seriesTags = useMemo(() => {
+  const indexersTags = useMemo(() => {
     const tags = ids.reduce((acc: number[], id) => {
       const s = allIndexers.items.find((s: Indexer) => s.id === id);
 
@@ -101,10 +101,10 @@ function TagsModalContent(props: TagsModalContentProps) {
               value={applyTags}
               values={applyTagsOptions}
               helpTexts={[
-                'How to apply tags to the selected indexer(s)',
-                'Add: Add the tags the existing list of tags',
-                'Remove: Remove the entered tags',
-                'Replace: Replace the tags with the entered tags (enter no tags to clear all tags)',
+                translate('ApplyTagsHelpTexts1'),
+                translate('ApplyTagsHelpTexts2'),
+                translate('ApplyTagsHelpTexts3'),
+                translate('ApplyTagsHelpTexts4'),
               ]}
               onChange={onApplyTagsChange}
             />
@@ -114,7 +114,7 @@ function TagsModalContent(props: TagsModalContentProps) {
             <FormLabel>{translate('Result')}</FormLabel>
 
             <div className={styles.result}>
-              {seriesTags.map((id) => {
+              {indexersTags.map((id) => {
                 const tag = tagList.find((t) => t.id === id);
 
                 if (!tag) {
@@ -149,7 +149,7 @@ function TagsModalContent(props: TagsModalContentProps) {
                     return null;
                   }
 
-                  if (seriesTags.indexOf(id) > -1) {
+                  if (indexersTags.indexOf(id) > -1) {
                     return null;
                   }
 
