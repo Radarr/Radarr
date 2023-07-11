@@ -24,21 +24,21 @@ namespace NzbDrone.Core.MediaFiles
         private readonly IVideoFileInfoReader _videoFileInfoReader;
         private readonly IProcessProvider _processProvider;
         private readonly IConfigService _configService;
-        private readonly ITagService _tagService;
+        private readonly ITagRepository _tagRepository;
         private readonly Logger _logger;
 
         public ImportScriptService(IProcessProvider processProvider,
                                    IVideoFileInfoReader videoFileInfoReader,
                                    IConfigService configService,
                                    IConfigFileProvider configFileProvider,
-                                   ITagService tagService,
+                                   ITagRepository tagRepository,
                                    Logger logger)
         {
             _processProvider = processProvider;
             _videoFileInfoReader = videoFileInfoReader;
             _configService = configService;
             _configFileProvider = configFileProvider;
-            _tagService = tagService;
+            _tagRepository = tagRepository;
             _logger = logger;
         }
 
@@ -71,7 +71,7 @@ namespace NzbDrone.Core.MediaFiles
             environmentVariables.Add("Radarr_Movie_ImdbId", movie.MovieMetadata.Value.ImdbId ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_OriginalLanguage", IsoLanguages.Get(movie.MovieMetadata.Value.OriginalLanguage).ThreeLetterCode);
             environmentVariables.Add("Radarr_Movie_Genres", string.Join("|", movie.MovieMetadata.Value.Genres));
-            environmentVariables.Add("Radarr_Movie_Tags", string.Join("|", movie.Tags.Select(t => _tagService.GetTag(t).Label)));
+            environmentVariables.Add("Radarr_Movie_Tags", string.Join("|", movie.Tags.Select(t => _tagRepository.Get(t).Label)));
 
             environmentVariables.Add("Radarr_Movie_In_Cinemas_Date", movie.MovieMetadata.Value.InCinemas.ToString() ?? string.Empty);
             environmentVariables.Add("Radarr_Movie_Physical_Release_Date", movie.MovieMetadata.Value.PhysicalRelease.ToString() ?? string.Empty);
