@@ -49,6 +49,7 @@ interface Movie extends ModelBase {
   sizeOnDisk: number;
   genres: string[];
   ratings: Ratings;
+  popularity: number;
   certification: string;
   tags: number[];
   images: Image[];

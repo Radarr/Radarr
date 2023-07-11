@@ -64,6 +64,12 @@
   flex: 0 0 90px;
 }
 
+.popularity {
+  composes: cell;
+
+  flex: 0 0 100px;
+}
+
 .lists {
   composes: cell;
 

@@ -61,6 +61,7 @@ import {
   faFileInvoice as farFileInvoice,
   faFilm as fasFilm,
   faFilter as fasFilter,
+  faFire as fasFire,
   faFlag as fasFlag,
   faFolderOpen as fasFolderOpen,
   faForward as fasForward,
@@ -192,6 +193,7 @@ export const PAUSED = fasPause;
 export const PENDING = farClock;
 export const PLAY = fasPlay;
 export const PROFILE = fasUser;
+export const POPULAR = fasFire;
 export const POSTER = fasTh;
 export const QUEUED = fasCloud;
 export const QUICK = fasRocket;

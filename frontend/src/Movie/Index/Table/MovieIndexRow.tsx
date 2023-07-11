@@ -19,6 +19,7 @@ import DeleteMovieModal from 'Movie/Delete/DeleteMovieModal';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
 import EditMovieModalConnector from 'Movie/Edit/EditMovieModalConnector';
 import createMovieIndexItemSelector from 'Movie/Index/createMovieIndexItemSelector';
+import MoviePopularityIndex from 'Movie/MoviePopularityIndex';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import { executeCommand } from 'Store/Actions/commandActions';
 import createUISettingsSelector from 'Store/Selectors/createUISettingsSelector';
@@ -69,6 +70,7 @@ function MovieIndexRow(props: MovieIndexRowProps) {
     sizeOnDisk,
     genres = [],
     ratings,
+    popularity,
     certification,
     tags = [],
     tmdbId,
@@ -358,6 +360,14 @@ function MovieIndexRow(props: MovieIndexRowProps) {
           return (
             <VirtualTableRowCell key={name} className={styles[name]}>
               <ImdbRating ratings={ratings} />
+            </VirtualTableRowCell>
+          );
+        }
+
+        if (name === 'popularity') {
+          return (
+            <VirtualTableRowCell key={name} className={styles[name]}>
+              <MoviePopularityIndex popularity={popularity} />
             </VirtualTableRowCell>
           );
         }

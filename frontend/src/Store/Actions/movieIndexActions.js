@@ -192,6 +192,12 @@ export const defaultState = {
       isVisible: false
     },
     {
+      name: 'popularity',
+      label: translate('Popularity'),
+      isSortable: true,
+      isVisible: false
+    },
+    {
       name: 'certification',
       label: translate('Certification'),
       isSortable: true,
@@ -441,6 +447,11 @@ export const defaultState = {
     {
       name: 'imdbVotes',
       label: translate('ImdbVotes'),
+      type: filterBuilderTypes.NUMBER
+    },
+    {
+      name: 'popularity',
+      label: translate('Popularity'),
       type: filterBuilderTypes.NUMBER
     },
     {

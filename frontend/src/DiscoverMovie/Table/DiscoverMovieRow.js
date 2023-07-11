@@ -13,6 +13,7 @@ import AddNewDiscoverMovieModal from 'DiscoverMovie/AddNewDiscoverMovieModal';
 import ExcludeMovieModal from 'DiscoverMovie/Exclusion/ExcludeMovieModal';
 import { icons } from 'Helpers/Props';
 import MovieDetailsLinks from 'Movie/Details/MovieDetailsLinks';
+import MoviePopularityIndex from 'Movie/MoviePopularityIndex';
 import formatRuntime from 'Utilities/Date/formatRuntime';
 import translate from 'Utilities/String/translate';
 import ListMovieStatusCell from './ListMovieStatusCell';
@@ -73,6 +74,7 @@ class DiscoverMovieRow extends Component {
       images,
       genres,
       ratings,
+      popularity,
       certification,
       collection,
       columns,
@@ -261,6 +263,14 @@ class DiscoverMovieRow extends Component {
               );
             }
 
+            if (name === 'popularity') {
+              return (
+                <VirtualTableRowCell key={name} className={styles[name]}>
+                  <MoviePopularityIndex popularity={popularity} />
+                </VirtualTableRowCell>
+              );
+            }
+
             if (name === 'certification') {
               return (
                 <VirtualTableRowCell
@@ -384,6 +394,7 @@ DiscoverMovieRow.propTypes = {
   runtime: PropTypes.number,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   ratings: PropTypes.object.isRequired,
+  popularity: PropTypes.number.isRequired,
   certification: PropTypes.string,
   collection: PropTypes.object,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,

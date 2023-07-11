@@ -11,6 +11,7 @@ interface CssExports {
   'lists': string;
   'originalLanguage': string;
   'physicalRelease': string;
+  'popularity': string;
   'ratings': string;
   'runtime': string;
   'sortTitle': string;

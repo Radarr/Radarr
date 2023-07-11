@@ -41,6 +41,7 @@
 }
 
 .added,
+.popularity,
 .runtime {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 

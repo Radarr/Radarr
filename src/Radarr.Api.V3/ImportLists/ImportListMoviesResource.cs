@@ -36,6 +36,7 @@ namespace Radarr.Api.V3.ImportLists
         public int TmdbId { get; set; }
         public string Folder { get; set; }
         public string Certification { get; set; }
+        public float Popularity { get; set; }
         public List<string> Genres { get; set; }
         public Ratings Ratings { get; set; }
         public MovieCollection Collection { get; set; }
@@ -78,6 +79,7 @@ namespace Radarr.Api.V3.ImportLists
                 Website = model.MovieMetadata.Value.Website,
                 Genres = model.MovieMetadata.Value.Genres,
                 Ratings = model.MovieMetadata.Value.Ratings,
+                Popularity = model.MovieMetadata.Value.Popularity,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
                 Collection = new MovieCollection { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId },
                 Studio = model.MovieMetadata.Value.Studio
@@ -115,6 +117,7 @@ namespace Radarr.Api.V3.ImportLists
                 Genres = model.MovieMetadata.Value.Genres,
                 Ratings = model.MovieMetadata.Value.Ratings,
                 YouTubeTrailerId = model.MovieMetadata.Value.YouTubeTrailerId,
+                Popularity = model.MovieMetadata.Value.Popularity,
                 Studio = model.MovieMetadata.Value.Studio,
                 Collection = new MovieCollection { Title = model.MovieMetadata.Value.CollectionTitle, TmdbId = model.MovieMetadata.Value.CollectionTmdbId },
                 Lists = new HashSet<int> { model.ListId }

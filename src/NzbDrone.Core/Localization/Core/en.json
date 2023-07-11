@@ -732,6 +732,8 @@
   "Permissions": "Permissions",
   "PhysicalRelease": "Physical Release",
   "PhysicalReleaseDate": "Physical Release Date",
+  "Popularity": "Popularity",
+  "PopularityIndex": "Current Popularity Index",
   "Port": "Port",
   "PortNumber": "Port Number",
   "PosterOptions": "Poster Options",

@@ -48,6 +48,7 @@
 }
 
 .added,
+.popularity,
 .runtime {
   composes: cell;
 

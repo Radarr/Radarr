@@ -39,6 +39,12 @@
   flex: 0 0 90px;
 }
 
+.popularity {
+  composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
+
+  flex: 0 0 100px;
+}
+
 .lists {
   composes: headerCell from '~Components/Table/VirtualTableHeaderCell.css';
 
