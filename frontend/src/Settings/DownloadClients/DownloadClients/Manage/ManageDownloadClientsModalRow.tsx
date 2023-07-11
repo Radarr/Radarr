@@ -4,6 +4,7 @@ import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableSelectCell from 'Components/Table/Cells/TableSelectCell';
 import Column from 'Components/Table/Column';
 import TableRow from 'Components/Table/TableRow';
+import TagListConnector from 'Components/TagListConnector';
 import { kinds } from 'Helpers/Props';
 import { SelectStateInputProps } from 'typings/props';
 import translate from 'Utilities/String/translate';
@@ -17,6 +18,7 @@ interface ManageDownloadClientsModalRowProps {
   removeCompletedDownloads: boolean;
   removeFailedDownloads: boolean;
   implementation: string;
+  tags: number[];
   columns: Column[];
   isSelected?: boolean;
   onSelectedChange(result: SelectStateInputProps): void;
@@ -34,6 +36,7 @@ function ManageDownloadClientsModalRow(
     removeCompletedDownloads,
     removeFailedDownloads,
     implementation,
+    tags,
     onSelectedChange,
   } = props;
 
@@ -74,6 +77,10 @@ function ManageDownloadClientsModalRow(
 
       <TableRowCell className={styles.removeFailedDownloads}>
         {removeFailedDownloads ? translate('Yes') : translate('No')}
+      </TableRowCell>
+
+      <TableRowCell className={styles.tags}>
+        <TagListConnector tags={tags} />
       </TableRowCell>
     </TableRow>
   );

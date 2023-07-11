@@ -23,6 +23,7 @@ function TagDetailsModalContent(props) {
     restrictions,
     importLists,
     indexers,
+    downloadClients,
     onModalClose,
     onDeleteTagPress
   } = props;
@@ -167,7 +168,7 @@ function TagDetailsModalContent(props) {
         }
 
         {
-          !!importLists.length &&
+          importLists.length ?
             <FieldSet legend={translate('Lists')}>
               {
                 importLists.map((item) => {
@@ -178,7 +179,24 @@ function TagDetailsModalContent(props) {
                   );
                 })
               }
-            </FieldSet>
+            </FieldSet> :
+            null
+        }
+
+        {
+          downloadClients.length ?
+            <FieldSet legend={translate('DownloadClients')}>
+              {
+                downloadClients.map((item) => {
+                  return (
+                    <div key={item.id}>
+                      {item.name}
+                    </div>
+                  );
+                })
+              }
+            </FieldSet> :
+            null
         }
       </ModalBody>
 
@@ -214,6 +232,7 @@ TagDetailsModalContent.propTypes = {
   restrictions: PropTypes.arrayOf(PropTypes.object).isRequired,
   importLists: PropTypes.arrayOf(PropTypes.object).isRequired,
   indexers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  downloadClients: PropTypes.arrayOf(PropTypes.object).isRequired,
   onModalClose: PropTypes.func.isRequired,
   onDeleteTagPress: PropTypes.func.isRequired
 };

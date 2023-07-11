@@ -25,6 +25,7 @@ import translate from 'Utilities/String/translate';
 import getSelectedIds from 'Utilities/Table/getSelectedIds';
 import ManageDownloadClientsEditModal from './Edit/ManageDownloadClientsEditModal';
 import ManageDownloadClientsModalRow from './ManageDownloadClientsModalRow';
+import TagsModal from './Tags/TagsModal';
 import styles from './ManageDownloadClientsModalContent.css';
 
 // TODO: This feels janky to do, but not sure of a better way currently
@@ -69,6 +70,12 @@ const COLUMNS = [
     isSortable: true,
     isVisible: true,
   },
+  {
+    name: 'tags',
+    label: 'Tags',
+    isSortable: true,
+    isVisible: true,
+  },
 ];
 
 interface ManageDownloadClientsModalContentProps {
@@ -94,6 +101,8 @@ function ManageDownloadClientsModalContent(
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
+  const [isSavingTags, setIsSavingTags] = useState(false);
 
   const [selectState, setSelectState] = useSelectState();
 
@@ -134,6 +143,30 @@ function ManageDownloadClientsModalContent(
         bulkEditDownloadClients({
           ids: selectedIds,
           ...payload,
+        })
+      );
+    },
+    [selectedIds, dispatch]
+  );
+
+  const onTagsPress = useCallback(() => {
+    setIsTagsModalOpen(true);
+  }, [setIsTagsModalOpen]);
+
+  const onTagsModalClose = useCallback(() => {
+    setIsTagsModalOpen(false);
+  }, [setIsTagsModalOpen]);
+
+  const onApplyTagsPress = useCallback(
+    (tags: number[], applyTags: string) => {
+      setIsSavingTags(true);
+      setIsTagsModalOpen(false);
+
+      dispatch(
+        bulkEditDownloadClients({
+          ids: selectedIds,
+          tags,
+          applyTags,
         })
       );
     },
@@ -222,6 +255,14 @@ function ManageDownloadClientsModalContent(
           >
             {translate('Edit')}
           </SpinnerButton>
+
+          <SpinnerButton
+            isSpinning={isSaving && isSavingTags}
+            isDisabled={!anySelected}
+            onPress={onTagsPress}
+          >
+            {translate('SetTags')}
+          </SpinnerButton>
         </div>
 
         <Button onPress={onModalClose}>{translate('Close')}</Button>
@@ -232,6 +273,13 @@ function ManageDownloadClientsModalContent(
         onModalClose={onEditModalClose}
         onSavePress={onSavePress}
         downloadClientIds={selectedIds}
+      />
+
+      <TagsModal
+        isOpen={isTagsModalOpen}
+        ids={selectedIds}
+        onApplyTagsPress={onApplyTagsPress}
+        onModalClose={onTagsModalClose}
       />
 
       <ConfirmModal
