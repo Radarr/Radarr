@@ -9905,6 +9905,7 @@
           "tmdb",
           "trakt",
           "plex",
+          "simkl",
           "other",
           "advanced"
         ],
@@ -11801,6 +11802,10 @@
               "$ref": "#/components/schemas/CustomFormatResource"
             },
             "nullable": true
+          },
+          "customFormatScore": {
+            "type": "integer",
+            "format": "int32"
           },
           "size": {
             "type": "number",
