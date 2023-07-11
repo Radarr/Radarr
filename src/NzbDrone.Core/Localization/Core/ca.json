@@ -1156,5 +1156,9 @@
     "RemoveSelectedItemQueueMessageText": "Esteu segur que voleu eliminar {0} de la cua?",
     "RemoveSelectedItemsQueueMessageText": "Esteu segur que voleu eliminar {0} de la cua?",
     "ResetAPIKeyMessageText": "Esteu segur que voleu restablir la clau de l'API?",
-    "ResetDefinitionTitlesHelpText": "Restableix els títols de definició i els valors"
+    "ResetDefinitionTitlesHelpText": "Restableix els títols de definició i els valors",
+    "DeleteIndexers": "Suprimeix l'indexador",
+    "DeleteIndexersMessageText": "Esteu segur que voleu suprimir l'indexador '{0}'?",
+    "DeleteSelectedDownloadClients": "Suprimeix el client de descàrrega",
+    "DeleteSelectedIndexers": "Suprimeix l'indexador"
 }
