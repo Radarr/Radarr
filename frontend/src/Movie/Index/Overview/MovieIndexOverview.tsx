@@ -71,6 +71,9 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
     isAvailable,
     tmdbId,
     imdbId,
+    studio,
+    sizeOnDisk,
+    added,
     youTubeTrailerId,
   } = movie;
 
@@ -219,6 +222,9 @@ function MovieIndexOverview(props: MovieIndexOverviewProps) {
               height={overviewHeight}
               monitored={monitored}
               qualityProfile={qualityProfile}
+              studio={studio}
+              sizeOnDisk={sizeOnDisk}
+              added={added}
               path={path}
               sortKey={sortKey}
               {...overviewOptions}

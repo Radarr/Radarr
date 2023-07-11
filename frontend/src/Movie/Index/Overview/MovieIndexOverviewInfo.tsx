@@ -56,7 +56,7 @@ const rows = [
   {
     name: 'qualityProfileId',
     showProp: 'showQualityProfile',
-    valueProp: 'qualityProfileId',
+    valueProp: 'qualityProfile',
   },
   {
     name: 'added',
