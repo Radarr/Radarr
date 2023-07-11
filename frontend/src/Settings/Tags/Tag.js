@@ -58,7 +58,8 @@ class Tag extends Component {
       restrictionIds,
       importListIds,
       movieIds,
-      indexerIds
+      indexerIds,
+      downloadClientIds
     } = this.props;
 
     const {
@@ -72,7 +73,8 @@ class Tag extends Component {
       restrictionIds.length ||
       importListIds.length ||
       movieIds.length ||
-      indexerIds.length
+      indexerIds.length ||
+      downloadClientIds.length
     );
 
     return (
@@ -130,6 +132,14 @@ class Tag extends Component {
                   </div> :
                   null
               }
+
+              {
+                downloadClientIds.length ?
+                  <div>
+                    {downloadClientIds.length} download client{indexerIds.length > 1 && 's'}
+                  </div> :
+                  null
+              }
             </div>
         }
 
@@ -149,6 +159,7 @@ class Tag extends Component {
           restrictionIds={restrictionIds}
           importListIds={importListIds}
           indexerIds={indexerIds}
+          downloadClientIds={downloadClientIds}
           isOpen={isDetailsModalOpen}
           onModalClose={this.onDetailsModalClose}
           onDeleteTagPress={this.onDeleteTagPress}
@@ -177,6 +188,7 @@ Tag.propTypes = {
   importListIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   movieIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   indexerIds: PropTypes.arrayOf(PropTypes.number).isRequired,
+  downloadClientIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   onConfirmDeleteTag: PropTypes.func.isRequired
 };
 
@@ -186,7 +198,8 @@ Tag.defaultProps = {
   restrictionIds: [],
   importListIds: [],
   movieIds: [],
-  indexerIds: []
+  indexerIds: [],
+  downloadClientIds: []
 };
 
 export default Tag;

@@ -14,6 +14,7 @@ namespace Radarr.Api.V3.Tags
         public List<int> ImportListIds { get; set; }
         public List<int> MovieIds { get; set; }
         public List<int> IndexerIds { get; set; }
+        public List<int> DownloadClientIds { get; set; }
     }
 
     public static class TagDetailsResourceMapper
@@ -34,7 +35,8 @@ namespace Radarr.Api.V3.Tags
                 RestrictionIds = model.RestrictionIds,
                 ImportListIds = model.ImportListIds,
                 MovieIds = model.MovieIds,
-                IndexerIds = model.IndexerIds
+                IndexerIds = model.IndexerIds,
+                DownloadClientIds = model.DownloadClientIds,
             };
         }
 

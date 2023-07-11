@@ -55,7 +55,8 @@ namespace NzbDrone.Core.Download
 
             var downloadTitle = remoteMovie.Release.Title;
             var filterBlockedClients = remoteMovie.Release.PendingReleaseReason == PendingReleaseReason.DownloadClientUnavailable;
-            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteMovie.Release.DownloadProtocol, remoteMovie.Release.IndexerId, filterBlockedClients);
+            var tags = remoteMovie.Movie?.Tags;
+            var downloadClient = _downloadClientProvider.GetDownloadClient(remoteMovie.Release.DownloadProtocol, remoteMovie.Release.IndexerId, filterBlockedClients, tags);
 
             if (downloadClient == null)
             {

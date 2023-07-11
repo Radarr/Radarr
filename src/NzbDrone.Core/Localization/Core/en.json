@@ -273,6 +273,7 @@
   "DownloadClientSortingCheckMessage": "Download client {0} has {1} sorting enabled for Radarr's category. You should disable sorting in your download client to avoid import issues.",
   "DownloadClientStatusCheckAllClientMessage": "All download clients are unavailable due to failures",
   "DownloadClientStatusCheckSingleClientMessage": "Download clients unavailable due to failures: {0}",
+  "DownloadClientTagHelpText": "Only use this download client for movies with at least one matching tag. Leave blank to use with all movies.",
   "DownloadClientUnavailable": "Download client is unavailable",
   "DownloadClients": "Download Clients",
   "DownloadClientsSettingsSummary": "Download clients, download handling and remote path mappings",

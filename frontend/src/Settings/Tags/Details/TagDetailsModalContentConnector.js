@@ -77,6 +77,14 @@ function createMatchingIndexersSelector() {
   );
 }
 
+function createMatchingDownloadClientsSelector() {
+  return createSelector(
+    (state, { downloadClientIds }) => downloadClientIds,
+    (state) => state.settings.downloadClients.items,
+    findMatchingItems
+  );
+}
+
 function createMapStateToProps() {
   return createSelector(
     createMatchingMoviesSelector(),
@@ -85,14 +93,16 @@ function createMapStateToProps() {
     createMatchingRestrictionsSelector(),
     createMatchingImportListsSelector(),
     createMatchingIndexersSelector(),
-    (movies, delayProfiles, notifications, restrictions, importLists, indexers) => {
+    createMatchingDownloadClientsSelector(),
+    (movies, delayProfiles, notifications, restrictions, importLists, indexers, downloadClients) => {
       return {
         movies,
         delayProfiles,
         notifications,
         restrictions,
         importLists,
-        indexers
+        indexers,
+        downloadClients
       };
     }
   );

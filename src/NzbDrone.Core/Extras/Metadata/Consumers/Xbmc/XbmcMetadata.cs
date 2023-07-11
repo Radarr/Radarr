@@ -28,14 +28,14 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
         private readonly IDetectXbmcNfo _detectNfo;
         private readonly IDiskProvider _diskProvider;
         private readonly ICreditService _creditService;
-        private readonly ITagService _tagService;
+        private readonly ITagRepository _tagRepository;
         private readonly IMovieTranslationService _movieTranslationsService;
 
         public XbmcMetadata(IDetectXbmcNfo detectNfo,
                             IDiskProvider diskProvider,
                             IMapCoversToLocal mediaCoverService,
                             ICreditService creditService,
-                            ITagService tagService,
+                            ITagRepository tagRepository,
                             IMovieTranslationService movieTranslationsService,
                             Logger logger)
         {
@@ -44,7 +44,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
             _diskProvider = diskProvider;
             _detectNfo = detectNfo;
             _creditService = creditService;
-            _tagService = tagService;
+            _tagRepository = tagRepository;
             _movieTranslationsService = movieTranslationsService;
         }
 
@@ -273,7 +273,7 @@ namespace NzbDrone.Core.Extras.Metadata.Consumers.Xbmc
                         details.Add(setElement);
                     }
 
-                    var tags = _tagService.GetTags(movie.Tags);
+                    var tags = _tagRepository.Get(movie.Tags);
 
                     foreach (var tag in tags)
                     {
