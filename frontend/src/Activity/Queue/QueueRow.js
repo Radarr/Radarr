@@ -15,6 +15,7 @@ import MovieLanguage from 'Movie/MovieLanguage';
 import MovieQuality from 'Movie/MovieQuality';
 import MovieTitleLink from 'Movie/MovieTitleLink';
 import formatBytes from 'Utilities/Number/formatBytes';
+import formatPreferredWordScore from 'Utilities/Number/formatPreferredWordScore';
 import translate from 'Utilities/String/translate';
 import QueueStatusCell from './QueueStatusCell';
 import RemoveQueueItemModal from './RemoveQueueItemModal';
@@ -88,6 +89,7 @@ class QueueRow extends Component {
       movie,
       quality,
       customFormats,
+      customFormatScore,
       languages,
       protocol,
       indexer,
@@ -197,6 +199,17 @@ class QueueRow extends Component {
                   <MovieFormats
                     formats={customFormats}
                   />
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'customFormatScore') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.customFormatScore}
+                >
+                  {formatPreferredWordScore(customFormatScore)}
                 </TableRowCell>
               );
             }
@@ -365,6 +378,7 @@ QueueRow.propTypes = {
   movie: PropTypes.object,
   quality: PropTypes.object.isRequired,
   customFormats: PropTypes.arrayOf(PropTypes.object),
+  customFormatScore: PropTypes.number.isRequired,
   languages: PropTypes.arrayOf(PropTypes.object).isRequired,
   protocol: PropTypes.string.isRequired,
   indexer: PropTypes.string,

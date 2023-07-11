@@ -19,6 +19,7 @@ namespace Radarr.Api.V3.Queue
         public List<Language> Languages { get; set; }
         public QualityModel Quality { get; set; }
         public List<CustomFormatResource> CustomFormats { get; set; }
+        public int CustomFormatScore { get; set; }
         public decimal Size { get; set; }
         public string Title { get; set; }
         public decimal Sizeleft { get; set; }
@@ -45,6 +46,9 @@ namespace Radarr.Api.V3.Queue
                 return null;
             }
 
+            var customFormats = model.RemoteMovie?.CustomFormats;
+            var customFormatScore = model.Movie?.Profile?.CalculateCustomFormatScore(customFormats) ?? 0;
+
             return new QueueResource
             {
                 Id = model.Id,
@@ -52,7 +56,8 @@ namespace Radarr.Api.V3.Queue
                 Movie = includeMovie && model.Movie != null ? model.Movie.ToResource(0) : null,
                 Languages = model.Languages,
                 Quality = model.Quality,
-                CustomFormats = model.RemoteMovie?.CustomFormats?.ToResource(false),
+                CustomFormats = customFormats?.ToResource(false),
+                CustomFormatScore = customFormatScore,
                 Size = model.Size,
                 Title = model.Title,
                 Sizeleft = model.Sizeleft,
