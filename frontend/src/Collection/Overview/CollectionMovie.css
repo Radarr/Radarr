@@ -102,7 +102,7 @@ $hoverScale: 1.05;
 
   position: relative;
   display: block;
-  background-color: var(--defaultColor);
+  background-color: var(--black);
 }
 
 .monitorToggleButton {
