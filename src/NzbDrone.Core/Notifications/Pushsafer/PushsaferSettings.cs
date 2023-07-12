@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using FluentValidation;
 using NzbDrone.Core.Annotations;
 using NzbDrone.Core.ThingiProvider;
@@ -14,6 +15,10 @@ namespace NzbDrone.Core.Notifications.Pushsafer
             RuleFor(c => c.ApiKey).NotEmpty();
             RuleFor(c => c.Retry).GreaterThanOrEqualTo(60).LessThanOrEqualTo(10800).When(c => (PushsaferPriority)c.Priority == PushsaferPriority.Emergency);
             RuleFor(c => c.Expire).GreaterThanOrEqualTo(60).LessThanOrEqualTo(10800).When(c => (PushsaferPriority)c.Priority == PushsaferPriority.Emergency);
+            RuleFor(c => c.Sound).Must(c => int.TryParse(c, out var val) && val >= 0 && val <= 62).When(c => !string.IsNullOrWhiteSpace(c.Sound)).WithMessage("'Sound' must be greater than or equal to 0 and less than or equal to 62.");
+            RuleFor(c => c.Vibration).Must(c => int.TryParse(c, out var val) && val >= 1 && val <= 3).When(c => !string.IsNullOrWhiteSpace(c.Vibration)).WithMessage("'Vibration must be greater than or equal to 1 and less than or equal to 3.");
+            RuleFor(c => c.Icon).Must(c => int.TryParse(c, out var val) && val >= 1 && val <= 181).When(c => !string.IsNullOrWhiteSpace(c.Icon)).WithMessage("'Icon' must be be greater than or equal to 1 and less than or equal to 181.");
+            RuleFor(c => c.IconColor).Matches(new Regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")).When(c => !string.IsNullOrWhiteSpace(c.IconColor));
         }
     }
 
@@ -23,7 +28,7 @@ namespace NzbDrone.Core.Notifications.Pushsafer
 
         public PushsaferSettings()
         {
-            Priority = 0;
+            Priority = (int)PushsaferPriority.Normal;
             DeviceIds = Array.Empty<string>();
         }
 
