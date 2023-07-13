@@ -73,5 +73,18 @@ namespace NzbDrone.Core.Validation
             ruleBuilder.SetValidator(new NotEmptyValidator(null));
             return ruleBuilder.SetValidator(new RegularExpressionValidator("radarr", RegexOptions.IgnoreCase)).WithMessage("Must contain Radarr");
         }
+
+        public static IRuleBuilderOptions<T, string> ValidParsedStringRange<T>(this IRuleBuilder<T, string> ruleBuilder, int minValue, int maxValue)
+        {
+            return ruleBuilder.Must(x =>
+            {
+                if (int.TryParse(x, out var value))
+                {
+                    return value >= minValue && value <= maxValue;
+                }
+
+                return false;
+            }).WithMessage($"Must be greater than or equal to '{minValue}' and less than or equal to '{maxValue}'");
+        }
     }
 }
