@@ -65,7 +65,7 @@ namespace Radarr.Api.V3.Queue
         }
 
         [RestDeleteById]
-        public void RemoveAction(int id, bool removeFromClient = true, bool blocklist = false)
+        public void RemoveAction(int id, bool removeFromClient = true, bool blocklist = false, bool skipRedownload = false)
         {
             var pendingRelease = _pendingReleaseService.FindPendingQueueItem(id);
 
@@ -83,12 +83,12 @@ namespace Radarr.Api.V3.Queue
                 throw new NotFoundException();
             }
 
-            Remove(trackedDownload, removeFromClient, blocklist);
+            Remove(trackedDownload, removeFromClient, blocklist, skipRedownload);
             _trackedDownloadService.StopTracking(trackedDownload.DownloadItem.DownloadId);
         }
 
         [HttpDelete("bulk")]
-        public object RemoveMany([FromBody] QueueBulkResource resource, [FromQuery] bool removeFromClient = true, [FromQuery] bool blocklist = false)
+        public object RemoveMany([FromBody] QueueBulkResource resource, [FromQuery] bool removeFromClient = true, [FromQuery] bool blocklist = false, [FromQuery] bool skipRedownload = false)
         {
             var trackedDownloadIds = new List<string>();
             var pendingToRemove = new List<NzbDrone.Core.Queue.Queue>();
@@ -119,7 +119,7 @@ namespace Radarr.Api.V3.Queue
 
             foreach (var trackedDownload in trackedToRemove.DistinctBy(t => t.DownloadItem.DownloadId))
             {
-                Remove(trackedDownload, removeFromClient, blocklist);
+                Remove(trackedDownload, removeFromClient, blocklist, skipRedownload);
                 trackedDownloadIds.Add(trackedDownload.DownloadItem.DownloadId);
             }
 
@@ -242,7 +242,7 @@ namespace Radarr.Api.V3.Queue
             _pendingReleaseService.RemovePendingQueueItems(pendingRelease.Id);
         }
 
-        private TrackedDownload Remove(TrackedDownload trackedDownload, bool removeFromClient, bool blocklist)
+        private TrackedDownload Remove(TrackedDownload trackedDownload, bool removeFromClient, bool blocklist, bool skipRedownload)
         {
             if (removeFromClient)
             {
@@ -258,7 +258,7 @@ namespace Radarr.Api.V3.Queue
 
             if (blocklist)
             {
-                _failedDownloadService.MarkAsFailed(trackedDownload.DownloadItem.DownloadId);
+                _failedDownloadService.MarkAsFailed(trackedDownload.DownloadItem.DownloadId, skipRedownload);
             }
 
             if (!removeFromClient && !blocklist)

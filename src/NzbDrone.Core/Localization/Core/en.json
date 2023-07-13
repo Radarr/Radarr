@@ -1031,6 +1031,8 @@
   "SizeOnDisk": "Size on Disk",
   "SkipFreeSpaceCheck": "Skip Free Space Check",
   "SkipFreeSpaceCheckWhenImportingHelpText": "Use when Radarr is unable to detect free space from your movie root folder",
+  "SkipRedownload": "Skip Redownload",
+  "SkipRedownloadHelpText": "Prevents Radarr from trying to download an alternative release for this item",
   "Small": "Small",
   "Socks4": "Socks4",
   "Socks5": "Socks5 (Support TOR)",

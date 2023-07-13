@@ -26,6 +26,12 @@ namespace NzbDrone.Core.Download
         [EventHandleOrder(EventHandleOrder.Last)]
         public void Handle(DownloadFailedEvent message)
         {
+            if (message.SkipRedownload)
+            {
+                _logger.Debug("Skip redownloading requested by user");
+                return;
+            }
+
             if (!_configService.AutoRedownloadFailed)
             {
                 _logger.Debug("Auto redownloading failed movies is disabled");
