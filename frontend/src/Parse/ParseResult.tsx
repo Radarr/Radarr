@@ -130,7 +130,11 @@ function ParseResult(props: ParseResultProps) {
           title={translate('MatchedToMovie')}
           data={
             movie ? (
-              <MovieTitleLink titleSlug={movie.titleSlug} title={movie.title} />
+              <MovieTitleLink
+                titleSlug={movie.titleSlug}
+                title={movie.title}
+                year={movie.year}
+              />
             ) : (
               '-'
             )
