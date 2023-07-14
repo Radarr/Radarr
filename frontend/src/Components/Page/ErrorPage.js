@@ -7,6 +7,7 @@ function ErrorPage(props) {
   const {
     version,
     isLocalStorageSupported,
+    hasTranslationsError,
     moviesError,
     customFiltersError,
     tagsError,
@@ -20,6 +21,8 @@ function ErrorPage(props) {
 
   if (!isLocalStorageSupported) {
     errorMessage = 'Local Storage is not supported or disabled. A plugin or private browsing may have disabled it.';
+  } else if (hasTranslationsError) {
+    errorMessage = 'Failed to load translations from API';
   } else if (moviesError) {
     errorMessage = getErrorMessage(moviesError, 'Failed to load movie from API');
   } else if (customFiltersError) {
@@ -52,6 +55,7 @@ function ErrorPage(props) {
 ErrorPage.propTypes = {
   version: PropTypes.string.isRequired,
   isLocalStorageSupported: PropTypes.bool.isRequired,
+  hasTranslationsError: PropTypes.bool.isRequired,
   moviesError: PropTypes.object,
   customFiltersError: PropTypes.object,
   tagsError: PropTypes.object,
