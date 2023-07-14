@@ -48,16 +48,16 @@ namespace NzbDrone.Core.Notifications.Pushsafer
         [FieldDefinition(4, Label = "Expire", Type = FieldType.Textbox, HelpText = "Maximum time to retry Emergency alerts, maximum 10800 seconds")]
         public int Expire { get; set; }
 
-        [FieldDefinition(5, Label = "Sound", Type = FieldType.Textbox, HelpText = "Notification sound 0-62 (leave blank to use the default)", HelpLink = "https://www.pushsafer.com/en/pushapi_ext#API-S")]
+        [FieldDefinition(5, Label = "Sound", Type = FieldType.Textbox, Advanced = true, HelpText = "Notification sound 0-62 (leave blank to use the default)", HelpLink = "https://www.pushsafer.com/en/pushapi_ext#API-S")]
         public string Sound { get; set; }
 
-        [FieldDefinition(6, Label = "Vibration", Type = FieldType.Textbox, HelpText = "Vibration pattern 1-3 (leave blank to use the device default)", HelpLink = "https://www.pushsafer.com/en/pushapi_ext#API-V")]
+        [FieldDefinition(6, Label = "Vibration", Type = FieldType.Textbox, Advanced = true, HelpText = "Vibration pattern 1-3 (leave blank to use the device default)", HelpLink = "https://www.pushsafer.com/en/pushapi_ext#API-V")]
         public string Vibration { get; set; }
 
-        [FieldDefinition(7, Label = "Icon", Type = FieldType.Textbox, HelpText = "Icon number 1-181 (leave blank to use the default Pushsafer icon)", HelpLink = "https://www.pushsafer.com/en/pushapi_ext#API-I")]
+        [FieldDefinition(7, Label = "Icon", Type = FieldType.Textbox, Advanced = true, HelpText = "Icon number 1-181 (leave blank to use the default Pushsafer icon)", HelpLink = "https://www.pushsafer.com/en/pushapi_ext#API-I")]
         public string Icon { get; set; }
 
-        [FieldDefinition(8, Label = "Icon Color", Type = FieldType.Textbox, HelpText = "Icon color in hex format (leave blank to use the default Pushsafer icon color)", HelpLink = "https://www.pushsafer.com/en/pushapi_ext#API-C")]
+        [FieldDefinition(8, Label = "Icon Color", Type = FieldType.Textbox, Advanced = true, HelpText = "Icon color in hex format (leave blank to use the default Pushsafer icon color)", HelpLink = "https://www.pushsafer.com/en/pushapi_ext#API-C")]
         public string IconColor { get; set; }
 
         public NzbDroneValidationResult Validate()
